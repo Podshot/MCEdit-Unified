@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+org.eclipse.debug.ui.build_before_launch=false
+org.eclipse.debug.ui.wait_for_build=never
