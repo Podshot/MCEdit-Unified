@@ -143,22 +143,25 @@ log.info("Loading config...")
 config = loadConfig()
 config.observers = {}
 
+#TODO: The '_*' functions below (and prolly addObserver too) should be inside
+# Setting class, as they are  not called anywhere else on code besides the
+# wrappers there.
 
-def _propertyRef(section, name, dtype=str, default=None):
+def _propertyRef(section, name, dtype, dsubtype, default):
     class PropRef(object):
         def get(self):
-            return _getProperty(section, name, dtype, default)
+            return _getProperty(section, name, dtype, dsubtype, default)
 
         def set(self, val):
             _setProperty(section, name, val)
     return PropRef()
 
 
-def _configProperty(section, name, dtype=str, setter=None, default=None):
+def _configProperty(section, name, dtype, dsubtype, setter, default):
     assert default is not None
 
     def _getter(self):
-        return _getProperty(section, name, dtype, default)
+        return _getProperty(section, name, dtype, dsubtype, default)
 
     def _setter(self, val):
         _setProperty(section, name, val)
@@ -168,10 +171,13 @@ def _configProperty(section, name, dtype=str, setter=None, default=None):
     return property(_getter, _setter, None)
 
 
-def _getProperty(section, name, dtype=str, default=None):
+def _getProperty(section, name, dtype, dsubtype, default):
     try:
         if dtype is bool:
             return config.getboolean(section, name)
+        if dtype in [list, tuple]:
+            return dtype(dsubtype(x.strip()) for x in
+                    config.get(section, name).translate(None, '[]()').split(','))
         else:
             return dtype(config.get(section, name))
     except:
@@ -206,7 +212,7 @@ def _notifyObservers(section, name, value):
 import weakref
 
 
-def addObserver(section, name, target, attr=None, dtype=str, callback=None, default=None):
+def addObserver(section, name, target, attr, dtype, dsubtype, callback, default):
     """ Register 'target' for changes in the config var named by section and name.
     When the config is changed, calls setattr with target and attr.
     attr may be None; it will be created from the name by lowercasing the first
@@ -223,7 +229,7 @@ def addObserver(section, name, target, attr=None, dtype=str, callback=None, defa
     targetref = weakref.ref(target)
     observers.setdefault((targetref, attr), callback)
 
-    val = _getProperty(section, name, dtype, default)
+    val = _getProperty(section, name, dtype, dsubtype, default)
 
     setattr(target, attr, val)
     if callback:
@@ -231,29 +237,38 @@ def addObserver(section, name, target, attr=None, dtype=str, callback=None, defa
 
 
 class Setting(object):
-    def __init__(self, section, name, dtype, default):
+    def __init__(self, section, name, dtype, dsubtype, default):
         self.section = section
         self.name = name
-        self.dtype = dtype
         self.default = default
+        self.dtype = dtype
+        self.dsubtype = dsubtype
 
     def __repr__(self):
-        return "Setting(" + ", ".join(str(s) for s in (self.section, self.name, self.dtype, self.default))
+        attrs = [self.section, self.name, self.dtype, self.default]
+        if self.dtype in [list, tuple]:
+            attrs.insert(-1, self.dsubtype)
+        return "Setting(" + ", ".join(repr(s) for s in attrs) + ")"
 
     def addObserver(self, target, attr=None, callback=None):
-        addObserver(self.section, self.name, target, attr, self.dtype, callback, self.default)
+        addObserver(self.section, self.name, target, attr, self.dtype, self.dsubtype, callback, self.default)
 
     def get(self):
-        return _getProperty(self.section, self.name, self.dtype, self.default)
+        return _getProperty(self.section, self.name, self.dtype, self.dsubtype, self.default)
 
     def set(self, val):
-        return _setProperty(self.section, self.name, self.dtype(val))
+        # Perhaps set() should simply assign val without any dtype inference or conversion
+        # clients should be responsible for using data types compatible with default value
+        if self.dtype in [list, tuple]:
+            _setProperty(self.section, self.name, self.dtype(self.dsubtype(x) for x in val))
+        else:
+            _setProperty(self.section, self.name, self.dtype(val))
 
     def propertyRef(self):
-        return _propertyRef(self.section, self.name, self.dtype, self.default)
+        return _propertyRef(self.section, self.name, self.dtype, self.dsubtype, self.default)
 
     def configProperty(self, setter=None):
-        return _configProperty(self.section, self.name, self.dtype, setter, self.default)
+        return _configProperty(self.section, self.name, self.dtype, self.dsubtype, setter, self.default)
 
     def __int__(self):
         return int(self.get())
@@ -274,10 +289,15 @@ class Settings(object):
     def __call__(self, name, default):
         assert default is not None
 
-        dtype = type(default)
         section = self.section
 
-        s = self.Setting(section, name, dtype, default)
+        dtype = type(default)
+        if dtype in [list, tuple] and len(default) > 0:
+            dsubtype = type(default[0])
+        else:
+            dsubtype = str
+
+        s = self.Setting(section, name, dtype, dsubtype, default)
         if not config.has_section(section):
             config.add_section(section)
         if not config.has_option(section, name):

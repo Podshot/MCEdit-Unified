@@ -316,8 +316,8 @@ class ChunkCalculator (object):
 
             # del xArray, zArray, yArray
         self.nullVertices = numpy.zeros((0,) * len(self.precomputedVertices[0].shape), dtype=self.precomputedVertices[0].dtype)
-        from leveleditor import Settings
-
+        import leveleditor
+        Settings = leveleditor.Settings
         Settings.fastLeaves.addObserver(self)
         Settings.roughGraphics.addObserver(self)
 
@@ -473,12 +473,15 @@ class ChunkCalculator (object):
         for b in transparentMaterials:
             mats[b.ID] = materialCount
             materialCount += 1
-
+    # don't show boundaries between dirt,grass,sand,gravel,or stone. Don't show border between quartz and netherrack
     hiddenOreMaterials = numpy.arange(pymclevel.materials.id_limit, dtype='uint8')
-    hiddenOreMaterials[2] = 1  # don't show boundaries between dirt,grass,sand,gravel,stone
-    hiddenOreMaterials[3] = 1
-    hiddenOreMaterials[12] = 1
-    hiddenOreMaterials[13] = 1
+    stoneid = pymclevel.materials.alphaMaterials.Stone.ID
+    netherrackid = pymclevel.materials.alphaMaterials.Netherrack.ID
+    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Dirt.ID] = stoneid
+    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Grass.ID] = stoneid
+    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Sand.ID] = stoneid
+    hiddenOreMaterials[pymclevel.materials.alphaMaterials.Gravel.ID] = stoneid
+    hiddenOreMaterials[pymclevel.materials.alphaMaterials.NetherQuartzOre.ID] = netherrackid
 
     roughMaterials = numpy.ones((pymclevel.materials.id_limit,), dtype='uint8')
     roughMaterials[0] = 0
@@ -2313,6 +2316,9 @@ class MCRenderer(object):
         Settings.showChunkRedraw.addObserver(self, "showRedraw")
         Settings.spaceHeight.addObserver(self)
         Settings.targetFPS.addObserver(self, "targetFPS")
+        
+        for ore in Settings.hiddableOres.get():
+            getattr(Settings, "showOre{}".format(ore)).addObserver(self, callback=lambda x, id=ore: self.showOre(id, x))
 
         self.level = level
 
@@ -2594,6 +2600,11 @@ class MCRenderer(object):
             self.discardAllChunks()
 
         self._showHiddenOres = bool(val)
+        
+    def showOre(self, ore, show):
+        ChunkCalculator.hiddenOreMaterials[ore] = ore if show else 1
+        if self.showHiddenOres:
+            self.discardAllChunks()
 
     def invalidateChunk(self, cx, cz, layers=None):
         " marks the chunk for regenerating vertex data and display lists "
