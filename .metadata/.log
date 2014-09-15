@@ -1,0 +1,120 @@
+!SESSION 2014-02-20 18:18:24.478 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\minecraft.yaml
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\minecraft.yaml
+
+!ENTRY com.google.eclipse.mechanic 4 0 2014-02-20 18:19:06.091
+!MESSAGE Can't compute Mechanic Configuration directory: file:/C:/Program Files/Brainwy/LiClipse 0.9.7/
+!STACK 0
+java.net.URISyntaxException: Illegal character in path at index 16: file:/C:/Program Files/Brainwy/LiClipse 0.9.7/
+	at java.net.URI$Parser.fail(Unknown Source)
+	at java.net.URI$Parser.checkChars(Unknown Source)
+	at java.net.URI$Parser.parseHierarchical(Unknown Source)
+	at java.net.URI$Parser.parse(Unknown Source)
+	at java.net.URI.<init>(Unknown Source)
+	at com.google.eclipse.mechanic.internal.MechanicConfigurationVariableInitializer.initialize(MechanicConfigurationVariableInitializer.java:25)
+	at org.eclipse.core.internal.variables.ContributedValueVariable.initialize(ContributedValueVariable.java:91)
+	at org.eclipse.core.internal.variables.ContributedValueVariable.getValue(ContributedValueVariable.java:71)
+	at org.eclipse.core.internal.variables.StringSubstitutionEngine.resolve(StringSubstitutionEngine.java:279)
+	at org.eclipse.core.internal.variables.StringSubstitutionEngine.substitute(StringSubstitutionEngine.java:195)
+	at org.eclipse.core.internal.variables.StringSubstitutionEngine.performStringSubstitution(StringSubstitutionEngine.java:87)
+	at org.eclipse.core.internal.variables.StringVariableManager.performStringSubstitution(StringVariableManager.java:574)
+	at org.eclipse.core.internal.variables.StringVariableManager.performStringSubstitution(StringVariableManager.java:350)
+	at com.google.eclipse.mechanic.internal.VariableManagerStringParser.apply(VariableManagerStringParser.java:32)
+	at com.google.eclipse.mechanic.internal.VariableManagerStringParser.apply(VariableManagerStringParser.java:1)
+	at com.google.eclipse.mechanic.internal.ResourceTaskProviderParser.parse(ResourceTaskProviderParser.java:51)
+	at com.google.eclipse.mechanic.plugin.core.OldMechanicPreferences.getTaskProviders(OldMechanicPreferences.java:80)
+	at com.google.eclipse.mechanic.internal.RegisteredTaskProvidersSupplier.get(RegisteredTaskProvidersSupplier.java:41)
+	at com.google.eclipse.mechanic.internal.RegisteredTaskProvidersSupplier.get(RegisteredTaskProvidersSupplier.java:1)
+	at com.google.eclipse.mechanic.DirectoryIteratingTaskScanner.scan(DirectoryIteratingTaskScanner.java:28)
+	at com.google.eclipse.mechanic.internal.RootTaskScanner.scan(RootTaskScanner.java:47)
+	at com.google.eclipse.mechanic.MechanicService.updateTasks(MechanicService.java:273)
+	at com.google.eclipse.mechanic.MechanicService.update(MechanicService.java:237)
+	at com.google.eclipse.mechanic.MechanicService.run(MechanicService.java:172)
+	at com.google.eclipse.mechanic.MechanicService.access$2(MechanicService.java:167)
+	at com.google.eclipse.mechanic.MechanicService$ServiceJob.run(MechanicService.java:374)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY com.google.eclipse.mechanic 2 0 2014-02-20 18:19:06.096
+!MESSAGE Directory 'C:\Users\Kris\.eclipse\mechanic' does not exist.
+
+!ENTRY com.google.eclipse.mechanic 2 0 2014-02-20 18:19:06.097
+!MESSAGE Directory '\mechanic' does not exist.
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-02-20 18:19:08.455
+!MESSAGE Warning: EGit couldn't detect the installation path "gitPrefix" of native Git. Hence EGit can't respect system level
+Git settings which might be configured in ${gitPrefix}/etc/gitconfig under the native Git installation directory.
+The most important of these settings is core.autocrlf. Git for Windows by default sets this parameter to true in
+this system level configuration. The Git installation location can be configured on the
+Team > Git > Configuration preference page's 'System Settings' tab.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-02-20 18:19:08.455
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Kris'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2014-02-20 18:19:33.372 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\minecraft.yaml
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\minecraft.yaml
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-02-20 18:19:48.130
+!MESSAGE Warning: EGit couldn't detect the installation path "gitPrefix" of native Git. Hence EGit can't respect system level
+Git settings which might be configured in ${gitPrefix}/etc/gitconfig under the native Git installation directory.
+The most important of these settings is core.autocrlf. Git for Windows by default sets this parameter to true in
+this system level configuration. The Git installation location can be configured on the
+Team > Git > Configuration preference page's 'System Settings' tab.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-02-20 18:19:48.131
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Kris'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.google.eclipse.mechanic 4 0 2014-02-20 18:19:48.365
+!MESSAGE Can't compute Mechanic Configuration directory: file:/C:/Program Files/Brainwy/LiClipse 0.9.7/
+!STACK 0
+java.net.URISyntaxException: Illegal character in path at index 16: file:/C:/Program Files/Brainwy/LiClipse 0.9.7/
+	at java.net.URI$Parser.fail(Unknown Source)
+	at java.net.URI$Parser.checkChars(Unknown Source)
+	at java.net.URI$Parser.parseHierarchical(Unknown Source)
+	at java.net.URI$Parser.parse(Unknown Source)
+	at java.net.URI.<init>(Unknown Source)
+	at com.google.eclipse.mechanic.internal.MechanicConfigurationVariableInitializer.initialize(MechanicConfigurationVariableInitializer.java:25)
+	at org.eclipse.core.internal.variables.ContributedValueVariable.initialize(ContributedValueVariable.java:91)
+	at org.eclipse.core.internal.variables.ContributedValueVariable.getValue(ContributedValueVariable.java:71)
+	at org.eclipse.core.internal.variables.StringSubstitutionEngine.resolve(StringSubstitutionEngine.java:279)
+	at org.eclipse.core.internal.variables.StringSubstitutionEngine.substitute(StringSubstitutionEngine.java:195)
+	at org.eclipse.core.internal.variables.StringSubstitutionEngine.performStringSubstitution(StringSubstitutionEngine.java:87)
+	at org.eclipse.core.internal.variables.StringVariableManager.performStringSubstitution(StringVariableManager.java:574)
+	at org.eclipse.core.internal.variables.StringVariableManager.performStringSubstitution(StringVariableManager.java:350)
+	at com.google.eclipse.mechanic.internal.VariableManagerStringParser.apply(VariableManagerStringParser.java:32)
+	at com.google.eclipse.mechanic.internal.VariableManagerStringParser.apply(VariableManagerStringParser.java:1)
+	at com.google.eclipse.mechanic.internal.ResourceTaskProviderParser.parse(ResourceTaskProviderParser.java:51)
+	at com.google.eclipse.mechanic.plugin.core.OldMechanicPreferences.getTaskProviders(OldMechanicPreferences.java:80)
+	at com.google.eclipse.mechanic.internal.RegisteredTaskProvidersSupplier.get(RegisteredTaskProvidersSupplier.java:41)
+	at com.google.eclipse.mechanic.internal.RegisteredTaskProvidersSupplier.get(RegisteredTaskProvidersSupplier.java:1)
+	at com.google.eclipse.mechanic.DirectoryIteratingTaskScanner.scan(DirectoryIteratingTaskScanner.java:28)
+	at com.google.eclipse.mechanic.internal.RootTaskScanner.scan(RootTaskScanner.java:47)
+	at com.google.eclipse.mechanic.MechanicService.updateTasks(MechanicService.java:273)
+	at com.google.eclipse.mechanic.MechanicService.update(MechanicService.java:237)
+	at com.google.eclipse.mechanic.MechanicService.run(MechanicService.java:172)
+	at com.google.eclipse.mechanic.MechanicService.access$2(MechanicService.java:167)
+	at com.google.eclipse.mechanic.MechanicService$ServiceJob.run(MechanicService.java:374)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY com.google.eclipse.mechanic 2 0 2014-02-20 18:19:48.369
+!MESSAGE Directory 'C:\Users\Kris\.eclipse\mechanic' does not exist.
+
+!ENTRY com.google.eclipse.mechanic 2 0 2014-02-20 18:19:48.370
+!MESSAGE Directory '\mechanic' does not exist.

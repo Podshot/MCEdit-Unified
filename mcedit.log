@@ -1,0 +1,747 @@
+[    INFO][     OpenGL.GLUT.special.py:34]:Using NT-specific GLUT calls with exit callbacks
+[    INFO][    pymclevel.materials.py:167]:Loading block info from <open file 'C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\minecraft.yaml', mode 'rb' at 0x03B3E020>
+[    INFO][    pymclevel.materials.py:167]:Loading block info from <open file 'C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\classic.yaml', mode 'rb' at 0x03B3E020>
+[    INFO][    pymclevel.materials.py:167]:Loading block info from <open file 'C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\indev.yaml', mode 'rb' at 0x03B3E020>
+[    INFO][    pymclevel.materials.py:167]:Loading block info from <open file 'C:\Users\Kris\Desktop\Tal's Folder\Minecraft\MCEdit\appdata\mcedit-master\pymclevel\pocket.yaml', mode 'rb' at 0x03B3E020>
+[    INFO][                 config.py:142]:Loading config...
+[   DEBUG][                 config.py:318]:Setting {section => Fill}
+[   DEBUG][                 config.py:318]:Setting {chooseBlockImmediately => Setting('Fill', 'Choose Block Immediately', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {section => Selection}
+[   DEBUG][                 config.py:318]:Setting {showPreviousSelection => Setting('Selection', 'Show Previous Selection', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {color => Setting('Selection', 'Color', <type 'str'>, 'teal')}
+[   DEBUG][                 config.py:318]:Setting {section => Selection Colors}
+[   DEBUG][                 config.py:318]:Setting {defaultColors => {}}
+[   DEBUG][                 config.py:318]:Setting {Setting => <class 'editortools.select.ColorSetting'>}
+[   DEBUG][                 config.py:318]:Setting {section => Brush}
+[   DEBUG][                 config.py:318]:Setting {brushSizeL => Setting('Brush', 'Brush Shape L', <type 'int'>, 3)}
+[   DEBUG][                 config.py:318]:Setting {brushSizeH => Setting('Brush', 'Brush Shape H', <type 'int'>, 3)}
+[   DEBUG][                 config.py:318]:Setting {brushSizeW => Setting('Brush', 'Brush Shape W', <type 'int'>, 3)}
+[   DEBUG][                 config.py:318]:Setting {updateBrushOffset => Setting('Brush', 'Update Brush Offset', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {chooseBlockImmediately => Setting('Brush', 'Choose Block Immediately', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {alpha => Setting('Brush', 'Alpha', <type 'float'>, 0.66)}
+[   DEBUG][                 config.py:318]:Setting {section => Clone}
+[   DEBUG][                 config.py:318]:Setting {copyAir => Setting('Clone', 'Copy Air', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {copyWater => Setting('Clone', 'Copy Water', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {copyBiomes => Setting('Clone', 'Copy Biomes', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {placeImmediately => Setting('Clone', 'Place Immediately', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {section => Spawn}
+[   DEBUG][                 config.py:318]:Setting {spawnProtection => Setting('Spawn', 'Spawn Protection', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {section => Settings}
+[   DEBUG][                 config.py:318]:Setting {flyMode => Setting('Settings', 'Fly Mode', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {enableMouseLag => Setting('Settings', 'Enable Mouse Lag', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {longDistanceMode => Setting('Settings', 'Long Distance Mode', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {shouldResizeAlert => Setting('Settings', 'Window Size Alert', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {closeMinecraftWarning => Setting('Settings', 'Close Minecraft Warning', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {skin => Setting('Settings', 'MCEdit Skin', <type 'str'>, '[Current]')}
+[   DEBUG][                 config.py:318]:Setting {fov => Setting('Settings', 'Field of View', <type 'float'>, 70.0)}
+[   DEBUG][                 config.py:318]:Setting {spaceHeight => Setting('Settings', 'Space Height', <type 'int'>, 64)}
+[   DEBUG][                 config.py:318]:Setting {blockBuffer => Setting('Settings', 'Block Buffer', <type 'int'>, 268435456)}
+[   DEBUG][                 config.py:318]:Setting {reportCrashes => Setting('Settings', 'report crashes new', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {reportCrashesAsked => Setting('Settings', 'report crashes asked', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {viewDistance => Setting('Settings', 'View Distance', <type 'int'>, 8)}
+[   DEBUG][                 config.py:318]:Setting {targetFPS => Setting('Settings', 'Target FPS', <type 'int'>, 30)}
+[   DEBUG][                 config.py:318]:Setting {windowWidth => Setting('Settings', 'window width', <type 'int'>, 1024)}
+[   DEBUG][                 config.py:318]:Setting {windowHeight => Setting('Settings', 'window height', <type 'int'>, 768)}
+[   DEBUG][                 config.py:318]:Setting {windowX => Setting('Settings', 'window x', <type 'int'>, 0)}
+[   DEBUG][                 config.py:318]:Setting {windowY => Setting('Settings', 'window y', <type 'int'>, 0)}
+[   DEBUG][                 config.py:318]:Setting {windowShowCmd => Setting('Settings', 'window showcmd', <type 'int'>, 1)}
+[   DEBUG][                 config.py:318]:Setting {setWindowPlacement => Setting('Settings', 'SetWindowPlacement', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showHiddenOres => Setting('Settings', 'show hidden ores', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {hiddableOres => Setting('Settings', 'hiddable ores', <type 'list'>, <type 'int'>, [7, 16, 15, 21, 73, 14, 56, 153])}
+[   DEBUG][                 config.py:318]:Setting {showOre7 => Setting('Settings', 'show ore 7', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre16 => Setting('Settings', 'show ore 16', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre15 => Setting('Settings', 'show ore 15', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre21 => Setting('Settings', 'show ore 21', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre73 => Setting('Settings', 'show ore 73', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre14 => Setting('Settings', 'show ore 14', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre56 => Setting('Settings', 'show ore 56', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {fastLeaves => Setting('Settings', 'fast leaves', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {roughGraphics => Setting('Settings', 'rough graphics', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {showChunkRedraw => Setting('Settings', 'show chunk redraw', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawSky => Setting('Settings', 'draw sky', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawFog => Setting('Settings', 'draw fog', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showCeiling => Setting('Settings', 'show ceiling', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawEntities => Setting('Settings', 'draw entities', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawMonsters => Setting('Settings', 'draw monsters', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawItems => Setting('Settings', 'draw items', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawTileEntities => Setting('Settings', 'draw tile entities', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawTileTicks => Setting('Settings', 'draw tile ticks', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {drawUnpopulatedChunks => Setting('Settings', 'draw unpopulated chunks', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {vertexBufferLimit => Setting('Settings', 'vertex buffer limit', <type 'int'>, 384)}
+[   DEBUG][                 config.py:318]:Setting {vsync => Setting('Settings', 'vertical sync', <type 'int'>, 0)}
+[   DEBUG][                 config.py:318]:Setting {visibilityCheck => Setting('Settings', 'visibility check', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {viewMode => Setting('Settings', 'View Mode', <type 'str'>, 'Camera')}
+[   DEBUG][                 config.py:318]:Setting {undoLimit => Setting('Settings', 'Undo Limit', <type 'int'>, 20)}
+[   DEBUG][                 config.py:318]:Setting {section => Controls}
+[   DEBUG][                 config.py:318]:Setting {mouseSpeed => Setting('Controls', 'mouse speed', <type 'float'>, 5.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraAccel => Setting('Controls', 'camera acceleration', <type 'float'>, 125.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraDrag => Setting('Controls', 'camera drag', <type 'float'>, 100.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraMaxSpeed => Setting('Controls', 'camera maximum speed', <type 'float'>, 60.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraBrakingSpeed => Setting('Controls', 'camera braking speed', <type 'float'>, 8.0)}
+[   DEBUG][                 config.py:318]:Setting {invertMousePitch => Setting('Controls', 'invert mouse pitch', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {autobrake => Setting('Controls', 'autobrake', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {swapAxes => Setting('Controls', 'swap axes looking down', <type 'bool'>, False)}
+[   DEBUG][                 config.py:191]:Property Change:        Settings             SetWindowPlacement = False
+[   DEBUG][                 config.py:191]:Property Change:        Settings             SetWindowPlacement = True
+[   DEBUG][                 config.py:318]:Setting {section => Settings}
+[   DEBUG][                 config.py:318]:Setting {flyMode => Setting('Settings', 'Fly Mode', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {enableMouseLag => Setting('Settings', 'Enable Mouse Lag', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {longDistanceMode => Setting('Settings', 'Long Distance Mode', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {shouldResizeAlert => Setting('Settings', 'Window Size Alert', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {closeMinecraftWarning => Setting('Settings', 'Close Minecraft Warning', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {skin => Setting('Settings', 'MCEdit Skin', <type 'str'>, '[Current]')}
+[   DEBUG][                 config.py:318]:Setting {fov => Setting('Settings', 'Field of View', <type 'float'>, 70.0)}
+[   DEBUG][                 config.py:318]:Setting {spaceHeight => Setting('Settings', 'Space Height', <type 'int'>, 64)}
+[   DEBUG][                 config.py:318]:Setting {blockBuffer => Setting('Settings', 'Block Buffer', <type 'int'>, 268435456)}
+[   DEBUG][                 config.py:318]:Setting {reportCrashes => Setting('Settings', 'report crashes new', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {reportCrashesAsked => Setting('Settings', 'report crashes asked', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {viewDistance => Setting('Settings', 'View Distance', <type 'int'>, 8)}
+[   DEBUG][                 config.py:318]:Setting {targetFPS => Setting('Settings', 'Target FPS', <type 'int'>, 30)}
+[   DEBUG][                 config.py:318]:Setting {windowWidth => Setting('Settings', 'window width', <type 'int'>, 1024)}
+[   DEBUG][                 config.py:318]:Setting {windowHeight => Setting('Settings', 'window height', <type 'int'>, 768)}
+[   DEBUG][                 config.py:318]:Setting {windowX => Setting('Settings', 'window x', <type 'int'>, 0)}
+[   DEBUG][                 config.py:318]:Setting {windowY => Setting('Settings', 'window y', <type 'int'>, 0)}
+[   DEBUG][                 config.py:318]:Setting {windowShowCmd => Setting('Settings', 'window showcmd', <type 'int'>, 1)}
+[   DEBUG][                 config.py:318]:Setting {setWindowPlacement => Setting('Settings', 'SetWindowPlacement', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showHiddenOres => Setting('Settings', 'show hidden ores', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {hiddableOres => Setting('Settings', 'hiddable ores', <type 'list'>, <type 'int'>, [7, 16, 15, 21, 73, 14, 56, 153])}
+[   DEBUG][                 config.py:318]:Setting {showOre7 => Setting('Settings', 'show ore 7', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre16 => Setting('Settings', 'show ore 16', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre15 => Setting('Settings', 'show ore 15', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre21 => Setting('Settings', 'show ore 21', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre73 => Setting('Settings', 'show ore 73', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre14 => Setting('Settings', 'show ore 14', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showOre56 => Setting('Settings', 'show ore 56', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {fastLeaves => Setting('Settings', 'fast leaves', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {roughGraphics => Setting('Settings', 'rough graphics', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {showChunkRedraw => Setting('Settings', 'show chunk redraw', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawSky => Setting('Settings', 'draw sky', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawFog => Setting('Settings', 'draw fog', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {showCeiling => Setting('Settings', 'show ceiling', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawEntities => Setting('Settings', 'draw entities', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawMonsters => Setting('Settings', 'draw monsters', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawItems => Setting('Settings', 'draw items', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawTileEntities => Setting('Settings', 'draw tile entities', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {drawTileTicks => Setting('Settings', 'draw tile ticks', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {drawUnpopulatedChunks => Setting('Settings', 'draw unpopulated chunks', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {vertexBufferLimit => Setting('Settings', 'vertex buffer limit', <type 'int'>, 384)}
+[   DEBUG][                 config.py:318]:Setting {vsync => Setting('Settings', 'vertical sync', <type 'int'>, 0)}
+[   DEBUG][                 config.py:318]:Setting {visibilityCheck => Setting('Settings', 'visibility check', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {viewMode => Setting('Settings', 'View Mode', <type 'str'>, 'Camera')}
+[   DEBUG][                 config.py:318]:Setting {undoLimit => Setting('Settings', 'Undo Limit', <type 'int'>, 20)}
+[   DEBUG][                 config.py:318]:Setting {section => Controls}
+[   DEBUG][                 config.py:318]:Setting {mouseSpeed => Setting('Controls', 'mouse speed', <type 'float'>, 5.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraAccel => Setting('Controls', 'camera acceleration', <type 'float'>, 125.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraDrag => Setting('Controls', 'camera drag', <type 'float'>, 100.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraMaxSpeed => Setting('Controls', 'camera maximum speed', <type 'float'>, 60.0)}
+[   DEBUG][                 config.py:318]:Setting {cameraBrakingSpeed => Setting('Controls', 'camera braking speed', <type 'float'>, 8.0)}
+[   DEBUG][                 config.py:318]:Setting {invertMousePitch => Setting('Controls', 'invert mouse pitch', <type 'bool'>, False)}
+[   DEBUG][                 config.py:318]:Setting {autobrake => Setting('Controls', 'autobrake', <type 'bool'>, True)}
+[   DEBUG][                 config.py:318]:Setting {swapAxes => Setting('Controls', 'swap axes looking down', <type 'bool'>, False)}
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.fastLeaves
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.roughGraphics
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showHiddenOres
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.vertexBufferLimit
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.drawEntities
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.drawTileEntities
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.drawTileTicks
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.drawTerrainPopulated
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.drawMonsters
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.drawItems
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showRedraw
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.spaceHeight
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.targetFPS
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showOre7
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showOre16
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showOre15
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showOre21
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showOre73
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showOre14
+[   DEBUG][                 config.py:226]:Subscribing <renderer.MCRenderer object at 0x099B9B10>.showOre56
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.drawSky
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.drawFog
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.showCeiling
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.accelFactor
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.maxSpeed
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.brakeMaxSpeed
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.invertMousePitch
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.autobrake
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.swapAxesLookingDown
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.visibilityCheck
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.CameraViewport object at 0x099C0890>.fovSetting
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.drawSky
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.drawFog
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.showCeiling
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.accelFactor
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.maxSpeed
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.brakeMaxSpeed
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.invertMousePitch
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.autobrake
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.swapAxesLookingDown
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.visibilityCheck
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.ChunkViewport object at 0x099C0A70>.fovSetting
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.LevelEditor object at 0x03EAFE50>.viewMode
+[   DEBUG][                 config.py:226]:Subscribing <leveleditor.LevelEditor object at 0x03EAFE50>.undoLimit
+[   DEBUG][                 config.py:226]:Subscribing <editortools.brush.BrushTool object at 0x099C5650>.updateBrushOffset
+[   DEBUG][                 config.py:226]:Subscribing <editortools.brush.BrushTool object at 0x099C5650>.brushSizeW
+[   DEBUG][                 config.py:226]:Subscribing <editortools.brush.BrushTool object at 0x099C5650>.brushSizeH
+[   DEBUG][                 config.py:226]:Subscribing <editortools.brush.BrushTool object at 0x099C5650>.brushSizeL
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[    INFO][      pymclevel.mclevel.py:196]:Identifying C:\Users\Kris\AppData\Roaming\.minecraft\saves\Mindcrack Season 4\level.dat
+[    INFO][      pymclevel.mclevel.py:213]:Detected Infdev level.dat
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM-1
+[    INFO][pymclevel.infiniteworld.py:1311]:Found dimension DIM1
+[   DEBUG][                 config.py:226]:Subscribing <renderer.ChunkCalculator object at 0x09A097B0>.fastLeaves
+[   DEBUG][                 config.py:226]:Subscribing <renderer.ChunkCalculator object at 0x09A097B0>.roughGraphics
+[    INFO][pymclevel.infiniteworld.py:1330]:Scanning for regions...
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-1.mca with 1293/1427 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-11.mca with 14/14 sectors used and 12 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-12.mca with 22/22 sectors used and 20 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-2.mca with 1201/1314 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-3.mca with 1409/1514 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-4.mca with 1034/1051 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-5.mca with 1086/1110 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-6.mca with 1132/1159 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-7.mca with 1115/1144 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.-8.mca with 650/1115 sectors used and 580 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.0.mca with 1524/1657 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.1.mca with 1352/1452 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.10.mca with 726/757 sectors used and 671 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.11.mca with 988/1005 sectors used and 979 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.2.mca with 1291/1387 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.3.mca with 1027/1052 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.4.mca with 1035/1080 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.5.mca with 1036/1054 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.6.mca with 1098/1125 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.7.mca with 1207/1240 sectors used and 963 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.8.mca with 718/722 sectors used and 542 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-1.9.mca with 818/842 sectors used and 753 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.-1.mca with 607/607 sectors used and 549 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.-2.mca with 721/724 sectors used and 711 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.-3.mca with 1078/1133 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.-4.mca with 1077/1107 sectors used and 1000 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.-5.mca with 213/213 sectors used and 188 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.0.mca with 1089/1109 sectors used and 1005 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.1.mca with 528/531 sectors used and 515 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.18.mca with 360/386 sectors used and 295 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.19.mca with 1068/1114 sectors used and 905 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.3.mca with 242/242 sectors used and 239 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.4.mca with 715/715 sectors used and 704 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.5.mca with 26/26 sectors used and 24 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.6.mca with 723/726 sectors used and 708 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.7.mca with 501/504 sectors used and 498 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.8.mca with 341/349 sectors used and 320 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-10.9.mca with 465/468 sectors used and 441 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.-1.mca with 1131/1147 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.-2.mca with 1072/1125 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.-3.mca with 1152/1232 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.-4.mca with 1080/1119 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.-5.mca with 729/731 sectors used and 671 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.0.mca with 1225/1228 sectors used and 1022 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.1.mca with 751/757 sectors used and 727 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.18.mca with 154/154 sectors used and 123 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.19.mca with 229/229 sectors used and 212 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.2.mca with 509/521 sectors used and 428 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.3.mca with 981/987 sectors used and 957 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.4.mca with 631/631 sectors used and 595 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.5.mca with 645/678 sectors used and 575 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.6.mca with 1149/1158 sectors used and 1018 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.7.mca with 500/514 sectors used and 487 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.8.mca with 359/359 sectors used and 357 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-11.9.mca with 413/413 sectors used and 411 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.-1.mca with 1080/1106 sectors used and 1023 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.-2.mca with 1113/1165 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.-3.mca with 1142/1224 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.-4.mca with 1056/1065 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.-5.mca with 487/490 sectors used and 461 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.0.mca with 1203/1213 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.1.mca with 998/1001 sectors used and 916 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.2.mca with 917/928 sectors used and 869 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.3.mca with 696/702 sectors used and 677 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.4.mca with 859/868 sectors used and 810 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.5.mca with 588/588 sectors used and 564 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.6.mca with 221/221 sectors used and 217 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.7.mca with 135/135 sectors used and 132 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.8.mca with 377/377 sectors used and 375 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-12.9.mca with 325/325 sectors used and 320 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.-1.mca with 1046/1079 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.-2.mca with 1029/1045 sectors used and 1016 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.-3.mca with 1088/1146 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.-4.mca with 1089/1110 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.-5.mca with 589/590 sectors used and 580 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.-6.mca with 8/8 sectors used and 6 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.0.mca with 1036/1061 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.1.mca with 1030/1059 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.2.mca with 1029/1032 sectors used and 1019 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.3.mca with 808/819 sectors used and 799 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.4.mca with 908/952 sectors used and 814 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.5.mca with 96/96 sectors used and 92 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.6.mca with 315/315 sectors used and 313 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.7.mca with 1006/1006 sectors used and 995 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.8.mca with 920/924 sectors used and 918 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-13.9.mca with 341/341 sectors used and 339 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.-1.mca with 921/924 sectors used and 917 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.-2.mca with 712/727 sectors used and 685 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.-3.mca with 1076/1106 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.-4.mca with 1135/1175 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.-5.mca with 1049/1069 sectors used and 1020 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.-6.mca with 814/822 sectors used and 801 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.0.mca with 1050/1079 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.1.mca with 1039/1070 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.2.mca with 1028/1050 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.3.mca with 1049/1076 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.4.mca with 1048/1078 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.5.mca with 866/866 sectors used and 852 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.6.mca with 526/526 sectors used and 522 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.7.mca with 287/287 sectors used and 285 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.8.mca with 925/925 sectors used and 910 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-14.9.mca with 115/115 sectors used and 112 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.-1.mca with 1026/1036 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.-2.mca with 1027/1036 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.-3.mca with 1062/1082 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.-4.mca with 1083/1117 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.-5.mca with 830/835 sectors used and 821 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.-6.mca with 110/110 sectors used and 105 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.0.mca with 1039/1081 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.1.mca with 1029/1046 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.2.mca with 1029/1043 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.3.mca with 1026/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.4.mca with 1039/1046 sectors used and 995 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.5.mca with 730/730 sectors used and 723 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.6.mca with 583/583 sectors used and 580 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.7.mca with 659/661 sectors used and 657 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.8.mca with 873/887 sectors used and 851 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-15.9.mca with 183/183 sectors used and 181 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.-1.mca with 1031/1048 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.-2.mca with 1026/1036 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.-3.mca with 1039/1054 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.-4.mca with 1067/1089 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.-5.mca with 1059/1099 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.-6.mca with 757/760 sectors used and 707 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.0.mca with 1030/1058 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.1.mca with 1029/1037 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.2.mca with 1026/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.3.mca with 1028/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.4.mca with 1047/1070 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.5.mca with 1036/1044 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.6.mca with 1033/1033 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.7.mca with 1031/1031 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.8.mca with 1033/1040 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-16.9.mca with 661/668 sectors used and 651 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.-1.mca with 1032/1055 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.-2.mca with 1052/1105 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.-3.mca with 1062/1090 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.-4.mca with 1038/1044 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.-5.mca with 1076/1085 sectors used and 1022 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.-6.mca with 963/979 sectors used and 934 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.0.mca with 1053/1073 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.1.mca with 971/980 sectors used and 966 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.2.mca with 744/744 sectors used and 742 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.3.mca with 1017/1017 sectors used and 1015 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.4.mca with 1029/1029 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.5.mca with 1045/1063 sectors used and 1011 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.6.mca with 788/794 sectors used and 770 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.7.mca with 1040/1047 sectors used and 1016 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.8.mca with 550/556 sectors used and 540 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-17.9.mca with 289/291 sectors used and 272 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-1.mca with 1036/1061 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-10.mca with 12/12 sectors used and 10 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-2.mca with 1035/1045 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-3.mca with 1036/1046 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-4.mca with 1032/1036 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-5.mca with 1043/1053 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-6.mca with 898/911 sectors used and 864 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-7.mca with 140/140 sectors used and 138 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-8.mca with 212/213 sectors used and 210 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.-9.mca with 227/227 sectors used and 222 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.0.mca with 1035/1056 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.1.mca with 1043/1064 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.2.mca with 1026/1026 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.3.mca with 987/987 sectors used and 981 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.4.mca with 870/876 sectors used and 863 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.5.mca with 907/920 sectors used and 887 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.6.mca with 747/754 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.7.mca with 753/783 sectors used and 739 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-18.8.mca with 12/12 sectors used and 10 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-1.mca with 620/622 sectors used and 615 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-10.mca with 154/154 sectors used and 147 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-2.mca with 889/889 sectors used and 882 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-3.mca with 1035/1053 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-4.mca with 1058/1079 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-5.mca with 1087/1111 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-6.mca with 1195/1211 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-7.mca with 1218/1258 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-8.mca with 1027/1035 sectors used and 1021 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.-9.mca with 1041/1041 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.0.mca with 960/967 sectors used and 945 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.1.mca with 1032/1039 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.2.mca with 781/781 sectors used and 779 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-19.3.mca with 224/224 sectors used and 222 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-1.mca with 1068/1112 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-2.mca with 1038/1064 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-3.mca with 1055/1080 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-4.mca with 1045/1051 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-5.mca with 1083/1090 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-6.mca with 1057/1057 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-7.mca with 1111/1137 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.-8.mca with 260/1039 sectors used and 256 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.0.mca with 1264/1386 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.1.mca with 1090/1125 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.10.mca with 536/544 sectors used and 519 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.11.mca with 1015/1055 sectors used and 946 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.2.mca with 1050/1093 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.3.mca with 1101/1132 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.4.mca with 1126/1528 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.5.mca with 1031/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.6.mca with 568/1055 sectors used and 514 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.7.mca with 282/283 sectors used and 228 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.8.mca with 768/770 sectors used and 734 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-2.9.mca with 838/838 sectors used and 801 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-1.mca with 177/177 sectors used and 169 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-10.mca with 296/296 sectors used and 274 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-11.mca with 46/46 sectors used and 43 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-2.mca with 467/475 sectors used and 460 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-3.mca with 1069/1077 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-4.mca with 1085/1138 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-5.mca with 1283/1335 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-6.mca with 1627/1644 sectors used and 995 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-7.mca with 1059/1097 sectors used and 676 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-8.mca with 893/910 sectors used and 887 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.-9.mca with 1037/1038 sectors used and 1014 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.0.mca with 1035/1035 sectors used and 1022 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.1.mca with 828/828 sectors used and 826 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-20.2.mca with 68/68 sectors used and 66 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-1.mca with 1039/1056 sectors used and 1006 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-10.mca with 995/995 sectors used and 976 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-11.mca with 729/729 sectors used and 724 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-2.mca with 873/880 sectors used and 835 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-3.mca with 1128/1140 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-4.mca with 506/506 sectors used and 481 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-5.mca with 625/629 sectors used and 471 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-6.mca with 281/287 sectors used and 178 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-8.mca with 590/597 sectors used and 580 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.-9.mca with 1062/1080 sectors used and 1014 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.0.mca with 1052/1093 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.1.mca with 1142/1212 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.2.mca with 412/412 sectors used and 410 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-21.3.mca with 491/493 sectors used and 485 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-1.mca with 583/595 sectors used and 567 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-10.mca with 609/609 sectors used and 607 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-11.mca with 811/816 sectors used and 809 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-2.mca with 998/1014 sectors used and 948 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-3.mca with 710/711 sectors used and 674 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-4.mca with 39/39 sectors used and 37 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-8.mca with 238/238 sectors used and 236 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.-9.mca with 559/560 sectors used and 556 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.0.mca with 872/880 sectors used and 864 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.1.mca with 826/849 sectors used and 821 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.2.mca with 981/985 sectors used and 970 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-22.3.mca with 719/719 sectors used and 687 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-23.-1.mca with 549/558 sectors used and 532 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-23.-2.mca with 974/974 sectors used and 935 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-23.-3.mca with 774/786 sectors used and 748 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-23.0.mca with 948/949 sectors used and 924 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-23.1.mca with 23/23 sectors used and 20 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-24.-1.mca with 944/949 sectors used and 930 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-24.-2.mca with 790/791 sectors used and 749 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-24.-3.mca with 510/512 sectors used and 472 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-24.0.mca with 1038/1039 sectors used and 981 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-24.1.mca with 108/108 sectors used and 105 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-1.mca with 1049/1091 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-2.mca with 1027/1039 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-3.mca with 1027/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-4.mca with 1029/1042 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-5.mca with 1027/1027 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-6.mca with 1027/1030 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-7.mca with 1043/1050 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.-8.mca with 240/337 sectors used and 238 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.0.mca with 1118/1188 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.1.mca with 1037/1049 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.10.mca with 31/31 sectors used and 25 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.11.mca with 65/65 sectors used and 62 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.2.mca with 1039/1041 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.3.mca with 1029/1029 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.4.mca with 1028/1042 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.5.mca with 1027/1027 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.6.mca with 290/1034 sectors used and 288 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.7.mca with 355/356 sectors used and 335 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.8.mca with 802/810 sectors used and 760 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-3.9.mca with 801/803 sectors used and 777 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-1.mca with 1085/1138 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-2.mca with 1109/1155 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-3.mca with 1032/1036 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-4.mca with 1026/1030 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-5.mca with 1027/1037 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-6.mca with 1026/1027 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-7.mca with 1029/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.-8.mca with 230/236 sectors used and 228 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.0.mca with 1079/1113 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.1.mca with 1042/1059 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.2.mca with 1036/1217 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.3.mca with 1029/1035 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.4.mca with 1029/1030 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.5.mca with 1027/1028 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.6.mca with 291/1123 sectors used and 288 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.7.mca with 732/732 sectors used and 701 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.8.mca with 295/295 sectors used and 270 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-4.9.mca with 762/763 sectors used and 704 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-1.mca with 980/1085 sectors used and 946 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-2.mca with 1103/1183 sectors used and 1020 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-3.mca with 901/1053 sectors used and 873 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-4.mca with 743/1032 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-5.mca with 738/1032 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-6.mca with 743/1033 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-7.mca with 738/1026 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.-8.mca with 174/238 sectors used and 172 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.0.mca with 741/1038 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.1.mca with 742/1042 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.2.mca with 740/1038 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.3.mca with 740/1255 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.4.mca with 738/1040 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.5.mca with 738/1026 sectors used and 736 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.6.mca with 211/1040 sectors used and 207 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.7.mca with 837/848 sectors used and 816 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.8.mca with 23/23 sectors used and 21 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-5.9.mca with 812/813 sectors used and 757 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-6.-1.mca with 69/69 sectors used and 67 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-6.-2.mca with 324/330 sectors used and 309 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-6.6.mca with 363/363 sectors used and 359 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-6.7.mca with 745/746 sectors used and 725 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-6.9.mca with 841/850 sectors used and 790 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-7.5.mca with 272/273 sectors used and 269 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-7.6.mca with 942/942 sectors used and 900 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-7.7.mca with 130/130 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-7.8.mca with 62/62 sectors used and 60 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-7.9.mca with 786/786 sectors used and 775 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-8.4.mca with 259/259 sectors used and 256 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-8.5.mca with 872/875 sectors used and 855 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-8.6.mca with 232/235 sectors used and 218 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-8.8.mca with 189/190 sectors used and 182 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-8.9.mca with 635/635 sectors used and 607 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.-1.mca with 124/124 sectors used and 122 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.-2.mca with 42/42 sectors used and 40 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.-3.mca with 479/489 sectors used and 473 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.-4.mca with 828/863 sectors used and 753 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.-5.mca with 498/519 sectors used and 464 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.0.mca with 276/279 sectors used and 272 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.1.mca with 70/70 sectors used and 68 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.19.mca with 406/413 sectors used and 362 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.3.mca with 7/7 sectors used and 5 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.4.mca with 869/869 sectors used and 864 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.5.mca with 213/213 sectors used and 211 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.6.mca with 63/63 sectors used and 61 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.7.mca with 53/53 sectors used and 51 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.8.mca with 291/291 sectors used and 288 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.-9.9.mca with 469/469 sectors used and 466 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-1.mca with 1154/1229 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-11.mca with 732/748 sectors used and 623 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-12.mca with 598/623 sectors used and 506 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-2.mca with 1215/1290 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-3.mca with 1318/1395 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-4.mca with 1124/1162 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-5.mca with 1116/1143 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-6.mca with 1178/1220 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-7.mca with 1149/1196 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.-8.mca with 579/1044 sectors used and 537 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.0.mca with 1604/1746 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.1.mca with 1175/1279 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.10.mca with 507/507 sectors used and 420 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.11.mca with 1051/1051 sectors used and 962 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.2.mca with 1081/1109 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.3.mca with 1032/1037 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.4.mca with 1097/1128 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.5.mca with 1108/1135 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.6.mca with 995/1052 sectors used and 960 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.7.mca with 1101/1127 sectors used and 916 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.0.8.mca with 1077/1103 sectors used and 776 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-1.mca with 1300/1414 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-11.mca with 4/4 sectors used and 2 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-12.mca with 9/9 sectors used and 7 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-2.mca with 1345/1401 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-3.mca with 1068/1119 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-4.mca with 1281/1372 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-5.mca with 1089/1120 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-6.mca with 1050/1053 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-7.mca with 1111/1136 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.-8.mca with 258/738 sectors used and 256 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.0.mca with 1239/1366 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.1.mca with 1064/1104 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.10.mca with 95/95 sectors used and 87 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.11.mca with 212/221 sectors used and 181 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.2.mca with 1032/1050 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.3.mca with 1065/1100 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.4.mca with 1150/1202 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.5.mca with 1113/1159 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.6.mca with 967/1072 sectors used and 924 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.1.7.mca with 88/88 sectors used and 84 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.16.0.mca with 305/305 sectors used and 289 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-1.mca with 1276/1393 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-2.mca with 1298/1372 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-3.mca with 1339/1408 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-4.mca with 1193/1292 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-5.mca with 1121/1141 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-6.mca with 1105/1129 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-7.mca with 1161/1177 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.-8.mca with 262/1018 sectors used and 256 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.0.mca with 1155/1218 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.1.mca with 1038/1055 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.2.mca with 1034/1042 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.3.mca with 1055/1080 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.4.mca with 1123/1200 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.5.mca with 1177/1240 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.2.6.mca with 907/1039 sectors used and 896 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-1.mca with 1110/1158 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-2.mca with 1362/1412 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-3.mca with 1224/1264 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-4.mca with 1166/1236 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-5.mca with 1252/1268 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-6.mca with 1247/1263 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-7.mca with 1141/1166 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.-8.mca with 268/1080 sectors used and 256 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.0.mca with 1177/1229 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.1.mca with 1066/1085 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.2.mca with 1039/1040 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.3.mca with 1068/1093 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.4.mca with 1119/1135 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.5.mca with 1065/1089 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.3.6.mca with 904/1035 sectors used and 896 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-1.mca with 1072/1082 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-2.mca with 1152/1154 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-3.mca with 1176/1219 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-4.mca with 1110/1142 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-5.mca with 1122/1150 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-6.mca with 1027/1031 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-7.mca with 1164/1190 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.-8.mca with 223/424 sectors used and 209 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.0.mca with 1061/1067 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.1.mca with 1070/1076 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.2.mca with 1066/1073 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.3.mca with 1028/1030 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.4.mca with 1027/1027 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.5.mca with 1029/1031 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.4.6.mca with 898/1031 sectors used and 896 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-1.mca with 1048/1051 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-2.mca with 1049/1063 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-3.mca with 1218/1222 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-4.mca with 1035/1044 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-5.mca with 1029/1036 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-6.mca with 1026/1026 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-7.mca with 1048/1059 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.-8.mca with 327/766 sectors used and 256 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.0.mca with 1094/1100 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.1.mca with 1056/1059 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.2.mca with 1028/1028 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.3.mca with 1030/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.4.mca with 1027/1027 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.5.mca with 1027/1193 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.5.6.mca with 900/1091 sectors used and 896 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-1.mca with 1096/1102 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-2.mca with 1064/1074 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-3.mca with 1033/1048 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-4.mca with 1033/1047 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-5.mca with 1028/1038 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-6.mca with 1031/1035 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-7.mca with 1043/1053 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.-8.mca with 269/1006 sectors used and 254 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.0.mca with 1058/1064 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.1.mca with 1056/1059 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.2.mca with 1028/1028 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.3.mca with 1029/1029 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.4.mca with 1031/1031 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.5.mca with 1032/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.6.6.mca with 900/1029 sectors used and 896 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-1.mca with 1112/1117 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-2.mca with 1060/1076 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-3.mca with 1035/1035 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-4.mca with 1027/1031 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-5.mca with 1026/1029 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-6.mca with 1026/1028 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-7.mca with 1029/1037 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.-8.mca with 228/228 sectors used and 226 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.0.mca with 1106/1114 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.1.mca with 1063/1087 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.2.mca with 1030/1034 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.3.mca with 1032/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.4.mca with 1028/1284 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.5.mca with 1037/1091 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.7.6.mca with 899/1150 sectors used and 896 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-1.mca with 1073/1079 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-2.mca with 1076/1083 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-3.mca with 1108/1163 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-4.mca with 1029/1045 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-5.mca with 1029/1030 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-6.mca with 1026/1026 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-7.mca with 1026/1026 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.-8.mca with 246/246 sectors used and 244 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.0.mca with 1050/1052 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.1.mca with 1051/1054 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.2.mca with 1032/1032 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.3.mca with 1031/1031 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.4.mca with 1030/1058 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.5.mca with 1028/1030 sectors used and 1024 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.8.6.mca with 899/1027 sectors used and 896 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-1.mca with 130/242 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-2.mca with 159/270 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-3.mca with 208/321 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-4.mca with 130/247 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-5.mca with 130/186 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-6.mca with 130/258 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-7.mca with 130/167 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.-8.mca with 34/42 sectors used and 32 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.0.mca with 132/207 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.1.mca with 131/454 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.2.mca with 131/1083 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.3.mca with 130/740 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.4.mca with 134/220 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.5.mca with 131/296 sectors used and 128 chunks present
+[    INFO][    pymclevel.regionfile.py:91]:Found region file r.9.6.mca with 114/211 sectors used and 112 chunks present
+[   DEBUG][                  root.py:1011]:Mouse down 2 @ (778, 525)
+[   DEBUG][                  root.py:1029]:Mouse up   2 @ (688, 611)
+[   DEBUG][                  root.py:1011]:Mouse down 2 @ (852, 506)
+[   DEBUG][                  root.py:1029]:Mouse up   2 @ (349, 431)
+[   DEBUG][                 config.py:191]:Property Change:        Settings               show hidden ores = False
+[   DEBUG][                 config.py:202]:Notifying <renderer.MCRenderer object at 0x099B9B10>
+[   DEBUG][                  root.py:1011]:Mouse down 2 @ (941, 386)
+[   DEBUG][                  root.py:1029]:Mouse up   2 @ (857, 400)
+[   DEBUG][                  root.py:1011]:Mouse down 2 @ (840, 407)
+[   DEBUG][                  root.py:1029]:Mouse up   2 @ (1142, 322)
+[   DEBUG][                  root.py:1011]:Mouse down 2 @ (814, 442)
+[   DEBUG][                  root.py:1029]:Mouse up   2 @ (969, 545)
+[   DEBUG][                  root.py:1011]:Mouse down 2 @ (790, 427)
+[   DEBUG][                  root.py:1029]:Mouse up   2 @ (714, 407)
+[   DEBUG][                  root.py:1011]:Mouse down 2 @ (840, 501)
+[   DEBUG][                  root.py:1029]:Mouse up   2 @ (925, 545)
+[   DEBUG][                 config.py:191]:Property Change:        Settings                       window x = 72
+[   DEBUG][                 config.py:191]:Property Change:        Settings                       window y = 155
+[   DEBUG][                 config.py:191]:Property Change:        Settings                 window showcmd = 3
