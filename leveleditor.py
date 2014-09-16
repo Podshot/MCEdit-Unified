@@ -1504,7 +1504,7 @@ class LevelEditor(GLViewport):
 
             col.append(mceutils.CheckBoxLabel("Hidden Ores",
             ref=Settings.showHiddenOres.propertyRef(),
-            tooltipText="If disabled, overrides all specific ore settings below."))
+            tooltipText="Check to show/hide specific ores using the settings below."))
     
             for ore in Settings.hiddableOres.get():
                 col.append(mceutils.CheckBoxLabel(self.level.materials[ore].name.replace(" Ore",""),

@@ -107,7 +107,9 @@ this way.
 
         print "Cached servers: ", self.versions
 
-    def downloadCurrentServer(self):
+    def downloadCurrentServer(self):    
+    #Only works up to minecraft 1.5.3, versions are now stored in separate folders on the server with their version appended to the server jar, 
+    #Will need a partial rewrite to fix.
         print "Downloading the latest Minecraft Server..."
         try:
             (filename, headers) = urllib.urlretrieve("http://www.minecraft.net/download/minecraft_server.jar")
