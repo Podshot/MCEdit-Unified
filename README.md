@@ -1,44 +1,39 @@
 # MCEdit
 
-MCEdit is an open-source, BSD-licenced world editor for the viral indie hit [Minecraft](http://www.minecraft.net/). For downloads and update info, visit the official website at [www.mcedit.net](http://www.mcedit.net/). The rest of this file is intended for computer programmers and Linux users.
+MCEdit is an open-source, BSD-licenced world editor for the viral indie hit [Minecraft](http://www.minecraft.net/). For downloads and update info, visit the official website at [www.mcedit.net](http://www.mcedit.net/). The rest of this file is intended for computer programmers, Linux/Mac users, and those who wish to run from source.
 
 ## Running from source
 
-MCEdit is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 and `easy_install`/`pip` at a minimum before getting started. This quick guide assumes a unix-y OS.
+MCEdit is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 at a minimum before getting started. Easy_install / pip is reccommended.
 
-Clone MCEdit:
+Clone MCEdit using your github client of choice:
 
-```bash
-git clone --recursive https://github.com/mcedit/mcedit
-```
-Or, if you've already cloned MCEdit in the past and need to update, go to the existing source folder:
-```bash
-git pull --recurse-submodules
-```
+>git clone https://github.com/Khroki/MCEdit-Unified
+
+Or, if you've already cloned MCEdit in the past and need to update, go to the existing source folder then run:
+
+>git pull
 
 Optionally (but highly recommended), setup and activate [virtualenv](http://pypi.python.org/pypi/virtualenv). virtualenv will simplify development by creating an isolated and barebones Python environment. Anything you install while virtualenv is active won't affect your system-wide Python installation, for example.
 
-```bash
-cd mcedit
-easy_install virtualenv
-virtualenv ENV
-. ENV/bin/activate
-```
+>cd mcedit
+>easy_install virtualenv
+>virtualenv ENV
+>. ENV/bin/activate
 
 Install various dependencies. This may take a bit (especially numpy). If installing pygame errors, try installing from a [binary packages](http://pygame.org/install.html) or following one of the guides from that page to install from source. On Windows, `easy_install` is preferred because it installs prebuilt binary packages. On Linux and Mac OS X, you may want to use `pip install` instead.
 
-```bash
-easy_install PyOpenGL
-easy_install numpy
-easy_install pygame
-easy_install pyyaml
-```
+>easy_install PyOpenGL
+>easy_install numpy
+>easy_install pygame
+>easy_install pyyaml
+>easy_install pywin32 (Windows only, needed for compiling)
 
-Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
+For windows users if easy install cannot find a library you need, or you can't get easy install working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name.
 
-```bash
-apt-get install python-opengl python-pygame python-yaml python-numpy
-```
+Debian and Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
+
+$sudo apt-get install python-opengl python-pygame python-yaml python-numpy
 
 You should now be able to run MCEdit with `python mcedit.py` assuming you've installed all the dependencies correctly.
 
