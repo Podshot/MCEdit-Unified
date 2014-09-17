@@ -1644,9 +1644,8 @@ class LadderBlockRenderer(BlockRenderer):
     makeVertices = ladderVertices
 
 class SnowBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Snow.ID,
-                    pymclevel.materials.alphaMaterials.SnowLayer.ID,
-                    pymclevel.materials.alphaMaterials.Carpet.ID,
+    blocktypes = [pymclevel.materials.alphaMaterials.SnowLayer.ID,
+                    pymclevel.materials.alphaMaterials.Carpet.ID,       #Separate before implementing layers
                     pymclevel.materials.alphaMaterials.Lilypad.ID]
 
     def makeSnowVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
