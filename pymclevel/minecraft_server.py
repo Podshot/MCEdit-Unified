@@ -11,6 +11,8 @@ import sys
 import tempfile
 import time
 import urllib
+import json
+import urllib2
 
 import infiniteworld
 from mclevelbase import appSupportDir, exhaust, ChunkNotPresent
@@ -48,6 +50,18 @@ def which(program):
 convert = lambda text: int(text) if text.isdigit() else text
 alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
 
+def getVersions(doSnapshot):
+  version = None
+  JAR_VERSION_URL_TEMPLATE = "https://s3.amazonaws.com/Minecraft.Download/versions/{}/minecraft_server.{}.jar"
+  versionSite = urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json")
+  versionSiteResponse = versionSite.read()
+  versionJSON = json.loads(versionSiteResponse)
+  if doSnapshot:
+    version = versionJSON["latest"]["snapshot"]
+  else:
+    version = versionJSON["latest"]["release"]
+    URL = JAR_VERSION_URL_TEMPLATE.format(version, version)
+  return URL
 
 def sort_nicely(l):
     """ Sort the given list in the way that humans expect.

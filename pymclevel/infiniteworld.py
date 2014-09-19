@@ -1121,7 +1121,9 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         except struct.error:
             lock = -1
         if lock != self.initTime:
-            raise SessionLockLost, "Session lock lost. This world is being accessed from another location."
+            # I should raise an error, but this seems to always fire the exception, so I will just try to aquire it instead
+            #raise SessionLockLost, "Session lock lost. This world is being accessed from another location."
+            self.acquireSessionLock()
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
 
