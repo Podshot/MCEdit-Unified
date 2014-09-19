@@ -126,7 +126,7 @@ this way.
     #Will need a partial rewrite to fix.
         print "Downloading the latest Minecraft Server..."
         try:
-            (filename, headers) = urllib.urlretrieve("http://www.minecraft.net/download/minecraft_server.jar")
+            (filename, headers) = urllib.urlretrieve(getVersions(False))
         except Exception, e:
             print "Error downloading server: {0!r}".format(e)
             return
