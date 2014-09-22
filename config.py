@@ -137,6 +137,24 @@ delete blocks = delete
 toggle fps counter = 0
 toggle renderer = m
 
+quit = q
+swap view = f
+select all = a
+deselect = d 
+cut = x
+copy = c
+paste = v
+reload world = r
+open = o
+load = l
+undo = z
+save = s
+new world = n
+close world = w
+world info = i
+goto panel = g
+export selection = e
+
 """
 
 log.info("Loading config...")

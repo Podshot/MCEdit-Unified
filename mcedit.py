@@ -155,9 +155,9 @@ class FileOpener(albow.Widget):
                 shortname = shortname[:37] + "..."
             shortnames.append(shortname)
 
-        hotkeys = ([('N', 'Create New World', self.createNewWorld),
-            ('L', 'Load World...', self.mcedit.editor.askLoadWorld),
-            ('O', 'Open a level...', self.promptOpenAndLoad)] + [
+        hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), 'Create New World', self.createNewWorld),
+            (str.upper(config.config.get('Keys', 'Load')), 'Load World...', self.mcedit.editor.askLoadWorld),
+            (str.upper(config.config.get('Keys', 'Open')), 'Open a level...', self.promptOpenAndLoad)] + [
             ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
             for i, world in enumerate(self.mcedit.recentWorlds())])
 
@@ -235,6 +235,25 @@ class KeyConfigPanel(Dialog):
         "Increase Reach",
         "Decrease Reach",
         "Reset Reach",
+        "",
+        "<Function Controls [Ctrl+]>",
+        "Quit",
+        "Swap View",
+        "Select All",
+        "Deselect",
+        "Cut",
+        "Copy",
+        "Paste",
+        "Reload World",
+        "Open",
+        "Load",
+        "Undo",
+        "Save",
+        "New World",
+        "Close World",
+        "World Info",
+        "Goto Panel",
+        "Export Selection"
     ]
 
     presets = {"WASD": [
@@ -296,7 +315,7 @@ class KeyConfigPanel(Dialog):
 
     def __init__(self):
         Dialog.__init__(self)
-        keyConfigTable = albow.TableView(columns=[albow.TableColumn("Command", 400, "l"), albow.TableColumn("Assigned Key", 150, "r")])
+        keyConfigTable = albow.TableView(columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
         keyConfigTable.num_rows = lambda: len(self.keyConfigKeys)
         keyConfigTable.row_data = self.getRowData
         keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
@@ -363,32 +382,32 @@ class KeyConfigPanel(Dialog):
         panel.add(label)
         panel.shrink_wrap()
 
-        def panelKeyDown(evt):
+        def panelKeyUp(evt):
             keyname = key.name(evt.key)
             panel.dismiss(keyname)
 
-        def panelMouseDown(evt):
+        def panelMouseUp(evt):
             button = leveleditor.remapMouseButton(evt.button)
             if button > 2:
                 keyname = "mouse{0}".format(button)
                 panel.dismiss(keyname)
 
-        panel.key_down = panelKeyDown
-        panel.mouse_down = panelMouseDown
+        panel.key_up = panelKeyUp
+        panel.mouse_up = panelMouseUp
 
         keyname = panel.present()
         if keyname != "escape":
             occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v == keyname]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
-            for keyname, setting in occupiedKeys:
+            '''for keyname, setting in occupiedKeys:
                 if self.askAssignKey(setting,
                                      "The key {0} is no longer bound to {1}.\n"
                                      "Press a new key for the action \"{1}\"\n\n"
                                      "Press ESC to cancel."
                                      .format(keyname, setting)):
                     config.config.set("Keys", configKey, oldkey)
-                    return True
+                    return True'''  #Only disabled as currently you can't input modifiers, reenable if fixed and edit leveleditor.py as needed
         else:
             return True
 

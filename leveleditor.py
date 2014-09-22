@@ -172,20 +172,18 @@ class ControlPanel(Panel):
         buttonsColumn = [header]
 
         cmd = mcplatform.cmd_name
-        hotkeys = ([(cmd + "-N", "Create New World", editor.mcedit.createNewWorld),
-                    (cmd + "-O", "Open World...", editor.askOpenFile),
-                    (cmd + "-L", "Load World...", editor.askLoadWorld),
-                    (cmd + "-S", "Save", editor.saveFile),
-                    (cmd + "-R", "Reload", editor.reload),
-                    (cmd + "-W", "Close", editor.closeEditor),
-                    ("", "", lambda: None),
-
-                    (cmd + "-G", "Goto", editor.showGotoPanel),
-                    (cmd + "-I", "World Info", editor.showWorldInfo),
-                    (cmd + "-Z", "Undo", editor.undo),
-                    (cmd + "-A", "Select All", editor.selectAll),
-                    (cmd + "-D", "Deselect", editor.deselect),
-                    (cmd + "-F", AttrRef(editor, 'viewDistanceLabelText'), editor.swapViewDistance),
+        hotkeys = ([(cmd + "-" + str.upper(config.config.get('Keys', 'New World')), "Create New World", editor.mcedit.createNewWorld),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Open')), "Open World...", editor.askOpenFile),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Load')), "Load World...", editor.askLoadWorld),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Save')), "Save", editor.saveFile),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Reload World')), "Reload", editor.reload),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Close World')), "Close", editor.closeEditor),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Goto Panel')), "Goto", editor.showGotoPanel),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'World Info')), "World Info", editor.showWorldInfo),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Undo')), "Undo", editor.undo),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Select All')), "Select All", editor.selectAll),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Deselect')), "Deselect", editor.deselect),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Swap View')), AttrRef(editor, 'viewDistanceLabelText'), editor.swapViewDistance),
                     ("Alt-F4", "Quit", editor.quit),
                     ])
 
@@ -2512,44 +2510,44 @@ class LevelEditor(GLViewport):
                     getattr(self.currentTool, name)()
 
         elif hasattr(evt, 'cmd') and evt.cmd:
-            if keyname == 'q' and mcplatform.cmd_name == "Cmd":
+            if keyname == config.config.get('Keys', 'Quit'):
                 self.quit()
                 return
 
-            if keyname == 'f':
+            if keyname == config.config.get('Keys', 'Swap View'):
                 self.swapViewDistance()
-            if keyname == 'a':
+            if keyname == config.config.get('Keys', 'Select All'):
                 self.selectAll()
-            if keyname == 'd':
+            if keyname == config.config.get('Keys', 'Deselect'):
                 self.deselect()
-            if keyname == 'x':
+            if keyname == config.config.get('Keys', 'Cut'):
                 self.cutSelection()
-            if keyname == 'c':
+            if keyname == config.config.get('Keys', 'Copy'):
                 self.copySelection()
-            if keyname == 'v':
+            if keyname == config.config.get('Keys', 'Paste'):
                 self.pasteSelection()
 
-            if keyname == 'r':
+            if keyname == config.config.get('Keys', 'Reload World'):
                 self.reload()
-
-            if keyname == 'o':
+       
+            if keyname == config.config.get('Keys', 'Open'):
                 self.askOpenFile()
-            if keyname == 'l':
+            if keyname == config.config.get('Keys', 'Load'):
                 self.askLoadWorld()
-            if keyname == 'z':
+            if keyname == config.config.get('Keys', 'Undo'):
                 self.undo()
-            if keyname == 's':
+            if keyname == config.config.get('Keys', 'Save'):
                 self.saveFile()
-            if keyname == 'n':
+            if keyname == config.config.get('Keys', 'New World'):
                 self.createNewLevel()
-            if keyname == 'w':
+            if keyname == config.config.get('Keys', 'Close World'):
                 self.closeEditor()
-            if keyname == 'i':
+            if keyname == config.config.get('Keys', 'World Info'):
                 self.showWorldInfo()
-            if keyname == 'g':
+            if keyname == config.config.get('Keys', 'Goto Panel'):
                 self.showGotoPanel()
 
-            if keyname == 'e':
+            if keyname == config.config.get('Keys', 'Export Selection'):
                 self.selectionTool.exportSelection()
 
             if keyname == 'f9':

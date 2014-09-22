@@ -1,7 +1,7 @@
 This file is to note down what needs to be fixed, and anything that badly needs an upgrade. Although this document was written to just keep things straightened out, any help is appreciated. 
 
-	Fix 1.8 server based land generation and jar retrieval:
-The address it checks for the server jar is incorrect at the moment and the page format has changed to now have different versions under numbered subfolders with the version appended to the jar name. Jar detection also needs to be updated to handle these version numbers in the filename. On top of that the 1.8 jar currently causes the program to hang with no error. Added eula.txt to repository just in case.
+	Fix 1.8 server based land generation:
+The 1.8 server jar currently causes the program to hang with no error. Added eula.txt to repository just in case.
 Files: minecraft_server.py, eula.txt maybe others.
 
 -------------------------
@@ -44,6 +44,10 @@ File: materials.py
 Although the item system was relatively straightforward to convert, mcedit internally uses the block ids all over the place, easiest way to implement would likely to be to pull the block name and other neccisary data then use materials.py to map them to ids, with a fallback for older versions. May require creative use of damage values down the line if we run out of IDs. A full convert is possible but quite involved and will break pocket, classic, and any pre 1.7 compatibility.
 Files: like half of MCedit
 
+-------------------------
+	Fix initialize chest
+The code for this was completely missing, if it was ever there in the first place. Text was changed to reflect this but it'd be nice to have it working. Should be roughly 8 lines of code but I'm not that familiar with the calls initialization uses.
+Files: select.py [line 369], possibly another.
 -------------------------
 	Cleanup minecraft.yaml
 Lots of outdated information and variables that don't do anything as many renderers handle which blocks they use directly, and in some cases the renderers being referenced don't even exist.
