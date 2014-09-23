@@ -353,6 +353,15 @@ class MCServerChunkGenerator(object):
     def generateAtPosition(self, tempWorld, tempDir, cx, cz):
         return exhaust(self.generateAtPositionIter(tempWorld, tempDir, cx, cz))
 
+    def addEULA(self, tempDir):
+        eulaLines = []
+        eulaLines.append("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n")
+        eulaLines.append("#Wed Jul 23 21:10:11 EDT 2014\n")
+        eulaLines.append("eula=true\n")
+        with open(tempDir +"/"+ "eula.txt", "w") as f:
+            f.writelines(eulaLines)
+
+
     def generateAtPositionIter(self, tempWorld, tempDir, cx, cz, simulate=False):
         tempWorldRW = infiniteworld.MCInfdevOldLevel(tempWorld.filename)
         tempWorldRW.setPlayerSpawnPosition((cx * 16, 64, cz * 16))
@@ -361,6 +370,7 @@ class MCServerChunkGenerator(object):
         del tempWorldRW
 
         tempWorld.unload()
+        self.addEULA(tempDir)
 
         startTime = time.time()
         proc = self.runServer(tempDir)
