@@ -387,7 +387,7 @@ def calc_column_lighting(x, z, mclevel):
     cur_light = 15
     # traverse the column until cur_light == 0
     # and the existing light values are also zero.
-    y = 127
+    y = 255
     get_block = mclevel.block
     set_block = mclevel.set_block
     get_height = mclevel.retrieve_heightmap
@@ -409,8 +409,8 @@ def calc_column_lighting(x, z, mclevel):
         # and the current block reduces light
         if (not height_updated) and (block_type not in (0, 20)):
             new_height = y + 1
-            if new_height == 128:
-                new_height = 127
+            if new_height == 256:
+                new_height = 255
             set_height(x, new_height, z)
             height_updated = True
         #compare block with cur_light, escape if both 0
@@ -462,7 +462,7 @@ def assign_value(x, y, z, values, save_file):
     If the index is outside the bounds of the map, return None.  If the
     assignment succeeds, return True.
     '''
-    if y > 127:
+    if y > 255:
         return None
     result = save_file.set_block(x, y, z, values)
     if LIGHTINGFIX:
@@ -992,10 +992,10 @@ class ProceduralTree(Tree):
         if num_of_clusters_per_y < 1:
             num_of_clusters_per_y = 1
         # make sure we don't spend too much time off the top of the map
-        if yend > 127:
-            yend = 127
-        if ystart > 127:
-            ystart = 127
+        if yend > 255:
+            yend = 255
+        if ystart > 255:
+            ystart = 255
         for y in range(yend, ystart, -1):
             for i in range(num_of_clusters_per_y):
                 shapefac = self.shapefunc(y - ystart)
@@ -1242,7 +1242,7 @@ def processtrees(mcmap, treelist):
         shape_choices = [SHAPE]
 
     # initialize mapheight, just in case
-    mapheight = 127
+    mapheight = 255
     for i in range(len(treelist)):
         newshape = choice(shape_choices)
         if newshape == "normal":
