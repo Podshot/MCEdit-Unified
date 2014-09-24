@@ -386,8 +386,19 @@ class SelectionTool(EditorTool):
                     furnace["BurnTime"] = nbt.TAG_Short(0)
                     furnace["CookTime"] = nbt.TAG_Short(0)
                     furnace["Items"] = nbt.TAG_List()
-                    hunk = self.editor.level.getChunk(cx, cz)
+                    chunk = self.editor.level.getChunk(cx, cz)
                     chunk.TileEntities.append(furnace)
+                    chunk.dirty = True
+                if block == pymclevel.alphaMaterials.LitFurnace.ID:
+                    furnace = nbt.TAG_Compound()
+                    furnace["x"] = nbt.TAG_Int(x)
+                    furnace["y"] = nbt.TAG_Int(y)
+                    furnace["z"] = nbt.TAG_Int(z)
+                    furnace["BurnTime"] = nbt.TAG_Short(0)
+                    furnace["CookTime"] = nbt.TAG_Short(0)
+                    furnace["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(litfurnace)
                     chunk.dirty = True
                 if block == pymclevel.alphaMaterials.Dispenser.ID:
                     dispenser = nbt.TAG_Compound()
@@ -410,7 +421,7 @@ class SelectionTool(EditorTool):
                     chunk.TileEntities.append(dropper)
                     chunk.dirty = True
                 if block == pymclevel.alphaMaterials.Hopper.ID:
-                    hopper = nbt.TAG_Compund()
+                    hopper = nbt.TAG_Compound()
                     hopper["id"] = nbt.TAG_String("Hopper")
                     hopper["x"] = nbt.TAG_Int(x)
                     hopper["y"] = nbt.TAG_Int(y)
