@@ -380,6 +380,7 @@ class SelectionTool(EditorTool):
                     chunk.dirty = True
                 if block == pymclevel.alphaMaterials.Furnace.ID:
                     furnace = nbt.TAG_Compound()
+                    furnace["id"] = nbt.TAG_String("Furnace")
                     furnace["x"] = nbt.TAG_Int(x)
                     furnace["y"] = nbt.TAG_Int(y)
                     furnace["z"] = nbt.TAG_Int(z)
