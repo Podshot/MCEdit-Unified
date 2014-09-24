@@ -389,6 +389,16 @@ class SelectionTool(EditorTool):
                     hunk = self.editor.level.getChunk(cx, cz)
                     chunk.TileEntities.append(furnace)
                     chunk.dirty = True
+                if block == pymclevel.alphaMaterials.Dispenser.ID:
+                    dispenser = nbt.TAG_Compound()
+                    dispenser["id"] = nbt.TAG_String("Trap")
+                    dispenser["x"] = nbt.TAG_Int(x)
+                    dispenser["y"] = nbt.TAG_Int(y)
+                    dispenser["z"] = nbt.TAG_Int(z)
+                    dispenser["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(dispenser)
+                    chunk.dirty = True
                 return "Uninitialized {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
         if block == pymclevel.alphaMaterials.MonsterSpawner.ID:
 
