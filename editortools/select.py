@@ -368,6 +368,58 @@ class SelectionTool(EditorTool):
             else:
                 #return "Double-click to initialize {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
                 #Will undo when container initialization is fixed.
+                if block == pymclevel.alphaMaterials.Chest.ID:
+                    chest = nbt.TAG_Compound()
+                    chest["id"] = nbt.TAG_String("Chest")
+                    chest["x"] = nbt.TAG_Int(x)
+                    chest["y"] = nbt.TAG_Int(y)
+                    chest["z"] = nbt.TAG_Int(z)
+                    chest["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(chest)
+                    chunk.dirty = True
+                if block == pymclevel.alphaMaterials.Furnace.ID:
+                    furnace = nbt.TAG_Compound()
+                    furnace["x"] = nbt.TAG_Int(x)
+                    furnace["y"] = nbt.TAG_Int(y)
+                    furnace["z"] = nbt.TAG_Int(z)
+                    furnace["BurnTime"] = nbt.TAG_Short(0)
+                    furnace["CookTime"] = nbt.TAG_Short(0)
+                    furnace["Items"] = nbt.TAG_List()
+                    hunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(furnace)
+                    chunk.dirty = True
+                if block == pymclevel.alphaMaterials.Dispenser.ID:
+                    dispenser = nbt.TAG_Compound()
+                    dispenser["id"] = nbt.TAG_String("Trap")
+                    dispenser["x"] = nbt.TAG_Int(x)
+                    dispenser["y"] = nbt.TAG_Int(y)
+                    dispenser["z"] = nbt.TAG_Int(z)
+                    dispenser["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(dispenser)
+                    chunk.dirty = True
+                if block == pymclevel.alphaMaterials.Dropper.ID:
+                    dropper = nbt.TAG_Compound()
+                    dropper["id"] = nbt.TAG_String("Dropper")
+                    dropper["x"] = nbt.TAG_Int(x)
+                    dropper["y"] = nbt.TAG_Int(y)
+                    dropper["z"] = nbt.TAG_Int(z)
+                    dropper["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(dropper)
+                    chunk.dirty = True
+                if block == pymclevel.alphaMaterials.Hopper.ID:
+                    hopper = nbt.TAG_Compund()
+                    hopper["id"] = nbt.TAG_String("Hopper")
+                    hopper["x"] = nbt.TAG_Int(x)
+                    hopper["y"] = nbt.TAG_Int(y)
+                    hopper["z"] = nbt.TAG_Int(z)
+                    hopper["TransferCooldown"] = nbt.TAG_Int(0)
+                    hopper["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(hopper)
+                    chunk.dirty = True
                 return "Uninitialized {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
         if block == pymclevel.alphaMaterials.MonsterSpawner.ID:
 
