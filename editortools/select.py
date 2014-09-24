@@ -378,6 +378,17 @@ class SelectionTool(EditorTool):
                     chunk = self.editor.level.getChunk(cx, cz)
                     chunk.TileEntities.append(chest)
                     chunk.dirty = True
+                if block == pymclevel.alphaMaterials.Furnace.ID:
+                    furnace = nbt.TAG_Compound()
+                    furnace["x"] = nbt.TAG_Int(x)
+                    furnace["y"] = nbt.TAG_Int(y)
+                    furnace["z"] = nbt.TAG_Int(z)
+                    furnace["BurnTime"] = nbt.TAG_Short(0)
+                    furnace["CookTime"] = nbt.TAG_Short(0)
+                    furnace["Items"] = nbt.TAG_List()
+                    hunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(furnace)
+                    chunk.dirty = True
                 return "Uninitialized {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
         if block == pymclevel.alphaMaterials.MonsterSpawner.ID:
 
