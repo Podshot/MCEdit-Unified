@@ -1320,7 +1320,6 @@ class PlantBlockRenderer(BlockRenderer):
         theseBlocks = blocks[blockIndices]
 
         bdata = blockData[blockIndices]
-        bdata[theseBlocks == 6] &= 0x5  # xxx saplings only
         texes = texMap(blocks[blockIndices], bdata, 0)
 
         blockLight = areaBlockLights[1:-1, 1:-1, 1:-1]
@@ -1777,6 +1776,7 @@ class PlateBlockRenderer(BlockRenderer): #suggestions to make this the proper sh
             if direction != pymclevel.faces.FaceYIncreasing and direction != pymclevel.faces.FaceYDecreasing:
                 vertexArray[_XYZ][..., 2:4, 1] -= 0.875
                 vertexArray[_ST][..., 2:4, 1] += 14
+            
 
             arrays.append(vertexArray)
             yield
@@ -1983,6 +1983,7 @@ class FenceBlockRenderer(BlockRenderer): #This code is written to only accept on
     def fenceVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         fenceMask = self.getMaterialIndices(blockMaterials)
         fenceIndices = fenceMask.nonzero()
+        bdata = blockData[fenceMask]
         yield
         
         tex = texMap(blocks[fenceMask], blockData[fenceMask], 0)[:, numpy.newaxis, 0:2]
@@ -2011,6 +2012,7 @@ class NetherFenceBlockRenderer(BlockRenderer):
     def fenceVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         fenceMask = self.getMaterialIndices(blockMaterials)
         fenceIndices = fenceMask.nonzero()
+        fenceBlocks = blocks[fenceMask]
         yield
 
         vertexArray = numpy.zeros((len(fenceIndices[0]), 6, 4, 6), dtype='float32')

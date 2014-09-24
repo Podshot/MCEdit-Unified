@@ -18,10 +18,6 @@ As is the fence renderer can't handle more than one texture without the arrays c
 File: renderer.py
 
 -------------------------
-	Fix jungle and birch saplings
-Currently showing as oak and spruce saplings, sapling code is a bit wonky atm.
-File: renderer.py
--------------------------
 
 	Add sign, button, and lever renderer
 Signs and buttons currently lack a renderer, levers are piggybacking off the torch renderer with some wierd effects. Might be best off copying the snow and or laddar renderers and tweaking them to purpose.

@@ -2173,7 +2173,7 @@ class LevelEditor(GLViewport):
     def saveInfoLabelText(self):
         if self.unsavedEdits == 0:
             return ""
-        return "{0} unsaved edits.  CTRL-S to save.  {1}".format(self.unsavedEdits, "" if self.recordUndo else "(UNDO DISABLED)")
+        return "{0} unsaved edits.  CTRL-{1} to save.  {2}".format(self.unsavedEdits, str.upper(config.config.get('Keys', 'Save')), "" if self.recordUndo else "(UNDO DISABLED)")
 
     @property
     def viewDistanceLabelText(self):
