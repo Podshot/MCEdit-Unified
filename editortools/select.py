@@ -409,6 +409,17 @@ class SelectionTool(EditorTool):
                     chunk = self.editor.level.getChunk(cx, cz)
                     chunk.TileEntities.append(dropper)
                     chunk.dirty = True
+                if block == pymclevel.alphaMaterials.Hopper.ID:
+                    hopper = nbt.TAG_Compund()
+                    hopper["id"] = nbt.TAG_String("Hopper")
+                    hopper["x"] = nbt.TAG_Int(x)
+                    hopper["y"] = nbt.TAG_Int(y)
+                    hopper["z"] = nbt.TAG_Int(z)
+                    hopper["TransferCooldown"] = nbt.TAG_Int(0)
+                    hopper["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(hopper)
+                    chunk.dirty = True
                 return "Uninitialized {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
         if block == pymclevel.alphaMaterials.MonsterSpawner.ID:
 
