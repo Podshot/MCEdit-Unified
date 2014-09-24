@@ -48,10 +48,6 @@ Although the item system was relatively straightforward to convert, mcedit inter
 Files: like half of MCedit
 
 -------------------------
-	Fix initialize chest
-The code for this was completely missing, if it was ever there in the first place. Text was changed to reflect this but it'd be nice to have it working. Should be roughly 8 lines of code but I'm not that familiar with the calls initialization uses.
-Files: select.py [line 369], possibly another.
--------------------------
 	Cleanup minecraft.yaml
 Lots of outdated information and variables that don't do anything as many renderers handle which blocks they use directly, and in some cases the renderers being referenced don't even exist.
 
