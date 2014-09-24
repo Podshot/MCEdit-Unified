@@ -34,7 +34,7 @@ Files: minecraft.yaml, config.py, brush.py, possibly renderer.py
 
 -------------------------
 	Add Pocket Edition 0.9.0 Format Compatibility
-Currently completely broken, to fix you need mojang's leveldb libraries from their github and a python wrapper for them such as plyvel. Needs some familiarity with C coding to implement. Needless to say well outside my abilities. Feel free to break old pocket compatibility if needed.
+Currently completely broken, to fix you need mojang's leveldb libraries from their github and a python wrapper, I've included a self-contained wrapper that should work, see leveldb.py. Feel free to break old pocket compatibility if needed.
 Files: pocket.py, leveleditor.py, possibly others
 
 -------------------------
