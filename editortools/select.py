@@ -368,6 +368,16 @@ class SelectionTool(EditorTool):
             else:
                 #return "Double-click to initialize {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
                 #Will undo when container initialization is fixed.
+                if block == pymclevel.alphaMaterials.Chest.ID:
+                    chest = nbt.TAG_Compound()
+                    chest["id"] = nbt.TAG_String("Chest")
+                    chest["x"] = nbt.TAG_Int(x)
+                    chest["y"] = nbt.TAG_Int(y)
+                    chest["z"] = nbt.TAG_Int(z)
+                    chest["Items"] = nbt.TAG_List()
+                    chunk = self.editor.level.getChunk(cx, cz)
+                    chunk.TileEntities.append(chest)
+                    chunk.dirty = True
                 return "Uninitialized {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
         if block == pymclevel.alphaMaterials.MonsterSpawner.ID:
 
