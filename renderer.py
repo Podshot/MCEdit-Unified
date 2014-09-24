@@ -1213,7 +1213,7 @@ class GenericBlockRenderer(BlockRenderer):
 
         self.vertexArrays = vertexArrays
 
-    grassColor = grassColorDefault = [0.39, 0.77, 0.23]  # 62C743
+    grassColor = grassColorDefault = [0.39, 0.71, 0.23]  # 62C743
 
     makeVertices = makeGenericVertices
 
