@@ -391,13 +391,14 @@ class SelectionTool(EditorTool):
                     chunk.TileEntities.append(furnace)
                     chunk.dirty = True
                 if block == pymclevel.alphaMaterials.LitFurnace.ID:
-                    furnace = nbt.TAG_Compound()
-                    furnace["x"] = nbt.TAG_Int(x)
-                    furnace["y"] = nbt.TAG_Int(y)
-                    furnace["z"] = nbt.TAG_Int(z)
-                    furnace["BurnTime"] = nbt.TAG_Short(0)
-                    furnace["CookTime"] = nbt.TAG_Short(0)
-                    furnace["Items"] = nbt.TAG_List()
+                    litfurnace = nbt.TAG_Compound()
+                    litfurnace["id"] = nbt.TAG_String("Furnace")
+                    litfurnace["x"] = nbt.TAG_Int(x)
+                    litfurnace["y"] = nbt.TAG_Int(y)
+                    litfurnace["z"] = nbt.TAG_Int(z)
+                    litfurnace["BurnTime"] = nbt.TAG_Short(0)
+                    litfurnace["CookTime"] = nbt.TAG_Short(0)
+                    litfurnace["Items"] = nbt.TAG_List()
                     chunk = self.editor.level.getChunk(cx, cz)
                     chunk.TileEntities.append(litfurnace)
                     chunk.dirty = True
