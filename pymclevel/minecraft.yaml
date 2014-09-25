@@ -2945,6 +2945,7 @@ blocks:
     name: Sea Lantern
     mapcolor: [49, 127, 159]
     tex: [17, 18]
+    brightness: 15
 
   - id: 170
     idStr: hay_block
