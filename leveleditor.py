@@ -897,6 +897,9 @@ class CameraViewport(GLViewport):
             i = chestWidget.selectedItemIndex
             item = tileEntityTag["Items"][i]
             tileEntityTag["Items"].value = [t for t in tileEntityTag["Items"].value if t is not item]
+            if 0 == len(tileEntityTag["Items"]):
+                itemField()
+
 
         def addItem():
             slot = 0
@@ -911,7 +914,8 @@ class CameraViewport(GLViewport):
             item["Slot"] = pymclevel.TAG_Byte(slot)
             item["Count"] = pymclevel.TAG_Byte(0)
             tileEntityTag["Items"].append(item)
-                
+            if 1 == len(tileEntityTag["Items"]):
+                itemField()
 
         addItemButton = Button("New Item (1.7+)", action=addItem, enable=addEnable)
         deleteItemButton = Button("Delete This Item", action=deleteItem, enable=deleteEnable)
