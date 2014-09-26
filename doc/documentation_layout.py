@@ -1,7 +1,7 @@
 '''
 This python file is not accual code, it is just a layout of how I will
 document MCEdit.
-Documentaion tags:
+Documentation tags:
 @param ____: A parameter to a function. '____' is the parameter name and
 what the parameter should be (Like an int, string, level object, or albow widget)
 @return: What the function returns (Like a boolean, string, or exception

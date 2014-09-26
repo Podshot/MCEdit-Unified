@@ -431,12 +431,12 @@ def GeneratorPanel():
         MCServerChunkGenerator.clearWorldCache()
 
     simRow = CheckBoxLabel("Simulate world", ref=AttrRef(panel, "simulate"), tooltipText="Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.")
-    useSnapshotServer = CheckBoxLabel("Use Latest Snapshot Server", ref=AttrRef(panel, "snapshot"), tooltipText="Uses the Latest Snapshot Terrain Generation")
+    useSnapshotServer = CheckBoxLabel("Use snapshot versions", ref=AttrRef(panel, "snapshot"), tooltipText="Uses the Latest Snapshot Terrain Generation")
 
     simRow = Row((simRow, advancedButton), anchor="lrh")
     #deleteCacheRow = Row((Label("Delete Temporary World File Cache?"), Button("Delete Cache!", action=clearCache, tooltipText="Click me if you think your chunks are stale.")))
 
-    serverPanel = Column([versionContainer, simRow, useSnapshotServer], align="l")
+    serverPanel = Column([useSnapshotServer, versionContainer, simRow], align="l")
 
     col.append(serverPanel)
     col = Column(col, align="l")

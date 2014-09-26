@@ -83,6 +83,7 @@ class Widget(object):
     _menubar = None
     _visible = True
     _is_gl_container = False
+    redraw_every_event = True
 
     tooltip = None
     tooltipText = None

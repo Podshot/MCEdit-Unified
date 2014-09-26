@@ -892,7 +892,6 @@ class CameraViewport(GLViewport):
 
                 self.editor.addUnsavedEdit()
                 chestWidget.selectedItemIndex = min(chestWidget.selectedItemIndex, len(tileEntityTag["Items"]) - 1)
-
         def deleteItem():
             i = chestWidget.selectedItemIndex
             item = tileEntityTag["Items"][i]
@@ -914,6 +913,7 @@ class CameraViewport(GLViewport):
             item["Slot"] = pymclevel.TAG_Byte(slot)
             item["Count"] = pymclevel.TAG_Byte(0)
             tileEntityTag["Items"].append(item)
+            chestWidget.remove(itemField)
             if 1 == len(tileEntityTag["Items"]):
                 itemField()
 
@@ -923,22 +923,21 @@ class CameraViewport(GLViewport):
         deleteCol = Column((addItemButton, deleteItemButton, deleteFromWorldButton))
 
         def itemField():
-            fieldRow = (
-                mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=26),
-                mceutils.TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'),width=300), #Text to allow the input of internal item names           
-                mceutils.IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
-                mceutils.IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-128, max=127),
-            )
             if len(tileEntityTag["Items"]) and chestWidget.selectedItemIndex != -1:
+                fieldRow = (
+                    mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=26),
+                    mceutils.TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'),width=300), #Text to allow the input of internal item names           
+                    mceutils.IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
+                    mceutils.IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-128, max=127),
+                )
                 fieldRow = Row(fieldRow)
                 col = Column((chestItemTable, fieldRow, deleteCol))
             else:
-                col = Column((chestItemTable, deleteCol))
+                col = Column((chestItemTable, Label("Container is empty, click Add Item to edit."), deleteCol))
             chestWidget.add(col)
             chestWidget.shrink_wrap()
 
         itemField()
-
         Dialog(client=chestWidget, responses=["Done"]).present()
         level = self.editor.level
 
