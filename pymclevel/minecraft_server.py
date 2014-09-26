@@ -51,17 +51,19 @@ convert = lambda text: int(text) if text.isdigit() else text
 alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
 
 def getVersions(doSnapshot):
-  version = None
-  JAR_VERSION_URL_TEMPLATE = "https://s3.amazonaws.com/Minecraft.Download/versions/{}/minecraft_server.{}.jar"
-  versionSite = urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json")
-  versionSiteResponse = versionSite.read()
-  versionJSON = json.loads(versionSiteResponse)
-  if doSnapshot:
-    version = versionJSON["latest"]["snapshot"]
-  else:
-    version = versionJSON["latest"]["release"]
+    version = None
+    JAR_VERSION_URL_TEMPLATE = "https://s3.amazonaws.com/Minecraft.Download/versions/{}/minecraft_server.{}.jar"
+    versionSite = urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json")
+    versionSiteResponse = versionSite.read()
+    versionJSON = json.loads(versionSiteResponse)
+    version = None
+    if doSnapshot:
+        version = versionJSON["latest"]["snapshot"]
+    else:
+        version = versionJSON["latest"]["release"]
+    print "Version: " + version
     URL = JAR_VERSION_URL_TEMPLATE.format(version, version)
-  return URL
+    return URL
 
 def sort_nicely(l):
     """ Sort the given list in the way that humans expect.
@@ -121,12 +123,13 @@ this way.
 
         print "Cached servers: ", self.versions
 
-    def downloadCurrentServer(self):    
+    def downloadCurrentServer(self, getSnapshot):    
     #Only works up to minecraft 1.5.3, versions are now stored in separate folders on the server with their version appended to the server jar, 
     #Will need a partial rewrite to fix.
+        self.snapshot = getSnapshot
         print "Downloading the latest Minecraft Server..."
         try:
-            (filename, headers) = urllib.urlretrieve(getVersions(False))
+            (filename, headers) = urllib.urlretrieve(getVersions(getSnapshot))
         except Exception, e:
             print "Error downloading server: {0!r}".format(e)
             return
@@ -137,7 +140,7 @@ this way.
         """ Finds the version number from the server jar at filename and copies
         it into the proper subfolder of the server jar cache folder"""
 
-        version = MCServerChunkGenerator._serverVersionFromJarFile(filename)
+        version = MCServerChunkGenerator._serverVersionFromJarFile(filename, self.snapshot)
         print "Found version ", version
         versionDir = os.path.join(self.cacheDir, version)
 
@@ -546,7 +549,7 @@ class MCServerChunkGenerator(object):
         return self._serverVersionFromJarFile(self.serverJarFile)
 
     @classmethod
-    def _serverVersionFromJarFile(cls, jarfile):
+    def _serverVersionFromJarFile(cls, jarfile, isSnapshot):
         tempdir = tempfile.mkdtemp("mclevel_servergen")
         proc = cls._runServer(tempdir, jarfile)
 
@@ -575,10 +578,13 @@ class MCServerChunkGenerator(object):
         # Versions like "0.2.1" are alphas, and versions like "1.0.0" without "Beta" are releases
         if version[0] == "0":
             version = "Alpha " + version
-        try:
-            if int(version[0]) > 0:
-                version = "Release " + version
-        except ValueError:
-            pass
+        if not isSnapshot:
+            try:
+                if int(version[0]) > 0:
+                    version = "Release " + version
+            except ValueError:
+                pass
+        else:
+            version = "Snapshot " + version
 
         return version

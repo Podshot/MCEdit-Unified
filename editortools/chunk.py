@@ -354,6 +354,7 @@ def GeneratorPanel():
     panel.chunkHeight = 64
     panel.grass = True
     panel.simulate = False
+    panel.snapshot = False
 
     jarStorage = MCServerChunkGenerator.getDefaultJarStorage()
     if jarStorage:
@@ -381,7 +382,7 @@ def GeneratorPanel():
         def checkForUpdates():
             def _check():
                 yield
-                jarStorage.downloadCurrentServer()
+                jarStorage.downloadCurrentServer(panel.snapshot)
                 yield
 
             showProgress("Checking for server updates...", _check())
@@ -389,6 +390,7 @@ def GeneratorPanel():
             versionChoice.choiceIndex = 0
 
         versionChoice = ChoiceButton(sorted(jarStorage.versions, reverse=True))
+        versionChoice.set_size_for_text(200)
         versionChoiceRow = (Row((
             Label("Server version:"),
             versionChoice,
@@ -429,11 +431,12 @@ def GeneratorPanel():
         MCServerChunkGenerator.clearWorldCache()
 
     simRow = CheckBoxLabel("Simulate world", ref=AttrRef(panel, "simulate"), tooltipText="Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.")
+    useSnapshotServer = CheckBoxLabel("Use Latest Snapshot Server", ref=AttrRef(panel, "snapshot"), tooltipText="Uses the Latest Snapshot Terrain Generation")
 
     simRow = Row((simRow, advancedButton), anchor="lrh")
     #deleteCacheRow = Row((Label("Delete Temporary World File Cache?"), Button("Delete Cache!", action=clearCache, tooltipText="Click me if you think your chunks are stale.")))
 
-    serverPanel = Column([versionContainer, simRow, ], align="l")
+    serverPanel = Column([versionContainer, simRow, useSnapshotServer], align="l")
 
     col.append(serverPanel)
     col = Column(col, align="l")
