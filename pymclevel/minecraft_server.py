@@ -123,9 +123,7 @@ this way.
 
         print "Cached servers: ", self.versions
 
-    def downloadCurrentServer(self, getSnapshot):    
-    #Only works up to minecraft 1.5.3, versions are now stored in separate folders on the server with their version appended to the server jar, 
-    #Will need a partial rewrite to fix.
+    def downloadCurrentServer(self, getSnapshot):
         self.snapshot = getSnapshot
         print "Downloading the latest Minecraft Server..."
         try:
@@ -180,7 +178,7 @@ this way.
     def getJarfile(self, version=None):
         if len(self.versions) == 0:
             print "No servers found in cache."
-            self.downloadCurrentServer()
+            self.downloadCurrentServer(0)
 
         version = version or self.latestVersion
         if version not in self.versions:
@@ -546,7 +544,7 @@ class MCServerChunkGenerator(object):
         return proc
 
     def _serverVersion(self):
-        return self._serverVersionFromJarFile(self.serverJarFile)
+        return self._serverVersionFromJarFile(self.serverJarFile, 0)
 
     @classmethod
     def _serverVersionFromJarFile(cls, jarfile, isSnapshot):
