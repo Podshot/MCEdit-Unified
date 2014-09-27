@@ -818,7 +818,7 @@ class CameraViewport(GLViewport):
             mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=26),
             mceutils.TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'),width=300), #Text to allow the input of internal item names           
             mceutils.IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
-            mceutils.IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-128, max=127),
+            mceutils.IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),
         )
 
         def deleteFromWorld():
