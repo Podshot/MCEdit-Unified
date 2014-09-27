@@ -178,7 +178,7 @@ this way.
     def getJarfile(self, version=None):
         if len(self.versions) == 0:
             print "No servers found in cache."
-            self.downloadCurrentServer(0)
+            self.downloadCurrentServer(False)
 
         version = version or self.latestVersion
         if version not in self.versions:
@@ -544,7 +544,7 @@ class MCServerChunkGenerator(object):
         return proc
 
     def _serverVersion(self):
-        return self._serverVersionFromJarFile(self.serverJarFile, 0)
+        return self._serverVersionFromJarFile(self.serverJarFile, self.snapshot)
 
     @classmethod
     def _serverVersionFromJarFile(cls, jarfile, isSnapshot):
