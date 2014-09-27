@@ -759,7 +759,7 @@ class CameraViewport(GLViewport):
             # xxx do validation here
             def getter(self):
                 if 0 == len(tileEntityTag["Items"]):
-                    return "N/A"
+                    return 0
                 return tileEntityTag["Items"][self.selectedItemIndex][key].value
 
             def setter(self, val):
@@ -793,12 +793,6 @@ class CameraViewport(GLViewport):
             TableColumn("Name", 260, "l"),
         ])
 
-        def deleteEnable():
-            return len(tileEntityTag["Items"]) and chestWidget.selectedItemIndex != -1
-
-        def addEnable():
-            return len(tileEntityTag["Items"]) < chestWidget.itemLimit
-        
         def itemName(id, damage):
             try:
                 return pymclevel.items.items.findItem(id, damage).name
@@ -819,7 +813,14 @@ class CameraViewport(GLViewport):
         chestItemTable.row_data = getRowData
         chestItemTable.row_is_selected = lambda x: x == chestWidget.selectedItemIndex
         chestItemTable.click_row = selectTableRow
-        
+
+        fieldRow = (
+            mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=26),
+            mceutils.TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'),width=300), #Text to allow the input of internal item names           
+            mceutils.IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
+            mceutils.IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-128, max=127),
+        )
+
         def deleteFromWorld():
             i = chestWidget.selectedItemIndex
             item = tileEntityTag["Items"][i]
@@ -892,13 +893,18 @@ class CameraViewport(GLViewport):
 
                 self.editor.addUnsavedEdit()
                 chestWidget.selectedItemIndex = min(chestWidget.selectedItemIndex, len(tileEntityTag["Items"]) - 1)
+
         def deleteItem():
             i = chestWidget.selectedItemIndex
             item = tileEntityTag["Items"][i]
             tileEntityTag["Items"].value = [t for t in tileEntityTag["Items"].value if t is not item]
-            if 0 == len(tileEntityTag["Items"]):
-                itemField()
+            chestWidget.selectedItemIndex = min(chestWidget.selectedItemIndex, len(tileEntityTag["Items"]) - 1)
 
+        def deleteEnable():
+            return len(tileEntityTag["Items"]) and chestWidget.selectedItemIndex != -1
+
+        def addEnable():
+            return len(tileEntityTag["Items"]) < chestWidget.itemLimit
 
         def addItem():
             slot = 0
@@ -913,34 +919,21 @@ class CameraViewport(GLViewport):
             item["Slot"] = pymclevel.TAG_Byte(slot)
             item["Count"] = pymclevel.TAG_Byte(0)
             tileEntityTag["Items"].append(item)
-            chestWidget.remove(itemField)
-            if 1 == len(tileEntityTag["Items"]):
-                itemField()
 
         addItemButton = Button("New Item (1.7+)", action=addItem, enable=addEnable)
         deleteItemButton = Button("Delete This Item", action=deleteItem, enable=deleteEnable)
         deleteFromWorldButton = Button("Delete All Instances Of This Item From World", action=deleteFromWorld, enable=deleteEnable)
         deleteCol = Column((addItemButton, deleteItemButton, deleteFromWorldButton))
 
-        def itemField():
-            if len(tileEntityTag["Items"]) and chestWidget.selectedItemIndex != -1:
-                fieldRow = (
-                    mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=26),
-                    mceutils.TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'),width=300), #Text to allow the input of internal item names           
-                    mceutils.IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
-                    mceutils.IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-128, max=127),
-                )
-                fieldRow = Row(fieldRow)
-                col = Column((chestItemTable, fieldRow, deleteCol))
-            else:
-                col = Column((chestItemTable, Label("Container is empty, click Add Item to edit."), deleteCol))
-            chestWidget.add(col)
-            chestWidget.shrink_wrap()
+        fieldRow = Row(fieldRow)
+        col = Column((chestItemTable, fieldRow, deleteCol))
 
-        itemField()
+        chestWidget.add(col)
+        chestWidget.shrink_wrap()
+
         Dialog(client=chestWidget, responses=["Done"]).present()
         level = self.editor.level
-
+        
         class ChestEditOperation(Operation):
             def perform(self, recordUndo=True):
                 level.addTileEntity(tileEntityTag)
