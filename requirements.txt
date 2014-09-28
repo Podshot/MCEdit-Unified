@@ -10,6 +10,6 @@ setuptools (optional)
 If you are running Ubuntu (May also apply to Debian) use the following command to install all dependencies:
 apt-get install python-opengl python-pygame python-yaml python-numpy
 
-If you are running windows, just google for the installers.
+If you are running windows, just google for the installers or see readme.md
 
 For more detailed instructions for Linux and Mac see readme.md
