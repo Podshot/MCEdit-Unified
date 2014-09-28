@@ -138,7 +138,7 @@ this way.
         """ Finds the version number from the server jar at filename and copies
         it into the proper subfolder of the server jar cache folder"""
 
-        version = MCServerChunkGenerator._serverVersionFromJarFile(filename, self.snapshot)
+        version = MCServerChunkGenerator._serverVersionFromJarFile(filename)
         print "Found version ", version
         versionDir = os.path.join(self.cacheDir, version)
 
@@ -544,10 +544,10 @@ class MCServerChunkGenerator(object):
         return proc
 
     def _serverVersion(self):
-        return self._serverVersionFromJarFile(self.serverJarFile, self.snapshot)
+        return self._serverVersionFromJarFile(self.serverJarFile)
 
     @classmethod
-    def _serverVersionFromJarFile(cls, jarfile, isSnapshot):
+    def _serverVersionFromJarFile(cls, jarfile):
         tempdir = tempfile.mkdtemp("mclevel_servergen")
         proc = cls._runServer(tempdir, jarfile)
 
@@ -576,13 +576,12 @@ class MCServerChunkGenerator(object):
         # Versions like "0.2.1" are alphas, and versions like "1.0.0" without "Beta" are releases
         if version[0] == "0":
             version = "Alpha " + version
-        if not isSnapshot:
+        elif 'w' in version or 'pre' in version:
+            version = "Snapshot " + version
+        else:
             try:
                 if int(version[0]) > 0:
                     version = "Release " + version
             except ValueError:
                 pass
-        else:
-            version = "Snapshot " + version
-
         return version
