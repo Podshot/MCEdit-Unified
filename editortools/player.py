@@ -23,6 +23,7 @@ from mceutils import loadPNGTexture, alertException, drawTerrainCuttingWire, dra
 from operation import Operation
 import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
+from pymclevel import version_compatability_utils
 import logging
 log = logging.getLogger(__name__)
 
@@ -119,9 +120,17 @@ class PlayerPositionPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
+        self.player_UUID = {}
         level = tool.editor.level
         if hasattr(level, 'players'):
             players = level.players or ["[No players]"]
+            if not level.oldPlayerFolderFormat:
+                for player in players:
+                    if player != "Player":
+                        self.player_UUID[version_compatability_utils.getPlayerNameFromUUID(player)] = player
+                self.player_UUID["Player"] = "Player"
+                players = self.player_UUID.keys()
+                
         else:
             players = ["Player"]
         self.players = players
@@ -154,7 +163,7 @@ class PlayerPositionPanel(Panel):
 
     @property
     def selectedPlayer(self):
-        return self.players[self.table.index]
+        return self.player_UUID[self.players[self.table.index]]
 
 
 class PlayerPositionTool(EditorTool):
