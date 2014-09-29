@@ -1071,7 +1071,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         if os.path.exists(self.worldFolder.getFolderPath("players")) and os.listdir(self.worldFolder.getFolderPath("players")) != []:
             self.playersFolder = self.worldFolder.getFolderPath("players")
             self.oldPlayerFolderFormat = True
-        elif os.path.exists(self.worldFolder.getFolderPath("playerdata")):
+        if os.path.exists(self.worldFolder.getFolderPath("playerdata")):
             self.playersFolder = self.worldFolder.getFolderPath("playerdata")
             self.oldPlayerFolderFormat = False
         self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
