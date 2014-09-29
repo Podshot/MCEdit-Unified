@@ -60,7 +60,7 @@ def get_git_version():
 # setup() options that are common on all platforms.
 SETUP_COMMON = {
     # General fields,
-    'name': 'MCEdit Fork', #if DEVELOP else 'MCEdit',
+    'name': 'MCEdit', #if DEVELOP else 'MCEdit',
     'version': 'V1.0.0 Dev',
     'description': 'Minecraft World Editor',
     'long_description': LONG_DESC,
