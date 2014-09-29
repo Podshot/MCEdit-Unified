@@ -77,8 +77,8 @@ class SpawnPositionInvalid(Exception):
 
 def okayAt63(level, pos):
     """blocks 63 or 64 must be occupied"""
-    return level.blockAt(pos[0], 63, pos[2]) != 0 or level.blockAt(pos[0], 64, pos[2]) != 0
-
+    #return level.blockAt(pos[0], 63, pos[2]) != 0 or level.blockAt(pos[0], 64, pos[2]) != 0
+    return True
 
 def okayAboveSpawn(level, pos):
     """3 blocks above spawn must be open"""
