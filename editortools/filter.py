@@ -63,9 +63,8 @@ class FilterModuleOptions(Widget):
         self.pages = pages
         self.optionDict = {}
         pageTabContents = []
-
-        if hasattr(module, "onOptionsLoad"):
-            module.onOptionsLoad()
+        
+        self.giveEditorObject(module)
         print "Creating options for ", module
         if hasattr(module, "inputs"):
             if isinstance(module.inputs, list):
@@ -233,6 +232,9 @@ class FilterModuleOptions(Widget):
         for k in val:
             if k in self.optionDict:
                 self.optionDict[k].set(val[k])
+
+    def giveEditorObject(self, module):
+        module.editor = self.tool.editor
 
 
 class FilterToolPanel(Panel):
