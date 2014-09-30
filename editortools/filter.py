@@ -64,6 +64,8 @@ class FilterModuleOptions(Widget):
         self.optionDict = {}
         pageTabContents = []
 
+        if hasattr(module, "onOptionsLoad"):
+            module.onOptionsLoad()
         print "Creating options for ", module
         if hasattr(module, "inputs"):
             if isinstance(module.inputs, list):
