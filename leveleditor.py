@@ -1822,6 +1822,30 @@ class LevelEditor(GLViewport):
 
     toolbar = None
 
+    def SimpleInteractiveWidget(self, msg, yesAction, noAction):
+        self.yon = Widget()
+        self.yon.bg_color = (0.0, 0.0, 0.6)
+        self.yesActionFunction = yesAction
+        self.noActionFunction = noAction
+        label = Label(msg)
+        ybutton = Button("Yes", action=self.yAction)
+        nbutton = Button("No", action=self.nAction)
+        #row = Row(label, ybutton, nbutton)
+        #col = Column(row)
+        col = Column((label, ybutton, nbutton))
+        self.yon.add(col)
+        self.yon.shrink_wrap()
+        self.yon.present()
+        print "Added Widget"
+
+    def yAction(self):
+        self.yon.dismiss()
+        self.yesActionFunction()
+
+    def nAction(self):
+        self.yon.dismiss()
+        self.noActionFunction()
+
     def reloadToolbar(self):
         self.toolbar = EditorToolbar(self, tools=[editortools.SelectionTool(self),
                       editortools.BrushTool(self),
