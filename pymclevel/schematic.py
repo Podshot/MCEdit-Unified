@@ -248,7 +248,7 @@ class MCSchematic (EntityLevel):
                 newz = self.Length - x - 1
 
                 entity["TileX"].value, entity["TileZ"].value = newx, newz
-                entity["Dir"].value = (entity["Dir"].value + 1) % 4
+                entity["Direction"].value = (entity["Direction"].value + 1) % 4
 
         for tileEntity in self.TileEntities:
             if not 'x' in tileEntity:
@@ -299,7 +299,7 @@ class MCSchematic (EntityLevel):
 
             if entity["id"].value in ("Painting", "ItemFrame"):
                 entity["TileX"].value = self.Width - entity["TileX"].value
-                entity["Dir"].value = northSouthPaintingMap[entity["Dir"].value]
+                entity["Direction"].value = northSouthPaintingMap[entity["Direction"].value]
 
         for tileEntity in self.TileEntities:
             if not 'x' in tileEntity:
@@ -329,7 +329,7 @@ class MCSchematic (EntityLevel):
 
             if entity["id"].value in ("Painting", "ItemFrame"):
                 entity["TileZ"].value = self.Length - entity["TileZ"].value
-                entity["Dir"].value = eastWestPaintingMap[entity["Dir"].value]
+                entity["Direction"].value = eastWestPaintingMap[entity["Direction"].value]
 
         for tileEntity in self.TileEntities:
             tileEntity["z"].value = self.Length - tileEntity["z"].value - 1
