@@ -89,7 +89,7 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited):
 	villager["Profession"] = TAG_Int(profession)
 	villager["Riches"] = TAG_Int(200)
 	villager["FallDistance"] = TAG_Float(0)
-	villager["CustomName"] = TAG_String("Trader")
+	#villager["CustomName"] = TAG_String("Trader")
 	villager["id"] = TAG_String("Villager")
 	villager["Motion"] = TAG_List()
 	villager["Motion"].append(TAG_Double(0))
