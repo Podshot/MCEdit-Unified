@@ -406,6 +406,7 @@ blocks:
     tex: [15, 14]
     type: SEMISOLID
     brightness: 15
+    opacity: 0
 
   - id: 11
     idStr: lava
@@ -414,6 +415,7 @@ blocks:
     tex: [15, 14]
     type: SEMISOLID
     brightness: 15
+    opacity: 0
 
   - id: 12
     idStr: sand
