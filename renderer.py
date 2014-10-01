@@ -1985,25 +1985,25 @@ class FenceBlockRenderer(BlockRenderer): #This code is written to only accept on
         fenceIndices = fenceMask.nonzero()
         bdata = blockData[fenceMask]
         yield
-        
+ 
         tex = texMap(blocks[fenceMask], blockData[fenceMask], 0)[:, numpy.newaxis, 0:2]
-
+ 
         vertexArray = numpy.zeros((len(fenceIndices[0]), 6, 4, 6), dtype='float32')
         for indicies in range(3):
             dimension = (0, 2, 1)[indicies]
-
-            vertexArray[..., indicies] = fenceIndices[dimension][:, numpy.newaxis, numpy.newaxis]  # xxx swap z with y using ^
-
+ 
+            vertexArray[..., indicies] = fenceIndices[dimension][:, numpy.newaxis, numpy.newaxis] # xxx swap z with y using ^
+ 
         vertexArray[..., 0:5] += self.fenceTemplates[..., 0:5]
-        vertexArray[_ST] += pymclevel.materials.alphaMaterials.blockTextures[pymclevel.materials.alphaMaterials.Fence.ID, 0, 0] #Offending line
-        
+        vertexArray[_ST] += pymclevel.materials.alphaMaterials.blockTextures[blocks[fenceIndices][0], 0, 0]
+ 
         vertexArray.view('uint8')[_RGB] = self.fenceTemplates[..., 5][..., numpy.newaxis]
         vertexArray.view('uint8')[_A] = 0xFF
         vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][fenceIndices][..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
         vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
         yield
         self.vertexArrays = [vertexArray]
-
+ 
     makeVertices = fenceVertices
     
 class NetherFenceBlockRenderer(BlockRenderer):

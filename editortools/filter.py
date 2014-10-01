@@ -14,11 +14,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import collections
 import os
 import traceback
-from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped
+from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped, TextField
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel
-from mceutils import ChoiceButton, alertException, setWindowCaption, showProgress
+from mceutils import ChoiceButton, alertException, setWindowCaption, showProgress, TextInputRow
 import mcplatform
 from operation import Operation
 from albow.dialogs import wrapped_label, alert
@@ -116,7 +116,7 @@ class FilterModuleOptions(Widget):
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
 
-                    if optionType[0] == "string":
+                    if optionType[0] == "string":           #This code seems to be completely dead.
                         kwds = []
                         wid = None
                         lin = None
@@ -152,7 +152,7 @@ class FilterModuleOptions(Widget):
                         if wid is None:
                             wid = 200
 
-                        field = TextFieldWrapped(value=val, width=wid,lines=lin)
+                        field = TextField(value=val, width=wid, lines=lin)
                         page.optionDict[optionName] = AttrRef(field, 'value')
 
                         row = Row((Label(optionName), field))
@@ -187,14 +187,18 @@ class FilterModuleOptions(Widget):
                 rows.append(row)
             elif optionType == "label":
                 rows.append(wrapped_label(optionName, 50))
-
+                
             elif optionType == "string":
-                field = TextFieldWrapped(value="Input String Here", width=200, lines=1)
+                input = None #not sure how to pull values from filters, but leaves it open for the future. Use this variable to set field width.
+                if input != None:
+                    size = input
+                else:
+                    size = 200
+                field = TextField(value="Input String Here")
+                row = TextInputRow(optionName, ref=AttrRef(field, 'value'), width = size)
                 page.optionDict[optionName] = AttrRef(field, 'value')
-
-                row = Row((Label(optionName), field))
                 rows.append(row)
-
+                
             elif optionType == "title":
                 title = optionName
 
