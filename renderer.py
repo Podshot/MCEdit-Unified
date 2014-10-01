@@ -1518,7 +1518,11 @@ class TorchBlockRenderer(BlockRenderer): #Levers here until someone makes a sepa
 
 
 class RailBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.Rail.ID, pymclevel.materials.alphaMaterials.PoweredRail.ID, pymclevel.materials.alphaMaterials.DetectorRail.ID]
+    blocktypes = [pymclevel.materials.alphaMaterials.Rail.ID, 
+                    pymclevel.materials.alphaMaterials.PoweredRail.ID, 
+                    pymclevel.materials.alphaMaterials.DetectorRail.ID, 
+                    pymclevel.materials.alphaMaterials.ActivatorRail.ID
+                    ]
     renderstate = ChunkCalculator.renderstateAlphaTest
 
     railTextures = numpy.array([

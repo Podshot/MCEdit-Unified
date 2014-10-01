@@ -254,7 +254,7 @@ applyThrownBit = applyBit8
 
 
 class PoweredDetectorRail(Rail):
-    blocktypes = [alphaMaterials.PoweredRail.ID, alphaMaterials.DetectorRail.ID]
+    blocktypes = [alphaMaterials.PoweredRail.ID, alphaMaterials.DetectorRail.ID, alphaMaterials.ActivatorRail.ID]
 PoweredDetectorRail.rotateLeft = genericRotation(PoweredDetectorRail)
 
 PoweredDetectorRail.rotateLeft[PoweredDetectorRail.NorthSouth] = PoweredDetectorRail.EastWest
@@ -389,12 +389,16 @@ applyBits48(RedstoneRepeater)
 
 
 class Trapdoor:
-    blocktypes = [alphaMaterials.Trapdoor.ID]
+    blocktypes = [alphaMaterials.Trapdoor.ID, alphaMaterials.IronTrapdoor.ID]
 
     West = 0
     East = 1
     South = 2
     North = 3
+    TopWest = 4
+    TopEast = 5
+    TopSouth = 6
+    TopNorth = 7
 
 genericFlipRotation(Trapdoor)
 applyOpenedBit = applyBit4
@@ -479,8 +483,8 @@ rotationClasses.append(Vines)
 class Anvil:
     blocktypes = [alphaMaterials.Anvil.ID]
 
-    NorthSouth = 0
-    WestEast = 1
+    NorthSouth = 1
+    WestEast = 0
 
     rotateLeft = arange(16, dtype='uint8')
     flipEastWest = arange(16, dtype='uint8')
@@ -535,28 +539,28 @@ applyBits48(TripwireHook) # activation/ready state
 class MobHead:
     blocktypes = [alphaMaterials.MobHead.ID]
 
-    North = 2
-    South = 3
-    East = 4
-    West = 5
+    East = 2
+    West = 3
+    North = 4
+    South = 5
 
 @genericFlipRotation
 class Hopper:
-    blocktypes = [alphaMaterials.Hopper.ID]
+    blocktypes = [alphaMaterials.Hopper.ID, alphaMaterials.Dropper.ID]
 
-    South = 2
-    North = 3
-    East = 4
-    West = 5
+    East = 2
+    West = 3
+    North = 4
+    South = 5
 
 @genericFlipRotation
 class RedstoneComparator:
     blocktypes = [alphaMaterials.RedstoneComparatorInactive.ID, alphaMaterials.RedstoneComparatorActive.ID]
 
-    South = 0
-    West = 1
-    North = 2
-    East = 3
+    East = 0
+    South = 1
+    West = 2
+    North = 3
 
 applyBits48(RedstoneComparator)
 
