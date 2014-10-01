@@ -194,7 +194,7 @@ class FilterModuleOptions(Widget):
                     size = input
                 else:
                     size = 200
-                field = TextField(value="Input String Here")
+                field = TextField(value="")
                 row = TextInputRow(optionName, ref=AttrRef(field, 'value'), width = size)
                 page.optionDict[optionName] = AttrRef(field, 'value')
                 rows.append(row)
