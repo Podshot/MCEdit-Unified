@@ -24,6 +24,10 @@ from operation import Operation
 from albow.dialogs import wrapped_label, alert
 import pymclevel
 from pymclevel import BoundingBox
+import urllib2
+import urllib
+import json
+import shutil
 
 
 def alertFilterException(func):
@@ -119,7 +123,6 @@ class FilterModuleOptions(Widget):
                     if optionType[0] == "string":           #This code seems to be completely dead.
                         kwds = []
                         wid = None
-                        lin = None
                         val = None
                         for keyword in optionType:
                             if isinstance(keyword, (str, unicode)) and keyword != "string":
@@ -145,14 +148,12 @@ class FilterModuleOptions(Widget):
                                     if key == "value":
                                         val = splitWord[1]
 
-                        if lin is None:
-                            lin = 1
                         if val is None:
                             val = "Input String Here"
                         if wid is None:
                             wid = 200
 
-                        field = TextField(value=val, width=wid, lines=lin)
+                        field = TextField(value=val, width=wid)
                         page.optionDict[optionName] = AttrRef(field, 'value')
 
                         row = Row((Label(optionName), field))
@@ -366,10 +367,37 @@ class FilterTool(EditorTool):
 
         self.editor.add(self.panel)
 
+        self.updatePanel = Panel()
+        updateButton = Button("Update Filters", action=self.updateFilters)
+        self.updatePanel.add(updateButton)
+        self.updatePanel.shrink_wrap()
+
+        self.updatePanel.right = self.editor.right
+        self.updatePanel.centery = self.editor.centery
+        self.editor.add(self.updatePanel)
+
     def hidePanel(self):
         self.panel.saveOptions()
         if self.panel.parent:
             self.panel.parent.remove(self.panel)
+            self.updatePanel.parent.remove(self.updatePanel)
+
+    def updateFilters(self):
+        try:
+            os.mkdir(mcplatform.filtersDir+"/updates")
+        except OSError:
+            pass
+        for module in self.filterModules.values():
+            if hasattr(module, "UPDATE_URL") and hasattr(module, "VERSION"):
+                if isinstance(module.UPDATE_URL, (str, unicode)) and isinstance(module.VERSION, (str, unicode)):
+                    versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
+                    if module.VERSION != versionJSON["Version"]:
+                        urllib.urlretrieve(versionJSON["Download-URL"], mcplatform.filtersDir+"/updates/"+versionJSON["Name"])
+        for f in os.listdir(mcplatform.filtersDir+"/updates"):
+            shutil.copy(mcplatform.filtersDir+"/updates/"+f, mcplatform.filtersDir)
+        shutil.rmtree(mcplatform.filtersDir+"/updates/")
+        print "Finished updating filters"
+        self.editor.YesNoWidget("Finished updating filters")
 
     def reloadFilters(self):
         filterDir = mcplatform.filtersDir
