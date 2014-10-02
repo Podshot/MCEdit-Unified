@@ -80,9 +80,14 @@ else:
 
 # check for launcher_profiles.json. If found, load saves directory from that instead.
 if os.path.isfile(os.path.join(minecraftDir, u"launcher_profiles.json")):
-    minecraftProfiles = json.load(open(os.path.join(minecraftDir, u"launcher_profiles.json"))) # load json file
-    selectedProfile = minecraftProfiles['selectedProfile'] # selected profile name
-    minecraftDir = minecraftProfiles['profiles'][selectedProfile]['gameDir'] # minecraftDir update to correct location.
-    saveFileDir = os.path.join(minecraftDir, u"saves") # saveFileDir update to correct location
+    try:
+        minecraftProfiles = json.load(open(os.path.join(minecraftDir, u"launcher_profiles.json"))) # load json file
+        selectedProfile = minecraftProfiles['selectedProfile'] # selected profile name
+        minecraftDir = minecraftProfiles['profiles'][selectedProfile]['gameDir'] # minecraftDir update to correct location.
+        saveFileDir = os.path.join(minecraftDir, u"saves") # saveFileDir update to correct location
+    except Exception, e:
+        saveFileDir = os.path.join(minecraftDir, u"saves") #unable to find a launcher_profiles, using default location
+        print "Error while reading or parsing JSON data from launcher_profiles.json: {0!r}".format(e)
+        print "Saves directory set to default minecraft saves location"
 else:
     saveFileDir = os.path.join(minecraftDir, u"saves") #unable to find a launcher_profiles, using default location
