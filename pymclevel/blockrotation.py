@@ -260,9 +260,8 @@ def applyBits48(array):
 
 @applyBit    
 def applyBit2(array):
-    array[7] = array[9] | 0x1
-    array[9] = array[8] | 0x1
-    array[8] = array[7] | 0x1
+    array[9] == array[8] | 0x2
+    array[8] == array[9] | 0x2
 
 
 applyThrownBit = applyBit8
