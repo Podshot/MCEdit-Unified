@@ -368,7 +368,7 @@ class FilterTool(EditorTool):
         self.editor.add(self.panel)
 
         self.updatePanel = Panel()
-        updateButton = Button("Check for Updates", action=self.updateFilters)
+        updateButton = Button("Check for Filter Updates", action=self.updateFilters)
         self.updatePanel.add(updateButton)
         self.updatePanel.shrink_wrap()
 
@@ -383,21 +383,34 @@ class FilterTool(EditorTool):
             self.updatePanel.parent.remove(self.updatePanel)
 
     def updateFilters(self):
+        totalFilters = 0
+        updatedFilters = 0
         try:
             os.mkdir(mcplatform.filtersDir+"/updates")
         except OSError:
             pass
         for module in self.filterModules.values():
+            totalFilters = totalFilters + 1
             if hasattr(module, "UPDATE_URL") and hasattr(module, "VERSION"):
                 if isinstance(module.UPDATE_URL, (str, unicode)) and isinstance(module.VERSION, (str, unicode)):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"], mcplatform.filtersDir+"/updates/"+versionJSON["Name"])
+                        updatedFilters = updatedFilters + 1
         for f in os.listdir(mcplatform.filtersDir+"/updates"):
             shutil.copy(mcplatform.filtersDir+"/updates/"+f, mcplatform.filtersDir)
         shutil.rmtree(mcplatform.filtersDir+"/updates/")
-        print "Finished updating filters"
-        self.editor.YesNoWidget("Finished updating filters")
+        self.finishedUpdatingWidget = Widget()
+        lbl = Label("Updated "+str(updatedFilters)+" filter(s) out of "+str(totalFilters))
+        closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
+        col = Column((lbl, closeBTN))
+        self.finishedUpdatingWidget.bg_color = (0.0, 0.0, 0.6)
+        self.finishedUpdatingWidget.add(col)
+        self.finishedUpdatingWidget.shrink_wrap()
+        self.finishedUpdatingWidget.present()
+
+    def closeFinishedUpdatingWidget(self):
+        self.finishedUpdatingWidget.dismiss()
 
     def reloadFilters(self):
         filterDir = mcplatform.filtersDir
