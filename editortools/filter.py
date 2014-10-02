@@ -119,7 +119,6 @@ class FilterModuleOptions(Widget):
                     if optionType[0] == "string":           #This code seems to be completely dead.
                         kwds = []
                         wid = None
-                        lin = None
                         val = None
                         for keyword in optionType:
                             if isinstance(keyword, (str, unicode)) and keyword != "string":
@@ -145,14 +144,12 @@ class FilterModuleOptions(Widget):
                                     if key == "value":
                                         val = splitWord[1]
 
-                        if lin is None:
-                            lin = 1
                         if val is None:
                             val = "Input String Here"
                         if wid is None:
                             wid = 200
 
-                        field = TextField(value=val, width=wid, lines=lin)
+                        field = TextField(value=val, width=wid)
                         page.optionDict[optionName] = AttrRef(field, 'value')
 
                         row = Row((Label(optionName), field))
