@@ -8,6 +8,7 @@ from contextlib import contextmanager
 from logging import getLogger
 import sys
 import os
+import json
 
 log = getLogger(__name__)
 
@@ -77,6 +78,11 @@ else:
     minecraftDir = os.path.expanduser(u"~/.minecraft")
     appSupportDir = os.path.expanduser(u"~/.pymclevel")
 
-saveFileDir = os.path.join(minecraftDir, u"saves")
-
-
+# check for launcher_profiles.json. If found, load saves directory from that instead.
+if os.path.isfile(os.path.join(minecraftDir, u"launcher_profiles.json")):
+    minecraftProfiles = json.load(open(os.path.join(minecraftDir, u"launcher_profiles.json"))) # load json file
+    selectedProfile = minecraftProfiles['selectedProfile'] # selected profile name
+    minecraftDir = minecraftProfiles['profiles'][selectedProfile]['gameDir'] # minecraftDir update to correct location.
+    saveFileDir = os.path.join(minecraftDir, u"saves") # saveFileDir update to correct location
+else:
+    saveFileDir = os.path.join(minecraftDir, u"saves") #unable to find a launcher_profiles, using default location
