@@ -120,7 +120,7 @@ class FilterModuleOptions(Widget):
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
 
-                    if optionType[0] == "string":           #This code seems to be completely dead.
+                    if optionType[0] == "string":
                         kwds = []
                         wid = None
                         val = None
@@ -149,7 +149,7 @@ class FilterModuleOptions(Widget):
                                         val = splitWord[1]
 
                         if val is None:
-                            val = "Input String Here"
+                            val = ""
                         if wid is None:
                             wid = 200
 
@@ -368,7 +368,7 @@ class FilterTool(EditorTool):
         self.editor.add(self.panel)
 
         self.updatePanel = Panel()
-        updateButton = Button("Update Filters", action=self.updateFilters)
+        updateButton = Button("Check for Updates", action=self.updateFilters)
         self.updatePanel.add(updateButton)
         self.updatePanel.shrink_wrap()
 
