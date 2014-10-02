@@ -2315,20 +2315,66 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Anvil
+        name: Anvil (North/South)
         tex_direction:
           TOP: [7, 14]
           BOTTOM: [7, 13]
       1:
-        name: Anvil (Damaged)
+        name: Anvil (East/West)
+        tex_direction:
+          TOP: [7, 14]
+          BOTTOM: [7, 13] 
+      2:
+        name: Anvil (North/South)
+        tex_direction:
+          TOP: [7, 14]
+          BOTTOM: [7, 13]          
+      3:
+        name: Anvil (East/West)
+        tex_direction:
+          TOP: [7, 14]
+          BOTTOM: [7, 13]          
+      4:
+        name: Anvil (Damaged)(North/South)
         tex_direction:
           TOP: [8, 13]
           BOTTOM: [7, 13]
-      2:
-        name: Anvil (Very Damaged)
+      5:
+        name: Anvil (Damaged)(East/West)
+        tex_direction:
+          TOP: [8, 13]
+          BOTTOM: [7, 13]
+      6:
+        name: Anvil (Damaged)(North/South)
+        tex_direction:
+          TOP: [8, 13]
+          BOTTOM: [7, 13]
+      7:
+        name: Anvil (Damaged)(East/West)
+        tex_direction:
+          TOP: [8, 13]
+          BOTTOM: [7, 13]
+      8:
+        name: Anvil (Very Damaged)(North/South)
         tex_direction:
           TOP: [8, 14]
           BOTTOM: [7, 13]
+      9:
+        name: Anvil (Very Damaged)(North/South)
+        tex_direction:
+          TOP: [8, 14]
+          BOTTOM: [7, 13]          
+      10:
+        name: Anvil (Very Damaged)(North/South)
+        tex_direction:
+          TOP: [8, 14]
+          BOTTOM: [7, 13]
+      11:
+        name: Anvil (Very Damaged)(North/South)
+        tex_direction:
+          TOP: [8, 14]
+          BOTTOM: [7, 13]
+
 
   - id: 146
     idStr: trapped_chest

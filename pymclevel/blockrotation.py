@@ -57,6 +57,13 @@ def genericNorthSouthFlip(cls):
         rotation[cls.TopNorth] = cls.TopSouth
 
     return rotation
+    
+def genericLeftRightFlip(cls):
+    rotation = arange(16, dtype='uint8')
+    rotation[cls.Left] = cls.Right
+    rotation[cls.Right] = cls.Left
+
+    return rotation
 
 rotationClasses = []
 
@@ -69,7 +76,7 @@ def genericFlipRotation(cls):
     rotationClasses.append(cls)
     return cls
 
-
+#Note, directions are based on the old north. North in here is East ingame.
 class Torch:
     blocktypes = [
         alphaMaterials.Torch.ID,
@@ -142,7 +149,7 @@ rotationClasses.append(HalfSlab)
 
 
 class WallSign:
-    blocktypes = [alphaMaterials.WallSign.ID]
+    blocktypes = [alphaMaterials.WallSign.ID, alphaMaterials.WallBanner.ID]
 
     East = 2
     West = 3
@@ -157,6 +164,7 @@ class FurnaceDispenserChest:
         alphaMaterials.LitFurnace.ID,
         alphaMaterials.Dispenser.ID,
         alphaMaterials.Chest.ID,
+        alphaMaterials.EnderChest.ID
     ]
     East = 2
     West = 3
@@ -250,6 +258,13 @@ def applyBits48(array):
     array[4:8] = array[0:4] | 0x4
     array[8:16] = array[0:8] | 0x8
 
+@applyBit    
+def applyBit2(array):
+    array[7] = array[9] | 0x1
+    array[9] = array[8] | 0x1
+    array[8] = array[7] | 0x1
+
+
 applyThrownBit = applyBit8
 
 
@@ -269,15 +284,19 @@ rotationClasses.append(PoweredDetectorRail)
 class Lever:
     blocktypes = [alphaMaterials.Lever.ID]
     ThrownBit = 0x8
+    Up = 0
     South = 1
     North = 2
     West = 3
     East = 4
     EastWest = 5
     NorthSouth = 6
+    Down = 7
 Lever.rotateLeft = genericRotation(Lever)
 Lever.rotateLeft[Lever.NorthSouth] = Lever.EastWest
 Lever.rotateLeft[Lever.EastWest] = Lever.NorthSouth
+Lever.rotateLeft[Lever.Up] = Lever.Down
+Lever.rotateLeft[Lever.Down] = Lever.Up
 Lever.flipEastWest = genericEastWestFlip(Lever)
 Lever.flipNorthSouth = genericNorthSouthFlip(Lever)
 applyThrownBit(Lever)
@@ -299,7 +318,7 @@ rotationClasses.append(Button)
 
 
 class SignPost:
-    blocktypes = [alphaMaterials.Sign.ID]
+    blocktypes = [alphaMaterials.Sign.ID, alphaMaterials.MobHead.ID, alphaMaterials.StandingBanner.ID]
     #west is 0, increasing clockwise
 
     rotateLeft = arange(16, dtype='uint8')
@@ -329,46 +348,29 @@ class Door:
     blocktypes = [
         alphaMaterials.IronDoor.ID,
         alphaMaterials.WoodenDoor.ID,
+        alphaMaterials.SpruceDoor.ID,
+        alphaMaterials.BirchDoor.ID,
+        alphaMaterials.JungleDoor.ID,
+        alphaMaterials.AcaciaDoor.ID,
+        alphaMaterials.DarkOakDoor.ID,
+        alphaMaterials.WoodenDoor.ID,
     ]
-    TopHalfBit = 0x8
-    SwungCCWBit = 0x4
-
-    Northeast = 0
-    Southeast = 1
-    Southwest = 2
-    Northwest = 3
+    South = 0
+    West = 1
+    North = 2
+    East = 3
+    Up = 8
+    Down = 9
 
     rotateLeft = arange(16, dtype='uint8')
 
-Door.rotateLeft[Door.Northeast] = Door.Northwest
-Door.rotateLeft[Door.Southeast] = Door.Northeast
-Door.rotateLeft[Door.Southwest] = Door.Southeast
-Door.rotateLeft[Door.Northwest] = Door.Southwest
-
 applyBit4(Door.rotateLeft)
-
-#when flipping horizontally, swing the doors so they at least look the same
-
-Door.flipEastWest = arange(16, dtype='uint8')
-Door.flipEastWest[Door.Northeast] = Door.Northwest
-Door.flipEastWest[Door.Northwest] = Door.Northeast
-Door.flipEastWest[Door.Southwest] = Door.Southeast
-Door.flipEastWest[Door.Southeast] = Door.Southwest
-Door.flipEastWest[4:8] = Door.flipEastWest[0:4]
-Door.flipEastWest[0:4] = Door.flipEastWest[4:8] | 0x4
-Door.flipEastWest[8:16] = Door.flipEastWest[0:8] | 0x8
-
-Door.flipNorthSouth = arange(16, dtype='uint8')
-Door.flipNorthSouth[Door.Northeast] = Door.Southeast
-Door.flipNorthSouth[Door.Northwest] = Door.Southwest
-Door.flipNorthSouth[Door.Southwest] = Door.Northwest
-Door.flipNorthSouth[Door.Southeast] = Door.Northeast
-Door.flipNorthSouth[4:8] = Door.flipNorthSouth[0:4]
-Door.flipNorthSouth[0:4] = Door.flipNorthSouth[4:8] | 0x4
-Door.flipNorthSouth[8:16] = Door.flipNorthSouth[0:8] | 0x8
-
-rotationClasses.append(Door)
-
+Door.flipEastWest = genericEastWestFlip(Door)
+Door.flipNorthSouth = genericNorthSouthFlip(Door)
+Door.flipLeftRight = genericVerticalFlip(Door)
+#rotationClasses.append(Door)
+genericFlipRotation(Door)
+applyBit2(Door)
 
 class RedstoneRepeater:
     blocktypes = [
@@ -401,7 +403,7 @@ class Trapdoor:
     TopNorth = 7
 
 genericFlipRotation(Trapdoor)
-applyOpenedBit = applyBit4
+applyOpenedBit = applyBit8
 applyOpenedBit(Trapdoor)
 
 
@@ -483,19 +485,27 @@ rotationClasses.append(Vines)
 class Anvil:
     blocktypes = [alphaMaterials.Anvil.ID]
 
-    NorthSouth = 1
-    WestEast = 0
+    East = 0
+    South = 1
+    West = 2
+    North = 3
+    
+genericFlipRotation(Anvil)
+applyAnvilBit = applyBit8
+applyAnvilBit(Anvil)
 
-    rotateLeft = arange(16, dtype='uint8')
-    flipEastWest = arange(16, dtype='uint8')
-    flipNorthSouth = arange(16, dtype='uint8')
+class Wood:
+    blocktypes = [alphaMaterials.Wood.ID, alphaMaterials.Wood2.ID]
 
-    rotateLeft[NorthSouth] = WestEast
-    rotateLeft[WestEast] = NorthSouth
+    East = 0
+    South = 1
+    West = 2
+    North = 3
+    
+genericFlipRotation(Anvil)
+applyAnvilBit = applyBit8
+applyAnvilBit(Anvil)
 
-rotationClasses.append(Anvil)
-
-@genericFlipRotation
 class FenceGate:
     blocktypes = [alphaMaterials.FenceGate.ID]
 
@@ -546,14 +556,24 @@ class MobHead:
 
 @genericFlipRotation
 class Hopper:
-    blocktypes = [alphaMaterials.Hopper.ID, alphaMaterials.Dropper.ID]
-
+    blocktypes = [alphaMaterials.Hopper.ID]
+    Down = 0
     East = 2
     West = 3
     North = 4
     South = 5
-
 @genericFlipRotation
+    
+class Dropper:
+    blocktypes = [alphaMaterials.Dropper.ID]
+    Down = 0
+    Up = 1
+    East = 2
+    West = 3
+    North = 4
+    South = 5
+@genericFlipRotation
+
 class RedstoneComparator:
     blocktypes = [alphaMaterials.RedstoneComparatorInactive.ID, alphaMaterials.RedstoneComparatorActive.ID]
 
@@ -592,6 +612,7 @@ class BlockRotation:
     flipEastWest = masterRotationTable("flipEastWest")
     flipNorthSouth = masterRotationTable("flipNorthSouth")
     flipVertical = masterRotationTable("flipVertical")
+    flipLeftRight = masterRotationTable("flipLeftRight")
     typeTable = rotationTypeTable()
 
 
@@ -610,6 +631,10 @@ def FlipNorthSouth(blocks, data):
 
 def FlipEastWest(blocks, data):
     data[:] = BlockRotation.flipEastWest[blocks, data]
+    
+    
+def FlipLeftRight(blocks, data):
+    data[:] = BlockRotation.flipLeftRight[blocks, data]
 
 
 def RotateLeft(blocks, data):

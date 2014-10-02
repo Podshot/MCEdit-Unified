@@ -467,7 +467,11 @@ class ChunkCalculator (object):
             pymclevel.materials.alphaMaterials.Trapdoor,
             pymclevel.materials.alphaMaterials.Lever,
             pymclevel.materials.alphaMaterials.BrewingStand,
-
+            pymclevel.materials.alphaMaterials.Anvil,
+            pymclevel.materials.alphaMaterials.Barrier,
+            pymclevel.materials.alphaMaterials.StainedGlass,
+            pymclevel.materials.alphaMaterials.Hopper
+            
         ]
         for b in transparentMaterials:
             mats[b.ID] = materialCount
@@ -1794,18 +1798,22 @@ class EnchantingBlockRenderer(BlockRenderer): #Note: Enderportal frame side spri
         materialIndices = self.getMaterialIndices(blockMaterials)
         arrays = []
         yield
-            
-        blockIndices = materialIndices
-        facingBlockLight = areaBlockLights[self.directionOffsets[direction]]
-        lights = facingBlockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
-        vertexArray = self.makeTemplate(direction, blockIndices)
-        if not len(vertexArray):
-            return
+        for direction, exposedFaceIndices in enumerate(facingBlockIndices):
+            if direction != pymclevel.faces.FaceYIncreasing:
+                blockIndices = materialIndices & exposedFaceIndices
+            else:
+                blockIndices = materialIndices
 
-        vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices], direction)[:, numpy.newaxis, 0:2]
-        vertexArray.view('uint8')[_RGB] *= lights
-        if direction == pymclevel.faces.FaceYIncreasing:
-            vertexArray[_XYZ][..., 1] -= 0.25
+            facingBlockLight = areaBlockLights[self.directionOffsets[direction]]
+            lights = facingBlockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
+            vertexArray = self.makeTemplate(direction, blockIndices)
+            if not len(vertexArray):
+                continue
+
+            vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices], direction)[:, numpy.newaxis, 0:2]
+            vertexArray.view('uint8')[_RGB] *= lights
+            if direction == pymclevel.faces.FaceYIncreasing:
+                vertexArray[_XYZ][..., 1] -= 0.25
 
             arrays.append(vertexArray)
             yield
