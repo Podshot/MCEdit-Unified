@@ -13,10 +13,12 @@ def yesFUNC(level, box):
 def perform(level, box, options):
     print "Test Filter Ran"
     print dir(editor)
-    ds.setLevel(level)
-    ds.setBox(box)
     # mceutils.SimpleInteractiveWidget("Test",yesFUNC,noFUNC)
     choice = editor.YesNoWidget("Place a sponge block here?")
+    for objective in level.scoreboard.Objectives.keys():
+        print "Objective Name: " + str(level.scoreboard.Objectives[objective].Name)
+    for team in level.scoreboard.Teams.keys():
+        print "Team Name: " + str(level.scoreboard.Teams[team].DisplayName)
     if choice:
         yesFunc(level, box)
         raise Exception("Response was Yes")
