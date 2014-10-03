@@ -251,11 +251,6 @@ def applyBits48(array):
     array[4:8] = array[0:4] | 0x4
     array[8:16] = array[0:8] | 0x8
 
-@applyBit    
-def applyBit2(array):
-    array[9] == array[8] | 0x2
-    array[8] == array[9] | 0x2
-
 
 applyThrownBit = applyBit8
 
@@ -351,17 +346,25 @@ class Door:
     West = 1
     North = 2
     East = 3
-    Up = 8
-    Down = 9
+    Left = 8
+    Right = 9
 
     rotateLeft = arange(16, dtype='uint8')
 
 applyBit4(Door.rotateLeft)
-Door.flipEastWest = genericEastWestFlip(Door)
-Door.flipNorthSouth = genericNorthSouthFlip(Door)
-#rotationClasses.append(Door)
-genericFlipRotation(Door)
-#applyBit2(Door)            #calls an array that attempts to swap data values 8 and 9, if we can make that work doors will be fixed.
+
+Door.flipEastWest = arange(16, dtype='uint8')
+Door.flipEastWest[Door.Left] = Door.Right
+Door.flipEastWest[Door.Right] = Door.Left
+Door.flipEastWest[Door.East] = Door.West
+Door.flipEastWest[Door.West] = Door.East
+
+Door.flipNorthSouth = arange(16, dtype='uint8')
+Door.flipNorthSouth[Door.Left] = Door.Right
+Door.flipNorthSouth[Door.Right] = Door.Left
+Door.flipNorthSouth[Door.North] = Door.South
+Door.flipNorthSouth[Door.South] = Door.North
+rotationClasses.append(Door)
 
 class RedstoneRepeater:
     blocktypes = [
@@ -484,6 +487,24 @@ class Anvil:
 genericFlipRotation(Anvil)
 applyAnvilBit = applyBit8
 applyAnvilBit(Anvil)
+
+@genericFlipRotation
+class Hay:
+    blocktypes = [alphaMaterials.HayBlock.ID]
+
+    East = 4
+    West = 4
+    North = 8
+    South = 8
+
+@genericFlipRotation
+class QuartzPillar:
+    blocktypes = [alphaMaterials.BlockofQuartz.ID]
+
+    East = 3
+    West = 3
+    North = 4
+    South = 4
 
 class Wood:
     blocktypes = [alphaMaterials.Wood.ID, alphaMaterials.Wood2.ID]

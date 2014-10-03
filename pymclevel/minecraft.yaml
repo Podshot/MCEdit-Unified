@@ -288,11 +288,9 @@ blocks:
     idStr: grass
     name: Grass
     mapcolor: [117, 176, 73]
-    tex: [0, 0]
+    tex: [3, 0]
     tex_direction:
-      FORWARD: [3, 0]
-      SIDES: [3, 0]
-      BACKWARD: [3, 0]
+      TOP: [0, 0]
       BOTTOM: [2, 0]
 
   - id: 3
@@ -2576,11 +2574,24 @@ blocks:
           TOP: [9, 15]
           BOTTOM: [9, 15]
       2:
-        name: Pillar Quartz Block
+        name: Pillar Quartz Block (Upright)
         tex: [10, 15]
         tex_direction:
           TOP: [11, 15]
           BOTTOM: [11, 15]
+      3:
+        name: Pillar Quartz Block (East/West)
+        tex: [17, 19]
+        tex_direction:
+          SIDES: [11, 15]
+      4:
+        name: Pillar Quartz Block (North/South)
+        tex: [10, 15]
+        tex_direction:
+          FORWARD: [11, 15]
+          BACKWARD: [11, 15]
+          SIDES: [17, 19]
+
           
   - id: 156
     idStr: quartz_stairs
@@ -3017,10 +3028,24 @@ blocks:
     idStr: hay_block
     name: Hay Block
     tex: [1, 16]
-    tex_direction:
-      TOP: [2, 16]
-      BOTTOM: [2, 16]
-
+    data:
+      0:
+        name: Hay Block (Upright)
+        tex_direction:
+          TOP: [2, 16]
+          BOTTOM: [2, 16]
+      4:
+        name: Hay Block (East/West)
+        tex: [16, 19]
+        tex_direction:
+          SIDES: [2, 16]
+      8:
+        name: Hay Block (North/South)
+        tex_direction:
+          SIDES: [16, 19]
+          FORWARD: [2, 16]
+          BACKWARD: [2, 16]
+        
   - id: 171
     idStr: carpet
     name: Carpet
