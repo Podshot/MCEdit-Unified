@@ -1002,6 +1002,24 @@ blocks:
       9:
         name: Smooth Double Sandstone Slab
         tex: [0, 11]
+      10:
+        name: Smooth Double Wooden Slab (Stone)
+        tex: [4, 0]
+      11:
+        name: Smooth Double Cobblestone Slab
+        tex: [0, 1]
+      12:
+        name: Smooth Double Brick Slab
+        tex: [7, 0]
+      13:
+        name: Smooth Double Stone Brick Slab
+        tex: [6, 0]
+      14:
+        name: Smooth Double Nether Brick Slab
+        tex: [0, 14]
+      15:
+        name: Smooth Double Quartz Slab
+        tex: [9, 13]
 
   - id: 44
     idStr: stone_slab
@@ -3223,6 +3241,12 @@ blocks:
     tex_direction:
       TOP: [4, 20]
       BOTTOM: [0, 20]
+    data:
+      0:
+        name: Double Red Sandstone Slab
+      8:
+        name: Smooth Double Red Sandstone Slab
+        tex: [4, 20]
 
   - id: 182
     idStr: stone_slab2
