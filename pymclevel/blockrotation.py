@@ -369,25 +369,34 @@ class Door:
     West = 1
     North = 2
     East = 3
+    SouthOpen = 4
+    WestOpen = 5
+    NorthOpen = 6
+    EastOpen = 7
     Left = 8
     Right = 9
 
     rotateLeft = arange(16, dtype='uint8')
 
 
-applyBit4(Door.rotateLeft)
+applyBit8(Door.rotateLeft)
 
 Door.flipEastWest = arange(16, dtype='uint8')
 Door.flipEastWest[Door.Left] = Door.Right
 Door.flipEastWest[Door.Right] = Door.Left
 Door.flipEastWest[Door.East] = Door.West
 Door.flipEastWest[Door.West] = Door.East
+Door.flipEastWest[Door.EastOpen] = Door.WestOpen
+Door.flipEastWest[Door.WestOpen] = Door.EastOpen
 
 Door.flipNorthSouth = arange(16, dtype='uint8')
 Door.flipNorthSouth[Door.Left] = Door.Right
 Door.flipNorthSouth[Door.Right] = Door.Left
 Door.flipNorthSouth[Door.North] = Door.South
 Door.flipNorthSouth[Door.South] = Door.North
+Door.flipNorthSouth[Door.NorthOpen] = Door.SouthOpen
+Door.flipNorthSouth[Door.SouthOpen] = Door.NorthOpen
+
 rotationClasses.append(Door)
 
 
