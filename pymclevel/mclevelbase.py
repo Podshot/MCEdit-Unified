@@ -87,8 +87,7 @@ if os.path.isfile(os.path.join(minecraftDir, u"launcher_profiles.json")):
         saveFileDir = os.path.join(minecraftDir, u"saves") # saveFileDir update to correct location
     except Exception, e:
         saveFileDir = os.path.join(minecraftDir, u"saves") #unable to find a launcher_profiles, using default location
-        #print "Error while reading or parsing JSON data from launcher_profiles.json: {0!r}".format(e)
-        #print "Custom save directory not set in launcher or Minecraft launcher profile not found"
-        print "Minecraft save directory set to default location"
+        print "Error while reading or parsing JSON data from launcher_profiles.json: {0!r}".format(e)
+-       print "Saves directory set to default minecraft saves location"
 else:
     saveFileDir = os.path.join(minecraftDir, u"saves") #unable to find a launcher_profiles, using default location
