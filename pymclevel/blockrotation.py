@@ -369,25 +369,42 @@ class Door:
     West = 1
     North = 2
     East = 3
+    SouthOpen = 4
+    WestOpen = 5
+    NorthOpen = 6
+    EastOpen = 7
     Left = 8
     Right = 9
 
     rotateLeft = arange(16, dtype='uint8')
 
-
-applyBit4(Door.rotateLeft)
+Door.rotateLeft[Door.South] = Door.West
+Door.rotateLeft[Door.West] = Door.North
+Door.rotateLeft[Door.North] = Door.East
+Door.rotateLeft[Door.East] = Door.South
+Door.rotateLeft[Door.SouthOpen] = Door.WestOpen
+Door.rotateLeft[Door.WestOpen] = Door.NorthOpen
+Door.rotateLeft[Door.NorthOpen] = Door.EastOpen
+Door.rotateLeft[Door.EastOpen] = Door.SouthOpen
+    
+#applyBit4(Door.rotateLeft)
 
 Door.flipEastWest = arange(16, dtype='uint8')
 Door.flipEastWest[Door.Left] = Door.Right
 Door.flipEastWest[Door.Right] = Door.Left
 Door.flipEastWest[Door.East] = Door.West
 Door.flipEastWest[Door.West] = Door.East
+Door.flipEastWest[Door.EastOpen] = Door.WestOpen
+Door.flipEastWest[Door.WestOpen] = Door.EastOpen
 
 Door.flipNorthSouth = arange(16, dtype='uint8')
 Door.flipNorthSouth[Door.Left] = Door.Right
 Door.flipNorthSouth[Door.Right] = Door.Left
 Door.flipNorthSouth[Door.North] = Door.South
 Door.flipNorthSouth[Door.South] = Door.North
+Door.flipNorthSouth[Door.NorthOpen] = Door.SouthOpen
+Door.flipNorthSouth[Door.SouthOpen] = Door.NorthOpen
+
 rotationClasses.append(Door)
 
 
@@ -618,7 +635,11 @@ class Hopper:
     South = 5
 
 
+<<<<<<< HEAD
 @genericFlipRotation
+=======
+@genericFlipRotation 
+>>>>>>> b982cbb57933786d34b522c1843db116ab75eac3
 class Dropper:
     blocktypes = [alphaMaterials.Dropper.ID]
     Down = 0
@@ -629,7 +650,11 @@ class Dropper:
     South = 5
 
 
+<<<<<<< HEAD
 @genericFlipRotation
+=======
+@genericFlipRotation 
+>>>>>>> b982cbb57933786d34b522c1843db116ab75eac3
 class RedstoneComparator:
     blocktypes = [alphaMaterials.RedstoneComparatorInactive.ID, alphaMaterials.RedstoneComparatorActive.ID]
 
