@@ -84,7 +84,8 @@ def getPYMCAppDataDirectory():
 def getMinecraftProfileJSON():
     if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
         try:
-            minecraftProfilesJSON = json.load(open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")))
+            with open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")) as jsonString:
+                minecraftProfilesJSON = json.load(jsonString.read())
             return minecraftProfilesJSON
         except:
             return None
