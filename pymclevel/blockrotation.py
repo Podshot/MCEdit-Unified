@@ -618,7 +618,7 @@ class Hopper:
     South = 5
 
 
-@genericFlipRotation \
+@genericFlipRotation 
 class Dropper:
     blocktypes = [alphaMaterials.Dropper.ID]
     Down = 0
@@ -629,7 +629,7 @@ class Dropper:
     South = 5
 
 
-@genericFlipRotation \
+@genericFlipRotation 
 class RedstoneComparator:
     blocktypes = [alphaMaterials.RedstoneComparatorInactive.ID, alphaMaterials.RedstoneComparatorActive.ID]
 
