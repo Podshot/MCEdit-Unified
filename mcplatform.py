@@ -39,12 +39,12 @@ os.environ["YAML_ROOT"] = join(directories.dataDir, "pymclevel").encode(enc)
 from pygame import display
 
 from albow import request_new_filename, request_old_filename
-from pymclevel import saveFileDir, minecraftDir
+from pymclevel import saveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from pymclevel import items
 
 import shutil
 
-texturePacksDir = os.path.join(minecraftDir, "texturepacks")
+texturePacksDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "texturepacks")
 
 
 def getTexturePacks():

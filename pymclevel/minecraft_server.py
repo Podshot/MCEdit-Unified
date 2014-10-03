@@ -15,7 +15,7 @@ import json
 import urllib2
 
 import infiniteworld
-from mclevelbase import appSupportDir, exhaust, ChunkNotPresent
+from mclevelbase import getPYMCAppDataDirectory, exhaust, ChunkNotPresent
 
 log = logging.getLogger(__name__)
 
@@ -72,7 +72,7 @@ def sort_nicely(l):
 
 
 class ServerJarStorage(object):
-    defaultCacheDir = os.path.join(appSupportDir, u"ServerJarStorage")
+    defaultCacheDir = os.path.join(getPYMCAppDataDirectory(), u"ServerJarStorage")
 
     def __init__(self, cacheDir=None):
         if cacheDir is None:
