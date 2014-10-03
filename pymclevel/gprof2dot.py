@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 #
 # Copyright 2008-2009 Jose Fonseca
 #
@@ -52,6 +52,7 @@ def equal(a, b):
 
 def fail(a, b):
     assert False
+
 
 tol = 2 ** -23
 
@@ -112,6 +113,7 @@ class Event(object):
         """Format an event value."""
         assert val is not None
         return self._formatter(val)
+
 
 CALLS = Event("Calls", 0, add, times)
 SAMPLES = Event("Samples", 0, add)
@@ -235,7 +237,8 @@ class Profile(Object):
             for callee_id in function.calls.keys():
                 assert function.calls[callee_id].callee_id == callee_id
                 if callee_id not in self.functions:
-                    sys.stderr.write('warning: call to undefined function %s from function %s\n' % (str(callee_id), function.name))
+                    sys.stderr.write(
+                        'warning: call to undefined function %s from function %s\n' % (str(callee_id), function.name))
                     del function.calls[callee_id]
 
     def find_cycles(self):
@@ -404,7 +407,8 @@ class Profile(Object):
                 partials = {}
                 self._rank_cycle_function(cycle, callee, 0, ranks)
                 self._call_ratios_cycle(cycle, callee, ranks, call_ratios, set())
-                partial = self._integrate_cycle_function(cycle, callee, call_ratio, partials, ranks, call_ratios, outevent, inevent)
+                partial = self._integrate_cycle_function(cycle, callee, call_ratio, partials, ranks, call_ratios,
+                                                         outevent, inevent)
                 assert partial == max(partials.values())
                 assert not total or abs(1.0 - partial / (call_ratio * total)) <= 0.001
 
@@ -430,7 +434,8 @@ class Profile(Object):
                             call_ratios[callee] = call_ratios.get(callee, 0.0) + call.ratio
                             self._call_ratios_cycle(cycle, callee, ranks, call_ratios, visited)
 
-    def _integrate_cycle_function(self, cycle, function, partial_ratio, partials, ranks, call_ratios, outevent, inevent):
+    def _integrate_cycle_function(self, cycle, function, partial_ratio, partials, ranks, call_ratios, outevent,
+                                  inevent):
         if function not in partials:
             partial = partial_ratio * function[inevent]
             for call in function.calls.itervalues():
@@ -441,7 +446,8 @@ class Profile(Object):
                         partial += partial_ratio * call[outevent]
                     else:
                         if ranks[callee] > ranks[function]:
-                            callee_partial = self._integrate_cycle_function(cycle, callee, partial_ratio, partials, ranks, call_ratios, outevent, inevent)
+                            callee_partial = self._integrate_cycle_function(cycle, callee, partial_ratio, partials,
+                                                                            ranks, call_ratios, outevent, inevent)
                             call_ratio = ratio(call.ratio, call_ratios[callee])
                             call_partial = call_ratio * callee_partial
                             try:
@@ -612,11 +618,11 @@ class LineParser(Parser):
         assert self.__line is not None
         return self.__eof
 
+
 XML_ELEMENT_START, XML_ELEMENT_END, XML_CHARACTER_DATA, XML_EOF = range(4)
 
 
 class XmlToken:
-
     def __init__(self, type, name_or_data, attrs=None, line=None, column=None):
         assert type in (XML_ELEMENT_START, XML_ELEMENT_END, XML_CHARACTER_DATA, XML_EOF)
         self.type = type
@@ -708,13 +714,13 @@ class XmlTokenizer:
 
 
 class XmlTokenMismatch(Exception):
-
     def __init__(self, expected, found):
         self.expected = expected
         self.found = found
 
     def __str__(self):
-        return '%u:%u: %s expected, %s found' % (self.found.line, self.found.column, str(self.expected), str(self.found))
+        return '%u:%u: %s expected, %s found' % (
+        self.found.line, self.found.column, str(self.expected), str(self.found))
 
 
 class XmlParser(Parser):
@@ -1466,7 +1472,6 @@ class OprofileParser(LineParser):
 
 
 class SysprofParser(XmlParser):
-
     def __init__(self, stream):
         XmlParser.__init__(self, stream)
 
@@ -1690,6 +1695,7 @@ class XPerfParser(Parser):
 
     def parse(self):
         import csv
+
         reader = csv.reader(
             self.stream,
             delimiter=',',
@@ -1870,7 +1876,6 @@ class SleepyParser(Parser):
 
 
 class AQtimeTable:
-
     def __init__(self, name, fields):
         self.name = name
 
@@ -1897,7 +1902,6 @@ class AQtimeTable:
 
 
 class AQtimeParser(XmlParser):
-
     def __init__(self, stream):
         XmlParser.__init__(self, stream)
         self.tables = {}
@@ -2040,11 +2044,13 @@ class PstatsParser:
 
     def __init__(self, *filename):
         import pstats
+
         try:
             self.stats = pstats.Stats(*filename)
         except ValueError, e:
             sys.stderr.write("ERROR: {0}".format(e))
             import hotshot.stats
+
             self.stats = hotshot.stats.load(filename[0])
         self.profile = Profile()
         self.function_ids = {}
@@ -2110,18 +2116,17 @@ class PstatsParser:
 
 
 class Theme:
-
     def __init__(self,
-            bgcolor=(0.0, 0.0, 1.0),
-            mincolor=(0.0, 0.0, 0.0),
-            maxcolor=(0.0, 0.0, 1.0),
-            fontname="Arial",
-            minfontsize=10.0,
-            maxfontsize=10.0,
-            minpenwidth=0.5,
-            maxpenwidth=4.0,
-            gamma=2.2,
-            skew=1.0):
+                 bgcolor=(0.0, 0.0, 1.0),
+                 mincolor=(0.0, 0.0, 0.0),
+                 maxcolor=(0.0, 0.0, 1.0),
+                 fontname="Arial",
+                 minfontsize=10.0,
+                 maxfontsize=10.0,
+                 minpenwidth=0.5,
+                 maxpenwidth=4.0,
+                 gamma=2.2,
+                 skew=1.0):
         self.bgcolor = bgcolor
         self.mincolor = mincolor
         self.maxcolor = maxcolor
@@ -2227,6 +2232,7 @@ class Theme:
         else:
             return m1
 
+
 TEMPERATURE_COLORMAP = Theme(
     mincolor=(2.0 / 3.0, 0.80, 0.25),  # dark blue
     maxcolor=(0.0, 1.0, 0.5),  # satured red
@@ -2294,10 +2300,10 @@ class DotWriter:
 
             label = '\n'.join(labels)
             self.node(function.id,
-                label=label,
-                color=self.color(theme.node_bgcolor(weight)),
-                fontcolor=self.color(theme.node_fgcolor(weight)),
-                fontsize="%.2f" % theme.node_fontsize(weight),
+                      label=label,
+                      color=self.color(theme.node_bgcolor(weight)),
+                      fontcolor=self.color(theme.node_fgcolor(weight)),
+                      fontsize="%.2f" % theme.node_fontsize(weight),
             )
 
             for call in function.calls.itervalues():
@@ -2319,13 +2325,13 @@ class DotWriter:
                 label = '\n'.join(labels)
 
                 self.edge(function.id, call.callee_id,
-                    label=label,
-                    color=self.color(theme.edge_color(weight)),
-                    fontcolor=self.color(theme.edge_color(weight)),
-                    fontsize="%.2f" % theme.edge_fontsize(weight),
-                    penwidth="%.2f" % theme.edge_penwidth(weight),
-                    labeldistance="%.2f" % theme.edge_penwidth(weight),
-                    arrowsize="%.2f" % theme.edge_arrowsize(weight),
+                          label=label,
+                          color=self.color(theme.edge_color(weight)),
+                          fontcolor=self.color(theme.edge_color(weight)),
+                          fontsize="%.2f" % theme.edge_fontsize(weight),
+                          penwidth="%.2f" % theme.edge_penwidth(weight),
+                          labeldistance="%.2f" % theme.edge_penwidth(weight),
+                          arrowsize="%.2f" % theme.edge_arrowsize(weight),
                 )
 
         self.end_graph()
@@ -2410,10 +2416,10 @@ class Main:
     """Main program."""
 
     themes = {
-            "color": TEMPERATURE_COLORMAP,
-            "pink": PINK_COLORMAP,
-            "gray": GRAY_COLORMAP,
-            "bw": BW_COLORMAP,
+        "color": TEMPERATURE_COLORMAP,
+        "pink": PINK_COLORMAP,
+        "gray": GRAY_COLORMAP,
+        "bw": BW_COLORMAP,
     }
 
     def main(self):
@@ -2436,7 +2442,8 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'callgrind', 'oprofile', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
+            type="choice",
+            choices=('prof', 'callgrind', 'oprofile', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
             help="profile format: prof, callgrind, oprofile, sysprof, shark, sleepy, aqtime, pstats, or xperf [default: %default]")
         parser.add_option(
@@ -2598,6 +2605,7 @@ class Main:
             function.name = self.compress_function_name(function.name)
 
         dot.graph(profile, self.theme)
+
 
 if __name__ == '__main__':
     Main().main()

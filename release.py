@@ -2,6 +2,7 @@ import os.path
 import subprocess
 import directories
 
+
 def get_version():
     """
     Loads the build version from the bundled version file, if available.
@@ -18,6 +19,7 @@ def get_version():
 
     return v
 
+
 def get_commit():
     """
     Loads the git commit ID from the bundled version file, if available.
@@ -33,6 +35,7 @@ def get_commit():
     fin.close()
 
     return v
+
 
 release = get_version()
 commit = get_commit()

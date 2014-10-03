@@ -15,34 +15,35 @@ from pymclevel import TileEntity
 displayName = "Create Spawners"
 
 inputs = (
-	("Include position data", False),
+("Include position data", False),
 )
 
+
 def perform(level, box, options):
-	includePos = options["Include position data"]
-	entitiesToRemove = []
+    includePos = options["Include position data"]
+    entitiesToRemove = []
 
-	for (chunk, slices, point) in level.getChunkSlices(box):
-	
-		for entity in chunk.Entities:
-			x = int(entity["Pos"][0].value)
-			y = int(entity["Pos"][1].value)
-			z = int(entity["Pos"][2].value)
-			
-			if x >= box.minx and x < box.maxx and y >= box.miny and y < box.maxy and z >= box.minz and z < box.maxz:
-				entitiesToRemove.append((chunk, entity))
+    for (chunk, slices, point) in level.getChunkSlices(box):
 
-				level.setBlockAt(x, y, z, 52)
+        for entity in chunk.Entities:
+            x = int(entity["Pos"][0].value)
+            y = int(entity["Pos"][1].value)
+            z = int(entity["Pos"][2].value)
 
-				spawner = TileEntity.Create("MobSpawner")
-				TileEntity.setpos(spawner, (x, y, z))
-				spawner["Delay"] = TAG_Short(120)
-				spawner["SpawnData"] = entity
-				if not includePos:
-					del spawner["SpawnData"]["Pos"]
-				spawner["EntityId"] = entity["id"]
-				
-				chunk.TileEntities.append(spawner)
-		
-	for (chunk, entity) in entitiesToRemove:
-		chunk.Entities.remove(entity)
+            if x >= box.minx and x < box.maxx and y >= box.miny and y < box.maxy and z >= box.minz and z < box.maxz:
+                entitiesToRemove.append((chunk, entity))
+
+                level.setBlockAt(x, y, z, 52)
+
+                spawner = TileEntity.Create("MobSpawner")
+                TileEntity.setpos(spawner, (x, y, z))
+                spawner["Delay"] = TAG_Short(120)
+                spawner["SpawnData"] = entity
+                if not includePos:
+                    del spawner["SpawnData"]["Pos"]
+                spawner["EntityId"] = entity["id"]
+
+                chunk.TileEntities.append(spawner)
+
+    for (chunk, entity) in entitiesToRemove:
+        chunk.Entities.remove(entity)

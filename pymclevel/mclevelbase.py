@@ -12,6 +12,7 @@ import json
 
 log = getLogger(__name__)
 
+
 @contextmanager
 def notclosing(f):
     yield f
@@ -42,17 +43,20 @@ def exhaust(_iter):
         pass
     return i
 
+
 def win32_appdata():
     # try to use win32 api to get the AppData folder since python doesn't populate os.environ with unicode strings.
 
     try:
         import win32com.client
+
         objShell = win32com.client.Dispatch("WScript.Shell")
         return objShell.SpecialFolders("AppData")
     except Exception, e:
         print "Error while getting AppData folder using WScript.Shell.SpecialFolders: {0!r}".format(e)
         try:
             from win32com.shell import shell, shellcon
+
             return shell.SHGetPathFromIDListEx(
                 shell.SHGetSpecialFolderLocation(0, shellcon.CSIDL_APPDATA)
             )
@@ -60,6 +64,7 @@ def win32_appdata():
             print "Error while getting AppData folder using SHGetSpecialFolderLocation: {0!r}".format(e)
 
             return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
+
 
 def getAppDataDirectory():
     if sys.platform == "win32":
@@ -69,17 +74,20 @@ def getAppDataDirectory():
     else:
         return os.path.expanduser(u"~")
 
+
 def getMinecraftLauncherDirectory():
     if sys.platform == "darwin":
         return os.path.join(getAppDataDirectory(), u"minecraft")
     else:
         return os.path.join(getAppDataDirectory(), u".minecraft")
 
+
 def getPYMCAppDataDirectory():
     if sys.platform == "win32" or "darwin":
         return os.path.join(getAppDataDirectory(), u"pymclevel")
     else:
         return os.path.join(getAppDataDirectory(), u".pymclevel")
+
 
 def getMinecraftProfileJSON():
     if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
@@ -90,12 +98,15 @@ def getMinecraftProfileJSON():
         except:
             return None
 
+
 def getMinecraftProfileDirectory(profileName):
     try:
-        profileDir = getMinecraftProfileJSON()['profiles'][profileName]['gameDir'] # profileDir update to correct location.
+        profileDir = getMinecraftProfileJSON()['profiles'][profileName][
+            'gameDir']  # profileDir update to correct location.
         return profileDir
     except:
         return os.path.join(getMinecraftLauncherDirectory())
+
 
 def getSelectedProfile():
     try:
@@ -103,5 +114,6 @@ def getSelectedProfile():
         return selectedProfile
     except:
         return None
+
 
 saveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), u"saves")

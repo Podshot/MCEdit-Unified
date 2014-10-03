@@ -14,7 +14,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import collections
 import os
 import traceback
-from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped, TextField
+from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, \
+    TextFieldWrapped, TextField
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel
@@ -40,21 +41,23 @@ def alertFilterException(func):
 
     return _func
 
+
 def addNumField(page, optionName, val, min=None, max=None):
-        if isinstance(val, float):
-            ftype = FloatField
-        else:
-            ftype = IntField
+    if isinstance(val, float):
+        ftype = FloatField
+    else:
+        ftype = IntField
 
-        if min == max:
-            min = None
-            max = None
+    if min == max:
+        min = None
+        max = None
 
-        field = ftype(value=val, width=100, min=min, max=max)
-        page.optionDict[optionName] = AttrRef(field, 'value')
+    field = ftype(value=val, width=100, min=min, max=max)
+    page.optionDict[optionName] = AttrRef(field, 'value')
 
-        row = Row([Label(optionName), field])
-        return row
+    row = Row([Label(optionName), field])
+    return row
+
 
 class FilterModuleOptions(Widget):
     is_gl_container = True
@@ -67,7 +70,7 @@ class FilterModuleOptions(Widget):
         self.pages = pages
         self.optionDict = {}
         pageTabContents = []
-        
+
         self.giveEditorObject(module)
         print "Creating options for ", module
         if hasattr(module, "inputs"):
@@ -87,7 +90,7 @@ class FilterModuleOptions(Widget):
         self.add(pages)
         self.shrink_wrap()
         if len(pages.pages):
-            if(pages.current_page != None):
+            if (pages.current_page != None):
                 pages.show_page(pages.current_page)
             else:
                 pages.show_page(pages.pages[0])
@@ -188,18 +191,18 @@ class FilterModuleOptions(Widget):
                 rows.append(row)
             elif optionType == "label":
                 rows.append(wrapped_label(optionName, 50))
-                
+
             elif optionType == "string":
-                input = None #not sure how to pull values from filters, but leaves it open for the future. Use this variable to set field width.
+                input = None  # not sure how to pull values from filters, but leaves it open for the future. Use this variable to set field width.
                 if input != None:
                     size = input
                 else:
                     size = 200
                 field = TextField(value="")
-                row = TextInputRow(optionName, ref=AttrRef(field, 'value'), width = size)
+                row = TextInputRow(optionName, ref=AttrRef(field, 'value'), width=size)
                 page.optionDict[optionName] = AttrRef(field, 'value')
                 rows.append(row)
-                
+
             elif optionType == "title":
                 title = optionName
 
@@ -217,7 +220,7 @@ class FilterModuleOptions(Widget):
 
             cols.append(Column(rows[:i]))
             rows = rows[i:]
-        #cols.append(Column(rows))
+        # cols.append(Column(rows))
 
         if len(rows):
             cols.append(Column(rows))
@@ -359,7 +362,7 @@ class FilterTool(EditorTool):
 
         self.reloadFilters()
 
-        #self.panel = FilterToolPanel(self)
+        # self.panel = FilterToolPanel(self)
         self.panel.reload()
 
         self.panel.left = self.editor.left
@@ -386,7 +389,7 @@ class FilterTool(EditorTool):
         totalFilters = 0
         updatedFilters = 0
         try:
-            os.mkdir(mcplatform.filtersDir+"/updates")
+            os.mkdir(mcplatform.filtersDir + "/updates")
         except OSError:
             pass
         for module in self.filterModules.values():
@@ -395,13 +398,14 @@ class FilterTool(EditorTool):
                 if isinstance(module.UPDATE_URL, (str, unicode)) and isinstance(module.VERSION, (str, unicode)):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
-                        urllib.urlretrieve(versionJSON["Download-URL"], mcplatform.filtersDir+"/updates/"+versionJSON["Name"])
+                        urllib.urlretrieve(versionJSON["Download-URL"],
+                                           mcplatform.filtersDir + "/updates/" + versionJSON["Name"])
                         updatedFilters = updatedFilters + 1
-        for f in os.listdir(mcplatform.filtersDir+"/updates"):
-            shutil.copy(mcplatform.filtersDir+"/updates/"+f, mcplatform.filtersDir)
-        shutil.rmtree(mcplatform.filtersDir+"/updates/")
+        for f in os.listdir(mcplatform.filtersDir + "/updates"):
+            shutil.copy(mcplatform.filtersDir + "/updates/" + f, mcplatform.filtersDir)
+        shutil.rmtree(mcplatform.filtersDir + "/updates/")
         self.finishedUpdatingWidget = Widget()
-        lbl = Label("Updated "+str(updatedFilters)+" filter(s) out of "+str(totalFilters))
+        lbl = Label("Updated " + str(updatedFilters) + " filter(s) out of " + str(totalFilters))
         closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
         col = Column((lbl, closeBTN))
         self.finishedUpdatingWidget.bg_color = (0.0, 0.0, 0.6)
@@ -434,7 +438,9 @@ class FilterTool(EditorTool):
                 reload(m)
             except Exception, e:
                 print traceback.format_exc()
-                alert(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}".format(m.__file__, e))
+                alert(
+                    u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}".format(
+                        m.__file__, e))
 
     @property
     def filterNames(self):
@@ -449,7 +455,8 @@ class FilterTool(EditorTool):
         with setWindowCaption("APPLYING FILTER - "):
             filterModule = self.filterModules[self.panel.filterSelect.selectedChoice]
 
-            op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), filterModule, self.panel.filterOptionsPanel.options)
+            op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), filterModule,
+                                 self.panel.filterOptionsPanel.options)
 
             self.editor.level.showProgress = showProgress
 

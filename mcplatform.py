@@ -28,6 +28,7 @@ enc = sys.getfilesystemencoding()
 
 if sys.platform == "win32":
     import platform
+
     if platform.architecture()[0] == "32bit":
         plat = "win32"
     if platform.architecture()[0] == "64bit":
@@ -54,7 +55,7 @@ def getTexturePacks():
         return []
 
 # for k,v in os.environ.iteritems():
-#    try:
+# try:
 #        os.environ[k] = v.decode(sys.getfilesystemencoding())
 #    except:
 #        continue
@@ -96,12 +97,14 @@ def Lion():
     try:
         import distutils.version
         import platform
+
         lionver = distutils.version.StrictVersion('10.7')
         curver = distutils.version.StrictVersion(platform.release())
         return curver >= lionver
     except Exception, e:
         print "Error getting system version: ", repr(e)
         return False
+
 
 lastSchematicsDir = None
 lastSaveDir = None
@@ -158,11 +161,11 @@ def askOpenFileWin32(title, schematics, initialDir):
     try:
         # if schematics:
         f = ('Levels and Schematics\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv\0' +
-              '*.*\0*.*\0\0')
+             '*.*\0*.*\0\0')
         #        else:
-#            f = ('Levels (*.mclevel, *.dat;*.mine;*.mine.gz;)\0' +
-#                 '*.mclevel;*.dat;*.mine;*.mine.gz;*.zip;*.lvl\0' +
-#                 '*.*\0*.*\0\0')
+        #            f = ('Levels (*.mclevel, *.dat;*.mine;*.mine.gz;)\0' +
+        #                 '*.mclevel;*.dat;*.mine;*.mine.gz;*.zip;*.lvl\0' +
+        #                 '*.*\0*.*\0\0')
 
         (filename, customfilter, flags) = win32gui.GetOpenFileNameW(
             hwndOwner=display.get_wm_info()['window'],
@@ -172,10 +175,10 @@ def askOpenFileWin32(title, schematics, initialDir):
                    | win32con.OFN_FILEMUSTEXIST
                    | win32con.OFN_LONGNAMES
                    # |win32con.OFN_EXTENSIONDIFFERENT
-                   ),
+            ),
             Title=title,
             Filter=f,
-            )
+        )
     except Exception, e:
         print "Open File: ", e
         pass
@@ -185,11 +188,11 @@ def askOpenFileWin32(title, schematics, initialDir):
 
 def askSaveSchematic(initialDir, displayName, fileFormat):
     return askSaveFile(initialDir,
-                title='Save this schematic...',
-                defaultName=displayName + "." + fileFormat,
-                filetype='Minecraft Schematics (*.{0})\0*.{0}\0\0'.format(fileFormat),
-                suffix=fileFormat,
-                )
+                       title='Save this schematic...',
+                       defaultName=displayName + "." + fileFormat,
+                       filetype='Minecraft Schematics (*.{0})\0*.{0}\0\0'.format(fileFormat),
+                       suffix=fileFormat,
+    )
 
 
 def askCreateWorld(initialDir):
@@ -200,11 +203,11 @@ def askCreateWorld(initialDir):
         name = defaultName + " " + str(i)
 
     return askSaveFile(initialDir,
-                title='Name this new world.',
-                defaultName=name,
-                filetype='Minecraft World\0*.*\0\0',
-                suffix="",
-                )
+                       title='Name this new world.',
+                       defaultName=name,
+                       filetype='Minecraft World\0*.*\0\0',
+                       suffix="",
+    )
 
 
 def askSaveFile(initialDir, title, defaultName, filetype, suffix):
@@ -218,7 +221,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                 DefExt=suffix,
                 Title=title,
                 Filter=filetype,
-                )
+            )
         except Exception, e:
             print "Error getting file name: ", e
             return
@@ -249,6 +252,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                                         pathname=None)
 
     return filename
+
 
 #
 #    if sys.platform == "win32":
@@ -332,6 +336,7 @@ def platform_open(path):
     except Exception, e:
         print "platform_open failed on {0}: {1}".format(sys.platform, e)
 
+
 win32_window_size = True
 
 ini = u"mcedit.ini"
@@ -404,10 +409,13 @@ def goFixed():
 
 def portableConfigExists():
     return (os.path.exists(portableConfigFilePath)  # mcedit.ini in MCEdit folder
-        or (sys.platform != 'darwin' and not os.path.exists(fixedConfigFilePath)))  # no mcedit.ini in Documents folder (except on OS X when we always want it in Library/Preferences
+            or (sys.platform != 'darwin' and not os.path.exists(
+        fixedConfigFilePath)))  # no mcedit.ini in Documents folder (except on OS X when we always want it in Library/Preferences
+
 
 if portableConfigExists():
-    print "Running in portable mode. MCEdit-schematics and mcedit.ini are stored alongside " + (sys.platform == "darwin" and "the MCEdit app bundle" or "MCEditData")
+    print "Running in portable mode. MCEdit-schematics and mcedit.ini are stored alongside " + (
+    sys.platform == "darwin" and "the MCEdit app bundle" or "MCEditData")
     portable = True
     schematicsDir = portableSchematicsDir
     configFilePath = portableConfigFilePath
@@ -423,7 +431,6 @@ if filtersDir not in [s.decode(sys.getfilesystemencoding())
                       if isinstance(s, str)
                       else s
                       for s in sys.path]:
-
     sys.path.append(filtersDir.encode(sys.getfilesystemencoding()))
 
 if portable:

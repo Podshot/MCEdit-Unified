@@ -1,6 +1,6 @@
 def perform(level, box, options):
     groups = RedstoneGroups(level)
-    
+
     for x in xrange(box.minx, box.maxx):
         for y in xrange(box.miny, box.maxy):
             for z in xrange(box.minz, box.maxz):
@@ -8,9 +8,12 @@ def perform(level, box, options):
 
     groups.changeBlocks()
 
-    
 
-TransparentBlocks = [0, 6, 8, 9, 10, 11, 18, 20, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38, 39, 40, 44, 46, 50, 51, 52, 53, 54, 55, 59, 60, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 75, 76, 77, 78, 79, 81, 83, 85, 89, 90, 92, 93, 94, 95, 96, 97, 101, 102, 104, 105, 106, 107, 108, 109, 111, 113, 114, 115, 116, 117, 118, 119, 120, 122, 126, 127]
+TransparentBlocks = [0, 6, 8, 9, 10, 11, 18, 20, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38, 39, 40, 44, 46, 50, 51,
+                     52, 53, 54, 55, 59, 60, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 75, 76, 77, 78, 79, 81, 83, 85, 89,
+                     90, 92, 93, 94, 95, 96, 97, 101, 102, 104, 105, 106, 107, 108, 109, 111, 113, 114, 115, 116, 117,
+                     118, 119, 120, 122, 126, 127]
+
 
 class RedstoneGroups:
     group = {}
@@ -35,10 +38,10 @@ class RedstoneGroups:
     def testneighbors(self, (x, y, z)):
         for dy in xrange(-1, 2, 1):
             if y + dy >= 0 and y + dy <= 255:
-                self.testneighbor((x, y, z), (x-1, y+dy, z))
-                self.testneighbor((x, y, z), (x+1, y+dy, z))
-                self.testneighbor((x, y, z), (x, y+dy, z-1))
-                self.testneighbor((x, y, z), (x, y+dy, z+1))
+                self.testneighbor((x, y, z), (x - 1, y + dy, z))
+                self.testneighbor((x, y, z), (x + 1, y + dy, z))
+                self.testneighbor((x, y, z), (x, y + dy, z - 1))
+                self.testneighbor((x, y, z), (x, y + dy, z + 1))
 
     def testneighbor(self, pos1, pos2):
         if pos2 in self.group:
@@ -100,7 +103,7 @@ class RedstoneGroups:
             return True
 
         return False
-    
+
 
     def connected(self, (x1, y1, z1), (x2, y2, z2)):
         blockid1 = self.level.blockAt(x1, y1, z1)
@@ -108,13 +111,13 @@ class RedstoneGroups:
 
         pos1 = (x1, y1, z1)
         pos2 = (x2, y2, z2)
-        
+
         if y1 == y2:
             if blockid1 == 55:
                 if blockid2 == 55:
                     return True
                 elif self.repeaterAlignedWith(pos2, pos1):
-                    return True                    
+                    return True
             elif self.repeaterAlignedWith(pos1, pos2) and blockid2 == 55:
                 return True
             elif self.repeaterPointingTowards(pos1, pos2) and self.repeaterPointingAway(pos2, pos1):
@@ -122,8 +125,8 @@ class RedstoneGroups:
             elif self.repeaterPointingAway(pos1, pos2) and self.repeaterPointingTowards(pos2, pos1):
                 return True
         elif y2 == y1 - 1:
-            aboveid = self.level.blockAt(x2, y2+1, z2)
-            
+            aboveid = self.level.blockAt(x2, y2 + 1, z2)
+
             if blockid1 == 55:
                 if blockid2 == 55 and TransparentBlocks.count(aboveid) == 1:
                     return True
@@ -142,9 +145,9 @@ class RedstoneGroups:
     def changeBlocks(self):
         for ((x, y, z), gr) in self.group.items():
             if y > 0:
-                blockid = self.level.blockAt(x, y-1, z)
+                blockid = self.level.blockAt(x, y - 1, z)
                 if self.SkipBlocks.count(blockid) == 1:
                     continue
-                self.level.setBlockAt(x, y-1, z, 35)
-                self.level.setBlockDataAt(x, y-1, z, gr % 16)
+                self.level.setBlockAt(x, y - 1, z, 35)
+                self.level.setBlockDataAt(x, y - 1, z, gr % 16)
                 self.level.getChunk(x / 16, z / 16).dirty = True

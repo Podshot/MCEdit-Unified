@@ -19,6 +19,7 @@ import os.path
 
 log = getLogger(__name__)
 
+
 def computeChunkHeightMap(materials, blocks, HeightMap=None):
     """Computes the HeightMap array for a chunk, which stores the lowest
     y-coordinate of each column where the sunlight is still at full strength.
@@ -123,7 +124,7 @@ class MCLevel(object):
     Subclasses must also have Blocks, and optionally Data and BlockLight.
     """
 
-    ### common to Creative, Survival and Indev. these routines assume
+    # ## common to Creative, Survival and Indev. these routines assume
     ### self has Width, Height, Length, and Blocks
 
     materials = materials.classicMaterials
@@ -285,6 +286,7 @@ class MCLevel(object):
                     x -= box.minx
                     z -= box.minz
                     yield cPos, slices, (x, y, z)
+
             return getAllSlices()
         else:
             return getSlices(box, self.Height)
@@ -487,7 +489,6 @@ class EntityLevel(MCLevel):
         assert isinstance(tileEntityTag, nbt.TAG_Compound)
 
         def differentPosition(a):
-
             return not ((tileEntityTag is a) or TileEntity.pos(a) == TileEntity.pos(tileEntityTag))
 
         self.TileEntities.value[:] = filter(differentPosition, self.TileEntities)

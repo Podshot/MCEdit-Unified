@@ -1,5 +1,5 @@
 #
-#   Albow - Layout widgets
+# Albow - Layout widgets
 #
 
 from pygame import Rect
@@ -7,7 +7,6 @@ from widget import Widget
 
 
 class RowOrColumn(Widget):
-
     _is_gl_container = True
 
     def __init__(self, size, items, kwds):
@@ -62,11 +61,11 @@ class RowOrColumn(Widget):
             py = p[1] + sy
         self.shrink_wrap()
 
+
 #---------------------------------------------------------------------------
 
 
 class Row(RowOrColumn):
-
     d = (1, 0)
     axis = 'h'
     longways = 'width'
@@ -84,11 +83,11 @@ class Row(RowOrColumn):
         """
         RowOrColumn.__init__(self, width, items, kwds)
 
+
 #---------------------------------------------------------------------------
 
 
 class Column(RowOrColumn):
-
     d = (0, 1)
     axis = 'v'
     longways = 'height'
@@ -106,11 +105,11 @@ class Column(RowOrColumn):
         """
         RowOrColumn.__init__(self, height, items, kwds)
 
+
 #---------------------------------------------------------------------------
 
 
 class Grid(Widget):
-
     _is_gl_container = True
 
     def __init__(self, rows, row_spacing=10, column_spacing=10, **kwds):
@@ -141,6 +140,7 @@ class Grid(Widget):
         #print "...row_heights =", row_heights ###
         Widget.__init__(self, r, **kwds)
         self.add(rows)
+
 
 #---------------------------------------------------------------------------
 

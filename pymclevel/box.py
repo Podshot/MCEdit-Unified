@@ -4,8 +4,8 @@ import math
 
 _Vector = namedtuple("_Vector", ("x", "y", "z"))
 
-class Vector(_Vector):
 
+class Vector(_Vector):
     __slots__ = ()
 
     def __add__(self, other):
@@ -39,7 +39,8 @@ class Vector(_Vector):
     def intfloor(self):
         return Vector(*[int(math.floor(p)) for p in self])
 
-class BoundingBox (object):
+
+class BoundingBox(object):
     type = int
 
     def __init__(self, origin=(0, 0, 0), size=(0, 0, 0)):
@@ -126,9 +127,9 @@ class BoundingBox (object):
          if there is no common area.
         """
         if (self.minx > box.maxx or self.maxx < box.minx or
-            self.miny > box.maxy or self.maxy < box.miny or
-            self.minz > box.maxz or self.maxz < box.minz):
-            #Zero size intersection.
+                    self.miny > box.maxy or self.maxy < box.miny or
+                    self.minz > box.maxz or self.maxz < box.minz):
+            # Zero size intersection.
             return BoundingBox()
 
         origin = Vector(
@@ -142,7 +143,7 @@ class BoundingBox (object):
             min(self.maxz, box.maxz),
         )
 
-        #print "Intersect of {0} and {1}: {2}".format(self, box, newbox)
+        # print "Intersect of {0} and {1}: {2}".format(self, box, newbox)
         return BoundingBox(origin, maximum - origin)
 
     def union(self, box):
@@ -221,7 +222,7 @@ class BoundingBox (object):
 
     @property
     def chunkPositions(self):
-        #iterate through all of the chunk positions within this selection box
+        # iterate through all of the chunk positions within this selection box
         return itertools.product(xrange(self.mincx, self.maxcx), xrange(self.mincz, self.maxcz))
 
     @property
@@ -232,5 +233,6 @@ class BoundingBox (object):
     def isChunkAligned(self):
         return (self.origin.x & 0xf == 0) and (self.origin.z & 0xf == 0)
 
-class FloatBox (BoundingBox):
+
+class FloatBox(BoundingBox):
     type = float

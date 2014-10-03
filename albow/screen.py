@@ -1,5 +1,5 @@
 #
-#   Albow - Screen
+# Albow - Screen
 #
 
 from widget import Widget
@@ -8,7 +8,6 @@ from widget import Widget
 
 
 class Screen(Widget):
-
     def __init__(self, shell, **kwds):
         Widget.__init__(self, shell.rect, **kwds)
         self.shell = shell

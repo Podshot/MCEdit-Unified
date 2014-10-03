@@ -27,11 +27,12 @@ def perform(level, box, options):
 
         heightmap = extractHeights(terrainBlocks)
 
-        #terrainBlocks |= schema.Blocks == 0
+        # terrainBlocks |= schema.Blocks == 0
         nonTerrainBlocks = ~terrainBlocks
         nonTerrainBlocks &= schema.Blocks != 0
 
-        newHeightmap = (heightmap[1:-1, 1:-1] + (heightmap[0:-2, 1:-1] + heightmap[2:, 1:-1] + heightmap[1:-1, 0:-2] + heightmap[1:-1, 2:]) * 0.7) / 3.8
+        newHeightmap = (heightmap[1:-1, 1:-1] + (
+        heightmap[0:-2, 1:-1] + heightmap[2:, 1:-1] + heightmap[1:-1, 0:-2] + heightmap[1:-1, 2:]) * 0.7) / 3.8
         #heightmap -= 0.5;
         newHeightmap += 0.5
         newHeightmap[newHeightmap < 0] = 0

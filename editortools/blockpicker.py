@@ -8,10 +8,12 @@ from pymclevel import materials
 
 from pymclevel.materials import Block
 
+
 def anySubtype(self):
     bl = Block(self.materials, self.ID, self.blockData)
     bl.wildcard = True
     return bl
+
 
 Block.anySubtype = anySubtype
 Block.wildcard = False  # True if
@@ -63,7 +65,8 @@ class BlockPicker(Dialog):
 
             return r
 
-        tableview = TableView(columns=[TableColumn(" ", 24, "l", lambda x: ""), TableColumn("(ID) Name [Aliases]", 376, "l", formatBlockName)])
+        tableview = TableView(columns=[TableColumn(" ", 24, "l", lambda x: ""),
+                                       TableColumn("(ID) Name [Aliases]", 376, "l", formatBlockName)])
         tableicons = [blockview.BlockView(materials) for i in range(tableview.rows.num_rows())]
         for t in tableicons:
             t.size = (16, 16)
@@ -113,8 +116,9 @@ class BlockPicker(Dialog):
         but.height = 30
 
         if self.allowWildcards:
-        # self.add(but)
-            anyRow = CheckBoxLabel("Any Subtype", ref=AttrRef(self, 'anySubtype'), tooltipText="Replace blocks with any data value. Only useful for Replace operations.")
+            # self.add(but)
+            anyRow = CheckBoxLabel("Any Subtype", ref=AttrRef(self, 'anySubtype'),
+                                   tooltipText="Replace blocks with any data value. Only useful for Replace operations.")
             col = Column((searchRow, tableWidget, anyRow, blockView, but))
         else:
             col = Column((searchRow, tableWidget, blockView, but))

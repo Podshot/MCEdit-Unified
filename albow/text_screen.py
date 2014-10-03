@@ -1,5 +1,5 @@
 #
-#   Albow - Text Screen
+# Albow - Text Screen
 #
 
 from pygame import Rect
@@ -14,7 +14,6 @@ from controls import Button
 
 
 class Page(object):
-
     def __init__(self, text_screen, heading, lines):
         self.text_screen = text_screen
         self.heading = heading
@@ -38,14 +37,14 @@ class Page(object):
             surface.blit(buf, (x, y))
             y += buf.get_rect().height
 
+
 #------------------------------------------------------------------------------
 
 
 class TextScreen(Screen):
-
-#    bg_color = (0, 0, 0)
-#    fg_color = (255, 255, 255)
-#    border = 20
+    #    bg_color = (0, 0, 0)
+    #    fg_color = (255, 255, 255)
+    #    border = 20
 
     heading_font = FontProperty('heading_font')
     button_font = FontProperty('button_font')

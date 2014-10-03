@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 #
 # Copyright (C) 2012 Space Monkey, Inc.
 #
@@ -33,7 +33,6 @@ import unittest
 
 
 class LevelDBTestCasesMixIn(object):
-
     db_class = None
 
     def setUp(self):
@@ -53,9 +52,9 @@ class LevelDBTestCasesMixIn(object):
         self.assertEqual(db.get("key1", fill_cache=False), "val1")
         self.assertEqual(db.get("key2", fill_cache=False), "val2")
         self.assertEqual(db.get("key1", verify_checksums=True,
-                fill_cache=False), "val1")
+                                fill_cache=False), "val1")
         self.assertEqual(db.get("key2", verify_checksums=True,
-                fill_cache=False), "val2")
+                                fill_cache=False), "val2")
         self.assertEqual(db.get("key1"), "val1")
         self.assertEqual(db.get("key2"), "val2")
         self.assertEqual(list(db.keys()), ["key1", "key2"])
@@ -99,23 +98,23 @@ class LevelDBTestCasesMixIn(object):
             db.put(key, str(val))
 
         self.assertEquals([row.key for row in db.range("bbbb", "bbcb")],
-            ['bbbba', 'bbbbb', 'bbbbc', 'bbbbd', 'bbbbe', 'bbbca', 'bbbcb',
-             'bbbcc', 'bbbcd', 'bbbce', 'bbbda', 'bbbdb', 'bbbdc', 'bbbdd',
-             'bbbde', 'bbbea', 'bbbeb', 'bbbec', 'bbbed', 'bbbee', 'bbcaa',
-             'bbcab', 'bbcac', 'bbcad', 'bbcae'])
+                          ['bbbba', 'bbbbb', 'bbbbc', 'bbbbd', 'bbbbe', 'bbbca', 'bbbcb',
+                           'bbbcc', 'bbbcd', 'bbbce', 'bbbda', 'bbbdb', 'bbbdc', 'bbbdd',
+                           'bbbde', 'bbbea', 'bbbeb', 'bbbec', 'bbbed', 'bbbee', 'bbcaa',
+                           'bbcab', 'bbcac', 'bbcad', 'bbcae'])
         self.assertEquals([row.key for row in db.range("bbbbb", "bbcbb")],
-            ['bbbbb', 'bbbbc', 'bbbbd', 'bbbbe', 'bbbca', 'bbbcb', 'bbbcc',
-             'bbbcd', 'bbbce', 'bbbda', 'bbbdb', 'bbbdc', 'bbbdd', 'bbbde',
-             'bbbea', 'bbbeb', 'bbbec', 'bbbed', 'bbbee', 'bbcaa', 'bbcab',
-             'bbcac', 'bbcad', 'bbcae', 'bbcba'])
+                          ['bbbbb', 'bbbbc', 'bbbbd', 'bbbbe', 'bbbca', 'bbbcb', 'bbbcc',
+                           'bbbcd', 'bbbce', 'bbbda', 'bbbdb', 'bbbdc', 'bbbdd', 'bbbde',
+                           'bbbea', 'bbbeb', 'bbbec', 'bbbed', 'bbbee', 'bbcaa', 'bbcab',
+                           'bbcac', 'bbcad', 'bbcae', 'bbcba'])
         self.assertEquals([r.key for r in db.scope("dd").range("bb", "cb")],
-            ['bba', 'bbb', 'bbc', 'bbd', 'bbe', 'bca', 'bcb', 'bcc', 'bcd',
-             'bce', 'bda', 'bdb', 'bdc', 'bdd', 'bde', 'bea', 'beb', 'bec',
-             'bed', 'bee', 'caa', 'cab', 'cac', 'cad', 'cae'])
+                          ['bba', 'bbb', 'bbc', 'bbd', 'bbe', 'bca', 'bcb', 'bcc', 'bcd',
+                           'bce', 'bda', 'bdb', 'bdc', 'bdd', 'bde', 'bea', 'beb', 'bec',
+                           'bed', 'bee', 'caa', 'cab', 'cac', 'cad', 'cae'])
         self.assertEquals([r.key for r in db.scope("dd").range("bbb", "cbb")],
-            ['bbb', 'bbc', 'bbd', 'bbe', 'bca', 'bcb', 'bcc', 'bcd', 'bce',
-             'bda', 'bdb', 'bdc', 'bdd', 'bde', 'bea', 'beb', 'bec', 'bed',
-             'bee', 'caa', 'cab', 'cac', 'cad', 'cae', 'cba'])
+                          ['bbb', 'bbc', 'bbd', 'bbe', 'bca', 'bcb', 'bcc', 'bcd', 'bce',
+                           'bda', 'bdb', 'bdc', 'bdd', 'bde', 'bea', 'beb', 'bec', 'bed',
+                           'bee', 'caa', 'cab', 'cac', 'cad', 'cae', 'cba'])
 
     def testRangeOptionalEndpoints(self):
         db = self.db_class(self.db_path, create_if_missing=True)
@@ -126,67 +125,67 @@ class LevelDBTestCasesMixIn(object):
         db.put("ee", "5")
 
         self.assertEquals([r.key for r in db.iterator().seek("d").range()],
-                ["aa", "bb", "cc", "dd", "ee"])
+                          ["aa", "bb", "cc", "dd", "ee"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb")], ["bb", "cc", "dd", "ee"])
+            start_key="bb")], ["bb", "cc", "dd", "ee"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                end_key="cc")], ["aa", "bb"])
+            end_key="cc")], ["aa", "bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb", end_key="cc")], ["bb"])
+            start_key="bb", end_key="cc")], ["bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b")], ["bb", "cc", "dd", "ee"])
+            start_key="b")], ["bb", "cc", "dd", "ee"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                end_key="c")], ["aa", "bb"])
+            end_key="c")], ["aa", "bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b", end_key="c")], ["bb"])
+            start_key="b", end_key="c")], ["bb"])
 
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb", start_inclusive=True)],
-                ["bb", "cc", "dd", "ee"])
+            start_key="bb", start_inclusive=True)],
+                          ["bb", "cc", "dd", "ee"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb", start_inclusive=False)],
-                ["cc", "dd", "ee"])
+            start_key="bb", start_inclusive=False)],
+                          ["cc", "dd", "ee"])
 
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                end_key="cc", end_inclusive=True)], ["aa", "bb", "cc"])
+            end_key="cc", end_inclusive=True)], ["aa", "bb", "cc"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                end_key="cc", end_inclusive=False)], ["aa", "bb"])
+            end_key="cc", end_inclusive=False)], ["aa", "bb"])
 
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb", end_key="cc", start_inclusive=True,
-                end_inclusive=True)], ["bb", "cc"])
+            start_key="bb", end_key="cc", start_inclusive=True,
+            end_inclusive=True)], ["bb", "cc"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb", end_key="cc", start_inclusive=True,
-                end_inclusive=False)], ["bb"])
+            start_key="bb", end_key="cc", start_inclusive=True,
+            end_inclusive=False)], ["bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb", end_key="cc", start_inclusive=False,
-                end_inclusive=True)], ["cc"])
+            start_key="bb", end_key="cc", start_inclusive=False,
+            end_inclusive=True)], ["cc"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="bb", end_key="cc", start_inclusive=False,
-                end_inclusive=False)], [])
+            start_key="bb", end_key="cc", start_inclusive=False,
+            end_inclusive=False)], [])
 
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b", start_inclusive=True)],
-                ["bb", "cc", "dd", "ee"])
+            start_key="b", start_inclusive=True)],
+                          ["bb", "cc", "dd", "ee"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b", start_inclusive=False)],
-                ["bb", "cc", "dd", "ee"])
+            start_key="b", start_inclusive=False)],
+                          ["bb", "cc", "dd", "ee"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                end_key="c", end_inclusive=True)], ["aa", "bb"])
+            end_key="c", end_inclusive=True)], ["aa", "bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                end_key="c", end_inclusive=False)], ["aa", "bb"])
+            end_key="c", end_inclusive=False)], ["aa", "bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b", end_key="c", start_inclusive=True,
-                end_inclusive=True)], ["bb"])
+            start_key="b", end_key="c", start_inclusive=True,
+            end_inclusive=True)], ["bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b", end_key="c", start_inclusive=False,
-                end_inclusive=True)], ["bb"])
+            start_key="b", end_key="c", start_inclusive=False,
+            end_inclusive=True)], ["bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b", end_key="c", start_inclusive=True,
-                end_inclusive=False)], ["bb"])
+            start_key="b", end_key="c", start_inclusive=True,
+            end_inclusive=False)], ["bb"])
         self.assertEquals([r.key for r in db.iterator().seek("d").range(
-                start_key="b", end_key="c", start_inclusive=False,
-                end_inclusive=False)], ["bb"])
+            start_key="b", end_key="c", start_inclusive=False,
+            end_inclusive=False)], ["bb"])
 
     def testScopedDB(self, use_writebatch=False):
         db = self.db_class(self.db_path, create_if_missing=True)
@@ -218,7 +217,7 @@ class LevelDBTestCasesMixIn(object):
         self.assertEquals(list(db), db_data)
         self.assertEquals(list(scoped_db_1), [("3", "4")])
         scoped_db_2_data = [("5", "6"), ("a_13", "14"), ("a_7", "8"),
-                ("b_9", "10")]
+                            ("b_9", "10")]
         self.assertEquals(list(scoped_db_2), scoped_db_2_data)
         self.assertEquals(list(scoped_db_2a), [("13", "14"), ("7", "8")])
         self.assertEquals(list(scoped_db_2b), [("9", "10")])
@@ -374,7 +373,6 @@ class LevelDBTestCasesMixIn(object):
 
 
 class LevelDBTestCases(LevelDBTestCasesMixIn, unittest.TestCase):
-
     db_class = staticmethod(leveldb.DB)
 
     def testInit(self):
@@ -383,7 +381,7 @@ class LevelDBTestCases(LevelDBTestCasesMixIn, unittest.TestCase):
         self.db_class(self.db_path, create_if_missing=True).close()
         self.db_class(self.db_path).close()
         self.assertRaises(leveldb.Error, self.db_class, self.db_path,
-                create_if_missing=True, error_if_exists=True)
+                          create_if_missing=True, error_if_exists=True)
 
     def testPutSync(self, size=100):
         db = self.db_class(self.db_path, create_if_missing=True)
@@ -481,12 +479,10 @@ class LevelDBTestCases(LevelDBTestCasesMixIn, unittest.TestCase):
 
 
 class MemLevelDBTestCases(LevelDBTestCasesMixIn, unittest.TestCase):
-
     db_class = staticmethod(leveldb.MemoryDB)
 
 
 class LevelDBIteratorTestMixIn(object):
-
     db_class = None
 
     def setUp(self):
@@ -617,7 +613,7 @@ class LevelDBIteratorTestMixIn(object):
 
     def test_scoped_seek_first(self):
         db = self.db_class(os.path.join(self.db_path, "1"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("ba", "1")
         db.put("bb", "2")
         db.put("cc", "3")
@@ -641,7 +637,7 @@ class LevelDBIteratorTestMixIn(object):
 
     def test_scoped_seek_last(self):
         db = self.db_class(os.path.join(self.db_path, "1"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("ba", "1")
         db.put("bb", "2")
         db.put("cc", "3")
@@ -663,7 +659,7 @@ class LevelDBIteratorTestMixIn(object):
         self.assertFalse(it.valid())
         db.close()
         db = self.db_class(os.path.join(self.db_path, "2"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("\xff\xff\xffab", "1")
         db.put("\xff\xff\xffcd", "2")
         it = db.scope("\xff\xff\xff").iterator().seekLast()
@@ -671,14 +667,14 @@ class LevelDBIteratorTestMixIn(object):
         self.assertEqual(it.key(), "cd")
         db.close()
         db = self.db_class(os.path.join(self.db_path, "3"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("\xff\xff\xfeab", "1")
         db.put("\xff\xff\xfecd", "2")
         it = db.scope("\xff\xff\xff").iterator().seekLast()
         self.assertFalse(it.valid())
         db.close()
         db = self.db_class(os.path.join(self.db_path, "4"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("\xff\xff\xfeab", "1")
         db.put("\xff\xff\xfecd", "2")
         it = db.scope("\xff\xff\xfe").iterator().seekLast()
@@ -686,7 +682,7 @@ class LevelDBIteratorTestMixIn(object):
         self.assertEqual(it.key(), "cd")
         db.close()
         db = self.db_class(os.path.join(self.db_path, "5"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("\xff\xff\xfeab", "1")
         db.put("\xff\xff\xfecd", "2")
         db.put("\xff\xff\xffef", "1")
@@ -696,7 +692,7 @@ class LevelDBIteratorTestMixIn(object):
         self.assertEqual(it.key(), "cd")
         db.close()
         db = self.db_class(os.path.join(self.db_path, "6"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("\x0f\xff\xfeab", "1")
         db.put("\x0f\xff\xfecd", "2")
         db.put("\x0f\xff\xffef", "1")
@@ -706,7 +702,7 @@ class LevelDBIteratorTestMixIn(object):
         self.assertEqual(it.key(), "cd")
         db.close()
         db = self.db_class(os.path.join(self.db_path, "7"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("\x10\xff", "1")
         db.put("\x11", "2")
         it = db.scope("\x10\xff").iterator().seekLast()
@@ -716,7 +712,7 @@ class LevelDBIteratorTestMixIn(object):
 
     def test_seek_last_with_leading_zero_prefix(self):
         db = self.db_class(os.path.join(self.db_path, "1"),
-                create_if_missing=True)
+                           create_if_missing=True)
         db.put("\x00\x00\x00", "1")
         db.put("\x00\x00\xff", "2")
         db.put("\x00\x01\x00", "3")
@@ -731,7 +727,7 @@ class LevelDBIteratorTestMixIn(object):
 
     def test_scoped_then_iterate(self):
         db = self.db_class(os.path.join(self.db_path, "1"),
-                create_if_missing=True)
+                           create_if_missing=True)
         for i in range(10):
             db.put("%dfoo" % i, "bar%d" % i)
         it = db.iterator(prefix="5").seekFirst()
@@ -746,13 +742,12 @@ class LevelDBIteratorTestMixIn(object):
 
 
 class LevelDBIteratorTest(LevelDBIteratorTestMixIn, unittest.TestCase):
-
     db_class = staticmethod(leveldb.DB)
 
     def testApproximateSizes(self):
         db = self.db_class(self.db_path, create_if_missing=True)
         self.assertEqual([0, 0, 0],
-            db.approximateDiskSizes(("a", "z"), ("0", "9"), ("A", "Z")))
+                         db.approximateDiskSizes(("a", "z"), ("0", "9"), ("A", "Z")))
         batch = leveldb.WriteBatch()
         for i in xrange(100):
             batch.put("c%d" % i, os.urandom(4096))
@@ -776,7 +771,6 @@ class LevelDBIteratorTest(LevelDBIteratorTestMixIn, unittest.TestCase):
 
 
 class MemLevelDBIteratorTest(LevelDBIteratorTestMixIn, unittest.TestCase):
-
     db_class = staticmethod(leveldb.MemoryDB)
 
 

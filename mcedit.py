@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+# !/usr/bin/env python2.7
 # -*- coding: utf8 -*_
 """
 mcedit.py
@@ -20,6 +20,7 @@ logger = logging.getLogger()
 # Set the log level up while importing OpenGL.GL to hide some obnoxious warnings about old array handlers
 logger.setLevel(logging.WARN)
 from OpenGL import GL
+
 logger.setLevel(logging.DEBUG)
 
 logfile = 'mcedit.log'
@@ -45,12 +46,10 @@ if "-vv" in sys.argv:
 
 
 class FileLineFormatter(logging.Formatter):
-
     def format(self, record):
         record.__dict__['fileline'] = "%(module)s.py:%(lineno)d" % record.__dict__
         record.__dict__['nameline'] = "%(name)s.py:%(lineno)d" % record.__dict__
         return super(FileLineFormatter, self).format(record)
-
 
 
 fmt = FileLineFormatter(
@@ -78,7 +77,6 @@ import mcplatform
 from mcplatform import platform_open
 import numpy
 
-
 import os
 import os.path
 import pygame
@@ -90,6 +88,7 @@ import sys
 import traceback
 
 ESCAPE = '\033'
+
 
 class FileOpener(albow.Widget):
     is_gl_container = True
@@ -156,10 +155,10 @@ class FileOpener(albow.Widget):
             shortnames.append(shortname)
 
         hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), 'Create New World', self.createNewWorld),
-            (str.upper(config.config.get('Keys', 'Load')), 'Load World...', self.mcedit.editor.askLoadWorld),
-            (str.upper(config.config.get('Keys', 'Open')), 'Open a level...', self.promptOpenAndLoad)] + [
-            ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
-            for i, world in enumerate(self.mcedit.recentWorlds())])
+                    (str.upper(config.config.get('Keys', 'Load')), 'Load World...', self.mcedit.editor.askLoadWorld),
+                    (str.upper(config.config.get('Keys', 'Open')), 'Open a level...', self.promptOpenAndLoad)] + [
+                       ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
+                       for i, world in enumerate(self.mcedit.recentWorlds())])
 
         commandRow = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
         commandRow.anchor = 'lrh'
@@ -274,48 +273,49 @@ class KeyConfigPanel(Dialog):
         ("Decrease Reach", "mouse5"),
         ("Reset Reach", "mouse3"),
     ],
-    "Arrows": [
-        ("Forward", "up"),
-        ("Back", "down"),
-        ("Left", "left"),
-        ("Right", "right"),
-        ("Up", "page up"),
-        ("Down", "page down"),
-        ("Brake", "space"),
+               "Arrows": [
+                   ("Forward", "up"),
+                   ("Back", "down"),
+                   ("Left", "left"),
+                   ("Right", "right"),
+                   ("Up", "page up"),
+                   ("Down", "page down"),
+                   ("Brake", "space"),
 
-        ("Rotate", "home"),
-        ("Roll", "end"),
-        ("Flip", "insert"),
-        ("Mirror", "delete"),
-        ("Swap", "\\"),
-        ("Increase Reach", "mouse4"),
-        ("Decrease Reach", "mouse5"),
-        ("Reset Reach", "mouse3"),
-    ],
-    "Numpad": [
-        ("Forward", "[8]"),
-        ("Back", "[5]"),
-        ("Left", "[4]"),
-        ("Right", "[6]"),
-        ("Up", "[9]"),
-        ("Down", "[3]"),
-        ("Brake", "[0]"),
+                   ("Rotate", "home"),
+                   ("Roll", "end"),
+                   ("Flip", "insert"),
+                   ("Mirror", "delete"),
+                   ("Swap", "\\"),
+                   ("Increase Reach", "mouse4"),
+                   ("Decrease Reach", "mouse5"),
+                   ("Reset Reach", "mouse3"),
+               ],
+               "Numpad": [
+                   ("Forward", "[8]"),
+                   ("Back", "[5]"),
+                   ("Left", "[4]"),
+                   ("Right", "[6]"),
+                   ("Up", "[9]"),
+                   ("Down", "[3]"),
+                   ("Brake", "[0]"),
 
-        ("Rotate", "[-]"),
-        ("Roll", "[+]"),
-        ("Flip", "[/]"),
-        ("Mirror", "[*]"),
-        ("Swap", "[.]"),
-        ("Increase Reach", "mouse4"),
-        ("Decrease Reach", "mouse5"),
-        ("Reset Reach", "mouse3"),
-    ]}
+                   ("Rotate", "[-]"),
+                   ("Roll", "[+]"),
+                   ("Flip", "[/]"),
+                   ("Mirror", "[*]"),
+                   ("Swap", "[.]"),
+                   ("Increase Reach", "mouse4"),
+                   ("Decrease Reach", "mouse5"),
+                   ("Reset Reach", "mouse3"),
+               ]}
 
     selectedKeyIndex = 0
 
     def __init__(self):
         Dialog.__init__(self)
-        keyConfigTable = albow.TableView(columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
+        keyConfigTable = albow.TableView(
+            columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
         keyConfigTable.num_rows = lambda: len(self.keyConfigKeys)
         keyConfigTable.row_data = self.getRowData
         keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
@@ -417,56 +417,56 @@ class GraphicsPanel(Panel):
         Panel.__init__(self)
 
         self.mcedit = mcedit
-#
-#        def getPacks():
-#            return ["[Default]", "[Current]"] + mcplatform.getTexturePacks()
-#
-#        def packChanged():
-#            self.texturePack = self.texturePackChoice.selectedChoice
-#            packs = getPacks()
-#            if self.texturePack not in packs:
-#                self.texturePack = "[Default]"
-#            self.texturePackChoice.selectedChoice = self.texturePack
-#            self.texturePackChoice.choices = packs
-#
-#        self.texturePackChoice = texturePackChoice = mceutils.ChoiceButton(getPacks(), choose=packChanged)
-#        if self.texturePack in self.texturePackChoice.choices:
-#            self.texturePackChoice.selectedChoice = self.texturePack
-#
-#        texturePackRow = albow.Row((albow.Label("Skin: "), texturePackChoice))
+        #
+        #        def getPacks():
+        #            return ["[Default]", "[Current]"] + mcplatform.getTexturePacks()
+        #
+        #        def packChanged():
+        #            self.texturePack = self.texturePackChoice.selectedChoice
+        #            packs = getPacks()
+        #            if self.texturePack not in packs:
+        #                self.texturePack = "[Default]"
+        #            self.texturePackChoice.selectedChoice = self.texturePack
+        #            self.texturePackChoice.choices = packs
+        #
+        #        self.texturePackChoice = texturePackChoice = mceutils.ChoiceButton(getPacks(), choose=packChanged)
+        #        if self.texturePack in self.texturePackChoice.choices:
+        #            self.texturePackChoice.selectedChoice = self.texturePack
+        #
+        #        texturePackRow = albow.Row((albow.Label("Skin: "), texturePackChoice))
 
         fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
-            ref=Settings.fov.propertyRef(), width=100, min=25, max=120)
+                                                ref=Settings.fov.propertyRef(), width=100, min=25, max=120)
 
         targetFPSRow = mceutils.IntInputRow("Target FPS: ",
-            ref=Settings.targetFPS.propertyRef(), width=100, min=1, max=60)
+                                            ref=Settings.targetFPS.propertyRef(), width=100, min=1, max=60)
 
         bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
-            ref=Settings.vertexBufferLimit.propertyRef(), width=100, min=0)
+                                              ref=Settings.vertexBufferLimit.propertyRef(), width=100, min=0)
 
         fastLeavesRow = mceutils.CheckBoxLabel("Fast Leaves",
-            ref=Settings.fastLeaves.propertyRef(),
-            tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
+                                               ref=Settings.fastLeaves.propertyRef(),
+                                               tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
 
         roughGraphicsRow = mceutils.CheckBoxLabel("Rough Graphics",
-            ref=Settings.roughGraphics.propertyRef(),
-            tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
+                                                  ref=Settings.roughGraphics.propertyRef(),
+                                                  tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
 
         enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
-            ref=Settings.enableMouseLag.propertyRef(),
-            tooltipText="Enable choppy mouse movement for faster loading.")
+                                                   ref=Settings.enableMouseLag.propertyRef(),
+                                                   tooltipText="Enable choppy mouse movement for faster loading.")
 
         settingsColumn = albow.Column((fastLeavesRow,
-                                  roughGraphicsRow,
-                                  enableMouseLagRow,
-#                                  texturePackRow,
-                                  fieldOfViewRow,
-                                  targetFPSRow,
-                                  bufferLimitRow,
-                                  ), align='r')
+                                       roughGraphicsRow,
+                                       enableMouseLagRow,
+                                       #                                  texturePackRow,
+                                       fieldOfViewRow,
+                                       targetFPSRow,
+                                       bufferLimitRow,
+                                      ), align='r')
 
         settingsColumn = albow.Column((albow.Label("Settings"),
-                                 settingsColumn))
+                                       settingsColumn))
 
         settingsRow = albow.Row((settingsColumn,))
 
@@ -490,71 +490,74 @@ class OptionsPanel(Dialog):
         self.mcedit = mcedit
 
         autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
-            ref=ControlSettings.autobrake.propertyRef(),
-            tooltipText="Apply brake when not pressing movement keys")
+                                              ref=ControlSettings.autobrake.propertyRef(),
+                                              tooltipText="Apply brake when not pressing movement keys")
 
         swapAxesRow = mceutils.CheckBoxLabel("Swap Axes Looking Down",
-            ref=ControlSettings.swapAxes.propertyRef(),
-            tooltipText="Change the direction of the Forward and Backward keys when looking down")
+                                             ref=ControlSettings.swapAxes.propertyRef(),
+                                             tooltipText="Change the direction of the Forward and Backward keys when looking down")
 
         cameraAccelRow = mceutils.FloatInputRow("Camera Acceleration: ",
-            ref=ControlSettings.cameraAccel.propertyRef(), width=100, min=5.0)
+                                                ref=ControlSettings.cameraAccel.propertyRef(), width=100, min=5.0)
 
         cameraDragRow = mceutils.FloatInputRow("Camera Drag: ",
-            ref=ControlSettings.cameraDrag.propertyRef(), width=100, min=1.0)
+                                               ref=ControlSettings.cameraDrag.propertyRef(), width=100, min=1.0)
 
         cameraMaxSpeedRow = mceutils.FloatInputRow("Camera Max Speed: ",
-            ref=ControlSettings.cameraMaxSpeed.propertyRef(), width=100, min=1.0)
+                                                   ref=ControlSettings.cameraMaxSpeed.propertyRef(), width=100, min=1.0)
 
         cameraBrakeSpeedRow = mceutils.FloatInputRow("Camera Braking Speed: ",
-            ref=ControlSettings.cameraBrakingSpeed.propertyRef(), width=100, min=1.0)
+                                                     ref=ControlSettings.cameraBrakingSpeed.propertyRef(), width=100,
+                                                     min=1.0)
 
         mouseSpeedRow = mceutils.FloatInputRow("Mouse Speed: ",
-            ref=ControlSettings.mouseSpeed.propertyRef(), width=100, min=0.1, max=20.0)
+                                               ref=ControlSettings.mouseSpeed.propertyRef(), width=100, min=0.1,
+                                               max=20.0)
 
         undoLimitRow = mceutils.IntInputRow("Undo Limit: ",
-            ref=Settings.undoLimit.propertyRef(), width=100, min=0)
+                                            ref=Settings.undoLimit.propertyRef(), width=100, min=0)
 
         invertRow = mceutils.CheckBoxLabel("Invert Mouse",
-            ref=ControlSettings.invertMousePitch.propertyRef(),
-            tooltipText="Reverse the up and down motion of the mouse.")
+                                           ref=ControlSettings.invertMousePitch.propertyRef(),
+                                           tooltipText="Reverse the up and down motion of the mouse.")
 
         spaceHeightRow = mceutils.IntInputRow("Low Detail Height",
-            ref=Settings.spaceHeight.propertyRef(),
-            tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
+                                              ref=Settings.spaceHeight.propertyRef(),
+                                              tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
 
         blockBufferRow = mceutils.IntInputRow("Block Buffer (MB):",
-            ref=albow.AttrRef(self, 'blockBuffer'), min=1,
-            tooltipText="Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.")
+                                              ref=albow.AttrRef(self, 'blockBuffer'), min=1,
+                                              tooltipText="Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.")
 
         setWindowPlacementRow = mceutils.CheckBoxLabel("Set Window Placement",
-            ref=Settings.setWindowPlacement.propertyRef(),
-            tooltipText="Try to save and restore the window position.")
+                                                       ref=Settings.setWindowPlacement.propertyRef(),
+                                                       tooltipText="Try to save and restore the window position.")
 
         windowSizeRow = mceutils.CheckBoxLabel("Window Resize Alert",
-            ref=Settings.shouldResizeAlert.propertyRef(),
-            tooltipText="Reminds you that the cursor won't work correctly after resizing the window.")
+                                               ref=Settings.shouldResizeAlert.propertyRef(),
+                                               tooltipText="Reminds you that the cursor won't work correctly after resizing the window.")
 
         visibilityCheckRow = mceutils.CheckBoxLabel("Visibility Check",
-            ref=Settings.visibilityCheck.propertyRef(),
-            tooltipText="Do a visibility check on chunks while loading. May cause a crash.")
+                                                    ref=Settings.visibilityCheck.propertyRef(),
+                                                    tooltipText="Do a visibility check on chunks while loading. May cause a crash.")
 
         longDistanceRow = mceutils.CheckBoxLabel("Long-Distance Mode",
-            ref=Settings.longDistanceMode.propertyRef(),
-            tooltipText="Always target the farthest block under the cursor, even in mouselook mode. Shortcut: ALT-Z")
+                                                 ref=Settings.longDistanceMode.propertyRef(),
+                                                 tooltipText="Always target the farthest block under the cursor, even in mouselook mode. Shortcut: ALT-Z")
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
-            ref=Settings.flyMode.propertyRef(),
-            tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
+                                            ref=Settings.flyMode.propertyRef(),
+                                            tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
 
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
         goPortableButton.tooltipText = self.portableButtonTooltip()
-        goPortableRow = albow.Row((albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
+        goPortableRow = albow.Row(
+            (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
 
         reportRow = mceutils.CheckBoxLabel("Report Errors",
-            ref=Settings.reportCrashes.propertyRef(),
-            tooltipText="Automatically report errors to the developer.")
+                                           ref=Settings.reportCrashes.propertyRef(),
+                                           tooltipText="Automatically report errors to the developer.")
 
         inputs = (
             spaceHeightRow,
@@ -568,27 +571,27 @@ class OptionsPanel(Dialog):
         )
 
         options = (
-            longDistanceRow,
-            flyModeRow,
-            autoBrakeRow,
-            swapAxesRow,
-            invertRow,
-            visibilityCheckRow,
-            ) + (
-            ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
-            ) + (
-            reportRow,
-            ) + (
-            (sys.platform == "win32") and (setWindowPlacementRow,) or ()
-            ) + (
-            goPortableRow,
-        )
+                      longDistanceRow,
+                      flyModeRow,
+                      autoBrakeRow,
+                      swapAxesRow,
+                      invertRow,
+                      visibilityCheckRow,
+                  ) + (
+                      ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
+                  ) + (
+                      reportRow,
+                  ) + (
+                      (sys.platform == "win32") and (setWindowPlacementRow,) or ()
+                  ) + (
+                      goPortableRow,
+                  )
 
         rightcol = albow.Column(options, align='r')
         leftcol = albow.Column(inputs, align='r')
 
         optionsColumn = albow.Column((albow.Label("Options"),
-                                albow.Row((leftcol, rightcol), align="t")))
+                                      albow.Row((leftcol, rightcol), align="t")))
 
         settingsRow = albow.Row((optionsColumn,))
 
@@ -606,8 +609,10 @@ class OptionsPanel(Dialog):
         Settings.blockBuffer.set(int(val * 1048576))
 
     def portableButtonTooltip(self):
-        return ("Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder",
-                "Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder")[mcplatform.portable]
+        return (
+        "Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder",
+        "Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder")[
+            mcplatform.portable]
 
     @property
     def portableLabelText(self):
@@ -615,11 +620,13 @@ class OptionsPanel(Dialog):
 
     def togglePortable(self):
         textChoices = [
-             "This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?".format((sys.platform == "darwin" and "the MCEdit application" or "MCEditData")),
-             "This will move your settings and schematics to your Documents folder. Continue?",
+            "This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?".format(
+                (sys.platform == "darwin" and "the MCEdit application" or "MCEditData")),
+            "This will move your settings and schematics to your Documents folder. Continue?",
         ]
         if sys.platform == "darwin":
-            textChoices[1] = "This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?"
+            textChoices[
+                1] = "This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?"
 
         alertText = textChoices[mcplatform.portable]
         if albow.ask(alertText) == "OK":
@@ -777,27 +784,27 @@ class MCEdit(GLViewport):
         readmePath = os.path.join(directories.dataDir, "README.html")
 
         hotkeys = ([("",
-                  "Keys",
-                  self.showKeyConfig),
-                  ("",
-                  "Graphics",
-                  self.showGraphicOptions),
-                  ("",
-                  "Options",
-                  self.showOptions),
-                  ("",
-                  "Homepage",
-                  lambda: platform_open("http://www.mcedit.net/")),
-                  ("",
-                  "About MCEdit",
-                  lambda: platform_open("http://www.mcedit.net/about.html")),
-                  ("",
-                  "Recent Changes",
-                  lambda: platform_open("http://www.mcedit.net/changes/%s.html" % release.release)),
-                  ("",
-                  "License",
-                  showLicense),
-                  ])
+                     "Keys",
+                     self.showKeyConfig),
+                    ("",
+                     "Graphics",
+                     self.showGraphicOptions),
+                    ("",
+                     "Options",
+                     self.showOptions),
+                    ("",
+                     "Homepage",
+                     lambda: platform_open("http://www.mcedit.net/")),
+                    ("",
+                     "About MCEdit",
+                     lambda: platform_open("http://www.mcedit.net/about.html")),
+                    ("",
+                     "Recent Changes",
+                     lambda: platform_open("http://www.mcedit.net/changes/%s.html" % release.release)),
+                    ("",
+                     "License",
+                     showLicense),
+                   ])
 
         c = mceutils.HotkeyColumn(hotkeys)
 
@@ -833,7 +840,8 @@ class MCEdit(GLViewport):
                     if not hasattr(self, 'resizeAlert'):
                         self.resizeAlert = self.shouldResizeAlert
                     if self.resizeAlert:
-                        albow.alert("Window size increased. You may have problems using the cursor until MCEdit is restarted.")
+                        albow.alert(
+                            "Window size increased. You may have problems using the cursor until MCEdit is restarted.")
                         self.resizeAlert = False
 
     shouldResizeAlert = Settings.shouldResizeAlert.configProperty()
@@ -864,7 +872,8 @@ class MCEdit(GLViewport):
             self.add(self.editor)
 
             self.focus_switch = self.editor
-            albow.alert("World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.")
+            albow.alert(
+                "World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.")
 
     def removeEditor(self):
         self.remove(self.editor)
@@ -875,7 +884,7 @@ class MCEdit(GLViewport):
     def confirm_quit(self):
         if self.editor.unsavedEdits:
             result = albow.ask("There are {0} unsaved changes.".format(self.editor.unsavedEdits),
-                     responses=["Save and Quit", "Quit", "Cancel"])
+                               responses=["Save and Quit", "Quit", "Cancel"])
             if result == "Save and Quit":
                 self.saveAndQuit()
             elif result == "Quit":
@@ -968,7 +977,9 @@ class MCEdit(GLViewport):
                         raise SystemExit()
 '''
         if mcedit.closeMinecraftWarning:
-            answer = albow.ask("Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.\n\n If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.", ["Don't remind me again.", "OK"], default=1, cancel=1)
+            answer = albow.ask(
+                "Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.\n\n If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.",
+                ["Don't remind me again.", "OK"], default=1, cancel=1)
             if answer == "Don't remind me again.":
                 mcedit.closeMinecraftWarning = False
 
@@ -994,12 +1005,13 @@ class MCEdit(GLViewport):
                 rootwidget.run()
             except SystemExit:
                 if sys.platform == "win32" and Settings.setWindowPlacement.get():
-                    (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(display.get_wm_info()['window'])
+                    (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
+                        display.get_wm_info()['window'])
                     X, Y, r, b = rect
                     #w = r-X
                     #h = b-Y
                     if (showCmd == mcplatform.win32con.SW_MINIMIZE or
-                       showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
+                                showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                         showCmd = mcplatform.win32con.SW_SHOWNORMAL
 
                     Settings.windowX.set(X)
@@ -1014,6 +1026,7 @@ class MCEdit(GLViewport):
                 traceback.print_exc()
                 mcedit.editor.handleMemoryError()
 
+
 def main(argv):
     """
     Setup display, bundled schematics. Handle unclean
@@ -1021,6 +1034,7 @@ def main(argv):
     """
     try:
         import squash_python
+
         squash_python.uploader.SquashUploader.headers.pop("Content-encoding", None)
         squash_python.uploader.SquashUploader.headers.pop("Accept-encoding", None)
 
@@ -1034,6 +1048,7 @@ def main(argv):
         client.build = version
         client.timeout = 5
         client.disabled = not config.config.getboolean("Settings", "report crashes new")
+
         def _reportingChanged(val):
             client.disabled = not val
 
@@ -1203,9 +1218,11 @@ class GLDisplayContext(object):
 def weird_fix():
     try:
         from OpenGL.platform import win32
+
         win32
     except Exception:
         pass
+
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))

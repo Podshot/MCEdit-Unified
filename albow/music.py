@@ -1,4 +1,4 @@
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 #
 #   Albow - Music
 #
@@ -16,6 +16,7 @@ except ImportError:
 
 if music:
     import root
+
     music.set_endevent(root.MUSIC_END_EVENT)
 
 from resource import resource_path
@@ -63,6 +64,7 @@ class PlayList(object):
                 items.append(item)
             return item
 
+
 #---------------------------------------------------------------------------
 
 
@@ -77,8 +79,8 @@ def get_playlist(*names, **kwds):
     prefix = kwds.pop('prefix', "music")
     dirpath = get_music(*names, **{'prefix': prefix})
     items = [os.path.join(dirpath, filename)
-        for filename in os.listdir(dirpath)
-            if not filename.startswith(".")]
+             for filename in os.listdir(dirpath)
+             if not filename.startswith(".")]
     items.sort()
     return PlayList(items, **kwds)
 
@@ -169,7 +171,6 @@ from albow.dialogs import Dialog
 
 
 class EnableMusicControl(CheckBox):
-
     def get_value(self):
         return get_music_enabled()
 
@@ -178,7 +179,6 @@ class EnableMusicControl(CheckBox):
 
 
 class MusicVolumeControl(Widget):
-
     def __init__(self, **kwds):
         Widget.__init__(self, Rect((0, 0), (100, 20)), **kwds)
 
@@ -199,7 +199,6 @@ class MusicVolumeControl(Widget):
 
 
 class MusicOptionsDialog(Dialog):
-
     def __init__(self):
         Dialog.__init__(self)
         emc = EnableMusicControl()

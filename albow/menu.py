@@ -1,4 +1,4 @@
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 #
 #    Albow - Pull-down or pop-up menu
 #
@@ -14,7 +14,6 @@ from pygame import Rect, draw
 
 
 class MenuItem(object):
-
     keyname = ""
     keycode = None
     shift = False
@@ -47,11 +46,11 @@ class MenuItem(object):
                 keyname = self.option_name + keyname
             self.keyname = self.cmd_name + keyname
 
+
 #---------------------------------------------------------------------------
 
 
 class Menu(Dialog):
-
     disabled_color = ThemeProperty('disabled_color')
     click_outside_response = -1
     scroll_button_size = ThemeProperty('scroll_button_size')
@@ -96,7 +95,7 @@ class Menu(Dialog):
         if w2 > 0:
             width += w2 + margin
         if self.scrolling:
-            width += self.scroll_button_size            
+            width += self.scroll_button_size
         self.size = (width, height)
         self._hilited = None
 
@@ -254,12 +253,12 @@ class Menu(Dialog):
     def find_item_for_key(self, e):
         for item in self._items:
             if item.keycode == e.key \
-                and item.shift == e.shift and item.alt == e.alt:
-                    focus = get_focus()
-                    if self.command_is_enabled(item, focus):
-                        return self._items.index(item)
-                    else:
-                        return -1
+                    and item.shift == e.shift and item.alt == e.alt:
+                focus = get_focus()
+                if self.command_is_enabled(item, focus):
+                    return self._items.index(item)
+                else:
+                    return -1
         return -1
 
     def get_command(self, i):

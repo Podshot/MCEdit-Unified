@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 import mclevelbase
 import mclevel
 import materials
@@ -16,6 +16,7 @@ import operator
 import codecs
 
 from math import floor
+
 try:
     import readline  # if available, used by raw_input()
 except:
@@ -256,16 +257,16 @@ class mce(object):
                 blockInfo = None
 
         if blockInfo is None:
-                print "Ambiguous block specifier: ", keyword
-                if len(matches):
-                    print "Matches: "
-                    for m in matches:
-                        if m == self.level.materials.defaultName:
-                            continue
-                        print "{0:3}:{1:<2} : {2}".format(m.ID, m.blockData, m.name)
-                else:
-                    print "No blocks matched."
-                raise BlockMatchError
+            print "Ambiguous block specifier: ", keyword
+            if len(matches):
+                print "Matches: "
+                for m in matches:
+                    if m == self.level.materials.defaultName:
+                        continue
+                    print "{0:3}:{1:<2} : {2}".format(m.ID, m.blockData, m.name)
+            else:
+                print "No blocks matched."
+            raise BlockMatchError
 
         return blockInfo
 
@@ -470,14 +471,15 @@ class mce(object):
                         idstring = "({id}:{data})".format(id=blockID, data=data)
 
                         print "{idstring:9} {name:30}: {count:<10}".format(
-                            idstring=idstring, name=self.level.materials.blockWithID(blockID, data).name, count=blockCounts[i])
+                            idstring=idstring, name=self.level.materials.blockWithID(blockID, data).name,
+                            count=blockCounts[i])
 
             else:
                 count = int(sum(blockCounts[(d << 12) + blockID] for d in range(16)))
                 if count:
                     idstring = "({id})".format(id=blockID)
                     print "{idstring:9} {name:30}: {count:<10}".format(
-                          idstring=idstring, name=self.level.materials.blockWithID(blockID, 0).name, count=count)
+                        idstring=idstring, name=self.level.materials.blockWithID(blockID, 0).name, count=count)
 
         self.needsSave = True
 
@@ -628,7 +630,6 @@ class mce(object):
             if i % 100 == 0:
                 print "Chunk {0}...".format(i)
 
-
         print "Dumped {0} signs to {1}".format(signCount, filename)
 
         outFile.close()
@@ -640,7 +641,7 @@ class mce(object):
     List region files in this world.
     """
         level = self.level
-        assert(isinstance(level, mclevel.MCInfdevOldLevel))
+        assert (isinstance(level, mclevel.MCInfdevOldLevel))
         assert level.version
 
         def getFreeSectors(rf):
@@ -682,7 +683,8 @@ class mce(object):
                     print "Region {rx},{rz} not found.".format(**locals())
                     return
 
-                print "Region {rx:6}, {rz:6}: {used}/{sectors} sectors".format(used=rf.usedSectors, sectors=rf.sectorCount)
+                print "Region {rx:6}, {rz:6}: {used}/{sectors} sectors".format(used=rf.usedSectors,
+                                                                               sectors=rf.sectorCount)
                 print "Offset Table:"
                 for cx in range(32):
                     for cz in range(32):
@@ -758,6 +760,7 @@ class mce(object):
 
     """
         from items import items
+
         if len(command):
             filename = command[0]
         else:
@@ -797,7 +800,6 @@ class mce(object):
 
             if i % 100 == 0:
                 print "Chunk {0}...".format(i)
-
 
         print "Dumped {0} chests to {1}".format(chestCount, filename)
 
@@ -871,7 +873,6 @@ class mce(object):
             if entitiesRemoved:
                 chunk.chunkChanged(False)
 
-
         if len(removedEntities) == 0:
             print "No entities to remove."
         else:
@@ -897,7 +898,7 @@ class mce(object):
 
         chunksCreated = self.level.createChunksInBox(box)
 
-        print "Created {0} chunks." .format(len(chunksCreated))
+        print "Created {0} chunks.".format(len(chunksCreated))
 
         self.needsSave = True
 
@@ -916,7 +917,7 @@ class mce(object):
 
         deletedChunks = self.level.deleteChunksInBox(box)
 
-        print "Deleted {0} chunks." .format(len(deletedChunks))
+        print "Deleted {0} chunks.".format(len(deletedChunks))
 
     def _prune(self, command):
         """
@@ -937,7 +938,7 @@ class mce(object):
                 self.level.deleteChunk(cx, cz)
                 i += 1
 
-        print "Pruned {0} chunks." .format(i)
+        print "Pruned {0} chunks.".format(i)
 
     def _relight(self, command):
         """
@@ -1013,12 +1014,12 @@ class mce(object):
         self.level.fillBlocks(box,
                               self.level.materials.Air,
                               blocksToReplace=[self.level.materials.Bedrock,
-                                self.level.materials.Obsidian,
-                                self.level.materials.Fire,
-                                self.level.materials.LavaActive,
-                                self.level.materials.Lava,
-                                ]
-                              )
+                                               self.level.materials.Obsidian,
+                                               self.level.materials.Fire,
+                                               self.level.materials.LavaActive,
+                                               self.level.materials.Lava,
+                              ]
+        )
         self.needsSave = True
 
     def _time(self, command):
@@ -1154,8 +1155,8 @@ class mce(object):
             return
 
         if not sys.stdin.isatty() or raw_input(
-     "This will destroy a large portion of the map and may take a long time.  Did you really want to do this?"
-     ).lower() in ("yes", "y", "1", "true"):
+                "This will destroy a large portion of the map and may take a long time.  Did you really want to do this?"
+        ).lower() in ("yes", "y", "1", "true"):
 
             from PIL import Image
             import datetime
@@ -1342,8 +1343,8 @@ class mce(object):
                 matches = self.level.materials.blocksMatching(searchName)
             else:
                 matches = [b for b in self.level.materials.allBlocks if b.ID == searchNumber]
-#                print "{0:3}: {1}".format(searchNumber, self.level.materials.names[searchNumber])
- #               return
+            #                print "{0:3}: {1}".format(searchNumber, self.level.materials.names[searchNumber])
+            #               return
 
         else:
             matches = self.level.materials.allBlocks
@@ -1488,11 +1489,13 @@ def main(argv):
     if profile:
         print "Profiling enabled"
         import cProfile
+
         cProfile.runctx('editor.run()', locals(), globals(), profile)
     else:
         editor.run()
 
     return 0
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

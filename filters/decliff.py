@@ -7,28 +7,29 @@ http://www.minecraftforum.net/topic/13807-mcedit-minecraft-world-editor-compatib
 from numpy import zeros, array
 import itertools
 from pymclevel import alphaMaterials
+
 am = alphaMaterials
 
 # Consider below materials when determining terrain height
 blocks = [
-  am.Stone,
-  am.Grass,
-  am.Dirt,
-  am.Bedrock,
-  am.Sand,
-  am.Sandstone,
-  am.Clay,
-  am.Gravel,
-  am.GoldOre,
-  am.IronOre,
-  am.CoalOre,
-  am.LapisLazuliOre,
-  am.DiamondOre,
-  am.RedstoneOre,
-  am.RedstoneOreGlowing,
-  am.Netherrack,
-  am.SoulSand,
-  am.Glowstone
+    am.Stone,
+    am.Grass,
+    am.Dirt,
+    am.Bedrock,
+    am.Sand,
+    am.Sandstone,
+    am.Clay,
+    am.Gravel,
+    am.GoldOre,
+    am.IronOre,
+    am.CoalOre,
+    am.LapisLazuliOre,
+    am.DiamondOre,
+    am.RedstoneOre,
+    am.RedstoneOreGlowing,
+    am.Netherrack,
+    am.SoulSand,
+    am.Glowstone
 ]
 terrainBlocktypes = [b.ID for b in blocks]
 terrainBlockmask = zeros((256,), dtype='bool')
@@ -62,12 +63,12 @@ def maxadj(heightmap, slice_no, cliff_pos, dir, pushup, maxstep, slice_width):
     for cur_pos in range(cliff_pos, end, dir):
         if pushup:
             ret = ret + \
-               max([0, maxstep - dir * heightmap[slice_no, cur_pos] + \
-               dir * heightmap[slice_no, cur_pos + dir]])
+                  max([0, maxstep - dir * heightmap[slice_no, cur_pos] + \
+                       dir * heightmap[slice_no, cur_pos + dir]])
         else:
             ret = ret + \
-               min([0, -maxstep + dir * heightmap[slice_no, cur_pos] - \
-               dir * heightmap[slice_no, cur_pos + dir]])
+                  min([0, -maxstep + dir * heightmap[slice_no, cur_pos] - \
+                       dir * heightmap[slice_no, cur_pos + dir]])
 
     return ret
 
@@ -97,25 +98,25 @@ def adjheight(orig, new, slice_no, cliff_pos, dir, adj, can_adj, maxstep, slice_
             if adj > 0:
                 done_adj = done_adj + \
                            max([0, maxstep - orig[slice_no, cur_pos] + \
-                           orig[slice_no, cur_pos + dir]])
+                                orig[slice_no, cur_pos + dir]])
 
                 if orig[slice_no, cur_pos] - \
-                    orig[slice_no, cur_pos + dir] > 0:
+                        orig[slice_no, cur_pos + dir] > 0:
                     cur_adj = max([0, cur_adj - orig[slice_no, cur_pos] + \
-                            orig[slice_no, cur_pos + dir]])
+                                   orig[slice_no, cur_pos + dir]])
                     prev = adj - cur_adj
             else:
                 done_adj = done_adj + \
                            min([0, -maxstep + \
-                               orig[slice_no, cur_pos] - \
-                               orig[slice_no, cur_pos + dir]])
+                                orig[slice_no, cur_pos] - \
+                                orig[slice_no, cur_pos + dir]])
                 if orig[slice_no, cur_pos] - \
-                   orig[slice_no, cur_pos + dir] > 0:
+                        orig[slice_no, cur_pos + dir] > 0:
                     cur_adj = min([0, cur_adj + orig[slice_no, cur_pos] - orig[slice_no, cur_pos + dir]])
                     prev = adj - cur_adj
             new[slice_no, cur_pos] = max([0, orig[slice_no, cur_pos] + cur_adj])
             if cur_adj != 0 and \
-               abs(prev) < abs(int(adj * done_adj / can_adj)):
+                            abs(prev) < abs(int(adj * done_adj / can_adj)):
                 cur_adj = cur_adj + (prev - int(adj * done_adj / can_adj))
                 prev = int(adj * done_adj / can_adj)
 
@@ -137,7 +138,7 @@ def perform(level, box, options):
 
     # Swap values around so long edge of selected rectangle is first
     # - the long edge is assumed to run parallel to the cliff face
-    #   and we want to process slices perpendicular to the face
+    # and we want to process slices perpendicular to the face
     #  heightmap will have x,z (or z,x) index with highest ground level
     if schema.Width > schema.Length:
         heightmap = zeros((schema.Width, schema.Length), dtype='float32')
@@ -161,10 +162,10 @@ def perform(level, box, options):
         # determine pos and height of cliff in this slice
         for cur_pos in range(0, slice_width - 1):
             if abs(heightmap[slice_no, cur_pos] - \
-                   heightmap[slice_no, cur_pos + 1]) > abs(cliff_height):
+                    heightmap[slice_no, cur_pos + 1]) > abs(cliff_height):
                 cliff_height = \
-                   heightmap[slice_no, cur_pos] - \
-                   heightmap[slice_no, cur_pos + 1]
+                    heightmap[slice_no, cur_pos] - \
+                    heightmap[slice_no, cur_pos + 1]
                 cliff_pos = cur_pos
 
         if abs(cliff_height) < 2:
@@ -232,10 +233,10 @@ def perform(level, box, options):
         Waterdepth = 0
         # Detect Water on top
         if column[oh + 1:oh + 2] == am.Water.ID or \
-           column[oh + 1:oh + 2] == am.Ice.ID:
+                        column[oh + 1:oh + 2] == am.Ice.ID:
             for cur_pos in range(oh + 1, schema.Height):
                 if column[cur_pos:cur_pos + 1] != am.Water.ID and \
-                  column[cur_pos:cur_pos + 1] != am.Ice.ID: break
+                                column[cur_pos:cur_pos + 1] != am.Ice.ID: break
                 Waterdepth = Waterdepth + 1
 
         if delta == 0:

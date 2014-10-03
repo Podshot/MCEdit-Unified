@@ -1,5 +1,5 @@
 #
-#   Albow - Table View
+# Albow - Table View
 #
 
 from itertools import izip
@@ -10,7 +10,6 @@ from utils import blit_in_rect
 
 
 class TableView(Column):
-
     columns = []
     header_font = None
     header_fg_color = None
@@ -19,8 +18,8 @@ class TableView(Column):
     column_margin = 2
 
     def __init__(self, nrows=15, height=None,
-            header_height=None, row_height=None,
-            scrolling=True, **kwds):
+                 header_height=None, row_height=None,
+                 scrolling=True, **kwds):
         columns = self.predict_attr(kwds, 'columns')
         if row_height is None:
             font = self.predict_font(kwds)
@@ -69,7 +68,7 @@ class TableView(Column):
 
     def draw_header_cell(self, surf, i, cell_rect, column):
         self.draw_text_cell(surf, i, column.title, cell_rect,
-            column.alignment, self.font)
+                            column.alignment, self.font)
 
     def draw_table_cell(self, surf, i, data, cell_rect, column):
         text = column.format(data)
@@ -123,11 +122,10 @@ class TableColumn(object):
             return ""
 
     def formatter(self, data):
-            return self.format_string % data
+        return self.format_string % data
 
 
 class TableRowBase(PaletteView):
-
     def __init__(self, cell_size, nrows, scrolling):
         PaletteView.__init__(self, cell_size, nrows, 1, scrolling=scrolling)
 
@@ -151,7 +149,6 @@ class TableRowBase(PaletteView):
 
 
 class TableRowView(TableRowBase):
-
     highlight_style = 'fill'
     vstretch = True
 
@@ -163,15 +160,14 @@ class TableRowView(TableRowBase):
 
 
 class TableHeaderView(TableRowBase):
-
     def __init__(self, width, height):
         TableRowBase.__init__(self, (width, height), 1, False)
 
-#    def row_data(self, row):
-#        return [c.title for c in self.parent.columns]
+    #    def row_data(self, row):
+    #        return [c.title for c in self.parent.columns]
 
-#    def draw_table_cell(self, surf, i, text, cell_rect, column):
-#        self.parent.draw_header_cell(surf, i, text, cell_rect, column)
+    #    def draw_table_cell(self, surf, i, text, cell_rect, column):
+    #        self.parent.draw_header_cell(surf, i, text, cell_rect, column)
 
     def row_data(self, row):
         None

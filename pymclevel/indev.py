@@ -187,6 +187,7 @@ class MCIndevLevel(EntityLevel):
                 for attr in "Motion", "Pos":
                     if attr in ent:
                         ent[attr] = nbt.TAG_List([nbt.TAG_Double(t.value) for t in ent[attr]])
+
             for ent in self.Entities:
                 numbersToDoubles(ent)
 
@@ -200,7 +201,6 @@ class MCIndevLevel(EntityLevel):
                 (x, y, z) = self.decodePos(pos)
 
                 TileEntity.setpos(te, (x, y, z))
-
 
             localPlayerList = [tag for tag in root_tag["Entities"] if tag['id'].value == 'LocalPlayer']
             if len(localPlayerList) == 0:  # omen doesn't make a player entity
@@ -216,21 +216,21 @@ class MCIndevLevel(EntityLevel):
         else:
             log.info(u"Creating new Indev levels is not yet implemented.!")
             raise ValueError("Can't do that yet")
-#            self.SurroundingGroundHeight = root_tag[Environment][SurroundingGroundHeight].value
-#            self.SurroundingGroundType = root_tag[Environment][SurroundingGroundType].value
-#            self.SurroundingWaterHeight = root_tag[Environment][SurroundingGroundHeight].value
-#            self.SurroundingWaterType = root_tag[Environment][SurroundingWaterType].value
-#            self.CloudHeight = root_tag[Environment][CloudHeight].value
-#            self.CloudColor = root_tag[Environment][CloudColor].value
-#            self.SkyColor = root_tag[Environment][SkyColor].value
-#            self.FogColor = root_tag[Environment][FogColor].value
-#            self.SkyBrightness = root_tag[Environment][SkyBrightness].value
-#            self.TimeOfDay = root_tag[Environment]["TimeOfDay"].value
-#
-#
-#            self.Name = self.root_tag[About][Name].value
-#            self.Author = self.root_tag[About][Author].value
-#            self.CreatedOn = self.root_tag[About][CreatedOn].value
+            # self.SurroundingGroundHeight = root_tag[Environment][SurroundingGroundHeight].value
+        #            self.SurroundingGroundType = root_tag[Environment][SurroundingGroundType].value
+        #            self.SurroundingWaterHeight = root_tag[Environment][SurroundingGroundHeight].value
+        #            self.SurroundingWaterType = root_tag[Environment][SurroundingWaterType].value
+        #            self.CloudHeight = root_tag[Environment][CloudHeight].value
+        #            self.CloudColor = root_tag[Environment][CloudColor].value
+        #            self.SkyColor = root_tag[Environment][SkyColor].value
+        #            self.FogColor = root_tag[Environment][FogColor].value
+        #            self.SkyBrightness = root_tag[Environment][SkyBrightness].value
+        #            self.TimeOfDay = root_tag[Environment]["TimeOfDay"].value
+        #
+        #
+        #            self.Name = self.root_tag[About][Name].value
+        #            self.Author = self.root_tag[About][Author].value
+        #            self.CreatedOn = self.root_tag[About][CreatedOn].value
 
     def rotateLeft(self):
         MCLevel.rotateLeft(self)
@@ -288,6 +288,7 @@ class MCIndevLevel(EntityLevel):
             for attr in "Motion", "Pos":
                 if attr in ent:
                     ent[attr] = nbt.TAG_List([nbt.TAG_Double(t.value) for t in ent[attr]])
+
         for ent in self.Entities:
             numbersToFloats(ent)
 

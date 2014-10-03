@@ -25,12 +25,12 @@ def lru_cache(maxsize=100):
     maxqueue = maxsize * 10
 
     def decorating_function(user_function,
-            len=len, iter=iter, tuple=tuple, sorted=sorted, KeyError=KeyError):
-        cache = {}                   # mapping of args to results
+                            len=len, iter=iter, tuple=tuple, sorted=sorted, KeyError=KeyError):
+        cache = {}  # mapping of args to results
         queue = collections.deque()  # order that keys have been used
-        refcount = Counter()         # times each key is in the queue
-        sentinel = object()          # marker for looping around the queue
-        kwd_mark = object()          # separate positional and keyword args
+        refcount = Counter()  # times each key is in the queue
+        sentinel = object()  # marker for looping around the queue
+        kwd_mark = object()  # separate positional and keyword args
 
         # lookup optimizations (ugly but fast)
         queue_append, queue_popleft = queue.append, queue.popleft
@@ -86,6 +86,7 @@ def lru_cache(maxsize=100):
         wrapper.hits = wrapper.misses = 0
         wrapper.clear = clear
         return wrapper
+
     return decorating_function
 
 
@@ -100,9 +101,9 @@ def lfu_cache(maxsize=100):
     '''
 
     def decorating_function(user_function):
-        cache = {}                      # mapping of args to results
-        use_count = Counter()           # times each key has been accessed
-        kwd_mark = object()             # separate positional and keyword args
+        cache = {}  # mapping of args to results
+        use_count = Counter()  # times each key has been accessed
+        kwd_mark = object()  # separate positional and keyword args
 
         @functools.wraps(user_function)
         def wrapper(*args, **kwds):
@@ -137,7 +138,9 @@ def lfu_cache(maxsize=100):
         wrapper.hits = wrapper.misses = 0
         wrapper.clear = clear
         return wrapper
+
     return decorating_function
+
 
 if __name__ == '__main__':
 
@@ -147,6 +150,7 @@ if __name__ == '__main__':
 
     domain = range(5)
     from random import choice
+
     for i in range(1000):
         r = f_lru(choice(domain), choice(domain))
 
@@ -158,6 +162,7 @@ if __name__ == '__main__':
 
     domain = range(5)
     from random import choice
+
     for i in range(1000):
         r = f_lfu(choice(domain), choice(domain))
 

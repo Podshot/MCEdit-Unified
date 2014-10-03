@@ -12,7 +12,6 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 
-
 import sys
 import os
 
@@ -51,11 +50,11 @@ def win32_utf8_argv():
         argc = c_int(0)
         argv = CommandLineToArgvW(cmd, byref(argc))
         if argc.value > 0:
-#            # Remove Python executable if present
-#            if argc.value - len(sys.argv) == 1:
-#                start = 1
-#            else:
-#                start = 0
+            # # Remove Python executable if present
+            #            if argc.value - len(sys.argv) == 1:
+            #                start = 1
+            #            else:
+            #                start = 0
             return [argv[i] for i in
                     xrange(0, argc.value)]
     except Exception:
@@ -80,5 +79,6 @@ def findDataDir():
         dataDir = os.getcwdu()
 
     return dataDir
+
 
 dataDir = findDataDir()

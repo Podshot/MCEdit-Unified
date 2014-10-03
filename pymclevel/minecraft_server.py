@@ -50,6 +50,7 @@ def which(program):
 convert = lambda text: int(text) if text.isdigit() else text
 alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
 
+
 def getVersions(doSnapshot):
     version = None
     JAR_VERSION_URL_TEMPLATE = "https://s3.amazonaws.com/Minecraft.Download/versions/{}/minecraft_server.{}.jar"
@@ -64,6 +65,7 @@ def getVersions(doSnapshot):
     print "Version: " + version
     URL = JAR_VERSION_URL_TEMPLATE.format(version, version)
     return URL
+
 
 def sort_nicely(l):
     """ Sort the given list in the way that humans expect.
@@ -108,7 +110,8 @@ this way.
 
     def reloadVersions(self):
         cacheDirList = os.listdir(self.cacheDir)
-        self.versions = list(reversed(sorted([v for v in cacheDirList if os.path.exists(self.jarfileForVersion(v))], key=alphanum_key)))
+        self.versions = list(
+            reversed(sorted([v for v in cacheDirList if os.path.exists(self.jarfileForVersion(v))], key=alphanum_key)))
 
         if MCServerChunkGenerator.javaExe:
             for f in cacheDirList:
@@ -119,7 +122,8 @@ this way.
                     os.remove(p)
 
         print "Minecraft_Server.jar storage initialized."
-        print u"Each server is stored in a subdirectory of {0} named with the server's version number".format(self.cacheDir)
+        print u"Each server is stored in a subdirectory of {0} named with the server's version number".format(
+            self.cacheDir)
 
         print "Cached servers: ", self.versions
 
@@ -165,6 +169,7 @@ this way.
         jf = self.jarfileForVersion(v)
         with file(jf, "rb") as f:
             import hashlib
+
             return hashlib.md5(f.read()).hexdigest()
 
     broken_versions = ["Beta 1.9 Prerelease {0}".format(i) for i in (1, 2, 3)]
@@ -216,7 +221,8 @@ def findJava():
         if javaExe is None:
             KEY_NAME = "HKLM\SOFTWARE\JavaSoft\Java Runtime Environment"
             try:
-                p = subprocess.Popen(["REG", "QUERY", KEY_NAME, "/v", "CurrentVersion"], stdout=subprocess.PIPE, universal_newlines=True)
+                p = subprocess.Popen(["REG", "QUERY", KEY_NAME, "/v", "CurrentVersion"], stdout=subprocess.PIPE,
+                                     universal_newlines=True)
                 o, e = p.communicate()
                 lines = o.split("\n")
                 for l in lines:
@@ -224,7 +230,8 @@ def findJava():
                     if l.startswith("CurrentVersion"):
                         words = l.split(None, 2)
                         version = words[-1]
-                        p = subprocess.Popen(["REG", "QUERY", KEY_NAME + "\\" + version, "/v", "JavaHome"], stdout=subprocess.PIPE, universal_newlines=True)
+                        p = subprocess.Popen(["REG", "QUERY", KEY_NAME + "\\" + version, "/v", "JavaHome"],
+                                             stdout=subprocess.PIPE, universal_newlines=True)
                         o, e = p.communicate()
                         lines = o.split("\n")
                         for l in lines:
@@ -277,11 +284,14 @@ class MCServerChunkGenerator(object):
         self.jarStorage = jarStorage or self.getDefaultJarStorage()
 
         if self.javaExe is None:
-            raise JavaNotFound("Could not find java. Please check that java is installed correctly. (Could not find java in your PATH environment variable.)")
+            raise JavaNotFound(
+                "Could not find java. Please check that java is installed correctly. (Could not find java in your PATH environment variable.)")
         if jarfile is None:
             jarfile = self.jarStorage.getJarfile(version)
         if jarfile is None:
-            raise VersionNotFound("Could not find minecraft_server.jar for version {0}. Please make sure that a minecraft_server.jar is placed under {1} in a subfolder named after the server's version number.".format(version or "(latest)", self.jarStorage.cacheDir))
+            raise VersionNotFound(
+                "Could not find minecraft_server.jar for version {0}. Please make sure that a minecraft_server.jar is placed under {1} in a subfolder named after the server's version number.".format(
+                    version or "(latest)", self.jarStorage.cacheDir))
         self.serverJarFile = jarfile
         self.serverVersion = version or self._serverVersion()
 
@@ -317,7 +327,8 @@ class MCServerChunkGenerator(object):
     def tempWorldForLevel(self, level):
 
         # tempDir = tempfile.mkdtemp("mclevel_servergen")
-        tempDir = os.path.join(self.worldCacheDir, self.jarStorage.checksumForVersion(self.serverVersion), str(level.RandomSeed))
+        tempDir = os.path.join(self.worldCacheDir, self.jarStorage.checksumForVersion(self.serverVersion),
+                               str(level.RandomSeed))
         propsFile = os.path.join(tempDir, "server.properties")
         properties = readProperties(propsFile)
 
@@ -356,10 +367,11 @@ class MCServerChunkGenerator(object):
 
     def addEULA(self, tempDir):
         eulaLines = []
-        eulaLines.append("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n")
+        eulaLines.append(
+            "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n")
         eulaLines.append("#Wed Jul 23 21:10:11 EDT 2014\n")
         eulaLines.append("eula=true\n")
-        with open(tempDir +"/"+ "eula.txt", "w") as f:
+        with open(tempDir + "/" + "eula.txt", "w") as f:
             f.writelines(eulaLines)
 
 
@@ -380,13 +392,13 @@ class MCServerChunkGenerator(object):
             log.info(line)
             yield line
 
-#            Forge and FML change stderr output, causing MCServerChunkGenerator to wait endlessly.
-#
-#            Vanilla:
-#              2012-11-13 11:29:19 [INFO] Done (9.962s)!
-#
-#            Forge/FML:
-#              2012-11-13 11:47:13 [INFO] [Minecraft] Done (8.020s)!
+            # Forge and FML change stderr output, causing MCServerChunkGenerator to wait endlessly.
+            #
+            #            Vanilla:
+            #              2012-11-13 11:29:19 [INFO] Done (9.962s)!
+            #
+            #            Forge/FML:
+            #              2012-11-13 11:47:13 [INFO] [Minecraft] Done (8.020s)!
 
             if "INFO" in line and "Done" in line:
                 if simulate:
@@ -422,7 +434,10 @@ class MCServerChunkGenerator(object):
         try:
             tempChunkBytes = tempWorld._getChunkBytes(cx, cz)
         except ChunkNotPresent, e:
-            raise ChunkNotPresent, "While generating a world in {0} using server {1} ({2!r})".format(tempWorld, self.serverJarFile, e), sys.exc_info()[2]
+            raise ChunkNotPresent, "While generating a world in {0} using server {1} ({2!r})".format(tempWorld,
+                                                                                                     self.serverJarFile,
+                                                                                                     e), sys.exc_info()[
+                2]
 
         level.worldFolder.saveChunk(cx, cz, tempChunkBytes)
         level._allChunks = None
@@ -449,8 +464,8 @@ class MCServerChunkGenerator(object):
         minRadius = self.minRadius
 
         genPositions = list(itertools.product(
-                       xrange(box.mincx, box.maxcx, minRadius * 2),
-                       xrange(box.mincz, box.maxcz, minRadius * 2)))
+            xrange(box.mincx, box.maxcx, minRadius * 2),
+            xrange(box.mincz, box.maxcz, minRadius * 2)))
 
         for i, (cx, cz) in enumerate(genPositions):
             log.info("Generating at %s" % ((cx, cz),))
@@ -497,13 +512,14 @@ class MCServerChunkGenerator(object):
 
             i = 0
             for cx, cz in itertools.product(
-                            xrange(centercx - maxRadius, centercx + maxRadius),
-                            xrange(centercz - maxRadius, centercz + maxRadius)):
+                    xrange(centercx - maxRadius, centercx + maxRadius),
+                    xrange(centercz - maxRadius, centercz + maxRadius)):
                 if level.containsChunk(cx, cz):
                     chunks.discard((cx, cz))
                 elif ((cx, cz) in chunks
-                    and all(tempWorld.containsChunk(ncx, ncz) for ncx, ncz in itertools.product(xrange(cx-1, cx+2), xrange(cz-1, cz+2)))
-                    ):
+                      and all(tempWorld.containsChunk(ncx, ncz) for ncx, ncz in
+                              itertools.product(xrange(cx - 1, cx + 2), xrange(cz - 1, cz + 2)))
+                ):
                     self.copyChunkAtPosition(tempWorld, level, cx, cz)
                     i += 1
                     chunks.discard((cx, cz))
@@ -532,13 +548,13 @@ class MCServerChunkGenerator(object):
             memflags = ["-Xmx1024M", "-Xms1024M", ]
 
         proc = subprocess.Popen([cls.javaExe, "-Djava.awt.headless=true"] + memflags + ["-jar", jarfile],
-            executable=cls.javaExe,
-            cwd=startingDir,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            universal_newlines=True,
-            )
+                                executable=cls.javaExe,
+                                cwd=startingDir,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT,
+                                universal_newlines=True,
+        )
 
         atexit.register(proc.terminate)
         return proc

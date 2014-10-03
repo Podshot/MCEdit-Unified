@@ -113,6 +113,7 @@ class DisplayList(object):
 
         def _delete(r):
             DisplayList.allLists.remove(r)
+
         self.allLists.append(weakref.ref(self, _delete))
 
     def __del__(self):
@@ -145,7 +146,7 @@ class DisplayList(object):
         l = gl.glGenLists(1)
         GL.glNewList(l, GL.GL_COMPILE)
         drawFunc()
-        #try:
+        # try:
         GL.glEndList()
         #except GL.GLError:
         #    print "Error while compiling display list. Retrying display list code to pinpoint error"
@@ -184,6 +185,7 @@ class Texture(object):
 
         def _delete(r):
             Texture.allTextures.remove(r)
+
         self.allTextures.append(weakref.ref(self, _delete))
         self.bind()
         GL.glTexParameter(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, minFilter)
@@ -245,7 +247,8 @@ class FramebufferTexture(Texture):
         else:
             GL.glReadBuffer(GL.GL_BACK)
 
-            GL.glPushAttrib(GL.GL_VIEWPORT_BIT | GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_TEST | GL.GL_STENCIL_BUFFER_BIT)
+            GL.glPushAttrib(
+                GL.GL_VIEWPORT_BIT | GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_TEST | GL.GL_STENCIL_BUFFER_BIT)
             GL.glDisable(GL.GL_STENCIL_TEST)
 
             GL.glViewport(0, 0, width, height)
@@ -258,7 +261,6 @@ class FramebufferTexture(Texture):
             GL.glCopyTexSubImage2D(GL.GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height)
 
             GL.glPopAttrib()
-
 
 
 def debugDrawPoint(point):

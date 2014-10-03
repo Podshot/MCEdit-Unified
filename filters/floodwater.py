@@ -5,14 +5,15 @@ import datetime
 
 displayName = "Classic Water Flood"
 inputs = (
-  ("Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.", "label"),
-  ("Flood Water", True),
-  ("Flood Lava", False),
+    (
+    "Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.",
+    "label"),
+    ("Flood Water", True),
+    ("Flood Lava", False),
 )
 
 
 def perform(level, box, options):
-
     def floodFluid(waterIDs, waterID):
         waterTable = zeros(256, dtype='bool')
         waterTable[waterIDs] = True

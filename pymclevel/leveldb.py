@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 #
 # Copyright (C) 2012 Space Monkey, Inc.
 #
@@ -70,48 +70,48 @@ _ldb.leveldb_cache_destroy.restype = None
 _ldb.leveldb_options_create.argtypes = []
 _ldb.leveldb_options_create.restype = ctypes.c_void_p
 _ldb.leveldb_options_set_filter_policy.argtypes = [ctypes.c_void_p,
-        ctypes.c_void_p]
+                                                   ctypes.c_void_p]
 _ldb.leveldb_options_set_filter_policy.restype = None
 _ldb.leveldb_options_set_create_if_missing.argtypes = [ctypes.c_void_p,
-        ctypes.c_ubyte]
+                                                       ctypes.c_ubyte]
 _ldb.leveldb_options_set_create_if_missing.restype = None
 _ldb.leveldb_options_set_error_if_exists.argtypes = [ctypes.c_void_p,
-        ctypes.c_ubyte]
+                                                     ctypes.c_ubyte]
 _ldb.leveldb_options_set_error_if_exists.restype = None
 _ldb.leveldb_options_set_paranoid_checks.argtypes = [ctypes.c_void_p,
-        ctypes.c_ubyte]
+                                                     ctypes.c_ubyte]
 _ldb.leveldb_options_set_paranoid_checks.restype = None
 _ldb.leveldb_options_set_write_buffer_size.argtypes = [ctypes.c_void_p,
-        ctypes.c_size_t]
+                                                       ctypes.c_size_t]
 _ldb.leveldb_options_set_write_buffer_size.restype = None
 _ldb.leveldb_options_set_max_open_files.argtypes = [ctypes.c_void_p,
-        ctypes.c_int]
+                                                    ctypes.c_int]
 _ldb.leveldb_options_set_max_open_files.restype = None
 _ldb.leveldb_options_set_cache.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 _ldb.leveldb_options_set_cache.restype = None
 _ldb.leveldb_options_set_block_size.argtypes = [ctypes.c_void_p,
-        ctypes.c_size_t]
+                                                ctypes.c_size_t]
 _ldb.leveldb_options_set_block_size.restype = None
 _ldb.leveldb_options_destroy.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_options_destroy.restype = None
 
 _ldb.leveldb_open.argtypes = [ctypes.c_void_p, ctypes.c_char_p,
-        ctypes.c_void_p]
+                              ctypes.c_void_p]
 _ldb.leveldb_open.restype = ctypes.c_void_p
 _ldb.leveldb_close.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_close.restype = None
 _ldb.leveldb_put.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p, ctypes.c_size_t,
-        ctypes.c_void_p]
+                             ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p, ctypes.c_size_t,
+                             ctypes.c_void_p]
 _ldb.leveldb_put.restype = None
 _ldb.leveldb_delete.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p]
+                                ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p]
 _ldb.leveldb_delete.restype = None
 _ldb.leveldb_write.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_void_p, ctypes.c_void_p]
+                               ctypes.c_void_p, ctypes.c_void_p]
 _ldb.leveldb_write.restype = None
 _ldb.leveldb_get.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p, ctypes.c_void_p]
+                             ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p, ctypes.c_void_p]
 _ldb.leveldb_get.restype = ctypes.POINTER(ctypes.c_char)
 
 _ldb.leveldb_writeoptions_create.argtypes = []
@@ -119,7 +119,7 @@ _ldb.leveldb_writeoptions_create.restype = ctypes.c_void_p
 _ldb.leveldb_writeoptions_destroy.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_writeoptions_destroy.restype = None
 _ldb.leveldb_writeoptions_set_sync.argtypes = [ctypes.c_void_p,
-        ctypes.c_ubyte]
+                                               ctypes.c_ubyte]
 _ldb.leveldb_writeoptions_set_sync.restype = None
 
 _ldb.leveldb_readoptions_create.argtypes = []
@@ -127,13 +127,13 @@ _ldb.leveldb_readoptions_create.restype = ctypes.c_void_p
 _ldb.leveldb_readoptions_destroy.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_readoptions_destroy.restype = None
 _ldb.leveldb_readoptions_set_verify_checksums.argtypes = [ctypes.c_void_p,
-        ctypes.c_ubyte]
+                                                          ctypes.c_ubyte]
 _ldb.leveldb_readoptions_set_verify_checksums.restype = None
 _ldb.leveldb_readoptions_set_fill_cache.argtypes = [ctypes.c_void_p,
-        ctypes.c_ubyte]
+                                                    ctypes.c_ubyte]
 _ldb.leveldb_readoptions_set_fill_cache.restype = None
 _ldb.leveldb_readoptions_set_snapshot.argtypes = [ctypes.c_void_p,
-        ctypes.c_void_p]
+                                                  ctypes.c_void_p]
 _ldb.leveldb_readoptions_set_snapshot.restype = None
 
 _ldb.leveldb_create_iterator.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
@@ -143,10 +143,10 @@ _ldb.leveldb_iter_destroy.restype = None
 _ldb.leveldb_iter_valid.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_iter_valid.restype = ctypes.c_bool
 _ldb.leveldb_iter_key.argtypes = [ctypes.c_void_p,
-        ctypes.POINTER(ctypes.c_size_t)]
+                                  ctypes.POINTER(ctypes.c_size_t)]
 _ldb.leveldb_iter_key.restype = ctypes.c_void_p
 _ldb.leveldb_iter_value.argtypes = [ctypes.c_void_p,
-        ctypes.POINTER(ctypes.c_size_t)]
+                                    ctypes.POINTER(ctypes.c_size_t)]
 _ldb.leveldb_iter_value.restype = ctypes.c_void_p
 _ldb.leveldb_iter_next.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_iter_next.restype = None
@@ -157,7 +157,7 @@ _ldb.leveldb_iter_seek_to_first.restype = None
 _ldb.leveldb_iter_seek_to_last.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_iter_seek_to_last.restype = None
 _ldb.leveldb_iter_seek.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_size_t]
+                                   ctypes.c_size_t]
 _ldb.leveldb_iter_seek.restype = None
 _ldb.leveldb_iter_get_error.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 _ldb.leveldb_iter_get_error.restype = None
@@ -170,19 +170,19 @@ _ldb.leveldb_writebatch_clear.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_writebatch_clear.restype = None
 
 _ldb.leveldb_writebatch_put.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_size_t, ctypes.c_void_p, ctypes.c_size_t]
+                                        ctypes.c_size_t, ctypes.c_void_p, ctypes.c_size_t]
 _ldb.leveldb_writebatch_put.restype = None
 _ldb.leveldb_writebatch_delete.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_size_t]
+                                           ctypes.c_size_t]
 _ldb.leveldb_writebatch_delete.restype = None
 
 _ldb.leveldb_approximate_sizes.argtypes = [ctypes.c_void_p, ctypes.c_int,
-        ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_void_p]
+                                           ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,
+                                           ctypes.c_void_p]
 _ldb.leveldb_approximate_sizes.restype = None
 
 _ldb.leveldb_compact_range.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
-        ctypes.c_size_t, ctypes.c_void_p, ctypes.c_size_t]
+                                       ctypes.c_size_t, ctypes.c_void_p, ctypes.c_size_t]
 _ldb.leveldb_compact_range.restype = None
 
 _ldb.leveldb_create_snapshot.argtypes = [ctypes.c_void_p]
@@ -193,7 +193,6 @@ _ldb.leveldb_release_snapshot.restype = None
 _ldb.leveldb_free.argtypes = [ctypes.c_void_p]
 _ldb.leveldb_free.restype = None
 
-
 Row = namedtuple('Row', 'key value')
 
 
@@ -202,7 +201,6 @@ class Error(Exception):
 
 
 class Iterator(object):
-
     """This class is created by calling __iter__ or iterator on a DB interface
     """
 
@@ -347,7 +345,7 @@ class Iterator(object):
         self._impl.prev()
 
     def range(self, start_key=None, end_key=None, start_inclusive=True,
-            end_inclusive=False):
+              end_inclusive=False):
         """A generator for some range of rows"""
         if start_key is not None:
             self.seek(start_key)
@@ -357,7 +355,7 @@ class Iterator(object):
             self.seekFirst()
         for row in self:
             if end_key is not None and (row.key > end_key or (
-                    not end_inclusive and row.key == end_key)):
+                        not end_inclusive and row.key == end_key)):
                 break
             yield row
 
@@ -376,7 +374,6 @@ class Iterator(object):
 
 
 class _OpaqueWriteBatch(object):
-
     """This is an opaque write batch that must be written to using the putTo
     and deleteFrom methods on DBInterface.
     """
@@ -392,7 +389,6 @@ class _OpaqueWriteBatch(object):
 
 
 class WriteBatch(_OpaqueWriteBatch):
-
     """This class is created stand-alone, but then written to some existing
     DBInterface
     """
@@ -411,7 +407,6 @@ class WriteBatch(_OpaqueWriteBatch):
 
 
 class DBInterface(object):
-
     """This class is created through a few different means:
 
     Initially, it can be created using either the DB() or MemoryDB()
@@ -487,7 +482,7 @@ class DBInterface(object):
         if self._prefix is not None:
             key = self._prefix + key
         return self._impl.get(key, verify_checksums=verify_checksums,
-                fill_cache=fill_cache)
+                              fill_cache=fill_cache)
 
     # pylint: disable=W0212
     def write(self, batch, sync=None):
@@ -514,9 +509,9 @@ class DBInterface(object):
             else:
                 prefix = self._prefix + prefix
         return Iterator(
-                self._impl.iterator(verify_checksums=verify_checksums,
-                                    fill_cache=fill_cache),
-                keys_only=keys_only, prefix=prefix)
+            self._impl.iterator(verify_checksums=verify_checksums,
+                                fill_cache=fill_cache),
+            keys_only=keys_only, prefix=prefix)
 
     def snapshot(self, default_sync=None, default_verify_checksums=None,
                  default_fill_cache=None):
@@ -527,9 +522,9 @@ class DBInterface(object):
         if default_fill_cache is None:
             default_fill_cache = self._default_fill_cache
         return DBInterface(self._impl.snapshot(), prefix=self._prefix,
-                allow_close=False, default_sync=default_sync,
-                default_verify_checksums=default_verify_checksums,
-                default_fill_cache=default_fill_cache)
+                           allow_close=False, default_sync=default_sync,
+                           default_verify_checksums=default_verify_checksums,
+                           default_fill_cache=default_fill_cache)
 
     def __iter__(self):
         return self.iterator().seekFirst()
@@ -551,10 +546,10 @@ class DBInterface(object):
 
     def has(self, key, verify_checksums=None, fill_cache=None):
         return self.get(key, verify_checksums=verify_checksums,
-                fill_cache=fill_cache) is not None
+                        fill_cache=fill_cache) is not None
 
     def scope(self, prefix, default_sync=None, default_verify_checksums=None,
-                 default_fill_cache=None):
+              default_fill_cache=None):
         if default_sync is None:
             default_sync = self._default_sync
         if default_verify_checksums is None:
@@ -564,20 +559,20 @@ class DBInterface(object):
         if self._prefix is not None:
             prefix = self._prefix + prefix
         return DBInterface(self._impl, prefix=prefix, allow_close=False,
-                default_sync=default_sync,
-                default_verify_checksums=default_verify_checksums,
-                default_fill_cache=default_fill_cache)
+                           default_sync=default_sync,
+                           default_verify_checksums=default_verify_checksums,
+                           default_fill_cache=default_fill_cache)
 
     def range(self, start_key=None, end_key=None, start_inclusive=True,
-            end_inclusive=False, verify_checksums=None, fill_cache=None):
+              end_inclusive=False, verify_checksums=None, fill_cache=None):
         if verify_checksums is None:
             verify_checksums = self._default_verify_checksums
         if fill_cache is None:
             fill_cache = self._default_fill_cache
         return self.iterator(verify_checksums=verify_checksums,
-                fill_cache=fill_cache).range(start_key=start_key,
-                        end_key=end_key, start_inclusive=start_inclusive,
-                        end_inclusive=end_inclusive)
+                             fill_cache=fill_cache).range(start_key=start_key,
+                                                          end_key=end_key, start_inclusive=start_inclusive,
+                                                          end_inclusive=end_inclusive)
 
     def keys(self, verify_checksums=None, fill_cache=None, prefix=None):
         if verify_checksums is None:
@@ -585,7 +580,7 @@ class DBInterface(object):
         if fill_cache is None:
             fill_cache = self._default_fill_cache
         return self.iterator(verify_checksums=verify_checksums,
-                fill_cache=fill_cache, prefix=prefix).seekFirst().keys()
+                             fill_cache=fill_cache, prefix=prefix).seekFirst().keys()
 
     def values(self, verify_checksums=None, fill_cache=None, prefix=None):
         if verify_checksums is None:
@@ -593,7 +588,7 @@ class DBInterface(object):
         if fill_cache is None:
             fill_cache = self._default_fill_cache
         return self.iterator(verify_checksums=verify_checksums,
-                fill_cache=fill_cache, prefix=prefix).seekFirst().values()
+                             fill_cache=fill_cache, prefix=prefix).seekFirst().values()
 
     def approximateDiskSizes(self, *ranges):
         return self._impl.approximateDiskSizes(*ranges)
@@ -617,7 +612,6 @@ def MemoryDB(*_args, **kwargs):
 
 
 class _IteratorMemImpl(object):
-
     __slots__ = ["_data", "_idx"]
 
     def __init__(self, memdb_data):
@@ -649,12 +643,11 @@ class _IteratorMemImpl(object):
         self._idx += 1
 
     def close(self):
-      self._data = []
-      self._idx = -1
+        self._data = []
+        self._idx = -1
 
 
 class _MemoryDBImpl(object):
-
     __slots__ = ["_data", "_lock", "_is_snapshot"]
 
     def __init__(self, data=None, is_snapshot=False):
@@ -732,7 +725,6 @@ class _MemoryDBImpl(object):
 
 
 class _PointerRef(object):
-
     __slots__ = ["ref", "_close", "_referrers", "__weakref__"]
 
     def __init__(self, ref, close_cb):
@@ -766,7 +758,6 @@ def _checkError(error):
 
 
 class _IteratorDbImpl(object):
-
     __slots__ = ["_ref"]
 
     def __init__(self, iterator_ref):
@@ -813,7 +804,7 @@ class _IteratorDbImpl(object):
         _checkError(error)
 
     def close(self):
-      self._ref.close()
+        self._ref.close()
 
 
 def DB(path, bloom_filter_size=10, create_if_missing=False,
@@ -826,15 +817,15 @@ def DB(path, bloom_filter_size=10, create_if_missing=False,
     """
 
     filter_policy = _PointerRef(
-            _ldb.leveldb_filterpolicy_create_bloom(bloom_filter_size),
-            _ldb.leveldb_filterpolicy_destroy)
+        _ldb.leveldb_filterpolicy_create_bloom(bloom_filter_size),
+        _ldb.leveldb_filterpolicy_destroy)
     cache = _PointerRef(
-            _ldb.leveldb_cache_create_lru(block_cache_size),
-            _ldb.leveldb_cache_destroy)
+        _ldb.leveldb_cache_create_lru(block_cache_size),
+        _ldb.leveldb_cache_destroy)
 
     options = _ldb.leveldb_options_create()
     _ldb.leveldb_options_set_filter_policy(
-            options, filter_policy.ref)
+        options, filter_policy.ref)
     _ldb.leveldb_options_set_create_if_missing(options, create_if_missing)
     _ldb.leveldb_options_set_error_if_exists(options, error_if_exists)
     _ldb.leveldb_options_set_paranoid_checks(options, paranoid_checks)
@@ -859,7 +850,6 @@ def DB(path, bloom_filter_size=10, create_if_missing=False,
 
 
 class _LevelDBImpl(object):
-
     __slots__ = ["_objs", "_db", "_snapshot"]
 
     def __init__(self, db_ref, snapshot_ref=None, other_objects=()):
@@ -882,7 +872,7 @@ class _LevelDBImpl(object):
         options = _ldb.leveldb_writeoptions_create()
         _ldb.leveldb_writeoptions_set_sync(options, sync)
         _ldb.leveldb_put(self._db.ref, options, key, len(key), val, len(val),
-                ctypes.byref(error))
+                         ctypes.byref(error))
         _ldb.leveldb_writeoptions_destroy(options)
         _checkError(error)
 
@@ -893,7 +883,7 @@ class _LevelDBImpl(object):
         options = _ldb.leveldb_writeoptions_create()
         _ldb.leveldb_writeoptions_set_sync(options, sync)
         _ldb.leveldb_delete(self._db.ref, options, key, len(key),
-                ctypes.byref(error))
+                            ctypes.byref(error))
         _ldb.leveldb_writeoptions_destroy(options)
         _checkError(error)
 
@@ -901,13 +891,13 @@ class _LevelDBImpl(object):
         error = ctypes.POINTER(ctypes.c_char)()
         options = _ldb.leveldb_readoptions_create()
         _ldb.leveldb_readoptions_set_verify_checksums(options,
-                verify_checksums)
+                                                      verify_checksums)
         _ldb.leveldb_readoptions_set_fill_cache(options, fill_cache)
         if self._snapshot is not None:
             _ldb.leveldb_readoptions_set_snapshot(options, self._snapshot.ref)
         size = ctypes.c_size_t(0)
         val_p = _ldb.leveldb_get(self._db.ref, options, key, len(key),
-                ctypes.byref(size), ctypes.byref(error))
+                                 ctypes.byref(size), ctypes.byref(error))
         if bool(val_p):
             val = ctypes.string_at(val_p, size.value)
             _ldb.leveldb_free(ctypes.cast(val_p, ctypes.c_void_p))
@@ -924,14 +914,14 @@ class _LevelDBImpl(object):
         real_batch = _ldb.leveldb_writebatch_create()
         for key, val in batch._puts.iteritems():
             _ldb.leveldb_writebatch_put(real_batch, key, len(key), val,
-                    len(val))
+                                        len(val))
         for key in batch._deletes:
             _ldb.leveldb_writebatch_delete(real_batch, key, len(key))
         error = ctypes.POINTER(ctypes.c_char)()
         options = _ldb.leveldb_writeoptions_create()
         _ldb.leveldb_writeoptions_set_sync(options, sync)
         _ldb.leveldb_write(self._db.ref, options, real_batch,
-                ctypes.byref(error))
+                           ctypes.byref(error))
         _ldb.leveldb_writeoptions_destroy(options)
         _ldb.leveldb_writebatch_destroy(real_batch)
         _checkError(error)
@@ -941,11 +931,11 @@ class _LevelDBImpl(object):
         if self._snapshot is not None:
             _ldb.leveldb_readoptions_set_snapshot(options, self._snapshot.ref)
         _ldb.leveldb_readoptions_set_verify_checksums(
-                options, verify_checksums)
+            options, verify_checksums)
         _ldb.leveldb_readoptions_set_fill_cache(options, fill_cache)
         it_ref = _PointerRef(
-                _ldb.leveldb_create_iterator(self._db.ref, options),
-                _ldb.leveldb_iter_destroy)
+            _ldb.leveldb_create_iterator(self._db.ref, options),
+            _ldb.leveldb_iter_destroy)
         _ldb.leveldb_readoptions_destroy(options)
         self._db.addReferrer(it_ref)
         return _IteratorDbImpl(it_ref)
@@ -966,18 +956,18 @@ class _LevelDBImpl(object):
             end_keys[i] = ctypes.cast(range_[1], ctypes.c_void_p)
             start_lens[i], end_lens[i] = len(range_[0]), len(range_[1])
         _ldb.leveldb_approximate_sizes(self._db.ref, len(ranges), start_keys,
-                start_lens, end_keys, end_lens, sizes)
+                                       start_lens, end_keys, end_lens, sizes)
         return list(sizes)
 
     def compactRange(self, start_key, end_key):
         assert isinstance(start_key, str) and isinstance(end_key, str)
         _ldb.leveldb_compact_range(self._db.ref, start_key, len(start_key),
-                end_key, len(end_key))
+                                   end_key, len(end_key))
 
     def snapshot(self):
         snapshot_ref = _PointerRef(
-                _ldb.leveldb_create_snapshot(self._db.ref),
-                lambda ref: _ldb.leveldb_release_snapshot(self._db.ref, ref))
+            _ldb.leveldb_create_snapshot(self._db.ref),
+            lambda ref: _ldb.leveldb_release_snapshot(self._db.ref, ref))
         self._db.addReferrer(snapshot_ref)
         return _LevelDBImpl(self._db, snapshot_ref=snapshot_ref,
                             other_objects=self._objs)
