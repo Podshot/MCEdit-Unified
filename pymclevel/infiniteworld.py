@@ -31,6 +31,7 @@ import nbt
 from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
 import version_compatability_utils
+import scoreboard
 
 log = getLogger(__name__)
 
@@ -1076,6 +1077,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
         if "Player" in self.root_tag["Data"]:
             self.players.append("Player")
+
+        
+        if os.path.exists(self.worldFolder.getFolderPath("data")):
+            if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
+                self.scoreboard = scoreboard.Scoreboard(self)
+        
 
         self.preloadDimensions()
 

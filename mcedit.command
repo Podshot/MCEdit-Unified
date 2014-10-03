@@ -1,2 +1,3 @@
-cd ~/MCEdit-Unified
-python ~/MCEdit-Unified/mcedit.py
+#!/bin/sh
+cd "$(dirname "$0")"
+python mcedit.py
