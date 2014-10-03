@@ -57,8 +57,10 @@ def genericNorthSouthFlip(cls):
         rotation[cls.TopNorth] = cls.TopSouth
 
     return rotation
-    
+
+
 rotationClasses = []
+
 
 def genericFlipRotation(cls):
     cls.rotateLeft = genericRotation(cls)
@@ -69,7 +71,8 @@ def genericFlipRotation(cls):
     rotationClasses.append(cls)
     return cls
 
-#Note, directions are based on the old north. North in here is East ingame.
+
+# Note, directions are based on the old north. North in here is East ingame.
 class Torch:
     blocktypes = [
         alphaMaterials.Torch.ID,
@@ -82,6 +85,7 @@ class Torch:
     West = 3
     East = 4
 
+
 genericFlipRotation(Torch)
 
 
@@ -92,6 +96,8 @@ class Ladder:
     West = 3
     North = 4
     South = 5
+
+
 genericFlipRotation(Ladder)
 
 
@@ -106,6 +112,8 @@ class Stair:
     TopNorth = 5
     TopWest = 6
     TopEast = 7
+
+
 genericFlipRotation(Stair)
 
 
@@ -125,7 +133,8 @@ class HalfSlab:
     TopBrickSlab = 12
     TopStoneBrickSlab = 13
 
-HalfSlab.flipVertical =  arange(16, dtype='uint8')
+
+HalfSlab.flipVertical = arange(16, dtype='uint8')
 HalfSlab.flipVertical[HalfSlab.StoneSlab] = HalfSlab.TopStoneSlab
 HalfSlab.flipVertical[HalfSlab.SandstoneSlab] = HalfSlab.TopSandstoneSlab
 HalfSlab.flipVertical[HalfSlab.WoodenSlab] = HalfSlab.TopWoodenSlab
@@ -148,6 +157,8 @@ class WallSign:
     West = 3
     North = 4
     South = 5
+
+
 genericFlipRotation(WallSign)
 
 
@@ -163,6 +174,8 @@ class FurnaceDispenserChest:
     West = 3
     North = 4
     South = 5
+
+
 genericFlipRotation(FurnaceDispenserChest)
 
 
@@ -176,6 +189,8 @@ class Pumpkin:
     South = 1
     West = 2
     North = 3
+
+
 genericFlipRotation(Pumpkin)
 
 
@@ -196,7 +211,6 @@ class Rail:
 
 
 def generic8wayRotation(cls):
-
     cls.rotateLeft = genericRotation(cls)
     cls.rotateLeft[cls.Northeast] = cls.Northwest
     cls.rotateLeft[cls.Southeast] = cls.Northeast
@@ -215,6 +229,7 @@ def generic8wayRotation(cls):
     cls.flipNorthSouth[cls.Southwest] = cls.Northwest
     cls.flipNorthSouth[cls.Northwest] = cls.Southwest
     rotationClasses.append(cls)
+
 
 generic8wayRotation(Rail)
 Rail.rotateLeft[Rail.NorthSouth] = Rail.EastWest
@@ -257,6 +272,8 @@ applyThrownBit = applyBit8
 
 class PoweredDetectorRail(Rail):
     blocktypes = [alphaMaterials.PoweredRail.ID, alphaMaterials.DetectorRail.ID, alphaMaterials.ActivatorRail.ID]
+
+
 PoweredDetectorRail.rotateLeft = genericRotation(PoweredDetectorRail)
 
 PoweredDetectorRail.rotateLeft[PoweredDetectorRail.NorthSouth] = PoweredDetectorRail.EastWest
@@ -279,6 +296,8 @@ class Lever:
     EastWest = 5
     NorthSouth = 6
     Down = 7
+
+
 Lever.rotateLeft = genericRotation(Lever)
 Lever.rotateLeft[Lever.NorthSouth] = Lever.EastWest
 Lever.rotateLeft[Lever.EastWest] = Lever.NorthSouth
@@ -297,6 +316,8 @@ class Button:
     North = 2
     West = 3
     East = 4
+
+
 Button.rotateLeft = genericRotation(Button)
 Button.flipEastWest = genericEastWestFlip(Button)
 Button.flipNorthSouth = genericNorthSouthFlip(Button)
@@ -316,6 +337,7 @@ class SignPost:
     flipNorthSouth = arange(16, dtype='uint8')
     pass
 
+
 rotationClasses.append(SignPost)
 
 
@@ -325,6 +347,7 @@ class Bed:
     North = 1
     East = 2
     South = 3
+
 
 genericFlipRotation(Bed)
 applyBit8(Bed)
@@ -351,6 +374,7 @@ class Door:
 
     rotateLeft = arange(16, dtype='uint8')
 
+
 applyBit4(Door.rotateLeft)
 
 Door.flipEastWest = arange(16, dtype='uint8')
@@ -366,6 +390,7 @@ Door.flipNorthSouth[Door.North] = Door.South
 Door.flipNorthSouth[Door.South] = Door.North
 rotationClasses.append(Door)
 
+
 class RedstoneRepeater:
     blocktypes = [
         alphaMaterials.RedstoneRepeaterOff.ID,
@@ -377,6 +402,7 @@ class RedstoneRepeater:
     South = 1
     West = 2
     North = 3
+
 
 genericFlipRotation(RedstoneRepeater)
 
@@ -396,6 +422,7 @@ class Trapdoor:
     TopSouth = 6
     TopNorth = 7
 
+
 genericFlipRotation(Trapdoor)
 applyOpenedBit = applyBit8
 applyOpenedBit(Trapdoor)
@@ -411,6 +438,7 @@ class PistonBody:
     North = 4
     South = 5
 
+
 genericFlipRotation(PistonBody)
 applyPistonBit = applyBit8
 applyPistonBit(PistonBody)
@@ -418,6 +446,7 @@ applyPistonBit(PistonBody)
 
 class PistonHead(PistonBody):
     blocktypes = [alphaMaterials.PistonHead.ID]
+
 
 rotationClasses.append(PistonHead)
 
@@ -448,6 +477,7 @@ class HugeMushroom:
     Northwest = 7
     North = 4
 
+
 generic8wayRotation(HugeMushroom)
 
 
@@ -475,7 +505,6 @@ Vines.flipNorthSouth[(Vines.flipNorthSouth & NorthSouthBits) > 0] ^= NorthSouthB
 rotationClasses.append(Vines)
 
 
-
 class Anvil:
     blocktypes = [alphaMaterials.Anvil.ID]
 
@@ -483,10 +512,12 @@ class Anvil:
     South = 1
     West = 2
     North = 3
-    
+
+
 genericFlipRotation(Anvil)
 applyAnvilBit = applyBit8
 applyAnvilBit(Anvil)
+
 
 @genericFlipRotation
 class Hay:
@@ -497,6 +528,7 @@ class Hay:
     North = 8
     South = 8
 
+
 @genericFlipRotation
 class QuartzPillar:
     blocktypes = [alphaMaterials.BlockofQuartz.ID]
@@ -506,6 +538,7 @@ class QuartzPillar:
     North = 4
     South = 4
 
+
 class Wood:
     blocktypes = [alphaMaterials.Wood.ID, alphaMaterials.Wood2.ID]
 
@@ -513,10 +546,12 @@ class Wood:
     South = 1
     West = 2
     North = 3
-    
+
+
 genericFlipRotation(Anvil)
 applyAnvilBit = applyBit8
 applyAnvilBit(Anvil)
+
 
 class FenceGate:
     blocktypes = [alphaMaterials.FenceGate.ID]
@@ -525,6 +560,7 @@ class FenceGate:
     West = 1
     North = 2
     East = 3
+
 
 @genericFlipRotation
 class EnderPortal:
@@ -535,6 +571,7 @@ class EnderPortal:
     North = 2
     East = 3
 
+
 @genericFlipRotation
 class CocoaPlant:
     blocktypes = [alphaMaterials.CocoaPlant.ID]
@@ -544,7 +581,9 @@ class CocoaPlant:
     South = 2
     West = 3
 
-applyBits48(CocoaPlant) # growth state
+
+applyBits48(CocoaPlant)  # growth state
+
 
 @genericFlipRotation
 class TripwireHook:
@@ -555,7 +594,9 @@ class TripwireHook:
     North = 2
     East = 3
 
-applyBits48(TripwireHook) # activation/ready state
+
+applyBits48(TripwireHook)  # activation/ready state
+
 
 @genericFlipRotation
 class MobHead:
@@ -566,6 +607,7 @@ class MobHead:
     North = 4
     South = 5
 
+
 @genericFlipRotation
 class Hopper:
     blocktypes = [alphaMaterials.Hopper.ID]
@@ -574,8 +616,9 @@ class Hopper:
     West = 3
     North = 4
     South = 5
-@genericFlipRotation
-    
+
+
+@genericFlipRotation \
 class Dropper:
     blocktypes = [alphaMaterials.Dropper.ID]
     Down = 0
@@ -584,8 +627,9 @@ class Dropper:
     West = 3
     North = 4
     South = 5
-@genericFlipRotation
 
+
+@genericFlipRotation \
 class RedstoneComparator:
     blocktypes = [alphaMaterials.RedstoneComparatorInactive.ID, alphaMaterials.RedstoneComparatorActive.ID]
 
@@ -594,7 +638,9 @@ class RedstoneComparator:
     West = 2
     North = 3
 
+
 applyBits48(RedstoneComparator)
+
 
 def masterRotationTable(attrname):
     # compute a materials.id_limitx16 table mapping each possible blocktype/data combination to

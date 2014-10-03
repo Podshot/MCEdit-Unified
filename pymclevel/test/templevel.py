@@ -11,6 +11,7 @@ tempdir = os.path.join(tempfile.gettempdir(), "pymclevel_test")
 if not os.path.exists(tempdir):
     os.mkdir(tempdir)
 
+
 def mktemp(suffix):
     td = tempfile.mkdtemp(suffix, dir=tempdir)
     os.rmdir(td)

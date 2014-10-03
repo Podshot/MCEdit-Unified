@@ -1,4 +1,4 @@
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 #
 #   Albow - Root widget
 #
@@ -17,12 +17,14 @@ from controls import Label
 
 from datetime import datetime, timedelta
 from albow.dialogs import wrapped_label
+
 start_time = datetime.now()
 
 mod_cmd = KMOD_LCTRL | KMOD_RCTRL | KMOD_LMETA | KMOD_RMETA
 double_click_time = timedelta(0, 0, 300000)  # days, seconds, microseconds
 
 import logging
+
 log = logging.getLogger(__name__)
 
 modifiers = dict(
@@ -34,17 +36,17 @@ modifiers = dict(
 
 modkeys = {
     K_LSHIFT: 'shift', K_RSHIFT: 'shift',
-    K_LCTRL:  'ctrl', K_RCTRL:  'ctrl',
-    K_LALT:   'alt', K_RALT:   'alt',
-    K_LMETA:  'meta', K_RMETA:  'meta',
+    K_LCTRL: 'ctrl', K_RCTRL: 'ctrl',
+    K_LALT: 'alt', K_RALT: 'alt',
+    K_LMETA: 'meta', K_RMETA: 'meta',
 }
 
 MUSIC_END_EVENT = USEREVENT + 1
 
 last_mouse_event = Event(0, pos=(0, 0), local=(0, 0))
 last_mouse_event_handler = None
-root_widget = None     # Root of the containment hierarchy
-top_widget = None      # Initial dispatch target
+root_widget = None  # Root of the containment hierarchy
+top_widget = None  # Initial dispatch target
 clicked_widget = None  # Target of mouse_drag and mouse_up events
 
 #---------------------------------------------------------------------------
@@ -52,6 +54,7 @@ clicked_widget = None  # Target of mouse_drag and mouse_up events
 
 class Cancel(Exception):
     pass
+
 
 #---------------------------------------------------------------------------
 
@@ -78,6 +81,7 @@ def get_top_widget():
 
 def get_focus():
     return top_widget.get_focus()
+
 
 #---------------------------------------------------------------------------
 
@@ -134,6 +138,7 @@ class RootWidget(Widget):
         is_modal = modal_widget is not None
         modal_widget = modal_widget or self
         from OpenGL import GL
+
         try:
             old_top_widget = top_widget
             top_widget = modal_widget
@@ -168,7 +173,7 @@ class RootWidget(Widget):
                     events.extend(pygame.event.get())
                     for event in events:
                         #if event.type:
-                            #log.debug("%s", event)
+                        #log.debug("%s", event)
 
                         type = event.type
                         if type == QUIT:
@@ -293,10 +298,12 @@ class RootWidget(Widget):
 
     def add_idle_handler(self, widget):
         from weakref import ref
+
         self.idle_handlers.append(ref(widget))
 
     def remove_idle_handler(self, widget):
         from weakref import ref
+
         self.idle_handlers.remove(ref(widget))
 
     def send_key(self, widget, name, event):
@@ -380,6 +387,7 @@ class RootWidget(Widget):
 
     def gl_clear(self):
         from OpenGL import GL
+
         bg = self.bg_color
         if bg:
             r = bg[0] / 255.0
@@ -390,6 +398,7 @@ class RootWidget(Widget):
 
     def music_end(self):
         import music
+
         music.music_end()
 
 #---------------------------------------------------------------------------

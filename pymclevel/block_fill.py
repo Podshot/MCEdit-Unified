@@ -9,6 +9,7 @@ from mclevelbase import exhaust
 import blockrotation
 from entity import TileEntity
 
+
 def blockReplaceTable(blocksToReplace):
     blocktable = numpy.zeros((materials.id_limit, 16), dtype='bool')
     for b in blocksToReplace:
@@ -19,8 +20,10 @@ def blockReplaceTable(blocksToReplace):
 
     return blocktable
 
+
 def fillBlocks(level, box, blockInfo, blocksToReplace=()):
     return exhaust(level.fillBlocksIter(box, blockInfo, blocksToReplace))
+
 
 def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
     if box is None:
@@ -31,7 +34,7 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
 
     # shouldRetainData = (not blockInfo.hasVariants and not any([b.hasVariants for b in blocksToReplace]))
     # if shouldRetainData:
-    #    log.info( "Preserving data bytes" )
+    # log.info( "Preserving data bytes" )
     shouldRetainData = False  # xxx old behavior overwrote blockdata with 0 when e.g. replacing water with lava
 
     log.info("Replacing {0} with {1}".format(blocksToReplace, blockInfo))

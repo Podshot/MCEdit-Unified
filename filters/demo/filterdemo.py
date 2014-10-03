@@ -1,11 +1,10 @@
-
 # the inputs list tells MCEdit what kind of options to present to the user.
 # each item is a (name, value) pair.  name is a text string acting
 # both as a text label for the input on-screen and a key for the 'options'
 # parameter to perform(). value and its type indicate allowable and
 # default values for the option:
 
-#    True or False:  creates a checkbox with the given value as default
+# True or False:  creates a checkbox with the given value as default
 #    int or float value: creates a value input with the given value as default
 #        int values create fields that only accept integers.
 #    tuple of numbers: a tuple of ints or floats creates a value input with minimum and
@@ -23,11 +22,11 @@
 # a checkbox initially checked, and a menu of choices
 
 inputs = (
-  ("Depth", (4, -128, 128)),
-  ("Pick a block:", "blocktype"),
-  ("Fractal complexity", 15.0),
-  ("Enable thrusters", True),
-  ("Access method", ("Use blockAt", "Use temp schematic", "Use chunk slices")),
+    ("Depth", (4, -128, 128)),
+    ("Pick a block:", "blocktype"),
+    ("Fractal complexity", 15.0),
+    ("Enable thrusters", True),
+    ("Access method", ("Use blockAt", "Use temp schematic", "Use chunk slices")),
 )
 
 # perform() is the main entry point of a filter. Its parameters are

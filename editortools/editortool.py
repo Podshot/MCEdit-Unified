@@ -3,6 +3,7 @@ import numpy
 from depths import DepthOffset
 from pymclevel import BoundingBox
 
+
 class EditorTool(object):
     surfaceBuild = False
     panel = None
@@ -102,7 +103,7 @@ class EditorTool(object):
         is picked, escape is pressed, or etc etc'''
         self.hidePanel()
 
-    #        pass
+    # pass
 
     def findBestTrackingPlane(self, face):
         cv = list(self.editor.mainViewport.cameraVector)
@@ -145,9 +146,9 @@ class EditorTool(object):
 
         points = {}
 
-#        glPointSize(5.0)
-#        glColor(1.0, 1.0, 0.0, 1.0)
-#        glBegin(GL_POINTS)
+        #        glPointSize(5.0)
+        #        glColor(1.0, 1.0, 0.0, 1.0)
+        #        glBegin(GL_POINTS)
 
         for dim in range(3):
             dim1 = dim + 1
@@ -169,18 +170,19 @@ class EditorTool(object):
                         scale = d / normal[dim]
 
                         point = map(lambda a, p: (a * scale + p), normal, p0)
-    #                    glVertex3f(*point)
+                        #                    glVertex3f(*point)
 
                         if pointInBounds(point, dim1) and pointInBounds(point, dim2):
                             points[dim * 2 + side] = point
 
-#        glEnd()
+                        #        glEnd()
 
         if not len(points):
             return None, None
 
         cp = self.editor.mainViewport.cameraPosition
-        distances = dict((numpy.sum(map(lambda a, b: (b - a) ** 2, cp, point)), (face, point)) for face, point in points.iteritems())
+        distances = dict(
+            (numpy.sum(map(lambda a, b: (b - a) ** 2, cp, point)), (face, point)) for face, point in points.iteritems())
         if not len(distances):
             return None, None
 
@@ -224,9 +226,8 @@ class EditorTool(object):
     def selectionCorners(self):
         """ returns the positions of the two selection corners as a pair of 3-tuples, each ordered x,y,z """
 
-        if(None != self.editor.selectionTool.bottomLeftPoint and
-           None != self.editor.selectionTool.topRightPoint):
-
+        if (None != self.editor.selectionTool.bottomLeftPoint and
+                    None != self.editor.selectionTool.topRightPoint):
             return (self.editor.selectionTool.bottomLeftPoint,
                     self.editor.selectionTool.topRightPoint)
 
@@ -283,6 +284,7 @@ class EditorTool(object):
     @property
     def maxBlocks(self):
         from leveleditor import Settings
+
         return Settings.blockBuffer.get() / 2  # assume block buffer in bytes
 
     def showPanel(self):

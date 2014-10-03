@@ -78,7 +78,7 @@ class PocketChunksFile(object):
             self.repair()
 
         logger.info("Found region file {file} with {used}/{total} sectors used and {chunks} chunks present".format(
-             file=os.path.basename(path), used=self.usedSectors, total=self.sectorCount, chunks=self.chunkCount))
+            file=os.path.basename(path), used=self.usedSectors, total=self.sectorCount, chunks=self.chunkCount))
 
     @property
     def usedSectors(self):
@@ -94,68 +94,70 @@ class PocketChunksFile(object):
 
     def repair(self):
         pass
-#        lostAndFound = {}
-#        _freeSectors = [True] * len(self.freeSectors)
-#        _freeSectors[0] = _freeSectors[1] = False
-#        deleted = 0
-#        recovered = 0
-#        logger.info("Beginning repairs on {file} ({chunks} chunks)".format(file=os.path.basename(self.path), chunks=sum(self.offsets > 0)))
-#        rx, rz = self.regionCoords
-#        for index, offset in enumerate(self.offsets):
-#            if offset:
-#                cx = index & 0x1f
-#                cz = index >> 5
-#                cx += rx << 5
-#                cz += rz << 5
-#                sectorStart = offset >> 8
-#                sectorCount = offset & 0xff
-#                try:
-#
-#                    if sectorStart + sectorCount > len(self.freeSectors):
-#                        raise RegionMalformed("Offset {start}:{end} ({offset}) at index {index} pointed outside of the file".format()
-#                            start=sectorStart, end=sectorStart + sectorCount, index=index, offset=offset)
-#
-#                    compressedData = self._readChunk(cx, cz)
-#                    if compressedData is None:
-#                        raise RegionMalformed("Failed to read chunk data for {0}".format((cx, cz)))
-#
-#                    format, data = self.decompressSectors(compressedData)
-#                    chunkTag = nbt.load(buf=data)
-#                    lev = chunkTag["Level"]
-#                    xPos = lev["xPos"].value
-#                    zPos = lev["zPos"].value
-#                    overlaps = False
-#
-#                    for i in xrange(sectorStart, sectorStart + sectorCount):
-#                        if _freeSectors[i] is False:
-#                            overlaps = True
-#                        _freeSectors[i] = False
-#
-#
-#                    if xPos != cx or zPos != cz or overlaps:
-#                        lostAndFound[xPos, zPos] = (format, compressedData)
-#
-#                        if (xPos, zPos) != (cx, cz):
-#                            raise RegionMalformed("Chunk {found} was found in the slot reserved for {expected}".format(found=(xPos, zPos), expected=(cx, cz)))
-#                        else:
-#                            raise RegionMalformed("Chunk {found} (in slot {expected}) has overlapping sectors with another chunk!".format(found=(xPos, zPos), expected=(cx, cz)))
-#
-#
-#
-#                except Exception, e:
-#                    logger.info("Unexpected chunk data at sector {sector} ({exc})".format(sector=sectorStart, exc=e))
-#                    self.setOffset(cx, cz, 0)
-#                    deleted += 1
-#
-#        for cPos, (format, foundData) in lostAndFound.iteritems():
-#            cx, cz = cPos
-#            if self.getOffset(cx, cz) == 0:
-#                logger.info("Found chunk {found} and its slot is empty, recovering it".format(found=cPos))
-#                self._saveChunk(cx, cz, foundData[5:], format)
-#                recovered += 1
-#
-#        logger.info("Repair complete. Removed {0} chunks, recovered {1} chunks, net {2}".format(deleted, recovered, recovered - deleted))
-#
+
+        # lostAndFound = {}
+
+    #        _freeSectors = [True] * len(self.freeSectors)
+    #        _freeSectors[0] = _freeSectors[1] = False
+    #        deleted = 0
+    #        recovered = 0
+    #        logger.info("Beginning repairs on {file} ({chunks} chunks)".format(file=os.path.basename(self.path), chunks=sum(self.offsets > 0)))
+    #        rx, rz = self.regionCoords
+    #        for index, offset in enumerate(self.offsets):
+    #            if offset:
+    #                cx = index & 0x1f
+    #                cz = index >> 5
+    #                cx += rx << 5
+    #                cz += rz << 5
+    #                sectorStart = offset >> 8
+    #                sectorCount = offset & 0xff
+    #                try:
+    #
+    #                    if sectorStart + sectorCount > len(self.freeSectors):
+    #                        raise RegionMalformed("Offset {start}:{end} ({offset}) at index {index} pointed outside of the file".format()
+    #                            start=sectorStart, end=sectorStart + sectorCount, index=index, offset=offset)
+    #
+    #                    compressedData = self._readChunk(cx, cz)
+    #                    if compressedData is None:
+    #                        raise RegionMalformed("Failed to read chunk data for {0}".format((cx, cz)))
+    #
+    #                    format, data = self.decompressSectors(compressedData)
+    #                    chunkTag = nbt.load(buf=data)
+    #                    lev = chunkTag["Level"]
+    #                    xPos = lev["xPos"].value
+    #                    zPos = lev["zPos"].value
+    #                    overlaps = False
+    #
+    #                    for i in xrange(sectorStart, sectorStart + sectorCount):
+    #                        if _freeSectors[i] is False:
+    #                            overlaps = True
+    #                        _freeSectors[i] = False
+    #
+    #
+    #                    if xPos != cx or zPos != cz or overlaps:
+    #                        lostAndFound[xPos, zPos] = (format, compressedData)
+    #
+    #                        if (xPos, zPos) != (cx, cz):
+    #                            raise RegionMalformed("Chunk {found} was found in the slot reserved for {expected}".format(found=(xPos, zPos), expected=(cx, cz)))
+    #                        else:
+    #                            raise RegionMalformed("Chunk {found} (in slot {expected}) has overlapping sectors with another chunk!".format(found=(xPos, zPos), expected=(cx, cz)))
+    #
+    #
+    #
+    #                except Exception, e:
+    #                    logger.info("Unexpected chunk data at sector {sector} ({exc})".format(sector=sectorStart, exc=e))
+    #                    self.setOffset(cx, cz, 0)
+    #                    deleted += 1
+    #
+    #        for cPos, (format, foundData) in lostAndFound.iteritems():
+    #            cx, cz = cPos
+    #            if self.getOffset(cx, cz) == 0:
+    #                logger.info("Found chunk {found} and its slot is empty, recovering it".format(found=cPos))
+    #                self._saveChunk(cx, cz, foundData[5:], format)
+    #                recovered += 1
+    #
+    #        logger.info("Repair complete. Removed {0} chunks, recovered {1} chunks, net {2}".format(deleted, recovered, recovered - deleted))
+    #
 
 
     def _readChunk(self, cx, cz):
@@ -176,7 +178,7 @@ class PocketChunksFile(object):
         with self.file as f:
             f.seek(sectorStart * self.SECTOR_BYTES)
             data = f.read(numSectors * self.SECTOR_BYTES)
-        assert(len(data) > 0)
+        assert (len(data) > 0)
         logger.debug("REGION LOAD %s,%s sector %s", cx, cz, sectorStart)
         return data
 
@@ -292,6 +294,7 @@ class PocketChunksFile(object):
         coords = ((i % 32, i // 32) for i in indexes)
         return coords
 
+
 from infiniteworld import ChunkedLevelMixin
 from level import MCLevel, LightedChunk
 
@@ -357,6 +360,7 @@ class PocketWorld(ChunkedLevelMixin, MCLevel):
             if chunk.needsLighting:
                 yield chunk.chunkPosition
 
+
 class PocketChunk(LightedChunk):
     HeightMap = FakeChunk.HeightMap
 
@@ -420,8 +424,8 @@ class PocketChunk(LightedChunk):
             self.DirtyColumns[:] = 255
 
         return "".join([self.Blocks.tostring(),
-                       packData(self.Data).tostring(),
-                       packData(self.SkyLight).tostring(),
-                       packData(self.BlockLight).tostring(),
-                       self.DirtyColumns.tostring(),
-                       ])
+                        packData(self.Data).tostring(),
+                        packData(self.SkyLight).tostring(),
+                        packData(self.BlockLight).tostring(),
+                        self.DirtyColumns.tostring(),
+        ])

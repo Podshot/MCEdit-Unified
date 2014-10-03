@@ -1,4 +1,5 @@
 from logging import getLogger
+
 logger = getLogger(__name__)
 
 items_txt = """
@@ -1472,7 +1473,7 @@ minecraft:record_wait  C418_-_wait                       x1
 """
 
 
-class ItemType (object):
+class ItemType(object):
     def __init__(self, id, name, maxdamage=0, damagevalue=0, stacksize=64):
         self.id = id
         self.name = name
@@ -1487,7 +1488,7 @@ class ItemType (object):
         return "ItemType {0}: {1}".format(self.id, self.name)
 
 
-class Items (object):
+class Items(object):
     items_txt = items_txt
 
     def __init__(self, filename=None):
@@ -1539,7 +1540,7 @@ class Items (object):
                             maxdamage = int(info[1:])
                         else:
                             damagevalue = int(info)
-                    #id = int(id)           #Removed for 1.8 compatibility, fields adjusted accordingly.
+                    # id = int(id)           #Removed for 1.8 compatibility, fields adjusted accordingly.
                     name = name.replace("_", " ")
 
                     self.itemtypes[(id, damagevalue)] = ItemType(id, name, maxdamage, damagevalue, stacksize)
@@ -1554,25 +1555,22 @@ class Items (object):
         item = self.itemtypes.get((id, damage))
         if item:
             return item
-            print "Success 1"
 
         item = self.itemtypes.get((id, None))
         if item:
             return item
-            print "Success 2"
 
         item = self.itemtypes.get((id, 0))
         if item:
             return item
-            print "Success 3"
-            
+
         else:
             return ItemType(id, "Unknown Item {0}:{1}".format(id, damage), damagevalue=damage)
-            print failure
-        #raise ItemNotFound, "Item {0}:{1} not found".format(id, damage)
+            # raise ItemNotFound, "Item {0}:{1} not found".format(id, damage)
 
 
 class ItemNotFound(KeyError):
     pass
+
 
 items = Items()

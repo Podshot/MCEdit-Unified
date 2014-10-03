@@ -34,8 +34,7 @@ def configFilePath():
 
 
 def loadConfig():
-
-    class keyDict (collections.MutableMapping):
+    class keyDict(collections.MutableMapping):
         def __init__(self, *args, **kwargs):
             self.dict = dict(*args, **kwargs)
             self.keyorder = []
@@ -103,6 +102,7 @@ def saveConfig():
         except:
             pass
 
+
 configDefaults = """
 [Keys]
 forward = w
@@ -161,7 +161,7 @@ log.info("Loading config...")
 config = loadConfig()
 config.observers = {}
 
-#TODO: The '_*' functions below (and prolly addObserver too) should be inside
+# TODO: The '_*' functions below (and prolly addObserver too) should be inside
 # Setting class, as they are  not called anywhere else on code besides the
 # wrappers there.
 
@@ -172,6 +172,7 @@ def _propertyRef(section, name, dtype, dsubtype, default):
 
         def set(self, val):
             _setProperty(section, name, val)
+
     return PropRef()
 
 
@@ -195,7 +196,7 @@ def _getProperty(section, name, dtype, dsubtype, default):
             return config.getboolean(section, name)
         if dtype in [list, tuple]:
             return dtype(dsubtype(x.strip()) for x in
-                    config.get(section, name).translate(None, '[]()').split(','))
+                         config.get(section, name).translate(None, '[]()').split(','))
         else:
             return dtype(config.get(section, name))
     except:
@@ -226,6 +227,7 @@ def _notifyObservers(section, name, value):
             newObservers[targetref, attr] = callback
 
     config.observers[(section, name)] = newObservers
+
 
 import weakref
 

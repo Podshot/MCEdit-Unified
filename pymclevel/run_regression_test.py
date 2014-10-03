@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 
 import tempfile
 import sys
@@ -75,8 +75,8 @@ def launch_subprocess(directory, arguments, env=None):
     newenv.update(env)
 
     proc = subprocess.Popen((["python.exe"] if sys.platform == "win32" else []) + [
-            "./mce.py",
-            directory] + arguments, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=newenv)
+        "./mce.py",
+        directory] + arguments, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=newenv)
 
     return proc
 
@@ -94,8 +94,8 @@ def do_test(test_data, result_check, arguments=()):
     result_check = result_check.lower()
 
     env = {
-            'MCE_RANDOM_SEED': '42',
-            'MCE_LAST_PLAYED': '42',
+        'MCE_RANDOM_SEED': '42',
+        'MCE_LAST_PLAYED': '42',
     }
 
     if 'MCE_PROFILE' in os.environ:
@@ -119,8 +119,8 @@ def do_test_match_output(test_data, result_check, arguments=()):
     result_check = result_check.lower()
 
     env = {
-            'MCE_RANDOM_SEED': '42',
-            'MCE_LAST_PLAYED': '42'
+        'MCE_RANDOM_SEED': '42',
+        'MCE_LAST_PLAYED': '42'
     }
 
     with directory_clone(test_data) as directory:
@@ -149,7 +149,8 @@ alpha_tests = [
     (do_test, 'degrief', '2b7eecd5e660f20415413707b4576b1234debfcb', ['degrief']),
     (do_test_match_output, 'analyze', '9cb4aec2ed7a895c3a5d20d6e29e26459e00bd53', ['analyze']),
     (do_test, 'relight', 'f3b3445b0abca1fe2b183bc48b24fb734dfca781', ['relight']),
-    (do_test, 'replace', '4e816038f9851817b0d75df948d058143708d2ec', ['replace', 'Water (active)', 'with', 'Lava (active)']),
+    (do_test, 'replace', '4e816038f9851817b0d75df948d058143708d2ec',
+     ['replace', 'Water (active)', 'with', 'Lava (active)']),
     (do_test, 'fill', '94566d069edece4ff0cc52ef2d8f877fbe9720ab', ['fill', 'Water (active)']),
     (do_test, 'heightmap', '71c20e7d7e335cb64b3eb0e9f6f4c9abaa09b070', ['heightmap', 'regression_test/mars.png']),
 ]

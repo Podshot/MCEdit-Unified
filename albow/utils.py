@@ -13,6 +13,7 @@ def frame_rect(surface, color, rect, thick=1):
 def blit_tinted(surface, image, pos, tint, src_rect=None):
     from Numeric import array, add, minimum
     from pygame.surfarray import array3d, pixels3d
+
     if src_rect:
         image = image.subsurface(src_rect)
     buf = Surface(image.get_size(), SRCALPHA, 32)

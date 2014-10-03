@@ -10,7 +10,7 @@ install_requires = [
     # -*- Extra requirements: -*-
     "numpy",
     "pyyaml",
-    ]
+]
 
 ext_modules = [Extension("_nbt", ["_nbt.pyx"])]
 
@@ -28,7 +28,7 @@ setup(name='pymclevel',
           "Programming Language :: Python :: 2.7",
           "Topic :: Utilities",
           "License :: OSI Approved :: MIT License",
-          ],
+      ],
       keywords='minecraft',
       author='David Vierra',
       author_email='codewarrior0@gmail.com',
@@ -47,4 +47,4 @@ setup(name='pymclevel',
       [console_scripts]
       mce.py=pymclevel.mce:main
       """,
-      )
+)

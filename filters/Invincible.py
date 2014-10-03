@@ -9,6 +9,7 @@ from pymclevel import TAG_Compound
 
 displayName = "Make Mobs Invincible"
 
+
 def perform(level, box, options):
     for (chunk, slices, point) in level.getChunkSlices(box):
         for e in chunk.Entities:

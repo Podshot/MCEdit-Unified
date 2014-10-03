@@ -1,5 +1,5 @@
 #
-#    Albow - Themes
+# Albow - Themes
 #
 
 import resource
@@ -8,7 +8,6 @@ debug_theme = False
 
 
 class ThemeProperty(object):
-
     def __init__(self, name):
         self.name = name
         self.cache_name = intern("_" + name)
@@ -29,6 +28,7 @@ class ThemeProperty(object):
         except:  ###
             if debug_theme:
                 import traceback
+
                 traceback.print_exc()
                 print "-------------------------------------------------------"
             raise  ###
@@ -43,7 +43,6 @@ class ThemeProperty(object):
 
 
 class FontProperty(ThemeProperty):
-
     def get_from_theme(self, cls, name):
         return root.get_font(cls, name)
 
@@ -65,7 +64,7 @@ class Theme(object):
             return self.lookup(cls, name)
         except ThemeError:
             raise AttributeError("No value found in theme %s for '%s' of %s.%s" %
-                (self.name, name, cls.__module__, cls.__name__))
+                                 (self.name, name, cls.__module__, cls.__name__))
 
     def lookup(self, cls, name):
         if debug_theme:

@@ -5,6 +5,7 @@ from pymclevel.box import BoundingBox
 
 __author__ = 'Rio'
 
+
 class TestServerGen(unittest.TestCase):
     def setUp(self):
         # self.alphaLevel = TempLevel("Dojo_64_64_128.dat")
@@ -26,6 +27,7 @@ class TestServerGen(unittest.TestCase):
         level = self.alphalevel.level
 
         gen.generateChunkInLevel(level, 50, 50)
-        gen.generateChunksInLevel(level, [(120, 50), (121, 50), (122, 50), (123, 50), (244, 244), (244, 245), (244, 246)])
+        gen.generateChunksInLevel(level,
+                                  [(120, 50), (121, 50), (122, 50), (123, 50), (244, 244), (244, 245), (244, 246)])
         c = level.getChunk(50, 50)
         assert c.Blocks.any()

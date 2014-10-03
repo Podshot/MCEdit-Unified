@@ -8,6 +8,7 @@ from pymclevel.box import BoundingBox
 
 __author__ = 'Rio'
 
+
 class TestSchematics(unittest.TestCase):
     def setUp(self):
         # self.alphaLevel = TempLevel("Dojo_64_64_128.dat")
@@ -23,10 +24,10 @@ class TestSchematics(unittest.TestCase):
         level = self.indevLevel.level
 
         schematic.copyBlocksFrom(level, BoundingBox((0, 0, 0), (64, 64, 64,)), (0, 0, 0))
-        assert((schematic.Blocks[0:64, 0:64, 0:64] == level.Blocks[0:64, 0:64, 0:64]).all())
+        assert ((schematic.Blocks[0:64, 0:64, 0:64] == level.Blocks[0:64, 0:64, 0:64]).all())
 
         schematic.copyBlocksFrom(level, BoundingBox((0, 0, 0), (64, 64, 64,)), (-32, -32, -32))
-        assert((schematic.Blocks[0:32, 0:32, 0:32] == level.Blocks[32:64, 32:64, 32:64]).all())
+        assert ((schematic.Blocks[0:32, 0:32, 0:32] == level.Blocks[32:64, 32:64, 32:64]).all())
 
         schematic.saveInPlace()
 
@@ -61,12 +62,12 @@ class TestSchematics(unittest.TestCase):
         level = self.anvilLevel.level
 
         x, y, z = level.bounds.origin
-        x += level.bounds.size[0]/2 & ~15
-        z += level.bounds.size[2]/2 & ~15
+        x += level.bounds.size[0] / 2 & ~15
+        z += level.bounds.size[2] / 2 & ~15
 
         box = BoundingBox((x, y, z), (64, 64, 64,))
         zs = level.extractZipSchematic(box)
-        assert(box.chunkCount == zs.chunkCount)
+        assert (box.chunkCount == zs.chunkCount)
         zs.close()
         os.remove(zs.filename)
 

@@ -3,12 +3,13 @@ from templevel import TempLevel
 
 __author__ = 'Rio'
 
+
 def test_command_block():
     level = TempLevel("AnvilWorld").level
 
     cmdblock = fromFile("testfiles/Commandblock.schematic")
 
-    point = level.bounds.origin + [p/2 for p in level.bounds.size]
+    point = level.bounds.origin + [p / 2 for p in level.bounds.size]
     level.copyBlocksFrom(cmdblock, cmdblock.bounds, point)
 
     te = level.tileEntityAt(*point)

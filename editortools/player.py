@@ -25,8 +25,8 @@ import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
 from pymclevel import version_compatability_utils
 import logging
-log = logging.getLogger(__name__)
 
+log = logging.getLogger(__name__)
 
 
 class PlayerMoveOperation(Operation):
@@ -77,8 +77,9 @@ class SpawnPositionInvalid(Exception):
 
 def okayAt63(level, pos):
     """blocks 63 or 64 must be occupied"""
-    #return level.blockAt(pos[0], 63, pos[2]) != 0 or level.blockAt(pos[0], 64, pos[2]) != 0
+    # return level.blockAt(pos[0], 63, pos[2]) != 0 or level.blockAt(pos[0], 64, pos[2]) != 0
     return True
+
 
 def okayAboveSpawn(level, pos):
     """3 blocks above spawn must be open"""
@@ -103,7 +104,8 @@ class PlayerSpawnMoveOperation(Operation):
         if isinstance(level, pymclevel.MCInfdevOldLevel):
             if not positionValid(level, self.pos):
                 if SpawnSettings.spawnProtection.get():
-                    raise SpawnPositionInvalid("You cannot have two air blocks at Y=63 and Y=64 in your spawn point's column. Additionally, you cannot have a solid block in the three blocks above your spawn point. It's weird, I know.")
+                    raise SpawnPositionInvalid(
+                        "You cannot have two air blocks at Y=63 and Y=64 in your spawn point's column. Additionally, you cannot have a solid block in the three blocks above your spawn point. It's weird, I know.")
 
         self.undoPos = level.playerSpawnPosition()
         level.setPlayerSpawnPosition(self.pos)
@@ -130,7 +132,7 @@ class PlayerPositionPanel(Panel):
                         self.player_UUID[version_compatability_utils.getPlayerNameFromUUID(player)] = player
                 self.player_UUID["Player"] = "Player"
                 players = self.player_UUID.keys()
-                
+
         else:
             players = ["Player"]
         self.players = players
@@ -301,7 +303,7 @@ class PlayerPositionTool(EditorTool):
 
         x, y, z = pos
 
-        #x,y,z=map(lambda p,d: p+d, pos, direction)
+        # x,y,z=map(lambda p,d: p+d, pos, direction)
         GL.glEnable(GL.GL_BLEND)
         GL.glColor(1.0, 1.0, 1.0, 0.5)
         self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5)
@@ -343,11 +345,11 @@ class PlayerPositionTool(EditorTool):
                 GL.glColor(1, 1, 1, 1)
                 self.drawCharacterHead(0, 0, 0)
                 GL.glPopMatrix()
-                #GL.glEnable(GL.GL_BLEND)
+                # GL.glEnable(GL.GL_BLEND)
                 drawTerrainCuttingWire(FloatBox((x - .5, y - .5, z - .5), (1, 1, 1)),
                                        c0=(0.3, 0.9, 0.7, 1.0),
                                        c1=(0, 0, 0, 0),
-                                       )
+                )
 
                 #GL.glDisable(GL.GL_BLEND)
 
@@ -420,6 +422,7 @@ class PlayerSpawnPositionOptions(ToolOptions):
 
         self.add(col)
         self.shrink_wrap()
+
 
 SpawnSettings = config.Settings("Spawn")
 SpawnSettings.spawnProtection = SpawnSettings("Spawn Protection", True)
@@ -499,10 +502,13 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         texSize = 16 * pixelScale
         cageTexVerts *= pixelScale
 
-        cageTexVerts = numpy.array([((tx, ty), (tx + texSize, ty), (tx + texSize, ty + texSize), (tx, ty + texSize)) for (tx, ty) in cageTexVerts], dtype='float32')
+        cageTexVerts = numpy.array(
+            [((tx, ty), (tx + texSize, ty), (tx + texSize, ty + texSize), (tx, ty + texSize)) for (tx, ty) in
+             cageTexVerts], dtype='float32')
         GL.glEnable(GL.GL_ALPHA_TEST)
 
-        drawCube(BoundingBox((x, y, z), (1, 1, 1)), texture=pymclevel.alphaMaterials.terrainTexture, textureVertices=cageTexVerts)
+        drawCube(BoundingBox((x, y, z), (1, 1, 1)), texture=pymclevel.alphaMaterials.terrainTexture,
+                 textureVertices=cageTexVerts)
         GL.glDisable(GL.GL_ALPHA_TEST)
 
     @alertException

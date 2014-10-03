@@ -9,8 +9,8 @@ from templevel import TempLevel
 
 __author__ = 'Rio'
 
-class TestNBT():
 
+class TestNBT():
     def testLoad(self):
         "Load an indev level."
         level = nbt.load("testfiles/hell.mclevel")
@@ -116,7 +116,7 @@ class TestNBT():
         level["About"]["Author"].value = "Stew Pickles"
 
         # Remove members of a TAG_Compound using del, similar to a python dict.
-        del(level["About"])
+        del (level["About"])
 
         # Replace all of the wood blocks with gold using a boolean index array
         blocks = level["Map"]["Blocks"].value
@@ -137,7 +137,7 @@ class TestNBT():
         level["Environment"]["SurroundingWaterHeight"].value += 6
 
         # Save the entire TAG structure to a different file.
-        TempLevel("atlantis.mclevel", createFunc=level.save) #xxx don't use templevel here
+        TempLevel("atlantis.mclevel", createFunc=level.save)  # xxx don't use templevel here
 
 
     def testList(self):
@@ -179,5 +179,5 @@ class TestNBT():
             n = nbt.load(f)
         duration = time.time() - startTime
 
-        assert duration < 1.0 # Will fail when not using _nbt.pyx
+        assert duration < 1.0  # Will fail when not using _nbt.pyx
 

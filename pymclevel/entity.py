@@ -10,6 +10,7 @@ from copy import deepcopy
 
 __all__ = ["Entity", "TileEntity"]
 
+
 class TileEntity(object):
     baseStructures = {
         "Furnace": (
@@ -154,14 +155,14 @@ class Entity(object):
                 "Villager",
                 "LavaSlime",
                 "WitherBoss",
-                ]
+    ]
     projectiles = ["Arrow",
                    "Snowball",
                    "Egg",
                    "Fireball",
                    "SmallFireball",
                    "ThrownEnderpearl",
-                   ]
+    ]
 
     items = ["Item",
              "XPOrb",
@@ -169,7 +170,7 @@ class Entity(object):
              "EnderCrystal",
              "ItemFrame",
              "WitherSkull",
-             ]
+    ]
     vehicles = ["Minecart", "Boat"]
     tiles = ["PrimedTnt", "FallingSand"]
 
@@ -186,7 +187,7 @@ class Entity(object):
             raise InvalidEntity(tag)
         values = [a.value for a in tag["Pos"]]
 
-        if isnan(values[0]) and 'xTile' in tag :
+        if isnan(values[0]) and 'xTile' in tag:
             values[0] = tag['xTile'].value
         if isnan(values[1]) and 'yTile' in tag:
             values[1] = tag['yTile'].value

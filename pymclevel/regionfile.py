@@ -12,8 +12,10 @@ log = logging.getLogger(__name__)
 
 __author__ = 'Rio'
 
+
 def deflate(data):
     return zlib.compress(data, 2)
+
 
 def inflate(data):
     return zlib.decompress(data)
@@ -88,10 +90,11 @@ class MCRegionFile(object):
             self.repair()
 
         log.info("Found region file {file} with {used}/{total} sectors used and {chunks} chunks present".format(
-             file=os.path.basename(path), used=self.usedSectors, total=self.sectorCount, chunks=self.chunkCount))
+            file=os.path.basename(path), used=self.usedSectors, total=self.sectorCount, chunks=self.chunkCount))
 
     def __repr__(self):
         return "%s(\"%s\")" % (self.__class__.__name__, self.path)
+
     @property
     def usedSectors(self):
         return len(self.freeSectors) - sum(self.freeSectors)
@@ -110,7 +113,8 @@ class MCRegionFile(object):
         _freeSectors[0] = _freeSectors[1] = False
         deleted = 0
         recovered = 0
-        log.info("Beginning repairs on {file} ({chunks} chunks)".format(file=os.path.basename(self.path), chunks=sum(self.offsets > 0)))
+        log.info("Beginning repairs on {file} ({chunks} chunks)".format(file=os.path.basename(self.path),
+                                                                        chunks=sum(self.offsets > 0)))
         rx, rz = self.regionCoords
         for index, offset in enumerate(self.offsets):
             if offset:
@@ -123,8 +127,9 @@ class MCRegionFile(object):
                 try:
 
                     if sectorStart + sectorCount > len(self.freeSectors):
-                        raise RegionMalformed("Offset {start}:{end} ({offset}) at index {index} pointed outside of the file".format(
-                            start=sectorStart, end=sectorStart + sectorCount, index=index, offset=offset))
+                        raise RegionMalformed(
+                            "Offset {start}:{end} ({offset}) at index {index} pointed outside of the file".format(
+                                start=sectorStart, end=sectorStart + sectorCount, index=index, offset=offset))
 
                     data = self.readChunk(cx, cz)
                     if data is None:
@@ -145,9 +150,13 @@ class MCRegionFile(object):
                         lostAndFound[xPos, zPos] = data
 
                         if (xPos, zPos) != (cx, cz):
-                            raise RegionMalformed("Chunk {found} was found in the slot reserved for {expected}".format(found=(xPos, zPos), expected=(cx, cz)))
+                            raise RegionMalformed(
+                                "Chunk {found} was found in the slot reserved for {expected}".format(found=(xPos, zPos),
+                                                                                                     expected=(cx, cz)))
                         else:
-                            raise RegionMalformed("Chunk {found} (in slot {expected}) has overlapping sectors with another chunk!".format(found=(xPos, zPos), expected=(cx, cz)))
+                            raise RegionMalformed(
+                                "Chunk {found} (in slot {expected}) has overlapping sectors with another chunk!".format(
+                                    found=(xPos, zPos), expected=(cx, cz)))
 
                 except Exception, e:
                     log.info("Unexpected chunk data at sector {sector} ({exc})".format(sector=sectorStart, exc=e))
@@ -161,7 +170,8 @@ class MCRegionFile(object):
                 self.saveChunk(cx, cz, foundData)
                 recovered += 1
 
-        log.info("Repair complete. Removed {0} chunks, recovered {1} chunks, net {2}".format(deleted, recovered, recovered - deleted))
+        log.info("Repair complete. Removed {0} chunks, recovered {1} chunks, net {2}".format(deleted, recovered,
+                                                                                             recovered - deleted))
 
 
     def _readChunk(self, cx, cz):
@@ -323,7 +333,7 @@ class MCRegionFile(object):
         cz &= 0x1f
         return self.modTimes[cx + cz * 32]
 
-    def setTimestamp(self, cx, cz, timestamp = None):
+    def setTimestamp(self, cx, cz, timestamp=None):
         if timestamp is None:
             timestamp = time.time()
 

@@ -1,5 +1,5 @@
 #
-#   Albow - Fields
+# Albow - Fields
 #
 
 from pygame import draw
@@ -12,7 +12,6 @@ from controls import Control
 
 
 class TextEditor(Widget):
-
     upper = False
     tab_stop = True
 
@@ -81,7 +80,7 @@ class TextEditor(Widget):
                     self.text = t
                 except:
                     print "scrap not available"
-                #print repr(t)
+                    #print repr(t)
             else:
                 self.attention_lost()
 
@@ -179,6 +178,7 @@ class TextEditor(Widget):
     def change_text(self, text):
         self.set_text(text)
         self.call_handler('change_action')
+
 
 #---------------------------------------------------------------------------
 
@@ -283,6 +283,7 @@ class Field(Control, TextEditor):
 
         else:
             self.insertion_point = None
+
 
 #    def get_value(self):
 #        self.commit()
@@ -417,6 +418,7 @@ class TimeField(Field):
         h, m = v
         super(TimeField, self).set_value((h % 24, m % 60))
 
+
 from pygame import key
 from pygame.locals import KMOD_SHIFT
 
@@ -461,11 +463,11 @@ class FloatField(Field):
         else:
             Field.mouse_down(self, evt)
 
+
 #---------------------------------------------------------------------------
 
 
 class TextEditorWrapped(Widget):
-
     upper = False
     tab_stop = True
 
@@ -493,10 +495,10 @@ class TextEditorWrapped(Widget):
         self.textChanged = True
 
     text = overridable_property('text')
-#Text line list and text line EoL index reference
+    #Text line list and text line EoL index reference
     textL = []
     textRefList = []
-        
+
     def draw(self, surface):
         frame = self.get_margin_rect()
         frameW, frameH = frame.size
@@ -508,16 +510,16 @@ class TextEditorWrapped(Widget):
 
         self.updateTextWrap()
 
-#Scroll the text up or down if necessary
+        #Scroll the text up or down if necessary
         if self.insertion_line > self.topLine + self.dispLines - 1:
             self.scroll_down()
         elif self.insertion_line < self.topLine:
             self.scroll_up()
 
-#Draw Border
-        draw.rect(surface, self.sel_color, pygame.Rect(frame.left,frame.top,frame.size[0],frame.size[1]), 1)
+        #Draw Border
+        draw.rect(surface, self.sel_color, pygame.Rect(frame.left, frame.top, frame.size[0], frame.size[1]), 1)
 
-#Draw Selection Highlighting if Applicable
+        #Draw Selection Highlighting if Applicable
         if focused and ip is None:
             if self.selection_start is None or self.selection_end is None:
                 surface.fill(self.sel_color, frame)
@@ -533,18 +535,18 @@ class TextEditorWrapped(Widget):
                         x1 += frame.left
                         x2 += frame.left
                         lineOffset = startLine - self.topLine
-                        y = frame.top + lineOffset*h
+                        y = frame.top + lineOffset * h
                         if lineOffset >= 0:
-                            selRect = pygame.Rect(x1,y,(x2-x1),h)
+                            selRect = pygame.Rect(x1, y, (x2 - x1), h)
                     else:
                         x1, h = font.size(self.textL[startLine][0:startStep])
                         x2, h = font.size(self.textL[startLine][0:endStep])
                         x1 += frame.left
                         x2 += frame.left
                         lineOffset = startLine - self.topLine
-                        y = frame.top + lineOffset*h
+                        y = frame.top + lineOffset * h
                         if lineOffset >= 0:
-                            selRect = pygame.Rect(x1,y,(x2-x1),h)
+                            selRect = pygame.Rect(x1, y, (x2 - x1), h)
                     draw.rect(surface, self.sel_color, selRect)
                 elif startLine < endLine:
                     x1, h = font.size(self.textL[startLine][0:startStep])
@@ -554,18 +556,18 @@ class TextEditorWrapped(Widget):
                     lineOffsetS = startLine - self.topLine
                     lineOffsetE = endLine - self.topLine
                     lDiff = lineOffsetE - lineOffsetS
-                    while lDiff > 1 and lineOffsetS+lDiff >= 0 and lineOffsetS+lDiff < self.dispLines:
-                        y = frame.top + lineOffsetS*h + (lDiff-1)*h
-                        rects.append(pygame.Rect(frame.left,y,frame.right-frame.left,h))
+                    while lDiff > 1 and lineOffsetS + lDiff >= 0 and lineOffsetS + lDiff < self.dispLines:
+                        y = frame.top + lineOffsetS * h + (lDiff - 1) * h
+                        rects.append(pygame.Rect(frame.left, y, frame.right - frame.left, h))
                         lDiff += -1
-                    y = frame.top + lineOffsetS*h
+                    y = frame.top + lineOffsetS * h
                     if lineOffsetS >= 0:
-                        rects.append(pygame.Rect(x1,y,frame.right-x1,h))
-                    y = frame.top + lineOffsetE*h
+                        rects.append(pygame.Rect(x1, y, frame.right - x1, h))
+                    y = frame.top + lineOffsetE * h
                     if lineOffsetE < self.dispLines:
-                        rects.append(pygame.Rect(frame.left,y,x2-frame.left,h))
+                        rects.append(pygame.Rect(frame.left, y, x2 - frame.left, h))
                     for selRect in rects:
-                        draw.rect(surface, self.sel_color, selRect)                            
+                        draw.rect(surface, self.sel_color, selRect)
                 elif startLine > endLine:
                     x2, h = font.size(self.textL[startLine][0:startStep])
                     x1, h = font.size(self.textL[endLine][0:endStep])
@@ -574,34 +576,34 @@ class TextEditorWrapped(Widget):
                     lineOffsetE = startLine - self.topLine
                     lineOffsetS = endLine - self.topLine
                     lDiff = lineOffsetE - lineOffsetS
-                    while lDiff > 1 and lineOffsetS+lDiff >= 0 and lineOffsetS+lDiff < self.dispLines:
-                        y = frame.top + lineOffsetS*h + (lDiff-1)*h
-                        rects.append(pygame.Rect(frame.left,y,frame.right-frame.left,h))
+                    while lDiff > 1 and lineOffsetS + lDiff >= 0 and lineOffsetS + lDiff < self.dispLines:
+                        y = frame.top + lineOffsetS * h + (lDiff - 1) * h
+                        rects.append(pygame.Rect(frame.left, y, frame.right - frame.left, h))
                         lDiff += -1
-                    y = frame.top + lineOffsetS*h
+                    y = frame.top + lineOffsetS * h
                     if lineOffsetS >= 0:
-                        rects.append(pygame.Rect(x1,y,frame.right-x1,h))
-                    y = frame.top + lineOffsetE*h
+                        rects.append(pygame.Rect(x1, y, frame.right - x1, h))
+                    y = frame.top + lineOffsetE * h
                     if lineOffsetE < self.dispLines:
-                        rects.append(pygame.Rect(frame.left,y,x2-frame.left,h))
+                        rects.append(pygame.Rect(frame.left, y, x2 - frame.left, h))
                     for selRect in rects:
                         draw.rect(surface, self.sel_color, selRect)
 
-# Draw Lines of Text
+                    # Draw Lines of Text
         h = 0
         for textLine in self.textL[self.topLine:self.topLine + self.dispLines]:
             image = font.render(textLine, True, fg)
-            surface.blit(image, frame.move(0,h))
+            surface.blit(image, frame.move(0, h))
             h += font.size(textLine)[1]
 
-# Draw Cursor if Applicable                
+        # Draw Cursor if Applicable
         if focused and ip is not None and i is not None and il is not None:
-            if(self.textL):
+            if (self.textL):
                 x, h = font.size(self.textL[il][:i])
             else:
                 x, h = (0, font.size("X")[1])
             x += frame.left
-            y = frame.top + h*(il-self.topLine)
+            y = frame.top + h * (il - self.topLine)
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
@@ -645,21 +647,23 @@ class TextEditorWrapped(Widget):
                             self.insertion_point += len(t)
                             self.textChanged = True
                             self.sync_line_and_step()
-                        elif self.insertion_point is None and (self.selection_start is None or self.selection_end is None):
+                        elif self.insertion_point is None and (
+                                self.selection_start is None or self.selection_end is None):
                             self.text = t
                             self.insertion_point = len(t)
                             self.textChanged = True
                             self.sync_line_and_step()
                         elif self.insertion_point is None and self.selection_start is not None and self.selection_end is not None:
-                            self.selection_point = min(self.selection_start,self.selection_end) + len(t)
-                            self.text = self.text[:(min(self.selection_start,self.selection_end))] + t + self.text[(max(self.selection_start,self.selection_end)):]
+                            self.selection_point = min(self.selection_start, self.selection_end) + len(t)
+                            self.text = self.text[:(min(self.selection_start, self.selection_end))] + t + self.text[(
+                            max(self.selection_start, self.selection_end)):]
                             self.selection_start = None
                             self.selection_end = None
                             self.textChanged = True
                             self.sync_line_and_step()
                 except:
                     print "scrap not available"
-                #print repr(t)
+                    #print repr(t)
             else:
                 self.attention_lost()
 
@@ -671,15 +675,15 @@ class TextEditorWrapped(Widget):
         if i is not None:
             i = max(0, min(i, len(text)))
         return text, i
-                
+
     def get_text_and_insertion_data(self):
         text = self.get_text()
         i = self.insertion_step
         il = self.insertion_line
         if il is not None:
-            il = max(0, min(il, (len(self.textL)-1)))
+            il = max(0, min(il, (len(self.textL) - 1)))
         if i is not None and il is not None and len(self.textL) > 0:
-            i = max(0, min(i, len(self.textL[il])-1))
+            i = max(0, min(i, len(self.textL[il]) - 1))
         return text, i, il
 
     def move_insertion_point(self, d):
@@ -722,7 +726,7 @@ class TextEditorWrapped(Widget):
             il = self.insertion_line
 
         if il > 0:
-            refPoint = self.textRefList[il-1]
+            refPoint = self.textRefList[il - 1]
         else:
             refPoint = 0
         self.insertion_step = ip - refPoint
@@ -738,7 +742,7 @@ class TextEditorWrapped(Widget):
         line = j
 
         if line > 0:
-            refPoint = self.textRefList[line-1]
+            refPoint = self.textRefList[line - 1]
         else:
             refPoint = 0
         step = i - refPoint
@@ -765,10 +769,10 @@ class TextEditorWrapped(Widget):
                 self.insertion_line = 0
         if i is None:
             self.insertion_step = 0
-        elif il+d >= 0 and il+d < len(self.textL):
-            self.insertion_line = il+d
+        elif il + d >= 0 and il + d < len(self.textL):
+            self.insertion_line = il + d
         if self.insertion_line > 0:
-            self.insertion_point = self.textRefList[self.insertion_line-1] + self.insertion_step
+            self.insertion_point = self.textRefList[self.insertion_line - 1] + self.insertion_step
             if self.insertion_point > len(self.text):
                 self.insertion_point = len(self.text)
         else:
@@ -790,8 +794,9 @@ class TextEditorWrapped(Widget):
                     self.insertion_line = i
                     self.insertion_step = i
                 elif i is None and self.selection_start is not None and self.selection_end is not None:
-                    i = min(self.selection_start,self.selection_end)
-                    text = text[:(min(self.selection_start,self.selection_end))] + text[(max(self.selection_start,self.selection_end)):]
+                    i = min(self.selection_start, self.selection_end)
+                    text = text[:(min(self.selection_start, self.selection_end))] + text[(
+                    max(self.selection_start, self.selection_end)):]
                     self.selection_start = None
                     self.selection_end = None
                 elif i > 0:
@@ -812,8 +817,9 @@ class TextEditorWrapped(Widget):
                         text = c
                         i = 1
                     elif i is None and self.selection_start is not None and self.selection_end is not None:
-                        i = min(self.selection_start,self.selection_end) + 1
-                        text = text[:(min(self.selection_start,self.selection_end))] + c + text[(max(self.selection_start,self.selection_end)):]
+                        i = min(self.selection_start, self.selection_end) + 1
+                        text = text[:(min(self.selection_start, self.selection_end))] + c + text[(
+                        max(self.selection_start, self.selection_end)):]
                         self.selection_start = None
                         self.selection_end = None
                     else:
@@ -838,23 +844,23 @@ class TextEditorWrapped(Widget):
                 return
 
             x, y = e.local
-            i = self.pos_to_index(x,y)
+            i = self.pos_to_index(x, y)
             self.insertion_point = i
             self.selection_start = None
             self.selection_end = None
             self.sync_line_and_step()
 
         if e.button == 5:
-#            self.scroll_down()
+            #            self.scroll_down()
             self.move_insertion_line(1)
 
         if e.button == 4:
-#            self.scroll_up()
+            #            self.scroll_up()
             self.move_insertion_line(-1)
 
     def mouse_drag(self, e):
         x, y = e.local
-        i = self.pos_to_index(x,y)
+        i = self.pos_to_index(x, y)
 
         if self.insertion_point is not None:
             if i != self.insertion_point:
@@ -872,7 +878,7 @@ class TextEditorWrapped(Widget):
                     self.insertion_point = i
                 else:
                     self.selection_end = i
-                
+
 
     def pos_to_index(self, x, y):
         text = self.get_text()
@@ -884,7 +890,7 @@ class TextEditorWrapped(Widget):
 
         if textL:
             h = font.size("X")[1]
-            line = y//h
+            line = y // h
 
             if line >= dispLines:
                 line = dispLines - 1
@@ -893,7 +899,7 @@ class TextEditorWrapped(Widget):
 
             if line >= len(textL):
                 line = len(textL) - 1
-                
+
             if line < 0:
                 line = 0
 
@@ -916,7 +922,7 @@ class TextEditorWrapped(Widget):
             else:
                 i = i1
             if line > 0:
-                i = i + textRef[line-1]
+                i = i + textRef[line - 1]
         else:
             i = 0
         return i
@@ -926,21 +932,21 @@ class TextEditorWrapped(Widget):
         self.textChanged = True
         self.updateTextWrap()
         self.call_handler('change_action')
-                
+
     def scroll_up(self):
-        if self.topLine-1 >= 0:
+        if self.topLine - 1 >= 0:
             self.topLine += -1
-    
+
     def scroll_down(self):
-        if self.topLine+1 < len(self.textL)-self.dispLines + 1:
+        if self.topLine + 1 < len(self.textL) - self.dispLines + 1:
             self.topLine += 1
-            
+
     def updateTextWrap(self):
         # Update text wrapping for box
         font = self.font
         frame = self.get_margin_rect()
         frameW, frameH = frame.size
-        if(self.textChanged):
+        if (self.textChanged):
             ix = 0
             iz = 0
             textLi = 0
@@ -962,12 +968,12 @@ class TextEditorWrapped(Widget):
                 segW = font.size(text[iz:ix])[0]
                 if segW > frameW:
                     if len(textL) > textLi:
-                        textL[textLi] = text[iz:ix-1]
-                        textR[textLi] = ix-1
+                        textL[textLi] = text[iz:ix - 1]
+                        textR[textLi] = ix - 1
                     else:
-                        textL.append(text[iz:ix-1])
-                        textR.append(ix-1)
-                    iz = ix-1
+                        textL.append(text[iz:ix - 1])
+                        textR.append(ix - 1)
+                    iz = ix - 1
                     textLi += 1
             if iz < ix:
                 if len(textL) > textLi:
@@ -977,7 +983,7 @@ class TextEditorWrapped(Widget):
                     textL.append(text[iz:ix])
                     textR.append(ix)
                 iz = ix
-                textLi += 1                             
+                textLi += 1
             textL = textL[:textLi]
             textR = textR[:textLi]
             self.textL = textL
@@ -985,7 +991,8 @@ class TextEditorWrapped(Widget):
             self.textChanged = False
 
             i = 0
-            
+
+
 #---------------------------------------------------------------------------
 
 class FieldWrapped(Control, TextEditorWrapped):
@@ -1090,6 +1097,7 @@ class FieldWrapped(Control, TextEditorWrapped):
 
         else:
             self.insertion_point = None
+
 
 #    def get_value(self):
 #        self.commit()

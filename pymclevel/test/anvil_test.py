@@ -14,6 +14,7 @@ from templevel import mktemp, TempLevel
 
 __author__ = 'Rio'
 
+
 class TestAnvilLevelCreate(unittest.TestCase):
     def testCreate(self):
         temppath = mktemp("AnvilCreate")
@@ -31,6 +32,7 @@ class TestAnvilLevel(unittest.TestCase):
         level = self.anvilLevel.level
         del level.root_tag['Data']['LastPlayed']
         import time
+
         assert 0 != level.LastPlayed
         level.LastPlayed = time.time() * 1000 - 1000000
 
@@ -59,8 +61,8 @@ class TestAnvilLevel(unittest.TestCase):
         indevlevel = self.indevLevel.level
         level = self.anvilLevel.level
         x, y, z = level.bounds.origin
-        x += level.bounds.size[0]/2 & ~15
-        z += level.bounds.size[2]/2 & ~15
+        x += level.bounds.size[0] / 2 & ~15
+        z += level.bounds.size[2] / 2 & ~15
         x -= indevlevel.Width / 2
         z -= indevlevel.Height / 2
 
@@ -69,10 +71,14 @@ class TestAnvilLevel(unittest.TestCase):
         oldEntityCount = len(level.getEntitiesInBox(BoundingBox(middle, indevlevel.bounds.size)))
         level.copyBlocksFrom(indevlevel, indevlevel.bounds, middle)
 
-        convertedSourceBlocks, convertedSourceData = block_copy.convertBlocks(indevlevel, level, indevlevel.Blocks[0:16, 0:16, 0:indevlevel.Height], indevlevel.Data[0:16, 0:16, 0:indevlevel.Height])
+        convertedSourceBlocks, convertedSourceData = block_copy.convertBlocks(indevlevel, level,
+                                                                              indevlevel.Blocks[0:16, 0:16,
+                                                                              0:indevlevel.Height],
+                                                                              indevlevel.Data[0:16, 0:16,
+                                                                              0:indevlevel.Height])
 
         assert ((level.getChunk(x >> 4, z >> 4).Blocks[0:16, 0:16, 0:indevlevel.Height]
-                == convertedSourceBlocks).all())
+                 == convertedSourceBlocks).all())
 
         assert (oldEntityCount + len(indevlevel.getEntitiesInBox(indevlevel.bounds))
                 == len(level.getEntitiesInBox(BoundingBox(middle, indevlevel.bounds.size))))
@@ -111,7 +117,8 @@ class TestAnvilLevel(unittest.TestCase):
     def testReplace(self):
         level = self.anvilLevel.level
 
-        level.fillBlocks(BoundingBox((-11, 0, -7), (38, level.Height, 25)), level.materials.WoodPlanks, [level.materials.Dirt, level.materials.Grass])
+        level.fillBlocks(BoundingBox((-11, 0, -7), (38, level.Height, 25)), level.materials.WoodPlanks,
+                         [level.materials.Dirt, level.materials.Grass])
 
     def testSaveRelight(self):
         indevlevel = self.indevLevel.level

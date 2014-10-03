@@ -185,6 +185,7 @@ import traceback
 
 log = getLogger(__name__)
 
+
 class LoadingError(RuntimeError):
     pass
 
@@ -214,7 +215,8 @@ def fromFile(filename, loadInfinite=True, readonly=False):
         if loadInfinite:
             return MCInfdevOldLevel(filename=filename, readonly=readonly)
         else:
-            raise ValueError("Asked to load {0} which is an infinite level, loadInfinite was False".format(os.path.basename(filename)))
+            raise ValueError("Asked to load {0} which is an infinite level, loadInfinite was False".format(
+                os.path.basename(filename)))
 
     if os.path.isdir(filename):
         raise ValueError("Folder {0} was not identified as a Minecraft level.".format(os.path.basename(filename)))
@@ -235,7 +237,7 @@ def fromFile(filename, loadInfinite=True, readonly=False):
         lev.compressed = False
         return lev
 
-    #ungzdata = None
+    # ungzdata = None
     compressed = True
     unzippedData = None
     try:
@@ -289,6 +291,6 @@ def loadWorld(name):
 
 
 def loadWorldNumber(i):
-    #deprecated
+    # deprecated
     filename = u"{0}{1}{2}{3}{1}".format(saveFileDir, os.sep, u"World", i)
     return fromFile(filename)

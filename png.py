@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 
 # $URL: http://pypng.googlecode.com/svn/trunk/code/png.py $
 # $Rev: 201 $
@@ -167,6 +167,7 @@ from __future__ import generators
 __version__ = "$URL: http://pypng.googlecode.com/svn/trunk/code/png.py $ $Rev: 201 $"
 
 from array import array
+
 try:  # See :pyver:old
     import itertools
 except:
@@ -210,6 +211,7 @@ def isarray(x):
         return isinstance(x, array)
     except:
         return False
+
 
 try:  # see :pyver:old
     array.tostring
@@ -271,16 +273,16 @@ def check_palette(palette):
     for i, t in enumerate(p):
         if len(t) not in (3, 4):
             raise ValueError(
-              "palette entry %d: entries must be 3- or 4-tuples." % i)
+                "palette entry %d: entries must be 3- or 4-tuples." % i)
         if len(t) == 3:
             seen_triple = True
         if seen_triple and len(t) == 4:
             raise ValueError(
-              "palette entry %d: all 4-tuples must precede all 3-tuples" % i)
+                "palette entry %d: all 4-tuples must precede all 3-tuples" % i)
         for x in t:
-            if int(x) != x or not(0 <= x <= 255):
+            if int(x) != x or not (0 <= x <= 255):
                 raise ValueError(
-                  "palette entry %d: values must be integer: 0 <= x <= 255" % i)
+                    "palette entry %d: values must be integer: 0 <= x <= 255" % i)
     return p
 
 
@@ -471,16 +473,16 @@ class Writer:
                     c = (c,)
                 if len(c) != 1:
                     raise ValueError("%s for greyscale must be 1-tuple" %
-                        which)
+                                     which)
                 if not isinteger(c[0]):
                     raise ValueError(
                         "%s colour for greyscale must be integer" %
                         which)
             else:
                 if not (len(c) == 3 and
-                        isinteger(c[0]) and
-                        isinteger(c[1]) and
-                        isinteger(c[2])):
+                            isinteger(c[0]) and
+                            isinteger(c[1]) and
+                            isinteger(c[2])):
                     raise ValueError(
                         "%s colour must be a triple of integers" %
                         which)
@@ -489,14 +491,14 @@ class Writer:
         if size:
             if len(size) != 2:
                 raise ValueError(
-                  "size argument should be a pair (width, height)")
+                    "size argument should be a pair (width, height)")
             if width is not None and width != size[0]:
                 raise ValueError(
-                  "size[0] (%r) and width (%r) should match when both are used."
+                    "size[0] (%r) and width (%r) should match when both are used."
                     % (size[0], width))
             if height is not None and height != size[1]:
                 raise ValueError(
-                  "size[1] (%r) and height (%r) should match when both are used."
+                    "size[1] (%r) and height (%r) should match when both are used."
                     % (size[1], height))
             width, height = size
         del size
@@ -523,7 +525,7 @@ class Writer:
         del bytes_per_sample
         if not isinteger(bitdepth) or bitdepth < 1 or 16 < bitdepth:
             raise ValueError("bitdepth (%r) must be a postive integer <= 16" %
-              bitdepth)
+                             bitdepth)
 
         self.rescale = None
         if palette:
@@ -560,7 +562,7 @@ class Writer:
 
         if bitdepth < 8 and (alpha or not greyscale and not palette):
             raise ValueError(
-              "bitdepth < 8 only permitted with greyscale or palette")
+                "bitdepth < 8 only permitted with greyscale or palette")
         if bitdepth > 8 and palette:
             raise ValueError(
                 "bit depth must be 8 or less for images with palette")
@@ -634,8 +636,8 @@ class Writer:
             nrows = self.write_passes(outfile, rows)
             if nrows != self.height:
                 raise ValueError(
-                  "rows supplied (%d) does not match height (%d)" %
-                  (nrows, self.height))
+                    "rows supplied (%d) does not match height (%d)" %
+                    (nrows, self.height))
 
     def write_passes(self, outfile, rows, packed=False):
         """
@@ -676,8 +678,8 @@ class Writer:
         # http://www.w3.org/TR/PNG/#11sBIT
         if self.rescale:
             write_chunk(outfile, 'sBIT',
-                struct.pack('%dB' % self.planes,
-                            *[self.rescale[0]] * self.planes))
+                        struct.pack('%dB' % self.planes,
+                                    *[self.rescale[0]] * self.planes))
 
         # :chunk:order: Without a palette (PLTE chunk), ordering is
         # relatively relaxed.  With one, gAMA chunk must precede PLTE
@@ -742,12 +744,12 @@ class Writer:
                 # Pack into bytes
                 l = group(a, spb)
                 l = map(lambda e: reduce(lambda x, y:
-                                           (x << self.bitdepth) + y, e), l)
+                                         (x << self.bitdepth) + y, e), l)
                 data.extend(l)
         if self.rescale:
             oldextend = extend
             factor = \
-              float(2 ** self.rescale[1] - 1) / float(2 ** self.rescale[0] - 1)
+                float(2 ** self.rescale[1] - 1) / float(2 ** self.rescale[0] - 1)
 
             def extend(sl):
                 oldextend(map(lambda x: int(round(factor * x)), sl))
@@ -776,6 +778,7 @@ class Writer:
             # int types it works for.
             def wrapmapint(f):
                 return lambda sl: f(map(int, sl))
+
             extend = wrapmapint(extend)
             del wrapmapint
             extend(row)
@@ -838,7 +841,7 @@ class Writer:
 
         if self.rescale:
             raise Error("write_packed method not suitable for bit depth %d" %
-              self.rescale[0])
+                        self.rescale[0])
         return self.write_passes(outfile, rows, packed=True)
 
     def convert_pnm(self, infile, outfile):
@@ -1108,7 +1111,7 @@ class Reader:
 
         """
         if ((_guess is not None and len(kw) != 0) or
-            (_guess is None and len(kw) != 1)):
+                (_guess is None and len(kw) != 1)):
             raise TypeError("Reader() takes exactly 1 argument")
 
         # Will be the first 8 bytes, later on.  See validate_signature.
@@ -1158,7 +1161,7 @@ class Reader:
             data = self.file.read(length)
             if len(data) != length:
                 raise ChunkError('Chunk %s too short for required %i octets.'
-                  % (type, length))
+                                 % (type, length))
             checksum = self.file.read(4)
             if len(checksum) != 4:
                 raise ValueError('Chunk %s too short for checksum.', type)
@@ -1178,8 +1181,8 @@ class Reader:
                 (a,) = struct.unpack('!I', checksum)
                 (b,) = struct.unpack('!I', verify)
                 raise ChunkError(
-                  "Checksum error in %s chunk: 0x%08X != 0x%08X." %
-                  (type, a, b))
+                    "Checksum error in %s chunk: 0x%08X != 0x%08X." %
+                    (type, a, b))
             return type, data
 
     def chunks(self):
@@ -1224,7 +1227,7 @@ class Reader:
 
         if filter_type not in (1, 2, 3, 4):
             raise FormatError('Invalid PNG Filter Type.'
-              '  See http://www.w3.org/TR/2003/REC-PNG-20031110/#9Filters .')
+                              '  See http://www.w3.org/TR/2003/REC-PNG-20031110/#9Filters .')
 
         # Filter unit.  The stride from one pixel to the corresponding
         # byte from the previous previous.  Normally this is the pixel
@@ -1395,7 +1398,7 @@ class Reader:
         if self.bitdepth == 16:
             bytes = tostring(bytes)
             return array('H',
-              struct.unpack('!%dH' % (len(bytes) // 2), bytes))
+                         struct.unpack('!%dH' % (len(bytes) // 2), bytes))
         assert self.bitdepth < 8
         if width is None:
             width = self.width
@@ -1437,7 +1440,7 @@ class Reader:
             # available bytes (after decompressing) do not pack into exact
             # rows.
             raise FormatError(
-              'Wrong size for decompressed IDAT chunk.')
+                'Wrong size for decompressed IDAT chunk.')
         assert len(a) == 0
 
     def validate_signature(self):
@@ -1466,7 +1469,7 @@ class Reader:
                 self.atchunk = self.chunklentype()
                 if self.atchunk is None:
                     raise FormatError(
-                      'This PNG file has no IDAT chunks.')
+                        'This PNG file has no IDAT chunks.')
             if self.atchunk[1] == 'IDAT':
                 return
             self.process_chunk()
@@ -1483,7 +1486,7 @@ class Reader:
             return None
         if len(x) != 8:
             raise FormatError(
-              'End of file whilst reading chunk length and type.')
+                'End of file whilst reading chunk length and type.')
         length, type = struct.unpack('!I4s', x)
         if length > 2 ** 31 - 1:
             raise FormatError('Chunk %s is too large: %d.' % (type, length))
@@ -1513,21 +1516,21 @@ class Reader:
             # per pixel; check only indexed or greyscale images have
             # fewer than 8 bits per pixel.
             if ((self.color_type & 1 and self.bitdepth > 8) or
-                (self.bitdepth < 8 and self.color_type not in (0, 3))):
+                    (self.bitdepth < 8 and self.color_type not in (0, 3))):
                 raise FormatError("Illegal combination of bit depth (%d)"
-                  " and colour type (%d)."
-                  " See http://www.w3.org/TR/2003/REC-PNG-20031110/#table111 ."
-                  % (self.bitdepth, self.color_type))
+                                  " and colour type (%d)."
+                                  " See http://www.w3.org/TR/2003/REC-PNG-20031110/#table111 ."
+                                  % (self.bitdepth, self.color_type))
             if self.compression != 0:
                 raise Error("unknown compression method %d" % self.compression)
             if self.filter != 0:
                 raise FormatError("Unknown filter method %d,"
-                  " see http://www.w3.org/TR/2003/REC-PNG-20031110/#9Filters ."
-                  % self.filter)
+                                  " see http://www.w3.org/TR/2003/REC-PNG-20031110/#9Filters ."
+                                  % self.filter)
             if self.interlace not in (0, 1):
                 raise FormatError("Unknown interlace method %d,"
-                  " see http://www.w3.org/TR/2003/REC-PNG-20031110/#8InterlaceMethods ."
-                  % self.interlace)
+                                  " see http://www.w3.org/TR/2003/REC-PNG-20031110/#8InterlaceMethods ."
+                                  % self.interlace)
 
             # Derived values
             # http://www.w3.org/TR/PNG/#6Colour-values
@@ -1561,7 +1564,7 @@ class Reader:
             self.plte = data
             if len(data) % 3 != 0:
                 raise FormatError(
-                  "PLTE chunk's length should be a multiple of 3.")
+                    "PLTE chunk's length should be a multiple of 3.")
             if len(data) > (2 ** self.bitdepth) * 3:
                 raise FormatError("PLTE chunk is too long.")
             if len(data) == 0:
@@ -1571,11 +1574,11 @@ class Reader:
                 if self.colormap:
                     if not self.plte:
                         warnings.warn(
-                          "PLTE chunk is required before bKGD chunk.")
+                            "PLTE chunk is required before bKGD chunk.")
                     self.background = struct.unpack('B', data)
                 else:
                     self.background = struct.unpack("!%dH" % self.color_planes,
-                      data)
+                                                    data)
             except struct.error:
                 raise FormatError("bKGD chunk has incorrect length.")
         elif type == 'tRNS':
@@ -1592,8 +1595,8 @@ class Reader:
             else:
                 if self.alpha:
                     raise FormatError(
-                      "tRNS chunk is not valid with colour type %d." %
-                      self.color_type)
+                        "tRNS chunk is not valid with colour type %d." %
+                        self.color_type)
                 try:
                     self.transparent = \
                         struct.unpack("!%dH" % self.color_planes, data)
@@ -1607,7 +1610,7 @@ class Reader:
         elif type == 'sBIT':
             self.sbit = data
             if (self.colormap and len(data) != 3 or
-                not self.colormap and len(data) != self.planes):
+                        not self.colormap and len(data) != self.planes):
                 raise FormatError("sBIT chunk has incorrect length.")
 
     def read(self):
@@ -1667,8 +1670,8 @@ class Reader:
             arraycode = 'BH'[self.bitdepth > 8]
             # Like :meth:`group` but producing an array.array object for
             # each row.
-            pixels = itertools.imap(lambda * row: array(arraycode, row),
-                       *[iter(self.deinterlace(raw))] * self.width * self.planes)
+            pixels = itertools.imap(lambda *row: array(arraycode, row),
+                                    *[iter(self.deinterlace(raw))] * self.width * self.planes)
         else:
             pixels = self.iterboxed(self.iterstraight(raw))
         meta = dict()
@@ -1779,6 +1782,7 @@ class Reader:
                 for row in pixels:
                     row = map(plte.__getitem__, row)
                     yield array('B', itertools.chain(*row))
+
             pixels = iterpal(pixels)
         elif self.trns:
             # It would be nice if there was some reasonable way of doing
@@ -1806,7 +1810,8 @@ class Reader:
                     opa = map(maxval.__mul__, opa)
                     opa = zip(opa)  # convert to 1-tuples
                     yield array(typecode,
-                      itertools.chain(*map(operator.add, row, opa)))
+                                itertools.chain(*map(operator.add, row, opa)))
+
             pixels = itertrns(pixels)
         targetbitdepth = None
         if self.sbit:
@@ -1814,7 +1819,7 @@ class Reader:
             targetbitdepth = max(sbit)
             if targetbitdepth > meta['bitdepth']:
                 raise Error('sBIT chunk %r exceeds bitdepth %d' %
-                    (sbit, self.bitdepth))
+                            (sbit, self.bitdepth))
             if min(sbit) <= 0:
                 raise Error('sBIT chunk %r has a 0-entry' % sbit)
             if targetbitdepth == meta['bitdepth']:
@@ -1826,6 +1831,7 @@ class Reader:
             def itershift(pixels):
                 for row in pixels:
                     yield map(shift.__rrshift__, row)
+
             pixels = itershift(pixels)
         return x, y, pixels, meta
 
@@ -1844,6 +1850,7 @@ class Reader:
         def iterfloat():
             for row in pixels:
                 yield map(factor.__mul__, row)
+
         return x, y, iterfloat(), info
 
     def _as_rescale(self, get, targetbitdepth):
@@ -1858,6 +1865,7 @@ class Reader:
         def iterscale():
             for row in pixels:
                 yield map(lambda x: int(round(x * factor)), row)
+
         return width, height, iterscale(), meta
 
     def asRGB8(self):
@@ -1913,6 +1921,7 @@ class Reader:
                 for i in range(3):
                     a[i::3] = row
                 yield a
+
         return width, height, iterrgb(), meta
 
     def asRGBA(self):
@@ -1933,6 +1942,7 @@ class Reader:
 
         def newarray():
             return array(typecode, [0]) * 4 * width
+
         if meta['alpha'] and meta['greyscale']:
             # LA to RGBA
             def convert():
@@ -2021,6 +2031,7 @@ except:
                     # Convert to list.  Allows iterators to work.
                     extension = list(extension)
                 return super_extend(self.true_array(self.typecode, extension))
+
         array = _array_shim
     except:
         # Expect to get here on Python 2.2
@@ -2053,17 +2064,20 @@ try:
 except:
     class _dummy_itertools:
         pass
+
     itertools = _dummy_itertools()
 
     def _itertools_imap(f, seq):
         for x in seq:
             yield f(x)
+
     itertools.imap = _itertools_imap
 
     def _itertools_chain(*iterables):
         for it in iterables:
             for element in it:
                 yield element
+
     itertools.chain = _itertools_chain
 
 # === Internal Test Support ===
@@ -2259,25 +2273,27 @@ class Test(unittest.TestCase):
             it = Reader(bytes=bytes)
             x, y, pixels, meta = it.read()
             pngi = topngbytes('adam7wn' + name + '.png', pixels,
-              x=x, y=y, bitdepth=it.bitdepth,
-              greyscale=it.greyscale, alpha=it.alpha,
-              transparent=it.transparent,
-              interlace=False)
+                              x=x, y=y, bitdepth=it.bitdepth,
+                              greyscale=it.greyscale, alpha=it.alpha,
+                              transparent=it.transparent,
+                              interlace=False)
             x, y, ps, meta = Reader(bytes=pngi).read()
             it = Reader(bytes=bytes)
             x, y, pixels, meta = it.read()
             pngs = topngbytes('adam7wi' + name + '.png', pixels,
-              x=x, y=y, bitdepth=it.bitdepth,
-              greyscale=it.greyscale, alpha=it.alpha,
-              transparent=it.transparent,
-              interlace=True)
+                              x=x, y=y, bitdepth=it.bitdepth,
+                              greyscale=it.greyscale, alpha=it.alpha,
+                              transparent=it.transparent,
+                              interlace=True)
             x, y, pi, meta = Reader(bytes=pngs).read()
             self.assertEqual(map(list, ps), map(list, pi))
 
     def testPGMin(self):
         """Test that the command line tool can read PGM files."""
+
         def do():
             return _main(['testPGMin'])
+
         s = StringIO()
         s.write('P5 2 2 3\n')
         s.write('\x00\x01\x02\x03')
@@ -2292,8 +2308,10 @@ class Test(unittest.TestCase):
 
     def testPAMin(self):
         """Test that the command line tool can read PAM file."""
+
         def do():
             return _main(['testPAMin'])
+
         s = StringIO()
         s.write('P7\nWIDTH 3\nHEIGHT 1\nDEPTH 4\nMAXVAL 255\n'
                 'TUPLTYPE RGB_ALPHA\nENDHDR\n')
@@ -2313,14 +2331,16 @@ class Test(unittest.TestCase):
     def testLA4(self):
         """Create an LA image with bitdepth 4."""
         bytes = topngbytes('la4.png', [[5, 12]], 1, 1,
-          greyscale=True, alpha=True, bitdepth=4)
+                           greyscale=True, alpha=True, bitdepth=4)
         sbit = Reader(bytes=bytes).chunk('sBIT')[1]
         self.assertEqual(sbit, '\x04\x04')
 
     def testPNMsbit(self):
         """Test that PNM files can generates sBIT chunk."""
+
         def do():
             return _main(['testPNMsbit'])
+
         s = StringIO()
         s.write('P6 8 1 1\n')
         for pixel in range(8):
@@ -2415,6 +2435,7 @@ class Test(unittest.TestCase):
             data = data.encode('zip')
             chunk = (chunk[0], data)
             return chunk
+
         self.assertRaises(FormatError, self.helperFormat, eachchunk)
 
     def testNotEnoughPixels(self):
@@ -2426,6 +2447,7 @@ class Test(unittest.TestCase):
             data = data[:-1]
             data = data.encode('zip')
             return chunk[0], data
+
         self.assertRaises(FormatError, self.helperFormat, eachchunk)
 
     def helperFormat(self, f):
@@ -2435,6 +2457,7 @@ class Test(unittest.TestCase):
         def newchunks():
             for chunk in r.chunks():
                 yield f(chunk)
+
         write_chunks(o, newchunks())
         r = Reader(bytes=o.getvalue())
         return list(r.asDirect()[2])
@@ -2448,6 +2471,7 @@ class Test(unittest.TestCase):
             data = '\x99' + data[1:]
             data = data.encode('zip')
             return chunk[0], data
+
         self.assertRaises(FormatError, self.helperFormat, eachchunk)
 
     def testFlat(self):
@@ -2472,7 +2496,7 @@ class Test(unittest.TestCase):
 
         rows = [map(numpy.uint16, range(0, 0x10000, 0x5555))]
         b = topngbytes('numpyuint16.png', rows, 4, 1,
-            greyscale=True, alpha=False, bitdepth=16)
+                       greyscale=True, alpha=False, bitdepth=16)
 
     def testNumpyuint8(self):
         """numpy uint8."""
@@ -2485,7 +2509,7 @@ class Test(unittest.TestCase):
 
         rows = [map(numpy.uint8, range(0, 0x100, 0x55))]
         b = topngbytes('numpyuint8.png', rows, 4, 1,
-            greyscale=True, alpha=False, bitdepth=8)
+                       greyscale=True, alpha=False, bitdepth=8)
 
     def testNumpybool(self):
         """numpy bool."""
@@ -2498,7 +2522,7 @@ class Test(unittest.TestCase):
 
         rows = [map(numpy.bool, [0, 1])]
         b = topngbytes('numpybool.png', rows, 2, 1,
-            greyscale=True, alpha=False, bitdepth=1)
+                       greyscale=True, alpha=False, bitdepth=1)
 
 
 # === Command Line Support ===
@@ -2519,7 +2543,7 @@ def _dehex(s):
 # be?), they use the same naming scheme, but start with a capital
 # letter.
 _pngsuite = {
-  'basi0g01': _dehex("""
+    'basi0g01': _dehex("""
 89504e470d0a1a0a0000000d49484452000000200000002001000000012c0677
 cf0000000467414d41000186a031e8965f0000009049444154789c2d8d310ec2
 300c45dfc682c415187a00a42e197ab81e83b127e00c5639001363a580d8582c
@@ -2528,14 +2552,14 @@ d92aaf4c9fd927ea449e6487df5b9c36e799b91bdf082b4d4bd4014fe4014b01
 ab7a17aee694d28d328a2d63837a70451e1648702d9a9ff4a11d2f7a51aa21e5
 a18c7ffd0094e3511d661822f20000000049454e44ae426082
 """),
-  'basi0g02': _dehex("""
+    'basi0g02': _dehex("""
 89504e470d0a1a0a0000000d49484452000000200000002002000000016ba60d
 1f0000000467414d41000186a031e8965f0000005149444154789c635062e860
 00e17286bb609c93c370ec189494960631366e4467b3ae675dcf10f521ea0303
 90c1ca006444e11643482064114a4852c710baea3f18c31918020c30410403a6
 0ac1a09239009c52804d85b6d97d0000000049454e44ae426082
 """),
-  'basi0g04': _dehex("""
+    'basi0g04': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000200400000001e4e6f8
 bf0000000467414d41000186a031e8965f000000ae49444154789c658e5111c2
 301044171c141c141c041c843a287510ea20d441c041c141c141c04191102454
@@ -2545,7 +2569,7 @@ bf0000000467414d41000186a031e8965f000000ae49444154789c658e5111c2
 a5b4ae6b63ac6520ad730ca4ed7b06d20e030369bd6720ed383290360406d24e
 13811f2781eba9d34d07160000000049454e44ae426082
 """),
-  'basi0g08': _dehex("""
+    'basi0g08': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000200800000001211615
 be0000000467414d41000186a031e8965f000000b549444154789cb5905d0ac2
 3010849dbac81c42c47bf843cf253e8878b0aa17110f214bdca6be240f5d21a5
@@ -2555,7 +2579,7 @@ be0000000467414d41000186a031e8965f000000b549444154789cb5905d0ac2
 f1f4e03bbec7ce832dca927aea005e431b625796345307b019c845e6bfc3bb98
 769d84f9efb02ea6c00f9bb9ff45e81f9f280000000049454e44ae426082
 """),
-  'basi0g16': _dehex("""
+    'basi0g16': _dehex("""
 89504e470d0a1a0a0000000d49484452000000200000002010000000017186c9
 fd0000000467414d41000186a031e8965f000000e249444154789cb5913b0ec2
 301044c7490aa8f85d81c3e4301c8f53a4ca0da8902c8144b3920b4043111282
@@ -2567,7 +2591,7 @@ c60d5c81edcf6c58c535e252839e93801b15c0a70d810ae0d306b205dc32b187
 b606771a05626b401a05f1f589827cf0fe44c1f0bae0055698ee8914fffffe00
 00000049454e44ae426082
 """),
-  'basi2c08': _dehex("""
+    'basi2c08': _dehex("""
 89504e470d0a1a0a0000000d49484452000000200000002008020000018b1fdd
 350000000467414d41000186a031e8965f000000f249444154789cd59341aa04
 210c44abc07b78133d59d37333bd89d76868b566d10cf4675af8596431a11662
@@ -2579,7 +2603,7 @@ a07f8bdaf5b40feed2d33e025e2ff4fe2d4a63e1a16d91180b736d8bc45854c5
 26cffbafeffcd30654f46d119be4793f827387fc0d189d5bc4d69a3c23d45a7f
 db803146578337df4d0a3121fc3d330000000049454e44ae426082
 """),
-  'basi2c16': _dehex("""
+    'basi2c16': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000201002000001db8f01
 760000000467414d41000186a031e8965f0000020a49444154789cd5962173e3
 3010853fcf1838cc61a1818185a53e56787fa13fa130852e3b5878b4b0b03081
@@ -2600,7 +2624,7 @@ c413ede267fd1fbab46880c90f80eccf0013185eb48b47ba03df2bdaadef3181
 cb8976f18e13188768170f98c0f844bb78cb04c62ddac59d09fc3fa25dfc1da4
 14deb3df1344f70000000049454e44ae426082
 """),
-  'basi3p08': _dehex("""
+    'basi3p08': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020080300000133a3ba
 500000000467414d41000186a031e8965f00000300504c5445224400f5ffed77
 ff77cbffff110a003a77002222ffff11ff110000222200ffac5566ff66ff6666
@@ -2650,7 +2674,7 @@ e5301baec06a580677600ddc05ba0f13e120bc81a770133ec355a017300d4ec2
 f7f017f6c10aa0d1300a0ec374780943e1382c06fa0a9b60238c83473016cec0
 02f80f73fefe1072afc1e50000000049454e44ae426082
 """),
-  'basi6a08': _dehex("""
+    'basi6a08': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000200806000001047d4a
 620000000467414d41000186a031e8965f0000012049444154789cc595414ec3
 3010459fa541b8bbb26641b8069b861e8b4d12c1c112c1452a710a2a65d840d5
@@ -2664,7 +2688,7 @@ b7337b9f988cc67f5f0e186d20e808042f1c97054e1309da40d02d7e27f92e03
 200314cf801faab200ea752803a8d7a90c503a039f824a53f4694e7342000000
 0049454e44ae426082
 """),
-  'basn0g01': _dehex("""
+    'basn0g01': _dehex("""
 89504e470d0a1a0a0000000d49484452000000200000002001000000005b0147
 590000000467414d41000186a031e8965f0000005b49444154789c2dccb10903
 300c05d1ebd204b24a200b7a346f90153c82c18d0a61450751f1e08a2faaead2
@@ -2672,14 +2696,14 @@ a4846ccea9255306e753345712e211b221bf4b263d1b427325255e8bdab29e6f
 6aca30692e9d29616ee96f3065f0bf1f1087492fd02f14c90000000049454e44
 ae426082
 """),
-  'basn0g02': _dehex("""
+    'basn0g02': _dehex("""
 89504e470d0a1a0a0000000d49484452000000200000002002000000001ca13d
 890000000467414d41000186a031e8965f0000001f49444154789c6360085df5
 1f8cf1308850c20053868f0133091f6390b90700bd497f818b0989a900000000
 49454e44ae426082
 """),
-  # A version of basn0g04 dithered down to 3 bits.
-  'Basn0g03': _dehex("""
+    # A version of basn0g04 dithered down to 3 bits.
+    'Basn0g03': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020040000000093e1c8
 2900000001734249540371d88211000000fd49444154789c6d90d18906210c84
 c356f22356b2889588604301b112112b11d94a96bb495cf7fe87f32d996f2689
@@ -2692,21 +2716,21 @@ a0e3e5523461be448561001042b7d4a15309ce2c57aef2ba89d1c13794a109d7
 b5880aa27744fc5c4aecb5e7bcef5fe528ec6293a930690000000049454e44ae
 426082
 """),
-  'basn0g04': _dehex("""
+    'basn0g04': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020040000000093e1c8
 290000000467414d41000186a031e8965f0000004849444154789c6360601014
 545232367671090d4d4b2b2f6720430095dbd1418e002a77e64c720450b9ab56
 912380caddbd9b1c0154ee9933e408a072efde25470095fbee1d1902001f14ee
 01eaff41fa0000000049454e44ae426082
 """),
-  'basn0g08': _dehex("""
+    'basn0g08': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000200800000000561125
 280000000467414d41000186a031e8965f0000004149444154789c6364602400
 1408c8b30c05058c0f0829f8f71f3f6079301c1430ca11906764a2795c0c0605
 8c8ff0cafeffcff887e67131181430cae0956564040050e5fe7135e2d8590000
 000049454e44ae426082
 """),
-  'basn0g16': _dehex("""
+    'basn0g16': _dehex("""
 89504e470d0a1a0a0000000d49484452000000200000002010000000000681f9
 6b0000000467414d41000186a031e8965f0000005e49444154789cd5d2310ac0
 300c4351395bef7fc6dca093c0287b32d52a04a3d98f3f3880a7b857131363a0
@@ -2714,14 +2738,14 @@ b5880aa27744fc5c4aecb5e7bcef5fe528ec6293a930690000000049454e44ae
 d02d680fa44c603f6f07ec4ff41938cf7f0016d84bd85fae2b9fd70000000049
 454e44ae426082
 """),
-  'basn2c08': _dehex("""
+    'basn2c08': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000200802000000fc18ed
 a30000000467414d41000186a031e8965f0000004849444154789cedd5c10900
 300c024085ec91fdb772133b442bf4a1f8cee12bb40d043b800a14f81ca0ede4
 7d4c784081020f4a871fc284071428f0a0743823a94081bb7077a3c00182b1f9
 5e0f40cf4b0000000049454e44ae426082
 """),
-  'basn2c16': _dehex("""
+    'basn2c16': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000201002000000ac8831
 e00000000467414d41000186a031e8965f000000e549444154789cd596c10a83
 301044a7e0417fcb7eb7fdadf6961e06039286266693cc7a188645e43dd6a08f
@@ -2733,7 +2757,7 @@ fb8d3630039dbd59601e7ab3c06cf428507f0634d039afdc80123a7bb1801e7a
 b1802a7a14c89f016d74ce331bf080ce9e08f8414f04bca133bfe642fe5e07bb
 c4ec0000000049454e44ae426082
 """),
-  'basn6a08': _dehex("""
+    'basn6a08': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000200806000000737a7a
 f40000000467414d41000186a031e8965f0000006f49444154789cedd6310a80
 300c46e12764684fa1f73f55048f21c4ddc545781d52e85028fc1f4d28d98a01
@@ -2741,7 +2765,7 @@ f40000000467414d41000186a031e8965f0000006f49444154789cedd6310a80
 1bb0420f5cdc2e0079208892ffe2a00136a07b4007943c1004d900195036407f
 011bf00052201a9c160fb84c0000000049454e44ae426082
 """),
-  'cs3n3p08': _dehex("""
+    'cs3n3p08': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020080300000044a48a
 c60000000467414d41000186a031e8965f0000000373424954030303a392a042
 00000054504c544592ff0000ff9200ffff00ff0000dbff00ff6dffb600006dff
@@ -2752,14 +2776,14 @@ b6ffff0000ff2400b6ffffdb000092ffff6d000024ffff49006dff00df702b17
 6ed0121cd6d004bda0013a421ff803224033e177f4ae260000000049454e44ae
 426082
 """),
-  's09n3p02': _dehex("""
+    's09n3p02': _dehex("""
 89504e470d0a1a0a0000000d49484452000000090000000902030000009dffee
 830000000467414d41000186a031e8965f000000037342495404040477f8b5a3
 0000000c504c544500ff000077ffff00ffff7700ff5600640000001f49444154
 789c63600002fbff0c0c56ab19182ca381581a4283f82071200000696505c36a
 437f230000000049454e44ae426082
 """),
-  'tbgn3p08': _dehex("""
+    'tbgn3p08': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020080300000044a48a
 c60000000467414d41000186a031e8965f00000207504c54457f7f7fafafafab
 abab110000222200737300999999510d00444400959500959595e6e600919191
@@ -2797,7 +2821,7 @@ e898260c07fca80a24c076cc864b777131a00190cdfa3069035eccbc038c30e1
 9e854c38e5191878fbe471e749b0112bb18902008dc473b2b2e8e72700000000
 49454e44ae426082
 """),
-  'Tp2n3p08': _dehex("""
+    'Tp2n3p08': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020080300000044a48a
 c60000000467414d41000186a031e8965f00000300504c544502ffff80ff05ff
 7f0703ff7f0180ff04ff00ffff06ff000880ff05ff7f07ffff06ff000804ff00
@@ -2844,7 +2868,7 @@ c0e96bf79ebdfafc971e0a587885e515f58cad5d7d43a2d2720aeadaba26cf5a
 bc62fbcea3272fde7efafac37f3a28000087c0fe101bc2f85f0000000049454e
 44ae426082
 """),
-  'tbbn1g04': _dehex("""
+    'tbbn1g04': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020040000000093e1c8
 290000000467414d41000186a031e8965f0000000274524e530007e8f7589b00
 000002624b47440000aa8d23320000013e49444154789c55d1cd4b024118c7f1
@@ -2860,7 +2884,7 @@ b692d190b718d159f4c0a45c4435915a243c58a7a4312a7a57913f05747594c6
 7a601bd2710caceba6158797285b7f2084a2f82c57c01a0000000049454e44ae
 426082
 """),
-  'tbrn2c08': _dehex("""
+    'tbrn2c08': _dehex("""
 89504e470d0a1a0a0000000d4948445200000020000000200802000000fc18ed
 a30000000467414d41000186a031e8965f0000000674524e53007f007f007f8a
 33334f00000006624b474400ff0000000033277cf3000004d649444154789cad
@@ -2905,7 +2929,7 @@ c0f8f878ad69341a33994ced2969c0d0d0502412f9f8f163f3a7fd654b474787
 9e3d7bf6d3a74f3b3b3b47c80efc05ff7af28fefb70d9b0000000049454e44ae
 426082
 """),
-  'basn6a16': _dehex("""
+    'basn6a16': _dehex("""
 89504e470d0a1a0a0000000d494844520000002000000020100600000023eaa6
 b70000000467414d41000186a031e8965f00000d2249444154789cdd995f6c1c
 d775c67ff38fb34b724d2ee55a8e4b04a0ac87049100cab4dbd8c6528902cb4d
@@ -3117,7 +3141,7 @@ def test_suite(options, args):
         'CK15': test_checker_15,
         'ZERO': test_zero,
         'ONE': test_one,
-        }
+    }
 
     def test_pattern(width, height, bitdepth, pattern):
         """Create a single plane (monochrome) test pattern.  Returns a
@@ -3139,7 +3163,7 @@ def test_suite(options, args):
         return a
 
     def test_rgba(size=256, bitdepth=8,
-                    red="GTB", green="GLR", blue="RTL", alpha=None):
+                  red="GTB", green="GLR", blue="RTL", alpha=None):
         """
         Create a test image.  Each channel is generated from the
         specified pattern; any channel apart from red can be set to
@@ -3176,6 +3200,7 @@ def test_suite(options, args):
             def rescale(data):
                 for row in data:
                     yield map(factor.__mul__, row)
+
             pixels = rescale(pixels)
             meta['bitdepth'] = 8
         arraycode = 'BH'[meta['bitdepth'] > 8]
@@ -3247,20 +3272,20 @@ def read_pam_header(infile):
             header[l[0]] += ' ' + l[1]
 
     if ('WIDTH' not in header or
-        'HEIGHT' not in header or
-        'DEPTH' not in header or
-        'MAXVAL' not in header):
+                'HEIGHT' not in header or
+                'DEPTH' not in header or
+                'MAXVAL' not in header):
         raise Error('PAM file must specify WIDTH, HEIGHT, DEPTH, and MAXVAL')
     width = int(header['WIDTH'])
     height = int(header['HEIGHT'])
     depth = int(header['DEPTH'])
     maxval = int(header['MAXVAL'])
     if (width <= 0 or
-        height <= 0 or
-        depth <= 0 or
-        maxval <= 0):
+                height <= 0 or
+                depth <= 0 or
+                maxval <= 0):
         raise Error(
-          'WIDTH, HEIGHT, DEPTH, MAXVAL must all be positive integers')
+            'WIDTH, HEIGHT, DEPTH, MAXVAL must all be positive integers')
     return 'P7', width, height, depth, maxval
 
 
@@ -3414,6 +3439,7 @@ def _main(argv):
     # Parse command line arguments
     from optparse import OptionParser
     import re
+
     version = '%prog ' + re.sub(r'( ?\$|URL: |Rev:)', '', __version__)
     parser = OptionParser(version=version)
     parser.set_usage("%prog [options] [imagefile]")
@@ -3504,7 +3530,7 @@ def _main(argv):
     else:
         # Encode PNM to PNG
         format, width, height, depth, maxval = \
-          read_pnm_header(infile, ('P5', 'P6', 'P7'))
+            read_pnm_header(infile, ('P5', 'P6', 'P7'))
         # When it comes to the variety of input formats, we do something
         # rather rude.  Observe that L, LA, RGB, RGBA are the 4 colour
         # types supported by PNG and that they correspond to 1, 2, 3, 4
@@ -3518,8 +3544,8 @@ def _main(argv):
             mi = supported.index(maxval)
         except ValueError:
             raise NotImplementedError(
-              'your maxval (%s) not in supported list %s' %
-              (maxval, str(supported)))
+                'your maxval (%s) not in supported list %s' %
+                (maxval, str(supported)))
         bitdepth = mi + 1
         writer = Writer(width, height,
                         greyscale=greyscale,
@@ -3533,10 +3559,10 @@ def _main(argv):
         if options.alpha:
             pgmfile = open(options.alpha, 'rb')
             format, awidth, aheight, adepth, amaxval = \
-              read_pnm_header(pgmfile, 'P5')
+                read_pnm_header(pgmfile, 'P5')
             if amaxval != '255':
                 raise NotImplementedError(
-                  'maxval %s not supported for alpha channel' % amaxval)
+                    'maxval %s not supported for alpha channel' % amaxval)
             if (awidth, aheight) != (width, height):
                 raise ValueError("alpha channel image size mismatch"
                                  " (%s has %sx%s but %s has %sx%s)"

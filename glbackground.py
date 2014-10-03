@@ -28,7 +28,7 @@ class GLBackground(GLOrtho):
     margin = 8
     bg_color = (0.0, 0.0, 0.0, 0.6)
 
-    #bg_color = (30/255.0,0,255/255.0, 100/255.0)
+    # bg_color = (30/255.0,0,255/255.0, 100/255.0)
     def gl_draw(self):
         #if hasattr(self, 'highlight_bg_color') and self in self.get_root().find_widget(mouse.get_pos()).all_parents():
         #    color = self.highlight_bg_color

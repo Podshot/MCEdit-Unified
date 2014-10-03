@@ -1,4 +1,3 @@
-
 from numpy import zeros
 import itertools
 from pymclevel import alphaMaterials
@@ -6,25 +5,25 @@ from pymclevel.level import extractHeights
 
 am = alphaMaterials
 
-#naturally occuring materials
+# naturally occuring materials
 blocks = [
-  am.Grass,
-  am.Dirt,
-  am.Stone,
-  am.Bedrock,
-  am.Sand,
-  am.Gravel,
-  am.GoldOre,
-  am.IronOre,
-  am.CoalOre,
-  am.LapisLazuliOre,
-  am.DiamondOre,
-  am.RedstoneOre,
-  am.RedstoneOreGlowing,
-  am.Netherrack,
-  am.SoulSand,
-  am.Clay,
-  am.Glowstone
+    am.Grass,
+    am.Dirt,
+    am.Stone,
+    am.Bedrock,
+    am.Sand,
+    am.Gravel,
+    am.GoldOre,
+    am.IronOre,
+    am.CoalOre,
+    am.LapisLazuliOre,
+    am.DiamondOre,
+    am.RedstoneOre,
+    am.RedstoneOreGlowing,
+    am.Netherrack,
+    am.SoulSand,
+    am.Clay,
+    am.Glowstone
 ]
 blocktypes = [b.ID for b in blocks]
 
@@ -34,9 +33,10 @@ def naturalBlockmask():
     blockmask[blocktypes] = True
     return blockmask
 
+
 inputs = (
-  ("Depth", (4, -128, 128)),
-  ("Pick a block:", alphaMaterials.Grass),
+    ("Depth", (4, -128, 128)),
+    ("Pick a block:", alphaMaterials.Grass),
 )
 
 

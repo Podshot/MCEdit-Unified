@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   Albow - File Dialogs
+# Albow - File Dialogs
 #
 
 import os
@@ -16,7 +16,6 @@ from albow.theme import ThemeProperty
 
 
 class DirPathView(Widget):
-
     def __init__(self, width, client, **kwds):
         Widget.__init__(self, **kwds)
         self.set_size_for_text(width)
@@ -35,7 +34,6 @@ class DirPathView(Widget):
 
 
 class FileListView(PaletteView):
-
     #scroll_button_color = (255, 255, 0)
 
     def __init__(self, width, client, **kwds):
@@ -58,7 +56,7 @@ class FileListView(PaletteView):
 
         try:
             names = [name for name in os.listdir(dir) if filter(name)]
-                #if not name.startswith(".") and filter(name)]
+            #if not name.startswith(".") and filter(name)]
         except EnvironmentError, e:
             alert(u"%s: %s" % (dir, e))
             names = []
@@ -94,7 +92,6 @@ class FileListView(PaletteView):
 
 
 class FileDialog(Dialog):
-
     box_width = 250
     default_prompt = None
     up_button_text = ThemeProperty("up_button_text")
@@ -207,7 +204,6 @@ class FileDialog(Dialog):
 
 
 class FileSaveDialog(FileDialog):
-
     saving = True
     default_prompt = "Save as:"
     ok_label = "Save"
@@ -252,7 +248,6 @@ class FileSaveDialog(FileDialog):
 
 
 class FileOpenDialog(FileDialog):
-
     saving = False
     ok_label = "Open"
 
@@ -281,7 +276,6 @@ class FileOpenDialog(FileDialog):
 
 
 class LookForFileDialog(FileOpenDialog):
-
     target = None
 
     def __init__(self, target, **kwds):
@@ -296,7 +290,7 @@ class LookForFileDialog(FileOpenDialog):
 
 
 def request_new_filename(prompt=None, suffix=None, extra_suffixes=None,
-        directory=None, filename=None, pathname=None):
+                         directory=None, filename=None, pathname=None):
     if pathname:
         directory, filename = os.path.split(pathname)
     if extra_suffixes:

@@ -40,6 +40,7 @@ import zipfile
 
 import logging
 
+
 def alertException(func):
     def _alertException(*args, **kw):
         try:
@@ -51,9 +52,11 @@ def alertException(func):
 
         except Exception, e:
             logging.exception("Exception:")
-            if ask("Error during {0}: {1!r}".format(func, e)[:1000], ["Report Error", "Okay"], default=1, cancel=0) == "Report Error":
+            if ask("Error during {0}: {1!r}".format(func, e)[:1000], ["Report Error", "Okay"], default=1,
+                   cancel=0) == "Report Error":
                 try:
                     import squash_python
+
                     squash_python.get_client().recordException(*sys.exc_info())
                 except ImportError:
                     pass
@@ -71,50 +74,50 @@ def drawFace(box, face, type=GL.GL_QUADS):
 
         faceVertices = numpy.array(
             (x, y2, z2,
-            x, y2, z,
-            x, y, z,
-            x, y, z2,
+             x, y2, z,
+             x, y, z,
+             x, y, z2,
             ), dtype='f4')
 
     elif face == pymclevel.faces.FaceXIncreasing:
 
         faceVertices = numpy.array(
             (x2, y, z2,
-            x2, y, z,
-            x2, y2, z,
-            x2, y2, z2,
+             x2, y, z,
+             x2, y2, z,
+             x2, y2, z2,
             ), dtype='f4')
 
     elif face == pymclevel.faces.FaceYDecreasing:
         faceVertices = numpy.array(
             (x2, y, z2,
-            x, y, z2,
-            x, y, z,
-            x2, y, z,
+             x, y, z2,
+             x, y, z,
+             x2, y, z,
             ), dtype='f4')
 
     elif face == pymclevel.faces.FaceYIncreasing:
         faceVertices = numpy.array(
             (x2, y2, z,
-            x, y2, z,
-            x, y2, z2,
-            x2, y2, z2,
+             x, y2, z,
+             x, y2, z2,
+             x2, y2, z2,
             ), dtype='f4')
 
     elif face == pymclevel.faces.FaceZDecreasing:
         faceVertices = numpy.array(
             (x, y, z,
-            x, y2, z,
-            x2, y2, z,
-            x2, y, z,
+             x, y2, z,
+             x2, y2, z,
+             x2, y, z,
             ), dtype='f4')
 
     elif face == pymclevel.faces.FaceZIncreasing:
         faceVertices = numpy.array(
             (x2, y, z2,
-            x2, y2, z2,
-            x, y2, z2,
-            x, y, z2,
+             x2, y2, z2,
+             x, y2, z2,
+             x, y, z2,
             ), dtype='f4')
 
     faceVertices.shape = (4, 3)
@@ -154,70 +157,70 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
     dx, dy, dz = x2 - x, y2 - y, z2 - z
     cubeVertices = numpy.array(
         (
-        x, y, z,
-        x, y2, z,
-        x2, y2, z,
-        x2, y, z,
+            x, y, z,
+            x, y2, z,
+            x2, y2, z,
+            x2, y, z,
 
-        x2, y, z2,
-        x2, y2, z2,
-        x, y2, z2,
-        x, y, z2,
+            x2, y, z2,
+            x2, y2, z2,
+            x, y2, z2,
+            x, y, z2,
 
-        x2, y, z2,
-        x, y, z2,
-        x, y, z,
-        x2, y, z,
+            x2, y, z2,
+            x, y, z2,
+            x, y, z,
+            x2, y, z,
 
-        x2, y2, z,
-        x, y2, z,
-        x, y2, z2,
-        x2, y2, z2,
+            x2, y2, z,
+            x, y2, z,
+            x, y2, z2,
+            x2, y2, z2,
 
-        x, y2, z2,
-        x, y2, z,
-        x, y, z,
-        x, y, z2,
+            x, y2, z2,
+            x, y2, z,
+            x, y, z,
+            x, y, z2,
 
-        x2, y, z2,
-        x2, y, z,
-        x2, y2, z,
-        x2, y2, z2,
-                            ), dtype='f4')
+            x2, y, z2,
+            x2, y, z,
+            x2, y2, z,
+            x2, y2, z2,
+        ), dtype='f4')
     if textureVertices == None:
         textureVertices = numpy.array(
-        (
-        0, -dy * 16,
-        0, 0,
-        dx * 16, 0,
-        dx * 16, -dy * 16,
+            (
+                0, -dy * 16,
+                0, 0,
+                dx * 16, 0,
+                dx * 16, -dy * 16,
 
-        dx * 16, -dy * 16,
-        dx * 16, 0,
-        0, 0,
-        0, -dy * 16,
+                dx * 16, -dy * 16,
+                dx * 16, 0,
+                0, 0,
+                0, -dy * 16,
 
-        dx * 16, -dz * 16,
-        0, -dz * 16,
-        0, 0,
-        dx * 16, 0,
+                dx * 16, -dz * 16,
+                0, -dz * 16,
+                0, 0,
+                dx * 16, 0,
 
-        dx * 16, 0,
-        0, 0,
-        0, -dz * 16,
-        dx * 16, -dz * 16,
+                dx * 16, 0,
+                0, 0,
+                0, -dz * 16,
+                dx * 16, -dz * 16,
 
-        dz * 16, 0,
-        0, 0,
-        0, -dy * 16,
-        dz * 16, -dy * 16,
+                dz * 16, 0,
+                0, 0,
+                0, -dy * 16,
+                dz * 16, -dy * 16,
 
-        dz * 16, -dy * 16,
-        0, -dy * 16,
-        0, 0,
-        dz * 16, 0,
+                dz * 16, -dy * 16,
+                0, -dy * 16,
+                0, 0,
+                dz * 16, 0,
 
-        ), dtype='f4')
+            ), dtype='f4')
 
         textureVertices.shape = (6, 4, 2)
 
@@ -250,7 +253,6 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
 def drawTerrainCuttingWire(box,
                            c0=(0.75, 0.75, 0.75, 0.4),
                            c1=(1.0, 1.0, 1.0, 1.0)):
-
     # glDepthMask(False)
     GL.glEnable(GL.GL_DEPTH_TEST)
 
@@ -267,6 +269,7 @@ def drawTerrainCuttingWire(box,
     GL.glDepthFunc(GL.GL_LEQUAL)
     GL.glDisable(GL.GL_DEPTH_TEST)
     # glDepthMask(True)
+
 
 # texturePacksDir = os.path.join(pymclevel.minecraftDir, "texturepacks")
 
@@ -488,6 +491,7 @@ def CheckBoxLabel(title, *args, **kw):
     row.checkbox = cb
     return row
 
+
 from albow import FloatField, IntField, TextField
 
 
@@ -498,11 +502,14 @@ def FloatInputRow(title, *args, **kw):
 def IntInputRow(title, *args, **kw):
     return Row((Label(title, tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
 
+
 from albow.dialogs import Dialog
 from datetime import timedelta
 
+
 def TextInputRow(title, *args, **kw):
     return Row((Label(title, tooltipText=kw.get('tooltipText')), TextField(*args, **kw)))
+
 
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
@@ -513,6 +520,7 @@ def setWindowCaption(prefix):
 
         def __exit__(self, *args):
             display.set_caption(caption)
+
     return ctx()
 
 
@@ -523,6 +531,7 @@ def showProgress(progressText, progressIterator, cancel=False):
     A float value between 0.0 and 1.0 for a determinate indicator,
     A string, to update the progress info label
     or a tuple of (float value, string) to set the progress and update the label"""
+
     class ProgressWidget(Dialog):
         progressFraction = 0.0
         firstDraw = False
@@ -609,6 +618,7 @@ def showProgress(progressText, progressIterator, cancel=False):
         return widget.progressAmount
     else:
         return "Canceled"
+
 
 from glutils import DisplayList
 

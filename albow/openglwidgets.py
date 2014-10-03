@@ -1,4 +1,4 @@
-#-------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 #
 #   Albow - OpenGL widgets
 #
@@ -10,7 +10,6 @@ from widget import Widget
 
 
 class GLViewport(Widget):
-
     is_gl_container = True
 
     def gl_draw_self(self, root, offset):
@@ -63,16 +62,16 @@ class GLViewport(Widget):
         except ValueError:  # projection failed!
             pass
 
+
 import numpy
 
 #-------------------------------------------------------------------------
 
 
 class GLOrtho(GLViewport):
-
     def __init__(self, rect=None,
-            xmin=-1, xmax=1, ymin=-1, ymax=1,
-            near=-1, far=1, **kwds):
+                 xmin=-1, xmax=1, ymin=-1, ymax=1,
+                 near=-1, far=1, **kwds):
         GLViewport.__init__(self, rect, **kwds)
         self.xmin = xmin
         self.xmax = xmax
@@ -83,7 +82,7 @@ class GLOrtho(GLViewport):
 
     def setup_projection(self):
         GL.glOrtho(self.xmin, self.xmax, self.ymin, self.ymax,
-            self.near, self.far)
+                   self.near, self.far)
 
 
 class GLPixelOrtho(GLOrtho):
@@ -99,9 +98,8 @@ class GLPixelOrtho(GLOrtho):
 
 
 class GLPerspective(GLViewport):
-
     def __init__(self, rect=None, fovy=20,
-            near=0.1, far=1000, **kwds):
+                 near=0.1, far=1000, **kwds):
         GLViewport.__init__(self, rect, **kwds)
         self.fovy = fovy
         self.near = near

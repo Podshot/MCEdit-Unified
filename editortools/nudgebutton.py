@@ -5,6 +5,7 @@ from pymclevel.box import Vector
 import config
 from glbackground import GLBackground
 
+
 class NudgeButton(GLBackground):
     """ A button that captures movement keys while pressed and sends them to a listener as nudge events.
     Poorly planned. """
@@ -22,7 +23,8 @@ class NudgeButton(GLBackground):
         # tooltipBacking.bg_color = (0, 0, 0, 0.6)
         keys = [config.config.get("Keys", k).upper() for k in ("Forward", "Back", "Left", "Right", "Up", "Down")]
 
-        nudgeLabel.tooltipText = "Click and hold.  While holding, use the movement keys ({0}{1}{2}{3}{4}{5}) to nudge. Hold SHIFT to nudge faster.".format(*keys)
+        nudgeLabel.tooltipText = "Click and hold.  While holding, use the movement keys ({0}{1}{2}{3}{4}{5}) to nudge. Hold SHIFT to nudge faster.".format(
+            *keys)
         # tooltipBacking.shrink_wrap()
 
     def mouse_down(self, event):

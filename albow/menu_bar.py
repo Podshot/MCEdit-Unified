@@ -1,5 +1,5 @@
 #
-#    Albow - Menu bar
+# Albow - Menu bar
 #
 
 from pygame import Rect
@@ -7,7 +7,6 @@ from widget import Widget, overridable_property
 
 
 class MenuBar(Widget):
-
     menus = overridable_property('menus', "List of Menu instances")
 
     def __init__(self, menus=None, width=0, **kwds):

@@ -45,9 +45,11 @@ def rect_property(name):
         new_size = r.size
         if old_size != new_size:
             self._resized(old_size)
+
     return property(get, set)
 
-#noinspection PyPropertyAccess
+
+# noinspection PyPropertyAccess
 
 
 class Widget(object):
@@ -112,28 +114,28 @@ class Widget(object):
         self._rect = Rect(x)
         self._resized(old_size)
 
-#    def get_anchor(self):
-#        if self.hstretch:
-#            chars ='lr'
-#        elif self.hmove:
-#            chars = 'r'
-#        else:
-#            chars = 'l'
-#        if self.vstretch:
-#            chars += 'tb'
-#        elif self.vmove:
-#            chars += 'b'
-#        else:
-#            chars += 't'
-#        return chars
-#
-#    def set_anchor(self, chars):
-#        self.hmove = 'r' in chars and not 'l' in chars
-#        self.vmove = 'b' in chars and not 't' in chars
-#        self.hstretch = 'r' in chars and 'l' in chars
-#        self.vstretch = 'b' in chars and 't' in chars
-#
-#    anchor = property(get_anchor, set_anchor)
+    #    def get_anchor(self):
+    #        if self.hstretch:
+    #            chars ='lr'
+    #        elif self.hmove:
+    #            chars = 'r'
+    #        else:
+    #            chars = 'l'
+    #        if self.vstretch:
+    #            chars += 'tb'
+    #        elif self.vmove:
+    #            chars += 'b'
+    #        else:
+    #            chars += 't'
+    #        return chars
+    #
+    #    def set_anchor(self, chars):
+    #        self.hmove = 'r' in chars and not 'l' in chars
+    #        self.vmove = 'b' in chars and not 't' in chars
+    #        self.hstretch = 'r' in chars and 'l' in chars
+    #        self.vstretch = 'b' in chars and 't' in chars
+    #
+    #    anchor = property(get_anchor, set_anchor)
 
     resizing_axes = {'h': 'lr', 'v': 'tb'}
     resizing_values = {'': [0], 'm': [1], 's': [0, 1]}
@@ -622,62 +624,62 @@ class Widget(object):
             for child in self.subwidgets:
                 child.collect_tab_order(result)
 
-#    def tab_to_first(self, start = None):
-#        if debug_tab:
-#            print "Enter Widget.tab_to_first:", self ###
-#            print "...start =", start ###
-#        if not self.visible:
-#            if debug_tab: print "...invisible" ###
-#            self.tab_to_next_in_parent(start)
-#        elif self.tab_stop:
-#            if debug_tab: print "...stopping here" ###
-#            self.focus()
-#        else:
-#            if debug_tab: print "...tabbing to next" ###
-#            self.tab_to_next(start or self)
-#        if debug_tab: print "Exit Widget.tab_to_first:", self ###
-#
-#    def tab_to_next(self, start = None):
-#        if debug_tab:
-#            print "Enter Widget.tab_to_next:", self ###
-#            print "...start =", start ###
-#        sub = self.subwidgets
-#        if sub:
-#            if debug_tab: print "...tabbing to first subwidget" ###
-#            sub[0].tab_to_first(start or self)
-#        else:
-#            if debug_tab: print "...tabbing to next in parent" ###
-#            self.tab_to_next_in_parent(start)
-#        if debug_tab: print "Exit Widget.tab_to_next:", self ###
-#
-#    def tab_to_next_in_parent(self, start):
-#        if debug_tab:
-#            print "Enter Widget.tab_to_next_in_parent:", self ###
-#            print "...start =", start ###
-#        parent = self.parent
-#        if parent and not self.is_modal:
-#            if debug_tab: print "...telling parent to tab to next" ###
-#            parent.tab_to_next_after(self, start)
-#        else:
-#            if self is not start:
-#                if debug_tab: print "...wrapping back to first" ###
-#                self.tab_to_first(start)
-#        if debug_tab: print "Exit Widget.tab_to_next_in_parent:", self ###
-#
-#    def tab_to_next_after(self, last, start):
-#        if debug_tab:
-#            print "Enter Widget.tab_to_next_after:", self, last ###
-#            print "...start =", start ###
-#        sub = self.subwidgets
-#        i = sub.index(last) + 1
-#        if debug_tab: print "...next index =", i, "of", len(sub) ###
-#        if i < len(sub):
-#            if debug_tab: print "...tabbing there" ###
-#            sub[i].tab_to_first(start)
-#        else:
-#            if debug_tab: print "...tabbing to next in parent" ###
-#            self.tab_to_next_in_parent(start)
-#        if debug_tab: print "Exit Widget.tab_to_next_after:", self, last ###
+            #    def tab_to_first(self, start = None):
+            #        if debug_tab:
+            #            print "Enter Widget.tab_to_first:", self ###
+            #            print "...start =", start ###
+            #        if not self.visible:
+            #            if debug_tab: print "...invisible" ###
+            #            self.tab_to_next_in_parent(start)
+            #        elif self.tab_stop:
+            #            if debug_tab: print "...stopping here" ###
+            #            self.focus()
+            #        else:
+            #            if debug_tab: print "...tabbing to next" ###
+            #            self.tab_to_next(start or self)
+            #        if debug_tab: print "Exit Widget.tab_to_first:", self ###
+            #
+            #    def tab_to_next(self, start = None):
+            #        if debug_tab:
+            #            print "Enter Widget.tab_to_next:", self ###
+            #            print "...start =", start ###
+            #        sub = self.subwidgets
+            #        if sub:
+            #            if debug_tab: print "...tabbing to first subwidget" ###
+            #            sub[0].tab_to_first(start or self)
+            #        else:
+            #            if debug_tab: print "...tabbing to next in parent" ###
+            #            self.tab_to_next_in_parent(start)
+            #        if debug_tab: print "Exit Widget.tab_to_next:", self ###
+            #
+            #    def tab_to_next_in_parent(self, start):
+            #        if debug_tab:
+            #            print "Enter Widget.tab_to_next_in_parent:", self ###
+            #            print "...start =", start ###
+            #        parent = self.parent
+            #        if parent and not self.is_modal:
+            #            if debug_tab: print "...telling parent to tab to next" ###
+            #            parent.tab_to_next_after(self, start)
+            #        else:
+            #            if self is not start:
+            #                if debug_tab: print "...wrapping back to first" ###
+            #                self.tab_to_first(start)
+            #        if debug_tab: print "Exit Widget.tab_to_next_in_parent:", self ###
+            #
+            #    def tab_to_next_after(self, last, start):
+            #        if debug_tab:
+            #            print "Enter Widget.tab_to_next_after:", self, last ###
+            #            print "...start =", start ###
+            #        sub = self.subwidgets
+            #        i = sub.index(last) + 1
+            #        if debug_tab: print "...next index =", i, "of", len(sub) ###
+            #        if i < len(sub):
+            #            if debug_tab: print "...tabbing there" ###
+            #            sub[i].tab_to_first(start)
+            #        else:
+            #            if debug_tab: print "...tabbing to next in parent" ###
+            #            self.tab_to_next_in_parent(start)
+            #        if debug_tab: print "Exit Widget.tab_to_next_after:", self, last ###
 
     def inherited(self, attribute):
         value = getattr(self, attribute)
@@ -723,6 +725,7 @@ class Widget(object):
         if not self.visible:
             return
         from OpenGL import GL, GLU
+
         rect = self.rect.move(offset)
         if self.is_gl_container:
             self.gl_draw_self(root, offset)
@@ -749,7 +752,7 @@ class Widget(object):
             GL.glEnable(GL.GL_BLEND)
             GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
             GL.glDrawPixels(self.width, self.height,
-                GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, fromstring(data, dtype='uint8'))
+                            GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, fromstring(data, dtype='uint8'))
             GL.glPopAttrib()
             GL.glFlush()
 

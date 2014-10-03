@@ -3,12 +3,13 @@
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
+
 log = logging.getLogger(__name__)
 
 from OpenGL import GL
 
-class Drawable(object):
 
+class Drawable(object):
     def __init__(self):
         super(Drawable, self).__init__()
         self._displayList = None
@@ -45,7 +46,7 @@ class Drawable(object):
 
     def draw(self):
         if self._displayList is None:
-           self._displayList = GL.glGenLists(1)
+            self._displayList = GL.glGenLists(1)
 
         if self.invalidList:
             self.compileList()

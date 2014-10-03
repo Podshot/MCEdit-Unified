@@ -16,6 +16,7 @@ import re
 
 log = getLogger(__name__)
 
+
 class MCJavaLevel(MCLevel):
     def setBlockDataAt(self, *args):
         pass
@@ -87,7 +88,9 @@ class MCJavaLevel(MCLevel):
 
         blockCount = h * l * w
         if blockCount > data.shape[0]:
-            raise ValueError("Level file does not contain enough blocks! (size {s}) Try putting the size into the filename, e.g. server_level_{w}_{l}_{h}.dat".format(w=w, l=l, h=h, s=data.shape))
+            raise ValueError(
+                "Level file does not contain enough blocks! (size {s}) Try putting the size into the filename, e.g. server_level_{w}_{l}_{h}.dat".format(
+                    w=w, l=l, h=h, s=data.shape))
 
         blockOffset = data.shape[0] - blockCount
         blocks = data[blockOffset:blockOffset + blockCount]
@@ -112,7 +115,6 @@ class MCJavaLevel(MCLevel):
 
         s = StringIO()
         g = gzip.GzipFile(fileobj=s, mode='wb')
-
 
         g.write(self.filedata.tostring())
         g.flush()

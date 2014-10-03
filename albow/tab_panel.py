@@ -1,4 +1,4 @@
-################################################################
+# ###############################################################
 #
 #   Albow - Tab Panel
 #
@@ -140,8 +140,8 @@ class TabPanel(Widget):
 
     def tab_bg_color_for_page(self, page):
         return getattr(page, 'tab_bg_color', None) \
-            or page.bg_color \
-            or self.default_tab_bg_color
+               or page.bg_color \
+               or self.default_tab_bg_color
 
     def mouse_down(self, e):
         x, y = e.local
@@ -157,7 +157,7 @@ class TabPanel(Widget):
         i = (x - m) * n // width
         if 0 <= i < n:
             return i
-        
+
     def gl_draw_self(self, root, offset):
         self.gl_draw(root, offset)
 
@@ -166,14 +166,14 @@ class TabPanel(Widget):
 
         if len(pages) > 1:
             tlcorner = (offset[0] + self.bottomleft[0], offset[1] + self.bottomleft[1])
-            pageTabContents = []        
+            pageTabContents = []
             current_page = self.current_page
             n = len(pages)
             b = self.tab_border_width
             s = self.tab_spacing
             h = self.tab_height
             m = self.tab_margin
-            tabWidth = (self.size[0]-(s*n)-(2*m))/n
+            tabWidth = (self.size[0] - (s * n) - (2 * m)) / n
             width = self.width - 2 * m + s - b
             x0 = m + tlcorner[0]
 
@@ -182,23 +182,23 @@ class TabPanel(Widget):
             surface = Surface(self.size, SRCALPHA)
 
             glEnable(GL_BLEND)
-            
+
             for i, page in enumerate(pages):
-                x1 = x0+tabWidth
+                x1 = x0 + tabWidth
                 selected = page is current_page
                 if selected:
                     glColor(1.0, 1.0, 1.0, 0.5)
                 else:
                     glColor(0.5, 0.5, 0.5, 0.5)
-                glRectf(x0, tlcorner[1]-(m+b), x1, tlcorner[1]-(h))
+                glRectf(x0, tlcorner[1] - (m + b), x1, tlcorner[1] - (h))
                 buf = font.render(self.pages[i].tab_title, True, self.fg_color or fg)
                 r = buf.get_rect()
 
-                offs = ((tabWidth - r.size[0])/2) + m +((s+tabWidth)*i)
+                offs = ((tabWidth - r.size[0]) / 2) + m + ((s + tabWidth) * i)
 
                 surface.blit(buf, (offs, m))
-                x0 = x1 + s    
-            
+                x0 = x1 + s
+
             data = image.tostring(surface, 'RGBA', 1)
             rect = self.rect.move(offset)
             w, h = root.size
@@ -212,7 +212,7 @@ class TabPanel(Widget):
             glPushAttrib(GL_COLOR_BUFFER_BIT)
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
             glDrawPixels(self.width, self.height,
-                GL_RGBA, GL_UNSIGNED_BYTE, fromstring(data, dtype='uint8'))
+                         GL_RGBA, GL_UNSIGNED_BYTE, fromstring(data, dtype='uint8'))
             glPopAttrib()
             glFlush()
 

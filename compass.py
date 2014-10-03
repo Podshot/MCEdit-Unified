@@ -12,7 +12,8 @@ log = logging.getLogger(__name__)
 
 
 def makeQuad(minx, miny, width, height):
-    return [minx, miny, minx+width, miny, minx+width, miny+height, minx, miny + height]
+    return [minx, miny, minx + width, miny, minx + width, miny + height, minx, miny + height]
+
 
 class CompassOverlay(Drawable):
     _tex = None
@@ -38,7 +39,7 @@ class CompassOverlay(Drawable):
             else:
                 filename = "compass.png"
 
-            self._tex = loadPNGTexture("toolicons/" + filename)#, minFilter=GL.GL_LINEAR, magFilter=GL.GL_LINEAR)
+            self._tex = loadPNGTexture("toolicons/" + filename)  # , minFilter=GL.GL_LINEAR, magFilter=GL.GL_LINEAR)
 
         self._tex.bind()
         size = 0.075
@@ -47,12 +48,12 @@ class CompassOverlay(Drawable):
             GL.glLoadIdentity()
 
             yaw, pitch = self.yawPitch
-            GL.glTranslatef(1.-size, size, 0.0)  # position on upper right corner
-            GL.glRotatef(180-yaw, 0., 0., 1.)  # adjust to north
+            GL.glTranslatef(1. - size, size, 0.0)  # position on upper right corner
+            GL.glRotatef(180 - yaw, 0., 0., 1.)  # adjust to north
             GL.glColor3f(1., 1., 1.)
 
             with gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY):
-                GL.glVertexPointer(2, GL.GL_FLOAT, 0, makeQuad(-size, -size, 2*size, 2*size))
+                GL.glVertexPointer(2, GL.GL_FLOAT, 0, makeQuad(-size, -size, 2 * size, 2 * size))
                 GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, makeQuad(0, 0, 256, 256))
 
                 with gl.glEnable(GL.GL_BLEND, GL.GL_TEXTURE_2D):

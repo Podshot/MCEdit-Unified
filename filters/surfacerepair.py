@@ -1,8 +1,7 @@
-
 from numpy import zeros, array
 import itertools
 
-#naturally occuring materials
+# naturally occuring materials
 from pymclevel.level import extractHeights
 
 blocktypes = [1, 2, 3, 7, 12, 13, 14, 15, 16, 56, 73, 74, 87, 88, 89]
@@ -15,12 +14,11 @@ blockmask[blocktypes] = True
 displayName = "Chunk Surface Repair"
 
 inputs = (
-  ("Repairs the backwards surfaces made by old versions of Minecraft.", "label"),
+    ("Repairs the backwards surfaces made by old versions of Minecraft.", "label"),
 )
 
 
 def perform(level, box, options):
-
     #iterate through the slices of each chunk in the selection box
     for chunk, slices, point in level.getChunkSlices(box):
         # slicing the block array is straightforward. blocks will contain only

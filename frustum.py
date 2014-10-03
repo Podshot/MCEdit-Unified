@@ -13,6 +13,7 @@ Based on code from:
 import logging
 import numpy
 from OpenGL import GL
+
 context_log = logging.getLogger()
 
 
@@ -61,7 +62,7 @@ def viewingMatrix(projection=None, model=None):
     return numpy.dot(model, projection)
 
 
-class Frustum (object):
+class Frustum(object):
     """Holder for frustum specification for intersection tests
 
     Note:
@@ -70,6 +71,7 @@ class Frustum (object):
         is to define 6 clipping planes from the OpenGL
         model-view matrices.
     """
+
     def visible(self, points, radius):
         """Determine whether this sphere is visible in frustum
 
@@ -89,7 +91,7 @@ class Frustum (object):
         return ~numpy.any(distances < -radius, -1)
 
     def visible1(self, point, radius):
-        #return self.visible(array(point[numpy.newaxis, :]), radius)
+        # return self.visible(array(point[numpy.newaxis, :]), radius)
 
         distance = numpy.sum(self.planes * point, -1)
         vis = ~numpy.any(distance < -radius, -1)
@@ -156,7 +158,8 @@ class Frustum (object):
     @classmethod
     def normalize(cls, frustum):
         """Normalize clipping plane equations"""
-        magnitude = numpy.sqrt(frustum[:, 0] * frustum[:, 0] + frustum[:, 1] * frustum[:, 1] + frustum[:, 2] * frustum[:, 2])
+        magnitude = numpy.sqrt(
+            frustum[:, 0] * frustum[:, 0] + frustum[:, 1] * frustum[:, 1] + frustum[:, 2] * frustum[:, 2])
         # eliminate any planes which have 0-length vectors,
         # those planes can't be used for excluding anything anyway...
         frustum = numpy.compress(magnitude, frustum, 0)
