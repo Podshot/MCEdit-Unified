@@ -58,13 +58,6 @@ def genericNorthSouthFlip(cls):
 
     return rotation
     
-def genericLeftRightFlip(cls):
-    rotation = arange(16, dtype='uint8')
-    rotation[cls.Left] = cls.Right
-    rotation[cls.Right] = cls.Left
-
-    return rotation
-
 rotationClasses = []
 
 def genericFlipRotation(cls):
@@ -366,10 +359,9 @@ class Door:
 applyBit4(Door.rotateLeft)
 Door.flipEastWest = genericEastWestFlip(Door)
 Door.flipNorthSouth = genericNorthSouthFlip(Door)
-Door.flipLeftRight = genericVerticalFlip(Door)
 #rotationClasses.append(Door)
 genericFlipRotation(Door)
-applyBit2(Door)
+#applyBit2(Door)            #calls an array that attempts to swap data values 8 and 9, if we can make that work doors will be fixed.
 
 class RedstoneRepeater:
     blocktypes = [
@@ -611,7 +603,6 @@ class BlockRotation:
     flipEastWest = masterRotationTable("flipEastWest")
     flipNorthSouth = masterRotationTable("flipNorthSouth")
     flipVertical = masterRotationTable("flipVertical")
-    flipLeftRight = masterRotationTable("flipLeftRight")
     typeTable = rotationTypeTable()
 
 
@@ -630,10 +621,6 @@ def FlipNorthSouth(blocks, data):
 
 def FlipEastWest(blocks, data):
     data[:] = BlockRotation.flipEastWest[blocks, data]
-    
-    
-def FlipLeftRight(blocks, data):
-    data[:] = BlockRotation.flipLeftRight[blocks, data]
 
 
 def RotateLeft(blocks, data):

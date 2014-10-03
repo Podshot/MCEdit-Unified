@@ -470,7 +470,13 @@ class ChunkCalculator (object):
             pymclevel.materials.alphaMaterials.Anvil,
             pymclevel.materials.alphaMaterials.Barrier,
             pymclevel.materials.alphaMaterials.StainedGlass,
-            pymclevel.materials.alphaMaterials.Hopper
+            pymclevel.materials.alphaMaterials.Hopper,
+            pymclevel.materials.alphaMaterials.Cauldron,
+            pymclevel.materials.alphaMaterials.WoodenDoor,
+            pymclevel.materials.alphaMaterials.IronDoor,
+            pymclevel.materials.alphaMaterials.AcaciaDoor,
+            pymclevel.materials.alphaMaterials.JungleDoor,
+            pymclevel.materials.alphaMaterials.IronTrapdoor,
             
         ]
         for b in transparentMaterials:
