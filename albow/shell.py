@@ -1,5 +1,5 @@
 #
-#   Albow - Shell
+# Albow - Shell
 #
 
 from root import RootWidget
@@ -8,7 +8,6 @@ from root import RootWidget
 
 
 class Shell(RootWidget):
-
     def __init__(self, surface, **kwds):
         RootWidget.__init__(self, surface, **kwds)
         self.current_screen = None

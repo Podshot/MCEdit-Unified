@@ -3,7 +3,7 @@ from widget import Widget
 
 
 class GridView(Widget):
-    #  cell_size   (width, height)   size of each cell
+    # cell_size   (width, height)   size of each cell
     #
     #  Abstract methods:
     #

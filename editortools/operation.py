@@ -12,13 +12,16 @@ from pymclevel.mclevelbase import exhaust
 
 undo_folder = os.path.join(tempfile.gettempdir(), "mcedit_undo", str(os.getpid()))
 
+
 def mkundotemp():
     if not os.path.exists(undo_folder):
         os.makedirs(undo_folder)
 
     return tempfile.mkdtemp("mceditundo", dir=undo_folder)
 
+
 atexit.register(shutil.rmtree, undo_folder, True)
+
 
 class Operation(object):
     changedLevel = True
@@ -34,7 +37,7 @@ class Operation(object):
         else:
             return self.extractUndoSchematic(level, box)
 
-    def extractUndoChunks(self, level, chunks, chunkCount = None):
+    def extractUndoChunks(self, level, chunks, chunkCount=None):
         if not isinstance(level, pymclevel.MCInfdevOldLevel):
             chunks = numpy.array(list(chunks))
             mincx, mincz = numpy.min(chunks, 0)
@@ -99,7 +102,8 @@ class Operation(object):
                         self.level.copyChunkFrom(self.undoLevel, cx, cz)
                         yield i, self.undoLevel.chunkCount, "Copying chunk %s..." % ((cx, cz),)
                 else:
-                    for i in self.level.copyBlocksFromIter(self.undoLevel, self.undoLevel.bounds, self.undoLevel.sourcePoint, biomes=True):
+                    for i in self.level.copyBlocksFromIter(self.undoLevel, self.undoLevel.bounds,
+                                                           self.undoLevel.sourcePoint, biomes=True):
                         yield i, self.undoLevel.chunkCount, "Copying..."
 
             if self.undoLevel.chunkCount > 25:

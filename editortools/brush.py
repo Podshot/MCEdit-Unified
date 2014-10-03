@@ -50,6 +50,7 @@ BrushSettings.updateBrushOffset = BrushSettings("Update Brush Offset", False)
 BrushSettings.chooseBlockImmediately = BrushSettings("Choose Block Immediately", False)
 BrushSettings.alpha = BrushSettings("Alpha", 0.66)
 
+
 class BrushMode(object):
     options = []
 
@@ -65,6 +66,7 @@ class BrushMode(object):
         Called by BrushOperation for brush modes that can't be implemented using applyToChunk
         """
         pass
+
     apply = NotImplemented
 
     def applyToChunk(self, op, chunk, point):
@@ -107,7 +109,8 @@ class Modes:
             return col
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
-            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise,
+                                        op.hollow)
 
             chunk.Blocks[slices][brushMask] = op.blockInfo.ID
             chunk.Data[slices][brushMask] = op.blockInfo.blockData
@@ -205,7 +208,8 @@ class Modes:
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
-            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise,
+                                        op.hollow)
 
             replaceWith = op.options['replaceBlockInfo']
             # xxx pasted from fill.py
@@ -233,7 +237,8 @@ class Modes:
                 panel.modeStyleGrid,
                 panel.brushSizeRows,
             ]
-            col.append(IntInputRow("Strength: ", ref=AttrRef(tool, 'erosionStrength'), min=1, max=20, tooltipText="Number of times to apply erosion. Larger numbers are slower."))
+            col.append(IntInputRow("Strength: ", ref=AttrRef(tool, 'erosionStrength'), min=1, max=20,
+                                   tooltipText="Number of times to apply erosion. Larger numbers are slower."))
             return col
 
         def apply(self, op, point):
@@ -308,13 +313,14 @@ class Modes:
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
-            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
-
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise,
+                                        op.hollow)
 
             if op.options['naturalEarth']:
                 try:
                     # try to get the block mask from the topsoil filter
                     import topsoil  # @UnresolvedImport
+
                     blockmask = topsoil.naturalBlockmask()
                     blockmask[blocktype.ID] = True
                     blocktypeMask = blockmask[blocks]
@@ -386,7 +392,6 @@ class Modes:
 
 
 class BrushOperation(Operation):
-
     def __init__(self, editor, level, points, options):
         super(BrushOperation, self).__init__(editor, level)
 
@@ -432,7 +437,6 @@ class BrushOperation(Operation):
         return self.options.get('brushHollow', False)
 
 
-
     def dirtyBox(self):
         return self._dirtyBox
 
@@ -442,7 +446,7 @@ class BrushOperation(Operation):
 
         def _perform():
             yield 0, len(self.points), "Applying {0} brush...".format(self.brushMode.name)
-            if self.brushMode.apply is not NotImplemented: #xxx double negative
+            if self.brushMode.apply is not NotImplemented:  # xxx double negative
                 for i, point in enumerate(self.points):
                     f = self.brushMode.apply(self, point)
                     if hasattr(f, "__iter__"):
@@ -464,7 +468,9 @@ class BrushOperation(Operation):
                             for progress in f:
                                 yield progress
                         else:
-                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, "Applying {0} brush...".format(self.brushMode.name)
+                            yield j * len(self.points) + i, len(
+                                self.points) * self._dirtyBox.chunkCount, "Applying {0} brush...".format(
+                                self.brushMode.name)
 
                     chunk.chunkChanged()
 
@@ -472,7 +478,6 @@ class BrushOperation(Operation):
             showProgress("Performing brush...", _perform(), cancel=True)
         else:
             exhaust(_perform())
-
 
 
 class BrushPanel(Panel):
@@ -488,8 +493,8 @@ class BrushPanel(Panel):
         self.brushModeRow = Row((Label("Mode:"), self.brushModeButton))
 
         self.brushStyleButton = ValueButton(width=self.brushModeButton.width,
-                                        ref=AttrRef(tool, "brushStyle"),
-                                        action=tool.swapBrushStyles)
+                                            ref=AttrRef(tool, "brushStyle"),
+                                            action=tool.swapBrushStyles)
 
         self.brushStyleButton.tooltipText = "Shortcut: ALT-1"
 
@@ -535,7 +540,8 @@ class BrushPanel(Panel):
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
-            spaceRow = IntInputRow("Line Spacing", ref=AttrRef(tool, "minimumSpacing"), min=1, tooltipText="Hold SHIFT to draw lines")
+            spaceRow = IntInputRow("Line Spacing", ref=AttrRef(tool, "minimumSpacing"), min=1,
+                                   tooltipText="Hold SHIFT to draw lines")
             col.append(spaceRow)
         col = Column(col)
 
@@ -574,17 +580,19 @@ class BrushToolOptions(ToolOptions):
         alphaField.increment = 0.1
         alphaRow = Row((Label("Alpha: "), alphaField))
         autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
-                                            ref=AttrRef(tool, "chooseBlockImmediately"),
-                                            tooltipText="When the brush tool is chosen, prompt for a block type.")
+                                           ref=AttrRef(tool, "chooseBlockImmediately"),
+                                           tooltipText="When the brush tool is chosen, prompt for a block type.")
 
         updateOffsetCheckBox = CheckBoxLabel("Reset Distance When Brush Size Changes",
-                                            ref=AttrRef(tool, "updateBrushOffset"),
-                                            tooltipText="Whenever the brush size changes, reset the distance to the brush blocks.")
+                                             ref=AttrRef(tool, "updateBrushOffset"),
+                                             tooltipText="Whenever the brush size changes, reset the distance to the brush blocks.")
 
-        col = Column((Label("Brush Options"), alphaRow, autoChooseCheckBox, updateOffsetCheckBox, Button("OK", action=self.dismiss)))
+        col = Column((
+        Label("Brush Options"), alphaRow, autoChooseCheckBox, updateOffsetCheckBox, Button("OK", action=self.dismiss)))
         self.add(col)
         self.shrink_wrap()
         return
+
 
 from clone import CloneTool
 
@@ -740,7 +748,7 @@ class BrushTool(CloneTool):
             F=config.config.get("Keys", "Flip").upper(),
             E=config.config.get("Keys", "Rotate").upper(),
             G=config.config.get("Keys", "Mirror").upper(),
-            )
+        )
 
     @property
     def worldTooltipText(self):
@@ -751,7 +759,8 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return "Click to use {0} ({1}:{2})".format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
+                return "Click to use {0} ({1}:{2})".format(self.editor.level.materials.names[blockID][blockdata],
+                                                           blockID, blockdata)
 
             except Exception, e:
                 return repr(e)
@@ -763,7 +772,8 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return "Click to replace {0} ({1}:{2})".format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
+                return "Click to replace {0} ({1}:{2})".format(self.editor.level.materials.names[blockID][blockdata],
+                                                               blockID, blockdata)
 
             except Exception, e:
                 return repr(e)
@@ -791,8 +801,8 @@ class BrushTool(CloneTool):
 
     def getBrushOptions(self):
         return dict(((key, getattr(self, key))
-                       for key
-                       in self.options))
+                     for key
+                     in self.options))
 
     draggedDirection = (0, 0, 0)
     centerx = centery = centerz = 0
@@ -938,7 +948,8 @@ class BrushTool(CloneTool):
                 f.world = self
                 f.chunkPosition = (cx, cz)
 
-                mask = createBrushMask(brushSize, brushStyle, (0, 0, 0), BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
+                mask = createBrushMask(brushSize, brushStyle, (0, 0, 0),
+                                       BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
                 f.Blocks = numpy.zeros(mask.shape, dtype='uint8')
                 f.Data = numpy.zeros(mask.shape, dtype='uint8')
                 f.BlockLight = self.zerolight
@@ -979,9 +990,10 @@ class BrushTool(CloneTool):
         self.setupPreview()
         self.showPanel()
 
-#    def cancel(self):
-#        self.hidePanel()
-#        super(BrushTool, self).cancel()
+        # def cancel(self):
+
+    #        self.hidePanel()
+    #        super(BrushTool, self).cancel()
 
     def showPanel(self):
         if self.panel:
@@ -1076,6 +1088,7 @@ class BrushTool(CloneTool):
 
     def option3(self):
         self.brushHollow = not self.brushHollow
+
 
 def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
     """

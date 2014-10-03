@@ -29,7 +29,6 @@ from albow.dialogs import Dialog
 
 
 class ChunkToolPanel(Panel):
-
     def __init__(self, tool, *a, **kw):
         Panel.__init__(self, *a, **kw)
 
@@ -49,8 +48,8 @@ class ChunkToolPanel(Panel):
         extractButton.highlight_color = (255, 255, 255)
 
         deselectButton = Button("Deselect",
-            tooltipText=None,
-            action=tool.editor.deselect,
+                                tooltipText=None,
+                                action=tool.editor.deselect,
         )
 
         createButton = Button("Create")
@@ -81,8 +80,10 @@ class ChunkToolPanel(Panel):
         dontRepopButton.action = tool.dontRepopChunks
         dontRepopButton.highlight_color = (255, 255, 255)
 
-        col = Column((chunkToolLabel, self.chunksLabel, deselectButton, createButton, destroyButton, pruneButton, relightButton, extractButton, repopButton, dontRepopButton))
-#        col.right = self.width - 10;
+        col = Column((
+        chunkToolLabel, self.chunksLabel, deselectButton, createButton, destroyButton, pruneButton, relightButton,
+        extractButton, repopButton, dontRepopButton))
+        # col.right = self.width - 10;
         self.width = col.width
         self.height = col.height
         #self.width = 120
@@ -94,7 +95,7 @@ class ChunkToolPanel(Panel):
 
     def updateText(self):
         pass
-        #self.chunksLabel.text = self.chunksLabelText()
+        # self.chunksLabel.text = self.chunksLabelText()
 
 
 class ChunkTool(EditorTool):
@@ -115,7 +116,7 @@ class ChunkTool(EditorTool):
         if self._displayList is None:
             self._displayList = DisplayList(self._drawToolMarkers)
 
-        #print len(self._selectedChunks) if self._selectedChunks else None, "!=", len(self.editor.selectedChunks)
+        # print len(self._selectedChunks) if self._selectedChunks else None, "!=", len(self.editor.selectedChunks)
 
         if self._selectedChunks != self.editor.selectedChunks or True:  # xxx
             self._selectedChunks = set(self.editor.selectedChunks)
@@ -127,9 +128,9 @@ class ChunkTool(EditorTool):
 
         lines = (
             ((-1, 0), (0, 0, 0, 1), []),
-            ((1, 0),  (1, 0, 1, 1), []),
+            ((1, 0), (1, 0, 1, 1), []),
             ((0, -1), (0, 0, 1, 0), []),
-            ((0, 1),  (0, 1, 1, 1), []),
+            ((0, 1), (0, 1, 1, 1), []),
         )
         for ch in self._selectedChunks:
             cx, cz = ch
@@ -143,6 +144,7 @@ class ChunkTool(EditorTool):
         with gl.glEnable(GL.GL_BLEND):
 
             import renderer
+
             sizedChunks = renderer.chunkMarkers(self._selectedChunks)
             for size, chunks in sizedChunks.iteritems():
                 if not len(chunks):
@@ -156,7 +158,7 @@ class ChunkTool(EditorTool):
                 chunkPosition *= 16
                 chunkPosition[..., 1] = self.editor.level.Height
                 GL.glVertexPointer(3, GL.GL_FLOAT, 0, chunkPosition.ravel())
-                #chunkPosition *= 8
+                # chunkPosition *= 8
                 GL.glDrawArrays(GL.GL_QUADS, 0, len(chunkPosition) * 4)
 
         for d, points, positions in lines:
@@ -216,11 +218,11 @@ class ChunkTool(EditorTool):
     @alertException
     def extractChunks(self):
         folder = mcplatform.askSaveFile(mcplatform.docsFolder,
-                title='Export chunks to...',
-                defaultName=self.editor.level.displayName + "_chunks",
-                filetype='Folder\0*.*\0\0',
-                suffix="",
-                )
+                                        title='Export chunks to...',
+                                        defaultName=self.editor.level.displayName + "_chunks",
+                                        filetype='Folder\0*.*\0\0',
+                                        suffix="",
+        )
         if not folder:
             return
 
@@ -255,7 +257,7 @@ class ChunkTool(EditorTool):
 
         self.editor.renderer.invalidateChunkMarkers()
         self.editor.renderer.discardChunks(chunks)
-        #self.editor.addUnsavedEdit()
+        # self.editor.addUnsavedEdit()
 
     @alertException
     def pruneChunks(self):
@@ -281,7 +283,7 @@ class ChunkTool(EditorTool):
         self.editor.renderer.invalidateChunkMarkers()
         self.editor.discardAllChunks()
 
-        #self.editor.addUnsavedEdit()
+        # self.editor.addUnsavedEdit()
 
     @alertException
     def relightChunks(self):
@@ -291,9 +293,8 @@ class ChunkTool(EditorTool):
                 yield i
 
         with setWindowCaption("RELIGHTING - "):
-
             showProgress("Lighting {0} chunks...".format(len(self.selectedChunks())),
-                                     _relightChunks(), cancel=True)
+                         _relightChunks(), cancel=True)
 
             self.editor.invalidateChunks(self.selectedChunks())
             self.editor.addUnsavedEdit()
@@ -407,7 +408,7 @@ def GeneratorPanel():
         ("Open Server Storage", "revealStorage"),
         ("Reveal World Cache", "revealCache"),
         ("Delete World Cache", "clearCache")
-        ])
+    ])
 
     def presentMenu():
         i = menu.present(advancedButton.parent, advancedButton.topleft)
@@ -424,14 +425,16 @@ def GeneratorPanel():
     def revealCache():
         mcplatform.platform_open(MCServerChunkGenerator.worldCacheDir)
 
-    #revealCacheRow = Row((Label("Minecraft Server Storage: "), Button("Open Folder", action=revealCache, tooltipText="Click me to install your own minecraft_server.jar if you have any.")))
+    # revealCacheRow = Row((Label("Minecraft Server Storage: "), Button("Open Folder", action=revealCache, tooltipText="Click me to install your own minecraft_server.jar if you have any.")))
 
     @alertException
     def clearCache():
         MCServerChunkGenerator.clearWorldCache()
 
-    simRow = CheckBoxLabel("Simulate world", ref=AttrRef(panel, "simulate"), tooltipText="Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.")
-    useSnapshotServer = CheckBoxLabel("Use snapshot versions", ref=AttrRef(panel, "snapshot"), tooltipText="Uses the Latest Snapshot Terrain Generation")
+    simRow = CheckBoxLabel("Simulate world", ref=AttrRef(panel, "simulate"),
+                           tooltipText="Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.")
+    useSnapshotServer = CheckBoxLabel("Use snapshot versions", ref=AttrRef(panel, "snapshot"),
+                                      tooltipText="Uses the Latest Snapshot Terrain Generation")
 
     simRow = Row((simRow, advancedButton), anchor="lrh")
     #deleteCacheRow = Row((Label("Delete Temporary World File Cache?"), Button("Delete Cache!", action=clearCache, tooltipText="Click me if you think your chunks are stale.")))
@@ -457,7 +460,6 @@ def GeneratorPanel():
                 else:
                     version = None
                 gen = MCServerChunkGenerator(version=version)
-
 
                 if isinstance(arg, pymclevel.BoundingBox):
                     for i in gen.createLevelIter(level, arg, simulate=panel.simulate):

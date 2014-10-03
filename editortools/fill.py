@@ -61,7 +61,6 @@ class BlockFillOperation(Operation):
 
 
 class FillToolPanel(Panel):
-
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
@@ -85,11 +84,11 @@ class FillToolPanel(Panel):
         replaceLabel.align = "c"
 
         col = (self.fillWithLabel,
-                self.blockButton,
-                # swapRow,
-                replaceLabel,
-                # self.replaceBlockButton,
-                self.fillButton)
+               self.blockButton,
+               # swapRow,
+               replaceLabel,
+               # self.replaceBlockButton,
+               self.fillButton)
 
         if replacing:
             self.fillWithLabel = Label("Find:", width=self.blockButton.width, align="c")
@@ -110,11 +109,11 @@ class FillToolPanel(Panel):
             self.fillButton.tooltipText = "Shortcut: ENTER"
 
             col = (self.fillWithLabel,
-                    self.blockButton,
-                    replaceLabel,
-                    self.replaceBlockButton,
-                    self.swapButton,
-                    self.fillButton)
+                   self.blockButton,
+                   replaceLabel,
+                   self.replaceBlockButton,
+                   self.swapButton,
+                   self.fillButton)
 
         col = Column(col)
 
@@ -238,12 +237,13 @@ class FillTool(EditorTool):
                 else:
                     blocksToReplace = [self.blockInfo]
 
-                op = BlockFillOperation(self.editor, self.editor.level, self.selectionBox(), self.replaceBlockInfo, blocksToReplace)
+                op = BlockFillOperation(self.editor, self.editor.level, self.selectionBox(), self.replaceBlockInfo,
+                                        blocksToReplace)
 
             else:
                 blocksToReplace = []
-                op = BlockFillOperation(self.editor, self.editor.level, self.selectionBox(), self.blockInfo, blocksToReplace)
-
+                op = BlockFillOperation(self.editor, self.editor.level, self.selectionBox(), self.blockInfo,
+                                        blocksToReplace)
 
         self.editor.addOperation(op)
 
@@ -290,7 +290,9 @@ class FillTool(EditorTool):
                 s = s * w / pixelWidth
                 t = t * h / pixelWidth
                 texData = numpy.array(terrainTexture.data[t:t + h / 16, s:s + w / 16])
-                GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 16, h / 16, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, texData)
+                GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 16, h / 16, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
+                                texData)
+
             return _func
 
         for type in range(256):
@@ -312,7 +314,7 @@ class FillTool(EditorTool):
 
         color = 1.0, 1.0, 1.0, 0.35
         if blockInfo:
-            tex = self.blockTextures.get(blockInfo.ID, self.blockTextures[255]) # xxx
+            tex = self.blockTextures.get(blockInfo.ID, self.blockTextures[255])  # xxx
 
             # color = (1.5 - alpha, 1.0, 1.5 - alpha, alpha - 0.35)
             GL.glMatrixMode(GL.GL_TEXTURE)
@@ -334,7 +336,8 @@ class FillTool(EditorTool):
 
     @property
     def statusText(self):
-        return "Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.".format(hotkey=self.hotkey, R=config.config.get("Keys", "Roll").upper())
+        return "Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.".format(
+            hotkey=self.hotkey, R=config.config.get("Keys", "Roll").upper())
 
     @property
     def worldTooltipText(self):
@@ -345,7 +348,8 @@ class FillTool(EditorTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return "Click to use {0} ({1}:{2})".format(self.editor.level.materials.blockWithID(blockID, blockdata).name, blockID, blockdata)
+                return "Click to use {0} ({1}:{2})".format(
+                    self.editor.level.materials.blockWithID(blockID, blockdata).name, blockID, blockdata)
 
             except Exception, e:
                 return repr(e)

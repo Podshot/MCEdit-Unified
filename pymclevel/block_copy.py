@@ -1,5 +1,6 @@
 from datetime import datetime
 import logging
+
 log = logging.getLogger(__name__)
 
 import numpy
@@ -11,6 +12,7 @@ from entity import Entity, TileEntity
 
 def convertBlocks(destLevel, sourceLevel, blocks, blockData):
     return materials.convertBlocks(destLevel.materials, sourceLevel.materials, blocks, blockData)
+
 
 def sourceMaskFunc(blocksToCopy):
     if blocksToCopy is not None:
@@ -32,8 +34,8 @@ def adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint):
     # if the destination box is outside the level, it and the source corners are moved inward to fit.
     (dx, dy, dz) = map(int, destinationPoint)
 
-    log.debug(u"Asked to copy {} blocks \n\tfrom {} in {}\n\tto {} in {}" .format(
-              sourceBox.volume, sourceBox, sourceLevel, destinationPoint, destLevel))
+    log.debug(u"Asked to copy {} blocks \n\tfrom {} in {}\n\tto {} in {}".format(
+        sourceBox.volume, sourceBox, sourceLevel, destinationPoint, destLevel))
     if destLevel.Width == 0:
         return sourceBox, destinationPoint
 
@@ -46,8 +48,8 @@ def adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint):
     return actualSourceBox, actualDestPoint
 
 
-
-def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True, create=False, biomes=False):
+def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True,
+                       create=False, biomes=False):
     """ copy blocks between two infinite levels by looping through the
     destination's chunks. make a sub-box of the source level for each chunk
     and copy block and entities in the sub box to the dest chunk."""
@@ -56,7 +58,7 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
 
     sourceBox, destinationPoint = adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint)
     # needs work xxx
-    log.info(u"Copying {0} blocks from {1} to {2}" .format(ly * lz * lx, sourceBox, destinationPoint))
+    log.info(u"Copying {0} blocks from {1} to {2}".format(ly * lz * lx, sourceBox, destinationPoint))
     startTime = datetime.now()
 
     destBox = BoundingBox(destinationPoint, sourceBox.size)
@@ -70,7 +72,7 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
     copyOffset = [d - s for s, d in zip(sourceBox.origin, destinationPoint)]
 
     # Visit each chunk in the destination area.
-    #   Get the region of the source area corresponding to that chunk
+    # Get the region of the source area corresponding to that chunk
     #   Visit each chunk of the region of the source area
     #     Get the slices of the destination chunk
     #     Get the slices of the source chunk
@@ -80,7 +82,8 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
         cx, cz = destCpos
 
         destChunkBox = BoundingBox((cx << 4, 0, cz << 4), (16, destLevel.Height, 16)).intersect(destBox)
-        destChunkBoxInSourceLevel = BoundingBox([d - o for o, d in zip(copyOffset, destChunkBox.origin)], destChunkBox.size)
+        destChunkBoxInSourceLevel = BoundingBox([d - o for o, d in zip(copyOffset, destChunkBox.origin)],
+                                                destChunkBox.size)
 
         if not destLevel.containsChunk(*destCpos):
             if create and any(sourceLevel.containsChunk(*c) for c in destChunkBoxInSourceLevel.chunkPositions):
@@ -90,7 +93,6 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
                 continue
 
         destChunk = destLevel.getChunk(*destCpos)
-
 
         i += 1
         yield (i, chunkCount)
@@ -107,7 +109,8 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
             if sourceChunkBox.volume == 0:
                 continue
 
-            sourceChunkBoxInDestLevel = BoundingBox([d + o for o, d in zip(copyOffset, sourceChunkBox.origin)], sourceChunkBox.size)
+            sourceChunkBoxInDestLevel = BoundingBox([d + o for o, d in zip(copyOffset, sourceChunkBox.origin)],
+                                                    sourceChunkBox.size)
 
             _, destSlices = destChunk.getChunkSlicesForBox(sourceChunkBoxInDestLevel)
 
@@ -142,8 +145,11 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
     log.info("Duration: {0}".format(datetime.now() - startTime))
     log.info("Copied {0} entities and {1} tile entities".format(e, t))
 
-def copyBlocksFrom(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True, create=False, biomes=False):
-    return exhaust(copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy, entities, create, biomes))
+
+def copyBlocksFrom(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True, create=False,
+                   biomes=False):
+    return exhaust(
+        copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy, entities, create, biomes))
 
 
 

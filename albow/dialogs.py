@@ -8,7 +8,6 @@ from fields import TextField
 
 
 class Modal(object):
-
     enter_response = True
     cancel_response = False
 
@@ -20,11 +19,10 @@ class Modal(object):
 
 
 class Dialog(Modal, Widget):
-
     click_outside_response = None
 
     def __init__(self, client=None, responses=None,
-            default=0, cancel=-1, **kwds):
+                 default=0, cancel=-1, **kwds):
         Widget.__init__(self, **kwds)
         if client or responses:
             rows = []
@@ -36,7 +34,7 @@ class Dialog(Modal, Widget):
             if responses:
                 buttons = Row([
                     Button(text, action=lambda t=text: self.dismiss(t))
-                        for text in responses])
+                    for text in responses])
                 rows.append(buttons)
                 w2 = buttons.width
             if w1 < w2:
@@ -62,6 +60,7 @@ class Dialog(Modal, Widget):
 
 class QuickDialog(Dialog):
     """ Dialog that closes as soon as you click outside or press a key"""
+
     def mouse_down(self, evt):
         if evt not in self:
             self.dismiss(-1)
@@ -78,7 +77,8 @@ def wrapped_label(text, wrap_width, **kwds):
     text = "\n".join([textwrap.fill(para, wrap_width) for para in paras])
     return Label(text, **kwds)
 
-#def alert(mess, wrap_width = 60, **kwds):
+
+# def alert(mess, wrap_width = 60, **kwds):
 #    box = Dialog(**kwds)
 #    d = box.margin
 #    lb = wrapped_label(mess, wrap_width)

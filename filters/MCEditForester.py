@@ -22,7 +22,7 @@ inputs = (
                "Cone",
                "Rainforest",
                "Mangrove",
-               )),
+    )),
 
     ("Tree Count", 2),
     ("Tree Height", 35),

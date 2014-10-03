@@ -4,7 +4,7 @@ import sys
 import pygame
 from pygame.locals import RLEACCEL
 
-#default_font_name = "Vera.ttf"
+# default_font_name = "Vera.ttf"
 optimize_images = True
 run_length_encode = False
 
@@ -12,6 +12,7 @@ run_length_encode = False
 def find_resource_dir():
     try:
         from directories import dataDir
+
         return dataDir
     except:
         pass
@@ -24,6 +25,7 @@ def find_resource_dir():
         if parent == dir:
             raise SystemError("albow: Unable to find Resources directory")
         dir = parent
+
 
 resource_dir = find_resource_dir()
 
@@ -47,7 +49,7 @@ def resource_exists(*names, **kwds):
 
 
 def _get_image(names, border=0, optimize=optimize_images, noalpha=False,
-        rle=run_length_encode, prefix="images"):
+               rle=run_length_encode, prefix="images"):
     path = _resource_path(prefix, names)
     image = image_cache.get(path)
     if not image:
@@ -109,6 +111,7 @@ class DummySound(object):
 
     def stop(self):
         pass
+
 
 dummy_sound = DummySound()
 

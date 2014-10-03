@@ -5,7 +5,7 @@ from theme import ThemeProperty
 
 
 class PaletteView(GridView):
-    #  nrows   int   No. of displayed rows
+    # nrows   int   No. of displayed rows
     #  ncols   int   No. of displayed columns
     #
     #  Abstract methods:
@@ -20,7 +20,7 @@ class PaletteView(GridView):
     scroll_button_size = ThemeProperty('scroll_button_size')
     scroll_button_color = ThemeProperty('scroll_button_color')
     highlight_style = ThemeProperty('highlight_style')
-        # 'frame' or 'fill' or 'reverse' or None
+    # 'frame' or 'fill' or 'reverse' or None
 
     def __init__(self, cell_size, nrows, ncols, scrolling=False, **kwds):
         GridView.__init__(self, cell_size, nrows, ncols, **kwds)

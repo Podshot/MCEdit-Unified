@@ -1,4 +1,3 @@
-
 # vim:set sw=2 sts=2 ts=2:
 
 """
@@ -192,7 +191,6 @@ class TAG_Int_Array(TAG_Byte_Array):
     dtype = numpy.dtype('>u4')
 
 
-
 class TAG_Short_Array(TAG_Int_Array):
     """An array of big-endian 16-bit integers. Not official, but used by some mods."""
     tagID = TAG_SHORT_ARRAY
@@ -236,6 +234,7 @@ class TAG_String(TAG_Value):
     def write_value(self, buf):
         write_string(self._value, buf)
 
+
 string_len_fmt = struct.Struct(">H")
 
 
@@ -252,7 +251,8 @@ def write_string(string, buf):
     encoded = string.encode('utf-8')
     buf.write(struct.pack(">h%ds" % (len(encoded),), len(encoded), encoded))
 
-#noinspection PyMissingConstructor
+
+# noinspection PyMissingConstructor
 
 
 class TAG_Compound(TAG_Value, collections.MutableMapping):
@@ -390,6 +390,7 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
     def get_all(self, key):
         return [v for v in self._value if v.name == key]
 
+
 class TAG_List(TAG_Value, collections.MutableSequence):
     """A homogenous list of unnamed data of a single TAG_* type.
     Once created, the type can only be changed by emptying the list
@@ -424,7 +425,6 @@ class TAG_List(TAG_Value, collections.MutableSequence):
         return list(val)
 
 
-
     @classmethod
     def load_from(cls, ctx):
         self = cls()
@@ -442,10 +442,10 @@ class TAG_List(TAG_Value, collections.MutableSequence):
 
 
     def write_value(self, buf):
-       buf.write(chr(self.list_type))
-       buf.write(TAG_Int.fmt.pack(len(self.value)))
-       for i in self.value:
-           i.write_value(buf)
+        buf.write(chr(self.list_type))
+        buf.write(TAG_Int.fmt.pack(len(self.value)))
+        for i in self.value:
+            i.write_value(buf)
 
     def check_tag(self, value):
         if value.tagID != self.list_type:
@@ -489,9 +489,10 @@ class TAG_List(TAG_Value, collections.MutableSequence):
 
 tag_classes = {}
 
-for c in (TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array):
+for c in (
+TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound,
+TAG_Int_Array, TAG_Short_Array):
     tag_classes[c.tagID] = c
-
 
 
 def gunzip(data):
@@ -520,8 +521,10 @@ def load(filename="", buf=None):
 
     return _load_buffer(try_gunzip(buf))
 
+
 class load_ctx(object):
     pass
+
 
 def _load_buffer(buf):
     if isinstance(buf, str):
@@ -557,7 +560,7 @@ TAG_Value.__str__ = nbt_util.nested_string
 try:
     #noinspection PyUnresolvedReferences
     from _nbt import (load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
-    TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError)
+                      TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError)
 except ImportError:
     pass
 

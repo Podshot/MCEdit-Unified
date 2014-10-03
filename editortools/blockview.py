@@ -8,6 +8,7 @@ import blockpicker
 from glbackground import Panel, GLBackground
 from glutils import DisplayList
 
+
 class BlockView(GLOrtho):
     def __init__(self, materials, blockInfo=None):
         GLOrtho.__init__(self)
@@ -38,16 +39,17 @@ class BlockView(GLOrtho):
 
         GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
         GL.glVertexPointer(2, GL.GL_FLOAT, 0, array([-1, -1,
-                                 - 1, 1,
-                                 1, 1,
-                                 1, -1, ], dtype='float32'))
+                                                     - 1, 1,
+                                                     1, 1,
+                                                     1, -1, ], dtype='float32'))
         texOrigin = array(self.materials.blockTextures[blockInfo.ID, blockInfo.blockData, 0])
         texOrigin *= pixelScale
 
         GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, array([texOrigin[0], texOrigin[1] + texSize,
-                                  texOrigin[0], texOrigin[1],
-                                  texOrigin[0] + texSize, texOrigin[1],
-                                  texOrigin[0] + texSize, texOrigin[1] + texSize], dtype='float32'))
+                                                       texOrigin[0], texOrigin[1],
+                                                       texOrigin[0] + texSize, texOrigin[1],
+                                                       texOrigin[0] + texSize, texOrigin[1] + texSize],
+                                                      dtype='float32'))
 
         GL.glDrawArrays(GL.GL_QUADS, 0, 4)
 
@@ -134,6 +136,7 @@ class BlockButton(ButtonBase, Panel):
 
             def action(evt):
                 self.blockInfo = bi
+
             bv.mouse_up = action
             return bv
 
@@ -154,7 +157,7 @@ class BlockButton(ButtonBase, Panel):
 
         self.recentBlockView.right = self.width
         self.add(self.recentBlockView)
-        #print self.rect, self.recentBlockView.rect
+        # print self.rect, self.recentBlockView.rect
 
     recentBlockView = None
 

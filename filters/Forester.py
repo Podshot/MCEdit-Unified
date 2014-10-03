@@ -126,7 +126,7 @@ BRANCHDENSITY = 1.0
 # Only works if SHAPE is "round" or "cone" or "procedural"
 # "yes" roots will penetrate anything, and may enter underground caves.
 # "tostone" roots will be stopped by stone (default see STOPSROOTS below).
-#    There may be some penetration.
+# There may be some penetration.
 # "hanging" will hang downward in air.  Good for "floating" type maps
 #    (I really miss "floating" terrain as a default option)
 # "no" roots will not be generated
@@ -437,6 +437,7 @@ def calc_column_lighting(x, z, mclevel):
 
 class ReLight(object):
     '''keep track of which squares need to be relit, and then relight them'''
+
     def add(self, x, z):
         coords = (x, z)
         self.all_columns.add(coords)
@@ -452,6 +453,7 @@ class ReLight(object):
     def __init__(self):
         self.all_columns = set()
         self.save_file = None
+
 
 relight_master = ReLight()
 
@@ -473,6 +475,7 @@ def assign_value(x, y, z, values, save_file):
 class Tree(object):
     '''Set up the interface for tree objects.  Designed for subclassing.
     '''
+
     def prepare(self, mcmap):
         '''initialize the internal values for the Tree object.
         '''
@@ -509,6 +512,7 @@ class StickTree(Tree):
 
     Designed for sublcassing.  Only makes the trunk.
     '''
+
     def maketrunk(self, mcmap):
         x = self.pos[0]
         y = self.pos[1]
@@ -524,6 +528,7 @@ class NormalTree(StickTree):
     This tree will be a single bulb of foliage above a single width trunk.
     This shape is very similar to the default Minecraft tree.
     '''
+
     def makefoliage(self, mcmap):
         """note, foliage will disintegrate if there is no foliage below, or
         if there is no "log" block within range 2 (square) at the same level or
@@ -541,7 +546,7 @@ class NormalTree(StickTree):
                     if (random() > 0.618
                         and abs(xoff) == abs(zoff)
                         and abs(xoff) == rad
-                        ):
+                    ):
                         continue
 
                     x = self.pos[0] + xoff
@@ -555,6 +560,7 @@ class BambooTree(StickTree):
 
     Make foliage sparse and adjacent to the trunk.
     '''
+
     def makefoliage(self, mcmap):
         start = self.pos[1]
         end = self.pos[1] + self.height + 1
@@ -572,6 +578,7 @@ class PalmTree(StickTree):
 
     Make foliage stick out in four directions from the top of the trunk.
     '''
+
     def makefoliage(self, mcmap):
         y = self.pos[1] + self.height
         for xoff in range(-2, 3):
@@ -691,7 +698,7 @@ class ProceduralTree(Tree):
             coord[secidx2] = secloc2
             primdist = abs(delta[primidx])
             radius = endsize + (startsize - endsize) * abs(delta[primidx]
-                                - primoffset) / primdist
+                                                           - primoffset) / primdist
             self.crossection(coord, radius, primidx, blockdata, mcmap)
 
     def makefoliage(self, mcmap):
@@ -726,7 +733,7 @@ class ProceduralTree(Tree):
             endrad = 1.0
         for coord in self.foliage_cords:
             dist = (sqrt(float(coord[0] - treeposition[0]) ** 2 +
-                            float(coord[2] - treeposition[2]) ** 2))
+                         float(coord[2] - treeposition[2]) ** 2))
             ydist = coord[1] - treeposition[1]
             # value is a magic number that weights the probability
             # of generating branches properly so that
@@ -750,7 +757,7 @@ class ProceduralTree(Tree):
             else:
                 branchy = posy - dist * slope
                 basesize = (endrad + (self.trunkradius - endrad) *
-                         (topy - branchy) / self.trunkheight)
+                            (topy - branchy) / self.trunkheight)
             startsize = (basesize * (1 + random()) * .618 *
                          (dist / height) ** 0.618)
             rndr = sqrt(random()) * basesize * 0.618
@@ -764,7 +771,7 @@ class ProceduralTree(Tree):
                 startsize = 1.0
             endsize = 1.0
             self.taperedcylinder(startcoord, coord, startsize, endsize,
-                             mcmap, WOODINFO)
+                                 mcmap, WOODINFO)
 
     def makeroots(self, rootbases, mcmap):
         '''generate the roots and enter them in mcmap.
@@ -778,7 +785,7 @@ class ProceduralTree(Tree):
             # First, set the threshhold for randomly selecting this
             # coordinate for root creation.
             dist = (sqrt(float(coord[0] - treeposition[0]) ** 2 +
-                            float(coord[2] - treeposition[2]) ** 2))
+                         float(coord[2] - treeposition[2]) ** 2))
             ydist = coord[1] - treeposition[1]
             value = (self.branchdensity * 220 * height) / ((ydist + dist) ** 3)
             # Randomly skip roots, based on the above threshold
@@ -835,14 +842,14 @@ class ProceduralTree(Tree):
                 # dist stores how far the search went (including searchstart)
                 # before encountering the expected marterial.
                 dist = startdist + dist_to_mat(searchstart, vec,
-                                        searchindex, mcmap, limit=offlength)
+                                               searchindex, mcmap, limit=offlength)
                 # If the distance to the material is less than the length
                 # of the root, change the end point of the root to where
                 # the search found the material.
                 if dist < offlength:
                     # rootmid is the size of the crossection at endcoord.
                     rootmid += (rootstartsize -
-                                         endsize) * (1 - dist / offlength)
+                                endsize) * (1 - dist / offlength)
                     # endcoord is the midpoint for hanging roots,
                     # and the endpoint for roots stopped by stone.
                     endcoord = [startcoord[i] + int(vec[i] * dist)
@@ -858,16 +865,16 @@ class ProceduralTree(Tree):
                         bottomcord[1] += -int(remaining_dist)
                         # Make the hanging part of the hanging root.
                         self.taperedcylinder(endcoord, bottomcord,
-                             rootmid, endsize, mcmap, WOODINFO)
+                                             rootmid, endsize, mcmap, WOODINFO)
 
                 # make the beginning part of hanging or "tostone" roots
                 self.taperedcylinder(startcoord, endcoord,
-                     rootstartsize, rootmid, mcmap, WOODINFO)
+                                     rootstartsize, rootmid, mcmap, WOODINFO)
 
             # If you aren't searching for stone or air, just make the root.
             else:
                 self.taperedcylinder(startcoord, endcoord,
-                             rootstartsize, endsize, mcmap, WOODINFO)
+                                     rootstartsize, endsize, mcmap, WOODINFO)
 
     def maketrunk(self, mcmap):
         '''Generate the trunk, roots, and branches in mcmap.
@@ -919,8 +926,8 @@ class ProceduralTree(Tree):
                     thisbuttressradius = 1.0
                 # Make the root buttress.
                 self.taperedcylinder([thisx, starty, thisz], [x, midy, z],
-                                 thisbuttressradius, thisbuttressradius,
-                                 mcmap, WOODINFO)
+                                     thisbuttressradius, thisbuttressradius,
+                                     mcmap, WOODINFO)
                 # Add this root buttress as a possible location at
                 # which roots can spawn.
                 rootbases += [[thisx, thisz, thisbuttressradius]]
@@ -931,9 +938,9 @@ class ProceduralTree(Tree):
             rootbases = [[x, z, startrad]]
         # Make the lower and upper sections of the trunk.
         self.taperedcylinder([x, starty, z], [x, midy, z], startrad, midrad,
-                         mcmap, WOODINFO)
+                             mcmap, WOODINFO)
         self.taperedcylinder([x, midy, z], [x, topy, z], midrad, endrad,
-                         mcmap, WOODINFO)
+                             mcmap, WOODINFO)
         #Make the branches
         self.makebranches(mcmap)
         #Make the roots, if indicated.
@@ -962,7 +969,7 @@ class ProceduralTree(Tree):
             start_z = choice(z_choices)
             self.taperedcylinder([start_x, starty, start_z], [x, midy, z],
                                  base_radius, mid_radius,
-                         mcmap, TRUNKFILLINFO)
+                                 mcmap, TRUNKFILLINFO)
             hollow_top_y = int(topy + trunkradius + 1.5)
             self.taperedcylinder([x, midy, z], [x, hollow_top_y, z],
                                  mid_radius, top_radius,
@@ -1011,7 +1018,7 @@ class ProceduralTree(Tree):
                 # by stuff, like dirt or rock, or whatever
                 if len(STOPSBRANCHES):
                     dist = (sqrt(float(x - treeposition[0]) ** 2 +
-                                float(z - treeposition[2]) ** 2))
+                                 float(z - treeposition[2]) ** 2))
                     slope = self.branchslope
                     if y - dist * slope > topy:
                         # the top of the tree
@@ -1043,6 +1050,7 @@ class ProceduralTree(Tree):
 class RoundTree(ProceduralTree):
     '''This kind of tree is designed to resemble a deciduous tree.
     '''
+
     def prepare(self, mcmap):
         self.branchslope = 0.382
         ProceduralTree.prepare(self, mcmap)
@@ -1095,6 +1103,7 @@ class ConeTree(ProceduralTree):
 class RainforestTree(ProceduralTree):
     '''This kind of tree is designed to resemble a rainforest tree.
     '''
+
     def prepare(self, mcmap):
         self.foliage_shape = [3.4, 2.6]
         self.branchslope = 1.0
@@ -1119,6 +1128,7 @@ class RainforestTree(ProceduralTree):
 class MangroveTree(RoundTree):
     '''This kind of tree is designed to resemble a mangrove tree.
     '''
+
     def prepare(self, mcmap):
         self.branchslope = 1.0
         RoundTree.prepare(self, mcmap)
@@ -1331,6 +1341,7 @@ def standalone():
     the_map.write()
     if VERBOSE:
         print("finished")
+
 
 if __name__ == '__main__':
     standalone()

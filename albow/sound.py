@@ -1,5 +1,5 @@
 #
-#   Albow - Sound utilities
+# Albow - Sound utilities
 #
 
 import pygame

@@ -26,7 +26,7 @@ def bresenham(p1, p2):
     longestAxis = dl.index(max(dl))
     d = [2 * a - dl[longestAxis] for a in dl]
 
-    #if dy > dx:
+    # if dy > dx:
     #     steep = 1
 
     #d = (2 * dy) + (2 * dz) - dx

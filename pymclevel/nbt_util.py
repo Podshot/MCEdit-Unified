@@ -1,5 +1,6 @@
 import nbt
 
+
 def nested_string(tag, indent_string="  ", indent=0):
     result = ""
 

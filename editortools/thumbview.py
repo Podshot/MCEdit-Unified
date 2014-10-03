@@ -6,8 +6,8 @@ from glutils import FramebufferTexture, gl
 import pymclevel
 from renderer import PreviewRenderer
 
-class ThumbView(GLPerspective):
 
+class ThumbView(GLPerspective):
     def __init__(self, sch, **kw):
         GLPerspective.__init__(self, **kw)  # self, xmin= -32, xmax=32, ymin= -32, ymax=32, near= -1000, far=1000)
         self.far = 16000
@@ -20,6 +20,7 @@ class ThumbView(GLPerspective):
         GLU.gluLookAt(-self.schematic.Width * 2.8, self.schematic.Height * 2.5 + 1, -self.schematic.Length * 1.5,
                       self.schematic.Width, 0, self.schematic.Length,
                       0, 1, 0)
+
     fbo = None
 
     def gl_draw_tex(self):
@@ -47,9 +48,9 @@ class ThumbView(GLPerspective):
             GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
             GL.glColor(1.0, 1.0, 1.0, 1.0)
             GL.glVertexPointer(2, GL.GL_FLOAT, 0, array([-1, -1,
-                         - 1, 1,
-                         1, 1,
-                         1, -1, ], dtype='float32'))
+                                                         - 1, 1,
+                                                         1, 1,
+                                                         1, -1, ], dtype='float32'))
             GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, array([0, 0, 0, 256, 256, 256, 256, 0], dtype='float32'))
             e = (GL.GL_TEXTURE_2D,)
             if not self.drawBackground:

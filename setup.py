@@ -1,4 +1,4 @@
-#from esky import bdist_esky
+# from esky import bdist_esky
 from setuptools import setup
 
 import os
@@ -60,7 +60,7 @@ def get_git_version():
 # setup() options that are common on all platforms.
 SETUP_COMMON = {
     # General fields,
-    'name': 'MCEdit', #if DEVELOP else 'MCEdit',
+    'name': 'MCEdit',  #if DEVELOP else 'MCEdit',
     'version': 'V1.0.0 Dev',
     'description': 'Minecraft World Editor',
     'long_description': LONG_DESC,
@@ -156,6 +156,7 @@ def setup_win32():
         if os.path.basename(pathname).lower() in ['sdl_ttf.dll']:
             return 0
         return origIsSystemDLL(pathname)
+
     py2exe.build_exe.isSystemDLL = isSystemDLL
 
 
@@ -192,16 +193,16 @@ def main():
     ]
 
     setup(
-       data_files=data_files,
-       # options=ESKY_OPTIONS,
-       # **SETUP_COMMON
-       windows = ['mcedit.py'],
-	   options = {
-           "py2exe": {
-               "includes": ["ctypes","logging"],
-               "excludes": ["OpenGL"]
-	       }
-       }
+        data_files=data_files,
+        # options=ESKY_OPTIONS,
+        # **SETUP_COMMON
+        windows=['mcedit.py'],
+        options={
+            "py2exe": {
+                "includes": ["ctypes", "logging"],
+                "excludes": ["OpenGL"]
+            }
+        }
     )
 
     #os.unlink('RELEASE-VERSION')

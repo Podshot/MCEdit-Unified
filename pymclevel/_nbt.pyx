@@ -39,18 +39,19 @@ import gzip
 import zlib
 
 from cStringIO import StringIO
+
 from cpython cimport PyTypeObject, PyObject_TypeCheck, PyUnicode_DecodeUTF8, PyList_Append
 import numpy
 
 cdef extern from "cStringIO.h":
     struct PycStringIO_CAPI:
-        int cwrite(object o, char * buf, Py_ssize_t len)
-        PyTypeObject * OutputType
+        int cwrite(object o, char *buf, Py_ssize_t len)
+        PyTypeObject *OutputType
 cdef extern from "cobject.h":
-    void * PyCObject_Import(char * module_name, char * cobject_name)
+    void *PyCObject_Import(char *module_name, char *cobject_name)
 
 cdef PycStringIO_CAPI *PycStringIO = <PycStringIO_CAPI *> PyCObject_Import("cStringIO", "cStringIO_CAPI")
-cdef PyTypeObject * StringO = PycStringIO.OutputType
+cdef PyTypeObject *StringO = PycStringIO.OutputType
 
 from numpy import array, zeros, uint8, fromstring, ndarray, frombuffer
 
@@ -69,10 +70,11 @@ cdef char TAG_INT_ARRAY = 11
 cdef char TAG_SHORT_ARRAY = 12
 
 
-class NBTFormatError (ValueError):
+class NBTFormatError(ValueError):
     pass
 
 import nbt_util
+
 cdef class TAG_Value:
     IF UNICODE_NAMES:
         cdef unicode _name
@@ -102,7 +104,6 @@ cdef class TAG_Value:
     def __reduce__(self):
         return self.__class__, (self.value, self._name)
 
-
 cdef class TAG_Byte(TAG_Value):
     cdef public char value
 
@@ -113,7 +114,6 @@ cdef class TAG_Byte(TAG_Value):
         self.value = value
         self.name = name
         self.tagID = TAG_BYTE
-
 
 cdef class TAG_Short(TAG_Value):
     cdef public short value
@@ -126,7 +126,6 @@ cdef class TAG_Short(TAG_Value):
         self.name = name
         self.tagID = TAG_SHORT
 
-
 cdef class TAG_Int(TAG_Value):
     cdef public int value
 
@@ -137,7 +136,6 @@ cdef class TAG_Int(TAG_Value):
         self.value = value
         self.name = name
         self.tagID = TAG_INT
-
 
 cdef class TAG_Long(TAG_Value):
     cdef public long long value
@@ -150,7 +148,6 @@ cdef class TAG_Long(TAG_Value):
         self.name = name
         self.tagID = TAG_LONG
 
-
 cdef class TAG_Float(TAG_Value):
     cdef public float value
 
@@ -162,7 +159,6 @@ cdef class TAG_Float(TAG_Value):
         self.name = name
         self.tagID = TAG_FLOAT
 
-
 cdef class TAG_Double(TAG_Value):
     cdef public double value
 
@@ -173,7 +169,6 @@ cdef class TAG_Double(TAG_Value):
         self.value = value
         self.name = name
         self.tagID = TAG_DOUBLE
-
 
 cdef class TAG_Byte_Array(TAG_Value):
     cdef public object value
@@ -193,7 +188,6 @@ cdef class TAG_Byte_Array(TAG_Value):
     def __repr__(self):
         return "<%s name=%s length=%d>" % (self.__class__.__name__, self.name, len(self.value))
 
-
 cdef class TAG_Int_Array(TAG_Value):
     cdef public object value
     dtype = numpy.dtype('>u4')
@@ -209,7 +203,6 @@ cdef class TAG_Int_Array(TAG_Value):
     cdef save_value(self, buf):
         save_array(self.value, buf, 4)
 
-
 cdef class TAG_Short_Array(TAG_Value):
     cdef public object value
     dtype = numpy.dtype('>u2')
@@ -224,7 +217,6 @@ cdef class TAG_Short_Array(TAG_Value):
 
     cdef save_value(self, buf):
         save_array(self.value, buf, 2)
-
 
 cdef class TAG_String(TAG_Value):
     cdef unicode _value
@@ -246,7 +238,6 @@ cdef class TAG_String(TAG_Value):
     cdef save_value(self, buf):
         save_string(self._value.encode('utf-8'), buf)
 
-
 cdef class _TAG_List(TAG_Value):
     cdef public list value
     cdef public char list_type
@@ -261,7 +252,6 @@ cdef class _TAG_List(TAG_Value):
             for tag in value:
                 self.check_tag(tag)
             self.value = list(value)
-
 
     def __repr__(self):
         return "<%s name='%s' list_type=%r length=%d>" % (self.__class__.__name__, self.name,
@@ -306,7 +296,7 @@ cdef class _TAG_List(TAG_Value):
         cdef TAG_Value tag
 
         save_tag_id(list_type, buf)
-        save_int(<int>len(self.value), buf)
+        save_int(<int> len(self.value), buf)
 
         cdef TAG_Value subtag
         for subtag in self.value:
@@ -412,25 +402,24 @@ cdef class _TAG_Compound(TAG_Value):
 
 class TAG_Compound(_TAG_Compound, collections.MutableMapping):
     pass
+
 #    def __init__(self, value = None, name=""):
 #        _TAG_Compound.__init__(self, value, name)
 
 #cdef int needswap = (sys.byteorder == "little")
-cdef swab(void * vbuf, int nbytes):
-    cdef unsigned char * buf = <unsigned char *> vbuf
+cdef swab(void *vbuf, int nbytes):
+    cdef unsigned char *buf = <unsigned char *> vbuf
     #print "Swapping ", nbytes, "bytes"
     #for i in range(nbytes): print buf[i],
     #print "to",
     #if not needswap: return
     cdef int i
-    for i in range((nbytes+1)/2):
-        buf[i], buf[nbytes - i -1] = buf[nbytes - i - 1], buf[i]
-    #for i in range(nbytes): print buf[i],
-
+    for i in range((nbytes + 1) / 2):
+        buf[i], buf[nbytes - i - 1] = buf[nbytes - i - 1], buf[i]
+        #for i in range(nbytes): print buf[i],
 
 def gunzip(data):
     return gzip.GzipFile(fileobj=StringIO(data)).read()
-
 
 def try_gunzip(data):
     try:
@@ -438,7 +427,6 @@ def try_gunzip(data):
     except IOError, zlib.error:
         pass
     return data
-
 
 def load(filename="", buf=None):
     if filename:
@@ -449,21 +437,18 @@ def load(filename="", buf=None):
 
     return load_buffer(try_gunzip(buf))
 
-
 cdef class load_ctx:
     cdef size_t offset
-    cdef char * buffer
+    cdef char *buffer
     cdef size_t size
 
-
-cdef char * require(load_ctx self, size_t s) except NULL:
+cdef char *require(load_ctx self, size_t s) except NULL:
     if s > self.size - self.offset:
         raise NBTFormatError("NBT Stream too short. Asked for %d, only had %d" % (s, (self.size - self.offset)))
 
-    cdef char * ret = self.buffer + self.offset
+    cdef char *ret = self.buffer + self.offset
     self.offset += s
     return ret
-
 
 cdef load_buffer(bytes buf):
     cdef load_ctx ctx = load_ctx()
@@ -473,7 +458,7 @@ cdef load_buffer(bytes buf):
     if len(buf) < 1:
         raise NBTFormatError("NBT Stream too short!")
 
-    cdef unsigned int * magic_no = <unsigned int *> ctx.buffer
+    cdef unsigned int *magic_no = <unsigned int *> ctx.buffer
 
     if ctx.buffer[0] != TAG_COMPOUND:
         raise NBTFormatError('Not an NBT file with a root TAG_Compound '
@@ -484,67 +469,59 @@ cdef load_buffer(bytes buf):
     return tag
 
 cdef load_byte(load_ctx ctx):
-
     cdef TAG_Byte tag = TAG_Byte.__new__(TAG_Byte)
     tag.value = require(ctx, 1)[0]
     tag.tagID = TAG_BYTE
     return tag
 
-
 cdef load_short(load_ctx ctx):
-    cdef short * ptr = <short *> require(ctx, 2)
+    cdef short *ptr = <short *> require(ctx, 2)
     cdef TAG_Short tag = TAG_Short.__new__(TAG_Short)
     tag.value = ptr[0]
     swab(&tag.value, 2)
     tag.tagID = TAG_SHORT
     return tag
 
-
 cdef load_int(load_ctx ctx):
-    cdef int * ptr = <int *> require(ctx, 4)
+    cdef int *ptr = <int *> require(ctx, 4)
     cdef TAG_Int tag = TAG_Int.__new__(TAG_Int)
     tag.value = (ptr[0])
     swab(&tag.value, 4)
     tag.tagID = TAG_INT
     return tag
 
-
 cdef load_long(load_ctx ctx):
-    cdef long long * ptr = <long long *> require(ctx, 8)
+    cdef long long *ptr = <long long *> require(ctx, 8)
     cdef TAG_Long tag = TAG_Long.__new__(TAG_Long)
     tag.value = ptr[0]
     swab(&tag.value, 8)
     tag.tagID = TAG_LONG
     return tag
 
-
 cdef load_float(load_ctx ctx):
-    cdef float * ptr = <float *> require(ctx, 4)
+    cdef float *ptr = <float *> require(ctx, 4)
     cdef TAG_Float tag = TAG_Float.__new__(TAG_Float)
     tag.value = ptr[0]
     swab(&tag.value, 4)
     tag.tagID = TAG_FLOAT
     return tag
 
-
 cdef load_double(load_ctx ctx):
-    cdef double * ptr = <double *> require(ctx, 8)
+    cdef double *ptr = <double *> require(ctx, 8)
     cdef TAG_Double tag = TAG_Double.__new__(TAG_Double)
     tag.value = ptr[0]
     swab(&tag.value, 8)
     tag.tagID = TAG_DOUBLE
     return tag
 
-
 cdef load_array(load_ctx ctx, object TagClass):
-    cdef int * ptr = <int *> require(ctx, 4)
+    cdef int *ptr = <int *> require(ctx, 4)
     cdef int length = ptr[0]
     swab(&length, 4)
 
     byte_length = length * TagClass.dtype.itemsize
     cdef char *arr = require(ctx, byte_length)
     return TagClass(fromstring(arr[:byte_length], dtype=TagClass.dtype, count=length))
-
 
 cdef load_compound(load_ctx ctx):
     cdef char tagID
@@ -559,18 +536,15 @@ cdef load_compound(load_ctx ctx):
 
     return root_tag
 
-
 cdef load_named(load_ctx ctx, char tagID):
     name = load_name(ctx)
     cdef TAG_Value tag = load_tag(tagID, ctx)
     tag._name = name
     return tag
 
-
 cdef load_list(load_ctx ctx):
-
     cdef char list_type = require(ctx, 1)[0]
-    cdef int * ptr = <int *> require(ctx, 4)
+    cdef int *ptr = <int *> require(ctx, 4)
     cdef int length = ptr[0]
     swab(&length, 4)
 
@@ -582,10 +556,8 @@ cdef load_list(load_ctx ctx):
 
     return tag
 
-
 cdef unicode load_string(load_ctx ctx):
-
-    cdef unsigned short * ptr = <unsigned short *> require(ctx, 2)
+    cdef unsigned short *ptr = <unsigned short *> require(ctx, 2)
     cdef unsigned short length = ptr[0]
     swab(&length, 2)
 
@@ -644,28 +616,24 @@ cdef load_tag(char tagID, load_ctx ctx):
     if tagID == TAG_SHORT_ARRAY:
         return load_array(ctx, TAG_Short_Array)
 
-
 def hexdump(src, length=8):
-    FILTER=''.join([(len(repr(chr(x)))==3) and chr(x) or '.' for x in range(256)])
-    N=0
-    result=''
+    FILTER = ''.join([(len(repr(chr(x))) == 3) and chr(x) or '.' for x in range(256)])
+    N = 0
+    result = ''
     while src:
         s, src = src[:length], src[length:]
-        hexa = ' '.join(["%02X"%ord(x) for x in s])
+        hexa = ' '.join(["%02X" % ord(x) for x in s])
         s = s.translate(FILTER)
         result += "%04X   %-*s   %s\n" % (N, length * 3, hexa, s)
-        N+=length
+        N += length
     return result
-
 
 cdef cwrite(obj, char *buf, size_t len):
     #print "cwrite %s %s %d" % (map(ord, buf[:min(4, len)]), buf[:min(4, len)].decode('ascii', 'replace'), len)
     return PycStringIO.cwrite(obj, buf, len)
 
-
 cdef save_tag_id(char tagID, object buf):
     cwrite(buf, &tagID, 1)
-
 
 cdef save_tag_name(TAG_Value tag, object buf):
     IF UNICODE_NAMES:
@@ -674,52 +642,43 @@ cdef save_tag_name(TAG_Value tag, object buf):
     ELSE:
         save_string(tag._name, buf)
 
-
 cdef save_string(bytes value, object buf):
-    cdef short length = <short>len(value)
-    cdef char * s = value
+    cdef short length = <short> len(value)
+    cdef char *s = value
     swab(&length, 2)
     cwrite(buf, <char *> &length, 2)
     cwrite(buf, s, len(value))
 
-
 cdef save_array(object value, object buf, char size):
     value = value.tostring()
-    cdef char * s = value
-    cdef int length = <int>len(value) / size
+    cdef char *s = value
+    cdef int length = <int> len(value) / size
     swab(&length, 4)
     cwrite(buf, <char *> &length, 4)
     cwrite(buf, s, len(value))
 
-
 cdef save_byte(char value, object buf):
     cwrite(buf, <char *> &value, 1)
-
 
 cdef save_short(short value, object buf):
     swab(&value, 2)
     cwrite(buf, <char *> &value, 2)
 
-
 cdef save_int(int value, object buf):
     swab(&value, 4)
     cwrite(buf, <char *> &value, 4)
-
 
 cdef save_long(long long value, object buf):
     swab(&value, 8)
     cwrite(buf, <char *> &value, 8)
 
-
 cdef save_float(float value, object buf):
     swab(&value, 4)
     cwrite(buf, <char *> &value, 4)
 
-
 cdef save_double(double value, object buf):
     swab(&value, 8)
     cwrite(buf, <char *> &value, 8)
-
 
 cdef save_tag_value(TAG_Value tag, object buf):
     cdef char tagID = tag.tagID
@@ -758,7 +717,6 @@ cdef save_tag_value(TAG_Value tag, object buf):
 
     if tagID == TAG_SHORT_ARRAY:
         (<TAG_Int_Array> tag).save_value(buf)
-
 
 tag_classes = {TAG().tagID: TAG for TAG in (TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
                                             TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array)}

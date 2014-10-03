@@ -24,7 +24,7 @@ log = getLogger(__name__)
 __all__ = ['MCSchematic', 'INVEditChest']
 
 
-class MCSchematic (EntityLevel):
+class MCSchematic(EntityLevel):
     materials = alphaMaterials
 
     def __init__(self, shape=None, root_tag=None, filename=None, mats='Alpha'):
@@ -56,7 +56,7 @@ class MCSchematic (EntityLevel):
         if mats in namedMaterials:
             self.materials = namedMaterials[mats]
         else:
-            assert(isinstance(mats, MCMaterials))
+            assert (isinstance(mats, MCMaterials))
             self.materials = mats
 
         if root_tag:
@@ -70,7 +70,7 @@ class MCSchematic (EntityLevel):
             l = self.root_tag["Length"].value
             h = self.root_tag["Height"].value
 
-            self._Blocks = self.root_tag["Blocks"].value.astype('uint16').reshape(h, l, w) # _Blocks is y, z, x
+            self._Blocks = self.root_tag["Blocks"].value.astype('uint16').reshape(h, l, w)  # _Blocks is y, z, x
             del self.root_tag["Blocks"]
             if "AddBlocks" in self.root_tag:
                 # Use WorldEdit's "AddBlocks" array to load and store the 4 high bits of a block ID.
@@ -160,7 +160,8 @@ class MCSchematic (EntityLevel):
 
 
     def __str__(self):
-        return u"MCSchematic(shape={0}, materials={2}, filename=\"{1}\")".format(self.size, self.filename or u"", self.Materials)
+        return u"MCSchematic(shape={0}, materials={2}, filename=\"{1}\")".format(self.size, self.filename or u"",
+                                                                                 self.Materials)
 
     # these refer to the blocks array instead of the file's height because rotation swaps the axes
     # this will have an impact later on when editing schematics instead of just importing/exporting
@@ -224,7 +225,7 @@ class MCSchematic (EntityLevel):
         if "Biomes" in self.root_tag:
             self.root_tag["Biomes"].value = swapaxes(self.root_tag["Biomes"].value, 0, 1)[::-1, :]
 
-        self.root_tag["Data"].value   = swapaxes(self.root_tag["Data"].value, 1, 2)[:, ::-1, :]  # x=z; z=-x
+        self.root_tag["Data"].value = swapaxes(self.root_tag["Data"].value, 1, 2)[:, ::-1, :]  # x=z; z=-x
         self._update_shape()
 
         blockrotation.RotateLeft(self.Blocks, self.Data)
@@ -427,7 +428,7 @@ class INVEditChest(MCSchematic):
         return nbt.TAG_List([chestTag], name="TileEntities")
 
 
-class ZipSchematic (infiniteworld.MCInfdevOldLevel):
+class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     def __init__(self, filename, create=False):
         self.zipfilename = filename
 
@@ -439,7 +440,6 @@ class ZipSchematic (infiniteworld.MCInfdevOldLevel):
 
         super(ZipSchematic, self).__init__(tempdir, create)
         atexit.register(shutil.rmtree, self.worldFolder.filename, True)
-
 
         try:
             schematicDat = nbt.load(self.worldFolder.getFilePath("schematic.dat"))
@@ -490,8 +490,6 @@ class ZipSchematic (infiniteworld.MCInfdevOldLevel):
     @classmethod
     def _isLevel(cls, filename):
         return zipfile.is_zipfile(filename)
-
-
 
 
 def adjustExtractionParameters(self, box):
@@ -564,6 +562,7 @@ def extractSchematicFromIter(sourceLevel, box, entities=True):
 
     yield tempSchematic
 
+
 MCLevel.extractSchematic = extractSchematicFrom
 MCLevel.extractSchematicIter = extractSchematicFromIter
 MCLevel.adjustExtractionParameters = adjustExtractionParameters
@@ -593,12 +592,14 @@ def extractZipSchematicFromIter(sourceLevel, box, zipfilename=None, entities=Tru
     tempSchematic = ZipSchematic(zipfilename, create=True)
     tempSchematic.materials = sourceLevel.materials
 
-    for i in tempSchematic.copyBlocksFromIter(sourceLevel, sourceBox, destPoint, entities=entities, create=True, biomes=True):
+    for i in tempSchematic.copyBlocksFromIter(sourceLevel, sourceBox, destPoint, entities=entities, create=True,
+                                              biomes=True):
         yield i
 
     tempSchematic.Width, tempSchematic.Height, tempSchematic.Length = sourceBox.size
     tempSchematic.saveInPlace()  # lights not needed for this format - crashes minecraft though
     yield tempSchematic
+
 
 MCLevel.extractZipSchematic = extractZipSchematicFrom
 MCLevel.extractZipSchematicIter = extractZipSchematicFromIter
@@ -615,6 +616,7 @@ def extractAnySchematicIter(level, box):
     else:
         for i in level.extractZipSchematicIter(box):
             yield i
+
 
 MCLevel.extractAnySchematic = extractAnySchematic
 MCLevel.extractAnySchematicIter = extractAnySchematicIter
