@@ -42,8 +42,6 @@ def exhaust(_iter):
         pass
     return i
 
-
-
 def win32_appdata():
     # try to use win32 api to get the AppData folder since python doesn't populate os.environ with unicode strings.
 
@@ -63,31 +61,46 @@ def win32_appdata():
 
             return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
 
-if sys.platform == "win32":
-    appDataDir = win32_appdata()
-    minecraftDir = os.path.join(appDataDir, u".minecraft")
-    appSupportDir = os.path.join(appDataDir, u"pymclevel")
+def getAppDataDirectory():
+    if sys.platform == "win32":
+        return win32_appdata()
+    elif sys.platform == "darwin":
+        return os.path.expanduser(u"~/Library/Application Support")
+    else:
+        return os.path.expanduser(u"~")
 
-elif sys.platform == "darwin":
-    appDataDir = os.path.expanduser(u"~/Library/Application Support")
-    minecraftDir = os.path.join(appDataDir, u"minecraft")
-    appSupportDir = os.path.expanduser(u"~/Library/Application Support/pymclevel/")
+def getMinecraftLauncherDirectory():
+    if sys.platform == "darwin":
+        return os.path.join(getAppDataDirectory(), u"minecraft")
+    else:
+        return os.path.join(getAppDataDirectory(), u".minecraft")
 
-else:
-    appDataDir = os.path.expanduser(u"~")
-    minecraftDir = os.path.expanduser(u"~/.minecraft")
-    appSupportDir = os.path.expanduser(u"~/.pymclevel")
+def getPYMCAppDataDirectory():
+    if sys.platform == "win32" or "darwin":
+        return os.path.join(getAppDataDirectory(), u"pymclevel")
+    else:
+        return os.path.join(getAppDataDirectory(), u".pymclevel")
 
-# check for launcher_profiles.json. If found, load saves directory from that instead.
-if os.path.isfile(os.path.join(minecraftDir, u"launcher_profiles.json")):
+def getMinecraftProfileJSON():
+    if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
+        try:
+            minecraftProfilesJSON = json.load(open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")))
+            return minecraftProfilesJSON
+        except:
+            return None
+
+def getMinecraftProfileDirectory(profileName):
     try:
-        minecraftProfiles = json.load(open(os.path.join(minecraftDir, u"launcher_profiles.json"))) # load json file
-        selectedProfile = minecraftProfiles['selectedProfile'] # selected profile name
-        minecraftDir = minecraftProfiles['profiles'][selectedProfile]['gameDir'] # minecraftDir update to correct location.
-        saveFileDir = os.path.join(minecraftDir, u"saves") # saveFileDir update to correct location
-    except Exception, e:
-        saveFileDir = os.path.join(minecraftDir, u"saves") #unable to find a launcher_profiles, using default location
-        print "Error while reading or parsing JSON data from launcher_profiles.json: {0!r}".format(e)
--       print "Saves directory set to default minecraft saves location"
-else:
-    saveFileDir = os.path.join(minecraftDir, u"saves") #unable to find a launcher_profiles, using default location
+        profileDir = getMinecraftProfileJSON()['profiles'][profileName]['gameDir'] # profileDir update to correct location.
+        return profileDir
+    except:
+        return os.path.join(getMinecraftLauncherDirectory())
+
+def getSelectedProfile():
+    try:
+        selectedProfile = getMinecraftProfileJSON()['selectedProfile']
+        return selectedProfile
+    except:
+        return None
+
+saveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), u"saves")
