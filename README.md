@@ -4,7 +4,7 @@ MCEdit is an open-source, BSD-licenced world editor for the viral indie hit [Min
 
 ## Running from source
 
-MCEdit is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 at a minimum before getting started. Easy_install / pip is reccommended.
+MCEdit is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 (Python 3 is not supported) at a minimum before getting started. Easy_install / pip is reccommended.
 
 Clone MCEdit using your github client of choice:
 
