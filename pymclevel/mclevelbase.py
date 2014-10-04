@@ -93,7 +93,7 @@ def getMinecraftProfileJSON():
     if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
         try:
             with open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")) as jsonString:
-                minecraftProfilesJSON = json.load(jsonString.read())
+                minecraftProfilesJSON = json.load(jsonString)
             return minecraftProfilesJSON
         except:
             return None
