@@ -180,7 +180,7 @@ def askOpenFileWin32(title, schematics, initialDir):
             Filter=f,
         )
     except Exception, e:
-        print "Open File: ", e
+        #print "Open File: ", e
         pass
     else:
         return filename
