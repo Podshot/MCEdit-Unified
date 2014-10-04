@@ -55,7 +55,7 @@
 		}
 		function createReleaseInfo(data) {
 			if (data.length == 0) {
-				releaseBannerFail();
+				releaseBannerFail('Couldn\'t find any releases');
 				return false;
 			}
 			try {
@@ -66,11 +66,15 @@
 					var version = data[i].tag_name;
 					var title = data[i].name
 					if (data[i].prerelease) {
-						var releaselabel = '<span class="prerelease-label">Pre-release</span>';
+						var releaselabel = 'Pre-release';
 					} else {
 						var releaselabel = '';
 					}
-					$('#changelog').append('<div class="row"><div class="col c12"><h3>Version ' + version + ' ' + releaselabel + '</h3><p>' + note + '</p></div></div>')
+					var releasetime = new Date(data[i].published_at).toLocaleDateString();
+					$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>');
+					releasenote = $('.releasenote[version="' + version + '"]');
+					releasenote.append('<div class="col c2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;">' + version + '</h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');
+					releasenote.append('<div class="col c10"><p>' + note + '</p></div></div>');
 				}
 				$('#changelog').show();
 				prereleases = [];
@@ -104,11 +108,18 @@
 					$('#prerelease-message').slideDown();
 				}
 			} catch(err) {
-				releaseBannerFail();
+				releaseBannerFail(err.message);
 			}
 			$('#loading-message').slideUp();
 		}
-		function releaseBannerFail() {
+		function releaseBannerFail(message) {
+			if (typeof message == "object") {
+				message = 'An error occured loading the release information: ' + message.responseJSON.message;
+			}
+			if (message == undefined) {
+				var message = 'An error occured loading the release information';
+			}
+			$('#failure-reason').html(message);
 			$('#failed-message').slideDown();
 			$('#loading-message').slideUp();
 		}
@@ -133,10 +144,10 @@
 			<strong><i class="fa fa-refresh"></i> Loading release information</strong>
 		</div>
 		<div class="msg" id="failed-message" style="display:none;">
-			<strong><i class="fa fa-times"></i> Couldn't load release information</strong>
+			<strong><i class="fa fa-times"></i> <span id="failure-reason"></span></strong>
 		</div>
 		<div class="msg" style="display:none;" id="prerelease-message">
-			<strong>Pre-Release version <span id="prereleaseversion">null</span></strong>
+			<strong>Pre-release version <span id="prereleaseversion">null</span></strong>
 			<br>
 			<span id="prerelease-notes"></span>
 			<br>
@@ -151,10 +162,6 @@
 		</div>
 
 		<div id="changelog" style="display:none;">
-		</div>
-
-		<div class="copyright" style="color:gray;padding:5px;">
-			&copy; 2010 David Rio Vierra
 		</div>
 	</div>
 </body>

@@ -13,17 +13,18 @@ a {
 	color: DodgerBlue;
 	text-decoration: none;
 }
-#failed-message a {
+#failed-message>a #failed-message>a {
 	color: DodgerBlue;
 }
-#msg a {
+#msg>a {
 	text-decoration: none;
 }
-#msg a:hover {
+#msg>a:hover {
 	text-decoration: underline;
 }
 .prerelease-label {
 	background-color: #FB984A;
 	padding: 2px;
+	text-align: center;
 	border-radius: 2px;
 }
