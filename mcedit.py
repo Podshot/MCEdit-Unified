@@ -985,18 +985,21 @@ class MCEdit(GLViewport):
             if answer == "Don't remind me again.":
                 mcedit.closeMinecraftWarning = False
 
-        if not Settings.reportCrashesAsked.get():
-            answer = albow.ask(
-                "When an error occurs, MCEdit can report the details of the error to its developers. "
-                "The error report will include your operating system version, MCEdit version, "
-                "OpenGL version, plus the make and model of your CPU and graphics processor. No personal "
-                "information will be collected.\n\n"
-                "Error reporting can be enabled or disabled in the Options dialog.\n\n"
-                "Enable error reporting?",
-                ["Yes", "No"],
-                default=0)
-            Settings.reportCrashes.set(answer == "Yes")
-            Settings.reportCrashesAsked.set(True)
+# Disabled Crash Reporting Option
+#       if not Settings.reportCrashesAsked.get():
+#           answer = albow.ask(
+#               "When an error occurs, MCEdit can report the details of the error to its developers. "
+#               "The error report will include your operating system version, MCEdit version, "
+#               "OpenGL version, plus the make and model of your CPU and graphics processor. No personal "
+#               "information will be collected.\n\n"
+#               "Error reporting can be enabled or disabled in the Options dialog.\n\n"
+#               "Enable error reporting?",
+#               ["Yes", "No"],
+#               default=0)
+#           Settings.reportCrashes.set(answer == "Yes")
+#           Settings.reportCrashesAsked.set(True)
+        Settings.reportCrashes.set(False)
+        Settings.reportCrashesAsked.set(True)
 
         config.saveConfig()
         if "-causeError" in sys.argv:
@@ -1049,7 +1052,8 @@ def main(argv):
         client.revision = release.get_commit()
         client.build = version
         client.timeout = 5
-        #client.disabled = not config.config.getboolean("Settings", "report crashes new")
+# Disabled Crash Reporting Option
+#       client.disabled = not config.config.getboolean("Settings", "report crashes new")
         client.disabled = True
 
         def _reportingChanged(val):
