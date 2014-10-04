@@ -797,7 +797,7 @@ class MCEdit(GLViewport):
                      lambda: platform_open("https://github.com/Khroki/MCEdit-Unified")),
                     ("",
                      "About MCEdit",
-                     lambda: platform_open("https://github.com/Khroki/MCEdit-Unified/blob/master/README.md")),
+                     lambda: platform_open("http://khroki.github.io/MCEdit-Unified/about/")),
                     ("",
                      "Recent Changes",
                      lambda: platform_open("https://github.com/Khroki/MCEdit-Unified/releases")),
