@@ -1,15 +1,85 @@
 <html>
 <head>
 	<title>MCEdit</title>
-	<link rel="stylesheet" type="text/css" href="min.css">
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script>
+		/*versionCompare from http://stackoverflow.com/a/6832721*/
+		function compareVersionString(v1, v2, options) {
+			var lexicographical = options && options.lexicographical,
+			zeroExtend = options && options.zeroExtend,
+			v1parts = v1.split('.'),
+			v2parts = v2.split('.');
+
+			function isValidPart(x) {
+				return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+			}
+
+			if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+				return NaN;
+			}
+
+			if (zeroExtend) {
+				while (v1parts.length < v2parts.length) v1parts.push("0");
+				while (v2parts.length < v1parts.length) v2parts.push("0");
+			}
+
+			if (!lexicographical) {
+				v1parts = v1parts.map(Number);
+				v2parts = v2parts.map(Number);
+			}
+
+			for (var i = 0; i < v1parts.length; ++i) {
+				if (v2parts.length == i) {
+					return 1;
+				}
+
+				if (v1parts[i] == v2parts[i]) {
+					continue;
+				}
+				else if (v1parts[i] > v2parts[i]) {
+					return 1;
+				}
+				else {
+					return -1;
+				}
+			}
+
+			if (v1parts.length != v2parts.length) {
+				return -1;
+			}
+
+			return 0;
+		}
+		function compareVersionObject(a,b) {
+			return compareVersionString(a.tag_name, b.tag_name) * -1;
+		}
+		$(document).ready(function(){
+			$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/releases').done(function(releases){
+				releases.sort(compareVersionObject);
+				release = releases[0];
+				if (release.prerelease) {
+					$('#versionmsg').html('<strong>Pre-Release version ' + release.tag_name + '</strong>');
+				} else {
+					$('#versionmsg').html('<strong>Release version ' + release.tag_name + '</strong>');					
+				}
+				$('#versionmsg').append('<br>');
+				for (var i = 0; i < release.assets.length; i++) {
+					$('#versionmsg').append('<a href="' + release.assets[i].url + '">' + release.assets[i].name + '</a><br>');
+				};
+				$('#versionmsg').slideDown();
+			});
+		});
+	</script>
+	<link rel="stylesheet" type="text/css" href="css/min.css">
 </head>
 <body>
 	<nav class="nav" tabindex="-1" onclick="this.focus()">
 		<div class="container">
 			<a class="pagename current" href="index.html">MCEdit</a>
 			<a href="about/index.html">About</a>
-			<a href="https://github.com/Khroki/MCEdit-Unified/releases">Releases</a> 
+			<a href="https://github.com/Khroki/MCEdit-Unified/releases">Releases</a>
 		</div>
 	</nav>
+	<div class="msg" style="display:none;" id="versionmsg"></div>
 </body>
 </html>
