@@ -11,15 +11,14 @@ a {
 }
 #prerelease-message a {
 	color: DodgerBlue;
-	text-decoration: none;
 }
 #failed-message>a #failed-message>a {
 	color: DodgerBlue;
 }
-#msg>a {
+a {
 	text-decoration: none;
 }
-#msg>a:hover {
+a:hover {
 	text-decoration: underline;
 }
 .prerelease-label {

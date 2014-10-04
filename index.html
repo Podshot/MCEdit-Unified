@@ -73,7 +73,7 @@
 					var releasetime = new Date(data[i].published_at).toLocaleDateString();
 					$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>');
 					releasenote = $('.releasenote[version="' + version + '"]');
-					releasenote.append('<div class="col c2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;">' + version + '</h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');
+					releasenote.append('<div class="col c2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + data[i].html_url + '">' + version + '</a></h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');
 					releasenote.append('<div class="col c10"><p>' + note + '</p></div></div>');
 				}
 				$('#changelog').show();
