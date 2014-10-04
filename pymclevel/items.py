@@ -3,10 +3,10 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 items_txt = """
-#:mc-version Minecraft 1.8.0 Prerelease 3
+#:mc-version Minecraft 1.8.0
 
 # This section is for defining items.
-# Do not uncomment, the code requires this section be commented to work.
+# Do not remove quotes, the code requires this section be in a quote block to work.
 
 # Also note MCEdit uses this file for items only (editing chest contents etc),
 # not for rendering blocks.

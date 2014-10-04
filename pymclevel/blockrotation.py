@@ -407,12 +407,42 @@ Door.flipNorthSouth[Door.SouthOpen] = Door.NorthOpen
 
 rotationClasses.append(Door)
 
+class Log:
+    blocktypes = [
+        alphaMaterials.Wood.ID,
+        alphaMaterials.Wood2.ID,
+    ]
+    Type1Up = 0
+    Type2Up = 1
+    Type3Up = 2
+    Type4Up = 3
+    Type1NorthSouth = 4
+    Type2NorthSouth = 5
+    Type3NorthSouth = 6
+    Type4NorthSouth = 7
+    Type1EastWest = 8
+    Type2EastWest = 9
+    Type3EastWest = 10
+    Type4EastWest = 11
+
+    rotateLeft = arange(16, dtype='uint8')
+
+Log.rotateLeft[Log.Type1NorthSouth] = Log.Type1EastWest
+Log.rotateLeft[Log.Type1EastWest] = Log.Type1NorthSouth
+Log.rotateLeft[Log.Type2NorthSouth] = Log.Type2EastWest
+Log.rotateLeft[Log.Type2EastWest] = Log.Type2NorthSouth
+Log.rotateLeft[Log.Type3NorthSouth] = Log.Type3EastWest
+Log.rotateLeft[Log.Type3EastWest] = Log.Type3NorthSouth
+Log.rotateLeft[Log.Type4NorthSouth] = Log.Type4EastWest
+Log.rotateLeft[Log.Type4EastWest] = Log.Type4NorthSouth
+
+rotationClasses.append(Log)
+
 
 class RedstoneRepeater:
     blocktypes = [
         alphaMaterials.RedstoneRepeaterOff.ID,
-        alphaMaterials.RedstoneRepeaterOn.ID,
-
+        alphaMaterials.RedstoneRepeaterOn.ID
     ]
 
     East = 0
@@ -644,6 +674,7 @@ class Dropper:
     West = 3
     North = 4
     South = 5
+
 
 
 @genericFlipRotation 
