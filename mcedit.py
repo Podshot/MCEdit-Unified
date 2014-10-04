@@ -555,9 +555,10 @@ class OptionsPanel(Dialog):
         goPortableRow = albow.Row(
             (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
 
-        reportRow = mceutils.CheckBoxLabel("Report Errors",
-                                           ref=Settings.reportCrashes.propertyRef(),
-                                           tooltipText="Automatically report errors to the developer.")
+# Disabled Crash Reporting Option
+#       reportRow = mceutils.CheckBoxLabel("Report Errors",
+#                                          ref=Settings.reportCrashes.propertyRef(),
+#                                          tooltipText="Automatically report errors to the developer.")
 
         inputs = (
             spaceHeightRow,
@@ -579,8 +580,9 @@ class OptionsPanel(Dialog):
                       visibilityCheckRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
-                  ) + (
-                      reportRow,
+# Disabled Crash Reporting Option
+#                 ) + (
+#                     reportRow,
                   ) + (
                       (sys.platform == "win32") and (setWindowPlacementRow,) or ()
                   ) + (
@@ -1047,7 +1049,8 @@ def main(argv):
         client.revision = release.get_commit()
         client.build = version
         client.timeout = 5
-        client.disabled = not config.config.getboolean("Settings", "report crashes new")
+        #client.disabled = not config.config.getboolean("Settings", "report crashes new")
+        client.disabled = True
 
         def _reportingChanged(val):
             client.disabled = not val
