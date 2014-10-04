@@ -375,8 +375,7 @@ class FilterTool(EditorTool):
         self.updatePanel.add(updateButton)
         self.updatePanel.shrink_wrap()
 
-        self.updatePanel.right = self.editor.right
-        self.updatePanel.centery = self.editor.centery
+        self.updatePanel.bottomright = self.editor.viewportContainer.bottomright
         self.editor.add(self.updatePanel)
 
     def hidePanel(self):
