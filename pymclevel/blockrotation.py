@@ -327,16 +327,61 @@ rotationClasses.append(Button)
 
 class SignPost:
     blocktypes = [alphaMaterials.Sign.ID, alphaMaterials.MobHead.ID, alphaMaterials.StandingBanner.ID]
-    #west is 0, increasing clockwise
 
+    South = 0
+    SouthSouthWest = 1
+    SouthWest = 2
+    SouthWestWest = 3
+    West = 4
+    NorthWestWest = 5
+    NorthWest = 6
+    NorthNorthWest = 7
+    North = 8
+    NorthNorthEast = 9
+    NorthEast = 10
+    NorthEastEast = 11
+    East = 12
+    SouthEastEast = 13
+    SouthEast = 14
+    SouthSouthEast = 15
+    
+    #rotate by increasing clockwise
     rotateLeft = arange(16, dtype='uint8')
     rotateLeft -= 4
     rotateLeft &= 0xf
 
-    flipEastWest = arange(16, dtype='uint8')
-    flipNorthSouth = arange(16, dtype='uint8')
-    pass
+SignPost.flipNorthSouth = arange(16, dtype='uint8')
+SignPost.flipNorthSouth[SignPost.East] = SignPost.West
+SignPost.flipNorthSouth[SignPost.West] = SignPost.East
+SignPost.flipNorthSouth[SignPost.SouthWestWest] = SignPost.SouthEastEast
+SignPost.flipNorthSouth[SignPost.SouthEastEast] = SignPost.SouthWestWest
+SignPost.flipNorthSouth[SignPost.SouthWest] = SignPost.SouthEast
+SignPost.flipNorthSouth[SignPost.SouthEast] = SignPost.SouthWest
+SignPost.flipNorthSouth[SignPost.SouthSouthWest] = SignPost.SouthSouthEast
+SignPost.flipNorthSouth[SignPost.SouthSouthEast] = SignPost.SouthSouthWest
+SignPost.flipNorthSouth[SignPost.NorthEastEast] = SignPost.NorthWestWest
+SignPost.flipNorthSouth[SignPost.NorthWestWest] = SignPost.NorthEastEast
+SignPost.flipNorthSouth[SignPost.NorthEast] = SignPost.NorthWest
+SignPost.flipNorthSouth[SignPost.NorthWest] = SignPost.NorthEast
+SignPost.flipNorthSouth[SignPost.NorthNorthEast] = SignPost.NorthNorthWest
+SignPost.flipNorthSouth[SignPost.NorthNorthWest] = SignPost.NorthNorthEast
 
+
+SignPost.flipEastWest = arange(16, dtype='uint8')
+SignPost.flipEastWest[SignPost.North] = SignPost.South
+SignPost.flipEastWest[SignPost.South] = SignPost.North
+SignPost.flipEastWest[SignPost.SouthSouthEast] = SignPost.NorthNorthEast
+SignPost.flipEastWest[SignPost.NorthNorthEast] = SignPost.SouthSouthEast
+SignPost.flipEastWest[SignPost.NorthEast] = SignPost.SouthEast
+SignPost.flipEastWest[SignPost.SouthEast] = SignPost.NorthEast
+SignPost.flipEastWest[SignPost.SouthEastEast] = SignPost.NorthEastEast
+SignPost.flipEastWest[SignPost.NorthEastEast] = SignPost.SouthEastEast
+SignPost.flipEastWest[SignPost.NorthNorthWest] = SignPost.SouthSouthWest
+SignPost.flipEastWest[SignPost.SouthSouthWest] = SignPost.NorthNorthWest
+SignPost.flipEastWest[SignPost.NorthWest] = SignPost.SouthWest
+SignPost.flipEastWest[SignPost.SouthWest] = SignPost.NorthWest
+SignPost.flipEastWest[SignPost.NorthWestWest] = SignPost.SouthWestWest
+SignPost.flipEastWest[SignPost.SouthWestWest] = SignPost.NorthWestWest
 
 rotationClasses.append(SignPost)
 
