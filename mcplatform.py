@@ -342,10 +342,13 @@ win32_window_size = True
 ini = u"mcedit.ini"
 parentDir = dirname(directories.dataDir)
 docsFolder = documents_folder()
+
 portableConfigFilePath = os.path.join(parentDir, ini)
 portableSchematicsDir = os.path.join(parentDir, u"MCEdit-schematics")
+portableFiltersDir = os.path.join(parentDir, u"MCEdit-filters")
 fixedConfigFilePath = os.path.join(docsFolder, ini)
 fixedSchematicsDir = os.path.join(docsFolder, u"MCEdit-schematics")
+fixedFiltersDir = os.path.join(docsFolder, u"MCEdit-filters")
 
 if sys.platform == "darwin":
     # parentDir is MCEdit.app/Contents/
@@ -361,18 +364,22 @@ if sys.platform == "darwin":
 
     portableConfigFilePath = os.path.join(folderContainingAppPackage, ini)
     portableSchematicsDir = os.path.join(folderContainingAppPackage, u"MCEdit-schematics")
+    portableFiltersDir = os.path.join(folderContainingAppPackage, u"MCEdit-filters")
 
 
 def goPortable():
-    global configFilePath, schematicsDir, portable
+    global configFilePath, schematicsDir, filtersDir, portable
 
     if os.path.exists(fixedSchematicsDir):
         move_displace(fixedSchematicsDir, portableSchematicsDir)
     if os.path.exists(fixedConfigFilePath):
         move_displace(fixedConfigFilePath, portableConfigFilePath)
+    if os.path.exists(fixedFiltersDir):
+        move_displace(fixedFiltersDir, portableFiltersDir)
 
-    configFilePath = portableConfigFilePath
     schematicsDir = portableSchematicsDir
+    configFilePath = portableConfigFilePath
+    filtersDir = portableFiltersDir
     portable = True
 
 
@@ -395,15 +402,18 @@ def move_displace(src, dst):
 
 
 def goFixed():
-    global configFilePath, schematicsDir, portable
+    global configFilePath, schematicsDir, filtersDir, portable
 
     if os.path.exists(portableSchematicsDir):
         move_displace(portableSchematicsDir, fixedSchematicsDir)
     if os.path.exists(portableConfigFilePath):
         move_displace(portableConfigFilePath, fixedConfigFilePath)
+    if os.path.exists(portableFiltersDir):
+        move_displace(portableFiltersDir, fixedFiltersDir)
 
-    configFilePath = fixedConfigFilePath
     schematicsDir = fixedSchematicsDir
+    configFilePath = fixedConfigFilePath
+    filtersDir = fixedFiltersDir
     portable = False
 
 
@@ -419,14 +429,15 @@ if portableConfigExists():
     portable = True
     schematicsDir = portableSchematicsDir
     configFilePath = portableConfigFilePath
+    filtersDir = portableFiltersDir
 
 else:
     print "Running in fixed install mode. MCEdit-schematics and mcedit.ini are in your Documents folder."
-    configFilePath = fixedConfigFilePath
     schematicsDir = fixedSchematicsDir
+    configFilePath = fixedConfigFilePath
+    filtersDir = fixedFiltersDir
     portable = False
 
-filtersDir = os.path.join(directories.dataDir, "filters")
 if filtersDir not in [s.decode(sys.getfilesystemencoding())
                       if isinstance(s, str)
                       else s
