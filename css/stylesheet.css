@@ -22,3 +22,8 @@ a {
 #msg a:hover {
 	text-decoration: underline;
 }
+.prerelease-label {
+	background-color: #FB984A;
+	padding: 2px;
+	border-radius: 2px;
+}

@@ -53,13 +53,26 @@
 		function compareVersionObject(a,b) {
 			return compareVersionString(a.tag_name, b.tag_name) * -1;
 		}
-		function createReleaseNotes(data) {
+		function createReleaseInfo(data) {
+			if (data.length == 0) {
+				releaseBannerFail();
+				return false;
+			}
 			try {
-				if (data.length == 0) {
-					releaseNotesFail();
-					return false;
+				data.sort(compareVersionObject);
+				for (var i = 0; i < data.length; i++) {
+					var note = data[i].body;
+					note = note.replace(/\n/g,'<br>').replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a> ');
+					var version = data[i].tag_name;
+					var title = data[i].name
+					if (data[i].prerelease) {
+						var releaselabel = '<span class="prerelease-label">Pre-release</span>';
+					} else {
+						var releaselabel = '';
+					}
+					$('#changelog').append('<div class="row"><div class="col c12"><h3>Version ' + version + ' ' + releaselabel + '</h3><p>' + note + '</p></div></div>')
 				}
-
+				$('#changelog').show();
 				prereleases = [];
 				releases = [];
 				for (var i = 0; i < data.length; i++) {
@@ -91,16 +104,16 @@
 					$('#prerelease-message').slideDown();
 				}
 			} catch(err) {
-				releaseNotesFail();
+				releaseBannerFail();
 			}
 			$('#loading-message').slideUp();
 		}
-		function releaseNotesFail() {
+		function releaseBannerFail() {
 			$('#failed-message').slideDown();
 			$('#loading-message').slideUp();
 		}
 		$(document).ready(function(){
-			$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/releases').done(createReleaseNotes).fail(releaseNotesFail);
+			$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/releases').done(createReleaseInfo).fail(releaseBannerFail);
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="css/min.css">
@@ -110,14 +123,14 @@
 <body>
 	<nav class="nav" tabindex="-1" onclick="this.focus()">
 		<div class="container">
-			<a class="pagename current" href="index.html">MCEdit</a>
-			<a href="about">About</a>
+			<a class="pagename current" href="#">MCEdit</a>
+			<a href="about/index.html">About</a>
 			<a href="https://github.com/Khroki/MCEdit-Unified/releases">Releases</a>
 		</div>
 	</nav>
 	<div class="container">
 		<div class="msg" id="loading-message">
-			<strong><i class="fa fa-spin fa-refresh"></i> Loading release information</strong>
+			<strong><i class="fa fa-refresh"></i> Loading release information</strong>
 		</div>
 		<div class="msg" id="failed-message" style="display:none;">
 			<strong><i class="fa fa-times"></i> Couldn't load release information</strong>
@@ -136,7 +149,11 @@
 			<br>
 			<span id="release-downloads"></span>
 		</div>
-		<div class="copyright" style="position:absolute;bottom:0px;color:gray;padding:4px;">
+
+		<div id="changelog" style="display:none;">
+		</div>
+
+		<div class="copyright" style="color:gray;padding:5px;">
 			&copy; 2010 David Rio Vierra
 		</div>
 	</div>
