@@ -53,8 +53,13 @@
 		function compareVersionObject(a,b) {
 			return compareVersionString(a.tag_name, b.tag_name) * -1;
 		}
-		$(document).ready(function(){
-			$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/releases').done(function(data){
+		function createReleaseNotes(data) {
+			try {
+				if (data.length == 0) {
+					releaseNotesFail();
+					return false;
+				}
+
 				prereleases = [];
 				releases = [];
 				for (var i = 0; i < data.length; i++) {
@@ -73,6 +78,7 @@
 					for (var i = 0; i < release.assets.length; i++) {
 						$('#release-downloads').append('<a href="' + release.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + release.assets[i].name + '</a><br>');
 					}
+					$('#release-notes').html('<a href="' + release.html_url + '"><i class="fa fa-book"></i> Release notes</a>');
 					$('#release-message').slideDown();
 				}
 				if (prereleases.length > 0) {
@@ -81,9 +87,20 @@
 					for (var i = 0; i < prerelease.assets.length; i++) {
 						$('#prerelease-downloads').append('<a href="' + prerelease.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + prerelease.assets[i].name + '</a><br>');
 					}
+					$('#prerelease-notes').html('<a href="' + prerelease.html_url + '"><i class="fa fa-book"></i> Release notes</a>');
 					$('#prerelease-message').slideDown();
 				}
-			});
+			} catch(err) {
+				releaseNotesFail();
+			}
+			$('#loading-message').slideUp();
+		}
+		function releaseNotesFail() {
+			$('#failed-message').slideDown();
+			$('#loading-message').slideUp();
+		}
+		$(document).ready(function(){
+			$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/releases').done(createReleaseNotes).fail(releaseNotesFail);
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="css/min.css">
@@ -96,8 +113,22 @@
 			background:#FDC192;
 			border-color:#FD9840;
 		}
+		#failed-message {
+			background:#D87477;
+			border-color:#C7393D;
+		}
 		#prerelease-message a {
-			color: gray;
+			color: DodgerBlue;
+			text-decoration: none;
+		}
+		#failed-message a {
+			color: DodgerBlue;
+		}
+		#msg a {
+			text-decoration: none;
+		}
+		#msg a:hover {
+			text-decoration: underline;
 		}
 	</style>
 </head>
@@ -110,13 +141,23 @@
 		</div>
 	</nav>
 	<div class="container">
+		<div class="msg" id="loading-message">
+			<strong><i class="fa fa-spin fa-refresh"></i> Loading release information</strong>
+		</div>
+		<div class="msg" id="failed-message" style="display:none;">
+			<strong><i class="fa fa-times"></i> Couldn't load release information</strong>
+		</div>
 		<div class="msg" style="display:none;" id="prerelease-message">
 			<strong>Pre-Release version <span id="prereleaseversion">null</span></strong>
+			<br>
+			<span id="prerelease-notes"></span>
 			<br>
 			<span id="prerelease-downloads"></span>
 		</div>
 		<div class="msg" style="display:none;" id="release-message">
 			<strong>Release version <span id="releaseversion">null</span></strong>
+			<br>
+			<span id="release-notes"></span>
 			<br>
 			<span id="release-downloads"></span>
 		</div>
