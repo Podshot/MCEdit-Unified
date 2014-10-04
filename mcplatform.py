@@ -438,12 +438,6 @@ else:
     filtersDir = fixedFiltersDir
     portable = False
 
-if filtersDir not in [s.decode(sys.getfilesystemencoding())
-                      if isinstance(s, str)
-                      else s
-                      for s in sys.path]:
-    sys.path.append(filtersDir.encode(sys.getfilesystemencoding()))
-
 if portable:
     serverJarStorageDir = (os.path.join(parentDir, "ServerJarStorage"))
     ServerJarStorage.defaultCacheDir = serverJarStorageDir

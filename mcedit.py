@@ -1096,6 +1096,12 @@ def main(argv):
         except Exception, e:
             logging.warning('Error creating filters folder: {0!r}'.format(e))
 
+    if mcplatform.filtersDir not in [s.decode(sys.getfilesystemencoding())
+                          if isinstance(s, str)
+                          else s
+                          for s in sys.path]:
+        sys.path.append(mcplatform.filtersDir.encode(sys.getfilesystemencoding()))
+
     try:
         MCEdit.main()
     except Exception as e:
