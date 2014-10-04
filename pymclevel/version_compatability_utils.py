@@ -9,7 +9,10 @@ def getPlayerNameFromUUID(uuid):
         playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
     except:
         return uuid
-    playerJSON = json.loads(playerJSONResponse)
+	try:
+		playerJSON = json.loads(playerJSONResponse)
+	except:
+		return uuid
     return playerJSON[0]
 
 # while True:
