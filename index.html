@@ -102,7 +102,7 @@
 					prerelease = prereleases[0];
 					$('#prereleaseversion').html(prerelease.tag_name);
 					for (var i = 0; i < prerelease.assets.length; i++) {
-						$('#prerelease-downloads').append('<a href="' + prerelease.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + prerelease.assets[i].name + '</a><br>');
+						$('#prerelease-downloads').append('<a class="btn btn-sm ' + (prerelease.prerelease == true ? 'btn-c' : 'btn-b') + '" href="' + prerelease.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + prerelease.assets[i].name + '</a> <span style="color:gray">' + prerelease.assets[i].download_count + ' downloads, ' + Math.round(prerelease.assets[i].size/1000000) + ' MB</span><br>');
 					}
 					$('#prerelease-notes').html('<a href="' + prerelease.html_url + '"><i class="fa fa-book"></i> Release notes</a>');
 					$('#prerelease-message').slideDown();

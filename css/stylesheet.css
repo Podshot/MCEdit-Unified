@@ -9,10 +9,7 @@ a {
 	background:#D87477;
 	border-color:#C7393D;
 }
-#prerelease-message a {
-	color: DodgerBlue;
-}
-#failed-message>a #failed-message>a {
+#prerelease-message a:not(.btn) #failed-message>a:not(.btn) {
 	color: DodgerBlue;
 }
 a {
