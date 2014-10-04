@@ -1,0 +1,54 @@
+<html>
+<title>
+	MCEdit - Contributors
+</title>
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script>
+	function networkFailure() {
+		if (typeof message == "object") {
+			message = 'An error occured loading the release information: ' + message.responseJSON.message;
+		}
+		if (message == undefined) {
+			var message = 'An error occured loading the release information';
+		}
+		$('#failure-reason').html(message);
+		$('#failed-message').slideDown();
+		$('#loading-message').slideUp();
+	}
+	$(document).ready(function(){
+		$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/contributors').done(createContributorsList).fail(networkFailure);
+		$.get('https://api.github.com/repos/mcedit/mcedit/contributors').done(createContributorsList).fail(networkFailure);
+	});
+	function createContributorsList(data) {
+		for (var i = 0; i < data.length; i++) {
+			var user = data[i];
+			if ($('img[user="' + data[i].id + '"]').length == 0) {
+				$('#contributors').append('<a href="' + data[i].html_url + '"><img user="' + data[i].id + '" style="height:90px;padding:5px;" src="' + data[i].avatar_url + '"></a>');
+			}
+		};
+	}
+</script>
+
+<link rel="stylesheet" type="text/css" href="../css/min.css">
+<link rel="stylesheet" href="../css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/stylesheet.css">
+<body>
+	<nav class="nav" tabindex="-1" onclick="this.focus()">
+		<div class="container">
+			<a class="pagename" href="../index.html">MCEdit</a>
+			<a href="../about/index.html">About</a>
+			<a href="#" class="current">Contributors</a>
+			<a href="https://github.com/Khroki/MCEdit-Unified/releases">Releases</a>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="msg" id="failed-message" style="display:none;">
+			<strong><i class="fa fa-times"></i> <span id="failure-reason"></span></strong>
+		</div>
+		<h2>These people have contributed to <a href="http://github.com/mcedit/mcedit">mcedit/mcedit</a> and <a href="http://github.com/Khroki/MCEdit-Unified">Khroki/MCEdit-Unified</a></h2>
+		<div class="row" id="contributors">
+
+		</div>
+	</div>
+</body>
+</html>
