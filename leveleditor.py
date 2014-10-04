@@ -1866,6 +1866,12 @@ class LevelEditor(GLViewport):
         self.yon.dismiss()
         self.user_yon_response = False
 
+    def addExternalWidget(self, widget):
+        self._widget = widget
+        self._widget.bg_color = (0.0, 0.0, 0.6)
+        self._widget.present()
+        
+
     def reloadToolbar(self):
         self.toolbar = EditorToolbar(self, tools=[editortools.SelectionTool(self),
                                                   editortools.BrushTool(self),

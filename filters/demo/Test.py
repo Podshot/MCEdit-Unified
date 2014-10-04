@@ -1,3 +1,5 @@
+from albow import Widget, Label, Button
+
 inputs = (
     ("Test Option", False),
 )
@@ -12,7 +14,14 @@ def yesFUNC(level, box):
 
 def perform(level, box, options):
     print "Test Filter Ran"
-    print dir(editor)
+    widget = Widget()
+    widget.bg_color = (0.0, 0.0, 0.6)
+    lbl = Label("Test Message from a External Widget")
+    btn = Button("Hi")
+    widget.add(lbl)
+    widget.add(btn)
+    widget.shrink_wrap()
+    editor.addExternalWidget(widget)
     # mceutils.SimpleInteractiveWidget("Test",yesFUNC,noFUNC)
     choice = editor.YesNoWidget("Place a sponge block here?")
     for objective in level.scoreboard.Objectives.keys():
