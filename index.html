@@ -54,23 +54,52 @@
 			return compareVersionString(a.tag_name, b.tag_name) * -1;
 		}
 		$(document).ready(function(){
-			$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/releases').done(function(releases){
-				releases.sort(compareVersionObject);
-				release = releases[0];
-				if (release.prerelease) {
-					$('#versionmsg').html('<strong>Pre-Release version ' + release.tag_name + '</strong>');
-				} else {
-					$('#versionmsg').html('<strong>Release version ' + release.tag_name + '</strong>');					
+			$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/releases').done(function(data){
+				prereleases = [];
+				releases = [];
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].prerelease) {
+						prereleases.push(data[i]);
+					} else {
+						releases.push(data[i]);
+					}
 				}
-				$('#versionmsg').append('<br>');
-				for (var i = 0; i < release.assets.length; i++) {
-					$('#versionmsg').append('<a href="' + release.assets[i].url + '">' + release.assets[i].name + '</a><br>');
-				};
-				$('#versionmsg').slideDown();
+				releases.sort(compareVersionObject);
+				prereleases.sort(compareVersionObject);
+
+				if (releases.length > 0) {
+					release = releases[0];
+					$('#releaseversion').html(release.tag_name);
+					for (var i = 0; i < release.assets.length; i++) {
+						$('#release-downloads').append('<a href="' + release.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + release.assets[i].name + '</a><br>');
+					}
+					$('#release-message').slideDown();
+				}
+				if (prereleases.length > 0) {
+					prerelease = prereleases[0];
+					$('#prereleaseversion').html(prerelease.tag_name);
+					for (var i = 0; i < prerelease.assets.length; i++) {
+						$('#prerelease-downloads').append('<a href="' + prerelease.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + prerelease.assets[i].name + '</a><br>');
+					}
+					$('#prerelease-message').slideDown();
+				}
 			});
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="css/min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<style>
+		a {
+			color: #4484C2;
+		}
+		#prerelease-message {
+			background:#FDC192;
+			border-color:#FD9840;
+		}
+		#prerelease-message a {
+			color: gray;
+		}
+	</style>
 </head>
 <body>
 	<nav class="nav" tabindex="-1" onclick="this.focus()">
@@ -80,7 +109,16 @@
 			<a href="https://github.com/Khroki/MCEdit-Unified/releases">Releases</a>
 		</div>
 	</nav>
-	<div class="msg" style="display:none;" id="versionmsg"></div>
+	<div class="msg" style="display:none;" id="prerelease-message">
+		<strong>Pre-Release version <span id="prereleaseversion">null</span></strong>
+		<br>
+		<span id="prerelease-downloads"></span>
+	</div>
+	<div class="msg" style="display:none;" id="release-message">
+		<strong>Release version <span id="releaseversion">null</span></strong>
+		<br>
+		<span id="release-downloads"></span>
+	</div>
 	<div class="copyright" style="position:absolute;bottom:0px;color:gray;padding:4px;">
 		&copy; 2010 David Rio Vierra
 	</div>
