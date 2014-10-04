@@ -54,3 +54,7 @@ docs/_build/
 # PyBuilder
 target/
 filters/modifyitemstrings.py
+
+# Eclipse
+
+.metadata
