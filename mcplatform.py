@@ -402,7 +402,7 @@ def move_displace(src, dst):
 
 
 def goFixed():
-    global configFilePath, schematicsDir, portable
+    global configFilePath, schematicsDir, filtersDir, portable
 
     if os.path.exists(portableSchematicsDir):
         move_displace(portableSchematicsDir, fixedSchematicsDir)
