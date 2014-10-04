@@ -1,0 +1,24 @@
+a {
+	color: #4484C2;
+}
+#prerelease-message {
+	background:#FDC192;
+	border-color:#FD9840;
+}
+#failed-message {
+	background:#D87477;
+	border-color:#C7393D;
+}
+#prerelease-message a {
+	color: DodgerBlue;
+	text-decoration: none;
+}
+#failed-message a {
+	color: DodgerBlue;
+}
+#msg a {
+	text-decoration: none;
+}
+#msg a:hover {
+	text-decoration: underline;
+}
