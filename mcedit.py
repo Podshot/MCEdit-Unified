@@ -1084,6 +1084,19 @@ def main(argv):
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
 
     try:
+        if not os.path.exists(mcplatform.filtersDir):
+            shutil.copytree(
+                os.path.join(directories.dataDir, u'filters'),
+                mcplatform.filtersDir
+            )
+    except Exception, e:
+        logging.warning('Error copying bundled filters: {0!r}'.format(e))
+        try:
+            os.mkdir(mcplatform.filtersDir)
+        except Exception, e:
+            logging.warning('Error creating filters folder: {0!r}'.format(e))
+
+    try:
         MCEdit.main()
     except Exception as e:
         logging.error("MCEdit version %s", release.get_version())
