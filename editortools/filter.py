@@ -365,17 +365,16 @@ class FilterTool(EditorTool):
         # self.panel = FilterToolPanel(self)
         self.panel.reload()
 
-        self.panel.left = self.editor.left
-        self.panel.centery = self.editor.centery
+        self.panel.midleft = self.editor.midleft
 
         self.editor.add(self.panel)
 
         self.updatePanel = Panel()
-        updateButton = Button("Check for Filter Updates", action=self.updateFilters)
+        updateButton = Button("Update Filters", action=self.updateFilters)
         self.updatePanel.add(updateButton)
         self.updatePanel.shrink_wrap()
 
-        self.updatePanel.bottomright = self.editor.viewportContainer.bottomright
+        self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
         self.editor.add(self.updatePanel)
 
     def hidePanel(self):
