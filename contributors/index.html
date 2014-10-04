@@ -18,6 +18,7 @@
 	$(document).ready(function(){
 		$.get('https://api.github.com/repos/Khroki/MCEdit-Unified/contributors').done(createContributorsList).fail(networkFailure);
 		$.get('https://api.github.com/repos/mcedit/mcedit/contributors').done(createContributorsList).fail(networkFailure);
+		$.get('https://api.github.com/repos/mcedit/pymclevel/contributors').done(createContributorsList).fail(networkFailure);
 	});
 	function createContributorsList(data) {
 		for (var i = 0; i < data.length; i++) {
@@ -45,7 +46,7 @@
 		<div class="msg" id="failed-message" style="display:none;">
 			<strong><i class="fa fa-times"></i> <span id="failure-reason"></span></strong>
 		</div>
-		<h2>These people have contributed to <a href="http://github.com/mcedit/mcedit">mcedit/mcedit</a> and <a href="http://github.com/Khroki/MCEdit-Unified">Khroki/MCEdit-Unified</a></h2>
+		<h2>These people have contributed to <a href="http://github.com/Khroki/MCEdit-Unified">MCEdit-Unified</a></h2>
 		<div class="row" id="contributors">
 
 		</div>
