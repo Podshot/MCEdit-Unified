@@ -375,7 +375,10 @@ class SelectionTool(EditorTool):
                         return "{0} contains {len} items. (Mostly {top}) \n\nDouble-click to edit {0}.".format(
                             containerID, len=len(d), top=top)
                     else:
-                        return "Empty {0}. \n\nDouble-click to edit {0}.".format(containerID)
+                        if containerID == "Trap":
+                            return "Empty {0}. \n\nDouble-click to edit {0}.".format("Dispenser")
+                        else:
+                            return "Empty {0}. \n\nDouble-click to edit {0}.".format(containerID)
             else:
                 # return "Double-click to initialize {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
                 #Will undo when container initialization is fixed.
