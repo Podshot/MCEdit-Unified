@@ -8,6 +8,7 @@ from sys import platform as _platform
 
 
 def get_version():
+    '''
     """
     Loads the build version from the bundled version file, if available.
     """
@@ -20,19 +21,20 @@ def get_version():
     fin = open(os.path.join(directories.dataDir, 'RELEASE-VERSION'), 'rb')
     v = fin.read().strip()
     fin.close()
+    '''
 
-    return v
+    return new_get_current_version()
 
 def new_get_current_version():
-    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION-JSON"), 'rb'))
+    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb'))
     return current["full name"]
 
 def new_get_current_commit():
-    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION-JSON"), 'rb'))
+    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb'))
     return current["commit"]
 
 def new_get_current_release_tag():
-    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION-JSON"), 'rb'))
+    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb'))
     return current["release tag"]
     
 
@@ -70,6 +72,7 @@ def check_for_new_version():
 
 
 def get_commit():
+    '''
     """
     Loads the git commit ID from the bundled version file, if available.
     """
@@ -84,9 +87,11 @@ def get_commit():
     fin.close()
 
     return v
+    '''
+    return new_get_current_commit()
 
-print new_get_current_version()
-print new_get_current_commit()
-print check_for_new_version()
+#print new_get_current_version()
+#print new_get_current_commit()
+#print check_for_new_version()
 release = get_version()
 commit = get_commit()
