@@ -12,6 +12,10 @@
 		{
 			"displayname": "System Requirements",
 			"url": "requirements.html"
+		},
+		{
+			"displayname": "Contributors",
+			"url": "contributors.html"
 		}
 	]
 }
