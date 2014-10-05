@@ -1,10 +1,15 @@
 function getURL(url){
-	return $.ajax({
+	var response = $.ajax({
 		type: "GET",
 		url: url,
 		cache: false,
 		async: false
 	}).responseText;
+	try {
+		return JSON.parse(response);
+	} catch(err) {
+		return response;
+	}
 }
 /*versionCompare from http://stackoverflow.com/a/6832721*/
 function compareVersionString(v1, v2, options) {
@@ -127,8 +132,17 @@ function releaseBannerFail(message) {
 	$('#loading-message').slideUp();
 }
 function populateNavbar() {
-	var navbar = getURL('navbar.json');
+	var navjson = getURL('navbar.json');
+	var navbar = navjson.navbar;
+	for (var i = 0; i < navbar.length; i++) {
+		var navitem = navbar[i];
+		var active = location.href.replace('#','') == navjson.root + navitem.url;
+		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
+	}
 }
 function getReleaseInfo() {
 	return getURL('https://api.github.com/repos/Khroki/MCEdit-Unified/releases')
 }
+$(document).ready(function(){
+	populateNavbar();
+});

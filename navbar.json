@@ -1,12 +1,15 @@
-[
-	{
-		"url": "index.html",
-		"custom-class": "",
-		"displayname": "Home"
-	},
-	{
-		"custom-class": "",
-		"displayname": "About",
-		"url": "about/index.html"
-	}
-]
+{
+	"root": "file:///Users/ezekielelin/Library/Mobile%20Documents/com~apple~CloudDocs/Developer/MCEdit/",
+	"navbar": [
+		{
+			"url": "index.html",
+			"custom-class": "",
+			"displayname": "Home"
+		},
+		{
+			"custom-class": "",
+			"displayname": "About",
+			"url": "about/index.html"
+		}
+	]
+}
