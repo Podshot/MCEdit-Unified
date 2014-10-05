@@ -1,14 +1,14 @@
-function getURL(url){
-	var response = $.ajax({
-		type: "GET",
-		url: url,
-		cache: false,
-		async: false
-	}).responseText;
+function getJSON(url){
 	try {
+		var response = $.ajax({
+			type: "GET",
+			url: url,
+			cache: false,
+			async: false
+		}).responseText;
 		return JSON.parse(response);
 	} catch(err) {
-		return response;
+		alert(err.message);
 	}
 }
 /*versionCompare from http://stackoverflow.com/a/6832721*/
@@ -67,24 +67,6 @@ function createReleaseInfo(data) {
 		return false;
 	}
 	try {
-		data.sort(compareVersionObject);
-		for (var i = 0; i < data.length; i++) {
-			var note = data[i].body;
-			note = note.replace(/\n/g,'<br>').replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a> ');
-			var version = data[i].tag_name;
-			var title = data[i].name
-			if (data[i].prerelease) {
-				var releaselabel = 'Pre-release';
-			} else {
-				var releaselabel = '';
-			}
-			var releasetime = new Date(data[i].published_at).toLocaleDateString();
-			$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>');
-			releasenote = $('.releasenote[version="' + version + '"]');
-			releasenote.append('<div class="col c2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + data[i].html_url + '">' + version + '</a></h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');
-			releasenote.append('<div class="col c10"><p>' + note + '</p></div></div>');
-		}
-		$('#changelog').show();
 		prereleases = [];
 		releases = [];
 		for (var i = 0; i < data.length; i++) {
@@ -132,7 +114,7 @@ function releaseBannerFail(message) {
 	$('#loading-message').slideUp();
 }
 function populateNavbar() {
-	var navjson = getURL('navbar.json');
+	var navjson = getJSON('navbar.json');
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
 		var navitem = navbar[i];
@@ -141,8 +123,30 @@ function populateNavbar() {
 	}
 }
 function getReleaseInfo() {
-	return getURL('https://api.github.com/repos/Khroki/MCEdit-Unified/releases')
+	return getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases')
+}
+function buildReleaseNotes(releasesJSON,element) {
+	releasesJSON.sort(compareVersionObject);
+	for (var i = 0; i < releasesJSON.length; i++) {
+		var note = releasesJSON[i].body;
+		note = note.replace(/\n/g,'<br>').replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a> ');
+		var version = releasesJSON[i].tag_name;
+		var title = releasesJSON[i].name
+		if (releasesJSON[i].prerelease) {
+			var releaselabel = 'Pre-release';
+		} else {
+			var releaselabel = '';
+		}
+		var releasetime = new Date(releasesJSON[i].published_at).toLocaleDateString();
+		element.append('<div class="row releasenote" version="' + version + '"></div>' + (i < releasesJSON.length - 1 ? '<hr>' : ''));
+		releasenote = $('.releasenote[version="' + version + '"]');
+		releasenote.append('<div class="col-md-2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releasesJSON[i].html_url + '">' + version + '</a></h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');
+		releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
+	}
+	element.show();
 }
 $(document).ready(function(){
+	var releases = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
 	populateNavbar();
+	buildReleaseNotes(releases,$('#changelog'));
 });
