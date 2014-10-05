@@ -25,6 +25,9 @@
 					if (contributorDB[contributor.login].youtube) {
 						contributorDiv.append('<p><a href="http://youtube.com/' + contributorDB[contributor.login].youtube + '"><i class="fa fa-youtube-square"></i>  ' + contributorDB[contributor.login].youtube + '</a></p>');
 					}
+					if (contributorDB[contributor.login].reddit) {
+						contributorDiv.append('<p><a href="http://reddit.com/' + contributorDB[contributor.login].reddit + '"><i class="fa fa-reddit-square"></i>  ' + contributorDB[contributor.login].reddit + '</a></p>');
+					}
 					if (contributorDB[contributor.login].facebook) {
 						contributorDiv.append('<p><a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fa fa-facebook-square"></i>  ' + contributorDB[contributor.login].facebook + '</a></p>');
 					}
