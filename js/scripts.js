@@ -101,19 +101,6 @@ function generatePageStructure() {
 		}
 		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
 	}
-	$('#navbar').after('<form class="navbar-form navbar-right"></form>');
-	latestRelease = releaseData[0];
-	for (var i = 0; i < platforms.length; i++) {
-		var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
-		var asset64 = getDownload(platforms[i],latestRelease.tag_name,64);
-		if (asset32) {
-			console.log(asset32);
-			$('.navbar-form.navbar-right').append('<a class="btn btn-default" href="' + asset32.browser_download_url + '">Download <i class="fa fa-' + (platforms[i] == 'OSX' ? 'apple' : 'windows') + '"></i> ' + platforms[i] + ' 32bit</a> ');
-		}
-		if (asset64) {
-			$('.navbar-form.navbar-right').append('<a class="btn btn-default" href="' + asset64.browser_download_url + '">Download <i class="fa fa-' + (platforms[i] == 'OSX' ? 'apple' : 'windows') + '"></i> ' + platforms[i] + ' 64bit</a> ');
-		}
-	}	
 	return true;
 }
 function getDownload(platform,version,bittage) {

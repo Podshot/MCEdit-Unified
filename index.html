@@ -28,11 +28,43 @@
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 			}
 			$('#changelog').show();
+
+
+			latestRelease = releaseData[0];
+			for (var i = 0; i < platforms.length; i++) {
+				var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
+				var asset64 = getDownload(platforms[i],latestRelease.tag_name,64);
+				if (asset32) {
+					$('#' + platforms[i] + '-downloads').append('<a class="btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
+				}
+				if (asset64) {
+					$('#' + platforms[i] + '-downloads').append('<a class="btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
+				}
+			}	
 		}
 	</script>
 </head>
 <body>
 	<div class="container">
+		<div class="row">
+			<div class="col-md-12" style="padding:0xp;">
+				<div class="jumbotron" style="height:270px;text-align:center;" id="downloads">
+				<div class="col-md-3 col-md-offset-3">
+					<i class="fa fa-apple fa-5x"></i>
+					<br><br><br>
+					<span id="OSX-downloads">
+						
+					</span>
+				</div>
+				<div class="col-md-3">
+					<i class="fa fa-windows fa-5x"></i>
+					<br><br><br>
+					<span id="Win-downloads">
+						
+					</span>
+				</div>
+			</div>
+		</div>
 		<div id="changelog" style="display:none;">
 		</div>
 	</div>
