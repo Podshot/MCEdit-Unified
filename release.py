@@ -4,6 +4,7 @@ import directories
 import json
 import urllib2
 import sys
+from sys import platform as _platform
 
 
 def get_version():
@@ -46,14 +47,23 @@ def check_for_new_version():
         version["full name"] = first_entry["name"]
         assets = first_entry["assets"]
         for asset in assets:
-            if is_64bit:
-                if "64bit" in asset["name"] and "64bit" in asset["browser_download_url"]:
+            if _platform == "win32":
+                version["OS Target"] = "windows"
+                if "Win" in asset["name"] and "Win" in asset["browser_download_url"]:
+                    if is_64bit:
+                        if "64bit" in asset["name"] and "64bit" in asset["browser_download_url"]:
+                            version["download url"] = asset["browser_download_url"]
+                            version["target arch"] = "64bit"
+                    else:
+                        if "32bit" in asset["name"] and "32bit" in asset["browser_download_url"]:
+                            version["download url"] = asset["browser_download_url"]
+                            version["target arch"] = "32bit"
+            elif _platform == "darwin":
+                version["OS Target"] = "osx"
+                if "OSX" in asset["name"] and "OSX" in asset["browser_download_url"]:
                     version["download url"] = asset["browser_download_url"]
                     version["target arch"] = "64bit"
-            else:
-                 if "32bit" in asset["name"] and "32bit" in asset["browser_download_url"]:
-                    version["download url"] = asset["browser_download_url"]
-                    version["target arch"] = "32bit"
+                
         return version
     return False
     
