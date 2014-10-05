@@ -7,6 +7,29 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/stylesheet.css">
+
+	<script>
+		function pageTrigger() {
+			releaseData.sort(compareVersionObject);
+			for (var i = 0; i < releaseData.length; i++) {
+				var note = releaseData[i].body;
+				note = note.replace(/\n/g,'<br>').replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a> ');
+				var version = releaseData[i].tag_name;
+				var title = releaseData[i].name
+				if (releaseData[i].prerelease) {
+					var releaselabel = 'Pre-release';
+				} else {
+					var releaselabel = '';
+				}
+				var releasetime = new Date(releaseData[i].published_at).toLocaleDateString();
+				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
+				releasenote = $('.releasenote[version="' + version + '"]');
+				releasenote.append('<div class="col-md-2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
+			}
+			$('#changelog').show();
+		}
+	</script>
 </head>
 <body>
 	<div class="container">

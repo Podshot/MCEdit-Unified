@@ -1,3 +1,5 @@
+var releaseData = {};
+var platforms = ["OSX","Win"];
 function getJSON(url){
 	try {
 		var response = $.ajax({
@@ -61,9 +63,10 @@ function compareVersionString(v1, v2, options) {
 function compareVersionObject(a,b) {
 	return compareVersionString(a.tag_name, b.tag_name) * -1;
 }
-function getLatestReleases(data) {
-	prereleases = [];
-	releases = [];
+function getLatestRelease() {
+	data = releaseData;
+	var prereleases = [];
+	var releases = [];
 	for (var i = 0; i < data.length; i++) {
 		if (data[i].prerelease) {
 			prereleases.push(data[i]);
@@ -86,17 +89,6 @@ function getLatestReleases(data) {
 
 	return ret_val;
 }
-function releaseBannerFail(message) {
-	if (typeof message == "object") {
-		message = 'An error occured loading the release information: ' + message.responseJSON.message;
-	}
-	if (message == undefined) {
-		var message = 'An error occured loading the release information';
-	}
-	$('#failure-reason').html(message);
-	$('#failed-message').slideDown();
-	$('#loading-message').slideUp();
-}
 function generatePageStructure() {
 	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="#">MCEdit</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
 	var navjson = getJSON('navbar.json');
@@ -111,33 +103,27 @@ function generatePageStructure() {
 	}
 	return true;
 }
-function getReleaseInfo() {
-	return getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases')
-}
-function buildReleaseNotes(releasesJSON,element) {
-	releasesJSON.sort(compareVersionObject);
-	for (var i = 0; i < releasesJSON.length; i++) {
-		var note = releasesJSON[i].body;
-		note = note.replace(/\n/g,'<br>').replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a> ');
-		var version = releasesJSON[i].tag_name;
-		var title = releasesJSON[i].name
-		if (releasesJSON[i].prerelease) {
-			var releaselabel = 'Pre-release';
-		} else {
-			var releaselabel = '';
+function getDownload(platform,version,bittage) {
+	for (var i = 0; i < releaseData.length; i++) {
+		var release = releaseData[i];
+		for (var x = 0; x < release.assets.length; x++) {
+			var asset = release.assets[x];
+			if (asset.name == 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit.zip') {
+				return asset;
+			}
 		}
-		var releasetime = new Date(releasesJSON[i].published_at).toLocaleDateString();
-		element.append('<div class="row releasenote" version="' + version + '"></div>' + (i < releasesJSON.length - 1 ? '<hr>' : ''));
-		releasenote = $('.releasenote[version="' + version + '"]');
-		releasenote.append('<div class="col-md-2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releasesJSON[i].html_url + '">' + version + '</a></h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');
-		releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 	}
-	element.show();
+	return false;
 }
 $(document).ready(function(){
 	if (generatePageStructure()) {
-		var releases = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
-		buildReleaseNotes(releases,$('#changelog'));
+		releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+		releaseData.sort(compareVersionObject);
+		try {
+			pageTrigger();
+		} catch(err) {
+			console.log(err.message);
+		}
 	} else {
 		alert('An error occured loading the webpage. Please try again later.');
 	}
