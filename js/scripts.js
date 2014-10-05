@@ -90,7 +90,7 @@ function getLatestRelease() {
 	return ret_val;
 }
 function generatePageStructure() {
-	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="#">MCEdit</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
+	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="#">MCEdit Fork</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
 	var navjson = getJSON('navbar.json');
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
@@ -130,6 +130,7 @@ $(document).ready(function(){
 			alert('An error occured loading the webpage. Please try again later.');
 		}
 	} else {
+		$('title').html('MCEdit Fork - Rate Limit Exceeded');
 		$('body').html('<h1>Rate Limit Exceeded</h1><br>Click <a href="https://github.com/Khroki/MCEdit-Unified">here</a> to go to the repository page instead.');
 		$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 	}

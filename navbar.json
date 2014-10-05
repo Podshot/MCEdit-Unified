@@ -10,11 +10,6 @@
 			"custom-class": "",
 			"displayname": "About",
 			"url": "about.html"
-		},
-		{
-			"custom-class": "",
-			"displayname": "Download",
-			"url": "download.html"
 		}
 	]
 }
