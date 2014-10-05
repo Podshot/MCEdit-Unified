@@ -61,46 +61,30 @@ function compareVersionString(v1, v2, options) {
 function compareVersionObject(a,b) {
 	return compareVersionString(a.tag_name, b.tag_name) * -1;
 }
-function createReleaseInfo(data) {
-	if (data.length == 0) {
-		releaseBannerFail('Couldn\'t find any releases');
-		return false;
-	}
-	try {
-		prereleases = [];
-		releases = [];
-		for (var i = 0; i < data.length; i++) {
-			if (data[i].prerelease) {
-				prereleases.push(data[i]);
-			} else {
-				releases.push(data[i]);
-			}
+function getLatestReleases(data) {
+	prereleases = [];
+	releases = [];
+	for (var i = 0; i < data.length; i++) {
+		if (data[i].prerelease) {
+			prereleases.push(data[i]);
+		} else {
+			releases.push(data[i]);
 		}
-		releases.sort(compareVersionObject);
-		prereleases.sort(compareVersionObject);
+	}
+	releases.sort(compareVersionObject);
+	prereleases.sort(compareVersionObject);
 
-		if (releases.length > 0) {
-			release = releases[0];
-			$('#releaseversion').html(release.tag_name);
-			for (var i = 0; i < release.assets.length; i++) {
-				$('#release-downloads').append('<a href="' + release.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + release.assets[i].name + '</a><br>');
-			}
-			$('#release-notes').html('<a href="' + release.html_url + '"><i class="fa fa-book"></i> Release notes</a>');
-			$('#release-message').slideDown();
-		}
-		if (prereleases.length > 0) {
-			prerelease = prereleases[0];
-			$('#prereleaseversion').html(prerelease.tag_name);
-			for (var i = 0; i < prerelease.assets.length; i++) {
-				$('#prerelease-downloads').append('<a class="btn btn-sm ' + (prerelease.prerelease == true ? 'btn-c' : 'btn-b') + '" href="' + prerelease.assets[i].browser_download_url + '"><i class="fa fa-cloud-download"></i> ' + prerelease.assets[i].name + '</a> <span style="color:gray">' + prerelease.assets[i].download_count + ' downloads, ' + Math.round(prerelease.assets[i].size/1000000) + ' MB</span><br>');
-			}
-			$('#prerelease-notes').html('<a href="' + prerelease.html_url + '"><i class="fa fa-book"></i> Release notes</a>');
-			$('#prerelease-message').slideDown();
-		}
-	} catch(err) {
-		releaseBannerFail(err.message);
+	var ret_val = {};
+
+	if (releases.length > 0) {
+		ret_val.release = releases[0];
 	}
-	$('#loading-message').slideUp();
+
+	if (prereleases.length > 0) {
+		ret_val.prerelease = prereleases[0];
+	}
+
+	return ret_val;
 }
 function releaseBannerFail(message) {
 	if (typeof message == "object") {
