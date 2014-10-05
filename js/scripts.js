@@ -117,15 +117,21 @@ function getDownload(platform,version,bittage) {
 	return false;
 }
 $(document).ready(function(){
-	releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
-	releaseData.sort(compareVersionObject);
-	if (generatePageStructure()) {
-		try {
-			pageTrigger();
-		} catch(err) {
-			console.log(err.message);
+	var ratelimits = getJSON('https://api.github.com/rate_limit');
+	if (ratelimits.resources.core.remaining > 0) {
+		releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+		releaseData.sort(compareVersionObject);
+		if (generatePageStructure()) {
+			try {
+				pageTrigger();
+			} catch(err) {
+				console.log(err.message);
+			}
+		} else {
+			alert('An error occured loading the webpage. Please try again later.');
 		}
 	} else {
-		alert('An error occured loading the webpage. Please try again later.');
+		$('body').html('<h1>Rate Limit Exceeded</h1><br>Click <a href="https://github.com/Khroki/MCEdit-Unified">here</a> to go to the repository page instead.');
+		$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 	}
 });
