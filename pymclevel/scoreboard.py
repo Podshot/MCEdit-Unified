@@ -26,6 +26,14 @@ class Objective:
     def RenderType(self):
         return self.renderType
 
+    def getTAGStructure(self):
+        tag = nbt.TAG_Compound()
+        tag["Name"] = nbt.TAG_String(self.name)
+        tag["RenderType"] = nbt.TAG_String(self.rednerType)
+        tag["DisplayName"] = nbt.TAG_String(self.displayName)
+        tag["CriteriaName"] = nbt.TAG_String(self.criteria)
+        return tag
+
 class Team:
 
     def __init__(self, team):
@@ -76,7 +84,7 @@ class Team:
 
     @property
     def FriendlyInvisibles(self):
-        return self.fiendlyInvisibles
+        return self.friendlyInvisibles
 
     @property
     def FriendlyFire(self):
@@ -86,6 +94,25 @@ class Team:
     def TeamMembers(self):
         return self.teamMembers
 
+    def getTAGStructure(self):
+        tag = nbt.TAG_Compound()
+        tag["Name"] = nbt.TAG_String(self.name)
+        tag["DisplayName"] = nbt.TAG_String(self.displayName)
+        tag["Prefix"] = nbt.TAG_String(self.prefix)
+        tag["Suffix"] = nbt.TAG_String(self.suffix)
+        if self.color != None:
+            tag["TeamColor"] = nbt.TAG_String(self.color)
+        tag["NameTagVisibility"] = nbt.TAG_String(self.nametags)
+        tag["DeathMessageVisibility"] = nbt.TAG_String(self.deathMessage)
+        tag["AllowFriendlyFire"] = nbt.TAG_Byte(self.friendlyFire)
+        tag["SeeFriendlyInvisibles"] = nbt.TAG_Byte(self.friendlyInvisibles)
+        players = nbt.TAG_List()
+        for member in self.teamMembers:
+            players.append(nbt.TAG_String(member))
+        tag["Players"] = players
+        return tag
+        
+
 class Scoreboard:
 
     def __init__(self, level):
@@ -94,21 +121,34 @@ class Scoreboard:
 
     def setup(self):
         self.root_tag = nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
-        self.objectives = {}
-        self.teams = {}
+        self.objectives = []
+        self.teams = []
         for objective in self.root_tag["data"]["Objectives"]:
-            self.objectives[objective["Name"].value] = Objective(objective)
+            self.objectives.append(Objective(objective))
 
         for team in self.root_tag["data"]["Teams"]:
-            self.teams[team["Name"].value] = Team(team)
+            self.teams.append(Team(team))
 
 
     @property
-    def Objectives(self):
+    def objectives(self):
         return self.objectives
 
     @property
-    def Teams(self):
+    def teams(self):
         return self.teams
+
+    def save(self):
+        objectiveList = nbt.TAG_List()
+        teamList = nbt.TAG_List()
+        for objective in self.objectives:
+            objectiveList.append(objective.getTAGStructure())
+        for team in self.teams:
+            teamList.append(team.getTAGStructure())
+        self.root_tag["data"]["Objectives"] = objectiveList
+        self.root_tag["data"]["Teams"] = teamList
+        print "Saving Scoreboard...."
+        with open(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat") as datFile:
+            self.root_tag.save(datFile)
         
         
