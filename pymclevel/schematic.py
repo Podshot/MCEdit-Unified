@@ -249,7 +249,7 @@ class MCSchematic(EntityLevel):
                 newz = self.Length - x - 1
 
                 entity["TileX"].value, entity["TileZ"].value = newx, newz
-                entity["Direction"].value = (entity["Direction"].value + 1) % 4
+                entity["Facing"].value = (entity["Facing"].value + 1) % 4
 
         for tileEntity in self.TileEntities:
             if not 'x' in tileEntity:
