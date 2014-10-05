@@ -1,0 +1,12 @@
+[
+	{
+		"url": "index.html",
+		"custom-class": "",
+		"displayname": "Home"
+	},
+	{
+		"custom-class": "",
+		"displayname": "About",
+		"url": "about/index.html"
+	}
+]
