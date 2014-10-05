@@ -21,7 +21,7 @@
 				} else {
 					var releaselabel = '';
 				}
-				var releasetime = new Date(releaseData[i].published_at).toLocaleDateString();
+				var releasetime = new Date(releaseData[i].created_at).toLocaleDateString();
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
 				releasenote.append('<div class="col-md-2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + releaselabel + '<br>' + releasetime + '</div></div>');

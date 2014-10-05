@@ -101,7 +101,7 @@ function generatePageStructure() {
 		}
 		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
 	}
-	$('#navbar').after('<ul class="nav navbar-nav navbar-right"><p class="navbar-text navbar-right">Currently v' + releaseData[0].tag_name + ' (' + new Date(releaseData[0].published_at).toLocaleDateString() + ')</p></li>');
+	$('#navbar').after('<ul class="nav navbar-nav navbar-right"><p class="navbar-text navbar-right">Currently v' + releaseData[0].tag_name + ' (' + new Date(releaseData[0].created_at).toLocaleDateString() + ')</p></li>');
 	return true;
 }
 function getDownload(platform,version,bittage) {
