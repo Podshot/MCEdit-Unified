@@ -3,11 +3,9 @@
 	"navbar": [
 		{
 			"url": "index.html",
-			"custom-class": "",
 			"displayname": "Home"
 		},
 		{
-			"custom-class": "",
 			"displayname": "About",
 			"url": "about.html"
 		}
