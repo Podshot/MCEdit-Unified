@@ -2,7 +2,8 @@ import os.path
 import subprocess
 import directories
 import json
-import HTMLParser
+import urllib2
+import sys
 
 
 def get_version():
@@ -23,11 +24,37 @@ def get_version():
 
 def new_get_current_version():
     current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION-JSON"), 'rb'))
-    return current["name"]
+    return current["full name"]
 
 def new_get_current_commit():
     current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION-JSON"), 'rb'))
     return current["commit"]
+
+def new_get_current_release_tag():
+    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION-JSON"), 'rb'))
+    return current["release tag"]
+    
+
+def check_for_new_version():
+    release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
+    first_entry = release_api_response[0]
+    #print "Tag Name: " + first_entry["tag_name"]
+    if first_entry["tag_name"] != new_get_current_release_tag():
+        is_64bit = sys.maxsize > 2**32
+        version = {}
+        version["PreRelease"] = first_entry["prerelease"]
+        version["full name"] = first_entry["name"]
+        assets = first_entry["assets"]
+        for asset in assets:
+            if is_64bit:
+                if "64bit" in asset["name"] and "64bit" in asset["browser_download_url"]:
+                    version["download url"] = asset["browser_download_url"]
+            else:
+                 if "32bit" in asset["name"] and "32bit" in asset["browser_download_url"]:
+                    version["download url"] = asset["browser_download_url"]
+        return version
+    return False
+    
 
 
 def get_commit():
@@ -48,5 +75,6 @@ def get_commit():
 
 print new_get_current_version()
 print new_get_current_commit()
+print check_for_new_version()
 release = get_version()
 commit = get_commit()
