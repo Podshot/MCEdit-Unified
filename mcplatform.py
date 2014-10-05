@@ -23,6 +23,7 @@ import directories
 import os
 from os.path import dirname, exists, join
 import sys
+import platform
 
 enc = sys.getfilesystemencoding()
 
@@ -79,32 +80,95 @@ if sys.platform == "win32":
 
 AppKit = None
 
-if sys.platform.startswith('darwin') or sys.platform.startswith('mac'):
+if sys.platform == 'darwin':
+    try:
+        import AppKit
+    except ImportError:
+        pass
+
     cmd_name = "Cmd"
     option_name = "Opt"
 else:
     cmd_name = "Ctrl"
     option_name = "Alt"
 
-if sys.platform == "darwin":
-    try:
-        import AppKit
-    except ImportError:
-        pass
-
-
-def Lion():
-    try:
-        import distutils.version
-        import platform
-
-        lionver = distutils.version.StrictVersion('10.7')
-        curver = distutils.version.StrictVersion(platform.release())
-        return curver >= lionver
-    except Exception, e:
-        print "Error getting system version: ", repr(e)
+def OSXVersionChecker(name,compare):
+    if compare != 'gt' and compare != 'lt' and compare != 'eq' and compare != 'gteq' and compare != 'lteq':
+        print "Invalid version check {}".format(compare)
         return False
+    if sys.platform == 'darwin':
+        try:
+            systemVersion = platform.mac_ver()[0].split('.')
+            if len(systemVersion) == 2:
+                systemVersion.append('0')
 
+            major, minor, patch = 10, 0, 0
+
+            if (name.lower() == 'cheetah'):
+                minor = 0
+                patch = 4
+            elif (name.lower() == 'puma'):
+                minor = 1
+                patch = 5
+            elif (name.lower() == 'jaguar'):
+                minor = 2
+                patch = 8
+            elif (name.lower() == 'panther'):
+                minor = 3
+                patch = 9
+            elif (name.lower() == 'tiger'):
+                minor = 4
+                patch = 11
+            elif (name.lower() == 'snow_leopard'):
+                minor = 5
+                patch = 8
+            elif (name.lower() == 'snow_leopard'):
+                minor = 6
+                patch = 8
+            elif (name.lower() == 'lion'):
+                minor = 7
+                patch = 5
+            elif (name.lower() == 'mountain_lion'):
+                minor = 8
+                patch = 5
+            elif (name.lower() == 'mavericks'):
+                minor = 9
+                patch = 5
+            elif (name.lower() == 'yosemite'):
+                minor = 10
+                patch = 0
+            else:
+                major = 0
+
+            ret_val = 0
+            if int(systemVersion[0]) > int(major):
+                ret_val = 1
+            elif int(systemVersion[0]) < int(major):
+                ret_val = -1
+            else:
+                if int(systemVersion[1]) > int(minor):
+                    ret_val = 1
+                elif int(systemVersion[1]) < int(minor):
+                    ret_val = -1
+                else:
+                    if int(systemVersion[2]) > int(patch):
+                        ret_val = 1
+                    elif int(systemVersion[2]) < int(patch):
+                        ret_val = -1
+                    else:
+                        ret_val = 0
+
+            if ret_val == 0 and (compare == 'eq' or compare == 'gteq' or compare == 'lteq'):
+                return True
+            elif ret_val == -1 and (compare == 'lt' or compare == 'lteq'):
+                return True
+            elif ret_val == 1 and (compare == 'gt' or compare == 'gteq'):
+                return True
+        except:
+            print "An error occured determining the system version"
+            return False
+    else:
+        return False
 
 lastSchematicsDir = None
 lastSaveDir = None
@@ -128,8 +192,8 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False):
 
         if sys.platform == "win32":
             return askOpenFileWin32(title, schematics, initialDir)
-        elif sys.platform == "darwin" and AppKit is not None and not Lion():
-
+        elif sys.platform == "darwin" and AppKit is not None:
+            print "Open File"
             op = AppKit.NSOpenPanel.openPanel()
             op.setPrompt_(title)
             op.setAllowedFileTypes_(suffixes)
@@ -144,7 +208,6 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False):
             return op.filename()
 
         else:  # linux
-
             return request_old_filename(suffixes=suffixes, directory=initialDir)
 
     filename = _askOpen()
