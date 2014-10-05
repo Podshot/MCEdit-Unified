@@ -8,6 +8,10 @@
 		{
 			"displayname": "About",
 			"url": "about.html"
+		},
+		{
+			"displayname": "System Requirements",
+			"url": "requirements.html"
 		}
 	]
 }
