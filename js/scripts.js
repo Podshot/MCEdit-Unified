@@ -97,14 +97,19 @@ function releaseBannerFail(message) {
 	$('#failed-message').slideDown();
 	$('#loading-message').slideUp();
 }
-function populateNavbar() {
+function generatePageStructure() {
+	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="#">MCEdit</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
 	var navjson = getJSON('navbar.json');
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
 		var navitem = navbar[i];
 		var active = location.href.replace('#','') == navjson.root + navitem.url;
+		if (active) {
+			$('title').html('MCEdit Fork - ' + navitem.displayname);
+		}
 		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
 	}
+	return true;
 }
 function getReleaseInfo() {
 	return getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases')
@@ -130,7 +135,10 @@ function buildReleaseNotes(releasesJSON,element) {
 	element.show();
 }
 $(document).ready(function(){
-	var releases = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
-	populateNavbar();
-	buildReleaseNotes(releases,$('#changelog'));
+	if (generatePageStructure()) {
+		var releases = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+		buildReleaseNotes(releases,$('#changelog'));
+	} else {
+		alert('An error occured loading the webpage. Please try again later.');
+	}
 });
