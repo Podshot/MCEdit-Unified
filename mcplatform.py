@@ -195,7 +195,7 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False):
         elif sys.platform == "darwin" and AppKit is not None:
             print "Open File"
             op = AppKit.NSOpenPanel.openPanel()
-            op.setPrompt_(title)
+            op.setTitle_(title)
             op.setAllowedFileTypes_(suffixes)
             op.setAllowsOtherFileTypes_(True)
 
