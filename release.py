@@ -49,9 +49,11 @@ def check_for_new_version():
             if is_64bit:
                 if "64bit" in asset["name"] and "64bit" in asset["browser_download_url"]:
                     version["download url"] = asset["browser_download_url"]
+                    version["target arch"] = "64bit"
             else:
                  if "32bit" in asset["name"] and "32bit" in asset["browser_download_url"]:
                     version["download url"] = asset["browser_download_url"]
+                    version["target arch"] = "32bit"
         return version
     return False
     
