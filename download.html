@@ -14,10 +14,10 @@
 				var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
 				var asset64 = getDownload(platforms[i],latestRelease.tag_name,64);
 				if (asset32) {
-					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-default" href="' + asset32.html_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
+					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
 				}
 				if (asset64) {
-					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-default" href="' + asset64.html_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
+					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
 				}
 			};
 		}
