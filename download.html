@@ -14,13 +14,10 @@
 				var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
 				var asset64 = getDownload(platforms[i],latestRelease.tag_name,64);
 				if (asset32) {
-					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-success" href="' + asset32.html_url + '">' + asset32.name + '</a><br><br>');
+					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-default" href="' + asset32.html_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
 				}
 				if (asset64) {
-					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-success" href="' + asset64.html_url + '">' + asset64.name + '</a>');
-				}
-				if (!asset32 && !asset64) {
-					$('#' + platforms[i] + '-buttons').html('No downloads available for this platform');
+					$('#' + platforms[i] + '-buttons').append('<a class="btn btn-default" href="' + asset64.html_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
 				}
 			};
 		}
@@ -32,14 +29,21 @@
 			<div class="download col-md-3 col-md-offset-3" id="OSX-downloads">
 				<i class="fa fa-apple fa-5x"></i>
 				<br><br>
+				OS X
 				<br><br>
 				<span id="OSX-buttons"></span>
 			</div>
 			<div class="download col-md-3" id="Win-downloads">
 				<i class="fa fa-windows fa-5x"></i>
 				<br><br>
+				Windows
 				<br><br>
 				<span id="Win-buttons"></span>
+			</div>
+		</div>
+		<div class="row" style="position:absolute;bottom:20px;">
+			<div class="col-md-12">
+				<i class="fa fa-linux"></i> Linux is not currently supported.
 			</div>
 		</div>
 	</div>

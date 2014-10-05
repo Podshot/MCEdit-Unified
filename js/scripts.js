@@ -101,6 +101,7 @@ function generatePageStructure() {
 		}
 		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
 	}
+	$('#navbar').after('<ul class="nav navbar-nav navbar-right"><p class="navbar-text navbar-right">Currently v' + releaseData[0].tag_name + ' (' + new Date(releaseData[0].published_at).toLocaleDateString() + ')</p></li>');
 	return true;
 }
 function getDownload(platform,version,bittage) {
@@ -116,9 +117,9 @@ function getDownload(platform,version,bittage) {
 	return false;
 }
 $(document).ready(function(){
+	releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+	releaseData.sort(compareVersionObject);
 	if (generatePageStructure()) {
-		releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
-		releaseData.sort(compareVersionObject);
 		try {
 			pageTrigger();
 		} catch(err) {
