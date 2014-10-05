@@ -117,6 +117,12 @@ function getDownload(platform,version,bittage) {
 }
 $(document).ready(function(){
 	var ratelimits = getJSON('https://api.github.com/rate_limit');
+	if (ratelimits.resources.core.remaining < 5) {
+		$('body').children().hide();
+		$('body').append('<div id="ratewarning"><h1>Rate Limit Low</h1><br>You only have ' + ratelimits.resources.core.remaining + ' requests remaining<br><br><button onclick="$(\'#ratewarning\').remove();$(\'body\').css(\'background-color\',\'white\').children().show();" class="btn btn-default"><i class="fa fa-check"></i> Ok</button></div>');
+		$('body').css('background-color','#444444')
+		$('#ratewarning').css('text-align','center').css('color','white');
+	}
 	if (ratelimits.resources.core.remaining > 0) {
 		releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
 		releaseData.sort(compareVersionObject);
