@@ -1,16 +1,23 @@
 var releaseData = {};
 var platforms = ["OSX","Win"];
+var requests = {};
 function getJSON(url){
-	try {
-		var response = $.ajax({
-			type: "GET",
-			url: url,
-			cache: false,
-			async: false
-		}).responseText;
-		return JSON.parse(response);
-	} catch(err) {
-		alert(err.message);
+	if (requests[url]) {
+		console.log('Found cached version');
+		return requests[url];
+	} else {
+		try {
+			var response = $.ajax({
+				type: "GET",
+				url: url,
+				cache: false,
+				async: false
+			}).responseText;
+			requests[url] = JSON.parse(response);
+			return requests[url];
+		} catch(err) {
+			alert(err.message);
+		}
 	}
 }
 /*versionCompare from http://stackoverflow.com/a/6832721*/
