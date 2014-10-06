@@ -30,7 +30,7 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent, exhaust, PlayerNotFound
 import nbt
 from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
-import version_compatability_utils
+import version_utils
 import scoreboard
 
 log = getLogger(__name__)
