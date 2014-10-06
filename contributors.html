@@ -13,36 +13,29 @@
 			var contributorDB = getJSON('contributors.json');
 			for (var i = 0; i < contributors.length; i++) {
 				var contributor = contributors[i];
-				$('#contributors').append('<div class="row"><div class="col-md-2"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt="' + contributor.login + '" width="100%"></a></div><div class="col-md-10"><div class="row"><div class="col-md-12"><h4>' + contributor.login + '</h4></div></div><div class="row"><div class="col-md-2" user="' + contributor.login + '"></div></div></div></div>');
+				contributorDiv = '<p><a href="http://github.com/' + contributor.login + '"><i class="fa fa-github-square"></i>  ' + contributor.login + '</a></p>';
 				if (contributorDB[contributor.login]) {
-					contributorDiv = $('div[user="' + contributor.login + '"]');
 					if (contributorDB[contributor.login].twitter) {
-						contributorDiv.append('<p><a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fa fa-twitter-square"></i>  ' + contributorDB[contributor.login].twitter + '</a></p>');
-					}
-					if (contributorDB[contributor.login].github) {
-						contributorDiv.append('<p><a href="http://github.com/' + contributorDB[contributor.login].github + '"><i class="fa fa-github-square"></i>  ' + contributorDB[contributor.login].github + '</a></p>');
+						contributorDiv += '<p><a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fa fa-twitter-square"></i>  ' + contributorDB[contributor.login].twitter + '</a></p>';
 					}
 					if (contributorDB[contributor.login].youtube) {
-						contributorDiv.append('<p><a href="http://youtube.com/' + contributorDB[contributor.login].youtube + '"><i class="fa fa-youtube-square"></i>  ' + contributorDB[contributor.login].youtube + '</a></p>');
+						contributorDiv += '<p><a href="http://youtube.com/' + contributorDB[contributor.login].youtube + '"><i class="fa fa-youtube-square"></i>  ' + contributorDB[contributor.login].youtube + '</a></p>';
 					}
 					if (contributorDB[contributor.login].reddit) {
-						contributorDiv.append('<p><a href="http://reddit.com/u/' + contributorDB[contributor.login].reddit + '"><i class="fa fa-reddit-square"></i>  ' + contributorDB[contributor.login].reddit + '</a></p>');
+						contributorDiv += '<p><a href="http://reddit.com/u/' + contributorDB[contributor.login].reddit + '"><i class="fa fa-reddit-square"></i>  ' + contributorDB[contributor.login].reddit + '</a></p>';
 					}
 					if (contributorDB[contributor.login].facebook) {
-						contributorDiv.append('<p><a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fa fa-facebook-square"></i>  ' + contributorDB[contributor.login].facebook + '</a></p>');
-					}
-					if (contributorDB[contributor.login].bio) {
-						contributorDiv.after('<div class="col-md-6"><p>' + contributorDB[contributor.login].bio + '</p></div>');
+						contributorDiv += '<p><a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fa fa-facebook-square"></i>  ' + contributorDB[contributor.login].facebook + '</a></p>';
 					}
 				}
-
+				$('#contributors').append('<div class="col-sm-3 col-md-3"><div class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '</h3><p>' + contributorDiv + '</p></div></div></div>');
 			};
 		}
 	</script>
 </head>
 <body>
 	<div class="container">
-		<div id="contributors">
+		<div class="row" id="contributors">
 		</div>
 	</div>
 </body>
