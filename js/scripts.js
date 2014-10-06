@@ -13,10 +13,16 @@ function getJSON(url){
 				cache: false,
 				async: false
 			}).responseText;
-			requests[url] = JSON.parse(response);
-			return requests[url];
+			ret_val = JSON.parse(response);
+			if (ret_val !== undefined) {
+				requests[url] = ret_val;
+				return requests[url];
+			} else {
+				loadFailError();
+			}
 		} catch(err) {
-			alert(err.message);
+			console.log(err.message);
+			loadFailError();
 		}
 	}
 }
@@ -98,7 +104,7 @@ function getLatestRelease() {
 }
 function generatePageStructure() {
 	var navjson = getJSON('navbar.json');
-	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="' + navjson.root + '">MCEdit Fork</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
+	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container nav-container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="' + navjson.root + '">MCEdit Fork</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
 		var navitem = navbar[i];
@@ -121,6 +127,19 @@ function getDownload(platform,version,bittage) {
 		}
 	}
 	return false;
+}
+function loadFailError() {
+	if (localStorage.getItem('errorCount') == undefined) {
+		localStorage.setItem('errorCount', 1);
+	} else {
+		localStorage.setItem('errorCount',localStorage.getItem('errorCount') + 1);
+	}
+	$('title').html('MCEdit Fork - Load Error');
+	$('body').html('<h1>An error occured loading the page.</h1><br>Please <a class="btn btn-default btn-xs" href="#" onclick="location.reload()">refresh</a> the page.');
+	if (localStorage.getItem('errorCount') > 2) {
+		$('body').append('<br><br><a onclick="localStorage.setItem(\'errorCount\',0);" href="http://github.com/Khroki/MCEdit-Unified/issues/new" class="btn btn-xs btn-danger"><i class="fa fa-exclamation-triangle"></i> Report an Issue</a>');
+	}
+	$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 }
 $(document).ready(function(){
 	var ratelimits = getJSON('https://api.github.com/rate_limit');
