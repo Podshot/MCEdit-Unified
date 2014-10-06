@@ -906,7 +906,7 @@ class MCEdit(GLViewport):
                 platform_open(new_version["html_url"])
             elif answer == "Download":
                 platform_open(new_version["asset"]["browser_download_url"])
-                albow.alert('{} is now downloading. Check your downloads folder'.format(new_version["asset"]["name"]))
+                albow.alert(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.'.format(new_version["asset"]["name"]))
 
 # Disabled old update code
 #       if hasattr(sys, 'frozen'):
