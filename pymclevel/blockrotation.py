@@ -630,6 +630,14 @@ class QuartzPillar:
     North = 4
     South = 4
 
+@genericFlipRotation
+class NetherPortal:
+    blocktypes = [alphaMaterials.NetherPortal.ID]
+
+    East = 1
+    West = 1
+    North = 2
+    South = 2
 
 class Wood:
     blocktypes = [alphaMaterials.Wood.ID, alphaMaterials.Wood2.ID]

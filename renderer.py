@@ -1714,8 +1714,7 @@ class SnowBlockRenderer(BlockRenderer):
         self.vertexArrays = arrays
 
     makeVertices = makeSnowVertices
-
-
+    
 class CactusBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Cactus.ID]
 
