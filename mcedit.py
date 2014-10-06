@@ -890,6 +890,22 @@ class MCEdit(GLViewport):
         if mcedit.droppedLevel:
             mcedit.loadFile(mcedit.droppedLevel)
 
+        new_version = release.check_for_new_version()
+        if new_version is not False:
+            answer = albow.ask(
+                'Version "%s" is available, would you like to '
+                'download it?' % new_version["tag_name"],
+                [
+                    'Yes',
+                    'No',
+                ],
+                default=0,
+                cancel=1
+            )
+            if answer == "Yes":
+                platform_open(new_version["html_url"])
+
+
         '''if hasattr(sys, 'frozen'):
             # We're being run from a bundle, check for updates.
             import esky
