@@ -23,7 +23,7 @@ from mceutils import loadPNGTexture, alertException, drawTerrainCuttingWire, dra
 from operation import Operation
 import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
-from pymclevel import version_compatability_utils
+from pymclevel import version_utils
 import logging
 
 log = logging.getLogger(__name__)
@@ -129,7 +129,7 @@ class PlayerPositionPanel(Panel):
             if not self.level.oldPlayerFolderFormat:
                 for player in players:
                     if player != "Player":
-                        self.player_UUID[version_compatability_utils.getPlayerNameFromUUID(player)] = player
+                        self.player_UUID[version_utils.getPlayerNameFromUUID(player)] = player
                 self.player_UUID["Player"] = "Player"
                 players = self.player_UUID.keys()
 
