@@ -304,7 +304,7 @@ blocks:
         tex: [2, 0]
       1:
         name: Coarse Dirt
-        tex: [2, 0]
+        tex: [19, 5]
       2:
         name: Podzol
         tex: [9, 3]
@@ -356,7 +356,6 @@ blocks:
     data:
       0:
         name: Oak Sapling
-        aka: Sapling
         tex: [15, 0]
       1:
         name: Spruce Sapling
@@ -372,6 +371,24 @@ blocks:
         tex: [20, 1]
       5:
         name: Dark Oak Sapling
+        tex: [20, 0]
+      8:
+        name: Oak Sapling (Stage 1)
+        tex: [15, 0]
+      9:
+        name: Spruce Sapling (Stage 1)
+        tex: [15, 3]
+      10:
+        name: Birch Sapling (Stage 1)
+        tex: [15, 4]
+      11:
+        name: Jungle Sapling (Stage 1)
+        tex: [14, 1]
+      12:
+        name: Acacia Sapling (Stage 1)
+        tex: [20, 1]
+      13:
+        name: Dark Oak Sapling (Stage 1)
         tex: [20, 0]
 
   - id: 7
@@ -1258,12 +1275,17 @@ blocks:
     name: Farmland
     aka: Tilled Soil
     mapcolor: [95, 58, 30]
-    tex: [6, 5]
+    tex: [2, 0]
     tex_direction:
-      FORWARD: [2, 0]
-      SIDES: [2, 0]
-      BACKWARD: [2, 0]
-      BOTTOM: [2, 0]
+      TOP: [7, 5]
+    data:
+      0: 
+        name: Farmland (Dry)
+      7: 
+        name: Farmland (Wet)
+        tex_direction:
+          TOP: [6, 5]
+    
 
   - id: 61
     idStr: furnace
