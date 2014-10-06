@@ -1,9 +1,21 @@
 from albow import Widget, Label, Button
+from pymclevel import scoreboard
+from pymclevel.nbt import *
+
+operations = {
+    "Yes/No Dialog": 1,
+    "Custom Dialog (Hi Button)": 2,
+    "Custom Dialog (Disabled Field)": 3,
+    "Scoreboard Editing (Objective)": 4,
+    "Scoreboard Editing (Team)": 5,
+    }
 
 inputs = (
-    ("Test Option", False),
-)
+    ("Operation", tuple(sorted(operations.keys()))),
+    )
 
+def hiAction():
+    print '"Hi" Button clicked!'
 
 def yesFUNC(level, box):
     for x in xrange(box.minx, box.maxx):
@@ -13,23 +25,38 @@ def yesFUNC(level, box):
 
 
 def perform(level, box, options):
+    #op = options["Operation"]
+    print dir(level.scoreboard.Objectives)
     print "Test Filter Ran"
-    widget = Widget()
-    widget.bg_color = (0.0, 0.0, 0.6)
-    lbl = Label("Test Message from a External Widget")
-    btn = Button("Hi")
-    widget.add(lbl)
-    widget.add(btn)
-    widget.shrink_wrap()
-    editor.addExternalWidget(widget)
-    # mceutils.SimpleInteractiveWidget("Test",yesFUNC,noFUNC)
-    choice = editor.YesNoWidget("Place a sponge block here?")
-    for objective in level.scoreboard.Objectives.keys():
-        print "Objective Name: " + str(level.scoreboard.Objectives[objective].Name)
-    for team in level.scoreboard.Teams.keys():
-        print "Team Name: " + str(level.scoreboard.Teams[team].DisplayName)
-    if choice:
-        yesFunc(level, box)
-        raise Exception("Response was Yes")
-    else:
-        raise Exception("Response was No")
+    if op == "Yes/No Dialog":
+        choice = editor.YesNoWidget("Place a sponge block here?")
+        if choice:
+            yesFunc(level, box)
+            raise Exception("Response was Yes")
+        else:
+            raise Exception("Response was No")
+    elif op == "Custom Dialog (Hi Button)":
+        widget = Widget()
+        widget.bg_color = (0.0, 0.0, 0.6)
+        lbl = Label("Test Message from a External Widget")
+        btn = Button("Hi", action=hiAction)
+        widget.add(lbl)
+        widget.add(btn)
+        widget.shrink_wrap()
+        editor.addExternalWidget(widget)
+    elif op == "Custom Dialog (Disabled Field)":
+        widget = Widget()
+    elif op == "Scoreboard Editing (Objective)":
+        test_objective = TAG_Compound()
+        test_objective["Name"] = TAG_String("FilterObjective")
+        test_objective["DisplayName"] = TAG_String("FilterObjective")
+        test_objective["CriteriaName"] = TAG_String("dummy")
+        test_objective["RenderType"] = TAG_String("integer")
+        test_objective = scoreboard.Objective(test_objective)
+        level.scoreboard.Objectives.append(test_objective)
+        level.scoreboard.save(level)
+        for objective in level.scoreboard.Objectives:
+            print "Objective Name: " + str(objective.Name)
+    elif op == "Scoreboard Editing (Team)":
+        for team in level.scoreboard.Teams:
+            print "Team Name: " + str(team.DisplayName)
