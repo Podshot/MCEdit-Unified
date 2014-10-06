@@ -908,62 +908,62 @@ class MCEdit(GLViewport):
                 platform_open(new_version["asset"]["browser_download_url"])
                 albow.alert('{} is now downloading. Check your downloads folder'.format(new_version["asset"]["name"]))
 
+# Disabled old update code
+#       if hasattr(sys, 'frozen'):
+#           # We're being run from a bundle, check for updates.
+#           import esky
+#
+#           app = esky.Esky(
+#               sys.executable.decode(sys.getfilesystemencoding()),
+#               'https://bitbucket.org/codewarrior0/mcedit/downloads'
+#           )
+#           try:
+#               update_version = app.find_update()
+#           except:
+#               # FIXME: Horrible, hacky kludge.
+#               update_version = None
+#               logging.exception('Error while checking for updates')
+#
+#           if update_version:
+#               answer = albow.ask(
+#                   'Version "%s" is available, would you like to '
+#                   'download it?' % update_version,
+#                   [
+#                       'Yes',
+#                       'No',
+#                   ],
+#                   default=0,
+#                   cancel=1
+#               )
+#               if answer == 'Yes':
+#                   def callback(args):
+#                       status = args['status']
+#                       status_texts = {
+#                           'searching': u"Finding updates...",
+#                           'found':  u"Found version {new_version}",
+#                           'downloading': u"Downloading: {received} / {size}",
+#                           'ready': u"Downloaded {path}",
+#                           'installing': u"Installing {new_version}",
+#                           'cleaning up': u"Cleaning up...",
+#                           'done': u"Done."
+#                       }
+#                       text = status_texts.get(status, 'Unknown').format(**args)
+#
+#                       panel = Dialog()
+#                       panel.idleevent = lambda event: panel.dismiss()
+#                       label = albow.Label(text, width=600)
+#                       panel.add(label)
+#                       panel.size = (500, 250)
+#                       panel.present()
+#
+#                   try:
+#                       app.auto_update(callback)
+#                   except (esky.EskyVersionError, EnvironmentError):
+#                       albow.alert("Failed to install update %s" % update_version)
+#                   else:
+#                       albow.alert("Version %s installed. Restart MCEdit to begin using it." % update_version)
+#                       raise SystemExit()
 
-        '''if hasattr(sys, 'frozen'):
-            # We're being run from a bundle, check for updates.
-            import esky
-
-            app = esky.Esky(
-                sys.executable.decode(sys.getfilesystemencoding()),
-                'https://bitbucket.org/codewarrior0/mcedit/downloads'
-            )
-            try:
-                update_version = app.find_update()
-            except:
-                # FIXME: Horrible, hacky kludge.
-                update_version = None
-                logging.exception('Error while checking for updates')
-
-            if update_version:
-                answer = albow.ask(
-                    'Version "%s" is available, would you like to '
-                    'download it?' % update_version,
-                    [
-                        'Yes',
-                        'No',
-                    ],
-                    default=0,
-                    cancel=1
-                )
-                if answer == 'Yes':
-                    def callback(args):
-                        status = args['status']
-                        status_texts = {
-                            'searching': u"Finding updates...",
-                            'found':  u"Found version {new_version}",
-                            'downloading': u"Downloading: {received} / {size}",
-                            'ready': u"Downloaded {path}",
-                            'installing': u"Installing {new_version}",
-                            'cleaning up': u"Cleaning up...",
-                            'done': u"Done."
-                        }
-                        text = status_texts.get(status, 'Unknown').format(**args)
-
-                        panel = Dialog()
-                        panel.idleevent = lambda event: panel.dismiss()
-                        label = albow.Label(text, width=600)
-                        panel.add(label)
-                        panel.size = (500, 250)
-                        panel.present()
-
-                    try:
-                        app.auto_update(callback)
-                    except (esky.EskyVersionError, EnvironmentError):
-                        albow.alert("Failed to install update %s" % update_version)
-                    else:
-                        albow.alert("Version %s installed. Restart MCEdit to begin using it." % update_version)
-                        raise SystemExit()
-'''
         if mcedit.closeMinecraftWarning:
             answer = albow.ask(
                 "Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.\n\n If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.",
