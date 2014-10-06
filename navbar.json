@@ -2,7 +2,7 @@
 	"root": "http://khroki.github.io/MCEdit-Unified/",
 	"navbar": [
 		{
-			"url": "index.html",
+			"url": "",
 			"displayname": "Home"
 		},
 		{
