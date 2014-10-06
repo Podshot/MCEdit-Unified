@@ -8,6 +8,7 @@ Startup, main menu, keyboard configuration, automatic updating.
 import OpenGL
 import sys
 import os
+import directories
 
 if "-debug" not in sys.argv:
     OpenGL.ERROR_CHECKING = False
@@ -1240,6 +1241,22 @@ class GLDisplayContext(object):
                 )
             mats.terrainTexture = self.terrainTextures[mats.name]
 
+def getSelectedMinecraftVersion():
+    import json
+    profile = getMinecraftProfileJSON()[getSelectedProfile()]
+    if 'lastVersionId' in profile:
+        return profile['lastVersionId']
+    else:
+        return '1.8'
+
+def getLatestMinecraftVersion(snapshots=False):
+    import urllib2
+    import json
+    versioninfo = json.loads(urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json ").read())
+    if snapshots:
+        return versioninfo['latest']['snapshot']
+    else:
+        return versioninfo['latest']['release']
 
 def weird_fix():
     try:
