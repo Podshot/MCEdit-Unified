@@ -174,7 +174,7 @@ from indev import MCIndevLevel
 from infiniteworld import MCInfdevOldLevel
 from javalevel import MCJavaLevel
 from logging import getLogger
-from mclevelbase import saveFileDir
+from directories import saveFileDir
 import nbt
 from numpy import fromstring
 import os

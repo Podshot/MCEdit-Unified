@@ -15,7 +15,8 @@ import json
 import urllib2
 
 import infiniteworld
-from mclevelbase import getPYMCAppDataDirectory, exhaust, ChunkNotPresent
+from directories import getPYMCAppDataDirectory
+from mclevelbase import exhaust, ChunkNotPresent
 
 log = logging.getLogger(__name__)
 
