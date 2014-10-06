@@ -29,7 +29,7 @@ class Objective:
     def getTAGStructure(self):
         tag = nbt.TAG_Compound()
         tag["Name"] = nbt.TAG_String(self.name)
-        tag["RenderType"] = nbt.TAG_String(self.rednerType)
+        tag["RenderType"] = nbt.TAG_String(self.renderType)
         tag["DisplayName"] = nbt.TAG_String(self.displayName)
         tag["CriteriaName"] = nbt.TAG_String(self.criteria)
         return tag
@@ -112,17 +112,16 @@ class Team:
         tag["Players"] = players
         return tag
         
-
 class Scoreboard:
 
     def __init__(self, level):
         self.level = level
+        self.objectives = []
+        self.teams = []
         self.setup()
 
     def setup(self):
         self.root_tag = nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
-        self.objectives = []
-        self.teams = []
         for objective in self.root_tag["data"]["Objectives"]:
             self.objectives.append(Objective(objective))
 
@@ -131,24 +130,25 @@ class Scoreboard:
 
 
     @property
-    def objectives(self):
+    def Objectives(self):
         return self.objectives
 
     @property
-    def teams(self):
+    def Teams(self):
         return self.teams
 
-    def save(self):
+    @classmethod
+    def save(self, level):
         objectiveList = nbt.TAG_List()
         teamList = nbt.TAG_List()
-        for objective in self.objectives:
+        for objective in level.scoreboard.Objectives:
             objectiveList.append(objective.getTAGStructure())
-        for team in self.teams:
+        for team in level.scoreboard.Objectives:
             teamList.append(team.getTAGStructure())
-        self.root_tag["data"]["Objectives"] = objectiveList
-        self.root_tag["data"]["Teams"] = teamList
+        level.scoreboard.root_tag["data"]["Objectives"] = objectiveList
+        level.scoreboard.root_tag["data"]["Teams"] = teamList
         print "Saving Scoreboard...."
-        with open(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat") as datFile:
-            self.root_tag.save(datFile)
+        with open(level.worldFolder.getFolderPath("data")+"/scoreboard.dat", 'w') as datFile:
+            level.scoreboard.root_tag.save(datFile)
         
         
