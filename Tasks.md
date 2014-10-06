@@ -1,32 +1,22 @@
 This file is to note down what needs to be fixed, and anything that badly needs an upgrade. Although this document was written to just keep things straightened out, any help is appreciated. 
 
-	Fix chunk view compass and keyboard movement:
-Currently the compass and movement rotation is wrong when in chunk view mode, the movement sensitivity in chunk mode is also well below what it should be.
-Files: possibly leveleditor.py
--------------------------
-	Reimplement automatic updating
-Because I build using pyinstaller instead of py2exe, mcedit will need to be changed from esky to updater4pyi.
-File: mcedit.py
-
--------------------------
-	Fix erode tool
-Currently doesn't take damage values into account, not a problem for most blocks but causes stained clay to always erode into white stained clay.
-
--------------------------
-	Fix fence renderer
-As is the fence renderer can't handle more than one texture without the arrays ceasing to work, rewrite as needed and combine the netherbrick renderer into it.
-File: renderer.py
-
--------------------------
-
-	Add sign, button, and lever renderer
-Signs and buttons currently lack a renderer, levers are piggybacking off the torch renderer with some wierd effects. Might be best off copying the snow and or laddar renderers and tweaking them to purpose.
-File: renderer.py
-
--------------------------
-	Add block rotate function
-Currently I've been just adding all the different block rotations to minecraft.yaml, which while it is functional it is clunky at best. I would like to add a key that when pressed increments the damage value of a block within a specified range, preferrably defined using a new attribute in minecraft.yaml. Such as rotation: [2, 3, 4, 5] for chests, allowing us to remove the directional entries from the block list and just use the key to rotate blocks.
-Files: minecraft.yaml, config.py, brush.py, possibly renderer.py
+- [ ] Fix chunk view compass and keyboard movement:
+	- Currently the compass and movement rotation is wrong when in chunk view mode, the movement sensitivity in chunk mode is also well below what it should be.
+	- Files: possibly leveleditor.py
+- [ ] Reimplement automatic updating
+	- Because I build using pyinstaller instead of py2exe, mcedit will need to be changed from esky to updater4pyi.
+	- File: mcedit.py
+- [ ] Fix erode tool
+	- Currently doesn't take damage values into account, not a problem for most blocks but causes stained clay to always erode into white stained clay.
+- [ ] Fix fence renderer
+	- As is the fence renderer can't handle more than one texture without the arrays ceasing to work, rewrite as needed and combine the netherbrick renderer into it.
+	- File: renderer.py
+- [ ] Add sign, button, and lever renderer
+	- Signs and buttons currently lack a renderer, levers are piggybacking off the torch renderer with some wierd effects. Might be best off copying the snow and or laddar renderers and tweaking them to purpose.
+	- File: renderer.py
+- [ ] Add block rotate function
+	- Currently I've been just adding all the different block rotations to minecraft.yaml, which while it is functional it is clunky at best. I would like to add a key that when pressed increments the damage value of a block within a specified range, preferrably defined using a new attribute in minecraft.yaml. Such as rotation: [2, 3, 4, 5] for chests, allowing us to remove the directional entries from the block list and just use the key to rotate blocks.
+	- Files: minecraft.yaml, config.py, brush.py, possibly renderer.py
 
 -------------------------
 	Add Pocket Edition 0.9.0 Format Compatibility
