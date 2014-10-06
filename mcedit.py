@@ -187,12 +187,14 @@ class FileOpener(albow.Widget):
             raise SystemExit
         if keyname in ('f1', 'f2', 'f3', 'f4', 'f5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
-        if keyname is "o":
+        if keyname is config.config.get('Keys', 'Open'):
             self.promptOpenAndLoad()
-        if keyname is "n":
+        if keyname is config.config.get('Keys', 'New World'):
             self.createNewWorld()
-        if keyname is "l":
+        if keyname is config.config.get('Keys', 'Load'):
             self.mcedit.editor.askLoadWorld()
+        if keyname is config.config.get('Keys', 'Quit'):
+            self.mcedit.editor.confirm_quit()
 
     def promptOpenAndLoad(self):
         try:
