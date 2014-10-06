@@ -413,29 +413,14 @@ class KeyConfigPanel(Dialog):
             return True
 
 
-class GraphicsPanel(Panel):
+class graphicsPanel(Dialog):
+    anchor = 'wh'
+
     def __init__(self, mcedit):
-        Panel.__init__(self)
+        Dialog.__init__(self)
 
         self.mcedit = mcedit
-        #
-        #        def getPacks():
-        #            return ["[Default]", "[Current]"] + mcplatform.getTexturePacks()
-        #
-        #        def packChanged():
-        #            self.texturePack = self.texturePackChoice.selectedChoice
-        #            packs = getPacks()
-        #            if self.texturePack not in packs:
-        #                self.texturePack = "[Default]"
-        #            self.texturePackChoice.selectedChoice = self.texturePack
-        #            self.texturePackChoice.choices = packs
-        #
-        #        self.texturePackChoice = texturePackChoice = mceutils.ChoiceButton(getPacks(), choose=packChanged)
-        #        if self.texturePack in self.texturePackChoice.choices:
-        #            self.texturePackChoice.selectedChoice = self.texturePack
-        #
-        #        texturePackRow = albow.Row((albow.Label("Skin: "), texturePackChoice))
-
+    
         fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
                                                 ref=Settings.fov.propertyRef(), width=100, min=25, max=120)
 
@@ -471,7 +456,8 @@ class GraphicsPanel(Panel):
 
         settingsRow = albow.Row((settingsColumn,))
 
-        optionsColumn = albow.Column((settingsRow, albow.Button("OK", action=mcedit.removeGraphicOptions)))
+        optionsColumn = albow.Column((settingsRow, albow.Button("OK", action=self.dismiss)))
+
         self.add(optionsColumn)
         self.shrink_wrap()
 
@@ -658,7 +644,7 @@ class MCEdit(GLViewport):
             self.setRecentWorlds([""] * 5)
 
         self.optionsPanel = OptionsPanel(self)
-        self.graphicOptionsPanel = GraphicsPanel(self)
+        self.graphicsPanel = graphicsPanel(self)
 
         self.keyConfigPanel = KeyConfigPanel()
 
@@ -710,36 +696,17 @@ class MCEdit(GLViewport):
 
                 c.position, c.yaw, c.pitch = pos, yaw, pitch
 
-    def removeGraphicOptions(self):
-        self.removePanel(self.graphicOptionsPanel)
-
-    def removePanel(self, panel):
-        if panel.parent:
-            panel.set_parent(None)
-            if self.editor.parent:
-                self.focus_switch = self.editor
-            elif self.fileOpener.parent:
-                self.focus_switch = self.fileOpener
-
     def add_right(self, widget):
         w, h = self.size
         widget.centery = h // 2
         widget.right = w
         self.add(widget)
 
-    def showPanel(self, optionsPanel):
-        if optionsPanel.parent:
-            optionsPanel.set_parent(None)
-
-        optionsPanel.anchor = "whr"
-        self.add_right(optionsPanel)
-        self.editor.mouseLookOff()
-
     def showOptions(self):
         self.optionsPanel.present()
 
     def showGraphicOptions(self):
-        self.showPanel(self.graphicOptionsPanel)
+        self.graphicsPanel.present()
 
     def showKeyConfig(self):
         self.keyConfigPanel.present()
@@ -850,7 +817,6 @@ class MCEdit(GLViewport):
     shouldResizeAlert = Settings.shouldResizeAlert.configProperty()
 
     def loadFile(self, filename):
-        self.removeGraphicOptions()
         if os.path.exists(filename):
             try:
                 self.editor.loadFile(filename)
