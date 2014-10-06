@@ -20,37 +20,34 @@ def get_release_tag():
     return current["release tag"]
 
 def check_for_new_version():
-    release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
-    first_entry = release_api_response[0]
-    #print "Tag Name: " + first_entry["tag_name"]
-    if first_entry["tag_name"] != get_release_tag():
-        is_64bit = sys.maxsize > 2**32
-        version = {}
-        version["prerelease"] = first_entry["prerelease"]
-        version["full name"] = first_entry["name"]
-        version["html_url"] = first_entry["html_url"]
-        version["tag_name"] = first_entry["tag_name"]
-        assets = first_entry["assets"]
-        for asset in assets:
-            if _platform == "win32":
-                version["OS Target"] = "windows"
-                if "Win" in asset["name"] and "Win" in asset["browser_download_url"]:
-                    if is_64bit:
-                        if "64bit" in asset["name"]:
-                            version["download url"] = asset["browser_download_url"]
-                            version["target arch"] = "64bit"
-                    else:
-                        if "32bit" in asset["name"]:
-                            version["download url"] = asset["browser_download_url"]
-                            version["target arch"] = "32bit"
-            elif _platform == "darwin":
-                version["OS Target"] = "osx"
-                if "OSX" in asset["name"]:
-                    version["download url"] = asset["browser_download_url"]
-                    version["target arch"] = "64bit"
-                
-        return version
-    return False
-    
+    try:
+        release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
+        version = release_api_response[0]
+        if version["tag_name"] != get_release_tag():
+            is_64bit = sys.maxsize > 2**32
+            assets = version["assets"]
+            for asset in assets:
+                if _platform == "win32":
+                    version["OS Target"] = "windows"
+                    if "Win" in asset["name"]:
+                        if is_64bit:
+                            if "64bit" in asset["name"]:
+                                version["asset"] = asset
+                                version["target_arch"] = "64bit"
+                        else:
+                            if "32bit" in asset["name"]:
+                                version["asset"] = asset
+                                version["target_arch"] = "32bit"
+                elif _platform == "darwin":
+                    version["OS Target"] = "osx"
+                    if "OSX" in asset["name"]:
+                        version["asset"] = asset
+                        version["target_arch"] = "64bit"
+                    
+            return version
+        return False
+    except:
+        print "An error occured!"
+        return False    
 release = get_version()
 commit = get_commit()

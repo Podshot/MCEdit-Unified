@@ -893,17 +893,20 @@ class MCEdit(GLViewport):
         new_version = release.check_for_new_version()
         if new_version is not False:
             answer = albow.ask(
-                'Version "%s" is available, would you like to '
-                'download it?' % new_version["tag_name"],
+                'Version {} is available'.format(new_version["tag_name"]),
                 [
-                    'Yes',
-                    'No',
+                    'Download',
+                    'View',
+                    'Ignore'
                 ],
-                default=0,
-                cancel=1
+                default=1,
+                cancel=2
             )
-            if answer == "Yes":
+            if answer == "View":
                 platform_open(new_version["html_url"])
+            elif answer == "Download":
+                platform_open(new_version["asset"]["browser_download_url"])
+                albow.alert('{} is now downloading. Check your downloads folder'.format(new_version["asset"]["name"]))
 
 
         '''if hasattr(sys, 'frozen'):
