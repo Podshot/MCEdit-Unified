@@ -160,7 +160,7 @@ def remapMouseButton(button):
 class ControlPanel(Panel):
     @classmethod
     def getHeader(cls):
-        header = Label("MCEdit {0} ({1})".format(release.release, arch), font=get_font(18, "VeraBd.ttf"))
+        header = Label("MCEdit {0} ({1})".format(release.get_version(), arch), font=get_font(18, "VeraBd.ttf"))
         return header
 
     def __init__(self, editor):

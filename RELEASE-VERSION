@@ -1,5 +1,4 @@
 {
-    "full name": "Fork v1.1.0.0 for Minecraft 1.8",
-    "commit": "2d13131",
-    "release tag": "1.1.0.0"
+    "name": "Fork v1.1.0.0 for Minecraft 1.8",
+    "tag_name": "1.1.0.0"
 }

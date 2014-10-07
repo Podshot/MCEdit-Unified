@@ -11,15 +11,7 @@ def get_version():
     try:
         with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
             current = json.load(jsonString)
-            return current["full name"]
-    except:
-        raise
-
-def get_commit():
-    try:
-        with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
-            current = json.load(jsonString)
-            return current["commit"]
+            return current["name"]
     except:
         raise
 
@@ -27,7 +19,7 @@ def get_release_tag():
     try:
         with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
             current = json.load(jsonString)
-            return current["release tag"]
+            return current["tag_name"]
     except:
         raise
 
@@ -59,6 +51,4 @@ def check_for_new_version():
         return False
     except:
         print "An error occured!"
-        return False    
-release = get_version()
-commit = get_commit()
+        return False

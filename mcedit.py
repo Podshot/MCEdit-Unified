@@ -1139,7 +1139,7 @@ class GLDisplayContext(object):
         except:
             logging.warning('PyGame clipboard integration disabled.')
 
-        display.set_caption('MCEdit ~ ' + release.release, 'MCEdit')
+        display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
         if sys.platform == 'win32' and Settings.setWindowPlacement.get():
             Settings.setWindowPlacement.set(False)
             config.saveConfig()
