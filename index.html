@@ -36,12 +36,19 @@
 				var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
 				var asset64 = getDownload(platforms[i],latestRelease.tag_name,64);
 				if (asset32) {
-					$('#' + platforms[i] + '-downloads').append('<a class="btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
+					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
 				}
 				if (asset64) {
-					$('#' + platforms[i] + '-downloads').append('<a class="btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
+					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
 				}
-			}	
+			}
+			var published_at = new Date(latestRelease['published_at']);
+			var now = new Date();
+			var second_difference = now - published_at
+			second_difference = second_difference / 1000;
+			if (second_difference < 86400) {//24 hours
+				$('a.dl').append(' <span class="label label-success">New!</span>')
+			}
 		}
 	</script>
 </head>
