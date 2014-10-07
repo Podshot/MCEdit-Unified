@@ -425,6 +425,7 @@ class ChunkCalculator(object):
                 PaneBlockRenderer,
                 CakeBlockRenderer,
                 DaylightBlockRenderer,
+                WallSignBlockRenderer,
                 #LeverBlockRenderer,
                 BedBlockRenderer,
                 EnchantingBlockRenderer,
@@ -1675,6 +1676,49 @@ class LadderBlockRenderer(BlockRenderer):
 
     makeVertices = ladderVertices
 
+class WallSignBlockRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.WallSign.ID]
+
+    wallSignOffsets = numpy.array([
+                                    [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
+                                    [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
+
+                                    [(0, -1, 0.9), (0, 0, -0.1), (0, 0, -0.1), (0, -1, 0.9)],  # facing east
+                                    [(0, 0, 0.1), (0, -1, -.9), (0, -1, -.9), (0, 0, 0.1)],  # facing west
+                                    [(.9, -1, 0), (.9, -1, 0), (-.1, 0, 0), (-.1, 0, 0)],  # north
+                                    [(0.1, 0, 0), (0.1, 0, 0), (-.9, -1, 0), (-.9, -1, 0)],  # south
+
+                                ] + [[(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)]] * 10, dtype='float32')
+
+    wallSignTextures = numpy.array([
+                                     [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+                                     [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
+
+                                     [(96, 176), (96, 160), (80, 160), (80, 176), ],  # e
+                                     [(80, 160), (80, 176), (96, 176), (96, 160), ],  # w
+                                     [(80, 176), (96, 176), (96, 160), (80, 160), ],  # n
+                                     [(96, 160), (80, 160), (80, 176), (96, 176), ],  # s
+
+                                 ] + [[(0, 192), (0, 208), (16, 208), (16, 192)]] * 10, dtype='float32')
+
+    def WallSignVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+        blockIndices = self.getMaterialIndices(blockMaterials)
+        blockLight = areaBlockLights[1:-1, 1:-1, 1:-1]
+        yield
+        bdata = blockData[blockIndices]
+
+        vertexArray = self.makeTemplate(pymclevel.faces.FaceYIncreasing, blockIndices)
+        if not len(vertexArray):
+            return
+
+        vertexArray[_ST] = self.wallSignTextures[bdata]
+        vertexArray[_XYZ] += self.wallSignOffsets[bdata]
+        vertexArray.view('uint8')[_RGB] *= blockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
+
+        yield
+        self.vertexArrays = [vertexArray]
+
+    makeVertices = WallSignVertices
 
 class SnowBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.SnowLayer.ID]
