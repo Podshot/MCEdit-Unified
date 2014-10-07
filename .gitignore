@@ -58,3 +58,6 @@ filters/modifyitemstrings.py
 # Eclipse
 
 .metadata
+.project
+.pydevproject
+.settings
