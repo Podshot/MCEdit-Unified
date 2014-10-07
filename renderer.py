@@ -420,6 +420,7 @@ class ChunkCalculator(object):
                 RailBlockRenderer,
                 LadderBlockRenderer,
                 SnowBlockRenderer,
+                CarpetBlockRenderer,
                 CactusBlockRenderer,
                 PaneBlockRenderer,
                 CakeBlockRenderer,
@@ -1676,9 +1677,7 @@ class LadderBlockRenderer(BlockRenderer):
 
 
 class SnowBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.SnowLayer.ID,
-                  pymclevel.materials.alphaMaterials.Carpet.ID,  #Separate before implementing layers
-                  pymclevel.materials.alphaMaterials.Lilypad.ID]
+    blocktypes = [pymclevel.materials.alphaMaterials.SnowLayer.ID]
 
     def makeSnowVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         materialIndices = self.getMaterialIndices(blockMaterials)
@@ -1714,6 +1713,45 @@ class SnowBlockRenderer(BlockRenderer):
         self.vertexArrays = arrays
 
     makeVertices = makeSnowVertices
+    
+class CarpetBlockRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.Carpet.ID,  #Separate before implementing layers
+                  pymclevel.materials.alphaMaterials.Lilypad.ID]
+
+    def makeCarpetVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+        materialIndices = self.getMaterialIndices(blockMaterials)
+        #snowIndices = self.getMaterialIndices(blockMaterials)
+        arrays = []
+        yield
+        for direction, exposedFaceIndices in enumerate(facingBlockIndices):
+
+            if direction != pymclevel.faces.FaceYIncreasing:
+                blockIndices = materialIndices & exposedFaceIndices
+            else:
+                blockIndices = materialIndices
+
+            facingBlockLight = areaBlockLights[self.directionOffsets[direction]]
+            lights = facingBlockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
+
+            vertexArray = self.makeTemplate(direction, blockIndices)
+            if not len(vertexArray):
+                continue
+
+            vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices], 0)[:, numpy.newaxis, 0:2]
+            vertexArray.view('uint8')[_RGB] *= lights
+
+            if direction == pymclevel.faces.FaceYIncreasing:
+                vertexArray[_XYZ][..., 1] -= 0.937
+
+            if direction != pymclevel.faces.FaceYIncreasing and direction != pymclevel.faces.FaceYDecreasing:
+                vertexArray[_XYZ][..., 2:4, 1] -= 0.937
+                vertexArray[_ST][..., 2:4, 1] += 15
+
+            arrays.append(vertexArray)
+            yield
+        self.vertexArrays = arrays
+
+    makeVertices = makeCarpetVertices
     
 class CactusBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Cactus.ID]
