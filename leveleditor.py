@@ -2201,21 +2201,21 @@ class LevelEditor(GLViewport):
 
         self.unsavedEdits += 1
 
-        saveInfoBackground = GLBackground()
-        saveInfoBackground.bg_color = (0.0, 0.0, 0.0, 0.6)
+        self.saveInfoBackground = GLBackground()
+        self.saveInfoBackground.bg_color = (0.0, 0.0, 0.0, 0.6)
 
-        saveInfoLabel = Label(self.saveInfoLabelText)
-        saveInfoLabel.anchor = "blwh"
+        self.saveInfoLabel = Label(self.saveInfoLabelText)
+        self.saveInfoLabel.anchor = "blwh"
         # saveInfoLabel.width = 500
 
-        saveInfoBackground.add(saveInfoLabel)
-        saveInfoBackground.shrink_wrap()
+        self.saveInfoBackground.add(self.saveInfoLabel)
+        self.saveInfoBackground.shrink_wrap()
 
-        saveInfoBackground.left = 50
-        saveInfoBackground.bottom = self.toolbar.toolbarRectInWindowCoords()[1]
+        self.saveInfoBackground.left = 50
+        self.saveInfoBackground.bottom = self.toolbar.toolbarRectInWindowCoords()[1]
 
-        self.add(saveInfoBackground)
-        self.saveInfoBackground = saveInfoBackground
+        self.add(self.saveInfoBackground)
+        self.saveInfoBackground = self.saveInfoBackground
 
     def clearUnsavedEdits(self):
         if self.unsavedEdits:
@@ -2775,7 +2775,7 @@ class LevelEditor(GLViewport):
                 self.saveFile()
             if answer == "Cancel":
                 return
-
+        self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.mainViewport.mouseLookOff()
         self.level = None
