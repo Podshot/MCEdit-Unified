@@ -1268,9 +1268,6 @@ def compareVersions(aString,bString):
         return 0
     except:
         print "Unable to compare {} to {}".format(aString,bString)
-        
-def compareMinecraftVersions(aString,bString):
-    
 
 def weird_fix():
     try:
