@@ -28,8 +28,6 @@ import platform
 enc = sys.getfilesystemencoding()
 
 if sys.platform == "win32":
-    import platform
-
     if platform.architecture()[0] == "32bit":
         plat = "win32"
     if platform.architecture()[0] == "64bit":
@@ -298,8 +296,8 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
     elif sys.platform == "darwin" and AppKit is not None:
         sp = AppKit.NSSavePanel.savePanel()
         sp.setDirectory_(initialDir)
+        sp.setTitle_(title)
         sp.setAllowedFileTypes_([suffix])
-        # sp.setFilename_(self.editor.level.displayName)
 
         if sp.runModal() == 0:
             return  # pressed cancel
@@ -317,44 +315,44 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
     return filename
 
 
+
+#   if sys.platform == "win32":
+#       try:
 #
-#    if sys.platform == "win32":
-#        try:
+#           (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
+#               hwndOwner = display.get_wm_info()['window'],
+#               # InitialDir=saveFileDir,
+#               Flags=win32con.OFN_EXPLORER | win32con.OFN_NOCHANGEDIR | win32con.OFN_OVERWRITEPROMPT,
+#               File=initialDir + os.sep + displayName,
+#               DefExt=fileFormat,
+#               Title=,
+#               Filter=,
+#               )
+#       except Exception, e:
+#           print "Error getting filename: {0!r}".format(e)
+#           return
 #
-#            (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
-#                hwndOwner = display.get_wm_info()['window'],
-#                # InitialDir=saveFileDir,
-#                Flags=win32con.OFN_EXPLORER | win32con.OFN_NOCHANGEDIR | win32con.OFN_OVERWRITEPROMPT,
-#                File=initialDir + os.sep + displayName,
-#                DefExt=fileFormat,
-#                Title=,
-#                Filter=,
-#                )
-#        except Exception, e:
-#            print "Error getting filename: {0!r}".format(e)
-#            return
+#   elif sys.platform == "darwin" and AppKit is not None:
+#       sp = AppKit.NSSavePanel.savePanel()
+#       sp.setDirectory_(initialDir)
+#       sp.setAllowedFileTypes_([fileFormat])
+#       # sp.setFilename_(self.editor.level.displayName)
 #
-#    elif sys.platform == "darwin" and AppKit is not None:
-#        sp = AppKit.NSSavePanel.savePanel()
-#        sp.setDirectory_(initialDir)
-#        sp.setAllowedFileTypes_([fileFormat])
-#        # sp.setFilename_(self.editor.level.displayName)
+#       if sp.runModal() == 0:
+#           return;  # pressed cancel
 #
-#        if sp.runModal() == 0:
-#            return;  # pressed cancel
+#       filename = sp.filename()
+#       AppKit.NSApp.mainWindow().makeKeyWindow()
 #
-#        filename = sp.filename()
-#        AppKit.NSApp.mainWindow().makeKeyWindow()
+#   else:
 #
-#    else:
+#       filename = request_new_filename(prompt = "Save this schematic...",
+#                                       suffix = ".{0}".format(fileFormat),
+#                                       directory = initialDir,
+#                                       filename = displayName,
+#                                       pathname = None)
 #
-#        filename = request_new_filename(prompt = "Save this schematic...",
-#                                        suffix = ".{0}".format(fileFormat),
-#                                        directory = initialDir,
-#                                        filename = displayName,
-#                                        pathname = None)
-#
-#    return filename
+#   return filename
 
 
 def documents_folder():
