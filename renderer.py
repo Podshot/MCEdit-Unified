@@ -1848,10 +1848,10 @@ class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper s
             vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices], 0)[:, numpy.newaxis, 0:2]
             vertexArray.view('uint8')[_RGB] *= lights
             if direction == pymclevel.faces.FaceYIncreasing:
-                vertexArray[_XYZ][..., 1] -= 0.875
+                vertexArray[_XYZ][..., 1] -= 0.937
             if direction != pymclevel.faces.FaceYIncreasing and direction != pymclevel.faces.FaceYDecreasing:
-                vertexArray[_XYZ][..., 2:4, 1] -= 0.875
-                vertexArray[_ST][..., 2:4, 1] += 14
+                vertexArray[_XYZ][..., 2:4, 1] -= 0.937
+                vertexArray[_ST][..., 2:4, 1] += 15
 
             arrays.append(vertexArray)
             yield
