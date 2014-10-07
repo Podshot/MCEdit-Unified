@@ -50,5 +50,5 @@ def check_for_new_version():
             return version
         return False
     except:
-        print "An error occured!"
+        print "An error occurred checking for updates."
         return False

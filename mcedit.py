@@ -1245,6 +1245,33 @@ def getLatestMinecraftVersion(snapshots=False):
     else:
         return versioninfo['latest']['release']
 
+def compareVersions(aString,bString):
+    try:
+        a = aString.split('.')
+        b = bString.split('.')
+        while len(a) > len(b):
+            b.append('0')
+        while len(b) > len(a):
+            a.append('0')
+        for (i,s) in enumerate(a):
+            a[i] = int(s)
+        for (i,s) in enumerate(b):
+            b[i] = int(s)
+    
+        for i in range(0,len(a)):
+            if a[i] > b[i]:
+                return 1
+            elif a[i] < b[i]:
+                return -1
+            else:
+                print "smaller"
+        return 0
+    except:
+        print "Unable to compare {} to {}".format(aString,bString)
+        
+def compareMinecraftVersions(aString,bString):
+    
+
 def weird_fix():
     try:
         from OpenGL.platform import win32
