@@ -58,3 +58,4 @@ filters/modifyitemstrings.py
 # Eclipse
 
 .metadata
+*.xcodeproj
