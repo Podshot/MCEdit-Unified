@@ -8,16 +8,28 @@ from sys import platform as _platform
 
 
 def get_version():
-    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb'))
-    return current["full name"]
+    try:
+        with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
+            current = json.load(jsonString)
+            return current["full name"]
+    except:
+        raise
 
 def get_commit():
-    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb'))
-    return current["commit"]
+    try:
+        with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
+            current = json.load(jsonString)
+            return current["commit"]
+    except:
+        raise
 
 def get_release_tag():
-    current = json.load(open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb'))
-    return current["release tag"]
+    try:
+        with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
+            current = json.load(jsonString)
+            return current["release tag"]
+    except:
+        raise
 
 def check_for_new_version():
     try:
@@ -43,7 +55,6 @@ def check_for_new_version():
                     if "OSX" in asset["name"]:
                         version["asset"] = asset
                         version["target_arch"] = "64bit"
-                    
             return version
         return False
     except:
