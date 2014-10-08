@@ -1098,7 +1098,7 @@ blocks:
     idStr: yellow_flower
     name: Dandelion
     mapcolor: [255, 255, 0]
-    tex: [12, 0]
+    tex: [13, 0]
     type: DECORATION_CROSS
     opacity: 0
 
@@ -1106,7 +1106,7 @@ blocks:
     idStr: red_flower
     name: Poppy
     mapcolor: [255, 0, 0]
-    tex: [13, 0]
+    tex: [12, 0]
     type: DECORATION_CROSS
     opacity: 0
     data:
