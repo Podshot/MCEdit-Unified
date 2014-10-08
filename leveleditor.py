@@ -176,8 +176,8 @@ class ControlPanel(Panel):
         cmd = mcplatform.cmd_name
         hotkeys = ([(cmd + "-" + str.upper(config.config.get('Keys', 'New World')), "Create New World",
                      editor.mcedit.createNewWorld),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Open')), "Open World", editor.askLoadWorld),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Load')), "Load File...", editor.askOpenFile),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Load')), "Quick-Load", editor.askLoadWorld),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Open')), "Open World...", editor.askOpenFile),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Save')), "Save", editor.saveFile),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Reload World')), "Reload", editor.reload),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Close World')), "Close", editor.closeEditor),
@@ -2588,9 +2588,9 @@ class LevelEditor(GLViewport):
                 self.reload()
 
             if keyname == config.config.get('Keys', 'Open'):
-                self.askLoadWorld()
-            if keyname == config.config.get('Keys', 'Load'):
                 self.askOpenFile()
+            if keyname == config.config.get('Keys', 'Load'):
+                self.askLoadWorld()
             if keyname == config.config.get('Keys', 'Undo'):
                 self.undo()
             if keyname == config.config.get('Keys', 'Save'):

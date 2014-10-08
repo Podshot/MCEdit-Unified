@@ -156,8 +156,8 @@ class FileOpener(albow.Widget):
             shortnames.append(shortname)
 
         hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), 'Create New World', self.createNewWorld),
-                    (str.upper(config.config.get('Keys', 'Open')), 'Open World', self.mcedit.editor.askLoadWorld),
-                    (str.upper(config.config.get('Keys', 'Load')), 'Load File...', self.promptOpenAndLoad)] + [
+                    (str.upper(config.config.get('Keys', 'Load')), 'Quick-Load', self.mcedit.editor.askLoadWorld),
+                    (str.upper(config.config.get('Keys', 'Open')), 'Open World...', self.promptOpenAndLoad)] + [
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
@@ -188,11 +188,11 @@ class FileOpener(albow.Widget):
         if keyname in ('f1', 'f2', 'f3', 'f4', 'f5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
         if keyname is config.config.get('Keys', 'Load'):
-            self.promptOpenAndLoad()
+            self.mcedit.editor.askLoadWorld()
         if keyname is config.config.get('Keys', 'New World'):
             self.createNewWorld()
         if keyname is config.config.get('Keys', 'Open'):
-            self.mcedit.editor.askLoadWorld()
+            self.promptOpenAndLoad()
         if keyname is config.config.get('Keys', 'Quit'):
             self.mcedit.editor.confirm_quit()
 
