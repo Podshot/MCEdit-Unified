@@ -155,6 +155,16 @@ class Entity(object):
                 "Villager",
                 "LavaSlime",
                 "WitherBoss",
+                "Witch",
+                "Endermite",
+                "Guardian",
+                "Rabbit",
+                "Bat",
+                "MushroomCow",
+                "SnowMan",
+                "Ozelot",
+                "VillagerGolem",
+                "EntityHorse"                
     ]
     projectiles = ["Arrow",
                    "Snowball",
@@ -162,6 +172,11 @@ class Entity(object):
                    "Fireball",
                    "SmallFireball",
                    "ThrownEnderpearl",
+                   "EyeOfEnderSignal",
+                   "ThrownPotion",
+                   "ThrownExpBottle",
+                   "WitherSkull",
+                   "FireworksRocketEntity"
     ]
 
     items = ["Item",
@@ -171,7 +186,15 @@ class Entity(object):
              "ItemFrame",
              "WitherSkull",
     ]
-    vehicles = ["Minecart", "Boat"]
+    vehicles = ["MinecartRidable",
+                "MinecartChest",
+                "MinecartFurnace",
+                "MinecartTNT"
+                "MinecartHopper"
+                "MinecartSpawner"
+                "MinecartCommandBlock"
+                "Boat",
+                ]
     tiles = ["PrimedTnt", "FallingSand"]
 
     @classmethod
