@@ -730,7 +730,7 @@ blocks:
     tex: [5, 9]
     tex_direction:
         TOP: [7, 8]
-        BOTTOM: [0, 5]
+        BOTTOM: [7, 8]
     type: BED
     opacity: 0
 
