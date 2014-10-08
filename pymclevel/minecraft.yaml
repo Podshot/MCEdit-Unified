@@ -1720,6 +1720,11 @@ blocks:
     tex: [10, 4]
     tex_direction:
       TOP: [11, 4]
+    data:
+      0:
+        name: Jukebox (Empty)
+      1:
+        name: Jukebox (With Record)
 
   - id: 85
     idStr: fence

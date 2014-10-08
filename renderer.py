@@ -1247,7 +1247,7 @@ class GenericBlockRenderer(BlockRenderer):
 
 
 class LeafBlockRenderer(BlockRenderer):
-    blocktypes = [18, 161]
+    blocktypes = [pymclevel.materials.alphaMaterials.Leaves.ID, pymclevel.materials.alphaMaterials.AcaciaLeaves.ID]
 
     @property
     def renderstate(self):
@@ -2238,7 +2238,7 @@ class StairBlockRenderer(BlockRenderer):
 
 
 class VineBlockRenderer(BlockRenderer):
-    blocktypes = [106]
+    blocktypes = [pymclevel.materials.alphaMaterials.Vines.ID]
 
     SouthBit = 1  #FaceZIncreasing
     WestBit = 2  #FaceXDecreasing
@@ -2322,8 +2322,8 @@ class SlabBlockRenderer(BlockRenderer):
 
 
 class WaterBlockRenderer(BlockRenderer):
-    waterID = 9
-    blocktypes = [8, waterID]
+    waterID = pymclevel.materials.alphaMaterials.Water.ID
+    blocktypes = [pymclevel.materials.alphaMaterials.WaterActive.ID, waterID]
     renderstate = ChunkCalculator.renderstateWater
 
     def waterFaceVertices(self, direction, blockIndices, exposedFaceIndices, blocks, blockData, blockLight,
@@ -2338,7 +2338,7 @@ class WaterBlockRenderer(BlockRenderer):
 
 
 class IceBlockRenderer(BlockRenderer):
-    iceID = 79
+    iceID = pymclevel.materials.alphaMaterials.Ice.ID
     blocktypes = [iceID]
     renderstate = ChunkCalculator.renderstateIce
 
