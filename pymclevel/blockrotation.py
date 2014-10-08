@@ -727,6 +727,7 @@ class Dropper:
     North = 4
     South = 5
 
+applyBit8(Dropper)
 
 
 @genericFlipRotation 
