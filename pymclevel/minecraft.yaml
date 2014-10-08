@@ -403,7 +403,7 @@ blocks:
     name: Water (Flowing)
     mapcolor: [38, 92, 255]
     type: WATER
-    tex: [15, 12]
+    tex: [13, 12]
     opacity: 3
 
   - id: 9
@@ -411,14 +411,14 @@ blocks:
     name: Water
     mapcolor: [38, 92, 255]
     type: WATER
-    tex: [15, 12]
+    tex: [13, 12]
     opacity: 3
 
   - id: 10
     idStr: flowing_lava
     name: Lava (Flowing)
     mapcolor: [255, 90, 0]
-    tex: [15, 14]
+    tex: [13, 14]
     type: SEMISOLID
     brightness: 15
     opacity: 0
@@ -427,7 +427,7 @@ blocks:
     idStr: lava
     name: Lava
     mapcolor: [255, 90, 0]
-    tex: [15, 14]
+    tex: [13, 14]
     type: SEMISOLID
     brightness: 15
     opacity: 0
@@ -762,10 +762,87 @@ blocks:
     tex: [12, 6]
     type: PISTON_BODY
     opacity: 0
-    tex_extra:
-      head: [11, 6]
-      back: [13, 6]
-      front: [14, 6]
+    data:
+      0:
+        name: Sticky Piston (Down)
+        tex: [15, 12]
+        tex_direction:
+          TOP: [14, 3]
+          BOTTOM: [10, 6]
+      1:
+        name: Sticky Piston (Up)
+        tex_direction:
+          TOP: [10, 6]
+          BOTTOM: [14, 3]
+      2:
+        name: Sticky Piston (North)
+        tex_direction:
+          LEFT: [14, 13]
+          RIGHT: [14, 12]
+          FORWARD: [10, 6]
+          BACKWARD: [14, 3]
+      3:
+        name: Sticky Piston (South)
+        tex: [15, 12]
+        tex_direction:
+          LEFT: [14, 12]
+          RIGHT: [14, 13]
+          BACKWARD: [10, 6]
+          FORWARD: [14, 3]
+      4:
+        name: Sticky Piston (West)
+        tex: [14, 13]
+        tex_direction:
+          LEFT: [10, 6]
+          RIGHT: [14, 3]
+          FORWARD: [14, 12]
+      5:
+        name: Sticky Piston (East)
+        tex: [14, 12]
+        tex_direction:
+          RIGHT: [10, 6]
+          LEFT: [14, 3]
+          FORWARD: [14, 13]
+      8:
+        name: Sticky Piston (Extended) (Down)
+        tex: [15, 12]
+        tex_direction:
+          TOP: [14, 3]
+          BOTTOM: [10, 6]
+      9:
+        name: Sticky Piston (Extended) (Up)
+        tex_direction:
+          TOP: [10, 6]
+          BOTTOM: [14, 3]
+      10:
+        name: Sticky Piston (Extended) (North)
+        tex_direction:
+          LEFT: [14, 13]
+          RIGHT: [14, 12]
+          FORWARD: [10, 6]
+          BACKWARD: [14, 3]
+      11:
+        name: Sticky Piston (Extended) (South)
+        tex: [15, 12]
+        tex_direction:
+          LEFT: [14, 12]
+          RIGHT: [14, 13]
+          BACKWARD: [10, 6]
+          FORWARD: [14, 3]
+      12:
+        name: Sticky Piston (Extended) (West)
+        tex: [14, 13]
+        tex_direction:
+          LEFT: [10, 6]
+          RIGHT: [14, 3]
+          FORWARD: [14, 12]
+      13:
+        name: Sticky Piston (Extended) (East)
+        tex: [14, 12]
+        tex_direction:
+          RIGHT: [10, 6]
+          LEFT: [14, 3]
+          FORWARD: [14, 13]
 
   - id: 30
     idStr: web
@@ -812,6 +889,87 @@ blocks:
       head: [11, 6]
       back: [13, 6]
       front: [14, 6]
+    data:
+      0:
+        name: Piston (Down)
+        tex: [15, 12]
+        tex_direction:
+          TOP: [14, 3]
+          BOTTOM: [11, 6]
+      1:
+        name: Piston (Up)
+        tex_direction:
+          TOP: [11, 6]
+          BOTTOM: [14, 3]
+      2:
+        name: Piston (North)
+        tex_direction:
+          LEFT: [14, 13]
+          RIGHT: [14, 12]
+          FORWARD: [11, 6]
+          BACKWARD: [14, 3]
+      3:
+        name: Piston (South)
+        tex: [15, 12]
+        tex_direction:
+          LEFT: [14, 12]
+          RIGHT: [14, 13]
+          BACKWARD: [11, 6]
+          FORWARD: [14, 3]
+      4:
+        name: Piston (West)
+        tex: [14, 13]
+        tex_direction:
+          LEFT: [11, 6]
+          RIGHT: [14, 3]
+          FORWARD: [14, 12]
+      5:
+        name: Piston (East)
+        tex: [14, 12]
+        tex_direction:
+          RIGHT: [11, 6]
+          LEFT: [14, 3]
+          FORWARD: [14, 13]
+      8:
+        name: Piston (Extended) (Down)
+        tex: [15, 12]
+        tex_direction:
+          TOP: [14, 3]
+          BOTTOM: [11, 6]
+      9:
+        name: Piston (Extended) (Up)
+        tex_direction:
+          TOP: [11, 6]
+          BOTTOM: [14, 3]
+      10:
+        name: Piston (Extended) (North)
+        tex_direction:
+          LEFT: [14, 13]
+          RIGHT: [14, 12]
+          FORWARD: [11, 6]
+          BACKWARD: [14, 3]
+      11:
+        name: Piston (Extended) (South)
+        tex: [15, 12]
+        tex_direction:
+          LEFT: [14, 12]
+          RIGHT: [14, 13]
+          BACKWARD: [11, 6]
+          FORWARD: [14, 3]
+      12:
+        name: Piston (Extended) (West)
+        tex: [14, 13]
+        tex_direction:
+          LEFT: [11, 6]
+          RIGHT: [14, 3]
+          FORWARD: [14, 12]
+      13:
+        name: Piston (Extended) (East)
+        tex: [14, 12]
+        tex_direction:
+          RIGHT: [11, 6]
+          LEFT: [14, 3]
+          FORWARD: [14, 13]
 
   - id: 34
     idStr: piston_head

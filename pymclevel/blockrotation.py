@@ -166,7 +166,6 @@ class FurnaceDispenserChest:
     blocktypes = [
         alphaMaterials.Furnace.ID,
         alphaMaterials.LitFurnace.ID,
-        alphaMaterials.Dispenser.ID,
         alphaMaterials.Chest.ID,
         alphaMaterials.EnderChest.ID
     ]
@@ -720,7 +719,7 @@ class Hopper:
 
 @genericFlipRotation 
 class Dropper:
-    blocktypes = [alphaMaterials.Dropper.ID]
+    blocktypes = [alphaMaterials.Dropper.ID, alphaMaterials.Dispenser.ID]
     Down = 0
     Up = 1
     East = 2
