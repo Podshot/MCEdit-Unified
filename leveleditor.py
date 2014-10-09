@@ -752,6 +752,13 @@ class CameraViewport(GLViewport):
         block = self.editor.level.blockAt(*point)
         blockData = self.editor.level.blockDataAt(*point)
         tileEntity = self.editor.level.tileEntityAt(*point)
+        skullTypes = {
+            "Skeleton": 0,
+            "Wither Skeleton": 1,
+            "Zombie": 2,
+            "Player": 3,
+            "Creeper": 4,
+        }  
         
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
@@ -760,19 +767,23 @@ class CameraViewport(GLViewport):
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["SkullType"] = pymclevel.TAG_Byte(3)
+
+        def skull_type_picked(index):
+            tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullTypes.keys()[index]])
             
         self.editor.level.addTileEntity(tileEntity)
         titleLabel = Label("Edit Skull Data")
         usernameField = TextField(width=150)
         panel = Dialog()
         okBTN = Button("OK", action=panel.dismiss)
+        skullMenu = mceutils.MenuButton("Skull Type...", skullTypes.keys(), menu_picked=skull_type_picked)
         
         if "Owner" not in tileEntity:
             usernameField.value = ""
         else:
             usernameField.value = str(tileEntity["Owner"]["Name"].value)
             
-        column = [titleLabel] + [usernameField] + [okBTN]
+        column = [titleLabel, usernameField, skullMenu, okBTN]
         panel.add(Column(column))
         panel.shrink_wrap()
         
