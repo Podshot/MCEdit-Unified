@@ -441,21 +441,20 @@ blocks:
         name: Lava Flowing (Height:1)
       8:
         name: Lava Flowing (Height:8)
-        # 9-15 are also Lava Flowing (Height:8), but left blank so only one shows up in the search
       9:
-        name: 
+        name: Lava Flowing (Height:8)
       10:
-        name: 
+        name: Lava Flowing (Height:8)
       11:
-        name: 
+        name: Lava Flowing (Height:8)
       12:
-        name: 
+        name: Lava Flowing (Height:8)
       13:
-        name: 
+        name: Lava Flowing (Height:8)
       14:
-        name: 
+        name: Lava Flowing (Height:8)
       15:
-        name: 
+        name: Lava Flowing (Height:8)
 
   - id: 11
     idStr: lava
@@ -483,6 +482,20 @@ blocks:
       7:
         name: Lava Still (Height:1)
       8:
+        name: Lava Still (Height:8)
+      9:
+        name: Lava Still (Height:8)
+      10:
+        name: Lava Still (Height:8)
+      11:
+        name: Lava Still (Height:8)
+      12:
+        name: Lava Still (Height:8)
+      13:
+        name: Lava Still (Height:8)
+      14:
+        name: Lava Still (Height:8)
+      15:
         name: Lava Still (Height:8)
 
   - id: 12
