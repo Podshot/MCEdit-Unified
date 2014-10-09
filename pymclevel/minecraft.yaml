@@ -547,7 +547,6 @@ blocks:
   - id: 17
     idStr: log
     name: Wood
-    aka: log
     mapcolor: [102, 81, 51]
     tex: [4, 1]
     data:
