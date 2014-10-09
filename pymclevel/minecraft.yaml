@@ -327,23 +327,23 @@ blocks:
     tex: [4, 0]
     data:
       0:
-        name: Oak Wood Planks
+        name: Wood Planks - Oak
         aka: Wood Planks
         tex: [4, 0]
       1:
-        name: Spruce Wood Planks
+        name: Wood Planks - Spruce
         tex: [6, 12]
       2:
-        name: Birch Wood Planks
+        name: Wood Planks - Birch
         tex: [6, 13]
       3:
-        name: Jungle Wood Planks
+        name: Wood Planks - Jungle
         tex: [7, 12]
       4:
-        name: Acacia Wood Planks
+        name: Wood Planks - Acacia
         tex: [0, 15]
       5:
-        name: Dark Oak Wood Planks
+        name: Wood Planks - Dark Oak
         tex: [1, 15]
 
   - id: 6
@@ -355,40 +355,40 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Oak Sapling
+        name: Sapling Stage:0 - Oak
         tex: [15, 0]
       1:
-        name: Spruce Sapling
+        name: Sapling Stage:0 - Spruce
         tex: [15, 3]
       2:
-        name: Birch Sapling
+        name: Sapling Stage:0 - Birch
         tex: [15, 4]
       3:
-        name: Jungle Sapling
+        name: Sapling Stage:0 - Jungle
         tex: [14, 1]
       4:
-        name: Acacia Sapling
+        name: Sapling Stage:0 - Acacia
         tex: [20, 1]
       5:
-        name: Dark Oak Sapling
+        name: Sapling Stage:0 - Dark Oak
         tex: [20, 0]
       8:
-        name: Oak Sapling (Stage 1)
+        name: Sapling Stage:1 - Oak
         tex: [15, 0]
       9:
-        name: Spruce Sapling (Stage 1)
+        name: Sapling Stage:1 - Spruce
         tex: [15, 3]
       10:
-        name: Birch Sapling (Stage 1)
+        name: Sapling Stage:1 - Birch
         tex: [15, 4]
       11:
-        name: Jungle Sapling (Stage 1)
+        name: Sapling Stage:1 - Jungle
         tex: [14, 1]
       12:
-        name: Acacia Sapling (Stage 1)
+        name: Sapling Stage:1 - Acacia
         tex: [20, 1]
       13:
-        name: Dark Oak Sapling (Stage 1)
+        name: Sapling Stage:1 - Dark Oak
         tex: [20, 0]
 
   - id: 7
@@ -416,16 +416,35 @@ blocks:
 
   - id: 10
     idStr: flowing_lava
-    name: Lava (Flowing)
+    name: Lava - Flowing - Height:Max
     mapcolor: [255, 90, 0]
     tex: [13, 14]
     type: SEMISOLID
     brightness: 15
     opacity: 0
+    data:
+      0:
+        name: Lava - Flowing - Source Block
+      1:
+        name: Lava - Flowing - Height:7
+      2:
+        name: Lava - Flowing - Height:6
+      3:
+        name: Lava - Flowing - Height:5
+      4:
+        name: Lava - Flowing - Height:4
+      5:
+        name: Lava - Flowing - Height:3
+      6:
+        name: Lava - Flowing - Height:2
+      7:
+        name: Lava - Flowing - Height:1
+      8:
+        name: Lava - Flowing - Height:Max
 
   - id: 11
     idStr: lava
-    name: Lava
+    name: Lava - Still
     mapcolor: [255, 90, 0]
     tex: [13, 14]
     type: SEMISOLID
