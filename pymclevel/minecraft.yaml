@@ -441,6 +441,7 @@ blocks:
         name: Lava Flowing (Height:1)
       8:
         name: Lava Flowing (Height:8)
+<<<<<<< HEAD
       9:
         name: Lava Flowing (Height:8)
       10:
@@ -455,6 +456,8 @@ blocks:
         name: Lava Flowing (Height:8)
       15:
         name: Lava Flowing (Height:8)
+=======
+>>>>>>> origin/patch-3
 
   - id: 11
     idStr: lava
