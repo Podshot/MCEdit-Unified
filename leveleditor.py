@@ -775,23 +775,31 @@ class CameraViewport(GLViewport):
         titleLabel = Label("Edit Skull Data")
         usernameField = TextField(width=150)
         panel = Dialog()
-        okBTN = Button("OK", action=panel.dismiss)
-        skullMenu = mceutils.MenuButton("Skull Type...", skullTypes.keys(), menu_picked=skull_type_picked)
-        
-        if "Owner" not in tileEntity:
-            usernameField.value = ""
-        else:
-            usernameField.value = str(tileEntity["Owner"]["Name"].value)
-            
-        column = [titleLabel, usernameField, skullMenu, okBTN]
-        panel.add(Column(column))
-        panel.shrink_wrap()
-        
-        if panel.present():
-            tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
+
+        def updateSkull():
+            if usernameField.value != "":
+                tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
+                tileEntity["SkullType"] = pymclevel.TAG_Byte(3)
+                if "Owner" in tileEntity:
+                    del tileEntity["Owner"]
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
             chunk.dirty = True
             self.editor.addUnsavedEdit()
+            panel.dismiss()
+            
+        if "ExtraType" not in tileEntity:
+            usernameField.value = ""
+        else:
+            usernameField.value = str(tileEntity["ExtraType"].value)
+            
+        okBTN = Button("OK", action=updateSkull)
+        cancel = Button("Cancel", action=panel.dismiss)
+        skullMenu = mceutils.MenuButton("Skull Type...", skullTypes.keys(), menu_picked=skull_type_picked)
+            
+        column = [titleLabel, usernameField, skullMenu, okBTN, cancel]
+        panel.add(Column(column))
+        panel.shrink_wrap()
+        panel.present()
             
             
         
