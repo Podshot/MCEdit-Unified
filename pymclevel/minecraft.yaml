@@ -355,40 +355,40 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Sapling Stage:0 - Oak
+        name: Sapling Stage:0 (Oak)
         tex: [15, 0]
       1:
-        name: Sapling Stage:0 - Spruce
+        name: Sapling Stage:0 (Spruce)
         tex: [15, 3]
       2:
-        name: Sapling Stage:0 - Birch
+        name: Sapling Stage:0 (Birch)
         tex: [15, 4]
       3:
-        name: Sapling Stage:0 - Jungle
+        name: Sapling Stage:0 (Jungle)
         tex: [14, 1]
       4:
-        name: Sapling Stage:0 - Acacia
+        name: Sapling Stage:0 (Acacia)
         tex: [20, 1]
       5:
-        name: Sapling Stage:0 - Dark Oak
+        name: Sapling Stage:0 (Dark Oak)
         tex: [20, 0]
       8:
-        name: Sapling Stage:1 - Oak
+        name: Sapling Stage:1 (Oak)
         tex: [15, 0]
       9:
-        name: Sapling Stage:1 - Spruce
+        name: Sapling Stage:1 (Spruce)
         tex: [15, 3]
       10:
-        name: Sapling Stage:1 - Birch
+        name: Sapling Stage:1 (Birch)
         tex: [15, 4]
       11:
-        name: Sapling Stage:1 - Jungle
+        name: Sapling Stage:1 (Jungle)
         tex: [14, 1]
       12:
-        name: Sapling Stage:1 - Acacia
+        name: Sapling Stage:1 (Acacia)
         tex: [20, 1]
       13:
-        name: Sapling Stage:1 - Dark Oak
+        name: Sapling Stage:1 (Dark Oak)
         tex: [20, 0]
 
   - id: 7
@@ -416,7 +416,7 @@ blocks:
 
   - id: 10
     idStr: flowing_lava
-    name: Lava - Flowing - Height:Max
+    name: Lava Flowing
     mapcolor: [255, 90, 0]
     tex: [13, 14]
     type: SEMISOLID
@@ -424,32 +424,79 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Lava - Flowing - Source Block
+        name: Lava Flowing (Source Block)
       1:
-        name: Lava - Flowing - Height:7
+        name: Lava Flowing (Height:7)
       2:
-        name: Lava - Flowing - Height:6
+        name: Lava Flowing (Height:6)
       3:
-        name: Lava - Flowing - Height:5
+        name: Lava Flowing (Height:5)
       4:
-        name: Lava - Flowing - Height:4
+        name: Lava Flowing (Height:4)
       5:
-        name: Lava - Flowing - Height:3
+        name: Lava Flowing (Height:3)
       6:
-        name: Lava - Flowing - Height:2
+        name: Lava Flowing (Height:2)
       7:
-        name: Lava - Flowing - Height:1
+        name: Lava Flowing (Height:1)
       8:
-        name: Lava - Flowing - Height:Max
+        name: Lava Flowing (Height:8)
+      9:
+        name: Lava Flowing (Height:8)
+      10:
+        name: Lava Flowing (Height:8)
+      11:
+        name: Lava Flowing (Height:8)
+      12:
+        name: Lava Flowing (Height:8)
+      13:
+        name: Lava Flowing (Height:8)
+      14:
+        name: Lava Flowing (Height:8)
+      15:
+        name: Lava Flowing (Height:8)
 
   - id: 11
     idStr: lava
-    name: Lava - Still
+    name: Lava Still
     mapcolor: [255, 90, 0]
     tex: [13, 14]
     type: SEMISOLID
     brightness: 15
     opacity: 0
+    data:
+      0:
+        name: Lava Still (Source Block)
+      1:
+        name: Lava Still (Height:7)
+      2:
+        name: Lava Still (Height:6)
+      3:
+        name: Lava Still (Height:5)
+      4:
+        name: Lava Still (Height:4)
+      5:
+        name: Lava Still (Height:3)
+      6:
+        name: Lava Still (Height:2)
+      7:
+        name: Lava Still (Height:1)
+      8:
+        name: Lava Still (Height:8)
+      9:
+        name: Lava Still (Height:8)
+      10:
+        name: Lava Still (Height:8)
+      11:
+        name: Lava Still (Height:8)
+      12:
+        name: Lava Still (Height:8)
+      13:
+        name: Lava Still (Height:8)
+      14:
+        name: Lava Still (Height:8)
+      15:
+        name: Lava Still (Height:8)
 
   - id: 12
     idStr: sand
