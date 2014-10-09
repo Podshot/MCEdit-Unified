@@ -442,7 +442,6 @@ blocks:
       8:
         name: Lava Flowing (Height:8)
 <<<<<<< HEAD
-<<<<<<< HEAD
       9:
         name: Lava Flowing (Height:8)
       10:
@@ -459,23 +458,6 @@ blocks:
         name: Lava Flowing (Height:8)
 =======
 >>>>>>> origin/patch-3
-=======
-        # 9-15 are also Lava Flowing (Height:8), but left blank so only one shows up in the search
-      9:
-        name: 
-      10:
-        name: 
-      11:
-        name: 
-      12:
-        name: 
-      13:
-        name: 
-      14:
-        name: 
-      15:
-        name: 
->>>>>>> parent of d5fac4d... Lava Test Look
 
   - id: 11
     idStr: lava
