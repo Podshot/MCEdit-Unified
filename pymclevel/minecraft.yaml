@@ -2300,22 +2300,22 @@ blocks:
     tex: [4, 0]
     data:
       0:
-        name: Double Oak Wood Slab
+        name: Oak Double Wooden Slab
       1:
         tex: [6, 12]
-        name: Double Spruce Wood Slab
+        name: Spruce Double Wooden Slab
       2:
         tex: [6, 13]
-        name: Double Birch Wood Slab
+        name: Birch Double Wooden Slab
       3:
         tex: [7, 12]
-        name: Double Jungle Wood Slab
+        name: Jungle Double Wooden Slab
       4:
         tex: [0, 15]
-        name: Double Acacia Wood Slab
+        name: Acacia Double Wooden Slab
       5:
         tex: [1, 15]
-        name: Double Dark Oak Wood Slab
+        name: Dark Oak Double Wooden Slab
 
   - id: 126
     idStr: wooden_slab
@@ -2324,39 +2324,39 @@ blocks:
     tex: [4, 0]
     data:
       0:
-        name: Oak Wood Slab
+        name: Oak Wooden Slab (Bottom)
       1:
         tex: [6, 12]
-        name: Spruce Wood Slab
+        name: Spruce Wooden Slab (Bottom)
       2:
         tex: [6, 13]
-        name: Birch Wood Slab
+        name: Birch Wooden Slab (Bottom)
       3:
         tex: [7, 12]
-        name: Jungle Wood Slab
+        name: Jungle Wooden Slab (Bottom)
       4:
         tex: [0, 15]
-        name: Acacia Wood Slab
+        name: Acacia Wooden Slab (Bottom)
       5:
         tex: [1, 15]
-        name: Dark Oak Wood Slab
+        name: Dark Oak Wooden Slab (Bottom)
       8:
-        name: Oak Wood Slab (Upper)
+        name: Oak Wooden Slab (Top)
       9:
         tex: [6, 12]
-        name: Spruce Wood Slab (Upper)
+        name: Spruce Wooden Slab (Top)
       10:
         tex: [6, 13]
-        name: Birch Wood Slab (Upper)
+        name: Birch Wooden Slab (Top)
       11:
         tex: [7, 12]
-        name: Jungle Wood Slab (Upper)
+        name: Jungle Wooden Slab (Top)
       12:
         tex: [0, 15]
-        name: Acacia Wood Slab (Upper)
+        name: Acacia Wooden Slab (Top)
       13:
         tex: [1, 15]
-        name: Dark Oak Wood Slab (Upper)
+        name: Dark Oak Wooden Slab (Top)
 
   - id: 127
     idStr: cocoa
