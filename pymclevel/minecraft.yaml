@@ -328,7 +328,6 @@ blocks:
     data:
       0:
         name: Wood Planks - Oak
-        aka: Wood Planks
         tex: [4, 0]
       1:
         name: Wood Planks - Spruce
@@ -355,40 +354,40 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Sapling Stage:0 (Oak)
+        name: Sapling Stage:0 - Oak
         tex: [15, 0]
       1:
-        name: Sapling Stage:0 (Spruce)
+        name: Sapling Stage:0 - Spruce
         tex: [15, 3]
       2:
-        name: Sapling Stage:0 (Birch)
+        name: Sapling Stage:0 - Birch
         tex: [15, 4]
       3:
-        name: Sapling Stage:0 (Jungle)
+        name: Sapling Stage:0 - Jungle
         tex: [14, 1]
       4:
-        name: Sapling Stage:0 (Acacia)
+        name: Sapling Stage:0 - Acacia
         tex: [20, 1]
       5:
-        name: Sapling Stage:0 (Dark Oak)
+        name: Sapling Stage:0 - Dark Oak
         tex: [20, 0]
       8:
-        name: Sapling Stage:1 (Oak)
+        name: Sapling Stage:1 - Oak
         tex: [15, 0]
       9:
-        name: Sapling Stage:1 (Spruce)
+        name: Sapling Stage:1 - Spruce
         tex: [15, 3]
       10:
-        name: Sapling Stage:1 (Birch)
+        name: Sapling Stage:1 - Birch
         tex: [15, 4]
       11:
-        name: Sapling Stage:1 (Jungle)
+        name: Sapling Stage:1 - Jungle
         tex: [14, 1]
       12:
-        name: Sapling Stage:1 (Acacia)
+        name: Sapling Stage:1 - Acacia
         tex: [20, 1]
       13:
-        name: Sapling Stage:1 (Dark Oak)
+        name: Sapling Stage:1 - Dark Oak
         tex: [20, 0]
 
   - id: 7
@@ -400,19 +399,57 @@ blocks:
 
   - id: 8
     idStr: flowing_water
-    name: Water (Flowing)
+    name: Water Flowing
     mapcolor: [38, 92, 255]
     type: WATER
     tex: [13, 12]
     opacity: 3
+    data:
+      0:
+        name: Water Flowing (Source Block)
+      1:
+        name: Water Flowing (Height:7)
+      2:
+        name: Water Flowing (Height:6)
+      3:
+        name: Water Flowing (Height:5)
+      4:
+        name: Water Flowing (Height:4)
+      5:
+        name: Water Flowing (Height:3)
+      6:
+        name: Water Flowing (Height:2)
+      7:
+        name: Water Flowing (Height:1)
+      8:
+        name: Water Flowing (Height:8)
 
   - id: 9
     idStr: water
-    name: Water
+    name: Water Still
     mapcolor: [38, 92, 255]
     type: WATER
     tex: [13, 12]
     opacity: 3
+    data:
+      0:
+        name: Water Still (Source Block)
+      1:
+        name: Water Still (Height:7)
+      2:
+        name: Water Still (Height:6)
+      3:
+        name: Water Still (Height:5)
+      4:
+        name: Water Still (Height:4)
+      5:
+        name: Water Still (Height:3)
+      6:
+        name: Water Still (Height:2)
+      7:
+        name: Water Still (Height:1)
+      8:
+        name: Water Still (Height:8)
 
   - id: 10
     idStr: flowing_lava
@@ -510,12 +547,12 @@ blocks:
   - id: 17
     idStr: log
     name: Wood
+    aka: log
     mapcolor: [102, 81, 51]
     tex: [4, 1]
     data:
       0:
-        name: Oak Wood (Upright)
-        aka: Wood
+        name: Wood Log (Upright) - Oak
         variant: Oak
         axis: x
         tex: [4, 1]
@@ -523,78 +560,78 @@ blocks:
           TOP: [5, 1]
           BOTTOM: [5, 1]
       1:
-        name: Spruce Wood (Upright)
+        name: Wood Log (Upright) - Spruce
         tex: [4, 7]
         tex_direction:
           TOP: [9, 14]
           BOTTOM: [9, 14]
       2:
-        name: Birch Wood (Upright)
+        name: Wood Log (Upright) - Birch
         tex: [5, 7]
         tex_direction:
           TOP: [10, 14]
           BOTTOM: [10, 14]
       3:
-        name: Jungle Wood (Upright)
+        name: Wood Log (Upright) - Jungle
         tex: [9, 9]
         tex_direction:
           TOP: [11, 14]
           BOTTOM: [11, 14]
       4:
-        name: Oak Wood (East/West)
+        name: Wood Log (East/West) - Oak
         tex: [4, 1]
         tex_direction:
           SIDES: [5, 1]
       5:
-        name: Spruce Wood (East/West)
+        name: Wood Log (East/West) - Spruce
         tex: [4, 7]
         tex_direction:
           SIDES: [9, 14]
       6:
-        name: Birch Wood (East/West)
+        name: Wood Log (East/West) - Birch
         tex: [5, 7]
         tex_direction:
           SIDES: [10, 14]
       7:
-        name: Jungle Wood (East/West)
+        name: Wood Log (East/West) - Jungle
         tex: [9, 9]
         tex_direction:
           SIDES: [11, 14]
       8:
-        name: Oak Wood (North/South)
+        name: Wood Log (North/South) - Oak
         tex: [4, 1]
         tex_direction:
           FORWARD: [11, 14]
           BACKWARD: [11, 14]
       9:
-        name: Spruce Wood (North/South)
+        name: Wood Log (North/South) - Spruce
         tex: [4, 7]
         tex_direction:
           FORWARD: [9, 14]
           BACKWARD: [9, 14]
       10:
-        name: Birch Wood (North/South)
+        name: Wood Log (North/South) - Birch
         tex: [5, 7]
         tex_direction:
           FORWARD: [10, 14]
           BACKWARD: [10, 14]
       11:
-        name: Jungle Wood (North/South)
+        name: Wood Log (North/South) - Jungle
         tex: [9, 9]
         tex_direction:
           FORWARD: [11, 14]
           BACKWARD: [11, 14]
       12:
-        name: Oak Wood (Bark Only)
+        name: Wood Log (Bark Only) - Oak
         tex: [4, 1]
       13:
-        name: Spruce Wood (Bark Only)
+        name: Wood Log (Bark Only) - Spruce
         tex: [4, 7]
       14:
-        name: Birch Wood (Bark Only)
+        name: Wood Log (Bark Only) - Birch
         tex: [5, 7]
       15:
-        name: Jungle Wood (Bark Only)
+        name: Wood Log (Bark Only) - Jungle
         tex: [9, 9]
 
   - id: 18
@@ -607,56 +644,56 @@ blocks:
     opacity: 1
     data:
       0:
-        name: Oak Leaves
+        name: Leaves - Oak
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       1:
-        name: Spruce Leaves
+        name: Leaves - Spruce
         aka: Pine Leaves
         mapcolor: [74, 131, 66]
         tex: [5, 8]
       2:
-        name: Birch Leaves
+        name: Leaves - Birch
         mapcolor: [89, 151, 76]
         tex: [5, 3]
       3:
-        name: Jungle Leaves
+        name: Leaves - Jungle
         mapcolor: [74, 131, 66]
         tex: [5, 12]
 
       4: # bit 0x4 - "Permanent"
-        name: Oak Leaves (No Decay)
+        name: Leaves (No Decay) - Oak
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       5:
-        name: Spruce Leaves (No Decay)
+        name: Leaves (No Decay) - Spruce
         aka: Pine Leaves
         mapcolor: [74, 131, 66]
         tex: [5, 8]
       6:
-        name: Birch Leaves (No Decay)
+        name: Leaves (No Decay) - Birch
         mapcolor: [89, 151, 76]
         tex: [5, 3]
       7:
-        name: Jungle Leaves (No Decay)
+        name: Leaves (No Decay) - Jungle
         mapcolor: [74, 131, 66]
         tex: [5, 12]
 
       8: # bit 0x8 - "Decaying"
-        name: Oak Leaves (Decaying)
+        name: Leaves (Decaying) - Oak
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       9:
-        name: Spruce Leaves (Decaying)
+        name: Leaves (Decaying) - Spruce
         aka: Pine Leaves
         mapcolor: [74, 131, 66]
         tex: [5, 8]
       10:
-        name: Birch Leaves (Decaying)
+        name: Leaves (Decaying) - Birch
         mapcolor: [89, 151, 76]
         tex: [5, 3]
       11:
-        name: Jungle Leaves (Decaying)
+        name: Leaves (Decaying) - Jungle
         mapcolor: [74, 131, 66]
         tex: [5, 12]
 
@@ -700,69 +737,69 @@ blocks:
 #    tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
     data:
       0:
-        name: Dispenser (Down)
+        name: Dispenser[Off] (Down)
         tex_direction:
           TOP: [14, 3]
           BOTTOM: [18, 5]
       1:
-        name: Dispenser (Up)
+        name: Dispenser[Off] (Up)
         tex_direction:
           TOP: [18, 5]
           BOTTOM: [14, 3]
       2: 
-        name: Dispenser (North)
+        name: Dispenser[Off] (North)
         tex_direction:
           FORWARD: [14, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       3: 
-        name: Dispenser (South)
+        name: Dispenser[Off] (South)
         tex_direction:
           BACKWARD: [14, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       4: 
-        name: Dispenser (West)
+        name: Dispenser[Off] (West)
         tex_direction:
           LEFT: [14, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       5: 
-        name: Dispenser (East)
+        name: Dispenser[Off] (East)
         tex_direction:
           RIGHT: [14, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       8:
-        name: Dispenser (On) (Down)
+        name: Dispenser[On] (Down)
         tex_direction:
           TOP: [14, 3]
           BOTTOM: [18, 5]
       9:
-        name: Dispenser (On) (Up)
+        name: Dispenser[On] (Up)
         tex_direction:
           TOP: [18, 5]
           BOTTOM: [14, 3]
       10: 
-        name: Dispenser (On) (North)
+        name: Dispenser[On] (North)
         tex_direction:
           FORWARD: [14, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       11: 
-        name: Dispenser (On) (South)
+        name: Dispenser[On] (South)
         tex_direction:
           BACKWARD: [14, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       12: 
-        name: Dispenser (On) (West)
+        name: Dispenser[On] (West)
         tex_direction:
           LEFT: [14, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       13: 
-        name: Dispenser (On) (East)
+        name: Dispenser[On] (East)
         tex_direction:
           RIGHT: [14, 2]
           TOP: [14, 3]
@@ -781,11 +818,11 @@ blocks:
         mapcolor: [218, 210, 158]
         tex: [0, 12]
       1:
-        name: Chiseled Sandstone
+        name: Sandstone Chiseled
         mapcolor: [218, 210, 158]
         tex: [5, 14]
       2:
-        name: Smooth Sandstone
+        name: Sandstone Smooth
         mapcolor: [218, 210, 158]
         tex: [6, 14]
 
