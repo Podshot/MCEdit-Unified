@@ -2537,6 +2537,7 @@ blocks:
   - id: 144
     idStr: skull
     name: Mob Head
+    aka: Skull
     mapcolor: [200, 100, 100]
     tex: [2, 15]
     opacity: 0
