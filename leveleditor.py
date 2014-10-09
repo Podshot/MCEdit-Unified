@@ -72,6 +72,7 @@ from glutils import gl, Texture
 from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
+from pymclevel import version_utils
 
 # Label = GLLabel
 
@@ -747,6 +748,44 @@ class CameraViewport(GLViewport):
                 tileEntity[l].value = f.value[:15]
 
     @mceutils.alertException
+    def editSkull(self, point):
+        block = self.editor.level.blockAt(*point)
+        blockData = self.editor.level.blockDataAt(*point)
+        tileEntity = self.editor.level.tileEntityAt(*point)
+        
+        if not tileEntity:
+            tileEntity = pymclevel.TAG_Compound()
+            tileEntity["id"] = pymclevel.TAG_String("Skull")
+            tileEntity["x"] = pymclevel.TAG_Int(point[0])
+            tileEntity["y"] = pymclevel.TAG_Int(point[1])
+            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+            tileEntity["SkullType"] = pymclevel.TAG_Byte(3)
+            
+        self.editor.level.addTileEntity(tileEntity)
+        titleLabel = Label("Edit Skull Data")
+        usernameField = TextField(width=150)
+        panel = Dialog()
+        okBTN = Button("OK", action=panel.dismiss)
+        
+        if "Owner" not in tileEntity:
+            usernameField.value = ""
+        else:
+            usernameField.value = str(tileEntity["Owner"]["Name"].value)
+            
+        column = [titleLabel] + [usernameField] + [okBTN]
+        panel.add(Column(column))
+        panel.shrink_wrap()
+        
+        if panel.present():
+            tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
+            chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
+            chunk.dirty = True
+            self.editor.addUnsavedEdit()
+            
+            
+        
+
+    @mceutils.alertException
     def editContainer(self, point, containerID):
         tileEntityTag = self.editor.level.tileEntityAt(*point)
         if tileEntityTag is None:
@@ -996,6 +1035,7 @@ class CameraViewport(GLViewport):
                                 pymclevel.alphaMaterials.MonsterSpawner.ID: self.editMonsterSpawner,
                                 pymclevel.alphaMaterials.Sign.ID: self.editSign,
                                 pymclevel.alphaMaterials.WallSign.ID: self.editSign,
+                                pymclevel.alphaMaterials.MobHead.ID: self.editSkull,
                             }
                             edit = blockEditors.get(block)
                             if edit:
