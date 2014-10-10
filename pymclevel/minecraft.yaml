@@ -805,15 +805,15 @@ blocks:
         tex_direction:
           FORWARD: [0, 21]
           BACKWARD: [8, 9]
-          LEFT: [1, 21]
-          RIGHT: [7, 9]
+          LEFT: [7, 9]
+          RIGHT: [1, 21]
           TOP: [3, 22]
           BOTTOM: [7, 8]
       9:
         name: Bed (Head) (occupied:false)
         tex_direction:
-          FORWARD: [1, 21]
-          BACKWARD: [7, 9]
+          FORWARD: [7, 9]
+          BACKWARD: [1, 21]
           LEFT: [8, 9]
           RIGHT: [0, 21]
           TOP: [1, 22]
@@ -823,15 +823,15 @@ blocks:
         tex_direction:
           FORWARD: [8, 9]
           BACKWARD: [0, 21]
-          LEFT: [7, 9]
-          RIGHT: [1, 21]
+          LEFT: [1, 21]
+          RIGHT: [7, 9]
           TOP: [4, 21]
           BOTTOM: [7, 8]
       11:
         name: Bed (Head) (occupied:false)
         tex_direction:
-          FORWARD: [7, 9]
-          BACKWARD: [1, 21]
+          FORWARD: [1, 21]
+          BACKWARD: [7, 9]
           LEFT: [0, 21]
           RIGHT: [8, 9]
           TOP: [7, 8]
@@ -841,15 +841,15 @@ blocks:
         tex_direction:
           FORWARD: [0, 21]
           BACKWARD: [8, 9]
-          LEFT: [1, 21]
-          RIGHT: [7, 9]
+          LEFT: [7, 9]
+          RIGHT: [1, 21]
           TOP: [3, 22]
           BOTTOM: [7, 8]
       13:
         name: Bed (Head) (occupied:true)
         tex_direction:
-          FORWARD: [1, 21]
-          BACKWARD: [7, 9]
+          FORWARD: [7, 9]
+          BACKWARD: [1, 21]
           LEFT: [8, 9]
           RIGHT: [0, 21]
           TOP: [1, 22]
@@ -859,15 +859,15 @@ blocks:
         tex_direction:
           FORWARD: [8, 9]
           BACKWARD: [0, 21]
-          LEFT: [7, 9]
-          RIGHT: [1, 21]
+          LEFT: [1, 21]
+          RIGHT: [7, 9]
           TOP: [4, 21]
           BOTTOM: [7, 8]
       15:
         name: Bed (Head) (occupied:true)
         tex_direction:
-          FORWARD: [7, 9]
-          BACKWARD: [1, 21]
+          FORWARD: [1, 21]
+          BACKWARD: [7, 9]
           LEFT: [0, 21]
           RIGHT: [8, 9]
           TOP: [7, 8]
