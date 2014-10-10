@@ -87,6 +87,10 @@ import release
 import shutil
 import sys
 import traceback
+import Tkinter
+import ttk
+import tkMessageBox
+import tkSimpleDialog
 
 ESCAPE = '\033'
 
