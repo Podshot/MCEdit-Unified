@@ -2057,6 +2057,15 @@ blocks:
     tex_extra:
       stem: [13, 8]
       pores: [14, 8]
+    data:
+      0:
+        name: Huge Brown Mushroom (All Inside)
+        tex: [14, 8]
+      14:
+        name: Huge Brown Mushroom (All Outside)
+      15:
+        name: Huge Brown Mushroom (All Stem)
+        tex: [13, 8]
 
   - id: 100
     idStr: red_mushroom_block
