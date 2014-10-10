@@ -413,7 +413,6 @@ class ChunkCalculator(object):
             TorchBlockRenderer,
             WaterBlockRenderer,
             SlabBlockRenderer,
-            PlateBlockRenderer,
         ]
         if materials.name in ("Alpha", "Pocket"):
             self.blockRendererClasses += [
@@ -440,12 +439,7 @@ class ChunkCalculator(object):
                 PlateBlockRenderer,
                 # button, floor plate, door -> 1-cube features
                 # lever, sign, wall sign, stairs -> 2-cube features
-
-                # repeater
                 # fence
-
-                # bed
-                # cake
                 # portal
             ]
 
@@ -1631,7 +1625,6 @@ class RailBlockRenderer(BlockRenderer):
 
     makeVertices = makeRailVertices
 
-
 class LadderBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Ladder.ID]
 
@@ -1902,7 +1895,6 @@ class PlateBlockRenderer(BlockRenderer):  #suggestions to make this the proper s
         self.vertexArrays = arrays
 
     makeVertices = makePlateVertices
-
 
 class EnchantingBlockRenderer(
     BlockRenderer):  #Note: Enderportal frame side sprite has been lowered 1 pixel to use this renderer, will need separate renderer for eye.

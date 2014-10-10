@@ -177,7 +177,7 @@ class ControlPanel(Panel):
         cmd = mcplatform.cmd_name
         hotkeys = ([(cmd + "-" + str.upper(config.config.get('Keys', 'New World')), "Create New World",
                      editor.mcedit.createNewWorld),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Load')), "Quick-Load", editor.askLoadWorld),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Load')), "Quick Load", editor.askLoadWorld),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Open')), "Open World...", editor.askOpenFile),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Save')), "Save", editor.saveFile),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Reload World')), "Reload", editor.reload),
