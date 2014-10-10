@@ -801,7 +801,7 @@ blocks:
           TOP: [6, 8]
           BOTTOM: [6, 8]
       8:
-        name: Bed (Head) (occupied:false)
+        name: Bed (Head)
         tex_direction:
           FORWARD: [0, 21]
           BACKWARD: [8, 9]
@@ -810,7 +810,7 @@ blocks:
           TOP: [3, 22]
           BOTTOM: [7, 8]
       9:
-        name: Bed (Head) (occupied:false)
+        name: Bed (Head)
         tex_direction:
           FORWARD: [7, 9]
           BACKWARD: [1, 21]
@@ -819,7 +819,7 @@ blocks:
           TOP: [1, 22]
           BOTTOM: [7, 8]
       10:
-        name: Bed (Head) (occupied:false)
+        name: Bed (Head)
         tex_direction:
           FORWARD: [8, 9]
           BACKWARD: [0, 21]
@@ -828,7 +828,7 @@ blocks:
           TOP: [4, 21]
           BOTTOM: [7, 8]
       11:
-        name: Bed (Head) (occupied:false)
+        name: Bed (Head)
         tex_direction:
           FORWARD: [1, 21]
           BACKWARD: [7, 9]
@@ -837,7 +837,7 @@ blocks:
           TOP: [7, 8]
           BOTTOM: [7, 8]
       12:
-        name: Bed (Head) (occupied:true)
+        name: Bed (Head) (Occupied)
         tex_direction:
           FORWARD: [0, 21]
           BACKWARD: [8, 9]
@@ -846,7 +846,7 @@ blocks:
           TOP: [3, 22]
           BOTTOM: [7, 8]
       13:
-        name: Bed (Head) (occupied:true)
+        name: Bed (Head) (Occupied)
         tex_direction:
           FORWARD: [7, 9]
           BACKWARD: [1, 21]
@@ -855,7 +855,7 @@ blocks:
           TOP: [1, 22]
           BOTTOM: [7, 8]
       14:
-        name: Bed (Head) (occupied:true)
+        name: Bed (Head) (Occupied)
         tex_direction:
           FORWARD: [8, 9]
           BACKWARD: [0, 21]
@@ -864,7 +864,7 @@ blocks:
           TOP: [4, 21]
           BOTTOM: [7, 8]
       15:
-        name: Bed (Head) (occupied:true)
+        name: Bed (Head) (Occupied)
         tex_direction:
           FORWARD: [1, 21]
           BACKWARD: [7, 9]
