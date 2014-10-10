@@ -738,7 +738,7 @@ class CameraViewport(GLViewport):
         def changeSign():
             self.editor.addUnsavedEdit()
             for l, f in zip(linekeys, lineFields):
-                tileEntity[l].value = f.value[:15]
+                tileEntity[l] = pymclevel.TAG_String(f.value[:15])
             panel.dismiss()
             
 
