@@ -2076,6 +2076,15 @@ blocks:
     tex_extra:
       stem: [13, 8]
       pores: [14, 8]
+    data:
+      0:
+        name: Huge Red Mushroom (All Inside)
+        tex: [14, 8]
+      14:
+        name: Huge Red Mushroom (All Outside)
+      15:
+        name: Huge Red Mushroom (All Stem)
+        tex: [13, 8]
 
   - id: 101
     idStr: iron_bars
