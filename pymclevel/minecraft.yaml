@@ -768,107 +768,107 @@ blocks:
         name: Bed (Foot)
         tex_direction:
           FORWARD: [5, 9]
-          #BACKWARD: blank
+          BACKWARD: [0, 21]
           LEFT: [6, 9]
-          RIGHT: [6, 9] #need correct texture (mirror of current texture)
-          TOP: [6, 8]
+          RIGHT: [2, 21]
+          TOP: [3, 21]
           BOTTOM: [6, 8]
       1:
         name: Bed (Foot)
         tex_direction:
           FORWARD: [6, 9]
-          BACKWARD: [6, 9] #need correct texture (mirror of current texture)
-          #LEFT: blank
+          BACKWARD: [2, 21]
+          LEFT: [0, 21]
           RIGHT: [5, 9]
-          TOP: [6, 8]
+          TOP: [2, 22]
           BOTTOM: [6, 8]
       2:
         name: Bed (Foot)
         tex_direction:
-          #FORWARD: blank
+          FORWARD: [0, 21]
           BACKWARD: [5, 9]
-          LEFT: [6, 9] #need correct texture (mirror of current texture)
+          LEFT: [2, 21]
           RIGHT: [6, 9]
-          TOP: [6, 8]
+          TOP: [4, 22]
           BOTTOM: [6, 8]
       3:
         name: Bed (Foot)
         tex_direction:
-          FORWARD: [6, 9] #need correct texture (mirror of current texture)
+          FORWARD: [2, 21]
           BACKWARD: [6, 9]
           LEFT: [5, 9]
-          #RIGHT: blank
+          RIGHT: [0, 21]
           TOP: [6, 8]
           BOTTOM: [6, 8]
       8:
         name: Bed (Head) (occupied:false)
         tex_direction:
-          #FORWARD: blank
+          FORWARD: [0, 21]
           BACKWARD: [8, 9]
-          LEFT: [7, 9] #need correct texture (mirror of current texture)
+          LEFT: [1, 21]
           RIGHT: [7, 9]
-          TOP: [7, 8]
+          TOP: [3, 22]
           BOTTOM: [7, 8]
       9:
         name: Bed (Head) (occupied:false)
         tex_direction:
-          FORWARD: [7, 9] #need correct texture (mirror of current texture)
+          FORWARD: [1, 21]
           BACKWARD: [7, 9]
           LEFT: [8, 9]
-          #RIGHT: blank
-          TOP: [7, 8]
+          RIGHT: [0, 21]
+          TOP: [1, 22]
           BOTTOM: [7, 8]
       10:
         name: Bed (Head) (occupied:false)
         tex_direction:
           FORWARD: [8, 9]
-          #BACKWARD: blank
+          BACKWARD: [0, 21]
           LEFT: [7, 9]
-          RIGHT: [7, 9] #need correct texture (mirror of current texture)
-          TOP: [7, 8]
+          RIGHT: [1, 21]
+          TOP: [4, 21]
           BOTTOM: [7, 8]
       11:
         name: Bed (Head) (occupied:false)
         tex_direction:
           FORWARD: [7, 9]
-          BACKWARD: [7, 9] #need correct texture (mirror of current texture)
-          #LEFT: blank
+          BACKWARD: [1, 21]
+          LEFT: [0, 21]
           RIGHT: [8, 9]
           TOP: [7, 8]
           BOTTOM: [7, 8]
       12:
         name: Bed (Head) (occupied:true)
         tex_direction:
-          #FORWARD: blank
+          FORWARD: [0, 21]
           BACKWARD: [8, 9]
-          LEFT: [7, 9] #need correct texture (mirror of current texture)
+          LEFT: [1, 21]
           RIGHT: [7, 9]
-          TOP: [7, 8]
+          TOP: [3, 22]
           BOTTOM: [7, 8]
       13:
         name: Bed (Head) (occupied:true)
         tex_direction:
-          FORWARD: [7, 9] #need correct texture (mirror of current texture)
+          FORWARD: [1, 21]
           BACKWARD: [7, 9]
           LEFT: [8, 9]
-          #RIGHT: blank
-          TOP: [7, 8]
+          RIGHT: [0, 21]
+          TOP: [1, 22]
           BOTTOM: [7, 8]
       14:
         name: Bed (Head) (occupied:true)
         tex_direction:
           FORWARD: [8, 9]
-          #BACKWARD: blank
+          BACKWARD: [0, 21]
           LEFT: [7, 9]
-          RIGHT: [7, 9] #need correct texture (mirror of current texture)
-          TOP: [7, 8]
+          RIGHT: [1, 21]
+          TOP: [4, 21]
           BOTTOM: [7, 8]
       15:
         name: Bed (Head) (occupied:true)
         tex_direction:
           FORWARD: [7, 9]
-          BACKWARD: [7, 9] #need correct texture (mirror of current texture)
-          #LEFT: blank
+          BACKWARD: [1, 21]
+          LEFT: [0, 21]
           RIGHT: [8, 9]
           TOP: [7, 8]
           BOTTOM: [7, 8]
