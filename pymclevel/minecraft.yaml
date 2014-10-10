@@ -761,12 +761,117 @@ blocks:
     idStr: bed
     name: Bed
     mapcolor: [255, 0, 0]
-    tex: [5, 9]
-    tex_direction:
-        TOP: [7, 8]
-        BOTTOM: [7, 8]
     type: BED
     opacity: 0
+    data:
+      0:
+        name: Bed (Foot)
+        tex_direction:
+          FORWARD: [5, 9]
+          BACKWARD: [0, 21]
+          LEFT: [6, 9]
+          RIGHT: [2, 21]
+          TOP: [3, 21]
+          BOTTOM: [6, 8]
+      1:
+        name: Bed (Foot)
+        tex_direction:
+          FORWARD: [6, 9]
+          BACKWARD: [2, 21]
+          LEFT: [0, 21]
+          RIGHT: [5, 9]
+          TOP: [2, 22]
+          BOTTOM: [6, 8]
+      2:
+        name: Bed (Foot)
+        tex_direction:
+          FORWARD: [0, 21]
+          BACKWARD: [5, 9]
+          LEFT: [2, 21]
+          RIGHT: [6, 9]
+          TOP: [4, 22]
+          BOTTOM: [6, 8]
+      3:
+        name: Bed (Foot)
+        tex_direction:
+          FORWARD: [2, 21]
+          BACKWARD: [6, 9]
+          LEFT: [5, 9]
+          RIGHT: [0, 21]
+          TOP: [6, 8]
+          BOTTOM: [6, 8]
+      8:
+        name: Bed (Head)
+        tex_direction:
+          FORWARD: [0, 21]
+          BACKWARD: [8, 9]
+          LEFT: [7, 9]
+          RIGHT: [1, 21]
+          TOP: [3, 22]
+          BOTTOM: [7, 8]
+      9:
+        name: Bed (Head)
+        tex_direction:
+          FORWARD: [7, 9]
+          BACKWARD: [1, 21]
+          LEFT: [8, 9]
+          RIGHT: [0, 21]
+          TOP: [1, 22]
+          BOTTOM: [7, 8]
+      10:
+        name: Bed (Head)
+        tex_direction:
+          FORWARD: [8, 9]
+          BACKWARD: [0, 21]
+          LEFT: [1, 21]
+          RIGHT: [7, 9]
+          TOP: [4, 21]
+          BOTTOM: [7, 8]
+      11:
+        name: Bed (Head)
+        tex_direction:
+          FORWARD: [1, 21]
+          BACKWARD: [7, 9]
+          LEFT: [0, 21]
+          RIGHT: [8, 9]
+          TOP: [7, 8]
+          BOTTOM: [7, 8]
+      12:
+        name: Bed (Head) (Occupied)
+        tex_direction:
+          FORWARD: [0, 21]
+          BACKWARD: [8, 9]
+          LEFT: [7, 9]
+          RIGHT: [1, 21]
+          TOP: [3, 22]
+          BOTTOM: [7, 8]
+      13:
+        name: Bed (Head) (Occupied)
+        tex_direction:
+          FORWARD: [7, 9]
+          BACKWARD: [1, 21]
+          LEFT: [8, 9]
+          RIGHT: [0, 21]
+          TOP: [1, 22]
+          BOTTOM: [7, 8]
+      14:
+        name: Bed (Head) (Occupied)
+        tex_direction:
+          FORWARD: [8, 9]
+          BACKWARD: [0, 21]
+          LEFT: [1, 21]
+          RIGHT: [7, 9]
+          TOP: [4, 21]
+          BOTTOM: [7, 8]
+      15:
+        name: Bed (Head) (Occupied)
+        tex_direction:
+          FORWARD: [1, 21]
+          BACKWARD: [7, 9]
+          LEFT: [0, 21]
+          RIGHT: [8, 9]
+          TOP: [7, 8]
+          BOTTOM: [7, 8]
 
   - id: 27
     idStr: golden_rail
