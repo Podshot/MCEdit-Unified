@@ -951,6 +951,31 @@ blocks:
     tex_extra:
       powered: [3, 11]
     opacity: 0
+    data:
+      0:
+        name: Powered Rail (Unpowered)
+      1:
+        name: Powered Rail (Unpowered)
+      2:
+        name: Powered Rail (Unpowered)
+      3:
+        name: Powered Rail (Unpowered)
+      4:
+        name: Powered Rail (Unpowered)
+      5:
+        name: Powered Rail (Unpowered)
+      8:
+        name: Powered Rail (Powered)
+      9:
+        name: Powered Rail (Powered)
+      10:
+        name: Powered Rail (Powered)
+      11:
+        name: Powered Rail (Powered)
+      12:
+        name: Powered Rail (Powered)
+      13:
+        name: Powered Rail (Powered)
 
   - id: 28
     idStr: detector_rail
@@ -962,6 +987,31 @@ blocks:
       powered: [3, 12] # Only because the SIMPLE_RAIL renderer requires it; will
                        # go unused here.
     opacity: 0
+    data:
+      0:
+        name: Detector Rail (Unpowered)
+      1:
+        name: Detector Rail (Unpowered)
+      2:
+        name: Detector Rail (Unpowered)
+      3:
+        name: Detector Rail (Unpowered)
+      4:
+        name: Detector Rail (Unpowered)
+      5:
+        name: Detector Rail (Unpowered)
+      8:
+        name: Detector Rail (Powered)
+      9:
+        name: Detector Rail (Powered)
+      10:
+        name: Detector Rail (Powered)
+      11:
+        name: Detector Rail (Powered)
+      12:
+        name: Detector Rail (Powered)
+      13:
+        name: Detector Rail (Powered)
 
   - id: 29
     idStr: sticky_piston
@@ -3202,6 +3252,31 @@ blocks:
     tex_extra:
         powered: [11, 13]
     opacity: 0
+    data:
+      0:
+        name: Activator Rail (Unpowered)
+      1:
+        name: Activator Rail (Unpowered)
+      2:
+        name: Activator Rail (Unpowered)
+      3:
+        name: Activator Rail (Unpowered)
+      4:
+        name: Activator Rail (Unpowered)
+      5:
+        name: Activator Rail (Unpowered)
+      8:
+        name: Activator Rail (Powered)
+      9:
+        name: Activator Rail (Powered)
+      10:
+        name: Activator Rail (Powered)
+      11:
+        name: Activator Rail (Powered)
+      12:
+        name: Activator Rail (Powered)
+      13:
+        name: Activator Rail (Powered)
 
   - id: 158
     idStr: dropper
