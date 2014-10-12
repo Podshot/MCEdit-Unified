@@ -17,7 +17,7 @@ the fancy stop sign. '''
 
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 
-displayName = "Create Shops +"
+displayName = "Create Shops"
 
 Professions = {
 	"Farmer (brown)": 0,
