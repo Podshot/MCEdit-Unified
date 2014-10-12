@@ -1409,6 +1409,7 @@ def LaunchNBTWindow():
 		app.wm_iconbitmap(os.path.join(Icons_Directory,"icon.ico"))
 		
 	app.title("NBT Editor")
+	app.lift()
 	app.mainloop()
 
 def perform(level, box, options):
