@@ -3,6 +3,7 @@
 #   Albow - Tab Panel
 #
 ################################################################
+#-# Modified by D.C.-G. for translation purpose
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -14,6 +15,9 @@ from widget import Widget
 from theme import ThemeProperty, FontProperty
 from utils import brighten
 from numpy import fromstring
+#-#
+from translate import _
+#-#
 
 
 class TabPanel(Widget):
@@ -60,7 +64,7 @@ class TabPanel(Widget):
             self.show_page(page)
 
     def _add_page(self, title, page):
-        page.tab_title = title
+        page.tab_title = _(title)
         page.anchor = 'ltrb'
         self.pages.append(page)
 

@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+#-# Modified by D.C.-G. for translation purpose
 import os
 import sys
 import pygame
 from pygame.locals import RLEACCEL
-
+#-#
+from translate import getLangPath
+#-#
 # default_font_name = "Vera.ttf"
 optimize_images = True
 run_length_encode = False
@@ -148,7 +151,10 @@ def missing_sound(e, name):
 
 
 def get_text(*names, **kwds):
-    path = _resource_path("text", names, **kwds)
+    #-# Try at first the 'lang/text' folder
+    path = _resource_path(os.path.join(getLangPath, "text"), names, **kwds)
+    if not os.path.exists(path):
+        path = _resource_path("text", names, **kwds)
     text = text_cache.get(path)
     if text is None:
         text = open(path, "rU").read()

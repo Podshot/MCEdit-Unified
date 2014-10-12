@@ -1,3 +1,4 @@
+#-# Modified by D.C.-G. for translation purpose
 import textwrap
 from pygame import Rect, event
 from pygame.locals import *
@@ -5,8 +6,9 @@ from widget import Widget
 from controls import Label, Button
 from layout import Row, Column
 from fields import TextField
-
-
+#-#
+from translate import _
+#-#
 class Modal(object):
     enter_response = True
     cancel_response = False
@@ -73,7 +75,10 @@ class QuickDialog(Dialog):
 
 
 def wrapped_label(text, wrap_width, **kwds):
-    paras = text.split("\n")
+    # paras = text.split("\n")
+    text = _(text)
+    kwds['doNotTranslate'] = True
+    paras = text.split("\n\n")
     text = "\n".join([textwrap.fill(para, wrap_width) for para in paras])
     return Label(text, **kwds)
 

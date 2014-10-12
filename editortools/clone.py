@@ -11,12 +11,16 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+#-# Modified by D.C.-G. for translation purpose
 import os
 import traceback
 from OpenGL import GL
 import numpy
 import pygame
 from albow import Widget, IntField, Column, Row, Label, Button, CheckBox, AttrRef, FloatField, alert
+#-#
+from albow.translate import _
+#-#
 from depths import DepthOffset
 from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton
@@ -114,7 +118,7 @@ class BlockCopyOperation(Operation):
         return BoundingBox(self.destPoint, self.sourceBox.size)
 
     def name(self):
-        return "Copy {0} blocks".format(self.sourceBox.volume)
+        return _("Copy {0} blocks").format(self.sourceBox.volume)
 
     def perform(self, recordUndo=True):
         sourceBox = self.sourceBox
@@ -135,7 +139,7 @@ class BlockCopyOperation(Operation):
         with setWindowCaption("Copying - "):
             i = self.level.copyBlocksFromIter(self.sourceLevel, self.sourceBox, self.destPoint, blocksToCopy,
                                               create=True, biomes=self.copyBiomes)
-            showProgress("Copying {0:n} blocks...".format(self.sourceBox.volume), i)
+            showProgress(_("Copying {0:n} blocks...").format(self.sourceBox.volume), i)
 
     def bufferSize(self):
         return 123456
@@ -197,7 +201,7 @@ class CloneOperation(Operation):
 
     def perform(self, recordUndo=True):
         with setWindowCaption("COPYING - "):
-            self.editor.freezeStatus("Copying %0.1f million blocks" % (float(self._dirtyBox.volume) / 1048576.,))
+            self.editor.freezeStatus(_("Copying %0.1f million blocks") % (float(self._dirtyBox.volume) / 1048576.,))
             if recordUndo:
                 chunks = set()
                 for op in self.blockCopyOps:
@@ -485,7 +489,7 @@ class CloneTool(EditorTool):
 
         if box.volume > self.maxBlocks:
             self.editor.mouseLookOff()
-            alert("Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.".format(
+            alert(_("Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.").format(
                 self.maxBlocks))
             self.editor.toolbar.selectTool(-1)
             return
@@ -1110,7 +1114,7 @@ class ConstructionTool(CloneTool):
             if filename:
                 # self.editor.toolbar.selectTool(-1)
                 alert(
-                    u"I don't know how to import this file: {0}.\n\nError: {1!r}".format(os.path.basename(filename), e))
+                    _(u"I don't know how to import this file: {0}.\n\nError: {1!r}").format(os.path.basename(filename), e))
 
             return
 

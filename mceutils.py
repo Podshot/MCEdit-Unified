@@ -17,9 +17,12 @@ mceutils.py
 
 Exception catching, some basic box drawing, texture pack loading, oddball UI elements
 """
-
+# Modified by D.C.-G. for translation purpose
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
+#-#
+from albow.translate import _
+#-#
 import config
 from cStringIO import StringIO
 from datetime import datetime
@@ -48,11 +51,11 @@ def alertException(func):
         except root.Cancel:
             alert("Canceled.")
         except pymclevel.infiniteworld.SessionLockLost as e:
-            alert(e.message + "\n\nYour changes cannot be saved.")
+            alert(e.message + _("\n\nYour changes cannot be saved."))
 
         except Exception, e:
             logging.exception("Exception:")
-            if ask("Error during {0}: {1!r}".format(func, e)[:1000], ["Report Error", "Okay"], default=1,
+            if ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["Report Error", "Okay"], default=1,
                    cancel=0) == "Report Error":
                 try:
                     import squash_python
@@ -513,7 +516,9 @@ def TextInputRow(title, *args, **kw):
 
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
-
+    prefix = _(prefix)
+    if type(prefix) == unicode:
+        prefix = prefix.encode("utf8")
     class ctx:
         def __enter__(self):
             display.set_caption(prefix + caption)
@@ -586,7 +591,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             delta = ((datetime.now() - self.startTime))
             progressPercent = (int(self.progressFraction * 10000))
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
-            return "Time left: {0}".format(left)
+            return _("Time left: {0}").format(left)
 
         def cancel(self):
             if cancel:
@@ -596,7 +601,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
     widget = ProgressWidget()
-    widget.progressText = progressText
+    widget.progressText = _(progressText)
     widget.statusText = ""
     widget.progressAmount = 0.0
 

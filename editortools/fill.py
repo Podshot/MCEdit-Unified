@@ -11,10 +11,14 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+#-# Modified by D.C.-G. for translation purpose
 from OpenGL import GL
 import numpy
 import pygame
 from albow import Label, Button, Column
+#-#
+from albow.translate import _
+#-#
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
@@ -40,7 +44,7 @@ class BlockFillOperation(Operation):
         self.blocksToReplace = blocksToReplace
 
     def name(self):
-        return "Fill with " + self.blockInfo.name
+        return _("Fill with ") + self.blockInfo.name
 
     def perform(self, recordUndo=True):
         if recordUndo:
@@ -336,7 +340,7 @@ class FillTool(EditorTool):
 
     @property
     def statusText(self):
-        return "Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.".format(
+        return _("Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.").format(
             hotkey=self.hotkey, R=config.config.get("Keys", "Roll").upper())
 
     @property
@@ -348,7 +352,7 @@ class FillTool(EditorTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return "Click to use {0} ({1}:{2})".format(
+                return _("Click to use {0} ({1}:{2})").format(
                     self.editor.level.materials.blockWithID(blockID, blockdata).name, blockID, blockdata)
 
             except Exception, e:

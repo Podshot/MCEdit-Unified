@@ -89,7 +89,7 @@ class Widget(object):
 
     tooltip = None
     tooltipText = None
-
+    doNotTranslate = False
     def __init__(self, rect=None, **kwds):
         if rect and not isinstance(rect, Rect):
             raise TypeError("Widget rect not a pygame.Rect")
