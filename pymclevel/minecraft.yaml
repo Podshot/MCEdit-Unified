@@ -945,7 +945,6 @@ blocks:
   - id: 27
     idStr: golden_rail
     name: Powered Rail
-    aka: Golden
     mapcolor: [120, 53, 28]
     tex: [3, 10]
     type: SIMPLE_RAIL
@@ -2223,38 +2222,37 @@ blocks:
 
   - id: 91
     idStr: lit_pumpkin
-    name: Jack o'Lantern
-    aka: [Lit Pumpkin]
+    name: Jack-o'-Lantern
     mapcolor: [249, 255, 58]
     explored: true
     tex: [6, 7]
 #   tex_direction_data: {0: SOUTH, 1: WEST, 2: NORTH, 3: EAST}
-    brightness: 15
     data:
       0: 
-        name: Jack o'Lantern (South)
+        name: Jack-o'-Lantern (South)
         tex_direction:
           BACKWARD: [8, 7]
           TOP: [6, 6]
           BOTTOM: [6, 6]
       1: 
-        name: Jack o'Lantern (West)
+        name: Jack-o'-Lantern (West)
         tex_direction:
           LEFT: [8, 7]
           TOP: [6, 6]
           BOTTOM: [6, 6]
       2: 
-        name: Jack o'Lantern (North)
+        name: Jack-o'-Lantern (North)
         tex_direction:
           FORWARD: [8, 7]
           TOP: [6, 6]
           BOTTOM: [6, 6]
       3: 
-        name: Jack o'Lantern (East)
+        name: Jack-o'-Lantern (East)
         tex_direction:
           RIGHT: [8, 7]
           TOP: [6, 6]
           BOTTOM: [6, 6]
+    brightness: 15
 
   - id: 92
     idStr: cake
