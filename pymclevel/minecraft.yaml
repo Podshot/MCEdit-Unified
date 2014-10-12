@@ -1377,28 +1377,28 @@ blocks:
         name: Double Stone Slab (Seamed, Quartz)
         tex: [9, 13]
       8:
-        name: Double Stone Slab (Seamed, Stone)
+        name: Double Stone Slab (Seamless, Stone)
         tex: [6, 0]
       9:
-        name: Double Stone Slab (Seamed, Sandstone)
+        name: Double Stone Slab (Seamless, Sandstone)
         tex: [0, 11]
       10:
-        name: Double Stone Slab (Seamed, Old Wood)
+        name: Double Stone Slab (Seamless, Old Wood)
         tex: [4, 0]
       11:
-        name: Double Stone Slab (Seamed, Cobblestone)
+        name: Double Stone Slab (Seamless, Cobblestone)
         tex: [0, 1]
       12:
-        name: Double Stone Slab (Seamed, Brick)
+        name: Double Stone Slab (Seamless, Brick)
         tex: [7, 0]
       13:
-        name: Double Stone Slab (Seamed, Stone Brick)
+        name: Double Stone Slab (Seamless, Stone Brick)
         tex: [6, 3]
       14:
-        name: Double Stone Slab (Seamed, Nether Brick)
+        name: Double Stone Slab (Seamless, Nether Brick)
         tex: [0, 14]
       15:
-        name: Double Stone Slab (Seamed, Quartz)
+        name: Double Stone Slab (Seamless, Quartz)
         tex: [9, 13]
 
   - id: 44
