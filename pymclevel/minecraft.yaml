@@ -1320,7 +1320,7 @@ blocks:
 
   - id: 37
     idStr: yellow_flower
-    name: Dandelion
+    name: Flower (Dandelion) [Yellow]
     mapcolor: [255, 255, 0]
     tex: [13, 0]
     type: DECORATION_CROSS
@@ -1328,38 +1328,38 @@ blocks:
 
   - id: 38
     idStr: red_flower
-    name: Poppy
+    name: Red Flower
     mapcolor: [255, 0, 0]
     tex: [12, 0]
     type: DECORATION_CROSS
     opacity: 0
     data:
       0:
-        name: Poppy
+        name: Flower (Poppy) [Red]
       1:
+        name: Flower (Blue Orchid)
         tex: [16, 0]
-        name: Blue Orchid
       2:
+        name: Flower (Allium)
         tex: [17, 0]
-        name: Allium
       3:
+        name: Flower (Azure Bluet) [Houstonia]
         tex: [18, 0]
-        name: Azure Bluet
       4:
+        name: Flower (Red Tulip)
         tex: [19, 0]
-        name: Red Tulip
       5:
+        name: Flower (Orange Tulip)
         tex: [16, 1]
-        name: Orange Tulip
       6:
+        name: Flower (White Tulip)
         tex: [17, 1]
-        name: White Tulip
       7:
+        name: Flower (Pink Tulip)
         tex: [18, 1]
-        name: Pink Tulip
       8:
+        name: Flower (Oxeye Daisy)
         tex: [19, 1]
-        name: Oxeye Daisy
 
   - id: 39
     idStr: brown_mushroom
@@ -1541,6 +1541,7 @@ blocks:
         tex_direction:
           TOP: [17, 16]
           BOTTOM: [18, 16]
+
   - id: 47
     idStr: bookshelf
     name: Bookshelf
@@ -2626,6 +2627,39 @@ blocks:
     tex: [4, 0]
     type: FENCE_GATE
     opacity: 0
+    data:
+      0:
+        name: Fence Gate (Oak, Closed, South)
+      1:
+        name: Fence Gate (Oak, Closed, West)
+      2:
+        name: Fence Gate (Oak, Closed, North)
+      3:
+        name: Fence Gate (Oak, Closed, East)
+      4:
+        name: Fence Gate (Oak, Open, South)
+      5:
+        name: Fence Gate (Oak, Open, West)
+      6:
+        name: Fence Gate (Oak, Open, North)
+      7:
+        name: Fence Gate (Oak, Open, East)
+      8:
+        name: Fence Gate (Oak, Powered, Closed, South)
+      9:
+        name: Fence Gate (Oak, Powered, Closed, West)
+      10:
+        name: Fence Gate (Oak, Powered, Closed, North)
+      11:
+        name: Fence Gate (Oak, Powered, Closed, East)
+      12:
+        name: Fence Gate (Oak, Powered, Open, South)
+      13:
+        name: Fence Gate (Oak, Powered, Open, West)
+      14:
+        name: Fence Gate (Oak, Powered, Open, North)
+      15:
+        name: Fence Gate (Oak, Powered, Open, East)
 
   - id: 108
     idStr: brick_stairs
@@ -2633,6 +2667,23 @@ blocks:
     mapcolor: [170, 86, 62]
     tex: [7, 0]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Brick, Bottom, East)
+      1:
+        name: Stairs (Brick, Bottom, West)
+      2:
+        name: Stairs (Brick, Bottom, South)
+      3:
+        name: Stairs (Brick, Bottom, North)
+      4:
+        name: Stairs (Brick, Top, East)
+      5:
+        name: Stairs (Brick, Top, West)
+      6:
+        name: Stairs (Brick, Top, South)
+      7:
+        name: Stairs (Brick, Top, North)
 
   - id: 109
     idStr: stone_brick_stairs
@@ -2640,6 +2691,23 @@ blocks:
     mapcolor: [120, 120, 120]
     tex: [6, 3]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Stone Brick, Bottom, East)
+      1:
+        name: Stairs (Stone Brick, Bottom, West)
+      2:
+        name: Stairs (Stone Brick, Bottom, South)
+      3:
+        name: Stairs (Stone Brick, Bottom, North)
+      4:
+        name: Stairs (Stone Brick, Top, East)
+      5:
+        name: Stairs (Stone Brick, Top, West)
+      6:
+        name: Stairs (Stone Brick, Top, South)
+      7:
+        name: Stairs (Stone Brick, Top, North)
 
   - id: 110
     idStr: mycelium
@@ -2652,7 +2720,7 @@ blocks:
 
   - id: 111
     idStr: waterlily
-    name: Lily Pad
+    name: Lily Pad [Waterlily]
     mapcolor: [117, 176, 73]
     tex: [12, 4]
     type: FLOOR
@@ -2678,6 +2746,23 @@ blocks:
     mapcolor: [54, 24, 30]
     tex: [0, 14]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Nether Brick, Bottom, East)
+      1:
+        name: Stairs (Nether Brick, Bottom, West)
+      2:
+        name: Stairs (Nether Brick, Bottom, South)
+      3:
+        name: Stairs (Nether Brick, Bottom, North)
+      4:
+        name: Stairs (Nether Brick, Top, East)
+      5:
+        name: Stairs (Nether Brick, Top, West)
+      6:
+        name: Stairs (Nether Brick, Top, South)
+      7:
+        name: Stairs (Nether Brick, Top, North)
 
   - id: 115
     idStr: nether_wart
@@ -2689,6 +2774,15 @@ blocks:
       smaller_1: [3, 14]
       smaller_2: [2, 14]
     opacity: 0
+    data:
+      0:
+        name: Nether Wart (Age 0)
+      1:
+        name: Nether Wart (Age 1)
+      2:
+        name: Nether Wart (Age 2)
+      3:
+        name: Nether Wart (Age 3)
 
   - id: 116
     idStr: enchanting_Table
@@ -2713,6 +2807,23 @@ blocks:
       base: [12, 9]
     opacity: 0
     brightness: 1
+    data:
+      0:
+        name: Brewing Stand (Empty)
+      1:
+        name: Brewing Stand (Has Bottle 0)
+      2:
+        name: Brewing Stand (Has Bottle 1)
+      3:
+        name: Brewing Stand (Has Bottle 0&1)
+      4:
+        name: Brewing Stand (Has Bottle 2)
+      5:
+        name: Brewing Stand (Has Bottle 0&2)
+      6:
+        name: Brewing Stand (Has Bottle 1&2)
+      7:
+        name: Brewing Stand (Has Bottle 0&1&2)
 
   - id: 118
     idStr: cauldron
@@ -2724,7 +2835,22 @@ blocks:
       TOP: [11, 8]
       BOTTOM: [11, 8]
     opacity: 0
-
+    data:
+      0:
+        name: Cauldron (Level 0)
+      1:
+        name: Cauldron (Level 1)
+        tex_direction:
+          TOP: [0, 22]
+      2:
+        name: Cauldron (Level 2)
+        tex_direction:
+          TOP: [0, 22]
+      3:
+        name: Cauldron (Level 3)
+        tex_direction:
+          TOP: [0, 22]
+        
   - id: 119
     idStr: end_portal
     name: End Portal
@@ -2742,9 +2868,34 @@ blocks:
     tex_direction:
       BOTTOM: [15, 10]
       TOP: [14, 9]
-    #  eye: [14, 10]
-    opacity: 0
+    #  Just eye: [14, 10]
     brightness: 1
+    opacity: 0
+    data:
+      0:
+        name: End Portal Frame (No Eye, South)
+      1:
+        name: End Portal Frame (No Eye, West)
+      2:
+        name: End Portal Frame (No Eye, North)
+      3:
+        name: End Portal Frame (No Eye, East)
+      4:
+        name: End Portal Frame (Eye, South)
+        tex_direction:
+          TOP: [19, 6]
+      5:
+        name: End Portal Frame (Eye, West)
+        tex_direction:
+          TOP: [19, 6]
+      6:
+        name: End Portal Frame (Eye, North)
+        tex_direction:
+          TOP: [19, 6]
+      7:
+        name: End Portal Frame (Eye, East)
+        tex_direction:
+          TOP: [19, 6]
 
   - id: 121
     idStr: end_stone
@@ -4054,6 +4205,39 @@ blocks:
     tex: [6, 12]
     type: FENCE_GATE
     opacity: 0
+    data:
+      0:
+        name: Fence Gate (Spruce, Closed, South)
+      1:
+        name: Fence Gate (Spruce, Closed, West)
+      2:
+        name: Fence Gate (Spruce, Closed, North)
+      3:
+        name: Fence Gate (Spruce, Closed, East)
+      4:
+        name: Fence Gate (Spruce, Open, South)
+      5:
+        name: Fence Gate (Spruce, Open, West)
+      6:
+        name: Fence Gate (Spruce, Open, North)
+      7:
+        name: Fence Gate (Spruce, Open, East)
+      8:
+        name: Fence Gate (Spruce, Powered, Closed, South)
+      9:
+        name: Fence Gate (Spruce, Powered, Closed, West)
+      10:
+        name: Fence Gate (Spruce, Powered, Closed, North)
+      11:
+        name: Fence Gate (Spruce, Powered, Closed, East)
+      12:
+        name: Fence Gate (Spruce, Powered, Open, South)
+      13:
+        name: Fence Gate (Spruce, Powered, Open, West)
+      14:
+        name: Fence Gate (Spruce, Powered, Open, North)
+      15:
+        name: Fence Gate (Spruce, Powered, Open, East)
  
   - id: 184
     idStr: birch_fence_gate
@@ -4062,6 +4246,39 @@ blocks:
     tex: [6, 13]
     type: FENCE_GATE
     opacity: 0
+    data:
+      0:
+        name: Fence Gate (Birch, Closed, South)
+      1:
+        name: Fence Gate (Birch, Closed, West)
+      2:
+        name: Fence Gate (Birch, Closed, North)
+      3:
+        name: Fence Gate (Birch, Closed, East)
+      4:
+        name: Fence Gate (Birch, Open, South)
+      5:
+        name: Fence Gate (Birch, Open, West)
+      6:
+        name: Fence Gate (Birch, Open, North)
+      7:
+        name: Fence Gate (Birch, Open, East)
+      8:
+        name: Fence Gate (Birch, Powered, Closed, South)
+      9:
+        name: Fence Gate (Birch, Powered, Closed, West)
+      10:
+        name: Fence Gate (Birch, Powered, Closed, North)
+      11:
+        name: Fence Gate (Birch, Powered, Closed, East)
+      12:
+        name: Fence Gate (Birch, Powered, Open, South)
+      13:
+        name: Fence Gate (Birch, Powered, Open, West)
+      14:
+        name: Fence Gate (Birch, Powered, Open, North)
+      15:
+        name: Fence Gate (Birch, Powered, Open, East)
     
   - id: 185
     idStr: jungle_fence_gate
@@ -4070,6 +4287,39 @@ blocks:
     tex: [7, 12]
     type: FENCE_GATE
     opacity: 0
+    data:
+      0:
+        name: Fence Gate (Jungle, Closed, South)
+      1:
+        name: Fence Gate (Jungle, Closed, West)
+      2:
+        name: Fence Gate (Jungle, Closed, North)
+      3:
+        name: Fence Gate (Jungle, Closed, East)
+      4:
+        name: Fence Gate (Jungle, Open, South)
+      5:
+        name: Fence Gate (Jungle, Open, West)
+      6:
+        name: Fence Gate (Jungle, Open, North)
+      7:
+        name: Fence Gate (Jungle, Open, East)
+      8:
+        name: Fence Gate (Jungle, Powered, Closed, South)
+      9:
+        name: Fence Gate (Jungle, Powered, Closed, West)
+      10:
+        name: Fence Gate (Jungle, Powered, Closed, North)
+      11:
+        name: Fence Gate (Jungle, Powered, Closed, East)
+      12:
+        name: Fence Gate (Jungle, Powered, Open, South)
+      13:
+        name: Fence Gate (Jungle, Powered, Open, West)
+      14:
+        name: Fence Gate (Jungle, Powered, Open, North)
+      15:
+        name: Fence Gate (Jungle, Powered, Open, East)
 
   - id: 186
     idStr: dark_oak_fence_gate
@@ -4078,6 +4328,39 @@ blocks:
     tex: [1, 15]
     type: FENCE_GATE
     opacity: 0
+    data:
+      0:
+        name: Fence Gate (Dark Oak, Closed, South)
+      1:
+        name: Fence Gate (Dark Oak, Closed, West)
+      2:
+        name: Fence Gate (Dark Oak, Closed, North)
+      3:
+        name: Fence Gate (Dark Oak, Closed, East)
+      4:
+        name: Fence Gate (Dark Oak, Open, South)
+      5:
+        name: Fence Gate (Dark Oak, Open, West)
+      6:
+        name: Fence Gate (Dark Oak, Open, North)
+      7:
+        name: Fence Gate (Dark Oak, Open, East)
+      8:
+        name: Fence Gate (Dark Oak, Powered, Closed, South)
+      9:
+        name: Fence Gate (Dark Oak, Powered, Closed, West)
+      10:
+        name: Fence Gate (Dark Oak, Powered, Closed, North)
+      11:
+        name: Fence Gate (Dark Oak, Powered, Closed, East)
+      12:
+        name: Fence Gate (Dark Oak, Powered, Open, South)
+      13:
+        name: Fence Gate (Dark Oak, Powered, Open, West)
+      14:
+        name: Fence Gate (Dark Oak, Powered, Open, North)
+      15:
+        name: Fence Gate (Dark Oak, Powered, Open, East)
     
   - id: 187
     idStr: acacia_fence_gate
@@ -4086,6 +4369,39 @@ blocks:
     tex: [0, 15]
     type: FENCE_GATE
     opacity: 0
+    data:
+      0:
+        name: Fence Gate (Acacia, Closed, South)
+      1:
+        name: Fence Gate (Acacia, Closed, West)
+      2:
+        name: Fence Gate (Acacia, Closed, North)
+      3:
+        name: Fence Gate (Acacia, Closed, East)
+      4:
+        name: Fence Gate (Acacia, Open, South)
+      5:
+        name: Fence Gate (Acacia, Open, West)
+      6:
+        name: Fence Gate (Acacia, Open, North)
+      7:
+        name: Fence Gate (Acacia, Open, East)
+      8:
+        name: Fence Gate (Acacia, Powered, Closed, South)
+      9:
+        name: Fence Gate (Acacia, Powered, Closed, West)
+      10:
+        name: Fence Gate (Acacia, Powered, Closed, North)
+      11:
+        name: Fence Gate (Acacia, Powered, Closed, East)
+      12:
+        name: Fence Gate (Acacia, Powered, Open, South)
+      13:
+        name: Fence Gate (Acacia, Powered, Open, West)
+      14:
+        name: Fence Gate (Acacia, Powered, Open, North)
+      15:
+        name: Fence Gate (Acacia, Powered, Open, East)
 
   - id: 188
     idStr: spruce_fence
