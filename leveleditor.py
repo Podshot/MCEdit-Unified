@@ -11,6 +11,7 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+#-# Modified by D.C.-G. for translation purpose
 import sys
 from compass import CompassOverlay
 from editortools.thumbview import ThumbView
@@ -61,6 +62,9 @@ from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_tex
 from albow.controls import Label, SmallValueDisplay, ValueDisplay
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
+#-#
+from albow.translate import _
+#-#
 from pygame import display, event, key, KMOD_ALT, KMOD_CTRL, KMOD_LALT, KMOD_META, KMOD_RALT, KMOD_SHIFT, mouse, \
     MOUSEMOTION
 
@@ -946,7 +950,7 @@ class CameraViewport(GLViewport):
                         yield (i, self.editor.level.chunkCount)
                         i += 1
 
-                progressInfo = "Deleting the item {0} from the entire world ({1} chunks)".format(
+                progressInfo = _("Deleting the item {0} from the entire world ({1} chunks)").format(
                     itemName(chestWidget.id, 0), self.editor.level.chunkCount)
 
                 mceutils.showProgress(progressInfo, deleteItemsIter(), cancel=True)
@@ -1535,16 +1539,16 @@ class LevelEditor(GLViewport):
         viewDistanceReadout = ValueDisplay(width=40, ref=AttrRef(self.renderer, "viewDistance"))
 
         chunksReadout = SmallValueDisplay(width=140,
-                                          get_value=lambda: "Chunks: %d" % len(self.renderer.chunkRenderers),
+                                          get_value=lambda: _("Chunks: %d") % len(self.renderer.chunkRenderers),
                                           tooltipText="Number of chunks loaded into the renderer.")
         fpsReadout = SmallValueDisplay(width=80,
-                                       get_value=lambda: "fps: %0.1f" % self.averageFPS,
+                                       get_value=lambda: _("fps: %0.1f") % self.averageFPS,
                                        tooltipText="Frames per second.")
         cpsReadout = SmallValueDisplay(width=100,
-                                       get_value=lambda: "cps: %0.1f" % self.averageCPS,
+                                       get_value=lambda: _("cps: %0.1f") % self.averageCPS,
                                        tooltipText="Chunks per second.")
         mbReadout = SmallValueDisplay(width=60,
-                                      get_value=lambda: "MBv: %0.1f" % (self.renderer.bufferUsage / 1000000.),
+                                      get_value=lambda: _("MBv: %0.1f") % (self.renderer.bufferUsage / 1000000.),
                                       tooltipText="Memory used for vertexes")
 
 
@@ -1782,7 +1786,7 @@ class LevelEditor(GLViewport):
                     tileEntityCounts[ent["id"].value] += 1
 
         with mceutils.setWindowCaption("ANALYZING - "):
-            mceutils.showProgress("Analyzing {0} blocks...".format(box.volume), _analyzeBox(), cancel=True)
+            mceutils.showProgress(_("Analyzing {0} blocks...").format(box.volume), _analyzeBox(), cancel=True)
 
         entitySum = numpy.sum(entityCounts.values())
         tileEntitySum = numpy.sum(tileEntityCounts.values())
@@ -2044,7 +2048,7 @@ class LevelEditor(GLViewport):
             if resp == "Save":
                 self.saveFile()
 
-        self.freezeStatus("Loading " + filename)
+        self.freezeStatus(_("Loading ") + filename)
         if self.level:
             self.level.close()
 
@@ -2054,7 +2058,7 @@ class LevelEditor(GLViewport):
             logging.exception(
                 'Wasn\'t able to open a file {file => %s}' % filename
             )
-            alert(u"I don't know how to open {0}:\n\n{1!r}".format(filename, e))
+            alert(_(u"I don't know how to open {0}:\n\n{1!r}").format(filename, e))
             return
 
         assert level
@@ -2201,7 +2205,7 @@ class LevelEditor(GLViewport):
     def initWindowCaption(self):
         filename = self.level.filename
         s = os.path.split(filename)
-        title = os.path.split(s[0])[1] + os.sep + s[1] + u" - MCEdit " + release.get_version()
+        title = os.path.split(s[0])[1] + os.sep + s[1] + _(u" - MCEdit ") + release.get_version()
         title = title.encode('ascii', 'replace')
         display.set_caption(title)
 
@@ -2223,7 +2227,7 @@ class LevelEditor(GLViewport):
                     try:
                         level.checkSessionLock()
                     except SessionLockLost, e:
-                        alert(e.message + "\n\nYour changes cannot be saved.")
+                        alert(e.message + _("\n\nYour changes cannot be saved."))
                         return
 
                 for level in itertools.chain(level.dimensions.itervalues(), [level]):
@@ -2277,13 +2281,13 @@ class LevelEditor(GLViewport):
     def saveInfoLabelText(self):
         if self.unsavedEdits == 0:
             return ""
-        return "{0} unsaved edits.  CTRL-{1} to save.  {2}".format(self.unsavedEdits,
+        return _("{0} unsaved edits.  CTRL-{1} to save.  {2}").format(self.unsavedEdits,
                                                                    str.upper(config.config.get('Keys', 'Save')),
                                                                    "" if self.recordUndo else "(UNDO DISABLED)")
 
     @property
     def viewDistanceLabelText(self):
-        return "View Distance ({0})".format(self.renderer.viewDistance)
+        return _("View Distance ({0})").format(self.renderer.viewDistance)
 
     def createRenderers(self):
         self.renderer = MCRenderer()
@@ -2936,7 +2940,7 @@ class LevelEditor(GLViewport):
 
         if isinstance(self.level, pymclevel.MCInfdevOldLevel):
             chunkCount = self.level.chunkCount
-            chunkCountLabel = Label("Number of chunks: {0}".format(chunkCount))
+            chunkCountLabel = Label(_("Number of chunks: {0}").format(chunkCount))
 
             items.append(chunkCountLabel)
 
@@ -2944,7 +2948,7 @@ class LevelEditor(GLViewport):
             if hasattr(self.level.worldFolder, 'regionFiles'):
                 worldFolder = self.level.worldFolder
                 regionCount = len(worldFolder.regionFiles)
-                regionCountLabel = Label("Number of regions: {0}".format(regionCount))
+                regionCountLabel = Label(_("Number of regions: {0}").format(regionCount))
                 items.append(regionCountLabel)
 
             button = Button("Repair regions", action=self.repairRegions)
@@ -2965,10 +2969,10 @@ class LevelEditor(GLViewport):
         items.append(sizelabel)
 
         if hasattr(self.level, "Entities"):
-            label = Label("{0} Entities".format(len(self.level.Entities)))
+            label = Label(_("{0} Entities").format(len(self.level.Entities)))
             items.append(label)
         if hasattr(self.level, "TileEntities"):
-            label = Label("{0} TileEntities".format(len(self.level.TileEntities)))
+            label = Label(_("{0} TileEntities").format(len(self.level.TileEntities)))
             items.append(label)
 
         col = Column(items)
@@ -3014,7 +3018,7 @@ class LevelEditor(GLViewport):
     @mceutils.alertException
     def askLoadWorld(self):
         if not os.path.isdir(pymclevel.saveFileDir):
-            alert(u"Could not find the Minecraft saves directory!\n\n({0} was not found or is not a directory)".format(
+            alert(_(u"Could not find the Minecraft saves directory!\n\n({0} was not found or is not a directory)").format(
                 pymclevel.saveFileDir))
             return
 
@@ -3335,7 +3339,7 @@ class LevelEditor(GLViewport):
         self.frameStartTime = frameStartTime
 
         if self.debug > 0:
-            self.debugString = "FPS: %0.1f/%0.1f, CPS: %0.1f, VD: %d, W: %d, WF: %d, " % (
+            self.debugString = _("FPS: %0.1f/%0.1f, CPS: %0.1f, VD: %d, W: %d, WF: %d, ") % (
             1000000. / (float(timeDelta.microseconds) + 0.000001),
             self.averageFPS,
             cps,
@@ -3344,7 +3348,7 @@ class LevelEditor(GLViewport):
             self.renderer.workFactor)
 
             if True:  # xxx
-                self.debugString += "DL: {dl} ({dlcount}), Tx: {t}, gc: {g}, ".format(
+                self.debugString += _("DL: {dl} ({dlcount}), Tx: {t}, gc: {g}, ").format(
                     dl=len(glutils.DisplayList.allLists), dlcount=glutils.gl.listCount,
                     t=len(glutils.Texture.allTextures), g=len(gc.garbage))
 
@@ -3357,9 +3361,9 @@ class LevelEditor(GLViewport):
         infos = []
         for w in sorted(self.workers):
             if isinstance(w, MCRenderer):
-                label = Label("Rendering chunks" + ((datetime.now().second / 3) % 3) * ".")
+                label = Label(_("Rendering chunks") + ((datetime.now().second / 3) % 3) * ".")
                 progress = Label(
-                    "{0} chunks ({1} pending updates)".format(len(w.chunkRenderers), len(w.invalidChunkQueue)))
+                    _("{0} chunks ({1} pending updates)").format(len(w.chunkRenderers), len(w.invalidChunkQueue)))
                 col = Column((label, progress), align="l", width=200)
                 infos.append(col)
             elif isinstance(w,
@@ -3410,16 +3414,16 @@ class LevelEditor(GLViewport):
                     bl = self.level.blockLightAt(*blockPosition)
                     blockID = self.level.blockAt(*blockPosition)
                     bdata = self.level.blockDataAt(*blockPosition)
-                    self.inspectionString += "ID: %d:%d (%s), " % (
+                    self.inspectionString += _("ID: %d:%d (%s), ") % (
                         blockID, bdata, self.level.materials.names[blockID][bdata])
-                    self.inspectionString += "Data: %d, Light: %d, " % (bdata, bl)
+                    self.inspectionString += _("Data: %d, Light: %d, ") % (bdata, bl)
 
                 elif isinstance(self.level, pymclevel.ChunkedLevelMixin):
                     sl = self.level.skylightAt(*blockPosition)
                     bl = self.level.blockLightAt(*blockPosition)
                     bdata = self.level.blockDataAt(*blockPosition)
                     blockID = self.level.blockAt(*blockPosition)
-                    self.inspectionString += "ID: %d:%d (%s), " % (
+                    self.inspectionString += _("ID: %d:%d (%s), ") % (
                         blockID, bdata, self.level.materials.names[blockID][bdata])
 
                     try:
@@ -3427,43 +3431,43 @@ class LevelEditor(GLViewport):
                     except:
                         path = "chunks.dat"
 
-                    self.inspectionString += "Data: %d, L: %d, SL: %d" % (
+                    self.inspectionString += _("Data: %d, L: %d, SL: %d") % (
                         bdata, bl, sl)
 
                     try:
                         hm = self.level.heightMapAt(x, z)
-                        self.inspectionString += ", H: %d" % hm
+                        self.inspectionString += _(", H: %d") % hm
                     except:
                         pass
                     try:
                         tp = self.level.getChunk(cx, cz).TerrainPopulated
-                        self.inspectionString += ", TP: %d" % tp
+                        self.inspectionString += _(", TP: %d") % tp
                     except:
                         pass
 
-                    self.inspectionString += ", D: %d" % self.level.getChunk(cx, cz).dirty
-                    self.inspectionString += ", NL: %d" % self.level.getChunk(cx, cz).needsLighting
+                    self.inspectionString += _(", D: %d") % self.level.getChunk(cx, cz).dirty
+                    self.inspectionString += _(", NL: %d") % self.level.getChunk(cx, cz).needsLighting
                     try:
                         biome = self.level.getChunk(cx, cz).Biomes[x & 15, z & 15]
                         from pymclevel import biome_types
 
-                        self.inspectionString += ", Bio: %s" % biome_types.biome_types[biome]
+                        self.inspectionString += _(", Bio: %s") % biome_types.biome_types[biome]
                     except AttributeError:
                         pass
 
                     if isinstance(self.level, pymclevel.pocket.PocketWorld):
                         ch = self.level.getChunk(cx, cz)
-                        self.inspectionString += ", DC: %s" % ch.DirtyColumns[z & 15, x & 15]
+                        self.inspectionString += _(", DC: %s") % ch.DirtyColumns[z & 15, x & 15]
 
-                    self.inspectionString += ", Ch(%d, %d): %s" % (cx, cz, path)
+                    self.inspectionString += _(", Ch(%d, %d): %s") % (cx, cz, path)
 
                 else:  # classic
                     blockID = self.level.blockAt(*blockPosition)
-                    self.inspectionString += "ID: %d (%s), " % (
+                    self.inspectionString += _("ID: %d (%s), ") % (
                         blockID, self.level.materials.names[blockID][0])
 
         except Exception, e:
-            self.inspectionString += "Chunk {0} had an error: {1!r}".format(
+            self.inspectionString += _("Chunk {0} had an error: {1!r}").format(
                 (int(numpy.floor(blockPosition[0])) >> 4, int(numpy.floor(blockPosition[2])) >> 4), e)
             pass
 
@@ -3556,7 +3560,7 @@ class LevelEditor(GLViewport):
             if None is cr:
                 return
 
-            crNames = ["%s - %0.1fkb" % (type(br).__name__, br.bufferSize() / 1000.0) for br in cr.blockRenderers]
+            crNames = [_("%s - %0.1fkb") % (type(br).__name__, br.bufferSize() / 1000.0) for br in cr.blockRenderers]
             infoLabel = Label("\n".join(crNames))
 
             infoPanel.remove(infoPanel.subwidgets[0])

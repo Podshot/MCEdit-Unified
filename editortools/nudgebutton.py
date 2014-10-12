@@ -1,6 +1,10 @@
+#-# Modified by D.C.-G. for translation purpose
 from numpy.core.umath import absolute
 from pygame import key
 from albow import Label
+#-#
+from albow.translate import _
+#-#
 from pymclevel.box import Vector
 import config
 from glbackground import GLBackground
@@ -23,7 +27,7 @@ class NudgeButton(GLBackground):
         # tooltipBacking.bg_color = (0, 0, 0, 0.6)
         keys = [config.config.get("Keys", k).upper() for k in ("Forward", "Back", "Left", "Right", "Up", "Down")]
 
-        nudgeLabel.tooltipText = "Click and hold.  While holding, use the movement keys ({0}{1}{2}{3}{4}{5}) to nudge. Hold SHIFT to nudge faster.".format(
+        nudgeLabel.tooltipText = _("Click and hold.  While holding, use the movement keys ({0}{1}{2}{3}{4}{5}) to nudge. Hold SHIFT to nudge faster.").format(
             *keys)
         # tooltipBacking.shrink_wrap()
 

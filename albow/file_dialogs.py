@@ -2,7 +2,7 @@
 #
 # Albow - File Dialogs
 #
-
+#-# Modified by D.C.-G. for translation purpose
 import os
 from pygame import draw, Rect
 from pygame.locals import *
@@ -13,8 +13,9 @@ from albow.fields import TextField
 from albow.layout import Row, Column
 from albow.palette_view import PaletteView
 from albow.theme import ThemeProperty
-
-
+#-#
+from translate import _
+#-#
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
         Widget.__init__(self, **kwds)
@@ -234,7 +235,7 @@ class FileSaveDialog(FileDialog):
     def ok(self):
         path = self.pathname
         if os.path.exists(path):
-            answer = ask("Replace existing '%s'?" % os.path.basename(path))
+            answer = ask(_("Replace existing '%s'?") % os.path.basename(path))
             if answer != "OK":
                 return
         #FileDialog.ok(self)

@@ -2,6 +2,17 @@
 
 MCEdit is an open-source, BSD-licenced world editor for the viral indie hit [Minecraft](http://www.minecraft.net/). For downloads and update info, visit the official website at [khroki.github.io/MCEdit-Unified](http://khroki.github.io/MCEdit-Unified/). The rest of this file is intended for computer programmers, Linux/Mac users, and those who wish to run from source.
 
+## Note for localisation
+
+This version implements localisation functions. It is intended to be merged with MCEdit-Unified.
+
+The UI fixed character strings can appear in users native language by simply editing translation files. Devolopers don't have to tweak their code.
+The strings which need text formating or concatenation have to be translated with the '_()' function before being formated. This function must be imported from albow.tranlate.
+
+See README.txt in albow subfolder for further details.
+
+-- D.C.-G.
+
 ## Running from source
 
 MCEdit is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 (Python 3 is not supported) at a minimum before getting started. Easy_install / pip is reccommended.

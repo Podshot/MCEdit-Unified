@@ -1,14 +1,15 @@
 #
 # Albow - Table View
 #
-
+#-# Modified by D.C.-G. for translation purpose
 from itertools import izip
 from pygame import Rect
 from layout import Column
 from palette_view import PaletteView
 from utils import blit_in_rect
-
-
+#-#
+from translate import _
+#-#
 class TableView(Column):
     columns = []
     header_font = None
@@ -106,7 +107,7 @@ class TableColumn(object):
     format_string = "%s"
 
     def __init__(self, title, width, align='l', fmt=None):
-        self.title = title
+        self.title = _(title)
         self.width = width
         self.alignment = align
         if fmt:
@@ -117,12 +118,12 @@ class TableColumn(object):
 
     def format(self, data):
         if data is not None:
-            return self.formatter(data)
+            return self.formatter(_(data))
         else:
             return ""
 
     def formatter(self, data):
-        return self.format_string % data
+        return self.format_string % _(data)
 
 
 class TableRowBase(PaletteView):
