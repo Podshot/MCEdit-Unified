@@ -28,7 +28,7 @@
 						contributorDiv += '<p><a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fa fa-facebook-square"></i>  ' + contributorDB[contributor.login].facebook + '</a></p>';
 					}
 				}
-				$('#contributors').append('<div class="col-sm-2"><div style="height:60%" class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + ' <small></small></h3><p>' + contributorDiv + '</p></div></div></div>');
+				$('#contributors').append('<div class="col-sm-2"><div style="height:60%" class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + ' <small>' + ((contributorDB[contributor.login] && contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : '') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
 			};
 		}
 	</script>
