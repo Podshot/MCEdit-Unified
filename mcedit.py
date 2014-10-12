@@ -161,7 +161,7 @@ class FileOpener(albow.Widget):
 
         hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), 'Create New World', self.createNewWorld),
                     (str.upper(config.config.get('Keys', 'Load')), 'Quick Load', self.mcedit.editor.askLoadWorld),
-                    (str.upper(config.config.get('Keys', 'Open')), 'Open .dat/Schematic', self.promptOpenAndLoad)] + [
+                    (str.upper(config.config.get('Keys', 'Open')), 'Open...', self.promptOpenAndLoad)] + [
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
