@@ -1410,6 +1410,7 @@ def LaunchNBTWindow():
 		
 	app.title("NBT Editor")
 	app.lift()
+	os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "Python" to true' ''')
 	app.mainloop()
 
 def perform(level, box, options):
