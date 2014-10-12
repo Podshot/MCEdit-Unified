@@ -180,7 +180,7 @@ def main():
     include_dirs = ['fonts', 'toolicons', 'stock-schematics', 'filters']
     data_files = get_data_files(include_dirs) + [
         ('', [
-            'README.html',
+            'README.md',
             'favicon.png',
             'terrain-classic.png',
             'terrain-pocket.png',
@@ -199,8 +199,9 @@ def main():
         windows=['mcedit.py'],
         options={
             "py2exe": {
-                "includes": ["ctypes", "logging"],
-                "excludes": ["OpenGL"]
+                "includes": ["ctypes", "logging", "OpenGL"],
+                # "excludes": ["OpenGL"]
+                "excludes": []
             }
         }
     )

@@ -11,6 +11,8 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+#-# Modified by D.C.-G. for translation purpose
+
 import os
 import traceback
 from OpenGL import GL
@@ -19,6 +21,9 @@ from collections import defaultdict
 import numpy
 import pygame
 from albow import Row, Label, Button, AttrRef, Column, ask
+#-#
+from albow.translate import _
+#-#
 import config
 from depths import DepthOffset
 from editortools.editortool import EditorTool
@@ -54,6 +59,7 @@ class ColorSetting(config.Setting):
     def get(self):
         values = super(ColorSetting, self).get()
         return (min(max(x, 0.0), 1.0) for x in values)
+
 
 
 ColorSettings.Setting = ColorSetting
@@ -167,32 +173,32 @@ class SelectionToolPanel(Panel):
         nudgeSelectionButton.bg_color = tool.selectionColor + (0.7,)
 
         deleteBlocksButton = Button("Delete Blocks", action=self.tool.deleteBlocks)
-        deleteBlocksButton.tooltipText = "Fill the selection with Air. Shortcut: DELETE"
+        deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: DELETE")
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
-        deleteEntitiesButton.tooltipText = "Remove all entities within the selection"
+        deleteEntitiesButton.tooltipText = _("Remove all entities within the selection")
         # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
-        analyzeButton.tooltipText = "Count the different blocks and entities in the selection and display the totals."
+        analyzeButton.tooltipText = _("Count the different blocks and entities in the selection and display the totals.")
         cutButton = Button("Cut", action=self.tool.cutSelection)
-        cutButton.tooltipText = "Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}-X".format(
+        cutButton.tooltipText = _("Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}-X").format(
             mcplatform.cmd_name)
         copyButton = Button("Copy", action=self.tool.copySelection)
-        copyButton.tooltipText = "Take a copy of all blocks and entities within the selection. Shortcut: {0}-C".format(
+        copyButton.tooltipText = _("Take a copy of all blocks and entities within the selection. Shortcut: {0}-C").format(
             mcplatform.cmd_name)
         pasteButton = Button("Paste", action=self.tool.editor.pasteSelection)
-        pasteButton.tooltipText = "Import the last item taken by Cut or Copy. Shortcut: {0}-V".format(
+        pasteButton.tooltipText = _("Import the last item taken by Cut or Copy. Shortcut: {0}-V").format(
             mcplatform.cmd_name)
         exportButton = Button("Export", action=self.tool.exportSelection)
-        exportButton.tooltipText = "Export the selection to a .schematic file. Shortcut: {0}-E".format(
+        exportButton.tooltipText = _("Export the selection to a .schematic file. Shortcut: {0}-E").format(
             mcplatform.cmd_name)
 
         selectButton = Button("Select Chunks")
-        selectButton.tooltipText = "Expand the selection to the edges of the chunks within"
+        selectButton.tooltipText = _("Expand the selection to the edges of the chunks within")
         selectButton.action = tool.selectChunks
         selectButton.highlight_color = (0, 255, 0)
 
         deselectButton = Button("Deselect")
-        deselectButton.tooltipText = "Remove the selection. Shortcut: {0}-D".format(mcplatform.cmd_name)
+        deselectButton.tooltipText = _("Remove the selection. Shortcut: {0}-D").format(mcplatform.cmd_name)
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
@@ -294,7 +300,7 @@ class SelectionTool(EditorTool):
             except Exception, e:
                 text += repr(e)
             if "Items" in t and not pygame.key.get_mods() & pygame.KMOD_ALT:
-                text += "--Items omitted. ALT to view. Double-click to edit.--\n"
+                text += _("--Items omitted. ALT to view. Double-click to edit.--\n")
                 t = nbt.TAG_Compound(list(t.value))
                 del t["Items"]
 
@@ -342,12 +348,12 @@ class SelectionTool(EditorTool):
                 try:
                     chunk = self.editor.level.getChunk(cx, cz)
                 except pymclevel.ChunkNotPresent:
-                    return "Chunk not present."
+                    return _("Chunk not present.")
                 if not chunk.HeightMap.any():
                     if self.editor.level.blockAt(x, y, z):
-                        return "Chunk HeightMap is incorrect! Please relight this chunk as soon as possible!"
+                        return _("Chunk HeightMap is incorrect! Please relight this chunk as soon as possible!")
                     else:
-                        return "Chunk is present and filled with air."
+                        return _("Chunk is present and filled with air.")
 
         block = self.editor.level.blockAt(*pos)
         if block in (pymclevel.alphaMaterials.Chest.ID,
@@ -372,15 +378,15 @@ class SelectionTool(EditorTool):
                             top = pymclevel.items.items.findItem(items[0][1]).name
                         except Exception, e:
                             top = repr(e)
-                        return "{0} contains {len} items. (Mostly {top}) \n\nDouble-click to edit {0}.".format(
+                        return _("{0} contains {len} items. (Mostly {top}) \n\nDouble-click to edit {0}.").format(
                             containerID, len=len(d), top=top)
                     else:
                         if containerID == "Trap":
-                            return "Empty {0}. \n\nDouble-click to edit {0}.".format("Dispenser")
+                            return _("Empty {0}. \n\nDouble-click to edit {0}.").format("Dispenser")
                         else:
-                            return "Empty {0}. \n\nDouble-click to edit {0}.".format(containerID)
+                            return _("Empty {0}. \n\nDouble-click to edit {0}.").format(containerID)
             else:
-                # return "Double-click to initialize {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
+                # return _("Double-click to initialize {0}.").format(pymclevel.alphaMaterials.names[block][blockdata])
                 #Will undo when container initialization is fixed.
                 if block == pymclevel.alphaMaterials.Chest.ID:
                     chest = nbt.TAG_Compound()
@@ -456,7 +462,7 @@ class SelectionTool(EditorTool):
             else:
                 id = "[Undefined]"
 
-            return "{id} spawner. \n\nDouble-click to edit spawner.".format(id=id)
+            return _("{id} spawner. \n\nDouble-click to edit spawner.").format(id=id)
 
         if block in (pymclevel.alphaMaterials.Sign.ID,
                      pymclevel.alphaMaterials.WallSign.ID):
@@ -465,7 +471,7 @@ class SelectionTool(EditorTool):
                 signtext = u"\n".join(t["Text" + str(x)].value for x in range(1, 5))
             else:
                 signtext = "Undefined"
-            return "Sign text: \n" + signtext + "\n\n" + "Double-click to edit sign."
+            return _("Sign text: \n") + signtext + "\n\n" + _("Double-click to edit sign.")
 
         absentTexture = (
         self.editor.level.materials.blockTextures[block, blockdata, 0] == pymclevel.materials.NOTEX).all()
@@ -562,7 +568,7 @@ class SelectionTool(EditorTool):
             self.nudgePanel.remove(self.sizeLabel)
         self.sizeLabel = Label(self.sizeLabelText())
         self.sizeLabel.anchor = "twh"
-        self.sizeLabel.tooltipText = "{0:n} blocks".format(self.selectionBox().volume)
+        self.sizeLabel.tooltipText = _("{0:n} blocks").format(self.selectionBox().volume)
 
         # self.nudgePanelColumn = Column( (self.sizeLabel, self.nudgeRow) )
         self.nudgePanel.top = self.nudgePanel.left = 0
@@ -632,7 +638,7 @@ class SelectionTool(EditorTool):
 
     @property
     def currentCornerName(self):
-        return ("Blue", "Yellow")[self.currentCorner]
+        return (_("Blue"), _("Yellow"))[self.currentCorner]
 
     @property
     def statusText(self):
@@ -644,18 +650,18 @@ class SelectionTool(EditorTool):
                 if self.dragStartPoint == p:
                     if self.clickSelectionInProgress:
 
-                        return "Click the mouse button again to place the {0} selection corner. Press {1} to switch corners.".format(
+                        return _("Click the mouse button again to place the {0} selection corner. Press {1} to switch corners.").format(
                             self.currentCornerName, self.hotkey)
                     else:
-                        return "Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.".format(
+                        return _("Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.").format(
                             self.currentCornerName, self.hotkey)
 
             if self.clickSelectionInProgress:
-                return "Click the mouse button again to place the other selection corner."
+                return _("Click the mouse button again to place the other selection corner.")
 
-            return "Release the mouse button to finish the selection"
+            return _("Release the mouse button to finish the selection")
 
-        return "Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.".format(
+        return _("Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.").format(
             self.currentCornerName, self.hotkey)
 
     clickSelectionInProgress = False
@@ -1096,7 +1102,7 @@ class SelectionTool(EditorTool):
             return
         op = BlockFillOperation(self.editor, self.editor.level, box, self.editor.level.materials.Air, [])
         with setWindowCaption("DELETING - "):
-            self.editor.freezeStatus("Deleting {0} blocks".format(box.volume))
+            self.editor.freezeStatus(_("Deleting {0} blocks").format(box.volume))
 
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)

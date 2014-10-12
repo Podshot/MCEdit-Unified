@@ -11,6 +11,7 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+#-# Modified by D.C.-G. for translation purpose
 from pymclevel.minecraft_server import ServerJarStorage, MCServerChunkGenerator
 
 """
@@ -39,6 +40,9 @@ os.environ["YAML_ROOT"] = join(directories.dataDir, "pymclevel").encode(enc)
 from pygame import display
 
 from albow import request_new_filename, request_old_filename
+#-#
+from albow.translate import _
+#-#
 from pymclevel import saveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from pymclevel import items
 
@@ -251,22 +255,22 @@ def askSaveSchematic(initialDir, displayName, fileFormat):
     return askSaveFile(initialDir,
                        title='Save this schematic...',
                        defaultName=displayName + "." + fileFormat,
-                       filetype='Minecraft Schematics (*.{0})\0*.{0}\0\0'.format(fileFormat),
+                       filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
                        suffix=fileFormat,
     )
 
 
 def askCreateWorld(initialDir):
-    defaultName = name = "Untitled World"
+    defaultName = name = _("Untitled World")
     i = 0
     while exists(join(initialDir, name)):
         i += 1
         name = defaultName + " " + str(i)
 
     return askSaveFile(initialDir,
-                       title='Name this new world.',
+                       title=_('Name this new world.'),
                        defaultName=name,
-                       filetype='Minecraft World\0*.*\0\0',
+                       filetype=_('Minecraft World\0*.*\0\0'),
                        suffix="",
     )
 
@@ -369,10 +373,10 @@ def documents_folder():
                 docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_PERSONAL, 0, 0)
             except Exception, e:
                 userprofile = os.environ['USERPROFILE'].decode(sys.getfilesystemencoding())
-                docsFolder = os.path.join(userprofile, "Documents")
+                docsFolder = os.path.join(userprofile, _("Documents"))
 
     elif sys.platform == "darwin":
-        docsFolder = os.path.expanduser(u"~/Documents/")
+        docsFolder = os.path.expanduser(u"~/%s/"%_("Documents"))
     else:
         docsFolder = os.path.expanduser(u"~/.mcedit")
     try:

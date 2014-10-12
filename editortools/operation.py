@@ -1,8 +1,12 @@
+#-# Modified by D.C.-G. for translation purpose
 import atexit
 import os
 import shutil
 import tempfile
 import albow
+#-#
+from albow.translate import _
+#-#
 from pymclevel import BoundingBox
 import numpy
 from albow.root import Cancel
@@ -57,7 +61,7 @@ class Operation(object):
             yield 0, 0, "Recording undo..."
             for i, (cx, cz) in enumerate(chunks):
                 undoLevel.copyChunkFrom(level, cx, cz)
-                yield i, chunkCount, "Copying chunk %s..." % ((cx, cz),)
+                yield i, chunkCount, _("Copying chunk %s...") % ((cx, cz),)
             undoLevel.saveInPlace()
 
         if chunkCount > 25 or chunkCount < 1:
