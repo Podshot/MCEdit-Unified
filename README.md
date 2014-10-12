@@ -28,12 +28,13 @@ Install various dependencies. This may take a bit (especially numpy). If install
 `>easy_install pygame`
 `>easy_install pyyaml`
 `>easy_install pywin32 (Windows only, needed for compiling)`
+`>easy_install tkinter (Required for linux, should come with Win and Mac)`
 
 For windows users if easy install cannot find a library you need, or you can't get easy install working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name.
 
 Debian and Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
 
-`$sudo apt-get install python-opengl python-pygame python-yaml python-numpy`
+`$sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-tk`
 
 You should now be able to run MCEdit with `python mcedit.py` assuming you've installed all the dependencies correctly.
 
