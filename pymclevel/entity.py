@@ -8,7 +8,7 @@ from math import isnan
 import nbt
 from copy import deepcopy
 
-__all__ = ["Entity", "TileEntity"]
+__all__ = ["Entity", "TileEntity", "TileTick"]
 
 
 class TileEntity(object):
@@ -236,6 +236,11 @@ class Entity(object):
             eTag["TileZ"].value += copyOffset[2]
 
         return eTag
+
+class TileTick(object):
+    @classmethod
+    def pos(cls, tag):
+        return [tag[a].value for a in 'xyz']
 
 
 class InvalidEntity(ValueError):

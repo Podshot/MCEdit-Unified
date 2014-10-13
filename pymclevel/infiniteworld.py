@@ -149,6 +149,7 @@ class AnvilChunkData(object):
 
         levelTag["Entities"] = nbt.TAG_List()
         levelTag["TileEntities"] = nbt.TAG_List()
+        levelTag["TileTicks"] = nbt.TAG_List()
 
         self.root_tag = chunkTag
 
@@ -287,6 +288,15 @@ class AnvilChunk(LightedChunk):
         self.dirty = True
         return super(AnvilChunk, self).removeTileEntitiesInBox(box)
 
+    def addTileTick(self, tickTag):
+        self.dirty = True
+        return super(AnvilChunk, self).addTileTick(tickTag)
+
+    def removeTileTicksInBox(self, box):
+        self.dirty = True
+        return super(AnvilChunk, self).removeTileTicksInBox(box)
+
+
     # --- AnvilChunkData accessors ---
 
     @property
@@ -342,6 +352,10 @@ class AnvilChunk(LightedChunk):
     @property
     def TileEntities(self):
         return self.root_tag["Level"]["TileEntities"]
+
+    @property
+    def TileTicks(self):
+        return self.root_tag["Level"]["TileTicks"]
 
     @property
     def TerrainPopulated(self):
@@ -1598,6 +1612,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             count += chunk.removeTileEntitiesInBox(box)
 
         log.info("Removed {0} tile entities".format(count))
+        return count
+
+    def removeTileTicksInBox(self, box):
+        count = 0
+        for chunk, slices, point in self.getChunkSlices(box):
+            count += chunk.removeTileTicksInBox(box)
+
+        log.info("Removed {0} tile ticks".format(count))
         return count
 
     # --- Chunk manipulation ---
