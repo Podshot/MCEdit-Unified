@@ -1081,7 +1081,11 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         
         if os.path.exists(self.worldFolder.getFolderPath("data")):
             if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
-                self.scoreboard = scoreboard.Scoreboard(self)
+                self._scoreboard = scoreboard.Scoreboard(self)
+            else:
+                self._scoreboard = None
+        else:
+            self._scoreboard = None
         
 
         self.preloadDimensions()
@@ -1266,6 +1270,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         shortname = os.path.basename(os.path.dirname(self.filename))
 
         return shortname
+
+    @property
+    def scoreboard(self):
+        return self._scoreboard
+
+    #@scoreboard.setter
+    #def scoreboard(self, scoreboard):
+    #    self._scoreboard = sb
 
     @property
     def bounds(self):
