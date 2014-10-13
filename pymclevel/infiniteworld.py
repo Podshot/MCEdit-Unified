@@ -1081,11 +1081,11 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         
         if os.path.exists(self.worldFolder.getFolderPath("data")):
             if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
-                self._scoreboard = scoreboard.Scoreboard(self)
+                self._scoreboard = scoreboard.Scoreboard(self, False)
             else:
-                self._scoreboard = None
+                self._scoreboard = scoreboard.Scoreboard(self, True)
         else:
-            self._scoreboard = None
+            self._scoreboard = scoreboard.Scoreboard(self, True)
         
 
         self.preloadDimensions()
