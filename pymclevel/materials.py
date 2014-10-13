@@ -104,7 +104,7 @@ class MCMaterials(object):
 
     @property
     def AllStairs(self):
-        return [b for b in self.allBlocks if b.name.endswith("Stairs")]
+        return [b for b in self.allBlocks if b.name.startswith("Stairs")]
 
     def get(self, key, default=None):
         try:
