@@ -481,8 +481,8 @@ class EntityLevel(MCLevel):
         return entsRemoved
 
     def removeTileTicksInBox(self, box):
-        if not hasattr(self, "TileTicks"):
-            return
+        #if not hasattr(self, "TileTicks"):
+        #    return
         newEnts = []
         for ent in self.TileTicks:
             if TileTick.pos(ent) in box:
