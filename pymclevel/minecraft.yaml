@@ -1062,25 +1062,25 @@ blocks:
           LEFT: [14, 3]
           FORWARD: [14, 13]
       8:
-        name: Sticky Piston (Extended) (Down)
+        name: Sticky Piston (Extended, Down)
         tex: [15, 12]
         tex_direction:
           TOP: [14, 3]
           BOTTOM: [10, 6]
       9:
-        name: Sticky Piston (Extended) (Up)
+        name: Sticky Piston (Extended, Up)
         tex_direction:
           TOP: [10, 6]
           BOTTOM: [14, 3]
       10:
-        name: Sticky Piston (Extended) (North)
+        name: Sticky Piston (Extended, North)
         tex_direction:
           LEFT: [14, 13]
           RIGHT: [14, 12]
           FORWARD: [10, 6]
           BACKWARD: [14, 3]
       11:
-        name: Sticky Piston (Extended) (South)
+        name: Sticky Piston (Extended, South)
         tex: [15, 12]
         tex_direction:
           LEFT: [14, 12]
@@ -1088,14 +1088,14 @@ blocks:
           BACKWARD: [10, 6]
           FORWARD: [14, 3]
       12:
-        name: Sticky Piston (Extended) (West)
+        name: Sticky Piston (Extended, West)
         tex: [14, 13]
         tex_direction:
           LEFT: [10, 6]
           RIGHT: [14, 3]
           FORWARD: [14, 12]
       13:
-        name: Sticky Piston (Extended) (East)
+        name: Sticky Piston (Extended, East)
         tex: [14, 12]
         tex_direction:
           RIGHT: [10, 6]
@@ -1189,25 +1189,25 @@ blocks:
           LEFT: [14, 3]
           FORWARD: [14, 13]
       8:
-        name: Piston (Extended) (Down)
+        name: Piston (Extended, Down)
         tex: [15, 12]
         tex_direction:
           TOP: [14, 3]
           BOTTOM: [11, 6]
       9:
-        name: Piston (Extended) (Up)
+        name: Piston (Extended, Up)
         tex_direction:
           TOP: [11, 6]
           BOTTOM: [14, 3]
       10:
-        name: Piston (Extended) (North)
+        name: Piston (Extended, North)
         tex_direction:
           LEFT: [14, 13]
           RIGHT: [14, 12]
           FORWARD: [11, 6]
           BACKWARD: [14, 3]
       11:
-        name: Piston (Extended) (South)
+        name: Piston (Extended, South)
         tex: [15, 12]
         tex_direction:
           LEFT: [14, 12]
@@ -1215,14 +1215,14 @@ blocks:
           BACKWARD: [11, 6]
           FORWARD: [14, 3]
       12:
-        name: Piston (Extended) (West)
+        name: Piston (Extended, West)
         tex: [14, 13]
         tex_direction:
           LEFT: [11, 6]
           RIGHT: [14, 3]
           FORWARD: [14, 12]
       13:
-        name: Piston (Extended) (East)
+        name: Piston (Extended, East)
         tex: [14, 12]
         tex_direction:
           RIGHT: [11, 6]
@@ -3168,10 +3168,15 @@ blocks:
     name: Command Block
     mapcolor: [200, 200, 200]
     tex: [8, 11]
+    data:
+      0:
+        name: Command Block
+      1:
+        name: Command Block (Triggered)
 
   - id: 138
     idStr: beacon
-    name: Beacon Block
+    name: Beacon
     mapcolor: [200, 200, 200]
     tex: [9, 2]
     opacity: 0
@@ -3206,12 +3211,32 @@ blocks:
     mapcolor: [200, 100, 100]
     tex: [11, 12]
     type: CROPS
-    data:
-      0: {tex: [8, 12]}
-      1: {tex: [9, 12]}
-      2: {tex: [10, 12]}
-      3: {tex: [11, 12]}
     opacity: 0
+    data:
+      0:
+        name: Carrots (Age 0)
+        tex: [8, 12]
+      1: 
+        name: Carrots (Age 1)
+        tex: [8, 12]
+      2: 
+        name: Carrots (Age 2)
+        tex: [9, 12]
+      3: 
+        name: Carrots (Age 3)
+        tex: [9, 12]
+      4: 
+        name: Carrots (Age 4)
+        tex: [10, 12]
+      5: 
+        name: Carrots (Age 5)
+        tex: [10, 12]
+      6: 
+        name: Carrots (Age 6)
+        tex: [10, 12]
+      7: 
+        name: Carrots (Age 7)
+        tex: [11, 12]
 
   - id: 142
     idStr: potatoes
@@ -3219,12 +3244,32 @@ blocks:
     mapcolor: [200, 100, 100]
     tex: [12, 12]
     type: CROPS
-    data:
-      0: {tex: [8, 12]}
-      1: {tex: [9, 12]}
-      2: {tex: [10, 12]}
-      3: {tex: [12, 12]}
     opacity: 0
+    data:
+      0:
+        name: Carrots (Age 0)
+        tex: [8, 12]
+      1: 
+        name: Carrots (Age 1)
+        tex: [8, 12]
+      2: 
+        name: Carrots (Age 2)
+        tex: [9, 12]
+      3: 
+        name: Carrots (Age 3)
+        tex: [9, 12]
+      4: 
+        name: Carrots (Age 4)
+        tex: [10, 12]
+      5: 
+        name: Carrots (Age 5)
+        tex: [10, 12]
+      6: 
+        name: Carrots (Age 6)
+        tex: [10, 12]
+      7: 
+        name: Carrots (Age 7)
+        tex: [12, 12]
 
   - id: 143
     idStr: wooden_button
@@ -3233,6 +3278,31 @@ blocks:
     tex: [4, 0]
     type: BUTTON
     opacity: 0
+    data:
+      0:
+        name: Wooden Button (Down)
+      1:
+        name: Wooden Button (East)
+      2:
+        name: Wooden Button (West)
+      3:
+        name: Wooden Button (South)
+      4:
+        name: Wooden Button (North)
+      5:
+        name: Wooden Button (Up)
+      8:
+        name: Wooden Button (Powered, Down)
+      9:
+        name: Wooden Button (Powered, East)
+      10:
+        name: Wooden Button (Powered, West)
+      11:
+        name: Wooden Button (Powered, South)
+      12:
+        name: Wooden Button (Powered, North)
+      13:
+        name: Wooden Button (Powered, Up)
 
   - id: 144
     idStr: skull
@@ -3250,62 +3320,62 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Anvil (North/South)
+        name: Anvil (South)
         tex_direction:
           TOP: [7, 14]
           BOTTOM: [7, 13]
       1:
-        name: Anvil (East/West)
+        name: Anvil (West)
         tex_direction:
           TOP: [7, 14]
           BOTTOM: [7, 13] 
       2:
-        name: Anvil (North/South)
+        name: Anvil (North)
         tex_direction:
           TOP: [7, 14]
           BOTTOM: [7, 13]          
       3:
-        name: Anvil (East/West)
+        name: Anvil (East)
         tex_direction:
           TOP: [7, 14]
           BOTTOM: [7, 13]          
       4:
-        name: Anvil (Damaged)(North/South)
+        name: Anvil (Damaged, South)
         tex_direction:
           TOP: [8, 13]
           BOTTOM: [7, 13]
       5:
-        name: Anvil (Damaged)(East/West)
+        name: Anvil (Damaged, West)
         tex_direction:
           TOP: [8, 13]
           BOTTOM: [7, 13]
       6:
-        name: Anvil (Damaged)(North/South)
+        name: Anvil (Damaged, North)
         tex_direction:
           TOP: [8, 13]
           BOTTOM: [7, 13]
       7:
-        name: Anvil (Damaged)(East/West)
+        name: Anvil (Damaged, East)
         tex_direction:
           TOP: [8, 13]
           BOTTOM: [7, 13]
       8:
-        name: Anvil (Very Damaged)(North/South)
+        name: Anvil (Very Damaged, South)
         tex_direction:
           TOP: [8, 14]
           BOTTOM: [7, 13]
       9:
-        name: Anvil (Very Damaged)(North/South)
+        name: Anvil (Very Damaged, West)
         tex_direction:
           TOP: [8, 14]
           BOTTOM: [7, 13]          
       10:
-        name: Anvil (Very Damaged)(North/South)
+        name: Anvil (Very Damaged, North)
         tex_direction:
           TOP: [8, 14]
           BOTTOM: [7, 13]
       11:
-        name: Anvil (Very Damaged)(North/South)
+        name: Anvil (Very Damaged, East)
         tex_direction:
           TOP: [8, 14]
           BOTTOM: [7, 13]
@@ -3318,11 +3388,9 @@ blocks:
     tex: [17,6]
 #   tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
 #   See chest entry
+    type: CHEST
+    opacity: 0
     data:
-#     0:
-#       null
-#     1:
-#       null
       2: 
         name: Trapped Chest (North)
         tex_direction:
@@ -3347,8 +3415,6 @@ blocks:
           RIGHT: [18, 6]
           TOP: [16, 6]
           BOTTOM: [16, 6]
-    opacity: 0
-    type: CHEST
 
   - id: 147
     idStr: light_weighted_pressure_plate
@@ -3357,6 +3423,39 @@ blocks:
     type: PRESSURE_PLATE
     tex: [7, 1]
     opacity: 0
+    data:
+      0: 
+        name: Weighted Pressure Plate (Light, Power 0)
+      1: 
+        name: Weighted Pressure Plate (Light, Power 1)
+      2: 
+        name: Weighted Pressure Plate (Light, Power 2)
+      3: 
+        name: Weighted Pressure Plate (Light, Power 3)
+      4: 
+        name: Weighted Pressure Plate (Light, Power 4)
+      5: 
+        name: Weighted Pressure Plate (Light, Power 5)
+      6: 
+        name: Weighted Pressure Plate (Light, Power 6)
+      7: 
+        name: Weighted Pressure Plate (Light, Power 7)
+      8: 
+        name: Weighted Pressure Plate (Light, Power 8)
+      9: 
+        name: Weighted Pressure Plate (Light, Power 9)
+      10: 
+        name: Weighted Pressure Plate (Light, Power 10)
+      11: 
+        name: Weighted Pressure Plate (Light, Power 11)
+      12: 
+        name: Weighted Pressure Plate (Light, Power 12)
+      13: 
+        name: Weighted Pressure Plate (Light, Power 13)
+      14: 
+        name: Weighted Pressure Plate (Light, Power 14)
+      15: 
+        name: Weighted Pressure Plate (Light, Power 15)
 
   - id: 148
     idStr: heavy_weighted_pressure_plate
@@ -3365,6 +3464,39 @@ blocks:
     tex: [6, 1]
     type: PRESSURE_PLATE
     opacity: 0
+    data:
+      0: 
+        name: Weighted Pressure Plate (Heavy, Power 0)
+      1: 
+        name: Weighted Pressure Plate (Heavy, Power 1)
+      2: 
+        name: Weighted Pressure Plate (Heavy, Power 2)
+      3: 
+        name: Weighted Pressure Plate (Heavy, Power 3)
+      4: 
+        name: Weighted Pressure Plate (Heavy, Power 4)
+      5: 
+        name: Weighted Pressure Plate (Heavy, Power 5)
+      6: 
+        name: Weighted Pressure Plate (Heavy, Power 6)
+      7: 
+        name: Weighted Pressure Plate (Heavy, Power 7)
+      8: 
+        name: Weighted Pressure Plate (Heavy, Power 8)
+      9: 
+        name: Weighted Pressure Plate (Heavy, Power 9)
+      10: 
+        name: Weighted Pressure Plate (Heavy, Power 10)
+      11: 
+        name: Weighted Pressure Plate (Heavy, Power 11)
+      12: 
+        name: Weighted Pressure Plate (Heavy, Power 12)
+      13: 
+        name: Weighted Pressure Plate (Heavy, Power 13)
+      14: 
+        name: Weighted Pressure Plate (Heavy, Power 14)
+      15: 
+        name: Weighted Pressure Plate (Heavy, Power 15)
 
   - id: 149
     idStr: unpowered_comparator
@@ -3375,19 +3507,19 @@ blocks:
     opacity: 0
     data:
       0: 
-        name: Redstone Comparator (Off) (North)
+        name: Redstone Comparator (Off, North)
         tex_direction:
           TOP: [11, 11]
       1: 
-        name: Redstone Comparator (Off) (East)
+        name: Redstone Comparator (Off, East)
         tex_direction:
           TOP: [18, 13]
       2: 
-        name: Redstone Comparator (Off) (South)
+        name: Redstone Comparator (Off, South)
         tex_direction:
           TOP: [18, 14]
       3: 
-        name: Redstone Comparator (Off) (West)
+        name: Redstone Comparator (Off, West)
         tex_direction:
           TOP: [18, 15]
 
@@ -3401,19 +3533,19 @@ blocks:
     brightness: 8
     data:
       0: 
-        name: Redstone Comparator (On) (North)
+        name: Redstone Comparator (On, North)
         tex_direction:
           TOP: [12, 11]
       1: 
-        name: Redstone Comparator (On) (East)
+        name: Redstone Comparator (On, East)
         tex_direction:
           TOP: [19, 7]
       2: 
-        name: Redstone Comparator (On) (South)
+        name: Redstone Comparator (On, South)
         tex_direction:
           TOP: [19, 8]
       3: 
-        name: Redstone Comparator (On) (West)
+        name: Redstone Comparator (On, West)
         tex_direction:
           TOP: [19, 9]
 
@@ -3613,35 +3745,35 @@ blocks:
           TOP: [14, 3]
           BOTTOM: [14, 3]
       8:
-        name: Dropper (On) (Down)
+        name: Dropper (On, Down)
         tex_direction:
           TOP: [14, 3]
           BOTTOM: [18, 4]
       9:
-        name: Dropper (On) (Up)
+        name: Dropper (On, Up)
         tex_direction:
           TOP: [18, 4]
           BOTTOM: [14, 3]
       10: 
-        name: Dropper (On) (North)
+        name: Dropper (On, North)
         tex_direction:
           FORWARD: [10, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       11: 
-        name: Dropper (On) (South)
+        name: Dropper (On, South)
         tex_direction:
           BACKWARD: [10, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       12: 
-        name: Dropper (On) (West)
+        name: Dropper (On, West)
         tex_direction:
           LEFT: [10, 2]
           TOP: [14, 3]
           BOTTOM: [14, 3]
       13: 
-        name: Dropper (On) (East)
+        name: Dropper (On, East)
         tex_direction:
           RIGHT: [10, 2]
           TOP: [14, 3]
