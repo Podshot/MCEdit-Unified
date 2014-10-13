@@ -97,6 +97,38 @@ class TileEntity(object):
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])
         eTag['z'] = nbt.TAG_Int(tileEntity['z'].value + copyOffset[2])
+        if eTag['id'].value == "Control":
+            command = eTag['Command'].value
+
+            # Adjust teleport command coordinates.
+            # /tp <playername> <x> <y> <z>
+            if command.startswith('/tp'):
+                words = command.split(' ')
+                if len(words) > 4:
+                    x, y, z = words[2:5]
+
+                    # Only adjust non-relative teleport coordinates.
+                    # These coordinates can be either ints or floats. If ints, Minecraft adds
+                    # 0.5 to the coordinate to center the player in the block.
+                    # We need to preserve the int/float status or else the coordinates will shift.
+                    # Note that copyOffset is always ints.
+
+                    def num(x):
+                        try:
+                            return int(x)
+                        except ValueError:
+                            return float(x)
+
+                    if x[0] != "~":
+                        x = str(num(x) + copyOffset[0])
+                    if y[0] != "~":
+                        y = str(num(y) + copyOffset[1])
+                    if z[0] != "~":
+                        z = str(num(z) + copyOffset[2])
+
+                    words[2:5] = x, y, z
+                    eTag['Command'].value = ' '.join(words)
+
         return eTag
 
 
