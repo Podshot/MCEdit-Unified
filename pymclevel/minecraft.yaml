@@ -1397,58 +1397,58 @@ blocks:
     tex: [6, 0]
     data:
       0:
-        name: Double Stone Slab (Seamed, Stone)
+        name: Stone Slab (Double, Seamed, Stone)
         tex: [5, 0]
         tex_direction:
           TOP: [6, 0]
           BOTTOM: [6, 0]
       1:
-        name: Double Stone Slab (Seamed, Sandstone)
+        name: Stone Slab (Double, Seamed, Sandstone)
         tex: [0, 12]
         tex_direction:
           TOP: [0, 11]
           BOTTOM: [0, 13]
       2:
-        name: Double Stone Slab (Seamed, Old Wood)
+        name: Stone Slab (Double, Seamed, Old Wood)
         tex: [4, 0]
       3:
-        name: Double Stone Slab (Seamed, Cobblestone)
+        name: Stone Slab (Double, Seamed, Cobblestone)
         tex: [0, 1]
       4:
-        name: Double Stone Slab (Seamed, Brick)
+        name: Stone Slab (Double, Seamed, Brick)
         tex: [7, 0]
       5:
-        name: Double Stone Slab (Seamed, Stone Brick)
+        name: Stone Slab (Double, Seamed, Stone Brick)
         tex: [6, 3]
       6:
-        name: Double Stone Slab (Seamed, Nether Brick)
+        name: Stone Slab (Double, Seamed, Nether Brick)
         tex: [0, 14]
       7:
-        name: Double Stone Slab (Seamed, Quartz)
+        name: Stone Slab (Double, Seamed, Quartz)
         tex: [9, 13]
       8:
-        name: Double Stone Slab (Seamless, Stone)
+        name: Stone Slab (Double, Seamless, Stone)
         tex: [6, 0]
       9:
-        name: Double Stone Slab (Seamless, Sandstone)
+        name: Stone Slab (Double, Seamless, Sandstone)
         tex: [0, 11]
       10:
-        name: Double Stone Slab (Seamless, Old Wood)
+        name: Stone Slab (Double, Seamless, Old Wood)
         tex: [4, 0]
       11:
-        name: Double Stone Slab (Seamless, Cobblestone)
+        name: Stone Slab (Double, Seamless, Cobblestone)
         tex: [0, 1]
       12:
-        name: Double Stone Slab (Seamless, Brick)
+        name: Stone Slab (Double, Seamless, Brick)
         tex: [7, 0]
       13:
-        name: Double Stone Slab (Seamless, Stone Brick)
+        name: Stone Slab (Double, Seamless, Stone Brick)
         tex: [6, 3]
       14:
-        name: Double Stone Slab (Seamless, Nether Brick)
+        name: Stone Slab (Double, Seamless, Nether Brick)
         tex: [0, 14]
       15:
-        name: Double Stone Slab (Seamless, Quartz)
+        name: Stone Slab (Double, Seamless, Quartz)
         tex: [9, 13]
 
   - id: 44
@@ -1611,21 +1611,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Oak, Bottom, East)
+        name: Stairs (Oak Wood, Bottom, East)
       1:
-        name: Stairs (Oak, Bottom, West)
+        name: Stairs (Oak Wood, Bottom, West)
       2:
-        name: Stairs (Oak, Bottom, South)
+        name: Stairs (Oak Wood, Bottom, South)
       3:
-        name: Stairs (Oak, Bottom, North)
+        name: Stairs (Oak Wood, Bottom, North)
       4:
-        name: Stairs (Oak, Top, East)
+        name: Stairs (Oak Wood, Top, East)
       5:
-        name: Stairs (Oak, Top, West)
+        name: Stairs (Oak Wood, Top, West)
       6:
-        name: Stairs (Oak, Top, South)
+        name: Stairs (Oak Wood, Top, South)
       7:
-        name: Stairs (Oak, Top, North)
+        name: Stairs (Oak Wood, Top, North)
 
   - id: 54
     idStr: chest
@@ -1821,7 +1821,7 @@ blocks:
 
   - id: 63
     idStr: standing_sign
-    name: Sign Post
+    name: Standing Sign
     mapcolor: [111, 91, 54]
     tex: [4, 0]
     type: SIGNPOST
@@ -2932,22 +2932,22 @@ blocks:
     tex: [4, 0]
     data:
       0:
-        name: Double Oak Wood Slab
+        name: Wooden Slab (Double, Oak)
       1:
         tex: [6, 12]
-        name: Double Spruce Wood Slab
+        name: Wooden Slab (Double, Spruce)
       2:
         tex: [6, 13]
-        name: Double Birch Wood Slab
+        name: Wooden Slab (Double, Birch)
       3:
         tex: [7, 12]
-        name: Double Jungle Wood Slab
+        name: Wooden Slab (Double, Jungle)
       4:
         tex: [0, 15]
-        name: Double Acacia Wood Slab
+        name: Wooden Slab (Double, Acacia)
       5:
         tex: [1, 15]
-        name: Double Dark Oak Wood Slab
+        name: Wooden Slab (Double, Dark Oak)
 
   - id: 126
     idStr: wooden_slab
@@ -2956,39 +2956,39 @@ blocks:
     tex: [4, 0]
     data:
       0:
-        name: Oak Wood Slab
+        name: Wooden Slab (Bottom, Oak)
       1:
         tex: [6, 12]
-        name: Spruce Wood Slab
+        name: Wooden Slab (Bottom, Spruce)
       2:
         tex: [6, 13]
-        name: Birch Wood Slab
+        name: Wooden Slab (Bottom, Birch)
       3:
         tex: [7, 12]
-        name: Jungle Wood Slab
+        name: Wooden Slab (Bottom, Jungle)
       4:
         tex: [0, 15]
-        name: Acacia Wood Slab
+        name: Wooden Slab (Bottom, Acacia)
       5:
         tex: [1, 15]
-        name: Dark Oak Wood Slab
+        name: Wooden Slab (Bottom, Dark Oak)
       8:
-        name: Oak Wood Slab (Upper)
+        name: Wooden Slab (Top, Oak)
       9:
         tex: [6, 12]
-        name: Spruce Wood Slab (Upper)
+        name: Wooden Slab (Top, Spruce)
       10:
         tex: [6, 13]
-        name: Birch Wood Slab (Upper)
+        name: Wooden Slab (Top, Birch)
       11:
         tex: [7, 12]
-        name: Jungle Wood Slab (Upper)
+        name: Wooden Slab (Top, Jungle)
       12:
         tex: [0, 15]
-        name: Acacia Wood Slab (Upper)
+        name: Wooden Slab (Top, Acacia)
       13:
         tex: [1, 15]
-        name: Dark Oak Wood Slab (Upper)
+        name: Wooden Slab (Top, Dark Oak)
 
   - id: 127
     idStr: cocoa
@@ -3007,6 +3007,23 @@ blocks:
       TOP: [0, 11]
       BOTTOM: [0, 13]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Sandstone, Bottom, East)
+      1:
+        name: Stairs (Sandstone, Bottom, West)
+      2:
+        name: Stairs (Sandstone, Bottom, South)
+      3:
+        name: Stairs (Sandstone, Bottom, North)
+      4:
+        name: Stairs (Sandstone, Top, East)
+      5:
+        name: Stairs (Sandstone, Top, West)
+      6:
+        name: Stairs (Sandstone, Top, South)
+      7:
+        name: Stairs (Sandstone, Top, North)
 
   - id: 129
     idStr: emerald_ore
@@ -3080,6 +3097,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [6, 12]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Spruce Wood, Bottom, East)
+      1:
+        name: Stairs (Spruce Wood, Bottom, West)
+      2:
+        name: Stairs (Spruce Wood, Bottom, South)
+      3:
+        name: Stairs (Spruce Wood, Bottom, North)
+      4:
+        name: Stairs (Spruce Wood, Top, East)
+      5:
+        name: Stairs (Spruce Wood, Top, West)
+      6:
+        name: Stairs (Spruce Wood, Top, South)
+      7:
+        name: Stairs (Spruce Wood, Top, North)
 
   - id: 135
     idStr: birch_stairs
@@ -3087,6 +3121,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [6, 13]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Birch Wood, Bottom, East)
+      1:
+        name: Stairs (Birch Wood, Bottom, West)
+      2:
+        name: Stairs (Birch Wood, Bottom, South)
+      3:
+        name: Stairs (Birch Wood, Bottom, North)
+      4:
+        name: Stairs (Birch Wood, Top, East)
+      5:
+        name: Stairs (Birch Wood, Top, West)
+      6:
+        name: Stairs (Birch Wood, Top, South)
+      7:
+        name: Stairs (Birch Wood, Top, North)
 
   - id: 136
     idStr: jungle_stairs
@@ -3094,6 +3145,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [7, 12]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Jungle Wood, Bottom, East)
+      1:
+        name: Stairs (Jungle Wood, Bottom, West)
+      2:
+        name: Stairs (Jungle Wood, Bottom, South)
+      3:
+        name: Stairs (Jungle Wood, Bottom, North)
+      4:
+        name: Stairs (Jungle Wood, Top, East)
+      5:
+        name: Stairs (Jungle Wood, Top, West)
+      6:
+        name: Stairs (Jungle Wood, Top, South)
+      7:
+        name: Stairs (Jungle Wood, Top, North)
 
   - id: 137
     idStr: command_block
@@ -3449,6 +3517,23 @@ blocks:
     name: Quartz Stairs
     tex: [9, 13]
     mapcolor: [255, 255, 255]
+    data:
+      0:
+        name: Stairs (Quartz, Bottom, East)
+      1:
+        name: Stairs (Quartz, Bottom, West)
+      2:
+        name: Stairs (Quartz, Bottom, South)
+      3:
+        name: Stairs (Quartz, Bottom, North)
+      4:
+        name: Stairs (Quartz, Top, East)
+      5:
+        name: Stairs (Quartz, Top, West)
+      6:
+        name: Stairs (Quartz, Top, South)
+      7:
+        name: Stairs (Quartz, Top, North)
 
   - id: 157
     idStr: activator_rail
@@ -3879,6 +3964,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [0, 15]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Acacia Wood, Bottom, East)
+      1:
+        name: Stairs (Acacia Wood, Bottom, West)
+      2:
+        name: Stairs (Acacia Wood, Bottom, South)
+      3:
+        name: Stairs (Acacia Wood, Bottom, North)
+      4:
+        name: Stairs (Acacia Wood, Top, East)
+      5:
+        name: Stairs (Acacia Wood, Top, West)
+      6:
+        name: Stairs (Acacia Wood, Top, South)
+      7:
+        name: Stairs (Acacia Wood, Top, North)
 
   - id: 164
     idStr: dark_oak_stairs
@@ -3886,6 +3988,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [1, 15]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Dark Oak Wood, Bottom, East)
+      1:
+        name: Stairs (Dark Oak Wood, Bottom, West)
+      2:
+        name: Stairs (Dark Oak Wood, Bottom, South)
+      3:
+        name: Stairs (Dark Oak Wood, Bottom, North)
+      4:
+        name: Stairs (Dark Oak Wood, Top, East)
+      5:
+        name: Stairs (Dark Oak Wood, Top, West)
+      6:
+        name: Stairs (Dark Oak Wood, Top, South)
+      7:
+        name: Stairs (Dark Oak Wood, Top, North)
     
   - id: 165
     idStr: slime
@@ -4167,6 +4286,23 @@ blocks:
       TOP: [4, 20]
       BOTTOM: [0, 20]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Red Sandstone, Bottom, East)
+      1:
+        name: Stairs (Red Sandstone, Bottom, West)
+      2:
+        name: Stairs (Red Sandstone, Bottom, South)
+      3:
+        name: Stairs (Red Sandstone, Bottom, North)
+      4:
+        name: Stairs (Red Sandstone, Top, East)
+      5:
+        name: Stairs (Red Sandstone, Top, West)
+      6:
+        name: Stairs (Red Sandstone, Top, South)
+      7:
+        name: Stairs (Red Sandstone, Top, North)
 
   - id: 181
     idStr: double_stone_slab2
