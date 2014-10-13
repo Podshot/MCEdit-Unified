@@ -1609,23 +1609,24 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [4, 0]
     type: STAIRS
-    data:
-      0:
-        name: Stairs (Oak, Bottom, East)
-      1:
-        name: Stairs (Oak, Bottom, West)
-      2:
-        name: Stairs (Oak, Bottom, South)
-      3:
-        name: Stairs (Oak, Bottom, North)
-      4:
-        name: Stairs (Oak, Top, East)
-      5:
-        name: Stairs (Oak, Top, West)
-      6:
-        name: Stairs (Oak, Top, South)
-      7:
-        name: Stairs (Oak, Top, North)
+# Adding this breaks the model currently
+#    data:
+#      0:
+#        name: Stairs (Oak, Bottom, East)
+#      1:
+#        name: Stairs (Oak, Bottom, West)
+#      2:
+#        name: Stairs (Oak, Bottom, South)
+#      3:
+#        name: Stairs (Oak, Bottom, North)
+#      4:
+#        name: Stairs (Oak, Top, East)
+#      5:
+#        name: Stairs (Oak, Top, West)
+#      6:
+#        name: Stairs (Oak, Top, South)
+#      7:
+#        name: Stairs (Oak, Top, North)
 
   - id: 54
     idStr: chest
@@ -1876,23 +1877,24 @@ blocks:
     mapcolor: [115, 115, 115]
     tex: [0, 1]
     type: STAIRS
-    data:
-      0:
-        name: Stairs (Cobblestone, Bottom, East)
-      1:
-        name: Stairs (Cobblestone, Bottom, West)
-      2:
-        name: Stairs (Cobblestone, Bottom, South)
-      3:
-        name: Stairs (Cobblestone, Bottom, North)
-      4:
-        name: Stairs (Cobblestone, Top, East)
-      5:
-        name: Stairs (Cobblestone, Top, West)
-      6:
-        name: Stairs (Cobblestone, Top, South)
-      7:
-        name: Stairs (Cobblestone, Top, North)
+# Adding this breaks the model currently
+#    data:
+#      0:
+#        name: Stairs (Cobblestone, Bottom, East)
+#      1:
+#        name: Stairs (Cobblestone, Bottom, West)
+#      2:
+#        name: Stairs (Cobblestone, Bottom, South)
+#      3:
+#        name: Stairs (Cobblestone, Bottom, North)
+#      4:
+#        name: Stairs (Cobblestone, Top, East)
+#      5:
+#        name: Stairs (Cobblestone, Top, West)
+#      6:
+#        name: Stairs (Cobblestone, Top, South)
+#      7:
+#        name: Stairs (Cobblestone, Top, North)
 
   - id: 68
     idStr: wall_sign
@@ -2667,23 +2669,24 @@ blocks:
     mapcolor: [170, 86, 62]
     tex: [7, 0]
     type: STAIRS
-    data:
-      0:
-        name: Stairs (Brick, Bottom, East)
-      1:
-        name: Stairs (Brick, Bottom, West)
-      2:
-        name: Stairs (Brick, Bottom, South)
-      3:
-        name: Stairs (Brick, Bottom, North)
-      4:
-        name: Stairs (Brick, Top, East)
-      5:
-        name: Stairs (Brick, Top, West)
-      6:
-        name: Stairs (Brick, Top, South)
-      7:
-        name: Stairs (Brick, Top, North)
+# Adding this breaks the model currently
+#    data:
+#      0:
+#        name: Stairs (Brick, Bottom, East)
+#      1:
+#        name: Stairs (Brick, Bottom, West)
+#      2:
+#        name: Stairs (Brick, Bottom, South)
+#      3:
+#        name: Stairs (Brick, Bottom, North)
+#      4:
+#        name: Stairs (Brick, Top, East)
+#      5:
+#        name: Stairs (Brick, Top, West)
+#      6:
+#        name: Stairs (Brick, Top, South)
+#      7:
+#        name: Stairs (Brick, Top, North)
 
   - id: 109
     idStr: stone_brick_stairs
@@ -2691,23 +2694,24 @@ blocks:
     mapcolor: [120, 120, 120]
     tex: [6, 3]
     type: STAIRS
-    data:
-      0:
-        name: Stairs (Stone Brick, Bottom, East)
-      1:
-        name: Stairs (Stone Brick, Bottom, West)
-      2:
-        name: Stairs (Stone Brick, Bottom, South)
-      3:
-        name: Stairs (Stone Brick, Bottom, North)
-      4:
-        name: Stairs (Stone Brick, Top, East)
-      5:
-        name: Stairs (Stone Brick, Top, West)
-      6:
-        name: Stairs (Stone Brick, Top, South)
-      7:
-        name: Stairs (Stone Brick, Top, North)
+# Adding this breaks the model currently
+#    data:
+#      0:
+#        name: Stairs (Stone Brick, Bottom, East)
+#      1:
+#        name: Stairs (Stone Brick, Bottom, West)
+#      2:
+#        name: Stairs (Stone Brick, Bottom, South)
+#      3:
+#        name: Stairs (Stone Brick, Bottom, North)
+#      4:
+#        name: Stairs (Stone Brick, Top, East)
+#      5:
+#        name: Stairs (Stone Brick, Top, West)
+#      6:
+#        name: Stairs (Stone Brick, Top, South)
+#      7:
+#        name: Stairs (Stone Brick, Top, North)
 
   - id: 110
     idStr: mycelium
@@ -2746,23 +2750,24 @@ blocks:
     mapcolor: [54, 24, 30]
     tex: [0, 14]
     type: STAIRS
-    data:
-      0:
-        name: Stairs (Nether Brick, Bottom, East)
-      1:
-        name: Stairs (Nether Brick, Bottom, West)
-      2:
-        name: Stairs (Nether Brick, Bottom, South)
-      3:
-        name: Stairs (Nether Brick, Bottom, North)
-      4:
-        name: Stairs (Nether Brick, Top, East)
-      5:
-        name: Stairs (Nether Brick, Top, West)
-      6:
-        name: Stairs (Nether Brick, Top, South)
-      7:
-        name: Stairs (Nether Brick, Top, North)
+# Adding this breaks the model currently
+#    data:
+#      0:
+#        name: Stairs (Nether Brick, Bottom, East)
+#      1:
+#        name: Stairs (Nether Brick, Bottom, West)
+#      2:
+#        name: Stairs (Nether Brick, Bottom, South)
+#      3:
+#        name: Stairs (Nether Brick, Bottom, North)
+#      4:
+#        name: Stairs (Nether Brick, Top, East)
+#      5:
+#        name: Stairs (Nether Brick, Top, West)
+#      6:
+#        name: Stairs (Nether Brick, Top, South)
+#      7:
+#        name: Stairs (Nether Brick, Top, North)
 
   - id: 115
     idStr: nether_wart
