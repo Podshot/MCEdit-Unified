@@ -176,6 +176,8 @@ class SelectionToolPanel(Panel):
         deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: DELETE")
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
         deleteEntitiesButton.tooltipText = _("Remove all entities within the selection")
+        deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
+        deleteTileTicksButton.tooltipText = _("Removes all tile ticks within selection")
         # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
         analyzeButton.tooltipText = _("Count the different blocks and entities in the selection and display the totals.")
@@ -209,6 +211,7 @@ class SelectionToolPanel(Panel):
             selectButton,
             deleteBlocksButton,
             deleteEntitiesButton,
+            deleteTileTicksButton,
             analyzeButton,
             cutButton,
             copyButton,
@@ -1107,6 +1110,29 @@ class SelectionTool(EditorTool):
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
             self.editor.addUnsavedEdit()
+
+    @alertException
+    def deleteTileTicks(self, recordUndo=True):
+        box = self.selectionBox()
+
+        with setWindowCaption("WORKING - "):
+            self.editor.freezeStatus("Removing Tile Ticks...")
+            level = self.editor.level
+            editor = self.editor
+            class DeleteTileTicksOperation(Operation):
+                def perform(self, recordUndo=True):
+                    self.undoTileTicks = level.getTileTicksInBox(box)
+                    level.removeTileTicksInBox(box)
+
+                def undo(self):
+                    level.removeTileTicksInBox(box)
+                    level.addTileTicks(self.undoTileTicks)
+
+            op = DeleteTileTicksOperation(self.editor, self.editor.level)
+            if recordUndo:
+                self.editor.addOperation(op)
+            self.editor.addUnsavedEdit()
+
 
     @alertException
     def deleteEntities(self, recordUndo=True):

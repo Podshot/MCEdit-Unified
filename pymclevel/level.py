@@ -7,7 +7,7 @@ Created on Jul 22, 2011
 import blockrotation
 from box import BoundingBox
 from collections import defaultdict
-from entity import Entity, TileEntity
+from entity import Entity, TileEntity, TileTick
 import itertools
 from logging import getLogger
 import materials
@@ -199,16 +199,28 @@ class MCLevel(object):
     def addTileEntity(self, entityTag):
         pass
 
+    def addTileTick(self, entityTag):
+        pass
+
+    def addTileTicks(self, tileTicks):
+        pass
+
     def getEntitiesInBox(self, box):
         return []
 
     def getTileEntitiesInBox(self, box):
         return []
 
+    def getTileTicksInBox(self, box):
+        return []
+
     def removeEntitiesInBox(self, box):
         pass
 
     def removeTileEntitiesInBox(self, box):
+        pass
+
+    def removeTileTicksInBox(self, box):
         pass
 
     @property
@@ -431,6 +443,11 @@ class EntityLevel(MCLevel):
         """Returns a list of references to tile entities in this chunk, whose positions are within box"""
         return [ent for ent in self.TileEntities if TileEntity.pos(ent) in box]
 
+    def getTileTicksInBox(self, box):
+
+        return [ent for ent in self.TileTicks if TileTick.pos(ent) in box]
+
+
     def removeEntitiesInBox(self, box):
 
         newEnts = []
@@ -460,6 +477,22 @@ class EntityLevel(MCLevel):
         log.debug("Removed {0} tile entities".format(entsRemoved))
 
         self.TileEntities.value[:] = newEnts
+
+        return entsRemoved
+
+    def removeTileTicksInBox(self, box):
+        #if not hasattr(self, "TileTicks"):
+        #    return
+        newEnts = []
+        for ent in self.TileTicks:
+            if TileTick.pos(ent) in box:
+                continue
+            newEnts.append(ent)
+
+        entsRemoved = len(self.TileTicks) - len(newEnts)
+        log.debug("Removed {0} tile tickss".format(entsRemoved))
+
+        self.TileTicks.value[:] = newEnts
 
         return entsRemoved
 
@@ -495,6 +528,21 @@ class EntityLevel(MCLevel):
 
         self.TileEntities.append(tileEntityTag)
         self._fakeEntities = None
+
+    def addTileTick(self, tickTag):
+        assert isinstance(tickTag, nbt.TAG_Compound)
+
+        def differentPosition(a):
+            return not ((tickTag is a) or TileTick.pos(a) == TileTick.pos(tickTag))
+
+        self.TileTicks.value[:] = filter(differentPosition, self.TileTicks)
+
+        self.TileTicks.append(tickTag)
+        self._fakeEntities = None
+
+    def addTileTicks(self, tileTicks):
+        for e in tileTicks:
+            self.addTileTick(e)
 
     _fakeEntities = None
 

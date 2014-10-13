@@ -62,4 +62,6 @@ filters/modifyitemstrings.py
 .project
 .pydevproject
 .settings
+.idea/
+*.iml
 Thumbs.db
