@@ -3507,21 +3507,69 @@ blocks:
     opacity: 0
     data:
       0: 
-        name: Redstone Comparator (Off, North)
+        name: Redstone Comparator (Off, Compare, North)
         tex_direction:
-          TOP: [11, 11]
+          TOP: [25, 0]
       1: 
-        name: Redstone Comparator (Off, East)
+        name: Redstone Comparator (Off, Compare, West)
         tex_direction:
-          TOP: [18, 13]
+          TOP: [25, 1]
       2: 
-        name: Redstone Comparator (Off, South)
+        name: Redstone Comparator (Off, Compare, South)
         tex_direction:
-          TOP: [18, 14]
+          TOP: [25, 2]
       3: 
-        name: Redstone Comparator (Off, West)
+        name: Redstone Comparator (Off, Compare, West)
         tex_direction:
-          TOP: [18, 15]
+          TOP: [25, 3]
+      4: 
+        name: Redstone Comparator (Off, Subtract, North)
+        tex_direction:
+          TOP: [26, 0]
+      5: 
+        name: Redstone Comparator (Off, Subtract, East)
+        tex_direction:
+          TOP: [26, 1]
+      6: 
+        name: Redstone Comparator (Off, Subtract, South)
+        tex_direction:
+          TOP: [26, 2]
+      7: 
+        name: Redstone Comparator (Off, Subtract, West)
+        tex_direction:
+          TOP: [26, 3]
+      8: 
+        name: Redstone Comparator (On, Compare, North)
+        tex_direction:
+          TOP: [27, 0]
+      9: 
+        name: Redstone Comparator (On, Compare, East)
+        tex_direction:
+          TOP: [27, 1]
+      10: 
+        name: Redstone Comparator (On, Compare, South)
+        tex_direction:
+          TOP: [27, 2]
+      11: 
+        name: Redstone Comparator (On, Compare, West)
+        tex_direction:
+          TOP: [27, 3]
+      12: 
+        name: Redstone Comparator (On, Subtract, North)
+        tex_direction:
+          TOP: [28, 0]
+      13: 
+        name: Redstone Comparator (On, Subtract, East)
+        tex_direction:
+          TOP: [28, 1]
+      14: 
+        name: Redstone Comparator (On, Subtract, South)
+        tex_direction:
+          TOP: [28, 2]
+      15: 
+        name: Redstone Comparator (On, Subtract, West)
+        tex_direction:
+          TOP: [28, 3]
 
   - id: 150
     idStr: powered_comparator
@@ -3531,23 +3579,6 @@ blocks:
     tex: [12, 11]
     opacity: 0
     brightness: 8
-    data:
-      0: 
-        name: Redstone Comparator (On, North)
-        tex_direction:
-          TOP: [12, 11]
-      1: 
-        name: Redstone Comparator (On, East)
-        tex_direction:
-          TOP: [19, 7]
-      2: 
-        name: Redstone Comparator (On, South)
-        tex_direction:
-          TOP: [19, 8]
-      3: 
-        name: Redstone Comparator (On, West)
-        tex_direction:
-          TOP: [19, 9]
 
   - id: 151
     idStr: daylight_detector
