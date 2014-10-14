@@ -269,19 +269,19 @@ blocks:
         name: Granite
         tex: [4, 16]
       2:
-        name: Polished Granite
+        name: Granite (Polished) [Smooth]
         tex: [5, 16]
       3:
         name: Diorite
         tex: [6, 16]
       4:
-        name: Polished Diorite
+        name: Diorite (Polished) [Smooth]
         tex: [7, 16]
       5:
         name: Andesite
         tex: [8, 16]
       6:
-        name: Polished Andesite
+        name: Andesite (Polished) [Smooth]
         tex: [9, 16]
         
   - id: 2
@@ -303,10 +303,10 @@ blocks:
         name: Dirt
         tex: [2, 0]
       1:
-        name: Coarse Dirt
+        name: Dirt (Coarse)
         tex: [19, 5]
       2:
-        name: Podzol
+        name: Dirt (Podzol)
         tex: [9, 3]
         tex_direction:
           FORWARD: [10, 3]
@@ -517,7 +517,7 @@ blocks:
         name: Sand
         tex: [2, 1]
       1:
-        name: Red Sand
+        name: Sand (Red)
         tex: [11, 1]
 
   - id: 13
@@ -700,7 +700,7 @@ blocks:
       0:
         name: Sponge
       1:
-        name: Wet Sponge
+        name: Sponge (Wet)
         tex: [16, 18]
 
   - id: 20
@@ -945,6 +945,7 @@ blocks:
   - id: 27
     idStr: golden_rail
     name: Powered Rail
+    aka: Golden
     mapcolor: [120, 53, 28]
     tex: [3, 10]
     type: SIMPLE_RAIL
@@ -1130,7 +1131,7 @@ blocks:
     data:
       0:
         tex: [7, 3]
-        name: Tall Grass (Dead Shrub)
+        name: Tall Grass (Dead Bush, Drops Seeds) [Shrub]
       1:
         tex: [7, 2]
         name: Tall Grass
@@ -1142,7 +1143,7 @@ blocks:
 
   - id: 32
     idStr: deadbush
-    name: Dead Bush
+    name: Dead Bush [Shrub]
     mapcolor: [148, 100, 40]
     tex: [7, 3]
     type: DECORATION_CROSS
@@ -1251,6 +1252,31 @@ blocks:
       head_sticky: [10, 6]
       body: [12, 6]
     opacity: 0
+    data:
+      0:
+        name: Piston Head (Down)
+      1:
+        name: Piston Head (Up)
+      2:
+        name: Piston Head (North)
+      3:
+        name: Piston Head (South)
+      4:
+        name: Piston Head (West)
+      5:
+        name: Piston Head (East)
+      8:
+        name: Piston Head (Sticky, Down)
+      9:
+        name: Piston Head (Sticky, Up)
+      10:
+        name: Piston Head (Sticky, North)
+      11:
+        name: Piston Head (Sticky, South)
+      12:
+        name: Piston Head (Sticky, West)
+      13:
+        name: Piston Head (Sticky, East)
 
   - id: 35
     idStr: wool
@@ -1325,7 +1351,7 @@ blocks:
 
   - id: 36
     idStr: piston_extension
-    name: Piston Movement Placeholder
+    name: Piston Extension [Block 36]
     mapcolor: [0, 0, 0]
     tex: [0, 0]
     opacity: 0
@@ -1375,7 +1401,7 @@ blocks:
 
   - id: 39
     idStr: brown_mushroom
-    name: Brown Mushroom
+    name: Mushroom (Brown)
     mapcolor: [145, 109, 85]
     tex: [13, 1]
     type: DECORATION_CROSS
@@ -1384,7 +1410,7 @@ blocks:
 
   - id: 40
     idStr: red_mushroom
-    name: Red Mushroom
+    name: Mushroom (Red)
     mapcolor: [226, 18, 18]
     tex: [12, 1]
     type: DECORATION_CROSS
@@ -1548,7 +1574,7 @@ blocks:
           TOP: [9, 0]
           BOTTOM: [10, 0]
       1:
-        name: TNT (Primed)
+        name: TNT (Primed when Punched)
         tex: [16, 16]
         tex_direction:
           TOP: [17, 16]
@@ -1741,7 +1767,7 @@ blocks:
   - id: 60
     idStr: farmland
     name: Farmland
-    aka: Tilled Soil
+    aka: Tilled
     mapcolor: [95, 58, 30]
     tex: [2, 0]
     tex_direction:
@@ -1838,6 +1864,39 @@ blocks:
     tex: [4, 0]
     type: SIGNPOST
     opacity: 0
+    data:
+      0:
+        name: Standing Sign (South)
+      1:
+        name: Standing Sign
+      2:
+        name: Standing Sign
+      3:
+        name: Standing Sign
+      4:
+        name: Standing Sign (West)
+      5:
+        name: Standing Sign
+      6:
+        name: Standing Sign
+      7:
+        name: Standing Sign
+      8:
+        name: Standing Sign (North)
+      9:
+        name: Standing Sign
+      10:
+        name: Standing Sign
+      11:
+        name: Standing Sign
+      12:
+        name: Standing Sign (East)
+      13:
+        name: Standing Sign
+      14:
+        name: Standing Sign
+      15:
+        name: Standing Sign
 
   - id: 64
     idStr: wooden_door
@@ -1878,9 +1937,25 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Rail
+        name: Rail (South)
       1:
-        name: Rail  
+        name: Rail (West)
+      2:
+        name: Rail (Ascending, East)
+      3:
+        name: Rail (Ascending, West)
+      4:
+        name: Rail (Ascending, North)
+      5:
+        name: Rail (Ascending, South)
+      6:
+        name: Rail (Curved, South/East)
+      7:
+        name: Rail (Curved, South/West)
+      8:
+        name: Rail (Curved, North/West)
+      9:
+        name: Rail (Curved, North/East)
 
   - id: 67
     idStr: stone_stairs
@@ -1913,11 +1988,19 @@ blocks:
     tex: [4, 0]
     type: WALLSIGN
     opacity: 0
+    data:
+      2: 
+        name: Wall Sign (North)
+      3: 
+        name: Wall Sign (South)
+      4: 
+        name: Wall Sign (West)
+      5: 
+        name: Wall Sign (East)
 
   - id: 69
     idStr: lever
     name: Lever
-    aka: Switch
     mapcolor: [124, 98, 62]
     tex: [0, 6]
     type: LEVER
@@ -2004,7 +2087,7 @@ blocks:
     idStr: lit_redstone_ore
     name: Lit Redstone Ore
     mapcolor: [131, 107, 107]
-    tex: [3, 3]
+    tex: [20, 4]
     brightness: 9
 
   - id: 75
@@ -2129,6 +2212,39 @@ blocks:
       TOP: [5, 4]
       BOTTOM: [5, 4]
     opacity: 0
+    data:
+      0:
+        name: Cactus (Age 0)
+      1:
+        name: Cactus (Age 1)
+      2:
+        name: Cactus (Age 2)
+      3:
+        name: Cactus (Age 3)
+      4:
+        name: Cactus (Age 4)
+      5:
+        name: Cactus (Age 5)
+      6:
+        name: Cactus (Age 6)
+      7:
+        name: Cactus (Age 7)
+      8:
+        name: Cactus (Age 8)
+      9:
+        name: Cactus (Age 9)
+      10:
+        name: Cactus (Age 10)
+      11:
+        name: Cactus (Age 11)
+      12:
+        name: Cactus (Age 12)
+      13:
+        name: Cactus (Age 13)
+      14:
+        name: Cactus (Age 14)
+      15:
+        name: Cactus (Age 15)
 
   - id: 82
     idStr: clay
@@ -2144,6 +2260,39 @@ blocks:
     tex: [9, 4]
     type: DECORATION_CROSS
     opacity: 0
+    data:
+      0:
+        name: Cactus (Age 0)
+      1:
+        name: Cactus (Age 1)
+      2:
+        name: Cactus (Age 2)
+      3:
+        name: Cactus (Age 3)
+      4:
+        name: Cactus (Age 4)
+      5:
+        name: Cactus (Age 5)
+      6:
+        name: Cactus (Age 6)
+      7:
+        name: Cactus (Age 7)
+      8:
+        name: Cactus (Age 8)
+      9:
+        name: Cactus (Age 9)
+      10:
+        name: Cactus (Age 10)
+      11:
+        name: Cactus (Age 11)
+      12:
+        name: Cactus (Age 12)
+      13:
+        name: Cactus (Age 13)
+      14:
+        name: Cactus (Age 14)
+      15:
+        name: Cactus (Age 15)
 
   - id: 84
     idStr: jukebox
@@ -2156,11 +2305,11 @@ blocks:
       0:
         name: Jukebox
       1:
-        name: Jukebox (With Record)
+        name: Jukebox (Has Record)
 
   - id: 85
     idStr: fence
-    name: Oak Fence
+    name: Fence (Oak)
     mapcolor: [157, 128, 79]
     tex: [4, 0]
     type: FENCE
@@ -2301,19 +2450,67 @@ blocks:
     opacity: 0
     data:
       0: 
-        name: Redstone Repeater (Unpowered, North)
+        name: Redstone Repeater (Unpowered, Delay 1, North)
         tex_direction:
           TOP: [3, 8]
       1: 
-        name: Redstone Repeater (Unpowered, East)
+        name: Redstone Repeater (Unpowered, Delay 1, East)
         tex_direction:
           TOP: [18, 7]
       2: 
-        name: Redstone Repeater (Unpowered, South)
+        name: Redstone Repeater (Unpowered, Delay 1, South)
         tex_direction:
           TOP: [18, 8]
       3: 
-        name: Redstone Repeater (Unpowered, West)
+        name: Redstone Repeater (Unpowered, Delay 1, West)
+        tex_direction:
+          TOP: [18, 9]
+      4: 
+        name: Redstone Repeater (Unpowered, Delay 2, North)
+        tex_direction:
+          TOP: [3, 8]
+      5: 
+        name: Redstone Repeater (Unpowered, Delay 2, East)
+        tex_direction:
+          TOP: [18, 7]
+      6: 
+        name: Redstone Repeater (Unpowered, Delay 2, South)
+        tex_direction:
+          TOP: [18, 8]
+      7: 
+        name: Redstone Repeater (Unpowered, Delay 2, West)
+        tex_direction:
+          TOP: [18, 9]
+      8: 
+        name: Redstone Repeater (Unpowered, Delay 3, North)
+        tex_direction:
+          TOP: [3, 8]
+      9: 
+        name: Redstone Repeater (Unpowered, Delay 3, East)
+        tex_direction:
+          TOP: [18, 7]
+      10: 
+        name: Redstone Repeater (Unpowered, Delay 3, South)
+        tex_direction:
+          TOP: [18, 8]
+      11: 
+        name: Redstone Repeater (Unpowered, Delay 3, West)
+        tex_direction:
+          TOP: [18, 9]
+      12: 
+        name: Redstone Repeater (Unpowered, Delay 4, North)
+        tex_direction:
+          TOP: [3, 8]
+      13: 
+        name: Redstone Repeater (Unpowered, Delay 4, East)
+        tex_direction:
+          TOP: [18, 7]
+      14: 
+        name: Redstone Repeater (Unpowered, Delay 4, South)
+        tex_direction:
+          TOP: [18, 8]
+      15: 
+        name: Redstone Repeater (Unpowered, Delay 4, West)
         tex_direction:
           TOP: [18, 9]
 
@@ -2327,19 +2524,67 @@ blocks:
     brightness: 9
     data:
       0: 
-        name: Redstone Repeater (Powered, North)
+        name: Redstone Repeater (Powered, Delay 1, North)
         tex_direction:
           TOP: [3, 9]
       1: 
-        name: Redstone Repeater (Powered, East)
+        name: Redstone Repeater (Powered, Delay 1, East)
         tex_direction:
           TOP: [18, 10]
       2: 
-        name: Redstone Repeater (Powered, South)
+        name: Redstone Repeater (Powered, Delay 1, South)
         tex_direction:
           TOP: [18, 11]
       3: 
-        name: Redstone Repeater (Powered, West)
+        name: Redstone Repeater (Powered, Delay 1, West)
+        tex_direction:
+          TOP: [18, 12]
+      4: 
+        name: Redstone Repeater (Powered, Delay 2, North)
+        tex_direction:
+          TOP: [3, 9]
+      5: 
+        name: Redstone Repeater (Powered, Delay 2, East)
+        tex_direction:
+          TOP: [18, 10]
+      6: 
+        name: Redstone Repeater (Powered, Delay 2, South)
+        tex_direction:
+          TOP: [18, 11]
+      7: 
+        name: Redstone Repeater (Powered, Delay 2, West)
+        tex_direction:
+          TOP: [18, 12]
+      8: 
+        name: Redstone Repeater (Powered, Delay 3, North)
+        tex_direction:
+          TOP: [3, 9]
+      9: 
+        name: Redstone Repeater (Powered, Delay 3, East)
+        tex_direction:
+          TOP: [18, 10]
+      10: 
+        name: Redstone Repeater (Powered, Delay 3, South)
+        tex_direction:
+          TOP: [18, 11]
+      11: 
+        name: Redstone Repeater (Powered, Delay 3, West)
+        tex_direction:
+          TOP: [18, 12]
+      12: 
+        name: Redstone Repeater (Powered, Delay 4, North)
+        tex_direction:
+          TOP: [3, 9]
+      13: 
+        name: Redstone Repeater (Powered, Delay 4, East)
+        tex_direction:
+          TOP: [18, 10]
+      14: 
+        name: Redstone Repeater (Powered, Delay 4, South)
+        tex_direction:
+          TOP: [18, 11]
+      15: 
+        name: Redstone Repeater (Powered, Delay 4, West)
         tex_direction:
           TOP: [18, 12]
 
@@ -2562,7 +2807,7 @@ blocks:
       6:
         name: Pumpkin Stem (Age 6)
       7:
-        name: Pumpkin Stem (Age 7)
+        name: Pumpkin Stem (Age 7 (Max))
 
   - id: 105
     idStr: melon_stem
@@ -2589,7 +2834,7 @@ blocks:
       6:
         name: Melon Stem (Age 6)
       7:
-        name: Melon Stem (Age 7)
+        name: Melon Stem (Age 7 (Max))
 
   - id: 106
     idStr: vine
@@ -2746,7 +2991,7 @@ blocks:
 
   - id: 113
     idStr: nether_brick_fence
-    name: Nether Brick Fence
+    name: Fence (Nether Brick)
     mapcolor: [54, 24, 30]
     tex: [0, 14]
     type: FENCE
@@ -2932,7 +3177,7 @@ blocks:
 
   - id: 124
     idStr: lit_redstone_lamp
-    name: Redstone Lamp (On)
+    name: Redstone Lamp (On) [Lit]
     mapcolor: [208, 152, 70]
     tex: [4, 13]
     brightness: 15
@@ -3009,6 +3254,31 @@ blocks:
     tex: [10, 10]
     type: CROPS
     opacity: 0
+    data:
+      0:
+        name: Cocoa Plant (Age 0, South)
+      1:
+        name: Cocoa Plant (Age 0, West)
+      2:
+        name: Cocoa Plant (Age 0, North)
+      3:
+        name: Cocoa Plant (Age 0, East)
+      4:
+        name: Cocoa Plant (Age 1, South)
+      5:
+        name: Cocoa Plant (Age 1, West)
+      6:
+        name: Cocoa Plant (Age 1, North)
+      7:
+        name: Cocoa Plant (Age 1, East)
+      8:
+        name: Cocoa Plant (Age 2, South)
+      9:
+        name: Cocoa Plant (Age 2, West)
+      10:
+        name: Cocoa Plant (Age 2, North)
+      11:
+        name: Cocoa Plant (Age 2, East)
 
   - id: 128
     idStr: sandstone_stairs
@@ -3052,10 +3322,6 @@ blocks:
     opacity: 0
     brightness: 7
     data:
-#     0:
-#       null
-#     1:
-#       null
       2: 
         name: Ender Chest (North)
         tex_direction:
@@ -3206,7 +3472,7 @@ blocks:
         name: Cobblestone Wall
       1:
         tex: [4, 2]
-        name: Mossy Cobblestone Wall
+        name: Cobblestone Wall (Mossy)
     opacity: 0
 
   - id: 140
