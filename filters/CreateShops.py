@@ -11,7 +11,7 @@ the fancy stop sign. '''
 # Changes:
 # 1) Allow your villager to move or not.
 # 2) Rename your villager in MCEdit.
-# 3) Allow players to receive experience for their trade. (Doesn't work at the moment).
+# 3) Allow players to receive experience for their trade.
 # 4) Updated some of the code, made it more prettier.
 # And a big thanks to Sethbling for creating this filter and all his other filters at http://sethbling.com/downloads/mcedit-filters/
 
@@ -39,7 +39,6 @@ inputs = [( ("General Trade","title"),
 	("Invulnerable Villager", True),
 	("Make Unlimited Trades", True),
 	("Give Experience per a Trade", True),
-	("*Experience currently works, just the option to change it doesn't*","label"),
 	("Make Villager not Move", False),
 	("Villager Name",("string","width=250")),),
 	
@@ -136,6 +135,12 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
 	for i in range(9):
 		if (i in priceList or i in priceListB) and i in saleList:
 			offer = TAG_Compound()
+				if xp:
+			if "rewardExp" not in villager:
+				villager["rewardExp"] = TAG_Byte(1)
+			else:
+				villager["rewardExp"] = TAG_Byte(0)
+			
 			if unlimited:
 				offer["uses"] = TAG_Int(0)
 				offer["maxUses"] = TAG_Int(2000000000)
@@ -165,13 +170,6 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
 		offer["sell"]["Damage"] = TAG_Short(0)
 		offer["sell"]["id"] = TAG_String("minecraft:barrier")
 		villager["Offers"]["Recipes"].append(offer)
-# Currently xp isn't working as I have no idea how to fix it but if you do know you can change it
-	if xp:
-		if "rewardExp" not in villager:
-			villager["rewardExp"] = TAG_Byte(1)
-		else:
-			villager["rewardExp"] = TAG_Byte(0)
-						
 	if invincible:
 		if "Invulnerable" not in villager:
 			villager["Invulnerable"] = TAG_Byte(1)
