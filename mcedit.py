@@ -552,9 +552,10 @@ class OptionsPanel(Dialog):
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
                                             ref=Settings.flyMode.propertyRef(),
-                                            tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
+                                            tooltipText="Moving forward and Backkward will not change your altitude in Fly Mode.")
 
         langStringRow = mceutils.TextInputRow("Language String",
+                                            ref=Settings.langCode.propertyRef(),
                                             tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
 
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)

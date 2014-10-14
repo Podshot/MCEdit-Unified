@@ -86,7 +86,8 @@ def getLangPath():
 
 #-------------------------------------------------------------------------------
 def getLang():
-    return lang
+    import config
+    return config.Settings.flyMode.configProperty()
 
 def setLang(newlang):
     global lang
