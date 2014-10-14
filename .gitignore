@@ -65,3 +65,6 @@ filters/modifyitemstrings.py
 .idea/
 *.iml
 Thumbs.db
+
+# MCEdit stuff
+filters.json

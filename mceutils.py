@@ -532,6 +532,9 @@ def setWindowCaption(prefix):
     return ctx()
 
 def compareMD5Hashes(found_filters):
+    ff = {}
+    for filter in found_filters:
+        ff[filter.split('\\')[-1]] = filter
     try:
         if not os.path.exists(os.path.join(directories.dataDir, "filters.json")):
             filterDict = {}
@@ -543,10 +546,10 @@ def compareMD5Hashes(found_filters):
         for bundled in filterInBundledFolder:
             filterBundle[bundled.split('\\')[-1]] = bundled
         hashJSON = json.load(open(os.path.join(directories.dataDir, "filters.json"), 'rb'))
-        for filt in found_filters:
-            realName = filt.split('\\')[-1]
+        for filt in ff.keys():
+            realName = filt
             if realName in filterBundle.keys():
-                with open(filt, 'r') as filtr:
+                with open(ff[filt], 'r') as filtr:
                     filterData = filtr.read()
                     if realName in hashJSON["filters"]:
                         old_hash = hashJSON["filters"][realName]
@@ -561,6 +564,14 @@ def compareMD5Hashes(found_filters):
                             hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
                     else:
                         hashJSON["filters"][realName] = hashlib.md5(filterData).hexdigest()
+        for bundled in filterBundle.keys():
+            if bundled not in ff.keys():
+                shutil.copy(filterBundle[bundled], mcplatform.filtersDir)
+                data = None
+                with open(filterBundle[bundled], 'r') as f:
+                    data = f.read()
+                if data != None:
+                    hashJSON[bundled] = hashlib.md5(data).hexdigest()
         with open(os.path.join(directories.dataDir, "filters.json"), 'w') as done:
             json.dump(hashJSON, done)
     except Exception, e:
