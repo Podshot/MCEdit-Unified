@@ -1099,6 +1099,9 @@ def main(argv):
                 os.path.join(directories.dataDir, u'filters'),
                 mcplatform.filtersDir
             )
+        else:
+            # Start hashing the filter dir
+            mceutils.compareMD5Hashes(directories.getAllFilters(mcplatform.filtersDir))
     except Exception, e:
         logging.warning('Error copying bundled filters: {0!r}'.format(e))
         try:

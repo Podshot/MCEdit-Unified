@@ -15,6 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import sys
 import os
 import json
+import glob
 
 
 def win32_utf8_argv():
@@ -151,6 +152,10 @@ def getSelectedProfile():
         return selectedProfile
     except:
         return None
+
+def getAllFilters(filters_dir):
+    return glob.glob(filters_dir+"/*.py")
+    
 
 
 saveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), u"saves")
