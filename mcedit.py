@@ -553,6 +553,9 @@ class OptionsPanel(Dialog):
                                             ref=Settings.flyMode.propertyRef(),
                                             tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
 
+        langStringRow = mceutils.TextInputRow("Language String",
+                                            tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
+
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
         goPortableButton.tooltipText = self.portableButtonTooltip()
@@ -582,6 +585,7 @@ class OptionsPanel(Dialog):
                       swapAxesRow,
                       invertRow,
                       visibilityCheckRow,
+                      langStringRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
 # Disabled Crash Reporting Option
