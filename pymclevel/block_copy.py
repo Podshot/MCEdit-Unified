@@ -49,7 +49,7 @@ def adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint):
 
 
 def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True,
-                       create=False, biomes=False, tileTicks=False):
+                       create=False, biomes=False, tileTicks=True):
     """ copy blocks between two infinite levels by looping through the
     destination's chunks. make a sub-box of the source level for each chunk
     and copy block and entities in the sub box to the dest chunk."""
@@ -152,7 +152,7 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
         destChunk.chunkChanged()
 
     log.info("Duration: {0}".format(datetime.now() - startTime))
-    log.info("Copied {0} entities and {1} tile entities and {2} tile ticks".format(e, t,tt))
+    log.info("Copied {0} entities and {1} tile entities and {2} tile ticks".format(e, t, tt))
 
 
 def copyBlocksFrom(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True, create=False,
