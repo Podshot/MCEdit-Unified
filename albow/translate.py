@@ -55,7 +55,7 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.sep.join((".", "lang"))
-lang = "Default"
+lang = "en_US"
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
