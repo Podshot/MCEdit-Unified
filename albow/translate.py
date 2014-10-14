@@ -55,7 +55,7 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.sep.join((".", "lang"))
-lang = "en_US"
+lang = "Default"
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
@@ -86,8 +86,7 @@ def getLangPath():
 
 #-------------------------------------------------------------------------------
 def getLang():
-    import config
-    return config.Settings.flyMode.configProperty()
+    return lang
 
 def setLang(newlang):
     global lang
@@ -113,6 +112,7 @@ def buildTranslation(lang):
     Errors encountered during the process are silently ignored.
     Returns string_cache."""
     global string_cache
+    lang = "%s"%lang
     fName = os.path.join(langPath, lang + ".trn")
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
         data = open(fName, "rb").read() + "\x00"

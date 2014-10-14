@@ -68,11 +68,11 @@ logger.addHandler(ch)
 import albow
 #-#
 albow.translate.setLangPath("./lang")
+
 import locale
-albow.translate.setLang(locale.getdefaultlocale()[0])
-print(albow.translate.getLang())
+#albow.translate.setLang(locale.getdefaultlocale()[0])
 del locale
-albow.translate.buildTranslation(albow.translate.getLang())
+
 from albow.translate import _
 #-#
 from albow.dialogs import Dialog
@@ -85,6 +85,9 @@ from glbackground import Panel
 import glutils
 import leveleditor
 from leveleditor import ControlSettings, Settings
+#-#
+albow.translate.setLang(Settings.langCode.get())
+#-#
 import mceutils
 import mcplatform
 from mcplatform import platform_open
@@ -649,6 +652,11 @@ class OptionsPanel(Dialog):
                 albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
 
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
+
+    def dismiss(self, *args, **kwargs):
+        """Used to change the laguage."""
+        albow.translate.setLang(Settings.langCode.get())
+        Dialog.dismiss(self, *args, **kwargs)
 
 
 class MCEdit(GLViewport):
