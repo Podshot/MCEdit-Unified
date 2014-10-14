@@ -1913,6 +1913,15 @@ blocks:
     tex: [4, 0]
     type: WALLSIGN
     opacity: 0
+    data:
+      2: 
+        name: Wall Sign (North)
+      3: 
+        name: Wall Sign (South)
+      4: 
+        name: Wall Sign (West)
+      5: 
+        name: Wall Sign (East)
 
   - id: 69
     idStr: lever
