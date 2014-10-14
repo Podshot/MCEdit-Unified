@@ -1586,8 +1586,6 @@ blocks:
     opacity: 0
     brightness: 14
     data:
-      0:
-        name: Torch (Legacy)
       1:
         name: Torch (East)
       2:
@@ -1597,7 +1595,7 @@ blocks:
       4:
         name: Torch (North)
       5:
-        name: Torch
+        name: Torch (Up)
 
   - id: 51
     idStr: fire
