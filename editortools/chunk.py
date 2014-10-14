@@ -270,6 +270,7 @@ class ChunkTool(EditorTool):
         self.editor.saveFile()
 
         def _pruneChunks():
+            maxChunks = self.editor.level.chunkCount
             selectedChunks = self.selectedChunks()
             for i, cPos in enumerate(list(self.editor.level.allChunks)):
                 if cPos not in selectedChunks:
@@ -279,7 +280,7 @@ class ChunkTool(EditorTool):
                     except Exception, e:
                         print "Error during chunk delete: ", e
 
-                yield i, self.editor.level.chunkCount
+                yield i, maxChunks
 
         with setWindowCaption("PRUNING - "):
             showProgress("Pruning chunks...", _pruneChunks())
