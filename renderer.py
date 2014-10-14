@@ -998,13 +998,10 @@ class TileTicksRenderer(EntityRendererGeneric):
     layer = Layer.TileTicks
 
     def makeChunkVertices(self, chunk):
-        if chunk.root_tag and "Level" in chunk.root_tag and "TileTicks" in chunk.root_tag["Level"]:
-            ticks = chunk.root_tag["Level"]["TileTicks"]
-            if len(ticks):
-                self.vertexArrays.append(self._computeVertices([[t[i].value for i in "xyz"] for t in ticks],
-                                                               (0xff, 0xff, 0xff, 0x44),
-                                                               chunkPosition=chunk.chunkPosition))
-
+        if hasattr(chunk, "TileTicks"):
+            self.vertexArrays.append(self._computeVertices([[tick[j].value for j in "xyz"] for i, tick in enumerate(chunk.TileTicks)],
+                                                           (0xff, 0xff, 0xff, 0x44),
+                                                           chunkPosition=chunk.chunkPosition))
         yield
 
 
@@ -2707,6 +2704,9 @@ class MCRenderer(object):
 
     def invalidateEntitiesInBox(self, box):
         self.invalidateChunks(box.chunkPositions, [Layer.Entities])
+
+    def invalidateTileTicksInBox(self, box):
+        self.invalidateChunks(box.chunkPositions, [Layer.TileTicks])
 
     def invalidateChunks(self, chunks, layers=None):
         for c in chunks:

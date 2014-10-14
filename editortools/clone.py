@@ -821,6 +821,9 @@ class CloneTool(EditorTool):
 
     def option2(self):
         self.copyWater = not self.copyWater
+        
+    def option3(self):
+        self.copyBiomes = not self.copyBiomes
 
     draggingFace = None
     draggingStartPoint = None

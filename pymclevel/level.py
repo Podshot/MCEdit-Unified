@@ -264,7 +264,7 @@ class MCLevel(object):
         f.BlockLight = whiteLight
         f.SkyLight = whiteLight
 
-        f.Entities, f.TileEntities = self._getFakeChunkEntities(cx, cz)
+        f.Entities, f.TileEntities, f.TileTicks = self._getFakeChunkEntities(cx, cz)
 
         f.root_tag = nbt.TAG_Compound()
 
@@ -444,9 +444,10 @@ class EntityLevel(MCLevel):
         return [ent for ent in self.TileEntities if TileEntity.pos(ent) in box]
 
     def getTileTicksInBox(self, box):
-
-        return [ent for ent in self.TileTicks if TileTick.pos(ent) in box]
-
+        if hasattr(self, "TileTicks"):
+            return [ent for ent in self.TileTicks if TileTick.pos(ent) in box]
+        else:
+            return []
 
     def removeEntitiesInBox(self, box):
 
@@ -481,8 +482,8 @@ class EntityLevel(MCLevel):
         return entsRemoved
 
     def removeTileTicksInBox(self, box):
-        #if not hasattr(self, "TileTicks"):
-        #    return
+        if not hasattr(self, "TileTicks"):
+            return
         newEnts = []
         for ent in self.TileTicks:
             if TileTick.pos(ent) in box:
@@ -531,14 +532,14 @@ class EntityLevel(MCLevel):
 
     def addTileTick(self, tickTag):
         assert isinstance(tickTag, nbt.TAG_Compound)
+        if hasattr(self, "TileTicks"):
+            def differentPosition(a):
+                return not ((tickTag is a) or TileTick.pos(a) == TileTick.pos(tickTag))
 
-        def differentPosition(a):
-            return not ((tickTag is a) or TileTick.pos(a) == TileTick.pos(tickTag))
+            self.TileTicks.value[:] = filter(differentPosition, self.TileTicks)
 
-        self.TileTicks.value[:] = filter(differentPosition, self.TileTicks)
-
-        self.TileTicks.append(tickTag)
-        self._fakeEntities = None
+            self.TileTicks.append(tickTag)
+            self._fakeEntities = None
 
     def addTileTicks(self, tileTicks):
         for e in tileTicks:
@@ -548,12 +549,12 @@ class EntityLevel(MCLevel):
 
     def _getFakeChunkEntities(self, cx, cz):
         """distribute entities into sublists based on fake chunk position
-        _fakeEntities keys are (cx, cz) and values are (Entities, TileEntities)"""
+        _fakeEntities keys are (cx, cz) and values are (Entities, TileEntities, TileTicks)"""
         if self._fakeEntities is None:
-            self._fakeEntities = defaultdict(lambda: (nbt.TAG_List(), nbt.TAG_List()))
-            for i, e in enumerate((self.Entities, self.TileEntities)):
+            self._fakeEntities = defaultdict(lambda: (nbt.TAG_List(), nbt.TAG_List(), nbt.TAG_List()))
+            for i, e in enumerate((self.Entities, self.TileEntities, self.TileTicks)):
                 for ent in e:
-                    x, y, z = [Entity, TileEntity][i].pos(ent)
+                    x, y, z = [Entity, TileEntity, TileTick][i].pos(ent)
                     ecx, ecz = map(lambda x: (int(floor(x)) >> 4), (x, z))
 
                     self._fakeEntities[ecx, ecz][i].append(ent)

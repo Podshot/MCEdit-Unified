@@ -397,6 +397,16 @@ genericFlipRotation(Bed)
 applyBit8(Bed)
 applyBit4(Bed)
 
+class EndPortal:
+    blocktypes = [alphaMaterials.PortalFrame.ID]
+    West = 0
+    North = 1
+    East = 2
+    South = 3
+
+
+genericFlipRotation(EndPortal)
+applyBit4(EndPortal)
 
 class Door:
     blocktypes = [

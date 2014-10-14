@@ -1827,10 +1827,11 @@ class LevelEditor(GLViewport):
                 c = 0
 
             c += count
+        counts.remove((level.materials.Air, 0))
         counts.append((b, c))
 
         blockRows = [("({0}:{1})".format(block.ID, block.blockData), block.name, count) for block, count in counts]
-        # blockRows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
+        #blockRows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         rows = list(blockRows)
 

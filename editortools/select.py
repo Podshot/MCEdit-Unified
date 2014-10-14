@@ -1123,10 +1123,12 @@ class SelectionTool(EditorTool):
                 def perform(self, recordUndo=True):
                     self.undoTileTicks = level.getTileTicksInBox(box)
                     level.removeTileTicksInBox(box)
+                    editor.renderer.invalidateTileTicksInBox(box)
 
                 def undo(self):
                     level.removeTileTicksInBox(box)
                     level.addTileTicks(self.undoTileTicks)
+                    editor.renderer.invalidateTileTicksInBox(box)
 
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
             if recordUndo:
