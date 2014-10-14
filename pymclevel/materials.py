@@ -140,8 +140,15 @@ class MCMaterials(object):
         return self.blockWithID(key)
 
     def blocksMatching(self, name):
+        toReturn = []
         name = name.lower()
-        return [v for v in self.allBlocks if name in v.name.lower() or name in v.aka.lower()]
+        spiltNames = name.split(" ")
+        for n in spiltNames:
+            for v in self.allBlocks:
+                if n in v.name.lower() or n in v.aka.lower():
+                    toReturn.append(v)
+        return toReturn
+        #return [v for v in self.allBlocks if name in v.name.lower() or name in v.aka.lower()]
 
     def blockWithID(self, id, data=0):
         if (id, data) in self.blocksByID:
