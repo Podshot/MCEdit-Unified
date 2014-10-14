@@ -25,7 +25,7 @@ class BlockPicker(Dialog):
     def __init__(self, blockInfo, materials, *a, **kw):
         self.allowWildcards = False
         Dialog.__init__(self, *a, **kw)
-        panelWidth = 470
+        panelWidth = 490
 
         self.materials = materials
         self.anySubtype = blockInfo.wildcard
@@ -71,7 +71,7 @@ class BlockPicker(Dialog):
             return ident
 
         tableview = TableView(columns=[TableColumn(" ", 24, "l", lambda x: ""),
-                                       TableColumn("Name", 371, "l", formatBlockName),
+                                       TableColumn("Name", 391, "l", formatBlockName),
                                        TableColumn("ID", 45, "l", formatBlockID)
                                        ])
         tableicons = [blockview.BlockView(materials) for i in range(tableview.rows.num_rows())]
