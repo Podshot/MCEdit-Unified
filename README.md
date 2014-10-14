@@ -4,10 +4,10 @@ MCEdit is an open-source, BSD-licenced world editor for the viral indie hit [Min
 
 ## Note for localisation
 
-This version implements localisation functions. It is intended to be merged with MCEdit-Unified.
+This version implements localisation functions.
 
 The UI fixed character strings can appear in users native language by simply editing translation files. Devolopers don't have to tweak their code.
-The strings which need text formating or concatenation have to be translated with the '_()' function before being formated. This function must be imported from albow.tranlate.
+The strings which need text formating or concatenation have to be translated with the '_()' function before being formated. This function must be imported from albow.translate.
 
 See README.txt in albow subfolder for further details.
 
@@ -39,12 +39,13 @@ Install various dependencies. This may take a bit (especially numpy). If install
 `>easy_install pygame`
 `>easy_install pyyaml`
 `>easy_install pywin32 (Windows only, needed for compiling)`
+`>easy_install tkinter (Required for linux, should come with Win and Mac)`
 
 For windows users if easy install cannot find a library you need, or you can't get easy install working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name.
 
 Debian and Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
 
-`$sudo apt-get install python-opengl python-pygame python-yaml python-numpy`
+`$sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-tk`
 
 You should now be able to run MCEdit with `python mcedit.py` assuming you've installed all the dependencies correctly.
 

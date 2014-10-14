@@ -114,19 +114,25 @@ class Team:
         
 class Scoreboard:
 
-    def __init__(self, level):
+    def __init__(self, level, should_create_scoreboard):
         self.level = level
         self.objectives = []
         self.teams = []
+        self._scs = should_create_scoreboard
         self.setup()
 
     def setup(self):
-        self.root_tag = nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
-        for objective in self.root_tag["data"]["Objectives"]:
-            self.objectives.append(Objective(objective))
+        if not self._scs:
+            self.root_tag = nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
+            for objective in self.root_tag["data"]["Objectives"]:
+                self.objectives.append(Objective(objective))
 
-        for team in self.root_tag["data"]["Teams"]:
-            self.teams.append(Team(team))
+            for team in self.root_tag["data"]["Teams"]:
+                self.teams.append(Team(team))
+        else:
+            self.root_tag = nbt.TAG_Compound()
+            self.root_tag["data"] = nbt.TAG_Compound()
+            
 
 
     @property
@@ -143,12 +149,12 @@ class Scoreboard:
         teamList = nbt.TAG_List()
         for objective in level.scoreboard.Objectives:
             objectiveList.append(objective.getTAGStructure())
-        for team in level.scoreboard.Objectives:
+        for team in level.scoreboard.Teams:
             teamList.append(team.getTAGStructure())
         level.scoreboard.root_tag["data"]["Objectives"] = objectiveList
         level.scoreboard.root_tag["data"]["Teams"] = teamList
         print "Saving Scoreboard...."
-        with open(level.worldFolder.getFolderPath("data")+"/scoreboard.dat", 'w') as datFile:
-            level.scoreboard.root_tag.save(datFile)
+        #with open(level.worldFolder.getFolderPath("data")+"/scoreboard.dat", 'w') as datFile:
+        level.scoreboard.root_tag.save(level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
         
         

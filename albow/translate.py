@@ -55,6 +55,7 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.sep.join((".", "lang"))
+lang = "Default"
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
@@ -82,6 +83,16 @@ def setLangPath(path):
 def getLangPath():
     """..."""
     return langPath
+
+#-------------------------------------------------------------------------------
+def getLang():
+    return lang
+
+def setLang(newlang):
+    global lang
+    if not lang == newlang:
+        buildTranslation(newlang)
+        lang = newlang
 
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):

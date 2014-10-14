@@ -69,9 +69,8 @@ import albow
 #-#
 albow.translate.setLangPath("./lang")
 import locale
-lang = locale.getdefaultlocale()[0]
+#albow.translate.setLang(locale.getdefaultlocale()[0])
 del locale
-albow.translate.buildTranslation(lang)
 from albow.translate import _
 #-#
 from albow.dialogs import Dialog
@@ -84,6 +83,9 @@ from glbackground import Panel
 import glutils
 import leveleditor
 from leveleditor import ControlSettings, Settings
+#-#
+albow.translate.setLang(Settings.langCode.get())
+#-#
 import mceutils
 import mcplatform
 from mcplatform import platform_open
@@ -98,6 +100,10 @@ import release
 import shutil
 import sys
 import traceback
+import Tkinter
+import ttk
+import tkMessageBox
+import tkSimpleDialog
 
 ESCAPE = '\033'
 
@@ -167,8 +173,8 @@ class FileOpener(albow.Widget):
             shortnames.append(shortname)
 
         hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), 'Create New World', self.createNewWorld),
-                    (str.upper(config.config.get('Keys', 'Load')), 'Quick-Load', self.mcedit.editor.askLoadWorld),
-                    (str.upper(config.config.get('Keys', 'Open')), 'Open World...', self.promptOpenAndLoad)] + [
+                    (str.upper(config.config.get('Keys', 'Load')), 'Quick Load', self.mcedit.editor.askLoadWorld),
+                    (str.upper(config.config.get('Keys', 'Open')), 'Open...', self.promptOpenAndLoad)] + [
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
@@ -547,7 +553,11 @@ class OptionsPanel(Dialog):
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
                                             ref=Settings.flyMode.propertyRef(),
-                                            tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
+                                            tooltipText="Moving forward and Backkward will not change your altitude in Fly Mode.")
+
+        langStringRow = mceutils.TextInputRow("Language String",
+                                            ref=Settings.langCode.propertyRef(),
+                                            tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
 
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
@@ -578,6 +588,7 @@ class OptionsPanel(Dialog):
                       swapAxesRow,
                       invertRow,
                       visibilityCheckRow,
+                      langStringRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
 # Disabled Crash Reporting Option
@@ -639,6 +650,11 @@ class OptionsPanel(Dialog):
                 albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
 
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
+
+    def dismiss(self, *args, **kwargs):
+        """Used to change the laguage."""
+        albow.translate.setLang(Settings.langCode.get())
+        Dialog.dismiss(self, *args, **kwargs)
 
 
 class MCEdit(GLViewport):
@@ -1095,6 +1111,9 @@ def main(argv):
                 os.path.join(directories.dataDir, u'filters'),
                 mcplatform.filtersDir
             )
+        else:
+            # Start hashing the filter dir
+            mceutils.compareMD5Hashes(directories.getAllFilters(mcplatform.filtersDir))
     except Exception, e:
         logging.warning('Error copying bundled filters: {0!r}'.format(e))
         try:

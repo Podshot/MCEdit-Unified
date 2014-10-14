@@ -93,6 +93,8 @@ Settings.blockBuffer = Settings("Block Buffer", 256 * 1048576)
 Settings.reportCrashes = Settings("report crashes new", False)
 Settings.reportCrashesAsked = Settings("report crashes asked", False)
 
+Settings.langCode = Settings("Language String", 'Default')
+
 Settings.viewDistance = Settings("View Distance", 8)
 Settings.targetFPS = Settings("Target FPS", 30)
 
@@ -181,8 +183,8 @@ class ControlPanel(Panel):
         cmd = mcplatform.cmd_name
         hotkeys = ([(cmd + "-" + str.upper(config.config.get('Keys', 'New World')), "Create New World",
                      editor.mcedit.createNewWorld),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Load')), "Quick-Load", editor.askLoadWorld),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Open')), "Open World...", editor.askOpenFile),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Load')), "Quick Load", editor.askLoadWorld),
+                    (cmd + "-" + str.upper(config.config.get('Keys', 'Open')), "Open...", editor.askOpenFile),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Save')), "Save", editor.saveFile),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Reload World')), "Reload", editor.reload),
                     (cmd + "-" + str.upper(config.config.get('Keys', 'Close World')), "Close", editor.closeEditor),
@@ -739,17 +741,20 @@ class CameraViewport(GLViewport):
             currentField.text += c  # xxx view hierarchy
             currentField.insertion_point = len(currentField.text)
 
+        def changeSign():
+            self.editor.addUnsavedEdit()
+            for l, f in zip(linekeys, lineFields):
+                tileEntity[l] = pymclevel.TAG_String(f.value[:15])
+            panel.dismiss()
+            
+
         colorMenu = mceutils.MenuButton("Color Code...", colors, menu_picked=menu_picked)
 
-        column = [Label("Edit Sign")] + lineFields + [colorMenu, Button("OK", action=panel.dismiss)]
+        column = [Label("Edit Sign")] + lineFields + [colorMenu, Button("OK", action=changeSign)]
 
         panel.add(Column(column))
         panel.shrink_wrap()
-        if panel.present():
-
-            self.editor.addUnsavedEdit()
-            for l, f in zip(linekeys, lineFields):
-                tileEntity[l].value = f.value[:15]
+        panel.present()
 
     @mceutils.alertException
     def editSkull(self, point):
@@ -762,7 +767,15 @@ class CameraViewport(GLViewport):
             "Zombie": 2,
             "Player": 3,
             "Creeper": 4,
-        }  
+        }
+
+        inverseSkullType = {
+            0: "Skeleton",
+            1: "Wither Skeleton",
+            2: "Zombie",
+            3: "Player",
+            4: "Creeper",
+        }
         
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
@@ -771,31 +784,38 @@ class CameraViewport(GLViewport):
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["SkullType"] = pymclevel.TAG_Byte(3)
-
-        def skull_type_picked(index):
-            tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullTypes.keys()[index]])
             
         self.editor.level.addTileEntity(tileEntity)
         titleLabel = Label("Edit Skull Data")
         usernameField = TextField(width=150)
         panel = Dialog()
-        okBTN = Button("OK", action=panel.dismiss)
-        skullMenu = mceutils.MenuButton("Skull Type...", skullTypes.keys(), menu_picked=skull_type_picked)
-        
-        if "Owner" not in tileEntity:
+        skullMenu = mceutils.ChoiceButton(map(str, skullTypes))
+
+        if "ExtraType" not in tileEntity:
             usernameField.value = ""
         else:
-            usernameField.value = str(tileEntity["Owner"]["Name"].value)
-            
-        column = [titleLabel, usernameField, skullMenu, okBTN]
-        panel.add(Column(column))
-        panel.shrink_wrap()
-        
-        if panel.present():
-            tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
+            usernameField.value = str(tileEntity["ExtraType"].value)
+
+        skullMenu.selectedChoice = inverseSkullType[tileEntity["SkullType"].value]
+
+        def updateSkull():
+            if usernameField.value != "":
+                tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
+                tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullMenu.selectedChoice])
+                if "Owner" in tileEntity:
+                    del tileEntity["Owner"]
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
             chunk.dirty = True
             self.editor.addUnsavedEdit()
+            panel.dismiss()
+            
+        okBTN = Button("OK", action=updateSkull)
+        cancel = Button("Cancel", action=panel.dismiss)
+            
+        column = [titleLabel, usernameField, skullMenu, okBTN, cancel]
+        panel.add(Column(column))
+        panel.shrink_wrap()
+        panel.present()
             
             
         

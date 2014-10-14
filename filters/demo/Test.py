@@ -1,13 +1,12 @@
-from albow import Widget, Label, Button
+from albow import Widget, Label, Button, TextField
 from pymclevel import scoreboard
 from pymclevel.nbt import *
 
 operations = {
     "Yes/No Dialog": 1,
     "Custom Dialog (Hi Button)": 2,
-    "Custom Dialog (Disabled Field)": 3,
-    "Scoreboard Editing (Objective)": 4,
-    "Scoreboard Editing (Team)": 5,
+    "Scoreboard Editing (Objective)": 3,
+    "Scoreboard Editing (Team)": 4,
     }
 
 inputs = (
@@ -25,8 +24,8 @@ def yesFUNC(level, box):
 
 
 def perform(level, box, options):
-    #op = options["Operation"]
-    print dir(level.scoreboard.Objectives)
+    op = options["Operation"]
+    #print dir(level.scoreboard.Objectives)
     print "Test Filter Ran"
     if op == "Yes/No Dialog":
         choice = editor.YesNoWidget("Place a sponge block here?")
@@ -43,20 +42,20 @@ def perform(level, box, options):
         widget.add(lbl)
         widget.add(btn)
         widget.shrink_wrap()
-        editor.addExternalWidget(widget)
-    elif op == "Custom Dialog (Disabled Field)":
-        widget = Widget()
+        editor.addExternalWidget(widget)        
     elif op == "Scoreboard Editing (Objective)":
-        test_objective = TAG_Compound()
-        test_objective["Name"] = TAG_String("FilterObjective")
-        test_objective["DisplayName"] = TAG_String("FilterObjective")
-        test_objective["CriteriaName"] = TAG_String("dummy")
-        test_objective["RenderType"] = TAG_String("integer")
-        test_objective = scoreboard.Objective(test_objective)
-        level.scoreboard.Objectives.append(test_objective)
-        level.scoreboard.save(level)
-        for objective in level.scoreboard.Objectives:
-            print "Objective Name: " + str(objective.Name)
+        if level.scoreboard != None:
+            test_objective = TAG_Compound()
+            test_objective["Name"] = TAG_String("FilterObjective")
+            test_objective["DisplayName"] = TAG_String("FilterObjective")
+            test_objective["CriteriaName"] = TAG_String("dummy")
+            test_objective["RenderType"] = TAG_String("integer")
+            test_objective = scoreboard.Objective(test_objective)
+            level.scoreboard.Objectives.append(test_objective)
+            level.scoreboard.save(level)
+            for objective in level.scoreboard.Objectives:
+                print "Objective Name: " + str(objective.Name)
     elif op == "Scoreboard Editing (Team)":
-        for team in level.scoreboard.Teams:
-            print "Team Name: " + str(team.DisplayName)
+        if level.scoreboard != None:
+            for team in level.scoreboard.Teams:
+                print "Team Name: " + str(team.DisplayName)
