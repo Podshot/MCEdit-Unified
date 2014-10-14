@@ -69,9 +69,10 @@ import albow
 #-#
 albow.translate.setLangPath("./lang")
 import locale
-lang = locale.getdefaultlocale()[0]
+albow.translate.setLang(locale.getdefaultlocale()[0])
+print(albow.translate.getLang())
 del locale
-albow.translate.buildTranslation(lang)
+albow.translate.buildTranslation(albow.translate.getLang())
 from albow.translate import _
 #-#
 from albow.dialogs import Dialog
