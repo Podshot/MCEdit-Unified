@@ -444,9 +444,10 @@ class EntityLevel(MCLevel):
         return [ent for ent in self.TileEntities if TileEntity.pos(ent) in box]
 
     def getTileTicksInBox(self, box):
-
-        return [ent for ent in self.TileTicks if TileTick.pos(ent) in box]
-
+        if hasattr(self, "TileTicks"):
+            return [ent for ent in self.TileTicks if TileTick.pos(ent) in box]
+        else:
+            return []
 
     def removeEntitiesInBox(self, box):
 
@@ -481,8 +482,8 @@ class EntityLevel(MCLevel):
         return entsRemoved
 
     def removeTileTicksInBox(self, box):
-        #if not hasattr(self, "TileTicks"):
-        #    return
+        if not hasattr(self, "TileTicks"):
+            return
         newEnts = []
         for ent in self.TileTicks:
             if TileTick.pos(ent) in box:
@@ -531,14 +532,14 @@ class EntityLevel(MCLevel):
 
     def addTileTick(self, tickTag):
         assert isinstance(tickTag, nbt.TAG_Compound)
+        if hasattr(self, "TileTicks"):
+            def differentPosition(a):
+                return not ((tickTag is a) or TileTick.pos(a) == TileTick.pos(tickTag))
 
-        def differentPosition(a):
-            return not ((tickTag is a) or TileTick.pos(a) == TileTick.pos(tickTag))
+            self.TileTicks.value[:] = filter(differentPosition, self.TileTicks)
 
-        self.TileTicks.value[:] = filter(differentPosition, self.TileTicks)
-
-        self.TileTicks.append(tickTag)
-        self._fakeEntities = None
+            self.TileTicks.append(tickTag)
+            self._fakeEntities = None
 
     def addTileTicks(self, tileTicks):
         for e in tileTicks:

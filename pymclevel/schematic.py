@@ -110,6 +110,7 @@ class MCSchematic(EntityLevel):
 
             root_tag["Entities"] = nbt.TAG_List()
             root_tag["TileEntities"] = nbt.TAG_List()
+            root_tag["TileTicks"] = nbt.TAG_List()
             root_tag["Materials"] = nbt.TAG_String(self.materials.name)
 
             self._Blocks = zeros((shape[1], shape[2], shape[0]), 'uint16')
@@ -194,6 +195,10 @@ class MCSchematic(EntityLevel):
         return self.root_tag["TileEntities"]
 
     @property
+    def TileTicks(self):
+        return self.root_tag["TileTicks"]
+
+    @property
     def Materials(self):
         return self.root_tag["Materials"].value
 
@@ -261,6 +266,13 @@ class MCSchematic(EntityLevel):
             tileEntity["x"].value = newX
             tileEntity["z"].value = newZ
 
+        for tileTick in self.TileTicks:
+            newX = tileTick["z"].value
+            newZ = tileTick["x"].value
+
+            tileTick["x"].value = newX
+            tileTick["z"].value = newZ
+
     def roll(self):
         " xxx rotate stuff - destroys biomes"
         self.root_tag.pop('Biomes', None)
@@ -307,6 +319,8 @@ class MCSchematic(EntityLevel):
                 continue
 
             tileEntity["x"].value = self.Width - tileEntity["x"].value - 1
+        for tileTick in self.TileTicks:
+            tileTick["x"].value = self.Width - tileTick["x"].value - 1
 
     def flipEastWest(self):
         if "Biomes" in self.root_tag:
@@ -334,7 +348,8 @@ class MCSchematic(EntityLevel):
 
         for tileEntity in self.TileEntities:
             tileEntity["z"].value = self.Length - tileEntity["z"].value - 1
-
+        for tileTick in self.TileTicks:
+            tileTick["z"].value = self.Length - tileTick["z"].value - 1
 
     def setBlockDataAt(self, x, y, z, newdata):
         if x < 0 or y < 0 or z < 0:

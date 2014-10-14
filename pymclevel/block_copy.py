@@ -8,7 +8,7 @@ from box import BoundingBox, Vector
 from mclevelbase import exhaust
 import materials
 from entity import Entity, TileEntity
-
+from copy import deepcopy
 
 def convertBlocks(destLevel, sourceLevel, blocks, blockData):
     return materials.convertBlocks(destLevel.materials, sourceLevel.materials, blocks, blockData)
@@ -49,7 +49,7 @@ def adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint):
 
 
 def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True,
-                       create=False, biomes=False):
+                       create=False, biomes=False, tileTicks=False):
     """ copy blocks between two infinite levels by looping through the
     destination's chunks. make a sub-box of the source level for each chunk
     and copy block and entities in the sub box to the dest chunk."""
@@ -66,7 +66,7 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
     i = 0
     e = 0
     t = 0
-
+    tt = 0
     sourceMask = sourceMaskFunc(blocksToCopy)
 
     copyOffset = [d - s for s, d in zip(sourceBox.origin, destinationPoint)]
@@ -137,13 +137,22 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
                 eTag = TileEntity.copyWithOffset(tileEntityTag, copyOffset)
                 destLevel.addTileEntity(eTag)
 
+            tileTicksList = sourceChunk.getTileTicksInBox(destChunkBoxInSourceLevel)
+            tt += len(tileTicksList)
+            for tileTick in tileTicksList:
+                eTag = deepcopy(tileTick)
+                eTag['x'].value = tileTick['x'].value + copyOffset[0]
+                eTag['y'].value = tileTick['y'].value + copyOffset[1]
+                eTag['z'].value = tileTick['z'].value + copyOffset[2]
+                destLevel.addTileTick(eTag)
+
             if biomes and hasattr(destChunk, 'Biomes') and hasattr(sourceChunk, 'Biomes'):
                 destChunk.Biomes[destSlices[:2]] = sourceChunk.Biomes[sourceSlices[:2]]
 
         destChunk.chunkChanged()
 
     log.info("Duration: {0}".format(datetime.now() - startTime))
-    log.info("Copied {0} entities and {1} tile entities".format(e, t))
+    log.info("Copied {0} entities and {1} tile entities and {2} tile ticks".format(e, t,tt))
 
 
 def copyBlocksFrom(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True, create=False,
