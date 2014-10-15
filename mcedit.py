@@ -68,10 +68,12 @@ logger.addHandler(ch)
 import albow
 #-#
 albow.translate.setLangPath("./lang")
+
 import locale
-lang = locale.getdefaultlocale()[0]
+#albow.translate.setLang(locale.getdefaultlocale()[0])
+albow.translate.buildTranslation(albow.translate.getLang())
 del locale
-albow.translate.buildTranslation(lang)
+
 from albow.translate import _
 #-#
 from albow.dialogs import Dialog
@@ -547,7 +549,11 @@ class OptionsPanel(Dialog):
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
                                             ref=Settings.flyMode.propertyRef(),
-                                            tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
+                                            tooltipText="Moving forward and Backkward will not change your altitude in Fly Mode.")
+
+        langStringRow = mceutils.TextInputRow("Language String",
+                                            ref=Settings.langCode.propertyRef(),
+                                            tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
 
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
@@ -578,6 +584,7 @@ class OptionsPanel(Dialog):
                       swapAxesRow,
                       invertRow,
                       visibilityCheckRow,
+                      langStringRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
 # Disabled Crash Reporting Option
@@ -639,6 +646,11 @@ class OptionsPanel(Dialog):
                 albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
 
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
+
+    def dismiss(self, *args, **kwargs):
+        """Used to change the language."""
+        Dialog.dismiss(self, *args, **kwargs)
+        albow.translate.getLang()
 
 
 class MCEdit(GLViewport):

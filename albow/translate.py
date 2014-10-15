@@ -55,6 +55,7 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.sep.join((".", "lang"))
+oldlang = ""
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
@@ -84,6 +85,22 @@ def getLangPath():
     return langPath
 
 #-------------------------------------------------------------------------------
+def getLang():
+    global lang
+    import config
+    from leveleditor import Settings
+
+    try:
+        lang = Settings.langCode.get() #.langCode
+        buildTranslation(lang)
+        if not oldlang == lang:
+            import albow
+            albow.alert("You must restart MCEdit to see language changes")
+        return lang
+    except Exception as inst:
+        print inst
+        return 'en_US'
+#-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""
     if type(data) == str:
@@ -101,6 +118,7 @@ def buildTranslation(lang):
     Errors encountered during the process are silently ignored.
     Returns string_cache."""
     global string_cache
+    lang = "%s"%lang
     fName = os.path.join(langPath, lang + ".trn")
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
         data = open(fName, "rb").read() + "\x00"
