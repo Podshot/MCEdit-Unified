@@ -487,6 +487,8 @@ class OptionsPanel(Dialog):
     anchor = 'wh'
 
     def __init__(self, mcedit):
+        albow.translate.getLang(True)
+
         Dialog.__init__(self)
 
         self.mcedit = mcedit

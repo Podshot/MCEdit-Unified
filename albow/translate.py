@@ -55,7 +55,11 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.sep.join((".", "lang"))
-oldlang = ""
+oldlang = "en_US"
+try:
+	oldlang = Settings.langCode.get()
+except:
+    pass
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
@@ -85,21 +89,22 @@ def getLangPath():
     return langPath
 
 #-------------------------------------------------------------------------------
-def getLang():
-    global lang
+def getLang(suppressAlert=False):
+    global oldlang
     import config
     from leveleditor import Settings
 
     try:
         lang = Settings.langCode.get() #.langCode
         buildTranslation(lang)
-        if not oldlang == lang:
+        if not oldlang == lang and not suppressAlert:
             import albow
             albow.alert("You must restart MCEdit to see language changes")
+        oldlang = lang
         return lang
     except Exception as inst:
         print inst
-        return 'en_US'
+        return ""
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""
