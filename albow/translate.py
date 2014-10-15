@@ -55,6 +55,7 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.sep.join((".", "lang"))
+oldlang = ""
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
@@ -91,8 +92,10 @@ def getLang():
 
     try:
         lang = Settings.langCode.get() #.langCode
-        print "Config language code is {}".format(lang)
         buildTranslation(lang)
+        if not oldlang == lang:
+            import albow
+            albow.alert("You must restart MCEdit to see language changes")
         return lang
     except Exception as inst:
         print inst

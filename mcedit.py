@@ -650,6 +650,7 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         Dialog.dismiss(self, *args, **kwargs)
+        albow.translate.getLang()
 
 
 class MCEdit(GLViewport):
