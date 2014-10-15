@@ -784,8 +784,8 @@ class CameraViewport(GLViewport):
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["SkullType"] = pymclevel.TAG_Byte(3)
-            
-        self.editor.level.addTileEntity(tileEntity)
+            self.editor.level.addTileEntity(tileEntity)
+        
         titleLabel = Label("Edit Skull Data")
         usernameField = TextField(width=150)
         panel = Dialog()
@@ -817,7 +817,53 @@ class CameraViewport(GLViewport):
         panel.shrink_wrap()
         panel.present()
             
-            
+    @mceutils.alertException
+    def editCommandBlock(self, point):
+        panel = Dialog()
+        block = self.editor.level.blockAt(*point)
+        blockData = self.editor.level.blockDataAt(*point)
+        tileEntity = self.editor.level.tileEntityAt(*point)
+
+        if not tileEntity:
+            tileEntity = pymclevel.TAG_Compound()
+            tileEntity["id"] = pymclevel.TAG_String("Control")
+            tileEntity["x"] = pymclevel.TAG_Int(point[0])
+            tileEntity["y"] = pymclevel.TAG_Int(point[1])
+            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+            tileEntity["Command"] = pymclevel.TAG_String()
+            tileEntity["CustomName"] = pymclevel.TAG_String("@")
+            self.editor.level.addTileEntity(tileEntity)
+
+        titleLabel = Label("Edit Command Block")
+        commandField = TextField(width=200)
+        nameField = TextField(width=100)
+        trackOutput = CheckBox()
+
+        if tileEntity["Command"].value != "":
+            commandField.value = tileEntity["Command"].value
+        if "TrackOutput" in tileEntity:
+            trackOutput.value = tileEntity["TrackOutput"].value
+        if "CustomName" in tileEntity:
+            nameField.value = tileEntity["CustomName"].value
+
+        def updateCommandBlock():
+            print trackOutput.value
+            tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
+            tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
+            tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
+            chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
+            chunk.dirty = True
+            self.editor.addUnsavedEdit()
+            panel.dismiss()
+
+        okBTN = Button("OK", action=updateCommandBlock)
+        cancel = Button("Cancel", action=panel.dismiss)
+        column = [titleLabel, Row((Label("Command"), commandField)), Row((Label("Custom Name"), nameField)), Row((Label("Track Ouput"), trackOutput)), okBTN, cancel]
+        panel.add(Column(column))
+        panel.shrink_wrap()
+        panel.present()
+        
+        return
         
 
     @mceutils.alertException
@@ -1071,6 +1117,7 @@ class CameraViewport(GLViewport):
                                 pymclevel.alphaMaterials.Sign.ID: self.editSign,
                                 pymclevel.alphaMaterials.WallSign.ID: self.editSign,
                                 pymclevel.alphaMaterials.MobHead.ID: self.editSkull,
+                                pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock
                             }
                             edit = blockEditors.get(block)
                             if edit:
