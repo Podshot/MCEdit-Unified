@@ -55,7 +55,6 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.sep.join((".", "lang"))
-lang = "en_US"
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
@@ -86,24 +85,18 @@ def getLangPath():
 
 #-------------------------------------------------------------------------------
 def getLang():
-    return lang
-
-def refreshLanguage():
     global lang
     import config
-    print "Refreshing Language. Currently {}".format(lang)
-    print "Trying to fetch the config language code."
+    from leveleditor import Settings
+
     try:
-        newlang = config.Settings("Language String").get() #.langCode
-        print "Config language code is {}".format(newlang)
+        lang = Settings.langCode.get() #.langCode
+        print "Config language code is {}".format(lang)
+        buildTranslation(lang)
+        return lang
     except Exception as inst:
         print inst
-        print "Unable to fetch langCode"
-        newlang = lang
-    if not lang == newlang:
-        lang = newlang
-        buildTranslation(newlang)
-
+        return 'en_US'
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""

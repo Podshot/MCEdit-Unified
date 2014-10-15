@@ -71,6 +71,7 @@ albow.translate.setLangPath("./lang")
 
 import locale
 #albow.translate.setLang(locale.getdefaultlocale()[0])
+albow.translate.buildTranslation(albow.translate.getLang())
 del locale
 
 from albow.translate import _
@@ -85,9 +86,6 @@ from glbackground import Panel
 import glutils
 import leveleditor
 from leveleditor import ControlSettings, Settings
-#-#
-albow.translate.refreshLanguage()
-#-#
 import mceutils
 import mcplatform
 from mcplatform import platform_open
@@ -650,8 +648,7 @@ class OptionsPanel(Dialog):
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
 
     def dismiss(self, *args, **kwargs):
-        """Used to change the laguage."""
-        albow.translate.refreshLanguage();
+        """Used to change the language."""
         Dialog.dismiss(self, *args, **kwargs)
 
 
