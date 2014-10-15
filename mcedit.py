@@ -551,7 +551,7 @@ class OptionsPanel(Dialog):
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
                                             ref=Settings.flyMode.propertyRef(),
-                                            tooltipText="Moving forward and Backkward will not change your altitude in Fly Mode.")
+                                            tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
         langStringRow = mceutils.TextInputRow("Language String",
                                             ref=Settings.langCode.propertyRef(),
