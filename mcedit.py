@@ -207,7 +207,7 @@ class FileOpener(albow.Widget):
         if keyname is config.config.get('Keys', 'Open'):
             self.promptOpenAndLoad()
         if keyname is config.config.get('Keys', 'Quit'):
-            self.mcedit.editor.confirm_quit()
+            self.mcedit.confirm_quit()
 
     def promptOpenAndLoad(self):
         try:
