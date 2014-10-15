@@ -86,7 +86,7 @@ import glutils
 import leveleditor
 from leveleditor import ControlSettings, Settings
 #-#
-albow.translate.setLang(Settings.langCode.get())
+albow.translate.refreshLanguage()
 #-#
 import mceutils
 import mcplatform
@@ -651,7 +651,8 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the laguage."""
-        albow.translate.setLang(Settings.langCode.get())
+        print config.Settings.langCode.get()
+        albow.translate.refreshLanguage();
         Dialog.dismiss(self, *args, **kwargs)
 
 

@@ -88,11 +88,20 @@ def getLangPath():
 def getLang():
     return lang
 
-def setLang(newlang):
+def refreshLanguage():
     global lang
+    import config
+    print "Refreshing Language. Currently {}".format(lang)
+    print "Trying to fetch the config language code."
+    try:
+        newlang = config.Settings.langCode.get()
+        print "Config language code is {}".format(newlang)
+    except:
+        print "Unable to fetch langCode"
+        newlang = lang
     if not lang == newlang:
-        buildTranslation(newlang)
         lang = newlang
+        buildTranslation(newlang)
 
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
