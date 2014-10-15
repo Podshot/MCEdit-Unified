@@ -49,12 +49,13 @@ You need, a least, these three function in your program:
 
 import os
 import re
-import locale
-# enc = locale.getdefaultlocale()[-1]
+import json
+import directories
+
 enc = "utf8"
 
 string_cache = {}
-langPath = os.sep.join((".", "lang"))
+langPath = os.path.join(directories.dataDir, "lang")
 oldlang = "en_US"
 try:
 	oldlang = Settings.langCode.get()
@@ -73,30 +74,15 @@ def _(string, doNotTranslate=False):
     return string_cache.get(string, string.replace("\n", "\n\n"))
 
 #-------------------------------------------------------------------------------
-def setLangPath(path):
-    """Changes the default 'lang' folder path. Retrun True if the path is valid, False otherwise."""
-    path = os.path.normpath(os.path.abspath(path))
-    if os.access(path, os.F_OK) and os.path.isdir(path) and os.access(path, os.R_OK):
-        global langPath
-        langPath = path
-        return True
-    else:
-        return False
-
-
-def getLangPath():
-    """..."""
-    return langPath
-
-#-------------------------------------------------------------------------------
-def getLang(suppressAlert=False):
+def getLang(suppressAlert=False,build=True):
     global oldlang
     import config
     from leveleditor import Settings
 
     try:
         lang = Settings.langCode.get() #.langCode
-        buildTranslation(lang)
+        if build:
+            buildTranslation(lang)
         if not oldlang == lang and not suppressAlert:
             import albow
             albow.alert("You must restart MCEdit to see language changes")
@@ -124,32 +110,10 @@ def buildTranslation(lang):
     Returns string_cache."""
     global string_cache
     lang = "%s"%lang
-    fName = os.path.join(langPath, lang + ".trn")
+    fName = os.path.join(langPath, lang + ".json")
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
-        data = open(fName, "rb").read() + "\x00"
-        trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
-        grps = re.finditer(trnPattern, data)
-        oStart = -1
-        oEnd = -1
-        tStart = -1
-        tEnd = -1
-        org = None
-        for grp in grps:
-            g = grp.group()
-            if g.startswith("o"):
-                oStart = grp.end()
-                tEnd = grp.start() -1
-            elif g.startswith("t"):
-                oEnd = grp.start() -1
-                tStart = grp.end()
-            if oStart > -1 and oEnd > -1 and tStart > tEnd:
-                org = data[oStart:oEnd]
-            if tStart > -1 and (tEnd > -1):
-                if tEnd > tStart:
-                    string_cache[org] = correctEncoding(data[tStart:tEnd])
-                    tStart = -1
-                    tEnd = -1
-        string_cache[org] = correctEncoding(data[tStart:tEnd -1])
+        with open(fName) as jsonString:
+            string_cache = json.load(jsonString)
     return string_cache
 
 #-------------------------------------------------------------------------------
@@ -158,9 +122,8 @@ if __name__ == "__main__":
     ### FOR TEST
     import sys
 
-    if setLangPath("."):
-        for k, v in buildTranslation("template").items():
-            print k, v
-        sys.exit()
+    for k, v in buildTranslation("template").items():
+        print k, v
+    sys.exit()
     ###
 

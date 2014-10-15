@@ -66,13 +66,12 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 import albow
-#-#
-albow.translate.setLangPath("./lang")
+# TODO: Language Detection
+# import locale
+# albow.translate.setLang(locale.getdefaultlocale()[0])
+# del locale
 
-import locale
-#albow.translate.setLang(locale.getdefaultlocale()[0])
 albow.translate.buildTranslation(albow.translate.getLang())
-del locale
 
 from albow.translate import _
 #-#
@@ -652,8 +651,7 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         Dialog.dismiss(self, *args, **kwargs)
-        albow.translate.getLang()
-
+        albow.translate.getLang(build=False)
 
 class MCEdit(GLViewport):
     #debug_resize = True
