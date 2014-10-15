@@ -651,7 +651,6 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the laguage."""
-        print config.Settings.langCode.get()
         albow.translate.refreshLanguage();
         Dialog.dismiss(self, *args, **kwargs)
 

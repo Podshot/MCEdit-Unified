@@ -94,9 +94,10 @@ def refreshLanguage():
     print "Refreshing Language. Currently {}".format(lang)
     print "Trying to fetch the config language code."
     try:
-        newlang = config.Settings.langCode.get()
+        newlang = config.Settings("Language String").get() #.langCode
         print "Config language code is {}".format(newlang)
-    except:
+    except Exception as inst:
+        print inst
         print "Unable to fetch langCode"
         newlang = lang
     if not lang == newlang:
