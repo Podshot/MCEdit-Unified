@@ -954,34 +954,34 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Powered Rail (Unpowered)
+        name: Powered Rail (Unpowered, North/South)
       1:
-        name: Powered Rail (Unpowered)
+        name: Powered Rail (Unpowered, East/West)
       2:
-        name: Powered Rail (Unpowered)
+        name: Powered Rail (Unpowered, Ascending, East)
       3:
-        name: Powered Rail (Unpowered)
+        name: Powered Rail (Unpowered, Ascending, West)
       4:
-        name: Powered Rail (Unpowered)
+        name: Powered Rail (Unpowered, Ascending, North)
       5:
-        name: Powered Rail (Unpowered)
+        name: Powered Rail (Unpowered, Ascending, South)
       8:
-        name: Powered Rail (Powered)
+        name: Powered Rail (Powered, North/South)
         tex: [3, 11]
       9:
-        name: Powered Rail (Powered)
+        name: Powered Rail (Powered, (East/West)
         tex: [3, 11]
       10:
-        name: Powered Rail (Powered)
+        name: Powered Rail (Powered, Ascending, East)
         tex: [3, 11]
       11:
-        name: Powered Rail (Powered)
+        name: Powered Rail (Powered, Ascending, West)
         tex: [3, 11]
       12:
-        name: Powered Rail (Powered)
+        name: Powered Rail (Powered, Ascending, North)
         tex: [3, 11]
       13:
-        name: Powered Rail (Powered)
+        name: Powered Rail (Powered, Ascending, South)
         tex: [3, 11]
 
   - id: 28
@@ -996,34 +996,34 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Detector Rail (Unpowered)
+        name: Detector Rail (Unpowered, North/South)
       1:
-        name: Detector Rail (Unpowered)
+        name: Detector Rail (Unpowered, East/West)
       2:
-        name: Detector Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, East)
       3:
-        name: Detector Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, West)
       4:
-        name: Detector Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, North)
       5:
-        name: Detector Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, South)
       8:
-        name: Detector Rail (Powered)
+        name: Detector Rail (Powered, North/South)
         tex: [20, 3]
       9:
-        name: Detector Rail (Powered)
+        name: Detector Rail (Powered, (East/West)
         tex: [20, 3]
       10:
-        name: Detector Rail (Powered)
+        name: Detector Rail (Powered, Ascending, East)
         tex: [20, 3]
       11:
-        name: Detector Rail (Powered)
+        name: Detector Rail (Powered, Ascending, West)
         tex: [20, 3]
       12:
-        name: Detector Rail (Powered)
+        name: Detector Rail (Powered, Ascending, North)
         tex: [20, 3]
       13:
-        name: Detector Rail (Powered)
+        name: Detector Rail (Powered, Ascending, South)
         tex: [20, 3]
 
   - id: 29
@@ -1973,9 +1973,9 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Rail (South)
+        name: Rail (North/South)
       1:
-        name: Rail (West)
+        name: Rail (East/West)
       2:
         name: Rail (Ascending, East)
       3:
@@ -4152,34 +4152,34 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Activator Rail (Unpowered)
+        name: Detector Rail (Unpowered, North/South)
       1:
-        name: Activator Rail (Unpowered)
+        name: Detector Rail (Unpowered, East/West)
       2:
-        name: Activator Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, East)
       3:
-        name: Activator Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, West)
       4:
-        name: Activator Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, North)
       5:
-        name: Activator Rail (Unpowered)
+        name: Detector Rail (Unpowered, Ascending, South)
       8:
-        name: Activator Rail (Powered)
+        name: Detector Rail (Powered, North/South)
         tex: [11, 13]
       9:
-        name: Activator Rail (Powered)
+        name: Detector Rail (Powered, (East/West)
         tex: [11, 13]
       10:
-        name: Activator Rail (Powered)
+        name: Detector Rail (Powered, Ascending, East)
         tex: [11, 13]
       11:
-        name: Activator Rail (Powered)
+        name: Detector Rail (Powered, Ascending, West)
         tex: [11, 13]
       12:
-        name: Activator Rail (Powered)
+        name: Detector Rail (Powered, Ascending, North)
         tex: [11, 13]
       13:
-        name: Activator Rail (Powered)
+        name: Detector Rail (Powered, Ascending, South)
         tex: [11, 13]
 
   - id: 158
