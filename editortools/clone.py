@@ -49,7 +49,7 @@ CloneSettings = config.Settings("Clone")
 CloneSettings.copyAir = CloneSettings("Copy Air", True)
 CloneSettings.copyWater = CloneSettings("Copy Water", True)
 CloneSettings.copyBiomes = CloneSettings("Copy Biomes", True)
-CloneSettings.staticCommands = CloneSettings("Change Static Coordinates", False)
+CloneSettings.staticCommands = CloneSettings("Change Coordinates", False)
 CloneSettings.placeImmediately = CloneSettings("Place Immediately", True)
 
 
@@ -324,9 +324,9 @@ class CloneToolPanel(Panel):
         copyBiomesRow = Row((self.copyBiomesCheckBox, self.copyBiomesLabel))
         
         self.staticCommandsCheckBox = CheckBox(ref=AttrRef(self.tool, "staticCommands"))
-        self.staticCommandsLabel = Label("Change Static Coordinates")
+        self.staticCommandsLabel = Label("Change Coordinates")
         self.staticCommandsLabel.mouse_down = self.staticCommandsCheckBox.mouse_down
-        self.staticCommandsLabel.tooltipText = "Shortcut: ALT-4"
+        self.staticCommandsLabel.tooltipText = "Check to automatically change command block static coordinates when moved.\nShortcut: ALT-4"
         self.staticCommandsCheckBox.tooltipText = self.staticCommandsLabel.tooltipText
 
         staticCommandsRow = Row((self.staticCommandsCheckBox, self.staticCommandsLabel))
