@@ -633,7 +633,7 @@ def extractSchematicFromIter(sourceLevel, box, entities=True):
     newbox, destPoint = p
 
     tempSchematic = MCSchematic(shape=box.size, mats=sourceLevel.materials)
-    for i in tempSchematic.copyBlocksFromIter(sourceLevel, newbox, destPoint, entities=entities, biomes=True):
+    for i in tempSchematic.copyBlocksFromIter(sourceLevel, newbox, destPoint, entities=entities, biomes=True, first=True):
         yield i
 
     yield tempSchematic
@@ -669,7 +669,7 @@ def extractZipSchematicFromIter(sourceLevel, box, zipfilename=None, entities=Tru
     tempSchematic.materials = sourceLevel.materials
 
     for i in tempSchematic.copyBlocksFromIter(sourceLevel, sourceBox, destPoint, entities=entities, create=True,
-                                              biomes=True):
+                                              biomes=True, first=True):
         yield i
 
     tempSchematic.Width, tempSchematic.Height, tempSchematic.Length = sourceBox.size

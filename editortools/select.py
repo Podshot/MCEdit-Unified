@@ -29,6 +29,7 @@ from depths import DepthOffset
 from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
+import leveleditor
 from glbackground import Panel
 from mceutils import ChoiceButton, CheckBoxLabel, IntInputRow, alertException, drawCube, drawFace, \
     drawTerrainCuttingWire, setWindowCaption, showProgress
@@ -250,7 +251,8 @@ class NudgeBlocksOperation(Operation):
 
             level.removeEntitiesInBox(self.sourceBox)
             level.removeEntitiesInBox(self.destBox)
-            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin)
+            staticCommandsNudge = leveleditor.Settings.staticCommandsNudge.get()
+            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin, staticCommands=staticCommandsNudge)
             self.editor.invalidateBox(dirtyBox)
 
             self.nudgeSelection.perform(recordUndo)

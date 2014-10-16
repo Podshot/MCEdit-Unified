@@ -27,7 +27,7 @@ class NudgeButton(GLBackground):
         # tooltipBacking.bg_color = (0, 0, 0, 0.6)
         keys = [config.config.get("Keys", k).upper() for k in ("Forward", "Back", "Left", "Right", "Up", "Down")]
 
-        nudgeLabel.tooltipText = _("Click and hold.  While holding, use the movement keys ({0}{1}{2}{3}{4}{5}) to nudge. Hold SHIFT to nudge faster.").format(
+        nudgeLabel.tooltipText = _("Click and hold.  While holding, use the movement keys ({0}{1}{2}{3}{4}{5}) to nudge. Hold SHIFT to nudge faster. If you want to enable/ disable changing static coordinates in command blocks while nudging, go to Options.").format(
             *keys)
         # tooltipBacking.shrink_wrap()
 

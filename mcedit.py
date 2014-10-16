@@ -555,6 +555,9 @@ class OptionsPanel(Dialog):
         langStringRow = mceutils.TextInputRow("Language String",
                                             ref=Settings.langCode.propertyRef(),
                                             tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
+        staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
+                                            ref=Settings.staticCommandsNudge.propertyRef(),
+                                            tooltipText="Change static coordinates in command blocks while nudging.")                                      
 
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
@@ -585,6 +588,7 @@ class OptionsPanel(Dialog):
                       swapAxesRow,
                       invertRow,
                       visibilityCheckRow,
+                      staticCommandsNudgeRow,
                       langStringRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
