@@ -1563,7 +1563,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         return heightMap[zInChunk, xInChunk]  # HeightMap indices are backwards
 
-    # --- Biome minipulation ---
+    # --- Biome manipulation ---
 
     def biomeAt(self, x, z):
         biomes = self.getChunk(int(x/16),int(z/16)).root_tag["Level"]["Biomes"].value
