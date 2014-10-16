@@ -6,13 +6,14 @@
 PLEASE READ: The unusable trade won't prevent new trades anymore but I
 solved it by adding a very high career level. So only use it if you like
 the fancy stop sign. '''
-# Reedited by DragonQuiz, October 12 , 2014
+# Reedited by DragonQuiz, October 15 , 2014
 #
-# Changes:
+# Changes: ^denotes new change
 # 1) Allow your villager to move or not.
 # 2) Rename your villager in MCEdit.
 # 3) Allow players to receive experience for their trade.
-# 4) Updated some of the code, made it more prettier.
+# 4) Updated more of the code, made it much prettier.
+# 5) ^Added rotation so the villager *can rotate* when possible.
 # And a big thanks to Sethbling for creating this filter and all his other filters at http://sethbling.com/downloads/mcedit-filters/
 
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
@@ -33,7 +34,7 @@ for key in Professions.keys():
 	ProfessionKeys = ProfessionKeys + (key,)
 
 inputs = [( ("General Trade","title"),
-	("This is a modified version of SethBling's Create Shops filter","label"),
+	("This is a modified version of SethBling's Create Shops filter at DragonQuiz's request","label"),
 	("Profession", ProfessionKeys),
 	("Add Stopping Trade", True),
 	("Invulnerable Villager", True),
@@ -42,6 +43,16 @@ inputs = [( ("General Trade","title"),
 	("Make Villager not Move", False),
 	("Villager Name",("string","width=250")),),
 	
+	(("Rotation","title"),
+	("*May or May not work, did work in testing(sometimes)*","label"),
+	("      Rotate the Position of your Trader\n"
+	"*Can only be used if Not Move is checked*","label"),
+	("Y-Axis",(0, 360)),
+	("Changes its body rotation. Due west is 0. Must be less than 360 degrees.","label"),
+	("X-Axis",("string","width=50")),
+	("Changes the head rotation Horizontal is 0. Positive values look downward. Less than +/- 90 degrees","label"),
+	),
+	
 	(("Trade Notes","title"),
 	("To create a shop first put your buy in the top slot(s) of the chest.\n"
 	"Second put a second buy in the middle slot(optional).\n"
@@ -49,9 +60,10 @@ inputs = [( ("General Trade","title"),
 	"Click the chest you want and choose what you want and click hit enter\n"
 	"*All items must be in the same row*\n"
 	"\n"
+	"Advanced, little experience in notepad ++ is recommended.\n"
 	"To change the amount of trades:\n"
 	"1) Uncheck 'Unlimited Trades'\n"
-	"2) Open the createshop filter using Notepad++ (link:http://notepad-plus-plus.org/) or notepad\n"
+	"2) Open the createshops filter using Notepad++ (link:http://notepad-plus-plus.org/) or notepad\n"
 	"*The filter is where you put the MCEdit folder*\n"
 	"3) Scroll to:\n" 
 	            "else:\n"
@@ -68,9 +80,10 @@ def perform(level, box, options):
 	invincible = options["Invulnerable Villager"]
 	unlimited = options["Make Unlimited Trades"]
 	xp = options["Give Experience per a Trade"]
-	move = options["Make Villager not Move"]
+	nomove = options["Make Villager not Move"]
 	name = options["Villager Name"]
-	
+	yaxis = options["Y-Axis"]
+	xaxis = options["X-Axis"]	
 	for (chunk, slices, point) in level.getChunkSlices(box):
 		for e in chunk.TileEntities:
 			x = e["x"].value
@@ -79,9 +92,9 @@ def perform(level, box, options):
 			
 			if (x,y,z) in box:
 				if e["id"].value == "Chest":
-					createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited, xp, move, name)
+					createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited, xp, nomove, name, yaxis, xaxis)
 
-def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, move, name):
+def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, name, yaxis, xaxis):
 	chest = level.tileEntityAt(x, y, z)
 	if chest == None:
 		return
@@ -116,18 +129,12 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
 	villager["FallDistance"] = TAG_Float(0)
 	villager["CustomNameVisible"] = TAG_Byte(1)
 	villager["CustomName"] = TAG_String(name)
+	villager["Invulnerable"] = TAG_Byte(invincible)
+	villager["NoAI"] = TAG_Byte(nomove)
 	villager["id"] = TAG_String("Villager")
-	villager["Motion"] = TAG_List()
-	villager["Motion"].append(TAG_Double(0))
-	villager["Motion"].append(TAG_Double(0))
-	villager["Motion"].append(TAG_Double(0))
-	villager["Pos"] = TAG_List()
-	villager["Pos"].append(TAG_Double(x + 0.5))
-	villager["Pos"].append(TAG_Double(y))
-	villager["Pos"].append(TAG_Double(z + 0.5))
-	villager["Rotation"] = TAG_List()
-	villager["Rotation"].append(TAG_Float(0))
-	villager["Rotation"].append(TAG_Float(0))
+	villager["Motion"] = TAG_List([TAG_Double(0.0), TAG_Double(0.0), TAG_Double(0.0)])
+	villager["Pos"] = TAG_List ([TAG_Double(x + 0.5), TAG_Double(y), TAG_Double(z + 0.5)])
+	villager["Rotation"] = TAG_List([TAG_Float(yaxis), TAG_Float(xaxis)])
 	
 	villager["Willing"] = TAG_Byte(0)
 	villager["Offers"] = TAG_Compound()
@@ -138,8 +145,8 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
 			if xp:
 				offer["rewardExp"] = TAG_Byte(1)
 			else:
-				offer["rewardExp"] = TAG_Byte(0)	
-			
+				offer["rewardExp"] = TAG_Byte(0)
+				
 			if unlimited:
 				offer["uses"] = TAG_Int(0)
 				offer["maxUses"] = TAG_Int(2000000000)
@@ -169,19 +176,7 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
 		offer["sell"]["Damage"] = TAG_Short(0)
 		offer["sell"]["id"] = TAG_String("minecraft:barrier")
 		villager["Offers"]["Recipes"].append(offer)
-						
-	if invincible:
-		if "Invulnerable" not in villager:
-			villager["Invulnerable"] = TAG_Byte(1)
-		else:
-			villager["Invulnerable"] = TAG_Byte(0)
-			
-	if move:
-		if "NoAI" not in villager:
-			villager["NoAI"] = TAG_Byte(1)
-		else:
-			villager["NoAI"] = TAG_Byte(0)
-		
+
 	level.setBlockAt(x, y, z, 0)
 
 	chunk = level.getChunk(x / 16, z / 16)
