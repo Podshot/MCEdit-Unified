@@ -177,7 +177,7 @@ class SelectionToolPanel(Panel):
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
         deleteEntitiesButton.tooltipText = _("Remove all entities within the selection")
         deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
-        deleteTileTicksButton.tooltipText = _("Removes all tile ticks within selection")
+        deleteTileTicksButton.tooltipText = _("Removes all tile ticks within selection. Tile ticks are scheduled block updates")
         # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
         analyzeButton.tooltipText = _("Count the different blocks and entities in the selection and display the totals.")

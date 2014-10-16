@@ -287,41 +287,45 @@ rotationClasses.append(PoweredDetectorRail)
 class Lever:
     blocktypes = [alphaMaterials.Lever.ID]
     ThrownBit = 0x8
-    Up = 0
+    # DownEast indicates floor lever pointing East in off state
+    DownEast = 0
     South = 1
     North = 2
     West = 3
     East = 4
-    EastWest = 5
-    NorthSouth = 6
-    Down = 7
+    UpEast = 5
+    UpSouth = 6
+    DownSouth = 7
 
 
 Lever.rotateLeft = genericRotation(Lever)
-Lever.rotateLeft[Lever.NorthSouth] = Lever.EastWest
-Lever.rotateLeft[Lever.EastWest] = Lever.NorthSouth
-Lever.rotateLeft[Lever.Up] = Lever.Down
-Lever.rotateLeft[Lever.Down] = Lever.Up
+Lever.rotateLeft[Lever.UpEast] = Lever.UpSouth
+Lever.rotateLeft[Lever.UpSouth] = Lever.UpEast
+Lever.rotateLeft[Lever.DownEast] = Lever.DownSouth
+Lever.rotateLeft[Lever.DownSouth] = Lever.DownEast
 Lever.flipEastWest = genericEastWestFlip(Lever)
 Lever.flipNorthSouth = genericNorthSouthFlip(Lever)
+Lever.flipVertical = arange(16, dtype='uint8')
+Lever.flipVertical[Lever.UpEast] = Lever.DownEast
+Lever.flipVertical[Lever.DownEast] = Lever.UpEast
+Lever.flipVertical[Lever.UpSouth] = Lever.DownSouth
+Lever.flipVertical[Lever.DownSouth] = Lever.UpSouth
+
 applyThrownBit(Lever)
 rotationClasses.append(Lever)
 
-
+@genericFlipRotation
 class Button:
     blocktypes = [alphaMaterials.Button.ID, alphaMaterials.WoodenButton.ID]
     PressedBit = 0x8
+    Down = 0
     South = 1
     North = 2
     West = 3
     East = 4
+    Up = 5
 
-
-Button.rotateLeft = genericRotation(Button)
-Button.flipEastWest = genericEastWestFlip(Button)
-Button.flipNorthSouth = genericNorthSouthFlip(Button)
 applyThrownBit(Button)
-rotationClasses.append(Button)
 
 
 class SignPost:
@@ -781,6 +785,7 @@ class BlockRotation:
     flipEastWest = masterRotationTable("flipEastWest")
     flipNorthSouth = masterRotationTable("flipNorthSouth")
     flipVertical = masterRotationTable("flipVertical")
+    roll = masterRotationTable("roll")
     typeTable = rotationTypeTable()
 
 
@@ -802,4 +807,7 @@ def FlipEastWest(blocks, data):
 
 
 def RotateLeft(blocks, data):
+    data[:] = BlockRotation.rotateLeft[blocks, data]
+
+def Roll(blocks, data):
     data[:] = BlockRotation.rotateLeft[blocks, data]
