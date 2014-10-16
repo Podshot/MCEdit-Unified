@@ -1563,6 +1563,20 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         return heightMap[zInChunk, xInChunk]  # HeightMap indices are backwards
 
+    # --- Biome manipulation ---
+
+    def biomeAt(self, x, z):
+        biomes = self.getChunk(int(x/16),int(z/16)).root_tag["Level"]["Biomes"].value
+        xChunk = int(x/16) * 16
+        zChunk = int(z/16) * 16
+        return biomes[(z - zChunk) * 16 + (x - xChunk)]
+        
+    def setBiomeAt(self, x, z, biomeID):
+        biomes = self.getChunk(int(x/16), int(z/16)).root_tag["Level"]["Biomes"].value
+        xChunk = int(x/16) * 16
+        zChunk = int(z/16) * 16
+        biomes[(z - zChunk) * 16 + (x - xChunk)] = biomeID
+
     # --- Entities and TileEntities ---
 
     def addEntity(self, entityTag):
