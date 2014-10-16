@@ -346,6 +346,32 @@ class MCSchematic(EntityLevel):
             for tileTick in self.TileTicks:
                 tileTick["y"].value = self.Height - tileTick["y"].value - 1
 
+    # Width of paintings
+    paintingMap = {'Kebab': 1,
+                   'Aztec': 1,
+                   'Alban': 1,
+                   'Aztec2': 1,
+                   'Bomb': 1,
+                   'Plant': 1,
+                   'Wasteland': 1,
+                   'Wanderer': 1,
+                   'Graham': 1,
+                   'Pool': 2,
+                   'Courbet': 2,
+                   'Sunset': 2,
+                   'Sea': 2,
+                   'Creebet': 2,
+                   'Match': 2,
+                   'Stage': 2,
+                   'Void': 2,
+                   'SkullAndRoses': 2,
+                   'Wither': 2,
+                   'Fighters': 4,
+                   'Skeleton': 4,
+                   'DonkeyKong': 4,
+                   'Pointer': 4,
+                   'Pigscene': 4,
+                   'BurningSkull': 4}
 
     def flipNorthSouth(self):
         if "Biomes" in self.root_tag:
@@ -367,10 +393,22 @@ class MCSchematic(EntityLevel):
 
             entity["Rotation"][0].value -= 180.0
 
-            if entity["id"].value in ("Painting", "ItemFrame"):
-                entity["TileX"].value = self.Width - entity["TileX"].value
+            # Special logic for old width painting as TileX/TileZ favours -x/-z
+            if entity["id"].value == "Painting":
+                if entity["Facing"].value == 2:
+                    entity["TileX"].value = self.Width - entity["TileX"].value - self.paintingMap[entity["Motive"].value] % 2
+                elif entity["Facing"].value == 0:
+                    entity["TileX"].value = self.Width - entity["TileX"].value - 2 + self.paintingMap[entity["Motive"].value] % 2
+                else:
+                    entity["TileX"].value = self.Width - entity["TileX"].value - 1
+                if entity["Facing"].value == 3:
+                    entity["TileZ"].value = entity["TileZ"].value - 1 + self.paintingMap[entity["Motive"].value] % 2
+                elif entity["Facing"].value == 1:
+                    entity["TileZ"].value = entity["TileZ"].value + 1 - self.paintingMap[entity["Motive"].value] % 2
                 entity["Facing"].value = northSouthPaintingMap[entity["Facing"].value]
-
+            elif entity["id"].value == "ItemFrame":
+                entity["TileX"].value = self.Width - entity["TileX"].value - 1
+                entity["Facing"].value = northSouthPaintingMap[entity["Facing"].value]
         for tileEntity in self.TileEntities:
             if not 'x' in tileEntity:
                 continue
@@ -401,8 +439,21 @@ class MCSchematic(EntityLevel):
 
             entity["Rotation"][0].value -= 180.0
 
-            if entity["id"].value in ("Painting", "ItemFrame"):
-                entity["TileZ"].value = self.Length - entity["TileZ"].value
+            # Special logic for old width painting as TileX/TileZ favours -x/-z
+            if entity["id"].value == "Painting":
+                if entity["Facing"].value == 1:
+                    entity["TileZ"].value = self.Length - entity["TileZ"].value - 2 + self.paintingMap[entity["Motive"].value] % 2
+                elif entity["Facing"].value == 3:
+                    entity["TileZ"].value = self.Length - entity["TileZ"].value - self.paintingMap[entity["Motive"].value] % 2
+                else:
+                    entity["TileZ"].value = self.Length - entity["TileZ"].value - 1
+                if entity["Facing"].value == 0:
+                    entity["TileX"].value = entity["TileX"].value + 1 - self.paintingMap[entity["Motive"].value] % 2
+                elif entity["Facing"].value == 2:
+                    entity["TileX"].value = entity["TileX"].value - 1 + self.paintingMap[entity["Motive"].value] % 2
+                entity["Facing"].value = eastWestPaintingMap[entity["Facing"].value]
+            elif entity["id"].value == "ItemFrame":
+                entity["TileZ"].value = self.Length - entity["TileZ"].value - 1
                 entity["Facing"].value = eastWestPaintingMap[entity["Facing"].value]
 
         for tileEntity in self.TileEntities:
