@@ -71,7 +71,7 @@ import albow
 # albow.translate.setLang(locale.getdefaultlocale()[0])
 # del locale
 
-albow.translate.buildTranslation(albow.translate.getLang())
+albow.translate.buildTranslation(albow.translate.refreshLang())
 
 from albow.translate import _
 #-#
@@ -486,7 +486,7 @@ class OptionsPanel(Dialog):
     anchor = 'wh'
 
     def __init__(self, mcedit):
-        albow.translate.getLang(True)
+        albow.translate.refreshLang(True)
 
         Dialog.__init__(self)
 
@@ -651,7 +651,7 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         Dialog.dismiss(self, *args, **kwargs)
-        albow.translate.getLang(build=False)
+        albow.translate.refreshLang(build=False)
 
 class MCEdit(GLViewport):
     #debug_resize = True

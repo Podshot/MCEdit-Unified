@@ -93,7 +93,7 @@ Settings.blockBuffer = Settings("Block Buffer", 256 * 1048576)
 Settings.reportCrashes = Settings("report crashes new", False)
 Settings.reportCrashesAsked = Settings("report crashes asked", False)
 
-Settings.langCode = Settings("Language String", 'en_US')
+Settings.langCode = Settings("Language String", "en_US")
 
 Settings.viewDistance = Settings("View Distance", 8)
 Settings.targetFPS = Settings("Target FPS", 30)

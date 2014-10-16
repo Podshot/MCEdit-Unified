@@ -56,7 +56,7 @@ enc = "utf8"
 
 string_cache = {}
 langPath = os.path.join(directories.dataDir, "lang")
-oldlang = "en_US"
+oldlang = "en_US" # en_US is the default language string, no exceptions.
 try:
 	oldlang = Settings.langCode.get()
 except:
@@ -74,18 +74,25 @@ def _(string, doNotTranslate=False):
     return string_cache.get(string, string.replace("\n", "\n\n"))
 
 #-------------------------------------------------------------------------------
-def getLang(suppressAlert=False,build=True):
+def refreshLang(suppressAlert=False,build=True):
+    """Refreshes and returns the current language string"""
     global oldlang
     import config
     from leveleditor import Settings
 
     try:
         lang = Settings.langCode.get() #.langCode
+        isRealLang = verifyLangCode(lang)
         if build:
             buildTranslation(lang)
-        if not oldlang == lang and not suppressAlert:
+        if not oldlang == lang and not suppressAlert and isRealLang:
             import albow
             albow.alert("You must restart MCEdit to see language changes")
+        elif not suppressAlert and not isRealLang:
+            import albow
+            albow.alert("{} is not a valid language".format(lang))
+        if not isRealLang:
+            Settings.langCode.set("en_US")
         oldlang = lang
         return lang
     except Exception as inst:
@@ -101,17 +108,22 @@ def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     if "\n" in data:
         data = data.replace("\n", "\n\n")
     return data
-
 #-------------------------------------------------------------------------------
-def buildTranslation(lang):
+def verifyLangCode(lang):
+    fName = os.path.join(langPath, lang + ".json")
+    if (os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK)) or lang == "en_US":
+        return True
+    else:
+        return False
+#-------------------------------------------------------------------------------
+def buildTranslation(lang,suppressAlert=False):
     """Finds the file corresponding to 'lang' builds up string_cache.
     If the file is not valid, does nothing.
     Errors encountered during the process are silently ignored.
     Returns string_cache."""
     global string_cache
-    lang = "%s"%lang
     fName = os.path.join(langPath, lang + ".json")
-    if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
+    if verifyLangCode(lang) and not lang == "en_US":
         with open(fName) as jsonString:
             string_cache = json.load(jsonString)
     return string_cache
