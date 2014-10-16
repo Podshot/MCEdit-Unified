@@ -29,6 +29,7 @@ from depths import DepthOffset
 from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
+import leveleditor
 from glbackground import Panel
 from mceutils import ChoiceButton, CheckBoxLabel, IntInputRow, alertException, drawCube, drawFace, \
     drawTerrainCuttingWire, setWindowCaption, showProgress
@@ -177,7 +178,7 @@ class SelectionToolPanel(Panel):
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
         deleteEntitiesButton.tooltipText = _("Remove all entities within the selection")
         deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
-        deleteTileTicksButton.tooltipText = _("Removes all tile ticks within selection")
+        deleteTileTicksButton.tooltipText = _("Removes all tile ticks within selection. Tile ticks are scheduled block updates")
         # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
         analyzeButton.tooltipText = _("Count the different blocks and entities in the selection and display the totals.")
@@ -250,7 +251,8 @@ class NudgeBlocksOperation(Operation):
 
             level.removeEntitiesInBox(self.sourceBox)
             level.removeEntitiesInBox(self.destBox)
-            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin)
+            staticCommandsNudge = leveleditor.Settings.staticCommandsNudge.get()
+            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin, staticCommands=staticCommandsNudge)
             self.editor.invalidateBox(dirtyBox)
 
             self.nudgeSelection.perform(recordUndo)

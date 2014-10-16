@@ -355,7 +355,7 @@ class AnvilChunk(LightedChunk):
 
     @property
     def TileTicks(self):
-        if self.root_tag["Level"].__contains__("TileTicks"):
+        if "TileTicks" in self.root_tag["Level"]:
             return self.root_tag["Level"]["TileTicks"]
         else:
             self.root_tag["Level"]["TileTicks"] = nbt.TAG_List()

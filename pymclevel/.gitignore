@@ -19,7 +19,6 @@ lib64/
 parts/
 sdist/
 var/
-ENV/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -69,4 +68,3 @@ Thumbs.db
 
 # MCEdit stuff
 filters.json
-pymclevel/.git/

@@ -11,16 +11,20 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
-# Modified by D.C.-G. for tanslation purpose
+
+#Modified by D.C.-G. for translation purposes
+
+#This code has been modified by Rubisk, removing the randomization chance for erosion, and adding a percentual brush.
+#Feel free to modify/distribute my code. 
+
 import collections
+import random
 from datetime import datetime
 import numpy
 from numpy import newaxis
 import pygame
 from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert
-#-#
 from albow.translate import _
-#-#
 import bresenham
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
@@ -54,7 +58,6 @@ BrushSettings.updateBrushOffset = BrushSettings("Update Brush Offset", False)
 BrushSettings.chooseBlockImmediately = BrushSettings("Choose Block Immediately", False)
 BrushSettings.alpha = BrushSettings("Alpha", 0.66)
 
-
 class BrushMode(object):
     options = []
 
@@ -70,7 +73,6 @@ class BrushMode(object):
         Called by BrushOperation for brush modes that can't be implemented using applyToChunk
         """
         pass
-
     apply = NotImplemented
 
     def applyToChunk(self, op, chunk, point):
@@ -113,8 +115,7 @@ class Modes:
             return col
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
-            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise,
-                                        op.hollow)
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
 
             chunk.Blocks[slices][brushMask] = op.blockInfo.ID
             chunk.Data[slices][brushMask] = op.blockInfo.blockData
@@ -212,8 +213,7 @@ class Modes:
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
-            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise,
-                                        op.hollow)
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
 
             replaceWith = op.options['replaceBlockInfo']
             # xxx pasted from fill.py
@@ -229,20 +229,160 @@ class Modes:
             replaceMask = replaceTable[blocks, data]
             brushMask &= replaceMask
 
+            print replaceWith.ID
+
             blocks[brushMask] = replaceWith.ID
             data[brushMask] = replaceWith.blockData
-
-    class Erode(BrushMode):
-        name = "Erode"
-        options = ['erosionStrength']
+			
+    class Vary(Fill):
+        name = "Varied Replace"
+        options = ['chanceA','chanceB','chanceC','chanceD','replaceWith1','replaceWith2','replaceWith3','replaceWith4']
 
         def createOptions(self, panel, tool):
+            replaceWith1 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith1'),
+            recentBlocks=tool.recentReplaceBlocks)
+            
+            replaceWith2 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith2'),
+            recentBlocks=tool.recentReplaceBlocks)
+
+            replaceWith3 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith3'),
+            recentBlocks=tool.recentReplaceBlocks)
+
+            replaceWith4 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith4'),
+            recentBlocks=tool.recentReplaceBlocks)
+
+            seperator = Label("---")
+            
+            chanceA = IntInputRow("Weight 1: ", ref=AttrRef(tool, 'chanceA'), min=0, width=50)
+            chanceB = IntInputRow("Weight 2: ", ref=AttrRef(tool, 'chanceB'), min=0, width=50)
+            chanceC = IntInputRow("Weight 3: ", ref=AttrRef(tool, 'chanceC'), min=0, width=50)
+            chanceD = IntInputRow("Weight 4: ", ref=AttrRef(tool, 'chanceD'), min=0, width=50)
+
             col = [
                 panel.modeStyleGrid,
                 panel.brushSizeRows,
+                panel.blockButton,
+                seperator,
+                replaceWith1,
+                replaceWith2,
+                replaceWith3,
+                replaceWith4,
+                chanceA, chanceB,
+                chanceC, chanceD,
+                ]
+            return col
+
+
+        def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
+
+            blocks = chunk.Blocks[slices]
+            data = chunk.Data[slices]
+
+            replaceWith1 = op.options['replaceWith1']
+            chanceA = op.options['chanceA']
+            replaceWith2 = op.options['replaceWith2']
+            chanceB = op.options['chanceB']
+            replaceWith3 = op.options['replaceWith3']
+            chanceC = op.options['chanceC']
+            replaceWith4 = op.options['replaceWith4']
+            chanceD = op.options['chanceD']
+
+            totalChance = chanceA + chanceB + chanceC + chanceD
+
+            if totalChance == 0:
+                print "Total Chance value can't be 0"
+                return
+
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
+
+            # xxx pasted from fill.py
+            if op.blockInfo.wildcard:
+                print "Wildcard replace"
+                blocksToReplace = []
+                for i in range(16):
+                    blocksToReplace.append(op.editor.level.materials.blockWithID(op.blockInfo.ID, i))
+            else:
+                blocksToReplace = [op.blockInfo]
+
+            replaceTable = block_fill.blockReplaceTable(blocksToReplace)
+            replaceMask = replaceTable[blocks, data]
+            brushMask &= replaceMask
+
+            brushMaskOption1 = numpy.copy(brushMask)
+            brushMaskOption2 = numpy.copy(brushMask)
+            brushMaskOption3 = numpy.copy(brushMask)
+            brushMaskOption4 = numpy.copy(brushMask)
+
+            x=-1
+            y=-1
+            z=-1
+
+            for array_x in brushMask:
+                x += 1
+                y = -1
+                for array_y in brushMask[x]:
+                    y += 1
+                    z=-1
+                    for array_z in brushMask[x][y]:
+                        z += 1
+                        if brushMask[x][y][z]:
+                            randomChance = random.randint(1, totalChance)
+                            if chanceA >= randomChance:
+                                brushMaskOption1[x][y][z] = True
+                                brushMaskOption2[x][y][z] = False
+                                brushMaskOption3[x][y][z] = False
+                                brushMaskOption4[x][y][z] = False
+                                continue
+                            if chanceA + chanceB >= randomChance:
+                                brushMaskOption1[x][y][z] = False
+                                brushMaskOption2[x][y][z] = True
+                                brushMaskOption3[x][y][z] = False
+                                brushMaskOption4[x][y][z] = False
+                                continue
+                            if chanceA + chanceB + chanceC >= randomChance:
+                                brushMaskOption1[x][y][z] = False
+                                brushMaskOption2[x][y][z] = False
+                                brushMaskOption3[x][y][z] = True
+                                brushMaskOption4[x][y][z] = False
+                                continue
+                            if chanceA + chanceB + chanceC + chanceD >= randomChance:
+                                brushMaskOption1[x][y][z] = False
+                                brushMaskOption2[x][y][z] = False
+                                brushMaskOption3[x][y][z] = False
+                                brushMaskOption4[x][y][z] = True
+                                continue
+            blocks[brushMaskOption1] = replaceWith1.ID
+            data[brushMaskOption1] = replaceWith1.blockData
+            blocks[brushMaskOption2] = replaceWith2.ID
+            data[brushMaskOption2] = replaceWith2.blockData
+            blocks[brushMaskOption3] = replaceWith3.ID
+            data[brushMaskOption3] = replaceWith3.blockData
+            blocks[brushMaskOption4] = replaceWith4.ID
+            data[brushMaskOption4] = replaceWith4.blockData
+
+    class Erode(BrushMode):
+        name = "Erode"
+        options = ['erosionStrength','erosionNoise']
+
+        def createOptions(self, panel, tool):
+            erosionNoise = CheckBoxLabel("Noise", ref=AttrRef(tool, 'erosionNoise'))
+            erosionStrength = IntInputRow("Strength: ", ref=AttrRef(tool, 'erosionStrength'), min=1, max=20, tooltipText="Number of times to apply erosion." )
+            col = [
+                panel.modeStyleGrid,
+                panel.hollowRow,
+                panel.noiseInput,
+                panel.brushSizeRows,
+                erosionStrength,
+                erosionNoise,
             ]
-            col.append(IntInputRow("Strength: ", ref=AttrRef(tool, 'erosionStrength'), min=1, max=20,
-                                   tooltipText="Number of times to apply erosion. Larger numbers are slower."))
             return col
 
         def apply(self, op, point):
@@ -250,9 +390,10 @@ class Modes:
 
             if brushBox.volume > 1048576:
                 raise ValueError("Affected area is too big for this brush mode")
+			
+            erosionStrength = op.options["erosionStrength"]
 
-            strength = op.options["erosionStrength"]
-
+			
             erosionArea = op.level.extractSchematic(brushBox, entities=False)
             if erosionArea is None:
                 return
@@ -271,13 +412,14 @@ class Modes:
                 neighbors[1:-1, 1:-1, 1:-1] += solidBlocks[1:-1, 1:-1, 2:]
                 return neighbors
 
-            for i in range(strength):
+            for i in range(erosionStrength):
                 solidBlocks = blocks != 0
                 neighbors = getNeighbors(solidBlocks)
 
                 brushMask = createBrushMask(op.brushSize, op.brushStyle)
                 erodeBlocks = neighbors < 5
-                erodeBlocks &= (numpy.random.random(erodeBlocks.shape) > 0.3)
+                if op.options['naturalEarth']:
+                    erodeBlocks &= (numpy.random.random(erodeBlocks.shape) > 0.3)
                 erodeBlocks[1:-1, 1:-1, 1:-1] &= brushMask
                 blocks[erodeBlocks] = 0
 
@@ -317,14 +459,13 @@ class Modes:
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
-            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise,
-                                        op.hollow)
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
+
 
             if op.options['naturalEarth']:
                 try:
                     # try to get the block mask from the topsoil filter
                     import topsoil  # @UnresolvedImport
-
                     blockmask = topsoil.naturalBlockmask()
                     blockmask[blocktype.ID] = True
                     blocktypeMask = blockmask[blocks]
@@ -396,6 +537,7 @@ class Modes:
 
 
 class BrushOperation(Operation):
+
     def __init__(self, editor, level, points, options):
         super(BrushOperation, self).__init__(editor, level)
 
@@ -427,6 +569,7 @@ class BrushOperation(Operation):
         Modes.Fill,
         Modes.FloodFill,
         Modes.Replace,
+		Modes.Vary,
         Modes.Erode,
         Modes.Topsoil,
         Modes.Paste
@@ -441,6 +584,7 @@ class BrushOperation(Operation):
         return self.options.get('brushHollow', False)
 
 
+
     def dirtyBox(self):
         return self._dirtyBox
 
@@ -450,7 +594,7 @@ class BrushOperation(Operation):
 
         def _perform():
             yield 0, len(self.points), _("Applying {0} brush...").format(self.brushMode.name)
-            if self.brushMode.apply is not NotImplemented:  # xxx double negative
+            if self.brushMode.apply is not NotImplemented: #xxx double negative
                 for i, point in enumerate(self.points):
                     f = self.brushMode.apply(self, point)
                     if hasattr(f, "__iter__"):
@@ -472,9 +616,7 @@ class BrushOperation(Operation):
                             for progress in f:
                                 yield progress
                         else:
-                            yield j * len(self.points) + i, len(
-                                self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(
-                                self.brushMode.name)
+                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(self.brushMode.name)
 
                     chunk.chunkChanged()
 
@@ -482,6 +624,7 @@ class BrushOperation(Operation):
             showProgress("Performing brush...", _perform(), cancel=True)
         else:
             exhaust(_perform())
+
 
 
 class BrushPanel(Panel):
@@ -497,8 +640,8 @@ class BrushPanel(Panel):
         self.brushModeRow = Row((Label("Mode:"), self.brushModeButton))
 
         self.brushStyleButton = ValueButton(width=self.brushModeButton.width,
-                                            ref=AttrRef(tool, "brushStyle"),
-                                            action=tool.swapBrushStyles)
+                                        ref=AttrRef(tool, "brushStyle"),
+                                        action=tool.swapBrushStyles)
 
         self.brushStyleButton.tooltipText = "Shortcut: ALT-1"
 
@@ -544,8 +687,7 @@ class BrushPanel(Panel):
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
-            spaceRow = IntInputRow("Line Spacing", ref=AttrRef(tool, "minimumSpacing"), min=1,
-                                   tooltipText="Hold SHIFT to draw lines")
+            spaceRow = IntInputRow("Line Spacing", ref=AttrRef(tool, "minimumSpacing"), min=1, tooltipText="Hold SHIFT to draw lines")
             col.append(spaceRow)
         col = Column(col)
 
@@ -584,19 +726,17 @@ class BrushToolOptions(ToolOptions):
         alphaField.increment = 0.1
         alphaRow = Row((Label("Alpha: "), alphaField))
         autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
-                                           ref=AttrRef(tool, "chooseBlockImmediately"),
-                                           tooltipText="When the brush tool is chosen, prompt for a block type.")
+                                            ref=AttrRef(tool, "chooseBlockImmediately"),
+                                            tooltipText="When the brush tool is chosen, prompt for a block type.")
 
         updateOffsetCheckBox = CheckBoxLabel("Reset Distance When Brush Size Changes",
-                                             ref=AttrRef(tool, "updateBrushOffset"),
-                                             tooltipText="Whenever the brush size changes, reset the distance to the brush blocks.")
+                                            ref=AttrRef(tool, "updateBrushOffset"),
+                                            tooltipText="Whenever the brush size changes, reset the distance to the brush blocks.")
 
-        col = Column((
-        Label("Brush Options"), alphaRow, autoChooseCheckBox, updateOffsetCheckBox, Button("OK", action=self.dismiss)))
+        col = Column((Label("Brush Options"), alphaRow, autoChooseCheckBox, updateOffsetCheckBox, Button("OK", action=self.dismiss)))
         self.add(col)
         self.shrink_wrap()
         return
-
 
 from clone import CloneTool
 
@@ -638,6 +778,17 @@ class BrushTool(CloneTool):
     naturalEarth = True
     erosionStrength = 1
     indiscriminate = False
+    chanceA = 0
+    chanceB = 0
+    chanceC = 0
+    chanceD = 0
+    replaceWith1 = 0
+    replaceWith2 = 0
+    replaceWith3 = 0
+    replaceWith4 = 0
+    erosionNoise = True
+
+
 
     @property
     def reticleOffset(self):
@@ -752,7 +903,7 @@ class BrushTool(CloneTool):
             F=config.config.get("Keys", "Flip").upper(),
             E=config.config.get("Keys", "Rotate").upper(),
             G=config.config.get("Keys", "Mirror").upper(),
-        )
+            )
 
     @property
     def worldTooltipText(self):
@@ -763,8 +914,7 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return _("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata],
-                                                           blockID, blockdata)
+                return _("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
 
             except Exception, e:
                 return repr(e)
@@ -776,8 +926,7 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return _("Click to replace {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata],
-                                                               blockID, blockdata)
+                return _("Click to replace {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
 
             except Exception, e:
                 return repr(e)
@@ -805,8 +954,8 @@ class BrushTool(CloneTool):
 
     def getBrushOptions(self):
         return dict(((key, getattr(self, key))
-                     for key
-                     in self.options))
+                       for key
+                       in self.options))
 
     draggedDirection = (0, 0, 0)
     centerx = centery = centerz = 0
@@ -952,8 +1101,7 @@ class BrushTool(CloneTool):
                 f.world = self
                 f.chunkPosition = (cx, cz)
 
-                mask = createBrushMask(brushSize, brushStyle, (0, 0, 0),
-                                       BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
+                mask = createBrushMask(brushSize, brushStyle, (0, 0, 0), BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
                 f.Blocks = numpy.zeros(mask.shape, dtype='uint8')
                 f.Data = numpy.zeros(mask.shape, dtype='uint8')
                 f.BlockLight = self.zerolight
@@ -994,10 +1142,9 @@ class BrushTool(CloneTool):
         self.setupPreview()
         self.showPanel()
 
-        # def cancel(self):
-
-    #        self.hidePanel()
-    #        super(BrushTool, self).cancel()
+#    def cancel(self):
+#        self.hidePanel()
+#        super(BrushTool, self).cancel()
 
     def showPanel(self):
         if self.panel:
@@ -1092,7 +1239,6 @@ class BrushTool(CloneTool):
 
     def option3(self):
         self.brushHollow = not self.brushHollow
-
 
 def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
     """

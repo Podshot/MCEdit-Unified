@@ -66,12 +66,13 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 import albow
-#-#
-albow.translate.setLangPath("./lang")
-import locale
-lang = locale.getdefaultlocale()[0]
-del locale
-albow.translate.buildTranslation(lang)
+# TODO: Language Detection
+# import locale
+# albow.translate.setLang(locale.getdefaultlocale()[0])
+# del locale
+
+albow.translate.buildTranslation(albow.translate.refreshLang())
+
 from albow.translate import _
 #-#
 from albow.dialogs import Dialog
@@ -98,10 +99,6 @@ import release
 import shutil
 import sys
 import traceback
-import Tkinter
-import ttk
-import tkMessageBox
-import tkSimpleDialog
 
 ESCAPE = '\033'
 
@@ -209,7 +206,7 @@ class FileOpener(albow.Widget):
         if keyname is config.config.get('Keys', 'Open'):
             self.promptOpenAndLoad()
         if keyname is config.config.get('Keys', 'Quit'):
-            self.mcedit.editor.confirm_quit()
+            self.mcedit.confirm_quit()
 
     def promptOpenAndLoad(self):
         try:
@@ -489,6 +486,8 @@ class OptionsPanel(Dialog):
     anchor = 'wh'
 
     def __init__(self, mcedit):
+        albow.translate.refreshLang(True)
+
         Dialog.__init__(self)
 
         self.mcedit = mcedit
@@ -551,7 +550,14 @@ class OptionsPanel(Dialog):
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
                                             ref=Settings.flyMode.propertyRef(),
-                                            tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
+                                            tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
+
+        langStringRow = mceutils.TextInputRow("Language String",
+                                            ref=Settings.langCode.propertyRef(),
+                                            tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
+        staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
+                                            ref=Settings.staticCommandsNudge.propertyRef(),
+                                            tooltipText="Change static coordinates in command blocks while nudging.")                                      
 
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
@@ -582,6 +588,8 @@ class OptionsPanel(Dialog):
                       swapAxesRow,
                       invertRow,
                       visibilityCheckRow,
+                      staticCommandsNudgeRow,
+                      langStringRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
 # Disabled Crash Reporting Option
@@ -644,6 +652,10 @@ class OptionsPanel(Dialog):
 
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
 
+    def dismiss(self, *args, **kwargs):
+        """Used to change the language."""
+        Dialog.dismiss(self, *args, **kwargs)
+        albow.translate.refreshLang(build=False)
 
 class MCEdit(GLViewport):
     #debug_resize = True

@@ -33,10 +33,7 @@ o13 When an error occurs, MCEdit can report the details of the error to its deve
 Error reporting can be enabled or disabled in the Options dialog.
 
 Enable error reporting?
-t13 En cas d'erreurs, MCEdit peut en rapporter les détails à l'auteur.
-Le rapport d'erreur contiendra les versions de votre système d'exploitation, de MCEdit,
-et d'OpenGL, ainsi que la marque et le modèle de votre microprocesseur. Aucune information
-personnelle ne sera collectée.
+t13 En cas d'erreurs, MCEdit peut en rapporter les détails à l'auteur. Le rapport d'erreur contiendra les versions de votre système d'exploitation, de MCEdit, et d'OpenGL, ainsi que la marque et le modèle de votre microprocesseur. Aucune information personnelle ne sera collectée.
 
 Le rapport d'erreur peut activé ou désactivé dans le menu Options.
 
@@ -49,8 +46,8 @@ o16 Create New World
 t16 Créer nouveau monde
 o17 Load World...
 t17 Charger monde...
-o18 Open a level...
-t18 Ouvrir niveau...
+o18 Open...
+t18 Ouvrir...
 o19 Keys
 t19 Clavier
 o20 Graphics
@@ -1082,5 +1079,5 @@ o505 Ignore
 t505 Ignorer
 o506  {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.
 t506  {} devrait être téléchargé par votre explorateur. Vous devrez cependant extraire le fichier pour utiliser la nouvelle version.
-o507 Quick-Load
+o507 Quick Load
 t507 Chargement rapide 
