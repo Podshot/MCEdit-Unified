@@ -4767,8 +4767,17 @@ blocks:
       5:
         name: Double Plant (Lower Half, Peony)
         tex: [16, 14]
-# Tall plant tops use block states for the top half, and are all on data:8
+# Tall plant tops use block states for the top half, and are all on data:8-11
       8:
+        name: Double Plant (Upper Half)
+        tex: [5, 3]
+      9:
+        name: Double Plant (Upper Half)
+        tex: [5, 3]
+      10:
+        name: Double Plant (Upper Half)
+        tex: [5, 3]
+      11:
         name: Double Plant (Upper Half)
         tex: [5, 3]
 
