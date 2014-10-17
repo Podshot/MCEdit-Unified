@@ -212,10 +212,7 @@ class BlockPicker(Dialog):
         else:
             self.matchingBlocks = blocks
 
-        if oldBlock in self.matchingBlocks:
-            self.selectedBlockIndex = self.matchingBlocks.index(oldBlock)
-        else:
-            self.selectedBlockIndex = 0
+        self.selectedBlockIndex = 0
 
         self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
         self.blockButton.blockInfo = self.blockInfo
