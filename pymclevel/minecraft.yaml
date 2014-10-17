@@ -3101,7 +3101,7 @@ blocks:
     name: Brewing Stand
     mapcolor: [189, 163, 82]
     tex: [13, 9]
-    type: BREWING_STAND
+    type: DECORATION_CROSS
     tex_extra:
       base: [12, 9]
     opacity: 0

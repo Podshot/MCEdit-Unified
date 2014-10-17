@@ -477,6 +477,14 @@ class ChunkCalculator(object):
             pymclevel.materials.alphaMaterials.AcaciaDoor,
             pymclevel.materials.alphaMaterials.JungleDoor,
             pymclevel.materials.alphaMaterials.IronTrapdoor,
+            pymclevel.materials.alphaMaterials.Button,
+            pymclevel.materials.alphaMaterials.WoodenButton,
+            pymclevel.materials.alphaMaterials.FenceGate,
+            pymclevel.materials.alphaMaterials.SpruceFenceGate,
+            pymclevel.materials.alphaMaterials.BirchFenceGate,
+            pymclevel.materials.alphaMaterials.JungleFenceGate,
+            pymclevel.materials.alphaMaterials.DarkOakFenceGate,
+            pymclevel.materials.alphaMaterials.AcaciaFenceGate
 
         ]
         for b in transparentMaterials:
