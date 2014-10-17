@@ -55,20 +55,9 @@ def alertException(func):
             alert("Canceled.")
         except pymclevel.infiniteworld.SessionLockLost as e:
             alert(e.message + _("\n\nYour changes cannot be saved."))
-
         except Exception, e:
             logging.exception("Exception:")
-            if ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["Report Error", "Okay"], default=1,
-                   cancel=0) == "Report Error":
-                try:
-                    import squash_python
-
-                    squash_python.get_client().recordException(*sys.exc_info())
-                except ImportError:
-                    pass
-                except Exception:
-                    logging.exception("Error while recording exception data:")
-
+            ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
     return _alertException
 
 
