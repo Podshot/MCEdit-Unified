@@ -15,9 +15,7 @@ from widget import Widget
 from theme import ThemeProperty, FontProperty
 from utils import brighten
 from numpy import fromstring
-#-#
 from translate import _
-#-#
 
 
 class TabPanel(Widget):

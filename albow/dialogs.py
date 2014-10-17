@@ -6,9 +6,8 @@ from widget import Widget
 from controls import Label, Button
 from layout import Row, Column
 from fields import TextField
-#-#
 from translate import _
-#-#
+
 class Modal(object):
     enter_response = True
     cancel_response = False

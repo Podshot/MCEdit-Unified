@@ -13,9 +13,7 @@ from albow.fields import TextField
 from albow.layout import Row, Column
 from albow.palette_view import PaletteView
 from albow.theme import ThemeProperty
-#-#
 from translate import _
-#-#
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
         Widget.__init__(self, **kwds)

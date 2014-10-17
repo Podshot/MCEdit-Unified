@@ -40,9 +40,7 @@ os.environ["YAML_ROOT"] = join(directories.dataDir, "pymclevel").encode(enc)
 from pygame import display
 
 from albow import request_new_filename, request_old_filename
-#-#
 from albow.translate import _
-#-#
 from pymclevel import saveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from pymclevel import items
 

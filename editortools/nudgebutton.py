@@ -2,9 +2,7 @@
 from numpy.core.umath import absolute
 from pygame import key
 from albow import Label
-#-#
 from albow.translate import _
-#-#
 from pymclevel.box import Vector
 import config
 from glbackground import GLBackground

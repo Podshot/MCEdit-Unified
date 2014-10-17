@@ -62,9 +62,7 @@ from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_tex
 from albow.controls import Label, SmallValueDisplay, ValueDisplay
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
-#-#
 from albow.translate import _
-#-#
 from pygame import display, event, key, KMOD_ALT, KMOD_CTRL, KMOD_LALT, KMOD_META, KMOD_RALT, KMOD_SHIFT, mouse, \
     MOUSEMOTION
 

@@ -4,9 +4,7 @@ import os
 import shutil
 import tempfile
 import albow
-#-#
 from albow.translate import _
-#-#
 from pymclevel import BoundingBox
 import numpy
 from albow.root import Cancel

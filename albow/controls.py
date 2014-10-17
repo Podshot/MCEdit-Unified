@@ -8,12 +8,7 @@ from widget import Widget, overridable_property
 from theme import ThemeProperty
 from utils import blit_in_rect, frame_rect
 import resource
-#-#
 from translate import _
-#-#
-
-#---------------------------------------------------------------------------
-
 
 class Control(object):
     highlighted = overridable_property('highlighted')
@@ -54,8 +49,6 @@ class Control(object):
         self._enabled = x
 
 
-#---------------------------------------------------------------------------
-
 
 class AttrRef(object):
     def __init__(self, obj, attr):
@@ -69,8 +62,6 @@ class AttrRef(object):
         setattr(self.obj, self.attr, x)
 
 
-#---------------------------------------------------------------------------
-
 
 class ItemRef(object):
     def __init__(self, obj, item):
@@ -83,8 +74,6 @@ class ItemRef(object):
     def set(self, x):
         self.obj[self.item] = x
 
-
-#---------------------------------------------------------------------------
 
 
 class Label(Widget):
@@ -199,8 +188,6 @@ class SmallLabel(Label):
     """Small text size. See theme.py"""
 
 
-#---------------------------------------------------------------------------
-
 
 class ButtonBase(Control):
     align = 'c'
@@ -226,8 +213,6 @@ class ButtonBase(Control):
                     self.call_handler('action')
 
 
-#---------------------------------------------------------------------------
-
 
 class Button(ButtonBase, Label):
     def __init__(self, text, action=None, enable=None, **kwds):
@@ -237,8 +222,6 @@ class Button(ButtonBase, Label):
             kwds['enable'] = enable
         Label.__init__(self, text, **kwds)
 
-
-#---------------------------------------------------------------------------
 
 
 class Image(Widget):
@@ -280,14 +263,10 @@ class Image(Widget):
 #        frame = self.get_margin_rect()
 #        surf.blit(self.image, frame)
 
-#---------------------------------------------------------------------------
-
 
 class ImageButton(ButtonBase, Image):
     pass
 
-
-#---------------------------------------------------------------------------
 
 
 class ValueDisplay(Control, Label):
@@ -326,8 +305,6 @@ class ValueButton(ButtonBase, ValueDisplay):
         return self.format_value(self.value)
 
 
-#---------------------------------------------------------------------------
-
 
 class CheckControl(Control):
     def mouse_down(self, e):
@@ -336,8 +313,6 @@ class CheckControl(Control):
     def get_highlighted(self):
         return self.value
 
-
-#---------------------------------------------------------------------------
 
 
 class CheckWidget(Widget):
@@ -365,14 +340,10 @@ class CheckWidget(Widget):
                 draw.lines(surf, fg, False, [p1, p2, p3])
 
 
-#---------------------------------------------------------------------------
-
 
 class CheckBox(CheckControl, CheckWidget):
     pass
 
-
-#---------------------------------------------------------------------------
 
 
 class RadioControl(Control):
@@ -384,8 +355,6 @@ class RadioControl(Control):
     def mouse_down(self, e):
         self.value = self.setting
 
-
-#---------------------------------------------------------------------------
 
 
 class RadioButton(RadioControl, CheckWidget):

@@ -15,9 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert
-#-#
 from albow.translate import _
-#-#
 import config
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions

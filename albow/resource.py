@@ -4,9 +4,7 @@ import os
 import sys
 import pygame
 from pygame.locals import RLEACCEL
-#-#
 from translate import langPath
-#-#
 # default_font_name = "Vera.ttf"
 optimize_images = True
 run_length_encode = False

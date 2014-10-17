@@ -7,9 +7,7 @@ from pygame import Rect
 from layout import Column
 from palette_view import PaletteView
 from utils import blit_in_rect
-#-#
 from translate import _
-#-#
 class TableView(Column):
     columns = []
     header_font = None

@@ -17,9 +17,7 @@ import os
 import traceback
 from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, \
     TextFieldWrapped, TextField
-#-#
 from albow.translate import _
-#-#
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel

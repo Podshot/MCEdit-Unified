@@ -21,9 +21,7 @@ from collections import defaultdict
 import numpy
 import pygame
 from albow import Row, Label, Button, AttrRef, Column, ask
-#-#
 from albow.translate import _
-#-#
 import config
 from depths import DepthOffset
 from editortools.editortool import EditorTool

@@ -16,9 +16,7 @@ from OpenGL import GL
 import numpy
 import pygame
 from albow import Label, Button, Column
-#-#
 from albow.translate import _
-#-#
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton

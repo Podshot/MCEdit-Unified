@@ -74,7 +74,6 @@ import albow
 albow.translate.buildTranslation(albow.translate.refreshLang())
 
 from albow.translate import _
-#-#
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget

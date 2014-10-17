@@ -18,9 +18,7 @@ from OpenGL import GL
 import numpy
 import pygame
 from albow import Widget, IntField, Column, Row, Label, Button, CheckBox, AttrRef, FloatField, alert
-#-#
 from albow.translate import _
-#-#
 from depths import DepthOffset
 from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton

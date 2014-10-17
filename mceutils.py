@@ -20,9 +20,7 @@ Exception catching, some basic box drawing, texture pack loading, oddball UI ele
 # Modified by D.C.-G. for translation purpose
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
-#-#
 from albow.translate import _
-#-#
 import config
 from cStringIO import StringIO
 from datetime import datetime

@@ -9,9 +9,7 @@ from root import get_root, get_focus
 from dialogs import Dialog
 from theme import ThemeProperty
 from pygame import Rect, draw
-#-#
 from translate import _
-#-#
 #---------------------------------------------------------------------------
 
 

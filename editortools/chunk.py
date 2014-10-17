@@ -18,9 +18,7 @@ import numpy
 from numpy import newaxis
 
 from albow import Label, ValueDisplay, AttrRef, Button, Column, ask, Row, alert, Widget, Menu
-#-#
 from albow.translate import _
-#-#
 from editortools.editortool import EditorTool
 from glbackground import Panel
 from glutils import DisplayList, gl
