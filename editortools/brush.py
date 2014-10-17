@@ -300,15 +300,17 @@ class Modes:
 
             doomedBlock = op.level.blockAt(*point)
             doomedBlockData = op.level.blockDataAt(*point)
+            print doomedBlock
+            print doomedBlockData
             checkData = (doomedBlock not in (8, 9, 10, 11))
             indiscriminate = op.options['indiscriminate']
 
-            if doomedBlock == op.blockInfo.ID:
-                return
             if indiscriminate:
                 checkData = False
                 if doomedBlock == 2:  # grass
                     doomedBlock = 3  # dirt
+            if doomedBlock == op.blockInfo.ID and (doomedBlockData == op.blockInfo.blockData or checkData == False):
+                return
 
             x, y, z = point
             saveUndoChunk(x // 16, z // 16)
@@ -331,6 +333,7 @@ class Modes:
                         if b == doomedBlock:
                             if checkData:
                                 if op.level.blockDataAt(nx, ny, nz) != doomedBlockData:
+                                    print "Incorrect Data"
                                     continue
 
                             saveUndoChunk(nx // 16, nz // 16)
@@ -744,6 +747,7 @@ class BrushOperation(Operation):
     brushModeClasses = [
         Modes.Fill,
         Modes.VariedFill,
+        Modes.FloodFill,
         Modes.Replace,
 		Modes.Vary,
         Modes.Erode,
