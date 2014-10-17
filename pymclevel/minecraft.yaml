@@ -2177,7 +2177,7 @@ blocks:
     idStr: stone_button
     name: Stone Button
     mapcolor: [120, 120, 120]
-    tex: [1, 0]
+    tex: [19, 8]
     type: BUTTON
     opacity: 0
     data:
@@ -3595,7 +3595,7 @@ blocks:
     idStr: wooden_button
     name: Wooden Button
     mapcolor: [200, 100, 100]
-    tex: [4, 0]
+    tex: [19, 7]
     type: BUTTON
     opacity: 0
     data:
