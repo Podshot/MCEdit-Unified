@@ -141,36 +141,13 @@ Stair.roll[Stair.South] = Stair.TopSouth
 Stair.roll[Stair.TopSouth] = Stair.TopNorth
 Stair.roll[Stair.TopNorth] = Stair.North
 
+# data value 0-8 bottom and 9-15 Top
 class HalfSlab:
-    blocktypes = [alphaMaterials.StoneSlab.ID]
-
-    StoneSlab = 0
-    SandstoneSlab = 1
-    WoodenSlab = 2
-    CobblestoneSlab = 3
-    BrickSlab = 4
-    StoneBrickSlab = 5
-    TopStoneSlab = 8
-    TopSandstoneSlab = 9
-    TopWoodenSlab = 10
-    TopCobblestoneSlab = 11
-    TopBrickSlab = 12
-    TopStoneBrickSlab = 13
-
+    blocktypes = [b.ID for b in alphaMaterials.AllSlabs]
 
 HalfSlab.flipVertical = arange(16, dtype='uint8')
-HalfSlab.flipVertical[HalfSlab.StoneSlab] = HalfSlab.TopStoneSlab
-HalfSlab.flipVertical[HalfSlab.SandstoneSlab] = HalfSlab.TopSandstoneSlab
-HalfSlab.flipVertical[HalfSlab.WoodenSlab] = HalfSlab.TopWoodenSlab
-HalfSlab.flipVertical[HalfSlab.CobblestoneSlab] = HalfSlab.TopCobblestoneSlab
-HalfSlab.flipVertical[HalfSlab.BrickSlab] = HalfSlab.TopBrickSlab
-HalfSlab.flipVertical[HalfSlab.StoneBrickSlab] = HalfSlab.TopStoneBrickSlab
-HalfSlab.flipVertical[HalfSlab.TopStoneSlab] = HalfSlab.StoneSlab
-HalfSlab.flipVertical[HalfSlab.TopSandstoneSlab] = HalfSlab.SandstoneSlab
-HalfSlab.flipVertical[HalfSlab.TopWoodenSlab] = HalfSlab.WoodenSlab
-HalfSlab.flipVertical[HalfSlab.TopCobblestoneSlab] = HalfSlab.CobblestoneSlab
-HalfSlab.flipVertical[HalfSlab.TopBrickSlab] = HalfSlab.BrickSlab
-HalfSlab.flipVertical[HalfSlab.TopStoneBrickSlab] = HalfSlab.StoneBrickSlab
+for i in range(8):
+    HalfSlab.flipVertical[i] = i + 8
 rotationClasses.append(HalfSlab)
 
 
@@ -268,6 +245,10 @@ def applyBit(apply):
                       class_or_array.flipNorthSouth,
                       class_or_array.rotateLeft):
                 apply(a)
+            if hasattr(class_or_array, "flipVertical"):
+                apply(class_or_array.flipVertical)
+            if hasattr(class_or_array, "roll"):
+                apply(class_or_array.roll)
         else:
             array = class_or_array
             apply(array)
