@@ -33,7 +33,7 @@ from editortools.tooloptions import ToolOptions
 from glbackground import Panel
 from glutils import gl
 import mcplatform
-from pymclevel import block_fill, BoundingBox
+from pymclevel import block_fill, BoundingBox, materials
 import pymclevel
 from pymclevel.level import extractHeights
 from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, alertException, drawTerrainCuttingWire
@@ -102,23 +102,176 @@ class BrushMode(object):
 
 class Modes:
     class Fill(BrushMode):
+
         name = "Fill"
+        options =['airFill']
 
         def createOptions(self, panel, tool):
+
+            airFill = CheckBoxLabel("Fill Air", ref=AttrRef(tool, 'airFill'))
+
             col = [
                 panel.modeStyleGrid,
                 panel.hollowRow,
                 panel.noiseInput,
                 panel.brushSizeRows,
                 panel.blockButton,
+                airFill,
             ]
             return col
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
             brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
 
+            blocks = chunk.Blocks[slices]
+            data = chunk.Data[slices]
+
+            airFill = op.options['airFill']
+
+            if airFill == False:
+                airtable = numpy.zeros((materials.id_limit, 16), dtype='bool')
+                airtable[0] = True
+                replaceMaskAir = airtable[blocks, data]
+                brushMask = ~replaceMaskAir
+
+
             chunk.Blocks[slices][brushMask] = op.blockInfo.ID
             chunk.Data[slices][brushMask] = op.blockInfo.blockData
+
+    class VariedFill(BrushMode):
+
+        name = "Varied Fill"
+        options =['airFill','chanceA','chanceB','chanceC','chanceD','replaceWith1','replaceWith2','replaceWith3','replaceWith4']
+
+        def createOptions(self, panel, tool):
+
+            airFill = CheckBoxLabel("Fill Air", ref=AttrRef(tool, 'airFill'))
+
+            replaceWith1 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith1'),
+            recentBlocks=tool.recentReplaceBlocks)
+            
+            replaceWith2 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith2'),
+            recentBlocks=tool.recentReplaceBlocks)
+
+            replaceWith3 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith3'),
+            recentBlocks=tool.recentReplaceBlocks)
+
+            replaceWith4 = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith4'),
+            recentBlocks=tool.recentReplaceBlocks)
+
+            seperator = Label("---")
+            
+            chanceA = IntInputRow("Weight 1: ", ref=AttrRef(tool, 'chanceA'), min=0, width=50)
+            chanceB = IntInputRow("Weight 2: ", ref=AttrRef(tool, 'chanceB'), min=0, width=50)
+            chanceC = IntInputRow("Weight 3: ", ref=AttrRef(tool, 'chanceC'), min=0, width=50)
+            chanceD = IntInputRow("Weight 4: ", ref=AttrRef(tool, 'chanceD'), min=0, width=50)
+
+            col = [
+                panel.modeStyleGrid,
+                panel.hollowRow,
+                panel.noiseInput,
+                panel.brushSizeRows,
+                replaceWith1,
+                replaceWith2,
+                replaceWith3,
+                replaceWith4,
+                chanceA, 
+                chanceB,
+                chanceC, 
+                chanceD,
+                airFill,
+            ]
+            return col
+
+        def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
+            brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
+
+            blocks = chunk.Blocks[slices]
+            data = chunk.Data[slices]
+
+            airFill = op.options['airFill']
+            replaceWith1 = op.options['replaceWith1']
+            chanceA = op.options['chanceA']
+            replaceWith2 = op.options['replaceWith2']
+            chanceB = op.options['chanceB']
+            replaceWith3 = op.options['replaceWith3']
+            chanceC = op.options['chanceC']
+            replaceWith4 = op.options['replaceWith4']
+            chanceD = op.options['chanceD']
+
+            totalChance = chanceA + chanceB + chanceC + chanceD
+
+            if totalChance == 0:
+                print "Total Chance value can't be 0"
+                return
+
+            if airFill == False:
+                airtable = numpy.zeros((materials.id_limit, 16), dtype='bool')
+                airtable[0] = True
+                replaceMaskAir = airtable[blocks, data]
+                brushMask = ~replaceMaskAir
+
+            brushMaskOption1 = numpy.copy(brushMask)
+            brushMaskOption2 = numpy.copy(brushMask)
+            brushMaskOption3 = numpy.copy(brushMask)
+            brushMaskOption4 = numpy.copy(brushMask)
+
+            x=-1
+            y=-1
+            z=-1
+
+            for array_x in brushMask:
+                x += 1
+                y = -1
+                for array_y in brushMask[x]:
+                    y += 1
+                    z=-1
+                    for array_z in brushMask[x][y]:
+                        z += 1
+                        if brushMask[x][y][z]:
+                            randomChance = random.randint(1, totalChance)
+                            if chanceA >= randomChance:
+                                brushMaskOption1[x][y][z] = True
+                                brushMaskOption2[x][y][z] = False
+                                brushMaskOption3[x][y][z] = False
+                                brushMaskOption4[x][y][z] = False
+                                continue
+                            if chanceA + chanceB >= randomChance:
+                                brushMaskOption1[x][y][z] = False
+                                brushMaskOption2[x][y][z] = True
+                                brushMaskOption3[x][y][z] = False
+                                brushMaskOption4[x][y][z] = False
+                                continue
+                            if chanceA + chanceB + chanceC >= randomChance:
+                                brushMaskOption1[x][y][z] = False
+                                brushMaskOption2[x][y][z] = False
+                                brushMaskOption3[x][y][z] = True
+                                brushMaskOption4[x][y][z] = False
+                                continue
+                            if chanceA + chanceB + chanceC + chanceD >= randomChance:
+                                brushMaskOption1[x][y][z] = False
+                                brushMaskOption2[x][y][z] = False
+                                brushMaskOption3[x][y][z] = False
+                                brushMaskOption4[x][y][z] = True
+                                continue
+
+            blocks[brushMaskOption1] = replaceWith1.ID
+            data[brushMaskOption1] = replaceWith1.blockData
+            blocks[brushMaskOption2] = replaceWith2.ID
+            data[brushMaskOption2] = replaceWith2.blockData
+            blocks[brushMaskOption3] = replaceWith3.ID
+            data[brushMaskOption3] = replaceWith3.blockData
+            blocks[brushMaskOption4] = replaceWith4.ID
+            data[brushMaskOption4] = replaceWith4.blockData
+
 
     class FloodFill(BrushMode):
         name = "Flood Fill"
@@ -206,7 +359,15 @@ class Modes:
         name = "Replace"
 
         def createOptions(self, panel, tool):
-            return Modes.Fill.createOptions(self, panel, tool) + [panel.replaceBlockButton]
+            col = [
+                panel.modeStyleGrid,
+                panel.hollowRow,
+                panel.noiseInput,
+                panel.brushSizeRows,
+                panel.blockButton,
+                panel.replaceBlockButton,
+            ]
+            return col
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
 
@@ -228,8 +389,6 @@ class Modes:
             replaceTable = block_fill.blockReplaceTable(blocksToReplace)
             replaceMask = replaceTable[blocks, data]
             brushMask &= replaceMask
-
-            print replaceWith.ID
 
             blocks[brushMask] = replaceWith.ID
             data[brushMask] = replaceWith.blockData
@@ -567,7 +726,7 @@ class BrushOperation(Operation):
     # brushModeNames = ["Fill", "Flood Fill", "Replace", "Erode", "Topsoil", "Paste"]  # "Smooth", "Flatten", "Raise", "Lower", "Build", "Erode", "Evert"]
     brushModeClasses = [
         Modes.Fill,
-        Modes.FloodFill,
+        Modes.VariedFill,
         Modes.Replace,
 		Modes.Vary,
         Modes.Erode,
@@ -787,6 +946,7 @@ class BrushTool(CloneTool):
     replaceWith3 = 0
     replaceWith4 = 0
     erosionNoise = True
+    airFill = True
 
 
 
