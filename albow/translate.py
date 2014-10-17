@@ -49,6 +49,7 @@ You need, a least, these three function in your program:
 
 import os
 import re
+import json
 import directories
 
 enc = "utf8"
@@ -109,7 +110,7 @@ def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     return data
 #-------------------------------------------------------------------------------
 def verifyLangCode(lang):
-    fName = os.path.join(langPath, lang + ".trn")
+    fName = os.path.join(langPath, lang + ".json")
     if (os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK)) or lang == "en_US":
         return True
     else:
@@ -121,32 +122,10 @@ def buildTranslation(lang,suppressAlert=False):
     Errors encountered during the process are silently ignored.
     Returns string_cache."""
     global string_cache
-    fName = os.path.join(langPath, lang + ".trn")
+    fName = os.path.join(langPath, lang + ".json")
     if verifyLangCode(lang) and not lang == "en_US":
-        data = open(fName, "rb").read() + "\x00"
-        trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
-        grps = re.finditer(trnPattern, data)
-        oStart = -1
-        oEnd = -1
-        tStart = -1
-        tEnd = -1
-        org = None
-        for grp in grps:
-            g = grp.group()
-            if g.startswith("o"):
-                oStart = grp.end()
-                tEnd = grp.start() -1
-            elif g.startswith("t"):
-                oEnd = grp.start() -1
-                tStart = grp.end()
-            if oStart > -1 and oEnd > -1 and tStart > tEnd:
-                org = data[oStart:oEnd]
-            if tStart > -1 and (tEnd > -1):
-                if tEnd > tStart:
-                    string_cache[org] = correctEncoding(data[tStart:tEnd])
-                    tStart = -1
-                    tEnd = -1
-        string_cache[org] = correctEncoding(data[tStart:tEnd -1])
+        with open(fName) as jsonString:
+            string_cache = json.load(jsonString)
     return string_cache
 
 #-------------------------------------------------------------------------------
