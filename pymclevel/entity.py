@@ -94,6 +94,9 @@ class TileEntity(object):
 
     @classmethod
     def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, first):
+        #You'll need to use this function twice
+        #The first time with first equals to True
+        #The second time with first equals to False
         eTag = deepcopy(tileEntity)
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])
@@ -164,10 +167,10 @@ class TileEntity(object):
                     else:
                         if char != 'x' and char != 'y' and char != 'z':
                             new_selector += char
-                            if char >= 'a' and char <= 'z':
-                                letter = True
-                            else:
+                            if char == '[' or char == ',':
                                 letter = False
+                            else:
+                                letter = True
                         elif char == 'x' and letter == False:
                             new_selector += selector[char_num:char_num + 2]
                             char_x = char_num + 2
