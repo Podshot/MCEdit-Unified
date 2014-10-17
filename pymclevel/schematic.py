@@ -291,7 +291,7 @@ class MCSchematic(EntityLevel):
 
         log.info(u"N/S Roll: Relocating entities...")
         for i, entity in enumerate(self.Entities):
-            newX = self.Width - entity["Pos"][1].value - 1
+            newX = self.Width - entity["Pos"][1].value
             newY = entity["Pos"][0].value
             entity["Pos"][0].value = newX
             entity["Pos"][1].value = newY
