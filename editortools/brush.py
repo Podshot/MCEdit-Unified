@@ -727,6 +727,7 @@ class BrushOperation(Operation):
     brushModeClasses = [
         Modes.Fill,
         Modes.VariedFill,
+        Modes.FloodFill,
         Modes.Replace,
 		Modes.Vary,
         Modes.Erode,
