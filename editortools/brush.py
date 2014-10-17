@@ -123,6 +123,8 @@ class Modes:
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
             brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
 
+
+
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
@@ -132,7 +134,7 @@ class Modes:
                 airtable = numpy.zeros((materials.id_limit, 16), dtype='bool')
                 airtable[0] = True
                 replaceMaskAir = airtable[blocks, data]
-                brushMask = ~replaceMaskAir
+                brushMask &= ~replaceMaskAir
 
 
             chunk.Blocks[slices][brushMask] = op.blockInfo.ID
@@ -217,7 +219,7 @@ class Modes:
                 airtable = numpy.zeros((materials.id_limit, 16), dtype='bool')
                 airtable[0] = True
                 replaceMaskAir = airtable[blocks, data]
-                brushMask = ~replaceMaskAir
+                brushMask &= ~replaceMaskAir
 
             brushMaskOption1 = numpy.copy(brushMask)
             brushMaskOption2 = numpy.copy(brushMask)
