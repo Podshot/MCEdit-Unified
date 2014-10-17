@@ -558,8 +558,24 @@ class Modes:
                 return
 
             blocks = erosionArea.Blocks
+            data = erosionArea.Data
+            print data
+            print blocks
             bins = numpy.bincount(blocks.ravel())
             fillBlockID = bins.argmax()
+            xcount = -1
+
+            for x in blocks:
+                xcount += 1
+                ycount = -1
+                for y in blocks[xcount]:
+                    ycount += 1
+                    zcount = -1
+                    for z in blocks[xcount][ycount]:
+                        zcount += 1
+                        if blocks[xcount][ycount][zcount] == fillBlockID:
+                            fillBlockData = data[xcount][ycount][zcount]
+
 
             def getNeighbors(solidBlocks):
                 neighbors = numpy.zeros(solidBlocks.shape, dtype='uint8')
@@ -577,7 +593,7 @@ class Modes:
 
                 brushMask = createBrushMask(op.brushSize, op.brushStyle)
                 erodeBlocks = neighbors < 5
-                if op.options['naturalEarth']:
+                if op.options['erosionNoise']:
                     erodeBlocks &= (numpy.random.random(erodeBlocks.shape) > 0.3)
                 erodeBlocks[1:-1, 1:-1, 1:-1] &= brushMask
                 blocks[erodeBlocks] = 0
@@ -589,6 +605,7 @@ class Modes:
                 fillBlocks &= ~solidBlocks
                 fillBlocks[1:-1, 1:-1, 1:-1] &= brushMask
                 blocks[fillBlocks] = fillBlockID
+                data[fillBlocks] = fillBlockData
 
             op.level.copyBlocksFrom(erosionArea, erosionArea.bounds.expand(-1), brushBox.origin + (1, 1, 1))
 
