@@ -393,6 +393,8 @@ class Entity(object):
             eTag["TileY"].value += copyOffset[1]
             eTag["TileZ"].value += copyOffset[2]
 
+        if "Riding" in eTag:
+            eTag["Riding"] = copyWithOffset(cls, eTag["Riding"], copyOffset)
         return eTag
 
 class TileTick(object):
