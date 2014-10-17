@@ -484,7 +484,8 @@ class ChunkCalculator(object):
             pymclevel.materials.alphaMaterials.BirchFenceGate,
             pymclevel.materials.alphaMaterials.JungleFenceGate,
             pymclevel.materials.alphaMaterials.DarkOakFenceGate,
-            pymclevel.materials.alphaMaterials.AcaciaFenceGate
+            pymclevel.materials.alphaMaterials.AcaciaFenceGate,
+            pymclevel.materials.alphaMaterials.Sign
 
         ]
         for b in transparentMaterials:
