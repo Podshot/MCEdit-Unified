@@ -1903,7 +1903,7 @@ blocks:
     idStr: standing_sign
     name: Standing Sign
     mapcolor: [111, 91, 54]
-    tex: [4, 0]
+    tex: [20, 5]
     type: SIGNPOST
     opacity: 0
     data:
