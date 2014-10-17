@@ -17,7 +17,7 @@
 	"No": "Non",
 	"Create New World": "Créer nouveau monde",
 	"Load World...": "Charger monde...",
-	"Open a level...": "Ouvrir niveau...",
+	"Open...": "Ouvrir...",
 	"Keys": "Clavier",
 	"Graphics": "Graphismes",
 	"Options": "Options",
@@ -497,5 +497,5 @@
 	"View": "Voir",
 	"Ignore": "Ignorer",
 	" {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.": " {} devrait être téléchargé par votre explorateur. Vous devrez cependant extraire le fichier pour utiliser la nouvelle version.",
-	"Quick-Load": "Chargement rapide"
+	"Quick Load": "Chargement rapide"
 }
