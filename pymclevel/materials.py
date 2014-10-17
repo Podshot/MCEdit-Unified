@@ -106,6 +106,10 @@ class MCMaterials(object):
     def AllStairs(self):
         return [b for b in self.allBlocks if "Stairs" in b.name]
 
+    @property
+    def AllSlabs(self):
+        return [b for b in self.allBlocks if "Slab" in b.name]
+
     def get(self, key, default=None):
         try:
             return self[key]

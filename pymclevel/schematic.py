@@ -291,7 +291,7 @@ class MCSchematic(EntityLevel):
 
         log.info(u"N/S Roll: Relocating entities...")
         for i, entity in enumerate(self.Entities):
-            newX = self.Width - entity["Pos"][1].value - 1
+            newX = self.Width - entity["Pos"][1].value
             newY = entity["Pos"][0].value
             entity["Pos"][0].value = newX
             entity["Pos"][1].value = newY
@@ -308,11 +308,11 @@ class MCSchematic(EntityLevel):
             entity["Rotation"][1].value = newY
 
             if entity["id"].value in ("Painting", "ItemFrame"):
-                if entity["Facing"].value in (0,2):
-                    newX = self.Width - entity["TileY"].value - 1
-                    newY = entity["TileX"].value
-                    entity["TileX"].value = newX
-                    entity["TileY"].value = newY
+                newX = self.Width - entity["TileY"].value - 1
+                newY = entity["TileX"].value
+                entity["TileX"].value = newX
+                entity["TileY"].value = newY
+
         for tileEntity in self.TileEntities:
             newX = self.Width - tileEntity["y"].value - 1
             newY = tileEntity["x"].value
