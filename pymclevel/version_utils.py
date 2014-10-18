@@ -12,7 +12,7 @@ def getPlayerNameFromUUID(uuid):
     try:
         if not os.path.exists(userCachePath):
             usercache = {}
-            print "Usercache doesn't exist, no caching"
+            print "Usercache doesn't exist, will not cache"
         else:
             f = open(userCachePath,"r+")
             usercache = json.loads(f.read())
@@ -23,7 +23,7 @@ def getPlayerNameFromUUID(uuid):
 
         if refreshUUID:
             try:
-                print "Loading file from network"
+                print "Loading {} from network".format(uuid)
                 playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
                 playerJSON = json.loads(playerJSONResponse)
                 username = playerJSON[0]
@@ -31,8 +31,6 @@ def getPlayerNameFromUUID(uuid):
             except:
                 print "A network error occured"
                 return uuid
-            else:
-                print "Loaded from network."
 
         if os.path.exists(userCachePath):
             f.seek(0)
