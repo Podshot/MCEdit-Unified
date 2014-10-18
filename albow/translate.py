@@ -112,6 +112,8 @@ def refreshLang(self=None,suppressAlert=False,build=True):
 #-------------------------------------------------------------------------------
 def restart(mcedit):
     import config
+    import mcplatform
+    from pygame import display
     from leveleditor import Settings
     if sys.platform == "win32" and Settings.setWindowPlacement.get():
         (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
