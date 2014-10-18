@@ -162,13 +162,9 @@ class TileEntity(object):
                         pos = Entity.pos(mob)
                         x, y, z = [str(part) for part in pos]
                         x, y, z = coords(x, y, z, moveSpawnerPos)
-                        print "Here"
-                        print "Here"
-                        print "Here"
-                        print mob
-                        mob['Temp1'] = x
-                        mob['Temp2'] = y
-                        mob['Temp3'] = z
+                        mob['Temp1'] = nbt.TAG_String(x)
+                        mob['Temp2'] = nbt.TAG_String(y)
+                        mob['Temp3'] = nbt.TAG_String(z)
                     elif 'Temp1' in mob and 'Temp2' in mob and 'Temp3' in mob:
                         x = mob['Temp1']
                         y = mob['Temp2']
