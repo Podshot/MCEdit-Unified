@@ -48,6 +48,7 @@ You need, a least, these three function in your program:
 """
 
 import os
+import sys
 import re
 import json
 import directories
@@ -74,30 +75,74 @@ def _(string, doNotTranslate=False):
     return string_cache.get(string, string.replace("\n", "\n\n"))
 
 #-------------------------------------------------------------------------------
-def refreshLang(suppressAlert=False,build=True):
+def refreshLang(self=None,suppressAlert=False,build=True):
     """Refreshes and returns the current language string"""
     global oldlang
     import config
+    import leveleditor
     from leveleditor import Settings
 
     try:
+        cancel = False
         lang = Settings.langCode.get() #.langCode
         isRealLang = verifyLangCode(lang)
         if build:
             buildTranslation(lang)
         if not oldlang == lang and not suppressAlert and isRealLang:
             import albow
-            albow.alert("You must restart MCEdit to see language changes")
+            if leveleditor.LevelEditor(self).unsavedEdits:
+                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Cancel"])
+            else:
+                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Cancel"])
+            if result == "Save and Restart":
+                editor.saveFile()
+                restart(self)
+            elif result == "Restart":
+                restart(self)
+            else:
+                isRealLang = False
+                cancel = True
         elif not suppressAlert and not isRealLang:
             import albow
             albow.alert("{} is not a valid language".format(lang))
         if not isRealLang:
-            Settings.langCode.set("en_US")
-        oldlang = lang
-        return lang
+            Settings.langCode.set(oldlang)
+        else:
+            oldlang = lang
+        if cancel == True:
+            return ""
+        else:
+            return lang
     except Exception as inst:
         print inst
         return ""
+        
+#-------------------------------------------------------------------------------
+def restart(mcedit):
+    import config
+    import mcplatform
+    from pygame import display
+    from leveleditor import Settings
+    if sys.platform == "win32" and Settings.setWindowPlacement.get():
+        (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
+            display.get_wm_info()['window'])
+        X, Y, r, b = rect
+        #w = r-X
+        #h = b-Y
+        if (showCmd == mcplatform.win32con.SW_MINIMIZE or
+                    showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
+            showCmd = mcplatform.win32con.SW_SHOWNORMAL
+
+        Settings.windowX.set(X)
+        Settings.windowY.set(Y)
+        Settings.windowShowCmd.set(showCmd)
+
+    config.saveConfig()
+    mcedit.editor.renderer.discardAllChunks()
+    mcedit.editor.deleteAllCopiedSchematics()
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
+    
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""
