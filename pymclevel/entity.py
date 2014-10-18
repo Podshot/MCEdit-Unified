@@ -111,30 +111,30 @@ class TileEntity(object):
         def coordX(x, argument):
             if first == True:
                 x = str(num(x)) + '!' + str(num(x) + copyOffset[0])
-            elif argument == True:
+            elif argument == True and x.find("!") >= 0:
                 x = x[x.index("!") + 1:]
                 x = str(num(x) + copyOffset[0])
-            else:
+            elif argument == False and x.find("!") >= 0:
                 x = x[:x.index("!")]    
             return x
                     
         def coordY(y, argument):
             if first == True:
                 y = str(num(y)) + '!' + str(num(y) + copyOffset[1]) 
-            elif argument == True:
+            elif argument == True and y.find("!") >= 0:
                 y = y[y.index("!") + 1:]
                 y = str(num(y) + copyOffset[1])
-            else:
+            elif argument == False and y.find("!") >= 0:
                 y = y[:y.index("!")]    
             return y
                     
         def coordZ(z, argument):
             if first == True:
                 z = str(num(z)) + '!' + str(num(z) + copyOffset[2])   
-            elif argument == True:
+            elif argument == True and z.find("!") >= 0:
                 z = z[z.index("!") + 1:]
                 z = str(num(z) + copyOffset[2])
-            else:
+            elif argument == False and z.find("!") >= 0:
                 z = z[:z.index("!")]    
             return z       
                         
