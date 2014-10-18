@@ -1085,28 +1085,29 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         assert self.version == self.VERSION_ANVIL, "Pre-Anvil world formats are not supported (for now)"
 
-        if os.path.exists(self.worldFolder.getFolderPath("players")) and os.listdir(
-                self.worldFolder.getFolderPath("players")) != []:
-            self.playersFolder = self.worldFolder.getFolderPath("players")
-            self.oldPlayerFolderFormat = True
-        if os.path.exists(self.worldFolder.getFolderPath("playerdata")):
-            self.playersFolder = self.worldFolder.getFolderPath("playerdata")
-            self.oldPlayerFolderFormat = False
-        self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
-        if "Player" in self.root_tag["Data"]:
-            self.players.append("Player")
+        if readonly == False:
+            if os.path.exists(self.worldFolder.getFolderPath("players")) and os.listdir(
+                    self.worldFolder.getFolderPath("players")) != []:
+                self.playersFolder = self.worldFolder.getFolderPath("players")
+                self.oldPlayerFolderFormat = True
+            if os.path.exists(self.worldFolder.getFolderPath("playerdata")):
+                self.playersFolder = self.worldFolder.getFolderPath("playerdata")
+                self.oldPlayerFolderFormat = False
+            self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
+            if "Player" in self.root_tag["Data"]:
+                self.players.append("Player")
 
         
-        if os.path.exists(self.worldFolder.getFolderPath("data")):
-            if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
-                self._scoreboard = scoreboard.Scoreboard(self, False)
+            if os.path.exists(self.worldFolder.getFolderPath("data")):
+                if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
+                    self._scoreboard = scoreboard.Scoreboard(self, False)
+                else:
+                    self._scoreboard = scoreboard.Scoreboard(self, True)
             else:
-                self._scoreboard = scoreboard.Scoreboard(self, True)
-        else:
-            self._scoreboard = scoreboard.Scoreboard(self, True)
+                 self._scoreboard = scoreboard.Scoreboard(self, True)
         
 
-        self.preloadDimensions()
+            self.preloadDimensions()
 
     # --- Load, save, create ---
 
