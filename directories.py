@@ -179,8 +179,13 @@ def getSelectedProfile():
 def getAllFilters(filters_dir):
     return glob.glob(filters_dir+"/*.py")
 
+# Create pymclevel folder as needed    
+if not os.path.exists(self.getCacheDir()):
+    os.makedirs(self.getCacheDir())
+
+# set userCachePath
 userCachePath = os.path.join(getCacheDir(),'usercache.json')
-# Make sure it has been created
+# Make sure it exists
 try:
     if not os.path.exists(userCachePath):
         f = open(userCachePath,'w')
@@ -190,6 +195,3 @@ except:
     print "Unable to make usercache.json at {}".format(userCachePath)
 
 minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")
-
-if not os.path.exists(self.getCacheDir()):
-    os.makedirs(self.getCacheDir())
