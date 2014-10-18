@@ -485,7 +485,7 @@ class OptionsPanel(Dialog):
     anchor = 'wh'
 
     def __init__(self, mcedit):
-        albow.translate.refreshLang(True)
+        albow.translate.refreshLang(suppressAlert=True)
 
         Dialog.__init__(self)
 
@@ -554,6 +554,7 @@ class OptionsPanel(Dialog):
         langStringRow = mceutils.TextInputRow("Language String",
                                             ref=Settings.langCode.propertyRef(),
                                             tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
+        
         staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
                                             ref=Settings.staticCommandsNudge.propertyRef(),
                                             tooltipText="Change static coordinates in command blocks while nudging.")                                      
@@ -654,7 +655,7 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         Dialog.dismiss(self, *args, **kwargs)
-        albow.translate.refreshLang(build=False)
+        albow.translate.refreshLang(self.mcedit, build=False)
 
 class MCEdit(GLViewport):
     #debug_resize = True
