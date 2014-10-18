@@ -4,6 +4,9 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/scripts.js"></script>
+
+	<script src="js/marked.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/stylesheet.css">
@@ -13,8 +16,7 @@
 			var releaseList = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
 			releaseData.sort(compareVersionObject);
 			for (var i = 0; i < releaseData.length; i++) {
-				var note = releaseData[i].body;
-				note = note.replace(/\n/g,'<br>').replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a> ').replace(/\\([-+*])/g,'$1');
+				var note = marked(releaseData[i].body);
 				var version = releaseData[i].tag_name;
 				var title = releaseData[i].name
 				if (releaseData[i].prerelease) {
