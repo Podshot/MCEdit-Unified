@@ -44,17 +44,17 @@ def perform(level, box, options):
         widget.shrink_wrap()
         editor.addExternalWidget(widget)        
     elif op == "Scoreboard Editing (Objective)":
-        if level.scoreboard != None:
-            test_objective = TAG_Compound()
-            test_objective["Name"] = TAG_String("FilterObjective")
-            test_objective["DisplayName"] = TAG_String("FilterObjective")
-            test_objective["CriteriaName"] = TAG_String("dummy")
-            test_objective["RenderType"] = TAG_String("integer")
-            test_objective = scoreboard.Objective(test_objective)
-            level.scoreboard.Objectives.append(test_objective)
-            level.scoreboard.save(level)
-            for objective in level.scoreboard.Objectives:
-                print "Objective Name: " + str(objective.Name)
+        score = level.init_scoreboard()
+        test_objective = TAG_Compound()
+        test_objective["Name"] = TAG_String("FilterObjective")
+        test_objective["DisplayName"] = TAG_String("FilterObjective")
+        test_objective["CriteriaName"] = TAG_String("dummy")
+        test_objective["RenderType"] = TAG_String("integer")
+        test_objective = scoreboard.Objective(test_objective)
+        score.Objectives.append(test_objective)
+        score.save(level)
+        for objective in score.Objectives:
+            print "Objective Name: " + str(objective.Name)
     elif op == "Scoreboard Editing (Team)":
         if level.scoreboard != None:
             for team in level.scoreboard.Teams:

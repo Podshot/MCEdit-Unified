@@ -1096,15 +1096,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
             if "Player" in self.root_tag["Data"]:
                 self.players.append("Player")
-
-        
-            if os.path.exists(self.worldFolder.getFolderPath("data")):
-                if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
-                    self._scoreboard = scoreboard.Scoreboard(self, False)
-                else:
-                    self._scoreboard = scoreboard.Scoreboard(self, True)
-            else:
-                 self._scoreboard = scoreboard.Scoreboard(self, True)
         
 
             self.preloadDimensions()
@@ -1290,9 +1281,11 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         return shortname
 
-    @property
-    def scoreboard(self):
-        return self._scoreboard
+    def init_scoreboard(self):
+        if os.path.exists(self.worldFolder.getFolderPath("data")):
+                if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
+                    return scoreboard.Scoreboard(self, False)
+        return scoreboard.Scoreboard(self, True)
 
     #@scoreboard.setter
     #def scoreboard(self, scoreboard):

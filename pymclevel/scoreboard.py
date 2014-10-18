@@ -116,45 +116,43 @@ class Scoreboard:
 
     def __init__(self, level, should_create_scoreboard):
         self.level = level
-        self.objectives = []
-        self.teams = []
+        self._objectives = []
+        self._teams = []
         self._scs = should_create_scoreboard
+        self.root_tag = None
         self.setup()
 
     def setup(self):
         if not self._scs:
             self.root_tag = nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
             for objective in self.root_tag["data"]["Objectives"]:
-                self.objectives.append(Objective(objective))
+                self._objectives.append(Objective(objective))
 
             for team in self.root_tag["data"]["Teams"]:
-                self.teams.append(Team(team))
+                self._teams.append(Team(team))
         else:
             self.root_tag = nbt.TAG_Compound()
             self.root_tag["data"] = nbt.TAG_Compound()
             
-
-
     @property
     def Objectives(self):
-        return self.objectives
+        return self._objectives
 
     @property
     def Teams(self):
-        return self.teams
+        return self._teams
 
-    @classmethod
     def save(self, level):
         objectiveList = nbt.TAG_List()
         teamList = nbt.TAG_List()
-        for objective in level.scoreboard.Objectives:
+        for objective in self._objectives:
             objectiveList.append(objective.getTAGStructure())
-        for team in level.scoreboard.Teams:
+        for team in self._teams:
             teamList.append(team.getTAGStructure())
-        level.scoreboard.root_tag["data"]["Objectives"] = objectiveList
-        level.scoreboard.root_tag["data"]["Teams"] = teamList
+        self.root_tag["data"]["Objectives"] = objectiveList
+        self.root_tag["data"]["Teams"] = teamList
         print "Saving Scoreboard...."
         #with open(level.worldFolder.getFolderPath("data")+"/scoreboard.dat", 'w') as datFile:
-        level.scoreboard.root_tag.save(level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
+        self.root_tag.save(level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
         
         
