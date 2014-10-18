@@ -559,6 +559,10 @@ class OptionsPanel(Dialog):
                                             ref=Settings.staticCommandsNudge.propertyRef(),
                                             tooltipText="Change static coordinates in command blocks while nudging.")                                      
 
+        moveSpawnerPosNudgeRow = mceutils.CheckBoxLabel("Change Spawners While Nudging",
+                                            ref=Settings.moveSpawnerPosNudge.propertyRef(),
+                                            tooltipText="Change the position of the mobs in spawners while nudging.")
+                                                
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
         goPortableButton.tooltipText = self.portableButtonTooltip()
@@ -589,6 +593,7 @@ class OptionsPanel(Dialog):
                       invertRow,
                       visibilityCheckRow,
                       staticCommandsNudgeRow,
+                      moveSpawnerPosNudgeRow,
                       langStringRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())

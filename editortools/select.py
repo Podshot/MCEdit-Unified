@@ -250,7 +250,8 @@ class NudgeBlocksOperation(Operation):
             level.removeEntitiesInBox(self.sourceBox)
             level.removeEntitiesInBox(self.destBox)
             staticCommandsNudge = leveleditor.Settings.staticCommandsNudge.get()
-            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin, staticCommands=staticCommandsNudge)
+            moveSpawnerPos = leveleditor.Settings.moveSpawnerPosNudge.get()
+            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin, staticCommands=staticCommandsNudge, moveSpawnerPos=moveSpawnerPosNudge)
             self.editor.invalidateBox(dirtyBox)
 
             self.nudgeSelection.perform(recordUndo)
