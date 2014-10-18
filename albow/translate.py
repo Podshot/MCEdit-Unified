@@ -112,6 +112,7 @@ def refreshLang(self=None,suppressAlert=False,build=True):
 #-------------------------------------------------------------------------------
 def restart(mcedit):
     import config
+    from leveleditor import Settings
     if sys.platform == "win32" and Settings.setWindowPlacement.get():
         (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
             display.get_wm_info()['window'])
