@@ -93,7 +93,7 @@ class TileEntity(object):
                                    
 
     @classmethod
-    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, first):
+    def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first):
         #You'll need to use this function twice
         #The first time with first equals to True
         #The second time with first equals to False
@@ -101,6 +101,86 @@ class TileEntity(object):
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])
         eTag['z'] = nbt.TAG_Int(tileEntity['z'].value + copyOffset[2])
+        
+        def num(x):
+            try:
+                return int(x)
+            except ValueError:
+                return float(x)
+                
+        def coordX(x, argument):
+            if first == True:
+                x = str(num(x)) + '!' + str(num(x) + copyOffset[0])
+            elif argument == True and x.find("!") >= 0:
+                x = x[x.index("!") + 1:]
+                x = str(num(x) + copyOffset[0])
+            elif argument == False and x.find("!") >= 0:
+                x = x[:x.index("!")]    
+            return x
+                    
+        def coordY(y, argument):
+            if first == True:
+                y = str(num(y)) + '!' + str(num(y) + copyOffset[1]) 
+            elif argument == True and y.find("!") >= 0:
+                y = y[y.index("!") + 1:]
+                y = str(num(y) + copyOffset[1])
+            elif argument == False and y.find("!") >= 0:
+                y = y[:y.index("!")]    
+            return y
+                    
+        def coordZ(z, argument):
+            if first == True:
+                z = str(num(z)) + '!' + str(num(z) + copyOffset[2])   
+            elif argument == True and z.find("!") >= 0:
+                z = z[z.index("!") + 1:]
+                z = str(num(z) + copyOffset[2])
+            elif argument == False and z.find("!") >= 0:
+                z = z[:z.index("!")]    
+            return z       
+                        
+        def coords(x, y, z, argument):
+            if x[0] != "~":
+                x = coordX(x, argument)
+            if y[0] != "~":
+                y = coordY(y, argument)
+            if z[0] != "~":
+                z = coordZ(z, argument)
+            return x, y, z
+        
+        if eTag['id'].value == 'MobSpawner':
+            mobs = []
+            mob = eTag.get('SpawnData')
+            if mob:
+                mobs.append(mob)
+            potentials = eTag.get('SpawnPotentials')
+            if potentials:
+                mobs.extend(p["Properties"] for p in potentials)
+
+            for mob in mobs:
+                if "Pos" in mob:
+                    if first == True:
+                        pos = Entity.pos(mob)
+                        x, y, z = [str(part) for part in pos]
+                        x, y, z = coords(x, y, z, moveSpawnerPos)
+                        mob['Temp1'] = nbt.TAG_String(x)
+                        mob['Temp2'] = nbt.TAG_String(y)
+                        mob['Temp3'] = nbt.TAG_String(z)
+                    elif 'Temp1' in mob and 'Temp2' in mob and 'Temp3' in mob:
+                        x = mob['Temp1']
+                        y = mob['Temp2']
+                        z= mob['Temp3']
+                        del mob['Temp1']
+                        del mob['Temp2']
+                        del mob['Temp3']
+                        parts = []
+                        for part in (x,y,z):
+                            part = str(part)
+                            part = part[13:len(part)-2]
+                            parts.append(part)
+                        x, y, z = parts
+                        pos = [float(part) for part in coords(x, y, z, moveSpawnerPos)]
+                        Entity.setpos(mob, pos)
+                    
         if eTag['id'].value == "Control":
             command = eTag['Command'].value
             execute = False
@@ -108,51 +188,6 @@ class TileEntity(object):
             if command[0] == "/":
                 command = command.replace("/", "", 1)
                 Slash = True
-                    
-            def num(x):
-                try:
-                    return int(x)
-                except ValueError:
-                    return float(x)
-                
-            def coordX(x):
-                if first == True:
-                    x = str(num(x)) + '!' + str(num(x) + copyOffset[0])
-                elif staticCommands == True:
-                    x = x[x.index("!") + 1:]
-                    x = str(num(x) + copyOffset[0])
-                else:
-                    x = x[:x.index("!")]    
-                return x
-                    
-            def coordY(y):
-                if first == True:
-                    y = str(num(y)) + '!' + str(num(y) + copyOffset[1]) 
-                elif staticCommands == True:
-                    y = y[y.index("!") + 1:]
-                    y = str(num(y) + copyOffset[1])
-                else:
-                    y = y[:y.index("!")]    
-                return y
-                    
-            def coordZ(z):
-                if first == True:
-                    z = str(num(z)) + '!' + str(num(z) + copyOffset[2])   
-                elif staticCommands == True:
-                    z = z[z.index("!") + 1:]
-                    z = str(num(z) + copyOffset[2])
-                else:
-                    z = z[:z.index("!")]    
-                return z       
-                        
-            def coords(x, y, z):
-                if x[0] != "~":
-                    x = coordX(x)
-                if y[0] != "~":
-                    y = coordY(y)
-                if z[0] != "~":
-                    z = coordZ(z)
-                return x, y, z
                 
             def selectorCoords(selector):
                 char_num = 0
@@ -179,7 +214,7 @@ class TileEntity(object):
                                 end_char_x = len(selector) - 1
                             x = selector[char_x:end_char_x]
                             dont_copy = len(x) + 1
-                            x = coordX(x)
+                            x = coordX(x, staticCommands)
                             new_selector += x
                         
                         elif char == 'y' and letter == False:
@@ -190,7 +225,7 @@ class TileEntity(object):
                                 end_char_y = len(selector) - 1
                             y = selector[char_y:end_char_y]
                             dont_copy = len(y) + 1
-                            y = coordY(y)
+                            y = coordY(y, staticCommands)
                             new_selector += y
                         elif char == 'z' and letter == False:
                             new_selector += selector[char_num:char_num + 2]
@@ -200,7 +235,7 @@ class TileEntity(object):
                                 end_char_z = len(selector) - 1
                             z = selector[char_z:end_char_z]
                             dont_copy = len(z) + 1
-                            z = coordZ(z)
+                            z = coordZ(z, staticCommands)
                             new_selector += z
                     char_num += 1  
                 return new_selector    
@@ -223,10 +258,10 @@ class TileEntity(object):
                     if Slash == True:
                         saving_command += '/'
                     x, y, z = words[2:5]
-                    words[2:5] = coords(x, y, z)
+                    words[2:5] = coords(x, y, z, staticCommands)
                     if words[5] == 'detect':
                         x, y, z = words[6:9]
-                        words[6:9] = coords(x, y, z)
+                        words[6:9] = coords(x, y, z, staticCommands)
                         saving_command += ' '.join(words[:9])
                         words = words[9:]
                     else:    
@@ -244,40 +279,40 @@ class TileEntity(object):
             
             if (command.startswith('tp') and len(words) == 5) or command.startswith('particle') or command.startswith('replaceitem block') or (command.startswith('spawnpoint') and len(words) == 5) or command.startswith('stats block') or (command.startswith('summon') and len(words) >= 5):
                 x, y, z = words[2:5]
-                words[2:5] = coords(x, y, z)
+                words[2:5] = coords(x, y, z, staticCommands)
             elif command.startswith('blockdata') or command.startswith('setblock') or (command.startswith('setworldspawn') and len(words) == 4):
                 x, y, z = words[1:4]
-                words[1:4] = coords(x, y, z)
+                words[1:4] = coords(x, y, z, staticCommands)
             elif command.startswith('playsound') and len(words) >= 6:
                 x, y, z = words[3:6]
-                words[3:6] = coords(x, y, z)   
+                words[3:6] = coords(x, y, z, staticCommands)   
             elif command.startswith('clone'):
                 x1, y1, z1, x2, y2, z2, x, y, z = words[1:10]
-                x1, y1, z1 = coords(x1, y1, z1)
-                x2, y2, z2 = coords(x2, y2, z2)
-                x, y, z = coords(x, y, z)
+                x1, y1, z1 = coords(x1, y1, z1, staticCommands)
+                x2, y2, z2 = coords(x2, y2, z2, staticCommands)
+                x, y, z = coords(x, y, z, staticCommands)
                     
                 words[1:10] = x1, y1, z1, x2, y2, z2, x, y, z
             elif command.startswith('fill'):
                 x1, y1, z1, x2, y2, z2 = words[1:7]
-                x1, y1, z1 = coords(x1, y1, z1)
-                x2, y2, z2 = coords(x2, y2, z2)
+                x1, y1, z1 = coords(x1, y1, z1, staticCommands)
+                x2, y2, z2 = coords(x2, y2, z2, staticCommands)
                         
                 words[1:7] = x1, y1, z1, x2, y2, z2
             elif command.startswith('spreadplayers'):
                 x, z = words[1:3]
                 if x[0] != "~":
-                    x = coordX(x)
+                    x = coordX(x, staticCommands)
                 if z[0] != "~":
-                    z = coordZ(z)
+                    z = coordZ(z, staticCommands)
                 
                 words[1:3] = x, z
             elif command.startswith('worldborder center') and len(words) == 4:
                 x, z = words[2:4]
                 if x[0] != "~":
-                    x = coordX(x)
+                    x = coordX(x, staticCommands)
                 if z[0] != "~":
-                    z = coordZ(z)
+                    z = coordZ(z, staticCommands)
                         
                 words[2:4] = x, z                       
             if Slash == True:

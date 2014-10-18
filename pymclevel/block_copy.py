@@ -49,7 +49,7 @@ def adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint):
 
 
 def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True,
-                       create=False, biomes=False, tileTicks=True, staticCommands=False, first = False):
+                       create=False, biomes=False, tileTicks=True, staticCommands=False, moveSpawnerPos=False, first=False):
     """ copy blocks between two infinite levels by looping through the
     destination's chunks. make a sub-box of the source level for each chunk
     and copy block and entities in the sub box to the dest chunk."""
@@ -134,7 +134,7 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
             tileEntities = sourceChunk.getTileEntitiesInBox(destChunkBoxInSourceLevel)
             t += len(tileEntities)
             for tileEntityTag in tileEntities:
-                eTag = TileEntity.copyWithOffset(tileEntityTag, copyOffset, staticCommands, first)
+                eTag = TileEntity.copyWithOffset(tileEntityTag, copyOffset, staticCommands, moveSpawnerPos, first)
                 destLevel.addTileEntity(eTag)
 
             tileTicksList = sourceChunk.getTileTicksInBox(destChunkBoxInSourceLevel)
@@ -156,9 +156,9 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
 
 
 def copyBlocksFrom(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy=None, entities=True, create=False,
-                   biomes=False, tileTicks=True, staticCommands=False, first=False):
+                   biomes=False, tileTicks=True, staticCommands=False, moveSpawnerPos=False, first=False):
     return exhaust(
-        copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy, entities, create, biomes, tileTicks,staticCommands, first))
+        copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, blocksToCopy, entities, create, biomes, tileTicks,staticCommands, moveSpawnerPos,first))
 
 
 
