@@ -784,6 +784,8 @@ class MCEdit(GLViewport):
     def makeSideColumn(self):
         def showLicense():
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
+        def showCacheDir():
+            platform_open(directories.getCacheDir())
 
         readmePath = os.path.join(directories.getDataDir(), "README.html")
 
@@ -808,6 +810,9 @@ class MCEdit(GLViewport):
                     ("",
                      "License",
                      showLicense),
+                    ("",
+                     "Open Magic Folder",
+                     showCacheDir),
                    ])
 
         c = mceutils.HotkeyColumn(hotkeys)
