@@ -4,36 +4,40 @@ import urllib2
 from directories import userCachePath
 import os
 import json
-
+import time
 
 def getPlayerNameFromUUID(uuid):
+    t = time.time()
     nuuid = uuid.replace("-", "")
     try:
-        playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
-        playerJSON = json.loads(playerJSONResponse)
-        username = playerJSON[0]
-        try:
-            if os.path.exists(userCachePath):
-                with open(userCachePath) as jsonString:
-                    usercache = json.load(jsonString)
-                usercache[uuid] = username
-            else:
-                usercache = {uuid:username}
+        if not os.path.exists(userCachePath):
             f = open(userCachePath,"w")
-            f.write(json.dumps(usercache))
+            f.write("{}")
             f.close()
-        except:
-            print "Unable to write to cache"
-        return username
-    except:
+        f = open(userCachePath,"r+")
+
         try:
-            if not os.path.exists(userCachePath):
-                return uuid
-            else:
-                with open(userCachePath) as jsonString:
-                    usercache = json.load(jsonString)
-                return usercache[uuid]
+            usercache = json.load(f)
         except:
-            return uuid
-# while True:
-#print getPlayerNameFromUUID("11d0102c-4178-4953-9175-09bbd7d46264")
+            usercache = {}
+
+        refreshUUID = True
+        if uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
+            refreshUUID = False
+
+        if refreshUUID:
+            try:
+                playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
+                playerJSON = json.loads(playerJSONResponse)
+                username = playerJSON[0]
+                usercache[uuid] = {"username":username,"timestamp":t}
+            except:
+                print "A network error occured"
+                return uuid
+
+        f.write(json.dumps(usercache))
+        f.close()
+        return usercache[uuid]["username"]
+    except:
+        print "Unable to r/w user cache file"
+        return uuid
