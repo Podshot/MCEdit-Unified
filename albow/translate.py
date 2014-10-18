@@ -83,6 +83,7 @@ def refreshLang(self=None,suppressAlert=False,build=True):
     from leveleditor import Settings
 
     try:
+        cancel = False
         lang = Settings.langCode.get() #.langCode
         isRealLang = verifyLangCode(lang)
         if build:
@@ -96,15 +97,22 @@ def refreshLang(self=None,suppressAlert=False,build=True):
             if result == "Save and Restart":
                 editor.saveFile()
                 restart(self)
-            if result == "Restart":
-                restart(self)    
+            elif result == "Restart":
+                restart(self)
+            else:
+                isRealLang = False
+                cancel = True
         elif not suppressAlert and not isRealLang:
             import albow
             albow.alert("{} is not a valid language".format(lang))
         if not isRealLang:
             Settings.langCode.set(oldlang)
-        oldlang = lang
-        return lang
+        else:
+            oldlang = lang
+        if cancel == True:
+            return ""
+        else:
+            return lang
     except Exception as inst:
         print inst
         return ""

@@ -654,8 +654,8 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
-        Dialog.dismiss(self, *args, **kwargs)
-        albow.translate.refreshLang(self.mcedit, build=False)
+        if albow.translate.refreshLang(self.mcedit, build=False) != "":
+            Dialog.dismiss(self, *args, **kwargs)
 
 class MCEdit(GLViewport):
     #debug_resize = True
