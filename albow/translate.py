@@ -66,7 +66,7 @@ except:
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
 #-------------------------------------------------------------------------------
-def _(string, doNotTranslate=False):
+def tr(string, doNotTranslate=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
     if doNotTranslate:
         return string

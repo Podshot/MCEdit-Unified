@@ -8,7 +8,7 @@ from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_
 from widget import Widget, overridable_property
 from controls import Control
 #-#
-from translate import _
+from translate import tr
 #-#
 #---------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ class TextEditor(Widget):
         return self._text
 
     def set_text(self, text):
-        self._text = _(text)
+        self._text = tr(text)
 
     text = overridable_property('text')
 
@@ -232,7 +232,7 @@ class Field(Control, TextEditor):
 
     def set_text(self, text):
         self.editing = True
-        self._text = _(text)
+        self._text = tr(text)
         if self.should_commit_immediately(text):
             self.commit()
 
@@ -304,7 +304,7 @@ class TextField(Field):
 
 
 class IntField(Field):
-    tooltipText = _("Point here and use mousewheel to adjust")
+    tooltipText = tr("Point here and use mousewheel to adjust")
 
     def type(self, i):
         try:
@@ -429,7 +429,7 @@ class FloatField(Field):
     type = float
     _increment = 1.0
     _shift_increment = 16.0
-    tooltipText = _("Point here and use mousewheel to adjust")
+    tooltipText = tr("Point here and use mousewheel to adjust")
 
     allowed_chars = '-+.0123456789f'
 
@@ -493,7 +493,7 @@ class TextEditorWrapped(Widget):
         return self._text
 
     def set_text(self, text):
-        self._text = _(text)
+        self._text = tr(text)
         self.textChanged = True
 
     text = overridable_property('text')
@@ -930,7 +930,7 @@ class TextEditorWrapped(Widget):
         return i
 
     def change_text(self, text):
-        self.set_text(_(text))
+        self.set_text(tr(text))
         self.textChanged = True
         self.updateTextWrap()
         self.call_handler('change_action')
@@ -1036,7 +1036,7 @@ class FieldWrapped(Control, TextEditorWrapped):
         if x == self.empty:
             return ""
         else:
-            return self.format % _(x)
+            return self.format % tr(x)
 
     def get_text(self):
         if self.editing:
@@ -1046,7 +1046,7 @@ class FieldWrapped(Control, TextEditorWrapped):
 
     def set_text(self, text):
         self.editing = True
-        self._text = _(text)
+        self._text = tr(text)
         if self.should_commit_immediately(text):
             self.commit()
 

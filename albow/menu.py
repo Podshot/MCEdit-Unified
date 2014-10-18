@@ -9,7 +9,7 @@ from root import get_root, get_focus
 from dialogs import Dialog
 from theme import ThemeProperty
 from pygame import Rect, draw
-from translate import _
+from translate import tr
 #---------------------------------------------------------------------------
 
 
@@ -33,7 +33,7 @@ class MenuItem(object):
             text, key = text.split("/", 1)
         else:
             key = ""
-        self.text = _(text)
+        self.text = tr(text)
         if key:
             keyname = key[-1]
             mods = key[:-1]
@@ -59,7 +59,7 @@ class Menu(Dialog):
 
     def __init__(self, title, items, scrolling=False, scroll_items=30,
                  scroll_page=5, **kwds):
-        self.title = _(title)
+        self.title = tr(title)
         self.items = items
         self._items = [MenuItem(*item) for item in items]
         self.scrolling = scrolling and len(self._items) > scroll_items

@@ -15,7 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert
-from albow.translate import _
+from albow.translate import tr
 import config
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
@@ -49,7 +49,7 @@ class PlayerMoveOperation(Operation):
                 self.undoDim = level.getPlayerDimension(self.player)
                 self.undoYP = level.getPlayerOrientation(self.player)
             except Exception, e:
-                log.info(_("Couldn't get player position! ({0!r})").format(e))
+                log.info(tr("Couldn't get player position! ({0!r})").format(e))
 
             yaw, pitch = self.yp
             if yaw is not None and pitch is not None:
@@ -379,7 +379,7 @@ class PlayerPositionTool(EditorTool):
         if player == "Player":
             return "Click to move the player"
 
-        return _("Click to move the player \"{0}\"").format(player)
+        return tr("Click to move the player \"{0}\"").format(player)
 
     @alertException
     def mouseDown(self, evt, pos, direction):
@@ -530,23 +530,23 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                 status = ""
                 if not okayAt63(level, pos):
                     level.setBlockAt(pos[0], 63, pos[2], 1)
-                    status += _("Block added at y=63.\n")
+                    status += tr("Block added at y=63.\n")
 
                 if 59 < pos[1] < 63:
                     pos[1] = 63
-                    status += _("Spawn point moved upward to y=63.\n")
+                    status += tr("Spawn point moved upward to y=63.\n")
 
                 if not okayAboveSpawn(level, pos):
                     if pos[1] > 63 or pos[1] < 59:
                         lpos = (pos[0], pos[1] - 1, pos[2])
                         if level.blockAt(*pos) == 0 and level.blockAt(*lpos) != 0 and okayAboveSpawn(level, lpos):
                             pos = lpos
-                            status += _("Spawn point shifted down by one block.\n")
+                            status += tr("Spawn point shifted down by one block.\n")
                     if not okayAboveSpawn(level, pos):
                         for i in range(1, 4):
                             level.setBlockAt(pos[0], pos[1] + i, pos[2], 0)
 
-                            status += _("Blocks above spawn point cleared.\n")
+                            status += tr("Blocks above spawn point cleared.\n")
 
                 self.editor.invalidateChunks([(pos[0] // 16, pos[2] // 16)])
                 op = PlayerSpawnMoveOperation(self, pos)
@@ -560,7 +560,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                 self.editor.addUnsavedEdit()
                 self.markerList.invalidate()
                 if len(status):
-                    alert(_("Spawn point fixed. Changes: \n\n") + status)
+                    alert(tr("Spawn point fixed. Changes: \n\n") + status)
 
     @alertException
     def toolReselected(self):

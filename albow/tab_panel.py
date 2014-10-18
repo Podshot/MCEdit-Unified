@@ -15,7 +15,7 @@ from widget import Widget
 from theme import ThemeProperty, FontProperty
 from utils import brighten
 from numpy import fromstring
-from translate import _
+from translate import tr
 
 
 class TabPanel(Widget):
@@ -62,7 +62,7 @@ class TabPanel(Widget):
             self.show_page(page)
 
     def _add_page(self, title, page):
-        page.tab_title = _(title)
+        page.tab_title = tr(title)
         page.anchor = 'ltrb'
         self.pages.append(page)
 

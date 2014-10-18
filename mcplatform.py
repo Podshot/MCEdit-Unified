@@ -40,7 +40,7 @@ os.environ["YAML_ROOT"] = join(directories.getDataDir(), "pymclevel").encode(enc
 from pygame import display
 
 from albow import request_new_filename, request_old_filename
-from albow.translate import _
+from albow.translate import tr
 from pymclevel import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from pymclevel import items
 
@@ -251,24 +251,24 @@ def askOpenFileWin32(title, schematics, initialDir):
 
 def askSaveSchematic(initialDir, displayName, fileFormat):
     return askSaveFile(initialDir,
-                       title='Save this schematic...',
+                       title=tr('Save this schematic...'),
                        defaultName=displayName + "." + fileFormat,
-                       filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
+                       filetype=tr('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
                        suffix=fileFormat,
     )
 
 
 def askCreateWorld(initialDir):
-    defaultName = name = _("Untitled World")
+    defaultName = name = tr("Untitled World")
     i = 0
     while exists(join(initialDir, name)):
         i += 1
         name = defaultName + " " + str(i)
 
     return askSaveFile(initialDir,
-                       title=_('Name this new world.'),
+                       title=tr('Name this new world.'),
                        defaultName=name,
-                       filetype=_('Minecraft World\0*.*\0\0'),
+                       filetype=tr('Minecraft World\0*.*\0\0'),
                        suffix="",
     )
 

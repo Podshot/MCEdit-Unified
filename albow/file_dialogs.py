@@ -13,7 +13,7 @@ from albow.fields import TextField
 from albow.layout import Row, Column
 from albow.palette_view import PaletteView
 from albow.theme import ThemeProperty
-from translate import _
+from translate import tr
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
         Widget.__init__(self, **kwds)
@@ -233,7 +233,7 @@ class FileSaveDialog(FileDialog):
     def ok(self):
         path = self.pathname
         if os.path.exists(path):
-            answer = ask(_("Replace existing '%s'?") % os.path.basename(path))
+            answer = ask(tr("Replace existing '%s'?") % os.path.basename(path))
             if answer != "OK":
                 return
         #FileDialog.ok(self)

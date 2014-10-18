@@ -17,7 +17,7 @@ import os
 import traceback
 from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, \
     TextFieldWrapped, TextField
-from albow.translate import _
+from albow.translate import tr
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel
@@ -39,7 +39,7 @@ def alertFilterException(func):
             func(*args, **kw)
         except Exception, e:
             print traceback.format_exc()
-            alert(_(u"Exception during filter operation. See console for details.\n\n{0}").format(e))
+            alert(tr(u"Exception during filter operation. See console for details.\n\n{0}").format(e))
 
     return _func
 
@@ -278,7 +278,7 @@ class FilterToolPanel(Panel):
             try:
                 self.filterOptionsPanel = FilterModuleOptions(self.tool, module)
             except Exception, e:
-                alert(_("Error creating filter inputs for {0}: {1}").format(module, e))
+                alert(tr("Error creating filter inputs for {0}: {1}").format(module, e))
                 traceback.print_exc()
                 self.tool.filterModules.pop(self.selectedFilterName)
                 self.selectedFilterName = tool.filterNames[0]
@@ -426,7 +426,7 @@ class FilterTool(EditorTool):
                 return __import__(name)
             except Exception, e:
                 print traceback.format_exc()
-                alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
+                alert(tr(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
 
         filterModules = (tryImport(x[:-3]) for x in filterPyfiles)
@@ -439,7 +439,7 @@ class FilterTool(EditorTool):
             except Exception, e:
                 print traceback.format_exc()
                 alert(
-                    _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
+                    tr(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
 
     @property

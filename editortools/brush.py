@@ -24,7 +24,7 @@ import numpy
 from numpy import newaxis
 import pygame
 from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert
-from albow.translate import _
+from albow.translate import tr
 import bresenham
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
@@ -770,7 +770,7 @@ class BrushOperation(Operation):
             self.undoLevel = self.extractUndo(self.level, self._dirtyBox)
 
         def _perform():
-            yield 0, len(self.points), _("Applying {0} brush...").format(self.brushMode.name)
+            yield 0, len(self.points), tr("Applying {0} brush...").format(self.brushMode.name)
             if self.brushMode.apply is not NotImplemented: #xxx double negative
                 for i, point in enumerate(self.points):
                     f = self.brushMode.apply(self, point)
@@ -778,7 +778,7 @@ class BrushOperation(Operation):
                         for progress in f:
                             yield progress
                     else:
-                        yield i, len(self.points), _("Applying {0} brush...").format(self.brushMode.name)
+                        yield i, len(self.points), tr("Applying {0} brush...").format(self.brushMode.name)
             else:
 
                 for j, cPos in enumerate(self._dirtyBox.chunkPositions):
@@ -793,7 +793,7 @@ class BrushOperation(Operation):
                             for progress in f:
                                 yield progress
                         else:
-                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(self.brushMode.name)
+                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, tr("Applying {0} brush...").format(self.brushMode.name)
 
                     chunk.chunkChanged()
 
@@ -1076,7 +1076,7 @@ class BrushTool(CloneTool):
 
     @property
     def statusText(self):
-        return _("Click and drag to place blocks. ALT-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.").format(
+        return tr("Click and drag to place blocks. ALT-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.").format(
             R=config.config.get("Keys", "Roll").upper(),
             F=config.config.get("Keys", "Flip").upper(),
             E=config.config.get("Keys", "Rotate").upper(),
@@ -1092,7 +1092,7 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return _("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
+                return tr("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
 
             except Exception, e:
                 return repr(e)
@@ -1104,7 +1104,7 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return _("Click to replace {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
+                return tr("Click to replace {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
 
             except Exception, e:
                 return repr(e)

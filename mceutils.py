@@ -20,8 +20,7 @@ Exception catching, some basic box drawing, texture pack loading, oddball UI ele
 # Modified by D.C.-G. for translation purpose
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
-from albow.translate import _
-import config
+from albow.translate import tr
 from cStringIO import StringIO
 from datetime import datetime
 import directories
@@ -52,10 +51,10 @@ def alertException(func):
         except root.Cancel:
             alert("Canceled.")
         except pymclevel.infiniteworld.SessionLockLost as e:
-            alert(e.message + _("\n\nYour changes cannot be saved."))
+            alert(e.message + tr("\n\nYour changes cannot be saved."))
         except Exception, e:
             logging.exception("Exception:")
-            ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
+            ask(tr("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
     return _alertException
 
 
@@ -506,7 +505,7 @@ def TextInputRow(title, *args, **kw):
 
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
-    prefix = _(prefix)
+    prefix = tr(prefix)
     if type(prefix) == unicode:
         prefix = prefix.encode("utf8")
     class ctx:
@@ -626,7 +625,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             delta = ((datetime.now() - self.startTime))
             progressPercent = (int(self.progressFraction * 10000))
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
-            return _("Time left: {0}").format(left)
+            return tr("Time left: {0}").format(left)
 
         def cancel(self):
             if cancel:
@@ -636,7 +635,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
     widget = ProgressWidget()
-    widget.progressText = _(progressText)
+    widget.progressText = tr(progressText)
     widget.statusText = ""
     widget.progressAmount = 0.0
 

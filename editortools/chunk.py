@@ -18,7 +18,7 @@ import numpy
 from numpy import newaxis
 
 from albow import Label, ValueDisplay, AttrRef, Button, Column, ask, Row, alert, Widget, Menu
-from albow.translate import _
+from albow.translate import tr
 from editortools.editortool import EditorTool
 from glbackground import Panel
 from glutils import DisplayList, gl
@@ -93,7 +93,7 @@ class ChunkToolPanel(Panel):
 
     @property
     def chunkSizeText(self):
-        return _("{0} chunks").format(len(self.tool.selectedChunks()))
+        return tr("{0} chunks").format(len(self.tool.selectedChunks()))
 
     def updateText(self):
         pass
@@ -106,7 +106,7 @@ class ChunkTool(EditorTool):
 
     @property
     def statusText(self):
-        return _("Click and drag to select chunks. Hold ALT to deselect chunks. Hold SHIFT to select chunks.")
+        return tr("Click and drag to select chunks. Hold ALT to deselect chunks. Hold SHIFT to select chunks.")
 
     def toolEnabled(self):
         return isinstance(self.editor.level, pymclevel.ChunkedLevelMixin)
@@ -198,7 +198,7 @@ class ChunkTool(EditorTool):
         if box:
             box = box.chunkBox(self.editor.level)
             l, w = box.length // 16, box.width // 16
-            return _("%s x %s chunks") % (l, w)
+            return tr("%s x %s chunks") % (l, w)
 
     def toolSelected(self):
 
@@ -296,7 +296,7 @@ class ChunkTool(EditorTool):
                 yield i
 
         with setWindowCaption("RELIGHTING - "):
-            showProgress(_("Lighting {0} chunks...").format(len(self.selectedChunks())),
+            showProgress(tr("Lighting {0} chunks...").format(len(self.selectedChunks())),
                          _relightChunks(), cancel=True)
 
             self.editor.invalidateChunks(self.selectedChunks())
@@ -321,7 +321,7 @@ class ChunkTool(EditorTool):
                 showProgress("Creating {0} chunks...".format(len(chunks)), createChunks, cancel=True)
         except Exception, e:
             traceback.print_exc()
-            alert(_("Failed to start the chunk generator. {0!r}").format(e))
+            alert(tr("Failed to start the chunk generator. {0!r}").format(e))
         finally:
             self.editor.renderer.invalidateChunkMarkers()
             self.editor.renderer.loadNearbyChunks()
