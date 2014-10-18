@@ -169,7 +169,7 @@ class TileEntity(object):
                         mob['Temp1'] = x
                         mob['Temp2'] = y
                         mob['Temp3'] = z
-                    else:
+                    elif 'Temp1' in mob and 'Temp2' in mob and 'Temp3' in mob:
                         x = mob['Temp1']
                         y = mob['Temp2']
                         z= mob['Temp3']

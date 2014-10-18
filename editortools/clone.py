@@ -350,7 +350,7 @@ class CloneToolPanel(Panel):
         else:
             col = Column((
             rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.nudgeButton, copyAirRow, copyWaterRow, copyBiomesRow,
-            staticCommandsRow, moveSpawnerPos,self.performButton))
+            staticCommandsRow, moveSpawnerPosRow,self.performButton))
 
         self.add(col)
         self.anchor = "lwh"
