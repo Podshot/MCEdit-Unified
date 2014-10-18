@@ -162,6 +162,7 @@ class TileEntity(object):
                         pos = Entity.pos(mob)
                         x, y, z = [str(part) for part in pos]
                         x, y, z = coords(x, y, z, moveSpawnerPos)
+                        print x,y,z
                         mob['Temp1'] = x
                         mob['Temp2'] = y
                         mob['Temp3'] = z
