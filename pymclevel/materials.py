@@ -145,10 +145,20 @@ class MCMaterials(object):
         spiltNames = name.split(" ")
         amount = len(spiltNames)
         for v in self.allBlocks:
+            nameParts = v.name.lower().split(" ")
+            for anotherName in v.aka.lower().split(" "):
+                nameParts.append(anotherName)
             i = 0
-            for n in spiltNames:
-                if n in v.name.lower() or n in v.aka.lower():
-                    i += 1
+            spiltNamesUsed = []
+            for v2 in nameParts:
+                Start = True
+                j = 0
+                while j < len(spiltNames) and Start == True:
+                    if spiltNames[j] in v2 and not j in spiltNamesUsed:
+                        i += 1
+                        spiltNamesUsed.append(j)
+                        Start = False
+                    j += 1
             if i == amount:
                 toReturn.append(v)
         return toReturn
