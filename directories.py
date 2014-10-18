@@ -180,8 +180,8 @@ def getAllFilters(filters_dir):
     return glob.glob(filters_dir+"/*.py")
 
 # Create pymclevel folder as needed    
-if not os.path.exists(self.getCacheDir()):
-    os.makedirs(self.getCacheDir())
+if not os.path.exists(getCacheDir()):
+    os.makedirs(getCacheDir())
 
 # set userCachePath
 userCachePath = os.path.join(getCacheDir(),'usercache.json')
