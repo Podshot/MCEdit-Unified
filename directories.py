@@ -190,3 +190,6 @@ except:
     print "Unable to make usercache.json at {}".format(userCachePath)
 
 minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")
+
+if not os.path.exists(self.getCacheDir()):
+    os.makedirs(self.getCacheDir())

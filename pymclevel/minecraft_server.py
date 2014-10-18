@@ -75,14 +75,9 @@ def sort_nicely(l):
 
 
 class ServerJarStorage(object):
-    defaultCacheDir = os.path.join(getCacheDir(), u"ServerJarStorage")
+    cacheDir = os.path.join(getCacheDir(), u"ServerJarStorage")
 
     def __init__(self, cacheDir=None):
-        if cacheDir is None:
-            cacheDir = self.defaultCacheDir
-
-        self.cacheDir = cacheDir
-
         if not os.path.exists(self.cacheDir):
             os.makedirs(self.cacheDir)
         readme = os.path.join(self.cacheDir, "README.TXT")
