@@ -77,6 +77,7 @@ from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
 from pymclevel import version_utils
+from pymclevel.entity import Entity
 
 # Label = GLLabel
 
@@ -1844,12 +1845,13 @@ class LevelEditor(GLViewport):
                 types[:b.shape[0]] += b
 
                 for ent in chunk.getEntitiesInBox(box):
+                    entID = Entity.getId(ent["id"].value)
                     if ent["id"].value == "Item":
                         v = pymclevel.items.items.findItem(ent["Item"]["id"].value,
                                                            ent["Item"]["Damage"].value).name
                     else:
                         v = ent["id"].value
-                    entityCounts[(ent["id"].value, v)] += 1
+                    entityCounts[(entID, v)] += 1
                 for ent in chunk.getTileEntitiesInBox(box):
                     tileEntityCounts[ent["id"].value] += 1
 
@@ -1889,7 +1891,7 @@ class LevelEditor(GLViewport):
                 rows.extend([(id[0], id[1], count) for (id, count) in sorted(entityCounts.iteritems())])
             if tileEntitySum:
                 rows.extend([("", "", ""), ("", "<TileEntities>", tileEntitySum)])
-                rows.extend([(id, id, count) for (id, count) in sorted(tileEntityCounts.iteritems())])
+                rows.extend([("", id, count) for (id, count) in sorted(tileEntityCounts.iteritems())])
 
         extendEntities()
 
