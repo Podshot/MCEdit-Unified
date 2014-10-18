@@ -63,19 +63,17 @@ def win32_utf8_argv():
         pass
 
 
-def findDataDir():
-    def fsdecode(x):
-        return x.decode(sys.getfilesystemencoding())
-
-    argzero = fsdecode(os.path.abspath(sys.argv[0]))
-
+def getDataDir():
+    """Returns the folder where the executable is located."""
     if sys.platform == "win32":
+        def fsdecode(x):
+            return x.decode(sys.getfilesystemencoding())
+
+        argzero = fsdecode(os.path.abspath(sys.argv[0]))
         if hasattr(sys, 'frozen'):
             dataDir = os.path.dirname(fsdecode(sys.executable))
         else:
             dataDir = os.path.dirname(argzero)
-
-    elif sys.platform == "darwin":
         dataDir = os.getcwdu()
     else:
         dataDir = os.getcwdu()
@@ -104,33 +102,21 @@ def win32_appdata():
             return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
 
 
-def getAppDataDirectory():
+def getCacheDir():
+    """Returns the path to the cache folder. This folder is used to store files the user doesn't need to access."""
     if sys.platform == "win32":
-        return win32_appdata()
+        return os.path.join(win32_appdata(), "pymclevel")
     elif sys.platform == "darwin":
-        return os.path.expanduser(u"~/Library/Application Support")
+        return os.path.expanduser("~/Library/Application Support/pymclevel")
     else:
-        return os.path.expanduser(u"~")
-
-
-def getMinecraftLauncherDirectory():
-    if sys.platform == "darwin":
-        return os.path.join(getAppDataDirectory(), u"minecraft")
-    else:
-        return os.path.join(getAppDataDirectory(), u".minecraft")
-
-
-def getPYMCAppDataDirectory():
-    if sys.platform == "win32" or "darwin":
-        return os.path.join(getAppDataDirectory(), u"pymclevel")
-    else:
-        return os.path.join(getAppDataDirectory(), u".pymclevel")
+        return os.path.expanduser("~/.pymclevel")
 
 
 def getMinecraftProfileJSON():
-    if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")):
+    """Returns a dictionary object with the minecraft profile information"""
+    if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), "launcher_profiles.json")):
         try:
-            with open(os.path.join(getMinecraftLauncherDirectory(), u"launcher_profiles.json")) as jsonString:
+            with open(os.path.join(getMinecraftLauncherDirectory(), "launcher_profiles.json")) as jsonString:
                 minecraftProfilesJSON = json.load(jsonString)
             return minecraftProfilesJSON
         except:
@@ -138,6 +124,7 @@ def getMinecraftProfileJSON():
 
 
 def getMinecraftProfileDirectory(profileName):
+    """Returns the path to the sent minecraft profile directory"""
     try:
         profileDir = getMinecraftProfileJSON()['profiles'][profileName][
             'gameDir']  # profileDir update to correct location.
@@ -145,6 +132,42 @@ def getMinecraftProfileDirectory(profileName):
     except:
         return os.path.join(getMinecraftLauncherDirectory())
 
+
+def getMinecraftLauncherDirectory():
+    """Returns the /minecraft directory, note: may not contain the /saves folder!"""
+    if sys.platform == "win32":
+        return os.path.join(win32_appdata(), "minecraft")
+    elif sys.platform == "darwin":
+        return os.path.expanduser("~/Library/Application Support/minecraft")
+    else:
+        return os.path.expanduser("~/.minecraft")
+
+def getDocumentsFolder():
+    docsFolder = None
+
+    if sys.platform == "win32":
+        try:
+            objShell = win32com.client.Dispatch("WScript.Shell")
+            docsFolder = objShell.SpecialFolders("MyDocuments")
+
+        except Exception, e:
+            print e
+            try:
+                docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_PERSONAL, 0, 0)
+            except Exception, e:
+                userprofile = os.environ['USERPROFILE'].decode(sys.getfilesystemencoding())
+                docsFolder = os.path.join(userprofile, _("Documents"))
+
+    elif sys.platform == "darwin":
+        docsFolder = os.path.expanduser("~/Documents")
+    else:
+        docsFolder = os.path.expanduser("~/.mcedit")
+    try:
+        os.mkdir(docsFolder)
+    except:
+        pass
+
+    return docsFolder
 
 def getSelectedProfile():
     try:
@@ -156,11 +179,14 @@ def getSelectedProfile():
 def getAllFilters(filters_dir):
     return glob.glob(filters_dir+"/*.py")
 
+userCachePath = os.path.join(getCacheDir(),'usercache.json')
+# Make sure it has been created
+try:
+    if not os.path.exists(userCachePath):
+        f = open(userCachePath,'w')
+        f.write('{}')
+        f.close()
+except:
+    print "Unable to make usercache.json at {}".format(userCachePath)
 
-userCachePath = os.path.join(getPYMCAppDataDirectory(),'usercache.json')
-if not os.path.exists(userCachePath):
-    f = open(userCachePath,'w')
-    f.write('{}')
-    f.close()
-saveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), u"saves")
-dataDir = findDataDir()
+minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")

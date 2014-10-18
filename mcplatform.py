@@ -33,15 +33,15 @@ if sys.platform == "win32":
         plat = "win32"
     if platform.architecture()[0] == "64bit":
         plat = "win-amd64"
-    sys.path.append(join(directories.dataDir, "pymclevel", "build", "lib." + plat + "-2.6").encode(enc))
+    sys.path.append(join(directories.getDataDir(), "pymclevel", "build", "lib." + plat + "-2.6").encode(enc))
 
-os.environ["YAML_ROOT"] = join(directories.dataDir, "pymclevel").encode(enc)
+os.environ["YAML_ROOT"] = join(directories.getDataDir(), "pymclevel").encode(enc)
 
 from pygame import display
 
 from albow import request_new_filename, request_old_filename
 from albow.translate import _
-from pymclevel import saveFileDir, getMinecraftProfileDirectory, getSelectedProfile
+from pymclevel import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from pymclevel import items
 
 import shutil
@@ -177,7 +177,7 @@ lastSaveDir = None
 def askOpenFile(title='Select a Minecraft level....', schematics=False):
     global lastSchematicsDir, lastSaveDir
 
-    initialDir = lastSaveDir or saveFileDir
+    initialDir = lastSaveDir or minecraftSaveFileDir
     if schematics:
         initialDir = lastSchematicsDir or schematicsDir
 
@@ -323,7 +323,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
 #
 #           (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
 #               hwndOwner = display.get_wm_info()['window'],
-#               # InitialDir=saveFileDir,
+#               # InitialDir=minecraftSaveFileDir,
 #               Flags=win32con.OFN_EXPLORER | win32con.OFN_NOCHANGEDIR | win32con.OFN_OVERWRITEPROMPT,
 #               File=initialDir + os.sep + displayName,
 #               DefExt=fileFormat,
@@ -356,35 +356,6 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
 #
 #   return filename
 
-
-def documents_folder():
-    docsFolder = None
-
-    if sys.platform == "win32":
-        try:
-            objShell = win32com.client.Dispatch("WScript.Shell")
-            docsFolder = objShell.SpecialFolders("MyDocuments")
-
-        except Exception, e:
-            print e
-            try:
-                docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_PERSONAL, 0, 0)
-            except Exception, e:
-                userprofile = os.environ['USERPROFILE'].decode(sys.getfilesystemencoding())
-                docsFolder = os.path.join(userprofile, _("Documents"))
-
-    elif sys.platform == "darwin":
-        docsFolder = os.path.expanduser(u"~/%s/"%_("Documents"))
-    else:
-        docsFolder = os.path.expanduser(u"~/.mcedit")
-    try:
-        os.mkdir(docsFolder)
-    except:
-        pass
-
-    return docsFolder
-
-
 def platform_open(path):
     try:
         if sys.platform == "win32":
@@ -403,8 +374,8 @@ def platform_open(path):
 win32_window_size = True
 
 ini = u"mcedit.ini"
-parentDir = dirname(directories.dataDir)
-docsFolder = documents_folder()
+parentDir = dirname(directories.getDataDir())
+docsFolder = directories.getDocumentsFolder()
 
 portableConfigFilePath = os.path.join(parentDir, ini)
 portableSchematicsDir = os.path.join(parentDir, u"MCEdit-schematics")

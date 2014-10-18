@@ -783,9 +783,9 @@ class MCEdit(GLViewport):
 
     def makeSideColumn(self):
         def showLicense():
-            platform_open(os.path.join(directories.dataDir, "LICENSE.txt"))
+            platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
 
-        readmePath = os.path.join(directories.dataDir, "README.html")
+        readmePath = os.path.join(directories.getDataDir(), "README.html")
 
         hotkeys = ([("",
                      "Keys",
@@ -1100,7 +1100,7 @@ def main(argv):
     try:
         if not os.path.exists(mcplatform.schematicsDir):
             shutil.copytree(
-                os.path.join(directories.dataDir, u'stock-schematics'),
+                os.path.join(directories.getDataDir(), u'stock-schematics'),
                 mcplatform.schematicsDir
             )
     except Exception, e:
@@ -1113,7 +1113,7 @@ def main(argv):
     try:
         if not os.path.exists(mcplatform.filtersDir):
             shutil.copytree(
-                os.path.join(directories.dataDir, u'filters'),
+                os.path.join(directories.getDataDir(), u'filters'),
                 mcplatform.filtersDir
             )
         else:
@@ -1197,7 +1197,7 @@ class GLDisplayContext(object):
             config.saveConfig()
 
         try:
-            iconpath = os.path.join(directories.dataDir, 'favicon.png')
+            iconpath = os.path.join(directories.getDataDir(), 'favicon.png')
             iconfile = file(iconpath, 'rb')
             icon = pygame.image.load(iconfile, 'favicon.png')
             display.set_icon(icon)

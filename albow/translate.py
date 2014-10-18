@@ -56,7 +56,7 @@ import directories
 enc = "utf8"
 
 string_cache = {}
-langPath = os.path.join(directories.dataDir, "lang")
+langPath = os.path.join(directories.getDataDir(), "lang")
 oldlang = "en_US" # en_US is the default language string, no exceptions.
 try:
 	oldlang = Settings.langCode.get()

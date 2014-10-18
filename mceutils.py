@@ -270,7 +270,7 @@ def drawTerrainCuttingWire(box,
 def loadAlphaTerrainTexture():
     pngFile = None
 
-    texW, texH, terraindata = loadPNGFile(os.path.join(directories.dataDir, "terrain.png"))
+    texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), "terrain.png"))
 
     def _loadFunc():
         loadTextureFunc(texW, texH, terraindata)
@@ -311,7 +311,7 @@ def loadTextureFunc(w, h, ndata):
 
 
 def loadPNGTexture(filename, *a, **kw):
-    filename = os.path.join(directories.dataDir, filename)
+    filename = os.path.join(directories.getDataDir(), filename)
     try:
         w, h, ndata = loadPNGFile(filename)
 
@@ -523,16 +523,16 @@ def compareMD5Hashes(found_filters):
     for filter in found_filters:
         ff[filter.split('\\')[-1]] = filter
     try:
-        if not os.path.exists(os.path.join(directories.dataDir, "filters.json")):
+        if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
             filterDict = {}
             filterDict["filters"] = {}
-            with open(os.path.join(directories.dataDir, "filters.json"), 'w') as j:
+            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
                 json.dump(filterDict, j)
-        filterInBundledFolder = directories.getAllFilters(os.path.join(directories.dataDir, "filters"))
+        filterInBundledFolder = directories.getAllFilters(os.path.join(directories.getDataDir(), "filters"))
         filterBundle = {}
         for bundled in filterInBundledFolder:
             filterBundle[bundled.split('\\')[-1]] = bundled
-        hashJSON = json.load(open(os.path.join(directories.dataDir, "filters.json"), 'rb'))
+        hashJSON = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
         for filt in ff.keys():
             realName = filt
             if realName in filterBundle.keys():
@@ -559,7 +559,7 @@ def compareMD5Hashes(found_filters):
                     data = f.read()
                 if data != None:
                     hashJSON[bundled] = hashlib.md5(data).hexdigest()
-        with open(os.path.join(directories.dataDir, "filters.json"), 'w') as done:
+        with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
             json.dump(hashJSON, done)
     except Exception, e:
         print ('Error: {}'.format(e))

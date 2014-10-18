@@ -9,7 +9,7 @@ from sys import platform as _platform
 
 def get_version():
     try:
-        with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
+        with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION"), 'rb') as jsonString:
             current = json.load(jsonString)
             return current["name"]
     except:
@@ -17,7 +17,7 @@ def get_version():
 
 def get_release_tag():
     try:
-        with open(os.path.join(directories.dataDir, "RELEASE-VERSION"), 'rb') as jsonString:
+        with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION"), 'rb') as jsonString:
             current = json.load(jsonString)
             return current["tag_name"]
     except:

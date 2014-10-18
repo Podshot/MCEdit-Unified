@@ -3,6 +3,7 @@
 import os
 import sys
 import pygame
+from directories import getDataDir
 from pygame.locals import RLEACCEL
 from translate import langPath
 # default_font_name = "Vera.ttf"
@@ -10,25 +11,7 @@ optimize_images = True
 run_length_encode = False
 
 
-def find_resource_dir():
-    try:
-        from directories import dataDir
-
-        return dataDir
-    except:
-        pass
-    dir = sys.path[0]
-    while 1:
-        path = os.path.join(dir, "MCEditData")
-        if os.path.exists(path):
-            return path
-        parent = os.path.dirname(dir)
-        if parent == dir:
-            raise SystemError("albow: Unable to find Resources directory")
-        dir = parent
-
-
-resource_dir = find_resource_dir()
+resource_dir = getDataDir()
 
 image_cache = {}
 font_cache = {}
