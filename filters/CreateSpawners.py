@@ -34,6 +34,7 @@ def perform(level, box, options):
                 entitiesToRemove.append((chunk, entity))
 
                 level.setBlockAt(x, y, z, 52)
+				level.setBlockDataAt(x, y, z, 0)
 
                 spawner = TileEntity.Create("MobSpawner")
                 TileEntity.setpos(spawner, (x, y, z))
