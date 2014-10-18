@@ -155,8 +155,12 @@ def getSelectedProfile():
 
 def getAllFilters(filters_dir):
     return glob.glob(filters_dir+"/*.py")
-    
+
 
 userCachePath = os.path.expanduser(os.path.join(getPYMCAppDataDirectory(),'usercache.json'))
+if not os.path.exists(userCachePath):
+    f = open(userCachePath,'w')
+    f.write('{}')
+    f.close()
 saveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), u"saves")
 dataDir = findDataDir()
