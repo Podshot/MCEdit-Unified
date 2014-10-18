@@ -153,10 +153,10 @@ def getDocumentsFolder():
         except Exception, e:
             print e
             try:
-                docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_PERSONAL, 0, 0)
+                docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_MYDOCUMENTS, 0, 0)
             except Exception, e:
                 userprofile = os.environ['USERPROFILE'].decode(sys.getfilesystemencoding())
-                docsFolder = os.path.join(userprofile, _("Documents"))
+                docsFolder = os.path.join(userprofile, "Documents")
 
     elif sys.platform == "darwin":
         docsFolder = os.path.expanduser("~/Documents")
