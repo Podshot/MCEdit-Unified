@@ -19,7 +19,9 @@ def getPlayerNameFromUUID(uuid):
                 usercache[uuid] = username
             else:
                 usercache = {uuid:username}
-# Write usercache.json (userCachePath)
+            f = open(userCachePath,"w")
+            f.write(json.dumps(usercache))
+            f.close()
         except:
             print "Unable to write to cache"
         return username
