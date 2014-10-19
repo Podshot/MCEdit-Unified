@@ -392,7 +392,10 @@ if not os.path.exists(docsFolder):
 
 if sys.platform == "darwin":
     # parentDir is MCEdit.app/Contents/
-    folderContainingAppPackage = dirname(dirname(parentDir))
+    if ".app" in parentDir:
+        folderContainingAppPackage = dirname(dirname(parentDir)) # Running frmo app bundle
+    else:
+        folderContainingAppPackage = parentDir # Running from source
     oldPath = fixedConfigFilePath
 
     fixedConfigFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
@@ -413,7 +416,7 @@ if sys.platform == "darwin":
     try:
         if not os.path.exists(os.path.join(folderContainingAppPackage,"MCEdit")):
             os.makedirs(os.path.join(folderContainingAppPackage,"MCEdit"))
-    else:
+    except:
         print "Error making {}".format(os.path.join(folderContainingAppPackage,"MCEdit"))
 
 
