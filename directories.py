@@ -103,7 +103,7 @@ def win32_appdata():
 
 
 def getCacheDir():
-    """Returns the path to the cache folder. This folder is used to store files the user doesn't need to access."""
+    """Returns the path to the cache folder. This folder is the Application Support folder on OS X, and the Documents Folder on Windows."""
     if sys.platform == "win32":
         return os.path.join(os.path.join(getDocumentsFolder(),'MCEdit'))
     elif sys.platform == "darwin":
