@@ -1,6 +1,6 @@
 ===File Store Locations===
 
-====Mac OS X "Darwin"=====
+====Mac OS X "darwin"=====
 — usercache.json
   — ~/Library/Application Support/pymclevel/usercache.json
 
@@ -21,4 +21,23 @@
 
 =====Windows "win32"======
 
+Portable
+  usercache.json
+    Documents\ (CSIDL_MYDOCUMENTS)
+  ServerJarStorage\
+    Documents\ServerJarStorage\ (CSIDL_MYDOCUMENTS)
+  Filters\
+    Documents\Filters\ (CSIDL_MYDOCUMENTS)
+  Schematics\
+    Documents\Schematics\ (CSIDL_MYDOCUMENTS)
+Fixed
+  usercache.json
+    ..\ServerJarStorage\
+  ServerJarStorage\
+    ..\ServerJarStorage\
+  Filters\
+    ..\Filters\
+  Schematics\
+    ..\Schematics\
+    
 ======Linux "linux"=======
