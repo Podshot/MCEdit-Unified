@@ -3146,7 +3146,13 @@ class LevelEditor(GLViewport):
                     return w.LevelName
                 return u"{0} ({1})".format(w.LevelName, w.displayName)
             except:
-                return "(IT BROKE!)"
+                try:
+                    return w.LevelName
+                except:
+                    try:
+                        return w.displayName
+                    except:
+                        return "[UNABLE TO READ]"
 
         worldData = [[dateFormat(d), nameFormat(w), str(w.dimensions.keys())[1:-1], w, d]
                      for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
