@@ -224,7 +224,7 @@ if not os.path.exists(docsFolder):
 if sys.platform == "darwin":
     # parentDir is MCEdit.app/Contents/
     if ".app" in parentDir:
-        folderContainingAppPackage = dirname(dirname(parentDir)) # Running frmo app bundle
+        folderContainingAppPackage = os.path.dirname(os.path.dirname(parentDir)) # Running frmo app bundle
     else:
         folderContainingAppPackage = parentDir # Running from source
     oldPath = fixedConfigFilePath
