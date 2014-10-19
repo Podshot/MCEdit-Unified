@@ -105,7 +105,7 @@ def win32_appdata():
 def getCacheDir():
     """Returns the path to the cache folder. This folder is used to store files the user doesn't need to access."""
     if sys.platform == "win32":
-        return os.path.join(win32_appdata(), "pymclevel")
+        return os.path.join(os.path.join(getDocumentsFolder(),'MCEdit'))
     elif sys.platform == "darwin":
         return os.path.expanduser("~/Library/Application Support/pymclevel")
     else:
