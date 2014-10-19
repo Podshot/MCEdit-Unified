@@ -392,7 +392,7 @@ if not os.path.exists(docsFolder):
 
 if sys.platform == "darwin":
     # parentDir is MCEdit.app/Contents/
-    folderContainingAppPackage = os.path.join(dirname(dirname(parentDir)),'MCEdit')
+    folderContainingAppPackage = dirname(dirname(parentDir))
     oldPath = fixedConfigFilePath
 
     fixedConfigFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
@@ -408,10 +408,13 @@ if sys.platform == "darwin":
             print repr(e)
 
     portableConfigFilePath = os.path.join(folderContainingAppPackage, ini)
-    portableSchematicsDir = os.path.join(folderContainingAppPackage, u"Schematics")
-    portableFiltersDir = os.path.join(folderContainingAppPackage, u"Filters")
-    if not os.path.exists(folderContainingAppPackage):
-        os.makedirs(folderContainingAppPackage)
+    portableSchematicsDir = os.path.join(folderContainingAppPackage, u"MCEdit/Schematics")
+    portableFiltersDir = os.path.join(folderContainingAppPackage, u"MCEdit/Filters")
+    try:
+        if not os.path.exists(os.path.join(folderContainingAppPackage,"MCEdit")):
+            os.makedirs(os.path.join(folderContainingAppPackage,"MCEdit"))
+    else:
+        print "Error making {}".format(os.path.join(folderContainingAppPackage,"MCEdit"))
 
 
 def goPortable():
