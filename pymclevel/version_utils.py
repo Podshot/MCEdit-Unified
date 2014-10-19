@@ -13,7 +13,7 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
             nuuid = uuid.replace("-", "")
             playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
             playerJSON = json.loads(playerJSONResponse)
-            username = playerJSON[0]
+            return playerJSON[0]
         except:
             raise
     else:
@@ -27,6 +27,7 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
                 print "{} doesn't exist, will not cache".format(userCachePath)
             else:
                 try:
+                    print "Reading {} from disk".format(userCachePath)
                     f = open(userCachePath,"r+")
                     usercache = json.loads(f.read())
                 except:
@@ -37,7 +38,7 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
                 if os.path.exists(userCachePath) and uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
                     refreshUUID = False
                 else:
-                    refreshUUID = False
+                    refreshUUID = True
             except:
                 refreshUUID = True
 
@@ -55,9 +56,9 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
             except:
                 print "Error writing {} to disk".format(userCachePath)
             try:
+                print usercache[uuid]
                 return usercache[uuid]["username"]
             except:
-                print uuid in usercache
                 print "Error returning uuid"
                 return uuid
         except:
