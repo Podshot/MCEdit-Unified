@@ -2920,6 +2920,7 @@ class LevelEditor(GLViewport):
         self.removeWorker(self.renderer)
         self.renderer.level = None
         self.mcedit.removeEditor()
+        self.controlPanel.dismiss()
 
     def repairRegions(self):
         worldFolder = self.level.worldFolder
