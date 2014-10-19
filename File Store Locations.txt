@@ -21,4 +21,4 @@
 
 =====Windows "win32"======
 
-======Linux "Linux"=======
+======Linux "linux"=======
