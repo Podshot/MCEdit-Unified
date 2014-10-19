@@ -16,6 +16,7 @@ import sys
 import os
 import json
 import glob
+import shutil
 
 
 def win32_utf8_argv():
