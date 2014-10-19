@@ -63,3 +63,5 @@ filters/modifyitemstrings.py
 .settings
 
 filters.json
+Filters/
+Schematics/
