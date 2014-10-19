@@ -6,50 +6,60 @@ import os
 import json
 import time
 
-def getPlayerNameFromUUID(uuid):
-    try:
-        t = time.time()
-    except:
-        t = 0
-    nuuid = uuid.replace("-", "")
-    try:
-        if not os.path.exists(userCachePath):
-            usercache = {}
-            print "{} doesn't exist, will not cache".format(userCachePath)
-        else:
-            try:
-                f = open(userCachePath,"r+")
-                usercache = json.loads(f.read())
-            except:
-                print "Error loading {} from disk".format(userCachePath)
+def getPlayerNameFromUUID(uuid,forceNetwork=False):
+    if forceNetwork:
+        try:
+            print "Loading {} from network".format(uuid)
+            nuuid = uuid.replace("-", "")
+            playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
+            playerJSON = json.loads(playerJSONResponse)
+            username = playerJSON[0]
+        except:
+            raise
+    else:
+        try:
+            t = time.time()
+        except:
+            t = 0
+        try:
+            if not os.path.exists(userCachePath):
                 usercache = {}
-
-        try:
-            if os.path.exists(userCachePath) and uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
-                refreshUUID = False
+                print "{} doesn't exist, will not cache".format(userCachePath)
             else:
-                refreshUUID = False
-        except:
-            refreshUUID = True
+                try:
+                    f = open(userCachePath,"r+")
+                    usercache = json.loads(f.read())
+                except:
+                    print "Error loading {} from disk".format(userCachePath)
+                    usercache = {}
 
-        if refreshUUID:
             try:
-                print "Loading {} from network".format(uuid)
-                playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
-                playerJSON = json.loads(playerJSONResponse)
-                username = playerJSON[0]
-                usercache[uuid] = {"username":username,"timestamp":t}
+                if os.path.exists(userCachePath) and uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
+                    refreshUUID = False
+                else:
+                    refreshUUID = False
             except:
-                print "Error loading {} from network".format(uuid)
+                refreshUUID = True
+
+            if refreshUUID:
+                try:
+                    usercache[uuid] = {"username":getPlayerNameFromUUID(uuid,True),"timestamp":t}
+                except:
+                    print "Error loading {} from network".format(uuid)
+                    return uuid
+            try:
+                if os.path.exists(userCachePath):
+                    f.seek(0)
+                    f.write(json.dumps(usercache))
+                    f.close()
+            except:
+                print "Error writing {} to disk".format(userCachePath)
+            try:
+                return usercache[uuid]["username"]
+            except:
+                print uuid in usercache
+                print "Error returning uuid"
                 return uuid
-        try:
-            if os.path.exists(userCachePath):
-                f.seek(0)
-                f.write(json.dumps(usercache))
-                f.close()
         except:
-            print "Error writing {} to disk".format(userCachePath)
-        return usercache[uuid]["username"]
-    except:
-        print "An error occured getting the username for {}".format(uuid)
-        return uuid
+            print "Error getting the username for {}".format(uuid)
+            return uuid
