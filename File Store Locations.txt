@@ -23,13 +23,13 @@
 
 Portable
   usercache.json
-    Documents\ (CSIDL_MYDOCUMENTS)
+    Documents\MCEdit\ (CSIDL_MYDOCUMENTS)
   ServerJarStorage\
-    Documents\ServerJarStorage\ (CSIDL_MYDOCUMENTS)
+    Documents\MCEdit\ServerJarStorage\ (CSIDL_MYDOCUMENTS)
   Filters\
-    Documents\Filters\ (CSIDL_MYDOCUMENTS)
+    Documents\MCEdit\Filters\ (CSIDL_MYDOCUMENTS)
   Schematics\
-    Documents\Schematics\ (CSIDL_MYDOCUMENTS)
+    Documents\MCEdit\Schematics\ (CSIDL_MYDOCUMENTS)
 Fixed
   usercache.json
     ..\ServerJarStorage\
