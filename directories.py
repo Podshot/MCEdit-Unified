@@ -196,3 +196,139 @@ except:
     print "Unable to make usercache.json at {}".format(userCachePath)
 
 minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")
+
+
+ini = u"mcedit.ini"
+cache = u"usercache.json"
+
+parentDir = os.path.dirname(getDataDir())
+docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
+
+portableConfigFilePath = os.path.join(parentDir, cache)
+portableCacheFilePath = os.path.join(parentDir, ini)
+portableSchematicsDir = os.path.join(parentDir, u"Schematics")
+portableJarStorageDir = os.path.join(parentDir, u"ServerJarStorage")
+portableFiltersDir = os.path.join(parentDir, u"Filters")
+if not os.path.exists(parentDir):
+    os.makedirs(parentDir)
+
+fixedCacheFilePath = os.path.join(docsFolder, cache)
+fixedConfigFilePath = os.path.join(docsFolder, ini)
+fixedSchematicsDir = os.path.join(docsFolder, u"Schematics")
+FixedJarStorageDir = os.path.join(docsFolder, u"ServerJarStorage")
+fixedFiltersDir = os.path.join(docsFolder, u"Filters")
+if not os.path.exists(docsFolder):
+    os.makedirs(docsFolder)
+
+if sys.platform == "darwin":
+    # parentDir is MCEdit.app/Contents/
+    if ".app" in parentDir:
+        folderContainingAppPackage = dirname(dirname(parentDir)) # Running frmo app bundle
+    else:
+        folderContainingAppPackage = parentDir # Running from source
+    oldPath = fixedConfigFilePath
+
+    fixedConfigFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
+    fixedSchematicsDir = os.path.join(directories.getCacheDir(), u"Schematics")
+    fixedFiltersDir = os.path.join(directories.getCacheDir(), u"Filters")
+    if not os.path.exists(directories.getCacheDir()):
+        os.makedirs(directories.getCacheDir())
+
+    if os.path.exists(oldPath):
+        try:
+            os.rename(oldPath, fixedConfigFilePath)
+        except Exception, e:
+            print repr(e)
+
+    portableConfigFilePath = os.path.join(folderContainingAppPackage, ini)
+    portableSchematicsDir = os.path.join(folderContainingAppPackage, u"MCEdit/Schematics")
+    portableFiltersDir = os.path.join(folderContainingAppPackage, u"MCEdit/Filters")
+    try:
+        if not os.path.exists(os.path.join(folderContainingAppPackage,"MCEdit")):
+            os.makedirs(os.path.join(folderContainingAppPackage,"MCEdit"))
+    except:
+        print "Error making {}".format(os.path.join(folderContainingAppPackage,"MCEdit"))
+
+print portableFiltersDir
+
+def goPortable():
+    global configFilePath, schematicsDir, filtersDir, portable
+
+    if os.path.exists(fixedSchematicsDir):
+        move_displace(fixedSchematicsDir, portableSchematicsDir)
+    if os.path.exists(fixedConfigFilePath):
+        move_displace(fixedConfigFilePath, portableConfigFilePath)
+    if os.path.exists(fixedFiltersDir):
+        move_displace(fixedFiltersDir, portableFiltersDir)
+
+    schematicsDir = portableSchematicsDir
+    configFilePath = portableConfigFilePath
+    filtersDir = portableFiltersDir
+    portable = True
+
+
+def move_displace(src, dst):
+    dstFolder = os.path.basename(os.path.dirname(dst))
+    if not os.path.exists(dst):
+
+        print "Moving {0} to {1}".format(os.path.basename(src), dstFolder)
+        shutil.move(src, dst)
+    else:
+        olddst = dst + ".old"
+        i = 0
+        while os.path.exists(olddst):
+            olddst = dst + ".old" + str(i)
+            i += 1
+
+        print "{0} already found in {1}! Renamed it to {2}.".format(os.path.basename(src), dstFolder, dst)
+        os.rename(dst, olddst)
+        shutil.move(src, dst)
+
+
+def goFixed():
+    global configFilePath, schematicsDir, filtersDir, portable
+
+    if os.path.exists(portableSchematicsDir):
+        move_displace(portableSchematicsDir, fixedSchematicsDir)
+    if os.path.exists(portableConfigFilePath):
+        move_displace(portableConfigFilePath, fixedConfigFilePath)
+    if os.path.exists(portableFiltersDir):
+        move_displace(portableFiltersDir, fixedFiltersDir)
+
+    schematicsDir = fixedSchematicsDir
+    configFilePath = fixedConfigFilePath
+    filtersDir = fixedFiltersDir
+    portable = False
+
+
+def portableConfigExists():
+    return (os.path.exists(portableConfigFilePath)  # mcedit.ini in MCEdit folder
+            or (sys.platform != 'darwin' and not os.path.exists(
+        fixedConfigFilePath)))  # no mcedit.ini in Documents folder (except on OS X when we always want it in Library/Preferences
+
+
+if portableConfigExists():
+    print "Running in portable mode. MCEdit/Schematics, MCEdit/Filters, and mcedit.ini are stored alongside " + (
+    sys.platform == "darwin" and "MCEdit.app" or "MCEditData")
+    portable = True
+    schematicsDir = portableSchematicsDir
+    configFilePath = portableConfigFilePath
+    filtersDir = portableFiltersDir
+
+else:
+    print "Running in fixed install mode. MCEdit/Schematics, MCEdit/Filters, and mcedit.ini are in your " + (
+    sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)" or "Documents folder.")
+    schematicsDir = fixedSchematicsDir
+    configFilePath = fixedConfigFilePath
+    filtersDir = fixedFiltersDir
+    portable = False
+    
+
+#if portable:
+#    serverJarStorageDir = (os.path.join(parentDir, "ServerJarStorage"))
+#    ServerJarStorage.defaultCacheDir = serverJarStorageDir
+#    jarStorage = ServerJarStorage(serverJarStorageDir)
+#else:
+#    jarStorage = ServerJarStorage()
+
+

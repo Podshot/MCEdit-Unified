@@ -1956,7 +1956,7 @@ class LevelEditor(GLViewport):
 
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
-            mcplatform.schematicsDir, self.level.displayName, "schematic")
+            directories.schematicsDir, self.level.displayName, "schematic")
 
         if filename:
             schematic.saveToFile(filename)

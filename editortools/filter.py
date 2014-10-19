@@ -292,7 +292,7 @@ class FilterToolPanel(Panel):
         self.confirmButton = Button("Filter", action=self.tool.confirm)
 
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
-        filterLabel.mouse_down = lambda x: mcplatform.platform_open(mcplatform.filtersDir)
+        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.filtersDir)
         filterLabel.tooltipText = "Click to open filters folder"
         filterSelectRow = Row((filterLabel, self.filterSelect))
 
@@ -389,7 +389,7 @@ class FilterTool(EditorTool):
         totalFilters = 0
         updatedFilters = 0
         try:
-            os.mkdir(mcplatform.filtersDir + "/updates")
+            os.mkdir(directories.filtersDir + "/updates")
         except OSError:
             pass
         for module in self.filterModules.values():
@@ -399,11 +399,11 @@ class FilterTool(EditorTool):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"],
-                                           mcplatform.filtersDir + "/updates/" + versionJSON["Name"])
+                                           directories.filtersDir + "/updates/" + versionJSON["Name"])
                         updatedFilters = updatedFilters + 1
-        for f in os.listdir(mcplatform.filtersDir + "/updates"):
-            shutil.copy(mcplatform.filtersDir + "/updates/" + f, mcplatform.filtersDir)
-        shutil.rmtree(mcplatform.filtersDir + "/updates/")
+        for f in os.listdir(directories.filtersDir + "/updates"):
+            shutil.copy(directories.filtersDir + "/updates/" + f, directories.filtersDir)
+        shutil.rmtree(directories.filtersDir + "/updates/")
         self.finishedUpdatingWidget = Widget()
         lbl = Label("Updated " + str(updatedFilters) + " filter(s) out of " + str(totalFilters))
         closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
@@ -417,7 +417,7 @@ class FilterTool(EditorTool):
         self.finishedUpdatingWidget.dismiss()
 
     def reloadFilters(self):
-        filterDir = mcplatform.filtersDir
+        filterDir = directories.filtersDir
         filterFiles = os.listdir(filterDir)
         filterPyfiles = filter(lambda x: x.endswith(".py"), filterFiles)
 

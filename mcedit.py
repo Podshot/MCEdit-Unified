@@ -636,11 +636,11 @@ class OptionsPanel(Dialog):
         return (
         tr("Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder"),
         tr("Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder"))[
-            mcplatform.portable]
+            directories.portable]
 
     @property
     def portableLabelText(self):
-        return (tr("Install Mode: Portable"), tr("Install Mode: Fixed"))[1 - mcplatform.portable]
+        return (tr("Install Mode: Portable"), tr("Install Mode: Fixed"))[1 - directories.portable]
 
     def togglePortable(self):
         textChoices = [
@@ -652,10 +652,10 @@ class OptionsPanel(Dialog):
             textChoices[
                 1] = tr("This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?")
 
-        alertText = textChoices[mcplatform.portable]
+        alertText = textChoices[directories.portable]
         if albow.ask(alertText) == "OK":
             try:
-                [mcplatform.goPortable, mcplatform.goFixed][mcplatform.portable]()
+                [directories.goPortable, directories.goFixed][directories.portable]()
             except Exception, e:
                 traceback.print_exc()
                 albow.alert(tr(u"Error while moving files: {0}").format(repr(e)))
@@ -1108,39 +1108,39 @@ def main(argv):
     pygame.font.init()
 
     try:
-        if not os.path.exists(mcplatform.schematicsDir):
+        if not os.path.exists(directories.schematicsDir):
             shutil.copytree(
                 os.path.join(directories.getDataDir(), u'stock-schematics'),
-                mcplatform.schematicsDir
+                directories.schematicsDir
             )
     except Exception, e:
         logging.warning('Error copying bundled schematics: {0!r}'.format(e))
         try:
-            os.mkdir(mcplatform.schematicsDir)
+            os.mkdir(directories.schematicsDir)
         except Exception, e:
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
 
     try:
-        if not os.path.exists(mcplatform.filtersDir):
+        if not os.path.exists(directories.filtersDir):
             shutil.copytree(
                 os.path.join(directories.getDataDir(), u'stock-filters'),
-                mcplatform.filtersDir
+                directories.filtersDir
             )
         else:
             # Start hashing the filter dir
-            mceutils.compareMD5Hashes(directories.getAllFilters(mcplatform.filtersDir))
+            mceutils.compareMD5Hashes(directories.getAllFilters(directories.filtersDir))
     except Exception, e:
         logging.warning('Error copying bundled filters: {0!r}'.format(e))
         try:
-            os.mkdir(mcplatform.filtersDir)
+            os.mkdir(directories.filtersDir)
         except Exception, e:
             logging.warning('Error creating filters folder: {0!r}'.format(e))
 
-    if mcplatform.filtersDir not in [s.decode(sys.getfilesystemencoding())
+    if directories.filtersDir not in [s.decode(sys.getfilesystemencoding())
                           if isinstance(s, str)
                           else s
                           for s in sys.path]:
-        sys.path.append(mcplatform.filtersDir.encode(sys.getfilesystemencoding()))
+        sys.path.append(directories.filtersDir.encode(sys.getfilesystemencoding()))
 
     try:
         MCEdit.main()

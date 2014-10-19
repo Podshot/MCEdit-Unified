@@ -22,7 +22,7 @@ import collections
 import ConfigParser
 from cStringIO import StringIO
 
-import mcplatform
+import directories
 
 from albow import alert
 
@@ -30,7 +30,7 @@ log = logging.getLogger(__name__)
 
 
 def configFilePath():
-    return mcplatform.configFilePath
+    return directories.configFilePath
 
 
 def loadConfig():

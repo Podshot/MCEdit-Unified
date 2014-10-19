@@ -543,16 +543,16 @@ def compareMD5Hashes(found_filters):
                         with open(filterBundle[realName]) as bundledFilter:
                             bundledData = bundledFilter.read()
                         if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData != None:
-                            shutil.copy(filterBundle[realName], mcplatform.filtersDir)
+                            shutil.copy(filterBundle[realName], directories.filtersDir)
                             hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
                         if old_hash != hashlib.md5(filterData).hexdigest() and hashlib.md5(filterData).hexdigest() != hashlib.md5(bundledData).hexdigest():
-                            shutil.copy(filterBundle[realName], mcplatform.filtersDir)
+                            shutil.copy(filterBundle[realName], directories.filtersDir)
                             hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
                     else:
                         hashJSON["filters"][realName] = hashlib.md5(filterData).hexdigest()
         for bundled in filterBundle.keys():
             if bundled not in ff.keys():
-                shutil.copy(filterBundle[bundled], mcplatform.filtersDir)
+                shutil.copy(filterBundle[bundled], directories.filtersDir)
                 data = None
                 with open(filterBundle[bundled], 'r') as f:
                     data = f.read()
