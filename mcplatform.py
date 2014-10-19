@@ -180,7 +180,7 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False):
 
     initialDir = lastSaveDir or minecraftSaveFileDir
     if schematics:
-        initialDir = lastSchematicsDir or schematicsDir
+        initialDir = lastSchematicsDir or directories.schematicsDir
 
     def _askOpen():
         suffixes = ["mclevel", "dat", "mine", "mine.gz"]

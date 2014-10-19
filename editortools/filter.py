@@ -31,6 +31,7 @@ import urllib2
 import urllib
 import json
 import shutil
+import directories
 
 
 def alertFilterException(func):
