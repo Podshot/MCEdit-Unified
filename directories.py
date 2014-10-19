@@ -230,10 +230,10 @@ if sys.platform == "darwin":
     oldPath = fixedConfigFilePath
 
     fixedConfigFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
-    fixedSchematicsDir = os.path.join(directories.getCacheDir(), u"Schematics")
-    fixedFiltersDir = os.path.join(directories.getCacheDir(), u"Filters")
-    if not os.path.exists(directories.getCacheDir()):
-        os.makedirs(directories.getCacheDir())
+    fixedSchematicsDir = os.path.join(getCacheDir(), u"Schematics")
+    fixedFiltersDir = os.path.join(getCacheDir(), u"Filters")
+    if not os.path.exists(getCacheDir()):
+        os.makedirs(getCacheDir())
 
     if os.path.exists(oldPath):
         try:
