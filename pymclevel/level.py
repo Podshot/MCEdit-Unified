@@ -464,13 +464,12 @@ class EntityLevel(MCLevel):
 
         return entsRemoved
 
-    def removeTileEntitiesInBox(self, box):
-
+    def removeTileEntities(self, func):
         if not hasattr(self, "TileEntities"):
             return
         newEnts = []
         for ent in self.TileEntities:
-            if TileEntity.pos(ent) in box:
+            if func(TileEntity.pos(ent)):
                 continue
             newEnts.append(ent)
 
@@ -481,12 +480,15 @@ class EntityLevel(MCLevel):
 
         return entsRemoved
 
-    def removeTileTicksInBox(self, box):
+    def removeTileEntitiesInBox(self, box):
+        return self.removeTileEntities(lambda p:p in box)
+
+    def removeTileTicks(self, func):
         if not hasattr(self, "TileTicks"):
             return
         newEnts = []
         for ent in self.TileTicks:
-            if TileTick.pos(ent) in box:
+            if func(TileTick.pos(ent)):
                 continue
             newEnts.append(ent)
 
@@ -496,6 +498,9 @@ class EntityLevel(MCLevel):
         self.TileTicks.value[:] = newEnts
 
         return entsRemoved
+
+    def removeTileTicksInBox(self, box):
+        return self.removeTileTicks(lambda p: p in box)
 
     def addEntities(self, entities):
         for e in entities:
