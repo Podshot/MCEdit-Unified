@@ -1880,7 +1880,7 @@ class LevelEditor(GLViewport):
         counts.remove((level.materials.Air, 0))
         counts.append((b, c))
 
-        blockRows = [("({0}:{1})".format(block.ID, block.blockData), block.name, count) for block, count in counts]
+        blockRows = [count ,block.name, ("({0}:{1})".format(block.ID, block.blockData)) for block, count in counts]
         #blockRows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         rows = list(blockRows)
@@ -1888,17 +1888,17 @@ class LevelEditor(GLViewport):
         def extendEntities():
             if entitySum:
                 rows.extend([("", "", ""), ("", "<Entities>", entitySum)])
-                rows.extend([(id[0], id[1], count) for (id, count) in sorted(entityCounts.iteritems())])
+                rows.extend([(count, id[1], id[0]) for (id, count) in sorted(entityCounts.iteritems())])
             if tileEntitySum:
                 rows.extend([("", "", ""), ("", "<TileEntities>", tileEntitySum)])
-                rows.extend([("", id, count) for (id, count) in sorted(tileEntityCounts.iteritems())])
+                rows.extend([(count, id, "") for (id, count) in sorted(tileEntityCounts.iteritems())])
 
         extendEntities()
 
         columns = [
-            TableColumn("ID", 120),
-            TableColumn("Name", 250),
             TableColumn("Count", 100),
+            TableColumn("Name", 250),
+            TableColumn("ID", 120),
         ]
         table = TableView(columns=columns)
         table.sortColumn = columns[2]
