@@ -1880,17 +1880,17 @@ class LevelEditor(GLViewport):
         counts.remove((level.materials.Air, 0))
         counts.append((b, c))
 
-        blockRows = [[count ,block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in counts]
-        #blockRows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
-
+        blockRows = [("", "", ""), (box.volume, "<Blocks>", "")]
         rows = list(blockRows)
+        rows.extend([[count ,block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in counts])
+        #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         def extendEntities():
             if entitySum:
-                rows.extend([("", "", ""), ("", "<Entities>", entitySum)])
+                rows.extend([("", "", ""), (entitySum, "<Entities>", "")])
                 rows.extend([(count, id[1], id[0]) for (id, count) in sorted(entityCounts.iteritems())])
             if tileEntitySum:
-                rows.extend([("", "", ""), ("", "<TileEntities>", tileEntitySum)])
+                rows.extend([("", "", ""), (tileEntitySum, "<TileEntities>", "")])
                 rows.extend([(count, id, "") for (id, count) in sorted(tileEntityCounts.iteritems())])
 
         extendEntities()
@@ -1935,9 +1935,9 @@ class LevelEditor(GLViewport):
         def saveToFile():
             filename = askSaveFile(mcplatform.docsFolder,
                                    title='Save analysis...',
-                                   defaultName=self.level.displayName + "_analysis",
+                                   defaultName=self.level.displayName + "_analysis.txt",
                                    filetype='Comma Separated Values\0*.txt\0\0',
-                                   suffix="",
+                                   suffix="txt",
             )
 
             if filename:
@@ -1949,7 +1949,7 @@ class LevelEditor(GLViewport):
                     csvfile.writerows(rows)
 
         saveButton = Button("Save to file...", action=saveToFile)
-        col = Column((Label("Volume: {0} blocks.".format(box.volume)), tableBacking, saveButton))
+        col = Column((Label("Analysis"), tableBacking, saveButton))
         Dialog(client=col, responses=["OK"]).present()
 
     def exportSchematic(self, schematic):
