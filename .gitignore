@@ -71,3 +71,5 @@ Thumbs.db
 filters.json
 pymclevel/.git/
 *.lnk
+Filters/
+Schematics/
