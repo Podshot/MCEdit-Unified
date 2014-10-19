@@ -4,6 +4,7 @@ from editortools import thumbview
 from editortools import blockview
 from glbackground import GLBackground
 from mceutils import CheckBoxLabel
+from pygame import key
 from pymclevel import materials
 
 from pymclevel.materials import Block
@@ -219,3 +220,15 @@ class BlockPicker(Dialog):
 
         self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
         self.blockButton.blockInfo = self.blockInfo
+
+    def key_down(self, evt):
+        keyname = key.name(evt.key)
+        if keyname == "up" and self.selectedBlockIndex > 0:
+            self.selectedBlockIndex -= 1
+            self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+            self.blockButton.blockInfo = self.blockInfo
+            
+        elif keyname == "down" and self.selectedBlockIndex < len(self.matchingBlocks):
+            self.selectedBlockIndex += 1
+            self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+            self.blockButton.blockInfo = self.blockInfo
