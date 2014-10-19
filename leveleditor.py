@@ -530,7 +530,7 @@ class CameraViewport(GLViewport):
             intProjectedPoint = map(int, map(numpy.floor, projectedPoint))
         except ValueError:
             return None  # catch NaNs
-        intProjectedPoint[1] = max(0, intProjectedPoint[1])
+        intProjectedPoint[1] = max(-1, intProjectedPoint[1])
 
         # find out which face is under the cursor.  xxx do it more precisely
         faceVector = ((projectedPoint[0] - (intProjectedPoint[0] + 0.5)),

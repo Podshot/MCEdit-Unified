@@ -503,6 +503,13 @@ class SelectionTool(EditorTool):
     def nudgeBlocks(self, dir):
         if pygame.key.get_mods() & pygame.KMOD_SHIFT:
             dir = dir * (16, 16, 16)
+
+        points = self.getSelectionPoints()
+        bounds = self.editor.level.bounds
+
+        if not all((p + dir) in bounds for p in points):
+            return
+
         op = NudgeBlocksOperation(self.editor, self.editor.level, self.selectionBox(), dir)
 
         self.editor.addOperation(op)
