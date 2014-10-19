@@ -419,6 +419,7 @@ if sys.platform == "darwin":
     except:
         print "Error making {}".format(os.path.join(folderContainingAppPackage,"MCEdit"))
 
+print portableFiltersDir
 
 def goPortable():
     global configFilePath, schematicsDir, filtersDir, portable

@@ -136,7 +136,7 @@ def getMinecraftProfileDirectory(profileName):
 def getMinecraftLauncherDirectory():
     """Returns the /minecraft directory, note: may not contain the /saves folder!"""
     if sys.platform == "win32":
-        return os.path.join(win32_appdata(), "minecraft")
+        return os.path.join(win32_appdata(), ".minecraft")
     elif sys.platform == "darwin":
         return os.path.expanduser("~/Library/Application Support/minecraft")
     else:

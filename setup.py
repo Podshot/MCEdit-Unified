@@ -88,7 +88,7 @@ SETUP_COMMON = {
             '_nbt.*'
         ],
         'filters': [
-            'filters/**'
+            'stock-filters/**'
         ],
         'stock-schematics': [
             'stock-schematics/**'

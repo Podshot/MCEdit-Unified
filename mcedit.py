@@ -1123,7 +1123,7 @@ def main(argv):
     try:
         if not os.path.exists(mcplatform.filtersDir):
             shutil.copytree(
-                os.path.join(directories.getDataDir(), u'filters'),
+                os.path.join(directories.getDataDir(), u'stock-filters'),
                 mcplatform.filtersDir
             )
         else:
