@@ -14,9 +14,6 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 
 #Modified by D.C.-G. for translation purposes
 
-#This code has been modified by Rubisk, removing the randomization chance for erosion, and adding a percentual brush.
-#Feel free to modify/distribute my code. 
-
 import collections
 import random
 from datetime import datetime
@@ -26,6 +23,7 @@ import pygame
 from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert
 from albow.translate import tr
 import bresenham
+import leveleditor
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
@@ -33,7 +31,7 @@ from editortools.tooloptions import ToolOptions
 from glbackground import Panel
 from glutils import gl
 import mcplatform
-from pymclevel import block_fill, BoundingBox, materials
+from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
 from pymclevel.level import extractHeights
 from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, alertException, drawTerrainCuttingWire
@@ -895,6 +893,24 @@ class BrushPanel(Panel):
         self.blockButton.blockInfo = self.replaceBlockButton.blockInfo
         self.replaceBlockButton.blockInfo = b
 
+    def rotate(self):
+        Block = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
+        Data = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
+        Block[0][0][0] = self.blockButton.blockInfo.ID
+        Data[0][0][0] = self.blockButton.blockInfo.blockData
+        blockrotation.RotateLeft(Block, Data)
+        self.blockButton.blockInfo.blockData = Data[0][0][0]
+    
+    def roll(self):
+        Block = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
+        Data = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
+        Block[0][0][0] = self.blockButton.blockInfo.ID
+        Data[0][0][0] = self.blockButton.blockInfo.blockData
+        blockrotation.Roll(Block, Data)
+        self.blockButton.blockInfo.blockData = Data[0][0][0]
+
+        
+
 
 class BrushToolOptions(ToolOptions):
     def __init__(self, tool):
@@ -1214,6 +1230,11 @@ class BrushTool(CloneTool):
         self.brushSize = L, H, W
         self.reticleOffset = offs
         self.editor.cameraToolDistance = dist
+        rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
+        if (rotateBlockBrush):
+            self.panel.rotate()
+        else:
+            print "Not rotating block because rotation is turned off in options menu"
 
     def mirror(self):
         offs = self.reticleOffset
@@ -1222,6 +1243,11 @@ class BrushTool(CloneTool):
         self.brushSize = W, L, H
         self.reticleOffset = offs
         self.editor.cameraToolDistance = dist
+        rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
+        if (rotateBlockBrush):
+            self.panel.roll()
+        else:
+            print "Not rotating block because rotation is turned off in options menu"
 
     def toolReselected(self):
         if self.brushMode.name == "Replace":
