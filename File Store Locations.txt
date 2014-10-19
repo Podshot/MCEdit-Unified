@@ -1,0 +1,24 @@
+===File Store Locations===
+
+====Mac OS X "Darwin"=====
+— usercache.json
+  — ~/Library/Application Support/pymclevel/usercache.json
+
+— ServerJarStorage/
+  — ~/Library/Application Support/pymclevel/ServerJarStorage/
+
+— Filters/
+  Portable
+    — ~/Library/Application Support/pymclevel/Filters
+  Fixed
+    — Relative to executable (Custom for .app package, if running from)
+
+— Schematics/
+  Portable
+    — ~/Library/Application Support/pymclevel/Schematics
+  Fixed
+    — Relative to executable (Custom for .app package, if running from)
+
+=====Windows "win32"======
+
+======Linux "Linux"=======
