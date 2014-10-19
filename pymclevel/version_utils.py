@@ -7,19 +7,30 @@ import json
 import time
 
 def getPlayerNameFromUUID(uuid):
-    t = time.time()
+    try:
+        t = time.time()
+    except:
+        t = 0
     nuuid = uuid.replace("-", "")
     try:
         if not os.path.exists(userCachePath):
             usercache = {}
-            print "Usercache doesn't exist, will not cache"
+            print "{} doesn't exist, will not cache".format(userCachePath)
         else:
-            f = open(userCachePath,"r+")
-            usercache = json.loads(f.read())
+            try:
+                f = open(userCachePath,"r+")
+                usercache = json.loads(f.read())
+            except:
+                print "Error loading {} from disk".format(userCachePath)
+                usercache = {}
 
-        refreshUUID = True
-        if os.path.exists(userCachePath) and uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
-            refreshUUID = False
+        try:
+            if os.path.exists(userCachePath) and uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
+                refreshUUID = False
+            else:
+                refreshUUID = False
+        except:
+            refreshUUID = True
 
         if refreshUUID:
             try:
@@ -29,14 +40,16 @@ def getPlayerNameFromUUID(uuid):
                 username = playerJSON[0]
                 usercache[uuid] = {"username":username,"timestamp":t}
             except:
-                print "A network error occured"
+                print "Error loading {} from network".format(uuid)
                 return uuid
-
-        if os.path.exists(userCachePath):
-            f.seek(0)
-            f.write(json.dumps(usercache))
-            f.close()
+        try:
+            if os.path.exists(userCachePath):
+                f.seek(0)
+                f.write(json.dumps(usercache))
+                f.close()
+        except:
+            print "Error writing {} to disk".format(userCachePath)
         return usercache[uuid]["username"]
     except:
-        print "Unable to r/w user cache file"
+        print "An error occured getting the username for {}".format(uuid)
         return uuid
