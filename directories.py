@@ -207,19 +207,19 @@ docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
 
 portableConfigFilePath = os.path.join(parentDir, cache)
 portableCacheFilePath = os.path.join(parentDir, ini)
-portableSchematicsDir = os.path.join(parentDir, u"/Schematics")
-portableJarStorageDir = os.path.join(parentDir, u"/ServerJarStorage")
-portableFiltersDir = os.path.join(parentDir, u"/Filters")
+portableSchematicsDir = os.path.join(parentDir, u"Schematics")
+portableJarStorageDir = os.path.join(parentDir, u"ServerJarStorage")
+portableFiltersDir = os.path.join(parentDir, u"Filters")
 if not os.path.exists(parentDir):
     os.makedirs(parentDir)
 
 fixedCacheFilePath = os.path.join(docsFolder, cache)
 fixedConfigFilePath = os.path.join(docsFolder, ini)
-fixedSchematicsDir = os.path.join(docsFolder, u"MCEdit/Schematics")
-FixedJarStorageDir = os.path.join(docsFolder, u"MCEdit/ServerJarStorage")
-fixedFiltersDir = os.path.join(docsFolder, u"MCEdit/Filters")
-if not os.path.exists(os.path.join(docsFolder,"MCEdit")):
-    os.makedirs(os.path.join(docsFolder,"MCEdit"))
+fixedSchematicsDir = os.path.join(docsFolder, u"Schematics")
+FixedJarStorageDir = os.path.join(docsFolder, u"ServerJarStorage")
+fixedFiltersDir = os.path.join(docsFolder, u"Filters")
+if not os.path.exists(docsFolder):
+    os.makedirs(docsFolder)
 
 if sys.platform == "darwin":
     # parentDir is MCEdit.app/Contents/
