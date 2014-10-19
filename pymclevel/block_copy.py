@@ -131,11 +131,22 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
                     eTag = Entity.copyWithOffset(entityTag, copyOffset)
                     destLevel.addEntity(eTag)
 
+            def copy(p):
+                return p in sourceChunkBoxInDestLevel and (blocksToCopy is None or mask[
+                    p[0] - sourceChunkBoxInDestLevel.minx,
+                    p[2] - sourceChunkBoxInDestLevel.minz,
+                    p[1] - sourceChunkBoxInDestLevel.miny,
+                ])
+
+            destChunk.removeTileEntities(copy)
+
             tileEntities = sourceChunk.getTileEntitiesInBox(destChunkBoxInSourceLevel)
             t += len(tileEntities)
             for tileEntityTag in tileEntities:
                 eTag = TileEntity.copyWithOffset(tileEntityTag, copyOffset, staticCommands, first)
                 destLevel.addTileEntity(eTag)
+
+            destChunk.removeTileTicks(copy)
 
             tileTicksList = sourceChunk.getTileTicksInBox(destChunkBoxInSourceLevel)
             tt += len(tileTicksList)
