@@ -795,22 +795,27 @@ class CameraViewport(GLViewport):
         panel = Dialog()
         skullMenu = mceutils.ChoiceButton(map(str, skullTypes))
 
-        if "ExtraType" not in tileEntity:
-            usernameField.value = ""
-        else:
+        if "Owner" in tileEntity:
+            usernameField.value = str(tileEntity["Owner"]["Name"].value)
+        elif "ExtraType" in tileEntity:
             usernameField.value = str(tileEntity["ExtraType"].value)
+        else:
+            usernameField.value = ""
 
+        oldUserName = usernameField.value
         skullMenu.selectedChoice = inverseSkullType[tileEntity["SkullType"].value]
 
         def updateSkull():
-            if usernameField.value != "":
-                tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
-                tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullMenu.selectedChoice])
-                if "Owner" in tileEntity:
-                    del tileEntity["Owner"]
+            if usernameField.value != oldUserName:
+                if usernameField.value != "":
+                    tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
+                    tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullMenu.selectedChoice])
+                    if "Owner" in tileEntity:
+                        del tileEntity["Owner"]
+                    self.editor.addUnsavedEdit()
+                    
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
             chunk.dirty = True
-            self.editor.addUnsavedEdit()
             panel.dismiss()
             
         okBTN = Button("OK", action=updateSkull)
@@ -845,19 +850,23 @@ class CameraViewport(GLViewport):
 
         if tileEntity["Command"].value != "":
             commandField.value = tileEntity["Command"].value
+            oldCommand = commandField.value
         if "TrackOutput" in tileEntity:
             trackOutput.value = tileEntity["TrackOutput"].value
+            oldTrackOutput = trackOutput.value
         if "CustomName" in tileEntity:
             nameField.value = tileEntity["CustomName"].value
+            oldNameField = nameField.value
 
         def updateCommandBlock():
-            print trackOutput.value
-            tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
-            tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
-            tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
+            if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value:
+                tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
+                tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
+                tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
+                self.editor.addUnsavedEdit()
+                
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
             chunk.dirty = True
-            self.editor.addUnsavedEdit()
             panel.dismiss()
 
         okBTN = Button("OK", action=updateCommandBlock)
