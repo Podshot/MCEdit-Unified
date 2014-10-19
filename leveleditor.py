@@ -3141,9 +3141,12 @@ class LevelEditor(GLViewport):
                 return u"{0} seconds since the epoch.".format(lp)
 
         def nameFormat(w):
-            if w.LevelName == w.displayName:
-                return w.LevelName
-            return u"{0} ({1})".format(w.LevelName, w.displayName)
+            try:
+                if w.LevelName == w.displayName:
+                    return w.LevelName
+                return u"{0} ({1})".format(w.LevelName, w.displayName)
+            except:
+                return "(IT BROKE!)"
 
         worldData = [[dateFormat(d), nameFormat(w), str(w.dimensions.keys())[1:-1], w, d]
                      for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
