@@ -534,6 +534,10 @@ class OptionsPanel(Dialog):
         setWindowPlacementRow = mceutils.CheckBoxLabel("Set Window Placement",
                                                        ref=Settings.setWindowPlacement.propertyRef(),
                                                        tooltipText="Try to save and restore the window position.")
+                                                       
+        rotateBlockBrushRow = mceutils.CheckBoxLabel("Rotate block with brush",
+                                                        ref=Settings.rotateBlockBrush.propertyRef(),
+                                                        tooltipText="When rotating your brush, also rotate the orientation of the block your brushing with")
 
         windowSizeRow = mceutils.CheckBoxLabel("Window Resize Alert",
                                                ref=Settings.shouldResizeAlert.propertyRef(),
@@ -594,6 +598,7 @@ class OptionsPanel(Dialog):
                       visibilityCheckRow,
                       staticCommandsNudgeRow,
                       moveSpawnerPosNudgeRow,
+                      rotateBlockBrushRow,
                       langStringRow,
                   ) + (
                       ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())

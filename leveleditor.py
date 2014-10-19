@@ -93,6 +93,8 @@ Settings.reportCrashes = Settings("report crashes new", False)
 Settings.reportCrashesAsked = Settings("report crashes asked", False)
 Settings.staticCommandsNudge = Settings("Static Coords While Nudging", False)
 Settings.moveSpawnerPosNudge = Settings("Change Spawners While Nudging", False)
+Settings.rotateBlockBrush = Settings("rotateBlockBrushRow", True)
+
 
 Settings.langCode = Settings("Language String", "en_US")
 
