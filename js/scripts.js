@@ -112,7 +112,11 @@ function generatePageStructure() {
 		if (active) {
 			$('title').html('MCEdit Fork - ' + navitem.displayname);
 		}
-		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
+		if (navitem.direct) {
+			$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navitem.url + '">' + navitem.displayname + '</a></li>')
+		} else {
+			$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
+		}
 	}
 	return true;
 }

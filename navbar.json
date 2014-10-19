@@ -16,6 +16,11 @@
 		{
 			"displayname": "Contributors",
 			"url": "contributors.html"
+		},
+		{
+			"displayname": "Github",
+			"url": "http://github.com/Khroki/MCEdit-Unified/",
+			"direct": true
 		}
 	]
 }
