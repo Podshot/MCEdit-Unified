@@ -207,11 +207,11 @@ docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
 
 portableConfigFilePath = os.path.join(parentDir, cache)
 portableCacheFilePath = os.path.join(parentDir, ini)
-portableSchematicsDir = os.path.join(parentDir, u"MCEdit/Schematics")
-portableJarStorageDir = os.path.join(parentDir, u"MCEdit/ServerJarStorage")
-portableFiltersDir = os.path.join(parentDir, u"MCEdit/Filters")
-if not os.path.exists(os.path.join(parendetDir,"MCEdit")):
-    os.makedirs(os.path.join(parendetDir,"MCEdit"))
+portableSchematicsDir = os.path.join(parentDir, u"/Schematics")
+portableJarStorageDir = os.path.join(parentDir, u"/ServerJarStorage")
+portableFiltersDir = os.path.join(parentDir, u"/Filters")
+if not os.path.exists(parentDir):
+    os.makedirs(parentDir)
 
 fixedCacheFilePath = os.path.join(docsFolder, cache)
 fixedConfigFilePath = os.path.join(docsFolder, ini)

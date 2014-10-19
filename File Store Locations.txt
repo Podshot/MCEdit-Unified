@@ -32,7 +32,7 @@ Portable
     Documents\MCEdit\Schematics\ (CSIDL_MYDOCUMENTS)
 Fixed
   usercache.json
-    ..\ServerJarStorage\
+    ..\usercache.json
   ServerJarStorage\
     ..\ServerJarStorage\
   Filters\
