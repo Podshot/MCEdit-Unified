@@ -93,6 +93,7 @@ else:
     option_name = "Alt"
 
 def OSXVersionChecker(name,compare):
+    """Rediculously complicated function to compare current System version to inputted version."""
     if compare != 'gt' and compare != 'lt' and compare != 'eq' and compare != 'gteq' and compare != 'lteq':
         print "Invalid version check {}".format(compare)
         return False
@@ -302,7 +303,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         sp.setAllowedFileTypes_([suffix])
 
         if sp.runModal() == 0:
-            return  # pressed cancel
+            return # pressed cancel
 
         filename = sp.filename()
         AppKit.NSApp.mainWindow().makeKeyWindow()
@@ -375,20 +376,30 @@ win32_window_size = True
 
 ini = u"mcedit.ini"
 parentDir = dirname(directories.getDataDir())
-docsFolder = directories.getDocumentsFolder()
+docsFolder = os.path.join(directories.getDocumentsFolder(),'MCEdit')
 
 portableConfigFilePath = os.path.join(parentDir, ini)
-portableSchematicsDir = os.path.join(parentDir, u"MCEdit-schematics")
-portableFiltersDir = os.path.join(parentDir, u"MCEdit-filters")
+portableSchematicsDir = os.path.join(parentDir, u"Schematics")
+portableFiltersDir = os.path.join(parentDir, u"Filters")
+if not os.path.exists(parentDir):
+    os.makedirs(parentDir)
+
 fixedConfigFilePath = os.path.join(docsFolder, ini)
-fixedSchematicsDir = os.path.join(docsFolder, u"MCEdit-schematics")
-fixedFiltersDir = os.path.join(docsFolder, u"MCEdit-filters")
+fixedSchematicsDir = os.path.join(docsFolder, u"Schematics")
+fixedFiltersDir = os.path.join(docsFolder, u"Filters")
+if not os.path.exists(docsFolder):
+    os.makedirs(docsFolder)
 
 if sys.platform == "darwin":
     # parentDir is MCEdit.app/Contents/
-    folderContainingAppPackage = dirname(dirname(parentDir))
+    folderContainingAppPackage = os.path.join(dirname(dirname(parentDir)),'MCEdit')
     oldPath = fixedConfigFilePath
+
     fixedConfigFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
+    fixedSchematicsDir = os.path.join(directories.getCacheDir(), u"Schematics")
+    fixedFiltersDir = os.path.join(directories.getCacheDir(), u"Filters")
+    if not os.path.exists(directories.getCacheDir()):
+        os.makedirs(directories.getCacheDir())
 
     if os.path.exists(oldPath):
         try:
@@ -397,8 +408,10 @@ if sys.platform == "darwin":
             print repr(e)
 
     portableConfigFilePath = os.path.join(folderContainingAppPackage, ini)
-    portableSchematicsDir = os.path.join(folderContainingAppPackage, u"MCEdit-schematics")
-    portableFiltersDir = os.path.join(folderContainingAppPackage, u"MCEdit-filters")
+    portableSchematicsDir = os.path.join(folderContainingAppPackage, u"Schematics")
+    portableFiltersDir = os.path.join(folderContainingAppPackage, u"Filters")
+    if not os.path.exists(folderContainingAppPackage):
+        os.makedirs(folderContainingAppPackage)
 
 
 def goPortable():
@@ -458,15 +471,16 @@ def portableConfigExists():
 
 
 if portableConfigExists():
-    print "Running in portable mode. MCEdit-schematics and mcedit.ini are stored alongside " + (
-    sys.platform == "darwin" and "the MCEdit app bundle" or "MCEditData")
+    print "Running in portable mode. MCEdit/Schematics, MCEdit/Filters, and mcedit.ini are stored alongside " + (
+    sys.platform == "darwin" and "MCEdit.app" or "MCEditData")
     portable = True
     schematicsDir = portableSchematicsDir
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
 
 else:
-    print "Running in fixed install mode. MCEdit-schematics and mcedit.ini are in your Documents folder."
+    print "Running in fixed install mode. MCEdit/Schematics, MCEdit/Filters, and mcedit.ini are in your " + (
+    sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)" or "Documents folder.")
     schematicsDir = fixedSchematicsDir
     configFilePath = fixedConfigFilePath
     filtersDir = fixedFiltersDir

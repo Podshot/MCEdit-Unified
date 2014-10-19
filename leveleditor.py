@@ -48,6 +48,7 @@ import itertools
 import mcplatform
 import pymclevel
 import renderer
+import directories
 
 from math import isnan
 from os.path import dirname, isdir
@@ -3087,15 +3088,15 @@ class LevelEditor(GLViewport):
 
     @mceutils.alertException
     def askLoadWorld(self):
-        if not os.path.isdir(pymclevel.saveFileDir):
+        if not os.path.isdir(directories.minecraftSaveFileDir):
             alert(tr(u"Could not find the Minecraft saves directory!\n\n({0} was not found or is not a directory)").format(
-                pymclevel.saveFileDir))
+                directories.minecraftSaveFileDir))
             return
 
         worldPanel = Widget()
 
-        potentialWorlds = os.listdir(pymclevel.saveFileDir)
-        potentialWorlds = [os.path.join(pymclevel.saveFileDir, p) for p in potentialWorlds]
+        potentialWorlds = os.listdir(directories.minecraftSaveFileDir)
+        potentialWorlds = [os.path.join(directories.minecraftSaveFileDir, p) for p in potentialWorlds]
         worldFiles = [p for p in potentialWorlds if pymclevel.MCInfdevOldLevel.isLevel(p)]
         worlds = []
         for f in worldFiles:
@@ -3218,7 +3219,7 @@ class LevelEditor(GLViewport):
         result = Dialog(client=newWorldPanel, responses=["Create", "Cancel"]).present()
         if result == "Cancel":
             return
-        filename = mcplatform.askCreateWorld(pymclevel.saveFileDir)
+        filename = mcplatform.askCreateWorld(directories.minecraftSaveFileDir)
 
         if not filename:
             return
