@@ -567,12 +567,11 @@ class OptionsPanel(Dialog):
                                             ref=Settings.moveSpawnerPosNudge.propertyRef(),
                                             tooltipText="Change the position of the mobs in spawners while nudging.")
         
-        if not sys.platform == "darwin":
-            goPortableButton = albow.Button("Change", action=self.togglePortable)
-            
-            goPortableButton.tooltipText = self.portableButtonTooltip()
-            goPortableRow = albow.Row(
-                (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
+        goPortableButton = albow.Button("Change", action=self.togglePortable)
+        
+        goPortableButton.tooltipText = self.portableButtonTooltip()
+        goPortableRow = albow.Row(
+            (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
 
 # Disabled Crash Reporting Option
 #       reportRow = mceutils.CheckBoxLabel("Report Errors",
