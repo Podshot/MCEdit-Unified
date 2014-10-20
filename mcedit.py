@@ -640,6 +640,8 @@ class OptionsPanel(Dialog):
         return (tr("Install Mode: Portable"), tr("Install Mode: Fixed"))[1 - directories.portable]
 
     def togglePortable(self):
+    	if sys.platform == "darwin":
+    		return False
         textChoices = [
             tr("This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?").format(
                 (sys.platform == "darwin" and tr("the MCEdit application") or tr("MCEditData"))),
@@ -658,6 +660,7 @@ class OptionsPanel(Dialog):
                 albow.alert(tr(u"Error while moving files: {0}").format(repr(e)))
 
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
+       	return True
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
