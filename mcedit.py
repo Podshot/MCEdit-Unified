@@ -567,7 +567,7 @@ class OptionsPanel(Dialog):
                                             ref=Settings.moveSpawnerPosNudge.propertyRef(),
                                             tooltipText="Change the position of the mobs in spawners while nudging.")
         
-        goPortableButton = albow.Button("Change", action=self.togglePortable)
+        self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
         
         goPortableButton.tooltipText = self.portableButtonTooltip()
         goPortableRow = albow.Row(
