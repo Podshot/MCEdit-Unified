@@ -24,6 +24,7 @@ from glbackground import Panel
 from glutils import DisplayList, gl
 from mceutils import alertException, setWindowCaption, showProgress, ChoiceButton, IntInputRow, CheckBoxLabel
 import mcplatform
+import directories
 import pymclevel
 from pymclevel.minecraft_server import MCServerChunkGenerator
 
@@ -219,7 +220,7 @@ class ChunkTool(EditorTool):
 
     @alertException
     def extractChunks(self):
-        folder = mcplatform.askSaveFile(mcplatform.docsFolder,
+        folder = mcplatform.askSaveFile(directories.docsFolder,
                                         title='Export chunks to...',
                                         defaultName=self.editor.level.displayName + "_chunks",
                                         filetype='Folder\0*.*\0\0',
