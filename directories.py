@@ -171,13 +171,7 @@ minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProf
 ini = u"mcedit.ini"
 cache = u"usercache.json"
 
-if sys.platform == "darwin":
-    configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
-    schematicsDir = os.path.join(getCacheDir(), u"Schematics")
-    filtersDir = os.path.join(getCacheDir(), u"Filters")
-    if not os.path.exists(getCacheDir()):
-        os.makedirs(getCacheDir())
-else:
+if sys.platform != "darwin":
     parentDir = os.path.dirname(getDataDir())
     docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
 
@@ -311,6 +305,13 @@ def getCacheDir():
     else:
         return os.path.expanduser("~/.pymclevel") 
 
+if sys.platform == "darwin":
+    configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
+    schematicsDir = os.path.join(getCacheDir(), u"Schematics")
+    filtersDir = os.path.join(getCacheDir(), u"Filters")
+    if not os.path.exists(getCacheDir()):
+        os.makedirs(getCacheDir())    
+        
 # Create pymclevel folder as needed    
 if not os.path.exists(getCacheDir()):
     os.makedirs(getCacheDir())
