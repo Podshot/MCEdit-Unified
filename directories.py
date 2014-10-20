@@ -171,9 +171,10 @@ minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProf
 ini = u"mcedit.ini"
 cache = u"usercache.json"
 
+parentDir = os.path.dirname(getDataDir())
+docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
+    
 if sys.platform != "darwin":
-    parentDir = os.path.dirname(getDataDir())
-    docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
 
     portableConfigFilePath = os.path.join(parentDir, ini)
     portableCacheFilePath = os.path.join(parentDir, cache)
