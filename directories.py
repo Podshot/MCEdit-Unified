@@ -267,6 +267,8 @@ def move_displace(src, dst):
 
 
 def goFixed():
+    if sys.platform == "darwin":
+        return False
     global configFilePath, schematicsDir, filtersDir, portable
 
     if os.path.exists(portableSchematicsDir):
