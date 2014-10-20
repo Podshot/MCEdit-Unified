@@ -104,7 +104,7 @@ def refreshLang(self=None,suppressAlert=False,build=True):
                 cancel = True
         elif not suppressAlert and not isRealLang:
             import albow
-            albow.alert("{} is not a valid language".format(lang))
+            albow.alert("{} is not a valid language ({})".format(lang,os.path.join(langPath, lang + ".json")))
         if not isRealLang:
             Settings.langCode.set(oldlang)
         else:
