@@ -304,7 +304,10 @@ def getCacheDir():
     elif sys.platform == "darwin":
         return os.path.expanduser("~/Library/Application Support/pymclevel")
     else:
-        return os.path.expanduser("~/.pymclevel") 
+        try:
+            return genericSupportDir
+        except:
+            return os.path.expanduser("~/.pymclevel") 
 
 if sys.platform == "darwin":
     configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
