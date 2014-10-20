@@ -303,19 +303,18 @@ def goFixed():
 
 
 def portableConfigExists():
-    return (os.path.exists(portableConfigFilePath)  # mcedit.ini in MCEdit folder
-            or (sys.platform != 'darwin' and not os.path.exists(
-        fixedConfigFilePath)))  # no mcedit.ini in Documents folder (except on OS X when we always want it in Library/Preferences
+    # Check for files at portable locations. Cannot be Mac because config doesn't move
+    return (os.path.exists(portableConfigFilePath) or (sys.platform != 'darwin' and not os.path.exists(fixedConfigFilePath)))
 
 
 if portableConfigExists():
-    print "Running in portable mode. MCEdit/Schematics, MCEdit/Filters, and mcedit.ini are stored alongside " + (
-    sys.platform == "darwin" and "MCEdit.app" or "MCEditData")
+    print "Running in portable mode. MCEdit/Schematics, MCEdit/Filters, and mcedit.ini are stored alongside MCEditData")
     portable = True
     schematicsDir = portableSchematicsDir
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
-
+    if sys.platform == "darwin":
+        goPortable()
 else:
     print "Running in fixed install mode. MCEdit/Schematics, MCEdit/Filters, and mcedit.ini are in your " + (
     sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)" or "Documents folder.")

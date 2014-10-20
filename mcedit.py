@@ -566,12 +566,13 @@ class OptionsPanel(Dialog):
         moveSpawnerPosNudgeRow = mceutils.CheckBoxLabel("Change Spawners While Nudging",
                                             ref=Settings.moveSpawnerPosNudge.propertyRef(),
                                             tooltipText="Change the position of the mobs in spawners while nudging.")
-                                                
-        self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
-
-        goPortableButton.tooltipText = self.portableButtonTooltip()
-        goPortableRow = albow.Row(
-            (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
+        
+        if not sys.platform == "darwin":
+            goPortableButton = albow.Button("Change", action=self.togglePortable)
+            
+            goPortableButton.tooltipText = self.portableButtonTooltip()
+            goPortableRow = albow.Row(
+                (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
 
 # Disabled Crash Reporting Option
 #       reportRow = mceutils.CheckBoxLabel("Report Errors",
@@ -590,26 +591,23 @@ class OptionsPanel(Dialog):
         )
 
         options = (
-                      longDistanceRow,
-                      flyModeRow,
-                      autoBrakeRow,
-                      swapAxesRow,
-                      invertRow,
-                      visibilityCheckRow,
-                      staticCommandsNudgeRow,
-                      moveSpawnerPosNudgeRow,
-                      rotateBlockBrushRow,
-                      langStringRow,
-                  ) + (
-                      ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
-# Disabled Crash Reporting Option
-#                 ) + (
-#                     reportRow,
-                  ) + (
-                      (sys.platform == "win32") and (setWindowPlacementRow,) or ()
-                  ) + (
-                      goPortableRow,
-                  )
+                    longDistanceRow,
+                    flyModeRow,
+                    autoBrakeRow,
+                    swapAxesRow,
+                    invertRow,
+                    visibilityCheckRow,
+                    staticCommandsNudgeRow,
+                    moveSpawnerPosNudgeRow,
+                    rotateBlockBrushRow,
+                    langStringRow,
+                    ) + (
+                        ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
+                    ) + (
+                        (sys.platform == "win32") and (setWindowPlacementRow,) or ()
+                    ) + (
+                        (not sys.platform == "darwin") and (goPortableRow,) or ()
+                    )
 
         rightcol = albow.Column(options, align='r')
         leftcol = albow.Column(inputs, align='r')
