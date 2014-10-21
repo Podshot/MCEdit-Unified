@@ -109,9 +109,9 @@ forward = w
 back = s
 left = a
 right = d
-up = q
-down = z
-brake = space
+up = space
+down = left shift
+brake = c
 
 rotate = e
 roll = r

@@ -248,6 +248,7 @@ class KeyConfigPanel(Dialog):
         "Increase Reach",
         "Decrease Reach",
         "Reset Reach",
+        "Delete Blocks",
         "",
         "<Function Controls [Ctrl+]>",
         "Quit",
@@ -274,18 +275,19 @@ class KeyConfigPanel(Dialog):
         ("Back", "s"),
         ("Left", "a"),
         ("Right", "d"),
-        ("Up", "q"),
-        ("Down", "z"),
-        ("Brake", "space"),
+        ("Up", "space"),
+        ("Down", "left shift"),
+        ("Brake", "c"),
 
         ("Rotate", "e"),
         ("Roll", "r"),
         ("Flip", "f"),
         ("Mirror", "g"),
         ("Swap", "x"),
-        ("Increase Reach", "Scroll Up"),
-        ("Decrease Reach", "Scroll Down"),
+        ("Increase Reach", "scroll up"),
+        ("Decrease Reach", "scroll down"),
         ("Reset Reach", "mouse3"),
+        ("Delete Blocks", "delete"),
     ],
                "Arrows": [
                    ("Forward", "up"),
@@ -304,6 +306,7 @@ class KeyConfigPanel(Dialog):
                    ("Increase Reach", "Scroll Up"),
                    ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "mouse3"),
+                   ("Delete Blocks", "delete")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -322,6 +325,7 @@ class KeyConfigPanel(Dialog):
                    ("Increase Reach", "Scroll Up"),
                    ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "mouse3"),
+                   ("Delete Blocks", "delete")
                ]}
 
     selectedKeyIndex = 0
