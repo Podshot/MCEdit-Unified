@@ -2737,7 +2737,7 @@ class LevelEditor(GLViewport):
 
             if keyname == config.config.get('Keys', 'Open'):
                 self.askOpenFile()
-            if keyname == config.config.get('Keys', 'Load'):
+            if keyname == config.config.get('Keys', 'Quick Load'):
                 self.askLoadWorld()
             if keyname == config.config.get('Keys', 'Undo'):
                 self.undo()

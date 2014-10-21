@@ -198,7 +198,7 @@ class FileOpener(albow.Widget):
             raise SystemExit
         if keyname in ('f1', 'f2', 'f3', 'f4', 'f5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
-        if keyname is config.config.get('Keys', 'Load'):
+        if keyname is config.config.get('Keys', 'Quick Load'):
             self.mcedit.editor.askLoadWorld()
         if keyname is config.config.get('Keys', 'New World'):
             self.createNewWorld()
