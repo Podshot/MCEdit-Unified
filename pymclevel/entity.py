@@ -184,12 +184,7 @@ class TileEntity(object):
         if eTag['id'].value == "Control":
             command = eTag['Command'].value
             oldCommand = command
-            execute = False
-            Slash = False
-            if command[0] == "/":
-                command = command.replace("/", "", 1)
-                Slash = True
-                
+            
             def selectorCoords(selector):
                 char_num = 0
                 x = ""
@@ -239,11 +234,16 @@ class TileEntity(object):
                             z = coordZ(z, staticCommands)
                             new_selector += z
                     char_num += 1  
-                return new_selector    
-                              
-
-            # Adjust command coordinates.
+                return new_selector
+                    
             try:
+                execute = False
+                Slash = False
+                if command[0] == "/":
+                    command = command.replace("/", "", 1)
+                    Slash = True
+                              
+                # Adjust command coordinates.
                 words = command.split(' ')
             
                 i = 0
