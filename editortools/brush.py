@@ -1223,7 +1223,7 @@ class BrushTool(CloneTool):
     def toolEnabled(self):
         return True
 
-    def rotate(self):
+    def rotate(self,blocksOnly=False):
         offs = self.reticleOffset
         dist = self.editor.cameraToolDistance
         W, H, L = self.brushSize
@@ -1236,7 +1236,7 @@ class BrushTool(CloneTool):
         else:
             print "Not rotating block because rotation is turned off in options menu"
 
-    def mirror(self):
+    def mirror(self,blocksOnly=False):
         offs = self.reticleOffset
         dist = self.editor.cameraToolDistance
         W, H, L = self.brushSize
@@ -1255,10 +1255,10 @@ class BrushTool(CloneTool):
         else:
             self.panel.pickFillBlock()
 
-    def flip(self):
+    def flip(self,blocksOnly=False):
         self.decreaseBrushSize()
 
-    def roll(self):
+    def roll(self,blocksOnly=False):
         self.increaseBrushSize()
 
     def swap(self):

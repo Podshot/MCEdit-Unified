@@ -26,10 +26,10 @@ from glbackground import Panel
 from glutils import Texture
 from mceutils import showProgress, CheckBoxLabel, alertException, setWindowCaption
 from operation import Operation
+from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
 import config
 import pymclevel
-
 FillSettings = config.Settings("Fill")
 FillSettings.chooseBlockImmediately = FillSettings("Choose Block Immediately", True)
 
@@ -253,8 +253,39 @@ class FillTool(EditorTool):
         self.editor.invalidateBox(box)
         self.editor.toolbar.selectTool(-1)
 
-    def roll(self):
-        self.toggleReplacing()
+    def roll(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            Roll(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+        else:
+            self.toggleReplacing()
+
+    def mirror(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            yaw = int(self.editor.mainViewport.yaw) % 360
+            if (yaw >= 45 and yaw < 135) or (yaw > 225 and yaw <= 315):
+                FlipEastWest(id,data)
+            else:
+                FlipNorthSouth(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+
+    def flip(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            FlipVertical(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+
+    def rotate(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            RotateLeft(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
 
     def toggleReplacing(self):
         self.replacing = not self.replacing

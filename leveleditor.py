@@ -2702,7 +2702,14 @@ class LevelEditor(GLViewport):
                 name = "option" + keyname
                 if hasattr(self.currentTool, name):
                     getattr(self.currentTool, name)()
-
+            if keyname == config.config.get('Keys', 'Flip'):
+                self.currentTool.flip(blocksOnly=True)
+            if keyname == config.config.get('Keys', 'Roll'):
+                self.currentTool.roll(blocksOnly=True)
+            if keyname == config.config.get('Keys', 'Rotate'):
+                self.currentTool.rotate(blocksOnly=True)
+            if keyname == config.config.get('Keys', 'Mirror'):
+                self.currentTool.mirror(blocksOnly=True)
         elif hasattr(evt, 'cmd') and evt.cmd:
             if keyname == config.config.get('Keys', 'Quit'):
                 self.quit()

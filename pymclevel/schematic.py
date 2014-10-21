@@ -227,6 +227,11 @@ class MCSchematic(EntityLevel):
         root_tag["Length"] = nbt.TAG_Short(shape[1])
         root_tag["Width"] = nbt.TAG_Short(shape[0])
 
+    def rotateLeftBlocks(self):
+        """
+        rotateLeft the blocks direction without there location
+        """
+        blockrotation.RotateLeft(self.Blocks, self.Data)
 
     def rotateLeft(self):
         self._fakeEntities = None
@@ -278,6 +283,12 @@ class MCSchematic(EntityLevel):
                 tileTick["x"].value = newX
                 tileTick["z"].value = newZ
 
+    def rollBlocks(self):
+        """
+        rolls the blocks direction without the block location
+        """
+        blockrotation.Roll(self.Blocks, self.Data)
+
     def roll(self):
         " xxx rotate stuff - destroys biomes"
         self.root_tag.pop('Biomes', None)
@@ -324,6 +335,8 @@ class MCSchematic(EntityLevel):
                 newY = tileTick["x"].value
                 tileTick["x"].value = newX
                 tileTick["y"].value = newY
+    def flipVerticalBlocks(self):
+        blockrotation.FlipVertical(self.Blocks, self.Data)
 
     def flipVertical(self):
         " xxx delete stuff "
@@ -372,6 +385,8 @@ class MCSchematic(EntityLevel):
                    'Pointer': 4,
                    'Pigscene': 4,
                    'BurningSkull': 4}
+    def flipNorthSouthBlocks(self):
+        blockrotation.FlipNorthSouth(self.Blocks, self.Data)
 
     def flipNorthSouth(self):
         if "Biomes" in self.root_tag:
@@ -418,6 +433,9 @@ class MCSchematic(EntityLevel):
         if "TileTicks" in self.root_tag:
             for tileTick in self.TileTicks:
                 tileTick["x"].value = self.Width - tileTick["x"].value - 1
+
+    def flipEastWestBlocks(self):
+        blockrotation.FlipEastWest(self.Blocks, self.Data)
 
     def flipEastWest(self):
         if "Biomes" in self.root_tag:

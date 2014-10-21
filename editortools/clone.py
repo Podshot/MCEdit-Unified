@@ -800,40 +800,53 @@ class CloneTool(EditorTool):
         return self.level
 
     @alertException
-    def rotate(self, amount=1):
+    def rotate(self, amount=1, blocksOnly=False):
         if self.canRotateLevel:
             self.rotation += amount
             self.rotation &= 0x3
             for i in range(amount & 0x3):
-                self.level.rotateLeft()
+                if blocksOnly:
+                    self.level.rotateLeftBlocks()
+                else:
+                    self.level.rotateLeft()
 
             self.previewRenderer.level = self.level
 
     @alertException
-    def roll(self, amount=1):
+    def roll(self, amount=1, blocksOnly=False):
         if self.canRotateLevel:
             for i in range(amount & 0x3):
-                self.level.roll()
+                if blocksOnly:
+                    self.level.rollBlocks()
+                else:
+                    self.level.roll()
 
             self.previewRenderer.level = self.level
 
     @alertException
-    def flip(self, amount=1):
+    def flip(self, amount=1, blocksOnly=False):
         if self.canRotateLevel:
             for i in range(amount & 0x1):
-                self.level.flipVertical()
-
+                if blocksOnly:
+                    self.level.flipVertical()
+                else:
+                    self.level.flipVerticalBlocks()
             self.previewRenderer.level = self.level
 
     @alertException
-    def mirror(self):
+    def mirror(self, blocksOnly=False):
         if self.canRotateLevel:
             yaw = int(self.editor.mainViewport.yaw) % 360
             if (yaw >= 45 and yaw < 135) or (yaw > 225 and yaw <= 315):
-                self.level.flipEastWest()
+                if blocksOnly:
+                    self.level.flipEastWestBlocks()
+                else:
+                    self.level.flipEastWest()
             else:
-                self.level.flipNorthSouth()
-
+                if blocksOnly:
+                    self.level.flipNorthSouthBlocks()
+                else:
+                    self.level.flipNorthSouth()
             self.previewRenderer.level = self.level
 
     def option1(self):
