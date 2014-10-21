@@ -557,7 +557,7 @@ class OptionsPanel(Dialog):
 
         langStringRow = mceutils.TextInputRow("Language String",
                                             ref=Settings.langCode.propertyRef(),
-                                            tooltipText="Enter your language string (corresponding to the file in /lang). Default is en_US")
+                                            tooltipText="Enter your language string (corresponding to the file in /lang). Available:\nen_US (default)\nfr_FR")
         
         staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
                                             ref=Settings.staticCommandsNudge.propertyRef(),
