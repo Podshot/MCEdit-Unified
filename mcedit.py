@@ -260,7 +260,7 @@ class KeyConfigPanel(Dialog):
         "Paste",
         "Reload World",
         "Open",
-        "Load",
+        "Quick Load",
         "Undo",
         "Save",
         "New World",
