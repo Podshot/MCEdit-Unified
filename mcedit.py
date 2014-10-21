@@ -303,8 +303,8 @@ class KeyConfigPanel(Dialog):
                    ("Flip", "insert"),
                    ("Mirror", "delete"),
                    ("Swap", "\\"),
-                   ("Increase Reach", "scroll Up"),
-                   ("Decrease Reach", "scroll Down"),
+                   ("Increase Reach", "scroll up"),
+                   ("Decrease Reach", "scroll down"),
                    ("Reset Reach", "mouse3"),
                    ("Delete Blocks", "backspace")
                ],
@@ -322,8 +322,8 @@ class KeyConfigPanel(Dialog):
                    ("Flip", "[/]"),
                    ("Mirror", "[*]"),
                    ("Swap", "[.]"),
-                   ("Increase Reach", "scroll Up"),
-                   ("Decrease Reach", "scroll Down"),
+                   ("Increase Reach", "scroll up"),
+                   ("Decrease Reach", "scroll down"),
                    ("Reset Reach", "mouse3"),
                    ("Delete Blocks", "delete")
                ]}
@@ -377,11 +377,11 @@ class KeyConfigPanel(Dialog):
         if self.isConfigKey(configKey):
             key = config.config.get("Keys", configKey)
             if key == 'mouse4':
-                key = 'scroll Up'
-                config.config.set("Keys", configKey, "scroll Up")
+                key = 'scroll up'
+                config.config.set("Keys", configKey, "scroll up")
             if key == 'mouse5':
-                key = 'scroll Down'
-                config.config.set("Keys", configKey, "scroll Down")
+                key = 'scroll down'
+                config.config.set("Keys", configKey, "scroll down")
         else:
             key = ""
         return configKey, key
@@ -419,9 +419,9 @@ class KeyConfigPanel(Dialog):
             if button == 3:
                 keyname = "mouse3"
             elif button == 4:
-                keyname = "scroll Up"
+                keyname = "scroll up"
             elif button == 5:
-                keyname = "scroll Down"
+                keyname = "scroll down"
             if button > 2:
                 panel.dismiss(keyname)
 
