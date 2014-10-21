@@ -1086,6 +1086,7 @@ def main(argv):
     Setup display, bundled schematics. Handle unclean
     shutdowns.
     """
+    '''
     try:
         import squash_python
 
@@ -1101,6 +1102,7 @@ def main(argv):
         client.revision = release.get_commit()
         client.build = version
         client.timeout = 5
+        
 # Disabled Crash Reporting Option
 #       client.disabled = not config.config.getboolean("Settings", "report crashes new")
         client.disabled = True
@@ -1113,6 +1115,7 @@ def main(argv):
         client.hook()
     except (ImportError, UnicodeError) as e:
         pass
+        '''
 
     try:
         display.init()
