@@ -245,10 +245,10 @@ class KeyConfigPanel(Dialog):
         "Flip",
         "Mirror",
         "Swap",
+        "Delete Blocks",
         "Increase Reach",
         "Decrease Reach",
         "Reset Reach",
-        "Delete Blocks",
         "",
         "<Function Controls [Ctrl+]>",
         "Quit",
@@ -306,15 +306,15 @@ class KeyConfigPanel(Dialog):
                    ("Increase Reach", "Scroll Up"),
                    ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "mouse3"),
-                   ("Delete Blocks", "delete")
+                   ("Delete Blocks", "backspace")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
                    ("Back", "[5]"),
                    ("Left", "[4]"),
                    ("Right", "[6]"),
-                   ("Up", "[9]"),
-                   ("Down", "[3]"),
+                   ("Up", "[7]"),
+                   ("Down", "[1]"),
                    ("Brake", "[0]"),
 
                    ("Rotate", "[-]"),
