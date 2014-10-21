@@ -125,8 +125,8 @@ pan up = i
 pan down = k
 
 reset reach = mouse3
-increase reach = mouse4
-decrease reach = mouse5
+increase reach = scroll up
+decrease reach = scroll down
 
 confirm construction = return
 

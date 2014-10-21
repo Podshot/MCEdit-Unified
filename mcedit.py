@@ -283,8 +283,8 @@ class KeyConfigPanel(Dialog):
         ("Flip", "f"),
         ("Mirror", "g"),
         ("Swap", "x"),
-        ("Increase Reach", "mouse4"),
-        ("Decrease Reach", "mouse5"),
+        ("Increase Reach", "Scroll Up"),
+        ("Decrease Reach", "Scroll Down"),
         ("Reset Reach", "mouse3"),
     ],
                "Arrows": [
@@ -301,8 +301,8 @@ class KeyConfigPanel(Dialog):
                    ("Flip", "insert"),
                    ("Mirror", "delete"),
                    ("Swap", "\\"),
-                   ("Increase Reach", "mouse4"),
-                   ("Decrease Reach", "mouse5"),
+                   ("Increase Reach", "Scroll Up"),
+                   ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "mouse3"),
                ],
                "Numpad": [
@@ -319,8 +319,8 @@ class KeyConfigPanel(Dialog):
                    ("Flip", "[/]"),
                    ("Mirror", "[*]"),
                    ("Swap", "[.]"),
-                   ("Increase Reach", "mouse4"),
-                   ("Decrease Reach", "mouse5"),
+                   ("Increase Reach", "Scroll Up"),
+                   ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "mouse3"),
                ]}
 
@@ -341,7 +341,7 @@ class KeyConfigPanel(Dialog):
         self.keyConfigTable = keyConfigTable
 
         buttonRow = (albow.Button("Assign Key...", action=self.askAssignSelectedKey),
-                     albow.Button("Done", action=self.dismiss))
+                     albow.Button("Done", action=self.done))
 
         buttonRow = albow.Row(buttonRow)
 
@@ -358,6 +358,10 @@ class KeyConfigPanel(Dialog):
         self.add(col)
         self.shrink_wrap()
 
+    def done(self):
+        config.saveConfig()
+        self.dismiss()
+    
     def choosePreset(self):
         preset = self.choiceButton.selectedChoice
         keypairs = self.presets[preset]
@@ -368,6 +372,12 @@ class KeyConfigPanel(Dialog):
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
             key = config.config.get("Keys", configKey)
+            if key == 'mouse4':
+                key = 'Scroll Up'
+                config.config.set("Keys", configKey, "Scroll Up")
+            if key == 'mouse5':
+                key = 'Scroll Down'
+                config.config.set("Keys", configKey, "Scroll Down")
         else:
             key = ""
         return configKey, key
@@ -402,8 +412,13 @@ class KeyConfigPanel(Dialog):
 
         def panelMouseUp(evt):
             button = leveleditor.remapMouseButton(evt.button)
+            if button == 3:
+                keyname = "mouse3"
+            elif button == 4:
+                keyname = "Scroll Up"
+            elif button == 5:
+                keyname = "Scroll Down"
             if button > 2:
-                keyname = "mouse{0}".format(button)
                 panel.dismiss(keyname)
 
         panel.key_up = panelKeyUp

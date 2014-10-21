@@ -2686,6 +2686,10 @@ class LevelEditor(GLViewport):
         keyname = evt.dict.get('keyname', None) or key.name(evt.key)
         if keyname == 'enter':
             keyname = 'return'
+        if keyname == 'mouse4':
+            keyname = 'Scroll Up'
+        if keyname == 'mouse5':
+            keyname = 'Scroll Down'
 
         d = self.cameraInputs
         im = [0., 0., 0.]
