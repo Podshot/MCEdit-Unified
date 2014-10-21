@@ -183,6 +183,7 @@ class TileEntity(object):
                     
         if eTag['id'].value == "Control":
             command = eTag['Command'].value
+            oldCommand = command
             execute = False
             Slash = False
             if command[0] == "/":
@@ -242,88 +243,91 @@ class TileEntity(object):
                               
 
             # Adjust command coordinates.
-            words = command.split(' ')
+            try:
+                words = command.split(' ')
             
-            i = 0
-            for word in words:
-                if word[0] == '@':
-                    words[i] = selectorCoords(word)
-                i += 1    
+                i = 0
+                for word in words:
+                    if word[0] == '@':
+                        words[i] = selectorCoords(word)
+                    i += 1    
                 
-            if command.startswith('execute'):
-                stillExecuting = True
-                execute = True
-                saving_command = ""
-                while stillExecuting == True:
-                    if Slash == True:
-                        saving_command += '/'
+                if command.startswith('execute'):
+                    stillExecuting = True
+                    execute = True
+                    saving_command = ""
+                    while stillExecuting == True:
+                        if Slash == True:
+                            saving_command += '/'
+                        x, y, z = words[2:5]
+                        words[2:5] = coords(x, y, z, staticCommands)
+                        if words[5] == 'detect':
+                            x, y, z = words[6:9]
+                            words[6:9] = coords(x, y, z, staticCommands)
+                            saving_command += ' '.join(words[:9])
+                            words = words[9:]
+                        else:    
+                            saving_command += ' '.join(words[:5])
+                            words = words[5:]        
+                        command = ' '.join(words)
+                        saving_command += ' '
+                        Slash = False
+                        if command[0] == "/":
+                             command = command.replace("/", "", 1)
+                             Slash = True
+                        words = command.split(' ')    
+                        if not command.startswith('execute'):
+                             stillExecuting = False        
+            
+                if (command.startswith('tp') and len(words) == 5) or command.startswith('particle') or command.startswith('replaceitem block') or (command.startswith('spawnpoint') and len(words) == 5) or command.startswith('stats block') or (command.startswith('summon') and len(words) >= 5):
                     x, y, z = words[2:5]
                     words[2:5] = coords(x, y, z, staticCommands)
-                    if words[5] == 'detect':
-                        x, y, z = words[6:9]
-                        words[6:9] = coords(x, y, z, staticCommands)
-                        saving_command += ' '.join(words[:9])
-                        words = words[9:]
-                    else:    
-                        saving_command += ' '.join(words[:5])
-                        words = words[5:]        
-                    command = ' '.join(words)
-                    saving_command += ' '
-                    Slash = False
-                    if command[0] == "/":
-                        command = command.replace("/", "", 1)
-                        Slash = True
-                    words = command.split(' ')    
-                    if not command.startswith('execute'):
-                        stillExecuting = False        
-            
-            if (command.startswith('tp') and len(words) == 5) or command.startswith('particle') or command.startswith('replaceitem block') or (command.startswith('spawnpoint') and len(words) == 5) or command.startswith('stats block') or (command.startswith('summon') and len(words) >= 5):
-                x, y, z = words[2:5]
-                words[2:5] = coords(x, y, z, staticCommands)
-            elif command.startswith('blockdata') or command.startswith('setblock') or (command.startswith('setworldspawn') and len(words) == 4):
-                x, y, z = words[1:4]
-                words[1:4] = coords(x, y, z, staticCommands)
-            elif command.startswith('playsound') and len(words) >= 6:
-                x, y, z = words[3:6]
-                words[3:6] = coords(x, y, z, staticCommands)   
-            elif command.startswith('clone'):
-                x1, y1, z1, x2, y2, z2, x, y, z = words[1:10]
-                x1, y1, z1 = coords(x1, y1, z1, staticCommands)
-                x2, y2, z2 = coords(x2, y2, z2, staticCommands)
-                x, y, z = coords(x, y, z, staticCommands)
+                elif command.startswith('blockdata') or command.startswith('setblock') or (command.startswith('setworldspawn') and len(words) == 4):
+                    x, y, z = words[1:4]
+                    words[1:4] = coords(x, y, z, staticCommands)
+                elif command.startswith('playsound') and len(words) >= 6:
+                    x, y, z = words[3:6]
+                    words[3:6] = coords(x, y, z, staticCommands)   
+                elif command.startswith('clone'):
+                    x1, y1, z1, x2, y2, z2, x, y, z = words[1:10]
+                    x1, y1, z1 = coords(x1, y1, z1, staticCommands)
+                    x2, y2, z2 = coords(x2, y2, z2, staticCommands)
+                    x, y, z = coords(x, y, z, staticCommands)
                     
-                words[1:10] = x1, y1, z1, x2, y2, z2, x, y, z
-            elif command.startswith('fill'):
-                x1, y1, z1, x2, y2, z2 = words[1:7]
-                x1, y1, z1 = coords(x1, y1, z1, staticCommands)
-                x2, y2, z2 = coords(x2, y2, z2, staticCommands)
+                    words[1:10] = x1, y1, z1, x2, y2, z2, x, y, z
+                elif command.startswith('fill'):
+                    x1, y1, z1, x2, y2, z2 = words[1:7]
+                    x1, y1, z1 = coords(x1, y1, z1, staticCommands)
+                    x2, y2, z2 = coords(x2, y2, z2, staticCommands)
                         
-                words[1:7] = x1, y1, z1, x2, y2, z2
-            elif command.startswith('spreadplayers'):
-                x, z = words[1:3]
-                if x[0] != "~":
-                    x = coordX(x, staticCommands)
-                if z[0] != "~":
-                    z = coordZ(z, staticCommands)
+                    words[1:7] = x1, y1, z1, x2, y2, z2
+                elif command.startswith('spreadplayers'):
+                    x, z = words[1:3]
+                    if x[0] != "~":
+                        x = coordX(x, staticCommands)
+                    if z[0] != "~":
+                        z = coordZ(z, staticCommands)
                 
-                words[1:3] = x, z
-            elif command.startswith('worldborder center') and len(words) == 4:
-                x, z = words[2:4]
-                if x[0] != "~":
-                    x = coordX(x, staticCommands)
-                if z[0] != "~":
-                    z = coordZ(z, staticCommands)
+                    words[1:3] = x, z
+                elif command.startswith('worldborder center') and len(words) == 4:
+                    x, z = words[2:4]
+                    if x[0] != "~":
+                        x = coordX(x, staticCommands)
+                    if z[0] != "~":
+                        z = coordZ(z, staticCommands)
                         
-                words[2:4] = x, z                       
-            if Slash == True:
-                command = '/'
-            else:
-                command = ""
-            command += ' '.join(words)
+                    words[2:4] = x, z                       
+                if Slash == True:
+                    command = '/'
+                else:
+                    command = ""
+                command += ' '.join(words)
                   
-            if execute == True:
-                command = saving_command + command
-            eTag['Command'].value = command    
+                if execute == True:
+                    command = saving_command + command
+                eTag['Command'].value = command
+            except:
+                eTag['Command'].value = oldCommand    
 
         return eTag
 
