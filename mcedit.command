@@ -6,6 +6,8 @@ ask() {
  
         if [ "${2:-}" = "R" ]; then
             default=Y
+        elif [ "${2:-}" = "enter" ]; then
+            default=Y
         else
             default=N
         fi
@@ -31,7 +33,7 @@ ask() {
 cd "$(dirname "$0")"
 python -B mcedit.py
 echo "-------------------------"
-if ask "Press R or Enter to restart MCEdit any other key to exit:"; then
+if ask "Press R to restart MCEdit, any other key to exit:"; then
 	clear
 	bash mcedit.command
 else
