@@ -105,55 +105,55 @@ def saveConfig():
 
 configDefaults = """
 [Keys]
-forward = w
-back = s
-left = a
-right = d
-up = space
-down = left shift
-brake = c
+forward = W
+back = S
+left = A
+right = D
+up = SPACE
+down = SHIFT
+brake = C
 
-rotate = e
-roll = r
-flip = f
-mirror = g
-swap = x
+rotate = E
+roll = R
+flip = F
+mirror = G
+swap = X
 
-pan left = j
-pan right = l
-pan up = i
-pan down = k
+pan left = J
+pan right = L
+pan up = I
+pan down = K
 
-reset reach = mouse3
-increase reach = scroll up
-decrease reach = scroll down
+reset reach = MOUSE3
+increase reach = SCROLL UP
+decrease reach = SCROLL DOWN
 
-confirm construction = return
+confirm construction = RETURN
 
-open level = o
-new level = n
-delete blocks = delete
+open level = O
+new level = N
+delete blocks = DELETE
 
 toggle fps counter = 0
-toggle renderer = m
+toggle renderer = M
 
-quit = q
-swap view = f
-select all = a
-deselect = d 
-cut = x
-copy = c
-paste = v
-reload world = r
-open = o
-quick load = l
-undo = z
-save = s
-new world = n
-close world = w
-world info = i
-goto panel = g
-export selection = e
+quit = CTRL+Q
+swap view = CTRL+F
+select all = CTRL+A
+deselect = CTRL+D
+cut = CTRL+X
+copy = CTRL+C
+paste = CTRL+V
+reload world = CTRL+R
+open = CTRL+O
+quick load = CTRL+L
+undo = CTRL+Z
+save = CTRL+S
+new world = CTRL+N
+close world = CTRL+W
+world info = CTRL+I
+goto panel = CTRL+G
+export selection = CTRL+E
 
 """
 

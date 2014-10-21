@@ -193,18 +193,18 @@ class FileOpener(albow.Widget):
         #self.invalidate()
 
     def key_down(self, evt):
-        keyname = key.name(evt.key)
-        if keyname == 'f4' and (key.get_mods() & (pygame.KMOD_ALT | pygame.KMOD_LALT | pygame.KMOD_RALT)):
+        keyname = KeyConfigPanel.getKey(evt)
+        if keyname == 'ALT+F4':
             raise SystemExit
-        if keyname in ('f1', 'f2', 'f3', 'f4', 'f5'):
+        if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
-        if keyname is config.config.get('Keys', 'Quick Load'):
+        if keyname == config.config.get('Keys', 'Quick Load'):
             self.mcedit.editor.askLoadWorld()
-        if keyname is config.config.get('Keys', 'New World'):
+        if keyname == config.config.get('Keys', 'New World'):
             self.createNewWorld()
-        if keyname is config.config.get('Keys', 'Open'):
+        if keyname == config.config.get('Keys', 'Open'):
             self.promptOpenAndLoad()
-        if keyname is config.config.get('Keys', 'Quit'):
+        if keyname == config.config.get('Keys', 'Quit'):
             self.mcedit.confirm_quit()
 
     def promptOpenAndLoad(self):
@@ -250,7 +250,7 @@ class KeyConfigPanel(Dialog):
         "Decrease Reach",
         "Reset Reach",
         "",
-        "<Function Controls [Ctrl+]>",
+        "<Function Controls>",
         "Quit",
         "Swap View",
         "Select All",
@@ -271,42 +271,42 @@ class KeyConfigPanel(Dialog):
     ]
 
     presets = {"WASD": [
-        ("Forward", "w"),
-        ("Back", "s"),
-        ("Left", "a"),
-        ("Right", "d"),
-        ("Up", "space"),
-        ("Down", "left shift"),
-        ("Brake", "c"),
+        ("Forward", "W"),
+        ("Back", "S"),
+        ("Left", "A"),
+        ("Right", "D"),
+        ("Up", "SPACE"),
+        ("Down", "SHIFT"),
+        ("Brake", "C"),
 
-        ("Rotate", "e"),
-        ("Roll", "r"),
-        ("Flip", "f"),
-        ("Mirror", "g"),
-        ("Swap", "x"),
-        ("Increase Reach", "scroll up"),
-        ("Decrease Reach", "scroll down"),
-        ("Reset Reach", "mouse3"),
-        ("Delete Blocks", "delete"),
+        ("Rotate", "E"),
+        ("Roll", "R"),
+        ("Flip", "F"),
+        ("Mirror", "G"),
+        ("Swap", "X"),
+        ("Increase Reach", "SCROLL UP"),
+        ("Decrease Reach", "SCROLL DOWN"),
+        ("Reset Reach", "MOUSE3"),
+        ("Delete Blocks", "DELETE"),
     ],
                "Arrows": [
-                   ("Forward", "up"),
-                   ("Back", "down"),
-                   ("Left", "left"),
-                   ("Right", "right"),
-                   ("Up", "page up"),
-                   ("Down", "page down"),
-                   ("Brake", "space"),
+                   ("Forward", "UP"),
+                   ("Back", "DOWN"),
+                   ("Left", "LEFT"),
+                   ("Right", "RIGHT"),
+                   ("Up", "PAGE UP"),
+                   ("Down", "PAGE DOWN"),
+                   ("Brake", "SPACE"),
 
-                   ("Rotate", "home"),
-                   ("Roll", "end"),
-                   ("Flip", "insert"),
-                   ("Mirror", "delete"),
+                   ("Rotate", "HOME"),
+                   ("Roll", "END"),
+                   ("Flip", "INSERT"),
+                   ("Mirror", "DELETE"),
                    ("Swap", "\\"),
-                   ("Increase Reach", "scroll up"),
-                   ("Decrease Reach", "scroll down"),
-                   ("Reset Reach", "mouse3"),
-                   ("Delete Blocks", "backspace")
+                   ("Increase Reach", "SCROLL UP"),
+                   ("Decrease Reach", "SCROLL DOWN"),
+                   ("Reset Reach", "MOUSE3"),
+                   ("Delete Blocks", "BACKSPACE")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -322,10 +322,10 @@ class KeyConfigPanel(Dialog):
                    ("Flip", "[/]"),
                    ("Mirror", "[*]"),
                    ("Swap", "[.]"),
-                   ("Increase Reach", "scroll up"),
-                   ("Decrease Reach", "scroll down"),
-                   ("Reset Reach", "mouse3"),
-                   ("Delete Blocks", "delete")
+                   ("Increase Reach", "SCROLL UP"),
+                   ("Decrease Reach", "SCROLL DOWN"),
+                   ("Reset Reach", "MOUSE3"),
+                   ("Delete Blocks", "DELETE")
                ]}
 
     selectedKeyIndex = 0
@@ -350,7 +350,7 @@ class KeyConfigPanel(Dialog):
         buttonRow = albow.Row(buttonRow)
 
         choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad"], choose=self.choosePreset)
-        if config.config.get("Keys", "Forward") == "up":
+        if config.config.get("Keys", "Forward") == "UP":
             choiceButton.selectedChoice = "Arrows"
         if config.config.get("Keys", "Forward") == "[8]":
             choiceButton.selectedChoice = "Numpad"
@@ -377,14 +377,30 @@ class KeyConfigPanel(Dialog):
         if self.isConfigKey(configKey):
             key = config.config.get("Keys", configKey)
             if key == 'mouse4':
-                key = 'scroll up'
-                config.config.set("Keys", configKey, "scroll up")
+                key = 'SCROLL UP'
+                config.config.set("Keys", configKey, "SCROLL UP")
             if key == 'mouse5':
-                key = 'scroll down'
-                config.config.set("Keys", configKey, "scroll down")
+                key = 'SCROLL DOWN'
+                config.config.set("Keys", configKey, "SCROLL DOWN")
+            key = key.upper()
         else:
             key = ""
         return configKey, key
+        
+    @classmethod
+    def getKey(self, evt):
+        keyname = key.name(evt.key)
+        newKeyname = ""
+        if evt.shift == True:
+            newKeyname += "shift+"
+        if evt.ctrl == True:
+            newKeyname += "ctrl+"
+        elif evt.cmd == True:
+            newKeyname += "ctrl+"
+        if evt.alt == True:
+            newKeyname += "alt+"
+        keyname = newKeyname + keyname
+        return keyname.upper()
 
     def isConfigKey(self, configKey):
         return not (len(configKey) == 0 or configKey[0] == "<")
@@ -411,7 +427,7 @@ class KeyConfigPanel(Dialog):
         panel.shrink_wrap()
 
         def panelKeyUp(evt):
-            keyname = key.name(evt.key)
+            keyname = self.getKey(evt)
             panel.dismiss(keyname)
 
         def panelMouseUp(evt):
@@ -430,17 +446,17 @@ class KeyConfigPanel(Dialog):
 
         keyname = panel.present()
         if keyname != "escape":
-            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v == keyname]
+            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v.upper() == keyname.upper()]
             oldkey = config.config.get("Keys", configKey)
-            config.config.set("Keys", configKey, keyname)
-            '''for keyname, setting in occupiedKeys:
+            config.config.set("Keys", configKey, keyname.upper())
+            for keyname, setting in occupiedKeys:
                 if self.askAssignKey(setting,
-                                     tr("The key {0} is no longer bound to {1}.\n"
+                                     tr("The key {0} is no longer bound to {1}. "
                                      "Press a new key for the action \"{1}\"\n\n"
                                      "Press ESC to cancel.")
-                                     .format(keyname, setting)):
+                                     .format(keyname.upper(), setting)):
                     config.config.set("Keys", configKey, oldkey)
-                    return True'''  #Only disabled as currently you can't input modifiers, reenable if fixed and edit leveleditor.py as needed
+                    return True  #Only disabled as currently you can't input modifiers, reenable if fixed and edit leveleditor.py as needed
         else:
             return True
 

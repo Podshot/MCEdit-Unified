@@ -2649,7 +2649,7 @@ class LevelEditor(GLViewport):
 
     def key_up(self, evt):
         d = self.cameraInputs
-        keyname = getattr(evt, 'keyname', None) or key.name(evt.key)
+        keyname = KeyConfigPanel.getKey(evt)
 
         if keyname == config.config.get('Keys', 'Brake'):
             self.mainViewport.brakeOff()
@@ -2680,200 +2680,193 @@ class LevelEditor(GLViewport):
         if keyname == config.config.get('Keys', 'Pan Down'):
             cp[1] = 0.
 
-            # if keyname in ("left alt", "right alt"):
-
     def key_down(self, evt):
-        keyname = evt.dict.get('keyname', None) or key.name(evt.key)
-        if keyname == 'enter':
-            keyname = 'return'
-        if keyname == 'mouse4':
-            keyname = 'scroll up'
-        if keyname == 'mouse5':
-            keyname = 'scroll down'
+        keyname = KeyConfigPanel.getKey(evt)
+        if keyname == 'ENTER':
+            keyname = 'RETURN'
+        if keyname == 'MOUSE4':
+            keyname = 'SCROLL UP'
+        if keyname == 'MOUSE5':
+            keyname = 'SCROLL DOWN'
 
         d = self.cameraInputs
         im = [0., 0., 0.]
         mods = evt.dict.get('mod', 0)
 
-        if keyname == 'f4' and (mods & (KMOD_ALT | KMOD_LALT | KMOD_RALT)):
+        if keyname == "ALT+F4":
             self.quit()
             return
 
-        if mods & KMOD_ALT:
-            if keyname == "z":
-                self.longDistanceMode = not self.longDistanceMode
-            if keyname in "12345":
-                name = "option" + keyname
-                if hasattr(self.currentTool, name):
-                    getattr(self.currentTool, name)()
-            if keyname == config.config.get('Keys', 'Flip'):
-                self.currentTool.flip(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Roll'):
-                self.currentTool.roll(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Rotate'):
-                self.currentTool.rotate(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Mirror'):
-                self.currentTool.mirror(blocksOnly=True)
-        elif hasattr(evt, 'cmd') and evt.cmd:
-            if keyname == config.config.get('Keys', 'Quit'):
-                self.quit()
-                return
+        if keyname == "ALT+Z":
+            self.longDistanceMode = not self.longDistanceMode
+        if keyname == "ALT+1" or keyname == "ALT+2" or keyname == "ALT+3" or keyname == "ALT+4" or keyname == "ALT+5":
+            name = "option" + keyname[len(keyname)-2:]
+            if hasattr(self.currentTool, name):
+                getattr(self.currentTool, name)()
+        if keyname == config.config.get('Keys', 'Flip'):
+            self.currentTool.flip(blocksOnly=True)
+        if keyname == config.config.get('Keys', 'Roll'):
+            self.currentTool.roll(blocksOnly=True)
+        if keyname == config.config.get('Keys', 'Rotate'):
+            self.currentTool.rotate(blocksOnly=True)
+        if keyname == config.config.get('Keys', 'Mirror'):
+            self.currentTool.mirror(blocksOnly=True)
+        if keyname == config.config.get('Keys', 'Quit'):
+            self.quit()
+            return
+        if keyname == config.config.get('Keys', 'Swap View'):
+            self.swapViewDistance()
+        if keyname == config.config.get('Keys', 'Select All'):
+            self.selectAll()
+        if keyname == config.config.get('Keys', 'Deselect'):
+            self.deselect()
+        if keyname == config.config.get('Keys', 'Cut'):
+            self.cutSelection()
+        if keyname == config.config.get('Keys', 'Copy'):
+            self.copySelection()
+        if keyname == config.config.get('Keys', 'Paste'):
+            self.pasteSelection()
 
-            if keyname == config.config.get('Keys', 'Swap View'):
-                self.swapViewDistance()
-            if keyname == config.config.get('Keys', 'Select All'):
-                self.selectAll()
-            if keyname == config.config.get('Keys', 'Deselect'):
-                self.deselect()
-            if keyname == config.config.get('Keys', 'Cut'):
-                self.cutSelection()
-            if keyname == config.config.get('Keys', 'Copy'):
-                self.copySelection()
-            if keyname == config.config.get('Keys', 'Paste'):
-                self.pasteSelection()
+        if keyname == config.config.get('Keys', 'Reload World'):
+            self.reload()
 
-            if keyname == config.config.get('Keys', 'Reload World'):
-                self.reload()
+        if keyname == config.config.get('Keys', 'Open'):
+            self.askOpenFile()
+        if keyname == config.config.get('Keys', 'Quick Load'):
+            self.askLoadWorld()
+        if keyname == config.config.get('Keys', 'Undo'):
+            self.undo()
+        if keyname == config.config.get('Keys', 'Save'):
+            self.saveFile()
+        if keyname == config.config.get('Keys', 'New World'):
+            self.createNewLevel()
+        if keyname == config.config.get('Keys', 'Close World'):
+            self.closeEditor()
+        if keyname == config.config.get('Keys', 'World Info'):
+            self.showWorldInfo()
+        if keyname == config.config.get('Keys', 'Goto Panel'):
+            self.showGotoPanel()
 
-            if keyname == config.config.get('Keys', 'Open'):
-                self.askOpenFile()
-            if keyname == config.config.get('Keys', 'Quick Load'):
-                self.askLoadWorld()
-            if keyname == config.config.get('Keys', 'Undo'):
-                self.undo()
-            if keyname == config.config.get('Keys', 'Save'):
-                self.saveFile()
-            if keyname == config.config.get('Keys', 'New World'):
-                self.createNewLevel()
-            if keyname == config.config.get('Keys', 'Close World'):
-                self.closeEditor()
-            if keyname == config.config.get('Keys', 'World Info'):
-                self.showWorldInfo()
-            if keyname == config.config.get('Keys', 'Goto Panel'):
-                self.showGotoPanel()
+        if keyname == config.config.get('Keys', 'Export Selection'):
+            self.selectionTool.exportSelection()
 
-            if keyname == config.config.get('Keys', 'Export Selection'):
-                self.selectionTool.exportSelection()
+        if keyname == 'CTRL+ALT+F9':
+            self.parent.reloadEditor()
+            # ===========================================================
+            # debugPanel = Panel()
+            # buttonColumn = [
+            #    Button("Reload Editor", action=self.parent.reloadEditor),
+            # ]
+            # debugPanel.add(Column(buttonColumn))
+            # debugPanel.shrink_wrap()
+            # self.add_centered(debugPanel)
+            # ===========================================================
 
-            if keyname == 'f9':
-                if mods & KMOD_ALT:
-                    self.parent.reloadEditor()
-                    # ===========================================================
-                    # debugPanel = Panel()
-                    # buttonColumn = [
-                    #    Button("Reload Editor", action=self.parent.reloadEditor),
-                    # ]
-                    # debugPanel.add(Column(buttonColumn))
-                    # debugPanel.shrink_wrap()
-                    # self.add_centered(debugPanel)
-                    # ===========================================================
+        if keyname == 'SHIFT+CTRL+F9':
+            raise GL.GLError(err=1285,
+            description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
+        if keyname == 'CTRL+F9':
+            try:
+                expr = input_text(">>> ", 600)
+                expr = compile(expr, 'eval', 'single')
+                alert("Result: {0!r}".format(eval(expr, globals(), locals())))
+            except Exception, e:
+                alert("Exception: {0!r}".format(e))
 
-                elif mods & KMOD_SHIFT:
-                    raise GL.GLError(err=1285,
-                                     description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
-                else:
-                    try:
-                        expr = input_text(">>> ", 600)
-                        expr = compile(expr, 'eval', 'single')
-                        alert("Result: {0!r}".format(eval(expr, globals(), locals())))
-                    except Exception, e:
-                        alert("Exception: {0!r}".format(e))
+        if keyname == 'CTRL+F10':
+            def causeError():
+                raise ValueError("User pressed CONTROL-F10, requesting a program error.")
 
-            if keyname == 'f10':
-                def causeError():
-                    raise ValueError("User pressed CONTROL-F10, requesting a program error.")
+        if keyname == 'CTRL+ALT+F10':
+            alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
+        if keyname == 'SHIFT+CTRL+F10':
+            mceutils.alertException(causeError)()
+        if keyname == 'F10':
+            causeError()
 
-                if mods & KMOD_ALT:
-                    alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
-                elif mods & KMOD_SHIFT:
-                    mceutils.alertException(causeError)()
-                else:
-                    causeError()
+        if keyname == 'TAB':
+            self.swapViewports()
 
-        else:
-            if keyname == 'tab':
-                self.swapViewports()
+        if keyname == config.config.get('Keys', 'Brake'):
+            self.mainViewport.brakeOn()
 
-            if keyname == config.config.get('Keys', 'Brake'):
-                self.mainViewport.brakeOn()
+        if keyname == config.config.get('Keys', 'Reset Reach'):
+            self.resetReach()
+        if keyname == config.config.get('Keys', 'Increase Reach'):
+            self.increaseReach()
+        if keyname == config.config.get('Keys', 'Decrease Reach'):
+            self.decreaseReach()
 
-            if keyname == config.config.get('Keys', 'Reset Reach'):
-                self.resetReach()
-            if keyname == config.config.get('Keys', 'Increase Reach'):
-                self.increaseReach()
-            if keyname == config.config.get('Keys', 'Decrease Reach'):
-                self.decreaseReach()
+        if keyname == config.config.get('Keys', 'Flip'):
+            self.currentTool.flip()
+        if keyname == config.config.get('Keys', 'Roll'):
+            self.currentTool.roll()
+        if keyname == config.config.get('Keys', 'Rotate'):
+            self.currentTool.rotate()
+        if keyname == config.config.get('Keys', 'Mirror'):
+            self.currentTool.mirror()
+        if keyname == config.config.get('Keys', 'Swap'):
+            self.currentTool.swap()
 
-            if keyname == config.config.get('Keys', 'Flip'):
-                self.currentTool.flip()
-            if keyname == config.config.get('Keys', 'Roll'):
-                self.currentTool.roll()
-            if keyname == config.config.get('Keys', 'Rotate'):
-                self.currentTool.rotate()
-            if keyname == config.config.get('Keys', 'Mirror'):
-                self.currentTool.mirror()
-            if keyname == config.config.get('Keys', 'Swap'):
-                self.currentTool.swap()
+        if keyname == 'escape':
+            self.toolbar.tools[0].endSelection()
+            self.mouseLookOff()
+            self.showControls()
 
-            if keyname == 'escape':
-                self.toolbar.tools[0].endSelection()
-                self.mouseLookOff()
-                self.showControls()
+        # movement
+        if keyname == config.config.get('Keys', 'Left'):
+            d[0] = -1.
+            im[0] = -1.
+        if keyname == config.config.get('Keys', 'Right'):
+            d[0] = 1.
+            im[0] = 1.
+        if keyname == config.config.get('Keys', 'Forward'):
+            d[2] = 1.
+            im[2] = 1.
+        if keyname == config.config.get('Keys', 'Back'):
+            d[2] = -1.
+            im[2] = -1.
+        if keyname == config.config.get('Keys', 'Up'):
+            d[1] = 1.
+            im[1] = 1.
+        if keyname == config.config.get('Keys', 'Down'):
+            d[1] = -1.
+            im[1] = -1.
 
-            # movement
-            if keyname == config.config.get('Keys', 'Left'):
-                d[0] = -1.
-                im[0] = -1.
-            if keyname == config.config.get('Keys', 'Right'):
-                d[0] = 1.
-                im[0] = 1.
-            if keyname == config.config.get('Keys', 'Forward'):
-                d[2] = 1.
-                im[2] = 1.
-            if keyname == config.config.get('Keys', 'Back'):
-                d[2] = -1.
-                im[2] = -1.
-            if keyname == config.config.get('Keys', 'Up'):
-                d[1] = 1.
-                im[1] = 1.
-            if keyname == config.config.get('Keys', 'Down'):
-                d[1] = -1.
-                im[1] = -1.
+        cp = self.cameraPanKeys
+        if keyname == config.config.get('Keys', 'Pan Left'):
+            cp[0] = -1.
+        if keyname == config.config.get('Keys', 'Pan Right'):
+            cp[0] = 1.
+        if keyname == config.config.get('Keys', 'Pan Up'):
+            cp[1] = -1.
+        if keyname == config.config.get('Keys', 'Pan Down'):
+            cp[1] = 1.
 
-            cp = self.cameraPanKeys
-            if keyname == config.config.get('Keys', 'Pan Left'):
-                cp[0] = -1.
-            if keyname == config.config.get('Keys', 'Pan Right'):
-                cp[0] = 1.
-            if keyname == config.config.get('Keys', 'Pan Up'):
-                cp[1] = -1.
-            if keyname == config.config.get('Keys', 'Pan Down'):
-                cp[1] = 1.
+        if keyname == config.config.get('Keys', 'Confirm Construction'):
+            self.confirmConstruction()
 
-            if keyname == config.config.get('Keys', 'Confirm Construction'):
-                self.confirmConstruction()
+        # =======================================================================
+        # if keyname == config.config.get('Keys','Toggle Flat Shading'):
+        #    self.renderer.swapMipmapping()
+        # if keyname == config.config.get('Keys','Toggle Lighting'):
+        #    self.renderer.toggleLighting()
+        # =======================================================================
 
-            # =======================================================================
-            # if keyname == config.config.get('Keys','Toggle Flat Shading'):
-            #    self.renderer.swapMipmapping()
-            # if keyname == config.config.get('Keys','Toggle Lighting'):
-            #    self.renderer.toggleLighting()
-            # =======================================================================
+        if keyname == config.config.get('Keys', 'Toggle FPS Counter'):
+            self.swapDebugLevels()
 
-            if keyname == config.config.get('Keys', 'Toggle FPS Counter'):
-                self.swapDebugLevels()
+        if keyname == config.config.get('Keys', 'Toggle Renderer'):
+            self.renderer.render = not self.renderer.render
 
-            if keyname == config.config.get('Keys', 'Toggle Renderer'):
-                self.renderer.render = not self.renderer.render
+        if keyname == config.config.get('Keys', 'Delete Blocks'):
+            self.deleteSelectedBlocks()
 
-            if keyname == config.config.get('Keys', 'Delete Blocks'):
-                self.deleteSelectedBlocks()
+        if keyname == '1' or keyname == '2' or keyname == '3' or keyname == '4' or keyname == '5' or keyname == '6' or keyname == '7' or keyname == '8' or keyname == '9':
+            self.toolbar.selectTool(int(keyname) - 1)
 
-            if keyname in "123456789":
-                self.toolbar.selectTool(int(keyname) - 1)
-
-            if keyname in ('f1', 'f2', 'f3', 'f4', 'f5'):
-                self.mcedit.loadRecentWorldNumber(int(keyname[1]))
+        if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
+            self.mcedit.loadRecentWorldNumber(int(keyname[1]))
 
     def showGotoPanel(self):
 
