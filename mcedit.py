@@ -731,8 +731,8 @@ class MCEdit(GLViewport):
         if len(sys.argv) > 1:
             for arg in sys.argv[1:]:
                 f = arg.decode(sys.getfilesystemencoding())
-                if os.path.isdir(os.path.join(pymclevel.saveFileDir, f)):
-                    f = os.path.join(pymclevel.saveFileDir, f)
+                if os.path.isdir(os.path.join(pymclevel.minecraftSaveFileDir, f)):
+                    f = os.path.join(pymclevel.minecraftSaveFileDir, f)
                     self.droppedLevel = f
                     break
                 if os.path.exists(f):
