@@ -20,6 +20,28 @@ def remapMouseButton(button):
     if button < len(buttons):
         return buttons[button]
     return button
+    
+def getKey(evt):
+    keyname = key.name(evt.key)
+    if 'left' in keyname and len(keyname) > 5:
+        keyname = keyname[5:]
+    elif 'right' in keyname and len(keyname) > 6:
+        keyname = keyname[6:]
+    try:
+        keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
+    finally:
+        newKeyname = ""
+        if evt.shift == True and keyname != "Shift":
+            newKeyname += "Shift-"
+        if evt.ctrl == True and keyname != "Ctrl":
+            newKeyname += "Ctrl-"
+        elif evt.cmd == True and keyname != "Meta":
+            newKeyname += "Ctrl-"
+        if evt.alt == True and keyname != "Alt":
+            newKeyname += "Alt-"
+    
+        keyname = newKeyname + keyname
+        return keyname
 
 class KeyConfigPanel(Dialog):
     keyConfigKeys = [
@@ -74,8 +96,8 @@ class KeyConfigPanel(Dialog):
         ("Back", "S"),
         ("Left", "A"),
         ("Right", "D"),
-        ("Up", "SPACE"),
-        ("Down", "SHIFT"),
+        ("Up", "Space"),
+        ("Down", "Shift"),
         ("Brake", "C"),
 
         ("Rotate", "E"),
@@ -83,29 +105,29 @@ class KeyConfigPanel(Dialog):
         ("Flip", "F"),
         ("Mirror", "G"),
         ("Swap", "X"),
-        ("Increase Reach", "SCROLL UP"),
-        ("Decrease Reach", "SCROLL DOWN"),
-        ("Reset Reach", "MOUSE3"),
-        ("Delete Blocks", "DELETE"),
+        ("Increase Reach", "Scroll Up"),
+        ("Decrease Reach", "Scroll Down"),
+        ("Reset Reach", "Mouse3"),
+        ("Delete Blocks", "Delete"),
     ],
                "Arrows": [
-                   ("Forward", "UP"),
-                   ("Back", "DOWN"),
-                   ("Left", "LEFT"),
-                   ("Right", "RIGHT"),
-                   ("Up", "PAGE UP"),
-                   ("Down", "PAGE DOWN"),
-                   ("Brake", "SPACE"),
+                   ("Forward", "Up"),
+                   ("Back", "Down"),
+                   ("Left", "Left"),
+                   ("Right", "Right"),
+                   ("Up", "Page Up"),
+                   ("Down", "Page Down"),
+                   ("Brake", "Space"),
 
-                   ("Rotate", "HOME"),
-                   ("Roll", "END"),
-                   ("Flip", "INSERT"),
-                   ("Mirror", "DELETE"),
+                   ("Rotate", "Home"),
+                   ("Roll", "End"),
+                   ("Flip", "Insert"),
+                   ("Mirror", "Delete"),
                    ("Swap", "\\"),
-                   ("Increase Reach", "SCROLL UP"),
-                   ("Decrease Reach", "SCROLL DOWN"),
-                   ("Reset Reach", "MOUSE3"),
-                   ("Delete Blocks", "BACKSPACE")
+                   ("Increase Reach", "Scroll Up"),
+                   ("Decrease Reach", "Scroll Down"),
+                   ("Reset Reach", "Mouse3"),
+                   ("Delete Blocks", "Backspace")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -121,10 +143,10 @@ class KeyConfigPanel(Dialog):
                    ("Flip", "[/]"),
                    ("Mirror", "[*]"),
                    ("Swap", "[.]"),
-                   ("Increase Reach", "SCROLL UP"),
-                   ("Decrease Reach", "SCROLL DOWN"),
-                   ("Reset Reach", "MOUSE3"),
-                   ("Delete Blocks", "DELETE")
+                   ("Increase Reach", "Scroll Up"),
+                   ("Decrease Reach", "Scroll Down"),
+                   ("Reset Reach", "Mouse3"),
+                   ("Delete Blocks", "Delete")
                ]}
 
     selectedKeyIndex = 0
@@ -149,7 +171,7 @@ class KeyConfigPanel(Dialog):
         buttonRow = albow.Row(buttonRow)
 
         choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad"], choose=self.choosePreset)
-        if config.config.get("Keys", "Forward") == "UP":
+        if config.config.get("Keys", "Forward") == "Up":
             choiceButton.selectedChoice = "Arrows"
         if config.config.get("Keys", "Forward") == "[8]":
             choiceButton.selectedChoice = "Numpad"
@@ -176,35 +198,14 @@ class KeyConfigPanel(Dialog):
         if self.isConfigKey(configKey):
             key = config.config.get("Keys", configKey)
             if key == 'mouse4':
-                key = 'SCROLL UP'
-                config.config.set("Keys", configKey, "SCROLL UP")
+                key = 'Scroll Up'
+                config.config.set("Keys", configKey, "Scroll Up")
             if key == 'mouse5':
-                key = 'SCROLL DOWN'
-                config.config.set("Keys", configKey, "SCROLL DOWN")
-            key = key.upper()
+                key = 'Scroll Down'
+                config.config.set("Keys", configKey, "Scroll Down")
         else:
             key = ""
         return configKey, key
-        
-    @classmethod
-    def getKey(self, evt):
-        keyname = key.name(evt.key)
-        newKeyname = ""
-        if evt.shift == True:
-            newKeyname += "shift-"
-        if evt.ctrl == True:
-            newKeyname += "ctrl-"
-        elif evt.cmd == True:
-            newKeyname += "ctrl-"
-        if evt.alt == True:
-            newKeyname += "alt-"
-        
-        if 'left' in keyname and len(keyname) > 5:
-            keyname = keyname[5:]
-        elif 'right' in keyname and len(keyname) > 6:
-            keyname = keyname[6:]
-        keyname = newKeyname + keyname
-        return keyname.upper()
 
     def isConfigKey(self, configKey):
         return not (len(configKey) == 0 or configKey[0] == "<")
@@ -231,17 +232,17 @@ class KeyConfigPanel(Dialog):
         panel.shrink_wrap()
 
         def panelKeyUp(evt):
-            keyname = self.getKey(evt)
+            keyname = getKey(evt)
             panel.dismiss(keyname)
 
         def panelMouseUp(evt):
             button = remapMouseButton(evt.button)
             if button == 3:
-                keyname = "mouse3"
+                keyname = "Mouse3"
             elif button == 4:
-                keyname = "scroll up"
+                keyname = "Scroll Up"
             elif button == 5:
-                keyname = "scroll down"
+                keyname = "Scroll Down"
             if button > 2:
                 panel.dismiss(keyname)
 
@@ -249,16 +250,16 @@ class KeyConfigPanel(Dialog):
         panel.mouse_up = panelMouseUp
 
         keyname = panel.present()
-        if keyname != "escape":
-            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v.upper() == keyname.upper()]
+        if keyname != "Escape":
+            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v.upper() == keyname]
             oldkey = config.config.get("Keys", configKey)
-            config.config.set("Keys", configKey, keyname.upper())
+            config.config.set("Keys", configKey, keyname)
             for keyname, setting in occupiedKeys:
                 if self.askAssignKey(setting,
                                      tr("The key {0} is no longer bound to {1}. "
                                      "Press a new key for the action \"{1}\"\n\n"
                                      "Press ESC to cancel.")
-                                     .format(keyname.upper(), setting)):
+                                     .format(keyname, setting)):
                     config.config.set("Keys", configKey, oldkey)
                     return True  #Only disabled as currently you can't input modifiers, reenable if fixed and edit leveleditor.py as needed
         else:

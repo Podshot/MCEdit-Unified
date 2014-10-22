@@ -29,6 +29,21 @@ from albow import alert
 log = logging.getLogger(__name__)
 
 
+def getNewKey(value, i):
+    if 'left' in value and len(value) > 5:
+        value = value[5:]
+    elif 'right' in value and len(value) > 6:
+        value = value[6:]
+    if value >= 'a' and value <= 'z':
+        value = value.replace(value[0], value[0].upper(), 1)
+    if i >= 26 and "Ctrl-" not in value:
+        value = "Ctrl-" + value
+    if value == "mouse4":
+        value = "Scroll Up"
+    if value == "mouse5":
+        value = "Scroll Down"
+    return value
+
 def configFilePath():
     return directories.configFilePath
 
@@ -83,7 +98,14 @@ def loadConfig():
 
     except Exception, e:
         log.warn(u"Error while reading configuration file mcedit.ini: {0}".format(e))
-
+    else:
+        if config.get("Version", "version") == "1.1.1.1":
+            i = 1
+            for (name, value) in config.items("Keys"):
+                config.set("Keys", name, getNewKey(value, i))
+                i += 1
+            config.set("Version", "version", "1.1.2.0")
+            saveConfig()
     return config
 
 
@@ -109,8 +131,8 @@ forward = W
 back = S
 left = A
 right = D
-up = SPACE
-down = LEFT SHIFT
+up = Space
+down = Shift
 brake = C
 
 rotate = E
@@ -124,37 +146,39 @@ pan right = L
 pan up = I
 pan down = K
 
-reset reach = MOUSE3
-increase reach = SCROLL UP
-decrease reach = SCROLL DOWN
+reset reach = Mouse3
+increase reach = Scroll Up
+decrease reach = Scroll Down
 
-confirm construction = RETURN
+confirm construction = Return
 
 open level = O
 new level = N
-delete blocks = DELETE
+delete blocks = Delete
 
 toggle fps counter = 0
 toggle renderer = M
 
-quit = CTRL-Q
-swap view = CTRL-F
-select all = CTRL-A
-deselect = CTRL-D
-cut = CTRL-X
-copy = CTRL-C
-paste = CTRL-V
-reload world = CTRL-R
-open = CTRL-O
-quick load = CTRL-L
-undo = CTRL-Z
-save = CTRL-S
-new world = CTRL-N
-close world = CTRL-W
-world info = CTRL-I
-goto panel = CTRL-G
-export selection = CTRL-E
+quit = Ctrl-Q
+swap view = Ctrl-F
+select all = Ctrl-A
+deselect = Ctrl-D
+cut = Ctrl-X
+copy = Ctrl-C
+paste = Ctrl-V
+reload world = Ctrl-R
+open = Ctrl-O
+quick load = Ctrl-L
+undo = Ctrl-Z
+save = Ctrl-S
+new world = Ctrl-N
+close world = Ctrl-W
+world info = Ctrl-I
+goto panel = Ctrl-G
+export selection = Ctrl-E
 
+[Version]
+version = 1.1.1.1
 """
 
 log.info("Loading config...")

@@ -2642,7 +2642,7 @@ class LevelEditor(GLViewport):
 
     def key_up(self, evt):
         d = self.cameraInputs
-        keyname = keys.KeyConfigPanel.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
 
         if keyname == config.config.get('Keys', 'Brake'):
             self.mainViewport.brakeOff()
@@ -2674,13 +2674,13 @@ class LevelEditor(GLViewport):
             cp[1] = 0.
 
     def key_down(self, evt):
-        keyname = keys.KeyConfigPanel.getKey(evt)
-        if keyname == 'ENTER':
-            keyname = 'RETURN'
-        if keyname == 'MOUSE4':
-            keyname = 'SCROLL UP'
-        if keyname == 'MOUSE5':
-            keyname = 'SCROLL DOWN'
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == 'Enter':
+            keyname = 'Return'
+        if keyname == 'Mouse4':
+            keyname = 'Scroll Up'
+        if keyname == 'Mouse5':
+            keyname = 'Scroll Down'
 
         d = self.cameraInputs
         im = [0., 0., 0.]
@@ -2690,10 +2690,10 @@ class LevelEditor(GLViewport):
             self.quit()
             return
 
-        if keyname == "ALT-Z":
+        if keyname == "Alt-Z":
             self.longDistanceMode = not self.longDistanceMode
-        if keyname == "ALT-1" or keyname == "ALT-2" or keyname == "ALT-3" or keyname == "ALT-4" or keyname == "ALT-5":
-            name = "option" + keyname[len(keyname)-2:]
+        if keyname == "Alt-1" or keyname == "Alt-2" or keyname == "Alt-3" or keyname == "Alt-4" or keyname == "Alt-5":
+            name = "option" + keyname[len(keyname)-1:]
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
         if keyname == config.config.get('Keys', 'Flip'):
@@ -2743,7 +2743,7 @@ class LevelEditor(GLViewport):
         if keyname == config.config.get('Keys', 'Export Selection'):
             self.selectionTool.exportSelection()
 
-        if keyname == 'CTRL-ALT-F9':
+        if keyname == 'Ctrl-Alt-F9':
             self.parent.reloadEditor()
             # ===========================================================
             # debugPanel = Panel()
@@ -2755,10 +2755,10 @@ class LevelEditor(GLViewport):
             # self.add_centered(debugPanel)
             # ===========================================================
 
-        if keyname == 'SHIFT-CTRL-F9':
+        if keyname == 'Shift-Ctrl-F9':
             raise GL.GLError(err=1285,
             description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
-        if keyname == 'CTRL-F9':
+        if keyname == 'Ctrl-F9':
             try:
                 expr = input_text(">>> ", 600)
                 expr = compile(expr, 'eval', 'single')
@@ -2766,18 +2766,18 @@ class LevelEditor(GLViewport):
             except Exception, e:
                 alert("Exception: {0!r}".format(e))
 
-        if keyname == 'CTRL-F10':
+        if keyname == 'Ctrl-F10':
             def causeError():
                 raise ValueError("User pressed CONTROL-F10, requesting a program error.")
 
-        if keyname == 'CTRL-ALT-F10':
+        if keyname == 'Ctrl-Alt-F10':
             alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
-        if keyname == 'SHIFT-CTRL-F10':
+        if keyname == 'Shift-Ctrl-F10':
             mceutils.alertException(causeError)()
         if keyname == 'F10':
             causeError()
 
-        if keyname == 'TAB':
+        if keyname == 'Tab':
             self.swapViewports()
 
         if keyname == config.config.get('Keys', 'Brake'):
@@ -2801,7 +2801,7 @@ class LevelEditor(GLViewport):
         if keyname == config.config.get('Keys', 'Swap'):
             self.currentTool.swap()
 
-        if keyname == 'ESCAPE':
+        if keyname == 'Escape':
             self.toolbar.tools[0].endSelection()
             self.mouseLookOff()
             self.showControls()

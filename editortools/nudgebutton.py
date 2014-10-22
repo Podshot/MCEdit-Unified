@@ -37,7 +37,7 @@ class NudgeButton(GLBackground):
         self.get_root().mcedit.editor.focus_switch = None  # xxxx restore focus to editor better
 
     def key_down(self, evt):
-        keyname = keys.KeyConfigPanel.getKey(evt)
+        keyname = keys.getKey(evt)
         if keyname == config.config.get("Keys", "Up"):
             self.nudge(Vector(0, 1, 0))
         if keyname == config.config.get("Keys", "Down"):

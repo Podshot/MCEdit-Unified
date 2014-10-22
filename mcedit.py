@@ -167,9 +167,9 @@ class FileOpener(albow.Widget):
                 shortname = shortname[:37] + "..."
             shortnames.append(shortname)
 
-        hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), 'Create New World', self.createNewWorld),
-                    (str.upper(config.config.get('Keys', 'Quick Load')), 'Quick Load', self.mcedit.editor.askLoadWorld),
-                    (str.upper(config.config.get('Keys', 'Open')), 'Open...', self.promptOpenAndLoad)] + [
+        hotkeys = ([(config.config.get('Keys', 'New World'), 'Create New World', self.createNewWorld),
+                    (config.config.get('Keys', 'Quick Load'), 'Quick Load', self.mcedit.editor.askLoadWorld),
+                    (config.config.get('Keys', 'Open'), 'Open...', self.promptOpenAndLoad)] + [
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
@@ -194,8 +194,8 @@ class FileOpener(albow.Widget):
         #self.invalidate()
 
     def key_down(self, evt):
-        keyname = keys.KeyConfigPanel.getKey(evt)
-        if keyname == 'ALT-F4':
+        keyname = keys.getKey(evt)
+        if keyname == 'Alt-F4':
             raise SystemExit
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
