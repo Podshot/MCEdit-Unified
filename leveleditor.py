@@ -2686,13 +2686,13 @@ class LevelEditor(GLViewport):
         im = [0., 0., 0.]
         mods = evt.dict.get('mod', 0)
 
-        if keyname == "ALT+F4":
+        if keyname == "ALT-F4":
             self.quit()
             return
 
-        if keyname == "ALT+Z":
+        if keyname == "ALT-Z":
             self.longDistanceMode = not self.longDistanceMode
-        if keyname == "ALT+1" or keyname == "ALT+2" or keyname == "ALT+3" or keyname == "ALT+4" or keyname == "ALT+5":
+        if keyname == "ALT-1" or keyname == "ALT-2" or keyname == "ALT-3" or keyname == "ALT-4" or keyname == "ALT-5":
             name = "option" + keyname[len(keyname)-2:]
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()

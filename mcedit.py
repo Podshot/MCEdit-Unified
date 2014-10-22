@@ -195,7 +195,7 @@ class FileOpener(albow.Widget):
 
     def key_down(self, evt):
         keyname = keys.KeyConfigPanel.getKey(evt)
-        if keyname == 'ALT+F4':
+        if keyname == 'ALT-F4':
             raise SystemExit
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))

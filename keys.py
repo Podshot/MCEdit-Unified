@@ -75,7 +75,7 @@ class KeyConfigPanel(Dialog):
         ("Left", "A"),
         ("Right", "D"),
         ("Up", "SPACE"),
-        ("Down", "LEFT SHIFT"),
+        ("Down", "SHIFT"),
         ("Brake", "C"),
 
         ("Rotate", "E"),
@@ -198,6 +198,11 @@ class KeyConfigPanel(Dialog):
             newKeyname += "ctrl-"
         if evt.alt == True:
             newKeyname += "alt-"
+        
+        if 'left' in keyname and len(keyname) > 5:
+            keyname = keyname[5:]
+        elif 'right' in keyname and len(keyname) > 6:
+            keyname = keyname[6:]
         keyname = newKeyname + keyname
         return keyname.upper()
 
