@@ -137,23 +137,23 @@ delete blocks = DELETE
 toggle fps counter = 0
 toggle renderer = M
 
-quit = CTRL+Q
-swap view = CTRL+F
-select all = CTRL+A
-deselect = CTRL+D
-cut = CTRL+X
-copy = CTRL+C
-paste = CTRL+V
-reload world = CTRL+R
-open = CTRL+O
-quick load = CTRL+L
-undo = CTRL+Z
-save = CTRL+S
-new world = CTRL+N
-close world = CTRL+W
-world info = CTRL+I
-goto panel = CTRL+G
-export selection = CTRL+E
+quit = CTRL-Q
+swap view = CTRL-F
+select all = CTRL-A
+deselect = CTRL-D
+cut = CTRL-X
+copy = CTRL-C
+paste = CTRL-V
+reload world = CTRL-R
+open = CTRL-O
+quick load = CTRL-L
+undo = CTRL-Z
+save = CTRL-S
+new world = CTRL-N
+close world = CTRL-W
+world info = CTRL-I
+goto panel = CTRL-G
+export selection = CTRL-E
 
 """
 

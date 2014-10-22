@@ -191,13 +191,13 @@ class KeyConfigPanel(Dialog):
         keyname = key.name(evt.key)
         newKeyname = ""
         if evt.shift == True:
-            newKeyname += "shift+"
+            newKeyname += "shift-"
         if evt.ctrl == True:
-            newKeyname += "ctrl+"
+            newKeyname += "ctrl-"
         elif evt.cmd == True:
-            newKeyname += "ctrl+"
+            newKeyname += "ctrl-"
         if evt.alt == True:
-            newKeyname += "alt+"
+            newKeyname += "alt-"
         keyname = newKeyname + keyname
         return keyname.upper()
 

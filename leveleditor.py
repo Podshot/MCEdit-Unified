@@ -161,7 +161,6 @@ ControlSettings.swapAxes = ControlSettings("swap axes looking down", False)
 
 arch = platform.architecture()[0]
 
-
 class ControlPanel(Panel):
     @classmethod
     def getHeader(cls):
@@ -179,19 +178,19 @@ class ControlPanel(Panel):
         buttonsColumn = [header]
 
         cmd = mcplatform.cmd_name
-        hotkeys = ([(cmd + "-" + str.upper(config.config.get('Keys', 'New World')), "Create New World",
+        hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), "Create New World",
                      editor.mcedit.createNewWorld),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Quick Load')), "Quick Load", editor.askLoadWorld),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Open')), "Open...", editor.askOpenFile),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Save')), "Save", editor.saveFile),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Reload World')), "Reload", editor.reload),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Close World')), "Close", editor.closeEditor),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Goto Panel')), "Goto", editor.showGotoPanel),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'World Info')), "World Info", editor.showWorldInfo),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Undo')), "Undo", editor.undo),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Select All')), "Select All", editor.selectAll),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Deselect')), "Deselect", editor.deselect),
-                    (cmd + "-" + str.upper(config.config.get('Keys', 'Swap View')),
+                    (str.upper(config.config.get('Keys', 'Quick Load')), "Quick Load", editor.askLoadWorld),
+                    (str.upper(config.config.get('Keys', 'Open')), "Open...", editor.askOpenFile),
+                    (str.upper(config.config.get('Keys', 'Save')), "Save", editor.saveFile),
+                    (str.upper(config.config.get('Keys', 'Reload World')), "Reload", editor.reload),
+                    (str.upper(config.config.get('Keys', 'Close World')), "Close", editor.closeEditor),
+                    (str.upper(config.config.get('Keys', 'Goto Panel')), "Goto", editor.showGotoPanel),
+                    (str.upper(config.config.get('Keys', 'World Info')), "World Info", editor.showWorldInfo),
+                    (str.upper(config.config.get('Keys', 'Undo')), "Undo", editor.undo),
+                    (str.upper(config.config.get('Keys', 'Select All')), "Select All", editor.selectAll),
+                    (str.upper(config.config.get('Keys', 'Deselect')), "Deselect", editor.deselect),
+                    (str.upper(config.config.get('Keys', 'Swap View')),
                      AttrRef(editor, 'viewDistanceLabelText'), editor.swapViewDistance),
                     ("Alt-F4", "Quit", editor.quit),
                    ])
@@ -2744,7 +2743,7 @@ class LevelEditor(GLViewport):
         if keyname == config.config.get('Keys', 'Export Selection'):
             self.selectionTool.exportSelection()
 
-        if keyname == 'CTRL+ALT+F9':
+        if keyname == 'CTRL-ALT-F9':
             self.parent.reloadEditor()
             # ===========================================================
             # debugPanel = Panel()
@@ -2756,10 +2755,10 @@ class LevelEditor(GLViewport):
             # self.add_centered(debugPanel)
             # ===========================================================
 
-        if keyname == 'SHIFT+CTRL+F9':
+        if keyname == 'SHIFT-CTRL-F9':
             raise GL.GLError(err=1285,
             description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
-        if keyname == 'CTRL+F9':
+        if keyname == 'CTRL-F9':
             try:
                 expr = input_text(">>> ", 600)
                 expr = compile(expr, 'eval', 'single')
@@ -2767,13 +2766,13 @@ class LevelEditor(GLViewport):
             except Exception, e:
                 alert("Exception: {0!r}".format(e))
 
-        if keyname == 'CTRL+F10':
+        if keyname == 'CTRL-F10':
             def causeError():
                 raise ValueError("User pressed CONTROL-F10, requesting a program error.")
 
-        if keyname == 'CTRL+ALT+F10':
+        if keyname == 'CTRL-ALT-F10':
             alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
-        if keyname == 'SHIFT+CTRL+F10':
+        if keyname == 'SHIFT-CTRL-F10':
             mceutils.alertException(causeError)()
         if keyname == 'F10':
             causeError()
