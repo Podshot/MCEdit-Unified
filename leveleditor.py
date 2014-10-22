@@ -2356,8 +2356,8 @@ class LevelEditor(GLViewport):
     def saveInfoLabelText(self):
         if self.unsavedEdits == 0:
             return ""
-        return tr("{0} unsaved edits.  CTRL-{1} to save.  {2}").format(self.unsavedEdits,
-                                                                   str.upper(config.config.get('Keys', 'Save')),
+        return tr("{0} unsaved edits.  {1} to save.  {2}").format(self.unsavedEdits,
+                                                                   config.config.get('Keys', 'Save'),
                                                                    "" if self.recordUndo else "(UNDO DISABLED)")
 
     @property
