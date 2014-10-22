@@ -863,36 +863,35 @@ def main(argv):
     Setup display, bundled schematics. Handle unclean
     shutdowns.
     """
-    '''
-    try:
-        import squash_python
-
-        squash_python.uploader.SquashUploader.headers.pop("Content-encoding", None)
-        squash_python.uploader.SquashUploader.headers.pop("Accept-encoding", None)
-
-        version = release.get_version()
-        client = squash_python.get_client()
-        client.APIKey = "6ea52b17-ac76-4fd8-8db4-2d7303473ca2"
-        client.environment = "testing" if "build" in version else "production"
-        client.host = "http://bugs.mcedit.net"
-        client.notifyPath = "/bugs.php"
-        client.revision = release.get_commit()
-        client.build = version
-        client.timeout = 5
-        
+   
+#    try:
+#        import squash_python
+#
+#        squash_python.uploader.SquashUploader.headers.pop("Content-encoding", None)
+#        squash_python.uploader.SquashUploader.headers.pop("Accept-encoding", None)
+#
+#        version = release.get_version()
+#        client = squash_python.get_client()
+#        client.APIKey = "6ea52b17-ac76-4fd8-8db4-2d7303473ca2"
+#        client.environment = "testing" if "build" in version else "production"
+#        client.host = "http://bugs.mcedit.net"
+#        client.notifyPath = "/bugs.php"
+#        client.revision = release.get_commit()
+#        client.build = version
+#        client.timeout = 5
+#        
 # Disabled Crash Reporting Option
 #       client.disabled = not config.config.getboolean("Settings", "report crashes new")
-        client.disabled = True
-
-        def _reportingChanged(val):
-            client.disabled = not val
-
-        Settings.reportCrashes.addObserver(client, '_enabled', _reportingChanged)
-        client.reportErrors()
-        client.hook()
-    except (ImportError, UnicodeError) as e:
-        pass
-        '''
+#       client.disabled = True
+#
+#       def _reportingChanged(val):
+#           client.disabled = not val
+#
+#       Settings.reportCrashes.addObserver(client, '_enabled', _reportingChanged)
+#       client.reportErrors()
+#       client.hook()
+#   except (ImportError, UnicodeError) as e:
+#       pass
 
     try:
         display.init()
