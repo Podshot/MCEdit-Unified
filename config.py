@@ -110,7 +110,7 @@ back = S
 left = A
 right = D
 up = SPACE
-down = SHIFT
+down = LEFT SHIFT
 brake = C
 
 rotate = E

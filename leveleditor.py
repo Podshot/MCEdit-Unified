@@ -16,6 +16,7 @@ import sys
 from compass import CompassOverlay
 from editortools.thumbview import ThumbView
 from pymclevel.infiniteworld import SessionLockLost
+import keys
 
 """
 leveleditor.py
@@ -159,13 +160,6 @@ ControlSettings.autobrake = ControlSettings("autobrake", True)
 ControlSettings.swapAxes = ControlSettings("swap axes looking down", False)
 
 arch = platform.architecture()[0]
-
-
-def remapMouseButton(button):
-    buttons = [0, 1, 3, 2, 4, 5]  # mouse2 is right button, mouse3 is middle
-    if button < len(buttons):
-        return buttons[button]
-    return button
 
 
 class ControlPanel(Panel):
@@ -1151,7 +1145,7 @@ class CameraViewport(GLViewport):
     # --- Event handlers ---
 
     def mouse_down(self, evt):
-        button = remapMouseButton(evt.button)
+        button = keys.remapMouseButton(evt.button)
         logging.debug("Mouse down %d @ %s", button, evt.pos)
 
         if button == 1:
@@ -1169,7 +1163,7 @@ class CameraViewport(GLViewport):
         # self.focus_switch = None
 
     def mouse_up(self, evt):
-        button = remapMouseButton(evt.button)
+        button = keys.remapMouseButton(evt.button)
         logging.debug("Mouse up   %d @ %s", button, evt.pos)
         if button == 1:
             if sys.platform == "darwin" and evt.ctrl:
@@ -2486,7 +2480,7 @@ class LevelEditor(GLViewport):
                 self.currentTool.mouseUp(evt, focusPoint, direction)
 
     def mouse_up(self, evt):
-        button = remapMouseButton(evt.button)
+        button = keys.remapMouseButton(evt.button)
         evt.dict['keyname'] = "mouse{0}".format(button)
         self.key_up(evt)
 
@@ -2500,7 +2494,7 @@ class LevelEditor(GLViewport):
                 self.currentTool.mouseDrag(evt, focusPoint, direction)
 
     def mouse_down(self, evt):
-        button = remapMouseButton(evt.button)
+        button = keys.remapMouseButton(evt.button)
 
         evt.dict['keyname'] = "mouse{0}".format(button)
         self.mcedit.focus_switch = self
@@ -2649,7 +2643,7 @@ class LevelEditor(GLViewport):
 
     def key_up(self, evt):
         d = self.cameraInputs
-        keyname = KeyConfigPanel.getKey(evt)
+        keyname = keys.KeyConfigPanel.getKey(evt)
 
         if keyname == config.config.get('Keys', 'Brake'):
             self.mainViewport.brakeOff()
@@ -2681,7 +2675,7 @@ class LevelEditor(GLViewport):
             cp[1] = 0.
 
     def key_down(self, evt):
-        keyname = KeyConfigPanel.getKey(evt)
+        keyname = keys.KeyConfigPanel.getKey(evt)
         if keyname == 'ENTER':
             keyname = 'RETURN'
         if keyname == 'MOUSE4':
@@ -2808,7 +2802,7 @@ class LevelEditor(GLViewport):
         if keyname == config.config.get('Keys', 'Swap'):
             self.currentTool.swap()
 
-        if keyname == 'escape':
+        if keyname == 'ESCAPE':
             self.toolbar.tools[0].endSelection()
             self.mouseLookOff()
             self.showControls()
