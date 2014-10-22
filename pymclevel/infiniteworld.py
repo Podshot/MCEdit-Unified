@@ -32,6 +32,7 @@ from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
 import version_utils
 import scoreboard
+import player
 
 log = getLogger(__name__)
 
@@ -1286,6 +1287,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
                     return scoreboard.Scoreboard(self, False)
         return scoreboard.Scoreboard(self, True)
+    
+    def init_player_data(self):
+        player_data = []
+        for p in [x for x in os.listdir(self.playersFolder) if x.endswith(".dat")]:
+                player_data.append(player.Player(self.playersFolder+"\\"+p))
+        return player_data
 
     #@scoreboard.setter
     #def scoreboard(self, scoreboard):

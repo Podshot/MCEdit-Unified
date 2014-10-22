@@ -24,11 +24,10 @@ class Player:
         self._healf = self.root_tag["HealF"].value
 
         self._xp_level = self.root_tag["XpLevel"].value
-        
 
     @property
     def name(self):
-        return self._uuid
+        return self._name
     
     @property
     def gametype(self):
