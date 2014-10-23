@@ -23,6 +23,8 @@ def remapMouseButton(button):
     
 def getKey(evt, i=0):
     keyname = key.name(evt.key)
+    if keyname == 'Enter':
+            keyname = 'Return'
     if 'left' in keyname and len(keyname) > 5:
         keyname = keyname[5:]
     elif 'right' in keyname and len(keyname) > 6:

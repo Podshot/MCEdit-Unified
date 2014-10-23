@@ -2644,8 +2644,8 @@ class LevelEditor(GLViewport):
     def key_up(self, evt):
         d = self.cameraInputs
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == 'Enter':
-            keyname = 'Return'
+        if keyname == 'mouse1' or keyname == 'mouse2':
+            keyname = 'M' + keyname[1:]
         if keyname == 'mouse3':
             keyname = 'Mouse3'
         if keyname == 'mouse4':
@@ -2683,8 +2683,8 @@ class LevelEditor(GLViewport):
 
     def key_down(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == 'Enter':
-            keyname = 'Return'
+        if keyname == 'mouse1' or keyname == 'mouse2':
+            keyname = 'M' + keyname[1:]
         if keyname == 'mouse3':
             keyname = 'Mouse3'
         if keyname == 'mouse4':
