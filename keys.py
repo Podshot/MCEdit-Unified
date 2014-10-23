@@ -31,8 +31,8 @@ def getKey(evt):
         keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
     finally:
         newKeyname = ""
-        if evt.shift == True and keyname != "Shift":
-            newKeyname += "Shift-"
+        #if evt.shift == True and keyname != "Shift":
+        #    newKeyname += "Shift-"
         if evt.ctrl == True and keyname != "Ctrl":
             newKeyname += "Ctrl-"
         elif evt.cmd == True and keyname != "Meta":
