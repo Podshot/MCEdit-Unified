@@ -1,11 +1,9 @@
-from nbt import *
 import json
 import urllib2
 from directories import userCachePath
 import os
-import json
 import time
-import base64
+import base64  # @UnusedImport
 
 #def getPlayerSkinURL(uuid):
 #    try:
