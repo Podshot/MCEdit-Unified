@@ -21,7 +21,7 @@ def remapMouseButton(button):
         return buttons[button]
     return button
     
-def getKey(evt):
+def getKey(evt, i=0):
     keyname = key.name(evt.key)
     if 'left' in keyname and len(keyname) > 5:
         keyname = keyname[5:]
@@ -31,13 +31,13 @@ def getKey(evt):
         keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
     finally:
         newKeyname = ""
-        #if evt.shift == True and keyname != "Shift":
-        #    newKeyname += "Shift-"
-        if evt.ctrl == True and keyname != "Ctrl":
+        if evt.shift == True and keyname != "Shift" and i != 1:
+            newKeyname += "Shift-"
+        if evt.ctrl == True and keyname != "Ctrl" and i != 1:
             newKeyname += "Ctrl-"
-        elif evt.cmd == True and keyname != "Meta":
+        elif evt.cmd == True and keyname != "Meta" and i != 1:
             newKeyname += "Ctrl-"
-        if evt.alt == True and keyname != "Alt":
+        if evt.alt == True and keyname != "Alt" and i != 1:
             newKeyname += "Alt-"
     
         keyname = newKeyname + keyname

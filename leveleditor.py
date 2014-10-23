@@ -50,6 +50,7 @@ import mcplatform
 import pymclevel
 import renderer
 import directories
+import pygame
 
 from math import isnan
 from os.path import dirname, isdir
@@ -2646,22 +2647,21 @@ class LevelEditor(GLViewport):
 
         if keyname == config.config.get('Keys', 'Brake'):
             self.mainViewport.brakeOff()
-
-        # if keyname == 'left ctrl' or keyname == 'right ctrl':
-        #    self.hideControls()
-
-        if keyname == config.config.get('Keys', 'Left'):
-            d[0] = 0.
-        if keyname == config.config.get('Keys', 'Right'):
-            d[0] = 0.
-        if keyname == config.config.get('Keys', 'Forward'):
-            d[2] = 0.
-        if keyname == config.config.get('Keys', 'Back'):
-            d[2] = 0.
-        if keyname == config.config.get('Keys', 'Up'):
-            d[1] = 0.
-        if keyname == config.config.get('Keys', 'Down'):
-            d[1] = 0.
+        
+        if 'mouse' not in keyname and 'Scroll' not in keyname:    
+            tempKeyname = keys.getKey(evt, 1)
+            if tempKeyname == config.config.get('Keys', 'Left'):
+                d[0] = 0.
+            if tempKeyname == config.config.get('Keys', 'Right'):
+                d[0] = 0.
+            if tempKeyname == config.config.get('Keys', 'Forward'):
+                d[2] = 0.
+            if tempKeyname == config.config.get('Keys', 'Back'):
+                d[2] = 0.
+            if tempKeyname == config.config.get('Keys', 'Up'):
+                d[1] = 0.
+            if tempKeyname == config.config.get('Keys', 'Down'):
+                d[1] = 0.
 
         cp = self.cameraPanKeys
         if keyname == config.config.get('Keys', 'Pan Left'):
@@ -2677,16 +2677,16 @@ class LevelEditor(GLViewport):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == 'Enter':
             keyname = 'Return'
-        if keyname == 'Mouse4':
+        if keyname == 'mouse4':
             keyname = 'Scroll Up'
-        if keyname == 'Mouse5':
+        if keyname == 'mouse5':
             keyname = 'Scroll Down'
 
         d = self.cameraInputs
         im = [0., 0., 0.]
         mods = evt.dict.get('mod', 0)
 
-        if keyname == "ALT-F4":
+        if keyname == "Alt-F4":
             self.quit()
             return
 
@@ -2807,24 +2807,26 @@ class LevelEditor(GLViewport):
             self.showControls()
 
         # movement
-        if keyname == config.config.get('Keys', 'Left'):
-            d[0] = -1.
-            im[0] = -1.
-        if keyname == config.config.get('Keys', 'Right'):
-            d[0] = 1.
-            im[0] = 1.
-        if keyname == config.config.get('Keys', 'Forward'):
-            d[2] = 1.
-            im[2] = 1.
-        if keyname == config.config.get('Keys', 'Back'):
-            d[2] = -1.
-            im[2] = -1.
-        if keyname == config.config.get('Keys', 'Up'):
-            d[1] = 1.
-            im[1] = 1.
-        if keyname == config.config.get('Keys', 'Down'):
-            d[1] = -1.
-            im[1] = -1.
+        if 'mouse' not in keyname and 'Scroll' not in keyname:
+            tempKeyname =  keys.getKey(evt, 1)
+            if tempKeyname == config.config.get('Keys', 'Left'):
+                d[0] = -1.
+                im[0] = -1.
+            if tempKeyname == config.config.get('Keys', 'Right'):
+                d[0] = 1.
+                im[0] = 1.
+            if tempKeyname == config.config.get('Keys', 'Forward'):
+                d[2] = 1.
+                im[2] = 1.
+            if tempKeyname == config.config.get('Keys', 'Back'):
+                d[2] = -1.
+                im[2] = -1.
+            if tempKeyname == config.config.get('Keys', 'Up'):
+                d[1] = 1.
+                im[1] = 1.
+            if tempKeyname == config.config.get('Keys', 'Down'):
+                d[1] = -1.
+                im[1] = -1.
 
         cp = self.cameraPanKeys
         if keyname == config.config.get('Keys', 'Pan Left'):
