@@ -273,11 +273,11 @@ class TileEntity(object):
                         saving_command += ' '
                         Slash = False
                         if command[0] == "/":
-                             command = command.replace("/", "", 1)
-                             Slash = True
+                            command = command.replace("/", "", 1)
+                            Slash = True
                         words = command.split(' ')    
                         if not command.startswith('execute'):
-                             stillExecuting = False        
+                            stillExecuting = False        
             
                 if (command.startswith('tp') and len(words) == 5) or command.startswith('particle') or command.startswith('replaceitem block') or (command.startswith('spawnpoint') and len(words) == 5) or command.startswith('stats block') or (command.startswith('summon') and len(words) >= 5):
                     x, y, z = words[2:5]
