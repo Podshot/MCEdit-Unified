@@ -1,5 +1,4 @@
 import os.path
-import subprocess
 import directories
 import json
 import urllib2
