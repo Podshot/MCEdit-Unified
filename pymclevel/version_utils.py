@@ -20,7 +20,7 @@ import base64
 #    except:
 #        raise
 
-print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
+#print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
 
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
     if forceNetwork:
