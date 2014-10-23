@@ -7,12 +7,16 @@ from OpenGL import GL
 from drawable import Drawable
 from glutils import gl
 from mceutils import loadPNGTexture
+import config
 
 log = logging.getLogger(__name__)
 
 
 def makeQuad(minx, miny, width, height):
     return [minx, miny, minx + width, miny, minx + width, miny + height, minx, miny + height]
+
+Settings = config.Settings("Settings")
+Settings.viewMode = Settings("View Mode", "Camera")
 
 
 class CompassOverlay(Drawable):
@@ -48,6 +52,8 @@ class CompassOverlay(Drawable):
             GL.glLoadIdentity()
 
             yaw, pitch = self.yawPitch
+            if Settings.viewMode.get() == "Chunk":
+                yaw = -180
             GL.glTranslatef(1. - size, size, 0.0)  # position on upper right corner
             GL.glRotatef(180 - yaw, 0., 0., 1.)  # adjust to north
             GL.glColor3f(1., 1., 1.)
