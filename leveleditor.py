@@ -2644,11 +2644,19 @@ class LevelEditor(GLViewport):
     def key_up(self, evt):
         d = self.cameraInputs
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == 'Enter':
+            keyname = 'Return'
+        if keyname == 'mouse3':
+            keyname = 'Mouse3'
+        if keyname == 'mouse4':
+            keyname = 'Scroll Up'
+        if keyname == 'mouse5':
+            keyname = 'Scroll Down'
 
         if keyname == config.config.get('Keys', 'Brake'):
             self.mainViewport.brakeOff()
         
-        if 'mouse' not in keyname and 'Scroll' not in keyname:    
+        if 'Mouse' not in keyname and 'Scroll' not in keyname:    
             tempKeyname = keys.getKey(evt, 1)
             if tempKeyname == config.config.get('Keys', 'Left'):
                 d[0] = 0.
@@ -2809,7 +2817,7 @@ class LevelEditor(GLViewport):
             self.showControls()
 
         # movement
-        if 'mouse' not in keyname and 'Scroll' not in keyname:
+        if 'Mouse' not in keyname and 'Scroll' not in keyname:
             tempKeyname =  keys.getKey(evt, 1)
             if tempKeyname == config.config.get('Keys', 'Left'):
                 d[0] = -1.
