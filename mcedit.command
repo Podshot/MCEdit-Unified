@@ -8,6 +8,8 @@ ask() {
             default=Y
         elif [ "${2:-}" = "enter" ]; then
             default=Y
+        elif [ "${2:-}" = "Y" ]; then
+            default=Y
         else
             default=N
         fi

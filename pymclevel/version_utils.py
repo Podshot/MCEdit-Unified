@@ -5,6 +5,22 @@ from directories import userCachePath
 import os
 import json
 import time
+import base64
+
+#def getPlayerSkinURL(uuid):
+#    try:
+#        playerJSONResponse = urllib2.urlopen('https://sessionserver.mojang.com/session/minecraft/profile/{}'.format(uuid))
+#        print playerJSONResponse
+#        texturesJSON = json.loads(playerJSONResponse)['properties']
+#        for prop in properties:
+#            if prop['name'] == 'textures':
+#                b64 = base64.b64decode(prop['value']);
+#                print b64
+#                return json.loads(b64)['textures']['SKIN']['url']
+#    except:
+#        raise
+
+print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
 
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
     if forceNetwork:
