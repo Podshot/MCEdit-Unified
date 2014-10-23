@@ -2677,6 +2677,8 @@ class LevelEditor(GLViewport):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == 'Enter':
             keyname = 'Return'
+        if keyname == 'mouse3':
+            keyname = 'Mouse3'
         if keyname == 'mouse4':
             keyname = 'Scroll Up'
         if keyname == 'mouse5':
