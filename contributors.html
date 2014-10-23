@@ -10,25 +10,29 @@
 	<script>
 		function pageTrigger() {
 			var contributors = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/contributors');
+			var totalContributions = 0;
+			for (var i = 0; i < contributors.length; i++) {
+				totalContributions += contributors[i].contributions;
+			}
 			var contributorDB = getJSON('contributors.json');
 			for (var i = 0; i < contributors.length; i++) {
 				var contributor = contributors[i];
-				contributorDiv = '<p><a href="http://github.com/' + contributor.login + '"><i class="fa fa-github-square"></i>  ' + contributor.login + '</a></p>';
+				contributorDiv = '<a href="http://github.com/' + contributor.login + '"><i class="fa fa-github-square"></i></a> ';
 				if (contributorDB[contributor.login]) {
 					if (contributorDB[contributor.login].twitter) {
-						contributorDiv += '<p><a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fa fa-twitter-square"></i>  ' + contributorDB[contributor.login].twitter + '</a></p>';
+						contributorDiv += '<a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fa fa-twitter-square"></i></a> ';
 					}
 					if (contributorDB[contributor.login].youtube) {
-						contributorDiv += '<p><a href="http://youtube.com/' + contributorDB[contributor.login].youtube + '"><i class="fa fa-youtube-square"></i>  ' + contributorDB[contributor.login].youtube + '</a></p>';
+						contributorDiv += '<a href="http://youtube.com/' + contributorDB[contributor.login].youtube + '"><i class="fa fa-youtube-square"></i></a> ';
 					}
 					if (contributorDB[contributor.login].reddit) {
-						contributorDiv += '<p><a href="http://reddit.com/u/' + contributorDB[contributor.login].reddit + '"><i class="fa fa-reddit-square"></i>  ' + contributorDB[contributor.login].reddit + '</a></p>';
+						contributorDiv += '<a href="http://reddit.com/u/' + contributorDB[contributor.login].reddit + '"><i class="fa fa-reddit-square"></i></a> ';
 					}
 					if (contributorDB[contributor.login].facebook) {
-						contributorDiv += '<p><a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fa fa-facebook-square"></i>  ' + contributorDB[contributor.login].facebook + '</a></p>';
+						contributorDiv += '<a href="http://facebook.com/' + contributorDB[contributor.login].facebook + '"><i class="fa fa-facebook-square"></i></a> ';
 					}
 				}
-				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2"><div style="min-height:380px" class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : '') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
+				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2"><div style="min-height:300px" class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
 			};
 		}
 	</script>
