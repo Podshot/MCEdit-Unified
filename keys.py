@@ -29,6 +29,8 @@ def getKey(evt, i=0):
         keyname = keyname[5:]
     elif 'right' in keyname and len(keyname) > 6:
         keyname = keyname[6:]
+    if keyname == 'Meta':
+        keyname = 'Ctrl'
     try:
         keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
     finally:
@@ -36,8 +38,6 @@ def getKey(evt, i=0):
         if evt.shift == True and keyname != "Shift" and i != 1:
             newKeyname += "Shift-"
         if evt.ctrl == True and keyname != "Ctrl" and i != 1:
-            newKeyname += "Ctrl-"
-        elif evt.cmd == True and keyname != "Meta" and i != 1:
             newKeyname += "Ctrl-"
         if evt.alt == True and keyname != "Alt" and i != 1:
             newKeyname += "Alt-"
