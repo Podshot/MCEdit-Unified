@@ -348,11 +348,9 @@ class CameraViewport(GLViewport):
         self.yaw += pi[0] * mouseSpeed
         self.pitch += pi[1] * mouseSpeed
 
-        alignMovementToAxes = key.get_mods() & KMOD_SHIFT
-
         if self.flyMode:
             (dx, dy, dz) = self._anglesToVector(self.yaw, 0)
-        elif self.swapAxesLookingDown or alignMovementToAxes:
+        elif self.swapAxesLookingDown:
             p = self.pitch
             if p > 80 or alignMovementToAxes:
                 p = 0
