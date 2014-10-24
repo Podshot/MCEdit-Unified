@@ -38,10 +38,16 @@ def getNewKey(value, i=0):
         value = value.replace(value[0], value[0].upper(), 1)
     if i >= 26 and "Ctrl-" not in value:
         value = "Ctrl-" + value
-    if value == "mouse4":
+    if value == "mouse3":
+        value = "Middle Mouse"
+    elif value == "mouse4":
         value = "Scroll Up"
-    if value == "mouse5":
+    elif value == "mouse5":
         value = "Scroll Down"
+    elif value == "mouse6":
+        value = "Button 4"
+    elif value == "mouse7":
+        value = "Button 5"
     return value
 
 def configFilePath():
@@ -146,7 +152,7 @@ pan right = L
 pan up = I
 pan down = K
 
-reset reach = Mouse3
+reset reach = Middle Mouse
 increase reach = Scroll Up
 decrease reach = Scroll Down
 

@@ -2642,11 +2642,15 @@ class LevelEditor(GLViewport):
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
         elif keyname == 'mouse3':
-            keyname = 'Mouse3'
-        elif keyname == 'mouse4' or keyname == 'mouse6':
+            keyname = 'Middle Mouse'
+        elif keyname == 'mouse4':
             keyname = 'Scroll Up'
-        elif keyname == 'mouse5' or keyname == 'mouse7':
+        elif keyname == 'mouse5':
             keyname = 'Scroll Down'
+        elif keyname == 'mouse6':
+            keyname = 'Button 4'
+        elif keyname == 'mouse7':
+            keyname = 'Button 5'
             
         if 'Mouse' not in keyname and 'Scroll' not in keyname:    
             tempKeyname = keys.getKey(evt, 1)
@@ -2706,12 +2710,16 @@ class LevelEditor(GLViewport):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
-        elif keyname == 'mouse3':
+        elif keyname == 'Middle Mouse':
             keyname = 'Mouse3'
-        elif keyname == 'mouse4' or keyname == 'mouse6':
+        elif keyname == 'mouse4':
             keyname = 'Scroll Up'
-        elif keyname == 'mouse5' or keyname == 'mouse7':
+        elif keyname == 'mouse5':
             keyname = 'Scroll Down'
+        elif keyname == 'mouse6':
+            keyname = 'Button 4'
+        elif keyname == 'mouse7':
+            keyname = 'Button 5'
 
         if keyname == "Alt-F4":
             self.quit()

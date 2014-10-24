@@ -199,12 +199,22 @@ class KeyConfigPanel(Dialog):
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
             key = config.config.get("Keys", configKey)
-            if key == 'mouse4' or key == 'mouse6':
+            if key == 'mouse3':
+                key = 'Middle Mouse'
+                config.config.set("Keys", configKey, "Middle Mouse")
+            elif key == 'mouse4':
                 key = 'Scroll Up'
                 config.config.set("Keys", configKey, "Scroll Up")
-            if key == 'mouse5' or key == 'mouse7':
+            elif key == 'mouse5':
                 key = 'Scroll Down'
                 config.config.set("Keys", configKey, "Scroll Down")
+            elif key == 'mouse6':
+                key = 'Button 4'
+                config.config.set("Keys", configKey, "Button 4")
+            elif key == 'mouse7':
+                key = 'Button 5'
+                config.config.set("Keys", configKey, "Button 5")
+            
         else:
             key = ""
         return configKey, key
@@ -240,11 +250,15 @@ class KeyConfigPanel(Dialog):
         def panelMouseUp(evt):
             button = remapMouseButton(evt.button)
             if button == 3:
-                keyname = "Mouse3"
-            elif button == 4 or button == 6:
+                keyname = "Middle Mouse"
+            elif button == 4:
                 keyname = "Scroll Up"
-            elif button == 5 or button == 7:
+            elif button == 5:
                 keyname = "Scroll Down"
+            elif button == 6:
+                keyname = "Button 4"
+            elif button == 7:
+                keyname = "Button 5"
             if button > 2:
                 panel.dismiss(keyname)
 
