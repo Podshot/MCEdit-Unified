@@ -16,7 +16,7 @@
 	},
 	"ezfe": {
 		"role": "Mac Expert",
-		"#payment": "http://pixelhost.ezekielelin.com/donate",
+		"payment": "http://pixelhost.ezekielelin.com/payments/?payment_item_id=mcedit",
 		"twitter": "ezekielfe",
 		"youtube": "EzekielFilms",
 		"reddit": "superezfe"
