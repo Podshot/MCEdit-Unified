@@ -16,7 +16,7 @@ from glbackground import Panel
 ESCAPE = '\033'
 
 def remapMouseButton(button):
-    buttons = [0, 1, 3, 2, 4, 5]  # mouse2 is right button, mouse3 is middle
+    buttons = [0, 1, 3, 2, 4, 5, 6, 7]  # mouse2 is right button, mouse3 is middle
     if button < len(buttons):
         return buttons[button]
     return button
@@ -199,10 +199,10 @@ class KeyConfigPanel(Dialog):
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
             key = config.config.get("Keys", configKey)
-            if key == 'mouse4':
+            if key == 'mouse4' or key == 'mouse6':
                 key = 'Scroll Up'
                 config.config.set("Keys", configKey, "Scroll Up")
-            if key == 'mouse5':
+            if key == 'mouse5' or key == 'mouse7':
                 key = 'Scroll Down'
                 config.config.set("Keys", configKey, "Scroll Down")
         else:
@@ -241,9 +241,9 @@ class KeyConfigPanel(Dialog):
             button = remapMouseButton(evt.button)
             if button == 3:
                 keyname = "Mouse3"
-            elif button == 4:
+            elif button == 4 or buttom == 6:
                 keyname = "Scroll Up"
-            elif button == 5:
+            elif button == 5 or button == 7:
                 keyname = "Scroll Down"
             if button > 2:
                 panel.dismiss(keyname)
@@ -253,16 +253,21 @@ class KeyConfigPanel(Dialog):
 
         keyname = panel.present()
         if keyname != "Escape":
-            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v.upper() == keyname]
+            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if config.getNewKey(v) == keyname and k != configKey.lower()]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
             for keyname, setting in occupiedKeys:
+                settings = setting.split(' ')
+                newSettings = []
+                for set in settings:
+                    newSettings.append(set[0].upper() + set[1:])
+                setting = ' '.join(newSettings)
                 if self.askAssignKey(setting,
                                      tr("The key {0} is no longer bound to {1}. "
                                      "Press a new key for the action \"{1}\"\n\n"
                                      "Press ESC to cancel.")
                                      .format(keyname, setting)):
                     config.config.set("Keys", configKey, oldkey)
-                    return True  #Only disabled as currently you can't input modifiers, reenable if fixed and edit leveleditor.py as needed
+                    return True 
         else:
             return True

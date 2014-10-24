@@ -29,7 +29,7 @@ from albow import alert
 log = logging.getLogger(__name__)
 
 
-def getNewKey(value, i):
+def getNewKey(value, i=0):
     if 'left' in value and len(value) > 5:
         value = value[5:]
     elif 'right' in value and len(value) > 6:

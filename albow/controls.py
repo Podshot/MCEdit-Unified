@@ -8,6 +8,7 @@ from widget import Widget, overridable_property
 from theme import ThemeProperty
 from utils import blit_in_rect, frame_rect
 import resource
+import keys
 from translate import tr
 
 class Control(object):
@@ -196,7 +197,8 @@ class ButtonBase(Control):
     default_choice_bg_color = ThemeProperty('default_choice_bg_color')
 
     def mouse_down(self, event):
-        if self.enabled:
+        button = event.button
+        if self.enabled and button == 1:
             self._highlighted = True
 
     def mouse_drag(self, event):
@@ -206,7 +208,8 @@ class ButtonBase(Control):
             self.invalidate()
 
     def mouse_up(self, event):
-        if event in self:
+        button = event.button
+        if event in self and button == 1:
             if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
                 self._highlighted = False
                 if self.enabled:

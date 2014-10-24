@@ -1588,6 +1588,8 @@ class LevelEditor(GLViewport):
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
         self.usedKeys = [0, 0, 0, 0, 0, 0]
+        self.movements = [config.config.get('Keys', 'Left'), config.config.get('Keys', 'Right'), config.config.get('Keys', 'Forward'), config.config.get('Keys', 'Back'), config.config.get('Keys', 'Up'), config.config.get('Keys', 'Down')]
+        self.save = 0
         self.cameraToolDistance = self.defaultCameraToolDistance
 
         self.createRenderers()
@@ -2641,38 +2643,52 @@ class LevelEditor(GLViewport):
             keyname = 'M' + keyname[1:]
         elif keyname == 'mouse3':
             keyname = 'Mouse3'
-        elif keyname == 'mouse4':
+        elif keyname == 'mouse4' or keyname == 'mouse6':
             keyname = 'Scroll Up'
-        elif keyname == 'mouse5':
+        elif keyname == 'mouse5' or keyname == 'mouse7':
             keyname = 'Scroll Down'
             
         if 'Mouse' not in keyname and 'Scroll' not in keyname:    
             tempKeyname = keys.getKey(evt, 1)
             d = self.cameraInputs
             if tempKeyname == config.config.get('Keys', 'Left'):
-                self.usedKeys[0] = 0
-                d[0] += 1.
-                return
-            if tempKeyname == config.config.get('Keys', 'Right'):
-                self.usedKeys[1] = 0
-                d[0] -= 1.
-                return
-            if tempKeyname == config.config.get('Keys', 'Forward'):
-                self.usedKeys[2] = 0
-                d[2] -= 1.
-                return
-            if tempKeyname == config.config.get('Keys', 'Back'):
-                self.usedKeys[3] = 0
-                d[2] += 1.
-                return
-            if tempKeyname == config.config.get('Keys', 'Up'):
-                self.usedKeys[4] = 0
-                d[1] -= 1.
-                return
-            if tempKeyname == config.config.get('Keys', 'Down'):
-                self.usedKeys[5] = 0
-                d[1] += 1.
-                return
+                if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
+                    self.usedKeys[0] = 0
+                    d[0] += 1.
+                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Right'):
+                if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
+                    self.usedKeys[1] = 0
+                    d[0] -= 1.
+                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Forward'):
+                if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
+                    self.usedKeys[2] = 0
+                    d[2] -= 1.
+                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Back'):
+                if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
+                    self.usedKeys[3] = 0
+                    d[2] += 1.
+                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                    self.save = 0
+                    print d[2]
+                    print self.usedKeys[3]
+            elif tempKeyname == config.config.get('Keys', 'Up'):
+                if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
+                    self.usedKeys[4] = 0
+                    d[1] -= 1.
+                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Down'):
+                if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
+                    self.usedKeys[5] = 0
+                    d[1] += 1.
+                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                    self.save = 0
 
         if keyname == config.config.get('Keys', 'Brake'):
             self.mainViewport.brakeOff()
@@ -2692,9 +2708,9 @@ class LevelEditor(GLViewport):
             keyname = 'M' + keyname[1:]
         elif keyname == 'mouse3':
             keyname = 'Mouse3'
-        elif keyname == 'mouse4':
+        elif keyname == 'mouse4' or keyname == 'mouse6':
             keyname = 'Scroll Up'
-        elif keyname == 'mouse5':
+        elif keyname == 'mouse5' or keyname == 'mouse7':
             keyname = 'Scroll Down'
 
         if keyname == "Alt-F4":
@@ -2709,32 +2725,38 @@ class LevelEditor(GLViewport):
                 d[0] -= 1.
                 im[0] -= 1.
                 self.usedKeys[0] = 1
-                return
-            if tempKeyname == config.config.get('Keys', 'Right') and self.usedKeys[1] == 0:
+                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Right') and self.usedKeys[1] == 0:
                 d[0] += 1.
                 im[0] += 1.
                 self.usedKeys[1] = 1
-                return
-            if tempKeyname == config.config.get('Keys', 'Forward') and self.usedKeys[2] == 0:
+                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Forward') and self.usedKeys[2] == 0:
                 d[2] += 1.
                 im[2] += 1.
                 self.usedKeys[2] = 1
-                return
-            if tempKeyname == config.config.get('Keys', 'Back') and self.usedKeys[3] == 0:
+                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Back') and self.usedKeys[3] == 0:
                 d[2] -= 1.
                 im[2] -= 1.
                 self.usedKeys[3] = 1
-                return
-            if tempKeyname == config.config.get('Keys', 'Up') and self.usedKeys[4] == 0:
+                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Up') and self.usedKeys[4] == 0:
                 d[1] += 1.
                 im[1] += 1.
                 self.usedKeys[4] = 1
-                return
-            if tempKeyname == config.config.get('Keys', 'Down') and self.usedKeys[5] == 0:
+                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                    self.save = 0
+            elif tempKeyname == config.config.get('Keys', 'Down') and self.usedKeys[5] == 0:
                 d[1] -= 1.
                 im[1] -= 1.
                 self.usedKeys[5] = 1
-                return
+                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                    self.save = 0
 
         if keyname == "Alt-Z":
             self.longDistanceMode = not self.longDistanceMode
@@ -2776,10 +2798,14 @@ class LevelEditor(GLViewport):
         elif keyname == config.config.get('Keys', 'Undo'):
             self.undo()
         elif keyname == config.config.get('Keys', 'Save'):
-            self.cameraInputs = [0., 0., 0.]
+            self.saveFile()
+            for move in self.movements:
+                if move in keyname:
+                    self.save = 1
             d = [0., 0., 0.]
             im = [0., 0., 0.]
-            self.saveFile()
+            self.usedKeys = [0, 0, 0, 0, 0, 0]
+            self.cameraInputs = [0., 0., 0.]
         elif keyname == config.config.get('Keys', 'New World'):
             self.createNewLevel()
         elif keyname == config.config.get('Keys', 'Close World'):
