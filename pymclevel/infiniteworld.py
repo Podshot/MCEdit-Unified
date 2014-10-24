@@ -1294,10 +1294,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 player_data.append(player.Player(self.playersFolder+"\\"+p))
         return player_data
 
-    #@scoreboard.setter
-    #def scoreboard(self, scoreboard):
-    #    self._scoreboard = sb
-
     @property
     def bounds(self):
         if self._bounds is None:
