@@ -7,6 +7,7 @@ operations = {
     "Custom Dialog (Hi Button)": 2,
     "Scoreboard Editing (Objective)": 3,
     "Scoreboard Editing (Team)": 4,
+    "Player Data": 5,
     }
 
 inputs = (
@@ -26,6 +27,7 @@ def yesFUNC(level, box):
 def perform(level, box, options):
     op = options["Operation"]
     #print dir(level.scoreboard.Objectives)
+    print level.init_scoreboard().PlayerScores["Chevalerie94"]
     print "Test Filter Ran"
     if op == "Yes/No Dialog":
         choice = editor.YesNoWidget("Place a sponge block here?")
@@ -59,3 +61,11 @@ def perform(level, box, options):
         if level.scoreboard != None:
             for team in level.scoreboard.Teams:
                 print "Team Name: " + str(team.DisplayName)
+    elif op == "Player Data":
+        players = level.init_player_data()
+        for p in players:
+            print p.name
+            for item in p.inventory:
+                print item["id"].value
+                print "==="
+            p.save()

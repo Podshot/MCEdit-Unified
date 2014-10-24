@@ -1,5 +1,23 @@
 import nbt
 
+class PlayerScores:
+    
+    def __init__(self, players):
+        self._playersScores = {}
+        self._players = players
+        self.setup()
+        
+    def setup(self):
+        for p in self._players:
+            if p["Name"].value not in self._playersScores:
+                self._playersScores[p["Name"].value] = {}
+            self._playersScores[p["Name"].value][p["Objective"].value] = {"Score":p["Score"].value,"Locked":p["Locked"].value}
+    
+    def get_player_scores(self):
+        return self._playersScores
+        
+        
+        
 class Objective:
 
     def __init__(self, objective):
@@ -119,6 +137,7 @@ class Scoreboard:
         self._objectives = []
         self._teams = []
         self._scs = should_create_scoreboard
+        self._playerscores = {}
         self.root_tag = None
         self.setup()
 
@@ -130,6 +149,7 @@ class Scoreboard:
 
             for team in self.root_tag["data"]["Teams"]:
                 self._teams.append(Team(team))
+            self._playerscores = PlayerScores(self.root_tag["data"]["PlayerScores"]).get_player_scores()
         else:
             self.root_tag = nbt.TAG_Compound()
             self.root_tag["data"] = nbt.TAG_Compound()
@@ -141,6 +161,10 @@ class Scoreboard:
     @property
     def Teams(self):
         return self._teams
+    
+    @property
+    def PlayerScores(self):
+        return self._playerscores
 
     def save(self, level):
         objectiveList = nbt.TAG_List()
