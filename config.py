@@ -39,7 +39,7 @@ def getNewKey(value, i=0):
     if i >= 26 and "Ctrl-" not in value:
         value = "Ctrl-" + value
     if value == "mouse3":
-        value = "Middle Mouse"
+        value = "Button 3"
     elif value == "mouse4":
         value = "Scroll Up"
     elif value == "mouse5":
@@ -152,7 +152,7 @@ pan right = L
 pan up = I
 pan down = K
 
-reset reach = Middle Mouse
+reset reach = Button 3
 increase reach = Scroll Up
 decrease reach = Scroll Down
 

@@ -2642,7 +2642,7 @@ class LevelEditor(GLViewport):
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
         elif keyname == 'mouse3':
-            keyname = 'Middle Mouse'
+            keyname = 'Button 3'
         elif keyname == 'mouse4':
             keyname = 'Scroll Up'
         elif keyname == 'mouse5':
@@ -2652,7 +2652,7 @@ class LevelEditor(GLViewport):
         elif keyname == 'mouse7':
             keyname = 'Button 5'
             
-        if 'Mouse' not in keyname and 'Scroll' not in keyname:    
+        if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:    
             tempKeyname = keys.getKey(evt, 1)
             d = self.cameraInputs
             if tempKeyname == config.config.get('Keys', 'Left'):
@@ -2711,7 +2711,7 @@ class LevelEditor(GLViewport):
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
         elif keyname == 'Middle Mouse':
-            keyname = 'Mouse3'
+            keyname = 'Button 3'
         elif keyname == 'mouse4':
             keyname = 'Scroll Up'
         elif keyname == 'mouse5':
@@ -2725,7 +2725,7 @@ class LevelEditor(GLViewport):
             self.quit()
             return
             
-        if 'Mouse' not in keyname and 'Scroll' not in keyname:
+        if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname =  keys.getKey(evt, 1)
             d = self.cameraInputs
             im = [0., 0., 0.]

@@ -109,7 +109,7 @@ class KeyConfigPanel(Dialog):
         ("Swap", "X"),
         ("Increase Reach", "Scroll Up"),
         ("Decrease Reach", "Scroll Down"),
-        ("Reset Reach", "Mouse3"),
+        ("Reset Reach", "Button 3"),
         ("Delete Blocks", "Delete"),
     ],
                "Arrows": [
@@ -128,7 +128,7 @@ class KeyConfigPanel(Dialog):
                    ("Swap", "\\"),
                    ("Increase Reach", "Scroll Up"),
                    ("Decrease Reach", "Scroll Down"),
-                   ("Reset Reach", "Mouse3"),
+                   ("Reset Reach", "Button 3"),
                    ("Delete Blocks", "Backspace")
                ],
                "Numpad": [
@@ -147,7 +147,7 @@ class KeyConfigPanel(Dialog):
                    ("Swap", "[.]"),
                    ("Increase Reach", "Scroll Up"),
                    ("Decrease Reach", "Scroll Down"),
-                   ("Reset Reach", "Mouse3"),
+                   ("Reset Reach", "Button 3"),
                    ("Delete Blocks", "Delete")
                ]}
 
@@ -200,8 +200,8 @@ class KeyConfigPanel(Dialog):
         if self.isConfigKey(configKey):
             key = config.config.get("Keys", configKey)
             if key == 'mouse3':
-                key = 'Middle Mouse'
-                config.config.set("Keys", configKey, "Middle Mouse")
+                key = 'Button 3'
+                config.config.set("Keys", configKey, "Button 3")
             elif key == 'mouse4':
                 key = 'Scroll Up'
                 config.config.set("Keys", configKey, "Scroll Up")
@@ -250,7 +250,7 @@ class KeyConfigPanel(Dialog):
         def panelMouseUp(evt):
             button = remapMouseButton(evt.button)
             if button == 3:
-                keyname = "Middle Mouse"
+                keyname = "Button 3"
             elif button == 4:
                 keyname = "Scroll Up"
             elif button == 5:
