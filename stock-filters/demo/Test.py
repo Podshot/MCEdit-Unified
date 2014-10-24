@@ -27,7 +27,7 @@ def yesFUNC(level, box):
 def perform(level, box, options):
     op = options["Operation"]
     #print dir(level.scoreboard.Objectives)
-    print level.init_scoreboard().PlayerScores["Chevalerie94"]
+    #print level.init_scoreboard().PlayerScores["Chevalerie94"]
     print "Test Filter Ran"
     if op == "Yes/No Dialog":
         choice = editor.YesNoWidget("Place a sponge block here?")
