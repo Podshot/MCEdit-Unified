@@ -99,7 +99,7 @@ def refreshLang(self=None,suppressAlert=False,build=True):
                 restart(self)
             elif result == "Restart":
                 restart(self)
-            elif result == "Cancel":
+            elif result == "Later":
                 pass
             else:
                 isRealLang = False
