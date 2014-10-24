@@ -4,10 +4,9 @@
 		"twitter": "TrazLander",
 		"youtube": "TrazLand",
 		"reddit": "TrazLander"
-		
 	},
 	"Khroki": {
-        "role": "Organizer",
+		"role": "Organizer",
 		"reddit": "Karthex"
 	},
 	"Podshot": {
@@ -17,6 +16,7 @@
 	},
 	"ezfe": {
 		"role": "Mac Expert",
+		"#payment": "http://pixelhost.ezekielelin.com/donate",
 		"twitter": "ezekielfe",
 		"youtube": "EzekielFilms",
 		"reddit": "superezfe"
