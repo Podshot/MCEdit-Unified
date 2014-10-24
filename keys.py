@@ -241,7 +241,7 @@ class KeyConfigPanel(Dialog):
             button = remapMouseButton(evt.button)
             if button == 3:
                 keyname = "Mouse3"
-            elif button == 4 or buttom == 6:
+            elif button == 4 or button == 6:
                 keyname = "Scroll Up"
             elif button == 5 or button == 7:
                 keyname = "Scroll Down"
