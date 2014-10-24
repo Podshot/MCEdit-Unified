@@ -91,14 +91,16 @@ def refreshLang(self=None,suppressAlert=False,build=True):
         if not oldlang == lang and not suppressAlert and isRealLang:
             import albow
             if leveleditor.LevelEditor(self).unsavedEdits:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Cancel"])
+                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
             else:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Cancel"])
+                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
             if result == "Save and Restart":
                 editor.saveFile()
                 restart(self)
             elif result == "Restart":
                 restart(self)
+            elif result == "Cancel":
+                pass
             else:
                 isRealLang = False
                 cancel = True
