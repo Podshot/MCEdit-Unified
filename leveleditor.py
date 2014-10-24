@@ -2635,53 +2635,59 @@ class LevelEditor(GLViewport):
 
     def key_up(self, evt):
         d = self.cameraInputs
+        cp = self.cameraPanKeys
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
-        if keyname == 'mouse3':
+        elif keyname == 'mouse3':
             keyname = 'Mouse3'
-        if keyname == 'mouse4':
+        elif keyname == 'mouse4':
             keyname = 'Scroll Up'
-        if keyname == 'mouse5':
+        elif keyname == 'mouse5':
             keyname = 'Scroll Down'
-
-        if keyname == config.config.get('Keys', 'Brake'):
-            self.mainViewport.brakeOff()
-        
+            
         if 'Mouse' not in keyname and 'Scroll' not in keyname:    
             tempKeyname = keys.getKey(evt, 1)
             if tempKeyname == config.config.get('Keys', 'Left'):
                 d[0] = 0.
+                return
             if tempKeyname == config.config.get('Keys', 'Right'):
                 d[0] = 0.
+                return
             if tempKeyname == config.config.get('Keys', 'Forward'):
                 d[2] = 0.
+                return
             if tempKeyname == config.config.get('Keys', 'Back'):
                 d[2] = 0.
+                return
             if tempKeyname == config.config.get('Keys', 'Up'):
                 d[1] = 0.
+                return
             if tempKeyname == config.config.get('Keys', 'Down'):
                 d[1] = 0.
+                return
 
-        cp = self.cameraPanKeys
-        if keyname == config.config.get('Keys', 'Pan Left'):
+        if keyname == config.config.get('Keys', 'Brake'):
+            self.mainViewport.brakeOff()
+
+        elif keyname == config.config.get('Keys', 'Pan Left'):
             cp[0] = 0.
-        if keyname == config.config.get('Keys', 'Pan Right'):
+        elif keyname == config.config.get('Keys', 'Pan Right'):
             cp[0] = 0.
-        if keyname == config.config.get('Keys', 'Pan Up'):
+        elif keyname == config.config.get('Keys', 'Pan Up'):
             cp[1] = 0.
-        if keyname == config.config.get('Keys', 'Pan Down'):
+        elif keyname == config.config.get('Keys', 'Pan Down'):
             cp[1] = 0.
 
     def key_down(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
-        if keyname == 'mouse3':
+        elif keyname == 'mouse3':
             keyname = 'Mouse3'
-        if keyname == 'mouse4':
+        elif keyname == 'mouse4':
             keyname = 'Scroll Up'
-        if keyname == 'mouse5':
+        elif keyname == 'mouse5':
             keyname = 'Scroll Down'
 
         d = self.cameraInputs
