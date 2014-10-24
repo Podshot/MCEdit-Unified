@@ -1930,7 +1930,7 @@ class LevelEditor(GLViewport):
         tableBacking.shrink_wrap()
 
         def saveToFile():
-            filename = askSaveFile(mcplatform.docsFolder,
+            filename = askSaveFile(directories.docsFolder,
                                    title='Save analysis...',
                                    defaultName=self.level.displayName + "_analysis.txt",
                                    filetype='Comma Separated Values\0*.txt\0\0',

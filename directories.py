@@ -287,12 +287,12 @@ else:
         genericSupportDir = fixedGenericSupportPath
     portable = False
 
-if portable:
-    serverJarStorageDir = portableJarStorageDir
+#if portable:
+#    serverJarStorageDir = portableJarStorageDir
 #    ServerJarStorage.defaultCacheDir = serverJarStorageDir
 #    jarStorage = ServerJarStorage(serverJarStorageDir)
 #else:
-    serverJarStorageDir = fixedJarStorageDir
+#    serverJarStorageDir = fixedJarStorageDir
         
 def getAllFilters(filters_dir):
     return glob.glob(filters_dir+"/*.py")
