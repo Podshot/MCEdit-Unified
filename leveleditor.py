@@ -352,7 +352,7 @@ class CameraViewport(GLViewport):
             (dx, dy, dz) = self._anglesToVector(self.yaw, 0)
         elif self.swapAxesLookingDown:
             p = self.pitch
-            if p > 80 or alignMovementToAxes:
+            if p > 80:
                 p = 0
 
             (dx, dy, dz) = self._anglesToVector(self.yaw, p)
@@ -365,12 +365,6 @@ class CameraViewport(GLViewport):
         yaw = numpy.radians(self.yaw)
         cosyaw = -numpy.cos(yaw)
         sinyaw = numpy.sin(yaw)
-        if alignMovementToAxes:
-            cosyaw = int(cosyaw * 1.4)
-            sinyaw = int(sinyaw * 1.4)
-            dx = int(dx * 1.4)
-            dy = int(dy * 1.6)
-            dz = int(dz * 1.4)
 
         directedInputs = mceutils.normalize((
             i[0] * cosyaw + i[2] * dx,
