@@ -55,9 +55,10 @@ docs/_build/
 # PyBuilder
 target/
 filters/modifyitemstrings.py
+build.bat
 
 # Eclipse
-
+.externalToolBuilders
 .metadata
 *.xcodeproj
 .project
