@@ -33,7 +33,11 @@ ask() {
 
 
 cd "$(dirname "$0")"
-python -B mcedit.py
+if ! type "python2" > /dev/null; then
+    python -B mcedit.py
+else
+    python2 -B mcedit.py
+fi
 echo "-------------------------"
 if ask "Press R to restart MCEdit, any other key to exit:"; then
 	clear
