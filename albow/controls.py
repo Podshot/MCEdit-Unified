@@ -213,12 +213,6 @@ class ButtonBase(Control):
             if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
                 self._highlighted = False
                 if self.enabled:
-                    """
-                    if self.text in str(range(1,10)):
-                        self.call_handler('action', self.text)
-                    else:
-                        self.call_handler('action')
-                    """
                     try:
                         if self.text in str(range(1,10)):
                             self.call_handler('action', self.text)
