@@ -14,13 +14,16 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 
 #Modified by D.C.-G. for translation purposes
 
+import mceutils
+import ast
+import config
 import collections
+import os
 import random
-from datetime import datetime
 import numpy
 from numpy import newaxis
 import pygame
-from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert
+from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert, Field
 from albow.translate import tr
 import bresenham
 import leveleditor
@@ -28,7 +31,7 @@ from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
-from glbackground import Panel
+from glbackground import Panel, GLBackground
 from glutils import gl
 import mcplatform
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
@@ -43,6 +46,7 @@ from operation import Operation, mkundotemp
 from pymclevel.mclevelbase import exhaust
 
 from OpenGL import GL
+from OpenGL.arrays import numbers
 
 log = logging.getLogger(__name__)
 
@@ -109,6 +113,7 @@ class Modes:
             airFill = CheckBoxLabel("Fill Air", ref=AttrRef(tool, 'airFill'))
 
             col = [
+                panel.brushPresetOptions,
                 panel.modeStyleGrid,
                 panel.hollowRow,
                 panel.noiseInput,
@@ -173,6 +178,10 @@ class Modes:
             chanceB = IntInputRow("Weight 2: ", ref=AttrRef(tool, 'chanceB'), min=0, width=50)
             chanceC = IntInputRow("Weight 3: ", ref=AttrRef(tool, 'chanceC'), min=0, width=50)
             chanceD = IntInputRow("Weight 4: ", ref=AttrRef(tool, 'chanceD'), min=0, width=50)
+            chanceABcolumns = [chanceA, chanceB]
+            chanceCDcolumns = [chanceC, chanceD]
+            chanceAB = Row(chanceABcolumns)
+            chanceCD = Row(chanceCDcolumns)
 
             col = [
                 panel.modeStyleGrid,
@@ -183,10 +192,8 @@ class Modes:
                 replaceWith2,
                 replaceWith3,
                 replaceWith4,
-                chanceA, 
-                chanceB,
-                chanceC, 
-                chanceD,
+                chanceAB,
+                chanceCD,
                 airFill,
             ]
             return col
@@ -424,7 +431,11 @@ class Modes:
             chanceB = IntInputRow("Weight 2: ", ref=AttrRef(tool, 'chanceB'), min=0, width=50)
             chanceC = IntInputRow("Weight 3: ", ref=AttrRef(tool, 'chanceC'), min=0, width=50)
             chanceD = IntInputRow("Weight 4: ", ref=AttrRef(tool, 'chanceD'), min=0, width=50)
-
+            chanceABcolumns = [chanceA, chanceB]
+            chanceCDcolumns = [chanceC, chanceD]
+            chanceAB = Row(chanceABcolumns)
+            chanceCD = Row(chanceCDcolumns)
+           
             col = [
                 panel.modeStyleGrid,
                 panel.brushSizeRows,
@@ -434,8 +445,8 @@ class Modes:
                 replaceWith2,
                 replaceWith3,
                 replaceWith4,
-                chanceA, chanceB,
-                chanceC, chanceD,
+                chanceAB,
+                chanceCD,
                 ]
             return col
 
@@ -749,7 +760,8 @@ class BrushOperation(Operation):
         Modes.Topsoil,
         Modes.Paste
     ]
-
+    
+    
     @property
     def noise(self):
         return self.options.get('brushNoise', 100)
@@ -757,9 +769,7 @@ class BrushOperation(Operation):
     @property
     def hollow(self):
         return self.options.get('brushHollow', False)
-
-
-
+    
     def dirtyBox(self):
         return self._dirtyBox
 
@@ -805,8 +815,38 @@ class BrushOperation(Operation):
 class BrushPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
-        self.tool = tool
+        self.currentNumber = 0
+        
+        #Creating Ref variables to link objects
+        self.noiseOption = AttrRef(tool, "brushNoise")
+        self.brushHollowOption = AttrRef(tool, "brushHollow")
+        self.replaceBlockInfoOption = AttrRef(tool, 'replaceBlockInfo')
+        self.blockInfoOption = AttrRef(tool, 'blockInfo')
+        self.minimumSpacingOption = AttrRef(tool, "minimumSpacing")
+        self.brushStyleOption = AttrRef(tool, "brushStyle")
+        self.brushSizeLOption = getattr(BrushSettings, "brushSizeL")
+        self.brushSizeWOption = getattr(BrushSettings, "brushSizeW")
+        self.brushSizeHOption = getattr(BrushSettings, "brushSizeH")
+        
+        self.saveableBrushOptions={
+        "noiseOption": self.noiseOption,
+        "brushHollowOption": self.brushHollowOption,
+        "replaceBlockInfoOption": self.replaceBlockInfoOption,
+        #"replaceBlockInfoOptionData": self.replaceBlockInfoOptionData,
+        "blockInfoOption": self.blockInfoOption,
+        #"blockInfoOptionData": self.blockInfoOptionData,
+        "minimumSpacingOption": self.minimumSpacingOption,
+        "brushStyleOption": self.brushStyleOption,
+        "brushSizeLOption": self.brushSizeLOption,
+        "brushSizeWOption": self.brushSizeWOption,
+        "brushSizeHOption": self.brushSizeHOption,
+        }
 
+        
+        self.tool = tool
+        #self.loadBrushPreset = self.loadBrushPreset()
+        
+        self.brushPresetOptions = self.createPresetRow()
         self.brushModeButton = ChoiceButton([m.name for m in tool.brushModes],
                                             width=150,
                                             choose=self.brushModeChanged)
@@ -815,7 +855,7 @@ class BrushPanel(Panel):
         self.brushModeRow = Row((Label("Mode:"), self.brushModeButton))
 
         self.brushStyleButton = ValueButton(width=self.brushModeButton.width,
-                                        ref=AttrRef(tool, "brushStyle"),
+                                        ref=self.brushStyleOption,
                                         action=tool.swapBrushStyles)
 
         self.brushStyleButton.tooltipText = "Shortcut: ALT-1"
@@ -827,19 +867,22 @@ class BrushPanel(Panel):
             self.brushStyleRow,
         ])
 
+        
         shapeRows = []
-
+        columns = []
         for d in ["L", "W", "H"]:
             l = Label(d)
             f = IntField(ref=getattr(BrushSettings, "brushSize" + d).propertyRef(), min=1, max=tool.maxBrushSize)
             row = Row((l, f))
-            shapeRows.append(row)
+            columns.append(row)
+            
+            #shapeRows.append(row)
+    
+        self.brushSizeRows = Row(columns)
 
-        self.brushSizeRows = Column(shapeRows)
+        self.noiseInput = IntInputRow("Chance: ", ref=self.noiseOption, min=0, max=100)
 
-        self.noiseInput = IntInputRow("Chance: ", ref=AttrRef(tool, "brushNoise"), min=0, max=100)
-
-        hollowCheckBox = CheckBox(ref=AttrRef(tool, "brushHollow"))
+        hollowCheckBox = CheckBox(ref=self.brushHollowOption)
         hollowLabel = Label("Hollow")
         hollowLabel.mouse_down = hollowCheckBox.mouse_down
         hollowLabel.tooltipText = hollowCheckBox.tooltipText = "Shortcut: ALT-3"
@@ -862,12 +905,59 @@ class BrushPanel(Panel):
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
-            spaceRow = IntInputRow("Line Spacing", ref=AttrRef(tool, "minimumSpacing"), min=1, tooltipText="Hold SHIFT to draw lines")
+            spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1, tooltipText="Hold SHIFT to draw lines")
             col.append(spaceRow)
         col = Column(col)
-
+        
         self.add(col)
         self.shrink_wrap()
+        
+    def createPresetRow(self):
+        def saveBrushPreset(currentNumber):
+            print "Saving Preset " + str(currentNumber)
+            if not config.config.has_section("BrushPresets"):
+                config.config.add_section("BrushPresets")
+            for key in self.saveableBrushOptions:
+                print key
+                value = self.saveableBrushOptions[key]
+                if not config.config.has_option("BrushPresets", key):
+                    print "No options for " + key + " found, creating new option array"
+                    a = [value.get() for i in range(1, 10)]
+                else:
+                    a = config.config.get("BrushPresets", key)
+                    if type(a) != list:
+                        a = ast.literal_eval(a)
+                    a[currentNumber] = value.get()
+                config.config.set("BrushPresets", key, a)
+        
+        def loadBrushPreset(number):
+            saveBrushPreset(self.currentNumber)
+            self.currentNumber = (int(number) - 1)
+            for key in self.saveableBrushOptions:
+                print key
+                a = config.config.get("BrushPresets", key)
+                if type(a) != list:
+                        a = ast.literal_eval(a)
+                #Bugfix to update blockbutton picture
+                self.saveableBrushOptions[key].set(a[self.currentNumber])
+                if(key=="blockInfoOption"):
+                    self.blockButton.blockInfo = a[self.currentNumber]
+                if(key=="replaceBlockInfoOption"):
+                    self.replaceBlockButton.blockInfo = a[self.currentNumber]            
+                       
+        row = []
+        for number in range(1, 10):
+            strnumber = str(number)
+            row.append(Button(strnumber, action=loadBrushPreset, enable=False))
+        
+        row = Row(row)
+
+        widget = GLBackground()
+        widget.bg_color = (0.8, 0.8, 0.8, 0.8)
+        widget.add(row)
+        widget.shrink_wrap()
+        widget.anchor = "whtr"
+        return widget
 
     def brushModeChanged(self):
         self.tool.brushMode = self.brushModeButton.selectedChoice
@@ -966,7 +1056,6 @@ class BrushTool(CloneTool):
 
     previewDirty = False
     updateBrushOffset = True
-
     _reticleOffset = 1
     naturalEarth = True
     erosionStrength = 1
@@ -1147,10 +1236,10 @@ class BrushTool(CloneTool):
     ]
 
     def getBrushOptions(self):
-        return dict(((key, getattr(self, key))
-                       for key
-                       in self.options))
-
+        bo = dict(((key, getattr(self, key)) for key in self.options))
+        return bo
+            
+   
     draggedDirection = (0, 0, 0)
     centerx = centery = centerz = 0
 
@@ -1263,13 +1352,13 @@ class BrushTool(CloneTool):
 
     def swap(self):
         self.panel.swap()
-
+        
     def decreaseBrushSize(self):
         self.brushSize = [i - 1 for i in self.brushSize]
         # self.setupPreview()
 
     def increaseBrushSize(self):
-        self.brushSize = [i + 1 for i in self.brushSize]
+        self.brushSize = [i + 1 for i in self.brushSize]    
 
     @alertException
     def setupPreview(self):

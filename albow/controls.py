@@ -4,11 +4,14 @@
 #-# Modified by D.C.-G. for translation purpose
 
 from pygame import Rect, draw
+
 from widget import Widget, overridable_property
 from theme import ThemeProperty
 from utils import blit_in_rect, frame_rect
 import resource
 from translate import tr
+import numpy
+
 
 class Control(object):
     highlighted = overridable_property('highlighted')
@@ -210,7 +213,21 @@ class ButtonBase(Control):
             if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
                 self._highlighted = False
                 if self.enabled:
-                    self.call_handler('action')
+                    """
+                    if self.text in str(range(1,10)):
+                        self.call_handler('action', self.text)
+                    else:
+                        self.call_handler('action')
+                    """
+                    try:
+                        if self.text in str(range(1,10)):
+                            self.call_handler('action', self.text)
+                        else:
+                            self.call_handler('action')
+                    except:
+                        self.call_handler('action')
+                    
+     
 
 
 
