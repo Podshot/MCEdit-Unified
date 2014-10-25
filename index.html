@@ -16,7 +16,7 @@
 			var releaseList = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
 			releaseData.sort(compareVersionObject);
 			for (var i = 0; i < releaseData.length; i++) {
-				var note = marked(releaseData[i].body);
+				var note = marked(releaseData[i].body).replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a> ');
 				var version = releaseData[i].tag_name;
 				var title = releaseData[i].name
 				if (releaseData[i].prerelease) {
