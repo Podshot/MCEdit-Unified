@@ -2659,25 +2659,25 @@ class LevelEditor(GLViewport):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
                     self.usedKeys[0] = 0
                     d[0] += 1.
-                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Right'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
                     self.usedKeys[1] = 0
                     d[0] -= 1.
-                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Forward'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
                     self.usedKeys[2] = 0
                     d[2] -= 1.
-                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Back'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
                     self.usedKeys[3] = 0
                     d[2] += 1.
-                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                else:
                     self.save = 0
                     print d[2]
                     print self.usedKeys[3]
@@ -2685,13 +2685,13 @@ class LevelEditor(GLViewport):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
                     self.usedKeys[4] = 0
                     d[1] -= 1.
-                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Down'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
                     self.usedKeys[5] = 0
                     d[1] += 1.
-                elif tempKeyname in config.config.get('Keys', 'Save') and self.save == 1:
+                else:
                     self.save = 0
 
         if keyname == config.config.get('Keys', 'Brake'):
@@ -2733,37 +2733,37 @@ class LevelEditor(GLViewport):
                 d[0] -= 1.
                 im[0] -= 1.
                 self.usedKeys[0] = 1
-                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Right') and self.usedKeys[1] == 0:
                 d[0] += 1.
                 im[0] += 1.
                 self.usedKeys[1] = 1
-                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Forward') and self.usedKeys[2] == 0:
                 d[2] += 1.
                 im[2] += 1.
                 self.usedKeys[2] = 1
-                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Back') and self.usedKeys[3] == 0:
                 d[2] -= 1.
                 im[2] -= 1.
                 self.usedKeys[3] = 1
-                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Up') and self.usedKeys[4] == 0:
                 d[1] += 1.
                 im[1] += 1.
                 self.usedKeys[4] = 1
-                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Down') and self.usedKeys[5] == 0:
                 d[1] -= 1.
                 im[1] -= 1.
                 self.usedKeys[5] = 1
-                if tempKeyname in config.config.get('Keys', 'Save') or self.save == 1:
+                if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
 
         if keyname == "Alt-Z":
