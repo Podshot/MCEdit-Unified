@@ -2838,9 +2838,9 @@ class LevelEditor(GLViewport):
             # self.add_centered(debugPanel)
             # ===========================================================
 
-        elif keyname == 'Shift-Ctrl-F9':
-            raise GL.GLError(err=1285,
-            description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
+        #elif keyname == 'Shift-Ctrl-F9':
+        #    raise GL.GLError(err=1285,
+        #    description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
         elif keyname == 'Ctrl-F9':
             try:
                 expr = input_text(">>> ", 600)
@@ -2849,16 +2849,12 @@ class LevelEditor(GLViewport):
             except Exception, e:
                 alert("Exception: {0!r}".format(e))
 
-        elif keyname == 'Ctrl-F10':
-            def causeError():
-                raise ValueError("User pressed CONTROL-F10, requesting a program error.")
+        #elif keyname == 'Ctrl-F10':
+        #    def causeError():
+        #        raise ValueError("User pressed CONTROL-F10, requesting a program error.")
 
         elif keyname == 'Ctrl-Alt-F10':
             alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
-        elif keyname == 'Shift-Ctrl-F10':
-            mceutils.alertException(causeError)()
-        elif keyname == 'F10':
-            causeError()
 
         elif keyname == 'Tab':
             self.swapViewports()
