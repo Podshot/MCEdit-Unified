@@ -29,15 +29,14 @@ from OpenGL import GL
 logger.setLevel(logging.DEBUG)
 
 logfile = 'mcedit.log'
-'''if hasattr(sys, 'frozen'):
-    if sys.platform == "win32":
-        import esky
-        app = esky.Esky(sys.executable)
-
-        logfile = os.path.join(app.appdir, logfile)
-    elif sys.platform == "darwin":
-        logfile = os.path.expanduser("~/Library/Logs/" + logfile)
-'''
+#if hasattr(sys, 'frozen'):
+#    if sys.platform == "win32":
+#        import esky
+#        app = esky.Esky(sys.executable)
+#
+#        logfile = os.path.join(app.appdir, logfile)
+if sys.platform == "darwin":
+    logfile = os.path.expanduser("~/Library/Logs/mcedit.log")
 fh = logging.FileHandler(logfile, mode="w")
 fh.setLevel(logging.DEBUG)
 
