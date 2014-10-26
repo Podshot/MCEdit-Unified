@@ -185,6 +185,7 @@ class Modes:
             chanceCD = Row(chanceCDcolumns)
 
             col = [
+                panel.brushPresetOptions, 
                 panel.modeStyleGrid,
                 panel.hollowRow,
                 panel.noiseInput,
@@ -287,6 +288,7 @@ class Modes:
 
         def createOptions(self, panel, tool):
             col = [
+                panel.brushPresetOptions,
                 panel.brushModeRow,
                 panel.blockButton
             ]
@@ -368,6 +370,7 @@ class Modes:
 
         def createOptions(self, panel, tool):
             col = [
+                panel.brushPresetOptions,
                 panel.modeStyleGrid,
                 panel.hollowRow,
                 panel.noiseInput,
@@ -438,6 +441,7 @@ class Modes:
             chanceCD = Row(chanceCDcolumns)
            
             col = [
+                panel.brushPresetOptions,
                 panel.modeStyleGrid,
                 panel.brushSizeRows,
                 panel.blockButton,
@@ -547,6 +551,7 @@ class Modes:
             erosionNoise = CheckBoxLabel("Noise", ref=AttrRef(tool, 'erosionNoise'))
             erosionStrength = IntInputRow("Strength: ", ref=AttrRef(tool, 'erosionStrength'), min=1, max=20, tooltipText="Number of times to apply erosion." )
             col = [
+                panel.brushPresetOptions,
                 panel.modeStyleGrid,
                 panel.hollowRow,
                 panel.noiseInput,
@@ -627,6 +632,7 @@ class Modes:
             depthRow = IntInputRow("Depth: ", ref=AttrRef(tool, 'topsoilDepth'))
             naturalRow = CheckBoxLabel("Only Change Natural Earth", ref=AttrRef(tool, 'naturalEarth'))
             col = [
+                panel.brushPresetOptions,
                 panel.modeStyleGrid,
                 panel.hollowRow,
                 panel.noiseInput,
@@ -692,7 +698,10 @@ class Modes:
             return BoundingBox(point, options['level'].size)
 
         def createOptions(self, panel, tool):
-            col = [panel.brushModeRow]
+            col = [
+            panel.brushPresetOptions, 
+            panel.brushModeRow, 
+           ]
 
             importButton = Button("Import", action=tool.importPaste)
             importLabel = ValueDisplay(width=150, ref=AttrRef(tool, "importFilename"))
@@ -924,7 +933,7 @@ class BrushPanel(Panel):
             config.config.set("BrushPresets", key, a)   
 
         def saveBrushPreset(currentNumber):
-            print "Saving Preset " + str(currentNumber)
+            print "Saving Preset " + str(currentNumber+1)
             if not config.config.has_section("BrushPresets"):
                 config.config.add_section("BrushPresets")
             for key in self.saveableBrushOptions:
@@ -935,12 +944,13 @@ class BrushPanel(Panel):
                     keyID = key + " ID"
                     keyData = key + " Data"
                     value = self.saveableBrushOptions[key]
-                    for key, value in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
-                        storeBrushPreset(key, value, currentNumber)
+                    for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
+                        storeBrushPreset(a, b, currentNumber)
 
         def loadBrushPreset(number):
             saveBrushPreset(self.currentNumber)
             self.currentNumber = (int(number) - 1)
+            print "Loading Preset " + str(self.currentNumber+1)
             for key in self.saveableBrushOptions:
                 if key not in ["Block","Block To Replace"]:
                     a = config.config.get("BrushPresets", key)
@@ -954,10 +964,13 @@ class BrushPanel(Panel):
                         if type(x) != list:
                             x = ast.literal_eval(x)
                     print self.saveableBrushOptions[key].get().ID
-                    self.saveableBrushOptions[key].get().ID = aID[self.currentNumber]
-                    self.saveableBrushOptions[key].get().blockData = aData[self.currentNumber]
                     blockInfo = materials.Block(self.tool.editor.level.materials, aID[self.currentNumber], aData[self.currentNumber])
-                    self.blockButton.blockInfo = blockInfo
+                    if key == "Block":
+                        self.replaceBlockButton.blockInfo = blockInfo
+                    elif key == "Block To Replace":
+                        self.blockButton.blockInfo = blockInfo
+                    #self.saveableBrushOptions[key].get().ID = aID[self.currentNumber]
+                    #self.saveableBrushOptions[key].get().blockData = aData[self.currentNumber]
                        
         row = []
         for number in range(1, 10):
