@@ -914,7 +914,7 @@ class BrushPanel(Panel):
         def storeBrushPreset(key, value, currentNumber):
             if not config.config.has_option("BrushPresets", key):
                 print "No options for " + key + " found, creating new option array"
-                a = [None for i in range(1, 10)]
+                a = [value for i in range(1, 10)]
                 a[currentNumber] = value
             else:
                 a = config.config.get("BrushPresets", key)
@@ -956,7 +956,7 @@ class BrushPanel(Panel):
                     print self.saveableBrushOptions[key].get().ID
                     self.saveableBrushOptions[key].get().ID = aID[self.currentNumber]
                     self.saveableBrushOptions[key].get().blockData = aData[self.currentNumber]
-                    blockInfo = materials.Block(self.materials, aID[self.currentNumber], aData[self.currentNumber])
+                    blockInfo = materials.Block(self.tool.editor.level.materials, aID[self.currentNumber], aData[self.currentNumber])
                     self.blockButton.blockInfo = blockInfo
                        
         row = []
