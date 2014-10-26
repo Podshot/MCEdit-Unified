@@ -998,10 +998,8 @@ class BrushPanel(Panel):
                     blockInfo = materials.Block(self.tool.editor.level.materials, aID[currentNumber], aData[currentNumber])
                     if key == "Block":
                         self.blockButton.blockInfo = blockInfo
-                        self.blockButton.blockInfo = self.blockButton.blockInfo
                     elif key == "Block To Replace":
                         self.replaceBlockButton.blockInfo = blockInfo
-                        self.replaceBlockButton.blockInfo = self.replaceBlockButton.blockInfo
                     elif key == "Vary Replace 1":
                         self.replaceWith1Button.blockInfo = blockInfo
                     elif key == "Vary Replace 2":
@@ -1014,6 +1012,7 @@ class BrushPanel(Panel):
             shell = win32com.client.Dispatch("WScript.Shell")
             shell.SendKeys("1")
             shell.SendKeys("2")
+            self.tool.setupPreview()
             
         def numberEnable1():
             global currentNumber
@@ -1247,6 +1246,15 @@ class BrushTool(CloneTool):
     @replaceBlockInfo.setter
     def replaceBlockInfo(self, bi):
         self._replaceBlockInfo = bi
+        self.setupPreview()    
+        
+    @property
+    def replaceWith1(self):
+        return self._replaceWith1
+
+    @replaceBlockInfo.setter
+    def replaceWith1(self, bi):
+        self._replaceWith1 = bi
         self.setupPreview()
 
     @property
@@ -1446,6 +1454,7 @@ class BrushTool(CloneTool):
             print "Not rotating block because rotation is turned off in options menu"
 
     def toolReselected(self):
+        self.tool.setupPreview()
         if self.brushMode.name == "Replace":
             self.panel.pickReplaceBlock()
         else:
@@ -1474,6 +1483,8 @@ class BrushTool(CloneTool):
         brushStyle = self.brushStyle
         if self.brushMode.name == "Replace":
             blockInfo = self.replaceBlockInfo
+        if self.brushMode.name in ["Varied Replace","Varied Fill"]:
+            blockInfo = self.replaceWith1
         else:
             blockInfo = self.blockInfo
 
