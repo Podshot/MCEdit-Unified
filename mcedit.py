@@ -866,7 +866,8 @@ def main(argv):
     Setup display, bundled schematics. Handle unclean
     shutdowns.
     """
-   
+
+# This should eventually be revived, what is "squash_python"?
 #    try:
 #        import squash_python
 #
@@ -876,10 +877,9 @@ def main(argv):
 #        version = release.get_version()
 #        client = squash_python.get_client()
 #        client.APIKey = "6ea52b17-ac76-4fd8-8db4-2d7303473ca2"
-#        client.environment = "testing" if "build" in version else "production"
-#        client.host = "http://bugs.mcedit.net"
-#        client.notifyPath = "/bugs.php"
-#        client.revision = release.get_commit()
+#        client.environment = "unknown"
+#        client.host = "http://pixelhost.ezekielelin.com"
+#        client.notifyPath = "/mcedit_bugs.php"
 #        client.build = version
 #        client.timeout = 5
 #        
