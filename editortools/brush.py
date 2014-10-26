@@ -423,13 +423,13 @@ class Modes:
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
-            replaceWith1 = op.op.options['replaceWith1']
+            replaceWith1 = op.options['replaceWith1']
             chanceA = op.options['chanceA']
-            replaceWith2 = op.op.options['replaceWith2']
+            replaceWith2 = op.options['replaceWith2']
             chanceB = op.options['chanceB']
-            replaceWith3 = op.op.options['replaceWith3']
+            replaceWith3 = op.options['replaceWith3']
             chanceC = op.options['chanceC']
-            replaceWith4 = op.op.options['replaceWith4']
+            replaceWith4 = op.options['replaceWith4']
             chanceD = op.options['chanceD']
 
             totalChance = chanceA + chanceB + chanceC + chanceD
