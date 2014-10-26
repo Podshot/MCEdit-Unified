@@ -2826,8 +2826,8 @@ class LevelEditor(GLViewport):
         elif keyname == config.config.get('Keys', 'Export Selection'):
             self.selectionTool.exportSelection()
 
-        elif keyname == 'Ctrl-Alt-F9':
-            self.parent.reloadEditor()
+        #elif keyname == 'Ctrl-Alt-F9':
+        #    self.parent.reloadEditor()
             # ===========================================================
             # debugPanel = Panel()
             # buttonColumn = [
