@@ -2841,7 +2841,7 @@ class LevelEditor(GLViewport):
         #elif keyname == 'Shift-Ctrl-F9':
         #    raise GL.GLError(err=1285,
         #    description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
-        elif keyname == 'Ctrl-F9':
+        elif keyname == 'Ctrl-Alt-F9':
             try:
                 expr = input_text(">>> ", 600)
                 expr = compile(expr, 'eval', 'single')
