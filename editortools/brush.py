@@ -825,7 +825,13 @@ class BrushOperation(Operation):
 class BrushPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
-        self.currentNumber = 0
+        
+        global currentNumber
+        try:
+            print currentNumber
+        except:
+            currentNumber = 0
+        
         
         #Creating Ref variables to link objects
         self.noiseOption = AttrRef(tool, "brushNoise")
@@ -837,7 +843,9 @@ class BrushPanel(Panel):
         self.brushSizeHOption = getattr(BrushSettings, "brushSizeH")
         self.brushBlockInfoOption = AttrRef(tool, "blockInfo")
         self.replaceBlockInfoOption = AttrRef(tool, "replaceBlockInfo")
+            
         self.saveableBrushOptions={
+        "Mode": tool.brushMode.name,
         "Noise": self.noiseOption,
         "Hollow": self.brushHollowOption,
         "Minimum Spacing": self.minimumSpacingOption,
@@ -855,6 +863,8 @@ class BrushPanel(Panel):
         self.brushModeButton = ChoiceButton([m.name for m in tool.brushModes],
                                             width=150,
                                             choose=self.brushModeChanged)
+        
+        #self.brushModeButton.selectedChoice = m.VariedFill
 
         self.brushModeButton.selectedChoice = tool.brushMode.name
         self.brushModeRow = Row((Label("Mode:"), self.brushModeButton))
@@ -937,9 +947,11 @@ class BrushPanel(Panel):
             if not config.config.has_section("BrushPresets"):
                 config.config.add_section("BrushPresets")
             for key in self.saveableBrushOptions:
-                if key not in ["Block","Block To Replace"]:
+                if key not in ["Block","Block To Replace", "Mode"]:
                     value = self.saveableBrushOptions[key].get()
                     storeBrushPreset(key, value, currentNumber)
+                elif key == "Mode":
+                    storeBrushPreset(key, self.saveableBrushOptions[key], currentNumber)
                 else:
                     keyID = key + " ID"
                     keyData = key + " Data"
@@ -948,29 +960,36 @@ class BrushPanel(Panel):
                         storeBrushPreset(a, b, currentNumber)
 
         def loadBrushPreset(number):
-            saveBrushPreset(self.currentNumber)
-            self.currentNumber = (int(number) - 1)
-            print "Loading Preset " + str(self.currentNumber+1)
+            global currentNumber
+            saveBrushPreset(currentNumber)
+            currentNumber = (int(number) - 1)
+            print "Loading Preset " + str(currentNumber+1)
             for key in self.saveableBrushOptions:
-                if key not in ["Block","Block To Replace"]:
+                if key not in ["Block","Block To Replace", "Mode"]:
                     a = config.config.get("BrushPresets", key)
                     if type(a) != list:
-                            a = ast.literal_eval(a)
-                    self.saveableBrushOptions[key].set(a[self.currentNumber])
+                        a = ast.literal_eval(a)
+                    self.saveableBrushOptions[key].set(a[currentNumber])
+                elif key == "Mode":
+                    a = config.config.get("BrushPresets", key)
+                    print a
+                    if type(a) != list:
+                        print type(a)
+                        a = ast.literal_eval(a)
+                    for m in self.tool.brushModes:
+                        if m.name == a[currentNumber]:
+                            self.tool.brushMode = a[currentNumber]
                 else:
                     aID = config.config.get("BrushPresets", key + " ID")
                     aData = config.config.get("BrushPresets", key + " Data")
                     for x in [aID, aData]:
                         if type(x) != list:
                             x = ast.literal_eval(x)
-                    print self.saveableBrushOptions[key].get().ID
-                    blockInfo = materials.Block(self.tool.editor.level.materials, aID[self.currentNumber], aData[self.currentNumber])
+                    blockInfo = materials.Block(self.tool.editor.level.materials, aID[currentNumber], aData[currentNumber])
                     if key == "Block":
                         self.replaceBlockButton.blockInfo = blockInfo
                     elif key == "Block To Replace":
                         self.blockButton.blockInfo = blockInfo
-                    #self.saveableBrushOptions[key].get().ID = aID[self.currentNumber]
-                    #self.saveableBrushOptions[key].get().blockData = aData[self.currentNumber]
                        
         row = []
         for number in range(1, 10):
