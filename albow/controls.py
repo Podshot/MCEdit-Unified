@@ -215,12 +215,16 @@ class ButtonBase(Control):
                 if self.enabled:
                     try:
                         if self.text in str(range(1,10)):
-                            self.call_handler('action', self.text)
+                            specialCall = True
                         else:
-                            self.call_handler('action')
+                            specialCall = False
                     except:
+                        specialCall = False
+                    if specialCall:
+                        self.call_handler('action', self.text)
+                    else:
                         self.call_handler('action')
-                    
+
      
 
 

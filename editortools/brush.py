@@ -14,43 +14,44 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 
 #Modified by D.C.-G. for translation purposes
 
-import mceutils
-import ast
-import config
-import collections
-import os
-import random
-import numpy
-from numpy import newaxis
-import pygame
+from OpenGL import GL
+from OpenGL.arrays import numbers
 from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert, Field
 from albow.translate import tr
+import ast
 import bresenham
-import leveleditor
+from clone import CloneTool
+import collections
+import config
+import config
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel, GLBackground
 from glutils import gl
+import itertools
+import leveleditor
+import logging
+from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, alertException, drawTerrainCuttingWire
+import mceutils
 import mcplatform
+from numpy import newaxis
+import numpy
+from operation import Operation, mkundotemp
+import os
+from os.path import basename
+import pygame
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
 from pymclevel.level import extractHeights
-from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, alertException, drawTerrainCuttingWire
-from os.path import basename
-import tempfile
-import itertools
-import logging
-from operation import Operation, mkundotemp
 from pymclevel.mclevelbase import exhaust
+import random
+import tempfile
 
-from OpenGL import GL
-from OpenGL.arrays import numbers
 
 log = logging.getLogger(__name__)
 
-import config
 
 BrushSettings = config.Settings("Brush")
 BrushSettings.brushSizeL = BrushSettings("Brush Shape L", 3)
@@ -125,7 +126,7 @@ class Modes:
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
             brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
-
+            print op.options
 
 
             blocks = chunk.Blocks[slices]
@@ -820,32 +821,27 @@ class BrushPanel(Panel):
         #Creating Ref variables to link objects
         self.noiseOption = AttrRef(tool, "brushNoise")
         self.brushHollowOption = AttrRef(tool, "brushHollow")
-        self.replaceBlockInfoOption = AttrRef(tool, 'replaceBlockInfo')
-        self.blockInfoOption = AttrRef(tool, 'blockInfo')
         self.minimumSpacingOption = AttrRef(tool, "minimumSpacing")
         self.brushStyleOption = AttrRef(tool, "brushStyle")
         self.brushSizeLOption = getattr(BrushSettings, "brushSizeL")
         self.brushSizeWOption = getattr(BrushSettings, "brushSizeW")
         self.brushSizeHOption = getattr(BrushSettings, "brushSizeH")
-        
+        self.brushBlockInfoOption = AttrRef(tool, "blockInfo")
+        self.replaceBlockInfoOption = AttrRef(tool, "replaceBlockInfo")
         self.saveableBrushOptions={
-        "noiseOption": self.noiseOption,
-        "brushHollowOption": self.brushHollowOption,
-        "replaceBlockInfoOption": self.replaceBlockInfoOption,
-        #"replaceBlockInfoOptionData": self.replaceBlockInfoOptionData,
-        "blockInfoOption": self.blockInfoOption,
-        #"blockInfoOptionData": self.blockInfoOptionData,
-        "minimumSpacingOption": self.minimumSpacingOption,
-        "brushStyleOption": self.brushStyleOption,
-        "brushSizeLOption": self.brushSizeLOption,
-        "brushSizeWOption": self.brushSizeWOption,
-        "brushSizeHOption": self.brushSizeHOption,
+        "Noise": self.noiseOption,
+        "Hollow": self.brushHollowOption,
+        "Minimum Spacing": self.minimumSpacingOption,
+        "Style": self.brushStyleOption,
+        "Size L": self.brushSizeLOption,
+        "Size W": self.brushSizeWOption,
+        "Size H": self.brushSizeHOption,
+        "Block": self.replaceBlockInfoOption,
+        "Block To Replace": self.brushBlockInfoOption,
         }
 
         
         self.tool = tool
-        #self.loadBrushPreset = self.loadBrushPreset()
-        
         self.brushPresetOptions = self.createPresetRow()
         self.brushModeButton = ChoiceButton([m.name for m in tool.brushModes],
                                             width=150,
@@ -894,6 +890,8 @@ class BrushPanel(Panel):
             ref=AttrRef(tool, 'blockInfo'),
             recentBlocks=tool.recentFillBlocks,
             allowWildcards=(tool.brushMode.name == "Replace"))
+        
+        print self.blockButton
 
         # col = [modeStyleGrid, hollowRow, noiseInput, shapeRows, blockButton]
 
@@ -901,7 +899,7 @@ class BrushPanel(Panel):
             tool.editor.level.materials,
             ref=AttrRef(tool, 'replaceBlockInfo'),
             recentBlocks=tool.recentReplaceBlocks)
-
+        
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
@@ -913,37 +911,53 @@ class BrushPanel(Panel):
         self.shrink_wrap()
         
     def createPresetRow(self):
+        def storeBrushPreset(key, value, currentNumber):
+            if not config.config.has_option("BrushPresets", key):
+                print "No options for " + key + " found, creating new option array"
+                a = [None for i in range(1, 10)]
+                a[currentNumber] = value
+            else:
+                a = config.config.get("BrushPresets", key)
+                if type(a) != list:
+                    a = ast.literal_eval(a)
+                a[currentNumber] = value
+            config.config.set("BrushPresets", key, a)   
+
         def saveBrushPreset(currentNumber):
             print "Saving Preset " + str(currentNumber)
             if not config.config.has_section("BrushPresets"):
                 config.config.add_section("BrushPresets")
             for key in self.saveableBrushOptions:
-                print key
-                value = self.saveableBrushOptions[key]
-                if not config.config.has_option("BrushPresets", key):
-                    print "No options for " + key + " found, creating new option array"
-                    a = [value.get() for i in range(1, 10)]
+                if key not in ["Block","Block To Replace"]:
+                    value = self.saveableBrushOptions[key].get()
+                    storeBrushPreset(key, value, currentNumber)
                 else:
-                    a = config.config.get("BrushPresets", key)
-                    if type(a) != list:
-                        a = ast.literal_eval(a)
-                    a[currentNumber] = value.get()
-                config.config.set("BrushPresets", key, a)
-        
+                    keyID = key + " ID"
+                    keyData = key + " Data"
+                    value = self.saveableBrushOptions[key]
+                    for key, value in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
+                        storeBrushPreset(key, value, currentNumber)
+
         def loadBrushPreset(number):
             saveBrushPreset(self.currentNumber)
             self.currentNumber = (int(number) - 1)
             for key in self.saveableBrushOptions:
-                print key
-                a = config.config.get("BrushPresets", key)
-                if type(a) != list:
-                        a = ast.literal_eval(a)
-                #Bugfix to update blockbutton picture
-                self.saveableBrushOptions[key].set(a[self.currentNumber])
-                if(key=="blockInfoOption"):
-                    self.blockButton.blockInfo = a[self.currentNumber]
-                if(key=="replaceBlockInfoOption"):
-                    self.replaceBlockButton.blockInfo = a[self.currentNumber]            
+                if key not in ["Block","Block To Replace"]:
+                    a = config.config.get("BrushPresets", key)
+                    if type(a) != list:
+                            a = ast.literal_eval(a)
+                    self.saveableBrushOptions[key].set(a[self.currentNumber])
+                else:
+                    aID = config.config.get("BrushPresets", key + " ID")
+                    aData = config.config.get("BrushPresets", key + " Data")
+                    for x in [aID, aData]:
+                        if type(x) != list:
+                            x = ast.literal_eval(x)
+                    print self.saveableBrushOptions[key].get().ID
+                    self.saveableBrushOptions[key].get().ID = aID[self.currentNumber]
+                    self.saveableBrushOptions[key].get().blockData = aData[self.currentNumber]
+                    blockInfo = materials.Block(self.materials, aID[self.currentNumber], aData[self.currentNumber])
+                    self.blockButton.blockInfo = blockInfo
                        
         row = []
         for number in range(1, 10):
@@ -1021,7 +1035,6 @@ class BrushToolOptions(ToolOptions):
         self.shrink_wrap()
         return
 
-from clone import CloneTool
 
 
 class BrushTool(CloneTool):
