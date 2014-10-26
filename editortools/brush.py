@@ -147,31 +147,12 @@ class Modes:
     class VariedFill(BrushMode):
 
         name = "Varied Fill"
-        options =['airFill','chanceA','chanceB','chanceC','chanceD','replaceWith1','replaceWith2','replaceWith3','replaceWith4']
+        options =['airFill','chanceA','chanceB','chanceC','chanceD']
 
         def createOptions(self, panel, tool):
 
             airFill = CheckBoxLabel("Fill Air", ref=AttrRef(tool, 'airFill'))
 
-            replaceWith1 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith1'),
-            recentBlocks=tool.recentReplaceBlocks)
-            
-            replaceWith2 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith2'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith3 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith3'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith4 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith4'),
-            recentBlocks=tool.recentReplaceBlocks)
 
             seperator = Label("---")
             
@@ -190,10 +171,10 @@ class Modes:
                 panel.hollowRow,
                 panel.noiseInput,
                 panel.brushSizeRows,
-                replaceWith1,
-                replaceWith2,
-                replaceWith3,
-                replaceWith4,
+                panel.replaceWith1Button,
+                panel.replaceWith2Button,
+                panel.replaceWith3Button,
+                panel.replaceWith4Button,
                 chanceAB,
                 chanceCD,
                 airFill,
@@ -207,13 +188,13 @@ class Modes:
             data = chunk.Data[slices]
 
             airFill = op.options['airFill']
-            replaceWith1 = op.options['replaceWith1']
+            replaceWith1 = op.replaceWith1
             chanceA = op.options['chanceA']
-            replaceWith2 = op.options['replaceWith2']
+            replaceWith2 = op.replaceWith2
             chanceB = op.options['chanceB']
-            replaceWith3 = op.options['replaceWith3']
+            replaceWith3 = op.replaceWith3
             chanceC = op.options['chanceC']
-            replaceWith4 = op.options['replaceWith4']
+            replaceWith4 = op.replaceWith4
             chanceD = op.options['chanceD']
 
             totalChance = chanceA + chanceB + chanceC + chanceD
@@ -406,28 +387,9 @@ class Modes:
 			
     class Vary(Fill):
         name = "Varied Replace"
-        options = ['chanceA','chanceB','chanceC','chanceD','replaceWith1','replaceWith2','replaceWith3','replaceWith4']
+        options = ['chanceA','chanceB','chanceC','chanceD']
 
         def createOptions(self, panel, tool):
-            replaceWith1 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith1'),
-            recentBlocks=tool.recentReplaceBlocks)
-            
-            replaceWith2 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith2'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith3 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith3'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith4 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith4'),
-            recentBlocks=tool.recentReplaceBlocks)
 
             seperator = Label("---")
             
@@ -446,10 +408,10 @@ class Modes:
                 panel.brushSizeRows,
                 panel.blockButton,
                 seperator,
-                replaceWith1,
-                replaceWith2,
-                replaceWith3,
-                replaceWith4,
+                panel.replaceWith1Button,
+                panel.replaceWith2Button,
+                panel.replaceWith3Button,
+                panel.replaceWith4Button,
                 chanceAB,
                 chanceCD,
                 ]
@@ -461,13 +423,13 @@ class Modes:
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
-            replaceWith1 = op.options['replaceWith1']
+            replaceWith1 = op.replaceWith1
             chanceA = op.options['chanceA']
-            replaceWith2 = op.options['replaceWith2']
+            replaceWith2 = op.replaceWith2
             chanceB = op.options['chanceB']
-            replaceWith3 = op.options['replaceWith3']
+            replaceWith3 = op.replaceWith3
             chanceC = op.options['chanceC']
-            replaceWith4 = op.options['replaceWith4']
+            replaceWith4 = op.replaceWith4
             chanceD = op.options['chanceD']
 
             totalChance = chanceA + chanceB + chanceC + chanceD
@@ -835,6 +797,7 @@ class BrushPanel(Panel):
         
         #Creating Ref variables to link objects
         self.noiseOption = AttrRef(tool, "brushNoise")
+        self.topsoilDepthOption = AttrRef(tool, 'topsoilDepth')
         self.brushHollowOption = AttrRef(tool, "brushHollow")
         self.minimumSpacingOption = AttrRef(tool, "minimumSpacing")
         self.brushStyleOption = AttrRef(tool, "brushStyle")
@@ -843,8 +806,36 @@ class BrushPanel(Panel):
         self.brushSizeHOption = getattr(BrushSettings, "brushSizeH")
         self.brushBlockInfoOption = AttrRef(tool, "blockInfo")
         self.replaceBlockInfoOption = AttrRef(tool, "replaceBlockInfo")
+        self.erosionNoiseOption = AttrRef(tool, 'erosionNoise')
+        self.erosionStrengthOpion = AttrRef(tool, 'erosionStrength')
+        
+        self.replaceWith1Option = AttrRef(tool, 'replaceWith1')
+        self.replaceWith2Option = AttrRef(tool, 'replaceWith2')
+        self.replaceWith3Option = AttrRef(tool, 'replaceWith3')
+        self.replaceWith4Option = AttrRef(tool, 'replaceWith4')
+        self.chanceAOption = AttrRef(tool, 'chanceA')
+        self.chanceBOption = AttrRef(tool, 'chanceB')
+        self.chanceCOption = AttrRef(tool, 'chanceC')
+        self.chanceDOption = AttrRef(tool, 'chanceD')
+        self.indiscriminateOption= AttrRef(tool, 'indiscriminate')
+        self.airFillOption = AttrRef(tool, 'airFill')
+        self.naturalEarthOption = AttrRef(tool, 'naturalEarth')
             
         self.saveableBrushOptions={
+        "Vary Replace 1":self.replaceWith1Option,
+        "Vary Replace 2":self.replaceWith2Option,
+        "Vary Replace 3":self.replaceWith3Option,
+        "Vary Replace 4":self.replaceWith4Option,
+        "Chance to Replace 1":self.chanceAOption,
+        "Chance to Replace 2":self.chanceBOption,
+        "Chance to Replace 3":self.chanceCOption,
+        "Chance to Replace 4":self.chanceDOption,
+        "Indiscriminate":self.indiscriminateOption,
+        "Fill air":self.airFillOption,
+        "Change Natural Earth":self.naturalEarthOption,
+        "Topsoil Depth":self.topsoilDepthOption,
+        "Erosion Noise":self.erosionNoiseOption,
+        "Erosion Strength":self.erosionStrengthOpion,
         "Mode": tool.brushMode.name,
         "Noise": self.noiseOption,
         "Hollow": self.brushHollowOption,
@@ -853,8 +844,8 @@ class BrushPanel(Panel):
         "Size L": self.brushSizeLOption,
         "Size W": self.brushSizeWOption,
         "Size H": self.brushSizeHOption,
-        "Block": self.replaceBlockInfoOption,
-        "Block To Replace": self.brushBlockInfoOption,
+        "Block": self.brushBlockInfoOption,
+        "Block To Replace": self.replaceBlockInfoOption,
         }
 
         
@@ -918,7 +909,26 @@ class BrushPanel(Panel):
             tool.editor.level.materials,
             ref=AttrRef(tool, 'replaceBlockInfo'),
             recentBlocks=tool.recentReplaceBlocks)
+            
+        self.replaceWith1Button = replaceWith1Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith1'),
+            recentBlocks = tool.recentReplaceBlocks)
+            
+        self.replaceWith2Button = replaceWith2Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith2'),
+            recentBlocks = tool.recentReplaceBlocks)
         
+        self.replaceWith3Button = replaceWith3Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith3'),
+            recentBlocks = tool.recentReplaceBlocks)
+            
+        self.replaceWith4Button = replaceWith4Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith4'),
+            recentBlocks = tool.recentReplaceBlocks)        
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
@@ -947,7 +957,7 @@ class BrushPanel(Panel):
             if not config.config.has_section("BrushPresets"):
                 config.config.add_section("BrushPresets")
             for key in self.saveableBrushOptions:
-                if key not in ["Block","Block To Replace", "Mode"]:
+                if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
                     value = self.saveableBrushOptions[key].get()
                     storeBrushPreset(key, value, currentNumber)
                 elif key == "Mode":
@@ -957,6 +967,7 @@ class BrushPanel(Panel):
                     keyData = key + " Data"
                     value = self.saveableBrushOptions[key]
                     for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
+                        print a, b
                         storeBrushPreset(a, b, currentNumber)
 
         def loadBrushPreset(number):
@@ -965,14 +976,13 @@ class BrushPanel(Panel):
             currentNumber = (int(number) - 1)
             print "Loading Preset " + str(currentNumber+1)
             for key in self.saveableBrushOptions:
-                if key not in ["Block","Block To Replace", "Mode"]:
+                if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
                     a = config.config.get("BrushPresets", key)
                     if type(a) != list:
                         a = ast.literal_eval(a)
                     self.saveableBrushOptions[key].set(a[currentNumber])
                 elif key == "Mode":
                     a = config.config.get("BrushPresets", key)
-                    print a
                     if type(a) != list:
                         print type(a)
                         a = ast.literal_eval(a)
@@ -987,14 +997,62 @@ class BrushPanel(Panel):
                             x = ast.literal_eval(x)
                     blockInfo = materials.Block(self.tool.editor.level.materials, aID[currentNumber], aData[currentNumber])
                     if key == "Block":
-                        self.replaceBlockButton.blockInfo = blockInfo
-                    elif key == "Block To Replace":
                         self.blockButton.blockInfo = blockInfo
+                        self.blockButton.blockInfo = self.blockButton.blockInfo
+                    elif key == "Block To Replace":
+                        self.replaceBlockButton.blockInfo = blockInfo
+                        self.replaceBlockButton.blockInfo = self.replaceBlockButton.blockInfo
+                    elif key == "Vary Replace 1":
+                        self.replaceWith1Button.blockInfo = blockInfo
+                    elif key == "Vary Replace 2":
+                        self.replaceWith2Button.blockInfo = blockInfo
+                    elif key == "Vary Replace 3":
+                        self.replaceWith3Button.blockInfo = blockInfo
+                    elif key == "Vary Replace 4":
+                        self.replaceWith4Button.blockInfo = blockInfo
+            import win32com.client
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shell.SendKeys("1")
+            shell.SendKeys("2")
+            
+        def numberEnable1():
+            global currentNumber
+            return 1 !=( currentNumber + 1)
+        def numberEnable2():
+            global currentNumber
+            return 2 !=( currentNumber + 1)
+        def numberEnable3():
+            global currentNumber
+            return 3 != ( currentNumber + 1)
+        def numberEnable4():
+            global currentNumber
+            return 4 != ( currentNumber + 1)
+        def numberEnable5():
+            global currentNumber
+            return 5 != ( currentNumber + 1)
+        def numberEnable6():
+            global currentNumber
+            return 6 != ( currentNumber + 1)
+        def numberEnable7():
+            global currentNumber
+            return 7 != ( currentNumber + 1)
+        def numberEnable8():
+            global currentNumber
+            return 8 != ( currentNumber + 1)
+        def numberEnable9():
+            global currentNumber
+            return 9 != ( currentNumber + 1)
                        
         row = []
-        for number in range(1, 10):
-            strnumber = str(number)
-            row.append(Button(strnumber, action=loadBrushPreset, enable=False))
+        row.append(Button("1", action=loadBrushPreset, enable=numberEnable1))
+        row.append(Button("2", action=loadBrushPreset, enable=numberEnable2))
+        row.append(Button("3", action=loadBrushPreset, enable=numberEnable3))
+        row.append(Button("4", action=loadBrushPreset, enable=numberEnable4))
+        row.append(Button("5", action=loadBrushPreset, enable=numberEnable5))
+        row.append(Button("6", action=loadBrushPreset, enable=numberEnable6))
+        row.append(Button("7", action=loadBrushPreset, enable=numberEnable7))
+        row.append(Button("8", action=loadBrushPreset, enable=numberEnable8))
+        row.append(Button("9", action=loadBrushPreset, enable=numberEnable9))
         
         row = Row(row)
 
