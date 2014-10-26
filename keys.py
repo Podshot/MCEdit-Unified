@@ -161,6 +161,9 @@ class KeyConfigPanel(Dialog):
         keyConfigTable.row_data = self.getRowData
         keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
         keyConfigTable.click_row = self.selectTableRow
+        keyConfigTable.key_down = self.key_down
+        self.changes = {}
+        self.changesNum = 0
         tableWidget = albow.Widget()
         tableWidget.add(keyConfigTable)
         tableWidget.shrink_wrap()
@@ -186,6 +189,8 @@ class KeyConfigPanel(Dialog):
         self.shrink_wrap()
 
     def done(self):
+        self.changesNum = 0
+        self.changes = {}
         config.saveConfig()
         self.dismiss()
     
@@ -226,6 +231,22 @@ class KeyConfigPanel(Dialog):
         self.selectedKeyIndex = i
         if evt.num_clicks == 2:
             self.askAssignSelectedKey()
+            
+    def key_down(self, evt):
+        keyname = getKey(evt)
+        if keyname == 'Escape':
+            if self.changesNum >= 1:
+                result = albow.ask("Do you want to save your changes?", ["Save", "Don't Save", "Cancel"])
+                if result == "Save":
+                    self.done()
+                elif result == "Don't Save":
+                    for key in self.changes.keys():
+                        config.config.set("Keys", key, self.changes[key])
+                    self.changesNum = 0
+                    self.changes = {}
+                    self.dismiss()
+            else:
+                self.dismiss()
 
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
@@ -270,6 +291,8 @@ class KeyConfigPanel(Dialog):
             occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if config.getNewKey(v) == keyname and k != configKey.lower()]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
+            self.changes[configKey] = oldkey
+            self.changesNum = 1
             for keyname, setting in occupiedKeys:
                 settings = setting.split(' ')
                 newSettings = []
@@ -282,6 +305,7 @@ class KeyConfigPanel(Dialog):
                                      "Press ESC to cancel.")
                                      .format(keyname, setting)):
                     config.config.set("Keys", configKey, oldkey)
+                    self.changes[configKey] = keyname
                     return True 
         else:
             return True
