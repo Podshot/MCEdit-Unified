@@ -2679,8 +2679,6 @@ class LevelEditor(GLViewport):
                     d[2] += 1.
                 else:
                     self.save = 0
-                    print d[2]
-                    print self.usedKeys[3]
             elif tempKeyname == config.config.get('Keys', 'Up'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
                     self.usedKeys[4] = 0
