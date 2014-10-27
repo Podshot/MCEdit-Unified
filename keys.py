@@ -210,7 +210,7 @@ class KeyConfigPanel(Dialog):
 
     def __init__(self):
         Dialog.__init__(self)
-        keyConfigTable = albow.TableView(
+        keyConfigTable = albow.TableView(nrows=30,
             columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
         keyConfigTable.num_rows = lambda: len(self.keyConfigKeys)
         keyConfigTable.row_data = self.getRowData
