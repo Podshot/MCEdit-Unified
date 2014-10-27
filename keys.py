@@ -91,7 +91,8 @@ class KeyConfigPanel(Dialog):
         "Close World",
         "World Info",
         "Goto Panel",
-        "Export Selection"
+        "Export Selection",
+        "Toggle Renderer"
     ]
 
     presets = {"WASD": [
@@ -129,7 +130,8 @@ class KeyConfigPanel(Dialog):
         ("Close World", "Ctrl-W"),
         ("World Info", "Ctrl-I"),
         ("Goto Panel", "Ctrl-G"),
-        ("Export Selection", "Ctrl-E")
+        ("Export Selection", "Ctrl-E"),
+        ("Toggle Renderer", "Ctrl-M")
     ],
                "Arrows": [
                    ("Forward", "Up"),
@@ -166,7 +168,8 @@ class KeyConfigPanel(Dialog):
                    ("Close World", "Ctrl-W"),
                    ("World Info", "Ctrl-I"),
                    ("Goto Panel", "Ctrl-G"),
-                   ("Export Selection", "Ctrl-E")
+                   ("Export Selection", "Ctrl-E"),
+                   ("Toggle Renderer", "Ctrl-M")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -203,7 +206,8 @@ class KeyConfigPanel(Dialog):
                    ("Close World", "Ctrl-W"),
                    ("World Info", "Ctrl-I"),
                    ("Goto Panel", "Ctrl-G"),
-                   ("Export Selection", "Ctrl-E")
+                   ("Export Selection", "Ctrl-E"),
+                   ("Toggle Renderer", "Ctrl-M")
                ]}
 
     selectedKeyIndex = 0

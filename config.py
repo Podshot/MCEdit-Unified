@@ -167,7 +167,6 @@ delete blocks = Delete
 line tool = Z
 
 toggle fps counter = 0
-toggle renderer = M
 
 quit = Ctrl-Q
 view distance = Ctrl-F
@@ -186,6 +185,7 @@ close world = Ctrl-W
 world info = Ctrl-I
 goto panel = Ctrl-G
 export selection = Ctrl-E
+toggle renderer = Ctrl-M
 
 [Version]
 version = 1.1.1.1
