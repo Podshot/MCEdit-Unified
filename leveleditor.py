@@ -1466,6 +1466,11 @@ class CameraViewport(GLViewport):
 
     _compass = None
 
+    def reloadTextures(self):
+        self._compass = None
+        self.skyList = None
+        self._ceilingList = None
+        self._floorQuadList = None
 
 class ChunkViewport(CameraViewport):
     defaultScale = 1.0  # pixels per block

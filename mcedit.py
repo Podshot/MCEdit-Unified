@@ -623,7 +623,14 @@ class MCEdit(GLViewport):
         """
         Handle window resizing events.
         """
+        # To resize reset the opengl context(pygame limitation)
+        # So reload display lists and textures
         self.displayContext._reset(self.size)
+        self.editor.renderer.discardAllChunks()
+        self.editor.toolbar.reloadTextures()
+        self.editor.mainViewport.reloadTextures()
+        self.editor.chunkViewport.reloadTextures()
+
         GLViewport.resized(self, dw, dh)
 
         (w, h) = self.size
