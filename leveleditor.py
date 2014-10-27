@@ -1601,6 +1601,7 @@ class LevelEditor(GLViewport):
         self.notMoveBack = 0
         self.notMoveUp = 0
         self.notMoveDown = 0
+        self.rightClickNudge = 0
         self.cameraToolDistance = self.defaultCameraToolDistance
 
         self.createRenderers()

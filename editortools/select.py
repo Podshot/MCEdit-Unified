@@ -501,7 +501,7 @@ class SelectionTool(EditorTool):
 
     @alertException
     def nudgeBlocks(self, dir):
-        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        if self.editor.rightClickNudge == 1:
             dir = dir * (16, 16, 16)
 
         points = self.getSelectionPoints()
@@ -516,7 +516,7 @@ class SelectionTool(EditorTool):
         self.editor.addUnsavedEdit()
 
     def nudgeSelection(self, dir):
-        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        if self.editor.rightClickNudge == 1:
             dir = dir * (16, 16, 16)
 
         points = self.getSelectionPoints()

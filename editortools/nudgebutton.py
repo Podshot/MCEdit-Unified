@@ -34,9 +34,12 @@ class NudgeButton(GLBackground):
 
     def mouse_down(self, event):
         self.focus()
+        if event.button == 3:
+            self.editor.rightClickNudge = 1
 
     def mouse_up(self, event):
         self.get_root().mcedit.editor.focus_switch = None  # xxxx restore focus to editor better
+        self.editor.rightClickNudge = 0
 
     def key_down(self, evt):
         keyname = keys.getKey(evt)
