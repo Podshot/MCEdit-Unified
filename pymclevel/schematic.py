@@ -604,8 +604,9 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
     def __del__(self):
         shutil.rmtree(self.worldFolder.filename, True)
 
-    def saveInPlace(self):
+    def saveInPlaceGen(self):
         self.saveToFile(self.zipfilename)
+        yield
 
     def saveToFile(self, filename):
         super(ZipSchematic, self).saveInPlace()

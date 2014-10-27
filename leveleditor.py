@@ -2327,7 +2327,15 @@ class LevelEditor(GLViewport):
                         self.invalidateChunks(needsRefresh)
 
             self.freezeStatus("Saving...")
-            self.level.saveInPlace()
+            chunks = self.level.chunkCount
+            count = [0]
+            def copyChunks():
+                for _ in self.level.saveInPlaceGen():
+                    count[0] += 1
+                    yield count[0],chunks
+
+            if "Canceled" == mceutils.showProgress("Copying chunks", copyChunks(), cancel=True):
+                return
 
         self.recordUndo = True
         self.clearUnsavedEdits()

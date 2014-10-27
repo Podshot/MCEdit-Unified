@@ -395,9 +395,14 @@ class MCLevel(object):
 
     from block_copy import copyBlocksFrom, copyBlocksFromIter
 
+    def saveInPlaceGen(self):
+        self.saveToFile(self.filename)
+        yield
 
     def saveInPlace(self):
-        self.saveToFile(self.filename)
+        gen = self.saveInPlaceGen()
+        for _ in gen:
+            pass
 
     # --- Player Methods ---
     def setPlayerPosition(self, pos, player="Player"):
