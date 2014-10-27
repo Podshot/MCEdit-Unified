@@ -228,7 +228,7 @@ class graphicsPanel(Dialog):
         Dialog.__init__(self)
 
         self.mcedit = mcedit
-    
+
         fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
                                                 ref=Settings.fov.propertyRef(), width=100, min=25, max=120)
 
@@ -329,7 +329,7 @@ class OptionsPanel(Dialog):
         setWindowPlacementRow = mceutils.CheckBoxLabel("Set Window Placement",
                                                        ref=Settings.setWindowPlacement.propertyRef(),
                                                        tooltipText="Try to save and restore the window position.")
-                                                       
+
         rotateBlockBrushRow = mceutils.CheckBoxLabel("Rotate block with brush",
                                                         ref=Settings.rotateBlockBrush.propertyRef(),
                                                         tooltipText="When rotating your brush, also rotate the orientation of the block your brushing with")
@@ -353,17 +353,17 @@ class OptionsPanel(Dialog):
         langStringRow = mceutils.TextInputRow("Language String",
                                             ref=Settings.langCode.propertyRef(),
                                             tooltipText="Enter your language string (corresponding to the file in /lang). Available:\nen_US (default)\nfr_FR")
-        
+
         staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
                                             ref=Settings.staticCommandsNudge.propertyRef(),
-                                            tooltipText="Change static coordinates in command blocks while nudging.")                                      
+                                            tooltipText="Change static coordinates in command blocks while nudging.")
 
         moveSpawnerPosNudgeRow = mceutils.CheckBoxLabel("Change Spawners While Nudging",
                                             ref=Settings.moveSpawnerPosNudge.propertyRef(),
                                             tooltipText="Change the position of the mobs in spawners while nudging.")
-        
+
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
-        
+
         goPortableButton.tooltipText = self.portableButtonTooltip()
         goPortableRow = albow.Row(
             (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
@@ -611,7 +611,7 @@ class MCEdit(GLViewport):
                      "License",
                      showLicense),
                     ("",
-                     "Open Magic Folder",
+                     "Open Data Folder",
                      showCacheDir),
                    ])
 
@@ -882,7 +882,7 @@ def main(argv):
 #        client.notifyPath = "/mcedit_bugs.php"
 #        client.build = version
 #        client.timeout = 5
-#        
+#
 # Disabled Crash Reporting Option
 #       client.disabled = not config.config.getboolean("Settings", "report crashes new")
 #       client.disabled = True
