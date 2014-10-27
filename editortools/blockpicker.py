@@ -221,12 +221,12 @@ class BlockPicker(Dialog):
 
     def key_down(self, evt):
         keyname = keys.getKey(evt)
-        if keyname == "UP" and self.selectedBlockIndex > 0:
+        if keyname == "Up" and self.selectedBlockIndex > 0:
             self.selectedBlockIndex -= 1
             self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
             self.blockButton.blockInfo = self.blockInfo
 
-        elif keyname == "DOWN" and self.selectedBlockIndex < len(self.matchingBlocks):
+        elif keyname == "Dowm" and self.selectedBlockIndex < len(self.matchingBlocks):
             self.selectedBlockIndex += 1
             self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
             self.blockButton.blockInfo = self.blockInfo
