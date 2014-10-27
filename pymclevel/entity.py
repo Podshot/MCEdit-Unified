@@ -245,7 +245,7 @@ class TileEntity(object):
                     if dont_copy != 0:
                         dont_copy -= 1
                     else:
-                        if char != 'x' and char != 'y' and char != 'z':
+                        if (char != 'x' and char != 'y' and char != 'z') or letter == True:
                             new_selector += char
                             if char == '[' or char == ',':
                                 letter = False
