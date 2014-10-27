@@ -147,7 +147,7 @@ class Modes:
     class VariedFill(BrushMode):
 
         name = "Varied Fill"
-        options =['airFill','chanceA','chanceB','chanceC','chanceD','replaceWith1','replaceWith2','replaceWith3','replaceWith4']
+        options =['airFill','chanceA','chanceB','chanceC','chanceD']
 
         def createOptions(self, panel, tool):
 
@@ -160,26 +160,6 @@ class Modes:
             chanceB = IntInputRow("Weight 2: ", ref=AttrRef(tool, 'chanceB'), min=0, width=50)
             chanceC = IntInputRow("Weight 3: ", ref=AttrRef(tool, 'chanceC'), min=0, width=50)
             chanceD = IntInputRow("Weight 4: ", ref=AttrRef(tool, 'chanceD'), min=0, width=50)
-            replaceWith1 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith1'),
-            recentBlocks=tool.recentReplaceBlocks)
-            
-            replaceWith2 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith2'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith3 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith3'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith4 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith4'),
-            recentBlocks=tool.recentReplaceBlocks)
-
             chanceABcolumns = [chanceA, chanceB]
             chanceCDcolumns = [chanceC, chanceD]
             chanceAB = Row(chanceABcolumns)
@@ -191,10 +171,10 @@ class Modes:
                 panel.hollowRow,
                 panel.noiseInput,
                 panel.brushSizeRows,
-                replaceWith1,
-                replaceWith2,
-                replaceWith3,
-                replaceWith4,
+                panel.replaceWith1Button,
+                panel.replaceWith2Button,
+                panel.replaceWith3Button,
+                panel.replaceWith4Button,
                 chanceAB,
                 chanceCD,
                 airFill,
@@ -407,30 +387,12 @@ class Modes:
 			
     class Vary(Fill):
         name = "Varied Replace"
-        options = ['chanceA','chanceB','chanceC','chanceD','replaceWith1','replaceWith2','replaceWith3','replaceWith4']
+        options = ['chanceA','chanceB','chanceC','chanceD']
 
         def createOptions(self, panel, tool):
 
             seperator = Label("---")
-            replaceWith1 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith1'),
-            recentBlocks=tool.recentReplaceBlocks)
             
-            replaceWith2 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith2'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith3 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith3'),
-            recentBlocks=tool.recentReplaceBlocks)
-
-            replaceWith4 = BlockButton(
-            tool.editor.level.materials,
-            ref=AttrRef(tool, 'replaceWith4'),
-            recentBlocks=tool.recentReplaceBlocks)
             chanceA = IntInputRow("Weight 1: ", ref=AttrRef(tool, 'chanceA'), min=0, width=50)
             chanceB = IntInputRow("Weight 2: ", ref=AttrRef(tool, 'chanceB'), min=0, width=50)
             chanceC = IntInputRow("Weight 3: ", ref=AttrRef(tool, 'chanceC'), min=0, width=50)
@@ -446,10 +408,10 @@ class Modes:
                 panel.brushSizeRows,
                 panel.blockButton,
                 seperator,
-                replaceWith1,
-                replaceWith2,
-                replaceWith3,
-                replaceWith4,
+                panel.replaceWith1Button,
+                panel.replaceWith2Button,
+                panel.replaceWith3Button,
+                panel.replaceWith4Button,
                 chanceAB,
                 chanceCD,
                 ]
@@ -846,6 +808,7 @@ class BrushPanel(Panel):
         self.replaceBlockInfoOption = AttrRef(tool, "replaceBlockInfo")
         self.erosionNoiseOption = AttrRef(tool, 'erosionNoise')
         self.erosionStrengthOpion = AttrRef(tool, 'erosionStrength')
+        
         self.replaceWith1Option = AttrRef(tool, 'replaceWith1')
         self.replaceWith2Option = AttrRef(tool, 'replaceWith2')
         self.replaceWith3Option = AttrRef(tool, 'replaceWith3')
@@ -945,8 +908,28 @@ class BrushPanel(Panel):
             ref=AttrRef(tool, 'replaceBlockInfo'),
             recentBlocks=tool.recentReplaceBlocks)
             
-        col = tool.brushMode.createOptions(self, tool)
+        self.replaceWith1Button = replaceWith1Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith1'),
+            recentBlocks = tool.recentReplaceBlocks)
+            
+        self.replaceWith2Button = replaceWith2Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith2'),
+            recentBlocks = tool.recentReplaceBlocks)
         
+        self.replaceWith3Button = replaceWith3Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith3'),
+            recentBlocks = tool.recentReplaceBlocks)
+            
+        self.replaceWith4Button = replaceWith4Button = BlockButton(
+            tool.editor.level.materials,
+            ref=AttrRef(tool, 'replaceWith4'),
+            recentBlocks = tool.recentReplaceBlocks)    
+            
+        col = tool.brushMode.createOptions(self, tool)
+
         if self.tool.brushMode.name != "Flood Fill":
             spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1, tooltipText="Hold SHIFT to draw lines")
             col.append(spaceRow)
@@ -1020,14 +1003,15 @@ class BrushPanel(Panel):
                     elif key == "Block To Replace":
                         self.replaceBlockButton.blockInfo = blockInfo
                     elif key == "Vary Replace 1":
-                        self.replaceWith1Option.blockInfo = blockInfo
+                        self.replaceWith1Button.blockInfo = blockInfo
                     elif key == "Vary Replace 2":
-                        self.replaceWith2Option.blockInfo = blockInfo
+                        self.replaceWith2Button.blockInfo = blockInfo
                     elif key == "Vary Replace 3":
-                        self.replaceWith3Option.blockInfo = blockInfo
+                        self.replaceWith3Button.blockInfo = blockInfo
                     elif key == "Vary Replace 4":
-                        self.replaceWith4Option.blockInfo = blockInfo
+                        self.replaceWith4Button.blockInfo = blockInfo
             BrushTool.toolSelected(self.tool)
+
             
         def numberEnable1():
             global currentNumber
