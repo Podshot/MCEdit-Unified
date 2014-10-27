@@ -314,7 +314,7 @@ class KeyConfigPanel(Dialog):
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
         if labelString is None:
-            labelString = tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(configKey)
+            labelString = tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(configKey)
         label = albow.Label(labelString)
         panel.add(label)
         panel.shrink_wrap()
@@ -342,7 +342,7 @@ class KeyConfigPanel(Dialog):
         panel.mouse_up = panelMouseUp
 
         keyname = panel.present()
-        if keyname != "Escape":
+        if keyname != "Escape" and keyname != "Ctrl-Escape":
             occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if config.getNewKey(v) == keyname and k != configKey.lower()]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
@@ -357,10 +357,12 @@ class KeyConfigPanel(Dialog):
                 if self.askAssignKey(setting,
                                      tr("The key {0} is no longer bound to {1}. "
                                      "Press a new key for the action \"{1}\"\n\n"
-                                     "Press ESC to cancel.")
+                                     "Press ESC to cancel. Press Ctrl-ESC to unbind.")
                                      .format(keyname, setting)):
                     config.config.set("Keys", configKey, oldkey)
                     self.changes[configKey] = keyname
                     return True 
+        elif keyname == "Ctrl-Escape":
+            config.config.set("Keys", configKey, "None")
         else:
             return True
