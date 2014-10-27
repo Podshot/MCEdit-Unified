@@ -179,25 +179,22 @@ class ControlPanel(Panel):
         buttonsColumn = [header]
 
         cmd = mcplatform.cmd_name
-        hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), "Create New World",
+        hotkeys = ([(config.config.get('Keys', 'New World'), "Create New World",
                      editor.mcedit.createNewWorld),
-                    (str.upper(config.config.get('Keys', 'Quick Load')), "Quick Load", editor.askLoadWorld),
-                    (str.upper(config.config.get('Keys', 'Open')), "Open...", editor.askOpenFile),
-                    (str.upper(config.config.get('Keys', 'Save')), "Save", editor.saveFile),
-                    (str.upper(config.config.get('Keys', 'Reload World')), "Reload", editor.reload),
-                    (str.upper(config.config.get('Keys', 'Close World')), "Close", editor.closeEditor),
-                    (str.upper(config.config.get('Keys', 'Goto Panel')), "Goto", editor.showGotoPanel),
-                    (str.upper(config.config.get('Keys', 'World Info')), "World Info", editor.showWorldInfo),
-                    (str.upper(config.config.get('Keys', 'Undo')), "Undo", editor.undo),
-                    (str.upper(config.config.get('Keys', 'Select All')), "Select All", editor.selectAll),
-                    (str.upper(config.config.get('Keys', 'Deselect')), "Deselect", editor.deselect),
-                    (str.upper(config.config.get('Keys', 'Swap View')),
+                    (config.config.get('Keys', 'Quick Load'), "Quick Load", editor.askLoadWorld),
+                    (config.config.get('Keys', 'Open'), "Open...", editor.askOpenFile),
+                    (config.config.get('Keys', 'Save'), "Save", editor.saveFile),
+                    (config.config.get('Keys', 'Reload World'), "Reload", editor.reload),
+                    (config.config.get('Keys', 'Close World'), "Close", editor.closeEditor),
+                    (config.config.get('Keys', 'Goto Panel'), "Goto", editor.showGotoPanel),
+                    (config.config.get('Keys', 'World Info'), "World Info", editor.showWorldInfo),
+                    (config.config.get('Keys', 'Undo'), "Undo", editor.undo),
+                    (config.config.get('Keys', 'Select All'), "Select All", editor.selectAll),
+                    (config.config.get('Keys', 'Deselect'), "Deselect", editor.deselect),
+                    (config.config.get('Keys', 'View Distance'),
                      AttrRef(editor, 'viewDistanceLabelText'), editor.swapViewDistance),
-                    ("Alt-F4", "Quit", editor.quit),
+                    (config.config.get('Keys', 'Quit'), "Quit", editor.quit),
                    ])
-
-        if cmd == "Cmd":
-            hotkeys[-1] = ("Cmd-Q", hotkeys[-1][1], hotkeys[-1][2])
 
         buttons = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
 
@@ -2746,7 +2743,7 @@ class LevelEditor(GLViewport):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
-        elif keyname == 'Middle Mouse':
+        elif keyname == 'mouse3':
             keyname = 'Button 3'
         elif keyname == 'mouse4':
             keyname = 'Scroll Up'
@@ -2837,7 +2834,7 @@ class LevelEditor(GLViewport):
         elif keyname == config.config.get('Keys', 'Quit'):
             self.quit()
             return
-        elif keyname == config.config.get('Keys', 'Swap View'):
+        elif keyname == config.config.get('Keys', 'View Distance'):
             self.swapViewDistance()
         elif keyname == config.config.get('Keys', 'Select All'):
             self.selectAll()

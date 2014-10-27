@@ -108,7 +108,10 @@ def loadConfig():
         if config.get("Version", "version") == "1.1.1.1":
             i = 1
             for (name, value) in config.items("Keys"):
-                config.set("Keys", name, getNewKey(value, i))
+                if name != "Swap View":
+                    config.set("Keys", name, getNewKey(value, i))
+                else:
+                    config.set("Keys", "View Distance", getNewKey(value, i))
                 i += 1
             config.set("Version", "version", "1.1.2.0")
             saveConfig()
@@ -167,7 +170,7 @@ toggle fps counter = 0
 toggle renderer = M
 
 quit = Ctrl-Q
-swap view = Ctrl-F
+view distance = Ctrl-F
 select all = Ctrl-A
 deselect = Ctrl-D
 cut = Ctrl-X

@@ -76,7 +76,7 @@ class KeyConfigPanel(Dialog):
         "",
         "<Function Controls>",
         "Quit",
-        "Swap View",
+        "View Distance",
         "Select All",
         "Deselect",
         "Cut",
@@ -112,6 +112,24 @@ class KeyConfigPanel(Dialog):
         ("Decrease Reach", "Scroll Down"),
         ("Reset Reach", "Button 3"),
         ("Delete Blocks", "Delete"),
+        
+        ("Quit", "Ctrl-Q"),
+        ("View Distance", "Ctrl-F"),
+        ("Select All", "Ctrl-A"),
+        ("Deselect", "Ctrl-D"),
+        ("Cut", "Ctrl-X"),
+        ("Copy", "Ctrl-C"),
+        ("Paste", "Ctrl-V"),
+        ("Reload World", "Ctrl-R"),
+        ("Open", "Ctrl-O"),
+        ("Quick Load", "Ctrl-L"),
+        ("Undo", "Ctrl-Z"),
+        ("Save", "Ctrl-S"),
+        ("New World", "Ctrl-N"),
+        ("Close World", "Ctrl-W"),
+        ("World Info", "Ctrl-I"),
+        ("Goto Panel", "Ctrl-G"),
+        ("Export Selection", "Ctrl-E")
     ],
                "Arrows": [
                    ("Forward", "Up"),
@@ -130,7 +148,25 @@ class KeyConfigPanel(Dialog):
                    ("Increase Reach", "Scroll Up"),
                    ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "Button 3"),
-                   ("Delete Blocks", "Backspace")
+                   ("Delete Blocks", "Backspace"),
+                   
+                   ("Quit", "Ctrl-Q"),
+                   ("View Distance", "Ctrl-F"),
+                   ("Select All", "Ctrl-A"),
+                   ("Deselect", "Ctrl-D"),
+                   ("Cut", "Ctrl-X"),
+                   ("Copy", "Ctrl-C"),
+                   ("Paste", "Ctrl-V"),
+                   ("Reload World", "Ctrl-R"),
+                   ("Open", "Ctrl-O"),
+                   ("Quick Load", "Ctrl-L"),
+                   ("Undo", "Ctrl-Z"),
+                   ("Save", "Ctrl-S"),
+                   ("New World", "Ctrl-N"),
+                   ("Close World", "Ctrl-W"),
+                   ("World Info", "Ctrl-I"),
+                   ("Goto Panel", "Ctrl-G"),
+                   ("Export Selection", "Ctrl-E")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -149,7 +185,25 @@ class KeyConfigPanel(Dialog):
                    ("Increase Reach", "Scroll Up"),
                    ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "Button 3"),
-                   ("Delete Blocks", "Delete")
+                   ("Delete Blocks", "Delete"),
+                   
+                   ("Quit", "Ctrl-Q"),
+                   ("View Distance", "Ctrl-F"),
+                   ("Select All", "Ctrl-A"),
+                   ("Deselect", "Ctrl-D"),
+                   ("Cut", "Ctrl-X"),
+                   ("Copy", "Ctrl-C"),
+                   ("Paste", "Ctrl-V"),
+                   ("Reload World", "Ctrl-R"),
+                   ("Open", "Ctrl-O"),
+                   ("Quick Load", "Ctrl-L"),
+                   ("Undo", "Ctrl-Z"),
+                   ("Save", "Ctrl-S"),
+                   ("New World", "Ctrl-N"),
+                   ("Close World", "Ctrl-W"),
+                   ("World Info", "Ctrl-I"),
+                   ("Goto Panel", "Ctrl-G"),
+                   ("Export Selection", "Ctrl-E")
                ]}
 
     selectedKeyIndex = 0

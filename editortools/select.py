@@ -531,7 +531,7 @@ class SelectionTool(EditorTool):
     def nudgePoint(self, p, n):
         if self.selectionBox() is None:
             return
-        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        if self.editor.rightClickNudge == 1:
             n = n * (16, 16, 16)
         self.setSelectionPoint(p, self.getSelectionPoint(p) + n)
 
