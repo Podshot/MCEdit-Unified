@@ -2864,7 +2864,6 @@ class LevelEditor(GLViewport):
         elif keyname == config.config.get('Keys', 'Undo'):
             self.undo()
         elif keyname == config.config.get('Keys', 'Save'):
-            self.saveFile()
             for move in self.movements:
                 if move in keyname:
                     self.save = 1
@@ -2872,6 +2871,8 @@ class LevelEditor(GLViewport):
             im = [0., 0., 0.]
             self.usedKeys = [0, 0, 0, 0, 0, 0]
             self.cameraInputs = [0., 0., 0.]
+            
+            self.saveFile()
         elif keyname == config.config.get('Keys', 'New World'):
             self.createNewLevel()
         elif keyname == config.config.get('Keys', 'Close World'):
@@ -3010,6 +3011,9 @@ class LevelEditor(GLViewport):
             self.mainViewport.cameraPosition = destPoint
 
     def closeEditor(self):
+        self.cameraInputs = [0., 0., 0.]
+        self.usedKeys = [0, 0, 0, 0, 0, 0]
+        
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
             if answer == "Save":
@@ -3018,8 +3022,6 @@ class LevelEditor(GLViewport):
                 return
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
-        self.cameraInputs = [0., 0., 0.]
-        self.usedKeys = [0, 0, 0, 0, 0, 0]
         self.mainViewport.mouseLookOff()
         self.level = None
         self.renderer.stopWork()
