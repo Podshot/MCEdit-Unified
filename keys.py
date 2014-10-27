@@ -94,6 +94,7 @@ class KeyConfigPanel(Dialog):
         "Export Selection",
         "Toggle Renderer",
         "",
+        "Long-Distance Mode",
         "Fly Mode"
     ]
 
