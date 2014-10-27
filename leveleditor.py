@@ -2812,7 +2812,7 @@ class LevelEditor(GLViewport):
                 if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
 
-        if keyname == "Alt-Z":
+        elif keyname == config.config.get('Keys', 'Long-Distance Mode'):
             self.longDistanceMode = not self.longDistanceMode
         elif keyname == "Alt-1" or keyname == "Alt-2" or keyname == "Alt-3" or keyname == "Alt-4" or keyname == "Alt-5":
             name = "option" + keyname[len(keyname)-1:]

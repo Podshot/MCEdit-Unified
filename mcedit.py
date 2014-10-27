@@ -344,7 +344,7 @@ class OptionsPanel(Dialog):
 
         longDistanceRow = mceutils.CheckBoxLabel("Long-Distance Mode",
                                                  ref=Settings.longDistanceMode.propertyRef(),
-                                                 tooltipText="Always target the farthest block under the cursor, even in mouselook mode. Shortcut: ALT-Z")
+                                                 tooltipText="Always target the farthest block under the cursor, even in mouselook mode.")
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
                                             ref=Settings.flyMode.propertyRef(),

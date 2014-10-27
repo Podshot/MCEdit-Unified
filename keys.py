@@ -135,6 +135,7 @@ class KeyConfigPanel(Dialog):
         ("Export Selection", "Ctrl-E"),
         ("Toggle Renderer", "Ctrl-M"),
         
+        ("Long-Distance Mode", "Alt-Z"),
         ("Fly Mode", "None")
     ],
                "Arrows": [
@@ -175,6 +176,7 @@ class KeyConfigPanel(Dialog):
                    ("Export Selection", "Ctrl-E"),
                    ("Toggle Renderer", "Ctrl-M"),
                    
+                   ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None")
                ],
                "Numpad": [
@@ -215,6 +217,7 @@ class KeyConfigPanel(Dialog):
                    ("Export Selection", "Ctrl-E"),
                    ("Toggle Renderer", "Ctrl-M"),
                    
+                   ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None")
                ]}
 
