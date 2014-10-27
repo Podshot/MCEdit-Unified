@@ -1418,7 +1418,7 @@ class BrushTool(CloneTool):
 
     def rotate(self,blocksOnly=False):
         print blocksOnly
-        if not blocksOnly:
+        if blocksOnly:
             self.panel.rotate()
         else:
             offs = self.reticleOffset
@@ -1435,7 +1435,7 @@ class BrushTool(CloneTool):
 
     def mirror(self,blocksOnly=False):
         print blocksOnly
-        if not blocksOnly:
+        if blocksOnly:
             self.panel.roll()
         else:
             offs = self.reticleOffset
