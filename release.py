@@ -25,7 +25,7 @@ def is_dev():
     try:
         with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
             current = json.load(jsonString)
-            return current["developement"]
+            return current["development"]
     except:
         raise
 def check_for_new_version():
