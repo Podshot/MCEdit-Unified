@@ -967,7 +967,6 @@ class BrushPanel(Panel):
                         keyData = key + " Data"
                         value = self.saveableBrushOptions[key]
                         for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
-                            print a, b
                             storeBrushPreset(a, b, currentNumber)
                      except:
                         print key + " does not have a value yet."
