@@ -1417,33 +1417,40 @@ class BrushTool(CloneTool):
         return True
 
     def rotate(self,blocksOnly=False):
-        offs = self.reticleOffset
-        dist = self.editor.cameraToolDistance
-        W, H, L = self.brushSize
-        self.brushSize = L, H, W
-        self.reticleOffset = offs
-        self.editor.cameraToolDistance = dist
-        rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
-        if (rotateBlockBrush):
+        print blocksOnly
+        if not blocksOnly:
             self.panel.rotate()
         else:
-            print "Not rotating block because rotation is turned off in options menu"
+            offs = self.reticleOffset
+            dist = self.editor.cameraToolDistance
+            W, H, L = self.brushSize
+            self.brushSize = L, H, W
+            self.reticleOffset = offs
+            self.editor.cameraToolDistance = dist
+            rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
+            if (rotateBlockBrush):
+                self.panel.rotate()
+            else:
+                print "Not rotating block because rotation is turned off in options menu"
 
     def mirror(self,blocksOnly=False):
-        offs = self.reticleOffset
-        dist = self.editor.cameraToolDistance
-        W, H, L = self.brushSize
-        self.brushSize = W, L, H
-        self.reticleOffset = offs
-        self.editor.cameraToolDistance = dist
-        rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
-        if (rotateBlockBrush):
+        print blocksOnly
+        if not blocksOnly:
             self.panel.roll()
         else:
-            print "Not rotating block because rotation is turned off in options menu"
+            offs = self.reticleOffset
+            dist = self.editor.cameraToolDistance
+            W, H, L = self.brushSize
+            self.brushSize = W, L, H
+            self.reticleOffset = offs
+            self.editor.cameraToolDistance = dist
+            rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
+            if (rotateBlockBrush):
+                self.panel.roll()
+            else:
+                print "Not rotating block because rotation is turned off in options menu"
 
     def toolReselected(self):
-        self.tool.setupPreview()
         if self.brushMode.name == "Replace":
             self.panel.pickReplaceBlock()
         else:
