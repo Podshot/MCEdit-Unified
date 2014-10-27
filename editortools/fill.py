@@ -209,9 +209,6 @@ class FillTool(EditorTool):
                 self.blockInfo = blockPicker.blockInfo
                 self.showPanel()
 
-            else:
-                self.editor.toolbar.selectTool(-1)
-
     chooseBlockImmediately = FillSettings.chooseBlockImmediately.configProperty()
 
     def toolReselected(self):

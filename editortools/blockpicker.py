@@ -28,6 +28,7 @@ class BlockPicker(Dialog):
         Dialog.__init__(self, *a, **kw)
         panelWidth = 490
 
+        self.click_outside_response = 0
         self.materials = materials
         self.anySubtype = blockInfo.wildcard
 
@@ -65,7 +66,7 @@ class BlockPicker(Dialog):
                 r += " [{0}]".format(block.aka)
 
             return r
-        
+
         def formatBlockID(x):
             block = self.matchingBlocks[x]
             ident = "({id}:{data})".format (id=block.ID, data=block.blockData)
@@ -224,7 +225,7 @@ class BlockPicker(Dialog):
             self.selectedBlockIndex -= 1
             self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
             self.blockButton.blockInfo = self.blockInfo
-            
+
         elif keyname == "DOWN" and self.selectedBlockIndex < len(self.matchingBlocks):
             self.selectedBlockIndex += 1
             self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
