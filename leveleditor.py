@@ -3024,6 +3024,7 @@ class LevelEditor(GLViewport):
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.cameraInputs = [0., 0., 0.]
+        self.usedKeys = [0, 0, 0, 0, 0, 0]
         self.mainViewport.mouseLookOff()
         self.level = None
         self.renderer.stopWork()
