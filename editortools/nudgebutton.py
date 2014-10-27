@@ -21,6 +21,7 @@ class NudgeButton(GLBackground):
         nudgeLabel = Label("Nudge", margin=8)
 
         self.editor = editor
+        self.count = 0
         self.add(nudgeLabel)
         self.shrink_wrap()
 
@@ -33,13 +34,30 @@ class NudgeButton(GLBackground):
         # tooltipBacking.shrink_wrap()
 
     def mouse_down(self, event):
+        self.count += 1
         self.focus()
         if event.button == 3:
             self.editor.rightClickNudge = 1
 
     def mouse_up(self, event):
-        self.get_root().mcedit.editor.focus_switch = None  # xxxx restore focus to editor better
-        self.editor.rightClickNudge = 0
+        if event.button == 3:
+            self.editor.rightClickNudge = 0
+        self.count -= 1
+        if self.count <= 0:
+            self.get_root().mcedit.editor.focus_switch = None  # xxxx restore focus to editor better
+            if config.config.get("Keys", "Left") != 'Shift' and config.config.get("Keys", "Left") != 'Ctrl' and config.config.get("Keys", "Left") != 'Alt': 
+                self.editor.notMoveLeft = 0
+            if config.config.get("Keys", "Right") != 'Shift' and config.config.get("Keys", "Right") != 'Ctrl' and config.config.get("Keys", "Right") != 'Alt': 
+                self.editor.notMoveRight = 0
+            if config.config.get("Keys", "Forward") != 'Shift' and config.config.get("Keys", "Forward") != 'Ctrl' and config.config.get("Keys", "Forward") != 'Alt': 
+                self.editor.notMoveForward = 0
+            if config.config.get("Keys", "Back") != 'Shift' and config.config.get("Keys", "Back") != 'Ctrl' and config.config.get("Keys", "Back") != 'Alt': 
+                self.editor.notMoveBack = 0
+            if config.config.get("Keys", "Up") != 'Shift' and config.config.get("Keys", "Up") != 'Ctrl' and config.config.get("Keys", "Up") != 'Alt': 
+                self.editor.notMoveUp = 0
+            if config.config.get("Keys", "Down") != 'Shift' and config.config.get("Keys", "Down") != 'Ctrl' and config.config.get("Keys", "Down") != 'Alt': 
+                self.editor.notMoveDown = 0
+            self.count = 0
 
     def key_down(self, evt):
         keyname = keys.getKey(evt)
