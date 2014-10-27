@@ -174,6 +174,14 @@ class MCMaterials(object):
             bl = Block(self, id, blockData=data)
             bl.hasVariants = True
             return bl
+        
+    def callableBlockWithID(self, id, data=0):
+        if (id, data) in self.blocksByID:
+            return self.blocksByID[id, data]
+        else:
+            bl = Block(self, id, blockData=data)
+            bl.hasVariants = True
+            return bl
 
     def addYamlBlocksFromFile(self, filename):
         try:
