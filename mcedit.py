@@ -623,6 +623,7 @@ class MCEdit(GLViewport):
         """
         Handle window resizing events.
         """
+        self.displayContext._reset(self.size)
         GLViewport.resized(self, dw, dh)
 
         (w, h) = self.size
@@ -968,6 +969,20 @@ class GLDisplayContext(object):
 
     def displayMode(self):
         return pygame.OPENGL | pygame.RESIZABLE | pygame.DOUBLEBUF
+    def _reset(self,size=None):
+        if not size:
+           size=self.getWindowSize()
+        self.display = display.set_mode(size, self.displayMode())
+
+        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
+        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
+        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+
+        # textures are 256x256, so with this we can specify pixel coordinates
+        GL.glMatrixMode(GL.GL_TEXTURE)
+        GL.glScale(1 / 256., 1 / 256., 1 / 256.)
+
+        self.loadTextures()
 
     def reset(self):
         pygame.key.set_repeat(500, 100)
@@ -979,7 +994,7 @@ class GLDisplayContext(object):
 
         display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
 
-        d = display.set_mode(self.getWindowSize(), self.displayMode())
+        self._reset()
         try:
             pygame.scrap.init()
         except:
@@ -1014,18 +1029,6 @@ class GLDisplayContext(object):
             display.set_icon(icon)
         except Exception, e:
             logging.warning('Unable to set icon: {0!r}'.format(e))
-
-        self.display = d
-
-        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
-        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
-        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
-
-        # textures are 256x256, so with this we can specify pixel coordinates
-        GL.glMatrixMode(GL.GL_TEXTURE)
-        GL.glScale(1 / 256., 1 / 256., 1 / 256.)
-
-        self.loadTextures()
 
     def getTerrainTexture(self, level):
         return self.terrainTextures.get(level.materials.name, self.terrainTextures["Alpha"])
