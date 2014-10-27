@@ -161,6 +161,7 @@ confirm construction = Return
 open level = O
 new level = N
 delete blocks = Delete
+line tool = Z
 
 toggle fps counter = 0
 toggle renderer = M

@@ -1379,7 +1379,7 @@ class BrushTool(CloneTool):
             self.draggedPositions = [point]
             return
 
-        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        if config.config.get('Keys', 'Line Tool'):
             if len(self.draggedPositions):
                 points = bresenham.bresenham(self.draggedPositions[-1], point)
                 self.draggedPositions.extend(points[::self.minimumSpacing][1:])
@@ -1619,7 +1619,7 @@ class BrushTool(CloneTool):
 
             dirtyBox = self.brushMode.brushBoxForPointAndOptions(reticlePoint, self.getBrushOptions())
             self.drawTerrainPreview(dirtyBox.origin)
-            if pygame.key.get_mods() & pygame.KMOD_SHIFT and self.lastPosition and self.brushMode.name != "Flood Fill":
+            if config.config.get('Keys', 'Line Tool') and self.lastPosition and self.brushMode.name != "Flood Fill":
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))

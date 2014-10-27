@@ -69,6 +69,7 @@ class KeyConfigPanel(Dialog):
         "Mirror",
         "Swap",
         "Delete Blocks",
+        "Line Tool",
         "Increase Reach",
         "Decrease Reach",
         "Reset Reach",
