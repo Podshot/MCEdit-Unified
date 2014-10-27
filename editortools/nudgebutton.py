@@ -5,6 +5,7 @@ from albow import Label
 from albow.translate import tr
 from pymclevel.box import Vector
 import config
+import leveleditor
 from glbackground import GLBackground
 import keys
 
@@ -15,10 +16,11 @@ class NudgeButton(GLBackground):
 
     is_gl_container = True
 
-    def __init__(self):
+    def __init__(self, editor):
         GLBackground.__init__(self)
         nudgeLabel = Label("Nudge", margin=8)
 
+        self.editor = editor
         self.add(nudgeLabel)
         self.shrink_wrap()
 
@@ -62,3 +64,5 @@ class NudgeButton(GLBackground):
             self.nudge(Vector(*left))
         if keyname == config.config.get("Keys", "Right"):
             self.nudge(Vector(*right))
+            
+        self.editor.key_down(evt, 1)

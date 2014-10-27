@@ -55,10 +55,10 @@ CloneSettings.placeImmediately = CloneSettings("Place Immediately", True)
 class CoordsInput(Widget):
     is_gl_container = True
 
-    def __init__(self):
+    def __init__(self, editor):
         Widget.__init__(self)
 
-        self.nudgeButton = NudgeButton()
+        self.nudgeButton = NudgeButton(editor)
         self.nudgeButton.nudge = self._nudge
 
         self.xField = IntField(value=0)
@@ -224,7 +224,7 @@ class CloneToolPanel(Panel):
     def transformEnable(self):
         return not isinstance(self.tool.level, pymclevel.MCInfdevOldLevel)
 
-    def __init__(self, tool):
+    def __init__(self, tool, editor):
         Panel.__init__(self)
         self.tool = tool
 
@@ -254,12 +254,12 @@ class CloneToolPanel(Panel):
 
         # headerLabel = Label("Clone Offset")
         if self.useOffsetInput:
-            self.offsetInput = CoordsInput()
+            self.offsetInput = CoordsInput(editor)
             self.offsetInput.coordsChanged = tool.offsetChanged
             self.offsetInput.nudgeButton.bg_color = tool.color
             self.offsetInput.nudge = tool.nudge
         else:
-            self.nudgeButton = NudgeButton()
+            self.nudgeButton = NudgeButton(editor)
             self.nudgeButton.bg_color = tool.color
             self.nudgeButton.nudge = tool.nudge
 
@@ -628,7 +628,7 @@ class CloneTool(EditorTool):
         if self.panel:
             self.panel.set_parent(None)
 
-        self.panel = self.panelClass(self)
+        self.panel = self.panelClass(self, self.editor)
         # self.panel.performButton.enabled = False
 
         self.panel.centery = self.editor.centery

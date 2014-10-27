@@ -158,16 +158,17 @@ class SelectionToolOptions(ToolOptions):
 
 
 class SelectionToolPanel(Panel):
-    def __init__(self, tool):
+    def __init__(self, tool, editor):
         Panel.__init__(self)
         self.tool = tool
+        self.editor = editor
 
-        nudgeBlocksButton = NudgeButton()
+        nudgeBlocksButton = NudgeButton(self.editor)
         nudgeBlocksButton.nudge = tool.nudgeBlocks
         nudgeBlocksButton.bg_color = (0.3, 1.0, 0.3, 0.35)
         self.nudgeBlocksButton = nudgeBlocksButton
 
-        nudgeSelectionButton = NudgeButton()
+        nudgeSelectionButton = NudgeButton(self.editor)
         nudgeSelectionButton.nudge = tool.nudgeSelection
         nudgeSelectionButton.bg_color = tool.selectionColor + (0.7,)
 
@@ -557,13 +558,13 @@ class SelectionTool(EditorTool):
 
             self.nudgePanel.bg_color = map(lambda x: x * 0.5, self.selectionColor) + [0.5, ]
 
-            self.bottomLeftNudge = bottomLeftNudge = NudgeButton()
+            self.bottomLeftNudge = bottomLeftNudge = NudgeButton(self.editor)
             bottomLeftNudge.nudge = self.nudgeBottomLeft
             bottomLeftNudge.anchor = "brwh"
 
             bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
 
-            self.topRightNudge = topRightNudge = NudgeButton()
+            self.topRightNudge = topRightNudge = NudgeButton(self.editor)
             topRightNudge.nudge = self.nudgeTopRight
             topRightNudge.anchor = "blwh"
 
@@ -598,7 +599,7 @@ class SelectionTool(EditorTool):
 
         if self.panel is None and self.editor.currentTool in (self, None):
             if self.bottomLeftPoint is not None and self.topRightPoint is not None:
-                self.panel = SelectionToolPanel(self)
+                self.panel = SelectionToolPanel(self, self.editor)
                 self.panel.left = self.editor.left
                 self.panel.centery = self.editor.centery
                 self.editor.add(self.panel)
