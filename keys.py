@@ -92,7 +92,9 @@ class KeyConfigPanel(Dialog):
         "World Info",
         "Goto Panel",
         "Export Selection",
-        "Toggle Renderer"
+        "Toggle Renderer",
+        "",
+        "Fly Mode"
     ]
 
     presets = {"WASD": [
@@ -131,7 +133,9 @@ class KeyConfigPanel(Dialog):
         ("World Info", "Ctrl-I"),
         ("Goto Panel", "Ctrl-G"),
         ("Export Selection", "Ctrl-E"),
-        ("Toggle Renderer", "Ctrl-M")
+        ("Toggle Renderer", "Ctrl-M"),
+        
+        ("Fly Mode", "None")
     ],
                "Arrows": [
                    ("Forward", "Up"),
@@ -169,7 +173,9 @@ class KeyConfigPanel(Dialog):
                    ("World Info", "Ctrl-I"),
                    ("Goto Panel", "Ctrl-G"),
                    ("Export Selection", "Ctrl-E"),
-                   ("Toggle Renderer", "Ctrl-M")
+                   ("Toggle Renderer", "Ctrl-M"),
+                   
+                   ("Fly Mode", "None")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -207,7 +213,9 @@ class KeyConfigPanel(Dialog):
                    ("World Info", "Ctrl-I"),
                    ("Goto Panel", "Ctrl-G"),
                    ("Export Selection", "Ctrl-E"),
-                   ("Toggle Renderer", "Ctrl-M")
+                   ("Toggle Renderer", "Ctrl-M"),
+                   
+                   ("Fly Mode", "None")
                ]}
 
     selectedKeyIndex = 0
@@ -318,7 +326,7 @@ class KeyConfigPanel(Dialog):
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
         if labelString is None:
-            labelString = tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(configKey)
+            labelString = tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
         label = albow.Label(labelString)
         panel.add(label)
         panel.shrink_wrap()
@@ -346,7 +354,7 @@ class KeyConfigPanel(Dialog):
         panel.mouse_up = panelMouseUp
 
         keyname = panel.present()
-        if keyname != "Escape" and keyname != "Ctrl-Escape":
+        if keyname != "Escape" and keyname != "Shift-Escape":
             occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if config.getNewKey(v) == keyname and k != configKey.lower()]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
@@ -361,12 +369,12 @@ class KeyConfigPanel(Dialog):
                 if self.askAssignKey(setting,
                                      tr("The key {0} is no longer bound to {1}. "
                                      "Press a new key for the action \"{1}\"\n\n"
-                                     "Press ESC to cancel. Press Ctrl-ESC to unbind.")
+                                     "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname, setting)):
                     config.config.set("Keys", configKey, oldkey)
                     self.changes[configKey] = keyname
                     return True 
-        elif keyname == "Ctrl-Escape":
+        elif keyname == "Shift-Escape":
             config.config.set("Keys", configKey, "None")
         else:
             return True

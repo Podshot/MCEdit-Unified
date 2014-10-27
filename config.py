@@ -186,6 +186,7 @@ world info = Ctrl-I
 goto panel = Ctrl-G
 export selection = Ctrl-E
 toggle renderer = Ctrl-M
+Fly Mode = None
 
 [Version]
 version = 1.1.1.1

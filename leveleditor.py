@@ -2962,6 +2962,10 @@ class LevelEditor(GLViewport):
 
         elif keyname == config.config.get('Keys', 'Delete Blocks'):
             self.deleteSelectedBlocks()
+            
+        elif keyname == config.config.get('Keys', 'Fly Mode'):
+            Settings.flyMode.set(not Settings.flyMode.get())
+            config.saveConfig()
 
         elif keyname == '1' or keyname == '2' or keyname == '3' or keyname == '4' or keyname == '5' or keyname == '6' or keyname == '7' or keyname == '8' or keyname == '9':
             self.toolbar.selectTool(int(keyname) - 1)
