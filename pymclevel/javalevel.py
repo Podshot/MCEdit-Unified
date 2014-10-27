@@ -111,7 +111,7 @@ class MCJavaLevel(MCLevel):
         blocks.shape = (w, l, h)
         blocks.strides = (1, w, w * l)
 
-    def saveInPlace(self):
+    def saveInPlaceGen(self):
 
         s = StringIO()
         g = gzip.GzipFile(fileobj=s, mode='wb')
@@ -140,6 +140,7 @@ class MCJavaLevel(MCLevel):
             os.remove(self.filename + ".old")
         except Exception, e:
             pass
+        yield
 
 
 class MCSharpLevel(MCLevel):

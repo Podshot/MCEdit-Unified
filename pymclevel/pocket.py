@@ -343,11 +343,12 @@ class PocketWorld(ChunkedLevelMixin, MCLevel):
 
         return all([os.path.exists(os.path.join(filename, f)) for f in clp])
 
-    def saveInPlace(self):
+    def saveInPlaceGen(self):
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
                 self.chunkFile.saveChunk(chunk)
                 chunk.dirty = False
+            yield
 
     def containsChunk(self, cx, cz):
         if cx > 31 or cz > 31 or cx < 0 or cz < 0:

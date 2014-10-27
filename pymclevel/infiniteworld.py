@@ -1173,14 +1173,15 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     log.info("Error loading level.dat_old. Initializing with defaults.")
                     self._create(self.filename, random_seed, last_played)
 
-    def saveInPlace(self):
+    def saveInPlaceGen(self):
         if self.readonly:
             raise IOError, "World is opened read only."
 
         self.checkSessionLock()
 
         for level in self.dimensions.itervalues():
-            level.saveInPlace(True)
+            for _ in MCInfdevOldLevel.saveInPlaceGen(level):
+                yield
 
         dirtyChunkCount = 0
         for chunk in self._loadedChunkData.itervalues():
@@ -1190,12 +1191,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 dirtyChunkCount += 1
                 self.worldFolder.saveChunk(cx, cz, data)
                 chunk.dirty = False
+            yield
 
         for cx, cz in self.unsavedWorkFolder.listChunks():
             if (cx, cz) not in self._loadedChunkData:
                 data = self.unsavedWorkFolder.readChunk(cx, cz)
                 self.worldFolder.saveChunk(cx, cz, data)
                 dirtyChunkCount += 1
+            yield
 
         self.unsavedWorkFolder.closeRegions()
         shutil.rmtree(self.unsavedWorkFolder.filename, True)
