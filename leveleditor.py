@@ -2819,13 +2819,25 @@ class LevelEditor(GLViewport):
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
         elif keyname == config.config.get('Keys', 'Flip'):
+            #TODO: add way to check if ALT is pressed
             self.currentTool.flip(blocksOnly=True)
         elif keyname == config.config.get('Keys', 'Roll'):
+            #TODO: add way to check if ALT is pressed            
             self.currentTool.roll(blocksOnly=True)
         elif keyname == config.config.get('Keys', 'Rotate'):
+            #TODO: add way to check if ALT is pressed            
             self.currentTool.rotate(blocksOnly=True)
         elif keyname == config.config.get('Keys', 'Mirror'):
-            self.currentTool.mirror(blocksOnly=True)
+            #TODO: add way to check if ALT is pressed            
+            self.currentTool.mirror(blocksOnly=True)        
+        elif keyname == config.config.get('Keys', 'Flip'):
+            self.currentTool.flip(blocksOnly=False)
+        elif keyname == config.config.get('Keys', 'Roll'):
+            self.currentTool.roll(blocksOnly=False)
+        elif keyname == config.config.get('Keys', 'Rotate'):
+            self.currentTool.rotate(blocksOnly=False)
+        elif keyname == config.config.get('Keys', 'Mirror'):
+            self.currentTool.mirror(blocksOnly=False)
         elif keyname == config.config.get('Keys', 'Quit'):
             self.quit()
             return
@@ -2914,15 +2926,6 @@ class LevelEditor(GLViewport):
             self.increaseReach()
         elif keyname == config.config.get('Keys', 'Decrease Reach'):
             self.decreaseReach()
-
-        elif keyname == config.config.get('Keys', 'Flip'):
-            self.currentTool.flip()
-        elif keyname == config.config.get('Keys', 'Roll'):
-            self.currentTool.roll()
-        elif keyname == config.config.get('Keys', 'Rotate'):
-            self.currentTool.rotate()
-        elif keyname == config.config.get('Keys', 'Mirror'):
-            self.currentTool.mirror()
         elif keyname == config.config.get('Keys', 'Swap'):
             self.currentTool.swap()
 
