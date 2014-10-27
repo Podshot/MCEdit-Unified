@@ -937,8 +937,6 @@ class BrushPanel(Panel):
             ref=AttrRef(tool, 'blockInfo'),
             recentBlocks=tool.recentFillBlocks,
             allowWildcards=(tool.brushMode.name == "Replace"))
-        
-        print self.blockButton
 
         #col = [modeStyleGrid, hollowRow, noiseInput, shapeRows, blockButton]
 
@@ -976,17 +974,21 @@ class BrushPanel(Panel):
                 config.config.add_section("BrushPresets")
             for key in self.saveableBrushOptions:
                 if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
-                    value = self.saveableBrushOptions[key].get()
-                    storeBrushPreset(key, value, currentNumber)
+                        value = self.saveableBrushOptions[key].get()
+                        storeBrushPreset(key, value, currentNumber)
                 elif key == "Mode":
                     storeBrushPreset(key, self.saveableBrushOptions[key], currentNumber)
                 else:
-                    keyID = key + " ID"
-                    keyData = key + " Data"
-                    value = self.saveableBrushOptions[key]
-                    for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
-                        print a, b
-                        storeBrushPreset(a, b, currentNumber)
+                     try:
+                        keyID = key + " ID"
+                        keyData = key + " Data"
+                        value = self.saveableBrushOptions[key]
+                        for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
+                            print a, b
+                            storeBrushPreset(a, b, currentNumber)
+                     except:
+                        print key + " does not have a value yet."
+
 
         def loadBrushPreset(number):
             global currentNumber
@@ -1002,7 +1004,6 @@ class BrushPanel(Panel):
                 elif key == "Mode":
                     a = config.config.get("BrushPresets", key)
                     if type(a) != list:
-                        print type(a)
                         a = ast.literal_eval(a)
                     for m in self.tool.brushModes:
                         if m.name == a[currentNumber]:
@@ -1019,18 +1020,14 @@ class BrushPanel(Panel):
                     elif key == "Block To Replace":
                         self.replaceBlockButton.blockInfo = blockInfo
                     elif key == "Vary Replace 1":
-                        self.replaceWith1.blockInfo = blockInfo
+                        self.replaceWith1Option.blockInfo = blockInfo
                     elif key == "Vary Replace 2":
-                        self.replaceWith1.blockInfo = blockInfo
+                        self.replaceWith2Option.blockInfo = blockInfo
                     elif key == "Vary Replace 3":
-                        self.replaceWith1.blockInfo = blockInfo
+                        self.replaceWith3Option.blockInfo = blockInfo
                     elif key == "Vary Replace 4":
-                        self.replaceWith1.blockInfo = blockInfo
-            import win32com.client
-            shell = win32com.client.Dispatch("WScript.Shell")
-            shell.SendKeys("1")
-            shell.SendKeys("2")
-            self.tool.setupPreview()
+                        self.replaceWith4Option.blockInfo = blockInfo
+            BrushTool.toolSelected(self.tool)
             
         def numberEnable1():
             global currentNumber
