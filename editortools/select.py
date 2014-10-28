@@ -294,7 +294,7 @@ class SelectionTool(EditorTool):
         blockID = self.editor.level.blockAt(*pos)
         blockdata = self.editor.level.blockDataAt(*pos)
         text = "X: {pos[0]}\nY: {pos[1]}\nZ: {pos[2]}\n".format(pos=pos)
-        text += "L: {0} S: {1}\n".format(self.editor.level.blockLightAt(*pos), self.editor.level.skylightAt(*pos))
+        text += "Light: {0} Sky: {1}\n".format(self.editor.level.blockLightAt(*pos), self.editor.level.skylightAt(*pos))
         text += "{name} ({bid}:{bdata})\n".format(name=self.editor.level.materials.names[blockID][blockdata],
                                                   bid=blockID, pos=pos, bdata=blockdata)
         t = self.editor.level.tileEntityAt(*pos)
