@@ -2904,7 +2904,7 @@ class LevelEditor(GLViewport):
         elif keyname == 'Ctrl-Alt-F10':
             alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
 
-        elif keyname == 'Tab':
+        elif keyname == config.config.get('Keys', 'Toggle View'):
             self.swapViewports()
 
         elif keyname == config.config.get('Keys', 'Brake'):
@@ -2943,7 +2943,7 @@ class LevelEditor(GLViewport):
         #    self.renderer.toggleLighting()
         # =======================================================================
 
-        elif keyname == config.config.get('Keys', 'Toggle FPS Counter'):
+        elif keyname == config.config.get('Keys', 'Debug Overlay'):
             self.swapDebugLevels()
 
         elif keyname == config.config.get('Keys', 'Toggle Renderer'):
