@@ -258,7 +258,59 @@ class KeyConfigPanel(Dialog):
                    ("Quit", "Ctrl-Q"),
                    
                    ("Blocks-Only Modifier", "Alt")
-               ]}
+               ],
+ "WASD Old": [
+        ("Forward", "W"),
+        ("Back", "S"),
+        ("Left", "A"),
+        ("Right", "D"),
+        ("Up", "Q"),
+        ("Down", "Z"),
+        ("Brake", "Space"),
+
+        ("Pan Up", "I"),
+        ("Pan Down", "K"),
+        ("Pan Left", "J"),
+        ("Pan Right", "L"),
+        ("Toggle View", "Tab"),
+        ("Goto Panel", "Ctrl-G"),
+        ("View Distance", "Ctrl-F"),
+        ("Toggle Renderer", "Ctrl-M"),
+
+        ("Rotate", "E"),
+        ("Roll", "R"),
+        ("Flip", "F"),
+        ("Mirror", "G"),
+        ("Swap", "X"),
+        ("Delete Blocks", "Delete"),
+        ("Increase Reach", "Scroll Up"),
+        ("Decrease Reach", "Scroll Down"),
+        ("Reset Reach", "Button 3"),
+        ("Export Selection", "Ctrl-E"),
+
+        ("Select All", "Ctrl-A"),
+        ("Deselect", "Ctrl-D"),
+        ("Undo", "Ctrl-Z"),
+        ("Cut", "Ctrl-X"),
+        ("Copy", "Ctrl-C"),
+        ("Paste", "Ctrl-V"),
+
+        ("Long-Distance Mode", "Alt-Z"),
+        ("Fly Mode", "None"),
+        ("Debug Overlay", "0"),
+
+        ("New World", "Ctrl-N"),
+        ("Quick Load", "Ctrl-L"),
+        ("Open", "Ctrl-O"),
+        ("Save", "Ctrl-S"),
+        ("Reload World", "Ctrl-R"),
+        ("Close World", "Ctrl-W"),
+        ("World Info", "Ctrl-I"),
+        ("Quit", "Ctrl-Q"),
+        
+        ("Blocks-Only Modifier", "Alt")
+    ]}
+ 
 
     selectedKeyIndex = 0
 
