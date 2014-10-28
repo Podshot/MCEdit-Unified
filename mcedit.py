@@ -590,7 +590,7 @@ class MCEdit(GLViewport):
         readmePath = os.path.join(directories.getDataDir(), "README.html")
 
         hotkeys = ([("",
-                     "Keys",
+                     "Controls",
                      self.showKeyConfig),
                     ("",
                      "Graphics",
