@@ -273,11 +273,12 @@ if fixedConfigExists():
     print "Running in fixed mode. Support files are in your " + (
     sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)" or "Documents folder.")
     portable = False
-    schematicsDir = fixedSchematicsDir
-    configFilePath = fixedConfigFilePath
-    filtersDir = fixedFiltersDir
-    jarStorageDir = fixedJarStorageDir
-    genericSupportDir = fixedGenericSupportPath
+    if not sys.platform == "darwin":
+        schematicsDir = fixedSchematicsDir
+        configFilePath = fixedConfigFilePath
+        filtersDir = fixedFiltersDir
+        jarStorageDir = fixedJarStorageDir
+        genericSupportDir = fixedGenericSupportPath
     
 else:
     print "Running in portable mode. Support files are stored next to the MCEdit directory."
