@@ -102,6 +102,16 @@ class RootWidget(Widget):
         widget.root_widget = self
         self.is_gl = surface.get_flags() & OPENGL != 0
         self.idle_handlers = []
+        self.dont = 0
+        self.shiftClicked = 0
+        self.shiftPlaced = -2
+        self.ctrlClicked = 0
+        self.ctrlPlaced = -2
+        self.altClicked = 0
+        self.altPlaced = -2
+        self.shiftAction = None
+        self.altAction = None
+        self.ctrlAction = None
 
     def set_timer(self, ms):
         pygame.time.set_timer(USEREVENT, ms)
@@ -171,10 +181,20 @@ class RootWidget(Widget):
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
+                    if self.shiftClicked == 1:
+                        events.append(self.shiftAction)
+                        self.shiftPlaced = len(events)-1
+                    if self.altClicked == 1:
+                        events.append(self.altAction)
+                        self.altPlaced = len(events)-1
+                    if self.ctrlClicked == 1:
+                        events.append(self.ctrlAction)
+                        self.ctrlPlaced = len(events)-1
+                    i = 0
                     for event in events:
                         #if event.type:
                         #log.debug("%s", event)
-
+                        self.dont = 0
                         type = event.type
                         if type == QUIT:
                             self.quit()
@@ -235,15 +255,48 @@ class RootWidget(Widget):
                             last_mouse_event_handler.handle_mouse('mouse_up', event)
                         elif type == KEYDOWN:
                             key = event.key
-                            set_modifier(key, True)
-                            self.do_draw = True
-                            self.send_key(modal_widget, 'key_down', event)
-                            if last_mouse_event_handler:
-                                event.dict['pos'] = last_mouse_event.pos
-                                event.dict['local'] = last_mouse_event.local
-                                last_mouse_event_handler.setup_cursor(event)
+                            temp = modkeys.get(key)
+                            if temp == 'shift':
+                                if self.shiftPlaced != i and self.shiftPlaced != -1:
+                                    self.shiftClicked = 1
+                                    self.shiftAction = event
+                                elif self.shiftPlaced == -1:
+                                    self.dont = 1
+                                    self.shiftPlaced = -2
+                            elif temp == 'alt':
+                                if self.altPlaced != i and self.altPlaced != -1:
+                                    self.altClicked = 1
+                                    self.altAction = event
+                                elif self.altPlaced == -1:
+                                    self.dont = 1
+                                    self.altPlaced = -2
+                            elif (temp == 'ctrl' or temp == 'meta'):
+                                if self.ctrlPlaced != i and self.ctrlPlaced != -1:
+                                    self.ctrlClicked = 1
+                                    self.ctrlAction = event
+                                elif self.ctrlPlaced == -1:
+                                    self.dont = 1
+                                    self.ctrlPlaced = -2
+                            if self.dont == 0:
+                                set_modifier(key, True)
+                                self.do_draw = True
+                                self.send_key(modal_widget, 'key_down', event)
+                                if last_mouse_event_handler:
+                                    event.dict['pos'] = last_mouse_event.pos
+                                    event.dict['local'] = last_mouse_event.local
+                                    last_mouse_event_handler.setup_cursor(event)
                         elif type == KEYUP:
                             key = event.key
+                            temp = modkeys.get(key)
+                            if temp == 'shift':
+                                self.shiftClicked = 0
+                                self.shiftPlaced = -1
+                            elif temp == 'alt':
+                                self.altClicked = 0
+                                self.altPlaced = -1
+                            elif temp == 'ctrl' or temp == 'meta':
+                                self.ctrlClicked = 0
+                                self.ctrlPlaced = -1
                             set_modifier(key, False)
                             self.do_draw = True
                             self.send_key(modal_widget, 'key_up', event)
@@ -274,6 +327,8 @@ class RootWidget(Widget):
                         elif type == NOEVENT:
                             add_modifiers(event)
                             self.call_idle_handlers(event)
+                    
+                        i+=1
 
                 except Cancel:
                     pass
