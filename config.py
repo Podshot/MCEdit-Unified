@@ -36,7 +36,7 @@ def getNewKey(value, i=0):
         value = value[6:]
     if value >= 'a' and value <= 'z':
         value = value.replace(value[0], value[0].upper(), 1)
-    if i >= 28 and "Ctrl-" not in value:
+    if i >= 29 and "Ctrl-" not in value:
         value = "Ctrl-" + value
     if value == "Mouse3":
         value = "Button 3"
@@ -171,6 +171,7 @@ toggle fps counter = 0
 long-distance mode = Alt-Z
 fly mode = None
 
+Blocks-Only Modifier = Alt
 
 quit = Ctrl-Q
 view distance = Ctrl-F

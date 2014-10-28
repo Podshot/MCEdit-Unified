@@ -65,7 +65,7 @@ class KeyConfigPanel(Dialog):
         "View Distance",
         "Toggle Renderer",
         "",
-        "<Block>",
+        "<Blocks>",
         "Rotate",
         "Roll",
         "Flip",
@@ -78,7 +78,7 @@ class KeyConfigPanel(Dialog):
         "Line Tool",
         "Export Selection",
         "",
-        "<Function>",
+        "<Functions>",
         "Select All",
         "Deselect",
         "Undo",
@@ -98,7 +98,10 @@ class KeyConfigPanel(Dialog):
         "Reload World",
         "Close World",
         "World Info",
-        "Quit"
+        "Quit",
+        "",
+        "<Modifiers>",
+        "Blocks-Only Modifier"
     ]
 
     presets = {"WASD": [
@@ -142,7 +145,9 @@ class KeyConfigPanel(Dialog):
         ("Reload World", "Ctrl-R"),
         ("Close World", "Ctrl-W"),
         ("World Info", "Ctrl-I"),
-        ("Quit", "Ctrl-Q")
+        ("Quit", "Ctrl-Q"),
+        
+        ("Blocks-Only Modifier", "Alt")
     ],
                "Arrows": [
                    ("Forward", "Up"),
@@ -185,7 +190,9 @@ class KeyConfigPanel(Dialog):
                    ("Reload World", "Ctrl-R"),
                    ("Close World", "Ctrl-W"),
                    ("World Info", "Ctrl-I"),
-                   ("Quit", "Ctrl-Q")
+                   ("Quit", "Ctrl-Q"),
+                   
+                   ("Blocks-Only Modifier", "Alt")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -228,7 +235,9 @@ class KeyConfigPanel(Dialog):
                    ("Reload World", "Ctrl-R"),
                    ("Close World", "Ctrl-W"),
                    ("World Info", "Ctrl-I"),
-                   ("Quit", "Ctrl-Q")
+                   ("Quit", "Ctrl-Q"),
+                   
+                   ("Blocks-Only Modifier", "Alt")
                ]}
 
     selectedKeyIndex = 0
@@ -368,7 +377,17 @@ class KeyConfigPanel(Dialog):
 
         keyname = panel.present()
         if keyname != "Escape" and keyname != "Shift-Escape":
-            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if config.getNewKey(v) == keyname and k != configKey.lower()]
+            if "Modifier" in configKey:
+                 occupiedKeys = []
+                 if keyname != "Shift" and keyname != "Ctrl" and keyname != "Alt":
+                    self.askAssignKey(configKey,
+                                     tr("The key {0} is not a modifier. "
+                                     "Press a new key.\n\n"
+                                     "Press ESC to cancel. Press Shift-ESC to unbind.")
+                                     .format(keyname))
+                    return True
+            else:        
+                occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if config.getNewKey(v) == keyname and k != configKey.lower()]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
             self.changes[configKey] = oldkey

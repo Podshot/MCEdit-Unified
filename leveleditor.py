@@ -1587,12 +1587,7 @@ class LevelEditor(GLViewport):
         self.usedKeys = [0, 0, 0, 0, 0, 0]
         self.movements = [config.config.get('Keys', 'Left'), config.config.get('Keys', 'Right'), config.config.get('Keys', 'Forward'), config.config.get('Keys', 'Back'), config.config.get('Keys', 'Up'), config.config.get('Keys', 'Down')]
         self.save = 0
-        self.notMoveLeft = 0
-        self.notMoveRight = 0
-        self.notMoveForward = 0
-        self.notMoveBack = 0
-        self.notMoveUp = 0
-        self.notMoveDown = 0
+        self.notMove = [0, 0, 0, 0, 0, 0]
         self.rightClickNudge = 0
         self.cameraToolDistance = self.defaultCameraToolDistance
 
@@ -2669,56 +2664,56 @@ class LevelEditor(GLViewport):
             d = self.cameraInputs
             if tempKeyname == config.config.get('Keys', 'Left'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
-                    if self.notMoveLeft == 0:
+                    if self.notMove[0] == 0:
                         self.usedKeys[0] = 0
                         d[0] += 1.
                     else:
-                        self.notMoveLeft = 0
+                        self.notMove[0] = 0
                 else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Right'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
-                    if self.notMoveRight == 0:
+                    if self.notMove[1] == 0:
                         self.usedKeys[1] = 0
                         d[0] -= 1.
                     else:
-                        self.notMoveRight = 0
+                        self.notMove[1] = 0
                 else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Forward'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
-                    if self.notMoveForward == 0:
+                    if self.notMove[2] == 0:
                         self.usedKeys[2] = 0
                         d[2] -= 1.
                     else:
-                        self.notMoveForward = 0
+                        self.notMove[2] = 0
                 else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Back'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
-                    if self.notMoveBack == 0:
+                    if self.notMove[3] == 0:
                         self.usedKeys[3] = 0
                         d[2] += 1.
                     else:
-                        self.notMoveBack = 0
+                        self.notMove[3] = 0
                 else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Up'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
-                    if self.notMoveUp == 0:
+                    if self.notMove[4] == 0:
                         self.usedKeys[4] = 0
                         d[1] -= 1.
                     else:
-                        self.notMoveUp = 0
+                        self.notMove[4] = 0
                 else:
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Down'):
                 if tempKeyname not in config.config.get('Keys', 'Save') or self.save == 0:
-                    if self.notMoveDown == 0:
+                    if self.notMove[5] == 0:
                         self.usedKeys[5] = 0
                         d[1] += 1.
                     else:
-                        self.notMoveDown = 0
+                        self.notMove[5] = 0
                 else:
                     self.save = 0
 
@@ -2760,54 +2755,54 @@ class LevelEditor(GLViewport):
                 if notMove == 0:
                     d[0] -= 1.
                     self.usedKeys[0] = 1
-                    self.notMoveLeft = 0
+                    self.notMove[0] = 0
                 else:
-                    self.notMoveLeft = 1
+                    self.notMove[0] = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Right') and self.usedKeys[1] == 0:
                 if notMove == 0:
                     d[0] += 1.
                     self.usedKeys[1] = 1
-                    self.notMoveRight = 0
+                    self.notMove[1] = 0
                 else:
-                    self.notMoveRight = 1
+                    self.notMove[1] = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Forward') and self.usedKeys[2] == 0:
                 if notMove == 0:
                     d[2] += 1.
                     self.usedKeys[2] = 1
-                    self.notMoveForward = 0
+                    self.notMove[2] = 0
                 else:
-                    self.notMoveForward = 1
+                    self.notMove[2] = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Back') and self.usedKeys[3] == 0:
                 if notMove == 0:
                     d[2] -= 1.
                     self.usedKeys[3] = 1
-                    self.notMoveBack = 0
+                    self.notMove[3] = 0
                 else:
-                    self.notMoveBack = 1
+                    self.notMove[3] = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Up') and self.usedKeys[4] == 0:
                 if notMove == 0:
                     d[1] += 1.
                     self.usedKeys[4] = 1
-                    self.notMoveUp = 0
+                    self.notMove[4] = 0
                 else:
-                    self.notMoveUp = 1
+                    self.notMove[4] = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
             elif tempKeyname == config.config.get('Keys', 'Down') and self.usedKeys[5] == 0:
                 if notMove == 0:
                     d[1] -= 1.
                     self.usedKeys[5] = 1
-                    self.notMoveDown = 0
+                    self.notMove[5] = 0
                 else:
-                    self.notMoveDown = 1
+                    self.notMove[5] = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
                     self.save = 0
 
@@ -2817,17 +2812,13 @@ class LevelEditor(GLViewport):
             name = "option" + keyname[len(keyname)-1:]
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
-        elif keyname == config.config.get('Keys', 'Flip'):
-            #TODO: add way to check if ALT is pressed
+        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=True)
-        elif keyname == config.config.get('Keys', 'Roll'):
-            #TODO: add way to check if ALT is pressed            
+        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Roll'):         
             self.currentTool.roll(blocksOnly=True)
-        elif keyname == config.config.get('Keys', 'Rotate'):
-            #TODO: add way to check if ALT is pressed            
+        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Rotate'):        
             self.currentTool.rotate(blocksOnly=True)
-        elif keyname == config.config.get('Keys', 'Mirror'):
-            #TODO: add way to check if ALT is pressed            
+        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Mirror'):          
             self.currentTool.mirror(blocksOnly=True)        
         elif keyname == config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=False)
@@ -3015,6 +3006,7 @@ class LevelEditor(GLViewport):
     def closeEditor(self):
         self.cameraInputs = [0., 0., 0.]
         self.usedKeys = [0, 0, 0, 0, 0, 0]
+        self.notMove = [0, 0, 0, 0, 0, 0]
         
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
