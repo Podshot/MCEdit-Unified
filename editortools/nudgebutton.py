@@ -36,6 +36,20 @@ class NudgeButton(GLBackground):
     def mouse_down(self, event):
         self.count += 1
         self.focus()
+        if self.editor.usedKeys[0] == 1:
+             self.editor.notMoveLeft = 1
+        if self.editor.usedKeys[1] == 1:
+            self.editor.notMoveRight = 1
+        if self.editor.usedKeys[2] == 1:
+            self.editor.notMoveForward = 1
+        if self.editor.usedKeys[3] == 1:
+            self.editor.notMoveBack = 1
+        if self.editor.usedKeys[4] == 1:
+            self.editor.notMoveUp = 1
+        if self.editor.usedKeys[5] == 1:
+            self.editor.notMoveDown = 1
+        self.editor.cameraInputs = [0., 0., 0.]
+        self.editor.usedKeys = [0, 0, 0, 0, 0, 0]
         if event.button == 3:
             self.editor.rightClickNudge = 1
 
@@ -45,18 +59,6 @@ class NudgeButton(GLBackground):
         self.count -= 1
         if self.count <= 0:
             self.get_root().mcedit.editor.focus_switch = None  # xxxx restore focus to editor better
-            if config.config.get("Keys", "Left") != 'Shift' and config.config.get("Keys", "Left") != 'Ctrl' and config.config.get("Keys", "Left") != 'Alt': 
-                self.editor.notMoveLeft = 0
-            if config.config.get("Keys", "Right") != 'Shift' and config.config.get("Keys", "Right") != 'Ctrl' and config.config.get("Keys", "Right") != 'Alt': 
-                self.editor.notMoveRight = 0
-            if config.config.get("Keys", "Forward") != 'Shift' and config.config.get("Keys", "Forward") != 'Ctrl' and config.config.get("Keys", "Forward") != 'Alt': 
-                self.editor.notMoveForward = 0
-            if config.config.get("Keys", "Back") != 'Shift' and config.config.get("Keys", "Back") != 'Ctrl' and config.config.get("Keys", "Back") != 'Alt': 
-                self.editor.notMoveBack = 0
-            if config.config.get("Keys", "Up") != 'Shift' and config.config.get("Keys", "Up") != 'Ctrl' and config.config.get("Keys", "Up") != 'Alt': 
-                self.editor.notMoveUp = 0
-            if config.config.get("Keys", "Down") != 'Shift' and config.config.get("Keys", "Down") != 'Ctrl' and config.config.get("Keys", "Down") != 'Alt': 
-                self.editor.notMoveDown = 0
             self.count = 0
 
     def key_down(self, evt):

@@ -2756,12 +2756,11 @@ class LevelEditor(GLViewport):
         if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname =  keys.getKey(evt, 1)
             d = self.cameraInputs
-            im = [0., 0., 0.]
             if tempKeyname == config.config.get('Keys', 'Left') and self.usedKeys[0] == 0:
                 if notMove == 0:
                     d[0] -= 1.
-                    im[0] -= 1.
                     self.usedKeys[0] = 1
+                    self.notMoveLeft = 0
                 else:
                     self.notMoveLeft = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
@@ -2769,8 +2768,8 @@ class LevelEditor(GLViewport):
             elif tempKeyname == config.config.get('Keys', 'Right') and self.usedKeys[1] == 0:
                 if notMove == 0:
                     d[0] += 1.
-                    im[0] += 1.
                     self.usedKeys[1] = 1
+                    self.notMoveRight = 0
                 else:
                     self.notMoveRight = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
@@ -2778,8 +2777,8 @@ class LevelEditor(GLViewport):
             elif tempKeyname == config.config.get('Keys', 'Forward') and self.usedKeys[2] == 0:
                 if notMove == 0:
                     d[2] += 1.
-                    im[2] += 1.
                     self.usedKeys[2] = 1
+                    self.notMoveForward = 0
                 else:
                     self.notMoveForward = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
@@ -2787,8 +2786,8 @@ class LevelEditor(GLViewport):
             elif tempKeyname == config.config.get('Keys', 'Back') and self.usedKeys[3] == 0:
                 if notMove == 0:
                     d[2] -= 1.
-                    im[2] -= 1.
                     self.usedKeys[3] = 1
+                    self.notMoveBack = 0
                 else:
                     self.notMoveBack = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
@@ -2796,8 +2795,8 @@ class LevelEditor(GLViewport):
             elif tempKeyname == config.config.get('Keys', 'Up') and self.usedKeys[4] == 0:
                 if notMove == 0:
                     d[1] += 1.
-                    im[1] += 1.
                     self.usedKeys[4] = 1
+                    self.notMoveUp = 0
                 else:
                     self.notMoveUp = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
@@ -2805,8 +2804,8 @@ class LevelEditor(GLViewport):
             elif tempKeyname == config.config.get('Keys', 'Down') and self.usedKeys[5] == 0:
                 if notMove == 0:
                     d[1] -= 1.
-                    im[1] -= 1.
                     self.usedKeys[5] = 1
+                    self.notMoveDown = 0
                 else:
                     self.notMoveDown = 1
                 if tempKeyname in config.config.get('Keys', 'Save'):
@@ -2868,7 +2867,6 @@ class LevelEditor(GLViewport):
                 if move in keyname:
                     self.save = 1
             d = [0., 0., 0.]
-            im = [0., 0., 0.]
             self.usedKeys = [0, 0, 0, 0, 0, 0]
             self.cameraInputs = [0., 0., 0.]
             
