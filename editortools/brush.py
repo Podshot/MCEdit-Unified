@@ -1083,25 +1083,24 @@ class BrushPanel(Panel):
         b = self.blockButton.blockInfo
         self.blockButton.blockInfo = self.replaceBlockButton.blockInfo
         self.replaceBlockButton.blockInfo = b
-
+        
     def rotate(self):
+        print "Rotating"
         Block = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Data = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Block[0][0][0] = self.blockButton.blockInfo.ID
         Data[0][0][0] = self.blockButton.blockInfo.blockData
         blockrotation.RotateLeft(Block, Data)
         self.blockButton.blockInfo.blockData = Data[0][0][0]
-    
+        
     def roll(self):
+        print "Rolling"
         Block = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Data = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Block[0][0][0] = self.blockButton.blockInfo.ID
         Data[0][0][0] = self.blockButton.blockInfo.blockData
         blockrotation.Roll(Block, Data)
-        self.blockButton.blockInfo.blockData = Data[0][0][0]
-
-        
-
+        self.blockButton.blockInfo.blockData = Data[0][0][0]    
 
 class BrushToolOptions(ToolOptions):
     def __init__(self, tool):
@@ -1420,6 +1419,7 @@ class BrushTool(CloneTool):
         print blocksOnly
         if blocksOnly:
             self.panel.rotate()
+            self.toolSelected()
         else:
             offs = self.reticleOffset
             dist = self.editor.cameraToolDistance
@@ -1433,10 +1433,11 @@ class BrushTool(CloneTool):
             else:
                 print "Not rotating block because rotation is turned off in options menu"
 
-    def mirror(self,blocksOnly=False):
+    def mirror(self,blocksOnly=False): #actually roll atm
         print blocksOnly
         if blocksOnly:
             self.panel.roll()
+            self.toolSelected()
         else:
             offs = self.reticleOffset
             dist = self.editor.cameraToolDistance
@@ -1688,6 +1689,8 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         blockCenters /= shape[:, newaxis, newaxis, newaxis]
         distances = sum(blockCenters, 0)
         mask = distances < 1
+    #elif style == "Cylinder"
+        
     elif style == "Square":
         # mask = ones(outputShape, dtype=bool)
         # mask = blockCenters[:, newaxis, newaxis, newaxis] < shape
