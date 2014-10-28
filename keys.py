@@ -336,7 +336,7 @@ class KeyConfigPanel(Dialog):
 
         buttonRow = albow.Row(buttonRow)
 
-        choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad"], choose=self.choosePreset)
+        choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad","WASD Old"], choose=self.choosePreset)
         if config.config.get("Keys", "Forward") == "Up":
             choiceButton.selectedChoice = "Arrows"
         if config.config.get("Keys", "Forward") == "[8]":
