@@ -124,7 +124,7 @@ def getMinecraftProfileDirectory(profileName):
 
 
 def getMinecraftLauncherDirectory():
-    """Returns the /minecraft directory, note: may not contain the /saves folder!"""
+    #Returns the /minecraft directory, note: may not contain the /saves folder!
     if sys.platform == "win32":
         return os.path.join(win32_appdata(), ".minecraft")
     elif sys.platform == "darwin":
@@ -214,6 +214,7 @@ def goPortable():
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
     cacheDir = portableGenericSupportPath
+    jarStorageDir = portableJarStorageDir
     portable = True
     return True
 
@@ -257,35 +258,36 @@ def goFixed():
     configFilePath = fixedConfigFilePath
     filtersDir = fixedFiltersDir
     cacheDir = fixedGenericSupportPath
+    jarStorageDir = fixedJarStorageDir
     portable = False
 
 
-def portableConfigExists():
+def fixedConfigExists():
     if sys.platform == "darwin":
-        return False
+        return True
     # Check for files at portable locations. Cannot be Mac because config doesn't move
-    return (os.path.exists(portableConfigFilePath) or not os.path.exists(fixedConfigFilePath))
+    return (os.path.exists(fixedConfigFilePath) or not os.path.exists(portableConfigFilePath))
 
 
-if portableConfigExists() and not sys.platform == "darwin":
-    print "Running in portable mode. Support files are stored next to the MCEdit directory."
-    portable = True
-    schematicsDir = portableSchematicsDir
-    configFilePath = portableConfigFilePath
-    filtersDir = portableFiltersDir
-    JarStorageDir = portableJarStorageDir
-    genericSupportDir = portableGenericSupportPath
-    
-else:
+if fixedConfigExists():
     print "Running in fixed mode. Support files are in your " + (
     sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)" or "Documents folder.")
-    if not sys.platform == "darwin":
-        schematicsDir = fixedSchematicsDir
-        configFilePath = fixedConfigFilePath
-        filtersDir = fixedFiltersDir
-        JarStorageDir = fixedJarStorageDir
-        genericSupportDir = fixedGenericSupportPath
     portable = False
+    schematicsDir = fixedSchematicsDir
+    configFilePath = fixedConfigFilePath
+    filtersDir = fixedFiltersDir
+    jarStorageDir = fixedJarStorageDir
+    genericSupportDir = fixedGenericSupportPath
+    
+else:
+    print "Running in portable mode. Support files are stored next to the MCEdit directory."
+    if not sys.platform == "darwin":
+        schematicsDir = portableSchematicsDir
+        configFilePath = portableConfigFilePath
+        filtersDir = portableFiltersDir
+        jarStorageDir = portableJarStorageDir
+        genericSupportDir = portableGenericSupportPath
+    portable = True
 
 #if portable:
 #    serverJarStorageDir = portableJarStorageDir
@@ -319,6 +321,7 @@ if sys.platform == "darwin":
 # Create pymclevel folder as needed    
 if not os.path.exists(getCacheDir()):
     os.makedirs(getCacheDir())
+
 # set userCachePath
 userCachePath = os.path.join(getCacheDir(),'usercache.json')
 # Make sure it exists

@@ -15,7 +15,7 @@ import json
 import urllib2
 
 import infiniteworld
-from directories import getCacheDir
+from directories import getCacheDir, jarStorageDir
 from mclevelbase import exhaust, ChunkNotPresent
 
 log = logging.getLogger(__name__)
@@ -75,7 +75,7 @@ def sort_nicely(l):
 
 
 class ServerJarStorage(object):
-    cacheDir = os.path.join(getCacheDir(), u"ServerJarStorage")
+    cacheDir = jarStorageDir
 
     def __init__(self, cacheDir=None):
         if not os.path.exists(self.cacheDir):
@@ -92,7 +92,7 @@ subfolders, one for each version of the server. Each subfolder must hold at
 least one file named minecraft_server.jar, and the subfolder's name should
 have the server's version plus the names of any installed mods.
 
-There may already be a subfolder here (for example, "Beta 1.7.3") if you have
+There may already be a subfolder here (for example, "Release 1.7.10") if you have
 used the Chunk Create feature in MCEdit to create chunks using the server.
 
 Version numbers can be automatically detected. If you place one or more
