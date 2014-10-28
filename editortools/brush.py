@@ -1378,7 +1378,7 @@ class BrushTool(CloneTool):
             self.draggedPositions = [point]
             return
 
-        if config.config.get('Keys', 'Line Tool'):
+        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
             if len(self.draggedPositions):
                 points = bresenham.bresenham(self.draggedPositions[-1], point)
                 self.draggedPositions.extend(points[::self.minimumSpacing][1:])
@@ -1627,7 +1627,7 @@ class BrushTool(CloneTool):
 
             dirtyBox = self.brushMode.brushBoxForPointAndOptions(reticlePoint, self.getBrushOptions())
             self.drawTerrainPreview(dirtyBox.origin)
-            if config.config.get('Keys', 'Line Tool') and self.lastPosition and self.brushMode.name != "Flood Fill":
+            if pygame.key.get_mods() & pygame.KMOD_SHIFT and self.lastPosition and self.brushMode.name != "Flood Fill":
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))
@@ -1689,12 +1689,14 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         blockCenters /= shape[:, newaxis, newaxis, newaxis]
         distances = sum(blockCenters, 0)
         mask = distances < 1
-    #elif style == "Cylinder"
+    elif style == "Cylinder":
+        pass
+    
         
     elif style == "Square":
         # mask = ones(outputShape, dtype=bool)
         # mask = blockCenters[:, newaxis, newaxis, newaxis] < shape
-        blockCenters /= shape[:, newaxis, newaxis, newaxis]
+        blockCenters /= shape[:, None, None, None]
 
         distances = numpy.absolute(blockCenters).max(0)
         mask = distances < .5
