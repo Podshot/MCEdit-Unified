@@ -459,7 +459,7 @@ class KeyConfigPanel(Dialog):
                                      .format(keyname))
                     return True
             else:        
-                occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if config.getNewKey(v) == keyname and k != configKey.lower()]
+                occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v == keyname and k != configKey.lower() and "modifier" not in k]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
             self.changes[configKey] = oldkey
