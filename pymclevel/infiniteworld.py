@@ -262,8 +262,8 @@ class AnvilChunk(LightedChunk):
             self.world.chunksNeedingLighting.discard(self.chunkPosition)
 
     def generateHeightMap(self):
-        if self.world.dimNo == DIM_NETHER:
-            self.HeightMap[:] = 0
+#        if self.world.dimNo == DIM_NETHER:
+#            self.HeightMap[:] = 0
         else:
             computeChunkHeightMap(self.materials, self.Blocks, self.HeightMap)
 
