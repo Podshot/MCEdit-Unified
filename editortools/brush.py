@@ -300,8 +300,6 @@ class Modes:
 
             doomedBlock = op.level.blockAt(*point)
             doomedBlockData = op.level.blockDataAt(*point)
-            print doomedBlock
-            print doomedBlockData
             checkData = (doomedBlock not in (8, 9, 10, 11))
             indiscriminate = op.options['indiscriminate']
 
@@ -333,7 +331,6 @@ class Modes:
                         if b == doomedBlock:
                             if checkData:
                                 if op.level.blockDataAt(nx, ny, nz) != doomedBlockData:
-                                    print "Incorrect Data"
                                     continue
 
                             saveUndoChunk(nx // 16, nz // 16)
@@ -561,6 +558,7 @@ class Modes:
                 return
 
             blocks = erosionArea.Blocks
+            data = erosionArea.Data
             bins = numpy.bincount(blocks.ravel())
             fillBlockID = bins.argmax()
 
