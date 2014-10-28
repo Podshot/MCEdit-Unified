@@ -36,17 +36,17 @@ def getNewKey(value, i=0):
         value = value[6:]
     if value >= 'a' and value <= 'z':
         value = value.replace(value[0], value[0].upper(), 1)
-    if i >= 26 and "Ctrl-" not in value:
+    if i >= 28 and "Ctrl-" not in value:
         value = "Ctrl-" + value
-    if value == "mouse3":
+    if value == "Mouse3":
         value = "Button 3"
-    elif value == "mouse4":
+    elif value == "Mouse4":
         value = "Scroll Up"
-    elif value == "mouse5":
+    elif value == "Mouse5":
         value = "Scroll Down"
-    elif value == "mouse6":
+    elif value == "Mouse6":
         value = "Button 4"
-    elif value == "mouse7":
+    elif value == "Mouse7":
         value = "Button 5"
     return value
 
@@ -168,6 +168,10 @@ line tool = Z
 
 toggle fps counter = 0
 
+long-distance mode = Alt-Z
+fly mode = None
+
+
 quit = Ctrl-Q
 view distance = Ctrl-F
 select all = Ctrl-A
@@ -186,9 +190,6 @@ world info = Ctrl-I
 goto panel = Ctrl-G
 export selection = Ctrl-E
 toggle renderer = Ctrl-M
-long-distance mode = Alt-Z
-fly mode = None
-
 
 [Version]
 version = 1.1.1.1
