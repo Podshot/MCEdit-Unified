@@ -101,6 +101,86 @@ class TileEntity(object):
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])
         eTag['z'] = nbt.TAG_Int(tileEntity['z'].value + copyOffset[2])
+        
+        def num(x):
+            try:
+                return int(x)
+            except ValueError:
+                return float(x)
+                
+        def coordX(x, argument):
+            if first == True:
+                x = str(num(x)) + '!' + str(num(x) + copyOffset[0])
+            elif argument == True and x.find("!") >= 0:
+                x = x[x.index("!") + 1:]
+                x = str(num(x) + copyOffset[0])
+            elif argument == False and x.find("!") >= 0:
+                x = x[:x.index("!")]    
+            return x
+                    
+        def coordY(y, argument):
+            if first == True:
+                y = str(num(y)) + '!' + str(num(y) + copyOffset[1]) 
+            elif argument == True and y.find("!") >= 0:
+                y = y[y.index("!") + 1:]
+                y = str(num(y) + copyOffset[1])
+            elif argument == False and y.find("!") >= 0:
+                y = y[:y.index("!")]    
+            return y
+                    
+        def coordZ(z, argument):
+            if first == True:
+                z = str(num(z)) + '!' + str(num(z) + copyOffset[2])   
+            elif argument == True and z.find("!") >= 0:
+                z = z[z.index("!") + 1:]
+                z = str(num(z) + copyOffset[2])
+            elif argument == False and z.find("!") >= 0:
+                z = z[:z.index("!")]    
+            return z       
+                        
+        def coords(x, y, z, argument):
+            if x[0] != "~":
+                x = coordX(x, argument)
+            if y[0] != "~":
+                y = coordY(y, argument)
+            if z[0] != "~":
+                z = coordZ(z, argument)
+            return x, y, z
+        
+        if eTag['id'].value == 'MobSpawner':
+            mobs = []
+            mob = eTag.get('SpawnData')
+            if mob:
+                mobs.append(mob)
+            potentials = eTag.get('SpawnPotentials')
+            if potentials:
+                mobs.extend(p["Properties"] for p in potentials)
+
+            for mob in mobs:
+                if "Pos" in mob:
+                    if first == True:
+                        pos = Entity.pos(mob)
+                        x, y, z = [str(part) for part in pos]
+                        x, y, z = coords(x, y, z, moveSpawnerPos)
+                        mob['Temp1'] = nbt.TAG_String(x)
+                        mob['Temp2'] = nbt.TAG_String(y)
+                        mob['Temp3'] = nbt.TAG_String(z)
+                    elif 'Temp1' in mob and 'Temp2' in mob and 'Temp3' in mob:
+                        x = mob['Temp1']
+                        y = mob['Temp2']
+                        z= mob['Temp3']
+                        del mob['Temp1']
+                        del mob['Temp2']
+                        del mob['Temp3']
+                        parts = []
+                        for part in (x,y,z):
+                            part = str(part)
+                            part = part[13:len(part)-2]
+                            parts.append(part)
+                        x, y, z = parts
+                        pos = [float(part) for part in coords(x, y, z, moveSpawnerPos)]
+                        Entity.setpos(mob, pos)
+                    
         if eTag['id'].value == "Control":
             command = eTag['Command'].value
             execute = False
