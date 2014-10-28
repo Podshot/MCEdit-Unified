@@ -2860,7 +2860,13 @@ class LevelEditor(GLViewport):
             d = [0., 0., 0.]
             self.usedKeys = [0, 0, 0, 0, 0, 0]
             self.cameraInputs = [0., 0., 0.]
-            
+            self.get_root().shiftClicked = 0
+            self.get_root().shiftPlaced = -2
+            self.get_root().ctrlClicked = 0
+            self.get_root().ctrlPlaced = -2
+            self.get_root().altClicked = 0
+            self.get_root().altPlaced = -2
+        
             self.saveFile()
         elif keyname == config.config.get('Keys', 'New World'):
             self.createNewLevel()
