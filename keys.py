@@ -61,6 +61,7 @@ class KeyConfigPanel(Dialog):
         "Pan Down",
         "Pan Left",
         "Pan Right",
+        "Toggle View",
         "Goto Panel",
         "View Distance",
         "Toggle Renderer",
@@ -89,6 +90,7 @@ class KeyConfigPanel(Dialog):
         "<Options>",
         "Long-Distance Mode",
         "Fly Mode",
+        "Debug Overlay",
         "",
         "<Menu>",
         "New World",
@@ -113,6 +115,11 @@ class KeyConfigPanel(Dialog):
         ("Down", "Shift"),
         ("Brake", "C"),
 
+        ("Pan Up", "I"),
+        ("Pan Down", "K"),
+        ("Pan Left", "J"),
+        ("Pan Right", "L"),
+        ("Toggle View", "Tab"),
         ("Goto Panel", "Ctrl-G"),
         ("View Distance", "Ctrl-F"),
         ("Toggle Renderer", "Ctrl-M"),
@@ -137,6 +144,7 @@ class KeyConfigPanel(Dialog):
 
         ("Long-Distance Mode", "Alt-Z"),
         ("Fly Mode", "None"),
+        ("Debug Overlay", "0"),
 
         ("New World", "Ctrl-N"),
         ("Quick Load", "Ctrl-L"),
@@ -158,6 +166,11 @@ class KeyConfigPanel(Dialog):
                    ("Down", "Page Down"),
                    ("Brake", "Space"),
 
+                   ("Pan Up", "I"),
+                   ("Pan Down", "K"),
+                   ("Pan Left", "J"),
+                   ("Pan Right", "L"),
+                   ("Toggle View", "Tab"),
                    ("Goto Panel", "Ctrl-G"),
                    ("View Distance", "Ctrl-F"),
                    ("Toggle Renderer", "Ctrl-M"),
@@ -182,6 +195,7 @@ class KeyConfigPanel(Dialog):
 
                    ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None"),
+                   ("Debug Overlay", "0"),
 
                    ("New World", "Ctrl-N"),
                    ("Quick Load", "Ctrl-L"),
@@ -203,6 +217,11 @@ class KeyConfigPanel(Dialog):
                    ("Down", "[1]"),
                    ("Brake", "[0]"),
 
+                   ("Pan Up", "I"),
+                   ("Pan Down", "K"),
+                   ("Pan Left", "J"),
+                   ("Pan Right", "L"),
+                   ("Toggle View", "Tab"),
                    ("Goto Panel", "Ctrl-G"),
                    ("View Distance", "Ctrl-F"),
                    ("Toggle Renderer", "Ctrl-M"),
@@ -227,6 +246,7 @@ class KeyConfigPanel(Dialog):
 
                    ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None"),
+                   ("Debug Overlay", "0"),
 
                    ("New World", "Ctrl-N"),
                    ("Quick Load", "Ctrl-L"),

@@ -36,7 +36,7 @@ def getNewKey(value, i=0):
         value = value[6:]
     if value >= 'a' and value <= 'z':
         value = value.replace(value[0], value[0].upper(), 1)
-    if i >= 29 and "Ctrl-" not in value:
+    if i >= 30 and "Ctrl-" not in value:
         value = "Ctrl-" + value
     if value == "Mouse3":
         value = "Button 3"
@@ -108,10 +108,14 @@ def loadConfig():
         if config.get("Version", "version") == "1.1.1.1":
             i = 1
             for (name, value) in config.items("Keys"):
-                if name != "Swap View":
+                if name != "Swap View" and name != "Toggle Fps Counter":
                     config.set("Keys", name, getNewKey(value, i))
-                else:
+                elif name == "Swap View":
                     config.set("Keys", "View Distance", getNewKey(value, i))
+                    config.set("Keys", "Swap View", "None")
+                elif name == "Toggle Fps Counter":
+                    config.set("Keys", "Debug Overlay", getNewKey(value,i))
+                    config.set("Keys", "Toggle Fps Counter", "None")
                 i += 1
             config.set("Version", "version", "1.1.2.0")
             saveConfig()
@@ -154,6 +158,7 @@ pan left = J
 pan right = L
 pan up = I
 pan down = K
+toggle view = Tab
 
 reset reach = Button 3
 increase reach = Scroll Up
@@ -166,12 +171,12 @@ new level = N
 delete blocks = Delete
 line tool = Z
 
-toggle fps counter = 0
+debug overlay = 0
 
 long-distance mode = Alt-Z
 fly mode = None
 
-Blocks-Only Modifier = Alt
+blocks-only modifier = Alt
 
 quit = Ctrl-Q
 view distance = Ctrl-F

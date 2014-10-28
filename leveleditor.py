@@ -2860,7 +2860,13 @@ class LevelEditor(GLViewport):
             d = [0., 0., 0.]
             self.usedKeys = [0, 0, 0, 0, 0, 0]
             self.cameraInputs = [0., 0., 0.]
-            
+            self.get_root().shiftClicked = 0
+            self.get_root().shiftPlaced = -2
+            self.get_root().ctrlClicked = 0
+            self.get_root().ctrlPlaced = -2
+            self.get_root().altClicked = 0
+            self.get_root().altPlaced = -2
+        
             self.saveFile()
         elif keyname == config.config.get('Keys', 'New World'):
             self.createNewLevel()
@@ -2904,7 +2910,7 @@ class LevelEditor(GLViewport):
         elif keyname == 'Ctrl-Alt-F10':
             alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
 
-        elif keyname == 'Tab':
+        elif keyname == config.config.get('Keys', 'Toggle View'):
             self.swapViewports()
 
         elif keyname == config.config.get('Keys', 'Brake'):
@@ -2943,7 +2949,7 @@ class LevelEditor(GLViewport):
         #    self.renderer.toggleLighting()
         # =======================================================================
 
-        elif keyname == config.config.get('Keys', 'Toggle FPS Counter'):
+        elif keyname == config.config.get('Keys', 'Debug Overlay'):
             self.swapDebugLevels()
 
         elif keyname == config.config.get('Keys', 'Toggle Renderer'):
