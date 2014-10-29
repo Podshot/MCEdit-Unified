@@ -208,6 +208,9 @@ class ControlPanel(Panel):
             self.dismiss()
         else:
             self.editor.key_down(evt)
+    
+    def key_up(self, evt):
+        self.editor.key_up(evt)
 
     def mouse_down(self, e):
         if e not in self:
