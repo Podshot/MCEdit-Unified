@@ -181,15 +181,30 @@ class RootWidget(Widget):
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
-                    if self.shiftClicked == 1:
+                    if self.shiftClicked == 1000:
                         events.append(self.shiftAction)
                         self.shiftPlaced = len(events)-1
-                    if self.altClicked == 1:
+                        self.shiftClicked = 1
+                    elif self.shiftClicked != 0:
+                        self.shiftClicked += 1
+                    else:
+                        self.shiftPlaced = -2
+                    if self.altClicked == 1000:
                         events.append(self.altAction)
                         self.altPlaced = len(events)-1
-                    if self.ctrlClicked == 1:
+                        self.altClicked = 1
+                    elif self.altClicked != 0:
+                        self.altClicked += 1
+                    else:
+                        self.altPlaced = -2
+                    if self.ctrlClicked == 1000:
                         events.append(self.ctrlAction)
                         self.ctrlPlaced = len(events)-1
+                        self.ctrlClicked = 1
+                    elif self.ctrlClicked != 0:
+                        self.ctrlClicked += 1
+                    else:
+                        self.ctrlPlaced = -2
                     i = 0
                     for event in events:
                         #if event.type:
@@ -258,21 +273,21 @@ class RootWidget(Widget):
                             temp = modkeys.get(key)
                             if temp == 'shift':
                                 if self.shiftPlaced != i and self.shiftPlaced != -1:
-                                    self.shiftClicked = 1
+                                    self.shiftClicked += 1
                                     self.shiftAction = event
                                 elif self.shiftPlaced == -1:
                                     self.dont = 1
                                     self.shiftPlaced = -2
                             elif temp == 'alt':
                                 if self.altPlaced != i and self.altPlaced != -1:
-                                    self.altClicked = 1
+                                    self.altClicked += 1
                                     self.altAction = event
                                 elif self.altPlaced == -1:
                                     self.dont = 1
                                     self.altPlaced = -2
                             elif (temp == 'ctrl' or temp == 'meta'):
                                 if self.ctrlPlaced != i and self.ctrlPlaced != -1:
-                                    self.ctrlClicked = 1
+                                    self.ctrlClicked += 1
                                     self.ctrlAction = event
                                 elif self.ctrlPlaced == -1:
                                     self.dont = 1
