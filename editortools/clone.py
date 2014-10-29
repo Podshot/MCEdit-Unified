@@ -123,6 +123,9 @@ class BlockCopyOperation(Operation):
         return tr("Copy {0} blocks").format(self.sourceBox.volume)
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
         sourceBox = self.sourceBox
 
         if recordUndo:
@@ -202,6 +205,9 @@ class CloneOperation(Operation):
         return self._dirtyBox
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
         with setWindowCaption("COPYING - "):
             self.editor.freezeStatus(tr("Copying %0.1f million blocks") % (float(self._dirtyBox.volume) / 1048576.,))
             if recordUndo:

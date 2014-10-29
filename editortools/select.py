@@ -20,7 +20,7 @@ from OpenGL import GL
 from collections import defaultdict
 import numpy
 import pygame
-from albow import Row, Label, Button, AttrRef, Column, ask
+from albow import Row, Label, Button, AttrRef, Column, ask, alert
 from albow.translate import tr
 import config
 from depths import DepthOffset
@@ -237,6 +237,9 @@ class NudgeBlocksOperation(Operation):
         return self.sourceBox.union(self.destBox)
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
         level = self.editor.level
         tempSchematic = level.extractSchematic(self.sourceBox)
         if tempSchematic:

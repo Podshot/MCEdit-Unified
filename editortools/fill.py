@@ -45,6 +45,9 @@ class BlockFillOperation(Operation):
         return tr("Fill with ") + self.blockInfo.name
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.destBox)
 
