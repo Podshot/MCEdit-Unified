@@ -638,13 +638,13 @@ class MCEdit(GLViewport):
         #assert isinstance(surf, pygame.Surface)
         #dw, dh = surf.get_size()
 
-        if w >= 1024 and h >= 768:
+        if w >= 1000 and h >= 700:
             Settings.windowWidth.set(w)
             Settings.windowHeight.set(h)
             config.saveConfig()
         elif w !=0 and h !=0:
-            Settings.windowWidth.set(1024)
-            Settings.windowHeight.set(768)
+            Settings.windowWidth.set(1000)
+            Settings.windowHeight.set(700)
             config.saveConfig()
         if dw > 20 or dh > 20:
             if not hasattr(self, 'resizeAlert'):
