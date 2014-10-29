@@ -325,6 +325,7 @@ class KeyConfigPanel(Dialog):
         keyConfigTable.key_down = self.key_down
         self.changes = {}
         self.changesNum = 0
+        self.enter = 0
         tableWidget = albow.Widget()
         tableWidget.add(keyConfigTable)
         tableWidget.shrink_wrap()
@@ -408,6 +409,13 @@ class KeyConfigPanel(Dialog):
                     self.dismiss()
             else:
                 self.dismiss()
+        elif keyname == 'Up' and self.selectedKeyIndex > 0:
+            self.selectedKeyIndex -= 1
+        elif keyname == 'Down' and self.selectedKeyIndex < len(self.keyConfigKeys)-1:
+            self.selectedKeyIndex += 1
+        elif keyname == 'Return':
+            self.enter += 1
+            self.askAssignSelectedKey()
 
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
@@ -448,6 +456,12 @@ class KeyConfigPanel(Dialog):
         panel.mouse_up = panelMouseUp
 
         keyname = panel.present()
+        if keyname == "Return" and self.enter == 1:
+            self.enter = 0
+            self.askAssignKey(configKey, tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey))
+            return True
+        
+        self.enter = 0
         if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             if "Modifier" in configKey:
                  occupiedKeys = []
