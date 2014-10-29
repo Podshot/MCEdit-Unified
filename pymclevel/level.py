@@ -130,6 +130,8 @@ class MCLevel(object):
     materials = materials.classicMaterials
     isInfinite = False
 
+    saving = False
+
     root_tag = None
 
     Height = None

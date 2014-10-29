@@ -2554,7 +2554,8 @@ class MCRenderer(object):
     def loadChunksStartingFrom(self, wx, wz, distance=None):  # world position
         if None is self.level:
             return
-
+        if self.level.saving:
+            return
         cx = wx >> 4
         cz = wz >> 4
 

@@ -746,6 +746,9 @@ class BrushOperation(Operation):
         return self._dirtyBox
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self._dirtyBox)
 

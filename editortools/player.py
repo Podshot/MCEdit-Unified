@@ -42,6 +42,9 @@ class PlayerMoveOperation(Operation):
         self.yp = yp
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
         try:
             level = self.tool.editor.level
             try:
@@ -102,6 +105,9 @@ class PlayerSpawnMoveOperation(Operation):
         self.tool, self.pos = tool, pos
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
         level = self.tool.editor.level
         if isinstance(level, pymclevel.MCInfdevOldLevel):
             if not positionValid(level, self.pos):
