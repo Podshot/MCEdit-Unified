@@ -297,8 +297,8 @@ else:
 #else:
 #    serverJarStorageDir = fixedJarStorageDir
         
-def getAllFilters(filters_dir):
-    return glob.glob(filters_dir+"/*.py")
+def getAllOfAFile(file_dir, ext):
+    return glob.glob(file_dir+"/*"+ext)
 
 def getCacheDir():
     """Returns the path to the cache folder. This folder is the Application Support folder on OS X, and the Documents Folder on Windows."""

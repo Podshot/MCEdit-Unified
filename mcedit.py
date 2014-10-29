@@ -926,7 +926,7 @@ def main(argv):
             )
         else:
             # Start hashing the filter dir
-            mceutils.compareMD5Hashes(directories.getAllFilters(directories.filtersDir))
+            mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
     except Exception, e:
         logging.warning('Error copying bundled filters: {0!r}'.format(e))
         try:

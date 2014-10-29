@@ -270,6 +270,12 @@ def loadAlphaTerrainTexture():
     pngFile = None
 
     texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), "terrain.png"))
+    '''
+    THIS CODE IS VERY LIKLEY TO CHANGE
+    terrainTextureFiles = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "terrain_textures"), ".png")
+    for textures in terrainTextureFiles:
+        return
+    '''
 
     def _loadFunc():
         loadTextureFunc(texW, texH, terraindata)
@@ -527,7 +533,7 @@ def compareMD5Hashes(found_filters):
             filterDict["filters"] = {}
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
                 json.dump(filterDict, j)
-        filterInBundledFolder = directories.getAllFilters(os.path.join(directories.getDataDir(), "filters"))
+        filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "filters"), ".py")
         filterBundle = {}
         for bundled in filterInBundledFolder:
             filterBundle[bundled.split('\\')[-1]] = bundled
