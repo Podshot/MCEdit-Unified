@@ -427,7 +427,7 @@ from pygame.locals import KMOD_SHIFT
 
 class FloatField(Field):
     type = float
-    _increment = 1.0
+    _increment = 0.1
     _shift_increment = 16.0
     tooltipText = tr("Point here and use mousewheel to adjust")
 
