@@ -1979,7 +1979,6 @@ class LevelEditor(GLViewport):
         self.yon.add(col)
         self.yon.shrink_wrap()
         self.yon.present()
-        print "Added Widget"
         waiter = None
         while waiter == None:
             if self.user_yon_response != None:
@@ -1995,10 +1994,12 @@ class LevelEditor(GLViewport):
         self.user_yon_response = False
 
     def addExternalWidget(self, widget):
-        self._widget = widget
-        self._widget.bg_color = (0.0, 0.0, 0.6)
-        self._widget.present()
+        self._external_widget = widget
+        self._external_widget.bg_color = (0.0, 0.0, 0.6)
+        self._external_widget.present()
         
+    def Notify(self, msg):
+        ask(msg, ["Close"], cancel=0)
 
     def reloadToolbar(self):
         self.toolbar = EditorToolbar(self, tools=[editortools.SelectionTool(self),
