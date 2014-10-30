@@ -21,6 +21,11 @@ import base64  # @UnusedImport
 #print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
 
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
+    '''
+    Gets the Username from a UUID
+    :param uuid: The Player's UUID
+    :param forceNetwork: Forces use Mojang's API instead of first looking in the usercache.json
+    '''
     if forceNetwork:
         try:
             print "Loading {} from network".format(uuid)
