@@ -48,6 +48,8 @@ def alertFilterException(func):
 def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
     if isinstance(val, float):
         ftype = FloatField
+        if isinstance(increment, int):
+            increment = float(increment)
     else:
         ftype = IntField
         if increment == 0.1:
