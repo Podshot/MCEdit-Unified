@@ -7,6 +7,9 @@ from sys import platform as _platform
 
 
 def get_version():
+    '''
+    Gets the name of the current version
+    '''
     try:
         with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
             current = json.load(jsonString)
@@ -15,6 +18,9 @@ def get_version():
         raise
 
 def get_release_tag():
+    '''
+    Gets the stage of development MCEdit-Unified is in
+    '''
     try:
         with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
             current = json.load(jsonString)
@@ -22,6 +28,9 @@ def get_release_tag():
     except:
         raise
 def is_dev():
+    '''
+    Checks if MCEdit-Unified is in development mode
+    '''
     try:
         with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
             current = json.load(jsonString)
@@ -29,6 +38,9 @@ def is_dev():
     except:
         raise
 def check_for_new_version():
+    '''
+    Checks for a new MCEdit-Unified version, if the current one is not in development mode
+    '''
     try:
         if not is_dev():
             release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
