@@ -45,7 +45,7 @@ def alertFilterException(func):
     return _func
 
 
-def addNumField(page, optionName, val, min=None, max=None):
+def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
     if isinstance(val, float):
         ftype = FloatField
     else:
@@ -56,6 +56,7 @@ def addNumField(page, optionName, val, min=None, max=None):
         max = None
 
     field = ftype(value=val, width=100, min=min, max=max)
+    field._increment = increment
     page.optionDict[optionName] = AttrRef(field, 'value')
 
     row = Row([Label(optionName), field])
@@ -115,13 +116,17 @@ class FilterModuleOptions(Widget):
         for optionName, optionType in inputs:
             if isinstance(optionType, tuple):
                 if isinstance(optionType[0], (int, long, float)):
-                    if len(optionType) > 2:
+                    if len(optionType) == 3:
                         val, min, max = optionType
+                        increment = 0.1
                     elif len(optionType) == 2:
                         min, max = optionType
                         val = min
+                        increment = 0.1
+                    elif len(optionType) == 4:
+                        val, min, max, increment = optionType
 
-                    rows.append(addNumField(page, optionName, val, min, max))
+                    rows.append(addNumField(page, optionName, val, min, max, increment=increment))
 
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
