@@ -52,6 +52,8 @@ def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
         ftype = IntField
         if increment == 0.1:
             increment = 1
+        if isinstance(increment, float):
+            increment = int(round(increment))
 
     if min == max:
         min = None
