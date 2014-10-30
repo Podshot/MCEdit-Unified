@@ -35,10 +35,15 @@
 				} else if (releasetimesec < 60 * 60 * 24 * 30) {
 					releasetime = Math.round(releasetimesec / 60 / 60 / 24) + ' days ago';
 				}
-				
+
+				var totalDownloads = 0
+				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
+					totalDownloads += releaseData[i].assets[x].download_count;
+				}
+
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 			}
 			$('#changelog').show();
@@ -55,11 +60,6 @@
 					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
 				}
 			}
-			var totalDownloads = 0
-			for (var i = releaseData[0].assets.length - 1; i >= 0; i--) {
-				totalDownloads += releaseData[0].assets[i].download_count;
-			}
-			console.log(totalDownloads);
 		}
 	</script>
 </head>
