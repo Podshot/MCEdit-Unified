@@ -120,9 +120,9 @@
 	"Automatically report errors to the developer.": "Rapporteer fouten automatisch aan de ontwikkelaar(s).",
 	"Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder": "Klik om McEdit een draagbare installatie te geven, en je filter, opties en schematics in je installatie op te slaan.",
 	"Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder": "Klik om McEdit een vaste installatie te geven, en je filter, opties en schematics in je Documenten map op te slaan.",
-	"Install Mode: Portable": "Installatie: Draagbaar
-	"Install Mode: Fixed": "Installatie: Vast
-	"This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?": "Did maakt je McEdit installatie \"draagbaar"\ door je filters, instellingen en schematics in dezelfde map op te slaan als {0}. Doorgaan?",
+	"Install Mode: Portable": "Installatie: Draagbaar",
+	"Install Mode: Fixed": "Installatie: Vast",
+	"This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?": "Did maakt je McEdit installatie \"draagbaar\" door je filters, instellingen en schematics in dezelfde map op te slaan als {0}. Doorgaan?",
 	"MCEditData": "MCEditData",
 	"This will move your settings and schematics to your Documents folder. Continue?": "Dit verplaatst je instellingen, filters en schematics naar je Mijn Documenten map. Doorgaan?",
 	"This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?": "Dit verplaatst je schematics en filters naar je Mijn Documenten map en je instellingen naar je Voorkeuren map. Doorgaan?",
@@ -153,7 +153,7 @@
 	"Analyze": "Analyseer",
 	"Count the different blocks and entities in the selection and display the totals.": "Tel alle blokken en entities in de selectie en toon de totalen.",
 	"Cut": "Knip",
-	"Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}-X": "Maak een kopie van alle blokken en entities in de selectie, verwijder dan alles in de selectie. Sneltoets: {0}-X"
+	"Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}-X": "Maak een kopie van alle blokken en entities in de selectie, verwijder dan alles in de selectie. Sneltoets: {0}-X",
 	"Copy": "Kopiëer",
 	"Take a copy of all blocks and entities within the selection. Shortcut: {0}-C": "Maak een kopie van alle blokken en entities in de selectie. Sneltoets : {0}-C",
 	"Paste": "Plak",
