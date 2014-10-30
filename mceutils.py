@@ -524,6 +524,10 @@ def setWindowCaption(prefix):
     return ctx()
 
 def compareMD5Hashes(found_filters):
+    '''
+    Compares the MD5 Hashes of filters
+    :param found_filters: A list of filter paths
+    '''
     ff = {}
     for filter in found_filters:
         ff[filter.split('\\')[-1]] = filter
