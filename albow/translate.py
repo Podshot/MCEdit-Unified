@@ -48,25 +48,27 @@ You need, a least, these three function in your program:
 """
 
 import os
-import sys
+# import sys # useless, only called in 'restart' (to be moved to mcedit.py)
 import re
-import json
-import directories
+# import json # json isn't user friendly decause of its syntax and the use of escaped characters for new lines, tabs, etc.
+# import directories # suppress this
 
 enc = "utf8"
 
 string_cache = {}
-langPath = os.path.join(directories.getDataDir(), "lang")
-oldlang = "en_US" # en_US is the default language string, no exceptions.
-try:
-	oldlang = Settings.langCode.get()
-except:
-    pass
+#langPath = os.path.join(directories.getDataDir(), "lang") # find another way to set this
+#oldlang = "en_US" # en_US is the default language string, no exceptions. ## Nope, default language is the language used by the app programmer.
+#try:
+#	oldlang = Settings.langCode.get()
+#except:
+#    pass
+langPath = os.sep.join((".", "lang"))
+lang = "Default"
 
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
 #-------------------------------------------------------------------------------
-def tr(string, doNotTranslate=False):
+def _(string, doNotTranslate=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
     if doNotTranslate:
         return string
@@ -75,6 +77,7 @@ def tr(string, doNotTranslate=False):
     return string_cache.get(string, string.replace("\n", "\n\n"))
 
 #-------------------------------------------------------------------------------
+# Suppress this. Messy and useless
 def refreshLang(self=None,suppressAlert=False,build=True):
     """Refreshes and returns the current language string"""
     global oldlang
@@ -120,6 +123,7 @@ def refreshLang(self=None,suppressAlert=False,build=True):
         return ""
         
 #-------------------------------------------------------------------------------
+# Move this to mcedit.py. The GUI does not have to handle program start/stop.
 def restart(mcedit):
     import config
     import mcplatform
@@ -145,6 +149,36 @@ def restart(mcedit):
     python = sys.executable
     os.execl(python, python, * sys.argv)
     
+
+
+#-------------------------------------------------------------------------------
+def setLangPath(path):
+    """Changes the default 'lang' folder path. Retrun True if the path is valid, False otherwise."""
+    path = os.path.normpath(os.path.abspath(path))
+    if os.access(path, os.F_OK) and os.path.isdir(path) and os.access(path, os.R_OK):
+        global langPath
+        langPath = path
+#-------------------------------------------------------------------------------
+def getLangPath():
+    """..."""
+    return langPath
+
+#-------------------------------------------------------------------------------
+def getLang():
+    return lang
+
+def setLang(newlang):
+    """Set the actual language. Returns old and new languages and string_cache in a tulpe.
+
+    newlang: str: new laguage to load in the format <language>_>country>"""
+    global lang
+    oldLang = "" + lang
+    sc = {}
+    if not lang == newlang:
+        buildTranslation(newlang)
+        lang = newlang
+    return oldLang, lang, string_cache
+
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""
@@ -156,6 +190,7 @@ def correctEncoding(data, oldEnc="ascii", newEnc=enc):
         data = data.replace("\n", "\n\n")
     return data
 #-------------------------------------------------------------------------------
+# Supress this ?
 def verifyLangCode(lang):
     fName = os.path.join(langPath, lang + ".json")
     if (os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK)) or lang == "en_US":
@@ -169,10 +204,33 @@ def buildTranslation(lang,suppressAlert=False):
     Errors encountered during the process are silently ignored.
     Returns string_cache."""
     global string_cache
-    fName = os.path.join(langPath, lang + ".json")
-    if verifyLangCode(lang) and not lang == "en_US":
-        with open(fName) as jsonString:
-            string_cache = json.load(jsonString)
+    lang = "%s"%lang
+    fName = os.path.join(langPath, lang + ".trn")
+    if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
+        data = open(fName, "rb").read() + "\x00"
+        trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
+        grps = re.finditer(trnPattern, data)
+        oStart = -1
+        oEnd = -1
+        tStart = -1
+        tEnd = -1
+        org = None
+        for grp in grps:
+            g = grp.group()
+            if g.startswith("o"):
+                oStart = grp.end()
+                tEnd = grp.start() -1
+            elif g.startswith("t"):
+                oEnd = grp.start() -1
+                tStart = grp.end()
+            if oStart > -1 and oEnd > -1 and tStart > tEnd:
+                org = data[oStart:oEnd]
+            if tStart > -1 and (tEnd > -1):
+                if tEnd > tStart:
+                    string_cache[org] = correctEncoding(data[tStart:tEnd])
+                    tStart = -1
+                    tEnd = -1
+        string_cache[org] = correctEncoding(data[tStart:tEnd -1])
     return string_cache
 
 #-------------------------------------------------------------------------------
@@ -181,8 +239,9 @@ if __name__ == "__main__":
     ### FOR TEST
     import sys
 
-    for k, v in buildTranslation("template").items():
-        print k, v
-    sys.exit()
+    if setLangPath("."):
+        for k, v in buildTranslation("template").items():
+            print k, v
+        sys.exit()
     ###
 

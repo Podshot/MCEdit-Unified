@@ -12,12 +12,12 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 
-#Modified by D.C.-G. for translation purposes
+# Modified by D.C.-G. for translation purposes
 
 from OpenGL import GL
 from OpenGL.arrays import numbers
 from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert, Field
-from albow.translate import tr
+from albow.translate import _
 import ast
 import bresenham
 from clone import CloneTool
@@ -747,13 +747,13 @@ class BrushOperation(Operation):
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(tr("Cannot perform action while saving is taking place"))
+            alert(_("Cannot perform action while saving is taking place"))
             return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self._dirtyBox)
 
         def _perform():
-            yield 0, len(self.points), tr("Applying {0} brush...").format(self.brushMode.name)
+            yield 0, len(self.points), _("Applying {0} brush...").format(self.brushMode.name)
             if self.brushMode.apply is not NotImplemented: #xxx double negative
                 for i, point in enumerate(self.points):
                     f = self.brushMode.apply(self, point)
@@ -761,7 +761,7 @@ class BrushOperation(Operation):
                         for progress in f:
                             yield progress
                     else:
-                        yield i, len(self.points), tr("Applying {0} brush...").format(self.brushMode.name)
+                        yield i, len(self.points), _("Applying {0} brush...").format(self.brushMode.name)
             else:
 
                 for j, cPos in enumerate(self._dirtyBox.chunkPositions):
@@ -776,7 +776,7 @@ class BrushOperation(Operation):
                             for progress in f:
                                 yield progress
                         else:
-                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, tr("Applying {0} brush...").format(self.brushMode.name)
+                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(self.brushMode.name)
 
                     chunk.chunkChanged()
 
@@ -1283,7 +1283,7 @@ class BrushTool(CloneTool):
 
     @property
     def statusText(self):
-        return tr("Click and drag to place blocks. ALT-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.").format(
+        return _("Click and drag to place blocks. ALT-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.").format(
             R=config.config.get("Keys", "Roll").upper(),
             F=config.config.get("Keys", "Flip").upper(),
             E=config.config.get("Keys", "Rotate").upper(),
@@ -1299,7 +1299,7 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return tr("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
+                return _("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
 
             except Exception, e:
                 return repr(e)
@@ -1311,7 +1311,7 @@ class BrushTool(CloneTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return tr("Click to replace {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
+                return _("Click to replace {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
 
             except Exception, e:
                 return repr(e)

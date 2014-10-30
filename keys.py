@@ -10,7 +10,7 @@ from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_text, IntField, Menu, root, Row, \
     TableColumn, TableView, TextField, TimeField, Widget, CheckBox
 from albow.controls import Label, SmallValueDisplay, ValueDisplay
-from albow.translate import tr
+from albow.translate import _
 from glbackground import Panel
 
 ESCAPE = '\033'
@@ -428,7 +428,7 @@ class KeyConfigPanel(Dialog):
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
         if labelString is None:
-            labelString = tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
+            labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
         label = albow.Label(labelString)
         panel.add(label)
         panel.shrink_wrap()
@@ -458,7 +458,7 @@ class KeyConfigPanel(Dialog):
         keyname = panel.present()
         if keyname == "Return" and self.enter == 1:
             self.enter = 0
-            self.askAssignKey(configKey, tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey))
+            self.askAssignKey(configKey, _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey))
             return True
         
         self.enter = 0
@@ -467,7 +467,7 @@ class KeyConfigPanel(Dialog):
                  occupiedKeys = []
                  if keyname != "Shift" and keyname != "Ctrl" and keyname != "Alt":
                     self.askAssignKey(configKey,
-                                     tr("The key {0} is not a modifier. "
+                                     _("The key {0} is not a modifier. "
                                      "Press a new key.\n\n"
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname))
@@ -485,7 +485,7 @@ class KeyConfigPanel(Dialog):
                     newSettings.append(set[0].upper() + set[1:])
                 setting = ' '.join(newSettings)
                 if self.askAssignKey(setting,
-                                     tr("The key {0} is no longer bound to {1}. "
+                                     _("The key {0} is no longer bound to {1}. "
                                      "Press a new key for the action \"{1}\"\n\n"
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname, setting)):
@@ -496,7 +496,7 @@ class KeyConfigPanel(Dialog):
             config.config.set("Keys", configKey, "None")
         elif keyname != "Escape":
             self.askAssignKey(configKey,
-                                     tr("You can't use the key {0}. "
+                                     _("You can't use the key {0}. "
                                      "Press a new key.\n\n"
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname))

@@ -3,7 +3,7 @@
 import os
 import sys
 import pygame
-from directories import getDataDir
+from directories import getDataDir # not nice, find something else
 from pygame.locals import RLEACCEL
 from translate import langPath
 # default_font_name = "Vera.ttf"
@@ -69,6 +69,7 @@ def get_font(size, *names, **kwds):
                 font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
             except Exception, e:
                 print "Couldn't get font {0}, using sysfont".format((path, size))
+                print "    PyGame said:", e
                 font = pygame.font.SysFont("Courier New", size)
         font_cache[key] = font
     return font
