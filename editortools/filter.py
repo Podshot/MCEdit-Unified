@@ -50,6 +50,8 @@ def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
         ftype = FloatField
     else:
         ftype = IntField
+        if increment == 0.1:
+            increment = 1
 
     if min == max:
         min = None
@@ -126,7 +128,7 @@ class FilterModuleOptions(Widget):
                     elif len(optionType) == 4:
                         val, min, max, increment = optionType
 
-                    rows.append(addNumField(page, optionName, val, min, max, increment=increment))
+                    rows.append(addNumField(page, optionName, val, min, max, increment))
 
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
