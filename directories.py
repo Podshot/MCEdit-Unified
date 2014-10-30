@@ -124,7 +124,9 @@ def getMinecraftProfileDirectory(profileName):
 
 
 def getMinecraftLauncherDirectory():
-    #Returns the /minecraft directory, note: may not contain the /saves folder!
+    '''
+    Returns the /minecraft directory, note: may not contain the /saves folder!
+    '''
     if sys.platform == "win32":
         return os.path.join(win32_appdata(), ".minecraft")
     elif sys.platform == "darwin":
@@ -161,6 +163,9 @@ def getDocumentsFolder():
     return docsFolder
 
 def getSelectedProfile():
+    '''
+    Gets the selected profile from the Minecraft Launcher
+    '''
     try:
         selectedProfile = getMinecraftProfileJSON()['selectedProfile']
         return selectedProfile
@@ -298,6 +303,11 @@ else:
 #    serverJarStorageDir = fixedJarStorageDir
         
 def getAllOfAFile(file_dir, ext):
+    '''
+    Returns a list of all the files the direcotry with the specified file extenstion
+    :param file_dir: Directory to search
+    :param ext: The file extension (IE: ".py")
+    '''
     return glob.glob(file_dir+"/*"+ext)
 
 def getCacheDir():
