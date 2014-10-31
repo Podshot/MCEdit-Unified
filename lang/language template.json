@@ -1,16 +1,20 @@
-This is a template for any laguages that you want to add in for MCEdit. Please don't use any translators for long words/sentences as it will confuse some people who read it in their native language, thank you.
-To edit make sure you save this file as: 'language(lower caps)_Country of Use(Upper Case).json Example: fr_FR.json, en_US.json. These are used in programs you use around the world and to see what your
-language code is go here http://msdn.microsoft.com/en-us/library/ms533052(v=vs.85).aspx or search what your language code is, either is preferable.
+This is a template for any language's that you want to add in for MCEdit. 
+Please don't use any translators for long words/sentences as it will confuse some people who use the program and read the text in their native language, thank you.
+To edit make sure you save this file as: 'language(lower caps)_Country of Use(Upper Case).json Example: fr_FR.json, en_US.json.(Unless we/you have found a much better way to do this).
+These are used in programs you use around the world and to see what your language code is go here http://msdn.microsoft.com/en-us/library/ms533052(v=vs.85).aspx , 
+http://www.mcanerin.com/EN/articles/meta-language.asp or search what your language code is, either is preferable.
 
 Make sure all words are correct within MCEdit. Then save your FINISHED language file to github and you're done. To add your language in github click the (+) in the lang folder.
 
-*DO NOT DELETE THIS TEMPLATE OR TYPE THE LANGUAGE NEXT TO THE WORD. PLEASE COPY AND PASTE ALL WORDS INSIDE AND INCLUDE THE BRACKETS {} (Windows: Ctrl+C then Ctrl+V, Mac:CMD+C, CMD+V) AND PUT IT INTO YOUR SAVE LANGUAGE FILE.
-ALSO MAKE SURE ALL WORDS/SENTENCES ARE INSIDE QUOTATION MARKS ("") AND USE A COMMA (,) WHEN YOU GO TO THE NEXT WORD/SENETENCE.* Example: 
+*DO NOT DELETE THIS TEMPLATE OR TYPE THE LANGUAGE NEXT TO THE WORD WITHIN THE TEMPLATE. PLEASE COPY AND PASTE ALL WORDS INSIDE AND INCLUDE THE CURLEY BRACKETS {}. (Windows: Ctrl+C then Ctrl+V, Mac:CMD+C, CMD+V) AND PUT IT INTO YOUR SAVE LANGUAGE FILE.
+ALSO MAKE SURE ALL WORDS/SENTENCES ARE INSIDE QUOTATION MARKS ("") AND USE A COMMA (,) WHEN YOU GO TO THE NEXT WORD/SENETENCE. *Example: 
 {
 	"Example": "Ejemplo"
 	"Copy all keys in your: language %:" : "Copie todas las claves en su idioma:%:"
 }
-COPY FROM HERE TO THE BOTTOM. AND PASTE IT INTO YOUR LANGUAGE FILE
+
+COPY FROM { TO } (AT THE BOTTOM) AND PASTE IT INTO YOUR LANGUAGE FILE
+
 {
 	"OK":
 	"Cancel":
