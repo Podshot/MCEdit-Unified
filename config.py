@@ -36,7 +36,7 @@ def getNewKey(value, i=0):
         value = value[6:]
     if value >= 'a' and value <= 'z':
         value = value.replace(value[0], value[0].upper(), 1)
-    if i >= 30 and "Ctrl-" not in value:
+    if i >= 36 and "Ctrl-" not in value:
         value = "Ctrl-" + value
     if value == "Mouse3":
         value = "Button 3"
@@ -171,12 +171,17 @@ new level = N
 delete blocks = Delete
 line tool = Z
 
-debug overlay = 0
-
 long-distance mode = Alt-Z
 fly mode = None
 
-blocks-only modifier = Alt
+debug overlay = 0
+blocks-only = Alt
+show block info = Alt
+pick block = Alt
+select chunks = Z
+deselect chunks = Alt
+brush line tool = Z
+snap clone to axis = Ctrl
 
 quit = Ctrl-Q
 view distance = Ctrl-F
