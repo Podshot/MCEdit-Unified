@@ -127,7 +127,6 @@ class Modes:
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
             brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
-            print op.options
 
 
             blocks = chunk.Blocks[slices]
@@ -1425,7 +1424,7 @@ class BrushTool(CloneTool):
     def mouseUp(self, evt, pos, direction):
         if 0 == len(self.draggedPositions):
             return
-
+        
         size = self.brushSize
         # point = self.getReticlePoint(pos, direction)
         if self.brushMode.name == "Flood Fill":
@@ -1444,6 +1443,23 @@ class BrushTool(CloneTool):
         self.lastPosition = self.draggedPositions[-1]
 
         self.draggedPositions = []
+        
+        if self.brushLineKey == 1:
+            for move in self.editor.movements:
+                if move in config.config.get("Keys", "Brush Line Tool"):
+                    self.editor.save = 1
+            self.editor.usedKeys = [0, 0, 0, 0, 0, 0]
+            self.editor.cameraInputs = [0., 0., 0.]
+            self.editor.get_root().shiftClicked = 0
+            self.editor.get_root().shiftPlaced = -2
+            self.editor.get_root().ctrlClicked = 0
+            self.editor.get_root().ctrlPlaced = -2
+            self.editor.get_root().altClicked = 0
+            self.editor.get_root().altPlaced = -2
+            
+            self.brushLineKey = 0
+            
+        self.lastPosition = None
 
     def toolEnabled(self):
         return True

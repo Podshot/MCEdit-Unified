@@ -76,7 +76,6 @@ class KeyConfigPanel(Dialog):
         "Increase Reach",
         "Decrease Reach",
         "Reset Reach",
-        "Line Tool",
         "Export Selection",
         "",
         "<Functions>",

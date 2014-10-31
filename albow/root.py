@@ -181,7 +181,7 @@ class RootWidget(Widget):
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
-                    if (self.shiftClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.shiftClicked >= 500 and self.mcedit.editor.focus_switch != None):
+                    if (self.shiftClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.shiftClicked >= 250 and self.mcedit.editor.focus_switch != None):
                         events.append(self.shiftAction)
                         self.shiftPlaced = len(events)-1
                         self.shiftClicked = 1
@@ -189,7 +189,7 @@ class RootWidget(Widget):
                         self.shiftClicked += 1
                     else:
                         self.shiftPlaced = -2
-                    if (self.altClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.altClicked >= 500 and self.mcedit.editor.focus_switch != None):
+                    if (self.altClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.altClicked >= 250 and self.mcedit.editor.focus_switch != None):
                         events.append(self.altAction)
                         self.altPlaced = len(events)-1
                         self.altClicked = 1
@@ -197,7 +197,7 @@ class RootWidget(Widget):
                         self.altClicked += 1
                     else:
                         self.altPlaced = -2
-                    if (self.ctrlClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.ctrlClicked >= 500 and self.mcedit.editor.focus_switch != None):
+                    if (self.ctrlClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.ctrlClicked >= 250 and self.mcedit.editor.focus_switch != None):
                         events.append(self.ctrlAction)
                         self.ctrlPlaced = len(events)-1
                         self.ctrlClicked = 1
@@ -286,12 +286,13 @@ class RootWidget(Widget):
                                     self.dont = 1
                                     self.altPlaced = -2
                             elif (temp == 'ctrl' or temp == 'meta'):
-                                if self.ctrlPlaced != i and self.ctrlPlaced != -1:
+                                if self.ctrlPlaced != i and self.ctrlPlaced != -1 and self.ctrlClicked != -1:
                                     self.ctrlClicked += 1
                                     self.ctrlAction = event
-                                elif self.ctrlPlaced == -1:
+                                elif self.ctrlPlaced == -1 or self.ctrlClicked == -1:
                                     self.dont = 1
                                     self.ctrlPlaced = -2
+                                    self.ctrlClicked = 0
                             if self.dont == 0:
                                 set_modifier(key, True)
                                 self.do_draw = True

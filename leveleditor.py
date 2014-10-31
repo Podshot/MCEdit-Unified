@@ -3254,6 +3254,7 @@ class LevelEditor(GLViewport):
 
         def loadWorld():
             self.mcedit.loadFile(worldData[worldTable.selectedWorldIndex][3].filename)
+            self.get_root().ctrlClicked = -1
 
         def click_row(i, evt):
             worldTable.selectedWorldIndex = i
