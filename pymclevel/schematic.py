@@ -263,7 +263,18 @@ class MCSchematic(EntityLevel):
                 newz = self.Length - x - 1
 
                 entity["TileX"].value, entity["TileZ"].value = newx, newz
-                entity["Facing"].value = (entity["Facing"].value - 1) % 4
+                facing = entity.get("Facing", entity.get("Direction"))
+                if facing is None:
+                    dirFacing = entity.get("Dir")
+                    if dirFacing is not None:
+                        if dirFacing.value == 0:
+                            dirFacing.value = 2
+                        elif dirFacing.value == 2:
+                            dirFacing.value = 0
+                        facing = dirFacing
+                    else:
+                        raise Exception("None of tags Facing/Direction/Dir found in entity %s during rotating -  %r" % (entity["id"].value, entity))
+                facing.value = (facing.value - 1) % 4
 
         for tileEntity in self.TileEntities:
             if not 'x' in tileEntity:
@@ -409,21 +420,35 @@ class MCSchematic(EntityLevel):
             entity["Rotation"][0].value -= 180.0
 
             # Special logic for old width painting as TileX/TileZ favours -x/-z
+
+            if entity["id"].value in ("Painting", "ItemFrame"):
+                facing = entity.get("Facing", entity.get("Direction"))
+                if facing is None:
+                    dirFacing = entity.get("Dir")
+                    if dirFacing is not None:
+                        if dirFacing.value == 0:
+                            dirFacing.value = 2
+                        elif dirFacing.value == 2:
+                            dirFacing.value = 0
+                        facing = dirFacing
+                    else:
+                        raise Exception("None of tags Facing/Direction/Dir found in entity %s during flipping -  %r" % (entity["id"].value, entity))
+
             if entity["id"].value == "Painting":
-                if entity["Facing"].value == 2:
+                if facing.value == 2:
                     entity["TileX"].value = self.Width - entity["TileX"].value - self.paintingMap[entity["Motive"].value] % 2
-                elif entity["Facing"].value == 0:
+                elif facing.value == 0:
                     entity["TileX"].value = self.Width - entity["TileX"].value - 2 + self.paintingMap[entity["Motive"].value] % 2
                 else:
                     entity["TileX"].value = self.Width - entity["TileX"].value - 1
-                if entity["Facing"].value == 3:
+                if facing.value == 3:
                     entity["TileZ"].value = entity["TileZ"].value - 1 + self.paintingMap[entity["Motive"].value] % 2
-                elif entity["Facing"].value == 1:
+                elif facing.value == 1:
                     entity["TileZ"].value = entity["TileZ"].value + 1 - self.paintingMap[entity["Motive"].value] % 2
-                entity["Facing"].value = northSouthPaintingMap[entity["Facing"].value]
+                facing.value = northSouthPaintingMap[facing.value]
             elif entity["id"].value == "ItemFrame":
                 entity["TileX"].value = self.Width - entity["TileX"].value - 1
-                entity["Facing"].value = northSouthPaintingMap[entity["Facing"].value]
+                facing.value = northSouthPaintingMap[facing.value]
         for tileEntity in self.TileEntities:
             if not 'x' in tileEntity:
                 continue
@@ -458,21 +483,35 @@ class MCSchematic(EntityLevel):
             entity["Rotation"][0].value -= 180.0
 
             # Special logic for old width painting as TileX/TileZ favours -x/-z
+
+            if entity["id"].value in ("Painting", "ItemFrame"):
+                facing = entity.get("Facing", entity.get("Direction"))
+                if facing is None:
+                    dirFacing = entity.get("Dir")
+                    if dirFacing is not None:
+                        if dirFacing.value == 0:
+                            dirFacing.value = 2
+                        elif dirFacing.value == 2:
+                            dirFacing.value = 0
+                        facing = dirFacing
+                    else:
+                        raise Exception("None of tags Facing/Direction/Dir found in entity %s during flipping -  %r" % (entity["id"].value, entity))
+
             if entity["id"].value == "Painting":
-                if entity["Facing"].value == 1:
+                if facing.value == 1:
                     entity["TileZ"].value = self.Length - entity["TileZ"].value - 2 + self.paintingMap[entity["Motive"].value] % 2
-                elif entity["Facing"].value == 3:
+                elif facing.value == 3:
                     entity["TileZ"].value = self.Length - entity["TileZ"].value - self.paintingMap[entity["Motive"].value] % 2
                 else:
                     entity["TileZ"].value = self.Length - entity["TileZ"].value - 1
-                if entity["Facing"].value == 0:
+                if facing.value == 0:
                     entity["TileX"].value = entity["TileX"].value + 1 - self.paintingMap[entity["Motive"].value] % 2
-                elif entity["Facing"].value == 2:
+                elif facing.value == 2:
                     entity["TileX"].value = entity["TileX"].value - 1 + self.paintingMap[entity["Motive"].value] % 2
-                entity["Facing"].value = eastWestPaintingMap[entity["Facing"].value]
+                facing.value = eastWestPaintingMap[facing.value]
             elif entity["id"].value == "ItemFrame":
                 entity["TileZ"].value = self.Length - entity["TileZ"].value - 1
-                entity["Facing"].value = eastWestPaintingMap[entity["Facing"].value]
+                facing.value = eastWestPaintingMap[facing.value]
 
         for tileEntity in self.TileEntities:
             tileEntity["z"].value = self.Length - tileEntity["z"].value - 1

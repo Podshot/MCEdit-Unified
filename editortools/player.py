@@ -399,6 +399,12 @@ class PlayerPositionTool(EditorTool):
         op.perform()
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
+        
+    def keyDown(self, evt):
+        pass
+        
+    def keyUp(self, evt):
+        pass
 
     def levelChanged(self):
         self.markerList.invalidate()

@@ -48,6 +48,7 @@ from pymclevel.level import extractHeights
 from pymclevel.mclevelbase import exhaust
 import random
 import tempfile
+import keys
 
 
 log = logging.getLogger(__name__)
@@ -126,7 +127,6 @@ class Modes:
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
             brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
-            print op.options
 
 
             blocks = chunk.Blocks[slices]
@@ -867,7 +867,7 @@ class BrushPanel(Panel):
                                         ref=self.brushStyleOption,
                                         action=tool.swapBrushStyles)
 
-        self.brushStyleButton.tooltipText = "Shortcut: ALT-1"
+        self.brushStyleButton.tooltipText = "Shortcut: Alt-1"
 
         self.brushStyleRow = Row((Label("Brush:"), self.brushStyleButton))
 
@@ -894,7 +894,7 @@ class BrushPanel(Panel):
         hollowCheckBox = CheckBox(ref=self.brushHollowOption)
         hollowLabel = Label("Hollow")
         hollowLabel.mouse_down = hollowCheckBox.mouse_down
-        hollowLabel.tooltipText = hollowCheckBox.tooltipText = "Shortcut: ALT-3"
+        hollowLabel.tooltipText = hollowCheckBox.tooltipText = "Shortcut: Alt-3"
 
         self.hollowRow = Row((hollowCheckBox, hollowLabel))
 
@@ -934,7 +934,7 @@ class BrushPanel(Panel):
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
-            spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1, tooltipText="Hold SHIFT to draw lines")
+            spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1, tooltipText=("Hold {0} to draw lines").format(config.config.get("Keys", "Brush Line Tool")))
             col.append(spaceRow)
         col = Column(col)
         
@@ -1137,6 +1137,8 @@ class BrushTool(CloneTool):
         self.recentFillBlocks = []
         self.recentReplaceBlocks = []
         self.draggedPositions = []
+        self.useKey = 0
+        self.brushLineKey = 0
 
         self.brushModes = [c() for c in BrushOperation.brushModeClasses]
         for m in self.brushModes:
@@ -1283,16 +1285,17 @@ class BrushTool(CloneTool):
 
     @property
     def statusText(self):
-        return tr("Click and drag to place blocks. ALT-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.").format(
-            R=config.config.get("Keys", "Roll").upper(),
-            F=config.config.get("Keys", "Flip").upper(),
-            E=config.config.get("Keys", "Rotate").upper(),
-            G=config.config.get("Keys", "Mirror").upper(),
+        return tr("Click and drag to place blocks. {P}-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.").format(
+            P=config.config.get("Keys", "Pick Block"),
+            R=config.config.get("Keys", "Roll"),
+            F=config.config.get("Keys", "Flip"),
+            E=config.config.get("Keys", "Rotate"),
+            G=config.config.get("Keys", "Mirror"),
             )
 
     @property
     def worldTooltipText(self):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.useKey == 1:
             try:
                 if self.editor.blockFaceUnderCursor is None:
                     return
@@ -1351,7 +1354,7 @@ class BrushTool(CloneTool):
 
     @alertException
     def mouseDown(self, evt, pos, direction):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.useKey == 1:
             id = self.editor.level.blockAt(*pos)
             data = self.editor.level.blockDataAt(*pos)
             if self.brushMode.name == "Replace":
@@ -1375,13 +1378,39 @@ class BrushTool(CloneTool):
                 if any([abs(a - b) >= self.minimumSpacing
                         for a, b in zip(point, lastPoint)]):
                     self.dragLineToPoint(point)
+                    
+    def keyDown(self, evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Pick Block'):
+            self.useKey = 1
+        if keyname == config.config.get("Keys", "Brush Line Tool"):
+            self.brushLineKey = 1
+            
+    def keyUp(self, evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Pick Block'):
+            self.useKey = 0
+        if keyname == config.config.get("Keys", "Brush Line Tool"):
+            self.brushLineKey = 0
 
     def dragLineToPoint(self, point):
         if self.brushMode.name == "Flood Fill":
             self.draggedPositions = [point]
             return
 
-        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        if self.brushLineKey == 1:
+            for move in self.editor.movements:
+                if move in config.config.get("Keys", "Brush Line Tool"):
+                    self.editor.save = 1
+            self.editor.usedKeys = [0, 0, 0, 0, 0, 0]
+            self.editor.cameraInputs = [0., 0., 0.]
+            self.editor.get_root().shiftClicked = 0
+            self.editor.get_root().shiftPlaced = -2
+            self.editor.get_root().ctrlClicked = 0
+            self.editor.get_root().ctrlPlaced = -2
+            self.editor.get_root().altClicked = 0
+            self.editor.get_root().altPlaced = -2
+            
             if len(self.draggedPositions):
                 points = bresenham.bresenham(self.draggedPositions[-1], point)
                 self.draggedPositions.extend(points[::self.minimumSpacing][1:])
@@ -1390,12 +1419,12 @@ class BrushTool(CloneTool):
                 self.draggedPositions.extend(points[::self.minimumSpacing][1:])
         else:
             self.draggedPositions.append(point)
-
+    
     @alertException
     def mouseUp(self, evt, pos, direction):
         if 0 == len(self.draggedPositions):
             return
-
+        
         size = self.brushSize
         # point = self.getReticlePoint(pos, direction)
         if self.brushMode.name == "Flood Fill":
@@ -1414,6 +1443,23 @@ class BrushTool(CloneTool):
         self.lastPosition = self.draggedPositions[-1]
 
         self.draggedPositions = []
+        
+        if self.brushLineKey == 1:
+            for move in self.editor.movements:
+                if move in config.config.get("Keys", "Brush Line Tool"):
+                    self.editor.save = 1
+            self.editor.usedKeys = [0, 0, 0, 0, 0, 0]
+            self.editor.cameraInputs = [0., 0., 0.]
+            self.editor.get_root().shiftClicked = 0
+            self.editor.get_root().shiftPlaced = -2
+            self.editor.get_root().ctrlClicked = 0
+            self.editor.get_root().ctrlPlaced = -2
+            self.editor.get_root().altClicked = 0
+            self.editor.get_root().altPlaced = -2
+            
+            self.brushLineKey = 0
+            
+        self.lastPosition = None
 
     def toolEnabled(self):
         return True
@@ -1611,7 +1657,7 @@ class BrushTool(CloneTool):
     lastPosition = None
 
     def drawTerrainReticle(self):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.useKey == 1:
             # eyedropper mode
             self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
         else:
@@ -1630,7 +1676,7 @@ class BrushTool(CloneTool):
 
             dirtyBox = self.brushMode.brushBoxForPointAndOptions(reticlePoint, self.getBrushOptions())
             self.drawTerrainPreview(dirtyBox.origin)
-            if pygame.key.get_mods() & pygame.KMOD_SHIFT and self.lastPosition and self.brushMode.name != "Flood Fill":
+            if self.brushLineKey == 1 and self.lastPosition and self.brushMode.name != "Flood Fill":
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))

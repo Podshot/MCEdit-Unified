@@ -73,7 +73,7 @@ import albow
 
 albow.translate.buildTranslation(albow.translate.refreshLang())
 
-from albow.translate import tr
+from albow.translate import tr, langPath, verifyLangCode
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
@@ -88,6 +88,8 @@ import mceutils
 import mcplatform
 from mcplatform import platform_open
 import numpy
+from pymclevel.minecraft_server import ServerJarStorage
+import keys
 
 import os
 import os.path
@@ -350,9 +352,10 @@ class OptionsPanel(Dialog):
                                             ref=Settings.flyMode.propertyRef(),
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
-        langStringRow = mceutils.TextInputRow("Language String",
-                                            ref=Settings.langCode.propertyRef(),
-                                            tooltipText="Enter your language string (corresponding to the file in /lang). Available:\nen_US (default)\nfr_FR")
+        self.languageButton = mceutils.ChoiceButton(self.getLanguageChoices(Settings.langCode.get()), choose=self.changeLanguage)
+        self.languageButton.selectedChoice = Settings.langCode.get()
+
+        langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
         staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
                                             ref=Settings.staticCommandsNudge.propertyRef(),
@@ -394,7 +397,7 @@ class OptionsPanel(Dialog):
                     staticCommandsNudgeRow,
                     moveSpawnerPosNudgeRow,
                     rotateBlockBrushRow,
-                    langStringRow,
+                    langButtonRow,
                     ) + (
                         ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
                     ) + (
@@ -423,6 +426,17 @@ class OptionsPanel(Dialog):
     @blockBuffer.setter
     def blockBuffer(self, val):
         Settings.blockBuffer.set(int(val * 1048576))
+
+    def getLanguageChoices(self, current):
+        files = os.listdir(langPath)
+        langs = [l[:-5] for l in files if l.endswith(".json") and l not in ["language template.json"]]
+        langs = [l for l in langs if verifyLangCode(l)]
+        if "en_US" not in langs:
+            langs = ["en_US"] + langs
+        return langs
+
+    def changeLanguage(self):
+        Settings.langCode.set(self.languageButton.selectedChoice)
 
     def portableButtonTooltip(self):
         return (
@@ -611,7 +625,7 @@ class MCEdit(GLViewport):
                      "License",
                      showLicense),
                     ("",
-                     "Open Data Folder",
+                     "Config Files Folder",
                      showCacheDir),
                    ])
 
@@ -828,6 +842,13 @@ class MCEdit(GLViewport):
         Settings.reportCrashesAsked.set(True)
 
         config.saveConfig()
+        if "update" in config.config.get("Version", "version"):
+            answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
+            if answer == "Yes":
+                for configKey, key in keys.KeyConfigPanel.presets["WASD"]:
+                    config.config.set("Keys", configKey, key)
+        config.config.set("Version", "version", "1.1.2.0")
+        config.saveConfig()
         if "-causeError" in sys.argv:
             raise ValueError, "Error requested via -causeError"
 
@@ -939,6 +960,11 @@ def main(argv):
                           else s
                           for s in sys.path]:
         sys.path.append(directories.filtersDir.encode(sys.getfilesystemencoding()))
+
+    try:
+        ServerJarStorage()
+    except Exception, e:
+        logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
 
     try:
         MCEdit.main()
