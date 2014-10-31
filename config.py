@@ -117,8 +117,12 @@ def loadConfig():
                     config.set("Keys", "Debug Overlay", getNewKey(value,i))
                     config.set("Keys", "Toggle Fps Counter", "None")
                 i += 1
-            config.set("Version", "version", "1.1.2.0")
+            if config.get("Keys", "Brake") == "Space":
+                config.set("Version", "version", "1.1.2.0-update")
+            else:
+                config.set("Version", "version", "1.1.2.0-new")
             saveConfig()
+    
     return config
 
 

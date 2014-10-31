@@ -371,6 +371,8 @@ class KeyConfigPanel(Dialog):
             choiceButton.selectedChoice = "Arrows"
         if config.config.get("Keys", "Forward") == "[8]":
             choiceButton.selectedChoice = "Numpad"
+        if config.config.get("Keys", "Brake") == "Space":
+            choiceButton.selectedChoice = "WASD Old"
 
         choiceRow = albow.Row((albow.Label("Presets: "), choiceButton))
         self.choiceButton = choiceButton
