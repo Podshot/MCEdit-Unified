@@ -611,7 +611,7 @@ class MCEdit(GLViewport):
                      "License",
                      showLicense),
                     ("",
-                     "Open Data Folder",
+                     "Config Files Folder",
                      showCacheDir),
                    ])
 
