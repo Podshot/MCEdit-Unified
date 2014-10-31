@@ -88,6 +88,7 @@ import mceutils
 import mcplatform
 from mcplatform import platform_open
 import numpy
+from pymclevel.minecraft_server import ServerJarStorage
 
 import os
 import os.path
@@ -951,6 +952,11 @@ def main(argv):
                           else s
                           for s in sys.path]:
         sys.path.append(directories.filtersDir.encode(sys.getfilesystemencoding()))
+
+    try:
+        ServerJarStorage()
+    except Exception, e:
+        logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
 
     try:
         MCEdit.main()
