@@ -1908,7 +1908,7 @@ class LevelEditor(GLViewport):
 
         columns = [
             TableColumn("Count", 100),
-            TableColumn("Name", 250),
+            TableColumn("Name", 400),
             TableColumn("ID", 120),
         ]
         table = TableView(columns=columns)
