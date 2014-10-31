@@ -2831,13 +2831,13 @@ class LevelEditor(GLViewport):
             name = "option" + keyname[len(keyname)-1:]
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
-        if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Flip'):
+        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=True)
-        if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Roll'):         
+        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Roll'):         
             self.currentTool.roll(blocksOnly=True)
-        if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Rotate'):        
+        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Rotate'):        
             self.currentTool.rotate(blocksOnly=True)
-        if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Mirror'):          
+        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Mirror'):          
             self.currentTool.mirror(blocksOnly=True)        
         if keyname == config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=False)

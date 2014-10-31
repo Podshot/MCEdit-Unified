@@ -108,7 +108,7 @@ class ChunkTool(EditorTool):
 
     @property
     def statusText(self):
-        return tr("Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.").format(config.config.get("Keys", "Deselect Chunks Modifier"), config.config.get("Keys", "Select Chunks Modifier"))
+        return tr("Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.").format(config.config.get("Keys", "Deselect Chunks"), config.config.get("Keys", "Select Chunks"))
 
     def toolEnabled(self):
         return isinstance(self.editor.level, pymclevel.ChunkedLevelMixin)

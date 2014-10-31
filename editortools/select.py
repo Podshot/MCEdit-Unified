@@ -773,20 +773,20 @@ class SelectionTool(EditorTool):
             
     def keyDown(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Show Block Info Modifier'):
+        if keyname == config.config.get('Keys', 'Show Block Info'):
             self.infoKey = 1
-        if keyname == config.config.get('Keys', 'Select Chunks Modifier'):
+        if keyname == config.config.get('Keys', 'Select Chunks'):
             self.selectKey = 1
-        if keyname == config.config.get('Keys', 'Deselect Chunks Modifier'):
+        if keyname == config.config.get('Keys', 'Deselect Chunks'):
             self.deselectKey = 1
             
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Show Block Info Modifier'):
+        if keyname == config.config.get('Keys', 'Show Block Info'):
             self.infoKey = 0
-        if keyname == config.config.get('Keys', 'Select Chunks Modifier'):
+        if keyname == config.config.get('Keys', 'Select Chunks'):
             self.selectKey = 0
-        if keyname == config.config.get('Keys', 'Deselect Chunks Modifier'):
+        if keyname == config.config.get('Keys', 'Deselect Chunks'):
             self.deselectKey = 0
 
     @property
