@@ -208,7 +208,7 @@ class ControlPanel(Panel):
             self.dismiss()
         else:
             self.editor.key_down(evt)
-    
+
     def key_up(self, evt):
         self.editor.key_up(evt)
 
@@ -736,7 +736,7 @@ class CameraViewport(GLViewport):
             for l, f in zip(linekeys, lineFields):
                 tileEntity[l] = pymclevel.TAG_String(f.value[:15])
             panel.dismiss()
-            
+
 
         colorMenu = mceutils.MenuButton("Color Code...", colors, menu_picked=menu_picked)
 
@@ -766,7 +766,7 @@ class CameraViewport(GLViewport):
             3: "Player",
             4: "Creeper",
         }
-        
+
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
             tileEntity["id"] = pymclevel.TAG_String("Skull")
@@ -775,7 +775,7 @@ class CameraViewport(GLViewport):
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["SkullType"] = pymclevel.TAG_Byte(3)
             self.editor.level.addTileEntity(tileEntity)
-        
+
         titleLabel = Label("Edit Skull Data")
         usernameField = TextField(width=150)
         panel = Dialog()
@@ -799,19 +799,19 @@ class CameraViewport(GLViewport):
                     if "Owner" in tileEntity:
                         del tileEntity["Owner"]
                     self.editor.addUnsavedEdit()
-                    
+
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
             chunk.dirty = True
             panel.dismiss()
-            
+
         okBTN = Button("OK", action=updateSkull)
         cancel = Button("Cancel", action=panel.dismiss)
-            
+
         column = [titleLabel, usernameField, skullMenu, okBTN, cancel]
         panel.add(Column(column))
         panel.shrink_wrap()
         panel.present()
-            
+
     @mceutils.alertException
     def editCommandBlock(self, point):
         panel = Dialog()
@@ -850,7 +850,7 @@ class CameraViewport(GLViewport):
                 tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
                 tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
                 self.editor.addUnsavedEdit()
-                
+
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
             chunk.dirty = True
             panel.dismiss()
@@ -861,9 +861,9 @@ class CameraViewport(GLViewport):
         panel.add(Column(column))
         panel.shrink_wrap()
         panel.present()
-        
+
         return
-        
+
 
     @mceutils.alertException
     def editContainer(self, point, containerID):
@@ -1938,9 +1938,10 @@ class LevelEditor(GLViewport):
         tableBacking.shrink_wrap()
 
         def saveToFile():
+            dt = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
             filename = askSaveFile(directories.docsFolder,
                                    title='Save analysis...',
-                                   defaultName=self.level.displayName + "_analysis.txt",
+                                   defaultName=self.level.displayName + "_analysis_" + dt + ".txt",
                                    filetype='Comma Separated Values\0*.txt\0\0',
                                    suffix="txt",
             )
@@ -2000,7 +2001,7 @@ class LevelEditor(GLViewport):
         self._external_widget = widget
         self._external_widget.bg_color = (0.0, 0.0, 0.6)
         self._external_widget.present()
-        
+
     def Notify(self, msg):
         ask(msg, ["Close"], cancel=0)
 
@@ -2652,7 +2653,7 @@ class LevelEditor(GLViewport):
 
     def key_up(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        
+
         if keyname == 'mouse1' or keyname == 'mouse2':
             keyname = 'M' + keyname[1:]
         elif keyname == 'mouse3':
@@ -2665,8 +2666,8 @@ class LevelEditor(GLViewport):
             keyname = 'Button 4'
         elif keyname == 'mouse7':
             keyname = 'Button 5'
-            
-        if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:    
+
+        if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname = keys.getKey(evt, 1)
             d = self.cameraInputs
             if tempKeyname == config.config.get('Keys', 'Left'):
@@ -2754,7 +2755,7 @@ class LevelEditor(GLViewport):
         if keyname == "Alt-F4":
             self.quit()
             return
-            
+
         if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname =  keys.getKey(evt, 1)
             d = self.cameraInputs
@@ -2821,12 +2822,12 @@ class LevelEditor(GLViewport):
                 getattr(self.currentTool, name)()
         elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=True)
-        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Roll'):         
+        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Roll'):
             self.currentTool.roll(blocksOnly=True)
-        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Rotate'):        
+        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Rotate'):
             self.currentTool.rotate(blocksOnly=True)
-        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Mirror'):          
-            self.currentTool.mirror(blocksOnly=True)        
+        elif keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Mirror'):
+            self.currentTool.mirror(blocksOnly=True)
         elif keyname == config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=False)
         elif keyname == config.config.get('Keys', 'Roll'):
@@ -2873,7 +2874,7 @@ class LevelEditor(GLViewport):
             self.get_root().ctrlPlaced = -2
             self.get_root().altClicked = 0
             self.get_root().altPlaced = -2
-        
+
             self.saveFile()
         elif keyname == config.config.get('Keys', 'New World'):
             self.createNewLevel()
@@ -2964,7 +2965,7 @@ class LevelEditor(GLViewport):
 
         elif keyname == config.config.get('Keys', 'Delete Blocks'):
             self.deleteSelectedBlocks()
-            
+
         elif keyname == config.config.get('Keys', 'Fly Mode'):
             Settings.flyMode.set(not Settings.flyMode.get())
             config.saveConfig()
@@ -3020,7 +3021,7 @@ class LevelEditor(GLViewport):
         self.cameraInputs = [0., 0., 0.]
         self.usedKeys = [0, 0, 0, 0, 0, 0]
         self.notMove = [0, 0, 0, 0, 0, 0]
-        
+
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
             if answer == "Save":
