@@ -1,9 +1,26 @@
 # -*- coding: utf-8 -*-
 #-# Modified by D.C.-G. for translation purpose
+#
+# System TrueType fonts (.ttf) paths
+# Linux
+# /usr/local/share/fonts (?)
+# /usr/share/fonts/truetype
+#
+# Windows
+# %SystemRoot%\Fonts
+#
+# OSX
+# /System/library/Fonts
+# /Library/Fonts
+
 import os
 import sys
+
+import logging
+log = logging.getLogger(__name__)
+
 import pygame
-from directories import getDataDir # not nice, find something else
+# from directories import getDataDir # not nice, find something else
 from pygame.locals import RLEACCEL
 from translate import langPath
 # default_font_name = "Vera.ttf"
@@ -11,7 +28,8 @@ optimize_images = True
 run_length_encode = False
 
 
-resource_dir = getDataDir()
+# resource_dir = getDataDir()
+resource_dir = "Resources"
 
 image_cache = {}
 font_cache = {}
@@ -21,6 +39,7 @@ cursor_cache = {}
 
 
 def _resource_path(default_prefix, names, prefix=""):
+    log.debug("resource_dir: %s"%resource_dir)
     return os.path.join(resource_dir, prefix or default_prefix, *names)
 
 
@@ -58,20 +77,35 @@ def get_image(*names, **kwds):
 
 
 def get_font(size, *names, **kwds):
+    log.debug("albow.resource.get_font <<<")
     path = _resource_path("fonts", names, **kwds)
+    log.debug("%s"%path)
     key = (path, size)
     font = font_cache.get(key)
+    log.debug("font: %s"%font)
     if not font:
+        log.debug("Font not in cache.")
         try:
             font = pygame.font.Font(path, size)
+            log.debug("Font loaded")
         except Exception, e:
+            log.debug("PyGame could not load font.")
+            log.debug("Exception: %s"%e)
+            log.debug("Trying with sys.getfilesystemencoding()")
             try:
-                font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
+                path = path.encode(sys.getfilesystemencoding())
+                log.debug("Path encoded")
+                font = pygame.font.Font(path, size)
+                log.debug("Font loaded")
             except Exception, e:
                 print "Couldn't get font {0}, using sysfont".format((path, size))
                 print "    PyGame said:", e
+                log.debug("PyGame could not load font.")
+                log.debug("Exception: %s"%e)
+                log.debug("Loading sysfont")
                 font = pygame.font.SysFont("Courier New", size)
         font_cache[key] = font
+    log.debug("albow.resource.get_font >>>")
     return font
 
 

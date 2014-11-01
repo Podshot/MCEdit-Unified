@@ -76,11 +76,18 @@ import albow
 # albow.translate.buildTranslation(albow.translate.refreshLang())
 
 from albow.translate import _
+#!# for debugging
+from albow.translate import getPlatInfo
+getPlatInfo()
+#!#
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
 import config
 import directories
+#-#
+albow.resource.resource_dir = directories.getDataDir()
+#-#
 import functools
 from glbackground import Panel
 import glutils
@@ -466,8 +473,13 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         o, n, sc = albow.translate.setLang(Settings.langCode.get())
-        if sc == {}:
+        print "o", o, "n", n, "sc", sc
+        if not sc and n != "en_US":
             albow.alert(_("{} is not a valid language").format(n))
+            if o == n:
+                o = "en_US"
+            Settings.langCode.set(o)
+            albow.translate.setLang(Settings.langCode.get())
         elif o != n:
             albow.alert("You must restart MCEdit to see language changes")
         Dialog.dismiss(self, *args, **kwargs)

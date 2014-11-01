@@ -47,6 +47,26 @@ You need, a least, these three function in your program:
 * _ function to translate strings.
 """
 
+import logging
+log = logging.getLogger(__name__)
+
+#!# for debugging
+import platform, locale
+def getPlatInfo():
+    log.debug("*** Platform information")
+    log.debug("    System: %s"%platform.system())
+    log.debug("    Release: %s"%platform.release())
+    log.debug("    Version: %s"%platform.version())
+    log.debug("    Architecture: %s, %s"%platform.architecture())
+    log.debug("    Dist: %s, %s, %s"%platform.dist())
+    log.debug("    Machine: %s"%platform.machine())
+    log.debug("    Processor: %s"%platform.processor())
+    log.debug("    Locale: %s"%locale.getdefaultlocale()[0])
+    log.debug("    Encoding: %s"%locale.getdefaultlocale()[1])
+    log.debug("***")
+#getPlatInfo()
+#!#
+
 import os
 # import sys # useless, only called in 'restart' (to be moved to mcedit.py)
 import re
@@ -154,10 +174,20 @@ def restart(mcedit):
 #-------------------------------------------------------------------------------
 def setLangPath(path):
     """Changes the default 'lang' folder path. Retrun True if the path is valid, False otherwise."""
+    log.debug("setLangPath <<<")
+    log.debug("Argument 'path': %s"%path)
     path = os.path.normpath(os.path.abspath(path))
+    log.debug("   Norm and abs: %s"%path)
+    log.debug("os.access(path, os.F_OK): %s; os.path.isdir(path): %s; os.access(path, os.R_OK): %s"%(os.access(path, os.F_OK), os.path.isdir(path), os.access(path, os.R_OK)))
     if os.access(path, os.F_OK) and os.path.isdir(path) and os.access(path, os.R_OK):
+        log.debug("'path' is valid")
         global langPath
         langPath = path
+        return True
+    lg.debug("'path' is not valid")
+    log.debug("setLangPath >>>")
+    return False
+
 #-------------------------------------------------------------------------------
 def getLangPath():
     """..."""
@@ -170,14 +200,18 @@ def getLang():
 def setLang(newlang):
     """Set the actual language. Returns old and new languages and string_cache in a tulpe.
 
-    newlang: str: new laguage to load in the format <language>_>country>"""
+    newlang: str: new laguage to load in the format <language>_<country>"""
     global lang
     oldLang = "" + lang
-    sc = {}
+#    sc = {}.update(string_cache)
+    result = False
     if not lang == newlang:
-        buildTranslation(newlang)
+        sc, result = buildTranslation(newlang)
         lang = newlang
-    return oldLang, lang, string_cache
+    else:
+        result = True
+    return oldLang, lang, result
+
 
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
@@ -189,6 +223,8 @@ def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     if "\n" in data:
         data = data.replace("\n", "\n\n")
     return data
+
+
 #-------------------------------------------------------------------------------
 # Supress this ?
 def verifyLangCode(lang):
@@ -202,12 +238,18 @@ def buildTranslation(lang,suppressAlert=False):
     """Finds the file corresponding to 'lang' builds up string_cache.
     If the file is not valid, does nothing.
     Errors encountered during the process are silently ignored.
-    Returns string_cache."""
+    Returns string_cache (dict) and wether the file exists (bool)."""
+    log.debug("buildTranslation <<<")
     global string_cache
+    fileFound = False
     lang = "%s"%lang
     fName = os.path.join(langPath, lang + ".trn")
+    log.debug("fName: %s"%fName)
+    log.debug("os.access(fName, os.F_OK): %s; os.path.isfile(fName): %s; os.access(fName, os.R_OK): %s"%(os.access(fName, os.F_OK), os.path.isfile(fName), os.access(fName, os.R_OK)))
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
+        fileFound = True
         data = open(fName, "rb").read() + "\x00"
+        log.debug("fName is valid and read.")
         trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
         grps = re.finditer(trnPattern, data)
         oStart = -1
@@ -231,7 +273,8 @@ def buildTranslation(lang,suppressAlert=False):
                     tStart = -1
                     tEnd = -1
         string_cache[org] = correctEncoding(data[tStart:tEnd -1])
-    return string_cache
+    log.debug("buildTranslation >>>")
+    return string_cache, fileFound
 
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":

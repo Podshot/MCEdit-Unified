@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------
+2014.11.01 Commit <latest on localisation-code branch>
+
+Added log messages and system information gathering to albow/translate.py.
+
+Non-existent language file code added in mcedit.py (OptionsPanel.dismiss).
+
+Moved setup of 'resource_dir' from albow/resource.py to mcedit.py.
+
+
+-------------------------------------------------------------------------------
+2014.10.30 Commit 9920e66d5e297fa6e4d0598dd9fd9bdd8e9b099e
+
+Added missing 'lang' folder.
+
+
+-------------------------------------------------------------------------------
+2014.10.30 Commit dae7867a469b73bc8baf007f985fc6825b0bf22e
+
+Inital commit on the branch 'localisation-code'.
+
+* json format dropped down for translation resource files. Back to plain UTF-8
+  text.
+  This is intended to be more user friendly for non programer users.
+  Doing this, other translation than french one aren't available (but this is
+  only temporary).
+
+* back to the '_()' function (instead of 'tr()'). This is faster to write one
+  character instead of two, and, it is visualy more perceptible in the code.
+
+* some useless function/methods have been dropped down. Especially those which
+  were using uninitialized code.
+  Parts of this code was, IMO, not relevant in the GUI. It is preferable to
+  implement it elsewhere, since it depends on the 'core' of MCEdit.
+  I mean that a simple code is more efficient at runtime and simplier to
+  maintain.
