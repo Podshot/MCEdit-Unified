@@ -202,7 +202,7 @@ if sys.platform != "darwin":
 def goPortable():
     if sys.platform == "darwin":
         return False
-    global configFilePath, schematicsDir, filtersDir, portable, cacheDir
+    global configFilePath, schematicsDir, filtersDir, portable
 
     if os.path.exists(fixedSchematicsDir):
         move_displace(fixedSchematicsDir, portableSchematicsDir)
@@ -218,7 +218,6 @@ def goPortable():
     schematicsDir = portableSchematicsDir
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
-    cacheDir = portableGenericSupportPath
     jarStorageDir = portableJarStorageDir
     portable = True
     return True
@@ -262,9 +261,10 @@ def goFixed():
     schematicsDir = fixedSchematicsDir
     configFilePath = fixedConfigFilePath
     filtersDir = fixedFiltersDir
-    cacheDir = fixedGenericSupportPath
     jarStorageDir = fixedJarStorageDir
     portable = False
+    
+
 
 
 def fixedConfigExists():
@@ -343,3 +343,8 @@ try:
         f.close()
 except:
     print "Unable to make usercache.json at {}".format(userCachePath)
+    
+def getFiltersDir():
+    global filtersDir
+    sys.path.append(filtersDir)
+    return filtersDir
