@@ -1422,6 +1422,9 @@ class BrushTool(CloneTool):
     
     @alertException
     def mouseUp(self, evt, pos, direction):
+        self.editor.cameraPanKeys = [0., 0.]
+        self.editor.get_root().ctrlClicked = -1
+        
         if 0 == len(self.draggedPositions):
             return
         

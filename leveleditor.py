@@ -3493,6 +3493,8 @@ class LevelEditor(GLViewport):
                 self.invalidateBox(changedBox)
             if op.changedLevel:
                 self.addUnsavedEdit()
+                
+        self.get_root().ctrlClicked = -1
 
     def invalidateBox(self, box):
         self.renderer.invalidateChunksInBox(box)
