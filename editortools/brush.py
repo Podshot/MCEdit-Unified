@@ -988,14 +988,10 @@ class BrushPanel(Panel):
                     aID = config.config.get("BrushPresets", key + " ID")
                     aData = config.config.get("BrushPresets", key + " Data")
                     if type(aID) != list:
-                        print "evalling"
                         aID = ast.literal_eval(aID)
                     if type(aData) != list:
-                        print "evalling"
                         aData = ast.literal_eval(aData)
-                    print aID[0]
                     blockInfo = materials.Block(self.tool.editor.level.materials, aID[currentNumber], aData[currentNumber])
-                    print blockInfo
                     if key == "Block":
                         self.blockButton.blockInfo = blockInfo
                     elif key == "Block To Replace":
@@ -1789,16 +1785,6 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         submask = mask[1:-1, 1:-1, 1:-1]
         exposedBlockSubMask = exposedBlockMask[1:-1, 1:-1, 1:-1]
         exposedBlockSubMask[:] = False
-        if wireframe and style == "Square":
-            newmask = numpy.ones(shape=outputShape, dtype='bool')
-            newmask = newmask[1:-1,1:-1,1:-1]
-            newmask[0, 1:-1, 1:-1] = False
-            newmask[-1, 1:-1, 1:-1] = False
-            newmask[1:-1,1:-1]= False
-            newmask[1:-1,0,1:-1] = False
-            newmask[1:-1,-1,1:-1] = False
-            submask &= newmask
-
             
         for dim in (0, 1, 2):
             slices = [slice(1, -1), slice(1, -1), slice(1, -1)]
@@ -1806,7 +1792,6 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
             exposedBlockSubMask |= (submask & (mask[slices] != submask))
             slices[dim] = slice(2, None)
             exposedBlockSubMask |= (submask & (mask[slices] != submask))
-            
                
         if hollow:
             mask[~exposedBlockMask] = False
