@@ -2887,6 +2887,8 @@ class LevelEditor(GLViewport):
             self.get_root().altPlaced = -2
 
             self.saveFile()
+            
+            self.get_root().ctrlClicked = -1
         if keyname == config.config.get('Keys', 'New World'):
             self.createNewLevel()
         if keyname == config.config.get('Keys', 'Close World'):
@@ -3038,12 +3040,14 @@ class LevelEditor(GLViewport):
 
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
+            self.get_root().ctrlClicked = -1
             if answer == "Save":
                 self.saveFile()
             if answer == "Cancel":
                 return
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
+        self.get_root().ctrlClicked = -1
         self.mainViewport.mouseLookOff()
         self.level = None
         self.renderer.stopWork()

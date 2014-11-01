@@ -1460,6 +1460,8 @@ class BrushTool(CloneTool):
             self.brushLineKey = 0
             
         self.lastPosition = None
+        self.editor.cameraPanKeys = [0., 0.]
+        self.editor.get_root().ctrlClicked = -1
 
     def toolEnabled(self):
         return True
