@@ -441,9 +441,6 @@ class FilterTool(EditorTool):
                 del m
 
         def tryImport(name):
-            #print directories.getFiltersDir()
-            #print directories.jarStorageDir
-            #print directories.schematicsDir
             print __import__(name)
             try:
                 return __import__(name)
@@ -457,12 +454,8 @@ class FilterTool(EditorTool):
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
         for m in self.filterModules.itervalues():
             try:
-                #print directories.getFiltersDir()
-                #print m
                 reload(m)
             except Exception, e:
-                #print m
-                #print directories.getFiltersDir()
                 print traceback.format_exc()
                 alert(
                     tr(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
