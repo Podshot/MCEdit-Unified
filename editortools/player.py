@@ -182,7 +182,7 @@ class PlayerPositionPanel(Panel):
 class PlayerPositionTool(EditorTool):
     surfaceBuild = True
     toolIconName = "player"
-    tooltipText = "Move Player"
+    tooltipText = "Players"
     movingPlayer = None
 
     def reloadTextures(self):
