@@ -441,14 +441,13 @@ class FilterTool(EditorTool):
                 del m
 
         def tryImport(name):
-            print __import__(name)
             try:
                 return __import__(name)
             except Exception, e:
                 print traceback.format_exc()
                 alert(tr(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
-                
+
         filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
