@@ -53,7 +53,6 @@ alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
 
 
 def getVersions(doSnapshot):
-    version = None
     JAR_VERSION_URL_TEMPLATE = "https://s3.amazonaws.com/Minecraft.Download/versions/{}/minecraft_server.{}.jar"
     versionSite = urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json")
     versionSiteResponse = versionSite.read()
