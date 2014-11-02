@@ -1875,25 +1875,9 @@ class LevelEditor(GLViewport):
 
         blockCounts = sorted([(level.materials[t & 0xfff, t >> 12], types[t]) for t in presentTypes[0]])
 
-        counts = []
-
-        c = 0
-        b = level.materials.Air
-        for block, count in blockCounts:
-            # Collapse waters and lavas together so different fluid levels are counted together
-            # xxx optional
-            if block.idStr not in ("water", "lava") or b.idStr != block.idStr:
-                counts.append((b, c))
-                b = block
-                c = 0
-
-            c += count
-        counts.remove((level.materials.Air, 0))
-        counts.append((b, c))
-
         blockRows = [("", "", ""), (box.volume, "<Blocks>", "")]
         rows = list(blockRows)
-        rows.extend([[count ,block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in counts])
+        rows.extend([[count ,block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
         #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         def extendEntities():
