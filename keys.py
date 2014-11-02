@@ -24,7 +24,7 @@ def remapMouseButton(button):
 def getKey(evt, i=0):
     keyname = key.name(evt.key)
     if keyname == 'Enter':
-            keyname = 'Return'
+        keyname = 'Return'
     if 'left' in keyname and len(keyname) > 5:
         keyname = keyname[5:]
     elif 'right' in keyname and len(keyname) > 6:
@@ -76,7 +76,6 @@ class KeyConfigPanel(Dialog):
         "Increase Reach",
         "Decrease Reach",
         "Reset Reach",
-        "Line Tool",
         "Export Selection",
         "",
         "<Functions>",
@@ -90,7 +89,6 @@ class KeyConfigPanel(Dialog):
         "<Options>",
         "Long-Distance Mode",
         "Fly Mode",
-        "Debug Overlay",
         "",
         "<Menu>",
         "New World",
@@ -102,8 +100,15 @@ class KeyConfigPanel(Dialog):
         "World Info",
         "Quit",
         "",
-        "<Modifiers>",
-        "Blocks-Only Modifier"
+        "<Advanced>",
+        "Debug Overlay",
+        "Blocks-Only",
+        "Show Block Info",
+        "Pick Block",
+        "Select Chunks",
+        "Deselect Chunks",
+        "Brush Line Tool",
+        "Snap Clone to Axis"
     ]
 
     presets = {"WASD": [
@@ -144,7 +149,6 @@ class KeyConfigPanel(Dialog):
 
         ("Long-Distance Mode", "Alt-Z"),
         ("Fly Mode", "None"),
-        ("Debug Overlay", "0"),
 
         ("New World", "Ctrl-N"),
         ("Quick Load", "Ctrl-L"),
@@ -155,7 +159,14 @@ class KeyConfigPanel(Dialog):
         ("World Info", "Ctrl-I"),
         ("Quit", "Ctrl-Q"),
         
-        ("Blocks-Only Modifier", "Alt")
+        ("Debug Overlay", "0"),
+        ("Blocks-Only", "Alt"),
+        ("Show Block Info", "Alt"),
+        ("Pick Block", "Alt"),
+        ("Select Chunks", "Z"),
+        ("Deselect Chunks", "Alt"),
+        ("Brush Line Tool", "Z"),
+        ("Snap Clone to Axis", "Ctrl")
     ],
                "Arrows": [
                    ("Forward", "Up"),
@@ -195,7 +206,6 @@ class KeyConfigPanel(Dialog):
 
                    ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None"),
-                   ("Debug Overlay", "0"),
 
                    ("New World", "Ctrl-N"),
                    ("Quick Load", "Ctrl-L"),
@@ -206,7 +216,14 @@ class KeyConfigPanel(Dialog):
                    ("World Info", "Ctrl-I"),
                    ("Quit", "Ctrl-Q"),
                    
-                   ("Blocks-Only Modifier", "Alt")
+                   ("Debug Overlay", "0"),
+                   ("Blocks-Only", "Alt"),
+                   ("Show Block Info", "Alt"),
+                   ("Pick Block", "Alt"),
+                   ("Select Chunks", "Z"),
+                   ("Deselect Chunks", "Alt"),
+                   ("Brush Line Tool", "Z"),
+                   ("Snap Clone to Axis", "Ctrl")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -246,7 +263,6 @@ class KeyConfigPanel(Dialog):
 
                    ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None"),
-                   ("Debug Overlay", "0"),
 
                    ("New World", "Ctrl-N"),
                    ("Quick Load", "Ctrl-L"),
@@ -257,7 +273,14 @@ class KeyConfigPanel(Dialog):
                    ("World Info", "Ctrl-I"),
                    ("Quit", "Ctrl-Q"),
                    
-                   ("Blocks-Only Modifier", "Alt")
+                   ("Debug Overlay", "0"),
+                   ("Blocks-Only", "Alt"),
+                   ("Show Block Info", "Alt"),
+                   ("Pick Block", "Alt"),
+                   ("Select Chunks", "Z"),
+                   ("Deselect Chunks", "Alt"),
+                   ("Brush Line Tool", "Z"),
+                   ("Snap Clone to Axis", "Ctrl")
                ],
  "WASD Old": [
         ("Forward", "W"),
@@ -297,7 +320,6 @@ class KeyConfigPanel(Dialog):
 
         ("Long-Distance Mode", "Alt-Z"),
         ("Fly Mode", "None"),
-        ("Debug Overlay", "0"),
 
         ("New World", "Ctrl-N"),
         ("Quick Load", "Ctrl-L"),
@@ -308,7 +330,14 @@ class KeyConfigPanel(Dialog):
         ("World Info", "Ctrl-I"),
         ("Quit", "Ctrl-Q"),
         
-        ("Blocks-Only Modifier", "Alt")
+        ("Debug Overlay", "0"),
+        ("Blocks-Only", "Alt"),
+        ("Show Block Info", "Alt"),
+        ("Pick Block", "Alt"),
+        ("Select Chunks", "Ctrl"),
+        ("Deselect Chunks", "Shift"),
+        ("Brush Line Tool", "Shift"),
+        ("Snap Clone to Axis", "Shift")
     ]}
  
 
@@ -342,6 +371,8 @@ class KeyConfigPanel(Dialog):
             choiceButton.selectedChoice = "Arrows"
         if config.config.get("Keys", "Forward") == "[8]":
             choiceButton.selectedChoice = "Numpad"
+        if config.config.get("Keys", "Brake") == "Space":
+            choiceButton.selectedChoice = "WASD Old"
 
         choiceRow = albow.Row((albow.Label("Presets: "), choiceButton))
         self.choiceButton = choiceButton
@@ -463,35 +494,10 @@ class KeyConfigPanel(Dialog):
         
         self.enter = 0
         if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
-            if "Modifier" in configKey:
-                 occupiedKeys = []
-                 if keyname != "Shift" and keyname != "Ctrl" and keyname != "Alt":
-                    self.askAssignKey(configKey,
-                                     _("The key {0} is not a modifier. "
-                                     "Press a new key.\n\n"
-                                     "Press ESC to cancel. Press Shift-ESC to unbind.")
-                                     .format(keyname))
-                    return True
-            else:        
-                occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v == keyname and k != configKey.lower() and "modifier" not in k]
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
             self.changes[configKey] = oldkey
             self.changesNum = 1
-            for keyname, setting in occupiedKeys:
-                settings = setting.split(' ')
-                newSettings = []
-                for set in settings:
-                    newSettings.append(set[0].upper() + set[1:])
-                setting = ' '.join(newSettings)
-                if self.askAssignKey(setting,
-                                     _("The key {0} is no longer bound to {1}. "
-                                     "Press a new key for the action \"{1}\"\n\n"
-                                     "Press ESC to cancel. Press Shift-ESC to unbind.")
-                                     .format(keyname, setting)):
-                    config.config.set("Keys", configKey, oldkey)
-                    self.changes[configKey] = keyname
-                    return True 
         elif keyname == "Shift-Escape":
             config.config.set("Keys", configKey, "None")
         elif keyname != "Escape":

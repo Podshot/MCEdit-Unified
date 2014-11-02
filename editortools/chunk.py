@@ -27,6 +27,7 @@ import mcplatform
 import directories
 import pymclevel
 from pymclevel.minecraft_server import MCServerChunkGenerator
+import config
 
 from albow.dialogs import Dialog
 
@@ -107,7 +108,7 @@ class ChunkTool(EditorTool):
 
     @property
     def statusText(self):
-        return _("Click and drag to select chunks. Hold ALT to deselect chunks. Hold SHIFT to select chunks.")
+        return _("Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.").format(config.config.get("Keys", "Deselect Chunks"), config.config.get("Keys", "Select Chunks"))
 
     def toolEnabled(self):
         return isinstance(self.editor.level, pymclevel.ChunkedLevelMixin)
@@ -352,6 +353,12 @@ class ChunkTool(EditorTool):
 
     def mouseUp(self, evt, *args):
         self.editor.selectionTool.mouseUp(evt, *args)
+        
+    def keyDown(self, evt):
+        self.editor.selectionTool.keyDown(evt)
+    
+    def keyUp(self, evt):
+        self.editor.selectionTool.keyUp(evt)
 
 
 def GeneratorPanel():

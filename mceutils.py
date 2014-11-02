@@ -270,6 +270,12 @@ def loadAlphaTerrainTexture():
     pngFile = None
 
     texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), "terrain.png"))
+    '''
+    THIS CODE IS VERY LIKLEY TO CHANGE
+    terrainTextureFiles = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "terrain_textures"), ".png")
+    for textures in terrainTextureFiles:
+        return
+    '''
 
     def _loadFunc():
         loadTextureFunc(texW, texH, terraindata)
@@ -505,7 +511,7 @@ def TextInputRow(title, *args, **kw):
 
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
-    prefix = tr(prefix)
+    prefix = _(prefix)
     if type(prefix) == unicode:
         prefix = prefix.encode("utf8")
     class ctx:
@@ -518,6 +524,10 @@ def setWindowCaption(prefix):
     return ctx()
 
 def compareMD5Hashes(found_filters):
+    '''
+    Compares the MD5 Hashes of filters
+    :param found_filters: A list of filter paths
+    '''
     ff = {}
     for filter in found_filters:
         ff[filter.split('\\')[-1]] = filter
@@ -527,7 +537,7 @@ def compareMD5Hashes(found_filters):
             filterDict["filters"] = {}
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
                 json.dump(filterDict, j)
-        filterInBundledFolder = directories.getAllFilters(os.path.join(directories.getDataDir(), "filters"))
+        filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "filters"), ".py")
         filterBundle = {}
         for bundled in filterInBundledFolder:
             filterBundle[bundled.split('\\')[-1]] = bundled
@@ -635,7 +645,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
     widget = ProgressWidget()
-    widget.progressText = tr(progressText)
+    widget.progressText = _(progressText)
     widget.statusText = ""
     widget.progressAmount = 0.0
 

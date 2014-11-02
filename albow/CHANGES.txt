@@ -1,6 +1,14 @@
 -------------------------------------------------------------------------------
 2014.11.01 Commit <latest on localisation-code branch>
 
+Merging to master branch.
+
+Added a tweaked compilation script (setup2.py).
+
+
+-------------------------------------------------------------------------------
+2014.11.01 Commit 1a77839099159949e2e688eb4f7abc77435d8f26
+
 Added log messages and system information gathering to albow/translate.py.
 
 Non-existent language file code added in mcedit.py (OptionsPanel.dismiss).

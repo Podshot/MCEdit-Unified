@@ -50,9 +50,17 @@ You need, a least, these three function in your program:
 import logging
 log = logging.getLogger(__name__)
 
+import os
+# import sys # useless, only called in 'restart' (to be moved to mcedit.py)
+import re
+# import json # json isn't user friendly decause of its syntax and the use of escaped characters for new lines, tabs, etc.
+# import directories # suppress this
+
 #!# for debugging
 import platform, locale
-def getPlatInfo():
+def getPlatInfo(**kwargs):
+    """kwargs: dict: {"module_name": module,...}
+    used to display version information about modules."""
     log.debug("*** Platform information")
     log.debug("    System: %s"%platform.system())
     log.debug("    Release: %s"%platform.release())
@@ -63,15 +71,29 @@ def getPlatInfo():
     log.debug("    Processor: %s"%platform.processor())
     log.debug("    Locale: %s"%locale.getdefaultlocale()[0])
     log.debug("    Encoding: %s"%locale.getdefaultlocale()[1])
+    reVer = re.compile(r"__version__|_version_|__version|_version|version|"
+                       "__ver__|_ver_|__ver|_ver|ver", re.IGNORECASE)
+    for name, mod in kwargs.items():
+        s = "%s"%dir(mod)
+        verObjNames = list(re.findall(reVer, s))
+        if len(verObjNames) > 0:
+            while verObjNames:
+                verObjName = verObjNames.pop()
+                verObj = getattr(mod, verObjName, None)
+                if verObj:
+                    if type(verObj) in (str, unicode, int, list, tuple):
+                        ver = "%s"%verObj
+                        break
+                    elif "%s"%type(verObj) == "<type 'module'>":
+                        verObjNames += ["%s.%s"%(verObjName, a) for a in re.findall(reVer, "%s"%dir(verObj))]
+                    else:
+                        ver = verObj()
+                else:
+                    ver = "%s"%type(verObj)
+            log.debug("    %s version: %s"%(name, ver))
     log.debug("***")
 #getPlatInfo()
 #!#
-
-import os
-# import sys # useless, only called in 'restart' (to be moved to mcedit.py)
-import re
-# import json # json isn't user friendly decause of its syntax and the use of escaped characters for new lines, tabs, etc.
-# import directories # suppress this
 
 enc = "utf8"
 
@@ -97,7 +119,7 @@ def _(string, doNotTranslate=False):
     return string_cache.get(string, string.replace("\n", "\n\n"))
 
 #-------------------------------------------------------------------------------
-# Suppress this. Messy and useless
+# Suppress this.
 def refreshLang(self=None,suppressAlert=False,build=True):
     """Refreshes and returns the current language string"""
     global oldlang
@@ -250,6 +272,7 @@ def buildTranslation(lang,suppressAlert=False):
         fileFound = True
         data = open(fName, "rb").read() + "\x00"
         log.debug("fName is valid and read.")
+        log.debug("Type of file data is %s"%type(data))
         trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
         grps = re.finditer(trnPattern, data)
         oStart = -1

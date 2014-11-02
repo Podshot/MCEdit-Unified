@@ -1,3 +1,5 @@
+Manualy merged with master. Waiting for merging to master.
+
 Read carefully before downloading. This is a test release.
 
 In order to test this, just download the zip and decompress it somewhere it
@@ -28,7 +30,7 @@ Sumary of changes (see also CHANGES.txt):
   maintain.
 
 
-Coming later:
+Comming later:
 
 * functionalities to create a language template. It will contain the original
   (english) strings to be translated.

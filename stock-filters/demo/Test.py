@@ -12,6 +12,9 @@ operations = {
 
 inputs = (
     ("Operation", tuple(sorted(operations.keys()))),
+    ("Float Field Test (Default)", 0.0),
+    ("Float Field Test (Min=-1.0 Max=1.0", (0.0, -1.0, 1.0)),
+    ("Float Field Test (Increments by 0.3)", (0.0, -5.0, 5.0, 0.3)),
     )
 
 def hiAction():

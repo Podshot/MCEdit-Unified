@@ -1,6 +1,9 @@
 import nbt
 
 class PlayerScores:
+    '''
+    Contains Objective scores for each player
+    '''
     
     def __init__(self, players):
         self._playersScores = {}
@@ -19,32 +22,50 @@ class PlayerScores:
         
         
 class Objective:
+    '''
+    Represents a Scoreboard Objective
+    '''
 
     def __init__(self, objective):
-        self.criteria = objective["CriteriaName"].value
-        self.displayName = objective["DisplayName"].value
-        self.name = objective["Name"].value
+        self._criteria = objective["CriteriaName"].value
+        self._displayName = objective["DisplayName"].value
+        self._name = objective["Name"].value
         # Only Render Type currently is integer, bu this is to prevent
         # breaking in possible newer versions
-        self.renderType = objective["RenderType"].value
+        self._renderType = objective["RenderType"].value
 
     @property
-    def Citeria(self):
-        return self.criteria
+    def Criteria(self):
+        '''
+        The Criteria of the Objective
+        '''
+        return self._criteria
 
     @property
     def DisplayName(self):
-        return self.displayName
+        '''
+        The DisplayName of the Objective
+        '''
+        return self._displayName
 
     @property
     def Name(self):
-        return self.name
+        '''
+        The Name of the Objective
+        '''
+        return self._name
 
     @property
     def RenderType(self):
-        return self.renderType
+        '''
+        The RenderType of the Objective (As of 1.8: only integer)
+        '''
+        return self._renderType
 
     def getTAGStructure(self):
+        '''
+        Returns a TAG_Compound() that matches the Objective structure
+        '''
         tag = nbt.TAG_Compound()
         tag["Name"] = nbt.TAG_String(self.name)
         tag["RenderType"] = nbt.TAG_String(self.renderType)
@@ -53,6 +74,9 @@ class Objective:
         return tag
 
 class Team:
+    '''
+    Represents a Scoreboard Team
+    '''
 
     def __init__(self, team):
         self.displayName = team["DisplayName"].value
@@ -74,45 +98,78 @@ class Team:
 
     @property
     def DisplayName(self):
+        '''
+        The DisplayName of the Team
+        '''
         return self.displayName
 
     @property
     def Name(self):
+        '''
+        The Name of the Team
+        '''
         return self.name
 
     @property
     def Prefix(self):
+        '''
+        The Prefix of the Team
+        '''
         return self.prefix
 
     @property
     def Suffix(self):
+        '''
+        The Suffix of the Team
+        '''
         return self.suffix
 
     @property
     def Color(self):
+        '''
+        The Color of the Team
+        '''
         return self.color
 
     @property
     def DeathMessage(self):
+        '''
+        The DeathMessage for the Team
+        '''
         return self.deathMessage
 
     @property
     def NameTags(self):
+        '''
+        The NameTags of the Team
+        '''
         return self.nametags
 
     @property
     def FriendlyInvisibles(self):
+        '''
+        Whether the members of the Team should see other players that are invisible and that are on their Team
+        '''
         return self.friendlyInvisibles
 
     @property
     def FriendlyFire(self):
+        '''
+        Whether players on the same Team can damage each other
+        '''
         return self.friendlyFire
 
     @property
     def TeamMembers(self):
+        '''
+        A list of player names of players that are on the Team
+        '''
         return self.teamMembers
 
     def getTAGStructure(self):
+        '''
+        Returns a TAG_Compound() that matches the Team structure
+        '''
         tag = nbt.TAG_Compound()
         tag["Name"] = nbt.TAG_String(self.name)
         tag["DisplayName"] = nbt.TAG_String(self.displayName)
@@ -131,8 +188,16 @@ class Team:
         return tag
         
 class Scoreboard:
+    '''
+    Represents a world's scoreboard.dat file
+    '''
 
     def __init__(self, level, should_create_scoreboard):
+        '''
+        Initiates a Scoreboard object
+        :param level: The level that this Scoreboard represents
+        :param should_create_scoreboard: Creates a empty Scoreboard if one is not present in the world's data folder
+        '''
         self.level = level
         self._objectives = []
         self._teams = []
@@ -156,17 +221,30 @@ class Scoreboard:
             
     @property
     def Objectives(self):
+        '''
+        The Objectives that belong to this Scoreboard
+        '''
         return self._objectives
 
     @property
     def Teams(self):
+        '''
+        The Teams that belong to this Scoreboard
+        '''
         return self._teams
     
     @property
     def PlayerScores(self):
+        '''
+        A list PlayerScore object
+        '''
         return self._playerscores
 
     def save(self, level):
+        '''
+        Saves the Scoreboard object to disk
+        :param level: The Level that this scoreboard should be saved to
+        '''
         objectiveList = nbt.TAG_List()
         teamList = nbt.TAG_List()
         for objective in self._objectives:
@@ -176,7 +254,6 @@ class Scoreboard:
         self.root_tag["data"]["Objectives"] = objectiveList
         self.root_tag["data"]["Teams"] = teamList
         print "Saving Scoreboard...."
-        #with open(level.worldFolder.getFolderPath("data")+"/scoreboard.dat", 'w') as datFile:
         self.root_tag.save(level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
         
         

@@ -32,6 +32,7 @@ import urllib
 import json
 import shutil
 import directories
+import sys
 
 
 def alertFilterException(func):
@@ -45,17 +46,24 @@ def alertFilterException(func):
     return _func
 
 
-def addNumField(page, optionName, val, min=None, max=None):
+def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
     if isinstance(val, float):
         ftype = FloatField
+        if isinstance(increment, int):
+            increment = float(increment)
     else:
         ftype = IntField
+        if increment == 0.1:
+            increment = 1
+        if isinstance(increment, float):
+            increment = int(round(increment))
 
     if min == max:
         min = None
         max = None
 
     field = ftype(value=val, width=100, min=min, max=max)
+    field._increment = increment
     page.optionDict[optionName] = AttrRef(field, 'value')
 
     row = Row([Label(optionName), field])
@@ -115,13 +123,17 @@ class FilterModuleOptions(Widget):
         for optionName, optionType in inputs:
             if isinstance(optionType, tuple):
                 if isinstance(optionType[0], (int, long, float)):
-                    if len(optionType) > 2:
+                    if len(optionType) == 3:
                         val, min, max = optionType
+                        increment = 0.1
                     elif len(optionType) == 2:
                         min, max = optionType
                         val = min
+                        increment = 0.1
+                    elif len(optionType) == 4:
+                        val, min, max, increment = optionType
 
-                    rows.append(addNumField(page, optionName, val, min, max))
+                    rows.append(addNumField(page, optionName, val, min, max, increment))
 
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
@@ -293,7 +305,7 @@ class FilterToolPanel(Panel):
         self.confirmButton = Button("Filter", action=self.tool.confirm)
 
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
-        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.filtersDir)
+        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
         filterLabel.tooltipText = "Click to open filters folder"
         filterSelectRow = Row((filterLabel, self.filterSelect))
 
@@ -392,8 +404,9 @@ class FilterTool(EditorTool):
     def updateFilters(self):
         totalFilters = 0
         updatedFilters = 0
+        filtersDir = directories.getFiltersDir()
         try:
-            os.mkdir(directories.filtersDir + "/updates")
+            os.mkdir(filtersDir + "/updates")
         except OSError:
             pass
         for module in self.filterModules.values():
@@ -403,11 +416,11 @@ class FilterTool(EditorTool):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"],
-                                           directories.filtersDir + "/updates/" + versionJSON["Name"])
+                                           filtersDir + "/updates/" + versionJSON["Name"])
                         updatedFilters = updatedFilters + 1
-        for f in os.listdir(directories.filtersDir + "/updates"):
-            shutil.copy(directories.filtersDir + "/updates/" + f, directories.filtersDir)
-        shutil.rmtree(directories.filtersDir + "/updates/")
+        for f in os.listdir(filtersDir + "/updates"):
+            shutil.copy(filtersDir + "/updates/" + f, filtersDir)
+        shutil.rmtree(filtersDir + "/updates/")
         self.finishedUpdatingWidget = Widget()
         lbl = Label("Updated " + str(updatedFilters) + " filter(s) out of " + str(totalFilters))
         closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
@@ -421,9 +434,11 @@ class FilterTool(EditorTool):
         self.finishedUpdatingWidget.dismiss()
 
     def reloadFilters(self):
-        filterDir = directories.filtersDir
-        filterFiles = os.listdir(filterDir)
-        filterPyfiles = filter(lambda x: x.endswith(".py"), filterFiles)
+        if self.filterModules:
+            for k, m in self.filterModules.iteritems():
+                name = m.__name__
+                del sys.modules[name]
+                del m
 
         def tryImport(name):
             try:
@@ -433,9 +448,8 @@ class FilterTool(EditorTool):
                 alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
 
-        filterModules = (tryImport(x[:-3]) for x in filterPyfiles)
+        filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
-
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
         for m in self.filterModules.itervalues():
             try:

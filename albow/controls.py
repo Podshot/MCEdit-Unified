@@ -227,6 +227,7 @@ class ButtonBase(Control):
                         self.call_handler('action', self.text)
                     else:
                         self.call_handler('action')
+        self.get_root().ctrlClicked = -1
 
      
 

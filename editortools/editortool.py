@@ -81,6 +81,12 @@ class EditorTool(object):
 
     def mouseDrag(self, evt, pos, direction):
         pass
+        
+    def keyDown(self, evt):
+        pass
+        
+    def keyUp(self, evt):
+        pass
 
     def increaseToolReach(self):
         "Return True if the tool handles its own reach"

@@ -1,0 +1,518 @@
+This is a template for any language's that you want to add in for MCEdit. 
+Please don't use any translators for long words/sentences as it will confuse some people who use the program and read the text in their native language, thank you.
+To edit make sure you save this file as: 'language(lower caps)_Country of Use(Upper Case).json Example: fr_FR.json, en_US.json.(Unless we/you have found a much better way to do this).
+These are used in programs you use around the world and to see what your language code is go here http://msdn.microsoft.com/en-us/library/ms533052(v=vs.85).aspx , 
+http://www.mcanerin.com/EN/articles/meta-language.asp or search what your language code is, either is preferable.
+
+Make sure all words are correct within MCEdit. Then save your FINISHED language file to github and you're done. To add your language in github click the (+) in the lang folder.
+
+*DO NOT DELETE THIS TEMPLATE OR TYPE THE LANGUAGE NEXT TO THE WORD WITHIN THE TEMPLATE. PLEASE COPY AND PASTE ALL WORDS INSIDE AND INCLUDE THE CURLEY BRACKETS {}. (Windows: Ctrl+C then Ctrl+V, Mac:CMD+C, CMD+V) AND PUT IT INTO YOUR SAVE LANGUAGE FILE.
+ALSO MAKE SURE ALL WORDS/SENTENCES ARE INSIDE QUOTATION MARKS ("") AND USE A COMMA (,) WHEN YOU GO TO THE NEXT WORD/SENETENCE. *Example: 
+{
+	"Example": "Ejemplo"
+	"Copy all keys in your: language %:" : "Copie todas las claves en su idioma:%:"
+}
+
+COPY FROM { TO } (AT THE BOTTOM) AND PASTE IT INTO YOUR LANGUAGE FILE
+
+{
+	"OK":
+	"Cancel":
+	"Save as:":
+	"Save":
+	"Replace existing '%s'?":
+	"Open":
+	"Enable Music":
+	"Music Volume":
+	"Prev Page":
+	"Menu":
+	"Next Page":
+	"Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.\n\n If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.": 
+	"Don't remind me again.":
+	"When an error occurs, MCEdit can report the details of the error to its developers. The error report will include your operating system version, MCEdit version, OpenGL version, plus the make and model of your CPU and graphics processor. No personal information will be collected.\n\nError reporting can be enabled or disabled in the Options dialog.\n\nEnable error reporting?":
+	"Yes":
+	"No":
+	"Create New World":
+	"Load World...":
+	"Open...":
+	"Controls":
+	"Graphics":
+	"Options":
+	"Homepage":
+	"About MCEdit":
+	"Recent Changes":
+	"License":
+	"Creating a new world.":
+	"East-West Chunks: ":
+	"North-South Chunks: ":
+	"Seed: ":
+	"Game Type:":
+	"Survival":
+	"Creative":
+	"Generator:":
+	"Minecraft Server":
+	"Flatland":
+	"Server version:": 
+	"or":
+	"Check for Updates":
+	"Simulate world":
+	"Advanced...":
+	"Create":
+	"Point here and use mousewheel to adjust":
+	" to slow down":
+	"Right-click to toggle camera control":
+	"Mousewheel to control tool distance":
+	"Hold SHIFT to move along a major axis":
+	"Hold ALT for details":
+	"<Movement Controls>":
+	"Forward":
+	"Back":
+	"Left":
+	"Right":
+	"Up":
+	"Down":
+	"Brake":
+	"<Camera Controls>":
+	"Pan Left":
+	"Pan Right":
+	"Pan Up":
+	"Pan Down":
+	"<Tool Controls>":
+	"Rotate":
+	"Roll":
+	"Flip":
+	"Mirror":
+	"Swap":
+	"Increase Reach":
+	"Decrease Reach":
+	"Reset Reach":
+	"Command":
+	"Assigned Key":
+	"Assign Key...":
+	"Done":
+	"WSAD":
+	"Arrows":
+	"Numpad":
+	"Presets: ":
+	"Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.":
+	"The key {0} is no longer bound to {1}.\nPress a new key for the action \"{1}\"\n\nPress ESC to cancel.":
+	"Field of View: ":
+	"Target FPS: ":
+	"Vertex Buffer Limit (MB): ":
+	"Fast Leaves":
+	"Leaves are solid, like Minecraft's 'Fast' graphics":
+	"Rough Graphics":
+	"All blocks are drawn the same way (overrides 'Fast Leaves')":
+	"Enable Mouse Lag":
+	"Enable choppy mouse movement for faster loading.":
+	"Settings":
+	"Autobrake":
+	"Apply brake when not pressing movement keys":
+	"Swap Axes Looking Down":
+	"Change the direction of the Forward and Backward keys when looking down":
+	"Camera Acceleration: ":
+	"Camera Drag: ":
+	"Camera Max Speed: ":
+	"Camera Braking Speed: ":
+	"Mouse Speed: ":
+	"Undo Limit: ":
+	"Invert Mouse":
+	"Reverse the up and down motion of the mouse.":
+	"Low Detail Height":
+	"When you are this far above the top of the world, move fast and use low-detail mode.":
+	"Block Buffer (MB):":
+	"Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.":
+	"Set Window Placement":
+	"Try to save and restore the window position. ":
+	"Window Resize Alert":
+	"Reminds you that the cursor won't work correctly after resizing the window.":
+	"Visibility Check":
+	"Do a visibility check on chunks while loading. May cause a crash.":
+	"Long-Distance Mode":
+	"Always target the farthest block under the cursor, even in mouselook mode. Shortcut: ALT-Z":
+	"Fly Mode": "Mode vol",
+	"Moving forward and backward will not change your altitude in Fly Mode.":
+	"Change":
+	"Report Errors":
+	"Automatically report errors to the developer.":
+	"Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder":
+	"Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder":
+	"Install Mode: Portable":
+	"Install Mode: Fixed": "Type d'installation :
+	"This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?":
+	"the MCEdit application":
+	"MCEditData":
+	"This will move your settings and schematics to your Documents folder. Continue?":
+	"This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?":
+	"Error while moving files: {0}":
+	"Window size increased. You may have problems using the cursor until MCEdit is restarted.":
+	"World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.":
+	"There are {0} unsaved changes.":
+	"Save and Quit":
+	"Quit":
+	"Failed to load minecraft.yaml. Check the console window for details.":
+	"Version {} is available":
+	"Finding updates...":
+	"Found version {new_version}":
+	"Downloading: {received} / {size}":
+	"Downloaded {path}":
+	"Installing {new_version}":
+	"Cleaning up...":
+	"Done.":
+	"Failed to install update %s":
+	"Version %s installed. Restart MCEdit to begin using it.":
+	"Color: ":
+	"Show Previous Selection":
+	"Selection Options":
+	"Delete Blocks":
+	"Fill the selection with Air. Shortcut: DELETE":
+	"Delete Entities":
+	"Remove all entities within the selection":
+	"Analyze":
+	"Count the different blocks and entities in the selection and display the totals.":
+	"Cut":
+	"Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}-X":
+	"Copy":
+	"Take a copy of all blocks and entities within the selection. Shortcut: {0}-C":
+	"Paste":
+	"Import the last item taken by Cut or Copy. Shortcut: {0}-V":
+	"Export":
+	"Export the selection to a .schematic file.
+	"Select Chunks":
+	"Expand the selection to the edges of the chunks within":
+	"Deselect":
+	"Remove the selection. Shortcut: {0}-D":
+	"--Items omitted. ALT to view. Double-click to edit.--":
+	"Chunk not present.":
+	"Chunk HeightMap is incorrect! Please relight this chunk as soon as possible!":
+	"Chunk is present and filled with air.":
+	"Shortcut: ENTER":
+	"{0} contains {len} items. (Mostly {top}) \n\nDouble-click to edit {0}.":
+	"Empty {0}. \n\nDouble-click to edit {0}.":
+	"Double-click to initialize the {0}.":
+	"{id} spawner. \n\nDouble-click to edit spawner.":
+	"Sign text:":
+	"Double-click to edit sign.":
+	"{0:n} blocks":
+	"Blue":
+	"Yellow":
+	"Click the mouse button again to place the {0} selection corner. Press {1} to switch corners.":
+	"Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.":
+	"Click the mouse button again to place the other selection corner.":
+	"Release the mouse button to finish the selection":
+	"Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.":
+	"You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?":
+	"Fill with Air":
+	"Delete Chunks":
+	"DELETING - ":
+	"Deleting {0} blocks":
+	"WORKING - ":
+	"Removing entities...":
+	"This is an uneven selection with missing chunks. Expand the selection to chunk edges, or copy air within the missing chunks?":
+	"Expand Selection":
+	"Copy Air":
+	"Copying - ":
+	"Copying {0:n} blocks...":
+	"Canceled.":
+	"Your changes cannot be saved.":
+	"Error during {0}: {1!r}":
+	"Report Error":
+	"Okay":
+	"Time left: {0}":
+	"Search":
+	"(ID) Name [Aliases]":
+	"Any Subtype":
+	"Replace blocks with any data value. Only useful for Replace operations.":
+	"Fill":
+	"Flood Fill":
+	"Indiscriminate":
+	"Did {0} coords in {1}":
+	"Flood fill...":
+	"Replace":
+	"Erode":
+	"Strength: ":
+	"Affected area is too big for this brush mode":
+	"Topsoil":
+	"Depth: ":
+	"Only Change Natural Earth":
+	"Import":
+	"Round":
+	"Square":
+	"Diamond":
+	"Applying {0} brush...":
+	"Performing brush...":
+	"Mode:":
+	"Shortcut: ALT-1":
+	"Brush:":
+	"Chance: ":
+	"Hollow":
+	"Shortcut: ALT-3":
+	"Line Spacing":
+	"Hold shift to trace lines":
+	"Alpha: ":
+	"Choose Block Immediately":
+	"When the brush tool is chosen, prompt for a block type.":
+	"Reset Distance When Brush Size Changes":
+	"Whenever the brush size changes, reset the distance to the brush blocks.":
+	"Brush Options":
+	"Brush\nRight-click for options":
+	"Choose a schematic or level...":
+	"Failed to load file %s":
+	"Nothing selected":
+	"Click and drag to place blocks. ALT-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.":
+	"Click to use {0} ({1}:{2})":
+	"Click to replace {0} ({1}:{2})":
+	"Selected Chunks:":
+	"...":
+	"Extract":
+	"Extract these chunks to individual chunk files":
+	"Select\nRight-click for options":
+	"Create new, empty chunks within the selection.":
+	"Delete":
+	"Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.":
+	"Prune":
+	"Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk":
+	"Relight":
+	"Recalculate light values across the selected chunks":
+	"Repop":
+	"Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.":
+	"Don't Repop":
+	"Unmark the selected chunks. They will not repopulate the next time you play the game.":
+	"{0} chunks":
+	"Chunk Control":
+	"Click and drag to select chunks. Hold ALT to deselect chunks. Hold SHIFT to select chunks.":
+	"%s x %s chunks":
+	"Really delete these chunks? This cannot be undone.":
+	"Deleting chunks...":
+	"Save these chunks and remove the rest? This cannot be undone.":
+	"PRUNING - ":
+	"Pruning chunks...":
+	"RELIGHTING - ":
+	"Lighting {0} chunks...":
+	"Create chunks using the settings above? This cannot be undone.":
+	"CREATING - ":
+	"Creating {0} chunks...":
+	"Failed to start the chunk generator. {0!r}":
+	"Will automatically download and use the latest version":
+	"Height: ":
+	"Grass":
+	"Checking for server updates...":
+	"Server version:":
+	"Check for Updates":
+	"Advanced":
+	"Open Server Storage":
+	"Reveal World Cache":
+	"Delete World Cache":
+	"Simulate world":
+	"Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.":
+	"Copy {0} blocks":
+	"COPYING - ":
+	"Copying %0.1f million blocks":
+	"Chunk Align":
+	"Repeat":
+	"Scale Factor":
+	"Copy Water":
+	"Shortcut: ALT-2":
+	"Copy Biomes":
+	"Clone":
+	"Place Immediately":
+	"When the clone tool is chosen, place the clone at the selection right away.":
+	"Clone\nRight-click for options":
+	"Click to set this item down.":
+	"Mousewheel to move along the third axis. Hold SHIFT to only move along one axis.":
+	"Click and drag to reposition the item. Double-click to pick it up. Click Clone or press ENTER to confirm.":
+	"Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.":
+	"Copying to clone buffer...":
+	"Click and drag to reposition the item. Double-click to pick it up. Click Import or press ENTER to confirm.":
+	"Import a schematic or level...":
+	"I don't know how to import this file: {0}.\n\nError: {1!r}":
+	"???":
+	"Fill with ":
+	"Replacing blocks...":
+	"Fill with:":
+	"Shortcut: {0}":
+	"Find:":
+	"Replace with:":
+	"When the fill tool is chosen, prompt for a block type.":
+	"Fill Options":
+	"Fill and Replace\nRight-click for options":
+	"REPLACING - ":
+	"Replacing %0.1f million blocks":
+	"Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.":
+	"Exception during filter operation. See console for details.\n\n{0}":
+	"No filter modules found!":
+	"Error creating filter inputs for {0}: {1}":
+	"No filters loaded!":
+	"Filter":
+	"Filter: ":
+	"Click to open filters folder":
+	"Choose a filter, then click Filter or press ENTER to apply it.":
+	"Exception while importing filter module {}. See console for details.\n\n{}":
+	"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}":
+	"APPLYING FILTER - ":
+	"Nudge":
+	"Click and hold.  While holding, use the movement keys ({0}{1}{2}{3}{4}{5}) to nudge. Hold SHIFT to nudge faster.":
+	"Recording undo...":
+	"Copying chunk %s...":
+	"Continue with undo disabled?":
+	"Undoing...":
+	"Copying...":
+	"Couldn't get player position! ({0!r})":
+	"Player Name":
+	"Goto Player":
+	"Goto Player's View":
+	"Move Player":
+	"Align Player to Camera":
+	"Click to move the player":
+	"Click to move the player \"{0}\"":
+	"Spawn Position Safety":
+	"Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.":
+	"Spawn Point Options":
+	"Move Spawn Point":
+	"Goto Spawn":
+	"Click to set the spawn position.":
+	"Fix it for me!":
+	"Block added at y=63.":
+	"Spawn point moved upward to y=63.":
+	"Spawn point shifted down by one block.":
+	"Blocks above spawn point cleared.":
+	"Spawn point fixed. Changes: ":
+	"Open World...":
+	"Reload":
+	"Close":
+	"Goto":
+	"World Info":
+	"Undo":
+	"Select All":
+	"View Distance ({0})":
+	"Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.":
+	"Color Code...":
+	"Edit Sign":
+	"Slot":
+	"ID":
+	"DMG":
+	"Count":
+	"Name":
+	"Unknown Item":
+	"ID: ":
+	"DMG: ":
+	"Count: ":
+	"Only delete items with the same damage value":
+	"Also delete blocks placed in the world":
+	"WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?":
+	"Deleting the item {0} from the entire world ({1} chunks)":
+	"Add Item":
+	"Delete This Item":
+	"Delete Item ID From Entire World":
+	"Done":
+	"Chunks: %d":
+	"Number of chunks loaded into the renderer.":
+	"fps: %0.1f":
+	"Frames per second.":
+	"cps: %0.1f": "cps :
+	"Chunks per second.":
+	"MBv: %0.1f":
+	"Memory used for vertexes":
+	"Entities":
+	"Items":
+	"TileEntities":
+	"TileTicks":
+	"Unpopulated Chunks":
+	"Sky":
+	"Fog":
+	"Ceiling":
+	"Hidden Ores":
+	"Chunk Redraw":
+	"Show...":
+	"Camera View":
+	"Shortcut: TAB":
+	"Record Undo":
+	"View Distance:":
+	"Chunk View":
+	"Click to import this item.":
+	"ANALYZING - ":
+	"Analyzing {0} blocks...":
+	"<Entities>":
+	"<TileEntities>":
+	"Save analysis...":
+	"Comma Separated Values\\0*.txt\\0\\0":
+	"Save to file...":
+	"Volume: {0} blocks.":
+	"Save unsaved edits before loading":
+	"Don't Save":
+	" to move":
+	"Loading ":
+	"I don't know how to open {0}:\n\n{1!r}":
+	"Earth":
+	"Dimension {0}":
+	"Goto Dimension":
+	"It looks like this level is completely empty!  You'll have to create some chunks before you can get started.":
+	"Create Chunks":
+	" - MCEdit ":
+	"SAVING - ":
+	"Lighting chunks":
+	"Saving...":
+	"{0} unsaved edits.  CTRL-S to save.  {1}  {2}":
+	"Goto Position:":
+	"(click anywhere to teleport)":
+	"Save unsaved edits before closing?":
+	"Repairs complete.  See the console window for details.":
+	"Minecraft Infinite World (Anvil Format)":
+	"Minecraft Infinite World (Region Format)":
+	"Minecraft Infinite World (Old Chunk Format)":
+	"Minecraft Indev (.mclevel format)":
+	"MCEdit Schematic":
+	"MCEdit Schematic (Zipped Format)":
+	"Minecraft Classic or raw block array":
+	"Unknown":
+	"Format:":
+	"Day: ":
+	"Time of day:":
+	"RandomSeed: ":
+	"Creating world...": 
+	"Number of chunks: {0}":
+	"Number of regions: {0}":
+	"Repair Regions":
+	"Open Folder":
+	"{0} Entities":
+	"{0} TileEntities":
+	"Could not find the Minecraft saves directory!\n\n({0} was not found or is not a directory)":
+	"No worlds found! You should probably play Minecraft to create your first world.":
+	"Last Played":
+	"Level Name (filename)":
+	"Dims":
+	"{0} seconds since the epoch.":
+	"Load":
+	"Generating chunks...":
+	"UNDOING - ":
+	"Undoing the previous operation...":
+	"FPS: %0.1f/%0.1f, CPS: %0.1f, VD: %d, W: %d, WF: %d, ":
+	"DL: {dl} ({dlcount}), Tx: {t}, gc: {g}, ":
+	"Rendering chunks":
+	"{0} chunks ({1} pending updates)":
+	"ID: %d:%d (%s), ":
+	"Data: %d, Light: %d, ":
+	"Data: %d, L: %d, SL: %d":
+	", H: %d":
+	", TP: %d":
+	", D: %d":
+	", NL: %d":
+	", Bio: %s":
+	", DC: %s":
+	", Ch(%d, %d): %s":
+	"ID: %d (%s), ":
+	"Chunk {0} had an error: {1!r}":
+	"%s - %0.1fkb":
+	"Levels and Schematics\\0*.mclevel;*.dat;*.mine;*.mine.gz;*.schematic;*.zip;*.schematic.gz;*.inv\\0*.*\\0*.*\\0\\0":
+	"Save this schematic...":
+	"Minecraft Schematics (*.{0})\\0*.{0}\\0\\0":
+	"Untitled World":
+	"Name this new world.":
+	"Minecraft World\\0*.*\\0\\0":
+	"Documents":
+	"Download":
+	"View":
+	"Ignore":
+	" {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.":
+	"Quick Load":
+}

@@ -1,18 +1,5 @@
 # -*- coding: utf-8 -*-
 #-# Modified by D.C.-G. for translation purpose
-#
-# System TrueType fonts (.ttf) paths
-# Linux
-# /usr/local/share/fonts (?)
-# /usr/share/fonts/truetype
-#
-# Windows
-# %SystemRoot%\Fonts
-#
-# OSX
-# /System/library/Fonts
-# /Library/Fonts
-
 import os
 import sys
 
@@ -95,7 +82,7 @@ def get_font(size, *names, **kwds):
             try:
                 path = path.encode(sys.getfilesystemencoding())
                 log.debug("Path encoded")
-                font = pygame.font.Font(path, size)
+                font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
                 log.debug("Font loaded")
             except Exception, e:
                 print "Couldn't get font {0}, using sysfont".format((path, size))

@@ -41,6 +41,7 @@ import logging
 log = logging.getLogger(__name__)
 
 import config
+import keys
 
 
 CloneSettings = config.Settings("Clone")
@@ -308,7 +309,7 @@ class CloneToolPanel(Panel):
         self.copyAirCheckBox = CheckBox(ref=AttrRef(self.tool, "copyAir"))
         self.copyAirLabel = Label("Copy Air")
         self.copyAirLabel.mouse_down = self.copyAirCheckBox.mouse_down
-        self.copyAirLabel.tooltipText = "Shortcut: ALT-1"
+        self.copyAirLabel.tooltipText = "Shortcut: Alt-1"
         self.copyAirCheckBox.tooltipText = self.copyAirLabel.tooltipText
 
         copyAirRow = Row((self.copyAirCheckBox, self.copyAirLabel))
@@ -316,7 +317,7 @@ class CloneToolPanel(Panel):
         self.copyWaterCheckBox = CheckBox(ref=AttrRef(self.tool, "copyWater"))
         self.copyWaterLabel = Label("Copy Water")
         self.copyWaterLabel.mouse_down = self.copyWaterCheckBox.mouse_down
-        self.copyWaterLabel.tooltipText = "Shortcut: ALT-2"
+        self.copyWaterLabel.tooltipText = "Shortcut: Alt-2"
         self.copyWaterCheckBox.tooltipText = self.copyWaterLabel.tooltipText
 
         copyWaterRow = Row((self.copyWaterCheckBox, self.copyWaterLabel))
@@ -324,7 +325,7 @@ class CloneToolPanel(Panel):
         self.copyBiomesCheckBox = CheckBox(ref=AttrRef(self.tool, "copyBiomes"))
         self.copyBiomesLabel = Label("Copy Biomes")
         self.copyBiomesLabel.mouse_down = self.copyBiomesCheckBox.mouse_down
-        self.copyBiomesLabel.tooltipText = "Shortcut: ALT-3"
+        self.copyBiomesLabel.tooltipText = "Shortcut: Alt-3"
         self.copyBiomesCheckBox.tooltipText = self.copyBiomesLabel.tooltipText
 
         copyBiomesRow = Row((self.copyBiomesCheckBox, self.copyBiomesLabel))
@@ -332,7 +333,7 @@ class CloneToolPanel(Panel):
         self.staticCommandsCheckBox = CheckBox(ref=AttrRef(self.tool, "staticCommands"))
         self.staticCommandsLabel = Label("Change Coordinates")
         self.staticCommandsLabel.mouse_down = self.staticCommandsCheckBox.mouse_down
-        self.staticCommandsLabel.tooltipText = "Check to automatically change command block static coordinates when moved.\nShortcut: ALT-4"
+        self.staticCommandsLabel.tooltipText = "Check to automatically change command block static coordinates when moved.\nShortcut: Alt-4"
         self.staticCommandsCheckBox.tooltipText = self.staticCommandsLabel.tooltipText
 
         staticCommandsRow = Row((self.staticCommandsCheckBox, self.staticCommandsLabel))
@@ -340,7 +341,7 @@ class CloneToolPanel(Panel):
         self.moveSpawnerPosCheckBox = CheckBox(ref=AttrRef(self.tool, "moveSpawnerPos"))
         self.moveSpawnerPosLabel = Label("Change Spawners")
         self.moveSpawnerPosLabel.mouse_down = self.moveSpawnerPosCheckBox.mouse_down
-        self.moveSpawnerPosLabel.tooltipText = "Check to automatically change the position of the mobs in spawners when moved.\nShortcut: ALT-5"
+        self.moveSpawnerPosLabel.tooltipText = "Check to automatically change the position of the mobs in spawners when moved.\nShortcut: Alt-5"
         self.moveSpawnerPosCheckBox.tooltipText = self.moveSpawnerPosLabel.tooltipText
 
         moveSpawnerPosRow = Row((self.moveSpawnerPosCheckBox, self.moveSpawnerPosLabel))
@@ -430,13 +431,15 @@ class CloneTool(EditorTool):
         self.optionsPanel = CloneToolOptions(self)
 
         self.destPoint = None
+        
+        self.snapCloneKey = 0
 
     @property
     def statusText(self):
         if self.destPoint == None:
             return "Click to set this item down."
         if self.draggingFace is not None:
-            return "Mousewheel to move along the third axis. Hold SHIFT to only move along one axis."
+            return "Mousewheel to move along the third axis. Hold {0} to only move along one axis.".format(config.config.get("Keys", "Snap Clone to Axis"))
 
         return "Click and drag to reposition the item. Double-click to pick it up. Click Clone or press ENTER to confirm."
 
@@ -459,8 +462,12 @@ class CloneTool(EditorTool):
             x, y, z = nudge
             nudge = x << 4, y, z << 4
 
-        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        if self.editor.rightClickNudge == 1:
             nudge = self.quickNudge(nudge)
+            new_nudge = []
+            for n in nudge:
+                new_nudge.append(n*16)
+            nudge = new_nudge
 
         # self.panel.performButton.enabled = True
         self.destPoint = self.destPoint + nudge
@@ -881,7 +888,7 @@ class CloneTool(EditorTool):
         dragPos = map(int, map(numpy.floor, self.positionOnDraggingPlane()))
         delta = map(lambda s, e: e - int(numpy.floor(s)), self.draggingStartPoint, dragPos)
 
-        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+        if self.snapCloneKey == 1:
             ad = map(abs, delta)
             midx = ad.index(max(ad))
             d = [0, 0, 0]
@@ -942,6 +949,16 @@ class CloneTool(EditorTool):
 
         self.draggingFace = None
         self.draggingStartPoint = None
+        
+    def keyDown(self,evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Snap Clone to Axis'):
+            self.snapCloneKey = 1
+    
+    def keyUp(self, evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Snap Clone to Axis'):
+            self.snapCloneKey = 0
 
     def increaseToolReach(self):
         if self.draggingFace is not None:
@@ -1076,6 +1093,7 @@ class ConstructionTool(CloneTool):
         CloneTool.__init__(self, *args)
         self.level = None
         self.optionsPanel = None
+        self.testBoardKey = 0
 
     @property
     def statusText(self):
@@ -1127,8 +1145,8 @@ class ConstructionTool(CloneTool):
     def toolSelected(self):
         self.editor.mouseLookOff()
 
-        mods = pygame.key.get_mods()
-        if mods & pygame.KMOD_ALT and mods & pygame.KMOD_SHIFT:
+        if self.editor.testBoardKey == 1:
+            self.editor.testBoardKey = 0
             self.loadLevel(self.createTestBoard())
             return
 

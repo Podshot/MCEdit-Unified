@@ -29,8 +29,6 @@ from OpenGL import GL
 logger.setLevel(logging.DEBUG)
 
 logfile = 'mcedit.log'
-
-# Should be restored, one day...
 #if hasattr(sys, 'frozen'):
 #    if sys.platform == "win32":
 #        import esky
@@ -78,7 +76,7 @@ import albow
 from albow.translate import _
 #!# for debugging
 from albow.translate import getPlatInfo
-getPlatInfo()
+#getPlatInfo(logging=logging)
 #!#
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
@@ -100,6 +98,8 @@ import mceutils
 import mcplatform
 from mcplatform import platform_open
 import numpy
+from pymclevel.minecraft_server import ServerJarStorage
+import keys
 
 import os
 import os.path
@@ -110,6 +110,8 @@ import release
 import shutil
 import sys
 import traceback
+
+getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
 ESCAPE = '\033'
 
@@ -292,7 +294,7 @@ class OptionsPanel(Dialog):
     anchor = 'wh'
 
     def __init__(self, mcedit):
-#        albow.translate.refreshLang(suppressAlert=True)
+        #albow.translate.refreshLang(suppressAlert=True)
         albow.translate.setLang(Settings.langCode.get())
 
         Dialog.__init__(self)
@@ -363,9 +365,11 @@ class OptionsPanel(Dialog):
                                             ref=Settings.flyMode.propertyRef(),
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
-        langStringRow = mceutils.TextInputRow("Language String",
-                                            ref=Settings.langCode.propertyRef(),
-                                            tooltipText="Enter your language string (corresponding to the file in /lang). Available:\nen_US (default)\nfr_FR")
+        self.languageButton = mceutils.ChoiceButton(self.getLanguageChoices(Settings.langCode.get()), choose=self.changeLanguage)
+        if Settings.langCode.get() in self.languageButton.choices:
+            self.languageButton.selectedChoice = Settings.langCode.get()
+
+        langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
         staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
                                             ref=Settings.staticCommandsNudge.propertyRef(),
@@ -407,7 +411,7 @@ class OptionsPanel(Dialog):
                     staticCommandsNudgeRow,
                     moveSpawnerPosNudgeRow,
                     rotateBlockBrushRow,
-                    langStringRow,
+                    langButtonRow,
                     ) + (
                         ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
                     ) + (
@@ -436,6 +440,22 @@ class OptionsPanel(Dialog):
     @blockBuffer.setter
     def blockBuffer(self, val):
         Settings.blockBuffer.set(int(val * 1048576))
+
+    def getLanguageChoices(self, current):
+        files = os.listdir(albow.translate.langPath)
+        #langs = [l[:-5] for l in files if l.endswith(".json") and l not in ["language template.json"]]
+        #langs = [l for l in langs if verifyLangCode(l)]
+        langs = []
+        for file in files:
+            name, ext = os.path.splitext(file)
+            if ext == ".trn" and len(name) == 5 and name[2] == "_":
+                langs.append(name)
+        if "en_US" not in langs:
+            langs = ["en_US"] + langs
+        return langs
+
+    def changeLanguage(self):
+        Settings.langCode.set(self.languageButton.selectedChoice)
 
     def portableButtonTooltip(self):
         return (
@@ -473,7 +493,6 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         o, n, sc = albow.translate.setLang(Settings.langCode.get())
-        print "o", o, "n", n, "sc", sc
         if not sc and n != "en_US":
             albow.alert(_("{} is not a valid language").format(n))
             if o == n:
@@ -633,7 +652,7 @@ class MCEdit(GLViewport):
                      "License",
                      showLicense),
                     ("",
-                     "Open Data Folder",
+                     "Config Files Folder",
                      showCacheDir),
                    ])
 
@@ -768,7 +787,7 @@ class MCEdit(GLViewport):
                 platform_open(new_version["html_url"])
             elif answer == "Download":
                 platform_open(new_version["asset"]["browser_download_url"])
-                albow.alert(tr(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
+                albow.alert(_(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
 
 # Disabled old update code
 #       if hasattr(sys, 'frozen'):
@@ -849,6 +868,13 @@ class MCEdit(GLViewport):
         Settings.reportCrashes.set(False)
         Settings.reportCrashesAsked.set(True)
 
+        config.saveConfig()
+        if "update" in config.config.get("Version", "version"):
+            answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
+            if answer == "Yes":
+                for configKey, key in keys.KeyConfigPanel.presets["WASD"]:
+                    config.config.set("Keys", configKey, key)
+        config.config.set("Version", "version", "1.1.2.0")
         config.saveConfig()
         if "-causeError" in sys.argv:
             raise ValueError, "Error requested via -causeError"
@@ -948,7 +974,7 @@ def main(argv):
             )
         else:
             # Start hashing the filter dir
-            mceutils.compareMD5Hashes(directories.getAllFilters(directories.filtersDir))
+            mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
     except Exception, e:
         logging.warning('Error copying bundled filters: {0!r}'.format(e))
         try:
@@ -961,6 +987,11 @@ def main(argv):
                           else s
                           for s in sys.path]:
         sys.path.append(directories.filtersDir.encode(sys.getfilesystemencoding()))
+
+    try:
+        ServerJarStorage()
+    except Exception, e:
+        logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
 
     try:
         MCEdit.main()
