@@ -6,7 +6,7 @@ import pygame
 from directories import getDataDir
 from pygame.locals import RLEACCEL
 from translate import langPath
-# default_font_name = "Vera.ttf"
+# default_font_name = "SourceSansPro-Regular.ttf"
 optimize_images = True
 run_length_encode = False
 

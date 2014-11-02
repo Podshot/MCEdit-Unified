@@ -98,7 +98,7 @@ class Theme(object):
 
 root = Theme('root')
 root.margin = 3
-root.font = (15, "Vera.ttf")
+root.font = (15, "SourceSansPro-Regular.ttf")
 root.fg_color = (255, 255, 255)
 root.bg_color = None
 root.bg_image = None
@@ -119,7 +119,7 @@ root.RootWidget = Theme('RootWidget')
 root.RootWidget.bg_color = (0, 0, 0)
 
 root.Button = Theme('Button')
-root.Button.font = (17, "VeraBd.ttf")
+root.Button.font = (17, "SourceSansPro-Bold.ttf")
 root.Button.fg_color = (255, 255, 0)
 root.Button.highlight_color = (16, 255, 16)
 root.Button.disabled_color = (64, 64, 64)
@@ -139,13 +139,13 @@ root.Label = Theme('Label')
 root.Label.margin = 4
 
 root.SmallLabel = Theme('SmallLabel')
-root.SmallLabel.font = (10, 'Vera.ttf')
+root.SmallLabel.font = (10, 'SourceSansPro-Regular.ttf')
 
 root.ValueDisplay = Theme('ValueDisplay')
 root.ValueDisplay.margin = 4
 
 root.SmallValueDisplay = Theme('SmallValueDisplay')
-root.SmallValueDisplay.font = (10, 'Vera.ttf')
+root.SmallValueDisplay.font = (10, 'SourceSansPro-Regular.ttf')
 root.ValueDisplay.margin = 2
 
 root.ImageButton = Theme('ImageButton')
@@ -183,12 +183,12 @@ root.PaletteView.highlight_style = 'frame'
 root.PaletteView.zebra_color = (48, 48, 48)
 
 root.TextScreen = Theme('TextScreen')
-root.TextScreen.heading_font = (24, "VeraBd.ttf")
-root.TextScreen.button_font = (18, "VeraBd.ttf")
+root.TextScreen.heading_font = (24, "SourceSansPro-Bold.ttf")
+root.TextScreen.button_font = (18, "SourceSansPro-Bold.ttf")
 root.TextScreen.margin = 20
 
 root.TabPanel = Theme('TabPanel')
-root.TabPanel.tab_font = (18, "Vera.ttf")
+root.TabPanel.tab_font = (18, "SourceSansPro-Regular.ttf")
 root.TabPanel.tab_height = 24
 root.TabPanel.tab_border_width = 0
 root.TabPanel.tab_spacing = 4

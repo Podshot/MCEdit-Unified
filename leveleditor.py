@@ -165,7 +165,7 @@ arch = platform.architecture()[0]
 class ControlPanel(Panel):
     @classmethod
     def getHeader(cls):
-        header = Label("MCEdit {0} ({1})".format(release.get_version(), arch), font=get_font(18, "VeraBd.ttf"))
+        header = Label("MCEdit {0} ({1})".format(release.get_version(), arch), font=get_font(18, "SourceSansPro-Bold.ttf"))
         return header
 
     def __init__(self, editor):
@@ -1582,7 +1582,7 @@ class LevelEditor(GLViewport):
 
         self.debug = 0
         self.debugString = ""
-        
+
         self.testBoardKey = 0
 
         self.perfSamples = 5
@@ -2727,7 +2727,7 @@ class LevelEditor(GLViewport):
             self.cameraPanKeys[1] = 0.
         if keyname == config.config.get('Keys', 'Pan Down'):
             self.cameraPanKeys[1] = 0.
-            
+
         if keyname == 'F7':
             self.testBoardKey = 0
 
@@ -2817,12 +2817,12 @@ class LevelEditor(GLViewport):
                 getattr(self.currentTool, name)()
         if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=True)
-        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Roll'):         
+        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Roll'):
             self.currentTool.roll(blocksOnly=True)
-        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Rotate'):        
+        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Rotate'):
             self.currentTool.rotate(blocksOnly=True)
-        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Mirror'):          
-            self.currentTool.mirror(blocksOnly=True)        
+        if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Mirror'):
+            self.currentTool.mirror(blocksOnly=True)
         if keyname == config.config.get('Keys', 'Flip'):
             self.currentTool.flip(blocksOnly=False)
         if keyname == config.config.get('Keys', 'Roll'):
@@ -2871,7 +2871,7 @@ class LevelEditor(GLViewport):
             self.get_root().altPlaced = -2
 
             self.saveFile()
-            
+
             self.get_root().ctrlClicked = -1
         if keyname == config.config.get('Keys', 'New World'):
             self.createNewLevel()
@@ -2962,7 +2962,7 @@ class LevelEditor(GLViewport):
 
         if keyname == config.config.get('Keys', 'Delete Blocks'):
             self.deleteSelectedBlocks()
-            
+
         if keyname == config.config.get('Keys', 'Fly Mode'):
             Settings.flyMode.set(not Settings.flyMode.get())
             config.saveConfig()
@@ -2972,7 +2972,7 @@ class LevelEditor(GLViewport):
 
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
-            
+
         if keyname == 'F7':
             self.testBoardKey = 1
 
@@ -3477,7 +3477,7 @@ class LevelEditor(GLViewport):
                 self.invalidateBox(changedBox)
             if op.changedLevel:
                 self.addUnsavedEdit()
-                
+
         self.get_root().ctrlClicked = -1
 
     def invalidateBox(self, box):
