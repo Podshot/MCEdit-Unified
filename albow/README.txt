@@ -119,7 +119,7 @@ demo.py     A demonstration of most of Albow's functionality.
 doc         Documentation in html format. Start with index.html.
 
 Resources   Some resources used by demo.py. Also contains some
-            default fonts (SourceSansPro-Regular.ttf and SourceSansPro-Bold.ttf) that you can
+            default fonts (DejaVuSans-Regular.ttf and DejaVuSans-Bold.ttf) that you can
             use in your applications if you wish.
 
 License
