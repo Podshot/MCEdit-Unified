@@ -44,6 +44,14 @@ from albow.translate import tr
 from pymclevel import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from pymclevel import items
 
+try:
+    import gtk
+    if gtk.pygtk_version < (2,3,90):
+        raise ImportError
+    hasGtk = True
+except ImportError:
+    hasGtk = False #Using old method as fallback
+
 import shutil
 
 texturePacksDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "texturepacks")
@@ -209,7 +217,10 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False):
 
             return op.filename()
 
-        else:  # linux
+        elif hasGtk: #Linux (When GTK 2.4 or newer is installed)
+            return askOpenFileGtk(title, suffixes, initialDir)
+
+        else:
             return request_old_filename(suffixes=suffixes, directory=initialDir)
 
     filename = _askOpen()
@@ -250,6 +261,38 @@ def askOpenFileWin32(title, schematics, initialDir):
     else:
         return filename
 
+def askOpenFileGtk(title, suffixes, initialDir):
+    chooser = gtk.FileChooserDialog(title,
+                                    None, gtk.FILE_CHOOSER_ACTION_SAVE,
+                                    (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                    gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+
+    chooser.set_default_response(gtk.RESPONSE_OK)
+    chooser.set_current_folder(initialDir)
+    chooser.set_current_name("world") #For some reason the Windows isn't closing if this line ins missing or the parameter is ""
+
+    #Add custom Filter
+    filter = gtk.FileFilter()
+    filter.set_name("Levels and Schematics")
+    for suffix in suffixes:
+        filter.add_pattern("*."+suffix)
+    chooser.add_filter(filter)
+
+    #Add "All files" Filter
+    filter = gtk.FileFilter()
+    filter.set_name("All files")
+    filter.add_pattern("*")
+    chooser.add_filter(filter)
+
+    response = chooser.run()
+    if response == gtk.RESPONSE_CANCEL:
+        chooser.destroy()
+        return # pressed cancel
+    elif response == gtk.RESPONSE_OK:
+        filename = chooser.get_filename()
+    chooser.destroy()
+
+    return filename
 
 def askSaveSchematic(initialDir, displayName, fileFormat):
     return askSaveFile(initialDir,
@@ -309,13 +352,42 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         filename = sp.filename()
         AppKit.NSApp.mainWindow().makeKeyWindow()
 
-    else:
-        filename = request_new_filename(prompt=title,
-                                        suffix=("." + suffix) if suffix else "",
-                                        directory=initialDir,
-                                        filename=defaultName,
-                                        pathname=None)
+    elif hasGtk: #Linux (When GTK 2.4 or newer is installed)
+        chooser = gtk.FileChooserDialog(title,
+                                        None, gtk.FILE_CHOOSER_ACTION_SAVE,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_current_folder(initialDir)
+        chooser.set_current_name(defaultName)
+
+        #Add custom Filter
+        filter = gtk.FileFilter()
+        filter.set_name(filetype[:filetype.index("\0")])
+        filter.add_pattern("*." + suffix)
+        chooser.add_filter(filter)
+
+        #Add "All files" Filter
+        filter = gtk.FileFilter()
+        filter.set_name("All files")
+        filter.add_pattern("*")
+        chooser.add_filter(filter)
+
+        response = chooser.run()
+        if response == gtk.RESPONSE_CANCEL:
+            chooser.destroy()
+            return # pressed cancel
+        elif response == gtk.RESPONSE_OK:
+            filename = chooser.get_filename()
+        chooser.destroy()
+
+    else: #Fallback
+        filename = request_new_filename(prompt=title,
+                                    suffix=("." + suffix) if suffix else "",
+                                    directory=initialDir,
+                                    filename=defaultName,
+                                    pathname=None)
     return filename
 
 
