@@ -1,4 +1,4 @@
-Manualy merged with master. Waiting for merging to master.
+Code tweak for better unicode support.
 
 Read carefully before downloading. This is a test release.
 

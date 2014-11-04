@@ -1,5 +1,14 @@
 -------------------------------------------------------------------------------
-2014.11.01 Commit <latest on localisation-code branch>
+2014.11.04 Commit <latest on localisation-code branch>
+
+Changed thz code page of mcedit.py to UTF-8 to comply to the file header
+delcaration.
+
+Changed albow/translate to load .trn files as unicode instead of str. Also
+'deacivated' the correctEncoding function.
+
+-------------------------------------------------------------------------------
+2014.11.01 Commit fc77df6af84531eafb7d269fea6c2d942a78e03d
 
 Merging to master branch.
 

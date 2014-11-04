@@ -1,4 +1,4 @@
-# -*- encoding: utf8 -*-
+# -*- encoding: utf_8 -*-
 #
 # /usr/bin/python
 #
@@ -53,6 +53,7 @@ log = logging.getLogger(__name__)
 import os
 # import sys # useless, only called in 'restart' (to be moved to mcedit.py)
 import re
+import codecs
 # import json # json isn't user friendly decause of its syntax and the use of escaped characters for new lines, tabs, etc.
 # import directories # suppress this
 
@@ -95,7 +96,8 @@ def getPlatInfo(**kwargs):
 #getPlatInfo()
 #!#
 
-enc = "utf8"
+#enc = "utf8"
+enc = locale.getdefaultlocale()[1]
 
 string_cache = {}
 #langPath = os.path.join(directories.getDataDir(), "lang") # find another way to set this
@@ -238,6 +240,7 @@ def setLang(newlang):
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""
+    return data
     if type(data) == str:
         data = data.decode(newEnc)
     elif type(data) == unicode:
@@ -270,7 +273,8 @@ def buildTranslation(lang,suppressAlert=False):
     log.debug("os.access(fName, os.F_OK): %s; os.path.isfile(fName): %s; os.access(fName, os.R_OK): %s"%(os.access(fName, os.F_OK), os.path.isfile(fName), os.access(fName, os.R_OK)))
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
         fileFound = True
-        data = open(fName, "rb").read() + "\x00"
+#        data = open(fName, "rb").read() + "\x00"
+        data = codecs.open(fName, "r", "utf-8").read() + "\x00"
         log.debug("fName is valid and read.")
         log.debug("Type of file data is %s"%type(data))
         trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)

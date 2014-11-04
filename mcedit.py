@@ -1,5 +1,5 @@
 # !/usr/bin/env python2.7
-# -*- coding: utf8 -*-
+# -*- coding: utf_8 -*-
 
 #-# Modified by D.C.-G. for translation purpose
 
