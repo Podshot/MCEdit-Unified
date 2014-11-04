@@ -464,10 +464,6 @@ class CloneTool(EditorTool):
 
         if self.editor.rightClickNudge == 1:
             nudge = self.quickNudge(nudge)
-            new_nudge = []
-            for n in nudge:
-                new_nudge.append(n*16)
-            nudge = new_nudge
 
         # self.panel.performButton.enabled = True
         self.destPoint = self.destPoint + nudge
