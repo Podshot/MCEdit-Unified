@@ -16,6 +16,8 @@ import sys
 from compass import CompassOverlay
 from editortools.thumbview import ThumbView
 from pymclevel.infiniteworld import SessionLockLost
+from raycaster import TooFarException
+import raycaster
 import keys
 
 """
@@ -497,11 +499,14 @@ class CameraViewport(GLViewport):
             self.updateMouseVector()
             if self.editor.mouseEntered:
                 if not self.mouseMovesCamera:
-                    mouse3dPoint = self._blockUnderCursor()
-                    focusPair = self.findBlockFaceUnderCursor(mouse3dPoint)
+                    try:
+                        focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level ,200)
+                    except TooFarException as e:
+                        mouse3dPoint = self._blockUnderCursor()
+                        focusPair = self._findBlockFaceUnderCursor(mouse3dPoint)
                 elif self.editor.longDistanceMode:
                     mouse3dPoint = self._blockUnderCursor(True)
-                    focusPair = self.findBlockFaceUnderCursor(mouse3dPoint)
+                    focusPair = self._findBlockFaceUnderCursor(mouse3dPoint)
 
             # otherwise, find the block at a controllable distance in front of the camera
             if focusPair is None:
@@ -509,7 +514,7 @@ class CameraViewport(GLViewport):
 
             self.blockFaceUnderCursor = focusPair
 
-    def findBlockFaceUnderCursor(self, projectedPoint):
+    def _findBlockFaceUnderCursor(self, projectedPoint):
         """Returns a (pos, Face) pair or None if one couldn't be found"""
 
         d = [0, 0, 0]
