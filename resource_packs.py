@@ -598,7 +598,7 @@ def setup_resource_packs():
     resourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
     for tex_pack in resourcePacks:
         rp = ResourcePack(tex_pack)
-        terrains[rp.pack_name] = "terrain-textures/"+rp.terrain_name
+        terrains[rp.pack_name] = "terrain-textures\\"+rp.terrain_name
     shutil.rmtree("textures/")
     return terrains
 
