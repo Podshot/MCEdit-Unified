@@ -11,6 +11,7 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+import resource_packs
 
 """
 mceutils.py
@@ -268,14 +269,9 @@ def drawTerrainCuttingWire(box,
 
 def loadAlphaTerrainTexture():
     pngFile = None
-
-    texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), "terrain.png"))
-    '''
-    THIS CODE IS VERY LIKLEY TO CHANGE
-    terrainTextureFiles = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "terrain_textures"), ".png")
-    for textures in terrainTextureFiles:
-        return
-    '''
+    
+    print os.path.join(directories.getDataDir(), resource_packs.packs.get_selected_resource_pack())
+    texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), resource_packs.packs.get_selected_resource_pack()))
 
     def _loadFunc():
         loadTextureFunc(texW, texH, terraindata)

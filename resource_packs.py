@@ -587,20 +587,45 @@ class ResourcePack:
         except:
             pass
         #new_terrain.show()
-
-def setup_terrain_textures():
+        
+def setup_resource_packs():
     terrains = {}
     try:
         os.mkdir("terrain-textures")
     except OSError:
         pass
+    terrains["Default"] = "terrain.png"
     resourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
     for tex_pack in resourcePacks:
         rp = ResourcePack(tex_pack)
-        terrains[rp.pack_name] = rp.terrain_name
-        #ResourcePack("OCD pack 1.8.zip")
+        terrains[rp.pack_name] = "terrain-textures/"+rp.terrain_name
     shutil.rmtree("textures/")
     return terrains
+
+class ResourcePackHandler:
     
+    def __init__(self):
+        self._resource_packs = setup_resource_packs()
+        self._selected_resource_pack = "Default"
+        print self._resource_packs
     
-packs = setup_terrain_textures()
+    @property
+    def resource_packs(self):
+        return self._resource_packs
+    
+    def get_available_resource_packs(self):
+        return self._resource_packs.keys()
+    
+    def reload_resource_packs(self):
+        self._resource_packs = setup_resource_packs()
+        
+    def get_selected_resource_pack_name(self):
+        return self._selected_resource_pack
+    
+    def set_selected_resource_pack_name(self, name):
+        self._selected_resource_pack = name
+    
+    def get_selected_resource_pack(self):
+        return self._resource_packs[self._selected_resource_pack]
+    
+packs = ResourcePackHandler()

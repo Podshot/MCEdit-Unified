@@ -1,5 +1,6 @@
 # !/usr/bin/env python2.7
 # -*- coding: utf8 -*-
+import resource_packs
 
 #-# Modified by D.C.-G. for translation purpose
 
@@ -225,7 +226,8 @@ class FileOpener(albow.Widget):
 
 class graphicsPanel(Dialog):
     anchor = 'wh'
-
+    
+    # TODO: Add Resource Pack selection
     def __init__(self, mcedit):
         Dialog.__init__(self)
 
@@ -250,7 +252,9 @@ class graphicsPanel(Dialog):
 
         enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
                                                    ref=Settings.enableMouseLag.propertyRef(),
-                                                   tooltipText="Enable choppy mouse movement for faster loading.")
+                                                 tooltipText="Enable choppy mouse movement for faster loading.")
+        
+        self.resourcePackButton = mceutils.ChoiceButton(map(str,resource_packs.packs.get_available_resource_packs()), choose=self.change_texture)
 
         settingsColumn = albow.Column((fastLeavesRow,
                                        roughGraphicsRow,
@@ -259,6 +263,7 @@ class graphicsPanel(Dialog):
                                        fieldOfViewRow,
                                        targetFPSRow,
                                        bufferLimitRow,
+                                       self.resourcePackButton,
                                       ), align='r')
 
         settingsColumn = albow.Column((albow.Label("Settings"),
@@ -274,7 +279,10 @@ class graphicsPanel(Dialog):
     def _reloadTextures(self, pack):
         if hasattr(pymclevel.alphaMaterials, "terrainTexture"):
             self.mcedit.displayContext.loadTextures()
-
+            
+    def change_texture(self):
+        resource_packs.packs.set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
+        self.mcedit.displayContext.loadTextures()
     texturePack = Settings.skin.configProperty(_reloadTextures)
 
 
@@ -1072,11 +1080,11 @@ class GLDisplayContext(object):
                 GL.GL_UNSIGNED_BYTE,
                 teximage
             )
-
+            
         textures = (
             (pymclevel.classicMaterials, 'terrain-classic.png'),
             (pymclevel.indevMaterials, 'terrain-classic.png'),
-            (pymclevel.alphaMaterials, 'terrain.png'),
+            (pymclevel.alphaMaterials, resource_packs.packs.get_selected_resource_pack()),
             (pymclevel.pocketMaterials, 'terrain-pocket.png')
         )
 
