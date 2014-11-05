@@ -9,7 +9,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from albow import *
-from pygame import Rect, Surface, draw, image
+from pygame import Rect, Surface, image
 from pygame.locals import SRCALPHA
 from widget import Widget
 from theme import ThemeProperty, FontProperty

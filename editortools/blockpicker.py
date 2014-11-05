@@ -4,7 +4,6 @@ from editortools import thumbview
 from editortools import blockview
 from glbackground import GLBackground
 from mceutils import CheckBoxLabel
-from pygame import key
 from pymclevel import materials
 import keys
 from pymclevel.materials import Block

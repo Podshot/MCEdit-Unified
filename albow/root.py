@@ -13,7 +13,6 @@ from pygame.event import Event
 from glbackground import *
 import widget
 from widget import Widget
-from controls import Label
 
 from datetime import datetime, timedelta
 from albow.dialogs import wrapped_label
@@ -167,7 +166,7 @@ class RootWidget(Widget):
 
             while modal_widget.modal_result is None:
                 try:
-                    self.hover_widget = self.find_widget(mouse.get_pos())
+                    self.hover_widget = self.find_widget(pygame.mouse.get_pos())
                     if self.do_draw:
                         if self.is_gl:
                             self.gl_clear()
@@ -343,7 +342,7 @@ class RootWidget(Widget):
                         elif type == NOEVENT:
                             add_modifiers(event)
                             self.call_idle_handlers(event)
-                    
+
                         i+=1
 
                 except Cancel:
@@ -428,7 +427,7 @@ class RootWidget(Widget):
 
     def update_tooltip(self, pos=None):
         if pos is None:
-            pos = mouse.get_pos()
+            pos = pygame.mouse.get_pos()
         if self.captured_widget:
             mouse_widget = self.captured_widget
             pos = mouse_widget.center

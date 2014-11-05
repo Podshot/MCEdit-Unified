@@ -19,14 +19,8 @@ Pythonesque wrappers around certain OpenGL functions.
 """
 
 from OpenGL import GL
-from OpenGL.GL.ARB import window_pos
 import numpy
-import functools
 from contextlib import contextmanager
-
-from albow import Label
-from albow.openglwidgets import GLOrtho
-import config
 
 import weakref
 from OpenGL.GL import framebufferobjects as FBO

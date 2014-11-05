@@ -16,7 +16,6 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 config.py
 Configuration settings and storage.
 """
-import os
 import logging
 import collections
 import ConfigParser
@@ -122,7 +121,7 @@ def loadConfig():
             else:
                 config.set("Version", "version", "1.1.2.0-new")
             saveConfig()
-    
+
     return config
 
 

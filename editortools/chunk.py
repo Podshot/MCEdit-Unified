@@ -353,10 +353,10 @@ class ChunkTool(EditorTool):
 
     def mouseUp(self, evt, *args):
         self.editor.selectionTool.mouseUp(evt, *args)
-        
+
     def keyDown(self, evt):
         self.editor.selectionTool.keyDown(evt)
-    
+
     def keyUp(self, evt):
         self.editor.selectionTool.keyUp(evt)
 

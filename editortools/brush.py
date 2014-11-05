@@ -15,14 +15,12 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #Modified by D.C.-G. for translation purposes
 
 from OpenGL import GL
-from OpenGL.arrays import numbers
-from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, CheckBox, FloatField, alert, Field
+from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert
 from albow.translate import tr
 import ast
 import bresenham
 from clone import CloneTool
 import collections
-import config
 import config
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
@@ -34,20 +32,16 @@ import itertools
 import leveleditor
 import logging
 from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, alertException, drawTerrainCuttingWire
-import mceutils
 import mcplatform
 from numpy import newaxis
 import numpy
 from operation import Operation, mkundotemp
-import os
 from os.path import basename
-import pygame
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
 from pymclevel.level import extractHeights
 from pymclevel.mclevelbase import exhaust
 import random
-import tempfile
 import keys
 
 #intialize currentNumber for brushpresets.

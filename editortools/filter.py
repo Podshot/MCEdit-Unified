@@ -15,8 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import collections
 import os
 import traceback
-from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, \
-    TextFieldWrapped, TextField
+from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextField
 from albow.translate import tr
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool

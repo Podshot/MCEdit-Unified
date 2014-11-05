@@ -1,8 +1,7 @@
 from __future__ import division
 import sys
-from pygame import Rect, Surface, draw, image
-from pygame.locals import K_RETURN, K_KP_ENTER, K_ESCAPE, K_TAB, \
-    KEYDOWN, SRCALPHA
+from pygame import Rect, Surface, image
+from pygame.locals import K_RETURN, K_KP_ENTER, K_ESCAPE, K_TAB, KEYDOWN, SRCALPHA
 from pygame.mouse import set_cursor
 from pygame.cursors import arrow as arrow_cursor
 from pygame.transform import rotozoom

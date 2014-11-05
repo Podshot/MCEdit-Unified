@@ -1,15 +1,8 @@
-import sys
-import os
-import directories
 import config
 import albow
 import mceutils
-from pygame import display, event, key, KMOD_ALT, KMOD_CTRL, KMOD_LALT, KMOD_META, KMOD_RALT, KMOD_SHIFT, mouse, \
-    MOUSEMOTION
-from albow.dialogs import Dialog, QuickDialog, wrapped_label
-from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_text, IntField, Menu, root, Row, \
-    TableColumn, TableView, TextField, TimeField, Widget, CheckBox
-from albow.controls import Label, SmallValueDisplay, ValueDisplay
+from pygame import key
+from albow.dialogs import Dialog
 from albow.translate import tr
 from glbackground import Panel
 
@@ -20,7 +13,7 @@ def remapMouseButton(button):
     if button < len(buttons):
         return buttons[button]
     return button
-    
+
 def getKey(evt, i=0):
     keyname = key.name(evt.key)
     if keyname == 'Enter':
@@ -41,7 +34,7 @@ def getKey(evt, i=0):
             newKeyname += "Ctrl-"
         if evt.alt == True and keyname != "Alt" and i != 1:
             newKeyname += "Alt-"
-    
+
         keyname = newKeyname + keyname
         return keyname
 
@@ -160,7 +153,7 @@ class KeyConfigPanel(Dialog):
         ("Close World", "Ctrl-W"),
         ("World Info", "Ctrl-I"),
         ("Quit", "Ctrl-Q"),
-        
+
         ("Debug Overlay", "0"),
         ("Blocks-Only", "Alt"),
         ("Show Block Info", "Alt"),
@@ -218,7 +211,7 @@ class KeyConfigPanel(Dialog):
                    ("Close World", "Ctrl-W"),
                    ("World Info", "Ctrl-I"),
                    ("Quit", "Ctrl-Q"),
-                   
+
                    ("Debug Overlay", "0"),
                    ("Blocks-Only", "Alt"),
                    ("Show Block Info", "Alt"),
@@ -276,7 +269,7 @@ class KeyConfigPanel(Dialog):
                    ("Close World", "Ctrl-W"),
                    ("World Info", "Ctrl-I"),
                    ("Quit", "Ctrl-Q"),
-                   
+
                    ("Debug Overlay", "0"),
                    ("Blocks-Only", "Alt"),
                    ("Show Block Info", "Alt"),
@@ -334,7 +327,7 @@ class KeyConfigPanel(Dialog):
         ("Close World", "Ctrl-W"),
         ("World Info", "Ctrl-I"),
         ("Quit", "Ctrl-Q"),
-        
+
         ("Debug Overlay", "0"),
         ("Blocks-Only", "Alt"),
         ("Show Block Info", "Alt"),
@@ -344,7 +337,7 @@ class KeyConfigPanel(Dialog):
         ("Brush Line Tool", "Shift"),
         ("Snap Clone to Axis", "Shift")
     ]}
- 
+
 
     selectedKeyIndex = 0
 
@@ -391,7 +384,7 @@ class KeyConfigPanel(Dialog):
         self.changes = {}
         config.saveConfig()
         self.dismiss()
-    
+
     def choosePreset(self):
         preset = self.choiceButton.selectedChoice
         keypairs = self.presets[preset]
@@ -417,7 +410,7 @@ class KeyConfigPanel(Dialog):
             elif key == 'mouse7':
                 key = 'Button 5'
                 config.config.set("Keys", configKey, "Button 5")
-            
+
         else:
             key = ""
         return configKey, key
@@ -429,7 +422,7 @@ class KeyConfigPanel(Dialog):
         self.selectedKeyIndex = i
         if evt.num_clicks == 2:
             self.askAssignSelectedKey()
-            
+
     def key_down(self, evt):
         keyname = getKey(evt)
         if keyname == 'Escape':
@@ -496,7 +489,7 @@ class KeyConfigPanel(Dialog):
             self.enter = 0
             self.askAssignKey(configKey, tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey))
             return True
-        
+
         self.enter = 0
         if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             oldkey = config.config.get("Keys", configKey)
@@ -512,6 +505,6 @@ class KeyConfigPanel(Dialog):
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname))
             return True
-            
+
         else:
             return True

@@ -1,11 +1,8 @@
 #-# Modified by D.C.-G. for translation purpose
-from numpy.core.umath import absolute
-from pygame import key
 from albow import Label
 from albow.translate import tr
 from pymclevel.box import Vector
 import config
-import leveleditor
 from glbackground import GLBackground
 import keys
 
@@ -87,5 +84,5 @@ class NudgeButton(GLBackground):
             self.nudge(Vector(*left))
         if keyname == config.config.get("Keys", "Right"):
             self.nudge(Vector(*right))
-            
+
         self.editor.key_down(evt, 1)

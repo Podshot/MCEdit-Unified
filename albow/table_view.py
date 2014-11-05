@@ -2,12 +2,13 @@
 # Albow - Table View
 #
 #-# Modified by D.C.-G. for translation purpose
-from itertools import izip
 from pygame import Rect
 from layout import Column
 from palette_view import PaletteView
 from utils import blit_in_rect
 from translate import tr
+
+
 class TableView(Column):
     columns = []
     header_font = None

@@ -4,7 +4,6 @@
 #
 #-# Modified by D.C.-G. for translation purpose
 import os
-from pygame import draw, Rect
 from pygame.locals import *
 from albow.widget import Widget
 from albow.dialogs import Dialog, ask, alert

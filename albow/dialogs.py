@@ -1,6 +1,6 @@
 #-# Modified by D.C.-G. for translation purpose
 import textwrap
-from pygame import Rect, event
+from pygame import event
 from pygame.locals import *
 from widget import Widget
 from controls import Label, Button

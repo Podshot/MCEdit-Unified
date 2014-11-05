@@ -508,11 +508,11 @@ class ResourcePack:
                 self.all_texture_slots.append((step(texx),step(texy)))
 
         self.open_pack()
-        
+
     @property
     def pack_name(self):
         return self._pack_name
-    
+
     @property
     def terrain_name(self):
         return self._texture_name
@@ -579,7 +579,7 @@ class ResourcePack:
             if t not in self.propogated_textures:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
                 new_terrain.paste(old_tex, t, old_tex)
-        
+
         self._texture_name = self._pack_name.replace(" ", "_")+".png"
         new_terrain.save("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
         try:
@@ -587,7 +587,7 @@ class ResourcePack:
         except:
             pass
         #new_terrain.show()
-        
+
 def setup_resource_packs():
     terrains = {}
     try:
@@ -603,29 +603,29 @@ def setup_resource_packs():
     return terrains
 
 class ResourcePackHandler:
-    
+
     def __init__(self):
         self._resource_packs = setup_resource_packs()
         self._selected_resource_pack = "Default"
         print self._resource_packs
-    
+
     @property
     def resource_packs(self):
         return self._resource_packs
-    
+
     def get_available_resource_packs(self):
         return self._resource_packs.keys()
-    
+
     def reload_resource_packs(self):
         self._resource_packs = setup_resource_packs()
-        
+
     def get_selected_resource_pack_name(self):
         return self._selected_resource_pack
-    
+
     def set_selected_resource_pack_name(self, name):
         self._selected_resource_pack = name
-    
+
     def get_selected_resource_pack(self):
         return self._resource_packs[self._selected_resource_pack]
-    
+
 packs = ResourcePackHandler()

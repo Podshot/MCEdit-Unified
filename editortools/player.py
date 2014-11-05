@@ -429,10 +429,10 @@ class PlayerPositionTool(EditorTool):
 
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
-        
+
     def keyDown(self, evt):
         pass
-        
+
     def keyUp(self, evt):
         pass
 

@@ -16,7 +16,6 @@ import os
 import traceback
 from OpenGL import GL
 import numpy
-import pygame
 from albow import Widget, IntField, Column, Row, Label, Button, CheckBox, AttrRef, FloatField, alert
 from albow.translate import tr
 from depths import DepthOffset
@@ -332,7 +331,7 @@ class CloneToolPanel(Panel):
         self.copyBiomesCheckBox.tooltipText = self.copyBiomesLabel.tooltipText
 
         copyBiomesRow = Row((self.copyBiomesCheckBox, self.copyBiomesLabel))
-        
+
         self.staticCommandsCheckBox = CheckBox(ref=AttrRef(self.tool, "staticCommands"))
         self.staticCommandsLabel = Label("Change Coordinates")
         self.staticCommandsLabel.mouse_down = self.staticCommandsCheckBox.mouse_down
@@ -340,7 +339,7 @@ class CloneToolPanel(Panel):
         self.staticCommandsCheckBox.tooltipText = self.staticCommandsLabel.tooltipText
 
         staticCommandsRow = Row((self.staticCommandsCheckBox, self.staticCommandsLabel))
-        
+
         self.moveSpawnerPosCheckBox = CheckBox(ref=AttrRef(self.tool, "moveSpawnerPos"))
         self.moveSpawnerPosLabel = Label("Change Spawners")
         self.moveSpawnerPosLabel.mouse_down = self.moveSpawnerPosCheckBox.mouse_down
@@ -434,7 +433,7 @@ class CloneTool(EditorTool):
         self.optionsPanel = CloneToolOptions(self)
 
         self.destPoint = None
-        
+
         self.snapCloneKey = 0
 
     @property
@@ -866,13 +865,13 @@ class CloneTool(EditorTool):
 
     def option2(self):
         self.copyWater = not self.copyWater
-        
+
     def option3(self):
         self.copyBiomes = not self.copyBiomes
-        
+
     def option4(self):
     	self.staticCommands = not self.staticCommands
-    	
+
     def option5(self):
         self.moveSpawnerPos = not self.moveSpawnerPos
 
@@ -948,12 +947,12 @@ class CloneTool(EditorTool):
 
         self.draggingFace = None
         self.draggingStartPoint = None
-        
+
     def keyDown(self,evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == config.config.get('Keys', 'Snap Clone to Axis'):
             self.snapCloneKey = 1
-    
+
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == config.config.get('Keys', 'Snap Clone to Axis'):

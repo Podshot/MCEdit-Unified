@@ -14,7 +14,6 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 from OpenGL import GL
 import numpy
-import pygame
 from albow import Label, Button, Column, alert
 from albow.translate import tr
 from depths import DepthOffset

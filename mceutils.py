@@ -22,22 +22,14 @@ Exception catching, some basic box drawing, texture pack loading, oddball UI ele
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
 from albow.translate import tr
-from cStringIO import StringIO
 from datetime import datetime
 import directories
-import httplib
-import mcplatform
 import numpy
-from OpenGL import GL, GLU
+from OpenGL import GL
 import os
-import platform
 import png
-from pygame import display, image, Surface
+from pygame import display
 import pymclevel
-import release
-import sys
-import traceback
-import zipfile
 import json
 import hashlib
 import shutil
@@ -269,7 +261,7 @@ def drawTerrainCuttingWire(box,
 
 def loadAlphaTerrainTexture():
     pngFile = None
-    
+
     print os.path.join(directories.getDataDir(), resource_packs.packs.get_selected_resource_pack())
     texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), resource_packs.packs.get_selected_resource_pack()))
 

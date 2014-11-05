@@ -50,7 +50,6 @@ import mcplatform
 import pymclevel
 import renderer
 import directories
-import pygame
 
 from math import isnan
 from os.path import dirname, isdir
@@ -66,8 +65,7 @@ from albow.controls import Label, SmallValueDisplay, ValueDisplay
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
 from albow.translate import tr
-from pygame import display, event, key, KMOD_ALT, KMOD_CTRL, KMOD_LALT, KMOD_META, KMOD_RALT, KMOD_SHIFT, mouse, \
-    MOUSEMOTION
+from pygame import display, event, key, mouse, MOUSEMOTION
 
 from depths import DepthOffset
 from editortools.operation import Operation
@@ -77,7 +75,6 @@ from glutils import gl, Texture
 from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
-from pymclevel import version_utils
 from pymclevel.entity import Entity
 
 # Label = GLLabel

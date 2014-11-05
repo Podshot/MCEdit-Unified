@@ -14,7 +14,6 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 
 import os
-import traceback
 from OpenGL import GL
 
 from collections import defaultdict
@@ -29,8 +28,7 @@ from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
 import leveleditor
 from glbackground import Panel
-from mceutils import ChoiceButton, CheckBoxLabel, IntInputRow, alertException, drawCube, drawFace, \
-    drawTerrainCuttingWire, setWindowCaption, showProgress
+from mceutils import ChoiceButton, CheckBoxLabel, IntInputRow, alertException, drawCube, drawFace, drawTerrainCuttingWire, setWindowCaption, showProgress
 import mcplatform
 from operation import Operation
 import pymclevel
@@ -343,7 +341,7 @@ class SelectionTool(EditorTool):
                 return None
             else:
                 return self.describeBlockAt(pos)
-            
+
             return text.strip()
 
         except Exception, e:
@@ -770,10 +768,10 @@ class SelectionTool(EditorTool):
                 deselectKeyBool = True
             else:
                 deselectKeyBool = False
-                
+
             self.editor.selectionToChunks(remove=deselectKeyBool, add=selectKeyBool)
             self.editor.toolbar.selectTool(8)
-            
+
     def keyDown(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == config.config.get('Keys', 'Show Block Info'):
@@ -782,7 +780,7 @@ class SelectionTool(EditorTool):
             self.selectKey = 1
         if keyname == config.config.get('Keys', 'Deselect Chunks'):
             self.deselectKey = 1
-            
+
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == config.config.get('Keys', 'Show Block Info'):

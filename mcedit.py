@@ -79,9 +79,7 @@ from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
 import config
-import directories
 import functools
-from glbackground import Panel
 import glutils
 import leveleditor
 from leveleditor import ControlSettings, Settings
@@ -90,12 +88,11 @@ import mcplatform
 from mcplatform import platform_open
 import numpy
 from pymclevel.minecraft_server import ServerJarStorage
-import keys
 
 import os
 import os.path
 import pygame
-from pygame import display, key, rect
+from pygame import display, rect
 import pymclevel
 import release
 import shutil
@@ -226,7 +223,7 @@ class FileOpener(albow.Widget):
 
 class graphicsPanel(Dialog):
     anchor = 'wh'
-    
+
     # TODO: Add Resource Pack selection
     def __init__(self, mcedit):
         Dialog.__init__(self)
@@ -253,7 +250,7 @@ class graphicsPanel(Dialog):
         enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
                                                    ref=Settings.enableMouseLag.propertyRef(),
                                                  tooltipText="Enable choppy mouse movement for faster loading.")
-        
+
         self.resourcePackButton = mceutils.ChoiceButton(map(str,resource_packs.packs.get_available_resource_packs()), choose=self.change_texture)
 
         settingsColumn = albow.Column((fastLeavesRow,
@@ -279,7 +276,7 @@ class graphicsPanel(Dialog):
     def _reloadTextures(self, pack):
         if hasattr(pymclevel.alphaMaterials, "terrainTexture"):
             self.mcedit.displayContext.loadTextures()
-            
+
     def change_texture(self):
         resource_packs.packs.set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
         self.mcedit.displayContext.loadTextures()
@@ -1080,7 +1077,7 @@ class GLDisplayContext(object):
                 GL.GL_UNSIGNED_BYTE,
                 teximage
             )
-            
+
         textures = (
             (pymclevel.classicMaterials, 'terrain-classic.png'),
             (pymclevel.indevMaterials, 'terrain-classic.png'),

@@ -49,7 +49,6 @@ You need, a least, these three function in your program:
 
 import os
 import sys
-import re
 import json
 import directories
 
@@ -118,7 +117,7 @@ def refreshLang(self=None,suppressAlert=False,build=True):
     except Exception as inst:
         print inst
         return ""
-        
+
 #-------------------------------------------------------------------------------
 def restart(mcedit):
     import config
@@ -144,7 +143,7 @@ def restart(mcedit):
     mcedit.editor.deleteAllCopiedSchematics()
     python = sys.executable
     os.execl(python, python, * sys.argv)
-    
+
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""

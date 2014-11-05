@@ -7,11 +7,8 @@ from pygame import Rect, draw
 
 from widget import Widget, overridable_property
 from theme import ThemeProperty
-from utils import blit_in_rect, frame_rect
 import resource
-import keys
 from translate import tr
-import numpy
 
 
 class Control(object):
@@ -229,7 +226,7 @@ class ButtonBase(Control):
                         self.call_handler('action')
         self.get_root().ctrlClicked = -1
 
-     
+
 
 
 
