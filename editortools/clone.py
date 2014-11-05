@@ -224,6 +224,9 @@ class CloneOperation(Operation):
         super(CloneOperation, self).undo()
         [i.undo() for i in self.selectionOps]
 
+    def redo(self):
+        super(CloneOperation, self).redo()
+        [i.redo() for i in self.selectionOps]
 
 class CloneToolPanel(Panel):
     useOffsetInput = True
