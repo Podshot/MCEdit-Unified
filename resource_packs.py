@@ -493,8 +493,8 @@ class ResourcePack:
 
     def __init__(self, zipfileFile):
         self.zipfile = zipfileFile
-        self.pack_name = zipfileFile.split("\\")[-1][:-4]
-        self.texture_path = "textures/"+self.pack_name+"/"
+        self._pack_name = zipfileFile.split("\\")[-1][:-4]
+        self.texture_path = "textures/"+self._pack_name+"/"
         try:
             os.makedirs(self.texture_path)
         except OSError:
@@ -508,6 +508,14 @@ class ResourcePack:
                 self.all_texture_slots.append((step(texx),step(texy)))
 
         self.open_pack()
+        
+    @property
+    def pack_name(self):
+        return self._pack_name
+    
+    @property
+    def terrain_name(self):
+        return self._texture_name
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
@@ -572,20 +580,27 @@ class ResourcePack:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
                 new_terrain.paste(old_tex, t, old_tex)
         
-        new_terrain.save("terrain-textures//"+self.pack_name.replace(" ", "_")+".png")
+        self._texture_name = self._pack_name.replace(" ", "_")+".png"
+        new_terrain.save("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
         try:
-            os.remove(self.pack_name.replace(" ", "_")+".png")
+            os.remove(self._pack_name.replace(" ", "_")+".png")
         except:
             pass
-        new_terrain.show()
+        #new_terrain.show()
 
-try:
-    os.mkdir("terrain-textures")
-except OSError:
-    pass
-resourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
-print resourcePacks
-for tex_pack in resourcePacks:
-    ResourcePack(tex_pack)
-ResourcePack("OCD pack 1.8.zip")
-shutil.rmtree("textures/")
+def setup_terrain_textures():
+    terrains = {}
+    try:
+        os.mkdir("terrain-textures")
+    except OSError:
+        pass
+    resourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
+    for tex_pack in resourcePacks:
+        rp = ResourcePack(tex_pack)
+        terrains[rp.pack_name] = rp.terrain_name
+        #ResourcePack("OCD pack 1.8.zip")
+    shutil.rmtree("textures/")
+    return terrains
+    
+    
+packs = setup_terrain_textures()
