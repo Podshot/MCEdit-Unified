@@ -500,7 +500,7 @@ class CameraViewport(GLViewport):
             if self.editor.mouseEntered:
                 if not self.mouseMovesCamera:
                     try:
-                        focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level ,200)
+                        focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level ,100)
                     except TooFarException as e:
                         mouse3dPoint = self._blockUnderCursor()
                         focusPair = self._findBlockFaceUnderCursor(mouse3dPoint)
