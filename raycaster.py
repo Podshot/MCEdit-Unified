@@ -81,7 +81,6 @@ def firstBlock(origin, direction, level, radius):
         if (block != 0):
             return i[0],i[1]
         if (_tooFar(origin, i[0], radius) or _tooHighOrLow(i[0])):
-            print "Too High or Low" 
             raise TooFarException("There are no valid blocks within range")
 
 def _tooFar(origin, position, radius):
