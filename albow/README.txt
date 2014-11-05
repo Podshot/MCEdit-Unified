@@ -64,10 +64,10 @@ o0 Hello
 t0 Bonjour
 o1 Today is %s
 t1 Ajourd'hui nous sommes %s
-o2 Mary has 
-t2 Marie a 
-o3  cats and 
-t4  chats et 
+o2 Mary has
+t2 Marie a
+o3  cats and
+t4  chats et
 o5  dogs.
 t5  chiens.
 o6 sunday
@@ -110,16 +110,16 @@ Contents
 albow       Package containing the Python modules. Put it
             on your PYTHONPATH or in the top level directory
             of your PyGame application.
-            
+
 demo.py     A demonstration of most of Albow's functionality.
             Run it using
-            
+
                  pythonw albow.py
 
 doc         Documentation in html format. Start with index.html.
 
 Resources   Some resources used by demo.py. Also contains some
-            default fonts (Vera.ttf and VeraBd.ttf) that you can
+            default fonts (DejaVuSans-Regular.ttf and DejaVuSans-Bold.ttf) that you can
             use in your applications if you wish.
 
 License

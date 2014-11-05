@@ -33,6 +33,7 @@ log = logging.getLogger(__name__)
 
 class PlayerMoveOperation(Operation):
     undoPos = None
+    redoPos = None
 
     def __init__(self, tool, pos, player="Player", yp=(None, None)):
         super(PlayerMoveOperation, self).__init__(tool.editor, tool.editor.level)
@@ -67,9 +68,29 @@ class PlayerMoveOperation(Operation):
     def undo(self):
         if not (self.undoPos is None):
             level = self.tool.editor.level
+            try:
+                self.redoPos = level.getPlayerPosition(self.player)
+                self.redoDim = level.getPlayerDimension(self.player)
+                self.redoYP = level.getPlayerOrientation(self.player)
+            except Exception, e:
+                log.info(tr("Couldn't get player position! ({0!r})").format(e))
             level.setPlayerPosition(self.undoPos, self.player)
             level.setPlayerDimension(self.undoDim, self.player)
             level.setPlayerOrientation(self.undoYP, self.player)
+            self.tool.markerList.invalidate()
+
+    def redo(self):
+        if not (self.redoPos is None):
+            level = self.tool.editor.level
+            try:
+                self.undoPos = level.getPlayerPosition(self.player)
+                self.undoDim = level.getPlayerDimension(self.player)
+                self.undoYP = level.getPlayerOrientation(self.player)
+            except Exception, e:
+                log.info(tr("Couldn't get player position! ({0!r})").format(e))
+            level.setPlayerPosition(self.redoPos, self.player)
+            level.setPlayerDimension(self.redoDim, self.player)
+            level.setPlayerOrientation(self.redoYP, self.player)
             self.tool.markerList.invalidate()
 
     def bufferSize(self):
@@ -100,8 +121,10 @@ def positionValid(level, pos):
 
 class PlayerSpawnMoveOperation(Operation):
     undoPos = None
+    redoPos = None
 
     def __init__(self, tool, pos):
+        super(PlayerSpawnMoveOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool, self.pos = tool, pos
 
     def perform(self, recordUndo=True):
@@ -122,7 +145,15 @@ class PlayerSpawnMoveOperation(Operation):
     def undo(self):
         if self.undoPos is not None:
             level = self.tool.editor.level
+            self.redoPos = level.playerSpawnPosition()
             level.setPlayerSpawnPosition(self.undoPos)
+            self.tool.markerList.invalidate()
+
+    def redo(self):
+        if self.redoPos is not None:
+            level = self.tool.editor.level
+            self.undoPos = level.playerSpawnPosition()
+            level.setPlayerSpawnPosition(self.redoPos)
             self.tool.markerList.invalidate()
 
 
@@ -182,7 +213,7 @@ class PlayerPositionPanel(Panel):
 class PlayerPositionTool(EditorTool):
     surfaceBuild = True
     toolIconName = "player"
-    tooltipText = "Move Player"
+    tooltipText = "Players"
     movingPlayer = None
 
     def reloadTextures(self):
@@ -202,7 +233,6 @@ class PlayerPositionTool(EditorTool):
 
         op = PlayerMoveOperation(self, pos, player, (y, p))
         self.movingPlayer = None
-        op.perform()
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
 
@@ -396,9 +426,15 @@ class PlayerPositionTool(EditorTool):
 
         op = PlayerMoveOperation(self, pos, self.movingPlayer)
         self.movingPlayer = None
-        op.perform()
+
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
+        
+    def keyDown(self, evt):
+        pass
+        
+    def keyUp(self, evt):
+        pass
 
     def levelChanged(self):
         self.markerList.invalidate()
@@ -524,8 +560,6 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         pos = map(lambda p, d: p + d, pos, direction)
         op = PlayerSpawnMoveOperation(self, pos)
         try:
-            op.perform()
-
             self.editor.addOperation(op)
             self.editor.addUnsavedEdit()
             self.markerList.invalidate()
@@ -557,14 +591,13 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                 self.editor.invalidateChunks([(pos[0] // 16, pos[2] // 16)])
                 op = PlayerSpawnMoveOperation(self, pos)
                 try:
-                    op.perform()
+                    self.editor.addOperation(op)
+                    self.editor.addUnsavedEdit()
+                    self.markerList.invalidate()
                 except SpawnPositionInvalid, e:
                     alert(str(e))
                     return
 
-                self.editor.addOperation(op)
-                self.editor.addUnsavedEdit()
-                self.markerList.invalidate()
                 if len(status):
                     alert(tr("Spawn point fixed. Changes: \n\n") + status)
 

@@ -32,6 +32,7 @@ import urllib
 import json
 import shutil
 import directories
+import sys
 
 
 def alertFilterException(func):
@@ -304,7 +305,7 @@ class FilterToolPanel(Panel):
         self.confirmButton = Button("Filter", action=self.tool.confirm)
 
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
-        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.filtersDir)
+        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
         filterLabel.tooltipText = "Click to open filters folder"
         filterSelectRow = Row((filterLabel, self.filterSelect))
 
@@ -403,8 +404,9 @@ class FilterTool(EditorTool):
     def updateFilters(self):
         totalFilters = 0
         updatedFilters = 0
+        filtersDir = directories.getFiltersDir()
         try:
-            os.mkdir(directories.filtersDir + "/updates")
+            os.mkdir(filtersDir + "/updates")
         except OSError:
             pass
         for module in self.filterModules.values():
@@ -414,11 +416,11 @@ class FilterTool(EditorTool):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"],
-                                           directories.filtersDir + "/updates/" + versionJSON["Name"])
+                                           filtersDir + "/updates/" + versionJSON["Name"])
                         updatedFilters = updatedFilters + 1
-        for f in os.listdir(directories.filtersDir + "/updates"):
-            shutil.copy(directories.filtersDir + "/updates/" + f, directories.filtersDir)
-        shutil.rmtree(directories.filtersDir + "/updates/")
+        for f in os.listdir(filtersDir + "/updates"):
+            shutil.copy(filtersDir + "/updates/" + f, filtersDir)
+        shutil.rmtree(filtersDir + "/updates/")
         self.finishedUpdatingWidget = Widget()
         lbl = Label("Updated " + str(updatedFilters) + " filter(s) out of " + str(totalFilters))
         closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
@@ -432,9 +434,11 @@ class FilterTool(EditorTool):
         self.finishedUpdatingWidget.dismiss()
 
     def reloadFilters(self):
-        filterDir = directories.filtersDir
-        filterFiles = os.listdir(filterDir)
-        filterPyfiles = filter(lambda x: x.endswith(".py"), filterFiles)
+        if self.filterModules:
+            for k, m in self.filterModules.iteritems():
+                name = m.__name__
+                del sys.modules[name]
+                del m
 
         def tryImport(name):
             try:
@@ -444,9 +448,8 @@ class FilterTool(EditorTool):
                 alert(tr(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
 
-        filterModules = (tryImport(x[:-3]) for x in filterPyfiles)
+        filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
-
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
         for m in self.filterModules.itervalues():
             try:

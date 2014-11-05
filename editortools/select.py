@@ -39,6 +39,7 @@ from fill import BlockFillOperation
 import tempfile
 from pymclevel import nbt
 import logging
+import keys
 
 log = logging.getLogger(__name__)
 
@@ -264,6 +265,9 @@ class NudgeBlocksOperation(Operation):
         super(NudgeBlocksOperation, self).undo()
         self.nudgeSelection.undo()
 
+    def redo(self):
+        super(NudgeBlocksOperation, self).redo()
+        self.nudgeSelection.redo()
 
 class SelectionTool(EditorTool):
     # selectionColor = (1.0, .9, .9)
@@ -286,6 +290,9 @@ class SelectionTool(EditorTool):
         self.editor = editor
         editor.selectionTool = self
         self.selectionPoint = None
+        self.infoKey = 0
+        self.selectKey = 0
+        self.deselectKey = 0
 
         self.optionsPanel = SelectionToolOptions(self)
 
@@ -307,8 +314,8 @@ class SelectionTool(EditorTool):
                 text += "{id}: {pos}\n".format(id=t["id"].value, pos=[t[a].value for a in "xyz"])
             except Exception, e:
                 text += repr(e)
-            if "Items" in t and not pygame.key.get_mods() & pygame.KMOD_ALT:
-                text += tr("--Items omitted. ALT to view. Double-click to edit.--\n")
+            if "Items" in t and self.infoKey == 0:
+                text += tr("--Items omitted. {0} to view. Double-click to edit.--\n").format(config.config.get('Keys', 'Show Block Info Modifier'))
                 t = nbt.TAG_Compound(list(t.value))
                 del t["Items"]
 
@@ -318,6 +325,8 @@ class SelectionTool(EditorTool):
 
     @property
     def worldTooltipText(self):
+        if self.infoKey == 0:
+            return
         pos, face = self.editor.blockFaceUnderCursor
         if pos is None:
             return
@@ -328,20 +337,14 @@ class SelectionTool(EditorTool):
             if box:
                 size = "{s[0]} W x {s[2]} L x {s[1]} H".format(s=box.size)
                 text = size
-            if pygame.key.get_mods() & pygame.KMOD_ALT:
-                if size:
-                    return size
-                elif self.dragResizeFace is not None:
-                    return None
-                else:
-
-                    return self.describeBlockAt(pos)
-
-                return text.strip()
-
+            if size:
+                return size
+            elif self.dragResizeFace is not None:
+                return None
             else:
-
-                return self.worldTooltipForBlock(pos) or size
+                return self.describeBlockAt(pos)
+            
+            return text.strip()
 
         except Exception, e:
             return repr(e)
@@ -759,8 +762,35 @@ class SelectionTool(EditorTool):
                 self.clickSelectionInProgress = False
 
         if self.chunkMode:
-            self.editor.selectionToChunks(remove=evt.alt, add=evt.shift)
+            if self.selectKey == 1:
+                selectKeyBool = True
+            else:
+                selectKeyBool = False
+            if self.deselectKey == 1:
+                deselectKeyBool = True
+            else:
+                deselectKeyBool = False
+                
+            self.editor.selectionToChunks(remove=deselectKeyBool, add=selectKeyBool)
             self.editor.toolbar.selectTool(8)
+            
+    def keyDown(self, evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Show Block Info'):
+            self.infoKey = 1
+        if keyname == config.config.get('Keys', 'Select Chunks'):
+            self.selectKey = 1
+        if keyname == config.config.get('Keys', 'Deselect Chunks'):
+            self.deselectKey = 1
+            
+    def keyUp(self, evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Show Block Info'):
+            self.infoKey = 0
+        if keyname == config.config.get('Keys', 'Select Chunks'):
+            self.selectKey = 0
+        if keyname == config.config.get('Keys', 'Deselect Chunks'):
+            self.deselectKey = 0
 
     @property
     def chunkMode(self):
@@ -999,7 +1029,7 @@ class SelectionTool(EditorTool):
                 box = self.selectionBoxForCorners(otherCorner, pos)
                 if self.chunkMode:
                     box = box.chunkBox(self.editor.level)
-                    if pygame.key.get_mods() & pygame.KMOD_ALT:
+                    if self.deselectKey == 1:
                         selectionColor = [1., 0., 0.]
                 self.editor.drawConstructionCube(box, selectionColor + [self.alpha, ])
         else:
@@ -1138,8 +1168,15 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateTileTicksInBox(box)
 
                 def undo(self):
+                    self.redoTileTicks = level.getTileTicksInBox(box)
                     level.removeTileTicksInBox(box)
                     level.addTileTicks(self.undoTileTicks)
+                    editor.renderer.invalidateTileTicksInBox(box)
+
+                def redo(self):
+                    self.undoTileTicks = level.getTileTicksInBox(box)
+                    level.removeTileTicksInBox(box)
+                    level.addTileTicks(self.redoTileTicks)
                     editor.renderer.invalidateTileTicksInBox(box)
 
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
@@ -1164,8 +1201,15 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateEntitiesInBox(box)
 
                 def undo(self):
+                    self.redoEntities = level.getEntitiesInBox(box)
                     level.removeEntitiesInBox(box)
                     level.addEntities(self.undoEntities)
+                    editor.renderer.invalidateEntitiesInBox(box)
+
+                def redo(self):
+                    self.undoEntities = level.getEntitiesInBox(box)
+                    level.removeEntitiesInBox(box)
+                    level.addEntities(self.redoEntities)
                     editor.renderer.invalidateEntitiesInBox(box)
 
             op = DeleteEntitiesOperation(self.editor, self.editor.level)
@@ -1251,8 +1295,16 @@ class SelectionOperation(Operation):
         self.selectionTool.setSelectionPoints(self.points)
 
     def undo(self):
+        self.redoPoints = self.selectionTool.getSelectionPoints()
         points = self.points
         self.points = self.undoPoints
+        self.perform()
+        self.points = points
+
+    def redo(self):
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        points = self.points
+        self.points = self.redoPoints
         self.perform()
         self.points = points
 
@@ -1264,8 +1316,8 @@ class NudgeSelectionOperation(Operation):
         super(NudgeSelectionOperation, self).__init__(selectionTool.editor, selectionTool.editor.level)
         self.selectionTool = selectionTool
         self.direction = direction
-        self.oldPoints = selectionTool.getSelectionPoints()
-        self.newPoints = [p + direction for p in self.oldPoints]
+        self.undoPoints = selectionTool.getSelectionPoints()
+        self.newPoints = [p + direction for p in self.undoPoints]
 
     def perform(self, recordUndo=True):
         self.selectionTool.setSelectionPoints(self.newPoints)
@@ -1273,4 +1325,9 @@ class NudgeSelectionOperation(Operation):
     oldSelection = None
 
     def undo(self):
-        self.selectionTool.setSelectionPoints(self.oldPoints)
+        self.redoPoints = self.selectionTool.getSelectionPoints()
+        self.selectionTool.setSelectionPoints(self.undoPoints)
+
+    def redo(self):
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        self.selectionTool.setSelectionPoints(self.redoPoints)

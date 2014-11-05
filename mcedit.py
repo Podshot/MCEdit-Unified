@@ -89,6 +89,7 @@ import mcplatform
 from mcplatform import platform_open
 import numpy
 from pymclevel.minecraft_server import ServerJarStorage
+import keys
 
 import os
 import os.path
@@ -841,6 +842,13 @@ class MCEdit(GLViewport):
         Settings.reportCrashesAsked.set(True)
 
         config.saveConfig()
+        if "update" in config.config.get("Version", "version"):
+            answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
+            if answer == "Yes":
+                for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
+                    config.config.set("Keys", configKey, k)
+        config.config.set("Version", "version", "1.1.2.0")
+        config.saveConfig()
         if "-causeError" in sys.argv:
             raise ValueError, "Error requested via -causeError"
 
@@ -1090,8 +1098,7 @@ class GLDisplayContext(object):
             mats.terrainTexture = self.terrainTextures[mats.name]
 
 def getSelectedMinecraftVersion():
-    import json
-    profile = getMinecraftProfileJSON()[getSelectedProfile()]
+    profile = directories.getMinecraftProfileJSON()[directories.getSelectedProfile()]
     if 'lastVersionId' in profile:
         return profile['lastVersionId']
     else:

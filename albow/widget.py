@@ -464,6 +464,7 @@ class Widget(object):
                 self.dismiss(self.enter_response)
                 return
         elif k == K_ESCAPE:
+            self.get_root().ctrlClicked = -1
             if self.cancel_response is not None:
                 self.dismiss(self.cancel_response)
                 return

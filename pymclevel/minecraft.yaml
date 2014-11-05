@@ -406,23 +406,37 @@ blocks:
     opacity: 3
     data:
       0:
-        name: Water (Flowing, Source)
+        name: Water (Flowing, Level 7 (Source))
       1:
-        name: Water (Flowing, Height 7)
+        name: Water (Flowing, Level 6)
       2:
-        name: Water (Flowing, Height 6)
+        name: Water (Flowing, Level 5)
       3:
-        name: Water (Flowing, Height 5)
+        name: Water (Flowing, Level 4)
       4:
-        name: Water (Flowing, Height 4)
+        name: Water (Flowing, Level 3)
       5:
-        name: Water (Flowing, Height 3)
+        name: Water (Flowing, Level 2)
       6:
-        name: Water (Flowing, Height 2)
+        name: Water (Flowing, Level 1)
       7:
-        name: Water (Flowing, Height 1)
+        name: Water (Flowing, Level 0)
       8:
-        name: Water (Flowing, Height 8)
+        name: Water (Flowing, Level 15)
+      9:
+        name: Water (Flowing, Level 14)
+      10:
+        name: Water (Flowing, Level 13)
+      11:
+        name: Water (Flowing, Level 12)
+      12:
+        name: Water (Flowing, Level 11)
+      13:
+        name: Water (Flowing, Level 10)
+      14:
+        name: Water (Flowing, Level 9)
+      15:
+        name: Water (Flowing, Level 8)
 
   - id: 9
     idStr: water
@@ -433,23 +447,37 @@ blocks:
     opacity: 3
     data:
       0:
-        name: Water (Still, Source)
+        name: Water (Still, Level 7 (Source))
       1:
-        name: Water (Still, Height 7)
+        name: Water (Still, Level 6)
       2:
-        name: Water (Still, Height 6)
+        name: Water (Still, Level 5)
       3:
-        name: Water (Still, Height 5)
+        name: Water (Still, Level 4)
       4:
-        name: Water (Still, Height 4)
+        name: Water (Still, Level 3)
       5:
-        name: Water (Still, Height 3)
+        name: Water (Still, Level 2)
       6:
-        name: Water (Still, Height 2)
+        name: Water (Still, Level 1)
       7:
-        name: Water (Still, Height 1)
+        name: Water (Still, Level 0)
       8:
-        name: Water (Still, Height 8)
+        name: Water (Still, Level 15)
+      9:
+        name: Water (Still, Level 14)
+      10:
+        name: Water (Still, Level 13)
+      11:
+        name: Water (Still, Level 12)
+      12:
+        name: Water (Still, Level 11)
+      13:
+        name: Water (Still, Level 10)
+      14:
+        name: Water (Still, Level 9)
+      15:
+        name: Water (Still, Level 8)
 
   - id: 10
     idStr: flowing_lava
@@ -461,23 +489,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Lava (Flowing, Source)
+        name: Lava (Flowing, Level 7 (Source))
       1:
-        name: Lava (Flowing, Height 7)
+        name: Lava (Flowing, Level 6)
       2:
-        name: Lava (Flowing, Height 6)
+        name: Lava (Flowing, Level 5)
       3:
-        name: Lava (Flowing, Height 5)
+        name: Lava (Flowing, Level 4)
       4:
-        name: Lava (Flowing, Height 4)
+        name: Lava (Flowing, Level 3)
       5:
-        name: Lava (Flowing, Height 3)
+        name: Lava (Flowing, Level 2)
       6:
-        name: Lava (Flowing, Height 2)
+        name: Lava (Flowing, Level 1)
       7:
-        name: Lava (Flowing, Height 1)
+        name: Lava (Flowing, Level 0)
       8:
-        name: Lava (Flowing, Height 8)
+        name: Lava (Flowing, Level 15)
+      9:
+        name: Lava (Flowing, Level 14)
+      10:
+        name: Lava (Flowing, Level 13)
+      11:
+        name: Lava (Flowing, Level 12)
+      12:
+        name: Lava (Flowing, Level 11)
+      13:
+        name: Lava (Flowing, Level 10)
+      14:
+        name: Lava (Flowing, Level 9)
+      15:
+        name: Lava (Flowing, Level 8)
 
   - id: 11
     idStr: lava
@@ -489,23 +531,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Lava (Still, Source)
+        name: Lava (Still, Level 7 (Source))
       1:
-        name: Lava (Still, Height 7)
+        name: Lava (Still, Level 6)
       2:
-        name: Lava (Still, Height 6)
+        name: Lava (Still, Level 5)
       3:
-        name: Lava (Still, Height 5)
+        name: Lava (Still, Level 4)
       4:
-        name: Lava (Still, Height 4)
+        name: Lava (Still, Level 3)
       5:
-        name: Lava (Still, Height 3)
+        name: Lava (Still, Level 2)
       6:
-        name: Lava (Still, Height 2)
+        name: Lava (Still, Level 1)
       7:
-        name: Lava (Still, Height 1)
+        name: Lava (Still, Level 0)
       8:
-        name: Lava (Still, Height 8)
+        name: Lava (Still, Level 15)
+      9:
+        name: Lava (Still, Level 14)
+      10:
+        name: Lava (Still, Level 13)
+      11:
+        name: Lava (Still, Level 12)
+      12:
+        name: Lava (Still, Level 11)
+      13:
+        name: Lava (Still, Level 10)
+      14:
+        name: Lava (Still, Level 9)
+      15:
+        name: Lava (Still, Level 8)
 
   - id: 12
     idStr: sand
@@ -4877,11 +4933,11 @@ blocks:
         name: Red Sandstone
         tex: [2, 20]
       1:
-        name: Red Sandstone (Smooth)
-        tex: [3, 20]
-      2:
         name: Red Sandstone (Chiseled)
         tex: [1, 20]
+      2:
+        name: Red Sandstone (Smooth)
+        tex: [3, 20]
     
   - id: 180
     idStr: red_sandstone_stairs

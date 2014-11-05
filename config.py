@@ -36,7 +36,7 @@ def getNewKey(value, i=0):
         value = value[6:]
     if value >= 'a' and value <= 'z':
         value = value.replace(value[0], value[0].upper(), 1)
-    if i >= 30 and "Ctrl-" not in value:
+    if i >= 36 and "Ctrl-" not in value:
         value = "Ctrl-" + value
     if value == "Mouse3":
         value = "Button 3"
@@ -117,8 +117,12 @@ def loadConfig():
                     config.set("Keys", "Debug Overlay", getNewKey(value,i))
                     config.set("Keys", "Toggle Fps Counter", "None")
                 i += 1
-            config.set("Version", "version", "1.1.2.0")
+            if config.get("Keys", "Brake") == "Space":
+                config.set("Version", "version", "1.1.2.0-update")
+            else:
+                config.set("Version", "version", "1.1.2.0-new")
             saveConfig()
+    
     return config
 
 
@@ -171,12 +175,17 @@ new level = N
 delete blocks = Delete
 line tool = Z
 
-debug overlay = 0
-
 long-distance mode = Alt-Z
 fly mode = None
 
-blocks-only modifier = Alt
+debug overlay = 0
+blocks-only = Alt
+show block info = Alt
+pick block = Alt
+select chunks = Z
+deselect chunks = Alt
+brush line tool = Z
+snap clone to axis = Ctrl
 
 quit = Ctrl-Q
 view distance = Ctrl-F
@@ -189,6 +198,7 @@ reload world = Ctrl-R
 open = Ctrl-O
 quick load = Ctrl-L
 undo = Ctrl-Z
+redo = Ctrl-Y
 save = Ctrl-S
 new world = Ctrl-N
 close world = Ctrl-W

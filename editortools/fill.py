@@ -15,7 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 import pygame
-from albow import Label, Button, Column
+from albow import Label, Button, Column, alert
 from albow.translate import tr
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
@@ -29,6 +29,7 @@ from operation import Operation
 from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
 import config
+import keys
 import pymclevel
 FillSettings = config.Settings("Fill")
 FillSettings.chooseBlockImmediately = FillSettings("Choose Block Immediately", True)
@@ -168,6 +169,7 @@ class FillTool(EditorTool):
     def __init__(self, *args, **kw):
         EditorTool.__init__(self, *args, **kw)
         self.optionsPanel = FillToolOptions(self)
+        self.pickBlockKey = 0
 
     @property
     def blockInfo(self):
@@ -332,7 +334,7 @@ class FillTool(EditorTool):
             self.blockTextures[type] = Texture(blockTexFunc(type))
 
     def drawToolReticle(self):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.pickBlockKey == 1:
             # eyedropper mode
             self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
 
@@ -374,7 +376,7 @@ class FillTool(EditorTool):
 
     @property
     def worldTooltipText(self):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.pickBlockKey == 1:
             try:
                 if self.editor.blockFaceUnderCursor is None:
                     return
@@ -392,10 +394,20 @@ class FillTool(EditorTool):
 
     @alertException
     def mouseDown(self, evt, pos, dir):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.pickBlockKey == 1:
             id = self.editor.level.blockAt(*pos)
             data = self.editor.level.blockDataAt(*pos)
 
             self.blockInfo = self.editor.level.materials.blockWithID(id, data)
         else:
             return self.editor.selectionTool.mouseDown(evt, pos, dir)
+
+    def keyDown(self, evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Pick Block'):
+            self.pickBlockKey = 1
+
+    def keyUp(self, evt):
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Pick Block'):
+            self.pickBlockKey = 0

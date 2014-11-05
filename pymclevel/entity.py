@@ -186,55 +186,90 @@ class TileEntity(object):
             oldCommand = command
             
             def selectorCoords(selector):
-                char_num = 0
-                x = ""
-                y = ""
-                z = ""
-                new_selector = ""
-                dont_copy = 0
-                for char in selector:
-                    if dont_copy != 0:
-                        dont_copy -= 1
-                    else:
-                        if (char != 'x' and char != 'y' and char != 'z') or letter == True:
-                            new_selector += char
-                            if char == '[' or char == ',':
-                                letter = False
-                            else:
-                                letter = True
-                        elif char == 'x' and letter == False:
-                            new_selector += selector[char_num:char_num + 2]
-                            char_x = char_num + 2
-                            end_char_x = selector.find(',', char_num + 3, len(selector)-1)
+                old_selector = selector
+                try:
+                    char_num = 0
+                    x = ""
+                    y = ""
+                    z = ""
+                    new_selector = ""
+                    dont_copy = 0
+                    if len(selector) > 4:
+                        if selector[3] >= '0' and selector[3] <= '9':
+                            new_selector = selector[:3]
+                            end_char_x = selector.find(',', 4, len(selector)-1)
                             if end_char_x == -1:
                                 end_char_x = len(selector) - 1
-                            x = selector[char_x:end_char_x]
-                            dont_copy = len(x) + 1
+                            x = selector[3:end_char_x]
                             x = coordX(x, staticCommands)
-                            new_selector += x
-                        
-                        elif char == 'y' and letter == False:
-                            new_selector += selector[char_num:char_num + 2]
-                            char_y = char_num + 2
-                            end_char_y = selector.find(',', char_num + 3, len(selector)-1)
+                            new_selector += x + ','
+                            
+                            end_char_y = selector.find(',', end_char_x+1, len(selector)-1)
                             if end_char_y == -1:
                                 end_char_y = len(selector) - 1
-                            y = selector[char_y:end_char_y]
-                            dont_copy = len(y) + 1
+                            y = selector[end_char_x+1:end_char_y]
                             y = coordY(y, staticCommands)
-                            new_selector += y
-                        elif char == 'z' and letter == False:
-                            new_selector += selector[char_num:char_num + 2]
-                            char_z = char_num + 2
-                            end_char_z = selector.find(',', char_num + 3, len(selector)-1)
+                            new_selector += y + ','
+                            
+                            end_char_z = selector.find(',', end_char_y+1, len(selector)-1)
                             if end_char_z == -1:
                                 end_char_z = len(selector) - 1
-                            z = selector[char_z:end_char_z]
-                            dont_copy = len(z) + 1
+                            z = selector[end_char_y+1:end_char_z]
                             z = coordZ(z, staticCommands)
-                            new_selector += z
-                    char_num += 1  
-                return new_selector
+                            new_selector += z + ',' + selector[end_char_z+1:]
+                            
+                        else:
+                            for char in selector:
+                                if dont_copy != 0:
+                                    dont_copy -= 1
+                                else:
+                                    if (char != 'x' and char != 'y' and char != 'z') or letter == True:
+                                        new_selector += char
+                                        if char == '[' or char == ',':
+                                            letter = False
+                                        else:
+                                            letter = True
+                                    
+                                    elif char == 'x' and letter == False:
+                                        new_selector += selector[char_num:char_num + 2]
+                                        char_x = char_num + 2
+                                        end_char_x = selector.find(',', char_num + 3, len(selector)-1)
+                                        if end_char_x == -1:
+                                            end_char_x = len(selector) - 1
+                                        x = selector[char_x:end_char_x]
+                                        dont_copy = len(x) + 1
+                                        x = coordX(x, staticCommands)
+                                        new_selector += x
+                        
+                                    elif char == 'y' and letter == False:
+                                        new_selector += selector[char_num:char_num + 2]
+                                        char_y = char_num + 2
+                                        end_char_y = selector.find(',', char_num + 3, len(selector)-1)
+                                        if end_char_y == -1:
+                                            end_char_y = len(selector) - 1
+                                        y = selector[char_y:end_char_y]
+                                        dont_copy = len(y) + 1
+                                        y = coordY(y, staticCommands)
+                                        new_selector += y
+                        
+                                    elif char == 'z' and letter == False:
+                                        new_selector += selector[char_num:char_num + 2]
+                                        char_z = char_num + 2
+                                        end_char_z = selector.find(',', char_num + 3, len(selector)-1)
+                                        if end_char_z == -1:
+                                            end_char_z = len(selector) - 1
+                                        z = selector[char_z:end_char_z]
+                                        dont_copy = len(z) + 1
+                                        z = coordZ(z, staticCommands)
+                                        new_selector += z
+                                char_num += 1  
+                    else:
+                        new_selector = old_selector
+                
+                except:
+                    new_selector = old_selector
+                finally:
+                    return new_selector
                     
             try:
                 execute = False

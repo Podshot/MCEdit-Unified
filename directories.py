@@ -112,7 +112,7 @@ def getMinecraftProfileJSON():
         except:
             return None
 
-            
+
 def getMinecraftProfileDirectory(profileName):
     """Returns the path to the sent minecraft profile directory"""
     try:
@@ -140,6 +140,7 @@ def getDocumentsFolder():
     if sys.platform == "win32":
         try:
             import win32com.client
+            from win32com.shell import shell, shellcon
             objShell = win32com.client.Dispatch("WScript.Shell")
             docsFolder = objShell.SpecialFolders("MyDocuments")
 
@@ -178,7 +179,7 @@ cache = u"usercache.json"
 
 parentDir = os.path.dirname(getDataDir())
 docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
-    
+
 if sys.platform != "darwin":
 
     portableConfigFilePath = os.path.join(parentDir, ini)
@@ -199,10 +200,14 @@ if sys.platform != "darwin":
     if not os.path.exists(docsFolder):
         os.makedirs(docsFolder)
 
+    sys.path.append(fixedFiltersDir)
+    sys.path.append(portableFiltersDir)
+
+
 def goPortable():
     if sys.platform == "darwin":
         return False
-    global configFilePath, schematicsDir, filtersDir, portable, cacheDir
+    global configFilePath, schematicsDir, filtersDir, portable
 
     if os.path.exists(fixedSchematicsDir):
         move_displace(fixedSchematicsDir, portableSchematicsDir)
@@ -218,7 +223,6 @@ def goPortable():
     schematicsDir = portableSchematicsDir
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
-    cacheDir = portableGenericSupportPath
     jarStorageDir = portableJarStorageDir
     portable = True
     return True
@@ -262,9 +266,10 @@ def goFixed():
     schematicsDir = fixedSchematicsDir
     configFilePath = fixedConfigFilePath
     filtersDir = fixedFiltersDir
-    cacheDir = fixedGenericSupportPath
     jarStorageDir = fixedJarStorageDir
     portable = False
+
+
 
 
 def fixedConfigExists():
@@ -284,7 +289,7 @@ if fixedConfigExists():
         filtersDir = fixedFiltersDir
         jarStorageDir = fixedJarStorageDir
         genericSupportDir = fixedGenericSupportPath
-    
+
 else:
     print "Running in portable mode. Support files are stored next to the MCEdit directory."
     if not sys.platform == "darwin":
@@ -301,7 +306,7 @@ else:
 #    jarStorage = ServerJarStorage(serverJarStorageDir)
 #else:
 #    serverJarStorageDir = fixedJarStorageDir
-        
+
 def getAllOfAFile(file_dir, ext):
     '''
     Returns a list of all the files the direcotry with the specified file extenstion
@@ -312,7 +317,7 @@ def getAllOfAFile(file_dir, ext):
 
 def getCacheDir():
     """Returns the path to the cache folder. This folder is the Application Support folder on OS X, and the Documents Folder on Windows."""
-    if sys.platform == "win32": 
+    if sys.platform == "win32":
         return genericSupportDir
     elif sys.platform == "darwin":
         return os.path.expanduser("~/Library/Application Support/pymclevel")
@@ -320,16 +325,16 @@ def getCacheDir():
         try:
             return genericSupportDir
         except:
-            return os.path.expanduser("~/.pymclevel") 
+            return os.path.expanduser("~/.pymclevel")
 
 if sys.platform == "darwin":
     configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
     schematicsDir = os.path.join(getCacheDir(), u"Schematics")
     filtersDir = os.path.join(getCacheDir(), u"Filters")
     if not os.path.exists(getCacheDir()):
-        os.makedirs(getCacheDir())    
-        
-# Create pymclevel folder as needed    
+        os.makedirs(getCacheDir())
+
+# Create pymclevel folder as needed
 if not os.path.exists(getCacheDir()):
     os.makedirs(getCacheDir())
 
@@ -343,3 +348,7 @@ try:
         f.close()
 except:
     print "Unable to make usercache.json at {}".format(userCachePath)
+
+
+def getFiltersDir():
+    return filtersDir
