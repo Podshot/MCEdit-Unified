@@ -845,8 +845,8 @@ class MCEdit(GLViewport):
         if "update" in config.config.get("Version", "version"):
             answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
             if answer == "Yes":
-                for configKey, key in keys.KeyConfigPanel.presets["WASD"]:
-                    config.config.set("Keys", configKey, key)
+                for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
+                    config.config.set("Keys", configKey, k)
         config.config.set("Version", "version", "1.1.2.0")
         config.saveConfig()
         if "-causeError" in sys.argv:
@@ -1098,8 +1098,7 @@ class GLDisplayContext(object):
             mats.terrainTexture = self.terrainTextures[mats.name]
 
 def getSelectedMinecraftVersion():
-    import json
-    profile = getMinecraftProfileJSON()[getSelectedProfile()]
+    profile = directories.getMinecraftProfileJSON()[directories.getSelectedProfile()]
     if 'lastVersionId' in profile:
         return profile['lastVersionId']
     else:

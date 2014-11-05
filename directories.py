@@ -140,6 +140,7 @@ def getDocumentsFolder():
     if sys.platform == "win32":
         try:
             import win32com.client
+            from win32com.shell import shell, shellcon
             objShell = win32com.client.Dispatch("WScript.Shell")
             docsFolder = objShell.SpecialFolders("MyDocuments")
 

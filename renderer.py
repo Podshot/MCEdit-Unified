@@ -1756,7 +1756,7 @@ class SnowBlockRenderer(BlockRenderer):
         self.vertexArrays = arrays
 
     makeVertices = makeSnowVertices
-    
+
 class CarpetBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Carpet.ID,  #Separate before implementing layers
                   pymclevel.materials.alphaMaterials.Lilypad.ID]
@@ -1795,7 +1795,7 @@ class CarpetBlockRenderer(BlockRenderer):
         self.vertexArrays = arrays
 
     makeVertices = makeCarpetVertices
-    
+
 class CactusBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Cactus.ID]
 

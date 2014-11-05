@@ -15,7 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 import pygame
-from albow import Label, Button, Column
+from albow import Label, Button, Column, alert
 from albow.translate import tr
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
@@ -401,12 +401,12 @@ class FillTool(EditorTool):
             self.blockInfo = self.editor.level.materials.blockWithID(id, data)
         else:
             return self.editor.selectionTool.mouseDown(evt, pos, dir)
-            
+
     def keyDown(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == config.config.get('Keys', 'Pick Block'):
             self.pickBlockKey = 1
-            
+
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == config.config.get('Keys', 'Pick Block'):
