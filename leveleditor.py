@@ -189,6 +189,7 @@ class ControlPanel(Panel):
                     (config.config.get('Keys', 'Goto Panel'), "Goto", editor.showGotoPanel),
                     (config.config.get('Keys', 'World Info'), "World Info", editor.showWorldInfo),
                     (config.config.get('Keys', 'Undo'), "Undo", editor.undo),
+                    (config.config.get('Keys', 'Redo'), "Redo", editor.redo),
                     (config.config.get('Keys', 'Select All'), "Select All", editor.selectAll),
                     (config.config.get('Keys', 'Deselect'), "Deselect", editor.deselect),
                     (config.config.get('Keys', 'View Distance'),
@@ -876,7 +877,7 @@ class CameraViewport(GLViewport):
         if tileEntityTag["id"].value != containerID:
             return
 
-        backupEntityTag = copy.deepcopy(tileEntityTag)
+        undoBackupEntityTag = copy.deepcopy(tileEntityTag)
 
         def itemProp(key):
             # xxx do validation here
@@ -1072,7 +1073,13 @@ class CameraViewport(GLViewport):
                 level.addTileEntity(tileEntityTag)
 
             def undo(self):
-                level.addTileEntity(backupEntityTag)
+                self.redoBackupEntityTag = copy.deepcopy(tileEntityTag)
+                level.addTileEntity(undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntityTag), (1, 1, 1))
+
+            def redo(self):
+                self.undoBackupEntityTag = copy.deepcopy(tileEntityTag)
+                level.addTileEntity(self.redoBackupEntityTag)
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntityTag), (1, 1, 1))
 
         if chestWidget.dirty:
@@ -1590,6 +1597,7 @@ class LevelEditor(GLViewport):
 
         self.unsavedEdits = 0
         self.undoStack = []
+        self.redoStack = []
         self.copyStack = []
 
         self.level = None
@@ -2856,6 +2864,8 @@ class LevelEditor(GLViewport):
             self.askLoadWorld()
         if keyname == config.config.get('Keys', 'Undo'):
             self.undo()
+        if keyname == config.config.get('Keys', 'Redo'):
+            self.redo()
         if keyname == config.config.get('Keys', 'Save'):
             for move in self.movements:
                 if move in keyname:
@@ -3471,7 +3481,32 @@ class LevelEditor(GLViewport):
         with mceutils.setWindowCaption("UNDOING - "):
             self.freezeStatus("Undoing the previous operation...")
             op = self.undoStack.pop()
+
+            if self.recordUndo:
+                self.redoStack.append(op)
+                if len(self.redoStack) > self.undoLimit:
+                    self.redoStack.pop(0)
             op.undo()
+            changedBox = op.dirtyBox()
+            if changedBox is not None:
+                self.invalidateBox(changedBox)
+            if op.changedLevel:
+                self.addUnsavedEdit()
+
+        self.get_root().ctrlClicked = -1
+
+    def redo(self):
+        if len(self.redoStack) == 0:
+            return
+        with mceutils.setWindowCaption("REDOING - "):
+            self.freezeStatus("Redoing the previous operation...")
+            op = self.redoStack.pop()
+
+            if self.recordUndo:
+                self.undoStack.append(op)
+                if len(self.undoStack) > self.undoLimit:
+                    self.undoStack.pop(0)
+            op.redo()
             changedBox = op.dirtyBox()
             if changedBox is not None:
                 self.invalidateBox(changedBox)

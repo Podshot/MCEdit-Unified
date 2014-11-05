@@ -198,6 +198,7 @@ reload world = Ctrl-R
 open = Ctrl-O
 quick load = Ctrl-L
 undo = Ctrl-Z
+redo = Ctrl-Y
 save = Ctrl-S
 new world = Ctrl-N
 close world = Ctrl-W

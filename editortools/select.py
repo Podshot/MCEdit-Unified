@@ -265,6 +265,9 @@ class NudgeBlocksOperation(Operation):
         super(NudgeBlocksOperation, self).undo()
         self.nudgeSelection.undo()
 
+    def redo(self):
+        super(NudgeBlocksOperation, self).redo()
+        self.nudgeSelection.redo()
 
 class SelectionTool(EditorTool):
     # selectionColor = (1.0, .9, .9)
@@ -1165,8 +1168,15 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateTileTicksInBox(box)
 
                 def undo(self):
+                    self.redoTileTicks = level.getTileTicksInBox(box)
                     level.removeTileTicksInBox(box)
                     level.addTileTicks(self.undoTileTicks)
+                    editor.renderer.invalidateTileTicksInBox(box)
+
+                def redo(self):
+                    self.undoTileTicks = level.getTileTicksInBox(box)
+                    level.removeTileTicksInBox(box)
+                    level.addTileTicks(self.redoTileTicks)
                     editor.renderer.invalidateTileTicksInBox(box)
 
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
@@ -1191,8 +1201,15 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateEntitiesInBox(box)
 
                 def undo(self):
+                    self.redoEntities = level.getEntitiesInBox(box)
                     level.removeEntitiesInBox(box)
                     level.addEntities(self.undoEntities)
+                    editor.renderer.invalidateEntitiesInBox(box)
+
+                def redo(self):
+                    self.undoEntities = level.getEntitiesInBox(box)
+                    level.removeEntitiesInBox(box)
+                    level.addEntities(self.redoEntities)
                     editor.renderer.invalidateEntitiesInBox(box)
 
             op = DeleteEntitiesOperation(self.editor, self.editor.level)
@@ -1278,8 +1295,16 @@ class SelectionOperation(Operation):
         self.selectionTool.setSelectionPoints(self.points)
 
     def undo(self):
+        self.redoPoints = self.selectionTool.getSelectionPoints()
         points = self.points
         self.points = self.undoPoints
+        self.perform()
+        self.points = points
+
+    def redo(self):
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        points = self.points
+        self.points = self.redoPoints
         self.perform()
         self.points = points
 
@@ -1291,8 +1316,8 @@ class NudgeSelectionOperation(Operation):
         super(NudgeSelectionOperation, self).__init__(selectionTool.editor, selectionTool.editor.level)
         self.selectionTool = selectionTool
         self.direction = direction
-        self.oldPoints = selectionTool.getSelectionPoints()
-        self.newPoints = [p + direction for p in self.oldPoints]
+        self.undoPoints = selectionTool.getSelectionPoints()
+        self.newPoints = [p + direction for p in self.undoPoints]
 
     def perform(self, recordUndo=True):
         self.selectionTool.setSelectionPoints(self.newPoints)
@@ -1300,4 +1325,9 @@ class NudgeSelectionOperation(Operation):
     oldSelection = None
 
     def undo(self):
-        self.selectionTool.setSelectionPoints(self.oldPoints)
+        self.redoPoints = self.selectionTool.getSelectionPoints()
+        self.selectionTool.setSelectionPoints(self.undoPoints)
+
+    def redo(self):
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        self.selectionTool.setSelectionPoints(self.redoPoints)
