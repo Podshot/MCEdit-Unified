@@ -28,7 +28,7 @@ def _rawRaycast(origin, direction):
     x,y,z = map(int,map(math.floor,origin))
     dx,dy,dz = direction
     
-    if (dx == 0):  #Yes, I know this is hacky. It works so too bad.
+    if (dx == 0):  #Yes, I know this is hacky. It works though.
         dx = 0.000000001
     if (dy == 0):
         dy = 0.000000001
@@ -76,9 +76,16 @@ Finds the first block from origin in the given direction by ray tracing
     This method returns a (position,face) tuple pair.
 """
 def firstBlock(origin, direction, level, radius):
+    startPos =  map(int,map(math.floor,origin))
+    block = level.blockAt(*startPos)
+    callback = None
+    if (block == 8 or block == 9):
+        callback = _WaterCallback()
+    else:
+        callback = _StandardCallback()
     for i in _rawRaycast(origin,direction):
         block = level.blockAt(*i[0])
-        if (block != 0):
+        if (callback.check(i[0],block)):
             return i[0],i[1]
         if (_tooFar(origin, i[0], radius) or _tooHighOrLow(i[0])):
             raise TooFarException("There are no valid blocks within range")
@@ -100,3 +107,34 @@ class TooFarException(Exception):
         self.value = value
     def __str__(self):
         return repr(self.value)
+
+class Callback:
+    """
+    Returns true if the ray tracer is to be terminated
+    """
+    def check(self, position,block):
+        pass
+
+class _WaterCallback(Callback):
+    def __init__(self):
+        self.escapedBlock = False
+
+    def check(self, position, block):
+        if (block == 8 or block == 9):
+            return False
+        elif (block == 0):
+            self.escapedBlock = True
+            return False
+        elif (self.escapedBlock and block != 0 ):
+            return True
+        return True
+        
+
+class _StandardCallback(Callback):
+    def __init__(self):
+        self.escapedBlock = False
+
+    def check(self, position, block):
+        if (self.escapedBlock and block != 0):
+            return True
+        return False
