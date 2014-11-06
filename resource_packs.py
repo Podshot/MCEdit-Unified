@@ -594,7 +594,6 @@ class ResourcePack:
             pass
         if self.propogated_textures == []:
             os.remove("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
-            print "Removed a terrain file, since it did not have any new textures"
             self._isEmpty = True
         #new_terrain.show()
 
@@ -610,7 +609,11 @@ def setup_resource_packs():
         rp = ResourcePack(tex_pack)
         if not rp.isEmpty:
             terrains[rp.pack_name] = "terrain-textures\\"+rp.terrain_name
-    shutil.rmtree("textures/")
+    try:
+        shutil.rmtree("textures/")
+    except:
+        print "Could not remove \"textures/\" directory"
+        pass
     return terrains
 
 class ResourcePackHandler:
