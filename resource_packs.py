@@ -3,7 +3,10 @@ import zipfile
 import directories
 import os
 import shutil
+import config
 
+Settings = config.Settings("Settings")
+Settings.resource_pack = Settings("Resource Pack", "Default")
 def step(slot):
     texSlot = slot*16
     return texSlot
@@ -274,7 +277,7 @@ textureSlots = {
     #
     "redstone_dust_line": (step(5),step(11)),
     "enchanting_table_side": (step(6),step(11)),
-    "obsidian": (step(7),step(11)),
+    "enchanting_table_bottom": (step(7),step(11)),
     "command_block": (step(8),step(11)),
     "itemframe_backround": (step(9),step(11)),
     "flower_pot": (step(10),step(11)),
@@ -605,8 +608,12 @@ def setup_resource_packs():
 class ResourcePackHandler:
 
     def __init__(self):
+        try:
+            os.mkdir("textures")
+        except OSError:
+            pass
         self._resource_packs = setup_resource_packs()
-        self._selected_resource_pack = "Default"
+        self._selected_resource_pack = Settings.resource_pack.get()
         print self._resource_packs
 
     @property
@@ -623,6 +630,7 @@ class ResourcePackHandler:
         return self._selected_resource_pack
 
     def set_selected_resource_pack_name(self, name):
+        Settings.resource_pack = name
         self._selected_resource_pack = name
 
     def get_selected_resource_pack(self):
