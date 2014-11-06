@@ -498,6 +498,7 @@ class ResourcePack:
         self.zipfile = zipfileFile
         self._pack_name = zipfileFile.split("\\")[-1][:-4]
         self.texture_path = "textures/"+self._pack_name+"/"
+        self._isEmpty = False
         try:
             os.makedirs(self.texture_path)
         except OSError:
@@ -519,6 +520,10 @@ class ResourcePack:
     @property
     def terrain_name(self):
         return self._texture_name
+    
+    @property
+    def isEmpty(self):
+        return self._isEmpty
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
@@ -589,6 +594,10 @@ class ResourcePack:
             os.remove(self._pack_name.replace(" ", "_")+".png")
         except:
             pass
+        if self.propogated_textures == []:
+            os.remove("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
+            print "Removed a terrain file, since it did not have any new textures"
+            self._isEmpty = True
         #new_terrain.show()
 
 def setup_resource_packs():
@@ -601,7 +610,8 @@ def setup_resource_packs():
     resourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
     for tex_pack in resourcePacks:
         rp = ResourcePack(tex_pack)
-        terrains[rp.pack_name] = "terrain-textures\\"+rp.terrain_name
+        if not rp.isEmpty:
+            terrains[rp.pack_name] = "terrain-textures\\"+rp.terrain_name
     shutil.rmtree("textures/")
     return terrains
 
@@ -614,7 +624,6 @@ class ResourcePackHandler:
             pass
         self._resource_packs = setup_resource_packs()
         self._selected_resource_pack = Settings.resource_pack.get()
-        print self._resource_packs
 
     @property
     def resource_packs(self):
@@ -630,7 +639,7 @@ class ResourcePackHandler:
         return self._selected_resource_pack
 
     def set_selected_resource_pack_name(self, name):
-        Settings.resource_pack = name
+        Settings.resource_pack.set(name)
         self._selected_resource_pack = name
 
     def get_selected_resource_pack(self):

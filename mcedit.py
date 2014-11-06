@@ -252,6 +252,7 @@ class graphicsPanel(Dialog):
                                                  tooltipText="Enable choppy mouse movement for faster loading.")
 
         self.resourcePackButton = mceutils.ChoiceButton(map(str,resource_packs.packs.get_available_resource_packs()), choose=self.change_texture)
+        self.resourcePackButton.selectedChoice = resource_packs.packs.get_selected_resource_pack_name()
 
         settingsColumn = albow.Column((fastLeavesRow,
                                        roughGraphicsRow,
