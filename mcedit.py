@@ -224,7 +224,6 @@ class FileOpener(albow.Widget):
 class graphicsPanel(Dialog):
     anchor = 'wh'
 
-    # TODO: Add Resource Pack selection
     def __init__(self, mcedit):
         Dialog.__init__(self)
 

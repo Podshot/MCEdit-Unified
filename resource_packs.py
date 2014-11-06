@@ -491,7 +491,6 @@ textureSlots = {
     # Start Comparator Block
     }
 
-# FIXME: Stop creation of Resource Packs that do not have any textures (Model Packs)
 class ResourcePack:
 
     def __init__(self, zipfileFile):
@@ -570,7 +569,6 @@ class ResourcePack:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
         self.parse_terrain_png()
 
-    # FIXME: Use a Dictionary to find out were to put the textures
     def parse_terrain_png(self):
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
