@@ -135,6 +135,10 @@ class _StandardCallback(Callback):
         self.escapedBlock = False
 
     def check(self, position, block):
-        if (self.escapedBlock and block != 0):
+        if not self.escapedBlock:
+            if (block == 0):
+                self.escapedBlock = True
+            return
+        if (block != 0):
             return True
         return False
