@@ -1,4 +1,4 @@
-This is a template for any language's that you want to add in for MCEdit. 
+This is a template for any language's that you want to add in for MCEdit. Lastest change: Nov. 05, 2014
 Please don't use any translators for long words/sentences as it will confuse some people who use the program and read the text in their native language, thank you.
 To edit make sure you save this file as: 'language(lower caps)_Country of Use(Upper Case).json Example: fr_FR.json, en_US.json.(Unless we/you have found a much better way to do this).
 These are used in programs you use around the world and to see what your language code is go here http://msdn.microsoft.com/en-us/library/ms533052(v=vs.85).aspx , 
@@ -35,7 +35,7 @@ COPY FROM { TO } (AT THE BOTTOM) AND PASTE IT INTO YOUR LANGUAGE FILE
 	"Create New World":
 	"Load World...":
 	"Open...":
-	"Controls":
+	"Keys":
 	"Graphics":
 	"Options":
 	"Homepage":
@@ -383,6 +383,7 @@ COPY FROM { TO } (AT THE BOTTOM) AND PASTE IT INTO YOUR LANGUAGE FILE
 	"Goto":
 	"World Info":
 	"Undo":
+	"Redo":
 	"Select All":
 	"View Distance ({0})":
 	"Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.":
