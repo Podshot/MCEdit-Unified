@@ -6,14 +6,14 @@
 PLEASE READ: The unusable trade won't prevent new trades anymore but I
 solved it by adding a very high career level. So only use it if you like
 the fancy stop sign. '''
-# Reedited by DragonQuiz, October 15 , 2014
+# Reedited by DragonQuiz, November 7, 2014
 #
 # Changes: ^denotes new change
 # 1) Allow your villager to move or not.
 # 2) Rename your villager in MCEdit.
 # 3) Allow players to receive experience for their trade.
 # 4) Updated more of the code, made it much prettier.
-# 5) ^Added rotation so the villager *can rotate* when possible.
+''' 5) Added rotation so the villager *can rotate* when possible. Currently Broken'''
 # And a big thanks to Sethbling for creating this filter and all his other filters at http://sethbling.com/downloads/mcedit-filters/
 
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
@@ -43,15 +43,15 @@ inputs = [( ("General Trade","title"),
 	("Make Villager not Move", False),
 	("Villager Name",("string","width=250")),),
 	
-	(("Rotation","title"),
-	("*May or May not work, did work in testing(sometimes)*","label"),
-	("      Rotate the Position of your Trader\n"
-	"*Can only be used if Not Move is checked*","label"),
-	("Y-Axis",(0, 360)),
-	("Changes its body rotation. Due west is 0. Must be less than 360 degrees.","label"),
-	("X-Axis",("string","width=50")),
-	("Changes the head rotation Horizontal is 0. Positive values look downward. Less than +/- 90 degrees","label"),
-	),
+	#(("Rotation","title"),
+	#("*May or May not work, did work in testing(sometimes)*","label"),
+	#("      Rotate the Position of your Trader\n"
+	#"*Can only be used if Not Move is checked*","label"),
+	#("Y-Axis",(0, 360)),
+	#("Changes its body rotation. Due west is 0. Must be less than 360 degrees.","label"),
+	#("X-Axis",("string","width=50")),
+	#("Changes the head rotation Horizontal is 0. Positive values look downward. Less than +/- 90 degrees","label"),
+	#),
 	
 	(("Trade Notes","title"),
 	("To create a shop first put your buy in the top slot(s) of the chest.\n"
@@ -82,8 +82,8 @@ def perform(level, box, options):
 	xp = options["Give Experience per a Trade"]
 	nomove = options["Make Villager not Move"]
 	name = options["Villager Name"]
-	yaxis = options["Y-Axis"]
-	xaxis = options["X-Axis"]	
+	#yaxis = options["Y-Axis"]
+	#xaxis = options["X-Axis"]	
 	for (chunk, slices, point) in level.getChunkSlices(box):
 		for e in chunk.TileEntities:
 			x = e["x"].value
@@ -92,9 +92,9 @@ def perform(level, box, options):
 			
 			if (x,y,z) in box:
 				if e["id"].value == "Chest":
-					createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited, xp, nomove, name, yaxis, xaxis)
+					createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited, xp, nomove, name)
 
-def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, name, yaxis, xaxis):
+def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, name):
 	chest = level.tileEntityAt(x, y, z)
 	if chest == None:
 		return
@@ -134,7 +134,7 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
 	villager["id"] = TAG_String("Villager")
 	villager["Motion"] = TAG_List([TAG_Double(0.0), TAG_Double(0.0), TAG_Double(0.0)])
 	villager["Pos"] = TAG_List ([TAG_Double(x + 0.5), TAG_Double(y), TAG_Double(z + 0.5)])
-	villager["Rotation"] = TAG_List([TAG_Float(yaxis), TAG_Float(xaxis)])
+	villager["Rotation"] = TAG_List([TAG_Float(0), TAG_Float(0)])
 	
 	villager["Willing"] = TAG_Byte(0)
 	villager["Offers"] = TAG_Compound()
