@@ -6,7 +6,7 @@ from widget import Widget
 from controls import Label, Button
 from layout import Row, Column
 from fields import TextField
-from translate import tr
+from translate import _
 
 class Modal(object):
     enter_response = True
@@ -75,7 +75,7 @@ class QuickDialog(Dialog):
 
 def wrapped_label(text, wrap_width, **kwds):
     # paras = text.split("\n")
-    text = tr(text)
+    text = _(text)
     kwds['doNotTranslate'] = True
     paras = text.split("\n\n")
     text = "\n".join([textwrap.fill(para, wrap_width) for para in paras])

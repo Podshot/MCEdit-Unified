@@ -1,6 +1,6 @@
 # !/usr/bin/env python2.7
-# -*- coding: utf8 -*-
-import resource_packs
+# -*- coding: utf_8 -*-
+# import resource_packs # not the right place, moving it a bit further
 
 #-# Modified by D.C.-G. for translation purpose
 
@@ -9,6 +9,7 @@ mcedit.py
 
 Startup, main menu, keyboard configuration, automatic updating.
 """
+import resource_packs
 import OpenGL
 import sys
 import os
@@ -72,17 +73,28 @@ import albow
 # albow.translate.setLang(locale.getdefaultlocale()[0])
 # del locale
 
-albow.translate.buildTranslation(albow.translate.refreshLang())
+# albow.translate.buildTranslation(albow.translate.refreshLang())
 
-from albow.translate import tr, langPath, verifyLangCode
+from albow.translate import _
+#!# for debugging
+from albow.translate import getPlatInfo
+#getPlatInfo(logging=logging)
+#!#
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
 import config
+import directories
+#-#
+albow.resource.resource_dir = directories.getDataDir()
+#-#
 import functools
 import glutils
 import leveleditor
 from leveleditor import ControlSettings, Settings
+#-#
+albow.translate.setLang(Settings.langCode.get())
+#-#
 import mceutils
 import mcplatform
 from mcplatform import platform_open
@@ -120,7 +132,7 @@ class FileOpener(albow.Widget):
             config.config.get('Keys', 'Right'),
             config.config.get('Keys', 'Up'),
             config.config.get('Keys', 'Down'),
-        ).upper() + tr(" to move"))
+        ).upper() + _(" to move"))
         label.anchor = 'whrt'
         label.align = 'r'
         helpColumn.append(label)
@@ -131,7 +143,7 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-        addHelp("{0}".format(config.config.get('Keys', 'Brake').upper()) + tr(" to slow down"))
+        addHelp("{0}".format(config.config.get('Keys', 'Brake').upper()) + _(" to slow down"))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
         addHelp("Hold SHIFT to move along a major axis")
@@ -287,7 +299,8 @@ class OptionsPanel(Dialog):
     anchor = 'wh'
 
     def __init__(self, mcedit):
-        albow.translate.refreshLang(suppressAlert=True)
+        #albow.translate.refreshLang(suppressAlert=True)
+        albow.translate.setLang(Settings.langCode.get())
 
         Dialog.__init__(self)
 
@@ -358,7 +371,8 @@ class OptionsPanel(Dialog):
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
         self.languageButton = mceutils.ChoiceButton(self.getLanguageChoices(Settings.langCode.get()), choose=self.changeLanguage)
-        self.languageButton.selectedChoice = Settings.langCode.get()
+        if Settings.langCode.get() in self.languageButton.choices:
+            self.languageButton.selectedChoice = Settings.langCode.get()
 
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
@@ -433,9 +447,14 @@ class OptionsPanel(Dialog):
         Settings.blockBuffer.set(int(val * 1048576))
 
     def getLanguageChoices(self, current):
-        files = os.listdir(langPath)
-        langs = [l[:-5] for l in files if l.endswith(".json") and l not in ["language template.json"]]
-        langs = [l for l in langs if verifyLangCode(l)]
+        files = os.listdir(albow.translate.langPath)
+        #langs = [l[:-5] for l in files if l.endswith(".json") and l not in ["language template.json"]]
+        #langs = [l for l in langs if verifyLangCode(l)]
+        langs = []
+        for file in files:
+            name, ext = os.path.splitext(file)
+            if ext == ".trn" and len(name) == 5 and name[2] == "_":
+                langs.append(name)
         if "en_US" not in langs:
             langs = ["en_US"] + langs
         return langs
@@ -445,25 +464,25 @@ class OptionsPanel(Dialog):
 
     def portableButtonTooltip(self):
         return (
-        tr("Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder"),
-        tr("Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder"))[
+        _("Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder"),
+        _("Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder"))[
             directories.portable]
 
     @property
     def portableLabelText(self):
-        return (tr("Install Mode: Portable"), tr("Install Mode: Fixed"))[1 - directories.portable]
+        return (_("Install Mode: Portable"), _("Install Mode: Fixed"))[1 - directories.portable]
 
     def togglePortable(self):
-    	if sys.platform == "darwin":
-    		return False
+        if sys.platform == "darwin":
+            return False
         textChoices = [
-            tr("This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?").format(
-                (sys.platform == "darwin" and tr("the MCEdit application") or tr("MCEditData"))),
-            tr("This will move your settings and schematics to your Documents folder. Continue?"),
+            _("This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?").format(
+                (sys.platform == "darwin" and _("the MCEdit application") or _("MCEditData"))),
+            _("This will move your settings and schematics to your Documents folder. Continue?"),
         ]
         if sys.platform == "darwin":
             textChoices[
-                1] = tr("This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?")
+                1] = _("This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?")
 
         alertText = textChoices[directories.portable]
         if albow.ask(alertText) == "OK":
@@ -471,15 +490,23 @@ class OptionsPanel(Dialog):
                 [directories.goPortable, directories.goFixed][directories.portable]()
             except Exception, e:
                 traceback.print_exc()
-                albow.alert(tr(u"Error while moving files: {0}").format(repr(e)))
+                albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
 
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
-       	return True
+        return True
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
-        if albow.translate.refreshLang(self.mcedit, build=False) != "":
-            Dialog.dismiss(self, *args, **kwargs)
+        o, n, sc = albow.translate.setLang(Settings.langCode.get())
+        if not sc and n != "en_US":
+            albow.alert(_("{} is not a valid language").format(n))
+            if o == n:
+                o = "en_US"
+            Settings.langCode.set(o)
+            albow.translate.setLang(Settings.langCode.get())
+        elif o != n:
+            albow.alert("You must restart MCEdit to see language changes")
+        Dialog.dismiss(self, *args, **kwargs)
 
 class MCEdit(GLViewport):
     #debug_resize = True
@@ -711,7 +738,7 @@ class MCEdit(GLViewport):
 
     def confirm_quit(self):
         if self.editor.unsavedEdits:
-            result = albow.ask(tr("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
+            result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
             if result == "Save and Quit":
                 self.saveAndQuit()
@@ -752,7 +779,7 @@ class MCEdit(GLViewport):
         new_version = release.check_for_new_version()
         if new_version is not False:
             answer = albow.ask(
-                tr('Version {} is available').format(new_version["tag_name"]),
+                _('Version {} is available').format(new_version["tag_name"]),
                 [
                     'Download',
                     'View',
@@ -765,7 +792,7 @@ class MCEdit(GLViewport):
                 platform_open(new_version["html_url"])
             elif answer == "Download":
                 platform_open(new_version["asset"]["browser_download_url"])
-                albow.alert(tr(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
+                albow.alert(_(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
 
 # Disabled old update code
 #       if hasattr(sys, 'frozen'):
@@ -818,9 +845,9 @@ class MCEdit(GLViewport):
 #                   try:
 #                       app.auto_update(callback)
 #                   except (esky.EskyVersionError, EnvironmentError):
-#                       albow.alert(tr("Failed to install update %s") % update_version)
+#                       albow.alert(_("Failed to install update %s") % update_version)
 #                   else:
-#                       albow.alert(tr("Version %s installed. Restart MCEdit to begin using it.") % update_version)
+#                       albow.alert(_("Version %s installed. Restart MCEdit to begin using it.") % update_version)
 #                       raise SystemExit()
 
         if mcedit.closeMinecraftWarning:

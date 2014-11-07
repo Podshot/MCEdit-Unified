@@ -16,7 +16,7 @@ import collections
 import os
 import traceback
 from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextField
-from albow.translate import tr
+from albow.translate import _
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel
@@ -40,7 +40,7 @@ def alertFilterException(func):
             func(*args, **kw)
         except Exception, e:
             print traceback.format_exc()
-            alert(tr(u"Exception during filter operation. See console for details.\n\n{0}").format(e))
+            alert(_(u"Exception during filter operation. See console for details.\n\n{0}").format(e))
 
     return _func
 
@@ -290,7 +290,7 @@ class FilterToolPanel(Panel):
             try:
                 self.filterOptionsPanel = FilterModuleOptions(self.tool, module)
             except Exception, e:
-                alert(tr("Error creating filter inputs for {0}: {1}").format(module, e))
+                alert(_("Error creating filter inputs for {0}: {1}").format(module, e))
                 traceback.print_exc()
                 self.tool.filterModules.pop(self.selectedFilterName)
                 self.selectedFilterName = tool.filterNames[0]
@@ -338,7 +338,7 @@ class FilterOperation(Operation):
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(tr("Cannot perform action while saving is taking place"))
+            alert(_("Cannot perform action while saving is taking place"))
             return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
@@ -444,7 +444,7 @@ class FilterTool(EditorTool):
                 return __import__(name)
             except Exception, e:
                 print traceback.format_exc()
-                alert(tr(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
+                alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
 
         filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
@@ -456,7 +456,7 @@ class FilterTool(EditorTool):
             except Exception, e:
                 print traceback.format_exc()
                 alert(
-                    tr(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
+                    _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
 
     @property

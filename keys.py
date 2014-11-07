@@ -3,7 +3,7 @@ import albow
 import mceutils
 from pygame import key
 from albow.dialogs import Dialog
-from albow.translate import tr
+from albow.translate import _
 from glbackground import Panel
 
 ESCAPE = '\033'
@@ -457,7 +457,7 @@ class KeyConfigPanel(Dialog):
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
         if labelString is None:
-            labelString = tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
+            labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
         label = albow.Label(labelString)
         panel.add(label)
         panel.shrink_wrap()
@@ -487,7 +487,7 @@ class KeyConfigPanel(Dialog):
         keyname = panel.present()
         if keyname == "Return" and self.enter == 1:
             self.enter = 0
-            self.askAssignKey(configKey, tr("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey))
+            self.askAssignKey(configKey, _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey))
             return True
 
         self.enter = 0
@@ -500,7 +500,7 @@ class KeyConfigPanel(Dialog):
             config.config.set("Keys", configKey, "None")
         elif keyname != "Escape":
             self.askAssignKey(configKey,
-                                     tr("You can't use the key {0}. "
+                                     _("You can't use the key {0}. "
                                      "Press a new key.\n\n"
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname))

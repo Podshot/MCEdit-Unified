@@ -11,7 +11,7 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
-import resource_packs
+ # import resource_packs # not the right place, moving it a bit furtehr
 
 """
 mceutils.py
@@ -19,9 +19,10 @@ mceutils.py
 Exception catching, some basic box drawing, texture pack loading, oddball UI elements
 """
 # Modified by D.C.-G. for translation purpose
+import resource_packs
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
-from albow.translate import tr
+from albow.translate import _
 from datetime import datetime
 import directories
 import numpy
@@ -44,10 +45,10 @@ def alertException(func):
         except root.Cancel:
             alert("Canceled.")
         except pymclevel.infiniteworld.SessionLockLost as e:
-            alert(e.message + tr("\n\nYour changes cannot be saved."))
+            alert(e.message + _("\n\nYour changes cannot be saved."))
         except Exception, e:
             logging.exception("Exception:")
-            ask(tr("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
+            ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
     return _alertException
 
 
@@ -495,7 +496,7 @@ def TextInputRow(title, *args, **kw):
 
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
-    prefix = tr(prefix)
+    prefix = _(prefix)
     if type(prefix) == unicode:
         prefix = prefix.encode("utf8")
     class ctx:
@@ -619,7 +620,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             delta = ((datetime.now() - self.startTime))
             progressPercent = (int(self.progressFraction * 10000))
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
-            return tr("Time left: {0}").format(left)
+            return _("Time left: {0}").format(left)
 
         def cancel(self):
             if cancel:
@@ -629,7 +630,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
     widget = ProgressWidget()
-    widget.progressText = tr(progressText)
+    widget.progressText = _(progressText)
     widget.statusText = ""
     widget.progressAmount = 0.0
 

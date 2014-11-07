@@ -15,7 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 from albow import Label, Button, Column, alert
-from albow.translate import tr
+from albow.translate import _
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
@@ -42,11 +42,11 @@ class BlockFillOperation(Operation):
         self.blocksToReplace = blocksToReplace
 
     def name(self):
-        return tr("Fill with ") + self.blockInfo.name
+        return _("Fill with ") + self.blockInfo.name
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(tr("Cannot perform action while saving is taking place"))
+            alert(_("Cannot perform action while saving is taking place"))
             return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.destBox)
@@ -370,7 +370,7 @@ class FillTool(EditorTool):
 
     @property
     def statusText(self):
-        return tr("Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.").format(
+        return _("Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.").format(
             hotkey=self.hotkey, R=config.config.get("Keys", "Roll").upper())
 
     @property
@@ -382,7 +382,7 @@ class FillTool(EditorTool):
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return tr("Click to use {0} ({1}:{2})").format(
+                return _("Click to use {0} ({1}:{2})").format(
                     self.editor.level.materials.blockWithID(blockID, blockdata).name, blockID, blockdata)
 
             except Exception, e:

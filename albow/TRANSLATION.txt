@@ -1,0 +1,40 @@
+TRANSLATION FILE FORMAT DOCUMENTATION
+
+These files work by mapping original english strings(o##) to the new translated
+strings(t##).
+As long as the numbers match, it will translate the specified english string to
+the new language.
+Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes
+and other special characters can be used.
+
+The white space (' ') after each tag, and 2 digit numbers are mandatory.
+The file must also be encoded in UTF-8 or it won't work. Most editors should
+support this. This is also mandatory, or you can experience weird aspect in the
+program.
+
+Syntax example:
+
+o0 This is the first entry.
+t0 Ceci est la première entrée.
+o1 Here is the second one.
+You can see it is splitted on two lines.
+t1 Voici la deuxième.
+Vous pouvez constater qu'elle est sur deux lignes.
+
+The 'o##' markers on the begining of a line marks the original string;
+the 't##', the translations.
+Strings can be splited on several lines and contain any sort of
+characters (thus, be aware of unicode).
+
+Files are named according to their language name, e.g. fr_FR.trn for
+french.
+The extension .trn is an arbitrary convention, but must be respected to load
+the files.
+
+As convention, english is considered as the default language, and the
+file en_EN.trn would never be present.
+
+If you have issues with this, you can report on the site you have downloaded
+the program.
+Just open an 'issue' topic and let be the more precise you can. Joining .log
+files and screenshots will be use full!

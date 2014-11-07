@@ -15,7 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert
-from albow.translate import tr
+from albow.translate import _
 import config
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
@@ -44,7 +44,7 @@ class PlayerMoveOperation(Operation):
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(tr("Cannot perform action while saving is taking place"))
+            alert(_("Cannot perform action while saving is taking place"))
             return
         try:
             level = self.tool.editor.level
@@ -53,7 +53,7 @@ class PlayerMoveOperation(Operation):
                 self.undoDim = level.getPlayerDimension(self.player)
                 self.undoYP = level.getPlayerOrientation(self.player)
             except Exception, e:
-                log.info(tr("Couldn't get player position! ({0!r})").format(e))
+                log.info(_("Couldn't get player position! ({0!r})").format(e))
 
             yaw, pitch = self.yp
             if yaw is not None and pitch is not None:
@@ -73,7 +73,7 @@ class PlayerMoveOperation(Operation):
                 self.redoDim = level.getPlayerDimension(self.player)
                 self.redoYP = level.getPlayerOrientation(self.player)
             except Exception, e:
-                log.info(tr("Couldn't get player position! ({0!r})").format(e))
+                log.info(_("Couldn't get player position! ({0!r})").format(e))
             level.setPlayerPosition(self.undoPos, self.player)
             level.setPlayerDimension(self.undoDim, self.player)
             level.setPlayerOrientation(self.undoYP, self.player)
@@ -87,7 +87,7 @@ class PlayerMoveOperation(Operation):
                 self.undoDim = level.getPlayerDimension(self.player)
                 self.undoYP = level.getPlayerOrientation(self.player)
             except Exception, e:
-                log.info(tr("Couldn't get player position! ({0!r})").format(e))
+                log.info(_("Couldn't get player position! ({0!r})").format(e))
             level.setPlayerPosition(self.redoPos, self.player)
             level.setPlayerDimension(self.redoDim, self.player)
             level.setPlayerOrientation(self.redoYP, self.player)
@@ -129,7 +129,7 @@ class PlayerSpawnMoveOperation(Operation):
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(tr("Cannot perform action while saving is taking place"))
+            alert(_("Cannot perform action while saving is taking place"))
             return
         level = self.tool.editor.level
         if isinstance(level, pymclevel.MCInfdevOldLevel):
@@ -415,7 +415,7 @@ class PlayerPositionTool(EditorTool):
         if player == "Player":
             return "Click to move the player"
 
-        return tr("Click to move the player \"{0}\"").format(player)
+        return _("Click to move the player \"{0}\"").format(player)
 
     @alertException
     def mouseDown(self, evt, pos, direction):
@@ -570,23 +570,23 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                 status = ""
                 if not okayAt63(level, pos):
                     level.setBlockAt(pos[0], 63, pos[2], 1)
-                    status += tr("Block added at y=63.\n")
+                    status += _("Block added at y=63.\n")
 
                 if 59 < pos[1] < 63:
                     pos[1] = 63
-                    status += tr("Spawn point moved upward to y=63.\n")
+                    status += _("Spawn point moved upward to y=63.\n")
 
                 if not okayAboveSpawn(level, pos):
                     if pos[1] > 63 or pos[1] < 59:
                         lpos = (pos[0], pos[1] - 1, pos[2])
                         if level.blockAt(*pos) == 0 and level.blockAt(*lpos) != 0 and okayAboveSpawn(level, lpos):
                             pos = lpos
-                            status += tr("Spawn point shifted down by one block.\n")
+                            status += _("Spawn point shifted down by one block.\n")
                     if not okayAboveSpawn(level, pos):
                         for i in range(1, 4):
                             level.setBlockAt(pos[0], pos[1] + i, pos[2], 0)
 
-                            status += tr("Blocks above spawn point cleared.\n")
+                            status += _("Blocks above spawn point cleared.\n")
 
                 self.editor.invalidateChunks([(pos[0] // 16, pos[2] // 16)])
                 op = PlayerSpawnMoveOperation(self, pos)
@@ -599,7 +599,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                     return
 
                 if len(status):
-                    alert(tr("Spawn point fixed. Changes: \n\n") + status)
+                    alert(_("Spawn point fixed. Changes: \n\n") + status)
 
     @alertException
     def toolReselected(self):
