@@ -1802,7 +1802,6 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
                     z=0
                     for zz in exposedBlockWireMask[x][y]:
                         if zz == False:
-                            print zz
                             exposedBlockWireNewMask[x+2][y+1][z+1] = False
                             exposedBlockWireNewMask[x+1][y+2][z+1] = False
                             exposedBlockWireNewMask[x+1][y+1][z+2] = False
