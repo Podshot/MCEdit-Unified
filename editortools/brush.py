@@ -560,7 +560,7 @@ class Modes:
                 solidBlocks = blocks != 0
                 neighbors = getNeighbors(solidBlocks)
 
-                brushMask = createBrushMask(op.brushSize, op.brushStyle, op.brushStyleMod)
+                brushMask = createBrushMask(op.brushSize, op.brushStyle)
                 erodeBlocks = neighbors < 5
                 if op.options['erosionNoise']:
                     erodeBlocks &= (numpy.random.random(erodeBlocks.shape) > 0.3)
