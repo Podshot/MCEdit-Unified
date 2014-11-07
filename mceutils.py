@@ -256,9 +256,6 @@ def drawTerrainCuttingWire(box,
     # glDepthMask(True)
 
 
-# texturePacksDir = os.path.join(pymclevel.minecraftDir, "texturepacks")
-
-
 def loadAlphaTerrainTexture():
     pngFile = None
 

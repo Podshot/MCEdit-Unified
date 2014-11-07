@@ -493,6 +493,9 @@ textureSlots = {
     }
 
 class ResourcePack:
+    '''
+    Represents a single Resource Pack
+    '''
 
     def __init__(self, zipfileFile):
         self.zipfile = zipfileFile
@@ -503,7 +506,7 @@ class ResourcePack:
         self.big_textures_counted = 0 
         self.big_textures_max = 10
         self._terrain_name = self._pack_name.replace(" ", "_")+".png"
-        self._terrain_path = "terrain-textures"+os.path.sep+self.terrain_name.replace(" ", "_")+".png"
+        self._terrain_path = "terrain-textures"+os.path.sep+self.terrain_name.replace(" ", "_")
         try:
             os.makedirs(self.texture_path)
         except OSError:
@@ -602,7 +605,9 @@ class ResourcePack:
             if t not in self.propogated_textures:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
                 new_terrain.paste(old_tex, t, old_tex)
-
+                
+        print self._terrain_path
+        print self._pack_name
         new_terrain.save(self._terrain_path)
         try:
             os.remove(self._pack_name.replace(" ", "_")+".png")
