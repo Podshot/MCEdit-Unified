@@ -607,6 +607,8 @@ class ResourcePack:
         if self.propogated_textures == []:
             os.remove("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
             self._isEmpty = True
+        if self._too_big:
+            os.remove("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
         del self.block_image
         #new_terrain.show()
 
