@@ -499,6 +499,9 @@ class ResourcePack:
         self._pack_name = zipfileFile.split("\\")[-1][:-4]
         self.texture_path = "textures/"+self._pack_name+"/"
         self._isEmpty = False
+        self._too_big = False
+        self.big_textures_counted = 0 
+        self.big_textures_max = 10
         try:
             os.makedirs(self.texture_path)
         except OSError:
@@ -524,6 +527,10 @@ class ResourcePack:
     @property
     def isEmpty(self):
         return self._isEmpty
+    
+    @property
+    def tooBig(self):
+        return self._too_big
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
@@ -566,8 +573,12 @@ class ResourcePack:
                     else:
                         if possible_texture.size == (32, 32):
                             self.block_image[block_name] = possible_texture.resize((16, 16))
+                        if possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
+                            self.big_textures_counted = self.big_textures_counted + 1
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
+        if self.big_textures_counted >= self.big_textures_max:
+            self._too_big = True
         self.parse_terrain_png()
 
     def parse_terrain_png(self):
@@ -610,7 +621,8 @@ def setup_resource_packs():
     for tex_pack in resourcePacks:
         rp = ResourcePack(tex_pack)
         if not rp.isEmpty:
-            terrains[rp.pack_name] = "terrain-textures\\"+rp.terrain_name
+            if not rp.tooBig:
+                terrains[rp.pack_name] = "terrain-textures\\"+rp.terrain_name
     try:
         shutil.rmtree("textures/")
     except:
