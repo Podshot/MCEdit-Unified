@@ -1959,6 +1959,9 @@ class DaylightBlockRenderer(BlockRenderer):
             vertexArray.view('uint8')[_RGB] *= lights
             if direction == pymclevel.faces.FaceYIncreasing:
                 vertexArray[_XYZ][..., 1] -= 0.625
+            if direction != pymclevel.faces.FaceYIncreasing and direction != pymclevel.faces.FaceYDecreasing:
+                vertexArray[_XYZ][..., 2:4, 1] -= 0.625
+                vertexArray[_ST][..., 2:4, 1] += 10
 
             arrays.append(vertexArray)
             yield
