@@ -1081,7 +1081,7 @@ class GLDisplayContext(object):
         textures = (
             (pymclevel.classicMaterials, 'terrain-classic.png'),
             (pymclevel.indevMaterials, 'terrain-classic.png'),
-            (pymclevel.alphaMaterials, resource_packs.packs.get_selected_resource_pack()),
+            (pymclevel.alphaMaterials, resource_packs.packs.get_selected_resource_pack().terrain_path()),
             (pymclevel.pocketMaterials, 'terrain-pocket.png')
         )
 

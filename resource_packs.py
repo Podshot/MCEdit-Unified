@@ -496,12 +496,14 @@ class ResourcePack:
 
     def __init__(self, zipfileFile):
         self.zipfile = zipfileFile
-        self._pack_name = zipfileFile.split("\\")[-1][:-4]
-        self.texture_path = "textures/"+self._pack_name+"/"
+        self._pack_name = zipfileFile.split(os.path.sep)[-1][:-4]
+        self.texture_path = "textures"+os.path.sep+self._pack_name+os.path.sep
         self._isEmpty = False
         self._too_big = False
         self.big_textures_counted = 0 
         self.big_textures_max = 10
+        self._terrain_name = self._pack_name.replace(" ", "_")+".png"
+        self._terrain_path = "terrain-textures"+os.path.sep+self.terrain_name.replace(" ", "_")+".png"
         try:
             os.makedirs(self.texture_path)
         except OSError:
@@ -522,7 +524,10 @@ class ResourcePack:
 
     @property
     def terrain_name(self):
-        return self._texture_name
+        return self._terrain_name
+    
+    def terrain_path(self):
+        return self._terrain_path
     
     @property
     def isEmpty(self):
@@ -598,37 +603,55 @@ class ResourcePack:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
                 new_terrain.paste(old_tex, t, old_tex)
 
-        self._texture_name = self._pack_name.replace(" ", "_")+".png"
-        new_terrain.save("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
+        new_terrain.save(self._terrain_path)
         try:
             os.remove(self._pack_name.replace(" ", "_")+".png")
         except:
             pass
         if self.propogated_textures == []:
-            os.remove("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
+            os.remove(self._terrain_path)
             self._isEmpty = True
         if self._too_big:
-            os.remove("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
+            os.remove(self._terrain_path)
         del self.block_image
         #new_terrain.show()
-
+        
+class DefaultResourcePack(ResourcePack):
+    
+    def __init__(self):
+        self._isEmpty = False
+        self._too_big = False
+        self._terrain_path = "terrain.png"
+    
+    def terrain_path(self):
+        return self._terrain_path
+    
+    @property
+    def isEmpty(self):
+        return self._isEmpty
+    
+    @property
+    def tooBig(self):
+        return self._too_big
+    
+    
 def setup_resource_packs():
     terrains = {}
     try:
         os.mkdir("terrain-textures")
     except OSError:
         pass
-    terrains["Default"] = "terrain.png"
+    terrains["Default"] = DefaultResourcePack()
     resourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
     for tex_pack in resourcePacks:
         rp = ResourcePack(tex_pack)
         if not rp.isEmpty:
             if not rp.tooBig:
-                terrains[rp.pack_name] = "terrain-textures\\"+rp.terrain_name
+                terrains[rp.pack_name] = rp
     try:
-        shutil.rmtree("textures/")
+        shutil.rmtree("textures")
     except:
-        print "Could not remove \"textures/\" directory"
+        print "Could not remove \"textures\" directory"
         pass
     return terrains
 
