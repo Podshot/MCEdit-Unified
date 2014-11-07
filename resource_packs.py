@@ -183,7 +183,7 @@ textureSlots = {
     # Start Eigth Row
     "rail_normal_turned": (step(0),step(7)),
     "wool_colored_black": (step(1),step(7)),
-    "wool_colored_gray": (step(2),step(7)),
+    "wool_colored_silver": (step(2),step(7)),
     "redstone_torch_off": (step(3),step(7)),
     "log_spruce": (step(4),step(7)),
     "log_birch": (step(5),step(7)),
@@ -206,7 +206,7 @@ textureSlots = {
     # Start Ninth Row
     "rail_normal": (step(0),step(8)),
     "wool_colored_red": (step(1),step(8)),
-    "wool_colored_pink": (step(2),step(8)),
+    "wool_colored_magenta": (step(2),step(8)),
     "repeater_off_south": (step(3),step(8)),
     "leaves_spruce": (step(4),step(8)),
     #
