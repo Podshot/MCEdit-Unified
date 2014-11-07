@@ -262,7 +262,7 @@ def askOpenFileGtk(title, suffixes, initialDir):
     chooser = gtk.FileChooserDialog(title,
                                     None, gtk.FILE_CHOOSER_ACTION_SAVE,
                                     (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                    gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
 
     chooser.set_default_response(gtk.RESPONSE_OK)
     chooser.set_current_folder(initialDir)
@@ -282,11 +282,11 @@ def askOpenFileGtk(title, suffixes, initialDir):
     chooser.add_filter(filter)
 
     response = chooser.run()
-    if response == gtk.RESPONSE_CANCEL:
+    if response == gtk.RESPONSE_OK:
+        filename = chooser.get_filename()
+    else:
         chooser.destroy()
         return # pressed cancel
-    elif response == gtk.RESPONSE_OK:
-        filename = chooser.get_filename()
     chooser.destroy()
 
     return filename
@@ -372,11 +372,12 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         chooser.add_filter(filter)
 
         response = chooser.run()
-        if response == gtk.RESPONSE_CANCEL:
+        if response == gtk.RESPONSE_OK:
+            filename = chooser.get_filename()
+        else:
             chooser.destroy()
             return # pressed cancel
-        elif response == gtk.RESPONSE_OK:
-            filename = chooser.get_filename()
+
         chooser.destroy()
 
     else: #Fallback
