@@ -7,6 +7,7 @@ import config
 
 Settings = config.Settings("Settings")
 Settings.resource_pack = Settings("Resource Pack", "Default")
+
 def step(slot):
     texSlot = slot*16
     return texSlot
@@ -595,6 +596,7 @@ class ResourcePack:
         if self.propogated_textures == []:
             os.remove("terrain-textures//"+self._pack_name.replace(" ", "_")+".png")
             self._isEmpty = True
+        del self.block_image
         #new_terrain.show()
 
 def setup_resource_packs():
