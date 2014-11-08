@@ -1444,9 +1444,6 @@ class BrushTool(CloneTool):
         self.draggedPositions = []
 
         if self.brushLineKey == 1:
-            for move in self.editor.movements:
-                if move in config.config.get("Keys", "Brush Line Tool"):
-                    self.editor.save = 1
             self.editor.get_root().shiftClicked = 0
             self.editor.get_root().shiftPlaced = -2
             self.editor.get_root().ctrlClicked = 0

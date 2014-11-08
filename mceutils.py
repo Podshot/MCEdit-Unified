@@ -630,7 +630,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
         def key_down(self, event):
-            self.get_root().mcedit.editor.key_down(event)
+            self.get_root().mcedit.editor.key_down(event, onlyKeys=1)
 
         def key_up(self, event):
             self.get_root().mcedit.editor.key_up(event)

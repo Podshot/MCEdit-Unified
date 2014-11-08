@@ -33,20 +33,6 @@ class NudgeButton(GLBackground):
     def mouse_down(self, event):
         self.count += 1
         self.focus()
-        if self.editor.usedKeys[0] == 1:
-            self.editor.notMove[0] = 1
-        if self.editor.usedKeys[1] == 1:
-            self.editor.notMove[1] = 1
-        if self.editor.usedKeys[2] == 1:
-            self.editor.notMove[2] = 1
-        if self.editor.usedKeys[3] == 1:
-            self.editor.notMove[3] = 1
-        if self.editor.usedKeys[4] == 1:
-            self.editor.notMove[4] = 1
-        if self.editor.usedKeys[5] == 1:
-            self.editor.notMove[5] = 1
-        self.editor.cameraInputs = [0., 0., 0.]
-        self.editor.usedKeys = [0, 0, 0, 0, 0, 0]
         if event.button == 3:
             self.editor.rightClickNudge = 1
 
