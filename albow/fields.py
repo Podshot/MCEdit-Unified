@@ -88,6 +88,9 @@ class TextEditor(Widget):
 
         self.call_parent_handler('key_down', event)
 
+    def key_up(self, event):
+        pass
+
     def get_text_and_insertion_point(self):
         text = self.get_text()
         i = self.insertion_point
@@ -670,6 +673,9 @@ class TextEditorWrapped(Widget):
                 self.attention_lost()
 
         self.call_parent_handler('key_down', event)
+
+    def key_up(self, event):
+        pass
 
     def get_text_and_insertion_point(self):
         text = self.get_text()
