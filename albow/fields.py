@@ -7,6 +7,7 @@ import pygame
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN
 from widget import Widget, overridable_property
 from controls import Control
+import config
 #-#
 from translate import _
 #-#
@@ -323,7 +324,7 @@ class IntField(Field):
 
     @property
     def increment(self):
-        if key.get_mods() & KMOD_SHIFT:
+        if (config.config.get("Keys", "Fast increment modifier") == "Shift" and key.get_mods() & KMOD_SHIFT) or (config.config.get("Keys", "Fast increment modifier") == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (config.config.get("Keys", "Fast increment modifier") == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
         else:
             return self._increment
@@ -425,7 +426,7 @@ class TimeField(Field):
 
 
 from pygame import key
-from pygame.locals import KMOD_SHIFT
+from pygame.locals import KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META
 
 
 class FloatField(Field):
@@ -441,7 +442,7 @@ class FloatField(Field):
 
     @property
     def increment(self):
-        if key.get_mods() & KMOD_SHIFT:
+        if (config.config.get("Keys", "Fast increment modifier") == "Shift" and key.get_mods() & KMOD_SHIFT) or (config.config.get("Keys", "Fast increment modifier") == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (config.config.get("Keys", "Fast increment modifier") == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
         return self._increment
 

@@ -102,7 +102,8 @@ class KeyConfigPanel(Dialog):
         "Select Chunks",
         "Deselect Chunks",
         "Brush Line Tool",
-        "Snap Clone to Axis"
+        "Snap Clone to Axis",
+        "Fast increment modifier"
     ]
 
     presets = {"WASD": [
@@ -161,7 +162,8 @@ class KeyConfigPanel(Dialog):
         ("Select Chunks", "Z"),
         ("Deselect Chunks", "Alt"),
         ("Brush Line Tool", "Z"),
-        ("Snap Clone to Axis", "Ctrl")
+        ("Snap Clone to Axis", "Ctrl"),
+        ("Fast increment modifier", "Ctrl")
     ],
                "Arrows": [
                    ("Forward", "Up"),
@@ -219,7 +221,8 @@ class KeyConfigPanel(Dialog):
                    ("Select Chunks", "Z"),
                    ("Deselect Chunks", "Alt"),
                    ("Brush Line Tool", "Z"),
-                   ("Snap Clone to Axis", "Ctrl")
+                   ("Snap Clone to Axis", "Ctrl"),
+                   ("Fast increment modifier", "Ctrl")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -277,7 +280,8 @@ class KeyConfigPanel(Dialog):
                    ("Select Chunks", "Z"),
                    ("Deselect Chunks", "Alt"),
                    ("Brush Line Tool", "Z"),
-                   ("Snap Clone to Axis", "Ctrl")
+                   ("Snap Clone to Axis", "Ctrl"),
+                   ("Fast increment modifier", "Ctrl")
                ],
  "WASD Old": [
         ("Forward", "W"),
@@ -335,7 +339,8 @@ class KeyConfigPanel(Dialog):
         ("Select Chunks", "Ctrl"),
         ("Deselect Chunks", "Shift"),
         ("Brush Line Tool", "Shift"),
-        ("Snap Clone to Axis", "Shift")
+        ("Snap Clone to Axis", "Shift"),
+        ("Fast increment modifier", "Shift")
     ]}
 
 
@@ -492,6 +497,13 @@ class KeyConfigPanel(Dialog):
 
         self.enter = 0
         if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
+            if "Modifiers" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
+              self.askAssignKey(configKey,
+                                     _("{0} is not a modifier. "
+                                     "Press a new key.\n\n"
+                                     "Press ESC to cancel. Press Shift-ESC to unbind.")
+                                     .format(keyname))
+              return True
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
             self.changes[configKey] = oldkey
