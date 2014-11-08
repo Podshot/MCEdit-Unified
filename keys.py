@@ -70,6 +70,7 @@ class KeyConfigPanel(Dialog):
         "Decrease Reach",
         "Reset Reach",
         "Export Selection",
+        "Brush Line Tool",
         "",
         "<Functions>",
         "Select All",
@@ -101,9 +102,8 @@ class KeyConfigPanel(Dialog):
         "Pick Block",
         "Select Chunks",
         "Deselect Chunks",
-        "Brush Line Tool",
         "Snap Clone to Axis",
-        "Fast increment modifier"
+        "Fast Increment Modifier"
     ]
 
     presets = {"WASD": [
@@ -134,6 +134,7 @@ class KeyConfigPanel(Dialog):
         ("Decrease Reach", "Scroll Down"),
         ("Reset Reach", "Button 3"),
         ("Export Selection", "Ctrl-E"),
+        ("Brush Line Tool", "Z"),
 
         ("Select All", "Ctrl-A"),
         ("Deselect", "Ctrl-D"),
@@ -161,9 +162,8 @@ class KeyConfigPanel(Dialog):
         ("Pick Block", "Alt"),
         ("Select Chunks", "Z"),
         ("Deselect Chunks", "Alt"),
-        ("Brush Line Tool", "Z"),
         ("Snap Clone to Axis", "Ctrl"),
-        ("Fast increment modifier", "Ctrl")
+        ("Fast Increment Modifier", "Ctrl")
     ],
                "Arrows": [
                    ("Forward", "Up"),
@@ -193,6 +193,7 @@ class KeyConfigPanel(Dialog):
                    ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "Button 3"),
                    ("Export Selection", "Ctrl-E"),
+                   ("Brush Line Tool", "Z"),
 
                    ("Select All", "Ctrl-A"),
                    ("Deselect", "Ctrl-D"),
@@ -220,9 +221,8 @@ class KeyConfigPanel(Dialog):
                    ("Pick Block", "Alt"),
                    ("Select Chunks", "Z"),
                    ("Deselect Chunks", "Alt"),
-                   ("Brush Line Tool", "Z"),
                    ("Snap Clone to Axis", "Ctrl"),
-                   ("Fast increment modifier", "Ctrl")
+                   ("Fast Increment Modifier", "Ctrl")
                ],
                "Numpad": [
                    ("Forward", "[8]"),
@@ -252,6 +252,7 @@ class KeyConfigPanel(Dialog):
                    ("Decrease Reach", "Scroll Down"),
                    ("Reset Reach", "Button 3"),
                    ("Export Selection", "Ctrl-E"),
+                   ("Brush Line Tool", "Z"),
 
                    ("Select All", "Ctrl-A"),
                    ("Deselect", "Ctrl-D"),
@@ -279,9 +280,8 @@ class KeyConfigPanel(Dialog):
                    ("Pick Block", "Alt"),
                    ("Select Chunks", "Z"),
                    ("Deselect Chunks", "Alt"),
-                   ("Brush Line Tool", "Z"),
                    ("Snap Clone to Axis", "Ctrl"),
-                   ("Fast increment modifier", "Ctrl")
+                   ("Fast Increment Modifier", "Ctrl")
                ],
  "WASD Old": [
         ("Forward", "W"),
@@ -311,6 +311,7 @@ class KeyConfigPanel(Dialog):
         ("Decrease Reach", "Scroll Down"),
         ("Reset Reach", "Button 3"),
         ("Export Selection", "Ctrl-E"),
+        ("Brush Line Tool", "Shift"),
 
         ("Select All", "Ctrl-A"),
         ("Deselect", "Ctrl-D"),
@@ -338,9 +339,8 @@ class KeyConfigPanel(Dialog):
         ("Pick Block", "Alt"),
         ("Select Chunks", "Ctrl"),
         ("Deselect Chunks", "Shift"),
-        ("Brush Line Tool", "Shift"),
         ("Snap Clone to Axis", "Shift"),
-        ("Fast increment modifier", "Shift")
+        ("Fast Increment Modifier", "Shift")
     ]}
 
 
