@@ -2826,28 +2826,28 @@ class LevelEditor(GLViewport):
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
         if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Flip'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.flip(blocksOnly=True)
         if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Roll (Clone)'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.roll(blocksOnly=True)
         if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Rotate (Clone)'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.rotate(blocksOnly=True)
         if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Mirror'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.mirror(blocksOnly=True)
         if keyname == config.config.get('Keys', 'Flip'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.flip(blocksOnly=False)
         if keyname == config.config.get('Keys', 'Roll (Clone)'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.roll(blocksOnly=False)
         if keyname == config.config.get('Keys', 'Rotate (Clone)'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.rotate(blocksOnly=False)
         if keyname == config.config.get('Keys', 'Mirror'):
-            if "Clone" in "{0}".format(self.currentTool):
+            if "clone" in "{0}".format(self.currentTool):
                 self.currentTool.mirror(blocksOnly=False)
 
         if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Rotate (Brush)'):
