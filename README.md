@@ -40,6 +40,7 @@ Install various dependencies. This may take a bit (especially numpy). If install
 `>easy_install numpy`
 `>easy_install pygame`
 `>easy_install pyyaml`
+`>easy_install Pillow`
 `>easy_install pywin32 (Windows only, needed for compiling)`
 
 For windows users if `easy_install` cannot find a library you need, or you can't get `easy_install` working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name.
