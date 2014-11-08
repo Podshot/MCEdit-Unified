@@ -238,12 +238,12 @@ class CloneToolPanel(Panel):
         self.tool = tool
 
         rotateRow = Row((
-            Label(config.config.get("Keys", "Rotate")),
+            Label(config.config.get("Keys", "Rotate (Clone)")),
             Button("Rotate", width=80, action=tool.rotate, enable=self.transformEnable),
         ))
 
         rollRow = Row((
-            Label(config.config.get("Keys", "Roll")),
+            Label(config.config.get("Keys", "Roll (Clone)")),
             Button("Roll", width=80, action=tool.roll, enable=self.transformEnable),
         ))
 

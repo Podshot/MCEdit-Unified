@@ -35,7 +35,7 @@ def getNewKey(value, i=0):
         value = value[6:]
     if value >= 'a' and value <= 'z':
         value = value.replace(value[0], value[0].upper(), 1)
-    if i >= 37 and "Ctrl-" not in value:
+    if i >= 41 and "Ctrl-" not in value:
         value = "Ctrl-" + value
     if value == "Mouse3":
         value = "Button 3"
@@ -151,10 +151,16 @@ up = Space
 down = Shift
 brake = C
 
-rotate = E
-roll = R
+rotate (clone) = E
+roll (clone) = R
 flip = F
 mirror = G
+
+rotate (brush) = E
+roll (brush) = G
+increase brush = R
+decrease brush = F
+
 swap = X
 
 pan left = J
