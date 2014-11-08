@@ -629,6 +629,12 @@ def showProgress(progressText, progressIterator, cancel=False):
         def idleevent(self, evt):
             self.invalidate()
 
+        def key_down(self, event):
+            self.get_root().mcedit.editor.key_down(event)
+
+        def key_up(self, event):
+            self.get_root().mcedit.editor.key_up(event)
+
     widget = ProgressWidget()
     widget.progressText = _(progressText)
     widget.statusText = ""

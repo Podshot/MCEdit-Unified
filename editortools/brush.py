@@ -774,6 +774,8 @@ class BrushOperation(Operation):
         else:
             exhaust(_perform())
 
+        self.editor.get_root().ctrlClicked = -1
+
 
 
 class BrushPanel(Panel):
@@ -1399,8 +1401,6 @@ class BrushTool(CloneTool):
             for move in self.editor.movements:
                 if move in config.config.get("Keys", "Brush Line Tool"):
                     self.editor.save = 1
-            self.editor.usedKeys = [0, 0, 0, 0, 0, 0]
-            self.editor.cameraInputs = [0., 0., 0.]
             self.editor.get_root().shiftClicked = 0
             self.editor.get_root().shiftPlaced = -2
             self.editor.get_root().ctrlClicked = 0
@@ -1419,7 +1419,6 @@ class BrushTool(CloneTool):
 
     @alertException
     def mouseUp(self, evt, pos, direction):
-        self.editor.cameraPanKeys = [0., 0.]
         self.editor.get_root().ctrlClicked = -1
 
         if 0 == len(self.draggedPositions):
@@ -1448,8 +1447,6 @@ class BrushTool(CloneTool):
             for move in self.editor.movements:
                 if move in config.config.get("Keys", "Brush Line Tool"):
                     self.editor.save = 1
-            self.editor.usedKeys = [0, 0, 0, 0, 0, 0]
-            self.editor.cameraInputs = [0., 0., 0.]
             self.editor.get_root().shiftClicked = 0
             self.editor.get_root().shiftPlaced = -2
             self.editor.get_root().ctrlClicked = 0
@@ -1459,7 +1456,6 @@ class BrushTool(CloneTool):
 
             self.brushLineKey = 0
 
-        self.editor.cameraPanKeys = [0., 0.]
         self.editor.get_root().ctrlClicked = -1
 
     def toolEnabled(self):
