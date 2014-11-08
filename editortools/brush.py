@@ -963,9 +963,7 @@ class BrushPanel(Panel):
             global currentNumber
             if currentNumber != -1:
                 saveBrushPreset(currentNumber)
-                currentNumber = (int(number) - 1)
-            else:
-                currentNumber = 0
+            currentNumber = (int(number) - 1)
             print "Loading Preset " + str(currentNumber+1)
             for key in self.saveableBrushOptions:
                 if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
