@@ -287,6 +287,7 @@ def buildTranslation(lang,suppressAlert=False):
             start = start.start()
         else:
             log.warning("*** %s malformed. Could not find entry point.\n    Translation not loaded.")
+            # exiting without further operations
             return {}, False
         data = data[start:]
         trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
@@ -305,17 +306,23 @@ def buildTranslation(lang,suppressAlert=False):
                         lst2.pop(idx)
                     else:
                         bug.append(item)
-                bugStrs += ["Not founf in %s"%lst1N, bug]
-                bugStrs += ["Not founf in %s"%lst2N, lst2]
-            print "Compared ",
+                bugStrs += ["Not found in %s"%lst1N, bug]
+                bugStrs += ["Not found in %s"%lst2N, lst2]
+#            print "Compared ",
             if len(grps1) < len(grps2):
                 compLists(grps1, "grps1", grps2, "grps2", u"t")
-                print "oXX tXX"
-                print bugStrs
+#                print "oXX tXX"
+#                print bugStrs
+                log.warning("Compared oXX tXX:")
+                log.warning("%s"%bugStrs)
             else:
                 compLists(grps2, "grps2", grps1, "grps1", u"o")
-                print "tXX oXX"
-                print bugStrs
+#                print "tXX oXX"
+#                print bugStrs
+                log.warning("Compared tXX oXX:")
+                log.warning("%s"%bugStrs)
+            # exiting without further operations
+            return {}, False
         n1 = len(grps) / 2
         result = u""
         n = 1
@@ -336,7 +343,7 @@ def buildTranslation(lang,suppressAlert=False):
         log.debug("Conversion done. Loading JSON resource.")
         string_cache = json.loads(result)
         tm1 = time()
-        print "end on", tm1, "duration", tm1 - tm
+        log.debug("end on %s duration %s"%(tm, tm1 - tm))
     log.debug("buildTranslation >>>")
     return string_cache, fileFound
 
