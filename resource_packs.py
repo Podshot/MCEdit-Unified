@@ -606,8 +606,6 @@ class ResourcePack:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
                 new_terrain.paste(old_tex, t, old_tex)
                 
-        print self._terrain_path
-        print self._pack_name
         new_terrain.save(self._terrain_path)
         try:
             os.remove(self._pack_name.replace(" ", "_")+".png")
@@ -619,7 +617,6 @@ class ResourcePack:
         if self._too_big:
             os.remove(self._terrain_path)
         del self.block_image
-        #new_terrain.show()
         
 class DefaultResourcePack(ResourcePack):
     
