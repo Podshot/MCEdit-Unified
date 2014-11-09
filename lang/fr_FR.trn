@@ -540,7 +540,7 @@ o251 Failed to load file %s
 t251 Échec du chargement de %s
 o252 Nothing selected
 t252 Aucune sélection
-o253 Click and drag to place blocks. ALT-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.
+o253 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
 t253 Gliiser-déposer pour placer les blocs. ALT-Clic pour utiliser le bloc sous le curseur.{R}/{F} pour changer la taille. {E} pour rotation. {G} pour tourner. Molette pour ajuster la distance.
 o254 Click to use {0} ({1}:{2})
 t254 Cliquer pour utiliser {0} ({1}:{2})
