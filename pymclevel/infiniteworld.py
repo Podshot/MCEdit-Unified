@@ -1288,8 +1288,29 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     def init_scoreboard(self):
         if os.path.exists(self.worldFolder.getFolderPath("data")):
                 if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
-                    return scoreboard.Scoreboard(self, False)
-        return scoreboard.Scoreboard(self, True)
+                    nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
+                else:
+                    root_tag = nbt.TAG_Compound()
+                    root_tag["data"] = nbt.TAG_Compound()
+                    root_tag["data"]["Objectives"] = nbt.TAG_List()
+                    root_tag["data"]["PlayerScores"] = nbt.TAG_List()
+                    root_tag["data"]["Teams"] = nbt.TAG_List()
+                    root_tag["data"]["DisplaySlots"] = nbt.TAG_List()
+                    self.save_scoreboard(root_tag)
+                    return root_tag
+        else:
+            self.worldFolder.getFolderPath("data")
+            root_tag = nbt.TAG_Compound()
+            root_tag["data"] = nbt.TAG_Compound()
+            root_tag["data"]["Objectives"] = nbt.TAG_List()
+            root_tag["data"]["PlayerScores"] = nbt.TAG_List()
+            root_tag["data"]["Teams"] = nbt.TAG_List()
+            root_tag["data"]["DisplaySlots"] = nbt.TAG_List()
+            self.save_scoreboard(root_tag)
+            return root_tag
+        
+    def save_scoreboard(self, score):
+        score.save(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
     
     def init_player_data(self):
         player_data = []
