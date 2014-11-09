@@ -364,7 +364,7 @@ class FilterTool(EditorTool):
 
     @property
     def statusText(self):
-        return "Choose a filter, then click Filter or press ENTER to apply it."
+        return "Choose a filter, then click Filter or press Enter to apply it."
 
     def toolEnabled(self):
         return not (self.selectionBox() is None)

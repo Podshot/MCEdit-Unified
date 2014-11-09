@@ -2838,6 +2838,10 @@ class LevelEditor(GLViewport):
             if keyname == config.config.get('Keys', 'Roll (Brush)'):
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.mirror(blocksOnly=False)
+
+            if keyname == config.config.get('Keys', 'Replace Shortcut'):
+                if "fill" in "{0}".format(self.currentTool):
+                    self.currentTool.toggleReplacing()
         
             if keyname == config.config.get('Keys', 'Quit'):
                 self.quit()

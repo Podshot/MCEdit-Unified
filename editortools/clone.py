@@ -443,7 +443,7 @@ class CloneTool(EditorTool):
         if self.draggingFace is not None:
             return "Mousewheel to move along the third axis. Hold {0} to only move along one axis.".format(config.config.get("Keys", "Snap Clone to Axis"))
 
-        return "Click and drag to reposition the item. Double-click to pick it up. Click Clone or press ENTER to confirm."
+        return "Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm."
 
     def quickNudge(self, nudge):
         return map(int.__mul__, nudge, self.selectionBox().size)
@@ -1098,7 +1098,7 @@ class ConstructionTool(CloneTool):
         if self.destPoint == None:
             return "Click to set this item down."
 
-        return "Click and drag to reposition the item. Double-click to pick it up. Click Import or press ENTER to confirm."
+        return "Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm."
 
     def showPanel(self):
         CloneTool.showPanel(self)

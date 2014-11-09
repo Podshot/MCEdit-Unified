@@ -16,8 +16,6 @@ def remapMouseButton(button):
 
 def getKey(evt, i=0):
     keyname = key.name(evt.key)
-    if keyname == 'Enter':
-        keyname = 'Return'
     if 'left' in keyname and len(keyname) > 5:
         keyname = keyname[5:]
     elif 'right' in keyname and len(keyname) > 6:
@@ -36,6 +34,10 @@ def getKey(evt, i=0):
             newKeyname += "Alt-"
 
         keyname = newKeyname + keyname
+
+        if keyname == 'Enter':
+            keyname = 'Return'
+
         return keyname
 
 class KeyConfigPanel(Dialog):
@@ -79,6 +81,9 @@ class KeyConfigPanel(Dialog):
         "Roll (Brush)",
         "Increase Brush",
         "Decrease Brush",
+        "",
+        "<Fill and Replace>",
+        "Replace Shortcut",
         "",
         "<Functions>",
         "Select All",
@@ -150,6 +155,8 @@ class KeyConfigPanel(Dialog):
         ("Increase Brush", "R"),
         ("Decrease Brush", "F"),
 
+        ("Replace Shortcut", "R"),
+
         ("Select All", "Ctrl-A"),
         ("Deselect", "Ctrl-D"),
         ("Undo", "Ctrl-Z"),
@@ -214,6 +221,8 @@ class KeyConfigPanel(Dialog):
                    ("Roll (Brush)", "Delete"),
                    ("Increase Brush", "End"),
                    ("Decrease Brush", "Insert"),
+
+                   ("Replace Shortcut", "R"),
 
                    ("Select All", "Ctrl-A"),
                    ("Deselect", "Ctrl-D"),
@@ -280,6 +289,8 @@ class KeyConfigPanel(Dialog):
                    ("Increase Brush", "[+]"),
                    ("Decrease Brush", "[/]"),
 
+                   ("Replace Shortcut", "R"),
+
                    ("Select All", "Ctrl-A"),
                    ("Deselect", "Ctrl-D"),
                    ("Undo", "Ctrl-Z"),
@@ -344,6 +355,8 @@ class KeyConfigPanel(Dialog):
         ("Roll (Brush)", "G"),
         ("Increase Brush", "R"),
         ("Decrease Brush", "F"),
+
+        ("Replace Shortcut", "R"),
 
         ("Select All", "Ctrl-A"),
         ("Deselect", "Ctrl-D"),
