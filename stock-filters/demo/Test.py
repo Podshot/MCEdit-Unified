@@ -1,5 +1,4 @@
 from albow import Widget, Label, Button, TextField
-from pymclevel import scoreboard
 from pymclevel.nbt import *
 
 operations = {
@@ -49,17 +48,16 @@ def perform(level, box, options):
         widget.shrink_wrap()
         editor.addExternalWidget(widget)        
     elif op == "Scoreboard Editing (Objective)":
-        score = level.init_scoreboard()
+        scoreboard = level.init_scoreboard()
         test_objective = TAG_Compound()
         test_objective["Name"] = TAG_String("FilterObjective")
         test_objective["DisplayName"] = TAG_String("FilterObjective")
         test_objective["CriteriaName"] = TAG_String("dummy")
         test_objective["RenderType"] = TAG_String("integer")
-        test_objective = scoreboard.Objective(test_objective)
-        score.Objectives.append(test_objective)
-        score.save(level)
+        scoreboard["data"]["Objectives"].append(test_objective)
+        level.save_scoreboard(scorebaord)
         for objective in score.Objectives:
-            print "Objective Name: " + str(objective.Name)
+            print "Objective Name: " + str(objective["Name"].value)
     elif op == "Scoreboard Editing (Team)":
         if level.scoreboard != None:
             for team in level.scoreboard.Teams:

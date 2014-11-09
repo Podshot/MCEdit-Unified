@@ -31,7 +31,6 @@ import nbt
 from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
 import version_utils
-import scoreboard
 import player
 
 log = getLogger(__name__)
