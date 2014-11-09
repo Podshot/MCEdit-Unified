@@ -2795,16 +2795,16 @@ class LevelEditor(GLViewport):
                 name = "option" + keyname[len(keyname)-1:]
                 if hasattr(self.currentTool, name):
                     getattr(self.currentTool, name)()
-            if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Flip'):
+            if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Flip'):
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.flip(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Roll (Clone)'):
+            if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Roll (Clone)'):
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.roll(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Rotate (Clone)'):
+            if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Rotate (Clone)'):
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.rotate(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Mirror'):
+            if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Mirror'):
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.mirror(blocksOnly=True)
             if keyname == config.config.get('Keys', 'Flip'):
@@ -2820,10 +2820,10 @@ class LevelEditor(GLViewport):
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.mirror(blocksOnly=False)
 
-            if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Rotate (Brush)'):
+            if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Rotate (Brush)'):
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.rotate(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Blocks-Only') + '-' + config.config.get('Keys', 'Roll (Brush)'):
+            if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Roll (Brush)'):
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.mirror(blocksOnly=True)
             if keyname == config.config.get('Keys', 'Decrease Brush'):
