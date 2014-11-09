@@ -4927,7 +4927,6 @@ blocks:
     tex_direction:
       TOP: [4, 20]
       BOTTOM: [0, 20]
-    opacity: 0
     data:
       0:
         name: Red Sandstone
