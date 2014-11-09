@@ -25,7 +25,7 @@ class BlockPicker(Dialog):
     def __init__(self, blockInfo, materials, *a, **kw):
         self.allowWildcards = False
         Dialog.__init__(self, *a, **kw)
-        panelWidth = 515
+        panelWidth = 518
 
         self.click_outside_response = 0
         self.materials = materials
