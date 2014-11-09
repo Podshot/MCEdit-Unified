@@ -1275,7 +1275,7 @@ class BrushTool(CloneTool):
 
     @property
     def statusText(self):
-        return _("Click and drag to place blocks. {P}-Click to use the block under the cursor. {R} to increase and {F} to decrease size. {E} to rotate, {G} to roll. Mousewheel to adjust distance.").format(
+        return _("Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.").format(
             P=config.config.get("Keys", "Pick Block"),
             R=config.config.get("Keys", "Increase Brush"),
             F=config.config.get("Keys", "Decrease Brush"),
