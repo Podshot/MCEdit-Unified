@@ -75,7 +75,10 @@ Finds the first block from origin in the given direction by ray tracing
 
     This method returns a (position,face) tuple pair.
 """
-def firstBlock(origin, direction, level, radius):
+def firstBlock(origin, direction, level, radius, Settings=None):
+    if Settings != None:
+        if Settings.viewMode.get() == "Chunk":
+            raise TooFarException("There are no valid blocks within range")
     startPos =  map(int,map(math.floor,origin))
     block = level.blockAt(*startPos)
     callback = None
