@@ -32,6 +32,7 @@ import json
 import shutil
 import directories
 import sys
+import mceutils
 
 
 def alertFilterException(func):
@@ -438,6 +439,7 @@ class FilterTool(EditorTool):
                 name = m.__name__
                 del sys.modules[name]
                 del m
+            mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
 
         def tryImport(name):
             try:
