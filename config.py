@@ -186,13 +186,13 @@ long-distance mode = Alt-Z
 fly mode = None
 
 debug overlay = 0
-blocks-only = Alt
 show block info = Alt
 pick block = Alt
 select chunks = Z
 deselect chunks = Alt
 brush line tool = Z
 snap clone to axis = Ctrl
+blocks-only modifier = Alt
 fast increment modifier = Ctrl
 
 quit = Ctrl-Q

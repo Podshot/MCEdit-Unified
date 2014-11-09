@@ -110,12 +110,12 @@ class KeyConfigPanel(Dialog):
         "",
         "<Advanced>",
         "Debug Overlay",
-        "Blocks-Only",
         "Show Block Info",
         "Pick Block",
         "Select Chunks",
         "Deselect Chunks",
         "Snap Clone to Axis",
+        "Blocks-Only Modifier",
         "Fast Increment Modifier"
     ]
 
@@ -178,12 +178,12 @@ class KeyConfigPanel(Dialog):
         ("Quit", "Ctrl-Q"),
 
         ("Debug Overlay", "0"),
-        ("Blocks-Only", "Alt"),
         ("Show Block Info", "Alt"),
         ("Pick Block", "Alt"),
         ("Select Chunks", "Z"),
         ("Deselect Chunks", "Alt"),
         ("Snap Clone to Axis", "Ctrl"),
+        ("Blocks-Only Modifier", "Alt"),
         ("Fast Increment Modifier", "Ctrl")
     ],
                "Arrows": [
@@ -245,12 +245,12 @@ class KeyConfigPanel(Dialog):
                    ("Quit", "Ctrl-Q"),
 
                    ("Debug Overlay", "0"),
-                   ("Blocks-Only", "Alt"),
                    ("Show Block Info", "Alt"),
                    ("Pick Block", "Alt"),
                    ("Select Chunks", "Z"),
                    ("Deselect Chunks", "Alt"),
                    ("Snap Clone to Axis", "Ctrl"),
+                   ("Blocks-Only Modifier", "Alt"),
                    ("Fast Increment Modifier", "Ctrl")
                ],
                "Numpad": [
@@ -312,12 +312,12 @@ class KeyConfigPanel(Dialog):
                    ("Quit", "Ctrl-Q"),
 
                    ("Debug Overlay", "0"),
-                   ("Blocks-Only", "Alt"),
                    ("Show Block Info", "Alt"),
                    ("Pick Block", "Alt"),
                    ("Select Chunks", "Z"),
                    ("Deselect Chunks", "Alt"),
                    ("Snap Clone to Axis", "Ctrl"),
+                   ("Blocks-Only Modifier", "Alt"),
                    ("Fast Increment Modifier", "Ctrl")
                ],
  "WASD Old": [
@@ -379,12 +379,12 @@ class KeyConfigPanel(Dialog):
         ("Quit", "Ctrl-Q"),
 
         ("Debug Overlay", "0"),
-        ("Blocks-Only", "Alt"),
         ("Show Block Info", "Alt"),
         ("Pick Block", "Alt"),
         ("Select Chunks", "Ctrl"),
         ("Deselect Chunks", "Shift"),
         ("Snap Clone to Axis", "Shift"),
+        ("Blocks-Only Modifier", "Alt"),
         ("Fast Increment Modifier", "Shift")
     ]}
 
@@ -542,7 +542,7 @@ class KeyConfigPanel(Dialog):
 
         self.enter = 0
         if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
-            if "Modifiers" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
+            if "Modifier" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
               self.askAssignKey(configKey,
                                      _("{0} is not a modifier. "
                                      "Press a new key.\n\n"
