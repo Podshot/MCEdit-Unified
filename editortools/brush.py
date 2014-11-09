@@ -1781,30 +1781,6 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
             slices[dim] = slice(2, None)
             exposedBlockSubMask |= (submask & (mask[slices] != submask))
 
-
-        if wireframe:
-            exposedBlockWireNewMask = numpy.copy(exposedBlockMask)
-            exposedBlockWireMask = exposedBlockMask[1:-1,1:-1,1:-1]
-            print exposedBlockWireMask
-            x=0
-            for xx in exposedBlockWireMask:
-                y=0
-                for yy in exposedBlockWireMask[x]:
-                    z=0
-                    for zz in exposedBlockWireMask[x][y]:
-                        if zz == False:
-                            print zz
-                            exposedBlockWireNewMask[x+2][y+1][z+1] = False
-                            exposedBlockWireNewMask[x+1][y+2][z+1] = False
-                            exposedBlockWireNewMask[x+1][y+1][z+2] = False
-                            exposedBlockWireNewMask[x][y+1][z+1] = False
-                            exposedBlockWireNewMask[x+1][y][z+1] = False
-                            exposedBlockWireNewMask[x+1][y+1][z] = False
-                        z+=1
-                    y+=1
-                x+=1
-            exposedBlockMask &= exposedBlockWireNewMask
-
         if hollow:
             mask[~exposedBlockMask] = False
         if chance < 100:
