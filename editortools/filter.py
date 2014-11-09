@@ -405,7 +405,7 @@ class FilterTool(EditorTool):
         updatedFilters = 0
         filtersDir = directories.getFiltersDir()
         try:
-            os.mkdir(filtersDir + "/updates")
+            os.mkdir(filtersDir+os.path.sep+"updates")
         except OSError:
             pass
         for module in self.filterModules.values():
@@ -415,11 +415,11 @@ class FilterTool(EditorTool):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"],
-                                           filtersDir + "/updates/" + versionJSON["Name"])
+                                           filtersDir+os.path.sep+"updates"+os.path.sep+versionJSON["Name"])
                         updatedFilters = updatedFilters + 1
-        for f in os.listdir(filtersDir + "/updates"):
-            shutil.copy(filtersDir + "/updates/" + f, filtersDir)
-        shutil.rmtree(filtersDir + "/updates/")
+        for f in os.listdir(filtersDir+os.path.sep+"updates"):
+            shutil.copy(filtersDir+os.path.sep+"updates"+os.path.sep+f, filtersDir)
+        shutil.rmtree(filtersDir+os.path.sep+"updates"+os.path.sep)
         self.finishedUpdatingWidget = Widget()
         lbl = Label("Updated " + str(updatedFilters) + " filter(s) out of " + str(totalFilters))
         closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
