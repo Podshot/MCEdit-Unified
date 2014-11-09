@@ -1683,7 +1683,7 @@ class LevelEditor(GLViewport):
         readoutGrid = Grid(((chunksReadout, fpsReadout), (mbReadoutRow, cpsReadout), ), 0, 0)
 
         self.viewportButton = Button("Camera View", action=self.swapViewports,
-                                     tooltipText="Shortcut: TAB")
+                                     tooltipText="Shortcut: {0}".format(config.config.get('Keys', 'Toggle View')))
 
         self.recordUndoButton = mceutils.CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
 
