@@ -349,7 +349,7 @@ class CloneToolPanel(Panel):
         moveSpawnerPosRow = Row((self.moveSpawnerPosCheckBox, self.moveSpawnerPosLabel))
 
         self.performButton = Button("Clone", width=100, align="c")
-        self.performButton.tooltipText = "Shortcut: ENTER"
+        self.performButton.tooltipText = "Shortcut: Enter"
         self.performButton.action = tool.confirm
         self.performButton.enable = lambda: (tool.destPoint is not None)
         if self.useOffsetInput:

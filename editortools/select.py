@@ -172,7 +172,7 @@ class SelectionToolPanel(Panel):
         nudgeSelectionButton.bg_color = tool.selectionColor + (0.7,)
 
         deleteBlocksButton = Button("Delete Blocks", action=self.tool.deleteBlocks)
-        deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: DELETE")
+        deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: {0}").format(config.config.get('Keys', 'Delete Blocks'))
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
         deleteEntitiesButton.tooltipText = _("Remove all entities within the selection")
         deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
@@ -181,17 +181,17 @@ class SelectionToolPanel(Panel):
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
         analyzeButton.tooltipText =_("Count the different blocks and entities in the selection and display the totals.")
         cutButton = Button("Cut", action=self.tool.cutSelection)
-        cutButton.tooltipText = _("Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}-X").format(
-            mcplatform.cmd_name)
+        cutButton.tooltipText = _("Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}").format(
+            config.config.get('Keys', 'Cut'))
         copyButton = Button("Copy", action=self.tool.copySelection)
-        copyButton.tooltipText = _("Take a copy of all blocks and entities within the selection. Shortcut: {0}-C").format(
-            mcplatform.cmd_name)
+        copyButton.tooltipText = _("Take a copy of all blocks and entities within the selection. Shortcut: {0}").format(
+            config.config.get('Keys', 'Copy'))
         pasteButton = Button("Paste", action=self.tool.editor.pasteSelection)
-        pasteButton.tooltipText = _("Import the last item taken by Cut or Copy. Shortcut: {0}-V").format(
-            mcplatform.cmd_name)
+        pasteButton.tooltipText = _("Import the last item taken by Cut or Copy. Shortcut: {0}").format(
+            config.config.get('Keys', 'Paste'))
         exportButton = Button("Export", action=self.tool.exportSelection)
-        exportButton.tooltipText = _("Export the selection to a .schematic file. Shortcut: {0}-E").format(
-            mcplatform.cmd_name)
+        exportButton.tooltipText = _("Export the selection to a .schematic file. Shortcut: {0}").format(
+            config.config.get('Keys', 'Export Selection'))
 
         selectButton = Button("Select Chunks")
         selectButton.tooltipText = _("Expand the selection to the edges of the chunks within")
@@ -199,7 +199,7 @@ class SelectionToolPanel(Panel):
         selectButton.highlight_color = (0, 255, 0)
 
         deselectButton = Button("Deselect")
-        deselectButton.tooltipText = _("Remove the selection. Shortcut: {0}-D").format(mcplatform.cmd_name)
+        deselectButton.tooltipText = _("Remove the selection. Shortcut: {0}").format(config.config.get('Keys', 'Deselect'))
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
