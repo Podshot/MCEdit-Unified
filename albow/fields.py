@@ -52,6 +52,7 @@ class TextEditor(Widget):
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
+        self.get_root().mcedit.editor.key_down(event, 1, 1)
         if not (event.cmd or event.alt):
             k = event.key
             if k == K_LEFT:
@@ -90,7 +91,7 @@ class TextEditor(Widget):
         self.call_parent_handler('key_down', event)
 
     def key_up(self, event):
-        pass
+        self.get_root().mcedit.editor.key_up(event)
 
     def get_text_and_insertion_point(self):
         text = self.get_text()

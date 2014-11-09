@@ -2885,96 +2885,96 @@ class LevelEditor(GLViewport):
             if keyname == config.config.get('Keys', 'Export Selection'):
                 self.selectionTool.exportSelection()
 
-        #if keyname == 'Ctrl-Alt-F9':
-        #    self.parent.reloadEditor()
-            # ===========================================================
-            # debugPanel = Panel()
-            # buttonColumn = [
-            #    Button("Reload Editor", action=self.parent.reloadEditor),
-            # ]
-            # debugPanel.add(Column(buttonColumn))
-            # debugPanel.shrink_wrap()
-            # self.add_centered(debugPanel)
-            # ===========================================================
+            #if keyname == 'Ctrl-Alt-F9':
+            #    self.parent.reloadEditor()
+                # ===========================================================
+                # debugPanel = Panel()
+                # buttonColumn = [
+                #    Button("Reload Editor", action=self.parent.reloadEditor),
+                # ]
+                # debugPanel.add(Column(buttonColumn))
+                # debugPanel.shrink_wrap()
+                # self.add_centered(debugPanel)
+                # ===========================================================
 
-        #if keyname == 'Shift-Ctrl-F9':
-        #    raise GL.GLError(err=1285,
-        #    description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
-        if keyname == 'Ctrl-Alt-F9':
-            try:
-                expr = input_text(">>> ", 600)
-                expr = compile(expr, 'eval', 'single')
-                alert("Result: {0!r}".format(eval(expr, globals(), locals())))
-            except Exception, e:
-                alert("Exception: {0!r}".format(e))
+            #if keyname == 'Shift-Ctrl-F9':
+            #    raise GL.GLError(err=1285,
+            #    description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
+            if keyname == 'Ctrl-Alt-F9':
+                try:
+                    expr = input_text(">>> ", 600)
+                    expr = compile(expr, 'eval', 'single')
+                    alert("Result: {0!r}".format(eval(expr, globals(), locals())))
+                except Exception, e:
+                    alert("Exception: {0!r}".format(e))
 
-        #if keyname == 'Ctrl-F10':
-        #    def causeError():
-        #        raise ValueError("User pressed CONTROL-F10, requesting a program error.")
+            #if keyname == 'Ctrl-F10':
+            #    def causeError():
+            #        raise ValueError("User pressed CONTROL-F10, requesting a program error.")
 
-        if keyname == 'Ctrl-Alt-F10':
-            alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
+            if keyname == 'Ctrl-Alt-F10':
+                alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
 
-        if keyname == config.config.get('Keys', 'Toggle View'):
-            self.swapViewports()
+            if keyname == config.config.get('Keys', 'Toggle View'):
+                self.swapViewports()
 
-        if keyname == config.config.get('Keys', 'Brake'):
-            self.mainViewport.brakeOn()
+            if keyname == config.config.get('Keys', 'Brake'):
+                self.mainViewport.brakeOn()
 
-        if keyname == config.config.get('Keys', 'Reset Reach'):
-            self.resetReach()
-        if keyname == config.config.get('Keys', 'Increase Reach'):
-            self.increaseReach()
-        if keyname == config.config.get('Keys', 'Decrease Reach'):
-            self.decreaseReach()
-        if keyname == config.config.get('Keys', 'Swap'):
-            self.currentTool.swap()
+            if keyname == config.config.get('Keys', 'Reset Reach'):
+                self.resetReach()
+            if keyname == config.config.get('Keys', 'Increase Reach'):
+                self.increaseReach()
+            if keyname == config.config.get('Keys', 'Decrease Reach'):
+                self.decreaseReach()
+            if keyname == config.config.get('Keys', 'Swap'):
+                self.currentTool.swap()
 
-        if keyname == 'Escape':
-            self.toolbar.tools[0].endSelection()
-            self.mouseLookOff()
-            self.showControls()
+            if keyname == 'Escape':
+                self.toolbar.tools[0].endSelection()
+                self.mouseLookOff()
+                self.showControls()
 
-        if keyname == config.config.get('Keys', 'Pan Left'):
-            self.cameraPanKeys[0] = -1.
-        if keyname == config.config.get('Keys', 'Pan Right'):
-            self.cameraPanKeys[0] = 1.
-        if keyname == config.config.get('Keys', 'Pan Up'):
-            self.cameraPanKeys[1] = -1.
-        if keyname == config.config.get('Keys', 'Pan Down'):
-            self.cameraPanKeys[1] = 1.
+            if keyname == config.config.get('Keys', 'Pan Left'):
+                self.cameraPanKeys[0] = -1.
+            if keyname == config.config.get('Keys', 'Pan Right'):
+                self.cameraPanKeys[0] = 1.
+            if keyname == config.config.get('Keys', 'Pan Up'):
+                self.cameraPanKeys[1] = -1.
+            if keyname == config.config.get('Keys', 'Pan Down'):
+                self.cameraPanKeys[1] = 1.
 
-        if keyname == config.config.get('Keys', 'Confirm Construction'):
-            self.confirmConstruction()
+            if keyname == config.config.get('Keys', 'Confirm Construction'):
+                self.confirmConstruction()
 
-        # =======================================================================
-        # if keyname == config.config.get('Keys','Toggle Flat Shading'):
-        #    self.renderer.swapMipmapping()
-        # if keyname == config.config.get('Keys','Toggle Lighting'):
-        #    self.renderer.toggleLighting()
-        # =======================================================================
+            # =======================================================================
+            # if keyname == config.config.get('Keys','Toggle Flat Shading'):
+            #    self.renderer.swapMipmapping()
+            # if keyname == config.config.get('Keys','Toggle Lighting'):
+            #    self.renderer.toggleLighting()
+            # =======================================================================
 
-        if keyname == config.config.get('Keys', 'Debug Overlay'):
-            self.swapDebugLevels()
+            if keyname == config.config.get('Keys', 'Debug Overlay'):
+                self.swapDebugLevels()
 
-        if keyname == config.config.get('Keys', 'Toggle Renderer'):
-            self.renderer.render = not self.renderer.render
+            if keyname == config.config.get('Keys', 'Toggle Renderer'):
+                self.renderer.render = not self.renderer.render
 
-        if keyname == config.config.get('Keys', 'Delete Blocks'):
-            self.deleteSelectedBlocks()
+            if keyname == config.config.get('Keys', 'Delete Blocks'):
+                self.deleteSelectedBlocks()
 
-        if keyname == config.config.get('Keys', 'Fly Mode'):
-            Settings.flyMode.set(not Settings.flyMode.get())
-            config.saveConfig()
+            if keyname == config.config.get('Keys', 'Fly Mode'):
+                Settings.flyMode.set(not Settings.flyMode.get())
+                config.saveConfig()
 
-        if keyname == '1' or keyname == '2' or keyname == '3' or keyname == '4' or keyname == '5' or keyname == '6' or keyname == '7' or keyname == '8' or keyname == '9':
-            self.toolbar.selectTool(int(keyname) - 1)
+            if keyname == '1' or keyname == '2' or keyname == '3' or keyname == '4' or keyname == '5' or keyname == '6' or keyname == '7' or keyname == '8' or keyname == '9':
+                self.toolbar.selectTool(int(keyname) - 1)
 
-        if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
-            self.mcedit.loadRecentWorldNumber(int(keyname[1]))
+            if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
+                self.mcedit.loadRecentWorldNumber(int(keyname[1]))
 
-        if keyname == 'F7':
-            self.testBoardKey = 1
+            if keyname == 'F7':
+                self.testBoardKey = 1
 
     def showGotoPanel(self):
 
