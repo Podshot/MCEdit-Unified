@@ -1085,7 +1085,7 @@ class ConstructionTool(CloneTool):
         pass
 
     def quickNudge(self, nudge):
-        return map(lambda x: x * 8, nudge)
+        return map(int.__mul__, nudge, self.selectionBox().size)
 
     def __init__(self, *args):
         CloneTool.__init__(self, *args)
