@@ -79,6 +79,12 @@ from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
 from pymclevel.entity import Entity
 
+try:
+    import resource  # @UnresolvedImport
+    resource.setrlimit(resource.RLIMIT_NOFILE, (500,-1))
+except:
+    pass
+
 # Label = GLLabel
 
 Settings = config.Settings("Settings")

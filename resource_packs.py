@@ -4,6 +4,7 @@ import directories
 import os
 import shutil
 import config
+
 try:
     import resource  # @UnresolvedImport
     resource.setrlimit(resource.RLIMIT_NOFILE, (500,-1))
@@ -595,7 +596,6 @@ class ResourcePack:
         self.parse_terrain_png()
 
     def parse_terrain_png(self):
-        print "Texture Pack size: "+str(len(self.block_image))
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
             try:
