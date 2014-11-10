@@ -92,8 +92,11 @@ import functools
 import glutils
 import leveleditor
 from leveleditor import ControlSettings, Settings
-#-#
-albow.translate.setLang(Settings.langCode.get())
+#-# Building translation template
+if "-tt" in sys.argv:
+    albow.translate.buildTemplate = True
+else:
+    albow.translate.setLang(Settings.langCode.get())
 #-#
 import mceutils
 import mcplatform
@@ -143,10 +146,10 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-        addHelp("{0}".format(config.config.get('Keys', 'Brake')) + _(" to slow down"))
+        addHelp("{0}".format(config.config.get('Keys', 'Brake').upper()) + _(" to slow down"))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp(_("Hold {0} for details").format(config.config.get('Keys', 'Show Block Info')))
+        addHelp("Hold ALT for details")
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
@@ -299,7 +302,7 @@ class OptionsPanel(Dialog):
 
     def __init__(self, mcedit):
         #albow.translate.refreshLang(suppressAlert=True)
-        albow.translate.setLang(Settings.langCode.get())
+#        albow.translate.setLang(Settings.langCode.get())
 
         Dialog.__init__(self)
 
@@ -463,8 +466,8 @@ class OptionsPanel(Dialog):
 
     def portableButtonTooltip(self):
         return (
-        _("Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder"),
-        _("Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder"))[
+        "Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder",
+        "Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder")[
             directories.portable]
 
     @property
@@ -504,7 +507,19 @@ class OptionsPanel(Dialog):
             Settings.langCode.set(o)
             albow.translate.setLang(Settings.langCode.get())
         elif o != n:
-            albow.alert("You must restart MCEdit to see language changes")
+#            albow.alert("You must restart MCEdit to see language changes")
+            editor = self.mcedit.editor
+            if editor and editor.unsavedEdits:
+                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
+            else:
+                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
+            if result == "Save and Restart":
+                editor.saveFile()
+                self.mcedit.restart()
+            elif result == "Restart":
+                self.mcedit.restart()
+            elif result == "Later":
+                pass
         Dialog.dismiss(self, *args, **kwargs)
 
 class MCEdit(GLViewport):
@@ -736,6 +751,10 @@ class MCEdit(GLViewport):
         self.focus_switch = self.fileOpener
 
     def confirm_quit(self):
+        #-# saving language template
+        if hasattr(albow.translate, "saveTemplate"):
+            albow.translate.saveTemplate()
+        #-#
         if self.editor.unsavedEdits:
             result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
@@ -909,6 +928,26 @@ class MCEdit(GLViewport):
                 traceback.print_exc()
                 mcedit.editor.handleMemoryError()
 
+    def restart(self):
+        if sys.platform == "win32" and Settings.setWindowPlacement.get():
+            (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
+                display.get_wm_info()['window'])
+            X, Y, r, b = rect
+            #w = r-X
+            #h = b-Y
+            if (showCmd == mcplatform.win32con.SW_MINIMIZE or
+                        showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
+                showCmd = mcplatform.win32con.SW_SHOWNORMAL
+
+            Settings.windowX.set(X)
+            Settings.windowY.set(Y)
+            Settings.windowShowCmd.set(showCmd)
+
+        config.saveConfig()
+        self.editor.renderer.discardAllChunks()
+        self.editor.deleteAllCopiedSchematics()
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
 
 def main(argv):
     """

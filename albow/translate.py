@@ -109,6 +109,22 @@ string_cache = {}
 langPath = os.sep.join((".", "lang"))
 lang = "Default"
 
+# template building
+strNum = 0
+template = {} # {"string": number}
+buildTemplate = False
+trnHeader = """# TRANSLATION BASICS
+# 
+# This file works by mapping original English strings(o##) to the new translated strings(t##)
+# As long as the numbers match, it will translate the specified English string to the new language.
+# Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes and other special characters can be used.
+# 
+# The space (' ') separating the strings from the numbers is mandatory.
+# The file must also be encoded in UTF-8 or it won't work. Most editors should support this.
+# 
+# See TRANSLATION.txt for more detailed information.
+#"""
+
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
 #-------------------------------------------------------------------------------
@@ -118,82 +134,26 @@ def _(string, doNotTranslate=False):
         return string
     if type(string) not in (str, unicode):
         return string
+    if buildTemplate:
+        global template
+        global strNum
+        if string not in template.values():
+            template[strNum] = u"%s"%string
+            strNum += 1
     return string_cache.get(string, string.replace("\n", "\n\n"))
 
 #-------------------------------------------------------------------------------
-# Suppress this.
-def refreshLang(self=None,suppressAlert=False,build=True):
-    """Refreshes and returns the current language string"""
-    global oldlang
-    import config
-    import leveleditor
-    from leveleditor import Settings
-
-    try:
-        cancel = False
-        lang = Settings.langCode.get() #.langCode
-        isRealLang = verifyLangCode(lang)
-        if build:
-            buildTranslation(lang)
-        if not oldlang == lang and not suppressAlert and isRealLang:
-            import albow
-            if leveleditor.LevelEditor(self).unsavedEdits:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
-            else:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
-            if result == "Save and Restart":
-                editor.saveFile()
-                restart(self)
-            elif result == "Restart":
-                restart(self)
-            elif result == "Later":
-                pass
-            else:
-                isRealLang = False
-                cancel = True
-        elif not suppressAlert and not isRealLang:
-            import albow
-            albow.alert("{} is not a valid language ({})".format(lang,os.path.join(langPath, lang + ".json")))
-        if not isRealLang:
-            Settings.langCode.set(oldlang)
-        else:
-            oldlang = lang
-        if cancel == True:
-            return ""
-        else:
-            return lang
-    except Exception as inst:
-        print inst
-        return ""
-        
-#-------------------------------------------------------------------------------
-# Move this to mcedit.py. The GUI does not have to handle program start/stop.
-def restart(mcedit):
-    import config
-    import mcplatform
-    from pygame import display
-    from leveleditor import Settings
-    if sys.platform == "win32" and Settings.setWindowPlacement.get():
-        (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
-            display.get_wm_info()['window'])
-        X, Y, r, b = rect
-        #w = r-X
-        #h = b-Y
-        if (showCmd == mcplatform.win32con.SW_MINIMIZE or
-                    showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
-            showCmd = mcplatform.win32con.SW_SHOWNORMAL
-
-        Settings.windowX.set(X)
-        Settings.windowY.set(Y)
-        Settings.windowShowCmd.set(showCmd)
-
-    config.saveConfig()
-    mcedit.editor.renderer.discardAllChunks()
-    mcedit.editor.deleteAllCopiedSchematics()
-    python = sys.executable
-    os.execl(python, python, * sys.argv)
-    
-
+def saveTemplate():
+    if buildTemplate:
+        fName = os.path.abspath(os.path.join(getLangPath(), "template.trn"))
+        f = codecs.open(fName, "w", "utf-8")
+        f.write(trnHeader)
+        keys = template.keys()
+        keys.sort()
+        for key in keys:
+            value = template[key]
+            f.write(u"\no%s %s\nt%s "%(key, value, key))
+        f.close()
 
 #-------------------------------------------------------------------------------
 def setLangPath(path):
