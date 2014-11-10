@@ -500,7 +500,7 @@ class ResourcePack:
     def __init__(self, zipfileFile):
         self.zipfile = zipfileFile
         self._pack_name = zipfileFile.split(os.path.sep)[-1][:-4]
-        self.texture_path = "textures"+os.path.sep+self._pack_name+os.path.sep
+        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
         self._isEmpty = False
         self._too_big = False
         self.big_textures_counted = 0 
@@ -651,7 +651,7 @@ def setup_resource_packs():
             if not rp.tooBig:
                 terrains[rp.pack_name] = rp
     try:
-        shutil.rmtree("textures")
+        shutil.rmtree(directories.parentDir+os.path.sep+"textures")
     except:
         print "Could not remove \"textures\" directory"
         pass
@@ -661,7 +661,7 @@ class ResourcePackHandler:
 
     def __init__(self):
         try:
-            os.mkdir("textures")
+            os.mkdir(directories.parentDir+os.path.sep+"textures")
         except OSError:
             pass
         self._resource_packs = setup_resource_packs()
