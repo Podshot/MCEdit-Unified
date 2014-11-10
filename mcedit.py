@@ -146,7 +146,7 @@ class FileOpener(albow.Widget):
         addHelp("{0}".format(config.config.get('Keys', 'Brake')) + _(" to slow down"))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp("Hold {0} for details".format(config.config.get('Keys', 'Show Block Info')))
+        addHelp(_("Hold {0} for details").format(config.config.get('Keys', 'Show Block Info')))
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
