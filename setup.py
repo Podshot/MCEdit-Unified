@@ -187,7 +187,7 @@ def main():
             'char.png',
             'gui.png',
             'terrain.png',
-            'albow\\TRANSLATION.txt',
+            'TRANSLATION.txt',
             #'RELEASE-VERSION',
             #'GIT-COMMIT',
         ])
