@@ -125,14 +125,14 @@ class FileOpener(albow.Widget):
 
         helpColumn = []
 
-        label = albow.Label("{0} {1} {2} {3} {4} {5}".format(
+        label = albow.Label("{0}/{1}/{2}/{3}/{4}/{5}".format(
             config.config.get('Keys', 'Forward'),
             config.config.get('Keys', 'Left'),
             config.config.get('Keys', 'Back'),
             config.config.get('Keys', 'Right'),
             config.config.get('Keys', 'Up'),
             config.config.get('Keys', 'Down'),
-        ).upper() + _(" to move"))
+        ) + _(" to move"))
         label.anchor = 'whrt'
         label.align = 'r'
         helpColumn.append(label)
@@ -143,11 +143,10 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-        addHelp("{0}".format(config.config.get('Keys', 'Brake').upper()) + _(" to slow down"))
+        addHelp("{0}".format(config.config.get('Keys', 'Brake')) + _(" to slow down"))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp("Hold SHIFT to move along a major axis")
-        addHelp("Hold ALT for details")
+        addHelp("Hold {0} for details".format(config.config.get('Keys', 'Show Block Info')))
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
