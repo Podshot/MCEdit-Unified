@@ -1,0 +1,949 @@
+# TRANSLATION BASICS
+# 
+# This file works by mapping original English strings(o##) to the new translated strings(t##)
+# As long as the numbers match, it will translate the specified English string to the new language.
+# Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes and other special characters can be used.
+# 
+# The space (' ') separating the strings from the numbers is mandatory.
+# The file must also be encoded in UTF-8 or it won't work. Most editors should support this.
+# 
+# See TRANSLATION.txt for more detailed information.
+#
+o0 Autobrake
+t0 
+o1 Swap Axes Looking Down
+t1 
+o2 Camera Acceleration: 
+t2 
+o3 Camera Drag: 
+t3 
+o4 Camera Max Speed: 
+t4 
+o5 Camera Braking Speed: 
+t5 
+o6 Mouse Speed: 
+t6 
+o7 Undo Limit: 
+t7 
+o8 Invert Mouse
+t8 
+o9 Low Detail Height
+t9 
+o10 Block Buffer (MB):
+t10 
+o11 Set Window Placement
+t11 
+o12 Rotate block with brush
+t12 
+o13 Window Resize Alert
+t13 
+o14 Visibility Check
+t14 
+o15 Long-Distance Mode
+t15 
+o16 Fly Mode
+t16 
+o17 
+t17 
+o18 Language
+t18 
+o19 Static Coords While Nudging
+t19 
+o20 Change Spawners While Nudging
+t20 
+o21 Change
+t21 
+o22 Options
+t22 
+o23 OK
+t23 
+o24 Field of View: 
+t24 
+o25 Target FPS: 
+t25 
+o26 Vertex Buffer Limit (MB): 
+t26 
+o27 Fast Leaves
+t27 
+o28 Rough Graphics
+t28 
+o29 Enable Mouse Lag
+t29 
+o30 Default
+t30 
+o31 Settings
+t31 
+o32 Command
+t32 
+o33 Assigned Key
+t33 
+o34 Assign Key...
+t34 
+o35 Done
+t35 
+o36 WASD
+t36 
+o37 Arrows
+t37 
+o38 Numpad
+t38 
+o39 WASD Old
+t39 
+o40 Presets: 
+t40 
+o41 MCEdit
+t41 
+o42 <
+t42 
+o43 >
+t43 
+o44 Show...
+t44 
+o45 Camera View
+t45 
+o46 Record Undo
+t46 
+o47 View Distance:
+t47 
+o48 Chunk View
+t48 
+o49 [UNDEFINED]
+t49 
+o50 White
+t50 
+o51 Blue
+t51 
+o52 Green
+t52 
+o53 Red
+t53 
+o54 Teal
+t54 
+o55 Pink
+t55 
+o56 Yellow
+t56 
+o57 Grey
+t57 
+o58 Black
+t58 
+o59 Color: 
+t59 
+o60 Show Previous Selection
+t60 
+o61 R:
+t61 
+o62 G:
+t62 
+o63 B:
+t63 
+o64 Selection Options
+t64 
+o65 Place Immediately
+t65 
+o66 Clone Options
+t66 
+o67 Alpha: 
+t67 
+o68 Choose Block Immediately
+t68 
+o69 Reset Distance When Brush Size Changes
+t69 
+o70 Brush Options
+t70 
+o71 Fill Options
+t71 
+o72 Spawn Position Safety
+t72 
+o73 Spawn Point Options
+t73 
+o74 Create New World
+t74 
+o75 Ctrl-
+t75 
+o76 Quick Load
+t76 
+o77 Open...
+t77 
+o78 Save
+t78 
+o79 Reload
+t79 
+o80 Close
+t80 
+o81 Goto
+t81 
+o82 World Info
+t82 
+o83 Undo
+t83 
+o84 Redo
+t84 
+o85 Select All
+t85 
+o86 Deselect
+t86 
+o87 Quit
+t87 
+o88 Controls
+t88 
+o89 Graphics
+t89 
+o90 Homepage
+t90 
+o91 About MCEdit
+t91 
+o92 Recent Changes
+t92 
+o93 License
+t93 
+o94 Config Files Folder
+t94 
+o95  to move
+t95 
+o96  to slow down
+t96 
+o97 Right-click to toggle camera control
+t97 
+o98 Mousewheel to control tool distance
+t98 
+o99 Hold ALT for details
+t99 
+o100 MCE Test
+t100 
+o101 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
+
+ If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
+t101 
+o102 Don't remind me again.
+t102 
+o103 <Movement>
+t103 
+o104 Forward
+t104 
+o105 Back
+t105 
+o106 Left
+t106 
+o107 Right
+t107 
+o108 Up
+t108 
+o109 Down
+t109 
+o110 Brake
+t110 
+o111 <Camera>
+t111 
+o112 Pan Up
+t112 
+o113 Pan Down
+t113 
+o114 Pan Left
+t114 
+o115 Pan Right
+t115 
+o116 Toggle View
+t116 
+o117 Goto Panel
+t117 
+o118 View Distance
+t118 
+o119 Toggle Renderer
+t119 
+o120 <Blocks>
+t120 
+o121 Swap
+t121 
+o122 Delete Blocks
+t122 
+o123 Increase Reach
+t123 
+o124 Decrease Reach
+t124 
+o125 Reset Reach
+t125 
+o126 Export Selection
+t126 
+o127 Brush Line Tool
+t127 
+o128 <Clone>
+t128 
+o129 Rotate (Clone)
+t129 
+o130 Install Mode: Portable
+t130 
+o131 Install Mode: Fixed
+t131 
+o132 Reverse the up and down motion of the mouse.
+t132 
+o133 Do a visibility check on chunks while loading. May cause a crash.
+t133 
+o134 Change static coordinates in command blocks while nudging.
+t134 
+o135 Change the position of the mobs in spawners while nudging.
+t135 
+o136 When rotating your brush, also rotate the orientation of the block your brushing with
+t136 
+o137 Choose your language.
+t137 
+o138 You must restart MCEdit to see language changes
+t138 
+o139 Restart
+t139 
+o140 Later
+t140 
+o141 Loading 
+t141 
+o142  - MCEdit 
+t142 
+o143 Overworld
+t143 
+o144 The End
+t144 
+o145 Nether
+t145 
+o146 Goto Dimension
+t146 
+o147 Chunks: %d
+t147 
+o148 fps: %0.1f
+t148 
+o149 MBv: %0.1f
+t149 
+o150 cps: %0.1f
+t150 
+o151 Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.
+t151 
+o152 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
+t152 
+o153 Release the mouse button to finish the selection
+t153 
+o154 Nudge
+t154 
+o155 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+t155 
+o156 {0:n} blocks
+t156 
+o157 Fill the selection with Air. Shortcut: {0}
+t157 
+o158 Delete Entities
+t158 
+o159 Remove all entities within the selection
+t159 
+o160 Delete Tile Ticks
+t160 
+o161 Removes all tile ticks within selection. Tile ticks are scheduled block updates
+t161 
+o162 Analyze
+t162 
+o163 Count the different blocks and entities in the selection and display the totals.
+t163 
+o164 Cut
+t164 
+o165 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
+t165 
+o166 Copy
+t166 
+o167 Take a copy of all blocks and entities within the selection. Shortcut: {0}
+t167 
+o168 Paste
+t168 
+o169 Import the last item taken by Cut or Copy. Shortcut: {0}
+t169 
+o170 Export
+t170 
+o171 Export the selection to a .schematic file. Shortcut: {0}
+t171 
+o172 Select Chunks
+t172 
+o173 Expand the selection to the edges of the chunks within
+t173 
+o174 Remove the selection. Shortcut: {0}
+t174 
+o175 Click and hold.  While holding, use the movement keys (W/S/A/D/Space/Shift) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+t175 
+o176 Select
+Right-click for options
+t176 
+o177 Brush
+Right-click for options
+t177 
+o178 Fill
+t178 
+o179 Varied Fill
+t179 
+o180 Flood Fill
+t180 
+o181 Replace
+t181 
+o182 Varied Replace
+t182 
+o183 Erode
+t183 
+o184 Topsoil
+t184 
+o185 Mode:
+t185 
+o186 Brush:
+t186 
+o187 Chance: 
+t187 
+o188 Hollow
+t188 
+o189 Fill Air
+t189 
+o190 Line Spacing
+t190 
+o191 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
+t191 
+o192 Whenever the brush size changes, reset the distance to the brush blocks.
+t192 
+o193 Clone
+Right-click for options
+t193 
+o194 COPYING - 
+t194 
+o195 Rotate
+t195 
+o196 Roll
+t196 
+o197 Flip
+t197 
+o198 Mirror
+t198 
+o199 Chunk Align
+t199 
+o200 Repeat
+t200 
+o201 Scale Factor
+t201 
+o202 Copy Air
+t202 
+o203 Copy Water
+t203 
+o204 Copy Biomes
+t204 
+o205 Change Coordinates
+t205 
+o206 Change Spawners
+t206 
+o207 Clone
+t207 
+o208 Fill and Replace
+Right-click for options
+t208 
+o209 Fill with:
+t209 
+o210 Search
+t210 
+o211  
+t211 
+o212 Name
+t212 
+o213 ID
+t213 
+o214 Any Subtype
+t214 
+o215 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
+t215 
+o216 Filter
+t216 
+o217 When the fill tool is chosen, prompt for a block type.
+t217 
+o218 Invisibility (no effect)
+t218 
+o219 Strength
+t219 
+o220 Nausea (no mob effect)
+t220 
+o221 Weakness
+t221 
+o222 Speed (no mob effect)
+t222 
+o223 Water Breathing
+t223 
+o224 Regeneration
+t224 
+o225 Poison
+t225 
+o226 Resistance
+t226 
+o227 Hunger (no mob effect)
+t227 
+o228 Haste (no mob effect)
+t228 
+o229 Fire Resistance
+t229 
+o230 Slowness (no mob effect)
+t230 
+o231 Blindness (no mob effect)
+t231 
+o232 Night Vision (no effect)
+t232 
+o233 Mining Fatigue (no mob effectg)
+t233 
+o234 Jump Boost
+t234 
+o235 Effect
+t235 
+o236 Level
+t236 
+o237 Duration (Seconds)
+t237 
+o238 Add Potion Effect to Mobs
+t238 
+o239 Banslimes
+t239 
+o240 Change Mob Properties
+t240 
+o241 Chunk Surface Repair
+t241 
+o242 Classic Water Flood
+t242 
+o243 Colorwires
+t243 
+o244 Create Busses
+t244 
+o245 Create Shops
+t245 
+o246 Create Spawners
+t246 
+o247 Decliff
+t247 
+o248 Find
+t248 
+o249 Forester
+t249 
+o250 Make Mobs Invincible
+t250 
+o251 Setbiome
+t251 
+o252 Smooth
+t252 
+o253 Filter:
+t253 
+o254 Update Filters
+t254 
+o255 Max Seed
+t255 
+o256 Health
+t256 
+o257 VelocityX
+t257 
+o258 VelocityY
+t258 
+o259 VelocityZ
+t259 
+o260 Fire
+t260 
+o261 FallDistance
+t261 
+o262 Air
+t262 
+o263 AttackTime
+t263 
+o264 HurtTime
+t264 
+o265 Lightning
+t265 
+o266 No Lightning
+t266 
+o267 Lightning Creeper
+t267 
+o268 Enderman Block Id
+t268 
+o269 Enderman Block Data
+t269 
+o270 Villager (green)
+t270 
+o271 Farmer (brown)
+t271 
+o272 Butcher (white apron)
+t272 
+o273 Librarian (white)
+t273 
+o274 Blacksmith (black apron)
+t274 
+o275 Priest (purple)
+t275 
+o276 Villager Profession
+t276 
+o277 Slime Size
+t277 
+o278 Breeding Mode Ticks
+t278 
+o279 Child/Adult Age
+t279 
+o280 Repairs the backwards surfaces made by old versions of Minecraft.
+t280 
+o281 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
+t281 
+o282 Flood Water
+t282 
+o283 Flood Lava
+t283 
+o284 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
+t284 
+o285 Profession
+t285 
+o286 Add Stopping Trade
+t286 
+o287 Invulnerable Villager
+t287 
+o288 Make Unlimited Trades
+t288 
+o289 Give Experience per a Trade
+t289 
+o290 Make Villager not Move
+t290 
+o291 Villager Name
+t291 
+o292 General Trade
+t292 
+o293       Rotate the Position of your Trader
+*Can only be used if Not Move is checked*
+t293 
+o294 Y-Axis
+t294 
+o295 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
+t295 
+o296 X-Axis
+t296 
+o297 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
+t297 
+o298 Rotation
+t298 
+o299 To create a shop first put your buy in the top slot(s) of the chest.
+Second put a second buy in the middle slot(optional).
+Third put a sell in the bottom slot.
+Click the chest you want and choose what you want and click hit enter
+*All items must be in the same row*
+
+Advanced, little experience in notepad ++ is recommended.
+To change the amount of trades:
+1) Uncheck 'Unlimited Trades'
+2) Open the createshops filter using Notepad++ (link:http://notepad-plus-plus.org/) or notepad
+*The filter is where you put the MCEdit folder*
+3) Scroll to:
+else:
+offer[uses] = TAG_Int(0)
+offer[maxUses] = TAG_Int(1)
+4) Change the amount you want
+
+*Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
+
+t299 
+o300 Trade Notes
+t300 
+o301 Include position data
+t301 
+o302 Both
+t302 
+o303 Lower Only
+t303 
+o304 Raise Only
+t304 
+o305 Raise/Lower
+t305 
+o306 TileEntity
+t306 
+o307 Entity
+t307 
+o308 Block
+t308 
+o309 Match by:
+t309 
+o310 Match block type (for TileEntity searches):
+t310 
+o311 Match block:
+t311 
+o312 Match block data:
+t312 
+o313 Match tile entities (for Block searches):
+t313 
+o314 "None" for Name or Value will match any tag's Name or Value respectively.
+t314 
+o315 Match Tag Name:
+t315 
+o316 Match Tag Value:
+t316 
+o317 Case insensitive:
+t317 
+o318 Any
+t318 
+o319 TAG_Byte_Array
+t319 
+o320 TAG_String
+t320 
+o321 TAG_Byte
+t321 
+o322 TAG_Short
+t322 
+o323 TAG_Compound
+t323 
+o324 TAG_Int_Array
+t324 
+o325 TAG_Long
+t325 
+o326 TAG_Int
+t326 
+o327 TAG_Float
+t327 
+o328 TAG_Double
+t328 
+o329 TAG_List
+t329 
+o330 Match Tag Type:
+t330 
+o331 Start New Search
+t331 
+o332 Find Next
+t332 
+o333 Dump Found Coordinates
+t333 
+o334 Operation:
+t334 
+o335 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+"Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
+t335 
+o336 Documentation
+t336 
+o337 Forester script by dudecon
+t337 
+o338 Procedural
+t338 
+o339 Normal
+t339 
+o340 Bamboo
+t340 
+o341 Palm
+t341 
+o342 Stickly
+t342 
+o343 Round
+t343 
+o344 Cone
+t344 
+o345 Rainforest
+t345 
+o346 Mangrove
+t346 
+o347 Shape
+t347 
+o348 Tree Count
+t348 
+o349 Tree Height
+t349 
+o350 Height Variation
+t350 
+o351 Branch Density
+t351 
+o352 Trunk Thickness
+t352 
+o353 Broken Trunk
+t353 
+o354 Hollow Trunk
+t354 
+o355 Wood
+t355 
+o356 Foliage
+t356 
+o357 Foliage Density
+t357 
+o358 Yes
+t358 
+o359 To Stone
+t359 
+o360 Hanging
+t360 
+o361 No
+t361 
+o362 Roots
+t362 
+o363 Root Buttresses
+t363 
+o364 Wood Material
+t364 
+o365 Leaf Material
+t365 
+o366 Plant On
+t366 
+o367 Point here and use mousewheel to adjust
+t367 
+o368 Ocean
+t368 
+o369 Plains
+t369 
+o370 Desert
+t370 
+o371 Extreme Hills
+t371 
+o372 Forest
+t372 
+o373 Taiga
+t373 
+o374 Swamppland
+t374 
+o375 River
+t375 
+o376 Hell (Nether)
+t376 
+o377 Sky (End)
+t377 
+o378 Frozen Ocean
+t378 
+o379 Frozen River
+t379 
+o380 Ice Plains
+t380 
+o381 Ice Mountains
+t381 
+o382 Mushroom Island
+t382 
+o383 Mushroom Island Shore
+t383 
+o384 Beach
+t384 
+o385 Desert Hills
+t385 
+o386 Forest Hills
+t386 
+o387 Taiga Hills
+t387 
+o388 Extreme Hills Edge
+t388 
+o389 Jungle
+t389 
+o390 Jungle Hills
+t390 
+o391 Jungle Edge
+t391 
+o392 Deep Ocean
+t392 
+o393 Stone Beach
+t393 
+o394 Cold Beach
+t394 
+o395 Birch Forest
+t395 
+o396 Birch Forest Hills
+t396 
+o397 Roofed Forest
+t397 
+o398 Cold Taiga
+t398 
+o399 Cold Taiga Hills
+t399 
+o400 Mega Taiga
+t400 
+o401 Mega Taiga Hills
+t401 
+o402 Extreme Hills+
+t402 
+o403 Savanna
+t403 
+o404 Savanna Plateau
+t404 
+o405 Messa
+t405 
+o406 Messa Plateau F
+t406 
+o407 Messa Plateau
+t407 
+o408 Sunflower Plains
+t408 
+o409 Desert M
+t409 
+o410 Extreme Hills M
+t410 
+o411 Flower Forest
+t411 
+o412 Taiga M
+t412 
+o413 Swampland M
+t413 
+o414 Ice Plains Spikes
+t414 
+o415 Ice Mountains Spikes
+t415 
+o416 Jungle M
+t416 
+o417 JungleEdge M
+t417 
+o418 Birch Forest M
+t418 
+o419 Birch Forest Hills M
+t419 
+o420 Roofed Forest M
+t420 
+o421 Cold Taiga M
+t421 
+o422 Mega Spruce Taiga
+t422 
+o423 Mega Spruce Taiga 
+t423 
+o424 Extreme Hills+ M
+t424 
+o425 Savanna M
+t425 
+o426 Savanna Plateau M
+t426 
+o427 Mesa (Bryce)
+t427 
+o428 Mesa Plateau F M
+t428 
+o429 Mesa Plateau M
+t429 
+o430 (Uncalculated)
+t430 
+o431 Biome
+t431 
+o432 Repeat count
+t432 
+o433 Depth
+t433 
+o434 Pick a block:
+t434 
+o435 Chunk Control
+t435 
+o436 Shortcut: Tab
+t436 
+o437 Entities
+t437 
+o438 Items
+t438 
+o439 TileEntities
+t439 
+o440 TileTicks
+t440 
+o441 Unpopulated Chunks
+t441 
+o442 Sky
+t442 
+o443 Fog
+t443 
+o444 Ceiling
+t444 
+o445 Chunk Redraw
+t445 
+o446 Hidden Ores
+t446 
+o447 Bedrock
+t447 
+o448 Coal
+t448 
+o449 Iron
+t449 
+o450 Lapis Lazuli
+t450 
+o451 Redstone
+t451 
+o452 Gold
+t452 
+o453 Diamond
+t453 
+o454 Nether Quartz
+t454 
+o455 View Distance ({0})
+t455 
