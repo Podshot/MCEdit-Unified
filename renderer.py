@@ -2799,85 +2799,8 @@ class MCRenderer(object):
         self.loadChunksStartingFrom(box.origin[0] + box.width / 2, box.origin[2] + box.length / 2,
                                     max(box.width, box.length))
 
-    _floorTexture = None
-
-    @property
-    def floorTexture(self):
-        if self._floorTexture is None:
-            self._floorTexture = Texture(self.makeFloorTex)
-        return self._floorTexture
-
-    def makeFloorTex(self):
-        color0 = (0xff, 0xff, 0xff, 0x22)
-        color1 = (0xff, 0xff, 0xff, 0x44)
-
-        img = numpy.array([color0, color1, color1, color0], dtype='uint8')
-
-        GL.glTexParameter(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST)
-        GL.glTexParameter(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST)
-
-        GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 2, 2, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, img)
-
     def invalidateChunkMarkers(self):
         self.loadableChunkMarkers.invalidate()
-
-    def _drawLoadableChunkMarkers(self):
-        if self.level.chunkCount:
-            chunkSet = set(self.level.allChunks)
-
-            sizedChunks = chunkMarkers(chunkSet)
-
-            GL.glPushAttrib(GL.GL_FOG_BIT)
-            GL.glDisable(GL.GL_FOG)
-
-            GL.glEnable(GL.GL_BLEND)
-            GL.glEnable(GL.GL_POLYGON_OFFSET_FILL)
-            GL.glPolygonOffset(DepthOffset.ChunkMarkers, DepthOffset.ChunkMarkers)
-            GL.glEnable(GL.GL_DEPTH_TEST)
-
-            GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
-            GL.glEnable(GL.GL_TEXTURE_2D)
-            GL.glColor(1.0, 1.0, 1.0, 1.0)
-
-            self.floorTexture.bind()
-            # chunkColor = numpy.zeros(shape=(chunks.shape[0], 4, 4), dtype='float32')
-            #            chunkColor[:]= (1, 1, 1, 0.15)
-            #
-            #            cc = numpy.array(chunks[:,0] + chunks[:,1], dtype='int32')
-            #            cc &= 1
-            #            coloredChunks = cc > 0
-            #            chunkColor[coloredChunks] = (1, 1, 1, 0.28)
-            #            chunkColor *= 255
-            #            chunkColor = numpy.array(chunkColor, dtype='uint8')
-            #
-            # GL.glColorPointer(4, GL.GL_UNSIGNED_BYTE, 0, chunkColor)
-            for size, chunks in sizedChunks.iteritems():
-                if not len(chunks):
-                    continue
-                chunks = numpy.array(chunks, dtype='float32')
-
-                chunkPosition = numpy.zeros(shape=(chunks.shape[0], 4, 3), dtype='float32')
-                chunkPosition[:, :, (0, 2)] = numpy.array(((0, 0), (0, 1), (1, 1), (1, 0)), dtype='float32')
-                chunkPosition[:, :, (0, 2)] *= size
-                chunkPosition[:, :, (0, 2)] += chunks[:, numpy.newaxis, :]
-                chunkPosition *= 16
-                GL.glVertexPointer(3, GL.GL_FLOAT, 0, chunkPosition.ravel())
-                # chunkPosition *= 8
-                GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, (chunkPosition[..., (0, 2)] * 8).ravel())
-                GL.glDrawArrays(GL.GL_QUADS, 0, len(chunkPosition) * 4)
-
-            GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
-            GL.glDisable(GL.GL_TEXTURE_2D)
-            GL.glDisable(GL.GL_BLEND)
-            GL.glDisable(GL.GL_DEPTH_TEST)
-            GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
-            GL.glPopAttrib()
-
-    def drawLoadableChunkMarkers(self):
-        if not self.isPreviewer or isinstance(self.level, pymclevel.MCInfdevOldLevel):
-            self.loadableChunkMarkers.call(self._drawLoadableChunkMarkers)
-
-            # self.drawCompressedChunkMarkers()
 
     needsImmediateRedraw = False
     viewingFrustum = None
@@ -2952,17 +2875,6 @@ class MCRenderer(object):
             dx, dy, dz = self.origin
             GL.glTranslate(dx, dy, dz)
 
-            GL.glEnable(GL.GL_CULL_FACE)
-            GL.glEnable(GL.GL_DEPTH_TEST)
-
-            self.level.materials.terrainTexture.bind()
-            GL.glEnable(GL.GL_TEXTURE_2D)
-            GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
-
-            offset = DepthOffset.PreviewRenderer if self.isPreviewer else DepthOffset.Renderer
-            GL.glPolygonOffset(offset, offset)
-            GL.glEnable(GL.GL_POLYGON_OFFSET_FILL)
-
             self.createMasterLists()
             try:
                 self.callMasterLists()
@@ -2972,16 +2884,6 @@ class MCRenderer(object):
                     self.errorLimit -= 1
                     traceback.print_exc()
                     print e
-
-            GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
-
-            GL.glDisable(GL.GL_CULL_FACE)
-            GL.glDisable(GL.GL_DEPTH_TEST)
-
-            GL.glDisable(GL.GL_TEXTURE_2D)
-            GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
-            # if self.drawLighting:
-            self.drawLoadableChunkMarkers()
 
         if self.level.materials.name in ("Pocket", "Alpha"):
             GL.glMatrixMode(GL.GL_TEXTURE)
