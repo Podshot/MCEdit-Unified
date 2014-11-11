@@ -4,7 +4,8 @@ import directories
 import os
 import shutil
 import config
-
+# FIXME: Reduce loading time by checking if a previous parsed texture is present before re-parsing
+# TODO: Add support for folder resource packs
 try:
     import resource  # @UnresolvedImport
     resource.setrlimit(resource.RLIMIT_NOFILE, (500,-1))
@@ -498,7 +499,29 @@ textureSlots = {
     # Start Comparator Block
     }
 
-class ResourcePack:
+class IResourcePack:
+    
+    @property
+    def pack_name(self):
+        return self._pack_name
+    
+    @property
+    def terrain_name(self):
+        return self._terrain_name
+    
+    def terrain_path(self):
+        return self._terrain_path
+    
+    @property
+    def isEmpty(self):
+        return self._isEmpty
+    
+    @property
+    def tooBig(self):
+        return self._too_big
+    
+
+class ZipResourcePack(IResourcePack):
     '''
     Represents a single Resource Pack
     '''
@@ -526,25 +549,6 @@ class ResourcePack:
                 self.all_texture_slots.append((step(texx),step(texy)))
 
         self.open_pack()
-
-    @property
-    def pack_name(self):
-        return self._pack_name
-
-    @property
-    def terrain_name(self):
-        return self._terrain_name
-    
-    def terrain_path(self):
-        return self._terrain_path
-    
-    @property
-    def isEmpty(self):
-        return self._isEmpty
-    
-    @property
-    def tooBig(self):
-        return self._too_big
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
@@ -624,7 +628,15 @@ class ResourcePack:
             os.remove(self._terrain_path)
         del self.block_image
         
-class DefaultResourcePack(ResourcePack):
+class FolderResourcePack(IResourcePack):
+    
+    def __init__(self, folder):
+        self._folder = folder
+        self._pack_name = self._folder.replace(" ", "_")
+        print self._pack_name
+        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+        
+class DefaultResourcePack(IResourcePack):
     
     def __init__(self):
         self._isEmpty = False
@@ -650,12 +662,16 @@ def setup_resource_packs():
     except OSError:
         pass
     terrains["Default"] = DefaultResourcePack()
-    resourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
-    for tex_pack in resourcePacks:
-        rp = ResourcePack(tex_pack)
-        if not rp.isEmpty:
-            if not rp.tooBig:
-                terrains[rp.pack_name] = rp
+    zipResourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
+    folderResourcePacks = os.listdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"))
+    for zip_tex_pack in zipResourcePacks:
+        zrp = ZipResourcePack(zip_tex_pack)
+        if not zrp.isEmpty:
+            if not zrp.tooBig:
+                terrains[zrp.pack_name] = zrp
+    for folder_tex_pack in folderResourcePacks:
+        if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+folder_tex_pack):
+            frp = FolderResourcePack(folder_tex_pack)
     try:
         shutil.rmtree(directories.parentDir+os.path.sep+"textures")
     except:
