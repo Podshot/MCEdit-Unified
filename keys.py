@@ -549,6 +549,13 @@ class KeyConfigPanel(Dialog):
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname))
               return True
+            if configKey == 'Down' or configKey == 'Up' or configKey == 'Back' or configKey == 'Forward' or configKey == 'Left' or configKey == 'Right':
+                if 'Ctrl' in keyname:
+                    self.askAssignKey(configKey,
+                                     _("Movement keys can't use Ctrl. "
+                                     "Press a new key.\n\n"
+                                     "Press ESC to cancel. Press Shift-ESC to unbind."))
+                    return True
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
             self.changes[configKey] = oldkey

@@ -1614,6 +1614,8 @@ class LevelEditor(GLViewport):
         self.cameraPanKeys = [0., 0.]
         self.usedKeys = [0, 0, 0, 0, 0, 0]
         self.movements = [config.config.get('Keys', 'Left'), config.config.get('Keys', 'Right'), config.config.get('Keys', 'Forward'), config.config.get('Keys', 'Back'), config.config.get('Keys', 'Up'), config.config.get('Keys', 'Down')]
+        self.movementMath = [-1, 1, 1, -1, 1, -1]
+        self.movementNum = [0, 0, 2, 2, 1, 1]
         self.notMove = [0, 0, 0, 0, 0, 0]
         self.rightClickNudge = 0
         self.cameraToolDistance = self.defaultCameraToolDistance
@@ -2676,42 +2678,26 @@ class LevelEditor(GLViewport):
         if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname = keys.getKey(evt, 1)
             d = self.cameraInputs
+            keysClicked = []
             if tempKeyname == config.config.get('Keys', 'Left'):
-                if self.notMove[0] == 0:
-                    self.usedKeys[0] = 0
-                    d[0] += 1.
-                else:
-                    self.notMove[0] = 0
+                keysClicked.append(0)
             if tempKeyname == config.config.get('Keys', 'Right'):
-                if self.notMove[1] == 0:
-                    self.usedKeys[1] = 0
-                    d[0] -= 1.
-                else:
-                    self.notMove[1] = 0
+                keysClicked.append(1)
             if tempKeyname == config.config.get('Keys', 'Forward'):
-                if self.notMove[2] == 0:
-                    self.usedKeys[2] = 0
-                    d[2] -= 1.
-                else:
-                    self.notMove[2] = 0
+                keysClicked.append(2)
             if tempKeyname == config.config.get('Keys', 'Back'):
-                if self.notMove[3] == 0:
-                    self.usedKeys[3] = 0
-                    d[2] += 1.
-                else:
-                    self.notMove[3] = 0
+                keysClicked.append(3)
             if tempKeyname == config.config.get('Keys', 'Up'):
-                if self.notMove[4] == 0:
-                    self.usedKeys[4] = 0
-                    d[1] -= 1.
-                else:
-                    self.notMove[4] = 0
+                keysClicked.append(4)
             if tempKeyname == config.config.get('Keys', 'Down'):
-                if self.notMove[5] == 0:
-                    self.usedKeys[5] = 0
-                    d[1] += 1.
-                else:
-                    self.notMove[5] = 0
+                keysClicked.append(5)
+
+            for clickedKey in keysClicked:
+         	    if self.notMove[clickedKey] == 0:
+         		    self.usedKeys[clickedKey] = 0
+         		    d[self.movementNum[clickedKey]] += (self.movementMath[clickedKey] * -1)
+         	    else:
+         		    self.notMove[clickedKey] = 0
 
         if keyname == config.config.get('Keys', 'Brake'):
             self.mainViewport.brakeOff()
@@ -2751,48 +2737,34 @@ class LevelEditor(GLViewport):
         if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname =  keys.getKey(evt, 1)
             d = self.cameraInputs
+            keysClicked = []
             if tempKeyname == config.config.get('Keys', 'Left') and self.usedKeys[0] == 0:
-                if notMove == 0:
-                    d[0] -= 1.
-                    self.usedKeys[0] = 1
-                    self.notMove[0] = 0
-                else:
-                    self.notMove[0] = 1
+                keysClicked.append(0)
             if tempKeyname == config.config.get('Keys', 'Right') and self.usedKeys[1] == 0:
-                if notMove == 0:
-                    d[0] += 1.
-                    self.usedKeys[1] = 1
-                    self.notMove[1] = 0
-                else:
-                    self.notMove[1] = 1
+                keysClicked.append(1)
             if tempKeyname == config.config.get('Keys', 'Forward') and self.usedKeys[2] == 0:
-                if notMove == 0:
-                    d[2] += 1.
-                    self.usedKeys[2] = 1
-                    self.notMove[2] = 0
-                else:
-                    self.notMove[2] = 1
+                keysClicked.append(2)
             if tempKeyname == config.config.get('Keys', 'Back') and self.usedKeys[3] == 0:
-                if notMove == 0:
-                    d[2] -= 1.
-                    self.usedKeys[3] = 1
-                    self.notMove[3] = 0
-                else:
-                    self.notMove[3] = 1
+                keysClicked.append(3)
             if tempKeyname == config.config.get('Keys', 'Up') and self.usedKeys[4] == 0:
-                if notMove == 0:
-                    d[1] += 1.
-                    self.usedKeys[4] = 1
-                    self.notMove[4] = 0
-                else:
-                    self.notMove[4] = 1
+                keysClicked.append(4)
             if tempKeyname == config.config.get('Keys', 'Down') and self.usedKeys[5] == 0:
-                if notMove == 0:
-                    d[1] -= 1.
-                    self.usedKeys[5] = 1
-                    self.notMove[5] = 0
-                else:
-                    self.notMove[5] = 1
+                keysClicked.append(5)
+
+            for clickedKey in keysClicked:
+            	if notMove == 0:
+            		d[self.movementNum[clickedKey]] += self.movementMath[clickedKey]
+            		self.usedKeys[clickedKey] = 1
+            		self.notMove[clickedKey] = 0
+            	else:
+            		self.notMove[clickedKey] = 1
+            
+            if evt.ctrl or evt.meta:
+                for i in range(0,6):
+                    if self.usedKeys[i] == 1:
+                        self.usedKeys[i] = 0
+                        d[self.movementNum[i]] += (self.movementMath[i] * -1)
+                        self.notMove[i] = 1
 
         if onlyKeys == 0:
             if keyname == config.config.get('Keys', 'Long-Distance Mode'):
