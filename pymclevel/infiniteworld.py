@@ -1938,7 +1938,7 @@ class MCAlphaDimension(MCInfdevOldLevel):
         pass
 
     def acquireSessionLock(self):
-        pass
+        self.parentWorld.acquireSessionLock()
 
     def checkSessionLock(self):
         self.parentWorld.checkSessionLock()
