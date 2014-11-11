@@ -636,9 +636,10 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.get_root().mcedit.editor.key_up(event)
 
         def mouse_up(self, event):
-            if "SelectionTool" in "{0}".format(self.get_root().mcedit.editor.currentTool):
-                if self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.count > 0:
-                   self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.mouse_up(event) 
+            try:
+                if "SelectionTool" in "{0}".format(self.get_root().mcedit.editor.currentTool):
+                    if self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.count > 0:
+                       self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.mouse_up(event) 
 
     widget = ProgressWidget()
     widget.progressText = _(progressText)
