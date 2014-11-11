@@ -146,10 +146,10 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-        addHelp("{0}".format(config.config.get('Keys', 'Brake').upper()) + _(" to slow down"))
+        addHelp("{0}".format(config.config.get('Keys', 'Brake')) + _(" to slow down"))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp("Hold ALT for details")
+        addHelp("Hold {0} for details".format(config.config.get('Keys', 'Show Block Info')))
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
