@@ -4,7 +4,9 @@ from directories import userCachePath, getDataDir
 import os
 import time
 import base64  # @UnusedImport
-from mclevelbase import PlayerNotFound
+from pymclevel.mclevelbase import PlayerNotFound
+import urllib
+import shutil
 
 #def getPlayerSkinURL(uuid):
 #    try:
@@ -148,18 +150,18 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
         
 def getPlayerSkin(uuid):
     toReturn = 'char.png'
+    if os.path.exists("player-skins"+os.path.sep+uuid.replace("-","_")+".png"):
+        return "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
     try:
-        os.mkdir(getDataDir()+os.path.sep+"player-skins")
+        os.mkdir("player-skins")
     except OSError:
         pass
-    playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid)).read()
+    playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
     playerJSON = json.loads(playerJSONResponse)
+    print playerJSON
     for entry in playerJSON["properties"]:
         if entry["name"] == "textures":
             texturesJSON = json.loads(base64.b64decode(entry["value"]))
-            png_data = urllib2.urlopen(texturesJSON["textures"]["SKIN"]["url"])
-            out = open(getDataDir()+os.path.sep+"player-skins"+os.path.sep+uuid.replace("-","_")+".png", "wb")
-            out.write(png_data.read())
-            out.close()
-            toReturn = getDataDir()+os.path.sep+"player-skins"+os.path.sep+uuid.replace("-","_")+".png"
+            urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], uuid.replace("-","_")+".png")
+            toReturn = "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
     return toReturn

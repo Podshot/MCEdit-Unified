@@ -26,8 +26,10 @@ from mceutils import loadPNGTexture, alertException, drawTerrainCuttingWire, dra
 from operation import Operation
 import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
-from pymclevel import version_utils, nbt
+from pymclevel import nbt
 import logging
+import version_utils
+
 
 log = logging.getLogger(__name__)
 
@@ -540,7 +542,6 @@ class PlayerPositionTool(EditorTool):
                 
                 self.playerPos[pos] = player
                 if player != "Player":
-                    print player
                     self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player))
                 x, y, z = pos
                 GL.glPushMatrix()
