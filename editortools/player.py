@@ -81,6 +81,8 @@ class PlayerAddOperation(Operation):
 
     def perform(self, recordUndo=True):
         self.player = input_text("Enter a Player Name: ", 160)
+        if not self.player:
+            return
         if len(self.player) > 16:
             alert("Name to long. Maximum name length is 16.")
             return
@@ -95,6 +97,8 @@ class PlayerAddOperation(Operation):
                 action = ask("Could not get {}'s UUID. Please make sure, that you are connectedto the internet and that the player {} exists".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
                 if action == "Enter UUID manually":
                     self.uuid = input_text("Enter a Player UUID: ", 160)
+                    if not self.uuid:
+                        return
                     self.player = version_utils.getPlayerNameFromUUID(self.uuid)
                     if self.player == self.uuid.replace("-", ""):
                         if ask("UUID was not found. Continue anyways?") == "Cancel":
