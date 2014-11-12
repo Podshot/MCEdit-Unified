@@ -1204,9 +1204,10 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         for path, tag in self.playerTagCache.iteritems():
             tag.save(path)
 
-        for file_ in os.listdir(self.playersFolder):
-            if file_.endswith(".dat") and file_[:-4] not in self.players:
-                os.remove(os.path.join(self.playersFolder, file_))
+        if hasattr(self, 'playersFolder'):
+            for file_ in os.listdir(self.playersFolder):
+                if file_.endswith(".dat") and file_[:-4] not in self.players:
+                    os.remove(os.path.join(self.playersFolder, file_))
 
         self.playerTagCache.clear()
 
