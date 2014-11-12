@@ -4,8 +4,7 @@ import directories
 import os
 import shutil
 import config
-# FIXME: Reduce loading time by checking if a previous parsed texture is present before re-parsing
-# TODO: Add support for folder resource packs
+
 try:
     import resource  # @UnresolvedImport
     resource.setrlimit(resource.RLIMIT_NOFILE, (500,-1))
@@ -752,6 +751,8 @@ class ResourcePackHandler:
             pass
         self._resource_packs = setup_resource_packs()
         self._selected_resource_pack = Settings.resource_pack.get()
+        if self._selected_resource_pack not in self._resource_packs.keys():
+            self.set_selected_resource_pack_name("Default")
 
     @property
     def resource_packs(self):
