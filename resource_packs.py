@@ -501,6 +501,26 @@ textureSlots = {
 
 class IResourcePack:
     
+    def __init__(self):
+        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+        self._isEmpty = False
+        self._too_big = False
+        self.big_textures_counted = 0 
+        self.big_textures_max = 10
+        try:
+            os.makedirs(self.texture_path)
+        except OSError:
+            pass
+        self.block_image = {}
+        self.propogated_textures = []
+        self.all_texture_slots = []
+        self.old_terrain = Image.open('terrain.png')
+        for texx in xrange(0,33):
+            for texy in xrange(0,33):
+                self.all_texture_slots.append((step(texx),step(texy)))
+        self._terrain_name = self._pack_name.replace(" ", "_")+".png"
+        self._terrain_path = "terrain-textures"+os.path.sep+self._terrain_name.replace(" ", "_")
+                
     @property
     def pack_name(self):
         return self._pack_name
@@ -520,6 +540,35 @@ class IResourcePack:
     def tooBig(self):
         return self._too_big
     
+    def parse_terrain_png(self):
+        new_terrain = Image.new("RGBA", (512, 512), None)
+        for tex in self.block_image.keys():
+            try:
+                image = self.block_image[tex]
+                slot = textureSlots[tex]
+                new_terrain.paste(image, slot, image)
+                self.propogated_textures.append(slot)
+            except:
+                pass
+        copy = self.old_terrain.copy()
+
+        for t in self.all_texture_slots:
+            if t not in self.propogated_textures:
+                old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
+                new_terrain.paste(old_tex, t, old_tex)
+                
+        new_terrain.save(self._terrain_path)
+        try:
+            os.remove(self._pack_name.replace(" ", "_")+".png")
+        except:
+            pass
+        if self.propogated_textures == []:
+            os.remove(self._terrain_path)
+            self._isEmpty = True
+        if self._too_big:
+            os.remove(self._terrain_path)
+        del self.block_image
+    
 
 class ZipResourcePack(IResourcePack):
     '''
@@ -529,26 +578,11 @@ class ZipResourcePack(IResourcePack):
     def __init__(self, zipfileFile):
         self.zipfile = zipfileFile
         self._pack_name = zipfileFile.split(os.path.sep)[-1][:-4]
-        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
-        self._isEmpty = False
-        self._too_big = False
-        self.big_textures_counted = 0 
-        self.big_textures_max = 10
-        self._terrain_name = self._pack_name.replace(" ", "_")+".png"
-        self._terrain_path = "terrain-textures"+os.path.sep+self.terrain_name.replace(" ", "_")
-        try:
-            os.makedirs(self.texture_path)
-        except OSError:
-            pass
-        self.block_image = {}
-        self.propogated_textures = []
-        self.all_texture_slots = []
-        self.old_terrain = Image.open('terrain.png')
-        for texx in xrange(0,33):
-            for texy in xrange(0,33):
-                self.all_texture_slots.append((step(texx),step(texy)))
-
-        self.open_pack()
+        IResourcePack.__init__(self)
+        
+        if not os.path.exists(self._terrain_path):
+            print "Opening pack: "+str(self._pack_name)
+            self.open_pack()
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
@@ -598,7 +632,8 @@ class ZipResourcePack(IResourcePack):
         if self.big_textures_counted >= self.big_textures_max:
             self._too_big = True
         self.parse_terrain_png()
-
+        
+    '''
     def parse_terrain_png(self):
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
@@ -627,14 +662,67 @@ class ZipResourcePack(IResourcePack):
         if self._too_big:
             os.remove(self._terrain_path)
         del self.block_image
+    '''
         
 class FolderResourcePack(IResourcePack):
     
     def __init__(self, folder):
         self._folder = folder
         self._pack_name = self._folder.replace(" ", "_")
-        print self._pack_name
+        IResourcePack.__init__(self)
+        self._full_path = os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+self._folder
         self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+        if not os.path.exists(self._terrain_path):
+            print "Opening pack: "+str(self._pack_name)
+            self.add_textures()
+        
+    def add_textures(self):
+        base_path = self._full_path+os.path.sep+"assets"+os.path.sep+"minecraft"+os.path.sep+"textures"+os.path.sep+"blocks"
+        if os.path.exists(base_path):
+            files = os.listdir(base_path)
+            for tex_file in files:
+                if tex_file.endswith(".png"):
+                    possible_texture = Image.open(base_path+os.path.sep+tex_file)
+                    block_name = tex_file[:-4]
+                    if possible_texture.size == (16, 16):
+                        self.block_image[block_name] = possible_texture
+                        if block_name.startswith("repeater_") or block_name.startswith("comparator_"):
+                            self.block_image[block_name+"_west"] = possible_texture.rotate(-90)
+                            self.block_image[block_name+"_north"] = possible_texture.rotate(180)
+                            self.block_image[block_name+"_east"] = possible_texture.rotate(90)
+                            self.block_image[block_name+"_south"] = possible_texture
+                        if block_name == "piston_side":
+                            self.block_image["piston_up"] = possible_texture
+                            self.block_image["piston_left"] = possible_texture.rotate(90)
+                            self.block_image["piston_down"] = possible_texture.rotate(180)
+                            self.block_image["piston_right"] = possible_texture.rotate(-90)
+                        if block_name == "hay_block_side":
+                            self.block_image["hay_block_side_rotated"] = possible_texture.rotate(-90)
+                        if block_name == "quartz_block_lines":
+                            self.block_image["quartz_block_lines_rotated"] = possible_texture.rotate(-90)
+                        if block_name.startswith("bed_"):
+                            if block_name == "bed_head_side":
+                                self.block_image["bed_head_side_flipped"] = possible_texture.transpose(Image.FLIP_LEFT_RIGHT)
+                            if block_name == "bed_feet_side":
+                                self.block_image["bed_feet_side_flipped"] = possible_texture.transpose(Image.FLIP_LEFT_RIGHT)
+                            if block_name == "bed_head_top":
+                                self.block_image["bed_head_top_flipped"] = possible_texture.transpose(Image.FLIP_LEFT_RIGHT)
+                                self.block_image["bed_head_top_bottom"] = possible_texture.rotate(-90)
+                                self.block_image["bed_head_top_top"] = possible_texture.rotate(90)
+                            if block_name == "bed_feet_top":
+                                self.block_image["bed_feet_top_flipped"] = possible_texture.transpose(Image.FLIP_LEFT_RIGHT)
+                                self.block_image["bed_feet_top_bottom"] = possible_texture.rotate(-90)
+                                self.block_image["bed_feet_top_top"] = possible_texture.rotate(90)
+                    else:
+                        if possible_texture.size == (32, 32):
+                            self.block_image[block_name] = possible_texture.resize((16, 16))
+                        if possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
+                            self.big_textures_counted = self.big_textures_counted + 1
+                        else:
+                            self.block_image[block_name] = possible_texture.crop((0,0,16,16))
+        if self.big_textures_counted >= self.big_textures_max:
+            self._too_big = True
+        self.parse_terrain_png()
         
 class DefaultResourcePack(IResourcePack):
     
@@ -642,6 +730,7 @@ class DefaultResourcePack(IResourcePack):
         self._isEmpty = False
         self._too_big = False
         self._terrain_path = "terrain.png"
+        self._pack_name = "Default"
     
     def terrain_path(self):
         return self._terrain_path
@@ -672,6 +761,13 @@ def setup_resource_packs():
     for folder_tex_pack in folderResourcePacks:
         if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+folder_tex_pack):
             frp = FolderResourcePack(folder_tex_pack)
+            if not frp.isEmpty:
+                if not frp.tooBig:
+                    terrains[frp.pack_name] = frp
+    for tex in terrains.keys():
+        pack = terrains[tex]
+        if not os.path.exists(pack.terrain_path()):
+            del terrains[tex]
     try:
         shutil.rmtree(directories.parentDir+os.path.sep+"textures")
     except:
