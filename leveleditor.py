@@ -3373,7 +3373,9 @@ class LevelEditor(GLViewport):
             if y < 64:
                 y = 64
                 newlevel.setBlockAt(x, y, z, pymclevel.alphaMaterials.Sponge.ID)
-
+            if newlevel.parentWorld:
+                newlevel = newlevel.parentWorld
+            newlevel.acquireSessionLock()
             newlevel.saveInPlace()
 
             self.loadFile(filename)
