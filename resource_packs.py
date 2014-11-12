@@ -581,7 +581,6 @@ class ZipResourcePack(IResourcePack):
         IResourcePack.__init__(self)
         
         if not os.path.exists(self._terrain_path):
-            print "Opening pack: "+str(self._pack_name)
             self.open_pack()
 
     def open_pack(self):
@@ -633,36 +632,6 @@ class ZipResourcePack(IResourcePack):
             self._too_big = True
         self.parse_terrain_png()
         
-    '''
-    def parse_terrain_png(self):
-        new_terrain = Image.new("RGBA", (512, 512), None)
-        for tex in self.block_image.keys():
-            try:
-                image = self.block_image[tex]
-                slot = textureSlots[tex]
-                new_terrain.paste(image, slot, image)
-                self.propogated_textures.append(slot)
-            except:
-                pass
-        copy = self.old_terrain.copy()
-
-        for t in self.all_texture_slots:
-            if t not in self.propogated_textures:
-                old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
-                new_terrain.paste(old_tex, t, old_tex)
-                
-        new_terrain.save(self._terrain_path)
-        try:
-            os.remove(self._pack_name.replace(" ", "_")+".png")
-        except:
-            pass
-        if self.propogated_textures == []:
-            os.remove(self._terrain_path)
-            self._isEmpty = True
-        if self._too_big:
-            os.remove(self._terrain_path)
-        del self.block_image
-    '''
         
 class FolderResourcePack(IResourcePack):
     
@@ -673,7 +642,6 @@ class FolderResourcePack(IResourcePack):
         self._full_path = os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+self._folder
         self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
         if not os.path.exists(self._terrain_path):
-            print "Opening pack: "+str(self._pack_name)
             self.add_textures()
         
     def add_textures(self):
