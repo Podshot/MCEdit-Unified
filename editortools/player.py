@@ -15,7 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 import os
-from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert, input_text
+from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert, input_text_buttons
 from albow.translate import _
 import config
 from editortools.editortool import EditorTool
@@ -80,7 +80,7 @@ class PlayerAddOperation(Operation):
         self.level = self.tool.editor.level
 
     def perform(self, recordUndo=True):
-        self.player = input_text("Enter a Player Name: ", 160)
+        self.player = input_text_buttons("Enter a Player Name: ", 160)
         if not self.player:
             return
         if len(self.player) > 16:
@@ -96,7 +96,7 @@ class PlayerAddOperation(Operation):
             except:
                 action = ask("Could not get {}'s UUID. Please make sure, that you are connectedto the internet and that the player {} exists".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
                 if action == "Enter UUID manually":
-                    self.uuid = input_text("Enter a Player UUID: ", 160)
+                    self.uuid = input_text_buttons("Enter a Player UUID: ", 160)
                     if not self.uuid:
                         return
                     self.player = version_utils.getPlayerNameFromUUID(self.uuid)
