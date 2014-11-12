@@ -151,3 +151,46 @@ def input_text(prompt, width, initial=None, **kwds):
         return tf.get_text()
     else:
         return None
+
+
+def input_text_buttons(prompt, width, initial=None, **kwds):
+    box = Dialog(**kwds)
+    d = box.margin
+
+    def ok():
+        box.dismiss(True)
+
+    def cancel():
+        box.dismiss(False)
+
+    buts = []
+    buts.append(Button("OK", action=ok))
+    buts.append(Button("Cancel", action=cancel))
+
+    brow = Row(buts, spacing=d)
+
+
+    lb = Label(prompt)
+    lb.topleft = (d, d)
+    tf = TextField(width)
+    if initial:
+        tf.set_text(initial)
+    tf.enter_action = ok
+    tf.escape_action = cancel
+    tf.top = lb.top
+    tf.left = lb.right + 5
+
+    trow = Row([lb, tf], spacing=d)
+
+    col = Column([trow, brow], spacing=d, align='c')
+
+    col.topleft = (d, d)
+
+    box.add(col)
+    #box.add(tf)
+    tf.focus()
+    box.shrink_wrap()
+    if box.present():
+        return tf.get_text()
+    else:
+        return None
