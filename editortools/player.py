@@ -14,7 +14,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modifiedby D.C.-G. for translation purpose
 from OpenGL import GL
 import numpy
-from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert
+import os
+from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert, input_text
 from albow.translate import _
 import config
 from editortools.editortool import EditorTool
@@ -25,10 +26,146 @@ from mceutils import loadPNGTexture, alertException, drawTerrainCuttingWire, dra
 from operation import Operation
 import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
-from pymclevel import version_utils
+from pymclevel import version_utils, nbt
 import logging
 
 log = logging.getLogger(__name__)
+
+class PlayerRemoveOperation(Operation):
+    undoTag = None
+
+    def __init__(self, tool, player="Player"):
+        super(PlayerRemoveOperation, self).__init__(tool.editor, tool.editor.level)
+        self.tool = tool
+        self.player = player
+        self.level = self.tool.editor.level
+
+    def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(tr("Cannot perform action while saving is taking place"))
+            return
+        
+        if self.player != "Player":
+            if recordUndo:
+                self.undoTag = self.level.getPlayerTag(self.player)
+                
+            self.level.players.remove(self.player)
+            self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
+            
+            while self.tool.panel.table.index >= len(self.tool.panel.players):
+                self.tool.panel.table.index -= 1
+            self.tool.markerList.invalidate()
+
+        else:
+            alert("Can't delete the default Player!")
+
+    def undo(self):
+        if not (self.undoTag is None):
+            self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.undoTag
+
+            self.level.players.append(self.player)
+            self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
+
+        self.tool.markerList.invalidate()
+
+    def redo(self):
+        self.perform()
+
+class PlayerAddOperation(Operation):
+    playerTag = None
+
+    def __init__(self, tool):
+        super(PlayerAddOperation, self).__init__(tool.editor, tool.editor.level)
+        self.tool = tool
+        self.level = self.tool.editor.level
+
+    def perform(self, recordUndo=True):
+        self.player = input_text("Enter a Player Name: ", 160)
+        if len(self.player) > 16:
+            alert("Name to long. Maximum name length is 16.")
+            return
+        elif len(self.player) < 4:
+            alert("Name to short. Minimum name length is 4.")
+            return
+        else:
+            try:
+                self.uuid = version_utils.getUUIDFromPlayerName(self.player)
+                self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
+            except:
+                action = ask("Could not get {}'s UUID. Please make sure, that you are connectedto the internet and that the player {} exists".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
+                if action == "Enter UUID manually":
+                    self.uuid = input_text("Enter a Player UUID: ", 160)
+                    self.player = version_utils.getPlayerNameFromUUID(self.uuid)
+                    if self.player == self.uuid.replace("-", ""):
+                        if ask("UUID was not found. Continue anyways?") == "Cancel":
+                            return
+                else:
+                    return
+            if self.uuid in self.level.players:
+                alert("Player already exists in this World.")
+                return
+            
+            self.playerTag = self.newPlayer()
+            
+            
+            self.tool.panel.players.append(self.player)
+
+            if self.level.oldPlayerFolderFormat:
+                self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.playerTag
+
+                self.level.players.append(self.player)
+                self.tool.panel.player_UUID[self.player] = self.player
+
+            else:
+                self.level.playerTagCache[self.level.getPlayerPath(self.uuid)] = self.playerTag
+
+                self.level.players.append(self.uuid)
+                self.tool.panel.player_UUID[self.player] = self.uuid
+
+        self.tool.markerList.invalidate()
+        self.tool.recordMove = False
+        self.tool.movingPlayer = self.uuid
+                         
+        print(self.level.players)
+        print(self.tool.panel.players)
+
+    def newPlayer(self):
+        playerTag = nbt.TAG_Compound()
+
+        playerTag['Air'] = nbt.TAG_Short(300)
+        playerTag['AttackTime'] = nbt.TAG_Short(0)
+        playerTag['DeathTime'] = nbt.TAG_Short(0)
+        playerTag['Fire'] = nbt.TAG_Short(-20)
+        playerTag['Health'] = nbt.TAG_Short(20)
+        playerTag['HurtTime'] = nbt.TAG_Short(0)
+        playerTag['Score'] = nbt.TAG_Int(0)
+        playerTag['FallDistance'] = nbt.TAG_Float(0)
+        playerTag['OnGround'] = nbt.TAG_Byte(0)
+
+        playerTag["Inventory"] = nbt.TAG_List()
+
+        playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in range(3)])
+        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([0.5, 2.8, 0.5][i]) for i in range(3)])
+        playerTag['Rotation'] = nbt.TAG_List([nbt.TAG_Float(0), nbt.TAG_Float(0)])
+
+        return playerTag
+
+    def undo(self):
+        self.level.players.remove(self.uuid)
+        self.tool.panel.players.remove(self.player)
+        self.tool.panel.player_UUID.pop(self.player)
+
+        self.tool.markerList.invalidate()
+
+    def redo(self):
+        if not (self.playerTag is None):
+            self.level.playerTagCache[self.level.getPlayerPath(self.uuid)] = self.playerTag
+
+            self.level.players.append(self.uuid)
+            self.tool.panel.players.append(self.player)
+            self.tool.panel.player_UUID[self.player] = self.uuid
+
+        self.tool.markerList.invalidate()
 
 
 class PlayerMoveOperation(Operation):
@@ -190,13 +327,15 @@ class PlayerPositionPanel(Panel):
         tableview.click_row = selectTableRow
         self.table = tableview
         l = Label("Player: ")
-        col = [l, tableview]
+        col = [l, self.table]
 
+        addButton = Button("Add Player", action=self.tool.addPlayer)
+        removeButton = Button("Remove Player", action=self.tool.removePlayer)
         gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
         gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
         moveButton = Button("Move Player", action=self.tool.movePlayer)
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
-        col.extend([gotoButton, gotoCameraButton, moveButton, moveToCameraButton])
+        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton])
 
         col = Column(col)
         self.add(col)
@@ -215,9 +354,26 @@ class PlayerPositionTool(EditorTool):
     toolIconName = "player"
     tooltipText = "Players"
     movingPlayer = None
+    recordMove = True
 
     def reloadTextures(self):
         self.charTex = loadPNGTexture('char.png')
+
+    @alertException
+    def addPlayer(self):
+        op = PlayerAddOperation(self)
+
+        self.editor.addOperation(op)
+        self.editor.addUnsavedEdit()
+
+    @alertException
+    def removePlayer(self):
+        player = self.panel.selectedPlayer
+        
+        op = PlayerRemoveOperation(self, player)
+
+        self.editor.addOperation(op)
+        self.editor.addUnsavedEdit()
 
     @alertException
     def movePlayer(self):
@@ -427,7 +583,11 @@ class PlayerPositionTool(EditorTool):
         op = PlayerMoveOperation(self, pos, self.movingPlayer)
         self.movingPlayer = None
 
-        self.editor.addOperation(op)
+        if self.recordMove:
+            self.editor.addOperation(op)
+        else:
+            self.editor.performWithRetry(op) #Prevent recording of Undo when adding player
+            self.recordMove = True
         self.editor.addUnsavedEdit()
 
     def keyDown(self, evt):
