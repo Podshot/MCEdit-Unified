@@ -473,6 +473,9 @@ class PlayerPositionTool(EditorTool):
         textureVertices[:, 1] *= 2
 
         self.texVerts = textureVertices
+        
+        self.playerPos = {}
+        self.playerTexture = {}
 
         self.markerList = DisplayList()
 
@@ -527,7 +530,6 @@ class PlayerPositionTool(EditorTool):
 
         GL.glEnable(GL.GL_DEPTH_TEST)
         GL.glMatrixMode(GL.GL_MODELVIEW)
-
         for player in self.editor.level.players:
             try:
                 pos = self.editor.level.getPlayerPosition(player)
@@ -535,13 +537,18 @@ class PlayerPositionTool(EditorTool):
                 dim = self.editor.level.getPlayerDimension(player)
                 if dim != self.editor.level.dimNo:
                     continue
+                
+                self.playerPos[pos] = player
+                if player != "Player":
+                    print player
+                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player))
                 x, y, z = pos
                 GL.glPushMatrix()
                 GL.glTranslate(x, y, z)
                 GL.glRotate(-yaw, 0, 1, 0)
                 GL.glRotate(pitch, 1, 0, 0)
                 GL.glColor(1, 1, 1, 1)
-                self.drawCharacterHead(0, 0, 0)
+                self.drawCharacterHead(0, 0, 0, (x,y,z))
                 GL.glPopMatrix()
                 # GL.glEnable(GL.GL_BLEND)
                 drawTerrainCuttingWire(FloatBox((x - .5, y - .5, z - .5), (1, 1, 1)),
@@ -556,16 +563,24 @@ class PlayerPositionTool(EditorTool):
                 continue
 
         GL.glDisable(GL.GL_DEPTH_TEST)
+        print self.playerPos
 
-    def drawCharacterHead(self, x, y, z):
+    def drawCharacterHead(self, x, y, z, realCoords=None):
+        if realCoords != None:
+            print self.playerPos[realCoords]
         GL.glEnable(GL.GL_CULL_FACE)
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
         box = FloatBox(origin, size)
-
-        drawCube(box,
-                 texture=self.charTex, textureVertices=self.texVerts)
+        
+        if realCoords != None and self.playerPos[realCoords] != "Player":
+            drawCube(box,
+                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts)
+        else:
+            drawCube(box,
+                     texture=self.charTex, textureVertices=self.texVerts)
         GL.glDisable(GL.GL_CULL_FACE)
+        
 
     @property
     def statusText(self):
@@ -685,12 +700,12 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         GL.glColor(*color)
         GL.glEnable(GL.GL_BLEND)
         self.drawCage(x, y, z)
-        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5)
+        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5, (x,y,z))
         GL.glDisable(GL.GL_BLEND)
 
         GL.glEnable(GL.GL_DEPTH_TEST)
         self.drawCage(x, y, z)
-        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5)
+        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5, (x,y,z))
         color2 = map(lambda a: a * 0.4, color)
         drawTerrainCuttingWire(BoundingBox((x, y, z), (1, 1, 1)), color2, color)
         GL.glDisable(GL.GL_DEPTH_TEST)

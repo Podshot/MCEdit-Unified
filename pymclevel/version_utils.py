@@ -1,6 +1,6 @@
 import json
 import urllib2
-from directories import userCachePath
+from directories import userCachePath, getDataDir
 import os
 import time
 import base64  # @UnusedImport
@@ -145,3 +145,21 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
         except:
             print "Error getting the username for {}".format(uuid)
             return uuid
+        
+def getPlayerSkin(uuid):
+    toReturn = 'char.png'
+    try:
+        os.mkdir(getDataDir()+os.path.sep+"player-skins")
+    except OSError:
+        pass
+    playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid)).read()
+    playerJSON = json.loads(playerJSONResponse)
+    for entry in playerJSON["properties"]:
+        if entry["name"] == "textures":
+            texturesJSON = json.loads(base64.b64decode(entry["value"]))
+            png_data = urllib2.urlopen(texturesJSON["textures"]["SKIN"]["url"])
+            out = open(getDataDir()+os.path.sep+"player-skins"+os.path.sep+uuid.replace("-","_")+".png", "wb")
+            out.write(png_data.read())
+            out.close()
+            toReturn = getDataDir()+os.path.sep+"player-skins"+os.path.sep+uuid.replace("-","_")+".png"
+    return toReturn
