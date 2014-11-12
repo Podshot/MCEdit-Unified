@@ -187,7 +187,6 @@ def input_text_buttons(prompt, width, initial=None, **kwds):
     col.topleft = (d, d)
 
     box.add(col)
-    #box.add(tf)
     tf.focus()
     box.shrink_wrap()
     if box.present():
