@@ -344,8 +344,7 @@ class PlayerPositionPanel(Panel):
 
         tableview.click_row = selectTableRow
         self.table = tableview
-        l = Label("Player: ")
-        col = [l, self.table]
+        col = [self.table]
 
         addButton = Button("Add Player", action=self.tool.addPlayer)
         removeButton = Button("Remove Player", action=self.tool.removePlayer)
@@ -353,7 +352,7 @@ class PlayerPositionPanel(Panel):
         gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
         moveButton = Button("Move Player", action=self.tool.movePlayer)
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
-        reloadSkin = Button("Reload Player Skins", action=self.tool.reloadSkins)
+        reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins)
         col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
 
         col = Column(col)

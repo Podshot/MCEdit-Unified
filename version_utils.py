@@ -151,6 +151,11 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
 def getPlayerSkin(uuid, force=False):
     toReturn = 'char.png'
     if os.path.exists("player-skins"+os.path.sep+uuid.replace("-","_")+".png") and not force:
+        player_skin = Image.open("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+        if player_skin.size == (64,64):
+            player_skin = player_skin.crop((0,0,64,32))
+            player_skin.save("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+            player_skin.close()
         return "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
     try:
         os.mkdir("player-skins")
@@ -166,5 +171,6 @@ def getPlayerSkin(uuid, force=False):
     player_skin = Image.open(toReturn)
     if player_skin.size == (64,64):
         player_skin = player_skin.crop((0,0,64,32))
-        player_skin.save()
+        player_skin.save("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+        player_skin.close()
     return toReturn
