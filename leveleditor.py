@@ -19,6 +19,7 @@ from pymclevel.infiniteworld import SessionLockLost
 from raycaster import TooFarException
 import raycaster
 import keys
+import pygame
 
 """
 leveleditor.py
@@ -2712,6 +2713,21 @@ class LevelEditor(GLViewport):
         if keyname == 'F7':
             self.testBoardKey = 0
 
+
+    def take_screenshot(self):
+        try:
+            os.mkdir(directories+os.path.sep+"screenshots")
+        except OSError:
+            pass
+        ws = self.displayContext.getWindowSize()
+        screenshot_name = directories.parentDir+os.path.sep+"screenshots"+os.path.sep+time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png"
+        pixels = GL.glReadPixels(0,0,ws[0],ws[1], GL.GL_RGB, GL.GL_UNSIGNED_BYTE)
+        if hasattr(pixels, "tostring"):
+            pixels = pixels.tostring()
+        pygame.image.save(pygame.image.fromstring(pixels, (ws[0],ws[1]), 'RGB', 1), screenshot_name)
+        pass
+    
+    
     def key_down(self, evt, notMove=0, onlyKeys=0):
         self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
@@ -2834,6 +2850,8 @@ class LevelEditor(GLViewport):
                 self.copySelection()
             if keyname == config.config.get('Keys', 'Paste'):
                 self.pasteSelection()
+            if keyname == 'Alt-S':
+                self.take_screenshot()
 
             if keyname == config.config.get('Keys', 'Reload World'):
                 self.reload()
