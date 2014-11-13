@@ -414,8 +414,9 @@ class PlayerPositionTool(EditorTool):
     @alertException
     def reloadSkins(self):
         for player in self.editor.level.players:
-            del self.playerTexture[player]
-            self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
+            if player != "Player":
+                del self.playerTexture[player]
+                self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
 
     def gotoPlayerCamera(self):
         player = self.panel.selectedPlayer
