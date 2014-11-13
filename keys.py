@@ -93,6 +93,7 @@ class KeyConfigPanel(Dialog):
         "Cut",
         "Copy",
         "Paste",
+        "Take a Screenshot",
         "",
         "<Options>",
         "Long-Distance Mode",
@@ -164,6 +165,7 @@ class KeyConfigPanel(Dialog):
         ("Cut", "Ctrl-X"),
         ("Copy", "Ctrl-C"),
         ("Paste", "Ctrl-V"),
+        ("Take a Screenshot", "F6"),
 
         ("Long-Distance Mode", "Alt-Z"),
         ("Fly Mode", "None"),
@@ -231,6 +233,7 @@ class KeyConfigPanel(Dialog):
                    ("Cut", "Ctrl-X"),
                    ("Copy", "Ctrl-C"),
                    ("Paste", "Ctrl-V"),
+                   ("Take a Screenshot", "F6"),
 
                    ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None"),
@@ -298,6 +301,7 @@ class KeyConfigPanel(Dialog):
                    ("Cut", "Ctrl-X"),
                    ("Copy", "Ctrl-C"),
                    ("Paste", "Ctrl-V"),
+                   ("Take a Screenshot", "F6"),
 
                    ("Long-Distance Mode", "Alt-Z"),
                    ("Fly Mode", "None"),
@@ -365,6 +369,7 @@ class KeyConfigPanel(Dialog):
         ("Cut", "Ctrl-X"),
         ("Copy", "Ctrl-C"),
         ("Paste", "Ctrl-V"),
+        ("Take a Screenshot", "F6"),
 
         ("Long-Distance Mode", "Alt-Z"),
         ("Fly Mode", "None"),
