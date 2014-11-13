@@ -2850,7 +2850,7 @@ class LevelEditor(GLViewport):
                 self.copySelection()
             if keyname == config.config.get('Keys', 'Paste'):
                 self.pasteSelection()
-            if keyname == 'F6':
+            if keyname == config.config.get('Keys', 'Take a Screenshot'):
                 self.take_screenshot()
 
             if keyname == config.config.get('Keys', 'Reload World'):

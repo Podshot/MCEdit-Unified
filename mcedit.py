@@ -220,6 +220,8 @@ class FileOpener(albow.Widget):
             self.promptOpenAndLoad()
         if keyname == config.config.get('Keys', 'Quit'):
             self.mcedit.confirm_quit()
+        if keyname == config.config.get('Keys', 'Take a Screenshot'):
+            self.mcedit.editor.take_screenshot()
 
     def promptOpenAndLoad(self):
         try:

@@ -35,7 +35,7 @@ def getNewKey(value, i=0):
         value = value[6:]
     if value >= 'a' and value <= 'z':
         value = value.replace(value[0], value[0].upper(), 1)
-    if i >= 42 and "Ctrl-" not in value:
+    if i >= 43 and "Ctrl-" not in value:
         value = "Ctrl-" + value
     if value == "Mouse3":
         value = "Button 3"
@@ -194,6 +194,8 @@ brush line tool = Z
 snap clone to axis = Ctrl
 blocks-only modifier = Alt
 fast increment modifier = Ctrl
+
+take a screenshot = F6
 
 quit = Ctrl-Q
 view distance = Ctrl-F
