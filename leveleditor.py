@@ -1099,7 +1099,6 @@ class CameraViewport(GLViewport):
     rightMouseDragStart = None
 
     def rightClickDown(self, evt):
-
         self.rightMouseDragStart = datetime.now()
         self.toggleMouseLook()
 
@@ -2952,6 +2951,8 @@ class LevelEditor(GLViewport):
 
             if keyname == 'F7':
                 self.testBoardKey = 1
+
+            self.get_root().ctrlClicked = -1
 
     def showGotoPanel(self):
 
