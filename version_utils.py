@@ -158,10 +158,9 @@ def getPlayerSkin(uuid):
         pass
     playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
     playerJSON = json.loads(playerJSONResponse)
-    print playerJSON
     for entry in playerJSON["properties"]:
         if entry["name"] == "textures":
             texturesJSON = json.loads(base64.b64decode(entry["value"]))
-            urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], uuid.replace("-","_")+".png")
+            urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], "player-skins"+os.path.sep+uuid.replace("-","_")+".png")
             toReturn = "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
     return toReturn
