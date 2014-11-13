@@ -2360,37 +2360,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Cactus (Age 0)
+        name: Reeds (Age 0) [Sugar Cane]
       1:
-        name: Cactus (Age 1)
+        name: Reeds (Age 1) [Sugar Cane]
       2:
-        name: Cactus (Age 2)
+        name: Reeds (Age 2) [Sugar Cane]
       3:
-        name: Cactus (Age 3)
+        name: Reeds (Age 3) [Sugar Cane]
       4:
-        name: Cactus (Age 4)
+        name: Reeds (Age 4) [Sugar Cane]
       5:
-        name: Cactus (Age 5)
+        name: Reeds (Age 5) [Sugar Cane]
       6:
-        name: Cactus (Age 6)
+        name: Reeds (Age 6) [Sugar Cane]
       7:
-        name: Cactus (Age 7)
+        name: Reeds (Age 7) [Sugar Cane]
       8:
-        name: Cactus (Age 8)
+        name: Reeds (Age 8) [Sugar Cane]
       9:
-        name: Cactus (Age 9)
+        name: Reeds (Age 9) [Sugar Cane]
       10:
-        name: Cactus (Age 10)
+        name: Reeds (Age 10) [Sugar Cane]
       11:
-        name: Cactus (Age 11)
+        name: Reeds (Age 11) [Sugar Cane]
       12:
-        name: Cactus (Age 12)
+        name: Reeds (Age 12) [Sugar Cane]
       13:
-        name: Cactus (Age 13)
+        name: Reeds (Age 13) [Sugar Cane]
       14:
-        name: Cactus (Age 14)
+        name: Reeds (Age 14) [Sugar Cane]
       15:
-        name: Cactus (Age 15)
+        name: Reeds (Age 15) [Sugar Cane]
 
   - id: 84
     idStr: jukebox
