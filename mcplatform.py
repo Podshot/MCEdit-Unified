@@ -54,6 +54,7 @@ except ImportError:
 texturePacksDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "texturepacks")
 #Compatibility layer for filters:
 filtersDir = directories.filtersDir
+schematicsDir = directories.schematicsDir
 
 def getTexturePacks():
     try:
