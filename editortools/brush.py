@@ -943,10 +943,13 @@ class BrushPanel(Panel):
                         self.saveingBrushOptions[a] = b
                 except:
                     print key + " does not have a value yet."
+        name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
+        
         f.write(repr(self.saveingBrushOptions))
         
     def loadBrushPreset(self, name):
+        name = name+'.preset'
         f = open(os.path.join(directories.brushesDir, name), "r")
         loadedBrushOptions = ast.literal_eval(f.read())
         for key in self.saveableBrushOptions:
@@ -987,9 +990,11 @@ class BrushPanel(Panel):
         Let's be fancy. We look for any files in the Brushes Folder, and make a list of all their names.
         Then we create a Drop-down button with all the names.
         """
-        presets.extend(os.listdir(directories.brushesDir))
+        presetdownload = os.listdir(directories.brushesDir)
+        for p in presetdownload:
+            if p.endswith('.preset'):
+                presets.append(os.path.splitext(p)[0])
         self.presetListButton = ChoiceButton(presets, width=100, choose=self.presetSelected)
-        
         self.presetListButton.selectedChoice = "Load Preset:"
         self.saveButton = Button("Save as preset", action=self.openSavePresetDialog)
         
@@ -1006,6 +1011,10 @@ class BrushPanel(Panel):
     def presetSaveDialogOK(self):
         self.presetSaveDialog.dismiss()
         if self.nameField.value != "Load Preset:":
+            for p in ['<','>',':','\"', '/', '\\', '|', '?', '*', '.']:
+                if p in self.nameField.value:
+                    alert('Invalid character in file name')
+                    return
             self.saveBrushPreset(self.nameField.value)
         self.tool.toolSelected()
         
