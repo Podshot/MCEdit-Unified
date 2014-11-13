@@ -1,10 +1,12 @@
 import json
 import urllib2
-from directories import userCachePath
+from directories import userCachePath, getDataDir
 import os
 import time
 import base64  # @UnusedImport
-from mclevelbase import PlayerNotFound
+from pymclevel.mclevelbase import PlayerNotFound
+import urllib
+from PIL import Image
 
 #def getPlayerSkinURL(uuid):
 #    try:
@@ -145,3 +147,30 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
         except:
             print "Error getting the username for {}".format(uuid)
             return uuid
+        
+def getPlayerSkin(uuid, force=False):
+    toReturn = 'char.png'
+    if os.path.exists("player-skins"+os.path.sep+uuid.replace("-","_")+".png") and not force:
+        player_skin = Image.open("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+        if player_skin.size == (64,64):
+            player_skin = player_skin.crop((0,0,64,32))
+            player_skin.save("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+            player_skin.close()
+        return "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
+    try:
+        os.mkdir("player-skins")
+    except OSError:
+        pass
+    playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
+    playerJSON = json.loads(playerJSONResponse)
+    for entry in playerJSON["properties"]:
+        if entry["name"] == "textures":
+            texturesJSON = json.loads(base64.b64decode(entry["value"]))
+            urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], "player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+            toReturn = "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
+    player_skin = Image.open(toReturn)
+    if player_skin.size == (64,64):
+        player_skin = player_skin.crop((0,0,64,32))
+        player_skin.save("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+        player_skin.close()
+    return toReturn

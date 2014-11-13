@@ -26,8 +26,10 @@ from mceutils import loadPNGTexture, alertException, drawTerrainCuttingWire, dra
 from operation import Operation
 import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
-from pymclevel import version_utils, nbt
+from pymclevel import nbt
 import logging
+import version_utils
+
 
 log = logging.getLogger(__name__)
 
@@ -55,6 +57,11 @@ class PlayerRemoveOperation(Operation):
             while self.tool.panel.table.index >= len(self.tool.panel.players):
                 self.tool.panel.table.index -= 1
             self.tool.markerList.invalidate()
+            
+            pos = self.tool.revPlayerPos[self.player]
+            del self.tool.playerPos[pos]
+            del self.tool.playerTexture[self.player]
+            del self.tool.revPlayerPos[self.player]
 
         else:
             alert("Can't delete the default Player!")
@@ -93,6 +100,7 @@ class PlayerAddOperation(Operation):
             try:
                 self.uuid = version_utils.getUUIDFromPlayerName(self.player)
                 self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
+                self.skin = version_utils.getPlayerSkin(self.uuid, force=False)
             except:
                 action = ask("Could not get {}'s UUID. Please make sure, that you are connectedto the internet and that the player {} exists".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
                 if action == "Enter UUID manually":
@@ -125,7 +133,10 @@ class PlayerAddOperation(Operation):
 
                 self.level.players.append(self.uuid)
                 self.tool.panel.player_UUID[self.player] = self.uuid
-
+        
+        self.tool.playerPos[(0,0,0)] = self.uuid
+        self.tool.revPlayerPos[self.uuid] = (0,0,0)
+        self.tool.playerTexture[self.uuid] = loadPNGTexture(self.skin)
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
         self.tool.movingPlayer = self.uuid
@@ -158,6 +169,9 @@ class PlayerAddOperation(Operation):
         self.level.players.remove(self.uuid)
         self.tool.panel.players.remove(self.player)
         self.tool.panel.player_UUID.pop(self.player)
+        del self.tool.playerPos[(0,0,0)]
+        del self.tool.revPlayerPos[self.uuid]
+        del self.tool.playerTexture[self.uuid]
 
         self.tool.markerList.invalidate()
 
@@ -330,8 +344,7 @@ class PlayerPositionPanel(Panel):
 
         tableview.click_row = selectTableRow
         self.table = tableview
-        l = Label("Player: ")
-        col = [l, self.table]
+        col = [self.table]
 
         addButton = Button("Add Player", action=self.tool.addPlayer)
         removeButton = Button("Remove Player", action=self.tool.removePlayer)
@@ -339,7 +352,8 @@ class PlayerPositionPanel(Panel):
         gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
         moveButton = Button("Move Player", action=self.tool.movePlayer)
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
-        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton])
+        reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins)
+        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
 
         col = Column(col)
         self.add(col)
@@ -395,6 +409,13 @@ class PlayerPositionTool(EditorTool):
         self.movingPlayer = None
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
+        
+    @alertException
+    def reloadSkins(self):
+        for player in self.editor.level.players:
+            if player != "Player":
+                del self.playerTexture[player]
+                self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
 
     def gotoPlayerCamera(self):
         player = self.panel.selectedPlayer
@@ -473,6 +494,10 @@ class PlayerPositionTool(EditorTool):
         textureVertices[:, 1] *= 2
 
         self.texVerts = textureVertices
+        
+        self.playerPos = {}
+        self.playerTexture = {}
+        self.revPlayerPos = {}
 
         self.markerList = DisplayList()
 
@@ -504,11 +529,11 @@ class PlayerPositionTool(EditorTool):
         # x,y,z=map(lambda p,d: p+d, pos, direction)
         GL.glEnable(GL.GL_BLEND)
         GL.glColor(1.0, 1.0, 1.0, 0.5)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5)
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
         GL.glDisable(GL.GL_BLEND)
 
         GL.glEnable(GL.GL_DEPTH_TEST)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5)
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
         drawTerrainCuttingWire(BoundingBox((x, y, z), (1, 1, 1)))
         drawTerrainCuttingWire(BoundingBox((x, y - 1, z), (1, 1, 1)))
         #drawTerrainCuttingWire( BoundingBox((x,y-2,z), (1,1,1)) )
@@ -527,7 +552,6 @@ class PlayerPositionTool(EditorTool):
 
         GL.glEnable(GL.GL_DEPTH_TEST)
         GL.glMatrixMode(GL.GL_MODELVIEW)
-
         for player in self.editor.level.players:
             try:
                 pos = self.editor.level.getPlayerPosition(player)
@@ -535,13 +559,18 @@ class PlayerPositionTool(EditorTool):
                 dim = self.editor.level.getPlayerDimension(player)
                 if dim != self.editor.level.dimNo:
                     continue
+                
+                self.playerPos[pos] = player
+                self.revPlayerPos[player] = pos
+                if player != "Player":
+                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=False))
                 x, y, z = pos
                 GL.glPushMatrix()
                 GL.glTranslate(x, y, z)
                 GL.glRotate(-yaw, 0, 1, 0)
                 GL.glRotate(pitch, 1, 0, 0)
                 GL.glColor(1, 1, 1, 1)
-                self.drawCharacterHead(0, 0, 0)
+                self.drawCharacterHead(0, 0, 0, (x,y,z))
                 GL.glPopMatrix()
                 # GL.glEnable(GL.GL_BLEND)
                 drawTerrainCuttingWire(FloatBox((x - .5, y - .5, z - .5), (1, 1, 1)),
@@ -557,15 +586,20 @@ class PlayerPositionTool(EditorTool):
 
         GL.glDisable(GL.GL_DEPTH_TEST)
 
-    def drawCharacterHead(self, x, y, z):
+    def drawCharacterHead(self, x, y, z, realCoords=None):
         GL.glEnable(GL.GL_CULL_FACE)
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
         box = FloatBox(origin, size)
-
-        drawCube(box,
-                 texture=self.charTex, textureVertices=self.texVerts)
+        
+        if realCoords != None and self.playerPos[realCoords] != "Player":
+            drawCube(box,
+                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts)
+        else:
+            drawCube(box,
+                     texture=self.charTex, textureVertices=self.texVerts)
         GL.glDisable(GL.GL_CULL_FACE)
+        
 
     @property
     def statusText(self):
