@@ -57,6 +57,11 @@ class PlayerRemoveOperation(Operation):
             while self.tool.panel.table.index >= len(self.tool.panel.players):
                 self.tool.panel.table.index -= 1
             self.tool.markerList.invalidate()
+            
+            pos = self.tool.revPlayerPos[self.player]
+            del self.tool.playerPos[pos]
+            del self.tool.playerTexture[self.player]
+            del self.tool.revPlayerPos[self.player]
 
         else:
             alert("Can't delete the default Player!")
@@ -95,6 +100,7 @@ class PlayerAddOperation(Operation):
             try:
                 self.uuid = version_utils.getUUIDFromPlayerName(self.player)
                 self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
+                self.skin = version_utils.getPlayerSkin(self.uuid, force=False)
             except:
                 action = ask("Could not get {}'s UUID. Please make sure, that you are connectedto the internet and that the player {} exists".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
                 if action == "Enter UUID manually":
@@ -127,7 +133,10 @@ class PlayerAddOperation(Operation):
 
                 self.level.players.append(self.uuid)
                 self.tool.panel.player_UUID[self.player] = self.uuid
-
+        
+        self.tool.playerPos[(0,0,0)] = self.uuid
+        self.tool.revPlayerPos[self.uuid] = (0,0,0)
+        self.tool.playerTexture[self.uuid] = loadPNGTexture(self.skin)
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
         self.tool.movingPlayer = self.uuid
@@ -160,6 +169,9 @@ class PlayerAddOperation(Operation):
         self.level.players.remove(self.uuid)
         self.tool.panel.players.remove(self.player)
         self.tool.panel.player_UUID.pop(self.player)
+        del self.tool.playerPos[(0,0,0)]
+        del self.tool.revPlayerPos[self.uuid]
+        del self.tool.playerTexture[self.uuid]
 
         self.tool.markerList.invalidate()
 
