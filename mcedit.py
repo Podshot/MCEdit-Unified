@@ -579,7 +579,6 @@ class MCEdit(GLViewport):
             pos, yaw, pitch = c.position, c.yaw, c.pitch
 
         self.editor = leveleditor.LevelEditor(self)
-        self.editor.displayContext = self.displayContext
         self.editor.anchor = 'tlbr'
         if level:
             self.add(self.editor)

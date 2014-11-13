@@ -2719,13 +2719,8 @@ class LevelEditor(GLViewport):
             os.mkdir(directories.parentDir+os.path.sep+"screenshots")
         except OSError:
             pass
-        ws = self.displayContext.getWindowSize()
         screenshot_name = directories.parentDir+os.path.sep+"screenshots"+os.path.sep+time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png"
-        pixels = GL.glReadPixels(0,0,ws[0],ws[1], GL.GL_RGB, GL.GL_UNSIGNED_BYTE)
-        if hasattr(pixels, "tostring"):
-            pixels = pixels.tostring()
-        pygame.image.save(pygame.image.fromstring(pixels, (ws[0],ws[1]), 'RGB', 1), screenshot_name)
-        pass
+        pygame.image.save(pygame.display.get_surface(), screenshot_name)
     
     
     def key_down(self, evt, notMove=0, onlyKeys=0):
