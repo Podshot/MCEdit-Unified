@@ -271,7 +271,7 @@ class SelectionTool(EditorTool):
     # selectionColor = (1.0, .9, .9)
     color = (0.7, 0., 0.7)
     surfaceBuild = False
-    toolIconName = "selection"
+    toolIconName = "selection2"
     tooltipText = "Select\nRight-click for options"
 
     bottomLeftPoint = topRightPoint = None
@@ -851,7 +851,7 @@ class SelectionTool(EditorTool):
     def option1(self):
         self.selectOtherCorner()
 
-    _currentCorner = 0
+    _currentCorner = 1
 
     @property
     def currentCorner(self):

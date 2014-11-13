@@ -2189,7 +2189,6 @@ class LevelEditor(GLViewport):
         """
         self.level = level
 
-        self.toolbar.selectTool(-1)
         self.toolbar.removeToolPanels()
         self.selectedChunks = set()
 
