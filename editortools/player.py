@@ -171,6 +171,22 @@ class PlayerAddOperation(Operation):
 
         self.tool.markerList.invalidate()
 
+class PlayerAddOperation(Operation):
+    undoTag = None
+
+    def __init__(self, tool, pos, player="Player"):
+        super(PlayerAddOperation, self).__init__(tool.editor, tool.editor.level)
+        self.tool = tool
+        self.level = self.tool.editor.level
+
+    def perform(self, recordUndo=True):
+        pass
+
+    def undo(self):
+        pass
+
+    def redo(self):
+        pass
 
 class PlayerMoveOperation(Operation):
     undoPos = None
@@ -335,6 +351,7 @@ class PlayerPositionPanel(Panel):
 
         addButton = Button("Add Player", action=self.tool.addPlayer)
         removeButton = Button("Remove Player", action=self.tool.removePlayer)
+        editButton = Button("Edit Player", action=self.tool.editPlayer)
         gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
         gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
         moveButton = Button("Move Player", action=self.tool.movePlayer)
@@ -375,6 +392,15 @@ class PlayerPositionTool(EditorTool):
         player = self.panel.selectedPlayer
         
         op = PlayerRemoveOperation(self, player)
+
+        self.editor.addOperation(op)
+        self.editor.addUnsavedEdit()
+
+    @alertException
+    def editPlayer(self):
+        player = self.panel.selectedPlayer
+
+        op = PlayerEditOperation(self, player)
 
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
