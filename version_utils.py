@@ -148,9 +148,9 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
             print "Error getting the username for {}".format(uuid)
             return uuid
         
-def getPlayerSkin(uuid):
+def getPlayerSkin(uuid, force=False):
     toReturn = 'char.png'
-    if os.path.exists("player-skins"+os.path.sep+uuid.replace("-","_")+".png"):
+    if os.path.exists("player-skins"+os.path.sep+uuid.replace("-","_")+".png") and not force:
         return "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
     try:
         os.mkdir("player-skins")

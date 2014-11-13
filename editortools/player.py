@@ -341,7 +341,8 @@ class PlayerPositionPanel(Panel):
         gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
         moveButton = Button("Move Player", action=self.tool.movePlayer)
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
-        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton])
+        reloadSkin = Button("Reload Player Skins", action=self.tool.reloadSkins)
+        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
 
         col = Column(col)
         self.add(col)
@@ -397,6 +398,12 @@ class PlayerPositionTool(EditorTool):
         self.movingPlayer = None
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
+        
+    @alertException
+    def reloadSkins(self):
+        for player in self.editor.level.players:
+            del self.playerTexture[player]
+            self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
 
     def gotoPlayerCamera(self):
         player = self.panel.selectedPlayer
@@ -544,7 +551,7 @@ class PlayerPositionTool(EditorTool):
                 self.playerPos[pos] = player
                 self.revPlayerPos[player] = pos
                 if player != "Player":
-                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player))
+                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=False))
                 x, y, z = pos
                 GL.glPushMatrix()
                 GL.glTranslate(x, y, z)
