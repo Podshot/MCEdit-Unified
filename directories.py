@@ -186,6 +186,7 @@ if sys.platform != "darwin":
     portableCacheFilePath = os.path.join(parentDir, cache)
     portableGenericSupportPath = os.path.join(parentDir)
     portableSchematicsDir = os.path.join(parentDir, u"Schematics")
+    portableBrushesDir = os.path.join(parentDir, u"Brushes")
     portableJarStorageDir = os.path.join(parentDir, u"ServerJarStorage")
     portableFiltersDir = os.path.join(parentDir, u"Filters")
     if not os.path.exists(parentDir):
@@ -195,6 +196,7 @@ if sys.platform != "darwin":
     fixedConfigFilePath = os.path.join(docsFolder, ini)
     fixedGenericSupportPath = os.path.join(docsFolder)
     fixedSchematicsDir = os.path.join(docsFolder, u"Schematics")
+    fixedBrushesDir = os.path.join(docsFolder, u"Brushes")
     fixedJarStorageDir = os.path.join(docsFolder, u"ServerJarStorage")
     fixedFiltersDir = os.path.join(docsFolder, u"Filters")
     if not os.path.exists(docsFolder):
@@ -207,10 +209,12 @@ if sys.platform != "darwin":
 def goPortable():
     if sys.platform == "darwin":
         return False
-    global configFilePath, schematicsDir, filtersDir, portable
+    global configFilePath, schematicsDir, filtersDir, portable, brushesDir
 
     if os.path.exists(fixedSchematicsDir):
         move_displace(fixedSchematicsDir, portableSchematicsDir)
+    if os.path.exists(fixedBrushesDir):
+        move_displace(fixedBrushesDir, portableBrushesDir)
     if os.path.exists(fixedConfigFilePath):
         move_displace(fixedConfigFilePath, portableConfigFilePath)
     if os.path.exists(fixedFiltersDir):
@@ -221,6 +225,7 @@ def goPortable():
         move_displace(fixedJarStorageDir, portableJarStorageDir)
 
     schematicsDir = portableSchematicsDir
+    brushesDir = portableBrushesDir
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
     jarStorageDir = portableJarStorageDir
@@ -250,10 +255,12 @@ def move_displace(src, dst):
 def goFixed():
     if sys.platform == "darwin":
         return False
-    global configFilePath, schematicsDir, filtersDir, portable, cacheDir
+    global configFilePath, schematicsDir, filtersDir, portable, cacheDir, brushesDir
 
     if os.path.exists(portableSchematicsDir):
         move_displace(portableSchematicsDir, fixedSchematicsDir)
+    if os.path.exists(portableBrushesDir):
+        move_displace(portableBrushesDir, fixedBrushesDir)
     if os.path.exists(portableConfigFilePath):
         move_displace(portableConfigFilePath, fixedConfigFilePath)
     if os.path.exists(portableFiltersDir):
@@ -264,6 +271,7 @@ def goFixed():
         move_displace(portableJarStorageDir, fixedJarStorageDir)
 
     schematicsDir = fixedSchematicsDir
+    brushesDir = fixedBrushesDir
     configFilePath = fixedConfigFilePath
     filtersDir = fixedFiltersDir
     jarStorageDir = fixedJarStorageDir
@@ -285,6 +293,7 @@ if fixedConfigExists():
     portable = False
     if not sys.platform == "darwin":
         schematicsDir = fixedSchematicsDir
+        brushesDir = fixedBrushesDir
         configFilePath = fixedConfigFilePath
         filtersDir = fixedFiltersDir
         jarStorageDir = fixedJarStorageDir
@@ -294,6 +303,7 @@ else:
     print "Running in portable mode. Support files are stored next to the MCEdit directory."
     if not sys.platform == "darwin":
         schematicsDir = portableSchematicsDir
+        brushesDir = portableBrushesDir
         configFilePath = portableConfigFilePath
         filtersDir = portableFiltersDir
         jarStorageDir = portableJarStorageDir
@@ -330,6 +340,7 @@ def getCacheDir():
 if sys.platform == "darwin":
     configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
     schematicsDir = os.path.join(getCacheDir(), u"Schematics")
+    brushesDir = os.path.join(getCacheDir(), u"Brushes")
     filtersDir = os.path.join(getCacheDir(), u"Filters")
     if not os.path.exists(getCacheDir()):
         os.makedirs(getCacheDir())
