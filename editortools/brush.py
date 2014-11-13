@@ -15,10 +15,13 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #Modified by D.C.-G. for translation purposes
 
 from OpenGL import GL
-from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox
+import os
+from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextField
+from albow.dialogs import Dialog
 from albow.translate import _
 import ast
 import bresenham
+import directories
 from clone import CloneTool
 import collections
 import config
@@ -717,7 +720,6 @@ class BrushOperation(Operation):
         self._dirtyBox = reduce(lambda a, b: a.union(b), boxes)
 
     brushStyles = ["Round", "Square", "Diamond"]
-    # brushModeNames = ["Fill", "Flood Fill", "Replace", "Erode", "Topsoil", "Paste"]  # "Smooth", "Flatten", "Raise", "Lower", "Build", "Erode", "Evert"]
     brushModeClasses = [
         Modes.Fill,
         Modes.VariedFill,
@@ -788,7 +790,6 @@ class BrushOperation(Operation):
 class BrushPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
-        global currentNumber
         #Creating Ref variables to link objects
         self.noiseOption = AttrRef(tool, "brushNoise")
         self.topsoilDepthOption = AttrRef(tool, 'topsoilDepth')
@@ -841,15 +842,13 @@ class BrushPanel(Panel):
         "Block": self.brushBlockInfoOption,
         "Block To Replace": self.replaceBlockInfoOption,
         }
-
-
+        
         self.tool = tool
+        
         self.brushPresetOptions = self.createPresetRow()
         self.brushModeButton = ChoiceButton([m.name for m in tool.brushModes],
                                             width=150,
                                             choose=self.brushModeChanged)
-
-        #self.brushModeButton.selectedChoice = m.VariedFill
 
         self.brushModeButton.selectedChoice = tool.brushMode.name
         self.brushModeRow = Row((Label("Mode:"), self.brushModeButton))
@@ -868,15 +867,12 @@ class BrushPanel(Panel):
         ])
 
 
-        shapeRows = []
         columns = []
         for d in ["L", "W", "H"]:
             l = Label(d)
             f = IntField(ref=getattr(BrushSettings, "brushSize" + d).propertyRef(), min=1, max=tool.maxBrushSize)
             row = Row((l, f))
             columns.append(row)
-
-            #shapeRows.append(row)
 
         self.brushSizeRows = Row(columns)
 
@@ -894,8 +890,6 @@ class BrushPanel(Panel):
             ref=AttrRef(tool, 'blockInfo'),
             recentBlocks=tool.recentFillBlocks,
             allowWildcards=(tool.brushMode.name == "Replace"))
-
-        #col = [modeStyleGrid, hollowRow, noiseInput, shapeRows, blockButton]
 
         self.replaceBlockButton = replaceBlockButton = BlockButton(
             tool.editor.level.materials,
@@ -925,139 +919,110 @@ class BrushPanel(Panel):
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
-            spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1, tooltipText=("Hold {0} to draw lines").format(config.config.get("Keys", "Brush Line Tool")))
+            spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1, 
+                                   tooltipText=("Hold {0} to draw lines").format(config.config.get("Keys", "Brush Line Tool")))
             col.append(spaceRow)
         col = Column(col)
 
         self.add(col)
         self.shrink_wrap()
-
-    def createPresetRow(self):
-        def storeBrushPreset(key, value, currentNumber):
-            if not config.config.has_option("BrushPresets", key):
-                print "No options for " + key + " found, creating new option array"
-                a = [value for i in range(1, 10)]
-                a[currentNumber] = value
+        self.saveingBrushOptions = {}
+        
+    def saveBrushPreset(self, name):
+        for key in self.saveableBrushOptions:
+            if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
+                self.saveingBrushOptions[key] = self.saveableBrushOptions[key].get()
+            elif key == "Mode":
+                self.saveingBrushOptions[key] = self.saveableBrushOptions[key]
             else:
-                a = config.config.get("BrushPresets", key)
-                if type(a) != list:
-                    a = ast.literal_eval(a)
-                a[currentNumber] = value
-            config.config.set("BrushPresets", key, a)
-
-        def saveBrushPreset(currentNumber):
-            print "Saving Preset " + str(currentNumber+1)
-            if not config.config.has_section("BrushPresets"):
-                config.config.add_section("BrushPresets")
-            for key in self.saveableBrushOptions:
-                if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
-                        value = self.saveableBrushOptions[key].get()
-                        storeBrushPreset(key, value, currentNumber)
-                elif key == "Mode":
-                    storeBrushPreset(key, self.saveableBrushOptions[key], currentNumber)
-                else:
-                     try:
-                        keyID = key + " ID"
-                        keyData = key + " Data"
-                        value = self.saveableBrushOptions[key]
-                        for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
-                            storeBrushPreset(a, b, currentNumber)
-                     except:
-                        print key + " does not have a value yet."
-
-
-        def loadBrushPreset(number):
-            global currentNumber
-            if currentNumber != -1:
-                saveBrushPreset(currentNumber)
-            currentNumber = (int(number) - 1)
-            print "Loading Preset " + str(currentNumber+1)
-            for key in self.saveableBrushOptions:
-                if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
-                    if config.config.has_option("BrushPresets", key):
-                        a = config.config.get("BrushPresets", key)
-                        if type(a) != list:
-                            a = ast.literal_eval(a)
-                        self.saveableBrushOptions[key].set(a[currentNumber])
-                elif key == "Mode":
-                    if config.config.has_option("BrushPresets", key):
-                        a = config.config.get("BrushPresets", key)
-                        if type(a) != list:
-                            a = ast.literal_eval(a)
-                        for m in self.tool.brushModes:
-                            if m.name == a[currentNumber]:
-                                self.tool.brushMode = a[currentNumber]
-                else:
-                    if config.config.has_option("BrushPresets", key + "ID") and config.config.has_option("BrushPresets", key + "Data"):
-                        aID = config.config.get("BrushPresets", key + " ID")
-                        aData = config.config.get("BrushPresets", key + " Data")
-                        if type(aID) != list:
-                            aID = ast.literal_eval(aID)
-                        if type(aData) != list:
-                            aData = ast.literal_eval(aData)
-                        blockInfo = materials.Block(self.tool.editor.level.materials, aID[currentNumber], aData[currentNumber])
-                        if key == "Block":
-                            self.blockButton.blockInfo = blockInfo
-                        elif key == "Block To Replace":
-                            self.replaceBlockButton.blockInfo = blockInfo
-                        elif key == "Vary Replace 1":
-                            self.replaceWith1Button.blockInfo = blockInfo
-                        elif key == "Vary Replace 2":
-                            self.replaceWith2Button.blockInfo = blockInfo
-                        elif key == "Vary Replace 3":
-                            self.replaceWith3Button.blockInfo = blockInfo
-                        elif key == "Vary Replace 4":
-                            self.replaceWith4Button.blockInfo = blockInfo
-            BrushTool.toolSelected(self.tool)
-
-
-        def numberEnable1():
-            global currentNumber
-            return 1 !=( currentNumber + 1)
-        def numberEnable2():
-            global currentNumber
-            return 2 !=( currentNumber + 1)
-        def numberEnable3():
-            global currentNumber
-            return 3 != ( currentNumber + 1)
-        def numberEnable4():
-            global currentNumber
-            return 4 != ( currentNumber + 1)
-        def numberEnable5():
-            global currentNumber
-            return 5 != ( currentNumber + 1)
-        def numberEnable6():
-            global currentNumber
-            return 6 != ( currentNumber + 1)
-        def numberEnable7():
-            global currentNumber
-            return 7 != ( currentNumber + 1)
-        def numberEnable8():
-            global currentNumber
-            return 8 != ( currentNumber + 1)
-        def numberEnable9():
-            global currentNumber
-            return 9 != ( currentNumber + 1)
-
-        row = []
-        row.append(Button("1", action=loadBrushPreset, enable=numberEnable1))
-        row.append(Button("2", action=loadBrushPreset, enable=numberEnable2))
-        row.append(Button("3", action=loadBrushPreset, enable=numberEnable3))
-        row.append(Button("4", action=loadBrushPreset, enable=numberEnable4))
-        row.append(Button("5", action=loadBrushPreset, enable=numberEnable5))
-        row.append(Button("6", action=loadBrushPreset, enable=numberEnable6))
-        row.append(Button("7", action=loadBrushPreset, enable=numberEnable7))
-        row.append(Button("8", action=loadBrushPreset, enable=numberEnable8))
-        row.append(Button("9", action=loadBrushPreset, enable=numberEnable9))
-
-        row = Row(row)
-
+                try:
+                    keyID = key + " ID"
+                    keyData = key + " Data"
+                    value = self.saveableBrushOptions[key]
+                    for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
+                        self.saveingBrushOptions[a] = b
+                except:
+                    print key + " does not have a value yet."
+        f = open(os.path.join(directories.brushesDir, name), "w")
+        f.write(repr(self.saveingBrushOptions))
+        
+    def loadBrushPreset(self, name):
+        f = open(os.path.join(directories.brushesDir, name), "r")
+        loadedBrushOptions = ast.literal_eval(f.read())
+        for key in self.saveableBrushOptions:
+            if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
+                if key in loadedBrushOptions.keys():
+                    a = loadedBrushOptions[key]
+                    self.saveableBrushOptions[key].set(a)
+            elif key == "Mode":
+                if key in loadedBrushOptions[key]:
+                    a = loadedBrushOptions[key]
+                    for m in self.tool.brushModes:
+                        if m.name == a:
+                            self.tool.brushMode = a
+            else:
+                if key + " ID" in loadedBrushOptions and key + " Data" in loadedBrushOptions:
+                    aID = loadedBrushOptions[key+ " ID"]
+                    aData = loadedBrushOptions[key+ " Data"]
+                    blockInfo = materials.Block(self.tool.editor.level.materials, aID, aData)
+                    if key == "Block":
+                        self.blockButton.blockInfo = blockInfo
+                    elif key == "Block To Replace":
+                        self.replaceBlockButton.blockInfo = blockInfo
+                    elif key == "Vary Replace 1":
+                        self.replaceWith1Button.blockInfo = blockInfo
+                    elif key == "Vary Replace 2":
+                        self.replaceWith2Button.blockInfo = blockInfo
+                    elif key == "Vary Replace 3":
+                        self.replaceWith3Button.blockInfo = blockInfo
+                    elif key == "Vary Replace 4":
+                        self.replaceWith4Button.blockInfo = blockInfo
+        self.tool.toolSelected()
+    
+    def createPresetRow(self): #Used for creating Brush Preset Inputs
+        pass
+    
+        presets = ["Load Preset:"]
+        """
+        Let's be fancy. We look for any files in the Brushes Folder, and make a list of all their names.
+        Then we create a Drop-down button with all the names.
+        """
+        presets.extend(os.listdir(directories.brushesDir))
+        self.presetListButton = ChoiceButton(presets, width=100, choose=self.presetSelected)
+        
+        self.presetListButton.selectedChoice = "Load Preset:"
+        self.saveButton = Button("Save as preset", action=self.openSavePresetDialog)
+        
+        presetListButtonRow = Row([self.presetListButton])
+        saveButtonRow = Row([self.saveButton])
+        row = Row([presetListButtonRow, saveButtonRow])
         widget = GLBackground()
         widget.bg_color = (0.8, 0.8, 0.8, 0.8)
         widget.add(row)
         widget.shrink_wrap()
         widget.anchor = "whtr"
         return widget
+    
+    def presetSaveDialogOK(self):
+        self.presetSaveDialog.dismiss()
+        if self.nameField.value != "Load Preset:":
+            self.saveBrushPreset(self.nameField.value)
+        self.tool.toolSelected()
+        
+    def openSavePresetDialog(self):
+        self.presetSaveDialog = Dialog()
+        label = Label("Preset Name:")
+        self.nameField = TextField(width=200)
+        okButton = Button("OK", action=self.presetSaveDialogOK)
+        cancelButton = Button("Cancel", action=self.presetSaveDialog.dismiss)
+        self.presetSaveDialog.add(Column((Row([label, self.nameField]), Row([okButton,cancelButton]))))
+        self.presetSaveDialog.shrink_wrap()
+        self.presetSaveDialog.present()
+
+    def presetSelected(self):
+        if self.presetListButton.selectedChoice != "Load Preset:":
+            self.loadBrushPreset(self.presetListButton.selectedChoice)
+        self.presetListButton.selectedChoice = "Load Preset:"
 
     def brushModeChanged(self):
         self.tool.brushMode = self.brushModeButton.selectedChoice
