@@ -478,6 +478,7 @@ class PlayerPositionTool(EditorTool):
         
         self.playerPos = {}
         self.playerTexture = {}
+        self.revPlayerPos = {}
 
         self.markerList = DisplayList()
 
@@ -509,11 +510,11 @@ class PlayerPositionTool(EditorTool):
         # x,y,z=map(lambda p,d: p+d, pos, direction)
         GL.glEnable(GL.GL_BLEND)
         GL.glColor(1.0, 1.0, 1.0, 0.5)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5)
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
         GL.glDisable(GL.GL_BLEND)
 
         GL.glEnable(GL.GL_DEPTH_TEST)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5)
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
         drawTerrainCuttingWire(BoundingBox((x, y, z), (1, 1, 1)))
         drawTerrainCuttingWire(BoundingBox((x, y - 1, z), (1, 1, 1)))
         #drawTerrainCuttingWire( BoundingBox((x,y-2,z), (1,1,1)) )
@@ -541,6 +542,7 @@ class PlayerPositionTool(EditorTool):
                     continue
                 
                 self.playerPos[pos] = player
+                self.revPlayerPos[player] = pos
                 if player != "Player":
                     self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player))
                 x, y, z = pos
@@ -564,11 +566,8 @@ class PlayerPositionTool(EditorTool):
                 continue
 
         GL.glDisable(GL.GL_DEPTH_TEST)
-        print self.playerPos
 
     def drawCharacterHead(self, x, y, z, realCoords=None):
-        if realCoords != None:
-            print self.playerPos[realCoords]
         GL.glEnable(GL.GL_CULL_FACE)
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
@@ -701,12 +700,12 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         GL.glColor(*color)
         GL.glEnable(GL.GL_BLEND)
         self.drawCage(x, y, z)
-        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5, (x,y,z))
+        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5)
         GL.glDisable(GL.GL_BLEND)
 
         GL.glEnable(GL.GL_DEPTH_TEST)
         self.drawCage(x, y, z)
-        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5, (x,y,z))
+        self.drawCharacterHead(x + 0.5, y + 0.5, z + 0.5)
         color2 = map(lambda a: a * 0.4, color)
         drawTerrainCuttingWire(BoundingBox((x, y, z), (1, 1, 1)), color2, color)
         GL.glDisable(GL.GL_DEPTH_TEST)

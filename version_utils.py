@@ -6,7 +6,7 @@ import time
 import base64  # @UnusedImport
 from pymclevel.mclevelbase import PlayerNotFound
 import urllib
-import shutil
+from PIL import Image
 
 #def getPlayerSkinURL(uuid):
 #    try:
@@ -163,4 +163,7 @@ def getPlayerSkin(uuid):
             texturesJSON = json.loads(base64.b64decode(entry["value"]))
             urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], "player-skins"+os.path.sep+uuid.replace("-","_")+".png")
             toReturn = "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
+    player_skin = Image.open(toReturn)
+    if player_skin.size == (64,64):
+        player_skin.crop((0,0,64,32)).save(toReturn)
     return toReturn
