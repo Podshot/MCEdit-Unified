@@ -1008,19 +1008,6 @@ def main(argv):
             os.mkdir(directories.schematicsDir)
         except Exception, e:
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
-            
-    try:
-        if not os.path.exists(directories.brushesDir):
-            shutil.copytree(
-                os.path.join(directories.getDataDir(), u'Brushes'),
-                directories.brushesDir
-            )
-    except Exception, e:
-        logging.warning('Error copying bundled Brushes: {0!r}'.format(e))
-        try:
-            os.mkdir(directories.brushesDir)
-        except Exception, e:
-            logging.warning('Error creating Brushes folder: {0!r}'.format(e))
 
     try:
         if not os.path.exists(directories.filtersDir):

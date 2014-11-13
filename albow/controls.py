@@ -213,7 +213,17 @@ class ButtonBase(Control):
             if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
                 self._highlighted = False
                 if self.enabled:
-                    self.call_handler('action')
+                    try:
+                        if self.text in str(range(1,10)):
+                            specialCall = True
+                        else:
+                            specialCall = False
+                    except:
+                        specialCall = False
+                    if specialCall:
+                        self.call_handler('action', self.text)
+                    else:
+                        self.call_handler('action')
         self.get_root().ctrlClicked = -1
 
 
