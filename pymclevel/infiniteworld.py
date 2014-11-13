@@ -1022,6 +1022,8 @@ class AnvilWorldFolder(object):
 
 
 class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
+    playersFolder = None
+
     def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
         """
         Load an Alpha level from the given filename. It can point to either
@@ -1204,7 +1206,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         for path, tag in self.playerTagCache.iteritems():
             tag.save(path)
 
-        if hasattr(self, 'playersFolder'):
+        if not self.playersFolder == None:
             for file_ in os.listdir(self.playersFolder):
                 if file_.endswith(".dat") and file_[:-4] not in self.players:
                     os.remove(os.path.join(self.playersFolder, file_))
