@@ -2716,7 +2716,7 @@ class LevelEditor(GLViewport):
 
     def take_screenshot(self):
         try:
-            os.mkdir(directories+os.path.sep+"screenshots")
+            os.mkdir(directories.parentDir+os.path.sep+"screenshots")
         except OSError:
             pass
         ws = self.displayContext.getWindowSize()
