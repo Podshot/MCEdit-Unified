@@ -100,7 +100,6 @@ class PlayerAddOperation(Operation):
             try:
                 self.uuid = version_utils.getUUIDFromPlayerName(self.player)
                 self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
-                self.skin = version_utils.getPlayerSkin(self.uuid, force=False)
             except:
                 action = ask("Could not get {}'s UUID. Please make sure, that you are connectedto the internet and that the player {} exists".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
                 if action == "Enter UUID manually":
@@ -136,7 +135,7 @@ class PlayerAddOperation(Operation):
         
         self.tool.playerPos[(0,0,0)] = self.uuid
         self.tool.revPlayerPos[self.uuid] = (0,0,0)
-        self.tool.playerTexture[self.uuid] = loadPNGTexture(self.skin)
+        self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid, force=False))
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
         self.tool.movingPlayer = self.uuid
@@ -587,6 +586,8 @@ class PlayerPositionTool(EditorTool):
         GL.glDisable(GL.GL_DEPTH_TEST)
 
     def drawCharacterHead(self, x, y, z, realCoords=None):
+        # FIXME: Top head texture is rotated incorrectly
+        # TODO: Possible add hat layer support
         GL.glEnable(GL.GL_CULL_FACE)
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
