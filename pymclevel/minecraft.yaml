@@ -3623,28 +3623,28 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Carrots (Age 0)
+        name: Potatoes (Age 0)
         tex: [8, 12]
       1: 
-        name: Carrots (Age 1)
+        name: Potatoes (Age 1)
         tex: [8, 12]
       2: 
-        name: Carrots (Age 2)
+        name: Potatoes (Age 2)
         tex: [9, 12]
       3: 
-        name: Carrots (Age 3)
+        name: Potatoes (Age 3)
         tex: [9, 12]
       4: 
-        name: Carrots (Age 4)
+        name: Potatoes (Age 4)
         tex: [10, 12]
       5: 
-        name: Carrots (Age 5)
+        name: Potatoes (Age 5)
         tex: [10, 12]
       6: 
-        name: Carrots (Age 6)
+        name: Potatoes (Age 6)
         tex: [10, 12]
       7: 
-        name: Carrots (Age 7)
+        name: Potatoes (Age 7)
         tex: [12, 12]
 
   - id: 143
