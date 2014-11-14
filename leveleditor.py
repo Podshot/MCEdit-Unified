@@ -2721,7 +2721,16 @@ class LevelEditor(GLViewport):
             pass
         screenshot_name = directories.parentDir+os.path.sep+"screenshots"+os.path.sep+time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png"
         pygame.image.save(pygame.display.get_surface(), screenshot_name)
-    
+        self.diag = Dialog()
+        lbl = Label("Screenshot taken and saved as '"+screenshot_name+"'")
+        btn = Button("Ok", action=self.screenshot_notify)
+        col = Column((lbl,btn))
+        self.diag.add(col)
+        self.diag.shrink_wrap()
+        self.diag.present()
+        
+    def screenshot_notify(self):
+        self.diag.dismiss()
     
     def key_down(self, evt, notMove=0, onlyKeys=0):
         self.currentTool.keyDown(evt)
