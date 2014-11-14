@@ -29,19 +29,19 @@ blocks:
         name: Granite
         tex: [1, 1]
       2:
-        name: Polished Granite
+        name: Granite (Polished) [Smooth]
         tex: [2, 1]
       3:
         name: Diorite
         tex: [3, 1]
       4:
-        name: Polished Diorite
+        name: Diorite (Polished) [Smooth]
         tex: [4, 1]
       5:
         name: Andesite
         tex: [5, 1]
       6:
-        name: Polished Andesite
+        name: Andesite (Polished) [Smooth]
         tex: [6, 1]
 
   - id: 2
@@ -74,23 +74,22 @@ blocks:
     tex: [22, 0]
     data:
       0:
-        name: Oak Wood Planks
-        aka: Wood Planks
+        name: Wood Planks (Oak)
         tex: [12, 2]
       1:
-        name: Spruce Wood Planks
+        name: Wood Planks (Spruce)
         tex: [13, 2]
       2:
-        name: Birch Wood Planks
+        name: Wood Planks (Birch)
         tex: [14, 2]
       3:
-        name: Jungle Wood Planks
+        name: Wood Planks (Jungle)
         tex: [15, 2]
       4:
-        name: Acacia Wood Planks
+        name: Wood Planks (Acacia)
         tex: [16, 2]
       5:
-        name: Dark Oak Wood Planks
+        name: Wood Planks (Dark Oak)
         tex: [17, 2]
 
   - id: 6
@@ -102,23 +101,40 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Oak Sapling
-        aka: Sapling
+        name: Sapling (Stage 0, Oak)
         tex: [16, 3]
       1:
-        name: Spruce Sapling
+        name: Sapling (Stage 0, Spruce)
         tex: [17, 3]
       2:
-        name: Birch Sapling
+        name: Sapling (Stage 0, Birch)
         tex: [18, 3]
       3:
-        name: Jungle Sapling
+        name: Sapling (Stage 0, Jungle)
         tex: [19, 3]
       4:
-        name: Acacia Sapling
+        name: Sapling (Stage 0, Acacia)
         tex: [20, 3]
       5:
-        name: Dark Oak Sapling
+        name: Sapling (Stage 0, Dark Oak)
+        tex: [21, 3]
+      8:
+        name: Sapling (Stage 1, Oak)
+        tex: [16, 3]
+      9:
+        name: Sapling (Stage 1, Spruce)
+        tex: [17, 3]
+      10:
+        name: Sapling (Stage 1, Birch)
+        tex: [18, 3]
+      11:
+        name: Sapling (Stage 1, Jungle)
+        tex: [19, 3]
+      12:
+        name: Sapling (Stage 1, Acacia)
+        tex: [20, 3]
+      13:
+        name: Sapling (Stage 1, Dark Oak)
         tex: [21, 3]
 
   - id: 7
@@ -130,41 +146,180 @@ blocks:
 
   - id: 8
     idStr: WATER
-    name: Water (Flowing)
+    name: Water Flowing
     mapcolor: [38, 92, 255]
     type: WATER
     tex: [27, 7]
     opacity: 3
+    data:
+      0:
+        name: Water (Flowing, Level 7 (Source))
+      1:
+        name: Water (Flowing, Level 6)
+      2:
+        name: Water (Flowing, Level 5)
+      3:
+        name: Water (Flowing, Level 4)
+      4:
+        name: Water (Flowing, Level 3)
+      5:
+        name: Water (Flowing, Level 2)
+      6:
+        name: Water (Flowing, Level 1)
+      7:
+        name: Water (Flowing, Level 0)
+      8:
+        name: Water (Flowing, Level 15)
+      9:
+        name: Water (Flowing, Level 14)
+      10:
+        name: Water (Flowing, Level 13)
+      11:
+        name: Water (Flowing, Level 12)
+      12:
+        name: Water (Flowing, Level 11)
+      13:
+        name: Water (Flowing, Level 10)
+      14:
+        name: Water (Flowing, Level 9)
+      15:
+        name: Water (Flowing, Level 8)
 
   - id: 9
     idStr: STATIONARY_WATER
-    name: Water
+    name: Water Still
     mapcolor: [38, 92, 255]
     type: WATER
     tex: [26, 7]
     opacity: 3
+    data:
+      0:
+        name: Water (Still, Level 7 (Source))
+      1:
+        name: Water (Still, Level 6)
+      2:
+        name: Water (Still, Level 5)
+      3:
+        name: Water (Still, Level 4)
+      4:
+        name: Water (Still, Level 3)
+      5:
+        name: Water (Still, Level 2)
+      6:
+        name: Water (Still, Level 1)
+      7:
+        name: Water (Still, Level 0)
+      8:
+        name: Water (Still, Level 15)
+      9:
+        name: Water (Still, Level 14)
+      10:
+        name: Water (Still, Level 13)
+      11:
+        name: Water (Still, Level 12)
+      12:
+        name: Water (Still, Level 11)
+      13:
+        name: Water (Still, Level 10)
+      14:
+        name: Water (Still, Level 9)
+      15:
+        name: Water (Still, Level 8)
 
   - id: 10
     idStr: LAVA
-    name: Lava (Flowing)
+    name: Lava Flowing
     mapcolor: [255, 90, 0]
     tex: [25, 7]
     type: SEMISOLID
     brightness: 15
+    data:
+      0:
+        name: Lava (Flowing, Level 7 (Source))
+      1:
+        name: Lava (Flowing, Level 6)
+      2:
+        name: Lava (Flowing, Level 5)
+      3:
+        name: Lava (Flowing, Level 4)
+      4:
+        name: Lava (Flowing, Level 3)
+      5:
+        name: Lava (Flowing, Level 2)
+      6:
+        name: Lava (Flowing, Level 1)
+      7:
+        name: Lava (Flowing, Level 0)
+      8:
+        name: Lava (Flowing, Level 15)
+      9:
+        name: Lava (Flowing, Level 14)
+      10:
+        name: Lava (Flowing, Level 13)
+      11:
+        name: Lava (Flowing, Level 12)
+      12:
+        name: Lava (Flowing, Level 11)
+      13:
+        name: Lava (Flowing, Level 10)
+      14:
+        name: Lava (Flowing, Level 9)
+      15:
+        name: Lava (Flowing, Level 8)
 
   - id: 11
     idStr: STATIONARY_LAVA
-    name: Lava
+    name: Lava Still
     mapcolor: [255, 90, 0]
     tex: [24, 7]
     type: SEMISOLID
     brightness: 15
+    data:
+      0:
+        name: Lava (Still, Level 7 (Source))
+      1:
+        name: Lava (Still, Level 6)
+      2:
+        name: Lava (Still, Level 5)
+      3:
+        name: Lava (Still, Level 4)
+      4:
+        name: Lava (Still, Level 3)
+      5:
+        name: Lava (Still, Level 2)
+      6:
+        name: Lava (Still, Level 1)
+      7:
+        name: Lava (Still, Level 0)
+      8:
+        name: Lava (Still, Level 15)
+      9:
+        name: Lava (Still, Level 14)
+      10:
+        name: Lava (Still, Level 13)
+      11:
+        name: Lava (Still, Level 12)
+      12:
+        name: Lava (Still, Level 11)
+      13:
+        name: Lava (Still, Level 10)
+      14:
+        name: Lava (Still, Level 9)
+      15:
+        name: Lava (Still, Level 8)
 
   - id: 12
     idStr: SAND
     name: Sand
     mapcolor: [218, 210, 158]
     tex: [13, 0]
+    data:
+      0:
+        name: Sand
+        tex: [13, 0]
+      1:
+        name: Sand (Red)
+        tex: [14, 0]
 
   - id: 13
     idStr: GRAVEL
@@ -200,151 +355,151 @@ blocks:
       BOTTOM: [1, 2]
     data:
       0:
-        name: Oak Wood (Upright)
-        aka: Wood
+        name: Wood Log (Upright, Oak)
+        variant: Oak
         tex: [0, 2]
         tex_direction:
           TOP: [1, 2]
           BOTTOM: [1, 2]
       1:
-        name: Spruce Wood (Upright)
+        name: Wood Log (Upright, Spruce)
         tex: [2, 2]
         tex_direction:
           TOP: [3, 2]
           BOTTOM: [3, 2]
       2:
-        name: Birch Wood (Upright)
+        name: Wood Log (Upright, Birch)
         tex: [4, 2]
         tex_direction:
           TOP: [5, 2]
           BOTTOM: [5, 2]
       3:
-        name: Jungle Wood (Upright)
+        name: Wood Log (Upright, Jungle)
         tex: [6, 2]
         tex_direction:
           TOP: [7, 2]
           BOTTOM: [7, 2]
       4:
-        name: Oak Wood (East/West)
+        name: Wood Log (East/West, Oak)
         tex: [0, 2]
         tex_direction:
           SIDES: [1, 2]
       5:
-        name: Spruce Wood (East/West)
+        name: Wood Log (East/West, Spruce)
         tex: [2, 2]
         tex_direction:
           SIDES: [3, 2]
       6:
-        name: Birch Wood (East/West)
+        name: Wood Log (East/West, Birch)
         tex: [4, 2]
         tex_direction:
           SIDES: [5, 2]
       7:
-        name: Jungle Wood (East/West)
+        name: Wood Log (East/West, Jungle)
         tex: [6, 2]
         tex_direction:
           SIDES: [7, 2]
       8:
-        name: Oak Wood (North/South)
+        name: Wood Log (North/South, Oak)
         tex: [0, 2]
         tex_direction:
           FORWARD: [1, 2]
           BACKWARD: [1, 2]
       9:
-        name: Spruce Wood (North/South)
+        name: Wood Log (North/South, Spruce)
         tex: [2, 2]
         tex_direction:
           FORWARD: [3, 2]
           BACKWARD: [3, 2]
       10:
-        name: Birch Wood (North/South)
+        name: Wood Log (North/South, Birch)
         tex: [4, 2]
         tex_direction:
           FORWARD: [5, 2]
           BACKWARD: [5, 2]
       11:
-        name: Jungle Wood (North/South)
+        name: Wood Log (North/South, Jungle)
         tex: [6, 2]
         tex_direction:
           FORWARD: [7, 2]
           BACKWARD: [7, 2]
       12:
-        name: Oak Wood (Bark Only)
+        name: Wood Log (Bark Only, Oak)
         tex: [0, 2]
       13:
-        name: Spruce Wood (Bark Only)
+        name: Wood Log (Bark Only, Spruce)
         tex: [2, 2]
       14:
-        name: Birch Wood (Bark Only)
+        name: Wood Log (Bark Only, Birch)
         tex: [4, 2]
       15:
-        name: Jungle Wood (Bark Only)
+        name: Wood Log (Bark Only, Jungle)
         tex: [6, 2]
 
   - id: 18
     idStr: LEAVES
     name: Leaves
     mapcolor: [60, 192, 41]
-    tex: [22, 2] # The "correct" one is actually [4, 3] but with the current
-                # transparency rendering issues, this one looks better.
+    tex: [22, 2]
+    type: GLAS
     opacity: 1
     data:
       0:
-        name: Oak Leaves
+        name: Leaves (Decay by Tree Update, Oak)
         mapcolor: [60, 192, 41]
         tex: [22, 2]
       1:
-        name: Spruce Leaves
-        aka: Pine Leaves
+        name: Leaves (Decay by Tree Update, Spruce)
         mapcolor: [74, 131, 66]
         tex: [23, 2]
       2:
-        name: Birch Leaves
+        name: Leaves (Decay by Tree Update, Birch)
         mapcolor: [89, 151, 76]
         tex: [24, 2]
       3:
-        name: Jungle Leaves
+        name: Leaves (Decay by Tree Update, Jungle)
         mapcolor: [74, 131, 66]
         tex: [25, 2]
 
-      4: # bit 0x4 - "Decaying"
-        name: Oak Leaves (Decaying)
+      4:
+        name: Leaves (Decaying, Oak)
         mapcolor: [60, 192, 41]
         tex: [22, 2]
       5:
-        name: Spruce Leaves (Decaying)
+        name: Leaves (Decaying, Spruce)
         aka: Pine Leaves (Decaying)
         mapcolor: [74, 131, 66]
         tex: [23, 2]
       6:
-        name: Birch Leaves (Decaying)
+        name: Leaves (Decaying, Birch)
         mapcolor: [89, 151, 76]
         tex: [24, 2]
       7:
-        name: Jungle Leaves (Decaying)
+        name: Leaves (Decaying, Jungle)
         mapcolor: [74, 131, 66]
         tex: [25, 2]
-      4: # bit 0x8 - "Permanent"
-        name: Oak Leaves (No Decay)
+      4:
+        name: Leaves (No Decay, Oak)
         mapcolor: [60, 192, 41]
         tex: [22, 2]
       5:
-        name: Spruce Leaves (No Decay)
+        name: Leaves (No Decay, Spruce)
         aka: Pine Leaves (No Decay)
         mapcolor: [74, 131, 66]
         tex: [23, 2]
       6:
-        name: Birch Leaves (No Decay)
+        name: Leaves (No Decay, Birch)
         mapcolor: [89, 151, 76]
         tex: [24, 2]
       7:
-        name: Jungle Leaves (No Decay)
+        name: Leaves (No Decay, Jungle)
         mapcolor: [74, 131, 66]
         tex: [25, 2]
 
   - id: 19
     idStr: sponge
     name: Sponge
+    aka: Sponge (Wet)
     mapcolor: [193, 193, 57]
     tex: [7, 7]
 
@@ -372,34 +527,28 @@ blocks:
     idStr: SANDSTONE
     name: Sandstone
     mapcolor: [218, 210, 158]
-    tex: [15, 0]
     tex_direction:
       TOP: [18, 0]
       BOTTOM: [19, 0]
     data:
       0:
         name: Sandstone
+        mapcolor: [218, 210, 158]
+        tex: [15, 0]
       1:
-        name: Chiseled Sandstone
-        aka: Decorative Sandstone
+        name: Sandstone (Chiseled)
         mapcolor: [218, 210, 158]
         tex: [16, 0]
-        tex_direction:
-          TOP: [18, 0]
-          BOTTOM: [19, 0]
       2:
-        name: Smooth Sandstone
+        name: Sandstone (Smooth)
         mapcolor: [218, 210, 158]
         tex: [17, 0]
-        tex_direction:
-          TOP: [18, 0]
-          BOTTOM: [19, 0]
 
   - id: 26
     idStr: BED
     name: Bed
     mapcolor: [255, 0, 0]
-    tex: [16, 5]
+    tex: [16, 5] #Unfinished. Too many datas to do.
     type: BED
     tex_extra:
       foot_top: [13, 5]
@@ -418,6 +567,37 @@ blocks:
     tex_extra:
       powered: [6, 6]
     opacity: 0
+    data:
+      0:
+        name: Powered Rail (Unpowered, North/South)
+      1:
+        name: Powered Rail (Unpowered, East/West)
+      2:
+        name: Powered Rail (Unpowered, Ascending, East)
+      3:
+        name: Powered Rail (Unpowered, Ascending, West)
+      4:
+        name: Powered Rail (Unpowered, Ascending, North)
+      5:
+        name: Powered Rail (Unpowered, Ascending, South)
+      8:
+        name: Powered Rail (Powered, North/South)
+        tex: [6, 6]
+      9:
+        name: Powered Rail (Powered, East/West)
+        tex: [6, 6]
+      10:
+        name: Powered Rail (Powered, Ascending, East)
+        tex: [6, 6]
+      11:
+        name: Powered Rail (Powered, Ascending, West)
+        tex: [6, 6]
+      12:
+        name: Powered Rail (Powered, Ascending, North)
+        tex: [6, 6]
+      13:
+        name: Powered Rail (Powered, Ascending, South)
+        tex: [6, 6]
 
   - id: 30
     idStr: WEB
@@ -435,19 +615,19 @@ blocks:
     data:
       0:
         tex: [24, 3]
-        name: (Unused Shrub)
+        name: Tall Grass (Dead Bush, Drops Seeds) [Shrub]
       1:
         tex: [24, 3]
         name: Tall Grass
       2:
         tex: [26, 3]
-        name: Fern
+        name: Tall Grass (Fern)
     type: DECORATION_CROSS
     opacity: 0
 
   - id: 32
     idStr: deadbush
-    name: Dead Shrub
+    name: Dead Shrub [Shrub]
     mapcolor: [148, 100, 40]
     tex: [25, 3]
     type: DECORATION_CROSS
@@ -461,81 +641,81 @@ blocks:
     data:
       0:
         tex: [0, 8]
-        name: White Wool
+        name: Wool (White)
         mapcolor: [222, 222, 222]
       1:
         tex: [1, 8]
-        name: Orange Wool
+        name: Wool (Orange)
         mapcolor: [234, 127, 55]
       2:
         tex: [2, 8]
-        name: Magenta Wool
+        name: Wool (Magenta)
         mapcolor: [191, 75, 201]
       3:
         tex: [3, 8]
-        name: Light Blue Wool
+        name: Wool (Light Blue)
         aka: Aqua Wool
         mapcolor: [104, 139, 212]
       4:
         tex: [4, 8]
-        name: Yellow Wool
+        name: Wool (Yellow)
         mapcolor: [104, 139, 212]
       5:
         tex: [5, 8]
-        name: Lime Wool
+        name: Wool (Lime)
         mapcolor: [59, 189, 48]
       6:
         tex: [6, 8]
-        name: Pink Wool
+        name: Wool (Pink)
         mapcolor: [217, 131, 155]
       7:
         tex: [7, 8]
-        name: Gray Wool
+        name: Wool (Gray)
         mapcolor: [66, 66, 66]
       8:
         tex: [8, 8]
-        name: Light Gray Wool
+        name: Wool (Light Gray)
         mapcolor: [166, 166, 166]
       9:
         tex: [9, 8]
-        name: Cyan Wool
+        name: Wool (Cyan)
         mapcolor: [39, 117, 149]
       10:
         tex: [10, 8]
-        name: Purple Wool
+        name: Wool (Purple)
         aka: Indigo Wool, Violet Wool
         mapcolor: [129, 54, 196]
       11:
         tex: [11, 8]
-        name: Blue Wool
+        name: Wool (Blue)
         mapcolor: [39, 51, 161]
       12:
         tex: [12, 8]
-        name: Brown Wool
+        name: Wool (Brown)
         mapcolor: [86, 51, 28]
       13:
         tex: [13, 8]
-        name: Green Wool
+        name: Wool (Green)
         mapcolor: [56, 77, 24]
       14:
         tex: [14, 8]
-        name: Red Wool
+        name: Wool (Red)
         mapcolor: [164, 45, 41]
       15:
         tex: [15, 8]
-        name: Black Wool
+        name: Wool (Black)
         mapcolor: [0, 0, 0]
 
   - id: 37
     idStr: YELLOW_FLOWER
-    name: Flower
+    name: Flower (Dandelion) [Yellow]
     mapcolor: [255, 255, 0]
     tex: [6, 3]
     type: DECORATION_CROSS
     opacity: 0
 
   - id: 38
-    name: Poppy
+    name: Red Flower
     mapcolor: [255, 0, 0]
     tex: [6, 3]
     type: DECORATION_CROSS
@@ -543,35 +723,35 @@ blocks:
     data:
       0:
         tex: [6, 3]
-        name: Poppy
+        name: Flower (Poppy) [Red]
       1:
         tex: [7, 3]
-        name: Blue Orchid
+        name: Flower (Blue Orchid)
       2:
         tex: [8, 3]
-        name: Allium
+        name: Flower (Allium)
       3:
         tex: [9, 3]
-        name: Azure Bluet
+        name: Flower (Azure Bluet) [Houstonia]
       4:
         tex: [10, 3]
-        name: Red Tulip
+        name: Flower (Red Tulip)
       5:
         tex: [11, 3]
-        name: Orange Tulip
+        name: Flower (Orange Tulip)
       6:
         tex: [12, 3]
-        name: White Tulip
+        name: Flower (White Tulip)
       7:
         tex: [13, 3]
-        name: Pink Tulip
+        name: Flower (Pink Tulip)
       8:
         tex: [14, 3]
-        name: Oxeye Daisy
+        name: Flower (Oxeye Daisy)
 
   - id: 39
     idStr: BROWN_MUSHROOM
-    name: Brown Mushroom
+    name: Mushroom (Brown)
     mapcolor: [145, 109, 85]
     tex: [23, 3]
     type: DECORATION_CROSS
@@ -579,7 +759,7 @@ blocks:
 
   - id: 40
     idStr: RED_MUSHROOM
-    name: Red Mushroom
+    name: Mushroom (Red)
     mapcolor: [226, 18, 18]
     tex: [22, 3]
     type: DECORATION_CROSS
@@ -605,99 +785,98 @@ blocks:
     tex: [16, 1]
     data:
       0:
-        name: Double Stone Slab
+        name: Stone Slab (Double, Seamed, Stone)
         tex: [16, 1]
         tex_direction:
           TOP: [15, 1]
           BOTTOM: [15, 1]
       1:
-        name: Double Sandstone Slab
+        name: Stone Slab (Double, Seamed, Sandstone)
         tex: [15, 0]
         tex_direction:
           TOP: [0, 18]
           BOTTOM: [0, 19]
       2:
-        name: Double Wooden Slab (Old)
+        name: Stone Slab (Double, Seamed, Old Wood)
         tex: [12, 2]
       3:
-        name: Double Cobblestone Slab
+        name: Stone Slab (Double, Seamed, Cobblestone)
         tex: [7, 1]
       4:
-        name: Double Brick Slab
+        name: Stone Slab (Double, Seamed, Brick)
         tex: [17, 1]
       5:
-        name: Double Stone Brick Slab
+        name: Stone Slab (Double, Seamed, Stone Brick)
         tex: [9, 1]
       6:
-        name: Double Quartz Slab
+        name: Stone Slab (Double, Seamed, Quartz)
         tex: [10, 7]
       7:
-        name: Smooth Double Stone Slab
-        tex: [15, 1]
+        name: Stone Slab (Double, Seamless, Stone)
+        tex: [15, 1] #Needs to be continued 7~13, No Nether brick slabs in MCPE
 
   - id: 44
     name: Slab
-    aka: Half Step
     mapcolor: [200, 200, 200]
     tex: [16, 1]
     type: HALFHEIGHT
     data:
       0:
-        name: Stone Slab
+        name: Stone Slab (Bottom, Stone)
         tex: [16, 1]
         tex_direction:
           TOP: [15, 1]
           BOTTOM: [15, 1]
       1:
-        name: Sandstone Slab
+        name: Stone Slab (Bottom, Sandstone)
         tex: [15, 0]
         tex_direction:
           TOP: [0, 18]
           BOTTOM: [0, 19]
       2:
-        name: Wooden Slab (Old)
+        name: Stone Slab (Bottom, Old Wood)
         tex: [12, 2]
       3:
-        name: Cobblestone Slab
+        name: Stone Slab (Bottom, Cobblestone)
         tex: [7, 1]
       4:
-        name: Brick Slab
+        name: Stone Slab (Bottom, Brick)
         tex: [17, 1]
       5:
-        name: Stone Brick Slab
+        name: Stone Slab (Bottom, Stone Brick)
         tex: [9, 1]
       6:
-        name: Quartz Slab
+        name: Stone Slab (Bottom, Quartz)
         tex: [10, 7]
       7:
-        name: Smooth Stone Slab
+        name: Smooth Stone Slab #All side is Stone Slab's top texture
         tex: [15, 1]
       8:
-        name: Stone Slab (Upper)
+        name: Stone Slab (Top, Stone)
         tex: [16, 1]
         tex_direction:
           TOP: [15, 1]
           BOTTOM: [15, 1]
       9:
-        name: Sandstone Slab (Upper)
+        name: Stone Slab (Top, Sandstone)
         tex: [15, 0]
         tex_direction:
           TOP: [0, 18]
           BOTTOM: [0, 19]
       10:
-        name: Wooden Slab (Old) (Upper}
+        name: Stone Slab (Top, Old Wood)
         tex: [12, 2]
       11:
-        name: Cobblestone Slab (Upper)
+        name: Stone Slab (Top, Cobblestone)
         tex: [7, 1]
       12:
-        name: Brick Slab (Upper)
+        name: Stone Slab (Top, Brick)
         tex: [17, 1]
       13:
-        name: Stone Brick Slab (Upper)
+        name: Stone Slab (Top, Stone Brick)
         tex: [9, 1]
       14:
-        name: Quartz Slab (Upper)
+        name: Stone Slab (Top, Quartz)
         tex: [10, 7]
       15:
         name: Smooth Stone Slab (Upper)
@@ -714,9 +893,18 @@ blocks:
     name: TNT
     mapcolor: [160, 83, 65]
     tex: [18, 6]
-    tex_direction:
-      TOP: [19, 6]
-      BOTTOM: [20, 6]
+    data:
+      0:
+        name: TNT
+        tex_direction:
+          TOP: [19, 6]
+          BOTTOM: [20, 6]
+      1:
+        name: TNT (Primed when Punched)
+        tex: [6, 10]
+        tex_direction:
+          TOP: [7, 10]
+          BOTTOM: [8, 10]
 
   - id: 47
     idStr: BOOKSHELF
@@ -749,6 +937,17 @@ blocks:
     explored: true
     opacity: 0
     brightness: 14
+    data:
+      1:
+        name: Torch (East)
+      2:
+        name: Torch (West)
+      3:
+        name: Torch (South)
+      4:
+        name: Torch (North)
+      5:
+        name: Torch (Up)
 
   - id: 51
     idStr: FIRE
@@ -774,21 +973,33 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [12, 2]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Oak Wood, Bottom, East)
+      1:
+        name: Stairs (Oak Wood, Bottom, West)
+      2:
+        name: Stairs (Oak Wood, Bottom, South)
+      3:
+        name: Stairs (Oak Wood, Bottom, North)
+      4:
+        name: Stairs (Oak Wood, Top, East)
+      5:
+        name: Stairs (Oak Wood, Top, West)
+      6:
+        name: Stairs (Oak Wood, Top, South)
+      7:
+        name: Stairs (Oak Wood, Top, North)
 
   - id: 54
     idStr: chest
     name: Chest
     mapcolor: [125, 91, 38]
     type: CHEST
-# For whatever reason the external file wasn't being loaded, put in something a bit simpler until it is fixed.
     tex: [20,5]
 #   tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
-#   Currently not working properly, using standard damage entries for now, null entries face north ingame.
+#   Currently not working properly, Will reuse for block rotate button later if possible.
     data:
-#     0:
-#       null
-#     1:
-#       null
       2:
         name: Chest (North)
         tex_direction:
@@ -845,14 +1056,30 @@ blocks:
     tex: [19, 4]
     type: CROPS
     data:
-      0: {tex: [12, 4]}
-      1: {tex: [13, 4]}
-      2: {tex: [14, 4]}
-      3: {tex: [15, 4]}
-      4: {tex: [16, 4]}
-      5: {tex: [17, 4]}
-      6: {tex: [18, 4]}
-      7: {tex: [19, 4]}
+      0:
+        name: Wheat (Age 0)
+        tex: [12, 4]
+      1: 
+        name: Wheat (Age 1)
+        tex: [13, 4]
+      2: 
+        name: Wheat (Age 2)
+        tex: [14, 4]
+      3: 
+        name: Wheat (Age 3)
+        tex: [15, 4]
+      4: 
+        name: Wheat (Age 4)
+        tex: [16, 4]
+      5: 
+        name: Wheat (Age 5)
+        tex: [17, 4]
+      6: 
+        name: Wheat (Age 6)
+        tex: [18, 4]
+      7: 
+        name: Wheat (Age 7)
+        tex: [19, 4]
     opacity: 0
 
   - id: 60
@@ -860,12 +1087,28 @@ blocks:
     name: Farmland
     aka: Tilled Soil
     mapcolor: [95, 58, 30]
-    tex: [11, 0]
+    tex: [5, 0]
     tex_direction:
-      FORWARD: [5, 0]
-      SIDES: [5, 0]
-      BACKWARD: [5, 0]
-      BOTTOM: [5, 0]
+      TOP: [11, 0]
+    data:
+      0: 
+        name: Farmland (Dry, Moisture 0)
+      1: 
+        name: Farmland (Dry, Moisture 1)
+      2: 
+        name: Farmland (Dry, Moisture 2)
+      3: 
+        name: Farmland (Dry, Moisture 3)
+      4: 
+        name: Farmland (Dry, Moisture 4)
+      5: 
+        name: Farmland (Dry, Moisture 5)
+      6: 
+        name: Farmland (Dry, Moisture 6)
+      7: 
+        name: Farmland (Wet, Moisture 7)
+        tex_direction:
+          TOP: [10, 0]
 
   - id: 61
     idStr: furnace
@@ -874,10 +1117,6 @@ blocks:
     tex: [7, 5]
 #    tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
     data:
-#     0:
-#       null
-#     1:
-#       null
       2:
         name: Furnace (North)
         tex_direction:
@@ -910,10 +1149,6 @@ blocks:
     tex: [7, 5]
 #    tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
     data:
-#     0:
-#       null
-#     1:
-#       null
       2:
         name: Lit Furnace (North)
         tex_direction:
@@ -942,11 +1177,44 @@ blocks:
 
   - id: 63
     idStr: standing_sign
-    name: Sign Post
+    name: Standing Sign
     mapcolor: [111, 91, 54]
     tex: [12, 2]
     type: SIGNPOST
     opacity: 0
+    data:
+      0:
+        name: Standing Sign (South)
+      1:
+        name: Standing Sign
+      2:
+        name: Standing Sign
+      3:
+        name: Standing Sign
+      4:
+        name: Standing Sign (West)
+      5:
+        name: Standing Sign
+      6:
+        name: Standing Sign
+      7:
+        name: Standing Sign
+      8:
+        name: Standing Sign (North)
+      9:
+        name: Standing Sign
+      10:
+        name: Standing Sign
+      11:
+        name: Standing Sign
+      12:
+        name: Standing Sign (East)
+      13:
+        name: Standing Sign
+      14:
+        name: Standing Sign
+      15:
+        name: Standing Sign
 
   - id: 64
     idStr: wooden_door
@@ -965,6 +1233,15 @@ blocks:
     tex: [2, 6]
     type: LADDER
     opacity: 0
+    data:
+      2: 
+        name: Ladder (North)
+      3: 
+        name: Ladder (South)
+      4: 
+        name: Ladder (West)
+      5: 
+        name: Ladder (East)
 
   - id: 66
     idStr: rail
@@ -975,6 +1252,27 @@ blocks:
     tex_extra:
       curve: [5, 6]
     opacity: 0
+    data:
+      0:
+        name: Rail (North/South)
+      1:
+        name: Rail (East/West)
+      2:
+        name: Rail (Ascending, East)
+      3:
+        name: Rail (Ascending, West)
+      4:
+        name: Rail (Ascending, North)
+      5:
+        name: Rail (Ascending, South)
+      6:
+        name: Rail (Curved, South/East)
+      7:
+        name: Rail (Curved, South/West)
+      8:
+        name: Rail (Curved, North/West)
+      9:
+        name: Rail (Curved, North/East)
 
   - id: 67
     idStr: stone_stairs
@@ -982,6 +1280,23 @@ blocks:
     mapcolor: [115, 115, 115]
     tex: [7, 1]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Cobblestone, Bottom, East)
+      1:
+        name: Stairs (Cobblestone, Bottom, West)
+      2:
+        name: Stairs (Cobblestone, Bottom, South)
+      3:
+        name: Stairs (Cobblestone, Bottom, North)
+      4:
+        name: Stairs (Cobblestone, Top, East)
+      5:
+        name: Stairs (Cobblestone, Top, West)
+      6:
+        name: Stairs (Cobblestone, Top, South)
+      7:
+        name: Stairs (Cobblestone, Top, North)
 
   - id: 68
     idStr: wall_sign
@@ -990,6 +1305,15 @@ blocks:
     tex: [12, 2]
     type: WALLSIGN
     opacity: 0
+    data:
+      2: 
+        name: Wall Sign (North)
+      3: 
+        name: Wall Sign (South)
+      4: 
+        name: Wall Sign (West)
+      5: 
+        name: Wall Sign (East)
 
   - id: 71
     idStr: iron_door
@@ -1009,7 +1333,7 @@ blocks:
 
   - id: 74
     idStr: GLOWING_REDSTONE_ORE
-    name: Redstone Ore (Glowing)
+    name: Lit Redstone Ore
     mapcolor: [131, 107, 107]
     tex: [23, 1]
     brightness: 9
@@ -1045,6 +1369,39 @@ blocks:
       TOP: [6, 4]
       BOTTOM: [8, 4]
     opacity: 0
+    data:
+      0:
+        name: Cactus (Age 0)
+      1:
+        name: Cactus (Age 1)
+      2:
+        name: Cactus (Age 2)
+      3:
+        name: Cactus (Age 3)
+      4:
+        name: Cactus (Age 4)
+      5:
+        name: Cactus (Age 5)
+      6:
+        name: Cactus (Age 6)
+      7:
+        name: Cactus (Age 7)
+      8:
+        name: Cactus (Age 8)
+      9:
+        name: Cactus (Age 9)
+      10:
+        name: Cactus (Age 10)
+      11:
+        name: Cactus (Age 11)
+      12:
+        name: Cactus (Age 12)
+      13:
+        name: Cactus (Age 13)
+      14:
+        name: Cactus (Age 14)
+      15:
+        name: Cactus (Age 15)
 
   - id: 82
     idStr: CLAY
@@ -1060,10 +1417,43 @@ blocks:
     tex: [9, 4]
     type: DECORATION_CROSS
     opacity: 0
+    data:
+      0:
+        name: Reeds (Age 0) [Sugar Cane]
+      1:
+        name: Reeds (Age 1) [Sugar Cane]
+      2:
+        name: Reeds (Age 2) [Sugar Cane]
+      3:
+        name: Reeds (Age 3) [Sugar Cane]
+      4:
+        name: Reeds (Age 4) [Sugar Cane]
+      5:
+        name: Reeds (Age 5) [Sugar Cane]
+      6:
+        name: Reeds (Age 6) [Sugar Cane]
+      7:
+        name: Reeds (Age 7) [Sugar Cane]
+      8:
+        name: Reeds (Age 8) [Sugar Cane]
+      9:
+        name: Reeds (Age 9) [Sugar Cane]
+      10:
+        name: Reeds (Age 10) [Sugar Cane]
+      11:
+        name: Reeds (Age 11) [Sugar Cane]
+      12:
+        name: Reeds (Age 12) [Sugar Cane]
+      13:
+        name: Reeds (Age 13) [Sugar Cane]
+      14:
+        name: Reeds (Age 14) [Sugar Cane]
+      15:
+        name: Reeds (Age 15) [Sugar Cane]
 
   - id: 85
     idStr: fence
-    name: Fence
+    name: Fence (Oak)
     mapcolor: [157, 128, 79]
     tex: [12, 2]
     type: FENCE
@@ -1121,28 +1511,27 @@ blocks:
     mapcolor: [249, 255, 58]
     explored: true
     tex: [15, 6]
-#   tex_direction_data: {0: SOUTH, 1: WEST, 2: NORTH, 3: EAST}
     data:
       0:
-        name: Jack-o'-Lantern (South)
+        name: Jack-o'-Lantern (South) [Lit Pumpkin]
         tex_direction:
           BACKWARD: [17, 6]
           TOP: [14, 6]
           BOTTOM: [14, 6]
       1:
-        name: Jack-o'-Lantern (West)
+        name: Jack-o'-Lantern (West) [Lit Pumpkin]
         tex_direction:
           LEFT: [17, 6]
           TOP: [14, 6]
           BOTTOM: [14, 6]
       2:
-        name: Jack-o'-Lantern (North)
+        name: Jack-o'-Lantern (North) [Lit Pumpkin]
         tex_direction:
           FORWARD: [17, 6]
           TOP: [14, 6]
           BOTTOM: [14, 6]
       3:
-        name: Jack-o'-Lantern (East)
+        name: Jack-o'-Lantern (East) [Lit Pumpkin]
         tex_direction:
           RIGHT: [17, 6]
           TOP: [14, 6]
@@ -1153,13 +1542,27 @@ blocks:
     idStr: cake
     name: Cake
     mapcolor: [234, 233, 235]
-    tex: [27, 5]
+    tex: [28 ,5]
     type: CAKE
-    tex_extra:
-      side_uncut: [28 ,5]
-      side_cut: [26, 5]
-      bottom: [25, 5]
+    tex_direction:
+      TOP: [27, 5]
+      BOTTOM: [25, 5]
     opacity: 0
+    data:
+      0:
+        name: Cake (0 Bites)
+      1:
+        name: Cake (1 Bites)
+      2:
+        name: Cake (2 Bites)
+      3:
+        name: Cake (3 Bites)
+      4:
+        name: Cake (4 Bites)
+      5:
+        name: Cake (5 Bites)
+      6:
+        name: Cake (6 Bites)
 
   - id: 95
     idStr: INVISIBLE_BEDROCK
@@ -1175,28 +1578,29 @@ blocks:
     
   - id: 97
     idStr: monster_egg
-    name: Silverfish Block
+    name: Monster Egg
+    aka: Silverfish Block
     mapcolor: [120, 120, 120]
     tex: [0, 10]
     data:
       0:
         tex: [0, 10]
-        name: Silverfish Block (Stone)
+        name: Monster Egg (Stone)
       1:
         tex: [1, 10]
-        name: Silverfish Block (Cobblestone)
+        name: Monster Egg (Cobblestone)
       2:
         tex: [2, 10]
-        name: Silverfish Block (Stone Bricks)
+        name: Monster Egg (Stone Bricks)
       3:
         tex: [3, 10]
-        name: Silverfish Block (Mossy Stone Bricks)
+        name: Monster Egg (Mossy Stone Bricks)
       4:
         tex: [4, 10]
-        name: Silverfish Block (Cracked Stone Bricks)
+        name: Monster Egg (Cracked Stone Bricks)
       5:
         tex: [5, 10]
-        name: Silverfish Block (Chiseled Stone Bricks)
+        name: Monster Egg (Chiseled Stone Bricks)
 
   - id: 98
     idStr: stonebrick
@@ -1208,34 +1612,52 @@ blocks:
         name: Stone Bricks
         tex: [9, 1]
       1:
-        name: Mossy Stone Bricks
+        name: Stone Brick (Mossy)
         tex: [10, 1]
       2:
-        name: Cracked Stone Bricks
+        name: Stone Brick (Cracked)
         tex: [11, 1]
       3:
-        name: Chiseled Stone Bricks
+        name: Stone Brick (Chiseled)
         tex: [12, 1]
         
   - id: 99
     idStr: brown_mushroom_block
-    name: Huge Brown Mushroom
+    name: Brown Mushroom Block
     mapcolor: [145, 109, 85]
     tex: [22, 6]
     type: HUGE_MUSHROOM
     tex_extra:
       stem: [25, 6]
       pores: [24, 6]
+    data:
+      0:
+        name: Brown Mushroom Block (All Inside)
+        tex: [24, 6]
+      14:
+        name: Brown Mushroom Block (All Outside)
+      15:
+        name: Brown Mushroom Block (All Stem)
+        tex: [25, 6]
 
   - id: 100
     idStr: red_mushroom_block
-    name: Huge Red Mushroom
+    name: Red Mushroom Block
     mapcolor: [181, 29, 27]
     tex: [23, 6]
     type: HUGE_MUSHROOM
     tex_extra:
       stem: [25, 6]
       pores: [24, 6]
+    data:
+      0:
+        name: Red Mushroom Block (All Inside)
+        tex: [24, 6]
+      14:
+        name: Red Mushroom Block (All Outside)
+      15:
+        name: Red Mushroom Block (All Stem)
+        tex: [25, 6]
 
   - id: 101
     idStr: fenceIron
@@ -1255,7 +1677,8 @@ blocks:
 
   - id: 103
     idStr: MELON
-    name: Watermelon
+    name: Melon
+    aka: Watermelon
     mapcolor: [190, 184, 41]
     tex: [12, 6]
     tex_direction:
@@ -1271,6 +1694,23 @@ blocks:
     tex_extra:
       curve: [27, 4]
     opacity: 0
+    data:
+      0:
+        name: Pumpkin Stem (Age 0)
+      1:
+        name: Pumpkin Stem (Age 1)
+      2:
+        name: Pumpkin Stem (Age 2)
+      3:
+        name: Pumpkin Stem (Age 3)
+      4:
+        name: Pumpkin Stem (Age 4)
+      5:
+        name: Pumpkin Stem (Age 5)
+      6:
+        name: Pumpkin Stem (Age 6)
+      7:
+        name: Pumpkin Stem (Age 7 (Max))
 
   - id: 105
     idStr: MELON_STEM
@@ -1281,6 +1721,23 @@ blocks:
     tex_extra:
       curve: [27, 4]
     opacity: 0
+    data:
+      0:
+        name: Melon Stem (Age 0)
+      1:
+        name: Melon Stem (Age 1)
+      2:
+        name: Melon Stem (Age 2)
+      3:
+        name: Melon Stem (Age 3)
+      4:
+        name: Melon Stem (Age 4)
+      5:
+        name: Melon Stem (Age 5)
+      6:
+        name: Melon Stem (Age 6)
+      7:
+        name: Melon Stem (Age 7 (Max))
     
   - id: 106
     idStr: vine
@@ -1289,14 +1746,64 @@ blocks:
     tex: [11, 4]
     type: VINE
     opacity: 0
+    data:
+      0:
+        name: Vines (None)
+      1:
+        name: Vines (South)
+      2:
+        name: Vines (West)
+      3:
+        name: Vines (South/West)
+      4:
+        name: Vines (North)
+      5:
+        name: Vines (North/South)
+      6:
+        name: Vines (North/West)
+      7:
+        name: Vines (North/South/West)
+      8:
+        name: Vines (East)
+      9:
+        name: Vines (East/South)
+      10:
+        name: Vines (East/West)
+      11:
+        name: Vines (East/South/West)
+      12:
+        name: Vines (East/North)
+      13:
+        name: Vines (East/North/South)
+      14:
+        name: Vines (East/North/West)
+      15:
+        name: Vines (East/North/South/West)
 
   - id: 107
     idStr: FENCE_GATE
-    name: Fence Gate
+    name: Oak Fence Gate
     mapcolor: [157, 128, 79]
     tex: [12, 2]
     type: FENCE_GATE
     opacity: 0
+    data:
+      0:
+        name: Fence Gate (Oak, Closed, South)
+      1:
+        name: Fence Gate (Oak, Closed, West)
+      2:
+        name: Fence Gate (Oak, Closed, North)
+      3:
+        name: Fence Gate (Oak, Closed, East)
+      4:
+        name: Fence Gate (Oak, Open, South)
+      5:
+        name: Fence Gate (Oak, Open, West)
+      6:
+        name: Fence Gate (Oak, Open, North)
+      7:
+        name: Fence Gate (Oak, Open, East)
 
   - id: 108
     idStr: BRICK_STAIRS
@@ -1304,6 +1811,23 @@ blocks:
     mapcolor: [170, 86, 62]
     tex: [17, 1]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Brick, Bottom, East)
+      1:
+        name: Stairs (Brick, Bottom, West)
+      2:
+        name: Stairs (Brick, Bottom, South)
+      3:
+        name: Stairs (Brick, Bottom, North)
+      4:
+        name: Stairs (Brick, Top, East)
+      5:
+        name: Stairs (Brick, Top, West)
+      6:
+        name: Stairs (Brick, Top, South)
+      7:
+        name: Stairs (Brick, Top, North)
 
   - id: 109
     idStr: stairsStoneBrickSmooth
@@ -1311,6 +1835,23 @@ blocks:
     mapcolor: [120, 120, 120]
     tex: [9, 1]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Stone Brick, Bottom, East)
+      1:
+        name: Stairs (Stone Brick, Bottom, West)
+      2:
+        name: Stairs (Stone Brick, Bottom, South)
+      3:
+        name: Stairs (Stone Brick, Bottom, North)
+      4:
+        name: Stairs (Stone Brick, Top, East)
+      5:
+        name: Stairs (Stone Brick, Top, West)
+      6:
+        name: Stairs (Stone Brick, Top, South)
+      7:
+        name: Stairs (Stone Brick, Top, North)
     
   - id: 110
     idStr: mycelium
@@ -1323,7 +1864,7 @@ blocks:
       
   - id: 111
     idStr: waterlily
-    name: Lily Pad
+    name: Lily Pad [Waterlily]
     mapcolor: [117, 176, 73]
     tex: [10, 4]
     type: FLOOR
@@ -1341,6 +1882,23 @@ blocks:
     mapcolor: [54, 24, 30]
     tex: [2, 9]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Nether Brick, Bottom, East)
+      1:
+        name: Stairs (Nether Brick, Bottom, West)
+      2:
+        name: Stairs (Nether Brick, Bottom, South)
+      3:
+        name: Stairs (Nether Brick, Bottom, North)
+      4:
+        name: Stairs (Nether Brick, Top, East)
+      5:
+        name: Stairs (Nether Brick, Top, West)
+      6:
+        name: Stairs (Nether Brick, Top, South)
+      7:
+        name: Stairs (Nether Brick, Top, North)
     
   - id: 120
     idStr: end_portal_frame
@@ -1368,6 +1926,31 @@ blocks:
     tex: [29, 3]
     type: CROPS
     opacity: 0
+    data:
+      0:
+        name: Cocoa Plant (Age 0, South)
+      1:
+        name: Cocoa Plant (Age 0, West)
+      2:
+        name: Cocoa Plant (Age 0, North)
+      3:
+        name: Cocoa Plant (Age 0, East)
+      4:
+        name: Cocoa Plant (Age 1, South)
+      5:
+        name: Cocoa Plant (Age 1, West)
+      6:
+        name: Cocoa Plant (Age 1, North)
+      7:
+        name: Cocoa Plant (Age 1, East)
+      8:
+        name: Cocoa Plant (Age 2, South)
+      9:
+        name: Cocoa Plant (Age 2, West)
+      10:
+        name: Cocoa Plant (Age 2, North)
+      11:
+        name: Cocoa Plant (Age 2, East)
 
   - id: 128
     idStr: stairsSandStone
@@ -1375,6 +1958,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [15, 0]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Sandstone, Bottom, East)
+      1:
+        name: Stairs (Sandstone, Bottom, West)
+      2:
+        name: Stairs (Sandstone, Bottom, South)
+      3:
+        name: Stairs (Sandstone, Bottom, North)
+      4:
+        name: Stairs (Sandstone, Top, East)
+      5:
+        name: Stairs (Sandstone, Top, West)
+      6:
+        name: Stairs (Sandstone, Top, South)
+      7:
+        name: Stairs (Sandstone, Top, North)
     
   - id: 129
     idStr: emerald_ore
@@ -1394,6 +1994,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [13, 2]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Spruce Wood, Bottom, East)
+      1:
+        name: Stairs (Spruce Wood, Bottom, West)
+      2:
+        name: Stairs (Spruce Wood, Bottom, South)
+      3:
+        name: Stairs (Spruce Wood, Bottom, North)
+      4:
+        name: Stairs (Spruce Wood, Top, East)
+      5:
+        name: Stairs (Spruce Wood, Top, West)
+      6:
+        name: Stairs (Spruce Wood, Top, South)
+      7:
+        name: Stairs (Spruce Wood, Top, North)
 
   - id: 135
     idStr: birch_stairs
@@ -1401,6 +2018,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [14, 2]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Birch Wood, Bottom, East)
+      1:
+        name: Stairs (Birch Wood, Bottom, West)
+      2:
+        name: Stairs (Birch Wood, Bottom, South)
+      3:
+        name: Stairs (Birch Wood, Bottom, North)
+      4:
+        name: Stairs (Birch Wood, Top, East)
+      5:
+        name: Stairs (Birch Wood, Top, West)
+      6:
+        name: Stairs (Birch Wood, Top, South)
+      7:
+        name: Stairs (Birch Wood, Top, North)
 
   - id: 136
     idStr: jungle_stairs
@@ -1408,6 +2042,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [15, 2]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Jungle Wood, Bottom, East)
+      1:
+        name: Stairs (Jungle Wood, Bottom, West)
+      2:
+        name: Stairs (Jungle Wood, Bottom, South)
+      3:
+        name: Stairs (Jungle Wood, Bottom, North)
+      4:
+        name: Stairs (Jungle Wood, Top, East)
+      5:
+        name: Stairs (Jungle Wood, Top, West)
+      6:
+        name: Stairs (Jungle Wood, Top, South)
+      7:
+        name: Stairs (Jungle Wood, Top, North)
 
   - id: 139
     idStr: cobblestone_wall
@@ -1420,7 +2071,7 @@ blocks:
         name: Cobblestone Wall
         tex: [7, 1]
       1:
-        name: Mossy Cobblestone Wall
+        name: Cobblestone Wall (Mossy)
         tex: [8, 1]
     opacity: 0
 
@@ -1430,12 +2081,32 @@ blocks:
     mapcolor: [200, 100, 100]
     tex: [23, 4]
     type: CROPS
-    data:
-      0: {tex: [20, 4]}
-      1: {tex: [21, 4]}
-      2: {tex: [22, 4]}
-      3: {tex: [23, 4]}
     opacity: 0
+    data:
+      0:
+        name: Carrots (Age 0)
+        tex: [20, 4]
+      1: 
+        name: Carrots (Age 1)
+        tex: [20, 4]
+      2: 
+        name: Carrots (Age 2)
+        tex: [21, 4]
+      3: 
+        name: Carrots (Age 3)
+        tex: [21, 4]
+      4: 
+        name: Carrots (Age 4)
+        tex: [22, 4]
+      5: 
+        name: Carrots (Age 5)
+        tex: [22, 4]
+      6: 
+        name: Carrots (Age 6)
+        tex: [22, 4]
+      7: 
+        name: Carrots (Age 7)
+        tex: [23, 4]
 
   - id: 142
     idStr: potatoes
@@ -1443,12 +2114,32 @@ blocks:
     mapcolor: [200, 100, 100]
     tex: [28, 6]
     type: CROPS
-    data:
-      0: {tex: [20, 4]}
-      1: {tex: [21, 4]}
-      2: {tex: [22, 4]}
-      3: {tex: [24, 4]}
     opacity: 0
+    data:
+      0:
+        name: Potatoes (Age 0)
+        tex: [20, 4]
+      1: 
+        name: Potatoes (Age 1)
+        tex: [20, 4]
+      2: 
+        name: Potatoes (Age 2)
+        tex: [21, 4]
+      3: 
+        name: Potatoes (Age 3)
+        tex: [21, 4]
+      4: 
+        name: Potatoes (Age 4)
+        tex: [22, 4]
+      5: 
+        name: Potatoes (Age 5)
+        tex: [22, 4]
+      6: 
+        name: Potatoes (Age 6)
+        tex: [22, 4]
+      7: 
+        name: Potatoes (Age 7)
+        tex: [24, 4]
 
   - id: 155
     idStr: quartz_block
@@ -1457,19 +2148,20 @@ blocks:
     tex: [12, 7]
     data:
       0:
-        name: Block of Quartz
+        name: Quartz Block
         tex: [12, 7]
         tex_direction:
           TOP: [11, 7]
           BOTTOM: [10, 7]
       1:
-        name: Chiseled Quartz Block
+        name: Quartz Block (Chiseled)
         tex: [15, 7]
         tex_direction:
           TOP: [16, 7]
           BOTTOM: [16, 7]
       2:
-        name: Pillar Quartz Block
+        name: Quartz Block (Pillar) #Only Upright in MCPE
+        aka: Quartz Block (Pillar, Upright)
         tex: [13, 7]
         tex_direction:
           TOP: [14, 7]
@@ -1481,6 +2173,23 @@ blocks:
     mapcolor: [255, 255, 255]
     tex: [12, 7]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Quartz, Bottom, East)
+      1:
+        name: Stairs (Quartz, Bottom, West)
+      2:
+        name: Stairs (Quartz, Bottom, South)
+      3:
+        name: Stairs (Quartz, Bottom, North)
+      4:
+        name: Stairs (Quartz, Top, East)
+      5:
+        name: Stairs (Quartz, Top, West)
+      6:
+        name: Stairs (Quartz, Top, South)
+      7:
+        name: Stairs (Quartz, Top, North)
 
   - id: 157
     idStr: double_wooden_slab
@@ -1489,21 +2198,21 @@ blocks:
     tex: [12, 2]
     data:
       0:
-        name: Double Oak Wood Slab
+        name: Wooden Slab (Double, Oak)
       1:
-        name: Double Spruce Wood Slab
+        name: Wooden Slab (Double, Spruce)
         tex: [13, 2]
       2:
-        name: Double Birch Wood Slab
+        name: Wooden Slab (Double, Birch)
         tex: [14, 2]
       3:
-        name: Double Jungle Wood Slab
+        name: Wooden Slab (Double, Jungle)
         tex: [15, 2]
       4:
-        name: Double Acasia Wood Slab
+        name: Wooden Slab (Double, Acacia)
         tex: [16, 2]
       5:
-        name: Double Dark Oak Wood Slab
+        name: Wooden Slab (Double, Dark Oak)
         tex: [17, 2]
 
   - id: 158
@@ -1514,39 +2223,39 @@ blocks:
     tex: [12, 2]
     data:
       0:
-        name: Oak Wood Slab
+        name: Wooden Slab (Bottom, Oak)
       1:
-        name: Spruce Wood Slab
+        name: Wooden Slab (Bottom, Spruce)
         tex: [13, 2]
       2:
-        name: Birch Wood Slab
+        name: Wooden Slab (Bottom, Birch)
         tex: [14, 2]
       3:
-        name: Jungle Wood Slab
+        name: Wooden Slab (Bottom, Jungle)
         tex: [15, 2]
       4:
-        name: Acacia Wood Slab
+        name: Wooden Slab (Bottom, Acacia)
         tex: [16, 2]
       5:
-        name: Dark Oak Wood Slab
+        name: Wooden Slab (Bottom, Dark Oak)
         tex: [17, 2]
       9:
-        name: Oak Wood Slab (Upper)
+        name: Wooden Slab (Top, Oak)
       10:
         tex: [13, 2]
-        name: Spruce Wood Slab (Upper)
+        name: Wooden Slab (Top, Spruce)
       11:
         tex: [14, 2]
-        name: Birch Wood Slab (Upper)
+        name: Wooden Slab (Top, Birch)
       12:
         tex: [15, 2]
-        name: Jungle Wood Slab (Upper)
+        name: Wooden Slab (Top, Jungle)
       13:
         tex: [16, 2]
-        name: Acasia Wood Slab (Upper)
+        name: Wooden Slab (Top, Acacia)
       14:
         tex: [17, 2]
-        name: Dark Oak Wood Slab (Upper)
+        name: Wooden Slab (Top, Dark Oak)
     type: HALFHEIGHT
     
   - id: 159
@@ -1556,101 +2265,99 @@ blocks:
     data:
       0:
         tex: [16, 8]
-        name: White Stained Clay
+        name: Stained Clay (White)
         mapcolor: [222, 222, 222]
       1:
         tex: [17, 8]
-        name: Orange Stained Clay
+        name: Stained Clay (Orange)
         mapcolor: [234, 127, 55]
       2:
         tex: [18, 8]
-        name: Magenta Stained Clay
+        name: Stained Clay (Magenta)
         mapcolor: [191, 75, 201]
       3:
         tex: [19, 8]
-        name: Light Blue Stained Clay
+        name: Stained Clay (Light Blue)
         mapcolor: [104, 139, 212]
       4:
         tex: [20, 8]
-        name: Yellow Stained Clay
+        name: Stained Clay (Yellow)
         mapcolor: [104, 139, 212]
       5:
         tex: [21, 8]
-        name: Lime Stained Clay
+        name: Stained Clay (Lime)
         mapcolor: [59, 189, 48]
       6:
         tex: [22, 8]
-        name: Pink Stained Clay
+        name: Stained Clay (Pink)
         mapcolor: [217, 131, 155]
       7:
         tex: [23, 8]
-        name: Gray Stained Clay
+        name: Stained Clay (Gray)
         mapcolor: [66, 66, 66]
       8:
         tex: [24, 8]
-        name: Light Gray Stained Clay
+        name: Stained Clay (Light Gray)
         mapcolor: [166, 166, 166]
       9:
         tex: [25, 8]
-        name: Cyan Stained Clay
+        name: Stained Clay (Cyan)
         mapcolor: [39, 117, 149]
       10:
         tex: [26, 8]
-        name: Purple Stained Clay
+        name: Stained Clay (Purple)
         mapcolor: [129, 54, 196]
       11:
         tex: [27, 8]
-        name: Blue Stained Clay
+        name: Stained Clay (Blue)
         mapcolor: [39, 51, 161]
       12:
         tex: [28, 8]
-        name: Brown Stained Clay
+        name: Stained Clay (Brown)
         mapcolor: [86, 51, 28]
       13:
         tex: [29, 8]
-        name: Green Stained Clay
+        name: Stained Clay (Green)
         mapcolor: [56, 77, 24]
       14:
         tex: [30, 8]
-        name: Red Stained Clay
+        name: Stained Clay (Red)
         mapcolor: [164, 45, 41]
       15:
         tex: [31, 8]
-        name: Black Stained Clay
+        name: Stained Clay (Black)
         mapcolor: [0, 0, 0]
 
   - id: 161
     idStr: leaves2
     name: Leaves (Acacia/Dark Oak)
     mapcolor: [60, 192, 41]
-    tex: [28, 2] # The "correct" one is actually [4, 3] but with the current
-                # transparency rendering issues, this one looks better.
+    tex: [28, 2]
     opacity: 1
     data:
       0:
-        name: Acacia Leaves
+        name: Leaves (Decay by Tree Update, Acacia)
         mapcolor: [60, 192, 41]
         tex: [28, 2]
       1:
-        name: Dark Oak Leaves
+        name: Leaves (Decay by Tree Update, Dark Oak)
         mapcolor: [74, 131, 66]
         tex: [29, 2]
 
-      4: # bit 0x4 - "Decaying"
-        name: Acacia Leaves (Decaying)
+      4:
+        name: Leaves (Decaying, Acacia)
         mapcolor: [60, 192, 41]
         tex: [28, 2]
       5:
-        name: Dark Oak Leaves (Decaying)
+        name: Leaves (Decaying, Dark Oak)
         mapcolor: [74, 131, 66]
         tex: [29, 2]
-
-      8: # bit 0x8 - "Permanent"
-        name: Acacia Leaves (Permanent)
+      8:
+        name: Leaves (No Decay, Acacia)
         mapcolor: [60, 192, 41]
         tex: [28, 2]
       9:
-        name: Dark Oak Leaves (Permanent)
+        name: Leaves (No Decay, Dark Oak)
         mapcolor: [74, 131, 66]
         tex: [29, 2]
         
@@ -1661,84 +2368,44 @@ blocks:
     tex: [8, 2]
     data:
       0:
-        name: Acacia Wood (Upright)
+        name: Wood Log (Upright, Acacia)
         tex: [8, 2]
         tex_direction:
           TOP: [9, 2]
           BOTTOM: [9, 2]
       1:
-        name: Dark Oak Wood (Upright)
-        tex: [10, 2]
-        tex_direction:
-          TOP: [11, 2]
-          BOTTOM: [11, 2]
-      2:
-        name: Acacia Placeholder Wood (Upright)
-        tex: [8, 2]
-        tex_direction:
-          TOP: [9, 2]
-          BOTTOM: [9, 2]
-      3:
-        name: Dark Oak Placeholder Wood (Upright)
+        name: Wood Log (Upright, Dark Oak)
         tex: [10, 2]
         tex_direction:
           TOP: [11, 2]
           BOTTOM: [11, 2]
       4:
-        name: Acacia Wood (East/West)
+        name: Wood Log (East/West, Acacia)
         tex: [8, 2]
         tex_direction:
           SIDES: [9, 2]
       5:
-        name: Dark Oak Wood (East/West)
-        tex: [10, 2]
-        tex_direction:
-          SIDES: [11, 2]
-      6:
-        name: Acacia Placeholder Wood (East/West)
-        tex: [8, 2]
-        tex_direction:
-          SIDES: [9, 2]
-      7:
-        name: Dark Oak Placeholder Wood (East/West)
+        name: Wood Log (East/West, Dark Oak)
         tex: [10, 2]
         tex_direction:
           SIDES: [11, 2]
       8:
-        name: Acacia Wood (North/South)
+        name: Wood Log (North/South, Acacia)
         tex: [8, 2]
         tex_direction:
           FORWARD: [9, 2]
           BACKWARD: [9, 2]
       9:
-        name: Dark Oak Wood (North/South)
-        tex: [10, 2]
-        tex_direction:
-          FORWARD: [11, 2]
-          BACKWARD: [11, 2]
-      10:
-        name: Acacia Placeholder Wood (North/South)
-        tex: [8, 2]
-        tex_direction:
-          FORWARD: [9, 2]
-          BACKWARD: [9, 2]
-      11:
-        name: Dark Oak Placeholder Wood (North/South)
+        name: Wood Log (North/South, Dark Oak)
         tex: [10, 2]
         tex_direction:
           FORWARD: [11, 2]
           BACKWARD: [11, 2]
       12:
-        name: Acacia Wood (Bark Only)
+        name: Wood Log (Bark Only, Acacia)
         tex: [8, 2]
       13:
-        name: Dark Oak Wood (Bark Only)
-        tex: [10, 2]
-      14:
-        name: Acacia Placeholder Wood (Bark Only)
-        tex: [8, 2]
-      15:
-        name: Dark Oak Placeholder Wood (Bark Only)
+        name: Wood Log (Bark Only, Dark Oak)
         tex: [10, 2]
 
   - id: 163
@@ -1747,6 +2414,23 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [16, 2]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Acacia Wood, Bottom, East)
+      1:
+        name: Stairs (Acacia Wood, Bottom, West)
+      2:
+        name: Stairs (Acacia Wood, Bottom, South)
+      3:
+        name: Stairs (Acacia Wood, Bottom, North)
+      4:
+        name: Stairs (Acacia Wood, Top, East)
+      5:
+        name: Stairs (Acacia Wood, Top, West)
+      6:
+        name: Stairs (Acacia Wood, Top, South)
+      7:
+        name: Stairs (Acacia Wood, Top, North)
 
   - id: 164
     idStr: dark_oak_stairs
@@ -1754,15 +2438,45 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [17, 2]
     type: STAIRS
+    data:
+      0:
+        name: Stairs (Dark Oak Wood, Bottom, East)
+      1:
+        name: Stairs (Dark Oak Wood, Bottom, West)
+      2:
+        name: Stairs (Dark Oak Wood, Bottom, South)
+      3:
+        name: Stairs (Dark Oak Wood, Bottom, North)
+      4:
+        name: Stairs (Dark Oak Wood, Top, East)
+      5:
+        name: Stairs (Dark Oak Wood, Top, West)
+      6:
+        name: Stairs (Dark Oak Wood, Top, South)
+      7:
+        name: Stairs (Dark Oak Wood, Top, North)
 
   - id: 170
     idStr: hay_block
     name: Hay Block
-    tex: [11, 6]
-    tex_direction:
-      FORWARD: [12, 6]
-      SIDES: [12, 6]
-      BACKWARD: [12, 6]
+    tex: [12, 6]
+    data:
+      0:
+        name: Hay Bale (Upright)
+        tex_direction:
+          TOP: [11, 6]
+          BOTTOM: [11, 6]
+      4:
+        name: Hay Bale (East/West)
+        tex: [12, 8]
+        tex_direction:
+          SIDES: [11, 6]
+      8:
+        name: Hay Bale (North/South)
+        tex_direction:
+          SIDES: [12, 8]
+          FORWARD: [11, 6]
+          BACKWARD: [11, 6]
 
   - id: 171
     name: Carpet
@@ -1771,67 +2485,67 @@ blocks:
     opacity: 0
     data:
       0:
-        name: White Carpet
+        name: Carpet (White)
         tex: [0, 8]
         mapcolor: [222, 222, 222]
       1:
-        name: Orange Carpet
+        name: Carpet (Orange)
         tex: [1, 8]
         mapcolor: [234, 127, 55]
       2:
-        name: Magenta Carpet
+        name: Carpet (Magenta)
         tex: [2, 8]
         mapcolor: [191, 75, 201]
       3:
-        name: Light Blue Carpet
+        name: Carpet (Light Blue)
         tex: [3, 8]
         mapcolor: [104, 139, 212]
       4:
-        name: Yellow Carpet
+        name: Carpet (Yellow)
         tex: [4, 8]
         mapcolor: [104, 139, 212]
       5:
-        name: Lime Carpet
+        name: Carpet (Lime)
         tex: [5, 8]
         mapcolor: [59, 189, 48]
       6:
-        name: Pink Carpet
+        name: Carpet (Pink)
         tex: [6, 8]
         mapcolor: [217, 131, 155]
       7:
-        name: Gray Carpet
+        name: Carpet (Gray)
         tex: [7, 8]
         mapcolor: [66, 66, 66]
       8:
-        name: Light Gray Carpet
+        name: Carpet (Light Gray)
         tex: [8, 8]
         mapcolor: [166, 166, 166]
       9:
-        name: Cyan Carpet
+        name: Carpet (Cyan)
         tex: [9, 8]
         mapcolor: [39, 117, 149]
       10:
-        name: Purple Carpet
+        name: Carpet (Purple)
         tex: [10, 8]
         mapcolor: [129, 54, 196]
       11:
-        name: Blue Carpet
+        name: Carpet (Blue)
         tex: [11, 8]
         mapcolor: [39, 51, 161]
       12:
-        name: Brown Carpet
+        name: Carpet (Brown)
         tex: [12, 8]
         mapcolor: [86, 51, 28]
       13:
-        name: Green Carpet
+        name: Carpet (Green)
         tex: [13, 8]
         mapcolor: [56, 77, 24]
       14:
-        name: Red Carpet
+        name: Carpet (Red)
         tex: [14, 8]
         mapcolor: [164, 45, 41]
       15:
-        name: Black Carpet
+        name: Carpet (Black)
         tex: [15, 8]
         mapcolor: [0, 0, 0]
 
@@ -1862,43 +2576,43 @@ blocks:
     tex: [0, 4]
     data:   #Couldn't find good ID information, update if something is wrong.
       0:
-        name: Sunflower Stem
+        name: Double Plant (Lower Half, Sunflower)
         tex: [0, 4]
       1:
-        name: Lilac Stem
+        name: Double Plant (Lower Half, Lilac)
         tex: [1, 4]
       2:
-        name: Double Tallgrass Stem
+        name: Double Plant (Lower Half, Double Tallgrass)
         tex: [2, 4]
       3:
-        name: Large Fern Stem
+        name: Double Plant (Lower Half, Large Fern)
         tex: [3, 4]
       4:
-        name: Rose Bush Stem
+        name: Double Plant (Lower Half, Rose Bush)
         tex: [4, 4]
       5:
-        name: Peony Stem
+        name: Double Plant (Lower Half, Peony)
         tex: [5, 4]
-#tall plant tops are dynamically changed ingame, but use multiple IDs for some reason.
+# Tall plant tops use block states for the top half, and are all on data:8-11
       8:
-        name: Tall Plant Top 
+        name: Double Plant (Upper Half) 
         tex: [5, 3]
       9:
-        name: Tall Plant Top
+        name: Double Plant (Upper Half)
         tex: [5, 3]
       10:
-        name: Tall Plant Top
+        name: Double Plant (Upper Half)
         tex: [5, 3]
       11:
-        name: Tall Plant Top
+        name: Double Plant (Upper Half)
         tex: [5, 3]
       12:
-        name: Tall Plant Top
+        name: Double Plant (Upper Half)
         tex: [5, 3]
     
   - id: 243
     idStr: podzol
-    name: Podzol
+    name: Dirt (Podzol)
     mapcolor: [134, 96, 67]
     tex: [6, 0]
     tex_direction:
@@ -1906,6 +2620,8 @@ blocks:
       SIDES: [7, 0]
       BACKWARD: [7, 0]
       BOTTOM: [5, 0]
+
+    # Fences and Fence gates for each wood types has to be added, later.(No doors)
     
   - id: 245
     idStr: STONECUTTER
