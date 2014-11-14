@@ -7,7 +7,7 @@ from pygame import Rect, draw
 
 from widget import Widget, overridable_property
 from theme import ThemeProperty
-import resource
+from albow import resource
 from translate import _
 
 

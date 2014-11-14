@@ -20,6 +20,7 @@ from albow.translate import _
 from config import config
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
+from editortools.playereditor import Inventory
 from glbackground import Panel
 from glutils import DisplayList
 from mceutils import loadPNGTexture, alertException, drawTerrainCuttingWire, drawCube
@@ -184,16 +185,18 @@ class PlayerAddOperation(Operation):
 
         self.tool.markerList.invalidate()
 
-class PlayerAddOperation(Operation):
+class PlayerEditOperation(Operation):
     undoTag = None
 
     def __init__(self, tool, pos, player="Player"):
-        super(PlayerAddOperation, self).__init__(tool.editor, tool.editor.level)
+        super(PlayerEditOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
         self.level = self.tool.editor.level
+        self.player = player
 
     def perform(self, recordUndo=True):
-        pass
+        inv = Inventory(self.player, self.level.getPlayerTag(self.player))
+        inv.present()
 
     def undo(self):
         pass
@@ -369,7 +372,7 @@ class PlayerPositionPanel(Panel):
         moveButton = Button("Move Player", action=self.tool.movePlayer)
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins)
-        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
+        col.extend([addButton, removeButton, editButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
 
         col = Column(col)
         self.add(col)
