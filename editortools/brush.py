@@ -447,9 +447,6 @@ class Modes:
                     blocksToReplace.append(op.editor.level.materials.blockWithID(op.blockInfo.ID, i))
             else:
                 blocksToReplace = [op.blockInfo]
-                
-            print op.blockInfo
-            print blocksToReplace
 
             replaceTable = block_fill.blockReplaceTable(blocksToReplace)
             replaceMask = replaceTable[blocks, data]
