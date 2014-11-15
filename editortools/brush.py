@@ -957,11 +957,9 @@ class BrushPanel(Panel):
                     a = loadedBrushOptions[key]
                     self.saveableBrushOptions[key].set(a)
             elif key == "Mode":
-                if key in loadedBrushOptions[key]:
-                    a = loadedBrushOptions[key]
-                    for m in self.tool.brushModes:
-                        if m.name == a:
-                            self.tool.brushMode = a
+                if key in loadedBrushOptions:
+                    print self.tool.brushModes
+                    self.tool.brushMode = loadedBrushOptions[key]
             else:
                 if key + " ID" in loadedBrushOptions and key + " Data" in loadedBrushOptions:
                     aID = loadedBrushOptions[key+ " ID"]
