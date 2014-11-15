@@ -803,7 +803,6 @@ class BrushPanel(Panel):
         self.replaceBlockInfoOption = AttrRef(tool, "replaceBlockInfo")
         self.erosionNoiseOption = AttrRef(tool, 'erosionNoise')
         self.erosionStrengthOpion = AttrRef(tool, 'erosionStrength')
-        
         self.replaceWith1Option = AttrRef(tool, 'replaceWith1')
         self.replaceWith2Option = AttrRef(tool, 'replaceWith2')
         self.replaceWith3Option = AttrRef(tool, 'replaceWith3')
@@ -889,7 +888,7 @@ class BrushPanel(Panel):
             tool.editor.level.materials,
             ref=AttrRef(tool, 'blockInfo'),
             recentBlocks=tool.recentFillBlocks,
-            allowWildcards=(tool.brushMode.name == "Replace"))
+            allowWildcards=(tool.brushMode.name == "Replace" or tool.brushMode.name == "Varied Replace"))
 
         self.replaceBlockButton = replaceBlockButton = BlockButton(
             tool.editor.level.materials,
@@ -936,6 +935,8 @@ class BrushPanel(Panel):
                 self.saveingBrushOptions[key] = self.saveableBrushOptions[key]
             else:
                 try:
+                    if key == "Block":
+                        self.saveingBrushOptions['wildcard'] = value.get().wildcard
                     keyID = key + " ID"
                     keyData = key + " Data"
                     value = self.saveableBrushOptions[key]
@@ -961,6 +962,11 @@ class BrushPanel(Panel):
                     print self.tool.brushModes
                     self.tool.brushMode = loadedBrushOptions[key]
             else:
+                if key == "Block":
+                    if 'wildcard' in loadedBrushOptions:
+                        self.blockButton.wildcard = loadedBrushOptions['wildcard']
+                        print self.blockButton.wildcard
+                        print self.blockButton.blockInfo.wildcard
                 if key + " ID" in loadedBrushOptions and key + " Data" in loadedBrushOptions:
                     aID = loadedBrushOptions[key+ " ID"]
                     aData = loadedBrushOptions[key+ " Data"]
