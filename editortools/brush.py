@@ -199,7 +199,7 @@ class Modes:
             totalChance = chanceA + chanceB + chanceC + chanceD
 
             if totalChance == 0:
-                print "Total Chance value can't be 0"
+                alert("Total Chance value can't be 0.")
                 return
 
             if airFill == False:
@@ -434,7 +434,7 @@ class Modes:
             totalChance = chanceA + chanceB + chanceC + chanceD
 
             if totalChance == 0:
-                print "Total Chance value can't be 0"
+                alert("Total Chance value can't be 0.")
                 return
 
             brushMask = createBrushMask(op.brushSize, op.brushStyle, brushBox.origin, brushBoxThisChunk, op.noise, op.hollow)
@@ -959,14 +959,11 @@ class BrushPanel(Panel):
                     self.saveableBrushOptions[key].set(a)
             elif key == "Mode":
                 if key in loadedBrushOptions:
-                    print self.tool.brushModes
                     self.tool.brushMode = loadedBrushOptions[key]
             else:
                 if key == "Block":
                     if 'wildcard' in loadedBrushOptions:
                         self.blockButton.wildcard = loadedBrushOptions['wildcard']
-                        print self.blockButton.wildcard
-                        print self.blockButton.blockInfo.wildcard
                 if key + " ID" in loadedBrushOptions and key + " Data" in loadedBrushOptions:
                     aID = loadedBrushOptions[key+ " ID"]
                     aData = loadedBrushOptions[key+ " Data"]
@@ -1110,7 +1107,6 @@ class BrushPanel(Panel):
         self.replaceBlockButton.blockInfo = b
 
     def rotate(self):
-        print "Rotating"
         Block = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Data = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Block[0][0][0] = self.blockButton.blockInfo.ID
@@ -1119,7 +1115,6 @@ class BrushPanel(Panel):
         self.blockButton.blockInfo.blockData = Data[0][0][0]
 
     def roll(self):
-        print "Rolling"
         Block = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Data = [[[0 for k in xrange(1)] for j in xrange(1)] for i in xrange(1)]
         Block[0][0][0] = self.blockButton.blockInfo.ID
@@ -1484,7 +1479,6 @@ class BrushTool(CloneTool):
         return True
 
     def rotate(self,blocksOnly=False):
-        print blocksOnly
         if blocksOnly:
             self.panel.rotate()
             self.toolSelected()
@@ -1498,11 +1492,8 @@ class BrushTool(CloneTool):
             rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
             if (rotateBlockBrush):
                 self.panel.rotate()
-            else:
-                print "Not rotating block because rotation is turned off in options menu"
 
     def mirror(self,blocksOnly=False): #actually roll atm
-        print blocksOnly
         if blocksOnly:
             self.panel.roll()
             self.toolSelected()
@@ -1516,8 +1507,6 @@ class BrushTool(CloneTool):
             rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
             if (rotateBlockBrush):
                 self.panel.roll()
-            else:
-                print "Not rotating block because rotation is turned off in options menu"
 
     def toolReselected(self):
         if self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace":
