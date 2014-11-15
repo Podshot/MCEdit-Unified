@@ -7,6 +7,30 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/stylesheet.css">
+	<style>
+		.contributor {
+			display: -moz-inline-stack;
+			display: inline-block;
+			vertical-align: top;
+			zoom: 1;
+			*display: inline;
+			float: none;
+		}
+		.contributor .thumbnail {
+			min-height: 320px;
+			display: block;
+		}
+		.contributor .thumbnail h3 {
+			text-align: center;
+		}
+		.contributor .thumbnail p {
+			text-align: center;
+			height: 20px;
+		}
+		.contributor .thumbnail img {
+			width: 100%;
+		}
+	</style>
 	<script>
 		function pageTrigger() {
 			var contributors = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/contributors');
@@ -35,18 +59,14 @@
 						contributorDiv += '<a href="' + contributorDB[contributor.login].payment + '"><i class="fa fa-usd"></i></a> ';
 					}
 				}
-				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2"><div style="min-height:310px" class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3 style="text-align:center;">' + contributor.login + '<br><small><span id="' + contributor.login + '_descriptionText">' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '</span><br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p style="text-align:center;">' + contributorDiv + '</p></div></div></div>');
-				if ($('#' + contributor.login + '_descriptionText').height() != '18') {
-					$('#' + contributor.login + '_descriptionText').html('Contributor');
-				}
+				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 contributor"><div class="thumbnail"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '<br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
 			};
 		}
 	</script>
 </head>
 <body>
 	<div class="container">
-		<div class="row" id="contributors">
-		</div>
+		<div id="contributors" class="row"></div>
 	</div>
 </body>
 </html>
