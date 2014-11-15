@@ -1,11 +1,11 @@
 # !/usr/bin/env python
-import mclevelbase
-import mclevel
-import materials
-import infiniteworld
+import pymclevel.mclevelbase
+import pymclevel.mclevel
+import pymclevel.materials
+import pymclevel.infiniteworld
 import sys
 import os
-from box import BoundingBox, Vector
+from pymclevel.box import BoundingBox, Vector
 import numpy
 from numpy import zeros, bincount
 import logging
@@ -16,6 +16,11 @@ import operator
 import codecs
 
 from math import floor
+
+mclevelbase = pymclevel.mclevelbase
+mclevel = pymclevel.mclevel
+materials = pymclevel.materials
+infiniteworld = pymclevel.infiniteworld
 
 try:
     import readline  # if available, used by raw_input()
