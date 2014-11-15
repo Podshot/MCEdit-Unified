@@ -212,7 +212,7 @@ t98 Waarschuwing: Open een wereld maar in Ã©Ã©n programma tegelijkertijd. Als je
 
  Als je Minecraft 1.3 of eerder gebruikt, moet je Minecraft compleet afsluiten voor je MCEdit gebruikt.
 o99 Don't remind me again.
-t99 Ne pas me le rappeler.
+t99 Herrinner me niet opnieuw.
 o100 <Movement>
 t100 <Beweginstoetsen>
 o101 Forward
@@ -314,19 +314,19 @@ t148 <Advanced>
 o149 Debug Overlay
 t149 Debug Overlay
 o150 Show Block Info
-t150 
+t150 Laat blokinfo zien
 o151 Pick Block
-t151 
+t151 Kies blok
 o152 Select Chunks
 t152 selecteren chunks
 o153 Deselect Chunks
 t153 Deselecteer Chunks
 o154 Snap Clone to Axis
-t154 
+t154 Plak kloon aan as
 o155 Blocks-Only Modifier
-t155 
+t155 Enkel-blokken toets
 o156 Fast Increment Modifier
-t156 
+t156 Snel scrollen toets
 o157 Leaves are solid, like Minecraft's 'Fast' graphics
 t157 Bladeren zijn solide (Minecrafts Fast setting)
 o158 All blocks are drawn the same way (overrides 'Fast Leaves')
@@ -334,7 +334,7 @@ t158 Alle blokken hetzelfde tekenen (Overschrijft 'Snelle bladeren')
 o159 Enable choppy mouse movement for faster loading.
 t159 Activeer hakkerige muis voor sneller laden.
 o160 Point here and use mousewheel to adjust
-t160 
+t160 Richt hier en gebruik muiswiel om aan te passen
 o161 Install Mode: Portable
 t161 Installatie: Draagbaar
 o162 Install Mode: Fixed
@@ -346,9 +346,9 @@ t164 Als je ver boven de wereld bent, gebruik laag-detail en versnel je beweegsn
 o165 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
 t165 Maximale hoeveelheid RAM-geheugen die gebruikt mag worden voor tijdelijke opslag. Als er meer nodig is wordt de harde schijf gebruikt.
 o166 Change the position of the mobs in spawners while nudging.
-t166 
+t166 Verander de positie van de mobs in spawners terwijl je schuift.
 o167 Change static coordinates in command blocks while nudging.
-t167 
+t167 Verander statische coordinaten in command-blokken terwijl je schuift.
 o168 Always target the farthest block under the cursor, even in mouselook mode.
 t168 Kies altijd het verste blok onder the muis, zelfs in muislock modus.
 o169 Moving forward and Backward will not change your altitude in Fly Mode.
@@ -360,29 +360,29 @@ t171 Keer de omhoog/omlaag richting van de muis om.
 o172 Do a visibility check on chunks while loading. May cause a crash.
 t172 Controleer de zichtbaarheid van chunks tijdens het laden.
 o173 When rotating your brush, also rotate the orientation of the block your brushing with
-t173 
+t173 Als je je kwast roteert, roteer dan ook de richting van het blok waarmee je verft.
 o174 Choose your language.
-t174 
+t174 Kies je taal.
 o175 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
 t175 Klik om McEdit een draagbare installatie te geven, en je filter, opties en schematics in je installatie op te slaan.
 o176 You must restart MCEdit to see language changes
-t176 
+t176 Je moet MCEdit herstarten om taalveranderingen te zien
 o177 Restart
 t177 Herstart
 o178 Later
-t178 
+t178 Later
 o179 Loading
 t179 Chargement
 o180  - MCEdit 
 t180  - MCEdit
 o181 Overworld
-t181 
+t181 Bovenwereld
 o182 The End
-t182 
+t182 Het Einde
 o183 Nether
-t183 
+t183 Onderwereld
 o184 Goto Dimension
-t184 Aller Ã  la dimension
+t184 Ga naar dimensie
 o185 Chunks: %d
 t185 Chunks: %d
 o186 fps: %0.1f
@@ -394,37 +394,37 @@ t188 cps: %0.1f
 o189 Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.
 t189 Klik en sleep om een selectie te maken. Klik de wanden om de grootte aan te passen. Click bij de rand om de tegenovergestelde rand te slepen.
 o190 Number of chunks loaded into the renderer.
-t190 Nombre de chunks chargÃ©s dans le rendu.
+t190 Aantal chunks geladen in de renderer
 o191 Memory used for vertexes
-t191 MÃ©moire utilisÃ©e par les vertex
+t191 Geheugen gebruikt voor vertices
 o192 Frames per second.
-t192 Frames par seconde.
+t192 Frames per seconde.
 o193 Chunks per second.
-t193 Chunks par seconde.
+t193 Chunks per seconde.
 o194 Shortcut: {0}
-t194 Raccourci: {0}
+t194 Sneltoets: {0}
 o195 Chunk View
-t195 Vue chunks
+t195 Chunk zicht
 o196 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
 t196 Laat de muis los om de {0} selectiehoek hier te plaatsen. Druk op {1} om hoeken te wisselen
 o197 Release the mouse button to finish the selection
 t197 Laat los om de selectie af te maken
 o198 Nudge
-t198 Pousser
+t198 Schuiven
 o199 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
-t199 Cliquer et maintenir pour dÃ©placer grÃ¢ce aux touches de dÃ©placement ({0}{1}{2}{3}{4}{5}). Maintenir SHIFT pour augmenter la vitesse.
+t199 Klik en houd ingedrukt. Terwijl je ingedrukt houd, gebruik de bewegingstoetsen ({0}{1}{2}{3}{4}{5}) om te schuiven. Links om één blok te schuiven, rechts om een grotere afstand te schuiven.
 o200 {0:n} blocks
 t200 {0:n} blokken
 o201 Fill the selection with Air. Shortcut: {0}
-t201 Vullen met lucht
+t201 Vullen met lucht, sneltoets: {0}
 o202 Delete Entities
 t202 Verwijder Entities
 o203 Remove all entities within the selection
 t203 Verwijder alle entities in de selectie
 o204 Delete Tile Ticks
-t204 
+t204 Verwijder Tile Ticks
 o205 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t205 
+t205 Verwijdert alle tile ticks in de selectie. Tile ticks zijn geplanede blok updates.
 o206 Analyze
 t206 Analyseer
 o207 Count the different blocks and entities in the selection and display the totals.
@@ -448,7 +448,7 @@ t215 Geselecteerde chunks:
 o216 Extract
 t216 Extraheer
 o217 Create
-t217 CreÃ«er
+t217 Creëerr
 o218 Prune
 t218 Snoei
 o219 Relight
@@ -495,8 +495,8 @@ o238 Export the selection to a .schematic file. Shortcut: {0}
 t238 Exporteer de selectie naar een .schematic bestand. : {0}
 o239 Clone
 Right-click for options
-t239 Cloner
-Clic-droit pour les options
+t239 Kloon
+Klik rechts voor opties
 o240 Brush
 Right-click for options
 t240 Kwast
@@ -504,13 +504,13 @@ Klik rechts voor opties
 o241 Fill
 t241 Vul
 o242 Varied Fill
-t242 
+t242 Gevariëerd vullen
 o243 Flood Fill
 t243 Vulemmer
 o244 Replace
 t244 Vervang
 o245 Varied Replace
-t245 
+t245 Gevariëerd vervangen
 o246 Erode
 t246 Erodeer
 o247 Topsoil
@@ -532,7 +532,7 @@ t254 Klik en sleep om blokken te plaatsen. ALT-klik om het blok onder de cursor 
 o255 Whenever the brush size changes, reset the distance to the brush blocks.
 t255 Wanneer de kwastgrootte veranderd, reset de afstand tot de kwastblokken
 o256 Shortcut: Alt-1
-t256 kortere weg: ALT-1
+t256 Sneltoets: ALT-1
 o257 ---
 t257 ---
 o258 Weight 1: 
@@ -544,7 +544,7 @@ t260 Gewicht 3:
 o261 Weight 4: 
 t261 Gewicht 4: 
 o262 Shortcut: Alt-3
-t262 kortere weg: ALT-3
+t262 Sneltoets: ALT-3
 o263 Hold {0} to draw lines
 t263 Houd {0} om lijnen te trekken
 o264 Stone
@@ -566,7 +566,7 @@ t271 Kracht:
 o272 Depth: 
 t272 Diepte: 
 o273 Only Change Natural Earth
-t273 Verandeer alleen natuurlijke aarde
+t273 Verandeer alleen natuurlijke grond
 o274 Import
 t274 Importeer
 o275 x
@@ -576,41 +576,43 @@ t276 y
 o277 z
 t277 z
 o278 COPYING - 
-t278 COPIE -
+t278 KOPIËREN -
 o279 Rotate
-t279 Herhaling
+t279 Draai
 o280 Roll
-t280 Draai
+t280 Rol
 o281 Chunk Align
 t281 Chunk Align
 o282 Repeat
-t282 Repeat
+t282 Herhalen
 o283 Scale Factor
-t283 Scale Factor
+t283 Schaalfactor
 o284 Copy Air
-t284 Kopieer Air
+t284 Kopieer Lucht
 o285 Copy Water
 t285 Kopieer Water
 o286 Copy Biomes
-t286 Kopieer Biomes
+t286 Kopieer biosystemen
 o287 Change Coordinates
-t287 Change CoÃ¶rdinaten
+t287 Verander coördinaten
 o288 Change Spawners
-t288 Change haringbestand
+t288 Verander spawners
 o289 Clone
-t289 Clone
+t289 Kloon
 o290 When the clone tool is chosen, place the clone at the selection right away.
-t290 
+t290 Als het kloon-gereedschap is geselecteerd, plaats het te klonen direct op de selectie
 o291 Shortcut: Alt-2
-t291 
+t291 Sneltoets: Alt-2
 o292 Check to automatically change command block static coordinates when moved.
 Shortcut: Alt-4
-t292 
+t292 Vink om automatisch de statische command-blok coördinaten aan te passen bij bewegen.
+Sneltoets: Alt-4
 o293 Check to automatically change the position of the mobs in spawners when moved.
 Shortcut: Alt-5
-t293 
+t293 Vink aan om automatisch de positie van de mobs in spawners aan te passen bij bewegen.
+Sneltoets: Alt-5
 o294 Shortcut: Enter
-t294 
+t294 Sneltoets: Enter
 o295 Fill and Replace
 Right-click for options
 t295 
