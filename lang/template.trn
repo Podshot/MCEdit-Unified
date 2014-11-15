@@ -1085,3 +1085,21 @@ o522 Goto Spawn
 t522 
 o523 Take a Screenshot
 t523 
+o524 Load Preset:
+t524 
+o525 Remove Presets
+t525 
+o526 Save as preset
+t526 
+o527 Preset Name:
+t527 
+o528 That preset name is reserved. Try pick another preset name.
+t528 
+o529 Invalid character in file name
+t529 
+o530 No presets saved
+t530 
+o531 Select preset to delete
+t531 
+o532  does not have a value yet.
+t532 

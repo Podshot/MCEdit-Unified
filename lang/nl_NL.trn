@@ -1099,3 +1099,23 @@ o522 Goto Spawn
 t522 
 o523 Take a Screenshot
 t523 
+o524 Load Preset:
+t524 Laad vooringestelde
+o525 Remove Presets
+t525 Verwijder vooringestelde
+o526 Save as preset
+t526 Sla op als vooringestelde
+o527 Preset Name:
+t527 Naam:
+o528 That preset name is reserved. Try pick another preset name.
+t528 Die naam is gereserveerd. Probeer een andere naam.
+o529 Invalid character in file name
+t529 Ongeldig karakter in bestandsnaam
+o530 No presets saved
+t530 Geen opgeslagen voorinstellingen
+o531 Select preset to delete
+t531 Selecteer voorinstelling om te verwijderen
+o532  does not have a value yet.
+t532  heeft nog geen waarde
+
+

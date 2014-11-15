@@ -943,7 +943,7 @@ class BrushPanel(Panel):
                     for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
                         self.saveingBrushOptions[a] = b
                 except:
-                    print key + " does not have a value yet."
+                    print key + _(" does not have a value yet.")
         name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
         f.write(repr(self.saveingBrushOptions))
