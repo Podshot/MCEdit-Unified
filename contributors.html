@@ -35,7 +35,10 @@
 						contributorDiv += '<a href="' + contributorDB[contributor.login].payment + '"><i class="fa fa-usd"></i></a> ';
 					}
 				}
-				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2"><div style="min-height:310px" class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3 style="text-align:center;">' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '<br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p style="text-align:center;">' + contributorDiv + '</p></div></div></div>');
+				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2"><div style="min-height:310px" class="thumbnail"><a href="' + contributor.html_url + '"><img style="width:100%" src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3 style="text-align:center;">' + contributor.login + '<br><small><span id="' + contributor.login + '_descriptionText">' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '</span><br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p style="text-align:center;">' + contributorDiv + '</p></div></div></div>');
+				if ($('#' + contributor.login + '_descriptionText').height() != '18') {
+					$('#' + contributor.login + '_descriptionText').html('Contributor');
+				}
 			};
 		}
 	</script>
