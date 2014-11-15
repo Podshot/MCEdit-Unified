@@ -16,7 +16,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 
 from OpenGL import GL
 import os
-from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextField
+from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextField, TableView, TableColumn
 from albow.dialogs import Dialog
 from albow.translate import _
 import ast
@@ -928,7 +928,7 @@ class BrushPanel(Panel):
         self.shrink_wrap()
         self.saveingBrushOptions = {}
         
-    def saveBrushPreset(self, name):
+    def saveBrushPreset(self, name): #Saves current brush presets in a file name.preset
         for key in self.saveableBrushOptions:
             if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
                 self.saveingBrushOptions[key] = self.saveableBrushOptions[key].get()
@@ -945,10 +945,9 @@ class BrushPanel(Panel):
                     print key + " does not have a value yet."
         name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
-        
         f.write(repr(self.saveingBrushOptions))
         
-    def loadBrushPreset(self, name):
+    def loadBrushPreset(self, name): #Loads a brush preset name.preset
         name = name+'.preset'
         f = open(os.path.join(directories.brushesDir, name), "r")
         loadedBrushOptions = ast.literal_eval(f.read())
@@ -980,21 +979,21 @@ class BrushPanel(Panel):
                         self.replaceWith3Button.blockInfo = blockInfo
                     elif key == "Vary Replace 4":
                         self.replaceWith4Button.blockInfo = blockInfo
-        self.tool.toolSelected()
-    
-    def createPresetRow(self): #Used for creating Brush Preset Inputs
-        pass
-    
-        presets = ["Load Preset:"]
-        """
-        Let's be fancy. We look for any files in the Brushes Folder, and make a list of all their names.
-        Then we create a Drop-down button with all the names.
-        """
+        
+    def getBrushFileList(self):#Returns a list of strings containing all .preset files
+        list = []
         presetdownload = os.listdir(directories.brushesDir)
         for p in presetdownload:
             if p.endswith('.preset'):
-                presets.append(os.path.splitext(p)[0])
-        self.presetListButton = ChoiceButton(presets, width=100, choose=self.presetSelected)
+                list.append(os.path.splitext(p)[0])
+        return list
+    
+    def createPresetRow(self): #Creates the brush preset row, called by brushpanel when creating the panel
+        self.presets = ["Load Preset:"]
+        self.presets.extend(self.getBrushFileList())
+        self.presets.append('Remove Presets')
+        
+        self.presetListButton = ChoiceButton(self.presets, width=100, choose=self.presetSelected)
         self.presetListButton.selectedChoice = "Load Preset:"
         self.saveButton = Button("Save as preset", action=self.openSavePresetDialog)
         
@@ -1007,31 +1006,80 @@ class BrushPanel(Panel):
         widget.shrink_wrap()
         widget.anchor = "whtr"
         return widget
-    
-    def presetSaveDialogOK(self):
-        self.presetSaveDialog.dismiss()
-        if self.nameField.value != "Load Preset:":
+        
+    def openSavePresetDialog(self): #Handles brush preset input, then calls saveBrushPreset
+        panel = Dialog()
+        label = Label("Preset Name:")
+        nameField = TextField(width=200)
+
+        def okPressed():
+            panel.dismiss()
+            name = nameField.value
+            
+            if name in ['Load Preset:', 'Remove Presets']:
+                alert("That preset name is reserved. Try pick another preset name.")
+                return
+            
             for p in ['<','>',':','\"', '/', '\\', '|', '?', '*', '.']:
-                if p in self.nameField.value:
+                if p in name:
                     alert('Invalid character in file name')
                     return
-            self.saveBrushPreset(self.nameField.value)
-        self.tool.toolSelected()
-        
-    def openSavePresetDialog(self):
-        self.presetSaveDialog = Dialog()
-        label = Label("Preset Name:")
-        self.nameField = TextField(width=200)
-        okButton = Button("OK", action=self.presetSaveDialogOK)
-        cancelButton = Button("Cancel", action=self.presetSaveDialog.dismiss)
-        self.presetSaveDialog.add(Column((Row([label, self.nameField]), Row([okButton,cancelButton]))))
-        self.presetSaveDialog.shrink_wrap()
-        self.presetSaveDialog.present()
+                
+            self.saveBrushPreset(name)
+            self.tool.showPanel()
 
-    def presetSelected(self):
-        if self.presetListButton.selectedChoice != "Load Preset:":
-            self.loadBrushPreset(self.presetListButton.selectedChoice)
-        self.presetListButton.selectedChoice = "Load Preset:"
+        okButton = Button("OK", action=okPressed)
+        cancelButton = Button("Cancel", action=panel.dismiss)
+        namerow = Row([label,nameField])
+        buttonRow = Row([okButton,cancelButton])
+        
+        panel.add(Column([namerow, buttonRow]))
+        panel.shrink_wrap()
+        panel.present()
+
+    def removePreset(self):#Handles removing presets
+        panel = Dialog()
+        p = self.getBrushFileList()
+        if not p:
+            alert('No presets saved')
+            return
+
+        def okPressed():
+            panel.dismiss()
+            name = p[presetTable.selectedIndex] + ".preset"
+            os.remove(os.path.join(directories.brushesDir, name))
+            self.tool.showPanel()
+            
+        def selectTableRow(i, evt):
+            presetTable.selectedIndex = i
+            if evt.num_clicks == 2:
+                okPressed()
+
+        presetTable = TableView(columns=(TableColumn("", 200),))
+        presetTable.num_rows = lambda: len(p)
+        presetTable.row_data = lambda i: (p[i],)
+        presetTable.row_is_selected = lambda x: x == presetTable.selectedIndex
+        presetTable.click_row = selectTableRow
+        presetTable.selectedIndex = 0
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda:"Select preset to delete"), presetTable))
+        okButton = Button("OK", action=okPressed)
+        cancelButton = Button("Cancel", action=panel.dismiss)
+        row = Row([okButton,cancelButton])
+        panel.add(Column((choiceCol, row)))
+        panel.shrink_wrap()
+        panel.present()
+        
+        
+    def presetSelected(self): #Called ons selecting item on Load Preset, to check if remove preset is selected. Calls removePreset if true, loadPreset(name) otherwise.
+        choice = self.presetListButton.selectedChoice
+        if choice == 'Remove Presets':
+            self.removePreset()
+        elif choice == 'Load Preset:':
+            return
+        else:
+            self.loadBrushPreset(choice)
+        choice = "Load Preset:"
+        self.tool.showPanel()
 
     def brushModeChanged(self):
         self.tool.brushMode = self.brushModeButton.selectedChoice
