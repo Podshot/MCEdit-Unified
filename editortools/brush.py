@@ -418,7 +418,7 @@ class Modes:
 
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
-
+            
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
@@ -447,6 +447,9 @@ class Modes:
                     blocksToReplace.append(op.editor.level.materials.blockWithID(op.blockInfo.ID, i))
             else:
                 blocksToReplace = [op.blockInfo]
+                
+            print op.blockInfo
+            print blocksToReplace
 
             replaceTable = block_fill.blockReplaceTable(blocksToReplace)
             replaceMask = replaceTable[blocks, data]
@@ -1027,7 +1030,7 @@ class BrushPanel(Panel):
                     return
                 
             self.saveBrushPreset(name)
-            self.tool.showPanel()
+            self.tool.toolSelected()
 
         okButton = Button("OK", action=okPressed)
         cancelButton = Button("Cancel", action=panel.dismiss)
@@ -1049,7 +1052,7 @@ class BrushPanel(Panel):
             panel.dismiss()
             name = p[presetTable.selectedIndex] + ".preset"
             os.remove(os.path.join(directories.brushesDir, name))
-            self.tool.showPanel()
+            self.tool.toolSelected()
             
         def selectTableRow(i, evt):
             presetTable.selectedIndex = i
@@ -1080,7 +1083,7 @@ class BrushPanel(Panel):
         else:
             self.loadBrushPreset(choice)
         choice = "Load Preset:"
-        self.tool.showPanel()
+        self.tool.toolSelected()
 
     def brushModeChanged(self):
         self.tool.brushMode = self.brushModeButton.selectedChoice
@@ -1509,6 +1512,9 @@ class BrushTool(CloneTool):
                 self.panel.roll()
 
     def toolReselected(self):
+        if not self.panel:
+            self.toolSelected()
+            return
         if self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace":
             self.panel.pickReplaceBlock()
         else:
@@ -1596,7 +1602,7 @@ class BrushTool(CloneTool):
             blockPicker = BlockPicker(
                 self.blockInfo,
                 self.editor.level.materials,
-                allowWildcards=self.brushMode.name == "Replace")
+                allowWildcards=self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace")
 
             if blockPicker.present():
                 self.blockInfo = blockPicker.blockInfo
