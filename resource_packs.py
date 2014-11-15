@@ -189,7 +189,7 @@ textureSlots = {
     # Start Eigth Row
     "rail_normal_turned": (step(0),step(7)),
     "wool_colored_black": (step(1),step(7)),
-    "wool_colored_silver": (step(2),step(7)),
+    "wool_colored_gray": (step(2),step(7)),
     "redstone_torch_off": (step(3),step(7)),
     "log_spruce": (step(4),step(7)),
     "log_birch": (step(5),step(7)),
@@ -343,7 +343,7 @@ textureSlots = {
 
     # Start Fifteenth Row
     "nether_brick": (step(0),step(14)),
-    "wool_colored_gray": (step(1),step(14)),
+    "wool_colored_silver": (step(1),step(14)),
     "nether_wart_stage_0": (step(2),step(14)),
     "nether_wart_stage_1": (step(3),step(14)),
     "nether_wart_stage_2": (step(4),step(14)),
