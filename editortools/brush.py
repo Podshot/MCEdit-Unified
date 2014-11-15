@@ -938,8 +938,6 @@ class BrushPanel(Panel):
                 self.saveingBrushOptions[key] = self.saveableBrushOptions[key]
             else:
                 try:
-                    if key == "Block":
-                        self.saveingBrushOptions['wildcard'] = value.get().wildcard
                     keyID = key + " ID"
                     keyData = key + " Data"
                     value = self.saveableBrushOptions[key]
@@ -947,6 +945,7 @@ class BrushPanel(Panel):
                         self.saveingBrushOptions[a] = b
                 except:
                     print key + _(" does not have a value yet.")
+        self.saveingBrushOptions['wildcard'] = self.blockButton.blockInfo.wildcard
         name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
         f.write(repr(self.saveingBrushOptions))
@@ -955,6 +954,8 @@ class BrushPanel(Panel):
         name = name+'.preset'
         f = open(os.path.join(directories.brushesDir, name), "r")
         loadedBrushOptions = ast.literal_eval(f.read())
+        if 'wildcard' in loadedBrushOptions:
+            self.blockButton.blockInfo.wildcard = loadedBrushOptions['wildcard']
         for key in self.saveableBrushOptions:
             if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
                 if key in loadedBrushOptions.keys():
@@ -964,9 +965,6 @@ class BrushPanel(Panel):
                 if key in loadedBrushOptions:
                     self.tool.brushMode = loadedBrushOptions[key]
             else:
-                if key == "Block":
-                    if 'wildcard' in loadedBrushOptions:
-                        self.blockButton.wildcard = loadedBrushOptions['wildcard']
                 if key + " ID" in loadedBrushOptions and key + " Data" in loadedBrushOptions:
                     aID = loadedBrushOptions[key+ " ID"]
                     aData = loadedBrushOptions[key+ " Data"]
