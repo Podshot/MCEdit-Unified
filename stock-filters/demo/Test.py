@@ -1,5 +1,6 @@
 from albow import Widget, Label, Button, TextField
 from pymclevel.nbt import *
+import release
 
 operations = {
     "Yes/No Dialog": 1,
@@ -16,6 +17,18 @@ inputs = (
     ("Float Field Test (Increments by 0.3)", (0.0, -5.0, 5.0, 0.3)),
     )
 
+class StoreData:
+    def __init__(self):
+        self._isFork = False
+        self._editor = None
+    @property
+    def isFork(self):
+        return self._isFork
+    @property
+    def editor(self):
+        return self._editor
+
+data = StoreData()
 def hiAction():
     print '"Hi" Button clicked!'
 
@@ -27,6 +40,20 @@ def yesFUNC(level, box):
 
 
 def perform(level, box, options):
+    ver = release.get_version()
+    if "fork" in ver.lower():
+        try:
+            data.editor = editor
+            data.isFork = True
+        except NameError:
+            import inspect
+            data.editor = inspect.stack()[1][0].f_locals.get('self', None).editor
+            pass
+    else:
+        import inspect
+        data.editor = inspect.stack()[1][0].f_locals.get('self', None).editor
+    if not data.isFork:
+        raise NotImplemented("This filter will only work with MCEdit-Unified!")
     op = options["Operation"]
     #print dir(level.scoreboard.Objectives)
     #print level.init_scoreboard().PlayerScores["Chevalerie94"]
@@ -64,9 +91,6 @@ def perform(level, box, options):
                 print "Team Name: " + str(team.DisplayName)
     elif op == "Player Data":
         players = level.init_player_data()
-        for p in players:
-            print p.name
-            for item in p.inventory:
-                print item["id"].value
-                print "==="
-            p.save()
+        for p in players.keys():
+            print players[p]["Air"].value
+        level.save_player_data(players)
