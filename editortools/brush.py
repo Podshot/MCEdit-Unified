@@ -1520,7 +1520,7 @@ class BrushTool(CloneTool):
                 print "Not rotating block because rotation is turned off in options menu"
 
     def toolReselected(self):
-        if self.brushMode.name == "Replace":
+        if self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace":
             self.panel.pickReplaceBlock()
         else:
             self.panel.pickFillBlock()
