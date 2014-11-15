@@ -764,7 +764,7 @@ class mce(object):
         [North/South, Down/Up, East/West]
 
     """
-        from items import items
+        from pymclevel.items import items
 
         if len(command):
             filename = command[0]
