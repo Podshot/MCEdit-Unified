@@ -525,6 +525,7 @@ class KeyConfigPanel(Dialog):
 
     def askAssignKey(self, configKey, labelString=None):
         if not self.isConfigKey(configKey):
+            self.enter = 0
             return
 
         panel = Panel()
