@@ -405,6 +405,7 @@ class KeyConfigPanel(Dialog):
         keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
         keyConfigTable.click_row = self.selectTableRow
         keyConfigTable.key_down = self.key_down
+        keyConfigTable.key_up = self.key_up
         self.changes = {}
         self.changesNum = False
         self.enter = 0
@@ -513,6 +514,11 @@ class KeyConfigPanel(Dialog):
         elif keyname == 'Return':
             self.enter += 1
             self.askAssignSelectedKey()
+
+        self.get_root().mcedit.editor.key_down(evt, 1, 1)
+
+    def key_up(self, evt):
+      self.get_root().mcedit.editor.key_up(evt)
 
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
