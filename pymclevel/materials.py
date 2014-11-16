@@ -22,8 +22,8 @@ class Block(object):
     """
 
     def __str__(self):
-        return "<Block {name} ({id}:{data}) hasVariants:{ha}>".format(
-            name=self.name, id=self.ID, data=self.blockData, ha=self.hasVariants)
+        return "<Block {name} ({id}:{data})>".format(
+            name=self.name, id=self.ID, data=self.blockData)
 
     def __repr__(self):
         return str(self)
@@ -33,8 +33,6 @@ class Block(object):
             return -1
         key = lambda a: a and (a.ID, a.blockData)
         return cmp(key(self), key(other))
-
-    hasVariants = True  # True if blockData defines additional blocktypes
 
     def __init__(self, materials, blockID, blockData=0):
         self.materials = materials
@@ -172,15 +170,6 @@ class MCMaterials(object):
             return self.blocksByID[id, data]
         else:
             bl = Block(self, id, blockData=data)
-            bl.hasVariants = True
-            return bl
-        
-    def callableBlockWithID(self, id, data=0):
-        if (id, data) in self.blocksByID:
-            return self.blocksByID[id, data]
-        else:
-            bl = Block(self, id, blockData=data)
-            bl.hasVariants = True
             return bl
 
     def addYamlBlocksFromFile(self, filename):
@@ -307,10 +296,6 @@ class MCMaterials(object):
 
         self.allBlocks.append(block)
         self.blocksByType[type].append(block)
-
-        if (blockID, 0) in self.blocksByID:
-            self.blocksByID[blockID, 0].hasVariants = True
-            block.hasVariants = True
 
         self.blocksByID[blockID, blockData] = block
 
