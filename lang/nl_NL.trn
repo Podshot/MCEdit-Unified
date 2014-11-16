@@ -52,7 +52,7 @@ t19 Verander haringbestand Terwijl Duwen
 o20 Change
 t20 Veranderen
 o21 Options
-t21 opties
+t21 Opties
 o22 OK
 t22 OK
 o23 Field of View: 
@@ -96,15 +96,15 @@ t41 <
 o42 >
 t42 >
 o43 Show...
-t43 Voir...
+t43 Laat zien...
 o44 Camera View
-t44 Vue camÃ©ra
+t44 Camera beeld
 o45 Record Undo
-t45 Enregistrement de l'historique
+t45 Neem ongedaan maken op
 o46 View Distance:
-t46 Distance de vue: 
+t46 Zichtafstand
 o47 [UNDEFINED]
-t47 [UNDEFINED]
+t47 [ONBEPAALD]
 o48 White
 t48 Wit
 o49 Blue
@@ -138,27 +138,27 @@ t62 Selectie Opties
 o63 Place Immediately
 t63 Plaats Onmiddellijk
 o64 Clone Options
-t64 Clone opties
+t64 Kloon Opties
 o65 Alpha: 
 t65 Alpha:  
 o66 Choose Block Immediately
-t66 Kies blok directs
+t66 Kies blok direct
 o67 Reset Distance When Brush Size Changes
 t67 Reset de afstand als de kwastgrootte veranderd
 o68 Brush Options
 t68 Kwastopties
 o69 Fill Options
-t69 opties de remplssage
+t69 Vulopties
 o70 Spawn Position Safety
-t70 SÃ©curitÃ© position de spawn
+t70 Beveilig spawnpositie
 o71 Spawn Point Options
-t71 opties point de spawn
+t71 Spawnpunt Opties
 o72 Create New World
 t72 Maak nieuwe wereld
 o73 Ctrl-
 t73 Ctrl-
 o74 Quick Load
-t74 Chargement rapide
+t74 Snel laden
 o75 Open...
 t75 Open...
 o76 Save
@@ -168,7 +168,7 @@ t77 Recharger
 o78 Close
 t78 Fermer
 o79 Goto
-t79 Aller Ã 
+t79 Ga naar
 o80 World Info
 t80 Info monde
 o81 Undo
@@ -196,7 +196,7 @@ t91 Licentie
 o92 Config Files Folder
 t92 Config Files Folder
 o93  to move
-t93  pour dÃ©pl
+t93  om te bewegen
 o94  to slow down
 t94  om af te remmen
 o95 Right-click to toggle camera control
@@ -302,13 +302,13 @@ t142 Geen
 o143 <Menu>
 t143 <Menu>
 o144 New World
-t144 ce monde
+t144 Nieuwe wereld
 o145 Open
 t145 Open
 o146 Reload World
-t146 Recharger monde
+t146 Herlaad wereld
 o147 Close World
-t147 Fermer monde
+t147 Sluit wereld
 o148 <Advanced>
 t148 <Advanced>
 o149 Debug Overlay
@@ -318,7 +318,7 @@ t150 Laat blokinfo zien
 o151 Pick Block
 t151 Kies blok
 o152 Select Chunks
-t152 selecteren chunks
+t152 Selecteer chunks
 o153 Deselect Chunks
 t153 Deselecteer Chunks
 o154 Snap Clone to Axis
@@ -372,7 +372,7 @@ t177 Herstart
 o178 Later
 t178 Later
 o179 Loading
-t179 Chargement
+t179 Laden
 o180  - MCEdit 
 t180  - MCEdit
 o181 Overworld
@@ -404,7 +404,7 @@ t193 Chunks per seconde.
 o194 Shortcut: {0}
 t194 Sneltoets: {0}
 o195 Chunk View
-t195 Chunk zicht
+t195 Chunk beeld
 o196 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
 t196 Laat de muis los om de {0} selectiehoek hier te plaatsen. Druk op {1} om hoeken te wisselen
 o197 Release the mouse button to finish the selection
@@ -434,7 +434,7 @@ t208 Maak een kopie van alle blokken en entities in de selectie, verwijder dan a
 o209 Take a copy of all blocks and entities within the selection. Shortcut: {0}
 t209 Maak een kopie van alle blokken en entities in de selectie. Sneltoets: {0}
 o210 Import the last item taken by Cut or Copy. Shortcut: {0}
-t210 Importeer de laatste selectie opgenomen door Knip of KopiÃ«er. 
+t210 Importeer de laatste selectie opgenomen door Knip of Kopiëer. 
 o211 Export
 t211 Exporteer
 o212 Export the selection to a .schematic file. Shortcut: {0}
@@ -490,16 +490,16 @@ t235 Maak een kopie van alle blokken en entities in de selectie, verwijder dan a
 o236 Take a copy of all blocks and entities within the selection. Shortcut: {0}
 t236 Maak een kopie van alle blokken en entities in de selectie. Sneltoets : {0}
 o237 Import the last item taken by Cut or Copy. Shortcut: {0}
-t237 Importeer de laatste selectie opgenomen door Knip of KopiÃ«er. Sneltoets:{0}
+t237 Importeer de laatste selectie opgenomen door Knip of Kopiëer. Sneltoets:{0}
 o238 Export the selection to a .schematic file. Shortcut: {0}
 t238 Exporteer de selectie naar een .schematic bestand. : {0}
-o239 Clone
+o239 Clone 
 Right-click for options
-t239 Kloon
+t239 Kloon 
 Klik rechts voor opties
-o240 Brush
+o240 Brush 
 Right-click for options
-t240 Kwast
+t240 Kwast 
 Klik rechts voor opties
 o241 Fill
 t241 Vul
@@ -613,194 +613,196 @@ t293 Vink aan om automatisch de positie van de mobs in spawners aan te passen bi
 Sneltoets: Alt-5
 o294 Shortcut: Enter
 t294 Sneltoets: Enter
-o295 Fill and Replace
+o295 Fill and Replace 
 Right-click for options
-t295 
+t295 Vul en vervang 
+Klik rechts voor opties
 o296 Fill with:
-t296 
+t296 Vullen met:
 o297 Search
-t297 
+t297 Zoek
 o298 Name
-t298 
+t298 Naam
 o299 ID
-t299 
+t299 ID
 o300 Any Subtype
-t300 
+t300 Elk subtype
 o301 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
-t301 
+t301 Durk op {hotkey} om een blok te kiezen. Druk op {R} om vervangmodus te selecteren. Klik Vullen of druk op Enter om te bevestigen.
 o302 Shortcut: {0}
-t302 
+t302 Sneltoets: {0}
 o303 Find:
-t303 
+t303 Vind:
 o304 Replace with:
-t304 
+t304 Vervangen met:
 o305 Shortcut: {0}
-t305 
+t305 Sneltoets: {0}
 o306 When the fill tool is chosen, prompt for a block type.
-t306 
+t306 Als het vullen gereedschap is gekozen, vraag direct om een bloktype.
 o307 Filter
-t307 
+t307 Filter
 o308 Invisibility (no effect)
-t308 
+t308 Onzichtbaarheid (geen effect)
 o309 Strength
-t309 
+t309 Kracht
 o310 Nausea (no mob effect)
-t310 
+t310 Misselijkheid (geen mob effect)
 o311 Weakness
-t311 
+t311 Zwakte
 o312 Speed (no mob effect)
-t312 
+t312 Snelheid (geen mob effect)
 o313 Water Breathing
-t313 
+t313 Onderwater ademhalen
 o314 Regeneration
-t314 
+t314 Herleving
 o315 Poison
-t315 
+t315 Gif
 o316 Resistance
-t316 
+t316 Weerstand
 o317 Hunger (no mob effect)
-t317 
+t317 Honger
 o318 Haste (no mob effect)
-t318 
+t318 Haast
 o319 Fire Resistance
-t319 
+t319 Vuurbestendigheid
 o320 Slowness (no mob effect)
-t320 
+t320 Traagheid (geen mob effect)
 o321 Blindness (no mob effect)
-t321 
+t321 Blindheid (geen mob effect)
 o322 Night Vision (no effect)
-t322 
+t322 Nachtkijken (geen mob effect)
 o323 Mining Fatigue (no mob effectg)
-t323 
+t323 Moe van het mijnen (geen mob effect) 
 o324 Jump Boost
-t324 
+t324 Spring oppepper
 o325 Effect
-t325 
+t325 Effect
 o326 Level
-t326 
+t326 Niveau
 o327 Duration (Seconds)
-t327 
+t327 Duur (Seconden)
 o328 Add Potion Effect to Mobs
-t328 
+t328 Voeg toverdrank effect toe aan mobs
 o329 Banslimes
-t329 
+t329 Verban slimes
 o330 Change Mob Properties
-t330 
+t330 Verander Mob Eigenschappen
 o331 Chunk Surface Repair
-t331 
+t331 Chunk oppervlakte repareren
 o332 Classic Water Flood
-t332 
+t332 Oude water overstroming
 o333 Colorwires
-t333 
+t333 Kleurdraden
 o334 Create Busses
-t334 
+t334 Maak bussen
 o335 Create Shops
-t335 
+t335 Maak winkels
 o336 Create Spawners
-t336 
+t336 Maak spawners
 o337 Decliff
-t337 
+t337 Ontklif
 o338 Find
-t338 
+t338 Vind
 o339 Forester
-t339 
+t339 Bebosser
 o340 Make Mobs Invincible
-t340 
+t340 Maak Mobs onkwetsbaar
 o341 Setbiome
-t341 
+t341 Stel biosysteem in
 o342 Smooth
-t342 
+t342 Verzacht
 o343 Filter:
-t343 
+t343 Filter:
 o344 Update Filters
-t344 
+t344 Vernieuw Filters
 o345 Max Seed
-t345 
+t345 Maximaal zaad
 o346 Health
-t346 
+t346 Levens
 o347 VelocityX
-t347 
+t347 X-Snelheid
 o348 VelocityY
-t348 
+t348 Y-Snelheid
 o349 VelocityZ
-t349 
+t349 Z-Snelheid
 o350 Fire
-t350 
+t350 Vuur
 o351 FallDistance
-t351 
+t351 Gevallen afstand
 o352 AttackTime
-t352 
+t352 Aanvaltijd
 o353 HurtTime
-t353 
+t353 Geraakt-tijd
 o354 Lightning
-t354 
+t354 Bliksem
 o355 No Lightning
-t355 
+t355 Geen bliksem
 o356 Lightning Creeper
-t356 
+t356 Bliksemcreeper
 o357 Enderman Block Id
-t357 
+t357 Enderman Blok ID
 o358 Enderman Block Data
-t358 
+t358 Enderman Block Data
 o359 Villager (green)
-t359 
+t359 Dorpeling (groen)
 o360 Farmer (brown)
-t360 
+t360 Boer (Bruin)
 o361 Butcher (white apron)
-t361 
+t361 Slager (wit schort)
 o362 Librarian (white)
-t362 
+t362 Bibliothecaris (wit)
 o363 Blacksmith (black apron)
-t363 
+t363 Smid (zwart schort)
 o364 Priest (purple)
-t364 
+t364 Priester (paars)
 o365 Villager Profession
-t365 
+t365 Beroep van Dorpeling
 o366 Slime Size
-t366 
+t366 Slimegrootte
 o367 Breeding Mode Ticks
-t367 
+t367 Paarmodus Ticks
 o368 Child/Adult Age
-t368 
+t368 Kind/Volwassen
 o369 Repairs the backwards surfaces made by old versions of Minecraft.
-t369 
+t369 Repareert het oude oppervlaktes gemaakt door oude versies van Minecraft.
 o370 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t370 
+t370 Maakt water in de regio naar buiten stromen en naar beneden, terwijl het volledige bronblokken worden, net als in Minecraft Classic.
 o371 Flood Water
-t371 
+t371 Overstroom Water
 o372 Flood Lava
-t372 
+t372 Overstroom Lava
 o373 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t373 
+t373 Dit is een aangepaste versie van Sethbling's maak winkels filter, op DragonQuiz's aanvraag.
 o374 Profession
-t374 
+t374 Beroep
 o375 Add Stopping Trade
-t375 
+t375 Voeg Beperkende Handelsoptie toe.
 o376 Invulnerable Villager
-t376 
+t376 Onkwetsbare Dorpeling
 o377 Make Unlimited Trades
-t377 
+t377 Maak Handelsopties oneindig
 o378 Give Experience per a Trade
-t378 
+t378 Geef Ervaring per Handel
 o379 Make Villager not Move
-t379 
+t379 Laat Dorpeling niet Bewegen
 o380 Villager Name
-t380 
+t380 Naam van Dorpeling
 o381 General Trade
-t381 
+t381 Gewone Handelsoptie
 o382       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t382 
+t382        Draai de Positie van je Handelaar 
+*Kan alleen gebruikt worden als Niet Bewegen is aangevinkt*
 o383 Y-Axis
-t383 
+t383 Y-As
 o384 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t384 
+t384 Verandert de draaing van zijn lichaam. West is 0. Moet tussen -180 en 180 graden zijn.
 o385 X-Axis
-t385 
+t385 X-As
 o386 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t386 
+t386 Verandert de draaing van zijn hoofd. Horizontaal is 0. Positieve waardes kijken naar benenden. Moet tussen -90 en 90 graden zijn.
 o387 Rotation
-t387 
+t387 DRaaiing
 o388 To create a shop first put your buy in the top slot(s) of the chest.
 Second put a second buy in the middle slot(optional).
 Third put a sell in the bottom slot.
