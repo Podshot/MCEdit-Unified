@@ -10,409 +10,411 @@
 # See TRANSLATION.txt for more detailed information.
 #
 o0 Autobrake
-t0 
+t0 자동 멈춤
 o1 Swap Axes Looking Down
-t1 
+t1 아래를 볼 때 방향 반전
 o2 Camera Acceleration: 
-t2 
+t2 카메라 가속:
 o3 Camera Drag: 
-t3 
+t3 카메라 드래그:
 o4 Camera Max Speed: 
-t4 
+t4 카메라 최고 속도:
 o5 Camera Braking Speed: 
-t5 
+t5 카메라 멈추는 속도:
 o6 Mouse Speed: 
-t6 
+t6 마우스 감도:
 o7 Undo Limit: 
-t7 
+t7 실행 취소 제한: 
 o8 Invert Mouse
-t8 
+t8 마우스 반전
 o9 Low Detail Height
-t9 
+t9 디테일 생략 높이
 o10 Block Buffer (MB):
-t10 
+t10 블럭 버퍼 (MB):
 o11 Set Window Placement
-t11 
+t11 윈도우 위치 고정
 o12 Rotate block with brush
-t12 
+t12 브러쉬와 함께 블럭 회전
 o13 Window Resize Alert
-t13 
+t13 윈도우 크기 변경 알림
 o14 Visibility Check
-t14 
+t14 가시성 검사
 o15 Long-Distance Mode
-t15 
+t15 먼 거리 모드
 o16 Fly Mode
-t16 
+t16 날기 모드
 o17 Language
-t17 
+t17 언어
 o18 Static Coords While Nudging
-t18 
+t18 움직일 때 고정된 좌표
 o19 Change Spawners While Nudging
-t19 
+t19 움직일 때 스포너 이동
 o20 Change
-t20 
+t20 이동
 o21 Options
-t21 
+t21 설정
 o22 OK
-t22 
+t22 확인
 o23 Field of View: 
-t23 
+t23 시야 범위:
 o24 Target FPS: 
-t24 
+t24 최대 프레임:
 o25 Vertex Buffer Limit (MB): 
-t25 
+t25 버텍스 버퍼 제한 (MB):
 o26 Fast Leaves
-t26 
+t26 빠른 나뭇잎
 o27 Rough Graphics
-t27 
+t27 빠른 그래픽
 o28 Enable Mouse Lag
-t28 
+t28 마우스 렉 허용
 o29 Default
-t29 
+t29 기본
 o30 Settings
-t30 
+t30 환경
 o31 Command
-t31 
+t31 명령
 o32 Assigned Key
-t32 
+t32 설정된 키
 o33 Assign Key...
-t33 
+t33 키 설정...
 o34 Done
-t34 
+t34 확인
 o35 WASD
-t35 
+t35 WASD
 o36 Arrows
-t36 
+t36 화살표
 o37 Numpad
-t37 
+t37 숫자패드
 o38 WASD Old
-t38 
+t38 WASD 옛날
 o39 Presets: 
-t39 
+t39 기본 설정: 
 o40 MCEdit
-t40 
+t40 MCEdit
 o41 <
-t41 
+t41 <
 o42 >
-t42 
+t42 >
 o43 Show...
-t43 
+t43 보기...
 o44 Camera View
-t44 
+t44 카메라 시야
 o45 Record Undo
-t45 
+t45 작업 내역 녹화
 o46 View Distance:
-t46 
+t46 시야:
 o47 [UNDEFINED]
-t47 
+t47 [UNDEFINED]
 o48 White
-t48 
+t48 하얀색
 o49 Blue
-t49 
+t49 파란색
 o50 Green
-t50 
+t50 초록색
 o51 Red
-t51 
+t51 빨간색
 o52 Teal
-t52 
+t52 청록색
 o53 Pink
-t53 
+t53 분홍색
 o54 Yellow
-t54 
+t54 노란색
 o55 Grey
-t55 
+t55 회색
 o56 Black
-t56 
+t56 검은색
 o57 Color: 
-t57 
+t57 색상:
 o58 Show Previous Selection
-t58 
+t58 최근 선택 영역 보기
 o59 R:
-t59 
+t59 R:
 o60 G:
-t60 
+t60 G:
 o61 B:
-t61 
+t61 B:
 o62 Selection Options
-t62 
+t62 선택 영역 설정
 o63 Place Immediately
-t63 
+t63 바로 설치하기
 o64 Clone Options
-t64 
+t64 복제 설정
 o65 Alpha: 
-t65 
+t65 투명도:
 o66 Choose Block Immediately
-t66 
+t66 블럭 바로 선택하기
 o67 Reset Distance When Brush Size Changes
-t67 
+t67 브러쉬 크기가 변경되면 거리 초기화
 o68 Brush Options
-t68 
+t68 브러쉬 설정
 o69 Fill Options
-t69 
+t69 채우기 설정
 o70 Spawn Position Safety
-t70 
+t70 스폰 지역 안전
 o71 Spawn Point Options
-t71 
+t71 스폰 지점 설정
 o72 Create New World
-t72 
+t72 새로운 월드 생성
 o73 Ctrl-
-t73 
+t73 Ctrl-
 o74 Quick Load
-t74 
+t74 월드 목록
 o75 Open...
-t75 
+t75 열기...
 o76 Save
-t76 
+t76 저장
 o77 Reload
-t77 
+t77 재시작
 o78 Close
-t78 
+t78 닫기
 o79 Goto
-t79 
+t79 이동
 o80 World Info
-t80 
+t80 월드 정보
 o81 Undo
-t81 
+t81 실행 취소
 o82 Redo
-t82 
+t82 다시 실행
 o83 Select All
-t83 
+t83 모두 선택
 o84 Deselect
-t84 
+t84 선택 취소
 o85 Quit
-t85 
+t85 종료
 o86 Controls
-t86 
+t86 조작
 o87 Graphics
-t87 
+t87 그래픽
 o88 Homepage
-t88 
+t88 홈페이지
 o89 About MCEdit
-t89 
+t89 MCEdit에 관하여
 o90 Recent Changes
-t90 
+t90 업데이트 내용
 o91 License
-t91 
+t91 라이선스
 o92 Config Files Folder
-t92 
+t92 설정 파일 폴더
 o93  to move
-t93 
+t93 로 움직이세요.
 o94  to slow down
-t94 
+t94 로 속도를 줄이세요.
 o95 Right-click to toggle camera control
-t95 
+t95 우클릭으로 카메라 컨트롤을 변경하세요.
 o96 Mousewheel to control tool distance
-t96 
+t96 마우스휠로 도구 거리를 변경하세요.
 o97 Hold Alt for details
-t97 
+t97 자세한 것은 Alt를 꾹 눌러서 보세요.
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
-t98 
+t98 경고: 한 번에 하나의 프로그램에서만 월드를 여세요. 마인크래프트와 MCEdit에서 동시에 월드를 열면 변경 사항을 잃고 세이브파일을 손상시킬 수 있습니다.
+
+ 마인크래프트 1.3 이하 버전을 쓴다면 마인크래프트를 완전히 닫고 MCEdit을 사용해야 합니다.
 o99 Don't remind me again.
-t99 
+t99 다시 보지 않기
 o100 <Movement>
-t100 
+t100 <조작>
 o101 Forward
-t101 
+t101 앞쪽
 o102 Back
-t102 
+t102 뒤쪽
 o103 Left
-t103 
+t103 왼쪽
 o104 Right
-t104 
+t104 오른쪽
 o105 Up
-t105 
+t105 위쪽
 o106 Down
-t106 
+t106 아래쪽
 o107 Brake
-t107 
+t107 정지
 o108 <Camera>
-t108 
+t108 <카메라>
 o109 Pan Up
-t109 
+t109 위쪽으로 회전
 o110 Pan Down
-t110 
+t110 아래쪽으로 회전
 o111 Pan Left
-t111 
+t111 왼쪽으로 회전
 o112 Pan Right
-t112 
+t112 오른쪽으로 회전
 o113 Toggle View
-t113 
+t113 카메라 변경
 o114 Goto Panel
-t114 
+t114 이동
 o115 View Distance
-t115 
+t115 시야
 o116 Toggle Renderer
-t116 
+t116 렌더링 변경
 o117 <Blocks>
-t117 
+t117 <블럭>
 o118 Swap
-t118 
+t118 바꾸기
 o119 Delete Blocks
-t119 
+t119 블럭 삭제
 o120 Increase Reach
-t120 
+t120 거리 늘리기
 o121 Decrease Reach
-t121 
+t121 거리 줄이기
 o122 Reset Reach
-t122 
+t122 거리 초기화
 o123 Export Selection
-t123 
+t123 선택 영역 내보내기
 o124 Brush Line Tool
-t124 
+t124 브러쉬 선 도구
 o125 <Clone>
-t125 
+t125 <복제>
 o126 Rotate (Clone)
-t126 
+t126 회전 (복제)
 o127 Roll (Clone)
-t127 
+t127 굴리기 (복제)
 o128 Flip
-t128 
+t128 뒤집기
 o129 Mirror
-t129 
+t129 대칭
 o130 <Brush>
-t130 
+t130 <브러쉬>
 o131 Rotate (Brush)
-t131 
+t131 회전 (브러쉬)
 o132 Roll (Brush)
-t132 
+t132 굴리기 (브러쉬)
 o133 Increase Brush
-t133 
+t133 브러쉬 늘리기
 o134 Decrease Brush
-t134 
+t134 브러쉬 줄이기
 o135 <Fill and Replace>
-t135 
+t135 <채우기, 변경>
 o136 Replace Shortcut
-t136 
+t136 변경 단축키
 o137 <Functions>
-t137 
+t137 <기능>
 o138 Cut
-t138 
+t138 잘라내기
 o139 Copy
-t139 
+t139 복사
 o140 Paste
-t140 
+t140 붙여넣기
 o141 <Options>
-t141 
+t141 <설정>
 o142 None
-t142 
+t142 없음
 o143 <Menu>
-t143 
+t143 <메뉴>
 o144 New World
-t144 
+t144 새로운 월드
 o145 Open
-t145 
+t145 열기
 o146 Reload World
-t146 
+t146 월드 재시작
 o147 Close World
-t147 
+t147 월드 닫기
 o148 <Advanced>
-t148 
+t148 <고급 기능>
 o149 Debug Overlay
-t149 
+t149 디버그 덮어쓰기
 o150 Show Block Info
-t150 
+t150 블럭 정보 보이기
 o151 Pick Block
-t151 
+t151 블럭 고르기
 o152 Select Chunks
-t152 
+t152 청크 선택
 o153 Deselect Chunks
-t153 
+t153 청크 선택 취소
 o154 Snap Clone to Axis
-t154 
+t154 Snap Clone to Axis
 o155 Blocks-Only Modifier
-t155 
+t155 Blocks-Only Modifier
 o156 Fast Increment Modifier
-t156 
+t156 Fast Increment Modifier
 o157 Leaves are solid, like Minecraft's 'Fast' graphics
-t157 
+t157 나뭇잎은 마인크래프트의 '빠른'그래픽같이 불투명합니다.
 o158 All blocks are drawn the same way (overrides 'Fast Leaves')
-t158 
+t158 모든 블럭이 같은 방식으로 렌더링됩니다. ('빠른 나뭇잎'을 덮어씀)
 o159 Enable choppy mouse movement for faster loading.
-t159 
+t159 마우스 움직임이 버벅거리는 대신 로딩이 빨라집니다.
 o160 Point here and use mousewheel to adjust
-t160 
+t160 여기를 가리키고 마우스휠로 조절하세요.
 o161 Install Mode: Portable
-t161 
+t161 설치 모드: 이동식
 o162 Install Mode: Fixed
-t162 
+t162 설치 모드: 고정
 o163 Change the direction of the Forward and Backward keys when looking down
-t163 
+t163 아래를 볼 때 앞과 뒤 키의 방향을 반전합니다.
 o164 When you are this far above the top of the world, move fast and use low-detail mode.
-t164 
+t164 이 높이보다 위에 있을 때, 카메라가 빨리 움직이고 디테일이 낮아집니다.
 o165 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
-t165 
+t165 임시저장에 사용되는 메모리의 크기. 이것보다 많은 양이 필요하면 디스크가 사용됩니다.
 o166 Change the position of the mobs in spawners while nudging.
-t166 
+t166 움직일 때 스포너의 몹들도 함께 움직입니다.
 o167 Change static coordinates in command blocks while nudging.
-t167 
+t167 움직일 때 커맨드 블럭의 고정 좌표도 함께 움직입니다.
 o168 Always target the farthest block under the cursor, even in mouselook mode.
-t168 
+t168 항상 커서 밑의 가장 먼 블럭을 선택합니다.
 o169 Moving forward and Backward will not change your altitude in Fly Mode.
-t169 
+t169 이 모드를 사용하면 앞과 뒤로 움직일 때 카메라의 높이가 변하지 않습니다.
 o170 Apply brake when not pressing movement keys
-t170 
+t170 이동 키를 누르지 않으면 자동으로 멈춥니다.
 o171 Reverse the up and down motion of the mouse.
-t171 
+t171 마우스의 위아래 방향을 반전합니다.
 o172 Do a visibility check on chunks while loading. May cause a crash.
-t172 
+t172 로딩시에 청크에 가시성 검사를 합니다. 크래시가 일어날 수 있습니다.
 o173 When rotating your brush, also rotate the orientation of the block your brushing with
-t173 
+t173 브러쉬를 회전할 때, 브러쉬에 사용되는 블럭도 함께 회전시킵니다.
 o174 Choose your language.
-t174 
+t174 언어를 선택하세요.
 o175 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t175 
+t175 클릭하시면 MCEdit의 모든 정보가 MCEdit의 폴더 안으로 이동됩니다.
 o176 You must restart MCEdit to see language changes
-t176 
+t176 MCEdit을 재시작하면 언어 변경 내용을 볼 수 있습니다.
 o177 Restart
-t177 
+t177 재시작
 o178 Later
-t178 
+t178 나중에
 o179 Loading 
-t179 
+t179 로딩중
 o180  - MCEdit 
-t180 
+t180  - MCEdit
 o181 Overworld
-t181 
+t181 오버월드
 o182 The End
-t182 
+t182 엔드
 o183 Nether
-t183 
+t183 지옥
 o184 Goto Dimension
-t184 
+t184 차원 이동
 o185 Chunks: %d
-t185 
+t185 Chunks: %d
 o186 fps: %0.1f
-t186 
+t186 fps: %0.1f
 o187 MBv: %0.1f
-t187 
+t187 MBv: %0.1f
 o188 cps: %0.1f
-t188 
+t188 cps: %0.1f
 o189 Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.
-t189 
+t189 클릭하거나 드래그하여 선택합니다. 선택 영역의 벽을 드래그해서 크기를 변경합니다. 모서리 부근을 클릭해서 반대쪽 벽을 드래그합니다.
 o190 Number of chunks loaded into the renderer.
-t190 
+t190 한 번에 렌더링되는 청크 수입니다.
 o191 Memory used for vertexes
-t191 
+t191 버텍스에 사용되는 메모리입니다.
 o192 Frames per second.
-t192 
+t192 초당 프레임 수
 o193 Chunks per second.
-t193 
+t193 초당 청크 수
 o194 Shortcut: {0}
-t194 
+t194 단축키: {0}
 o195 Chunk View
-t195 
+t195 청크 카메라
 o196 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
-t196 
+t196 마우스 버튼을 이곳에서 놓아서 {0} 선택 영억 코너를 놓으세요. {1}을 눌러서 코너를 변경하세요.
 o197 Release the mouse button to finish the selection
-t197 
+t197 마우스 버튼을 놓아서 선택을 완료하세요.
 o198 Nudge
-t198 
+t198 이동
 o199 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
-t199 
+t199 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 블럭씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
 o200 {0:n} blocks
-t200 
+t200 {0:n} 블럭
 o201 Fill the selection with Air. Shortcut: {0}
 t201 
 o202 Delete Entities
