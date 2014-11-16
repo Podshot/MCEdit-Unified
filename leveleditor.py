@@ -3251,6 +3251,23 @@ class LevelEditor(GLViewport):
                 loadWorld()
                 d.dismiss("Cancel")
 
+        def key_down(evt):
+            keyname = keys.getKey(evt)
+            if keyname == "Escape":
+                d.dismiss("Cancel")
+            elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
+                worldTable.selectedWorldIndex -= 1
+            elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds)-1:
+                worldTable.selectedWorldIndex += 1
+            elif keyname == "Return":
+                loadWorld()
+                d.dismiss("Cancel")
+
+            self.key_down(evt, 1, 1)
+
+        def key_up(evt):
+            self.key_up(evt)
+
         worldTable = TableView(columns=[
             TableColumn("Last Played", 170, "l"),
             TableColumn("Level Name (filename)", 500, "l"),
@@ -3299,6 +3316,8 @@ class LevelEditor(GLViewport):
         worldPanel.shrink_wrap()
 
         d = Dialog(worldPanel, ["Load", "Cancel"])
+        d.key_down = key_down
+        d.key_up = key_up
         if d.present() == "Load":
             loadWorld()
 
