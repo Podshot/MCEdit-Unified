@@ -471,9 +471,9 @@ class PlayerPositionTool(EditorTool):
                 24, 8,
 
                 16, 0,
-                16, 8,
-                8, 8,
                 8, 0,
+                8, 8,
+                16, 8,
 
                 8, 8,
                 0, 8,
