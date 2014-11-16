@@ -605,7 +605,7 @@ class MCEdit(GLViewport):
         self.graphicsPanel.present()
 
     def showKeyConfig(self):
-        self.keyConfigPanel.present()
+        self.keyConfigPanel.presentControls()
 
     def loadRecentWorldNumber(self, i):
         worlds = list(self.recentWorlds())
