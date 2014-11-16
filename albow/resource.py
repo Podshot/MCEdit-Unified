@@ -26,7 +26,6 @@ cursor_cache = {}
 
 
 def _resource_path(default_prefix, names, prefix=""):
-    log.debug("resource_dir: %s"%resource_dir)
     return os.path.join(resource_dir, prefix or default_prefix, *names)
 
 
@@ -64,33 +63,25 @@ def get_image(*names, **kwds):
 
 
 def get_font(size, *names, **kwds):
-    log.debug("albow.resource.get_font <<<")
     path = _resource_path("fonts", names, **kwds)
-    log.debug("%s"%path)
     key = (path, size)
     font = font_cache.get(key)
-    log.debug("font: %s"%font)
     if not font:
-        log.debug("Font not in cache.")
         try:
             font = pygame.font.Font(path, size)
-            log.debug("Font loaded")
         except Exception, e:
             log.debug("PyGame could not load font.")
             log.debug("Exception: %s"%e)
             log.debug("Trying with sys.getfilesystemencoding()")
             try:
                 path = path.encode(sys.getfilesystemencoding())
-                log.debug("Path encoded")
                 font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
-                log.debug("Font loaded")
             except Exception, e:
                 log.debug("PyGame could not load font.")
                 log.debug("Exception: %s"%e)
                 log.debug("Loading sysfont")
                 font = pygame.font.SysFont("Courier New", size)
         font_cache[key] = font
-    log.debug("albow.resource.get_font >>>")
     return font
 
 
