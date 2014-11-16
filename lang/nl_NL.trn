@@ -98,7 +98,7 @@ t42 >
 o43 Show...
 t43 Voir...
 o44 Camera View
-t44 Vue caméra
+t44 Vue camÃ©ra
 o45 Record Undo
 t45 Enregistrement de l'historique
 o46 View Distance:
@@ -150,7 +150,7 @@ t68 Kwastopties
 o69 Fill Options
 t69 opties de remplssage
 o70 Spawn Position Safety
-t70 Sécurité position de spawn
+t70 SÃ©curitÃ© position de spawn
 o71 Spawn Point Options
 t71 opties point de spawn
 o72 Create New World
@@ -168,7 +168,7 @@ t77 Recharger
 o78 Close
 t78 Fermer
 o79 Goto
-t79 Aller à
+t79 Aller Ã 
 o80 World Info
 t80 Info monde
 o81 Undo
@@ -196,7 +196,7 @@ t91 Licentie
 o92 Config Files Folder
 t92 Config Files Folder
 o93  to move
-t93  pour dépl
+t93  pour dÃ©pl
 o94  to slow down
 t94  om af te remmen
 o95 Right-click to toggle camera control
@@ -208,7 +208,7 @@ t97 Houdt Alt ingedrukt for details
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
-t98 Waarschuwing: Open een wereld maar in één programma tegelijkertijd. Als je een wereld in meerdere programma's opent, zul je je werk verliezen en miscchien je wereld corrumperen.
+t98 Waarschuwing: Open een wereld maar in Ã©Ã©n programma tegelijkertijd. Als je een wereld in meerdere programma's opent, zul je je werk verliezen en miscchien je wereld corrumperen.
 
  Als je Minecraft 1.3 of eerder gebruikt, moet je Minecraft compleet afsluiten voor je MCEdit gebruikt.
 o99 Don't remind me again.
@@ -292,7 +292,7 @@ t137 <Functies>
 o138 Cut
 t138 Knip
 o139 Copy
-t139 Kopiëer
+t139 KopiÃ«er
 o140 Paste
 t140 Plak
 o141 <Options>
@@ -412,7 +412,7 @@ t197 Laat los om de selectie af te maken
 o198 Nudge
 t198 Schuiven
 o199 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
-t199 Klik en houd ingedrukt. Terwijl je ingedrukt houd, gebruik de bewegingstoetsen ({0}{1}{2}{3}{4}{5}) om te schuiven. Links om ��n blok te schuiven, rechts om een grotere afstand te schuiven.
+t199 Klik en houd ingedrukt. Terwijl je ingedrukt houd, gebruik de bewegingstoetsen ({0}{1}{2}{3}{4}{5}) om te schuiven. Links om één blok te schuiven, rechts om een grotere afstand te schuiven.
 o200 {0:n} blocks
 t200 {0:n} blokken
 o201 Fill the selection with Air. Shortcut: {0}
@@ -434,7 +434,7 @@ t208 Maak een kopie van alle blokken en entities in de selectie, verwijder dan a
 o209 Take a copy of all blocks and entities within the selection. Shortcut: {0}
 t209 Maak een kopie van alle blokken en entities in de selectie. Sneltoets: {0}
 o210 Import the last item taken by Cut or Copy. Shortcut: {0}
-t210 Importeer de laatste selectie opgenomen door Knip of Kopiëer. 
+t210 Importeer de laatste selectie opgenomen door Knip of KopiÃ«er. 
 o211 Export
 t211 Exporteer
 o212 Export the selection to a .schematic file. Shortcut: {0}
@@ -448,7 +448,7 @@ t215 Geselecteerde chunks:
 o216 Extract
 t216 Extraheer
 o217 Create
-t217 Cre�err
+t217 Creëerr
 o218 Prune
 t218 Snoei
 o219 Relight
@@ -462,7 +462,7 @@ t222 Klik en sleep om chunks te selecteren. Houdt {0} ingedrukt om te deselecter
 o223 {0} chunks
 t223 {0} chunks
 o224 Create new chunks within the selection.
-t224 Creëer nieuwe, lege chunks in de selectie.
+t224 CreÃ«er nieuwe, lege chunks in de selectie.
 o225 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
 t225 Verwijder de chunks in de selectie. Minecraft maakt ze opnieuw aan als je in de buurt bent.
 o226 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
@@ -490,7 +490,7 @@ t235 Maak een kopie van alle blokken en entities in de selectie, verwijder dan a
 o236 Take a copy of all blocks and entities within the selection. Shortcut: {0}
 t236 Maak een kopie van alle blokken en entities in de selectie. Sneltoets : {0}
 o237 Import the last item taken by Cut or Copy. Shortcut: {0}
-t237 Importeer de laatste selectie opgenomen door Knip of Kopiëer. Sneltoets:{0}
+t237 Importeer de laatste selectie opgenomen door Knip of KopiÃ«er. Sneltoets:{0}
 o238 Export the selection to a .schematic file. Shortcut: {0}
 t238 Exporteer de selectie naar een .schematic bestand. : {0}
 o239 Clone
@@ -504,13 +504,13 @@ Klik rechts voor opties
 o241 Fill
 t241 Vul
 o242 Varied Fill
-t242 Gevari�erd vullen
+t242 Gevariëerd vullen
 o243 Flood Fill
 t243 Vulemmer
 o244 Replace
 t244 Vervang
 o245 Varied Replace
-t245 Gevari�erd vervangen
+t245 Gevariëerd vervangen
 o246 Erode
 t246 Erodeer
 o247 Topsoil
@@ -576,7 +576,7 @@ t276 y
 o277 z
 t277 z
 o278 COPYING - 
-t278 KOPI�REN -
+t278 KOPIËREN -
 o279 Rotate
 t279 Draai
 o280 Roll
@@ -594,7 +594,7 @@ t285 Kopieer Water
 o286 Copy Biomes
 t286 Kopieer biosystemen
 o287 Change Coordinates
-t287 Verander co�rdinaten
+t287 Verander coördinaten
 o288 Change Spawners
 t288 Verander spawners
 o289 Clone
@@ -605,7 +605,7 @@ o291 Shortcut: Alt-2
 t291 Sneltoets: Alt-2
 o292 Check to automatically change command block static coordinates when moved.
 Shortcut: Alt-4
-t292 Vink om automatisch de statische command-blok co�rdinaten aan te passen bij bewegen.
+t292 Vink om automatisch de statische command-blok coördinaten aan te passen bij bewegen.
 Sneltoets: Alt-4
 o293 Check to automatically change the position of the mobs in spawners when moved.
 Shortcut: Alt-5
@@ -1117,5 +1117,3 @@ o531 Select preset to delete
 t531 Selecteer voorinstelling om te verwijderen
 o532  does not have a value yet.
 t532  heeft nog geen waarde
-
-
