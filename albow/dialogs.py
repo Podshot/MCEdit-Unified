@@ -58,6 +58,13 @@ class Dialog(Modal, Widget):
             if response is not None:
                 self.dismiss(response)
 
+    def key_down(self, e):
+        self.get_root().mcedit.editor.key_down(e, 1, 1)
+
+    def key_up(self, e):
+        self.get_root().mcedit.editor.key_up(e)
+
+
 
 class QuickDialog(Dialog):
     """ Dialog that closes as soon as you click outside or press a key"""
