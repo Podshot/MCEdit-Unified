@@ -1,4 +1,4 @@
-# TRANSLATION BASICS
+﻿# TRANSLATION BASICS
 # 
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
 # As long as the numbers match, it will translate the specified English string to the new language.
