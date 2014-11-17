@@ -459,7 +459,6 @@ class OptionsPanel(Dialog):
         Settings.blockBuffer.set(int(val * 1048576))
 
     def getLanguageChoices(self, current=None):
-        print "getLanguageChoices"
         files = os.listdir(albow.translate.langPath)
         langs = {}
         sgnal = {}
@@ -470,11 +469,11 @@ class OptionsPanel(Dialog):
                 langs[langName] = name
                 sgnal[name] = langName
         if "English (US)" not in langs.keys():
-            langs["Englis (US)"] = "en_US"
-            sgnal["en_US"] = "English (US)"
+            langs[u"Englis (US)"] = "en_US"
+            sgnal["en_US"] = u"English (US)"
         self.langs = langs
         self.sgnal = sgnal
-        print self.langs
+        log.debug("Detected languages: %s"%self.langs)
         return langs
 
     def changeLanguage(self):
@@ -523,10 +522,10 @@ class OptionsPanel(Dialog):
             o = o.encode("utf-8")
         if type(n) == str:
             n = n.encode("utf-8")
-        if not sc and n != "en_US":
+        if not sc and n != u"en_US":
             albow.alert(_("{} is not a valid language").format("%s [%s]"%(self.sgnal[n], n)))
             if o == n:
-                o = "en_US"
+                o = u"en_US"
             Settings.langCode.set(self.sgnal.get(o))
             lng = Settings.langCode.get()
             if type(lng) == str:
@@ -567,7 +566,7 @@ class MCEdit(GLViewport):
         lng = Settings.langCode.get()
         if type(lng) == str:
             lng = lng.decode("utf-8")
-        albow.translate.setLang(langs[lng])
+        albow.translate.setLang(langs.get(lng, "English (US)"))
         self.graphicsPanel = graphicsPanel(self)
 
         self.keyConfigPanel = keys.KeyConfigPanel()
