@@ -1,4 +1,4 @@
-﻿#-# Vlaamse (Nederland)
+﻿#-# Nederlands (Nederland)
 # TRANSLATION BASICS
 # 
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
@@ -163,7 +163,7 @@ t74 Snel laden
 o75 Open...
 t75 Open...
 o76 Save
-t76 Opslann
+t76 Opslaan
 o77 Reload
 t77 Recharger
 o78 Close
@@ -265,11 +265,11 @@ t123 Exporteer selectie
 o124 Brush Line Tool
 t124 Brush Line Tool
 o125 <Clone>
-t125 <Cloner>
+t125 <Kloon>
 o126 Rotate (Clone)
-t126 Draai (Cloner)
+t126 Draai (Kloon)
 o127 Roll (Clone)
-t127 Draai (Cloner)
+t127 Draai (Kloon)
 o128 Flip
 t128 Flip
 o129 Mirror
@@ -285,7 +285,7 @@ t133 Vergroot Kwast
 o134 Decrease Brush
 t134 Verklein Kwast
 o135 <Fill and Replace>
-t135 <Remplir et remplacer>
+t135 <Vul en Vervang>
 o136 Replace Shortcut
 t136 Vervang Shortcut
 o137 <Functions>
@@ -311,7 +311,7 @@ t146 Herlaad wereld
 o147 Close World
 t147 Sluit wereld
 o148 <Advanced>
-t148 <Advanced>
+t148 <Geavanceerd>
 o149 Debug Overlay
 t149 Debug Overlay
 o150 Show Block Info
