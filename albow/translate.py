@@ -198,6 +198,20 @@ def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     return data
 
 
+#-------------------------------------------------------------------------------
+def getLangName(file, path=None):
+    """Return the language name defined in the .trn file.
+    If the name is not found, return the file base name."""
+    if not path:
+        path = langPath
+    line = codecs.open(os.path.join(path, file), "r", "utf-8").readline()
+    if line.startswith("#-# "):
+        name = line.strip("#-# ").strip()
+    else:
+        name = os.path.splitext(os.path.basename(file))[0]
+    return name
+
+
 from time import asctime, time
 #-------------------------------------------------------------------------------
 def buildTranslation(lang,suppressAlert=False):

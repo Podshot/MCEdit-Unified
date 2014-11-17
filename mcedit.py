@@ -95,8 +95,8 @@ from leveleditor import ControlSettings, Settings
 #-# Building translation template
 if "-tt" in sys.argv:
     albow.translate.buildTemplate = True
-else:
-    albow.translate.setLang(Settings.langCode.get())
+#else:
+#    albow.translate.setLang(Settings.langCode.get())
 #-#
 import mceutils
 import mcplatform
@@ -113,6 +113,8 @@ import release
 import shutil
 import sys
 import traceback
+
+getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
 ESCAPE = '\033'
 
@@ -310,6 +312,9 @@ class OptionsPanel(Dialog):
 
         self.mcedit = mcedit
 
+        self.langs = {}
+        self.sgnal = {}
+
         autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
                                               ref=ControlSettings.autobrake.propertyRef(),
                                               tooltipText="Apply brake when not pressing movement keys")
@@ -374,9 +379,12 @@ class OptionsPanel(Dialog):
                                             ref=Settings.flyMode.propertyRef(),
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
-        self.languageButton = mceutils.ChoiceButton(self.getLanguageChoices(Settings.langCode.get()), choose=self.changeLanguage)
-        if Settings.langCode.get() in self.languageButton.choices:
-            self.languageButton.selectedChoice = Settings.langCode.get()
+        lng = Settings.langCode.get()
+        if type(lng) == str:
+            lng = lng.decode("utf-8")
+        self.languageButton = mceutils.ChoiceButton(self.getLanguageChoices(lng).keys(), choose=self.changeLanguage)
+        if lng in self.languageButton.choices:
+            self.languageButton.selectedChoice = lng
 
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
@@ -450,17 +458,23 @@ class OptionsPanel(Dialog):
     def blockBuffer(self, val):
         Settings.blockBuffer.set(int(val * 1048576))
 
-    def getLanguageChoices(self, current):
+    def getLanguageChoices(self, current=None):
+        print "getLanguageChoices"
         files = os.listdir(albow.translate.langPath)
-        #langs = [l[:-5] for l in files if l.endswith(".json") and l not in ["language template.json"]]
-        #langs = [l for l in langs if verifyLangCode(l)]
-        langs = []
+        langs = {}
+        sgnal = {}
         for file in files:
             name, ext = os.path.splitext(file)
             if ext == ".trn" and len(name) == 5 and name[2] == "_":
-                langs.append(name)
-        if "en_US" not in langs:
-            langs = ["en_US"] + langs
+                langName = albow.translate.getLangName(file)
+                langs[langName] = name
+                sgnal[name] = langName
+        if "English (US)" not in langs.keys():
+            langs["Englis (US)"] = "en_US"
+            sgnal["en_US"] = "English (US)"
+        self.langs = langs
+        self.sgnal = sgnal
+        print self.langs
         return langs
 
     def changeLanguage(self):
@@ -501,15 +515,24 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
-        o, n, sc = albow.translate.setLang(Settings.langCode.get())
+        lng = Settings.langCode.get()
+        if type(lng) == str:
+            lng = lng.decode("utf-8")
+        o, n, sc = albow.translate.setLang(self.langs[lng])
+        if type(o) == str:
+            o = o.encode("utf-8")
+        if type(n) == str:
+            n = n.encode("utf-8")
         if not sc and n != "en_US":
-            albow.alert(_("{} is not a valid language").format(n))
+            albow.alert(_("{} is not a valid language").format("%s [%s]"%(self.sgnal[n], n)))
             if o == n:
                 o = "en_US"
-            Settings.langCode.set(o)
-            albow.translate.setLang(Settings.langCode.get())
+            Settings.langCode.set(self.sgnal.get(o))
+            lng = Settings.langCode.get()
+            if type(lng) == str:
+                lng = lng.decode("utf-8")
+            albow.translate.setLang(lng)
         elif o != n:
-#            albow.alert("You must restart MCEdit to see language changes")
             editor = self.mcedit.editor
             if editor and editor.unsavedEdits:
                 result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
@@ -540,6 +563,11 @@ class MCEdit(GLViewport):
             self.setRecentWorlds([""] * 5)
 
         self.optionsPanel = OptionsPanel(self)
+        langs = self.optionsPanel.getLanguageChoices()
+        lng = Settings.langCode.get()
+        if type(lng) == str:
+            lng = lng.decode("utf-8")
+        albow.translate.setLang(langs[lng])
         self.graphicsPanel = graphicsPanel(self)
 
         self.keyConfigPanel = keys.KeyConfigPanel()
