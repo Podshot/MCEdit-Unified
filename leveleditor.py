@@ -3019,10 +3019,6 @@ class LevelEditor(GLViewport):
             self.mainViewport.cameraPosition = destPoint
 
     def closeEditor(self):
-        self.cameraInputs = [0., 0., 0.]
-        self.usedKeys = [0, 0, 0, 0, 0, 0]
-        self.notMove = [0, 0, 0, 0, 0, 0]
-
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
             self.root.ctrlClicked = -1
