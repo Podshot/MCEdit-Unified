@@ -383,7 +383,9 @@ class OptionsPanel(Dialog):
         lng = Settings.langCode.get()
         if type(lng) == str:
             lng = lng.decode("cp1252")
-        self.languageButton = mceutils.ChoiceButton(self.getLanguageChoices(lng).keys(), choose=self.changeLanguage)
+        langNames = self.getLanguageChoices(lng).keys()
+        langNames.sort()
+        self.languageButton = mceutils.ChoiceButton(langNames, choose=self.changeLanguage)
         if lng in self.languageButton.choices:
             self.languageButton.selectedChoice = lng
 
