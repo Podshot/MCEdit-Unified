@@ -205,8 +205,8 @@ def getLangName(file, path=None):
     if not path:
         path = langPath
     line = codecs.open(os.path.join(path, file), "r", "utf-8").readline()
-    if line.startswith("#-# "):
-        name = line.strip("#-# ").strip()
+    if "#-# " in line:
+        name = line.split("#-# ")[1].strip()
     else:
         name = os.path.splitext(os.path.basename(file))[0]
     return name

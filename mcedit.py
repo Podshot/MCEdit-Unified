@@ -69,7 +69,8 @@ logger.addHandler(ch)
 
 import albow
 # TODO: Language Detection
-# import locale
+#import locale
+#localEncoding = locale.getdefaultlocale()[1]
 # albow.translate.setLang(locale.getdefaultlocale()[0])
 # del locale
 
@@ -381,7 +382,7 @@ class OptionsPanel(Dialog):
 
         lng = Settings.langCode.get()
         if type(lng) == str:
-            lng = lng.decode("utf-8")
+            lng = lng.decode("cp1252")
         self.languageButton = mceutils.ChoiceButton(self.getLanguageChoices(lng).keys(), choose=self.changeLanguage)
         if lng in self.languageButton.choices:
             self.languageButton.selectedChoice = lng
@@ -477,7 +478,10 @@ class OptionsPanel(Dialog):
         return langs
 
     def changeLanguage(self):
-        Settings.langCode.set(self.languageButton.selectedChoice)
+        lng = self.languageButton.selectedChoice
+        if type(lng) == unicode:
+            lng = lng.encode("cp1252")
+        Settings.langCode.set(lng)
 
     def portableButtonTooltip(self):
         return (
@@ -516,7 +520,7 @@ class OptionsPanel(Dialog):
         """Used to change the language."""
         lng = Settings.langCode.get()
         if type(lng) == str:
-            lng = lng.decode("utf-8")
+            lng = lng.decode("cp1252")
         o, n, sc = albow.translate.setLang(self.langs[lng])
         if type(o) == str:
             o = o.encode("utf-8")
@@ -565,7 +569,7 @@ class MCEdit(GLViewport):
         langs = self.optionsPanel.getLanguageChoices()
         lng = Settings.langCode.get()
         if type(lng) == str:
-            lng = lng.decode("utf-8")
+            lng = lng.decode("cp1252")
         albow.translate.setLang(langs.get(lng, "English (US)"))
         self.graphicsPanel = graphicsPanel(self)
 
