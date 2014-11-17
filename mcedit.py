@@ -470,8 +470,8 @@ class OptionsPanel(Dialog):
                 langs[langName] = name
                 sgnal[name] = langName
         if "English (US)" not in langs.keys():
-            langs["Englis (US)"] = "en_US"
-            sgnal["en_US"] = "English (US)"
+            langs[u"Englis (US)"] = "en_US"
+            sgnal["en_US"] = u"English (US)"
         self.langs = langs
         self.sgnal = sgnal
         print self.langs
@@ -523,10 +523,10 @@ class OptionsPanel(Dialog):
             o = o.encode("utf-8")
         if type(n) == str:
             n = n.encode("utf-8")
-        if not sc and n != "en_US":
+        if not sc and n != u"en_US":
             albow.alert(_("{} is not a valid language").format("%s [%s]"%(self.sgnal[n], n)))
             if o == n:
-                o = "en_US"
+                o = u"en_US"
             Settings.langCode.set(self.sgnal.get(o))
             lng = Settings.langCode.get()
             if type(lng) == str:
