@@ -292,7 +292,7 @@ t137 <Functies>
 o138 Cut
 t138 Knip
 o139 Copy
-t139 KopiÃ«er
+t139 Kopiëer
 o140 Paste
 t140 Plak
 o141 <Options>
@@ -448,7 +448,7 @@ t215 Geselecteerde chunks:
 o216 Extract
 t216 Extraheer
 o217 Create
-t217 Creëerr
+t217 Creëer
 o218 Prune
 t218 Snoei
 o219 Relight
@@ -462,7 +462,7 @@ t222 Klik en sleep om chunks te selecteren. Houdt {0} ingedrukt om te deselecter
 o223 {0} chunks
 t223 {0} chunks
 o224 Create new chunks within the selection.
-t224 CreÃ«er nieuwe, lege chunks in de selectie.
+t224 Creëer nieuwe, lege chunks in de selectie.
 o225 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
 t225 Verwijder de chunks in de selectie. Minecraft maakt ze opnieuw aan als je in de buurt bent.
 o226 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
@@ -488,11 +488,11 @@ t234 Vul de selectie met lucht. Sneltoets: {0}
 o235 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
 t235 Maak een kopie van alle blokken en entities in de selectie, verwijder dan alles in de selectie. Sneltoets: {0}
 o236 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t236 Maak een kopie van alle blokken en entities in de selectie. Sneltoets : {0}
+t236 Maak een kopie van alle blokken en entities in de selectie. Sneltoets: {0}
 o237 Import the last item taken by Cut or Copy. Shortcut: {0}
 t237 Importeer de laatste selectie opgenomen door Knip of Kopiëer. Sneltoets:{0}
 o238 Export the selection to a .schematic file. Shortcut: {0}
-t238 Exporteer de selectie naar een .schematic bestand. : {0}
+t238 Exporteer de selectie naar een .schematic bestand. Sneltoets: {0}
 o239 Clone 
 Right-click for options
 t239 Kloon 
@@ -556,9 +556,9 @@ t266 Geen onderscheid
 o267 Click to replace {0} ({1}:{2})
 t267 Klik om te vervangen {0} ({1}:{2})
 o268 Click to replace Dirt (3:0)
-t268 Klik om te vervangen vuil (3:0)
+t268 Klik om Grond te vervangen (3:0)
 o269 Click to replace Stone (1:0)
-t269 Klik om te vervangen steen (1:0)
+t269 Klik om Steen te vervangen (1:0)
 o270 Noise
 t270 Ruis
 o271 Strength: 
@@ -822,55 +822,72 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
-t388 
+t388 Om een winkel te maken, stop de eerste te kopen items in de bovenste vakje(s) van de kist. 
+Stop het tweede te kopen item in het middelste vakje (optioneel). 
+Stop het te verkopen item in het onderste vakje. 
+Klik op de kist die je wilt en kies wat je wilt, klik dan op Enter 
+*Alle Items moeten in dezelfde rij zijn* 
+ 
+Geavanceerd, kleine ervaring in notepad ++ is vereist. 
+Om de maximale hoeveelheid handelsopties aan te passen: 
+1) Onvink 'Handelsopties oneindig' 
+2) Open the createshops filter met Notepad ++ (link:http://notepad-plus-plus.org/) of kladblok 
+*Het filter is in je MCEdit map* 
+3) Scroll naar: 
+anders: 
+offer[uses] = Tag_Int(0) 
+offer[maxUses] = Tag_Int(1) 
+4) Verander de hoeveelheid die je wilt. 
+ 
+ *NB: Verander alleen de nummers hierboven, als je iets anders verandert gaat het filter kapot*  
 o389 Trade Notes
-t389 
+t389 Handelsnotities
 o390 Include position data
-t390 
+t390 Voeg positiedata toe
 o391 Both
-t391 
+t391 Beide
 o392 Lower Only
-t392 
+t392 Verlaag Enkel
 o393 Raise Only
-t393 
+t393 Verhoog Enkel
 o394 Raise/Lower
-t394 
+t394 Verhoog/Verlaag
 o395 TileEntity
-t395 
+t395 TileEntity
 o396 Entity
-t396 
+t396 Entity
 o397 Block
-t397 
+t397 Blok
 o398 Match by:
-t398 
+t398 Verbind met:
 o399 Match block type (for TileEntity searches):
-t399 
+t399 Verbind blok type (voor TileEntity zoekopdrachten):
 o400 Match block:
-t400 
+t400 Verbind blok:
 o401 Match block data:
-t401 
+t401 Verbind blokdata:
 o402 Match tile entities (for Block searches):
-t402 
+t402 Verbind tile entities (voor Blok zoekopdrachten):
 o403 "None" for Name or Value will match any tag's Name or Value respectively.
-t403 
+t403 "None" voor Naam of Waarde zal alle waardes verbinden.
 o404 Match Tag Name:
-t404 
+t404 Te verbind Tag Naam:
 o405 Match Tag Value:
-t405 
+t405 Te verbinden Tag waarde:
 o406 Case insensitive:
-t406 
+t406 Hoofdletter ongevoelig:
 o407 Any
-t407 
+t407 Elke
 o408 Match Tag Type:
-t408 
+t408 Verbind Tag Type:
 o409 Start New Search
-t409 
+t409 Begin Nieuwe Zoekopdracht
 o410 Find Next
-t410 
+t410 Vind Volgende
 o411 Dump Found Coordinates
-t411 
+t411 Dump Gevonden Coordinaten
 o412 Operation:
-t412 
+t412 Operatie:
 o413 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks. 
 
  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  
@@ -880,233 +897,242 @@ o413 This filter is designed to search for NBT in either Entities or TileEntitie
  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
  
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t413 
+t413 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks. 
+
+ "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  
+ 
+ All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa. 
+ 
+ Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+ 
+"Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
+
 o414 Documentation
-t414 
+t414 Documentatie
 o415 Forester script by dudecon
-t415 
+t415 Bebosssing script door dudecon
 o416 Procedural
-t416 
+t416 Procedureel
 o417 Normal
-t417 
+t417 Normaal
 o418 Bamboo
-t418 
+t418 Bamboo
 o419 Palm
-t419 
+t419 Palm
 o420 Stickly
-t420 
+t420 Plakkerig
 o421 Round
-t421 
+t421 Rond
 o422 Cone
-t422 
+t422 Kegel
 o423 Rainforest
-t423 
+t423 Regenwoud
 o424 Mangrove
-t424 
+t424 Mangrove
 o425 Shape
-t425 
+t425 Vorm
 o426 Tree Count
-t426 
+t426 Aantal
 o427 Tree Height
-t427 
+t427 Boom Hoogte
 o428 Height Variation
-t428 
+t428 Hoogteverschil
 o429 Branch Density
-t429 
+t429 Takkendichtheid
 o430 Trunk Thickness
-t430 
+t430 Stamdikte
 o431 Broken Trunk
-t431 
+t431 Gebroken Stam
 o432 Hollow Trunk
-t432 
+t432 Holle Stam
 o433 Wood
-t433 
+t433 Hout
 o434 Foliage
-t434 
+t434 Bladeren
 o435 Foliage Density
-t435 
+t435 Bladerdichtheid
 o436 Yes
-t436 
+t436 Ja
 o437 To Stone
-t437 
+t437 Naar Steen
 o438 Hanging
-t438 
+t438 Hangend
 o439 No
-t439 
+t439 Nee
 o440 Roots
-t440 
+t440 Wortels
 o441 Root Buttresses
-t441 
+t441 Wortel Steunberen
 o442 Wood Material
-t442 
+t442 Hout Materiaal
 o443 Leaf Material
-t443 
+t443 Blad Materiaal
 o444 Plant On
-t444 
+t444 Plant Op
 o445 Ocean
-t445 
+t445 Oceaan
 o446 Plains
-t446 
+t446 Velden
 o447 Desert
-t447 
+t447 Woestijn
 o448 Extreme Hills
-t448 
+t448 Extreme Heuvels
 o449 Forest
-t449 
+t449 Bos
 o450 Taiga
-t450 
+t450 Taiga
 o451 Swamppland
-t451 
+t451 Moerasland
 o452 River
-t452 
+t452 Rivier
 o453 Hell (Nether)
-t453 
+t453 Hel (Onderwereld)
 o454 Sky (End)
-t454 
+t454 Hemel (Het Einde)
 o455 Frozen Ocean
-t455 
+t455 Bevroren Oceaan
 o456 Frozen River
-t456 
+t456 Bevroren Rivier
 o457 Ice Plains
-t457 
+t457 IJsvelden
 o458 Ice Mountains
-t458 
+t458 IJsbergen
 o459 Mushroom Island
-t459 
+t459 Paddenstoeleneiland
 o460 Mushroom Island Shore
-t460 
+t460 Paddenstoeleneiland Kust
 o461 Beach
-t461 
+t461 Strand
 o462 Desert Hills
-t462 
+t462 Woestijnheuvels
 o463 Forest Hills
-t463 
+t463 Bosheuvels
 o464 Taiga Hills
-t464 
+t464 Taigaheuvels
 o465 Extreme Hills Edge
-t465 
+t465 Extreme Heuvelrand
 o466 Jungle
-t466 
+t466 Jungle
 o467 Jungle Hills
-t467 
+t467 Jungleheuvels
 o468 Jungle Edge
-t468 
+t468 Junglerand
 o469 Deep Ocean
-t469 
+t469 Diepe Oceaan
 o470 Stone Beach
-t470 
+t470 Stenenstrand
 o471 Cold Beach
-t471 
+t471 Koud Strand
 o472 Birch Forest
-t472 
+t472 Berkenbos
 o473 Birch Forest Hills
-t473 
+t473 Berkenbosheuvels
 o474 Roofed Forest
-t474 
+t474 Bedekt Bos
 o475 Cold Taiga
-t475 
+t475 Koude Taiga
 o476 Cold Taiga Hills
-t476 
+t476 Koude Taigaheuvels 
 o477 Mega Taiga
-t477 
+t477 Mega Taiga
 o478 Mega Taiga Hills
-t478 
+t478 Mega Taigaheuvels
 o479 Extreme Hills+
-t479 
+t479 Extreme Heuvels+
 o480 Savanna
-t480 
+t480 Savanne
 o481 Savanna Plateau
-t481 
+t481 Savanne Plateau
 o482 Messa
-t482 
+t482 Mesa
 o483 Messa Plateau F
-t483 
+t483 Mesa Plateau F
 o484 Messa Plateau
-t484 
+t484 Mesa Plateau
 o485 Sunflower Plains
-t485 
+t485 Zonnebloemvelden
 o486 Desert M
-t486 
+t486 Woestijn M
 o487 Extreme Hills M
-t487 
+t487 Extreme Heuvels M
 o488 Flower Forest
-t488 
+t488 Bloemenbos
 o489 Taiga M
-t489 
+t489 Taiga M
 o490 Swampland M
-t490 
+t490 Moerasland M
 o491 Ice Plains Spikes
-t491 
+t491 IJsvelden Stekels
 o492 Ice Mountains Spikes
-t492 
+t492 IJsbergen Stekels
 o493 Jungle M
-t493 
+t493 Jungle M
 o494 JungleEdge M
-t494 
+t494 Junglerand M
 o495 Birch Forest M
-t495 
+t495 Berkenbos M
 o496 Birch Forest Hills M
-t496 
+t496 Berkenbosheuvels M
 o497 Roofed Forest M
-t497 
+t497 Bedekt Bos M
 o498 Cold Taiga M
-t498 
+t498 Koude Taiga M
 o499 Mega Spruce Taiga
-t499 
+t499 Mega Dennen Taiga
 o500 Mega Spruce Taiga 
-t500 
+t500 Mega Dennen Taiga
 o501 Extreme Hills+ M
-t501 
+t501 Extreme Heuvels+ M
 o502 Savanna M
-t502 
+t502 Savanne M
 o503 Savanna Plateau M
-t503 
+t503 Savanne Plateau M
 o504 Mesa (Bryce)
-t504 
+t504 Mesa (Bryce)
 o505 Mesa Plateau F M
-t505 
+t505 Mesa Plateau F M
 o506 Mesa Plateau M
-t506 
+t506 Mesa Plateau M
 o507 (Uncalculated)
-t507 
+t507 (Onberekend)
 o508 Biome
-t508 
+t508 Biosysteem
 o509 Repeat count
-t509 
+t509 Herhaal tellen
 o510 Depth
-t510 
+t510 Diepte
 o511 Pick a block:
-t511 
+t511 Kies blok:
 o512 Players
-t512 
+t512 Spelers
 o513 Player Name
-t513 
+t513 Spelernaam
 o514 Player: 
-t514 
+t514 Speler:
 o515 Goto Player
-t515 
+t515 Ga naar Speler
 o516 Goto Player's View
-t516 
+t516 Ga naar Zicht van Speler
 o517 Move Player
-t517 
+t517 Beweeg Speler
 o518 Align Player to Camera
-t518 
+t518 Plaats Speler op Camera
 o519 Player
-t519 
+t519 Speler
 o520 Chunk Control
-t520 
+t520 Chunk Menu
 o521 Move Spawn Point
-t521 
+t521 Beweeg Spawnpunt
 o522 Goto Spawn
-t522 
+t522 Ga naar Spawn
 o523 Take a Screenshot
-t523 
+t523 Maak een Schermafbeelding
 o524 Load Preset:
-t524 Laad vooringestelde
+t524 Laad Preset
 o525 Remove Presets
-t525 Verwijder vooringestelde
+t525 Verwijder Preset
 o526 Save as preset
-t526 Sla op als vooringestelde
+t526 Sla op als Preset
 o527 Preset Name:
 t527 Naam:
 o528 That preset name is reserved. Try pick another preset name.
@@ -1114,8 +1140,8 @@ t528 Die naam is gereserveerd. Probeer een andere naam.
 o529 Invalid character in file name
 t529 Ongeldig karakter in bestandsnaam
 o530 No presets saved
-t530 Geen opgeslagen voorinstellingen
+t530 Geen opgeslagen Presets
 o531 Select preset to delete
-t531 Selecteer voorinstelling om te verwijderen
+t531 Selecteer Preset om te verwijderen
 o532  does not have a value yet.
 t532  heeft nog geen waarde
