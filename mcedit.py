@@ -473,7 +473,7 @@ class OptionsPanel(Dialog):
             sgnal["en_US"] = u"English (US)"
         self.langs = langs
         self.sgnal = sgnal
-        log.debug("Detected languages: %s"%self.langs)
+        logging.debug("Detected languages: %s"%self.langs)
         return langs
 
     def changeLanguage(self):
