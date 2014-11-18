@@ -41,6 +41,7 @@ from numpy import newaxis
 import numpy
 from operation import Operation, mkundotemp
 import os
+import sys
 from os.path import basename
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
@@ -258,7 +259,7 @@ class BrushTool(CloneTool):
     'chooseBlockImmediately':False,
     'updateBrushOffset':False            
     }
-    modeNames = {}
+    brushModes = {}
 
     def __init__(self, *args):
         CloneTool.__init__(self, *args)
@@ -268,18 +269,15 @@ class BrushTool(CloneTool):
         self.draggedPositions = []
         self.useKey = 0
         self.brushLineKey = 0
-        self.brushModes = self.importBrushModes()
-        print self.brushModes
-        for m in self.brushModes:
+        self.importedBrushModes = self.importBrushModes()
+        for m in self.importedBrushModes:
             if m.displayName:
-                self.modeNames(m.displayName)
+                self.brushModes[m.displayName] = m
             else:
-                self.modeNames.extend()
-            for r in m.inputs:
-                for field in r:
-                    self.options[field[0]] = field[1]
+                self.brushModes[m.__name__] = m
     
     def importBrushModes(self):
+        sys.path.append(directories.brushesDir)
         def tryImport(name):
             try:
                 return importlib.import_module(name)
@@ -287,12 +285,9 @@ class BrushTool(CloneTool):
                 print traceback.format_exc()
                 alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
                 return object()
-        modes = (tryImport(x[:-3]) for x in directories.getAllOfAFile(directories.brushesDir, '.py'))
+        modes = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
         return modes
-
-        
-
         
     def toolSelected(self): #Called on selecting tool. Applies options of BrushToolOptions, then sets up panel and other stuff.
         if self.settings['chooseBlockImmediately']:
