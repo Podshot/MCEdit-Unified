@@ -472,7 +472,7 @@ class OptionsPanel(Dialog):
                 langs[langName] = name
                 sgnal[name] = langName
         if "English (US)" not in langs.keys():
-            langs[u"Englis (US)"] = "en_US"
+            langs[u"English (US)"] = "en_US"
             sgnal["en_US"] = u"English (US)"
         self.langs = langs
         self.sgnal = sgnal
@@ -521,9 +521,10 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         lng = Settings.langCode.get()
-        if type(lng) == str:
-            lng = lng.decode("cp1252")
-        o, n, sc = albow.translate.setLang(self.langs[lng])
+        try:
+            o, n, sc = albow.translate.setLang(self.langs[lng])
+        except:
+            o, n, sc = albow.translate.setLang(self.sgnal[lng])
         if type(o) == str:
             o = o.encode("utf-8")
         if type(n) == str:
