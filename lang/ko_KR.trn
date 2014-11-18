@@ -1,4 +1,6 @@
 #-# Korean (Korea)
+#-# font regular: dotum.ttf
+#-# font bold: hline.ttf
 # TRANSLATION BASICS
 # 
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
@@ -8,6 +10,10 @@
 # The space (' ') separating the strings from the numbers is mandatory.
 # The file must also be encoded in UTF-8 or it won't work. Most editors should support this.
 # 
+# The first line of this file must start with #-# followed by a space and the Language (Country) pair.
+#
+# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
+#
 # See TRANSLATION.txt for more detailed information.
 #
 o0 Autobrake

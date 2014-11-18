@@ -15,6 +15,17 @@ optimize_images = True
 run_length_encode = False
 
 
+__curLang = "default"
+__oldLang = None
+
+def getCurLang():
+    return __curLang
+
+def setCurLang(lang):
+    global __curLang
+    __curLang = lang
+
+font_lang_cache = {}
 # resource_dir = getDataDir()
 resource_dir = "Resources"
 
@@ -62,13 +73,41 @@ def get_image(*names, **kwds):
     return _get_image(names, **kwds)
 
 
+#def get_font(size, *names, **kwds):
+#    path = _resource_path("fonts", names, **kwds)
+#    key = (path, size)
+#    font = font_cache.get(key)
+#    if not font:
+#        try:
+#            font = pygame.font.Font(path, size)
+#        except Exception, e:
+#            log.debug("PyGame could not load font.")
+#            log.debug("Exception: %s"%e)
+#            log.debug("Trying with sys.getfilesystemencoding()")
+#            try:
+#                path = path.encode(sys.getfilesystemencoding())
+#                font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
+#            except Exception, e:
+#                log.debug("PyGame could not load font.")
+#                log.debug("Exception: %s"%e)
+#                log.debug("Loading sysfont")
+#                font = pygame.font.SysFont("Courier New", size)
+#        font_cache[key] = font
+#    return font
+
 def get_font(size, *names, **kwds):
+    lngs_fontNm = font_lang_cache.get(names[-1], {})
+    fontNm = lngs_fontNm.get(getCurLang(), None)
+    if fontNm:
+        names = [a for a in names[:-1]]
+        names.append(fontNm)
     path = _resource_path("fonts", names, **kwds)
     key = (path, size)
     font = font_cache.get(key)
     if not font:
         try:
             font = pygame.font.Font(path, size)
+            log.debug("Font %s loaded."%path)
         except Exception, e:
             log.debug("PyGame could not load font.")
             log.debug("Exception: %s"%e)
@@ -76,6 +115,7 @@ def get_font(size, *names, **kwds):
             try:
                 path = path.encode(sys.getfilesystemencoding())
                 font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
+                log.debug("Font %s loaded."%path)
             except Exception, e:
                 log.debug("PyGame could not load font.")
                 log.debug("Exception: %s"%e)

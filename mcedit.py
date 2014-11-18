@@ -69,8 +69,8 @@ logger.addHandler(ch)
 
 import albow
 # TODO: Language Detection
-#import locale
-#localEncoding = locale.getdefaultlocale()[1]
+import locale
+localEncoding = locale.getdefaultlocale()[1]
 # albow.translate.setLang(locale.getdefaultlocale()[0])
 # del locale
 
@@ -348,7 +348,7 @@ class OptionsPanel(Dialog):
                                            ref=ControlSettings.invertMousePitch.propertyRef(),
                                            tooltipText="Reverse the up and down motion of the mouse.")
 
-        spaceHeightRow = mceutils.IntInputRow("Low Detail Height",
+        spaceHeightRow = mceutils.IntInputRow(_("Low Detail Height"),
                                               ref=Settings.spaceHeight.propertyRef(),
                                               tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
 
@@ -381,8 +381,8 @@ class OptionsPanel(Dialog):
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
         lng = Settings.langCode.get()
-        if type(lng) == str:
-            lng = lng.decode("cp1252")
+        if type(lng) == str: # and localEncoding != "UTF-8":
+            lng = lng.decode(localEncoding)
         langNames = self.getLanguageChoices(lng).keys()
         langNames.sort()
         self.languageButton = mceutils.ChoiceButton(langNames, choose=self.changeLanguage)
@@ -481,8 +481,8 @@ class OptionsPanel(Dialog):
 
     def changeLanguage(self):
         lng = self.languageButton.selectedChoice
-        if type(lng) == unicode:
-            lng = lng.encode("cp1252")
+        if type(lng) == unicode: # and localEncoding != "UTF-8":
+            lng = lng.encode(localEncoding)
         Settings.langCode.set(lng)
 
     def portableButtonTooltip(self):
@@ -521,6 +521,8 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         lng = Settings.langCode.get()
+        if type(lng) == str: # and localEncoding != "UTF-8":
+            lng = lng.decode(localEncoding)
         try:
             o, n, sc = albow.translate.setLang(self.langs[lng])
         except:
@@ -571,8 +573,8 @@ class MCEdit(GLViewport):
         self.optionsPanel = OptionsPanel(self)
         langs = self.optionsPanel.getLanguageChoices()
         lng = Settings.langCode.get()
-        if type(lng) == str:
-            lng = lng.decode("cp1252")
+        if type(lng) == str: # and localEncoding != "UTF-8":
+            lng = lng.decode(localEncoding)
         albow.translate.setLang(langs.get(lng, "English (US)"))
         self.graphicsPanel = graphicsPanel(self)
 
