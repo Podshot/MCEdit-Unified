@@ -1,4 +1,6 @@
 #-# 한국어 (Korean)
+#-# font regular: dotum.ttf
+#-# font bold: hline.ttf
 # TRANSLATION BASICS
 # 
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
