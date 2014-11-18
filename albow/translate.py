@@ -54,6 +54,7 @@ import os
 import re
 import codecs
 import json
+import resource
 
 import platform, locale
 def getPlatInfo(**kwargs):
@@ -95,6 +96,7 @@ def getPlatInfo(**kwargs):
 enc = locale.getdefaultlocale()[1]
 
 string_cache = {}
+font_lang_cache = {}
 langPath = os.sep.join((".", "lang"))
 lang = "Default"
 
@@ -204,11 +206,26 @@ def getLangName(file, path=None):
     If the name is not found, return the file base name."""
     if not path:
         path = langPath
-    line = codecs.open(os.path.join(path, file), "r", "utf-8").readline()
+    f = codecs.open(os.path.join(path, file), "r", "utf-8")
+    line = f.readline()
     if "#-# " in line:
         name = line.split("#-# ")[1].strip()
     else:
         name = os.path.splitext(os.path.basename(file))[0]
+    line = f.readline()
+    regular = None
+    if "#-# font regular: " in line:
+        regular = line.split("#-# font regular: ")[1].strip()
+    line = f.readline()
+    bold = None
+    if "#-# font bold: " in line:
+        bold = line.split("#-# font bold: ")[1].strip()
+    global font_lang_cache
+    if regular and regular.lower() != "default":
+        font_lang_cache["DejaVuSans-Regular.ttf"] = {name: regular}
+    if bold and bold.lower() != "default":
+        font_lang_cache["DejaVuSans-Bold.ttf"] = {name: bold}
+    resource.font_lang_cache = font_lang_cache
     return name
 
 
@@ -228,19 +245,19 @@ def buildTranslation(lang,suppressAlert=False):
     log.debug("fName: %s"%fName)
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
         fileFound = True
-        data = codecs.open(fName, "r", "utf-8").read()
+        rawData = codecs.open(fName, "r", "utf-8").read()
         log.debug("fName is valid and read.")
-        log.debug("Type of file data is %s"%("%s"%type(data)).strip("<type '").strip(">")[:-1])
+        log.debug("Type of file data is %s"%("%s"%type(rawData)).strip("<type '").strip(">")[:-1])
         log.debug("Parsing file and building JSON resource.")
         log.debug("  * Start on %s"%tm)
-        start = re.search(r"^o\d+[ ]", data, re.M|re.S)
+        start = re.search(r"^o\d+[ ]", rawData, re.M|re.S)
         if start:
             start = start.start()
         else:
             log.warning("    *** %s malformed. Could not find entry point.\n    Translation not loaded.")
             # exiting without further operations
             return {}, False
-        data = data[start:]
+        data = rawData[start:]
         trnPattern = re.compile(r"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
         grps = re.findall(trnPattern, data)
         if len(grps) % 2 != 0:
@@ -285,6 +302,13 @@ def buildTranslation(lang,suppressAlert=False):
         result = u"{" + result.replace(u"\r\n", u"\\n").replace(u"\n", u"\\n").replace(u"\t", u"\\t") + u"\"}"
         log.debug("    Conversion done. Loading JSON resource.")
         string_cache = json.loads(result)
+        log.debug("    Setting up font.")
+        line = rawData.splitlines()[0]
+        if "#-# " in line:
+            lngNm = line.split("#-# ")[1].strip()
+        else:
+            lngNm = os.path.splitext(os.path.basename(fName))[0]
+        resource.setCurLang(lngNm)
         tm1 = time()
         log.debug("  * End on %s duration %s"%(tm, tm1 - tm))
     else:

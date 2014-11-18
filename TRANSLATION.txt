@@ -12,8 +12,20 @@ The file must also be encoded in UTF-8 or it won't work. Most editors should
 support this. This is also mandatory, or you can experience weird aspect in the
 program.
 
+The first line of .trn files must start with #-# followed by a space and the
+Language (Country) pair. This isn't mandatory, but, if it is not used, the file
+nam (without its extention) will be used as language name.
+
+The second and third lines ca be used to specify particuliar fonts to use.
+They can be ommited or use DEFAULT as value to use the default fonts.
+
+
 Syntax example:
 
+#-# Français (France)
+#-# font regular: DEFAULT
+#-# font bold: myFancyFontOfTheDeath.ttf
+#
 o0 This is the first entry.
 t0 Ceci est la première entrée.
 o1 Here is the second one.
