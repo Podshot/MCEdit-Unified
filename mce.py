@@ -468,23 +468,14 @@ class mce(object):
                 logging.info("Chunk {0}...".format(i))
 
         for blockID in range(materials.id_limit):
-            block = self.level.materials.blockWithID(blockID, 0)
-            if block.hasVariants:
-                for data in range(16):
-                    i = (data << 12) + blockID
-                    if blockCounts[i]:
-                        idstring = "({id}:{data})".format(id=blockID, data=data)
+            for data in range(16):
+                i = (data << 12) + blockID
+                if blockCounts[i]:
+                    idstring = "({id}:{data})".format(id=blockID, data=data)
 
-                        print "{idstring:9} {name:30}: {count:<10}".format(
-                            idstring=idstring, name=self.level.materials.blockWithID(blockID, data).name,
-                            count=blockCounts[i])
-
-            else:
-                count = int(sum(blockCounts[(d << 12) + blockID] for d in range(16)))
-                if count:
-                    idstring = "({id})".format(id=blockID)
                     print "{idstring:9} {name:30}: {count:<10}".format(
-                        idstring=idstring, name=self.level.materials.blockWithID(blockID, 0).name, count=count)
+                        idstring=idstring, name=self.level.materials.blockWithID(blockID, data).name,
+                        count=blockCounts[i])
 
         self.needsSave = True
 

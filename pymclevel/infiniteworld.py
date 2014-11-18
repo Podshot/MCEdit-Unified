@@ -1294,7 +1294,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     def init_scoreboard(self):
         if os.path.exists(self.worldFolder.getFolderPath("data")):
                 if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
-                    nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
+                    return nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
                 else:
                     root_tag = nbt.TAG_Compound()
                     root_tag["data"] = nbt.TAG_Compound()
@@ -1319,10 +1319,39 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         score.save(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
     
     def init_player_data(self):
-        player_data = []
-        for p in [x for x in os.listdir(self.playersFolder) if x.endswith(".dat")]:
-                player_data.append(player.Player(self.playersFolder+"\\"+p))
+        player_data = {}
+        if self.oldPlayerFolderFormat:
+            for p in self.players:
+                if p != "Player":
+                    player_data_file = self.worldFolder.getFolderPath("players")+os.path.sep+p+".dat"
+                    player_data[p] = nbt.load(player_data_file)
+                else:
+                    data = nbt.load(self.worldFolder.getFilePath("level.dat"))
+                    player_data[p] = data["Data"]["Player"]
+        else:
+            for p in self.players:
+                if p != "Player":
+                    player_data_file = self.worldFolder.getFolderPath("playerdata")+os.path.sep+p+".dat"
+                    player_data[p] = nbt.load(player_data_file)
+                else:
+                    data = nbt.load(self.worldFolder.getFilePath("level.dat"))
+                    player_data[p] = data["Data"]["Player"]
+                    
+        #player_data = []
+        #for p in [x for x in os.listdir(self.playersFolder) if x.endswith(".dat")]:
+                #player_data.append(player.Player(self.playersFolder+"\\"+p))
         return player_data
+    
+    def save_player_data(self, player_data):
+        if self.oldPlayerFolderFormat:
+            for p in player_data.keys():
+                if p != "Player":
+                    player_data[p].save(self.worldFolder.getFolderPath("players")+os.path.sep+p+".dat")
+        else:
+            for p in player_data.keys():
+                if p != "Player":
+                    player_data[p].save(self.worldFolder.getFolderPath("playerdata")+os.path.sep+p+".dat")
+                
 
     @property
     def bounds(self):

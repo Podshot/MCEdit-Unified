@@ -13,11 +13,7 @@ from entity import TileEntity
 def blockReplaceTable(blocksToReplace):
     blocktable = numpy.zeros((materials.id_limit, 16), dtype='bool')
     for b in blocksToReplace:
-        if b.hasVariants:
             blocktable[b.ID, b.blockData] = True
-        else:
-            blocktable[b.ID] = True
-
     return blocktable
 
 

@@ -405,8 +405,9 @@ class KeyConfigPanel(Dialog):
         keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
         keyConfigTable.click_row = self.selectTableRow
         keyConfigTable.key_down = self.key_down
+        keyConfigTable.key_up = self.key_up
         self.changes = {}
-        self.changesNum = 0
+        self.changesNum = False
         self.enter = 0
         tableWidget = albow.Widget()
         tableWidget.add(keyConfigTable)
@@ -422,10 +423,12 @@ class KeyConfigPanel(Dialog):
         choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad","WASD Old"], choose=self.choosePreset)
         if config.config.get("Keys", "Forward") == "Up":
             choiceButton.selectedChoice = "Arrows"
-        if config.config.get("Keys", "Forward") == "[8]":
+        elif config.config.get("Keys", "Forward") == "[8]":
             choiceButton.selectedChoice = "Numpad"
-        if config.config.get("Keys", "Brake") == "Space":
+        elif config.config.get("Keys", "Brake") == "Space":
             choiceButton.selectedChoice = "WASD Old"
+
+        self.oldChoice = choiceButton.selectedChoice
 
         choiceRow = albow.Row((albow.Label("Presets: "), choiceButton))
         self.choiceButton = choiceButton
@@ -434,8 +437,12 @@ class KeyConfigPanel(Dialog):
         self.add(col)
         self.shrink_wrap()
 
+    def presentControls(self):
+      self.present()
+      self.oldChoice = self.choiceButton.selectedChoice
+
     def done(self):
-        self.changesNum = 0
+        self.changesNum = False
         self.changes = {}
         config.saveConfig()
         self.dismiss()
@@ -444,7 +451,12 @@ class KeyConfigPanel(Dialog):
         preset = self.choiceButton.selectedChoice
         keypairs = self.presets[preset]
         for configKey, key in keypairs:
-            config.config.set("Keys", configKey, key)
+            oldOne = config.config.get("Keys", configKey)
+            if key != oldOne:
+                self.changesNum = True
+                if configKey not in self.changes:
+                    self.changes[configKey] = oldOne
+                config.config.set("Keys", configKey, key)
 
     def getRowData(self, i):
         configKey = self.keyConfigKeys[i]
@@ -481,15 +493,17 @@ class KeyConfigPanel(Dialog):
     def key_down(self, evt):
         keyname = getKey(evt)
         if keyname == 'Escape':
-            if self.changesNum >= 1:
+            if self.changesNum:
                 result = albow.ask("Do you want to save your changes?", ["Save", "Don't Save", "Cancel"])
                 if result == "Save":
                     self.done()
                 elif result == "Don't Save":
                     for key in self.changes.keys():
                         config.config.set("Keys", key, self.changes[key])
-                    self.changesNum = 0
+                    self.changesNum = False
                     self.changes = {}
+                    self.choiceButton.selectedChoice = self.oldChoice
+                    config.saveConfig()
                     self.dismiss()
             else:
                 self.dismiss()
@@ -501,11 +515,17 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
+        self.get_root().mcedit.editor.key_down(evt, 1, 1)
+
+    def key_up(self, evt):
+      self.get_root().mcedit.editor.key_up(evt)
+
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
 
     def askAssignKey(self, configKey, labelString=None):
         if not self.isConfigKey(configKey):
+            self.enter = 0
             return
 
         panel = Panel()
@@ -563,8 +583,9 @@ class KeyConfigPanel(Dialog):
                     return True
             oldkey = config.config.get("Keys", configKey)
             config.config.set("Keys", configKey, keyname)
-            self.changes[configKey] = oldkey
-            self.changesNum = 1
+            if configKey not in self.changes:
+                self.changes[configKey] = oldkey
+            self.changesNum = True
         elif keyname == "Shift-Escape":
             config.config.set("Keys", configKey, "None")
         elif keyname != "Escape":

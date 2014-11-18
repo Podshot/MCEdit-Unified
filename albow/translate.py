@@ -51,13 +51,10 @@ import logging
 log = logging.getLogger(__name__)
 
 import os
-# import sys # useless, only called in 'restart' (to be moved to mcedit.py)
 import re
 import codecs
-import json # json isn't user friendly decause of its syntax and the use of escaped characters for new lines, tabs, etc.
-# import directories # suppress this
+import json
 
-#!# for debugging
 import platform, locale
 def getPlatInfo(**kwargs):
     """kwargs: dict: {"module_name": module,...}
@@ -93,19 +90,11 @@ def getPlatInfo(**kwargs):
                     ver = "%s"%type(verObj)
             log.debug("    %s version: %s"%(name, ver))
     log.debug("***")
-#getPlatInfo()
-#!#
 
-#enc = "utf8"
+
 enc = locale.getdefaultlocale()[1]
 
 string_cache = {}
-#langPath = os.path.join(directories.getDataDir(), "lang") # find another way to set this
-#oldlang = "en_US" # en_US is the default language string, no exceptions. ## Nope, default language is the language used by the app programmer.
-#try:
-#	oldlang = Settings.langCode.get()
-#except:
-#    pass
 langPath = os.sep.join((".", "lang"))
 lang = "Default"
 
@@ -137,7 +126,7 @@ def _(string, doNotTranslate=False):
     if buildTemplate:
         global template
         global strNum
-        if string not in template.values():
+        if u"%s"%string not in template.values():
             template[strNum] = u"%s"%string
             strNum += 1
     return string_cache.get(string, string.replace("\n", "\n\n"))
@@ -187,7 +176,6 @@ def setLang(newlang):
     newlang: str: new laguage to load in the format <language>_<country>"""
     global lang
     oldLang = "" + lang
-#    sc = {}.update(string_cache)
     result = False
     if not lang == newlang:
         sc, result = buildTranslation(newlang)
@@ -211,14 +199,18 @@ def correctEncoding(data, oldEnc="ascii", newEnc=enc):
 
 
 #-------------------------------------------------------------------------------
-# Supress this ? Yep, for now, since another solution is found.
-# Making test on time and memory consumption can be usefull.
-def verifyLangCode(lang):
-    fName = os.path.join(langPath, lang + ".json")
-    if (os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK)) or lang == "en_US":
-        return True
+def getLangName(file, path=None):
+    """Return the language name defined in the .trn file.
+    If the name is not found, return the file base name."""
+    if not path:
+        path = langPath
+    line = codecs.open(os.path.join(path, file), "r", "utf-8").readline()
+    if "#-# " in line:
+        name = line.split("#-# ")[1].strip()
     else:
-        return False
+        name = os.path.splitext(os.path.basename(file))[0]
+    return name
+
 
 from time import asctime, time
 #-------------------------------------------------------------------------------
@@ -229,24 +221,23 @@ def buildTranslation(lang,suppressAlert=False):
     Returns string_cache (dict) and wether the file exists (bool)."""
     log.debug("buildTranslation <<<")
     tm = time()
-    log.debug("start on %s"%tm)
     global string_cache
     fileFound = False
     lang = "%s"%lang
     fName = os.path.join(langPath, lang + ".trn")
     log.debug("fName: %s"%fName)
-#    log.debug("os.access(fName, os.F_OK): %s; os.path.isfile(fName): %s; os.access(fName, os.R_OK): %s"%(os.access(fName, os.F_OK), os.path.isfile(fName), os.access(fName, os.R_OK)))
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
         fileFound = True
         data = codecs.open(fName, "r", "utf-8").read()
         log.debug("fName is valid and read.")
         log.debug("Type of file data is %s"%("%s"%type(data)).strip("<type '").strip(">")[:-1])
-        log.debug("Building JSON resource.")
+        log.debug("Parsing file and building JSON resource.")
+        log.debug("  * Start on %s"%tm)
         start = re.search(r"^o\d+[ ]", data, re.M|re.S)
         if start:
             start = start.start()
         else:
-            log.warning("*** %s malformed. Could not find entry point.\n    Translation not loaded.")
+            log.warning("    *** %s malformed. Could not find entry point.\n    Translation not loaded.")
             # exiting without further operations
             return {}, False
         data = data[start:]
@@ -255,7 +246,7 @@ def buildTranslation(lang,suppressAlert=False):
         if len(grps) % 2 != 0:
             grps1 = re.findall(r"^o\d+[ ]", data, re.M|re.S)
             grps2 = re.findall(r"^t\d+[ ]", data, re.M|re.S)
-            log.warning("Unpaired original and translated strings. %s is longer (oXX: %s, tXX: %s)."%({True: "tXX", False: "oXX"}[len(grps1) < len(grps2)], len(grps1), len(grps2)))
+            log.warning("    Unpaired original and translated strings. %s is longer (oXX: %s, tXX: %s)."%({True: "tXX", False: "oXX"}[len(grps1) < len(grps2)], len(grps1), len(grps2)))
             bugStrs = []
             def compLists(lst1, lst1N, lst2, lst2N, repl, bugStrs=bugStrs):
                 bug = []
@@ -268,42 +259,42 @@ def buildTranslation(lang,suppressAlert=False):
                         bug.append(item)
                 bugStrs += ["Not found in %s"%lst1N, bug]
                 bugStrs += ["Not found in %s"%lst2N, lst2]
-#            print "Compared ",
             if len(grps1) < len(grps2):
                 compLists(grps1, "grps1", grps2, "grps2", u"t")
-#                print "oXX tXX"
-#                print bugStrs
-                log.warning("Compared oXX tXX:")
-                log.warning("%s"%bugStrs)
+                log.warning("    Compared oXX tXX:")
+                log.warning("    %s"%bugStrs)
             else:
                 compLists(grps2, "grps2", grps1, "grps1", u"o")
-#                print "tXX oXX"
-#                print bugStrs
-                log.warning("Compared tXX oXX:")
-                log.warning("%s"%bugStrs)
-            # exiting without further operations
+                log.warning("    Compared tXX oXX:")
+                log.warning("    %s"%bugStrs)
             return {}, False
         n1 = len(grps) / 2
         result = u""
         n = 1
         n2 = 0
         r = u"" + data.replace(u"\\", u"\\\\").replace(u"\"", u'\\"').replace(u"\r\n", u"\n").replace(u"\r", u"\n")
-        log.debug("Replacing oXX/tXX.")
+        log.debug("    Replacing oXX/tXX.")
         while n:
             r, n = re.subn(r"^o\d+[ ]|\no\d+[ ]", "\",\"", r, flags=re.M|re.S)
             r, n = re.subn(r"^t\d+[ ]|\nt\d+[ ]", "\":\"", r, flags=re.M|re.S)
             n2 += n
             if n2 == n1:
                 n = 0
-        log.debug("Replaced %s occurences."%n2)
+        log.debug("    Replaced %s occurences."%n2)
         result += r[2:]
-#        result = result.replace(u"\r\n", u"\\n").replace(u"\n", u"\\n")
         result = u"{" + result.replace(u"\r\n", u"\\n").replace(u"\n", u"\\n").replace(u"\t", u"\\t") + u"\"}"
-#        codecs.open("json.txt", "wb", "utf-8").write(result)
-        log.debug("Conversion done. Loading JSON resource.")
+        log.debug("    Conversion done. Loading JSON resource.")
         string_cache = json.loads(result)
         tm1 = time()
-        log.debug("end on %s duration %s"%(tm, tm1 - tm))
+        log.debug("  * End on %s duration %s"%(tm, tm1 - tm))
+    else:
+        log.debug("fName is not valid beacause:")
+        if not os.access(fName, os.F_OK):
+            log.debug("  * Can't access file.")
+        if not os.path.isfile(fName):
+            log.debug("  * It's not a file.")
+        if not os.access(fName, os.R_OK):
+            log.debug("  * Is not readable.")
     log.debug("buildTranslation >>>")
     return string_cache, fileFound
 
@@ -317,4 +308,3 @@ if __name__ == "__main__":
         print k, v
     sys.exit()
     ###
-

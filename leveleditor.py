@@ -1618,6 +1618,7 @@ class LevelEditor(GLViewport):
         self.movementNum = [0, 0, 2, 2, 1, 1]
         self.notMove = [0, 0, 0, 0, 0, 0]
         self.rightClickNudge = 0
+        self.root = self.get_root()
         self.cameraToolDistance = self.defaultCameraToolDistance
 
         self.createRenderers()
@@ -2770,7 +2771,7 @@ class LevelEditor(GLViewport):
                 keysClicked.append(5)
 
             for clickedKey in keysClicked:
-            	if notMove == 0:
+                if notMove == 0:
             		d[self.movementNum[clickedKey]] += self.movementMath[clickedKey]
             		self.usedKeys[clickedKey] = 1
             		self.notMove[clickedKey] = 0
@@ -2870,7 +2871,7 @@ class LevelEditor(GLViewport):
                 self.redo()
             if keyname == config.config.get('Keys', 'Save'):
                 self.saveFile()
-                self.get_root().ctrlClicked = -1
+                self.root.ctrlClicked = -1
             if keyname == config.config.get('Keys', 'New World'):
                 self.createNewLevel()
             if keyname == config.config.get('Keys', 'Close World'):
@@ -2974,7 +2975,7 @@ class LevelEditor(GLViewport):
             if keyname == 'F7':
                 self.testBoardKey = 1
 
-            self.get_root().ctrlClicked = -1
+            self.root.ctrlClicked = -1
 
     def showGotoPanel(self):
 
@@ -3018,20 +3019,16 @@ class LevelEditor(GLViewport):
             self.mainViewport.cameraPosition = destPoint
 
     def closeEditor(self):
-        self.cameraInputs = [0., 0., 0.]
-        self.usedKeys = [0, 0, 0, 0, 0, 0]
-        self.notMove = [0, 0, 0, 0, 0, 0]
-
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
-            self.get_root().ctrlClicked = -1
+            self.root.ctrlClicked = -1
             if answer == "Save":
                 self.saveFile()
             if answer == "Cancel":
                 return
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
-        self.get_root().ctrlClicked = -1
+        self.root.ctrlClicked = -1
         self.mainViewport.mouseLookOff()
         self.level = None
         self.renderer.stopWork()
@@ -3242,13 +3239,30 @@ class LevelEditor(GLViewport):
 
         def loadWorld():
             self.mcedit.loadFile(worldData[worldTable.selectedWorldIndex][3].filename)
-            self.get_root().ctrlClicked = -1
+            self.root.ctrlClicked = -1
 
         def click_row(i, evt):
             worldTable.selectedWorldIndex = i
             if evt.num_clicks == 2:
                 loadWorld()
                 d.dismiss("Cancel")
+
+        def key_down(evt):
+            keyname = keys.getKey(evt)
+            if keyname == "Escape":
+                d.dismiss("Cancel")
+            elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
+                worldTable.selectedWorldIndex -= 1
+            elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds)-1:
+                worldTable.selectedWorldIndex += 1
+            elif keyname == "Return":
+                loadWorld()
+                d.dismiss("Cancel")
+
+            self.key_down(evt, 1, 1)
+
+        def key_up(evt):
+            self.key_up(evt)
 
         worldTable = TableView(columns=[
             TableColumn("Last Played", 170, "l"),
@@ -3298,6 +3312,8 @@ class LevelEditor(GLViewport):
         worldPanel.shrink_wrap()
 
         d = Dialog(worldPanel, ["Load", "Cancel"])
+        d.key_down = key_down
+        d.key_up = key_up
         if d.present() == "Load":
             loadWorld()
 
@@ -3485,7 +3501,7 @@ class LevelEditor(GLViewport):
             if op.changedLevel:
                 self.addUnsavedEdit()
 
-        self.get_root().ctrlClicked = -1
+        self.root.ctrlClicked = -1
 
     def redo(self):
         if len(self.redoStack) == 0:
@@ -3505,7 +3521,7 @@ class LevelEditor(GLViewport):
             if op.changedLevel:
                 self.addUnsavedEdit()
 
-        self.get_root().ctrlClicked = -1
+        self.root.ctrlClicked = -1
 
     def invalidateBox(self, box):
         self.renderer.invalidateChunksInBox(box)

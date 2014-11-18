@@ -418,7 +418,7 @@ class Modes:
 
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
-
+            
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
@@ -935,15 +935,14 @@ class BrushPanel(Panel):
                 self.saveingBrushOptions[key] = self.saveableBrushOptions[key]
             else:
                 try:
-                    if key == "Block":
-                        self.saveingBrushOptions['wildcard'] = value.get().wildcard
                     keyID = key + " ID"
                     keyData = key + " Data"
                     value = self.saveableBrushOptions[key]
                     for a, b in zip([keyID, keyData],[value.get().ID, value.get().blockData]):
                         self.saveingBrushOptions[a] = b
                 except:
-                    print key + " does not have a value yet."
+                    print key + _(" does not have a value yet.")
+        self.saveingBrushOptions['wildcard'] = self.blockButton.blockInfo.wildcard
         name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
         f.write(repr(self.saveingBrushOptions))
@@ -952,6 +951,8 @@ class BrushPanel(Panel):
         name = name+'.preset'
         f = open(os.path.join(directories.brushesDir, name), "r")
         loadedBrushOptions = ast.literal_eval(f.read())
+        if 'wildcard' in loadedBrushOptions:
+            self.blockButton.blockInfo.wildcard = loadedBrushOptions['wildcard']
         for key in self.saveableBrushOptions:
             if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
                 if key in loadedBrushOptions.keys():
@@ -961,9 +962,6 @@ class BrushPanel(Panel):
                 if key in loadedBrushOptions:
                     self.tool.brushMode = loadedBrushOptions[key]
             else:
-                if key == "Block":
-                    if 'wildcard' in loadedBrushOptions:
-                        self.blockButton.wildcard = loadedBrushOptions['wildcard']
                 if key + " ID" in loadedBrushOptions and key + " Data" in loadedBrushOptions:
                     aID = loadedBrushOptions[key+ " ID"]
                     aData = loadedBrushOptions[key+ " Data"]
@@ -1027,7 +1025,7 @@ class BrushPanel(Panel):
                     return
                 
             self.saveBrushPreset(name)
-            self.tool.showPanel()
+            self.tool.toolSelected()
 
         okButton = Button("OK", action=okPressed)
         cancelButton = Button("Cancel", action=panel.dismiss)
@@ -1049,7 +1047,7 @@ class BrushPanel(Panel):
             panel.dismiss()
             name = p[presetTable.selectedIndex] + ".preset"
             os.remove(os.path.join(directories.brushesDir, name))
-            self.tool.showPanel()
+            self.tool.toolSelected()
             
         def selectTableRow(i, evt):
             presetTable.selectedIndex = i
@@ -1080,7 +1078,7 @@ class BrushPanel(Panel):
         else:
             self.loadBrushPreset(choice)
         choice = "Load Preset:"
-        self.tool.showPanel()
+        self.tool.toolSelected()
 
     def brushModeChanged(self):
         self.tool.brushMode = self.brushModeButton.selectedChoice
@@ -1509,6 +1507,9 @@ class BrushTool(CloneTool):
                 self.panel.roll()
 
     def toolReselected(self):
+        if not self.panel:
+            self.toolSelected()
+            return
         if self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace":
             self.panel.pickReplaceBlock()
         else:
@@ -1596,7 +1597,7 @@ class BrushTool(CloneTool):
             blockPicker = BlockPicker(
                 self.blockInfo,
                 self.editor.level.materials,
-                allowWildcards=self.brushMode.name == "Replace")
+                allowWildcards=self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace")
 
             if blockPicker.present():
                 self.blockInfo = blockPicker.blockInfo
