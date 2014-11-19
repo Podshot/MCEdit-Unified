@@ -316,6 +316,7 @@ class OptionsPanel(Dialog):
         self.langs = {}
         self.sgnal = {}
 
+    def initComponents(self):
         autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
                                               ref=ControlSettings.autobrake.propertyRef(),
                                               tooltipText="Apply brake when not pressing movement keys")
@@ -576,6 +577,7 @@ class MCEdit(GLViewport):
         if type(lng) == str: # and localEncoding != "UTF-8":
             lng = lng.decode(localEncoding)
         albow.translate.setLang(langs.get(lng, "English (US)"))
+        self.optionsPanel.initComponents()
         self.graphicsPanel = graphicsPanel(self)
 
         self.keyConfigPanel = keys.KeyConfigPanel()
