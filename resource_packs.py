@@ -723,7 +723,7 @@ def setup_resource_packs():
     for zip_tex_pack in zipResourcePacks:
         try:
             zip_tex_pack.decode('ascii')
-        except UnicodeDecodeError:
+        except (UnicodeDecodeError, UnicodeEncodeError):
             pass
         else:
             zrp = ZipResourcePack(zip_tex_pack)
@@ -734,7 +734,7 @@ def setup_resource_packs():
         if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+folder_tex_pack):
             try:
                 folder_tex_pack.decode('ascii')
-            except UnicodeDecodeError:
+            except (UnicodeDecodeError, UnicodeEncodeError):
                 pass
             else:
                 frp = FolderResourcePack(folder_tex_pack)
