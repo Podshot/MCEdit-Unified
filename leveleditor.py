@@ -3013,7 +3013,7 @@ class LevelEditor(GLViewport):
         d.top = self.viewportContainer.top + 10
         d.centerx = self.viewportContainer.centerx
         if d.present(centered=False) == "Goto":
-            destPoint = gotoPanel.X, gotoPanel.Y, gotoPanel.Z
+            destPoint = [gotoPanel.X, gotoPanel.Y, gotoPanel.Z]
             if self.currentViewport is self.chunkViewport:
                 self.swapViewports()
             self.mainViewport.cameraPosition = destPoint
