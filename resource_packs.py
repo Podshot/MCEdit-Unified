@@ -721,16 +721,26 @@ def setup_resource_packs():
     zipResourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
     folderResourcePacks = os.listdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"))
     for zip_tex_pack in zipResourcePacks:
-        zrp = ZipResourcePack(zip_tex_pack)
-        if not zrp.isEmpty:
-            if not zrp.tooBig:
-                terrains[zrp.pack_name] = zrp
+        try:
+            zip_tex_pack.decode('ascii')
+        except UnicodeEncodeError:
+            pass
+        else:
+            zrp = ZipResourcePack(zip_tex_pack)
+            if not zrp.isEmpty:
+                if not zrp.tooBig:
+                    terrains[zrp.pack_name] = zrp
     for folder_tex_pack in folderResourcePacks:
         if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+folder_tex_pack):
-            frp = FolderResourcePack(folder_tex_pack)
-            if not frp.isEmpty:
-                if not frp.tooBig:
-                    terrains[frp.pack_name] = frp
+            try:
+                folder_tex_pack.decode('ascii')
+            except UnicodeEncodeError:
+                pass
+            else:
+                frp = FolderResourcePack(folder_tex_pack)
+                if not frp.isEmpty:
+                    if not frp.tooBig:
+                        terrains[frp.pack_name] = frp
     for tex in terrains.keys():
         pack = terrains[tex]
         if not os.path.exists(pack.terrain_path()):
