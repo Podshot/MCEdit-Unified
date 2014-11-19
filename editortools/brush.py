@@ -35,7 +35,7 @@ import itertools
 import keys
 import leveleditor
 import logging
-from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, alertException, drawTerrainCuttingWire
+from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, FloatInputRow, alertException, drawTerrainCuttingWire
 import mcplatform
 from numpy import newaxis
 import numpy
@@ -195,17 +195,43 @@ class BrushPanel(Panel):
         presets = self.createPresetRow()
         optionsColumn = []
         optionsColumn.append(presets)
-        for r in tool.brushModes.inputs:
-            row = []
-            for field in r:
-                name = field[0]
-                default = field[default]
-                cf = createField(name, default)
-                row.append(cf)
-            row = Row(row)
-            optionsColumn.append(row)
+        for m in tool.brushModes:
+            m = tool.brushModes[m]
+            i = 0
+            for r in m.inputs:
+                row = []
+                for key, value in r.iteritems():
+                    field = self.createField(key, value)
+                    row.append(field)
+                print row
+                row = Row(row)
+                print row
+                optionsColumn.append(row)
         optionsColumn = Column(optionsColumn)
-            
+        self.add(optionsColumn)
+        self.shrink_wrap()
+        
+    def createField(self, key, value): #Creates a field matching the input type
+        type = value.__class__.__name__
+        reference = ItemRef(self.tool.options, key)
+        if type == 'int':
+            object = IntInputRow(key, ref=reference, width=50)
+        elif type == 'float':
+            object = FloatInputRow(key, ref=reference, width=50)
+        elif type == 'bool':
+            object = CheckBoxLabel(key, ref=reference)
+        elif type == 'Block':
+            if not hasattr(self.tool.recentBlocks, key):
+                self.tool.recentBlocks[key] = []
+            object = BlockButton(self.tool.editor.level.materials,
+                                 ref = reference,
+                                 recentBlocks = self.tool.recentBlocks[key],
+                                 allowWildcards = True
+                                 )
+        elif type == 'list':
+            pass
+        return object
+    
     def createPresetRow(self): #Creates the brush preset row, called by BrushPanel when creating the panel
         """
         Currently doesn't do anything yet, just a placeholder to create the widget
@@ -260,8 +286,11 @@ class BrushTool(CloneTool):
     'updateBrushOffset':False            
     }
     brushModes = {}
+    recentBlocks = {}
 
     def __init__(self, *args):
+        print self.editor
+        print self.editor.level.materials
         CloneTool.__init__(self, *args)
         self.optionsPanel = BrushToolOptions(self)
         self.recentFillBlocks = []
@@ -275,19 +304,26 @@ class BrushTool(CloneTool):
                 self.brushModes[m.displayName] = m
             else:
                 self.brushModes[m.__name__] = m
+            if m.inputs:
+                for r in m.inputs:
+                    for key in r:
+                        self.options[key] = r[key]
     
     def importBrushModes(self):
         sys.path.append(directories.brushesDir)
-        def tryImport(name):
-            try:
-                return importlib.import_module(name)
-            except Exception, e:
-                print traceback.format_exc()
-                alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
-                return object()
-        modes = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
+        modes = (self.tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
         return modes
+    
+    def tryImport(self, name):
+        print self.editor.level.materials
+        try:
+            return __import__(name, {'materials':self.editor.level.materials})
+        except Exception, e:
+            print traceback.format_exc()
+            alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
+            return object()
+
         
     def toolSelected(self): #Called on selecting tool. Applies options of BrushToolOptions, then sets up panel and other stuff.
         if self.settings['chooseBlockImmediately']:
@@ -320,7 +356,7 @@ class BrushTool(CloneTool):
         
     def getBrushSize(self): #Used to calculate brush size out of 3 integer values of W, H, L 
         size = []
-        for dim in ['brushSizeW','brushSizeH','brushSizeL']:
+        for dim in ['W','H','L']:
             size.append(self.options[dim])
         return size
     
