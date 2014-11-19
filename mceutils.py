@@ -483,7 +483,7 @@ def FloatInputRow(title, *args, **kw):
 
 
 def IntInputRow(title, *args, **kw):
-    return Row((Label(_(title), tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
 
 
 from albow.dialogs import Dialog

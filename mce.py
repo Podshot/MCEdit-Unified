@@ -790,7 +790,7 @@ class mce(object):
                                 itemname = "Unknown Item {0}".format(itemTag)
                             except Exception, e:
                                 itemname = repr(e)
-                            outFile.write("{0} {1}\n".format(itemTag["Count"].value, itemname))
+                            outFile.write("{0} {1}:{2}\n".format(itemTag["Count"].value, itemname, itemTag["Damage"].value))
                     else:
                         outFile.write("Empty Chest\n")
 

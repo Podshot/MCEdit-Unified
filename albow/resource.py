@@ -7,16 +7,13 @@ import logging
 log = logging.getLogger(__name__)
 
 import pygame
-# from directories import getDataDir # not nice, find something else
 from pygame.locals import RLEACCEL
 from translate import langPath
-# default_font_name = "DejaVuSans-Regular.ttf"
 optimize_images = True
 run_length_encode = False
 
 
 __curLang = "default"
-__oldLang = None
 
 def getCurLang():
     return __curLang
@@ -26,7 +23,6 @@ def setCurLang(lang):
     __curLang = lang
 
 font_lang_cache = {}
-# resource_dir = getDataDir()
 resource_dir = "Resources"
 
 image_cache = {}
@@ -72,28 +68,6 @@ def _get_image(names, border=0, optimize=optimize_images, noalpha=False,
 def get_image(*names, **kwds):
     return _get_image(names, **kwds)
 
-
-#def get_font(size, *names, **kwds):
-#    path = _resource_path("fonts", names, **kwds)
-#    key = (path, size)
-#    font = font_cache.get(key)
-#    if not font:
-#        try:
-#            font = pygame.font.Font(path, size)
-#        except Exception, e:
-#            log.debug("PyGame could not load font.")
-#            log.debug("Exception: %s"%e)
-#            log.debug("Trying with sys.getfilesystemencoding()")
-#            try:
-#                path = path.encode(sys.getfilesystemencoding())
-#                font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
-#            except Exception, e:
-#                log.debug("PyGame could not load font.")
-#                log.debug("Exception: %s"%e)
-#                log.debug("Loading sysfont")
-#                font = pygame.font.SysFont("Courier New", size)
-#        font_cache[key] = font
-#    return font
 
 def get_font(size, *names, **kwds):
     lngs_fontNm = font_lang_cache.get(names[-1], {})
