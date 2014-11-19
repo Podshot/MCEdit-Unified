@@ -13,7 +13,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 
 #Modified by D.C.-G. for translation purposes
-import importlib
+import imp
 import traceback
 from OpenGL import GL
 from albow import AttrRef, ItemRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextField, TableView, TableColumn
@@ -193,20 +193,22 @@ class BrushPanel(Panel):
         Panel.__init__(self)
         self.tool = tool
         presets = self.createPresetRow()
+        self.brushModeButton = ChoiceButton([m for m in tool.brushModes],
+                                       width=150,
+                                       choose=self.brushModeChanged)
+        self.brushModeButton.selectedChoice = self.tool.selectedBrushMode
         optionsColumn = []
-        optionsColumn.append(presets)
-        for m in tool.brushModes:
-            m = tool.brushModes[m]
-            i = 0
-            for r in m.inputs:
-                row = []
-                for key, value in r.iteritems():
-                    field = self.createField(key, value)
-                    row.append(field)
-                print row
-                row = Row(row)
-                print row
-                optionsColumn.append(row)
+        optionsColumn.extend([presets, self.brushModeButton])
+        m = tool.brushModes[self.tool.selectedBrushMode]
+        for r in m.inputs:
+            row = []
+            for key, value in r.iteritems():
+                field = self.createField(key, value)
+                row.append(field)
+            print row
+            row = Row(row)
+            print row
+            optionsColumn.append(row)
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -228,9 +230,10 @@ class BrushPanel(Panel):
                                  recentBlocks = self.tool.recentBlocks[key],
                                  allowWildcards = True
                                  )
-        elif type == 'list':
-            pass
         return object
+    
+    def brushModeChanged(self):
+        self.tool.selectedBrushMode = self.brushModeButton.selectedChoice
     
     def createPresetRow(self): #Creates the brush preset row, called by BrushPanel when creating the panel
         """
@@ -289,8 +292,6 @@ class BrushTool(CloneTool):
     recentBlocks = {}
 
     def __init__(self, *args):
-        print self.editor
-        print self.editor.level.materials
         CloneTool.__init__(self, *args)
         self.optionsPanel = BrushToolOptions(self)
         self.recentFillBlocks = []
@@ -298,6 +299,8 @@ class BrushTool(CloneTool):
         self.draggedPositions = []
         self.useKey = 0
         self.brushLineKey = 0
+    
+    def setupBrushModes(self):
         self.importedBrushModes = self.importBrushModes()
         for m in self.importedBrushModes:
             if m.displayName:
@@ -307,8 +310,9 @@ class BrushTool(CloneTool):
             if m.inputs:
                 for r in m.inputs:
                     for key in r:
-                        self.options[key] = r[key]
-    
+                        if not hasattr(self.options, key):
+                            self.options[key] = r[key]
+
     def importBrushModes(self):
         sys.path.append(directories.brushesDir)
         modes = (self.tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
@@ -318,7 +322,10 @@ class BrushTool(CloneTool):
     def tryImport(self, name):
         print self.editor.level.materials
         try:
-            return __import__(name, {'materials':self.editor.level.materials})
+            globals()[name] = m = imp.load_source(name, os.path.join(directories.brushesDir, (name+ ".py")))
+            m.materials = self.editor.level.materials
+            m.createInputs(m)
+            return m
         except Exception, e:
             print traceback.format_exc()
             alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
@@ -332,9 +339,12 @@ class BrushTool(CloneTool):
                 self.options['blockInfo'] = blockPicker.blockInfo
         if self.settings['updateBrushOffset']:
             self.options['reticleOffset'] = self.offsetMax()
+        self.setupBrushModes()
+        self.selectedBrushMode = [m for m in self.brushModes][0]
         #self.resetToolDistance()
         #self.setupPreview()
         self.showPanel()
+        
     
     def showPanel(self): #Remove old panels, make new panel instance and add it to leveleditor.
         if self.panel:
