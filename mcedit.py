@@ -71,15 +71,9 @@ import albow
 # TODO: Language Detection
 import locale
 localEncoding = locale.getdefaultlocale()[1]
-# albow.translate.setLang(locale.getdefaultlocale()[0])
-# del locale
-
-# albow.translate.buildTranslation(albow.translate.refreshLang())
-
 from albow.translate import _
 #!# for debugging
 from albow.translate import getPlatInfo
-#getPlatInfo(logging=logging)
 #!#
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
@@ -96,8 +90,6 @@ from leveleditor import ControlSettings, Settings
 #-# Building translation template
 if "-tt" in sys.argv:
     albow.translate.buildTemplate = True
-#else:
-#    albow.translate.setLang(Settings.langCode.get())
 #-#
 import mceutils
 import mcplatform
@@ -306,9 +298,6 @@ class OptionsPanel(Dialog):
     anchor = 'wh'
 
     def __init__(self, mcedit):
-        #albow.translate.refreshLang(suppressAlert=True)
-#        albow.translate.setLang(Settings.langCode.get())
-
         Dialog.__init__(self)
 
         self.mcedit = mcedit
@@ -317,6 +306,7 @@ class OptionsPanel(Dialog):
         self.sgnal = {}
 
     def initComponents(self):
+        """Initilize the window components. Call this after translation hs been loaded."""
         autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
                                               ref=ControlSettings.autobrake.propertyRef(),
                                               tooltipText="Apply brake when not pressing movement keys")
