@@ -253,6 +253,7 @@ class BrushPanel(Panel):
     
     def brushModeChanged(self):
         self.tool.selectedBrushMode = self.brushModeButton.selectedChoice
+        self.tool.brushMode = self.tool.brushModes[selectedBrushMode]
     
     def createPresetRow(self): #Creates the brush preset row, called by BrushPanel when creating the panel
         """
@@ -327,6 +328,21 @@ class BrushTool(CloneTool):
         self.useKey = 0
         self.brushLineKey = 0
         
+        
+    """
+    Property reticleOffset.
+    Used to determine the distance between the block the cursor is pointing at, and the center of the brush.
+    Increased by scrolling up, decreased by scrolling down (default keys)
+    """
+    _reticleOffset = 1
+    @property
+    def reticleOffset(self):
+        return self._reticleOffset
+    @reticleOffset.setter
+    def reticleOffset(self, val):
+        self._reticleOffset = val
+
+        
     def toolEnabled(self):
         """
         Brush tool is always enabled on the toolbar.
@@ -394,6 +410,7 @@ class BrushTool(CloneTool):
             self.reticleOffset = self.offsetMax()
         self.setupBrushModes()
         self.selectedBrushMode = [m for m in self.brushModes][0]
+        self.brushMode = self.brushModes[self.selectedBrushMode]
         self.resetToolDistance()
         self.setupPreview()
         self.showPanel()
@@ -498,6 +515,58 @@ class BrushTool(CloneTool):
 
         self.level = FakeLevel()
         CloneTool.setupPreview(self, alpha=self.settings['brushAlpha'])
+        
+    def getReticlePoint(self, pos, direction):
+        """
+        Calculates the position of the reticle.
+        Called by drawTerrainReticle.
+        """
+        if len(self.draggedPositions):
+            direction = self.draggedDirection
+        return map(lambda a, b: a + (b * self.reticleOffset), pos, direction)
+    
+    def drawToolReticle(self):
+        """
+        Draws a yellow reticle at every position where you dragged the brush.
+        Called by leveleditor.render
+        """
+        for pos in self.draggedPositions:
+            drawTerrainCuttingWire(BoundingBox(pos, (1, 1, 1)),
+                                   (0.75, 0.75, 0.1, 0.4),
+                                   (1.0, 1.0, 0.5, 1.0))
+        
+    def drawTerrainReticle(self):
+        """
+        Draws the white reticle where the cursor is pointing.
+        Called by leveleditor.render
+        """
+        if self.useKey == 1: #Alt is pressed
+            self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
+        else:
+            pos, direction = self.editor.blockFaceUnderCursor
+            reticlePoint = self.getReticlePoint(pos, direction)
+
+            self.editor.drawWireCubeReticle(position=reticlePoint)
+            if reticlePoint != pos:
+                GL.glColor4f(1.0, 1.0, 0.0, 0.7)
+                with gl.glBegin(GL.GL_LINES):
+                    GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))  #Center of reticle block
+                    GL.glVertex3f(*map(lambda a, b: a + 0.5 + b * 0.5, pos, direction))  #Top side of surface block
+
+            if self.previewDirty:
+                self.setupPreview()
+            if hasattr(self.brushMode, 'createDirtyBox'):
+                dirtyBox = self.brushMode.createDirtyBox()
+            else:
+                origin = map(lambda x, s: x - (s >> 1), reticlePoint, self.getBrushSize())
+                dirtyBox = BoundingBox(origin, self.getBrushSize())
+            self.drawTerrainPreview(dirtyBox.origin)
+            if self.brushLineKey == 1 and self.lastPosition: #If dragging mouse with Linetool pressed.
+                GL.glColor4f(1.0, 1.0, 1.0, 0.7)
+                with gl.glBegin(GL.GL_LINES):
+                    GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))
+                    GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))
+
 
     def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
         """
@@ -512,7 +581,7 @@ class BrushTool(CloneTool):
         :keyword hollow, input to calculate a hollow brush.
         """
     
-        # we are returning indices for a Blocks array, so swap axes
+        #We are returning indices for a Blocks array, so swap axes
         if box is None:
             box = BoundingBox(offset, shape)
         if chance < 100 or hollow:
