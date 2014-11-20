@@ -192,14 +192,35 @@ class BrushPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
+        m = tool.brushModes[self.tool.selectedBrushMode]        
+        """
+        presets, modeRow and styleRow are always created, no matter
+        what brush is selected. styleRow can be disabled by putting disableStyleButton = True
+        in the brush file.
+        """
         presets = self.createPresetRow()
-        self.brushModeButton = ChoiceButton([m for m in tool.brushModes],
+        
+        self.brushModeButtonLabel = Label("Mode:")
+        self.brushModeButton = ChoiceButton([mode for mode in tool.brushModes],
                                        width=150,
                                        choose=self.brushModeChanged)
+        modeRow = Row([self.brushModeButtonLabel, self.brushModeButton])   
+             
+        self.brushStyleButtonLabel = Label("Style:")
+        self.brushStyleButton = ValueButton(ref=ItemRef(self.tool.options, "Style"),
+                                            action=self.tool.swapBrushStyles,
+                                            width=150)
+        
+        styleRow = Row([self.brushStyleButtonLabel, self.brushStyleButton])
         self.brushModeButton.selectedChoice = self.tool.selectedBrushMode
         optionsColumn = []
-        optionsColumn.extend([presets, self.brushModeButton])
-        m = tool.brushModes[self.tool.selectedBrushMode]
+        optionsColumn.extend([presets, modeRow])
+        if not getattr(m, 'disableStyleButton', False):
+            optionsColumn.append(styleRow)
+        """
+        We're going over all options in the selected brush module, and making
+        a field for all of them.
+        """
         for r in m.inputs:
             row = []
             for key, value in r.iteritems():
@@ -281,7 +302,9 @@ class BrushTool(CloneTool):
     tooltipText = "Brush\nRight-click for options"
     toolIconName = "brush"
     
-    options = {}
+    options = {
+    'Style':'Round',
+    }
     settings = {
     'chooseBlockImmediately':False,
     'updateBrushOffset':False            
@@ -335,13 +358,19 @@ class BrushTool(CloneTool):
             if blockPicker.present():
                 self.options['blockInfo'] = blockPicker.blockInfo
         if self.settings['updateBrushOffset']:
-            self.options['reticleOffset'] = self.offsetMax()
+            self.reticleOffset = self.offsetMax()
         self.setupBrushModes()
         self.selectedBrushMode = [m for m in self.brushModes][0]
         #self.resetToolDistance()
-        #self.setupPreview()
+        self.setupPreview()
         self.showPanel()
         
+    def swapBrushStyles(self): #Swaps the BrushStyleButton
+        styles = ["Square","Round","Diamond"]
+        brushStyleIndex = styles.index(self.options["Style"]) + 1
+        brushStyleIndex %= 3
+        self.options["Style"] = styles[brushStyleIndex]
+        self.setupPreview()
     
     def showPanel(self): #Remove old panels, make new panel instance and add it to leveleditor.
         if self.panel:
@@ -370,8 +399,8 @@ class BrushTool(CloneTool):
     @alertException 
     def setupPreview(self): #Creates the Brush Preview (Still needs better documentation).
         brushSize = self.getBrushSize()
-        brushStyle = self.options['brushStyle']
-        blockInfo = self.options['blockInfo']
+        brushStyle = self.options['Style']
+        blockInfo = self.options['Block']
 
         class FakeLevel(pymclevel.MCLevel):
             filename = "Fake Level"
@@ -410,5 +439,5 @@ class BrushTool(CloneTool):
                 return f
 
         self.level = FakeLevel()
-        CloneTool.setupPreview(self, alpha=self.settings[brushAlpha])
+        CloneTool.setupPreview(self, alpha=self.settings['brushAlpha'])
 
