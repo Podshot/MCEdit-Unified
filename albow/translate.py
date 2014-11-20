@@ -131,7 +131,7 @@ def _(string, doNotTranslate=False):
         if u"%s"%string not in template.values():
             template[strNum] = u"%s"%string
             strNum += 1
-    return string_cache.get(string, string.replace("\n", "\n\n"))
+    return string_cache.get(string, string.replace("\n", "\n\n")) or string
 
 #-------------------------------------------------------------------------------
 def saveTemplate():
