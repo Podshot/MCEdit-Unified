@@ -90,6 +90,7 @@ from leveleditor import ControlSettings, Settings
 #-# Building translation template
 if "-tt" in sys.argv:
     albow.translate.buildTemplate = True
+    albow.translate.loadTemplate()
 #-#
 import mceutils
 import mcplatform
@@ -562,11 +563,12 @@ class MCEdit(GLViewport):
             self.setRecentWorlds([""] * 5)
 
         self.optionsPanel = OptionsPanel(self)
-        langs = self.optionsPanel.getLanguageChoices()
-        lng = Settings.langCode.get()
-        if type(lng) == str: # and localEncoding != "UTF-8":
-            lng = lng.decode(localEncoding)
-        albow.translate.setLang(langs.get(lng, "English (US)"))
+        if not albow.translate.buildTemplate:
+            langs = self.optionsPanel.getLanguageChoices()
+            lng = Settings.langCode.get()
+            if type(lng) == str: # and localEncoding != "UTF-8":
+                lng = lng.decode(localEncoding)
+            albow.translate.setLang(langs.get(lng, "English (US)"))
         self.optionsPanel.initComponents()
         self.graphicsPanel = graphicsPanel(self)
 
