@@ -313,18 +313,12 @@ class BrushTool(CloneTool):
     brushModes = {}
     recentBlocks = {}
     
-    
-    _reticleOffset = 1
-    @property
-    def reticleOffset(self):
-        return self._reticleOffset
-    @reticleOffset.setter
-    def reticleOffset(self, bi):
-        self._reticleOffset = bi
-        self.setupPreview()
-
 
     def __init__(self, *args):
+        """
+        Called on starting mcedit.
+        Creates some basic variables.
+        """
         CloneTool.__init__(self, *args)
         self.optionsPanel = BrushToolOptions(self)
         self.recentFillBlocks = []
@@ -332,8 +326,20 @@ class BrushTool(CloneTool):
         self.draggedPositions = []
         self.useKey = 0
         self.brushLineKey = 0
+        
+    def toolEnabled(self):
+        """
+        Brush tool is always enabled on the toolbar.
+        It does not need a selection.
+        """
+        return True
     
     def setupBrushModes(self):
+        """
+        Makes a dictionary of all mode names and their corresponding module. If no name is found, it uses the name of the file.
+        Creates dictionary entries for all inputs in import brush modules.
+        Called by toolSelected
+        """
         self.importedBrushModes = self.importBrushModes()
         for m in self.importedBrushModes:
             if m.displayName:
@@ -347,12 +353,20 @@ class BrushTool(CloneTool):
                             self.options[key] = r[key]
 
     def importBrushModes(self):
+        """
+        Imports all Brush Modes from their files.
+        Called by setupBrushModes
+        """
         sys.path.append(directories.brushesDir)
         modes = (self.tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
         return modes
     
     def tryImport(self, name):
+        """
+        Imports a brush module. Called by importBrushModules
+        :param name, name of the module to import. 
+        """
         try:
             globals()[name] = m = imp.load_source(name, os.path.join(directories.brushesDir, (name+ ".py")))
             m.materials = self.editor.level.materials
@@ -364,7 +378,14 @@ class BrushTool(CloneTool):
             return object()
 
         
-    def toolSelected(self): #Called on selecting tool. Applies options of BrushToolOptions, then sets up panel and other stuff.
+    def toolSelected(self):
+        """
+        Applies options of BrushToolOptions.
+        It then imports all brush modes from their files,
+        sets up the panel,
+        and sets up the brush preview.
+        Called on pressing "2" or pressing the brush button in the hotbar when brush is not selected.
+        """
         if self.settings['chooseBlockImmediately']:
             blockPicker = BlockPicker(self.options['Block'], self.editor.level.materials, allowWildcards=True)
             if blockPicker.present():
@@ -373,18 +394,26 @@ class BrushTool(CloneTool):
             self.reticleOffset = self.offsetMax()
         self.setupBrushModes()
         self.selectedBrushMode = [m for m in self.brushModes][0]
-        #self.resetToolDistance()
+        self.resetToolDistance()
         self.setupPreview()
         self.showPanel()
         
-    def swapBrushStyles(self): #Swaps the BrushStyleButton
+    def swapBrushStyles(self):
+        """
+        Swaps the BrushStyleButton to the next Brush Style.
+        Called by pressing BrushStyleButton in panel.
+        """
         styles = ["Square","Round","Diamond"]
         brushStyleIndex = styles.index(self.options["Style"]) + 1
         brushStyleIndex %= 3
         self.options["Style"] = styles[brushStyleIndex]
         self.setupPreview()
     
-    def showPanel(self): #Remove old panels, make new panel instance and add it to leveleditor.
+    def showPanel(self):
+        """
+        Removes old panels.
+        Makes new panel instance and add it to leveleditor.
+        """
         if self.panel:
             self.panel.parent.remove(self.panel)
         panel = BrushPanel(self)
@@ -394,22 +423,38 @@ class BrushTool(CloneTool):
         self.panel = panel
         self.editor.add(panel)
 
-    def offsetMax(self): #Sets the offset to match the Brush Size
+    def offsetMax(self):
+        """
+        Sets the Brush Offset (space between face the cursor is pointing at and center of brush.
+        Called by toolSelected if updateBrushOffset is Checked in BrushOptions
+        """
         brushSizeOffset = max(self.getBrushSize + 1)
         return max(1, (0.5 * brushSizeOffset))
                    
-    def resetToolDistance(self): #'Undocumented, no idea what it does' - Rubisk
+    def resetToolDistance(self):
+        """
+        Resets the distance of the brush in right-click mode, appropriate to the size of the brush.
+        """
         distance = max(self.editor.cameraToolDistance, 6 + max(self.getBrushSize()) * 1.25)
         self.editor.cameraToolDistance = distance
         
-    def getBrushSize(self): #Used to calculate brush size out of 3 integer values of W, H, L 
+    def getBrushSize(self):
+        """
+        Returns an array of the sizes of the brush.
+        Called by methods that need the size of the brush like createBrushMask
+        """ 
         size = []
         for dim in ['W','H','L']:
             size.append(self.options[dim])
         return size
     
     @alertException 
-    def setupPreview(self): #Creates the Brush Preview (Still needs better documentation).
+    def setupPreview(self): 
+        """
+        Creates the Brush Preview
+        Passes it as a FakeLevel object to the renderer
+        Called whenever the preview needs to be recalculated.
+        """
         self.previewDirty = False
         brushSize = self.getBrushSize()
         brushStyle = self.options['Style']
@@ -427,7 +472,6 @@ class BrushTool(CloneTool):
             zerolight[:] = 15
 
             def getChunk(self, cx, cz):
-                print 'hi'
                 if (cx, cz) in self.chunkCache:
                     return self.chunkCache[cx, cz]
 
@@ -459,7 +503,13 @@ class BrushTool(CloneTool):
         """
         Return a boolean array for a brush with the given shape and style.
         If 'offset' and 'box' are given, then the brush is offset into the world
-        and only the part of the world contained in box is returned as an array
+        and only the part of the world contained in box is returned as an array.
+        :param shape, UNKWOWN
+        :keyword style, style of the brush. Round if not given.
+        :keyword offset, UNKWOWN
+        :keyword box, UNKWOWN
+        :keyword chance, also known as Noise. Input in stock-brushes like Fill and Replace.
+        :keyword hollow, input to calculate a hollow brush.
         """
     
         # we are returning indices for a Blocks array, so swap axes
@@ -543,3 +593,5 @@ class BrushTool(CloneTool):
             return mask[1:-1, 1:-1, 1:-1]
         else:
             return mask
+        
+        
