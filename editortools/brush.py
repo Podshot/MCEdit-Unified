@@ -307,10 +307,22 @@ class BrushTool(CloneTool):
     }
     settings = {
     'chooseBlockImmediately':False,
-    'updateBrushOffset':False            
+    'updateBrushOffset':False,
+    'brushAlpha':1.0,      
     }
     brushModes = {}
     recentBlocks = {}
+    
+    
+    _reticleOffset = 1
+    @property
+    def reticleOffset(self):
+        return self._reticleOffset
+    @reticleOffset.setter
+    def reticleOffset(self, bi):
+        self._reticleOffset = bi
+        self.setupPreview()
+
 
     def __init__(self, *args):
         CloneTool.__init__(self, *args)
@@ -354,9 +366,9 @@ class BrushTool(CloneTool):
         
     def toolSelected(self): #Called on selecting tool. Applies options of BrushToolOptions, then sets up panel and other stuff.
         if self.settings['chooseBlockImmediately']:
-            blockPicker = BlockPicker(self.options['blockInfo'], self.editor.level.materials, allowWildcards=True)
+            blockPicker = BlockPicker(self.options['Block'], self.editor.level.materials, allowWildcards=True)
             if blockPicker.present():
-                self.options['blockInfo'] = blockPicker.blockInfo
+                self.options['Block'] = blockPicker.blockInfo
         if self.settings['updateBrushOffset']:
             self.reticleOffset = self.offsetMax()
         self.setupBrushModes()
@@ -398,6 +410,7 @@ class BrushTool(CloneTool):
     
     @alertException 
     def setupPreview(self): #Creates the Brush Preview (Still needs better documentation).
+        self.previewDirty = False
         brushSize = self.getBrushSize()
         brushStyle = self.options['Style']
         blockInfo = self.options['Block']
@@ -414,6 +427,7 @@ class BrushTool(CloneTool):
             zerolight[:] = 15
 
             def getChunk(self, cx, cz):
+                print 'hi'
                 if (cx, cz) in self.chunkCache:
                     return self.chunkCache[cx, cz]
 
@@ -425,7 +439,7 @@ class BrushTool(CloneTool):
                 f.world = self
                 f.chunkPosition = (cx, cz)
 
-                mask = createBrushMask(brushSize, brushStyle, (0, 0, 0), BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
+                mask = createBrushMask(self.getBrushSize(), self.options['Style'], (0, 0, 0), BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
                 f.Blocks = numpy.zeros(mask.shape, dtype='uint8')
                 f.Data = numpy.zeros(mask.shape, dtype='uint8')
 
@@ -441,3 +455,91 @@ class BrushTool(CloneTool):
         self.level = FakeLevel()
         CloneTool.setupPreview(self, alpha=self.settings['brushAlpha'])
 
+    def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
+        """
+        Return a boolean array for a brush with the given shape and style.
+        If 'offset' and 'box' are given, then the brush is offset into the world
+        and only the part of the world contained in box is returned as an array
+        """
+    
+        # we are returning indices for a Blocks array, so swap axes
+        if box is None:
+            box = BoundingBox(offset, shape)
+        if chance < 100 or hollow:
+            box = box.expand(1)
+    
+        outputShape = box.size
+        outputShape = (outputShape[0], outputShape[2], outputShape[1])
+    
+        shape = shape[0], shape[2], shape[1]
+        offset = numpy.array(offset) - numpy.array(box.origin)
+        offset = offset[[0, 2, 1]]
+    
+        inds = numpy.indices(outputShape, dtype=float)
+        halfshape = numpy.array([(i >> 1) - ((i & 1 == 0) and 0.5 or 0) for i in shape])
+    
+        blockCenters = inds - halfshape[:, newaxis, newaxis, newaxis]
+        blockCenters -= offset[:, newaxis, newaxis, newaxis]
+    
+        # odd diameter means measure from the center of the block at 0,0,0 to each block center
+        # even diameter means measure from the 0,0,0 grid point to each block center
+    
+        # if diameter & 1 == 0: blockCenters += 0.5
+        shape = numpy.array(shape, dtype='float32')
+    
+        # if not isSphere(shape):
+        if style == "Round":
+            blockCenters *= blockCenters
+            shape /= 2
+            shape *= shape
+    
+            blockCenters /= shape[:, newaxis, newaxis, newaxis]
+            distances = sum(blockCenters, 0)
+            mask = distances < 1
+        elif style == "Cylinder":
+            pass
+    
+    
+        elif style == "Square":
+            # mask = ones(outputShape, dtype=bool)
+            # mask = blockCenters[:, newaxis, newaxis, newaxis] < shape
+            blockCenters /= shape[:, None, None, None]
+    
+            distances = numpy.absolute(blockCenters).max(0)
+            mask = distances < .5
+    
+        elif style == "Diamond":
+            blockCenters = numpy.abs(blockCenters)
+            shape /= 2
+            blockCenters /= shape[:, newaxis, newaxis, newaxis]
+            distances = sum(blockCenters, 0)
+            mask = distances < 1
+        else:
+            raise ValueError, "Unknown style: " + style
+    
+        if (chance < 100 or hollow) and max(shape) > 1:
+            threshold = chance / 100.0
+            exposedBlockMask = numpy.ones(shape=outputShape, dtype='bool')
+            exposedBlockMask[:] = mask
+            submask = mask[1:-1, 1:-1, 1:-1]
+            exposedBlockSubMask = exposedBlockMask[1:-1, 1:-1, 1:-1]
+            exposedBlockSubMask[:] = False
+    
+            for dim in (0, 1, 2):
+                slices = [slice(1, -1), slice(1, -1), slice(1, -1)]
+                slices[dim] = slice(None, -2)
+                exposedBlockSubMask |= (submask & (mask[slices] != submask))
+                slices[dim] = slice(2, None)
+                exposedBlockSubMask |= (submask & (mask[slices] != submask))
+    
+            if hollow:
+                mask[~exposedBlockMask] = False
+            if chance < 100:
+                rmask = numpy.random.random(mask.shape) < threshold
+    
+                mask[exposedBlockMask] = rmask[exposedBlockMask]
+    
+        if chance < 100 or hollow:
+            return mask[1:-1, 1:-1, 1:-1]
+        else:
+            return mask
