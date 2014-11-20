@@ -15,6 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #Modified by D.C.-G. for translation purposes
 
 from OpenGL import GL
+import datetime
 import os
 from albow import AttrRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextField, TableView, TableColumn
 from albow.dialogs import Dialog
@@ -332,11 +333,11 @@ class Modes:
 
             def spread(coords):
                 while len(coords):
-                    start = datetime.now()
+                    start = datetime.datetime.now()
 
                     num = len(coords)
                     coords = processCoords(coords)
-                    d = datetime.now() - start
+                    d = datetime.datetime.now() - start
                     progress = "Did {0} coords in {1}".format(num, d)
                     log.info(progress)
                     yield progress
