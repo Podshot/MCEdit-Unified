@@ -205,9 +205,7 @@ class BrushPanel(Panel):
             for key, value in r.iteritems():
                 field = self.createField(key, value)
                 row.append(field)
-            print row
             row = Row(row)
-            print row
             optionsColumn.append(row)
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
@@ -320,7 +318,6 @@ class BrushTool(CloneTool):
         return modes
     
     def tryImport(self, name):
-        print self.editor.level.materials
         try:
             globals()[name] = m = imp.load_source(name, os.path.join(directories.brushesDir, (name+ ".py")))
             m.materials = self.editor.level.materials
