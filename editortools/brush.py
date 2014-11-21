@@ -192,7 +192,7 @@ class BrushPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
-        m = tool.brushModes[self.tool.selectedBrushMode]        
+        m = tool.brushMode
         """
         presets, modeRow and styleRow are always created, no matter
         what brush is selected. styleRow can be disabled by putting disableStyleButton = True
@@ -337,7 +337,9 @@ class BrushTool(CloneTool):
     _reticleOffset = 1
     @property
     def reticleOffset(self):
-        return self._reticleOffset
+        if getattr(self.brushMode, 'draggableBrush', True):
+            return self._reticleOffset
+        return 0
     @reticleOffset.setter
     def reticleOffset(self, val):
         self._reticleOffset = val
@@ -470,7 +472,7 @@ class BrushTool(CloneTool):
         """
         Creates the Brush Preview
         Passes it as a FakeLevel object to the renderer
-        Called whenever the preview needs to be recalculated.
+        Called whenever the preview needs to be recalculated
         """
         self.previewDirty = False
         brushSize = self.getBrushSize()
@@ -561,7 +563,7 @@ class BrushTool(CloneTool):
                 origin = map(lambda x, s: x - (s >> 1), reticlePoint, self.getBrushSize())
                 dirtyBox = BoundingBox(origin, self.getBrushSize())
             self.drawTerrainPreview(dirtyBox.origin)
-            if self.brushLineKey == 1 and self.lastPosition: #If dragging mouse with Linetool pressed.
+            if self.brushLineKey == 1 and self.lastPosition and getattr(self.brushMode, 'draggableBrush', True): #If dragging mouse with Linetool pressed.
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))
