@@ -1,0 +1,5 @@
+Add modelhandler.py (https://dl.dropboxusercontent.com/u/49046656/Minecraft%20model%20loader.zip)
+Register all current models
+Render using models
+Improve modelhandler.py to use textures
+Create new model files for blocks without model files, like signs
