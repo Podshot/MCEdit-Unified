@@ -94,52 +94,22 @@ class BrushMode(object):
     def createOptions(self, panel, tool):
         pass
 
-# class BrushOperation(Operation):
-#     def __init__(self, editor, level, points, options):
-#         super(BrushOperation, self).__init__(editor, level)
-#  
-#         # if options is None: options = {}
-#  
-#         self.options = options
-#         self.editor = editor
-#         if isinstance(points[0], (int, float)):
-#             points = [points]
-#  
-#         self.points = points
-#  
-#         self.brushSize = options['brushSize']
-#         self.blockInfo = options['blockInfo']
-#         self.brushStyle = options['brushStyle']
-#         self.brushMode = options['brushMode']
-#  
-#         if max(self.brushSize) > BrushTool.maxBrushSize:
-#             self.brushSize = (BrushTool.maxBrushSize,) * 3
-#         if max(self.brushSize) < 1:
-#             self.brushSize = (1, 1, 1)
-#  
-#         boxes = [self.brushMode.brushBoxForPointAndOptions(p, options) for p in points]
-#         self._dirtyBox = reduce(lambda a, b: a.union(b), boxes)
-#  
-#     brushStyles = ["Round", "Square", "Diamond"]
-#     brushModeClasses = [
-#         Modes.Fill,
-#         Modes.VariedFill,
-#         Modes.FloodFill,
-#         Modes.Replace,
-# 		Modes.Vary,
-#         Modes.Erode,
-#         Modes.Topsoil,
-#         Modes.Paste
-#     ]
-
-
-    @property
-    def noise(self):
-        return self.options.get('brushNoise', 100)
-
-    @property
-    def hollow(self):
-        return self.options.get('brushHollow', False)
+class BrushOperation(Operation):
+    def __init__(self, tool):
+        super(BrushOperation, self).__init__(tool.editor, tool.level)
+        self.tool = tool
+        self.editor = tool.editor
+        if isinstance(points[0], (int, float)):
+            points = [points]
+        self.points = points
+  
+        if max(self.brushSize) > BrushTool.maxBrushSize:
+            self.brushSize = (BrushTool.maxBrushSize,) * 3
+        if max(self.brushSize) < 1:
+            self.brushSize = (1, 1, 1)
+  
+        boxes = [self.tool.getDirtyBox(p, options) for p in points]
+        self._dirtyBox = reduce(lambda a, b: a.union(b), boxes)
     
     def dirtyBox(self):
         return self._dirtyBox
@@ -192,7 +162,6 @@ class BrushPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
-        m = tool.brushMode
         """
         presets, modeRow and styleRow are always created, no matter
         what brush is selected. styleRow can be disabled by putting disableStyleButton = True
@@ -215,13 +184,13 @@ class BrushPanel(Panel):
         self.brushModeButton.selectedChoice = self.tool.selectedBrushMode
         optionsColumn = []
         optionsColumn.extend([presets, modeRow])
-        if not getattr(m, 'disableStyleButton', False):
+        if not getattr(tool.brushMode, 'disableStyleButton', False):
             optionsColumn.append(styleRow)
         """
         We're going over all options in the selected brush module, and making
         a field for all of them.
         """
-        for r in m.inputs:
+        for r in tool.brushMode.inputs:
             row = []
             for key, value in r.iteritems():
                 field = self.createField(key, value)
@@ -245,7 +214,7 @@ class BrushPanel(Panel):
             if not hasattr(self.tool.recentBlocks, key):
                 self.tool.recentBlocks[key] = []
             object = BlockButton(self.tool.editor.level.materials,
-                                 ref = reference,
+                                 ref=reference,
                                  recentBlocks = self.tool.recentBlocks[key],
                                  allowWildcards = True
                                  )
@@ -325,8 +294,8 @@ class BrushTool(CloneTool):
         self.recentFillBlocks = []
         self.recentReplaceBlocks = []
         self.draggedPositions = []
-        self.useKey = 0
-        self.brushLineKey = 0
+        self.pickBlockKey = False
+        self.lineToolKey = False
         
         
     """
@@ -404,19 +373,152 @@ class BrushTool(CloneTool):
         and sets up the brush preview.
         Called on pressing "2" or pressing the brush button in the hotbar when brush is not selected.
         """
-        if self.settings['chooseBlockImmediately']:
-            blockPicker = BlockPicker(self.options['Block'], self.editor.level.materials, allowWildcards=True)
-            if blockPicker.present():
-                self.options['Block'] = blockPicker.blockInfo
-        if self.settings['updateBrushOffset']:
-            self.reticleOffset = self.offsetMax()
         self.setupBrushModes()
         self.selectedBrushMode = [m for m in self.brushModes][0]
         self.brushMode = self.brushModes[self.selectedBrushMode]
+        if self.settings['chooseBlockImmediately']:
+            key = getattr(self.brushMode, 'mainBlock', 'Block')
+            blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=True)
+            if blockPicker.present():
+                    self.options[key] = blockPicker.blockInfo
+        if self.settings['updateBrushOffset']:
+            self.reticleOffset = self.offsetMax()
         self.resetToolDistance()
         self.setupPreview()
         self.showPanel()
         
+    @property
+    def worldTooltipText(self):
+        """
+        Displays the corresponding tooltip if ALT is pressed.
+        Called by leveleditor every tick.
+        """
+        if self.pickBlockKey == True:
+            try:
+                if self.editor.blockFaceUnderCursor is None:
+                    return
+                pos = self.editor.blockFaceUnderCursor[0]
+                blockID = self.editor.level.blockAt(*pos)
+                blockdata = self.editor.level.blockDataAt(*pos)
+                return _("Click to use {0} ({1}:{2})").format(self.editor.level.materials.names[blockID][blockdata], blockID, blockdata)
+            except Exception, e:
+                return repr(e)
+
+        
+    def keyDown(self, evt):
+        """
+        Triggered on pressing a key,
+        sets the corresponding variable to True
+        """
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Pick Block'):
+            self.pickBlockKey = True
+        if keyname == config.config.get("Keys", "Brush Line Tool"):
+            self.lineToolKey = True
+
+    def keyUp(self, evt):
+        """
+        Triggered on releasing a key,
+        sets the corresponding variable to False
+        """
+        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        if keyname == config.config.get('Keys', 'Pick Block'):
+            self.pickBlockKey = False
+        if keyname == config.config.get("Keys", "Brush Line Tool"):
+            self.lineToolKey = False
+            self.lastPosition = None
+            
+    @alertException
+    def mouseDown(self, evt, pos, direction):
+        """
+        Called on pressing the mouseButton.
+        Sets bllockButton if pickBlock is True.
+        Also starts dragging.
+        """
+        if self.pickBlockKey == True:
+            id = self.editor.level.blockAt(*pos)
+            data = self.editor.level.blockDataAt(*pos)
+            key = getattr(self.brushMode, 'MainBlock', 'Block')
+            self.options[key] = self.editor.level.materials.blockWithID(id, data)
+            self.showPanel()
+        else:
+            self.draggedDirection = direction
+            point = [p + d * self.reticleOffset for p, d in zip(pos, direction)]
+            self.dragLineToPoint(point)
+
+    @alertException
+    def mouseDrag(self, evt, pos, _dir):
+        """
+        Called on dragging the mouse.
+        Adds the current point to draggedPositions.
+        """
+        direction = self.draggedDirection
+        if self.brushMode.name != "Flood Fill":
+            if len(self.draggedPositions):  # if self.isDragging
+                self.lastPosition = lastPoint = self.draggedPositions[-1]
+                point = [p + d * self.reticleOffset for p, d in zip(pos, direction)]
+                if any([abs(a - b) >= self.minimumSpacing
+                        for a, b in zip(point, lastPoint)]):
+                    self.dragLineToPoint(point)
+    
+        def dragLineToPoint(self, point):
+            if self.brushMode.name == "Flood Fill":
+                self.draggedPositions = [point]
+                return
+    
+            if self.lineToolKey == True:
+                for move in self.editor.movements:
+                    if move in config.config.get("Keys", "Brush Line Tool"):
+                        self.editor.save = 1
+                self.editor.get_root().shiftClicked = 0
+                self.editor.get_root().shiftPlaced = -2
+                self.editor.get_root().ctrlClicked = 0
+                self.editor.get_root().ctrlPlaced = -2
+                self.editor.get_root().altClicked = 0
+                self.editor.get_root().altPlaced = -2
+    
+                if len(self.draggedPositions):
+                    points = bresenham.bresenham(self.draggedPositions[-1], point)
+                    self.draggedPositions.extend(points[::self.minimumSpacing][1:])
+                elif self.lastPosition is not None:
+                    points = bresenham.bresenham(self.lastPosition, point)
+                    self.draggedPositions.extend(points[::self.minimumSpacing][1:])
+            else:
+                self.draggedPositions.append(point)
+
+    @alertException
+    def mouseUp(self, evt, pos, direction):
+        """
+        Called on releasing the Mouse Button.
+        Creates Operation object and passes it to the leveleditor.
+        """
+        self.editor.get_root().ctrlClicked = -1
+        if 0 == len(self.draggedPositions):
+            return
+        size = self.getBrushSize()
+        op = BrushOperation(self.editor,
+                            self.editor.level,
+                            self.draggedPositions,
+                            self.getBrushOptions())
+        box = op.dirtyBox()
+        self.editor.addOperation(op)
+        self.editor.addUnsavedEdit()
+
+        self.editor.invalidateBox(box)
+        self.lastPosition = self.draggedPositions[-1]
+
+        self.draggedPositions = []
+
+        if self.lineToolKey == True:
+            self.editor.get_root().shiftClicked = 0
+            self.editor.get_root().shiftPlaced = -2
+            self.editor.get_root().ctrlClicked = 0
+            self.editor.get_root().ctrlPlaced = -2
+            self.editor.get_root().altClicked = 0
+            self.editor.get_root().altPlaced = -2
+            self.lineToolKey = False
+        self.editor.get_root().ctrlClicked = -1
+
     def swapBrushStyles(self):
         """
         Swaps the BrushStyleButton to the next Brush Style.
@@ -477,7 +579,8 @@ class BrushTool(CloneTool):
         self.previewDirty = False
         brushSize = self.getBrushSize()
         brushStyle = self.options['Style']
-        blockInfo = self.options['Block']
+        key = getattr(self.brushMode, 'mainBlock', 'Block')
+        blockInfo = self.options[key]
 
         class FakeLevel(pymclevel.MCLevel):
             filename = "Fake Level"
@@ -536,13 +639,24 @@ class BrushTool(CloneTool):
             drawTerrainCuttingWire(BoundingBox(pos, (1, 1, 1)),
                                    (0.75, 0.75, 0.1, 0.4),
                                    (1.0, 1.0, 0.5, 1.0))
+            
+    def getDirtyBox(self, point, size):
+        """
+        Returns a box around the Brush given point and size of the brush.
+        """
+        if hasattr(self.brushMode, 'createDirtyBox'):
+            dirtyBox = self.brushMode.createDirtyBox(point, size)
+        else:
+            origin = map(lambda x, s: x - (s >> 1), point, size)
+            dirtyBox = BoundingBox(origin, size)
+        return dirtyBox
         
     def drawTerrainReticle(self):
         """
         Draws the white reticle where the cursor is pointing.
         Called by leveleditor.render
         """
-        if self.useKey == 1: #Alt is pressed
+        if self.pickBlockKey == 1: #Alt is pressed
             self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
         else:
             pos, direction = self.editor.blockFaceUnderCursor
@@ -557,13 +671,9 @@ class BrushTool(CloneTool):
 
             if self.previewDirty:
                 self.setupPreview()
-            if hasattr(self.brushMode, 'createDirtyBox'):
-                dirtyBox = self.brushMode.createDirtyBox()
-            else:
-                origin = map(lambda x, s: x - (s >> 1), reticlePoint, self.getBrushSize())
-                dirtyBox = BoundingBox(origin, self.getBrushSize())
+            dirtyBox = self.getDirtyBox(reticlePoint, self.getBrushSize())
             self.drawTerrainPreview(dirtyBox.origin)
-            if self.brushLineKey == 1 and self.lastPosition and getattr(self.brushMode, 'draggableBrush', True): #If dragging mouse with Linetool pressed.
+            if self.lineToolKey == True and self.lastPosition and getattr(self.brushMode, 'draggableBrush', True): #If dragging mouse with Linetool pressed.
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))
