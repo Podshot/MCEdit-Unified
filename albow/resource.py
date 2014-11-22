@@ -33,7 +33,10 @@ cursor_cache = {}
 
 
 def _resource_path(default_prefix, names, prefix=""):
-    return os.path.join(resource_dir, prefix or default_prefix, *names)
+    path = os.path.join(resource_dir, prefix or default_prefix, *names)
+    if type(path) == unicode:
+        path = path.encode(sys.getfilesystemencoding())
+    return path
 
 
 def resource_path(*names, **kwds):
@@ -70,6 +73,7 @@ def get_image(*names, **kwds):
 
 
 def get_font(size, *names, **kwds):
+    global font_cache
     lngs_fontNm = font_lang_cache.get(names[-1], {})
     fontNm = lngs_fontNm.get(getCurLang(), None)
     if fontNm:
@@ -88,7 +92,7 @@ def get_font(size, *names, **kwds):
             log.debug("Trying with sys.getfilesystemencoding()")
             try:
                 path = path.encode(sys.getfilesystemencoding())
-                font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
+                font = pygame.font.Font(path, size)
                 log.debug("Font %s loaded."%path)
             except Exception, e:
                 log.debug("PyGame could not load font.")
