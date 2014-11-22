@@ -2822,18 +2822,18 @@ class LevelEditor(GLViewport):
                     self.currentTool.rotate(blocksOnly=True)
             if keyname == config.config.get('Keys', 'Blocks-Only Modifier') + '-' + config.config.get('Keys', 'Roll (Brush)'):
                 if "Brush" in "{0}".format(self.currentTool):
-                    self.currentTool.mirror(blocksOnly=True)
+                    self.currentTool.roll(blocksOnly=True)
             if keyname == config.config.get('Keys', 'Decrease Brush'):
                 if "Brush" in "{0}".format(self.currentTool):
-                    self.currentTool.flip(blocksOnly=False)
+                    self.currentTool.decrease(blocksOnly=False)
             if keyname == config.config.get('Keys', 'Increase Brush'):
                 if "Brush" in "{0}".format(self.currentTool):
-                    self.currentTool.roll(blocksOnly=False)
+                    self.currentTool.increase(blocksOnly=False)
             if keyname == config.config.get('Keys', 'Rotate (Brush)'):
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.rotate(blocksOnly=False)
             if keyname == config.config.get('Keys', 'Roll (Brush)'):
-                if "Brush" in "{0}".format(self.currentTool):
+                if "Brush" in "{0}".roll(self.currentTool):
                     self.currentTool.mirror(blocksOnly=False)
 
             if keyname == config.config.get('Keys', 'Replace Shortcut'):

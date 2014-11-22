@@ -292,6 +292,7 @@ class BrushTool(CloneTool):
     brushModes = {}
     recentBlocks = {}
     previewDirty = False
+    cameraDistance = EditorTool.cameraDistance
     
 
     def __init__(self, *args):
@@ -347,6 +348,20 @@ class BrushTool(CloneTool):
     def L(self, val):
         self.options['L'] = val
         self.setupPreview()
+        
+    """
+    Statustext property, rendered in the black line at the bottom of the screen.
+    """
+    @property
+    def statusText(self):
+        return _("Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.").format(
+            P=config.config.get("Keys", "Pick Block"),
+            R=config.config.get("Keys", "Increase Brush"),
+            F=config.config.get("Keys", "Decrease Brush"),
+            E=config.config.get("Keys", "Rotate (Brush)"),
+            G=config.config.get("Keys", "Roll (Brush)"),
+            )
+            
 
     def toolEnabled(self):
         """
@@ -577,8 +592,18 @@ class BrushTool(CloneTool):
         """
         Resets the distance of the brush in right-click mode, appropriate to the size of the brush.
         """
-        distance = max(self.editor.cameraToolDistance, 6 + max(self.getBrushSize()) * 1.25)
+        distance = 6 + max(self.getBrushSize()) * 1.25
         self.editor.cameraToolDistance = distance
+        
+    def resetToolReach(self):
+        """
+        Resets reticleOffset or tooldistance in right-click mode.
+        """
+        if self.editor.mainViewport.mouseMovesCamera and not self.editor.longDistanceMode:
+            self.resetToolDistance()
+        else:
+            self.reticleOffset = self.offsetMax()
+        return True
         
     def getBrushSize(self):
         """
@@ -652,6 +677,29 @@ class BrushTool(CloneTool):
             direction = self.draggedDirection
         return map(lambda a, b: a + (b * self.reticleOffset), pos, direction)
     
+    def increaseToolReach(self):
+        """
+        Called on scrolling up (default).
+        Increases the reticleOffset (distance between face and brush center) by 1.
+        (unless you're in right-click mode and don't have long-distance mode enabled)
+        """
+        if self.editor.mainViewport.mouseMovesCamera and not self.editor.longDistanceMode:
+            return False
+        self.reticleOffset = self.reticleOffset + 1
+        return True
+
+    def decreaseToolReach(self):
+        """
+        Called on scrolling down (default).
+        Decreases the reticleOffset (distance between face and brush center) by 1.
+        (unless you're in right-click mode and don't have long-distance mode enabled)
+        """
+        if self.editor.mainViewport.mouseMovesCamera and not self.editor.longDistanceMode:
+            return False
+        self.reticleOffset = max(self.reticleOffset - 1, 0)
+        return True
+
+    
     def drawToolReticle(self):
         """
         Draws a yellow reticle at every position where you dragged the brush.
@@ -700,6 +748,63 @@ class BrushTool(CloneTool):
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, self.draggedPositions[0]))
                     GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))
+
+    def decreaseBrushSize(self):
+        """
+        Increases Brush Size, triggered by pressing corresponding key.
+        """
+        for key in ('W', 'H', 'L'):
+            self.options[key] = self.options[key] - 1
+        self.setupPreview()
+
+    def increaseBrushSize(self):
+        """
+        Decreases Brush Size, triggered by pressing corresponding key.
+        """
+        for key in ('W', 'H', 'L'):
+            self.options[key] = self.options[key] + 1
+        self.setupPreview()
+        
+    def swap(self):
+        main = getattr(self.brushMode, 'mainBlock', 'Block')
+        secondary = getattr(self.brushMode, 'secondaryBlock', 'Block To Replace')
+        bi = self.options[main]
+        self.options[main] = self.options[secondary]
+        self.options[secondary] = bi
+        self.showPanel()
+
+    def rotate(self, blocksOnly=False):
+        """
+        Rotates the brush.
+        :keyword blocksOnly: Also rotate the data value of the block we're brushing with.
+        """
+        def rotateBlock():
+            blockInfo = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
+            blockrotation.RotateLeft([[[blockInfo.ID]]], [[[blockInfo.blockData]]])
+            self.options[getattr(self.brushMode, 'mainBlock', 'Block')] = blockInfo
+        if leveleditor.Settings.rotateBlockBrush.get() or blocksOnly:
+            rotateBlock()
+        if not blocksOnly:
+            W = self.options['W']
+            self.options['W'] = self.options['L']
+            self.options['L'] = W
+
+    def roll(self, blocksOnly=False):
+        """
+        Rolls the brush.
+        :keyword blocksOnly: Also roll the data value of the block we're brushing with.
+        """
+        def rollBlock():
+            blockInfo = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
+            blockrotation.Roll([[[blockInfo.ID]]], [[[blockInfo.blockData]]])
+            self.options[getattr(self.brushMode, 'mainBlock', 'Block')] = blockInfo
+        if leveleditor.Settings.rotateBlockBrush.get() or blocksOnly:
+            rollBlock()
+        if not blocksOnly:
+            H = self.options['H']
+            self.options['H'] = self.options['W']
+            self.options['W'] = H
+
 
 
 def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
