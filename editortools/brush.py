@@ -203,11 +203,20 @@ class BrushPanel(Panel):
         
     def createField(self, key, value): #Creates a field matching the input type
         type = value.__class__.__name__
-        reference = ItemRef(self.tool.options, key)
+        mi = 0
+        ma = 100
+        if key in ('W','H','L'):
+            reference = AttrRef(self.tool, key)
+        else:
+            reference = ItemRef(self.tool.options, key)
+        if type == 'tuple':
+            type = value[0].__class__.__name__
+            mi = value[1]
+            ma = value[2]
         if type == 'int':
-            object = IntInputRow(key, ref=reference, width=50)
+            object = IntInputRow(key, ref=reference, width=50, min=mi, max=ma)
         elif type == 'float':
-            object = FloatInputRow(key, ref=reference, width=50)
+            object = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma)
         elif type == 'bool':
             object = CheckBoxLabel(key, ref=reference)
         elif type == 'Block':
@@ -282,6 +291,7 @@ class BrushTool(CloneTool):
     }
     brushModes = {}
     recentBlocks = {}
+    previewDirty = False
     
 
     def __init__(self, *args):
@@ -312,8 +322,32 @@ class BrushTool(CloneTool):
     @reticleOffset.setter
     def reticleOffset(self, val):
         self._reticleOffset = val
+    
+    """
+    Properties W,H,L. Used to reset the Brush Preview whenever they change.
+    """
+    @property
+    def W(self):
+        return self.options['W']
+    @W.setter
+    def W(self, val):
+        self.options['W'] = val
+        self.setupPreview()
+    @property
+    def H(self):
+        return self.options['H']
+    @H.setter
+    def H(self, val):
+        self.options['H'] = val
+        self.setupPreview()
+    @property
+    def L(self):
+        return self.options['L']
+    @L.setter
+    def L(self, val):
+        self.options['L'] = val
+        self.setupPreview()
 
-        
     def toolEnabled(self):
         """
         Brush tool is always enabled on the toolbar.
@@ -337,9 +371,13 @@ class BrushTool(CloneTool):
                 for r in m.inputs:
                     for key in r:
                         if not hasattr(self.options, key):
-                            self.options[key] = r[key]
+                            if type(r[key]) == tuple:
+                                self.options[key] = r[key][0]
+                            else:
+                                self.options[key] = r[key]
             if not hasattr(self.options, 'Minimum Spacing'):
                 self.options['Minimum Spacing'] = 1
+        self.renderedBlock = None
 
     def importBrushModes(self):
         """
@@ -385,6 +423,7 @@ class BrushTool(CloneTool):
                     self.options[key] = blockPicker.blockInfo
         if self.settings['updateBrushOffset']:
             self.reticleOffset = self.offsetMax()
+        self.optionsNotifier = None
         self.resetToolDistance()
         self.setupPreview()
         self.showPanel()
@@ -428,6 +467,7 @@ class BrushTool(CloneTool):
             self.pickBlockKey = False
         if keyname == config.config.get("Keys", "Brush Line Tool"):
             self.lineToolKey = False
+            self.draggedPositions = []
             
     @alertException
     def mouseDown(self, evt, pos, direction):
@@ -461,19 +501,6 @@ class BrushTool(CloneTool):
                         for a, b in zip(point, self.draggedPositions[-1])]):
                     self.dragLineToPoint(point)
     
-    def calculateLineToolCoords(self, point1, point2):
-        difference = []
-        for p1, p2 in zip(point1, point2):
-            difference = abs(p1-p2)
-        axis = numpy.argmax(difference)
-        end = numpy.copy(point2)
-        for dim in (0, 1, 2):
-            if dim != axis:
-                end[dim] = point1[dim]
-        return end
-            
-        
-    
     def dragLineToPoint(self, point):
         """
         Calculates the new point and adds it to self.draggedPositions.
@@ -484,15 +511,10 @@ class BrushTool(CloneTool):
                 for move in self.editor.movements:
                     if move in config.config.get("Keys", "Brush Line Tool"):
                         self.editor.save = 1
-                self.editor.get_root().shiftClicked = 0
-                self.editor.get_root().shiftPlaced = -2
-                self.editor.get_root().ctrlClicked = 0
-                self.editor.get_root().ctrlPlaced = -2
-                self.editor.get_root().altClicked = 0
-                self.editor.get_root().altPlaced = -2
                 if len(self.draggedPositions):
-                    points = self.calculateLineToolCoords(self.draggedPositions[-1], point)
-                    self.draggedPositions.append(points)
+                    points = bresenham.bresenham(self.draggedPositions[0], point)
+                    self.draggedPositions = [self.draggedPositions[0]]
+                    self.draggedPositions.extend(points[::self.options['Minimum Spacing']][1:])
             else:
                 self.draggedPositions.append(point)
         else:
@@ -504,8 +526,6 @@ class BrushTool(CloneTool):
         Called on releasing the Mouse Button.
         Creates Operation object and passes it to the leveleditor.
         """
-        print self.draggedPositions
-        self.editor.get_root().ctrlClicked = -1
         if 0 == len(self.draggedPositions):
             return
         size = self.getBrushSize()
@@ -518,16 +538,6 @@ class BrushTool(CloneTool):
 #         self.editor.addUnsavedEdit()
 #         self.editor.invalidateBox(box)
         self.draggedPositions = []
-
-        if self.lineToolKey == True:
-            self.editor.get_root().shiftClicked = 0
-            self.editor.get_root().shiftPlaced = -2
-            self.editor.get_root().ctrlClicked = 0
-            self.editor.get_root().ctrlPlaced = -2
-            self.editor.get_root().altClicked = 0
-            self.editor.get_root().altPlaced = -2
-            self.lineToolKey = False
-        self.editor.get_root().ctrlClicked = -1
 
     def swapBrushStyles(self):
         """
@@ -559,7 +569,7 @@ class BrushTool(CloneTool):
         Sets the Brush Offset (space between face the cursor is pointing at and center of brush.
         Called by toolSelected if updateBrushOffset is Checked in BrushOptions
         """
-        brushSizeOffset = max(self.getBrushSize + 1)
+        brushSizeOffset = max(self.getBrushSize()) + 1
         return max(1, (0.5 * brushSizeOffset))
                    
     def resetToolDistance(self):
@@ -586,7 +596,6 @@ class BrushTool(CloneTool):
         Passes it as a FakeLevel object to the renderer
         Called whenever the preview needs to be recalculated
         """
-        self.previewDirty = False
         brushSize = self.getBrushSize()
         brushStyle = self.options['Style']
         key = getattr(self.brushMode, 'mainBlock', 'Block')
@@ -615,9 +624,11 @@ class BrushTool(CloneTool):
                 f.world = self
                 f.chunkPosition = (cx, cz)
 
-                mask = createBrushMask(self.getBrushSize(), self.options['Style'], (0, 0, 0), BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
+                mask = createBrushMask(brushSize, brushStyle, (0, 0, 0), BoundingBox((cx << 4, 0, cz << 4), (16, self.Height, 16)))
                 f.Blocks = numpy.zeros(mask.shape, dtype='uint8')
                 f.Data = numpy.zeros(mask.shape, dtype='uint8')
+                f.BlockLight = self.zerolight
+                f.SkyLight = self.zerolight
 
                 if blockInfo.ID:
                     f.Blocks[mask] = blockInfo.ID
@@ -666,123 +677,122 @@ class BrushTool(CloneTool):
         Draws the white reticle where the cursor is pointing.
         Called by leveleditor.render
         """
+        if self.options[getattr(self.brushMode, 'mainBlock', 'Block')] != self.renderedBlock:
+            self.setupPreview()
+            self.renderedBlock = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
         if self.pickBlockKey == 1: #Alt is pressed
             self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
         else:
             pos, direction = self.editor.blockFaceUnderCursor
             reticlePoint = self.getReticlePoint(pos, direction)
-
             self.editor.drawWireCubeReticle(position=reticlePoint)
             if reticlePoint != pos:
                 GL.glColor4f(1.0, 1.0, 0.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))  #Center of reticle block
                     GL.glVertex3f(*map(lambda a, b: a + 0.5 + b * 0.5, pos, direction))  #Top side of surface block
-
-            if self.previewDirty:
-                self.setupPreview()
             dirtyBox = self.getDirtyBox(reticlePoint, self.getBrushSize())
             self.drawTerrainPreview(dirtyBox.origin)
             if self.lineToolKey == True and len(self.draggedPositions) and getattr(self.brushMode, 'draggableBrush', True): #If dragging mouse with Linetool pressed.
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
-                    GL.glVertex3f(*map(lambda a: a + 0.5, self.draggedPositions[-1]))
+                    GL.glVertex3f(*map(lambda a: a + 0.5, self.draggedPositions[0]))
                     GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))
 
 
-    def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
-        """
-        Return a boolean array for a brush with the given shape and style.
-        If 'offset' and 'box' are given, then the brush is offset into the world
-        and only the part of the world contained in box is returned as an array.
-        :param shape, UNKWOWN
-        :keyword style, style of the brush. Round if not given.
-        :keyword offset, UNKWOWN
-        :keyword box, UNKWOWN
-        :keyword chance, also known as Noise. Input in stock-brushes like Fill and Replace.
-        :keyword hollow, input to calculate a hollow brush.
-        """
+def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
+    """
+    Return a boolean array for a brush with the given shape and style.
+    If 'offset' and 'box' are given, then the brush is offset into the world
+    and only the part of the world contained in box is returned as an array.
+    :param shape, UNKWOWN
+    :keyword style, style of the brush. Round if not given.
+    :keyword offset, UNKWOWN
+    :keyword box, UNKWOWN
+    :keyword chance, also known as Noise. Input in stock-brushes like Fill and Replace.
+    :keyword hollow, input to calculate a hollow brush.
+    """
+
+    #We are returning indices for a Blocks array, so swap axes
+    if box is None:
+        box = BoundingBox(offset, shape)
+    if chance < 100 or hollow:
+        box = box.expand(1)
+
+    outputShape = box.size
+    outputShape = (outputShape[0], outputShape[2], outputShape[1])
+
+    shape = shape[0], shape[2], shape[1]
+    offset = numpy.array(offset) - numpy.array(box.origin)
+    offset = offset[[0, 2, 1]]
+
+    inds = numpy.indices(outputShape, dtype=float)
+    halfshape = numpy.array([(i >> 1) - ((i & 1 == 0) and 0.5 or 0) for i in shape])
+
+    blockCenters = inds - halfshape[:, newaxis, newaxis, newaxis]
+    blockCenters -= offset[:, newaxis, newaxis, newaxis]
+
+    # odd diameter means measure from the center of the block at 0,0,0 to each block center
+    # even diameter means measure from the 0,0,0 grid point to each block center
+
+    # if diameter & 1 == 0: blockCenters += 0.5
+    shape = numpy.array(shape, dtype='float32')
+
+    # if not isSphere(shape):
+    if style == "Round":
+        blockCenters *= blockCenters
+        shape /= 2
+        shape *= shape
+
+        blockCenters /= shape[:, newaxis, newaxis, newaxis]
+        distances = sum(blockCenters, 0)
+        mask = distances < 1
+    elif style == "Cylinder":
+        pass
+
+
+    elif style == "Square":
+        # mask = ones(outputShape, dtype=bool)
+        # mask = blockCenters[:, newaxis, newaxis, newaxis] < shape
+        blockCenters /= shape[:, None, None, None]
+
+        distances = numpy.absolute(blockCenters).max(0)
+        mask = distances < .5
+
+    elif style == "Diamond":
+        blockCenters = numpy.abs(blockCenters)
+        shape /= 2
+        blockCenters /= shape[:, newaxis, newaxis, newaxis]
+        distances = sum(blockCenters, 0)
+        mask = distances < 1
+    else:
+        raise ValueError, "Unknown style: " + style
+
+    if (chance < 100 or hollow) and max(shape) > 1:
+        threshold = chance / 100.0
+        exposedBlockMask = numpy.ones(shape=outputShape, dtype='bool')
+        exposedBlockMask[:] = mask
+        submask = mask[1:-1, 1:-1, 1:-1]
+        exposedBlockSubMask = exposedBlockMask[1:-1, 1:-1, 1:-1]
+        exposedBlockSubMask[:] = False
+
+        for dim in (0, 1, 2):
+            slices = [slice(1, -1), slice(1, -1), slice(1, -1)]
+            slices[dim] = slice(None, -2)
+            exposedBlockSubMask |= (submask & (mask[slices] != submask))
+            slices[dim] = slice(2, None)
+            exposedBlockSubMask |= (submask & (mask[slices] != submask))
+
+        if hollow:
+            mask[~exposedBlockMask] = False
+        if chance < 100:
+            rmask = numpy.random.random(mask.shape) < threshold
+
+            mask[exposedBlockMask] = rmask[exposedBlockMask]
+
+    if chance < 100 or hollow:
+        return mask[1:-1, 1:-1, 1:-1]
+    else:
+        return mask
     
-        #We are returning indices for a Blocks array, so swap axes
-        if box is None:
-            box = BoundingBox(offset, shape)
-        if chance < 100 or hollow:
-            box = box.expand(1)
     
-        outputShape = box.size
-        outputShape = (outputShape[0], outputShape[2], outputShape[1])
-    
-        shape = shape[0], shape[2], shape[1]
-        offset = numpy.array(offset) - numpy.array(box.origin)
-        offset = offset[[0, 2, 1]]
-    
-        inds = numpy.indices(outputShape, dtype=float)
-        halfshape = numpy.array([(i >> 1) - ((i & 1 == 0) and 0.5 or 0) for i in shape])
-    
-        blockCenters = inds - halfshape[:, newaxis, newaxis, newaxis]
-        blockCenters -= offset[:, newaxis, newaxis, newaxis]
-    
-        # odd diameter means measure from the center of the block at 0,0,0 to each block center
-        # even diameter means measure from the 0,0,0 grid point to each block center
-    
-        # if diameter & 1 == 0: blockCenters += 0.5
-        shape = numpy.array(shape, dtype='float32')
-    
-        # if not isSphere(shape):
-        if style == "Round":
-            blockCenters *= blockCenters
-            shape /= 2
-            shape *= shape
-    
-            blockCenters /= shape[:, newaxis, newaxis, newaxis]
-            distances = sum(blockCenters, 0)
-            mask = distances < 1
-        elif style == "Cylinder":
-            pass
-    
-    
-        elif style == "Square":
-            # mask = ones(outputShape, dtype=bool)
-            # mask = blockCenters[:, newaxis, newaxis, newaxis] < shape
-            blockCenters /= shape[:, None, None, None]
-    
-            distances = numpy.absolute(blockCenters).max(0)
-            mask = distances < .5
-    
-        elif style == "Diamond":
-            blockCenters = numpy.abs(blockCenters)
-            shape /= 2
-            blockCenters /= shape[:, newaxis, newaxis, newaxis]
-            distances = sum(blockCenters, 0)
-            mask = distances < 1
-        else:
-            raise ValueError, "Unknown style: " + style
-    
-        if (chance < 100 or hollow) and max(shape) > 1:
-            threshold = chance / 100.0
-            exposedBlockMask = numpy.ones(shape=outputShape, dtype='bool')
-            exposedBlockMask[:] = mask
-            submask = mask[1:-1, 1:-1, 1:-1]
-            exposedBlockSubMask = exposedBlockMask[1:-1, 1:-1, 1:-1]
-            exposedBlockSubMask[:] = False
-    
-            for dim in (0, 1, 2):
-                slices = [slice(1, -1), slice(1, -1), slice(1, -1)]
-                slices[dim] = slice(None, -2)
-                exposedBlockSubMask |= (submask & (mask[slices] != submask))
-                slices[dim] = slice(2, None)
-                exposedBlockSubMask |= (submask & (mask[slices] != submask))
-    
-            if hollow:
-                mask[~exposedBlockMask] = False
-            if chance < 100:
-                rmask = numpy.random.random(mask.shape) < threshold
-    
-                mask[exposedBlockMask] = rmask[exposedBlockMask]
-    
-        if chance < 100 or hollow:
-            return mask[1:-1, 1:-1, 1:-1]
-        else:
-            return mask
-        
-        
