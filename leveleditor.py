@@ -3289,9 +3289,9 @@ class LevelEditor(GLViewport):
 
         def nameFormat(w):
             try:
-                if w.LevelName == w.displayName:
+                if w.LevelName == w.displayName.decode("utf-8"):
                     return w.LevelName
-                return u"{0} ({1})".format(w.LevelName, w.displayName)
+                return u"{0} ({1})".format(w.LevelName, w.displayName.decode("utf-8"))
             except:
                 try:
                     return w.LevelName
