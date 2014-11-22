@@ -493,9 +493,10 @@ class BrushTool(CloneTool):
         Called on dragging the mouse.
         Adds the current point to draggedPositions.
         """
-        direction = self.draggedDirection
+        
         if getattr(self.brushMode, 'draggableBrush', True):
             if len(self.draggedPositions):  #If we're dragging the mouse
+                direction = self.draggedDirection
                 point = [p + d * self.reticleOffset for p, d in zip(pos, direction)]
                 if any([abs(a - b) >= self.options['Minimum Spacing']
                         for a, b in zip(point, self.draggedPositions[-1])]):
@@ -680,6 +681,7 @@ class BrushTool(CloneTool):
         if self.options[getattr(self.brushMode, 'mainBlock', 'Block')] != self.renderedBlock:
             self.setupPreview()
             self.renderedBlock = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
+        
         if self.pickBlockKey == 1: #Alt is pressed
             self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
         else:
