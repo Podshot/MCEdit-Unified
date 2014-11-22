@@ -498,12 +498,12 @@ class CameraViewport(GLViewport):
 
         return newpoint
 
-    def updateBlockFaceUnderCursor(self):
+    def updateBlockFaceUnderCursor(self, noRaycaster=0):
         focusPair = None
         if not self.enableMouseLag or self.editor.frames & 1:
             self.updateMouseVector()
             if self.editor.mouseEntered:
-                if not self.mouseMovesCamera:
+                if not self.mouseMovesCamera and noRaycaster == 0:
                     try:
                         focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level ,100, Settings)
                     except TooFarException as e:
@@ -1445,10 +1445,12 @@ class CameraViewport(GLViewport):
 
         if self.editor.level:
             try:
-                self.updateBlockFaceUnderCursor()
+                self.updateBlockFaceUnderCursor(self.editor.noRaycaster)
             except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
                 logging.debug("Updating cursor block: %s", e)
                 self.blockFaceUnderCursor = (None, None)
+
+            self.editor.noRaycaster = 0
 
             root.get_root().update_tooltip()
 
@@ -1609,6 +1611,7 @@ class LevelEditor(GLViewport):
         self.copyStack = []
 
         self.level = None
+        self.noRaycaster = 0
 
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
@@ -3017,6 +3020,7 @@ class LevelEditor(GLViewport):
             if self.currentViewport is self.chunkViewport:
                 self.swapViewports()
             self.mainViewport.cameraPosition = destPoint
+            self.noRaycaster = 1
 
     def closeEditor(self):
         if self.unsavedEdits:
