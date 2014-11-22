@@ -7,14 +7,14 @@ the new language.
 Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes
 and other special characters can be used.
 
-The white space (' ') after each tag, and 2 digit numbers are mandatory.
+The white space (' ') after each tag, and numbers are mandatory.
 The file must also be encoded in UTF-8 or it won't work. Most editors should
 support this. This is also mandatory, or you can experience weird aspect in the
 program.
 
 The first line of .trn files must start with #-# followed by a space and the
 Language (Country) pair. This isn't mandatory, but, if it is not used, the file
-nam (without its extention) will be used as language name.
+name (without its extention) will be used as language name.
 
 The second and third lines ca be used to specify particuliar fonts to use.
 They can be ommited or use DEFAULT as value to use the default fonts.
