@@ -42,6 +42,3 @@ class Model:
     #RETURNS: reference name
     def getBlockName(self):
         return self.blockname
-        
-registerModel("dave", "cobblestone")
-getModel("dave").render()
