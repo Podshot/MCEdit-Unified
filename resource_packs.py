@@ -804,31 +804,31 @@ def setup_resource_packs():
 #            if True:
             try:
                 if DEF_ENC.startswith("UTF"):
-                    folder_tex_pack = zip_tex_pack.decode(DEF_ENC)
+                    folder_tex_pack = folder_tex_pack.decode(DEF_ENC)
                 else:
-                    folder_tex_pack = zip_tex_pack.encode(DEF_ENC)
+                    folder_tex_pack = folder_tex_pack.encode(DEF_ENC)
             except (UnicodeDecodeError, UnicodeEncodeError), e:
-                print "***\n    ERROR in resource_pack.py:\n    setup_resource_pack() folder_tex_path: %s\n   "%repr(folder_tex_pack),e
+#                print "***\n    ERROR in resource_pack.py:\n    setup_resource_pack() folder_tex_path: %s\n   "%repr(folder_tex_pack),e
                 if 'encode' in "%s"%e:
-                    print "    Encoding with %s failed, trying to encode with UTF and reencode."%DEF_ENC
+#                    print "    Encoding with %s failed, trying to encode with UTF and reencode."%DEF_ENC
                     try:
-                        print "    UTF-16"
-                        folder_tex_pack = folder_tex_pack.translate("utf-16")
-                        print "    ", repr(folder_tex_pack)
+#                        print "    UTF-16"
+#                        folder_tex_pack = folder_tex_pack.translate("utf-16")
+#                        print "    ", repr(folder_tex_pack)
     #                    print "    UTF-8"
     #                    folder_tex_pack = folder_tex_pack.decode("utf-16")
     #                    print "    ", repr(folder_tex_pack)
-                        print "   ", DEF_ENC
+#                        print "   ", DEF_ENC
                         folder_tex_pack = folder_tex_pack.encode(DEF_ENC)
-                        print "    ", repr(folder_tex_pack)
+#                        print "    ", repr(folder_tex_pack)
                     except Exception, e:
-                        print "    Failed too:", e
-                        frp = ZipResourcePack(folder_tex_pack, noEncConvert=True)
+#                        print "    Failed too:", e
+                        frp = FolderResourcePack(folder_tex_pack, noEncConvert=True)
                         if not frp.isEmpty:
                             if not frp.tooBig:
                                 terrains[frp.pack_name] = frp
                     else:
-                        frp = ZipResourcePack(folder_tex_pack)
+                        frp = FolderResourcePack(folder_tex_pack)
                         if not frp.isEmpty:
                             if not frp.tooBig:
                                 terrains[frp.pack_name] = frp
