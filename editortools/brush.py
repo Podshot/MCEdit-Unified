@@ -113,13 +113,11 @@ class BrushOperation(Operation):
                     if not self.level.containsChunk(*cPos):
                         continue
                     chunk = self.level.getChunk(*cPos)
-                    print self.points
                     for i, point in enumerate(self.points):
                         brushBox = self.tool.getDirtyBox(point, self.tool.getBrushSize())
                         brushBoxThisChunk, slices = chunk.getChunkSlicesForBox(brushBox)
                         f = self.brushMode.applyToChunkSlices(self, chunk, slices, brushBox, brushBoxThisChunk)
                         if brushBoxThisChunk.volume == 0: f = None
-                        if f == False: return
                         if hasattr(f, "__iter__"):
                             for progress in f:
                                 yield progress
@@ -130,8 +128,6 @@ class BrushOperation(Operation):
             showProgress("Performing brush...", _perform(), cancel=True)
         else:
             exhaust(_perform())
-
-
 
 class BrushPanel(Panel):
     def __init__(self, tool):
@@ -197,10 +193,13 @@ class BrushPanel(Panel):
         elif type == 'Block':
             if not hasattr(self.tool.recentBlocks, key):
                 self.tool.recentBlocks[key] = []
+            wcb = getattr(self.tool.brushMode, 'wildcardBlocks', [])
+            aw = False
+            if key in wcb: aw = True
             object = BlockButton(self.tool.editor.level.materials,
                                  ref=reference,
                                  recentBlocks = self.tool.recentBlocks[key],
-                                 allowWildcards = True
+                                 allowWildcards = aw
                                  )
         elif type == 'str':
             object = Label(value)
@@ -408,7 +407,10 @@ class BrushTool(CloneTool):
         self.brushMode = self.brushModes[self.selectedBrushMode]
         if self.settings['chooseBlockImmediately']:
             key = getattr(self.brushMode, 'mainBlock', 'Block')
-            blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=True)
+            wcb = getattr(self.brushMode, 'wildcardBlocks', [])
+            aw = False
+            if key in wcb: aw = True
+            blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=aw)
             if blockPicker.present():
                     self.options[key] = blockPicker.blockInfo
         if self.settings['updateBrushOffset']:
@@ -544,11 +546,13 @@ class BrushTool(CloneTool):
         """
         if not self.panel:
             self.toolSelected()
-        elif self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace":
-            key = getattr(self.brushMode, 'mainBlock', 'Block')
-            blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=True)
-            if blockPicker.present():
-                    self.options[key] = blockPicker.blockInfo
+        key = getattr(self.brushMode, 'mainBlock', 'Block')
+        wcb = getattr(self.brushMode, 'wildcardBlocks', [])
+        aw = False
+        if key in wcb: aw = True
+        blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=aw)
+        if blockPicker.present():
+            self.options[key] = blockPicker.blockInfo
         self.setupPreview()
 
     
