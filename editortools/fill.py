@@ -251,7 +251,10 @@ class FillTool(EditorTool):
         with setWindowCaption("REPLACING - "):
             self.editor.freezeStatus("Replacing %0.1f million blocks" % (float(box.volume) / 1048576.,))
 
+            self.blockInfo = self.panel.blockButton.blockInfo
+
             if self.replacing:
+                self.replaceBlockInfo = self.panel.replaceBlockButton.blockInfo
                 if self.blockInfo.wildcard:
                     print "Wildcard replace"
                     blocksToReplace = []
