@@ -3883,67 +3883,67 @@ blocks:
     opacity: 0
     data:
       0: 
-        name: Redstone Comparator (Off, Compare, North)
+        name: Redstone Comparator (Off, Compare, South)
         tex_direction:
           TOP: [25, 0]
       1: 
-        name: Redstone Comparator (Off, Compare, East)
+        name: Redstone Comparator (Off, Compare, West)
         tex_direction:
           TOP: [25, 1]
       2: 
-        name: Redstone Comparator (Off, Compare, South)
+        name: Redstone Comparator (Off, Compare, North)
         tex_direction:
           TOP: [25, 2]
       3: 
-        name: Redstone Comparator (Off, Compare, West)
+        name: Redstone Comparator (Off, Compare, East)
         tex_direction:
           TOP: [25, 3]
       4: 
-        name: Redstone Comparator (Off, Subtract, North)
+        name: Redstone Comparator (Off, Subtract, South)
         tex_direction:
           TOP: [26, 0]
       5: 
-        name: Redstone Comparator (Off, Subtract, East)
+        name: Redstone Comparator (Off, Subtract, West)
         tex_direction:
           TOP: [26, 1]
       6: 
-        name: Redstone Comparator (Off, Subtract, South)
+        name: Redstone Comparator (Off, Subtract, North)
         tex_direction:
           TOP: [26, 2]
       7: 
-        name: Redstone Comparator (Off, Subtract, West)
+        name: Redstone Comparator (Off, Subtract, East)
         tex_direction:
           TOP: [26, 3]
       8: 
-        name: Redstone Comparator (On, Compare, North)
+        name: Redstone Comparator (On, Compare, South)
         tex_direction:
           TOP: [27, 0]
       9: 
-        name: Redstone Comparator (On, Compare, East)
+        name: Redstone Comparator (On, Compare, West)
         tex_direction:
           TOP: [27, 1]
       10: 
-        name: Redstone Comparator (On, Compare, South)
+        name: Redstone Comparator (On, Compare, North)
         tex_direction:
           TOP: [27, 2]
       11: 
-        name: Redstone Comparator (On, Compare, West)
+        name: Redstone Comparator (On, Compare, East)
         tex_direction:
           TOP: [27, 3]
       12: 
-        name: Redstone Comparator (On, Subtract, North)
+        name: Redstone Comparator (On, Subtract, South)
         tex_direction:
           TOP: [28, 0]
       13: 
-        name: Redstone Comparator (On, Subtract, East)
+        name: Redstone Comparator (On, Subtract, West)
         tex_direction:
           TOP: [28, 1]
       14: 
-        name: Redstone Comparator (On, Subtract, South)
+        name: Redstone Comparator (On, Subtract, North)
         tex_direction:
           TOP: [28, 2]
       15: 
-        name: Redstone Comparator (On, Subtract, West)
+        name: Redstone Comparator (On, Subtract, East)
         tex_direction:
           TOP: [28, 3]
 
