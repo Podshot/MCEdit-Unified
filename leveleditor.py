@@ -2720,10 +2720,10 @@ class LevelEditor(GLViewport):
 
     def take_screenshot(self):
         try:
-            os.mkdir(directories.parentDir+os.path.sep+"screenshots")
+            os.mkdir(os.path.join(directories.parentDir, "screenshots"))
         except OSError:
             pass
-        screenshot_name = directories.parentDir+os.path.sep+"screenshots"+os.path.sep+time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png"
+        screenshot_name = os.path.join(directories.parentDi, +"screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
         pygame.image.save(pygame.display.get_surface(), screenshot_name)
         self.diag = Dialog()
         lbl = Label("Screenshot taken and saved as '"+screenshot_name+"'")

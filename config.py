@@ -21,6 +21,9 @@ import collections
 import ConfigParser
 from cStringIO import StringIO
 
+from locale import getdefaultlocale
+DEF_ENC = getdefaultlocale()[1]
+
 import directories
 
 from albow import alert
@@ -346,6 +349,12 @@ class Setting(object):
         if self.dtype in [list, tuple]:
             _setProperty(self.section, self.name, self.dtype(self.dsubtype(x) for x in val))
         else:
+            if self.dtype == str and type(val) == unicode:
+                if not DEF_ENC == "UTF-8":
+                    try:
+                        val = val.decode(DEF_ENC)
+                    except:
+                        val = repr(val)
             _setProperty(self.section, self.name, self.dtype(val))
 
     def propertyRef(self):

@@ -1323,7 +1323,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         if self.oldPlayerFolderFormat:
             for p in self.players:
                 if p != "Player":
-                    player_data_file = self.worldFolder.getFolderPath("players")+os.path.sep+p+".dat"
+                    player_data_file = os.path.join(self.worldFolder.getFolderPath("players"), p+".dat")
                     player_data[p] = nbt.load(player_data_file)
                 else:
                     data = nbt.load(self.worldFolder.getFilePath("level.dat"))
@@ -1331,7 +1331,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         else:
             for p in self.players:
                 if p != "Player":
-                    player_data_file = self.worldFolder.getFolderPath("playerdata")+os.path.sep+p+".dat"
+                    player_data_file = os.path.join(self.worldFolder.getFolderPath("playerdata"), p+".dat")
                     player_data[p] = nbt.load(player_data_file)
                 else:
                     data = nbt.load(self.worldFolder.getFilePath("level.dat"))
@@ -1346,11 +1346,11 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         if self.oldPlayerFolderFormat:
             for p in player_data.keys():
                 if p != "Player":
-                    player_data[p].save(self.worldFolder.getFolderPath("players")+os.path.sep+p+".dat")
+                    player_data[p].save(os.path.join(self.worldFolder.getFolderPath("players"), p+".dat"))
         else:
             for p in player_data.keys():
                 if p != "Player":
-                    player_data[p].save(self.worldFolder.getFolderPath("playerdata")+os.path.sep+p+".dat")
+                    player_data[p].save(os.path.join(self.worldFolder.getFolderPath("playerdata"), p+".dat"))
                 
 
     @property
