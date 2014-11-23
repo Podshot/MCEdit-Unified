@@ -3887,7 +3887,7 @@ blocks:
         tex_direction:
           TOP: [25, 0]
       1: 
-        name: Redstone Comparator (Off, Compare, West)
+        name: Redstone Comparator (Off, Compare, East)
         tex_direction:
           TOP: [25, 1]
       2: 
