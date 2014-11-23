@@ -303,7 +303,7 @@ class BrushPanel(Panel):
             panel.dismiss()
             name = p[presetTable.selectedIndex] + ".preset"
             os.remove(os.path.join(directories.brushesDir, name))
-            self.tool.toolSelected()
+            self.tool.showPanel()
 
         def selectTableRow(i, evt):
             presetTable.selectedIndex = i
