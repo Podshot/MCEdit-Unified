@@ -109,6 +109,8 @@ class Config(object):
 class ConfigSection(object):
     def __init__(self, config, section, items):
         self.section = section
+        if not config.has_section(section):
+            config.add_section(section)
         self._items = {}
         for item in items:
             if isinstance(item, ConfigValue):
@@ -554,8 +556,6 @@ definitions = {
         ColorValue("black", "black", (0.0, 0.0, 0.0))
     ]
 }
-
-
 
 
 config = None
