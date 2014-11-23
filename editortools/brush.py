@@ -143,7 +143,7 @@ class BrushPanel(Panel):
         presets = self.createPresetRow()
         
         self.brushModeButtonLabel = Label("Mode:")
-        self.brushModeButton = ChoiceButton([mode for mode in tool.brushModes],
+        self.brushModeButton = ChoiceButton(sorted([mode for mode in tool.brushModes]),
                                        width=150,
                                        choose=self.brushModeChanged)
         modeRow = Row([self.brushModeButtonLabel, self.brushModeButton])   
@@ -353,7 +353,9 @@ class BrushTool(CloneTool):
         Called by toolSelected
         """
         self.importedBrushModes = self.importBrushModes()
-        for m in self.importedBrushModes:
+        self.stockBrushModes = self.importStockBrushModes()
+        for m in itertools.chain(self.importedBrushModes, self.stockBrushModes):
+            print m
             if m.displayName:
                 self.brushModes[m.displayName] = m
             else:
@@ -369,6 +371,17 @@ class BrushTool(CloneTool):
             if not hasattr(self.options, 'Minimum Spacing'):
                 self.options['Minimum Spacing'] = 1
         self.renderedBlock = None
+        
+    def importStockBrushModes(self):
+        """
+        Imports all Stock Brush Modes from their files.
+        Called by setupBrushModes
+        """
+        sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters'))
+        modes = (self.tryStockImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes'))))
+        modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
+        return modes
+
 
     def importBrushModes(self):
         """
@@ -379,6 +392,23 @@ class BrushTool(CloneTool):
         modes = (self.tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
         return modes
+    
+    def tryStockImport(self, name):
+        """
+        Imports a brush module. Called by importBrushModules
+        :param name, name of the module to import. 
+        """
+        print name
+        try:
+            globals()[name] = m = imp.load_source(name, os.path.join(directories.getDataDir(), u'stock-brushes', (name+ ".py")))
+            m.materials = self.editor.level.materials
+            m.createInputs(m)
+            return m
+        except Exception, e:
+            print traceback.format_exc()
+            alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
+            return object()
+
     
     def tryImport(self, name):
         """
