@@ -2933,9 +2933,11 @@ class LevelEditor(GLViewport):
                 self.currentTool.swap()
 
             if keyname == 'Escape':
-                self.toolbar.tools[0].endSelection()
-                self.mouseLookOff()
-                self.showControls()
+                if "select" not in "{}".format(self.currentTool):
+                    self.toolbar.selectTool(-1)
+                else:
+                    self.mouseLookOff()
+                    self.showControls()
 
             if keyname == config.config.get('Keys', 'Pan Left'):
                 self.cameraPanKeys[0] = -1.
