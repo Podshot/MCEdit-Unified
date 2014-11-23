@@ -170,7 +170,6 @@ class ConfigValue(object):
 
     def set(self, value):
         log.debug("Property Change: %15s %30s = %s", self.section, self.name, value)
-        print "Property Change: %15s %30s = %s" % (self.section, self.name, value)
         self.config.set(self.section, self.name, str(value))
         self._notifyObservers(value)
 
