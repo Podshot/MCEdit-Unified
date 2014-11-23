@@ -113,20 +113,19 @@ class BrushOperation(Operation):
                     if not self.level.containsChunk(*cPos):
                         continue
                     chunk = self.level.getChunk(*cPos)
+                    print self.points
                     for i, point in enumerate(self.points):
-                        print 'b'
                         brushBox = self.tool.getDirtyBox(point, self.tool.getBrushSize())
                         brushBoxThisChunk, slices = chunk.getChunkSlicesForBox(brushBox)
-                        if brushBoxThisChunk.volume == 0: return
                         f = self.brushMode.applyToChunkSlices(self, chunk, slices, brushBox, brushBoxThisChunk)
+                        if brushBoxThisChunk.volume == 0: f = None
+                        if f == False: return
                         if hasattr(f, "__iter__"):
                             for progress in f:
                                 yield progress
                         else:
                             yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
-                        print 'a'
                     chunk.chunkChanged()
-
         if len(self.points) > 10:
             showProgress("Performing brush...", _perform(), cancel=True)
         else:
@@ -203,11 +202,14 @@ class BrushPanel(Panel):
                                  recentBlocks = self.tool.recentBlocks[key],
                                  allowWildcards = True
                                  )
+        elif type == 'str':
+            object = Label(value)
         return object
     
     def brushModeChanged(self):
         self.tool.selectedBrushMode = self.brushModeButton.selectedChoice
-        self.tool.brushMode = self.tool.brushModes[selectedBrushMode]
+        self.tool.brushMode = self.tool.brushModes[self.tool.selectedBrushMode]
+        self.tool.showPanel()
     
     def createPresetRow(self): #Creates the brush preset row, called by BrushPanel when creating the panel
         """
@@ -230,8 +232,6 @@ class BrushPanel(Panel):
         widget.shrink_wrap()
         widget.anchor = "whtr"
         return widget
-
-        
         
         
 class BrushToolOptions(ToolOptions):
@@ -263,13 +263,12 @@ class BrushTool(CloneTool):
     settings = {
     'chooseBlockImmediately':False,
     'updateBrushOffset':False,
-    'brushAlpha':1.0,      
+    'brushAlpha':1.0,
     }
     brushModes = {}
     recentBlocks = {}
     previewDirty = False
     cameraDistance = EditorTool.cameraDistance
-    
 
     def __init__(self, *args):
         """
@@ -364,7 +363,7 @@ class BrushTool(CloneTool):
                         if not hasattr(self.options, key):
                             if type(r[key]) == tuple:
                                 self.options[key] = r[key][0]
-                            else:
+                            elif type(r[key]) != str:
                                 self.options[key] = r[key]
             if not hasattr(self.options, 'Minimum Spacing'):
                 self.options['Minimum Spacing'] = 1
@@ -712,6 +711,8 @@ class BrushTool(CloneTool):
         Draws the white reticle where the cursor is pointing.
         Called by leveleditor.render
         """
+        if not hasattr(self, 'brushMode'):
+            return
         if self.options[getattr(self.brushMode, 'mainBlock', 'Block')] != self.renderedBlock:
             self.setupPreview()
             self.renderedBlock = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
