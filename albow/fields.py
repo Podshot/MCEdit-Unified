@@ -61,8 +61,6 @@ class TextEditor(Widget):
             if k == K_RIGHT:
                 self.move_insertion_point(1)
                 return
-            if k == K_UP or k == K_DOWN:
-                return
             if k == K_TAB:
                 self.attention_lost()
                 self.tab_to_next()
@@ -71,8 +69,9 @@ class TextEditor(Widget):
                 c = event.unicode
             except ValueError:
                 c = ""
-            if self.insert_char(c) != 'pass':
-                return
+            if k != K_DOWN and k != K_UP:
+                if self.insert_char(c) != 'pass':
+                    return
         if event.cmd and event.unicode:
             if event.key == K_c:
                 try:

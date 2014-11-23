@@ -19,6 +19,7 @@ from albow.translate import _
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
+from editortools.nudgebutton import NudgeButton
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
@@ -75,6 +76,10 @@ class FillToolPanel(Panel):
         self.blockButton.blockInfo = tool.blockInfo
         self.blockButton.action = self.pickFillBlock
 
+        self.nudgeButton = NudgeButton(tool.editor)
+        self.nudgeButton.bg_color = tool.color
+        self.nudgeButton.nudge = tool.nudge
+
         self.fillWithLabel = Label("Fill with:", width=self.blockButton.width, align="c")
         self.fillButton = Button("Fill", action=tool.confirm, width=self.blockButton.width)
         self.fillButton.tooltipText = "Shortcut: Enter"
@@ -93,6 +98,7 @@ class FillToolPanel(Panel):
                # swapRow,
                replaceLabel,
                # self.replaceBlockButton,
+               self.nudgeButton,
                self.fillButton)
 
         if replacing:
@@ -117,6 +123,7 @@ class FillToolPanel(Panel):
                    self.blockButton,
                    replaceLabel,
                    self.replaceBlockButton,
+                   self.nudgeButton,
                    self.swapButton,
                    self.fillButton)
 
@@ -164,6 +171,7 @@ class FillTool(EditorTool):
     replaceBlockInfo = pymclevel.alphaMaterials.Air
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
+    color = (0.3, 1.0, 0.3, 0.19)
 
     def __init__(self, *args, **kw):
         EditorTool.__init__(self, *args, **kw)
@@ -221,6 +229,18 @@ class FillTool(EditorTool):
 
     def cancel(self):
         self.hidePanel()
+
+    def quickNudge(self, nudge):
+        return map(int.__mul__, nudge, self.selectionBox().size)
+
+    def nudge(self, nudge):
+        if self.editor.rightClickNudge == 1:
+            nudge = self.quickNudge(nudge)
+
+        if not all((p + nudge) in self.editor.level.bounds for p in self.editor.selectionTool.getSelectionPoints()):
+            return
+
+        self.editor.selectionTool.setSelectionPoints([p + nudge for p in self.editor.selectionTool.getSelectionPoints()])
 
     @alertException
     def confirm(self):
