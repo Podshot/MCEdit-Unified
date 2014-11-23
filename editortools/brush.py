@@ -230,7 +230,8 @@ class BrushPanel(Panel):
         for p in presetdownload:
             if p.endswith('.preset'):
                 list.append(os.path.splitext(p)[0])
-        list.remove('__temp__')
+        if '__temp__' in list:
+            list.remove('__temp__')
         return list
     
     def createPresetRow(self):
