@@ -570,7 +570,8 @@ class IResourcePack:
                 new_terrain.paste(image, slot, image)
                 self.propogated_textures.append(slot)
             except Exception, e:
-                print e
+#                print e
+                pass
         copy = self.old_terrain.copy()
 
         for t in self.all_texture_slots:
