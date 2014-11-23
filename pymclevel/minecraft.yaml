@@ -2548,67 +2548,67 @@ blocks:
     opacity: 0
     data:
       0: 
-        name: Redstone Repeater (Unpowered, Delay 1, North)
+        name: Redstone Repeater (Unpowered, Delay 1, South)
         tex_direction:
           TOP: [3, 8]
       1: 
-        name: Redstone Repeater (Unpowered, Delay 1, East)
+        name: Redstone Repeater (Unpowered, Delay 1, West)
         tex_direction:
           TOP: [18, 7]
       2: 
-        name: Redstone Repeater (Unpowered, Delay 1, South)
+        name: Redstone Repeater (Unpowered, Delay 1, North)
         tex_direction:
           TOP: [18, 8]
       3: 
-        name: Redstone Repeater (Unpowered, Delay 1, West)
+        name: Redstone Repeater (Unpowered, Delay 1, East)
         tex_direction:
           TOP: [18, 9]
       4: 
-        name: Redstone Repeater (Unpowered, Delay 2, North)
+        name: Redstone Repeater (Unpowered, Delay 2, South)
         tex_direction:
           TOP: [3, 8]
       5: 
-        name: Redstone Repeater (Unpowered, Delay 2, East)
+        name: Redstone Repeater (Unpowered, Delay 2, West)
         tex_direction:
           TOP: [18, 7]
       6: 
-        name: Redstone Repeater (Unpowered, Delay 2, South)
+        name: Redstone Repeater (Unpowered, Delay 2, North)
         tex_direction:
           TOP: [18, 8]
       7: 
-        name: Redstone Repeater (Unpowered, Delay 2, West)
+        name: Redstone Repeater (Unpowered, Delay 2, East)
         tex_direction:
           TOP: [18, 9]
       8: 
-        name: Redstone Repeater (Unpowered, Delay 3, North)
+        name: Redstone Repeater (Unpowered, Delay 3, South)
         tex_direction:
           TOP: [3, 8]
       9: 
-        name: Redstone Repeater (Unpowered, Delay 3, East)
+        name: Redstone Repeater (Unpowered, Delay 3, West)
         tex_direction:
           TOP: [18, 7]
       10: 
-        name: Redstone Repeater (Unpowered, Delay 3, South)
+        name: Redstone Repeater (Unpowered, Delay 3, North)
         tex_direction:
           TOP: [18, 8]
       11: 
-        name: Redstone Repeater (Unpowered, Delay 3, West)
+        name: Redstone Repeater (Unpowered, Delay 3, East)
         tex_direction:
           TOP: [18, 9]
       12: 
-        name: Redstone Repeater (Unpowered, Delay 4, North)
+        name: Redstone Repeater (Unpowered, Delay 4, South)
         tex_direction:
           TOP: [3, 8]
       13: 
-        name: Redstone Repeater (Unpowered, Delay 4, East)
+        name: Redstone Repeater (Unpowered, Delay 4, West)
         tex_direction:
           TOP: [18, 7]
       14: 
-        name: Redstone Repeater (Unpowered, Delay 4, South)
+        name: Redstone Repeater (Unpowered, Delay 4, North)
         tex_direction:
           TOP: [18, 8]
       15: 
-        name: Redstone Repeater (Unpowered, Delay 4, West)
+        name: Redstone Repeater (Unpowered, Delay 4, East)
         tex_direction:
           TOP: [18, 9]
 
