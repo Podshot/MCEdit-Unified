@@ -26,7 +26,7 @@ import ast
 import bresenham
 from clone import CloneTool
 import collections
-import config
+from config import config
 import directories
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
@@ -48,7 +48,6 @@ import sys
 from os.path import basename
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
-from pymclevel.level import extractHeights
 from pymclevel.mclevelbase import exhaust
 import random
 from __builtin__ import __import__
