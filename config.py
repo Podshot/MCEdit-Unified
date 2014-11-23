@@ -350,11 +350,10 @@ class Setting(object):
             _setProperty(self.section, self.name, self.dtype(self.dsubtype(x) for x in val))
         else:
             if self.dtype == str and type(val) == unicode:
-                if not DEF_ENC == "UTF-8":
-                    try:
-                        val = val.decode(DEF_ENC)
-                    except:
-                        val = repr(val)
+                try:
+                    val = val.encode(DEF_ENC)
+                except:
+                    val = repr(val)
             _setProperty(self.section, self.name, self.dtype(val))
 
     def propertyRef(self):
