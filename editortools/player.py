@@ -17,7 +17,7 @@ import numpy
 import os
 from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert, input_text_buttons
 from albow.translate import _
-import config
+from config import config
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
@@ -44,20 +44,20 @@ class PlayerRemoveOperation(Operation):
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(tr("Cannot perform action while saving is taking place"))
+            alert(_("Cannot perform action while saving is taking place"))
             return
-        
+
         if self.player != "Player":
             if recordUndo:
                 self.undoTag = self.level.getPlayerTag(self.player)
-                
+
             self.level.players.remove(self.player)
             self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
-            
+
             while self.tool.panel.table.index >= len(self.tool.panel.players):
                 self.tool.panel.table.index -= 1
             self.tool.markerList.invalidate()
-            
+
             pos = self.tool.revPlayerPos[self.player]
             del self.tool.playerPos[pos]
             del self.tool.playerTexture[self.player]
@@ -115,10 +115,10 @@ class PlayerAddOperation(Operation):
             if self.uuid in self.level.players:
                 alert("Player already exists in this World.")
                 return
-            
+
             self.playerTag = self.newPlayer()
-            
-            
+
+
             self.tool.panel.players.append(self.player)
 
             if self.level.oldPlayerFolderFormat:
@@ -132,14 +132,14 @@ class PlayerAddOperation(Operation):
 
                 self.level.players.append(self.uuid)
                 self.tool.panel.player_UUID[self.player] = self.uuid
-        
+
         self.tool.playerPos[(0,0,0)] = self.uuid
         self.tool.revPlayerPos[self.uuid] = (0,0,0)
         self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid, force=False))
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
         self.tool.movingPlayer = self.uuid
-                         
+
         print(self.level.players)
         print(self.tool.panel.players)
 
@@ -288,7 +288,7 @@ class PlayerSpawnMoveOperation(Operation):
         level = self.tool.editor.level
         if isinstance(level, pymclevel.MCInfdevOldLevel):
             if not positionValid(level, self.pos):
-                if SpawnSettings.spawnProtection.get():
+                if config.spawn.spawnProtection.get():
                     raise SpawnPositionInvalid(
                         "You cannot have two air blocks at Y=63 and Y=64 in your spawn point's column. Additionally, you cannot have a solid block in the three blocks above your spawn point. It's weird, I know.")
 
@@ -386,7 +386,7 @@ class PlayerPositionTool(EditorTool):
     @alertException
     def removePlayer(self):
         player = self.panel.selectedPlayer
-        
+
         op = PlayerRemoveOperation(self, player)
 
         self.editor.addOperation(op)
@@ -408,7 +408,7 @@ class PlayerPositionTool(EditorTool):
         self.movingPlayer = None
         self.editor.addOperation(op)
         self.editor.addUnsavedEdit()
-        
+
     @alertException
     def reloadSkins(self):
         for player in self.editor.level.players:
@@ -493,7 +493,7 @@ class PlayerPositionTool(EditorTool):
         textureVertices[:, 1] *= 2
 
         self.texVerts = textureVertices
-        
+
         self.playerPos = {}
         self.playerTexture = {}
         self.revPlayerPos = {}
@@ -558,7 +558,7 @@ class PlayerPositionTool(EditorTool):
                 dim = self.editor.level.getPlayerDimension(player)
                 if dim != self.editor.level.dimNo:
                     continue
-                
+
                 self.playerPos[pos] = player
                 self.revPlayerPos[player] = pos
                 if player != "Player":
@@ -592,7 +592,7 @@ class PlayerPositionTool(EditorTool):
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
         box = FloatBox(origin, size)
-        
+
         if realCoords != None and self.playerPos[realCoords] != "Player":
             drawCube(box,
                      texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts)
@@ -600,7 +600,7 @@ class PlayerPositionTool(EditorTool):
             drawCube(box,
                      texture=self.charTex, textureVertices=self.texVerts)
         GL.glDisable(GL.GL_CULL_FACE)
-        
+
 
     @property
     def statusText(self):
@@ -667,10 +667,6 @@ class PlayerSpawnPositionOptions(ToolOptions):
         self.shrink_wrap()
 
 
-SpawnSettings = config.Settings("Spawn")
-SpawnSettings.spawnProtection = SpawnSettings("Spawn Protection", True)
-
-
 class PlayerSpawnPositionTool(PlayerPositionTool):
     surfaceBuild = True
     toolIconName = "playerspawn"
@@ -706,7 +702,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
     def statusText(self):
         return "Click to set the spawn position."
 
-    spawnProtection = SpawnSettings.spawnProtection.configProperty()
+    spawnProtection = config.spawn.spawnProtection.property()
 
     def drawToolReticle(self):
         pos, direction = self.editor.blockFaceUnderCursor

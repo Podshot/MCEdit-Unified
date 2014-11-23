@@ -2,6 +2,7 @@ from OpenGL import GL
 import numpy
 from depths import DepthOffset
 from pymclevel import BoundingBox
+from config import config
 
 
 class EditorTool(object):
@@ -289,9 +290,8 @@ class EditorTool(object):
 
     @property
     def maxBlocks(self):
-        from leveleditor import Settings
 
-        return Settings.blockBuffer.get() / 2  # assume block buffer in bytes
+        return config.settings.blockBuffer.get() / 2  # assume block buffer in bytes
 
     def showPanel(self):
         pass

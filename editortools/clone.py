@@ -39,17 +39,8 @@ import logging
 
 log = logging.getLogger(__name__)
 
-import config
+from config import config
 import keys
-
-
-CloneSettings = config.Settings("Clone")
-CloneSettings.copyAir = CloneSettings("Copy Air", True)
-CloneSettings.copyWater = CloneSettings("Copy Water", True)
-CloneSettings.copyBiomes = CloneSettings("Copy Biomes", True)
-CloneSettings.staticCommands = CloneSettings("Change Coordinates", False)
-CloneSettings.moveSpawnerPos = CloneSettings("Change Spawners Pos", False)
-CloneSettings.placeImmediately = CloneSettings("Place Immediately", True)
 
 
 class CoordsInput(Widget):
@@ -417,7 +408,7 @@ class CloneTool(EditorTool):
             x, y, z = self.destPoint
             self.destPoint = Vector((x >> 4) << 4, y, (z >> 4) << 4)
 
-    placeImmediately = CloneSettings.placeImmediately.configProperty()
+    placeImmediately = config.clone.placeImmediately.property()
 
     panelClass = CloneToolPanel
     # color = (0.89, 0.65, 0.35, 0.33)
@@ -438,7 +429,7 @@ class CloneTool(EditorTool):
 
     @property
     def statusText(self):
-        if self.destPoint == None:
+        if self.destPoint is None:
             return "Click to set this item down."
         if self.draggingFace is not None:
             return "Mousewheel to move along the third axis. Hold {0} to only move along one axis.".format(config.config.get("Keys", "Snap Clone to Axis"))
@@ -448,11 +439,11 @@ class CloneTool(EditorTool):
     def quickNudge(self, nudge):
         return map(int.__mul__, nudge, self.selectionBox().size)
 
-    copyAir = CloneSettings.copyAir.configProperty()
-    copyWater = CloneSettings.copyWater.configProperty()
-    copyBiomes = CloneSettings.copyBiomes.configProperty()
-    staticCommands = CloneSettings.staticCommands.configProperty()
-    moveSpawnerPos = CloneSettings.moveSpawnerPos.configProperty()
+    copyAir = config.clone.copyAir.property()
+    copyWater = config.clone.copyWater.property()
+    copyBiomes = config.clone.copyBiomes.property()
+    staticCommands = config.clone.staticCommands.property()
+    moveSpawnerPos = config.clone.moveSpawnerPos.property()
 
     def nudge(self, nudge):
         if self.destPoint is None:
@@ -1003,7 +994,7 @@ class CloneTool(EditorTool):
         return True
 
     def pickUp(self):
-        if self.destPoint == None:
+        if self.destPoint is None:
             return
 
         box = self.selectionBox()
@@ -1095,7 +1086,7 @@ class ConstructionTool(CloneTool):
 
     @property
     def statusText(self):
-        if self.destPoint == None:
+        if self.destPoint is None:
             return "Click to set this item down."
 
         return "Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm."

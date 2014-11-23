@@ -78,7 +78,7 @@ from albow.translate import getPlatInfo
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
-import config
+from config import config
 import directories
 #-#
 albow.resource.resource_dir = directories.getDataDir()
@@ -86,7 +86,6 @@ albow.resource.resource_dir = directories.getDataDir()
 import functools
 import glutils
 import leveleditor
-from leveleditor import ControlSettings, Settings
 #-# Building translation template
 if "-tt" in sys.argv:
     albow.translate.buildTemplate = True
@@ -251,24 +250,24 @@ class graphicsPanel(Dialog):
         self.mcedit = mcedit
 
         fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
-                                                ref=Settings.fov.propertyRef(), width=100, min=25, max=120)
+                                                ref=config.settings.fov, width=100, min=25, max=120)
 
         targetFPSRow = mceutils.IntInputRow("Target FPS: ",
-                                            ref=Settings.targetFPS.propertyRef(), width=100, min=1, max=60)
+                                            ref=config.settings.targetFPS, width=100, min=1, max=60)
 
         bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
-                                              ref=Settings.vertexBufferLimit.propertyRef(), width=100, min=0)
+                                              ref=config.settings.vertexBufferLimit, width=100, min=0)
 
         fastLeavesRow = mceutils.CheckBoxLabel("Fast Leaves",
-                                               ref=Settings.fastLeaves.propertyRef(),
+                                               ref=config.settings.fastLeaves,
                                                tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
 
         roughGraphicsRow = mceutils.CheckBoxLabel("Rough Graphics",
-                                                  ref=Settings.roughGraphics.propertyRef(),
+                                                  ref=config.settings.roughGraphics,
                                                   tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
 
         enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
-                                                   ref=Settings.enableMouseLag.propertyRef(),
+                                                   ref=config.settings.enableMouseLag,
                                                  tooltipText="Enable choppy mouse movement for faster loading.")
 
 #        self.resourcePackButton = mceutils.ChoiceButton(map(str,resource_packs.packs.get_available_resource_packs()), choose=self.change_texture)
@@ -310,7 +309,7 @@ class graphicsPanel(Dialog):
     def change_texture(self):
         resource_packs.packs.set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
         self.mcedit.displayContext.loadTextures()
-    texturePack = Settings.skin.configProperty(_reloadTextures)
+    texturePack = config.settings.skin.property(_reloadTextures)
 
 
 class OptionsPanel(Dialog):
@@ -327,39 +326,39 @@ class OptionsPanel(Dialog):
     def initComponents(self):
         """Initilize the window components. Call this after translation hs been loaded."""
         autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
-                                              ref=ControlSettings.autobrake.propertyRef(),
+                                              ref=config.controls.autobrake,
                                               tooltipText="Apply brake when not pressing movement keys")
 
         swapAxesRow = mceutils.CheckBoxLabel("Swap Axes Looking Down",
-                                             ref=ControlSettings.swapAxes.propertyRef(),
+                                             ref=config.controls.swapAxes,
                                              tooltipText="Change the direction of the Forward and Backward keys when looking down")
 
         cameraAccelRow = mceutils.FloatInputRow("Camera Acceleration: ",
-                                                ref=ControlSettings.cameraAccel.propertyRef(), width=100, min=5.0)
+                                                ref=config.controls.cameraAccel, width=100, min=5.0)
 
         cameraDragRow = mceutils.FloatInputRow("Camera Drag: ",
-                                               ref=ControlSettings.cameraDrag.propertyRef(), width=100, min=1.0)
+                                               ref=config.controls.cameraDrag, width=100, min=1.0)
 
         cameraMaxSpeedRow = mceutils.FloatInputRow("Camera Max Speed: ",
-                                                   ref=ControlSettings.cameraMaxSpeed.propertyRef(), width=100, min=1.0)
+                                                   ref=config.controls.cameraMaxSpeed, width=100, min=1.0)
 
         cameraBrakeSpeedRow = mceutils.FloatInputRow("Camera Braking Speed: ",
-                                                     ref=ControlSettings.cameraBrakingSpeed.propertyRef(), width=100,
+                                                     ref=config.controls.cameraBrakingSpeed, width=100,
                                                      min=1.0)
 
         mouseSpeedRow = mceutils.FloatInputRow("Mouse Speed: ",
-                                               ref=ControlSettings.mouseSpeed.propertyRef(), width=100, min=0.1,
+                                               ref=config.controls.mouseSpeed, width=100, min=0.1,
                                                max=20.0)
 
         undoLimitRow = mceutils.IntInputRow("Undo Limit: ",
-                                            ref=Settings.undoLimit.propertyRef(), width=100, min=0)
+                                            ref=config.settings.undoLimit, width=100, min=0)
 
         invertRow = mceutils.CheckBoxLabel("Invert Mouse",
-                                           ref=ControlSettings.invertMousePitch.propertyRef(),
+                                           ref=config.controls.invertMousePitch,
                                            tooltipText="Reverse the up and down motion of the mouse.")
 
         spaceHeightRow = mceutils.IntInputRow(_("Low Detail Height"),
-                                              ref=Settings.spaceHeight.propertyRef(),
+                                              ref=config.settings.spaceHeight,
                                               tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
 
         blockBufferRow = mceutils.IntInputRow("Block Buffer (MB):",
@@ -367,30 +366,30 @@ class OptionsPanel(Dialog):
                                               tooltipText="Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.")
 
         setWindowPlacementRow = mceutils.CheckBoxLabel("Set Window Placement",
-                                                       ref=Settings.setWindowPlacement.propertyRef(),
+                                                       ref=config.settings.setWindowPlacement,
                                                        tooltipText="Try to save and restore the window position.")
 
         rotateBlockBrushRow = mceutils.CheckBoxLabel("Rotate block with brush",
-                                                        ref=Settings.rotateBlockBrush.propertyRef(),
+                                                        ref=config.settings.rotateBlockBrush,
                                                         tooltipText="When rotating your brush, also rotate the orientation of the block your brushing with")
 
         windowSizeRow = mceutils.CheckBoxLabel("Window Resize Alert",
-                                               ref=Settings.shouldResizeAlert.propertyRef(),
+                                               ref=config.settings.shouldResizeAlert,
                                                tooltipText="Reminds you that the cursor won't work correctly after resizing the window.")
 
         visibilityCheckRow = mceutils.CheckBoxLabel("Visibility Check",
-                                                    ref=Settings.visibilityCheck.propertyRef(),
+                                                    ref=config.settings.visibilityCheck,
                                                     tooltipText="Do a visibility check on chunks while loading. May cause a crash.")
 
         longDistanceRow = mceutils.CheckBoxLabel("Long-Distance Mode",
-                                                 ref=Settings.longDistanceMode.propertyRef(),
+                                                 ref=config.settings.longDistanceMode,
                                                  tooltipText="Always target the farthest block under the cursor, even in mouselook mode.")
 
         flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
-                                            ref=Settings.flyMode.propertyRef(),
+                                            ref=config.settings.flyMode,
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
-        lng = Settings.langCode.get()
+        lng = config.settings.langCode.get()
         if type(lng) == str: # and DEF_ENC != "UTF-8":
             lng = lng.decode(DEF_ENC)
         langNames = self.getLanguageChoices(lng).keys()
@@ -402,11 +401,11 @@ class OptionsPanel(Dialog):
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
         staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
-                                            ref=Settings.staticCommandsNudge.propertyRef(),
+                                            ref=config.settings.staticCommandsNudge,
                                             tooltipText="Change static coordinates in command blocks while nudging.")
 
         moveSpawnerPosNudgeRow = mceutils.CheckBoxLabel("Change Spawners While Nudging",
-                                            ref=Settings.moveSpawnerPosNudge.propertyRef(),
+                                            ref=config.settings.moveSpawnerPosNudge,
                                             tooltipText="Change the position of the mobs in spawners while nudging.")
 
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
@@ -417,7 +416,7 @@ class OptionsPanel(Dialog):
 
 # Disabled Crash Reporting Option
 #       reportRow = mceutils.CheckBoxLabel("Report Errors",
-#                                          ref=Settings.reportCrashes.propertyRef(),
+#                                          ref=config.settings.reportCrashes,
 #                                          tooltipText="Automatically report errors to the developer.")
 
         inputs = (
@@ -465,11 +464,11 @@ class OptionsPanel(Dialog):
 
     @property
     def blockBuffer(self):
-        return Settings.blockBuffer.get() / 1048576
+        return config.settings.blockBuffer.get() / 1048576
 
     @blockBuffer.setter
     def blockBuffer(self, val):
-        Settings.blockBuffer.set(int(val * 1048576))
+        config.settings.blockBuffer.set(int(val * 1048576))
 
     def getLanguageChoices(self, current=None):
         files = os.listdir(albow.translate.langPath)
@@ -493,7 +492,7 @@ class OptionsPanel(Dialog):
         lng = self.languageButton.selectedChoice
         if type(lng) == unicode: # and DEF_ENC != "UTF-8":
             lng = lng.encode(DEF_ENC)
-        Settings.langCode.set(lng)
+        config.settings.langCode.set(lng)
 
     def portableButtonTooltip(self):
         return (
@@ -530,7 +529,7 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
-        lng = Settings.langCode.get()
+        lng = config.settings.langCode.get()
         if type(lng) == str: # and DEF_ENC != "UTF-8":
             lng = lng.decode(DEF_ENC)
         try:
@@ -545,8 +544,8 @@ class OptionsPanel(Dialog):
             albow.alert(_("{} is not a valid language").format("%s [%s]"%(self.sgnal[n], n)))
             if o == n:
                 o = u"en_US"
-            Settings.langCode.set(self.sgnal.get(o))
-            lng = Settings.langCode.get()
+            config.settings.langCode.set(self.sgnal.get(o))
+            lng = config.settings.langCode.get()
             if type(lng) == str:
                 lng = lng.decode("utf-8")
             albow.translate.setLang(lng)
@@ -583,7 +582,7 @@ class MCEdit(GLViewport):
         self.optionsPanel = OptionsPanel(self)
         if not albow.translate.buildTemplate:
             langs = self.optionsPanel.getLanguageChoices()
-            lng = Settings.langCode.get()
+            lng = config.settings.langCode.get()
             if type(lng) == str: # and DEF_ENC != "UTF-8":
                 lng = lng.decode(DEF_ENC)
             albow.translate.setLang(langs.get(lng, "English (US)"))
@@ -749,13 +748,13 @@ class MCEdit(GLViewport):
         #dw, dh = surf.get_size()
 
         if w >= 1000 and h >= 700:
-            Settings.windowWidth.set(w)
-            Settings.windowHeight.set(h)
-            config.saveConfig()
+            config.settings.windowWidth.set(w)
+            config.settings.windowHeight.set(h)
+            config.save()
         elif w !=0 and h !=0:
-            Settings.windowWidth.set(1000)
-            Settings.windowHeight.set(700)
-            config.saveConfig()
+            config.settings.windowWidth.set(1000)
+            config.settings.windowHeight.set(700)
+            config.save()
         if dw > 20 or dh > 20:
             if not hasattr(self, 'resizeAlert'):
                 self.resizeAlert = self.shouldResizeAlert
@@ -764,7 +763,7 @@ class MCEdit(GLViewport):
                     "Window size increased. You may have problems using the cursor until MCEdit is restarted.")
                 self.resizeAlert = False
 
-    shouldResizeAlert = Settings.shouldResizeAlert.configProperty()
+    shouldResizeAlert = config.settings.shouldResizeAlert.property()
 
     def loadFile(self, filename):
         if os.path.exists(filename):
@@ -823,8 +822,6 @@ class MCEdit(GLViewport):
 
     def justQuit(self):
         raise SystemExit
-
-    closeMinecraftWarning = Settings.closeMinecraftWarning.configProperty()
 
     @classmethod
     def main(self):
@@ -918,15 +915,15 @@ class MCEdit(GLViewport):
 #                       albow.alert(_("Version %s installed. Restart MCEdit to begin using it.") % update_version)
 #                       raise SystemExit()
 
-        if mcedit.closeMinecraftWarning:
+        if config.settings.closeMinecraftWarning.get():
             answer = albow.ask(
                 "Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.\n\n If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.",
                 ["Don't remind me again.", "OK"], default=1, cancel=1)
             if answer == "Don't remind me again.":
-                mcedit.closeMinecraftWarning = False
+                config.settings.closeMinecraftWarning.set(False)
 
 # Disabled Crash Reporting Option
-#       if not Settings.reportCrashesAsked.get():
+#       if not config.settings.reportCrashesAsked.get():
 #           answer = albow.ask(
 #               "When an error occurs, MCEdit can report the details of the error to its developers. "
 #               "The error report will include your operating system version, MCEdit version, "
@@ -936,19 +933,19 @@ class MCEdit(GLViewport):
 #               "Enable error reporting?",
 #               ["Yes", "No"],
 #               default=0)
-#           Settings.reportCrashes.set(answer == "Yes")
-#           Settings.reportCrashesAsked.set(True)
-        Settings.reportCrashes.set(False)
-        Settings.reportCrashesAsked.set(True)
+#           config.settings.reportCrashes.set(answer == "Yes")
+#           config.settings.reportCrashesAsked.set(True)
+        config.settings.reportCrashes.set(False)
+        config.settings.reportCrashesAsked.set(True)
 
-        config.saveConfig()
+        config.save()
         if "update" in config.config.get("Version", "version"):
             answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
             if answer == "Yes":
                 for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
                     config.config.set("Keys", configKey, k)
         config.config.set("Version", "version", "1.1.2.0")
-        config.saveConfig()
+        config.save()
         if "-causeError" in sys.argv:
             raise ValueError, "Error requested via -causeError"
 
@@ -956,7 +953,7 @@ class MCEdit(GLViewport):
             try:
                 rootwidget.run()
             except SystemExit:
-                if sys.platform == "win32" and Settings.setWindowPlacement.get():
+                if sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
                     X, Y, r, b = rect
@@ -966,11 +963,11 @@ class MCEdit(GLViewport):
                                 showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                         showCmd = mcplatform.win32con.SW_SHOWNORMAL
 
-                    Settings.windowX.set(X)
-                    Settings.windowY.set(Y)
-                    Settings.windowShowCmd.set(showCmd)
+                    config.settings.windowX.set(X)
+                    config.settings.windowY.set(Y)
+                    config.settings.windowShowCmd.set(showCmd)
 
-                config.saveConfig()
+                config.save()
                 mcedit.editor.renderer.discardAllChunks()
                 mcedit.editor.deleteAllCopiedSchematics()
                 raise
@@ -979,7 +976,7 @@ class MCEdit(GLViewport):
                 mcedit.editor.handleMemoryError()
 
     def restart(self):
-        if sys.platform == "win32" and Settings.setWindowPlacement.get():
+        if sys.platform == "win32" and config.settings.setWindowPlacement.get():
             (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                 display.get_wm_info()['window'])
             X, Y, r, b = rect
@@ -989,11 +986,11 @@ class MCEdit(GLViewport):
                         showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                 showCmd = mcplatform.win32con.SW_SHOWNORMAL
 
-            Settings.windowX.set(X)
-            Settings.windowY.set(Y)
-            Settings.windowShowCmd.set(showCmd)
+            config.settings.windowX.set(X)
+            config.settings.windowY.set(Y)
+            config.settings.windowShowCmd.set(showCmd)
 
-        config.saveConfig()
+        config.save()
         self.editor.renderer.discardAllChunks()
         self.editor.deleteAllCopiedSchematics()
         python = sys.executable
@@ -1058,7 +1055,7 @@ def main(argv):
             os.mkdir(directories.schematicsDir)
         except Exception, e:
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
-            
+
     try:
         if not os.path.exists(directories.brushesDir):
             shutil.copytree(
@@ -1119,7 +1116,7 @@ class GLDisplayContext(object):
         self.reset()
 
     def getWindowSize(self):
-        w, h = (Settings.windowWidth.get(), Settings.windowHeight.get())
+        w, h = (config.settings.windowWidth.get(), config.settings.windowHeight.get())
         return max(20, w), max(20, h)
 
     def displayMode(self):
@@ -1129,7 +1126,7 @@ class GLDisplayContext(object):
         pygame.key.set_repeat(500, 100)
 
         try:
-            display.gl_set_attribute(pygame.GL_SWAP_CONTROL, Settings.vsync.get())
+            display.gl_set_attribute(pygame.GL_SWAP_CONTROL, config.settings.vsync.get())
         except Exception, e:
             logging.warning('Unable to set vertical sync: {0!r}'.format(e))
 
@@ -1142,10 +1139,10 @@ class GLDisplayContext(object):
             logging.warning('PyGame clipboard integration disabled.')
 
         display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
-        if sys.platform == 'win32' and Settings.setWindowPlacement.get():
-            Settings.setWindowPlacement.set(False)
-            config.saveConfig()
-            X, Y = Settings.windowX.get(), Settings.windowY.get()
+        if sys.platform == 'win32' and config.settings.setWindowPlacement.get():
+            config.settings.setWindowPlacement.set(False)
+            config.save()
+            X, Y = config.settings.windowX.get(), config.settings.windowY.get()
 
             if X:
                 w, h = self.getWindowSize()
@@ -1155,13 +1152,13 @@ class GLDisplayContext(object):
                 realW = rect[2] - rect[0]
                 realH = rect[3] - rect[1]
 
-                showCmd = Settings.windowShowCmd.get()
+                showCmd = config.settings.windowShowCmd.get()
                 rect = (X, Y, X + realW, Y + realH)
 
                 mcplatform.win32gui.SetWindowPlacement(hwndOwner, (0, showCmd, ptMin, ptMax, rect))
 
-            Settings.setWindowPlacement.set(True)
-            config.saveConfig()
+            config.settings.setWindowPlacement.set(True)
+            config.save()
 
         try:
             iconpath = os.path.join(directories.getDataDir(), 'favicon.png')

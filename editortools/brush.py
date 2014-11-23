@@ -90,7 +90,7 @@ class BrushOperation(Operation):
         self.brushMode = tool.brushMode
         boxes = [self.tool.getDirtyBox(p, self.tool.getBrushSize()) for p in self.points]
         self._dirtyBox = reduce(lambda a, b: a.union(b), boxes)
-    
+
     def dirtyBox(self):
         return self._dirtyBox
 
@@ -241,11 +241,11 @@ class BrushPanel(Panel):
         self.presets = ["Load Preset:"]
         self.presets.extend(self.getBrushFileList())
         self.presets.append('Remove Presets')
-        
+
         self.presetListButton = ChoiceButton(self.presets, width=100, choose=self.presetSelected)
         self.presetListButton.selectedChoice = "Load Preset:"
         self.saveButton = Button("Save as preset", action=self.openSavePresetDialog)
-        
+
         presetListButtonRow = Row([self.presetListButton])
         saveButtonRow = Row([self.saveButton])
         row = Row([presetListButtonRow, saveButtonRow])
@@ -271,7 +271,7 @@ class BrushPanel(Panel):
             if name in ['Load Preset:', 'Remove Presets', '__temp__']:
                 alert("That preset name is reserved. Try pick another preset name.")
                 return
-            
+
             for p in ['<','>',':','\"', '/', '\\', '|', '?', '*', '.']:
                 if p in name:
                     alert('Invalid character in file name')
@@ -284,7 +284,7 @@ class BrushPanel(Panel):
         cancelButton = Button("Cancel", action=panel.dismiss)
         namerow = Row([label,nameField])
         buttonRow = Row([okButton,cancelButton])
-        
+
         panel.add(Column([namerow, buttonRow]))
         panel.shrink_wrap()
         panel.present()
@@ -303,8 +303,8 @@ class BrushPanel(Panel):
             panel.dismiss()
             name = p[presetTable.selectedIndex] + ".preset"
             os.remove(os.path.join(directories.brushesDir, name))
-            self.tool.showPanel()
-            
+            self.tool.toolSelected()
+
         def selectTableRow(i, evt):
             presetTable.selectedIndex = i
             if evt.num_clicks == 2:
@@ -323,7 +323,6 @@ class BrushPanel(Panel):
         panel.add(Column((choiceCol, row)))
         panel.shrink_wrap()
         panel.present()
-        
         
     def presetSelected(self):
         """

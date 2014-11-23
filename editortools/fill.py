@@ -19,6 +19,7 @@ from albow.translate import _
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
+from editortools.nudgebutton import NudgeButton
 from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
@@ -27,11 +28,9 @@ from mceutils import showProgress, CheckBoxLabel, alertException, setWindowCapti
 from operation import Operation
 from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
-import config
+from config import config
 import keys
 import pymclevel
-FillSettings = config.Settings("Fill")
-FillSettings.chooseBlockImmediately = FillSettings("Choose Block Immediately", True)
 
 
 class BlockFillOperation(Operation):
@@ -75,6 +74,10 @@ class FillToolPanel(Panel):
         self.blockButton.blockInfo = tool.blockInfo
         self.blockButton.action = self.pickFillBlock
 
+        self.nudgeButton = NudgeButton(tool.editor)
+        self.nudgeButton.bg_color = tool.color
+        self.nudgeButton.nudge = tool.nudge
+
         self.fillWithLabel = Label("Fill with:", width=self.blockButton.width, align="c")
         self.fillButton = Button("Fill", action=tool.confirm, width=self.blockButton.width)
         self.fillButton.tooltipText = "Shortcut: Enter"
@@ -93,6 +96,7 @@ class FillToolPanel(Panel):
                # swapRow,
                replaceLabel,
                # self.replaceBlockButton,
+               self.nudgeButton,
                self.fillButton)
 
         if replacing:
@@ -117,6 +121,7 @@ class FillToolPanel(Panel):
                    self.blockButton,
                    replaceLabel,
                    self.replaceBlockButton,
+                   self.nudgeButton,
                    self.swapButton,
                    self.fillButton)
 
@@ -149,7 +154,7 @@ class FillToolOptions(ToolOptions):
         Panel.__init__(self)
         self.tool = tool
         self.autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
-                                                ref=FillSettings.chooseBlockImmediately.propertyRef(),
+                                                ref=config.fill.chooseBlockImmediately,
                                                 tooltipText="When the fill tool is chosen, prompt for a block type.")
 
         col = Column((Label("Fill Options"), self.autoChooseCheckBox, Button("OK", action=self.dismiss)))
@@ -164,6 +169,7 @@ class FillTool(EditorTool):
     replaceBlockInfo = pymclevel.alphaMaterials.Air
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
+    color = (0.3, 1.0, 0.3, 0.19)
 
     def __init__(self, *args, **kw):
         EditorTool.__init__(self, *args, **kw)
@@ -213,7 +219,7 @@ class FillTool(EditorTool):
                 self.blockInfo = blockPicker.blockInfo
                 self.showPanel()
 
-    chooseBlockImmediately = FillSettings.chooseBlockImmediately.configProperty()
+    chooseBlockImmediately = config.fill.chooseBlockImmediately.property()
 
     def toolReselected(self):
         self.showPanel()
@@ -221,6 +227,18 @@ class FillTool(EditorTool):
 
     def cancel(self):
         self.hidePanel()
+
+    def quickNudge(self, nudge):
+        return map(int.__mul__, nudge, self.selectionBox().size)
+
+    def nudge(self, nudge):
+        if self.editor.rightClickNudge == 1:
+            nudge = self.quickNudge(nudge)
+
+        if not all((p + nudge) in self.editor.level.bounds for p in self.editor.selectionTool.getSelectionPoints()):
+            return
+
+        self.editor.selectionTool.setSelectionPoints([p + nudge for p in self.editor.selectionTool.getSelectionPoints()])
 
     @alertException
     def confirm(self):
@@ -231,7 +249,10 @@ class FillTool(EditorTool):
         with setWindowCaption("REPLACING - "):
             self.editor.freezeStatus("Replacing %0.1f million blocks" % (float(box.volume) / 1048576.,))
 
+            self.blockInfo = self.panel.blockButton.blockInfo
+
             if self.replacing:
+                self.replaceBlockInfo = self.panel.replaceBlockButton.blockInfo
                 if self.blockInfo.wildcard:
                     print "Wildcard replace"
                     blocksToReplace = []

@@ -45,6 +45,7 @@ import numpy
 from OpenGL import GL
 import pymclevel
 import sys
+from config import config
 # import time
 
 
@@ -319,11 +320,8 @@ class ChunkCalculator(object):
         # del xArray, zArray, yArray
         self.nullVertices = numpy.zeros((0,) * len(self.precomputedVertices[0].shape),
                                         dtype=self.precomputedVertices[0].dtype)
-        import leveleditor
-
-        Settings = leveleditor.Settings
-        Settings.fastLeaves.addObserver(self)
-        Settings.roughGraphics.addObserver(self)
+        config.settings.fastLeaves.addObserver(self)
+        config.settings.roughGraphics.addObserver(self)
 
     class renderstatePlain(object):
         @classmethod
@@ -2387,29 +2385,25 @@ class MCRenderer(object):
 
         self.chunkIterator = None
 
-        import leveleditor
+        config.settings.fastLeaves.addObserver(self)
 
-        Settings = leveleditor.Settings
+        config.settings.roughGraphics.addObserver(self)
+        config.settings.showHiddenOres.addObserver(self)
+        config.settings.vertexBufferLimit.addObserver(self)
 
-        Settings.fastLeaves.addObserver(self)
+        config.settings.drawEntities.addObserver(self)
+        config.settings.drawTileEntities.addObserver(self)
+        config.settings.drawTileTicks.addObserver(self)
+        config.settings.drawUnpopulatedChunks.addObserver(self, "drawTerrainPopulated")
+        config.settings.drawMonsters.addObserver(self)
+        config.settings.drawItems.addObserver(self)
 
-        Settings.roughGraphics.addObserver(self)
-        Settings.showHiddenOres.addObserver(self)
-        Settings.vertexBufferLimit.addObserver(self)
+        config.settings.showChunkRedraw.addObserver(self, "showRedraw")
+        config.settings.spaceHeight.addObserver(self)
+        config.settings.targetFPS.addObserver(self, "targetFPS")
 
-        Settings.drawEntities.addObserver(self)
-        Settings.drawTileEntities.addObserver(self)
-        Settings.drawTileTicks.addObserver(self)
-        Settings.drawUnpopulatedChunks.addObserver(self, "drawTerrainPopulated")
-        Settings.drawMonsters.addObserver(self)
-        Settings.drawItems.addObserver(self)
-
-        Settings.showChunkRedraw.addObserver(self, "showRedraw")
-        Settings.spaceHeight.addObserver(self)
-        Settings.targetFPS.addObserver(self, "targetFPS")
-
-        for ore in Settings.hiddableOres.get():
-            getattr(Settings, "showOre{}".format(ore)).addObserver(self, callback=lambda x, id=ore: self.showOre(id, x))
+        for ore in config.settings.hiddableOres.get():
+            config.settings["showOre{}".format(ore)].addObserver(self, callback=lambda x, id=ore: self.showOre(id, x))
 
         self.level = level
 

@@ -21,15 +21,13 @@ import numpy
 import pygame
 from albow import Row, Label, Button, AttrRef, Column, ask, alert
 from albow.translate import _
-import config
+from config import config, ColorValue
 from depths import DepthOffset
 from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
-import leveleditor
 from glbackground import Panel
 from mceutils import ChoiceButton, CheckBoxLabel, IntInputRow, alertException, drawCube, drawFace, drawTerrainCuttingWire, setWindowCaption, showProgress
-import mcplatform
 from operation import Operation
 import pymclevel
 from pymclevel.box import Vector, BoundingBox, FloatBox
@@ -38,51 +36,18 @@ import tempfile
 from pymclevel import nbt
 import logging
 import keys
+from config import config
 
 log = logging.getLogger(__name__)
-
-SelectSettings = config.Settings("Selection")
-SelectSettings.showPreviousSelection = SelectSettings("Show Previous Selection", True)
-SelectSettings.color = SelectSettings("Color", "teal")
-
-ColorSettings = config.Settings("Selection Colors")
-ColorSettings.defaultColors = {}
-
-
-class ColorSetting(config.Setting):
-    def __init__(self, section, name, dtype, dsubtype, default):
-        super(ColorSetting, self).__init__(section, name, dtype, float, default)
-        ColorSettings.defaultColors[name] = self
-
-    def get(self):
-        values = super(ColorSetting, self).get()
-        return (min(max(x, 0.0), 1.0) for x in values)
-
-
-
-ColorSettings.Setting = ColorSetting
-
-ColorSettings("white", (1.0, 1.0, 1.0))
-
-ColorSettings("blue", (0.75, 0.75, 1.0))
-ColorSettings("green", (0.75, 1.0, 0.75))
-ColorSettings("red", (1.0, 0.75, 0.75))
-
-ColorSettings("teal", (0.75, 1.0, 1.0))
-ColorSettings("pink", (1.0, 0.75, 1.0))
-ColorSettings("yellow", (1.0, 1.0, 0.75))
-
-ColorSettings("grey", (0.6, 0.6, 0.6))
-ColorSettings("black", (0.0, 0.0, 0.0))
 
 
 def GetSelectionColor(colorWord=None):
     # TODO: this whole function code is now perhaps equivalent to this,
     # apart from case-sensitiveness handling and previous format fix:
-    # return ColorSettings.defaultColors.get((colorWord or SelectSettings.color.get()).lower(),
+    # return ColorSettings.defaultColors.get((colorWord or config.selection.color.get()).lower(),
     # ColorSettings(colorWord.lower(), (1.0, 1.0, 1.0))).get()
     if colorWord is None:
-        colorWord = SelectSettings.color.get()
+        colorWord = config.selection.color.get()
 
     colorValues = config.config.get("Selection Colors", colorWord)
     try:
@@ -91,7 +56,7 @@ def GetSelectionColor(colorWord=None):
         # this 'if' block may be removed once new version is widespread
         if len(values) > 3:
             values = tuple(float(x) for x in colorValues.replace("', '", "").translate(None, "[]()'").split(','))
-            ColorSettings.defaultColors[colorWord.lower()].set(values)
+            ColorValue.defaultColors[colorWord.lower()].set(values)
             log.debug("Fixing color %r {%r => %r}", colorWord, colorValues, values)
         values = tuple((min(max(float(x), 0.0), 1.0)) for x in values)
     except:
@@ -105,7 +70,7 @@ class SelectionToolOptions(ToolOptions):
         names = [name.lower() for (name, value) in config.config.items("Selection Colors")]
         self.colorPopupButton.choices = [name.capitalize() for name in names]
 
-        color = SelectSettings.color.get()
+        color = config.selection.color.get()
 
         self.colorPopupButton.choiceIndex = names.index(color.lower())
 
@@ -152,7 +117,7 @@ class SelectionToolOptions(ToolOptions):
         self.shrink_wrap()
 
     def colorChanged(self):
-        SelectSettings.color.set(self.colorPopupButton.selectedChoice)
+        config.selection.color.set(self.colorPopupButton.selectedChoice)
         self.tool.updateSelectionColor()
 
 
@@ -252,8 +217,8 @@ class NudgeBlocksOperation(Operation):
 
             level.removeEntitiesInBox(self.sourceBox)
             level.removeEntitiesInBox(self.destBox)
-            staticCommandsNudge = leveleditor.Settings.staticCommandsNudge.get()
-            moveSpawnerPosNudge = leveleditor.Settings.moveSpawnerPosNudge.get()
+            staticCommandsNudge = config.settings.staticCommandsNudge.get()
+            moveSpawnerPosNudge = config.settings.moveSpawnerPosNudge.get()
             level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin, staticCommands=staticCommandsNudge, moveSpawnerPos=moveSpawnerPosNudge)
             self.editor.invalidateBox(dirtyBox)
 
@@ -266,6 +231,7 @@ class NudgeBlocksOperation(Operation):
     def redo(self):
         super(NudgeBlocksOperation, self).redo()
         self.nudgeSelection.redo()
+
 
 class SelectionTool(EditorTool):
     # selectionColor = (1.0, .9, .9)
@@ -867,7 +833,7 @@ class SelectionTool(EditorTool):
     def selectOtherCorner(self):
         self.currentCorner = 1 - self.currentCorner
 
-    showPreviousSelection = SelectSettings.showPreviousSelection.configProperty()
+    showPreviousSelection = config.selection.showPreviousSelection.property()
     alpha = 0.25
 
     def drawToolMarkers(self):

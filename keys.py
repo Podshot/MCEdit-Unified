@@ -1,4 +1,4 @@
-import config
+from config import config
 import albow
 import mceutils
 from pygame import key
@@ -444,19 +444,19 @@ class KeyConfigPanel(Dialog):
     def done(self):
         self.changesNum = False
         self.changes = {}
-        config.saveConfig()
+        config.save()
         self.dismiss()
 
     def choosePreset(self):
         preset = self.choiceButton.selectedChoice
         keypairs = self.presets[preset]
-        for configKey, key in keypairs:
+        for configKey, k in keypairs:
             oldOne = config.config.get("Keys", configKey)
-            if key != oldOne:
+            if k != oldOne:
                 self.changesNum = True
                 if configKey not in self.changes:
                     self.changes[configKey] = oldOne
-                config.config.set("Keys", configKey, key)
+                config.config.set("Keys", configKey, k)
 
     def getRowData(self, i):
         configKey = self.keyConfigKeys[i]
@@ -498,12 +498,12 @@ class KeyConfigPanel(Dialog):
                 if result == "Save":
                     self.done()
                 elif result == "Don't Save":
-                    for key in self.changes.keys():
-                        config.config.set("Keys", key, self.changes[key])
+                    for k in self.changes.keys():
+                        config.config.set("Keys", k, self.changes[k])
                     self.changesNum = False
                     self.changes = {}
                     self.choiceButton.selectedChoice = self.oldChoice
-                    config.saveConfig()
+                    config.save()
                     self.dismiss()
             else:
                 self.dismiss()
