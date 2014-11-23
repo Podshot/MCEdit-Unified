@@ -54,21 +54,11 @@ from __builtin__ import __import__
 log = logging.getLogger(__name__)
 
 class BrushMode(object):
-    options = []
-
-    def brushBoxForPointAndOptions(self, point, options={}):
-        # Return a box of size options['brushSize'] centered around point.
-        # also used to position the preview reticle
-        size = options['brushSize']
-        origin = map(lambda x, s: x - (s >> 1), point, size)
-        return BoundingBox(origin, size)
-
     def apply(self, op, point):
         """
         Called by BrushOperation for brush modes that can't be implemented using applyToChunk
         """
         pass
-    apply = NotImplemented
 
     def applyToChunk(self, op, chunk, point):
         """
@@ -88,27 +78,14 @@ class BrushMode(object):
 
         return self.applyToChunkSlices(op, chunk, slices, brushBox, brushBoxThisChunk)
 
-    def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
-        raise NotImplementedError
-
-    def createOptions(self, panel, tool):
-        pass
-
 class BrushOperation(Operation):
     def __init__(self, tool):
-        super(BrushOperation, self).__init__(tool.editor, tool.level)
+        super(BrushOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
-        self.editor = tool.editor
-        if isinstance(points[0], (int, float)):
-            points = [points]
-        self.points = points
-  
-        if max(self.brushSize) > BrushTool.maxBrushSize:
-            self.brushSize = (BrushTool.maxBrushSize,) * 3
-        if max(self.brushSize) < 1:
-            self.brushSize = (1, 1, 1)
-  
-        boxes = [self.tool.getDirtyBox(p, options) for p in points]
+        self.points = tool.draggedPositions
+        self.options = tool.options
+        self.brushMode = tool.brushMode
+        boxes = [self.tool.getDirtyBox(p, self.tool.getBrushSize()) for p in self.points]
         self._dirtyBox = reduce(lambda a, b: a.union(b), boxes)
     
     def dirtyBox(self):
@@ -122,39 +99,38 @@ class BrushOperation(Operation):
             self.undoLevel = self.extractUndo(self.level, self._dirtyBox)
 
         def _perform():
-            yield 0, len(self.points), _("Applying {0} brush...").format(self.brushMode.name)
-            if self.brushMode.apply is not NotImplemented: #xxx double negative
+            yield 0, len(self.points), _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
+            if hasattr(self.brushMode, 'apply'):
                 for i, point in enumerate(self.points):
                     f = self.brushMode.apply(self, point)
                     if hasattr(f, "__iter__"):
                         for progress in f:
                             yield progress
                     else:
-                        yield i, len(self.points), _("Applying {0} brush...").format(self.brushMode.name)
-            else:
-
+                        yield i, len(self.points), _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
+            if hasattr(self.brushMode, 'applyToChunkSlices'):
                 for j, cPos in enumerate(self._dirtyBox.chunkPositions):
                     if not self.level.containsChunk(*cPos):
                         continue
                     chunk = self.level.getChunk(*cPos)
                     for i, point in enumerate(self.points):
-
-                        f = self.brushMode.applyToChunk(self, chunk, point)
-
+                        print 'b'
+                        brushBox = self.tool.getDirtyBox(point, self.tool.getBrushSize())
+                        brushBoxThisChunk, slices = chunk.getChunkSlicesForBox(brushBox)
+                        if brushBoxThisChunk.volume == 0: return
+                        f = self.brushMode.applyToChunkSlices(self, chunk, slices, brushBox, brushBoxThisChunk)
                         if hasattr(f, "__iter__"):
                             for progress in f:
                                 yield progress
                         else:
-                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(self.brushMode.name)
-
+                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
+                        print 'a'
                     chunk.chunkChanged()
 
         if len(self.points) > 10:
             showProgress("Performing brush...", _perform(), cancel=True)
         else:
             exhaust(_perform())
-
-        self.editor.get_root().ctrlClicked = -1
 
 
 
@@ -545,14 +521,10 @@ class BrushTool(CloneTool):
         if 0 == len(self.draggedPositions):
             return
         size = self.getBrushSize()
-#         op = BrushOperation(self.editor,
-#                             self.editor.level,
-#                             self.draggedPositions,
-#                             self.getBrushOptions())
-#         box = op.dirtyBox()
-#         self.editor.addOperation(op)
-#         self.editor.addUnsavedEdit()
-#         self.editor.invalidateBox(box)
+        op = BrushOperation(self)
+        self.editor.addOperation(op)
+        self.editor.addUnsavedEdit()
+        self.editor.invalidateBox(op.dirtyBox())
         self.draggedPositions = []
 
     def swapBrushStyles(self):
@@ -565,6 +537,21 @@ class BrushTool(CloneTool):
         brushStyleIndex %= 3
         self.options["Style"] = styles[brushStyleIndex]
         self.setupPreview()
+        
+    def toolReselected(self):
+        """
+        Called on reselecting the brush.
+        Makes a blockpicker show up for the Main Block of the brush mode.
+        """
+        if not self.panel:
+            self.toolSelected()
+        elif self.brushMode.name == "Replace" or self.brushMode.name == "Varied Replace":
+            key = getattr(self.brushMode, 'mainBlock', 'Block')
+            blockPicker = BlockPicker(self.options[key], self.editor.level.materials, allowWildcards=True)
+            if blockPicker.present():
+                    self.options[key] = blockPicker.blockInfo
+        self.setupPreview()
+
     
     def showPanel(self):
         """
@@ -715,11 +702,10 @@ class BrushTool(CloneTool):
         Returns a box around the Brush given point and size of the brush.
         """
         if hasattr(self.brushMode, 'createDirtyBox'):
-            dirtyBox = self.brushMode.createDirtyBox(point, size)
+            return self.brushMode.createDirtyBox(point, size)
         else:
             origin = map(lambda x, s: x - (s >> 1), point, size)
-            dirtyBox = BoundingBox(origin, size)
-        return dirtyBox
+            return BoundingBox(origin, size)
         
     def drawTerrainReticle(self):
         """
@@ -754,7 +740,7 @@ class BrushTool(CloneTool):
         Increases Brush Size, triggered by pressing corresponding key.
         """
         for key in ('W', 'H', 'L'):
-            self.options[key] = self.options[key] - 1
+            self.options[key] = max(self.options[key] - 1, 0)
         self.setupPreview()
 
     def increaseBrushSize(self):
@@ -779,15 +765,22 @@ class BrushTool(CloneTool):
         :keyword blocksOnly: Also rotate the data value of the block we're brushing with.
         """
         def rotateBlock():
-            blockInfo = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
-            blockrotation.RotateLeft([[[blockInfo.ID]]], [[[blockInfo.blockData]]])
-            self.options[getattr(self.brushMode, 'mainBlock', 'Block')] = blockInfo
+            list = [key for key in self.options if self.options[key].__class__.__name__ == 'Block']
+            list = getattr(self.brushMode, 'rotatableBlocks', list)
+            for key in list:
+                bl = self.options[key]
+                data = [[[bl.blockData]]]
+                blockrotation.RotateLeft([[[bl.ID]]], data)
+                bl.blockData = data[0][0][0]
+            self.showPanel()
+
         if leveleditor.Settings.rotateBlockBrush.get() or blocksOnly:
             rotateBlock()
         if not blocksOnly:
             W = self.options['W']
             self.options['W'] = self.options['L']
             self.options['L'] = W
+        self.setupPreview()
 
     def roll(self, blocksOnly=False):
         """
@@ -795,17 +788,22 @@ class BrushTool(CloneTool):
         :keyword blocksOnly: Also roll the data value of the block we're brushing with.
         """
         def rollBlock():
-            blockInfo = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
-            blockrotation.Roll([[[blockInfo.ID]]], [[[blockInfo.blockData]]])
-            self.options[getattr(self.brushMode, 'mainBlock', 'Block')] = blockInfo
+            list = [key for key in self.options if self.options[key].__class__.__name__ == 'Block']
+            list = getattr(self.brushMode, 'rotatableBlocks', list)
+            for key in list:
+                bl = self.options[key]
+                data = [[[bl.blockData]]]
+                blockrotation.Roll([[[bl.ID]]], data)
+                bl.blockData = data[0][0][0]
+            self.showPanel()
+
         if leveleditor.Settings.rotateBlockBrush.get() or blocksOnly:
             rollBlock()
         if not blocksOnly:
             H = self.options['H']
             self.options['H'] = self.options['W']
             self.options['W'] = H
-
-
+        self.setupPreview()
 
 def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
     """
