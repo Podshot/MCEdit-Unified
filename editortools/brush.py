@@ -15,6 +15,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #Modified by D.C.-G. for translation purposes
 import imp
 import traceback
+import copy
 from OpenGL import GL
 import datetime
 import os
@@ -174,7 +175,12 @@ class BrushPanel(Panel):
         self.add(optionsColumn)
         self.shrink_wrap()
         
-    def createField(self, key, value): #Creates a field matching the input type
+    def createField(self, key, value):
+        """
+        Creates a field matching the input type.
+        :param key, key to store the value in, also the name of the label if type is float or int.
+        :param value, default value for the field.
+        """
         type = value.__class__.__name__
         mi = 0
         ma = 100
@@ -208,21 +214,37 @@ class BrushPanel(Panel):
         return object
     
     def brushModeChanged(self):
+        """
+        Called on selecting a brushMode, sets it in BrushTool as well.
+        """
         self.tool.selectedBrushMode = self.brushModeButton.selectedChoice
         self.tool.brushMode = self.tool.brushModes[self.tool.selectedBrushMode]
+        self.tool.saveBrushPreset('__temp__')
         self.tool.showPanel()
-    
-    def createPresetRow(self): #Creates the brush preset row, called by BrushPanel when creating the panel
+           
+    def getBrushFileList(self):
         """
-        Currently doesn't do anything yet, just a placeholder to create the widget
+        Returns a list of strings of all .preset files in the brushes directory.
+        """
+        list = []
+        presetdownload = os.listdir(directories.brushesDir)
+        for p in presetdownload:
+            if p.endswith('.preset'):
+                list.append(os.path.splitext(p)[0])
+        list.remove('__temp__')
+        return list
+    
+    def createPresetRow(self):
+        """
+        Creates the brush preset widget, called by BrushPanel when creating the panel.
         """
         self.presets = ["Load Preset:"]
-        #self.presets.extend(self.getBrushFileList())
-        #self.presets.append('Remove Presets')
+        self.presets.extend(self.getBrushFileList())
+        self.presets.append('Remove Presets')
         
-        self.presetListButton = ChoiceButton(self.presets, width=100, choose=None)
+        self.presetListButton = ChoiceButton(self.presets, width=100, choose=self.presetSelected)
         self.presetListButton.selectedChoice = "Load Preset:"
-        self.saveButton = Button("Save as preset", action=None)
+        self.saveButton = Button("Save as preset", action=self.openSavePresetDialog)
         
         presetListButtonRow = Row([self.presetListButton])
         saveButtonRow = Row([self.saveButton])
@@ -233,6 +255,89 @@ class BrushPanel(Panel):
         widget.shrink_wrap()
         widget.anchor = "whtr"
         return widget
+        
+    def openSavePresetDialog(self):
+        """
+        Opens up a dialgo to input the name of the to save Preset.
+        """
+        panel = Dialog()
+        label = Label("Preset Name:")
+        nameField = TextField(width=200)
+
+        def okPressed():
+            panel.dismiss()
+            name = nameField.value
+            
+            if name in ['Load Preset:', 'Remove Presets', '__temp__']:
+                alert("That preset name is reserved. Try pick another preset name.")
+                return
+            
+            for p in ['<','>',':','\"', '/', '\\', '|', '?', '*', '.']:
+                if p in name:
+                    alert('Invalid character in file name')
+                    return
+                
+            self.tool.saveBrushPreset(name)
+            self.tool.showPanel()
+
+        okButton = Button("OK", action=okPressed)
+        cancelButton = Button("Cancel", action=panel.dismiss)
+        namerow = Row([label,nameField])
+        buttonRow = Row([okButton,cancelButton])
+        
+        panel.add(Column([namerow, buttonRow]))
+        panel.shrink_wrap()
+        panel.present()
+
+    def removePreset(self):
+        """
+        Brings up a panel to remove presets.
+        """
+        panel = Dialog()
+        p = self.getBrushFileList()
+        if not p:
+            alert('No presets saved')
+            return
+
+        def okPressed():
+            panel.dismiss()
+            name = p[presetTable.selectedIndex] + ".preset"
+            os.remove(os.path.join(directories.brushesDir, name))
+            self.tool.showPanel()
+            
+        def selectTableRow(i, evt):
+            presetTable.selectedIndex = i
+            if evt.num_clicks == 2:
+                okPressed()
+
+        presetTable = TableView(columns=(TableColumn("", 200),))
+        presetTable.num_rows = lambda: len(p)
+        presetTable.row_data = lambda i: (p[i],)
+        presetTable.row_is_selected = lambda x: x == presetTable.selectedIndex
+        presetTable.click_row = selectTableRow
+        presetTable.selectedIndex = 0
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda:"Select preset to delete"), presetTable))
+        okButton = Button("OK", action=okPressed)
+        cancelButton = Button("Cancel", action=panel.dismiss)
+        row = Row([okButton,cancelButton])
+        panel.add(Column((choiceCol, row)))
+        panel.shrink_wrap()
+        panel.present()
+        
+        
+    def presetSelected(self):
+        """
+        Called ons selecting item on Load Preset, to check if remove preset is selected. Calls removePreset if true, loadPreset(name) otherwise.
+        """
+        choice = self.presetListButton.selectedChoice
+        if choice == 'Remove Presets':
+            self.removePreset()
+        elif choice == 'Load Preset:':
+            return
+        else:
+            self.tool.loadBrushPreset(choice)
+        choice = "Load Preset:"
+        self.tool.showPanel()
         
         
 class BrushToolOptions(ToolOptions):
@@ -270,6 +375,7 @@ class BrushTool(CloneTool):
     recentBlocks = {}
     previewDirty = False
     cameraDistance = EditorTool.cameraDistance
+    optionBackup = None
 
     def __init__(self, *args):
         """
@@ -355,7 +461,6 @@ class BrushTool(CloneTool):
         self.importedBrushModes = self.importBrushModes()
         self.stockBrushModes = self.importStockBrushModes()
         for m in itertools.chain(self.importedBrushModes, self.stockBrushModes):
-            print m
             if m.displayName:
                 self.brushModes[m.displayName] = m
             else:
@@ -398,7 +503,6 @@ class BrushTool(CloneTool):
         Imports a brush module. Called by importBrushModules
         :param name, name of the module to import. 
         """
-        print name
         try:
             globals()[name] = m = imp.load_source(name, os.path.join(directories.getDataDir(), u'stock-brushes', (name+ ".py")))
             m.materials = self.editor.level.materials
@@ -447,10 +551,56 @@ class BrushTool(CloneTool):
                     self.options[key] = blockPicker.blockInfo
         if self.settings['updateBrushOffset']:
             self.reticleOffset = self.offsetMax()
-        self.optionsNotifier = None
         self.resetToolDistance()
+        self.loadBrushPreset('__temp__')
+        
+    
+    def saveBrushPreset(self, name):
+        """
+        Saves current brush presets in a file name.preset
+        :param name, name of the file to store the preset in.
+        """
+        optionsToSave = {}
+        for key in self.options:
+            if self.options[key].__class__.__name__ == 'Block':
+                optionsToSave[key + 'blockID'] = self.options[key].ID
+                optionsToSave[key + 'blockData'] = self.options[key].blockData
+            else:
+                optionsToSave[key] = self.options[key]
+        optionsToSave["Mode"] = self.selectedBrushMode
+        name = name + ".preset"
+        f = open(os.path.join(directories.brushesDir, name), "w")
+        f.write(repr(optionsToSave))
+        
+    def loadBrushPreset(self, name):
+        """ 
+        Loads a brush preset name.preset
+        :param name, name of the preset to load.
+        """
+        name = name+'.preset'
+        try:
+            f = open(os.path.join(directories.brushesDir, name), "r")
+        except:
+            if name == '__temp__.preset':
+                self.setupPreview()
+                self.showPanel()
+                return
+            alert('Exception while trying to load preset. See console for details.')
+        loadedBrushOptions = ast.literal_eval(f.read())
+        for key in loadedBrushOptions:
+            if key.endswith('blockID'):
+                self.options[key[:-7]] = self.editor.level.materials.blockWithID(loadedBrushOptions[key], loadedBrushOptions[key[:-7] + 'blockData'])
+            elif key.endswith('blockData'):
+                pass
+            elif key == "Mode":
+                self.selectedBrushMode = loadedBrushOptions[key]
+                self.brushMode = self.brushModes[self.selectedBrushMode]
+            else:
+                self.options[key] = loadedBrushOptions[key]
+        print self.options
         self.setupPreview()
         self.showPanel()
+
         
     @property
     def worldTooltipText(self):
@@ -747,6 +897,9 @@ class BrushTool(CloneTool):
         Draws the white reticle where the cursor is pointing.
         Called by leveleditor.render
         """
+        if self.optionBackup != self.options:
+            self.saveBrushPreset('__temp__')
+            self.optionBackup = copy.copy(self.options)
         if not hasattr(self, 'brushMode'):
             return
         if self.options[getattr(self.brushMode, 'mainBlock', 'Block')] != self.renderedBlock:
