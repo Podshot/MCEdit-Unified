@@ -163,7 +163,8 @@ class ConfigValue(object):
 
     def _setter(self, setter):
         def _s(s, value):
-            setter(s, value)
+            if setter is not None:
+                setter(s, value)
             return self.set(value)
         return _s
 
