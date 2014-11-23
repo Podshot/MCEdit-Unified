@@ -61,6 +61,8 @@ class TextEditor(Widget):
             if k == K_RIGHT:
                 self.move_insertion_point(1)
                 return
+            if k == K_UP or k == K_DOWN:
+                return
             if k == K_TAB:
                 self.attention_lost()
                 self.tab_to_next()
@@ -114,34 +116,33 @@ class TextEditor(Widget):
     def insert_char(self, c):
         if self.upper:
             c = c.upper()
-        if c <= "\x7f":
-            if c == "\x08" or c == "\x7f":
+        if c == "\x08" or c == "\x7f":
+            text, i = self.get_text_and_insertion_point()
+            if i is None:
+                text = ""
+                i = 0
+            else:
+                text = text[:i - 1] + text[i:]
+                i -= 1
+            self.change_text(text)
+            self.insertion_point = i
+            return
+        elif c == "\r" or c == "\x03":
+            return self.call_handler('enter_action')
+        elif c == "\x1b":
+            return self.call_handler('escape_action')
+        elif c >= "\x20":
+            if self.allow_char(c):
                 text, i = self.get_text_and_insertion_point()
                 if i is None:
-                    text = ""
-                    i = 0
+                    text = c
+                    i = 1
                 else:
-                    text = text[:i - 1] + text[i:]
-                    i -= 1
+                    text = text[:i] + c + text[i:]
+                    i += 1
                 self.change_text(text)
                 self.insertion_point = i
                 return
-            elif c == "\r" or c == "\x03":
-                return self.call_handler('enter_action')
-            elif c == "\x1b":
-                return self.call_handler('escape_action')
-            elif c >= "\x20":
-                if self.allow_char(c):
-                    text, i = self.get_text_and_insertion_point()
-                    if i is None:
-                        text = c
-                        i = 1
-                    else:
-                        text = text[:i] + c + text[i:]
-                        i += 1
-                    self.change_text(text)
-                    self.insertion_point = i
-                    return
         return 'pass'
 
     def allow_char(self, c):

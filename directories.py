@@ -1,3 +1,4 @@
+﻿# -*- coding: utf-8 -*-
 """Copyright (c) 2010-2012 David Rio Vierra
 
 Permission to use, copy, modify, and/or distribute this software for any

@@ -1,14 +1,18 @@
 #-# Language (Country)
-﻿# TRANSLATION BASICS
+#-# font regular: DEFAULT
+#-# font bold: DEFAULT
+# TRANSLATION BASICS
 #
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
 # As long as the numbers match, it will translate the specified English string to the new language.
 # Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes and other special characters can be used.
 #
-# The first line of this file must start with #-# followed by a space and the Language (Country) pair.
-#
 # The space (' ') separating the strings from the numbers is mandatory.
 # The file must also be encoded in UTF-8 or it won't work. Most editors should support this.
+#
+# The first line of this file must start with #-# followed by a space and the Language (Country) pair.
+#
+# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -198,15 +202,15 @@ o91 License
 t91 
 o92 Config Files Folder
 t92 
-o93  to move
+o93 {0}/{1}/{2}/{3}/{4}/{5} to move
 t93 
-o94  to slow down
+o94 {0} to slow down
 t94 
 o95 Right-click to toggle camera control
 t95 
 o96 Mousewheel to control tool distance
 t96 
-o97 Hold Alt for details
+o97 Hold {0} for details
 t97 
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 

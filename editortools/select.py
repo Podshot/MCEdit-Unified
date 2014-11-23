@@ -174,12 +174,12 @@ class SelectionToolPanel(Panel):
         deleteBlocksButton = Button("Delete Blocks", action=self.tool.deleteBlocks)
         deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: {0}").format(config.config.get('Keys', 'Delete Blocks'))
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
-        deleteEntitiesButton.tooltipText = _("Remove all entities within the selection")
+        deleteEntitiesButton.tooltipText = "Remove all entities within the selection"
         deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
-        deleteTileTicksButton.tooltipText = _("Removes all tile ticks within selection. Tile ticks are scheduled block updates")
+        deleteTileTicksButton.tooltipText = "Removes all tile ticks within selection. Tile ticks are scheduled block updates"
         # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
-        analyzeButton.tooltipText =_("Count the different blocks and entities in the selection and display the totals.")
+        analyzeButton.tooltipText ="Count the different blocks and entities in the selection and display the totals."
         cutButton = Button("Cut", action=self.tool.cutSelection)
         cutButton.tooltipText = _("Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}").format(
             config.config.get('Keys', 'Cut'))
@@ -194,7 +194,7 @@ class SelectionToolPanel(Panel):
             config.config.get('Keys', 'Export Selection'))
 
         selectButton = Button("Select Chunks")
-        selectButton.tooltipText = _("Expand the selection to the edges of the chunks within")
+        selectButton.tooltipText = "Expand the selection to the edges of the chunks within"
         selectButton.action = tool.selectChunks
         selectButton.highlight_color = (0, 255, 0)
 
@@ -237,7 +237,7 @@ class NudgeBlocksOperation(Operation):
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(_("Cannot perform action while saving is taking place"))
+            alert("Cannot perform action while saving is taking place")
             return
         level = self.editor.level
         tempSchematic = level.extractSchematic(self.sourceBox)
@@ -480,6 +480,7 @@ class SelectionTool(EditorTool):
                 signtext = u"\n".join(t["Text" + str(x)].value for x in range(1, 5))
             else:
                 signtext = "Undefined"
+            #return _("Sign text: \n%s\n\n"Double-click to edit sign.") #-# better to use this
             return _("Sign text: \n") + signtext + "\n\n" + _("Double-click to edit sign.")
 
         absentTexture = (
@@ -1180,6 +1181,7 @@ class SelectionTool(EditorTool):
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
             if recordUndo:
                 self.editor.addOperation(op)
+            self.editor.invalidateBox(box)
             self.editor.addUnsavedEdit()
 
 
@@ -1213,6 +1215,7 @@ class SelectionTool(EditorTool):
             op = DeleteEntitiesOperation(self.editor, self.editor.level)
             if recordUndo:
                 self.editor.addOperation(op)
+            self.editor.invalidateBox(box)
             self.editor.addUnsavedEdit()
 
     @alertException

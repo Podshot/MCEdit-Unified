@@ -70,7 +70,7 @@ logger.addHandler(ch)
 import albow
 # TODO: Language Detection
 import locale
-localEncoding = locale.getdefaultlocale()[1]
+DEF_ENC = locale.getdefaultlocale()[1]
 from albow.translate import _
 #!# for debugging
 from albow.translate import getPlatInfo
@@ -90,6 +90,7 @@ from leveleditor import ControlSettings, Settings
 #-# Building translation template
 if "-tt" in sys.argv:
     albow.translate.buildTemplate = True
+    albow.translate.loadTemplate()
 #-#
 import mceutils
 import mcplatform
@@ -123,14 +124,22 @@ class FileOpener(albow.Widget):
 
         helpColumn = []
 
-        label = albow.Label("{0}/{1}/{2}/{3}/{4}/{5}".format(
+#        label = albow.Label("{0}/{1}/{2}/{3}/{4}/{5}".format(
+#            config.config.get('Keys', 'Forward'),
+#            config.config.get('Keys', 'Left'),
+#            config.config.get('Keys', 'Back'),
+#            config.config.get('Keys', 'Right'),
+#            config.config.get('Keys', 'Up'),
+#            config.config.get('Keys', 'Down'),
+#        ) + _(" to move"))
+        label = albow.Label(_("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
             config.config.get('Keys', 'Forward'),
             config.config.get('Keys', 'Left'),
             config.config.get('Keys', 'Back'),
             config.config.get('Keys', 'Right'),
             config.config.get('Keys', 'Up'),
             config.config.get('Keys', 'Down'),
-        ) + _(" to move"))
+        ))
         label.anchor = 'whrt'
         label.align = 'r'
         helpColumn.append(label)
@@ -141,10 +150,11 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-        addHelp("{0}".format(config.config.get('Keys', 'Brake')) + _(" to slow down"))
+#        addHelp("{0}".format(config.config.get('Keys', 'Brake')) + _(" to slow down"))
+        addHelp(_("{0} to slow down").format(config.config.get('Keys', 'Brake')))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp("Hold {0} for details".format(config.config.get('Keys', 'Show Block Info')))
+        addHelp(_("Hold {0} for details").format(config.config.get('Keys', 'Show Block Info')))
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
@@ -261,7 +271,16 @@ class graphicsPanel(Dialog):
                                                    ref=Settings.enableMouseLag.propertyRef(),
                                                  tooltipText="Enable choppy mouse movement for faster loading.")
 
-        self.resourcePackButton = mceutils.ChoiceButton(map(str,resource_packs.packs.get_available_resource_packs()), choose=self.change_texture)
+#        self.resourcePackButton = mceutils.ChoiceButton(map(str,resource_packs.packs.get_available_resource_packs()), choose=self.change_texture)
+#        self.resourcePackButton = mceutils.ChoiceButton(resource_packs.packs.get_available_resource_packs(), choose=self.change_texture)
+        packs = resource_packs.packs.get_available_resource_packs()
+#        if not DEF_ENC.startswith('UTF'):
+#            for i in range(len(packs)):
+#                try:
+#                    packs[i] = packs[i].encode(DEF_ENC)
+#                except:
+#                    pass
+        self.resourcePackButton = mceutils.ChoiceButton(packs, choose=self.change_texture)
         self.resourcePackButton.selectedChoice = resource_packs.packs.get_selected_resource_pack_name()
 
         settingsColumn = albow.Column((fastLeavesRow,
@@ -372,8 +391,8 @@ class OptionsPanel(Dialog):
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
         lng = Settings.langCode.get()
-        if type(lng) == str: # and localEncoding != "UTF-8":
-            lng = lng.decode(localEncoding)
+        if type(lng) == str: # and DEF_ENC != "UTF-8":
+            lng = lng.decode(DEF_ENC)
         langNames = self.getLanguageChoices(lng).keys()
         langNames.sort()
         self.languageButton = mceutils.ChoiceButton(langNames, choose=self.changeLanguage)
@@ -472,8 +491,8 @@ class OptionsPanel(Dialog):
 
     def changeLanguage(self):
         lng = self.languageButton.selectedChoice
-        if type(lng) == unicode: # and localEncoding != "UTF-8":
-            lng = lng.encode(localEncoding)
+        if type(lng) == unicode: # and DEF_ENC != "UTF-8":
+            lng = lng.encode(DEF_ENC)
         Settings.langCode.set(lng)
 
     def portableButtonTooltip(self):
@@ -512,8 +531,8 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         lng = Settings.langCode.get()
-        if type(lng) == str: # and localEncoding != "UTF-8":
-            lng = lng.decode(localEncoding)
+        if type(lng) == str: # and DEF_ENC != "UTF-8":
+            lng = lng.decode(DEF_ENC)
         try:
             o, n, sc = albow.translate.setLang(self.langs[lng])
         except:
@@ -562,11 +581,12 @@ class MCEdit(GLViewport):
             self.setRecentWorlds([""] * 5)
 
         self.optionsPanel = OptionsPanel(self)
-        langs = self.optionsPanel.getLanguageChoices()
-        lng = Settings.langCode.get()
-        if type(lng) == str: # and localEncoding != "UTF-8":
-            lng = lng.decode(localEncoding)
-        albow.translate.setLang(langs.get(lng, "English (US)"))
+        if not albow.translate.buildTemplate:
+            langs = self.optionsPanel.getLanguageChoices()
+            lng = Settings.langCode.get()
+            if type(lng) == str: # and DEF_ENC != "UTF-8":
+                lng = lng.decode(DEF_ENC)
+            albow.translate.setLang(langs.get(lng, "English (US)"))
         self.optionsPanel.initComponents()
         self.graphicsPanel = graphicsPanel(self)
 

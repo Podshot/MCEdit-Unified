@@ -515,7 +515,7 @@ def compareMD5Hashes(found_filters):
     '''
     ff = {}
     for filter in found_filters:
-        ff[filter.split(os.path.sep)[-1]] = filter
+        ff[os.path.split(filter)[-1]] = filter
     try:
         if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
             filterDict = {}
@@ -525,7 +525,7 @@ def compareMD5Hashes(found_filters):
         filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "stock-filters"), ".py")
         filterBundle = {}
         for bundled in filterInBundledFolder:
-            filterBundle[bundled.split(os.path.sep)[-1]] = bundled
+            filterBundle[os.path.split(bundled)[-1]] = bundled
         hashJSON = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
         for filt in ff.keys():
             realName = filt

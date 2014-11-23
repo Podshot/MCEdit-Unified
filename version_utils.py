@@ -150,13 +150,13 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
         
 def getPlayerSkin(uuid, force=False):
     toReturn = 'char.png'
-    if os.path.exists("player-skins"+os.path.sep+uuid.replace("-","_")+".png") and not force:
-        player_skin = Image.open("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+    if os.path.exists(os.path.join("player-skins", uuid.replace("-","_")+".png")) and not force:
+        player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
         if player_skin.size == (64,64):
             player_skin = player_skin.crop((0,0,64,32))
-            player_skin.save("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+            player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
             player_skin.close()
-        return "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
+        return os.path.join("player-skins", uuid.replace("-","_")+".png")
     try:
         os.mkdir("player-skins")
     except OSError:
@@ -166,11 +166,11 @@ def getPlayerSkin(uuid, force=False):
     for entry in playerJSON["properties"]:
         if entry["name"] == "textures":
             texturesJSON = json.loads(base64.b64decode(entry["value"]))
-            urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], "player-skins"+os.path.sep+uuid.replace("-","_")+".png")
-            toReturn = "player-skins"+os.path.sep+uuid.replace("-","_")+".png"
+            urllib.urlretrieve(os.path.join(texturesJSON["textures"]["SKIN"]["url"], "player-skins", uuid.replace("-","_")+".png"))
+            toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
     player_skin = Image.open(toReturn)
     if player_skin.size == (64,64):
         player_skin = player_skin.crop((0,0,64,32))
-        player_skin.save("player-skins"+os.path.sep+uuid.replace("-","_")+".png")
+        player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
         player_skin.close()
     return toReturn

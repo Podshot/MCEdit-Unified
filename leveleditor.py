@@ -498,12 +498,12 @@ class CameraViewport(GLViewport):
 
         return newpoint
 
-    def updateBlockFaceUnderCursor(self):
+    def updateBlockFaceUnderCursor(self, noRaycaster=0):
         focusPair = None
         if not self.enableMouseLag or self.editor.frames & 1:
             self.updateMouseVector()
             if self.editor.mouseEntered:
-                if not self.mouseMovesCamera:
+                if not self.mouseMovesCamera and noRaycaster == 0:
                     try:
                         focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level ,100, Settings)
                     except TooFarException as e:
@@ -1077,7 +1077,7 @@ class CameraViewport(GLViewport):
         class ChestEditOperation(Operation):
             def perform(self, recordUndo=True):
                 if self.level.saving:
-                    alert(_("Cannot perform action while saving is taking place"))
+                    alert("Cannot perform action while saving is taking place")
                     return
                 level.addTileEntity(tileEntityTag)
 
@@ -1445,10 +1445,12 @@ class CameraViewport(GLViewport):
 
         if self.editor.level:
             try:
-                self.updateBlockFaceUnderCursor()
+                self.updateBlockFaceUnderCursor(self.editor.noRaycaster)
             except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
                 logging.debug("Updating cursor block: %s", e)
                 self.blockFaceUnderCursor = (None, None)
+
+            self.editor.noRaycaster = 0
 
             root.get_root().update_tooltip()
 
@@ -1609,6 +1611,7 @@ class LevelEditor(GLViewport):
         self.copyStack = []
 
         self.level = None
+        self.noRaycaster = 0
 
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
@@ -2717,10 +2720,10 @@ class LevelEditor(GLViewport):
 
     def take_screenshot(self):
         try:
-            os.mkdir(directories.parentDir+os.path.sep+"screenshots")
+            os.mkdir(os.path.join(directories.parentDir, "screenshots"))
         except OSError:
             pass
-        screenshot_name = directories.parentDir+os.path.sep+"screenshots"+os.path.sep+time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png"
+        screenshot_name = os.path.join(directories.parentDi, +"screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
         pygame.image.save(pygame.display.get_surface(), screenshot_name)
         self.diag = Dialog()
         lbl = Label("Screenshot taken and saved as '"+screenshot_name+"'")
@@ -2930,9 +2933,11 @@ class LevelEditor(GLViewport):
                 self.currentTool.swap()
 
             if keyname == 'Escape':
-                self.toolbar.tools[0].endSelection()
-                self.mouseLookOff()
-                self.showControls()
+                if "select" not in "{}".format(self.currentTool):
+                    self.toolbar.selectTool(-1)
+                else:
+                    self.mouseLookOff()
+                    self.showControls()
 
             if keyname == config.config.get('Keys', 'Pan Left'):
                 self.cameraPanKeys[0] = -1.
@@ -3017,6 +3022,7 @@ class LevelEditor(GLViewport):
             if self.currentViewport is self.chunkViewport:
                 self.swapViewports()
             self.mainViewport.cameraPosition = destPoint
+            self.noRaycaster = 1
 
     def closeEditor(self):
         if self.unsavedEdits:
@@ -3285,9 +3291,9 @@ class LevelEditor(GLViewport):
 
         def nameFormat(w):
             try:
-                if w.LevelName == w.displayName:
+                if w.LevelName == w.displayName.decode("utf-8"):
                     return w.LevelName
-                return u"{0} ({1})".format(w.LevelName, w.displayName)
+                return u"{0} ({1})".format(w.LevelName, w.displayName.decode("utf-8"))
             except:
                 try:
                     return w.LevelName

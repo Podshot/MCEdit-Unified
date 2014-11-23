@@ -1,9 +1,14 @@
+﻿# -*- coding: utf-8 -*-
 from PIL import Image
 import zipfile
 import directories
 import os
 import shutil
 import config
+
+import locale
+DEF_ENC = locale.getdefaultlocale()[1]
+FS_ENC = os.sys.getfilesystemencoding()
 
 try:
     import resource  # @UnresolvedImport
@@ -501,7 +506,15 @@ textureSlots = {
 class IResourcePack:
     
     def __init__(self):
-        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+#        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep #-# scrappy
+        tpBasePath = type(os.path.join(directories.parentDir, "textures"))
+        tpPackName = type(self._pack_name)
+#        if not DEF_ENC.startswith("UTF"):
+#            self._pack_name = self._pack_name.decode(DEF_ENC)
+#        print "DEF_ENC", DEF_ENC, "FS_ENC", FS_ENC, "tpBasePath", tpBasePath, "tpPackName", tpPackName
+#        print repr(self._pack_name)
+        texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
+        self.texture_path = texture_path
         self._isEmpty = False
         self._too_big = False
         self.big_textures_counted = 0 
@@ -518,8 +531,10 @@ class IResourcePack:
             for texy in xrange(0,33):
                 self.all_texture_slots.append((step(texx),step(texy)))
         self._terrain_name = self._pack_name.replace(" ", "_")+".png"
-        self._terrain_path = "terrain-textures"+os.path.sep+self._terrain_name.replace(" ", "_")
-                
+#        self._terrain_path = "terrain-textures"+os.path.sep+self._terrain_name.replace(" ", "_")
+        self._terrain_path = os.path.join("terrain-textures", self._terrain_name.replace(" ", "_"))
+#        print repr(self._terrain_path)
+
     @property
     def pack_name(self):
         return self._pack_name
@@ -544,11 +559,18 @@ class IResourcePack:
         for tex in self.block_image.keys():
             try:
                 image = self.block_image[tex]
+                # Scrappy fix for non-RGBA images.
+                # Originally made to debug Unicode stuff.
+                # The images that needed this conversion gave fully transparent
+                # textures in MCEdit.
+                # if image.mode != "RGBA":
+                #     image.convert("RGBA")
+                #     image.putalpha(255)
                 slot = textureSlots[tex]
                 new_terrain.paste(image, slot, image)
                 self.propogated_textures.append(slot)
-            except:
-                pass
+            except Exception, e:
+                print e
         copy = self.old_terrain.copy()
 
         for t in self.all_texture_slots:
@@ -574,9 +596,12 @@ class ZipResourcePack(IResourcePack):
     Represents a single Resource Pack
     '''
 
-    def __init__(self, zipfileFile):
+    def __init__(self, zipfileFile, noEncConvert=False):
         self.zipfile = zipfileFile
-        self._pack_name = zipfileFile.split(os.path.sep)[-1][:-4]
+#        self._pack_name = zipfileFile.split(os.path.sep)[-1][:-4]
+        self._pack_name = os.path.splitext(os.path.split(zipfileFile)[-1])[0]
+        if not noEncConvert and not DEF_ENC.startswith("UTF"):
+            self._pack_name = self._pack_name.decode(DEF_ENC)
         IResourcePack.__init__(self)
         
         if not os.path.exists(self._terrain_path):
@@ -590,7 +615,7 @@ class ZipResourcePack(IResourcePack):
                     block_name = name.filename.split("/")[-1]
                     block_name = block_name.split(".")[0]
                     zfile.extract(name.filename, self.texture_path)
-                    possible_texture = Image.open(self.texture_path+name.filename)
+                    possible_texture = Image.open(os.path.join(self.texture_path, name.filename))
                     if possible_texture.size == (16, 16):
                         self.block_image[block_name] = possible_texture
                         if block_name.startswith("repeater_") or block_name.startswith("comparator_"):
@@ -634,22 +659,28 @@ class ZipResourcePack(IResourcePack):
         
 class FolderResourcePack(IResourcePack):
     
-    def __init__(self, folder):
+    def __init__(self, folder, noEncConvert=False):
         self._folder = folder
         self._pack_name = self._folder.replace(" ", "_")
+        if not noEncConvert and not DEF_ENC.startswith("UTF"):
+            self._pack_name = self._pack_name.decode(DEF_ENC)
         IResourcePack.__init__(self)
-        self._full_path = os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+self._folder
-        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+#        self._full_path = os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+self._folder
+        self._full_path = os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", self._folder)
+#        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+        self.texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
         if not os.path.exists(self._terrain_path):
             self.add_textures()
         
     def add_textures(self):
-        base_path = self._full_path+os.path.sep+"assets"+os.path.sep+"minecraft"+os.path.sep+"textures"+os.path.sep+"blocks"
+#        base_path = self._full_path+os.path.sep+"assets"+os.path.sep+"minecraft"+os.path.sep+"textures"+os.path.sep+"blocks"
+        base_path = os.path.join(self._full_path, "assets", "minecraft", "textures", "blocks")
         if os.path.exists(base_path):
             files = os.listdir(base_path)
             for tex_file in files:
                 if tex_file.endswith(".png"):
-                    possible_texture = Image.open(base_path+os.path.sep+tex_file)
+#                    possible_texture = Image.open(base_path+os.path.sep+tex_file)
+                    possible_texture = Image.open(os.path.join(base_path, tex_file))
                     block_name = tex_file[:-4]
                     if possible_texture.size == (16, 16):
                         self.block_image[block_name] = possible_texture
@@ -721,21 +752,86 @@ def setup_resource_packs():
     zipResourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
     folderResourcePacks = os.listdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"))
     for zip_tex_pack in zipResourcePacks:
+#        try:
+#            zip_tex_pack.decode('ascii')
+#        except (UnicodeDecodeError, UnicodeEncodeError):
+#            pass
+#        else:
+#        if True:
         try:
-            zip_tex_pack.decode('ascii')
-        except (UnicodeDecodeError, UnicodeEncodeError):
-            pass
+            if DEF_ENC.startswith("UTF"):
+                zip_tex_pack = zip_tex_pack.decode(DEF_ENC)
+            else:
+                zip_tex_pack = zip_tex_pack.encode(DEF_ENC)
+        except (UnicodeDecodeError, UnicodeEncodeError), e:
+#            print "***\n    ERROR in resource_pack.py:\n    setup_resource_pack() zip_tex_path: %s\n   "%repr(zip_tex_pack),e
+            if 'encode' in "%s"%e:
+#                print "    Encoding with %s failed, trying to encode with UTF and reencode."%DEF_ENC
+                try:
+#                    print "    UTF-16"
+#                    zip_tex_pack = zip_tex_pack.translate("utf-16")
+#                    print "    ", repr(zip_tex_pack)
+#                    print "    UTF-8"
+#                    zip_tex_pack = zip_tex_pack.decode("utf-16")
+#                    print "    ", repr(zip_tex_pack)
+#                    print "   ", DEF_ENC
+                    zip_tex_pack = zip_tex_pack.encode(DEF_ENC)
+#                    print "    ", repr(zip_tex_pack)
+                except Exception, e:
+#                    print "    Failed too:", e
+                    zrp = ZipResourcePack(zip_tex_pack, noEncConvert=True)
+                    if not zrp.isEmpty:
+                        if not zrp.tooBig:
+                            terrains[zrp.pack_name] = zrp
+                else:
+                    zrp = ZipResourcePack(zip_tex_pack)
+                    if not zrp.isEmpty:
+                        if not zrp.tooBig:
+                            terrains[zrp.pack_name] = zrp
         else:
             zrp = ZipResourcePack(zip_tex_pack)
             if not zrp.isEmpty:
                 if not zrp.tooBig:
                     terrains[zrp.pack_name] = zrp
     for folder_tex_pack in folderResourcePacks:
-        if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+folder_tex_pack):
+#        if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+folder_tex_pack):
+        if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", folder_tex_pack)):
+#            try:
+#                folder_tex_pack.decode('ascii')
+#            except (UnicodeDecodeError, UnicodeEncodeError):
+#                pass
+#            else:
+#            if True:
             try:
-                folder_tex_pack.decode('ascii')
-            except (UnicodeDecodeError, UnicodeEncodeError):
-                pass
+                if DEF_ENC.startswith("UTF"):
+                    folder_tex_pack = folder_tex_pack.decode(DEF_ENC)
+                else:
+                    folder_tex_pack = folder_tex_pack.encode(DEF_ENC)
+            except (UnicodeDecodeError, UnicodeEncodeError), e:
+#                print "***\n    ERROR in resource_pack.py:\n    setup_resource_pack() folder_tex_path: %s\n   "%repr(folder_tex_pack),e
+                if 'encode' in "%s"%e:
+#                    print "    Encoding with %s failed, trying to encode with UTF and reencode."%DEF_ENC
+                    try:
+#                        print "    UTF-16"
+#                        folder_tex_pack = folder_tex_pack.translate("utf-16")
+#                        print "    ", repr(folder_tex_pack)
+    #                    print "    UTF-8"
+    #                    folder_tex_pack = folder_tex_pack.decode("utf-16")
+    #                    print "    ", repr(folder_tex_pack)
+#                        print "   ", DEF_ENC
+                        folder_tex_pack = folder_tex_pack.encode(DEF_ENC)
+#                        print "    ", repr(folder_tex_pack)
+                    except Exception, e:
+#                        print "    Failed too:", e
+                        frp = FolderResourcePack(folder_tex_pack, noEncConvert=True)
+                        if not frp.isEmpty:
+                            if not frp.tooBig:
+                                terrains[frp.pack_name] = frp
+                    else:
+                        frp = FolderResourcePack(folder_tex_pack)
+                        if not frp.isEmpty:
+                            if not frp.tooBig:
+                                terrains[frp.pack_name] = frp
             else:
                 frp = FolderResourcePack(folder_tex_pack)
                 if not frp.isEmpty:
@@ -746,7 +842,8 @@ def setup_resource_packs():
         if not os.path.exists(pack.terrain_path()):
             del terrains[tex]
     try:
-        shutil.rmtree(directories.parentDir+os.path.sep+"textures")
+#        shutil.rmtree(directories.parentDir+os.path.sep+"textures")
+        shutil.rmtree(os.path.join(directories.parentDir, "textures"))
     except:
         print "Could not remove \"textures\" directory"
         pass
@@ -756,11 +853,20 @@ class ResourcePackHandler:
 
     def __init__(self):
         try:
-            os.mkdir(directories.parentDir+os.path.sep+"textures")
+            os.mkdir(os.path.join(directories.parentDir, "textures"))
         except OSError:
             pass
         self._resource_packs = setup_resource_packs()
         self._selected_resource_pack = Settings.resource_pack.get()
+        if DEF_ENC == "UTF-8" and type(self._selected_resource_pack) == str:
+            self._selected_resource_pack = self._selected_resource_pack.decode(DEF_ENC)
+        else:
+            try:
+                self._selected_resource_pack = self._selected_resource_pack.encode(DEF_ENC)
+                if self._selected_resource_pack.startswith("u'"):
+                    self._selected_resource_pack = eval(self._selected_resource_pack)
+            except Exception, e:
+                print e
         if self._selected_resource_pack not in self._resource_packs.keys():
             self.set_selected_resource_pack_name("Default")
 
@@ -779,6 +885,8 @@ class ResourcePackHandler:
 
     def set_selected_resource_pack_name(self, name):
         Settings.resource_pack.set(name)
+#        if not DEF_ENC.startswith("UTF"):
+#            name = name.decode(DEF_ENC)
         self._selected_resource_pack = name
 
     def get_selected_resource_pack(self):

@@ -200,16 +200,16 @@ o91 License
 t91 Licentie
 o92 Config Files Folder
 t92 Config Files Folder
-o93  to move
-t93  om te bewegen
-o94  to slow down
-t94  om af te remmen
+o93 {0}/{1}/{2}/{3}/{4}/{5} to move
+t93 {0}/{1}/{2}/{3}/{4}/{5} om te bewegen
+o94 {0} to slow down
+t94 {0} om af te remmen
 o95 Right-click to toggle camera control
 t95 Klik rechts om camera-control aan/uit te zetten
 o96 Mousewheel to control tool distance
 t96 Muiswiel om afstand aan te passen
-o97 Hold Alt for details
-t97 Houdt Alt ingedrukt for details
+o97 Hold {0} for details
+t97 Houdt {0} ingedrukt for details
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
