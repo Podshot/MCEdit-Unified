@@ -4,7 +4,7 @@ import zipfile
 import directories
 import os
 import shutil
-import config
+from config import config
 
 import locale
 DEF_ENC = locale.getdefaultlocale()[1]
@@ -14,9 +14,6 @@ try:
     resource.setrlimit(resource.RLIMIT_NOFILE, (500,-1))
 except:
     pass
-
-Settings = config.Settings("Settings")
-Settings.resource_pack = Settings("Resource Pack", "Default")
 
 def step(slot):
     texSlot = slot*16
@@ -503,7 +500,7 @@ textureSlots = {
     }
 
 class IResourcePack:
-    
+
     def __init__(self):
         tpBasePath = type(os.path.join(directories.parentDir, "textures"))
         tpPackName = type(self._pack_name)
@@ -511,7 +508,7 @@ class IResourcePack:
         self.texture_path = texture_path
         self._isEmpty = False
         self._too_big = False
-        self.big_textures_counted = 0 
+        self.big_textures_counted = 0
         self.big_textures_max = 10
         try:
             os.makedirs(self.texture_path)
@@ -532,22 +529,22 @@ class IResourcePack:
     @property
     def pack_name(self):
         return self._pack_name
-    
+
     @property
     def terrain_name(self):
         return self._terrain_name
-    
+
     def terrain_path(self):
         return self._terrain_path
-    
+
     @property
     def isEmpty(self):
         return self._isEmpty
-    
+
     @property
     def tooBig(self):
         return self._too_big
-    
+
     def parse_terrain_png(self):
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
@@ -572,7 +569,7 @@ class IResourcePack:
             if t not in self.propogated_textures:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
                 new_terrain.paste(old_tex, t, old_tex)
-                
+
         new_terrain.save(self._terrain_path)
         try:
             os.remove(self._pack_name.replace(" ", "_")+".png")
@@ -584,7 +581,7 @@ class IResourcePack:
         if self._too_big:
             os.remove(self._terrain_path)
         del self.block_image
-    
+
 
 class ZipResourcePack(IResourcePack):
     '''
@@ -595,7 +592,7 @@ class ZipResourcePack(IResourcePack):
         self.zipfile = zipfileFile
         self._pack_name = os.path.splitext(os.path.split(zipfileFile)[-1])[0]
         IResourcePack.__init__(self)
-        
+
         if not os.path.exists(self._terrain_path):
             self.open_pack()
 
@@ -647,10 +644,10 @@ class ZipResourcePack(IResourcePack):
         if self.big_textures_counted >= self.big_textures_max:
             self._too_big = True
         self.parse_terrain_png()
-        
-        
+
+
 class FolderResourcePack(IResourcePack):
-    
+
     def __init__(self, folder, noEncConvert=False):
         self._folder = folder
         self._pack_name = self._folder.replace(" ", "_")
@@ -659,7 +656,7 @@ class FolderResourcePack(IResourcePack):
         self.texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
         if not os.path.exists(self._terrain_path):
             self.add_textures()
-        
+
     def add_textures(self):
         base_path = os.path.join(self._full_path, "assets", "minecraft", "textures", "blocks")
         if os.path.exists(base_path):
@@ -707,27 +704,27 @@ class FolderResourcePack(IResourcePack):
         if self.big_textures_counted >= self.big_textures_max:
             self._too_big = True
         self.parse_terrain_png()
-        
+
 class DefaultResourcePack(IResourcePack):
-    
+
     def __init__(self):
         self._isEmpty = False
         self._too_big = False
         self._terrain_path = "terrain.png"
         self._pack_name = "Default"
-    
+
     def terrain_path(self):
         return self._terrain_path
-    
+
     @property
     def isEmpty(self):
         return self._isEmpty
-    
+
     @property
     def tooBig(self):
         return self._too_big
-    
-    
+
+
 def setup_resource_packs():
     terrains = {}
     try:
@@ -767,7 +764,7 @@ class ResourcePackHandler:
         except OSError:
             pass
         self._resource_packs = setup_resource_packs()
-        self._selected_resource_pack = Settings.resource_pack.get()
+        self._selected_resource_pack = config.settings.resourcePack.get()
         if DEF_ENC == "UTF-8" and type(self._selected_resource_pack) == str:
             self._selected_resource_pack = self._selected_resource_pack.decode(DEF_ENC)
         else:
@@ -794,7 +791,7 @@ class ResourcePackHandler:
         return self._selected_resource_pack
 
     def set_selected_resource_pack_name(self, name):
-        Settings.resource_pack.set(name)
+        config.settings.resourcePack.set(name)
         self._selected_resource_pack = name
 
     def get_selected_resource_pack(self):

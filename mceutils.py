@@ -173,7 +173,7 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
             x2, y2, z,
             x2, y2, z2,
         ), dtype='f4')
-    if textureVertices == None:
+    if textureVertices is None:
         textureVertices = numpy.array(
             (
                 0, -dy * 16,
@@ -641,7 +641,7 @@ def showProgress(progressText, progressIterator, cancel=False):
                     if self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.count > 0:
                         self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.mouse_up(event)
             except:
-                pass 
+                pass
 
     widget = ProgressWidget()
     widget.progressText = _(progressText)

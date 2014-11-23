@@ -7,7 +7,7 @@ import pygame
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN
 from widget import Widget, overridable_property
 from controls import Control
-import config
+from config import config
 #-#
 from translate import _
 #-#

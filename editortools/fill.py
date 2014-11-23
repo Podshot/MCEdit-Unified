@@ -27,11 +27,9 @@ from mceutils import showProgress, CheckBoxLabel, alertException, setWindowCapti
 from operation import Operation
 from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
-import config
+from config import config
 import keys
 import pymclevel
-FillSettings = config.Settings("Fill")
-FillSettings.chooseBlockImmediately = FillSettings("Choose Block Immediately", True)
 
 
 class BlockFillOperation(Operation):
@@ -149,7 +147,7 @@ class FillToolOptions(ToolOptions):
         Panel.__init__(self)
         self.tool = tool
         self.autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
-                                                ref=FillSettings.chooseBlockImmediately.propertyRef(),
+                                                ref=config.fill.chooseBlockImmediately,
                                                 tooltipText="When the fill tool is chosen, prompt for a block type.")
 
         col = Column((Label("Fill Options"), self.autoChooseCheckBox, Button("OK", action=self.dismiss)))
@@ -213,7 +211,7 @@ class FillTool(EditorTool):
                 self.blockInfo = blockPicker.blockInfo
                 self.showPanel()
 
-    chooseBlockImmediately = FillSettings.chooseBlockImmediately.configProperty()
+    chooseBlockImmediately = config.fill.chooseBlockImmediately.property()
 
     def toolReselected(self):
         self.showPanel()

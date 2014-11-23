@@ -2,7 +2,7 @@
 from albow import Label
 from albow.translate import _
 from pymclevel.box import Vector
-import config
+from config import config
 from glbackground import GLBackground
 import keys
 

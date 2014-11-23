@@ -27,7 +27,7 @@ import mcplatform
 import directories
 import pymclevel
 from pymclevel.minecraft_server import MCServerChunkGenerator
-import config
+from config import config
 
 from albow.dialogs import Dialog
 

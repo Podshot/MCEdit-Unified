@@ -3,7 +3,7 @@ import math
 This function will produce a generator that will give out the blocks
 visited by a raycast in sequence. It is up to the user to terminate the generator.
 
-First described here by John Amanatides 
+First described here by John Amanatides
 http://www.cse.yorku.ca/~amana/research/grid.pdf
 
 Implementation in javascript by Kevin Reid:
@@ -16,7 +16,7 @@ def _rawRaycast(origin, direction):
          elif(x < 0):
             return -1
          else:
-            return 0         
+            return 0
 
     def _intbound(s,ds):
         if (ds<0):
@@ -24,10 +24,10 @@ def _rawRaycast(origin, direction):
         else:
             s = s % 1
             return (1-s)/ds
-        
+
     x,y,z = map(int,map(math.floor,origin))
     dx,dy,dz = direction
-    
+
     if (dx == 0):  #Yes, I know this is hacky. It works though.
         dx = 0.000000001
     if (dy == 0):
@@ -41,10 +41,10 @@ def _rawRaycast(origin, direction):
     tDeltaX = stepX/dx
     tDeltaY = stepY/dy
     tDeltaZ = stepZ/dz
-    
+
     if (dx == 0 and dy == 0 and dz == 0):
         raise Exception('Infinite ray trace detected')
-    
+
     face = None
     while True:
         yield ((x,y,z),face)
@@ -66,7 +66,7 @@ def _rawRaycast(origin, direction):
                 z += stepZ
                 tMaxZ += tDeltaZ
                 face = (0,0,-stepZ)
-            
+
 """
 Finds the first block from origin in the given direction by ray tracing
     origin is the coordinate of the camera given as a tuple
@@ -75,10 +75,9 @@ Finds the first block from origin in the given direction by ray tracing
 
     This method returns a (position,face) tuple pair.
 """
-def firstBlock(origin, direction, level, radius, Settings=None):
-    if Settings != None:
-        if Settings.viewMode.get() == "Chunk":
-            raise TooFarException("There are no valid blocks within range")
+def firstBlock(origin, direction, level, radius, viewMode=None):
+    if viewMode == "Chunk":
+        raise TooFarException("There are no valid blocks within range")
     startPos =  map(int,map(math.floor,origin))
     block = level.blockAt(*startPos)
     callback = None
@@ -97,7 +96,7 @@ def _tooFar(origin, position, radius):
     x = abs(origin[0] - position[0])
     y = abs(origin[1] - position[1])
     z = abs(origin[2] - position[2])
-    
+
     result = x>radius or y>radius or z>radius
     return result
 
@@ -131,7 +130,7 @@ class _WaterCallback(Callback):
         elif (self.escapedBlock and block != 0 ):
             return True
         return True
-        
+
 
 class _StandardCallback(Callback):
     def __init__(self):

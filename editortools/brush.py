@@ -25,7 +25,7 @@ import bresenham
 import directories
 from clone import CloneTool
 import collections
-import config
+from config import config
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
@@ -33,7 +33,6 @@ from editortools.tooloptions import ToolOptions
 from glbackground import Panel, GLBackground
 from glutils import gl
 import itertools
-import leveleditor
 import logging
 from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, alertException, drawTerrainCuttingWire
 import mcplatform
@@ -52,13 +51,6 @@ import keys
 log = logging.getLogger(__name__)
 
 
-BrushSettings = config.Settings("Brush")
-BrushSettings.brushSizeL = BrushSettings("Brush Shape L", 3)
-BrushSettings.brushSizeH = BrushSettings("Brush Shape H", 3)
-BrushSettings.brushSizeW = BrushSettings("Brush Shape W", 3)
-BrushSettings.updateBrushOffset = BrushSettings("Update Brush Offset", False)
-BrushSettings.chooseBlockImmediately = BrushSettings("Choose Block Immediately", False)
-BrushSettings.alpha = BrushSettings("Alpha", 0.66)
 global currentNumber
 currentNumber = -1
 
@@ -419,7 +411,7 @@ class Modes:
 
 
         def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
-            
+
             blocks = chunk.Blocks[slices]
             data = chunk.Data[slices]
 
@@ -740,7 +732,7 @@ class BrushOperation(Operation):
     @property
     def hollow(self):
         return self.options.get('brushHollow', False)
-    
+
     def dirtyBox(self):
         return self._dirtyBox
 
@@ -797,9 +789,9 @@ class BrushPanel(Panel):
         self.brushHollowOption = AttrRef(tool, "brushHollow")
         self.minimumSpacingOption = AttrRef(tool, "minimumSpacing")
         self.brushStyleOption = AttrRef(tool, "brushStyle")
-        self.brushSizeLOption = getattr(BrushSettings, "brushSizeL")
-        self.brushSizeWOption = getattr(BrushSettings, "brushSizeW")
-        self.brushSizeHOption = getattr(BrushSettings, "brushSizeH")
+        self.brushSizeLOption = config.brush.brushSizeL
+        self.brushSizeWOption = config.brush.brushSizeW
+        self.brushSizeHOption = config.brush.brushSizeH
         self.brushBlockInfoOption = AttrRef(tool, "blockInfo")
         self.replaceBlockInfoOption = AttrRef(tool, "replaceBlockInfo")
         self.erosionNoiseOption = AttrRef(tool, 'erosionNoise')
@@ -842,9 +834,9 @@ class BrushPanel(Panel):
         "Block": self.brushBlockInfoOption,
         "Block To Replace": self.replaceBlockInfoOption,
         }
-        
+
         self.tool = tool
-        
+
         self.brushPresetOptions = self.createPresetRow()
         self.brushModeButton = ChoiceButton([m.name for m in tool.brushModes],
                                             width=150,
@@ -870,7 +862,7 @@ class BrushPanel(Panel):
         columns = []
         for d in ["L", "W", "H"]:
             l = Label(d)
-            f = IntField(ref=getattr(BrushSettings, "brushSize" + d).propertyRef(), min=1, max=tool.maxBrushSize)
+            f = IntField(ref=config.brush["brushSize" + d], min=1, max=tool.maxBrushSize)
             row = Row((l, f))
             columns.append(row)
 
@@ -919,7 +911,7 @@ class BrushPanel(Panel):
         col = tool.brushMode.createOptions(self, tool)
 
         if self.tool.brushMode.name != "Flood Fill":
-            spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1, 
+            spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1,
                                    tooltipText=("Hold {0} to draw lines").format(config.config.get("Keys", "Brush Line Tool")))
             col.append(spaceRow)
         col = Column(col)
@@ -927,7 +919,7 @@ class BrushPanel(Panel):
         self.add(col)
         self.shrink_wrap()
         self.saveingBrushOptions = {}
-        
+
     def saveBrushPreset(self, name): #Saves current brush presets in a file name.preset
         for key in self.saveableBrushOptions:
             if key not in ["Block","Block To Replace","Vary Replace 1","Vary Replace 2","Vary Replace 3","Vary Replace 4", "Mode"]:
@@ -947,7 +939,7 @@ class BrushPanel(Panel):
         name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
         f.write(repr(self.saveingBrushOptions))
-        
+
     def loadBrushPreset(self, name): #Loads a brush preset name.preset
         name = name+'.preset'
         f = open(os.path.join(directories.brushesDir, name), "r")
@@ -979,7 +971,7 @@ class BrushPanel(Panel):
                         self.replaceWith3Button.blockInfo = blockInfo
                     elif key == "Vary Replace 4":
                         self.replaceWith4Button.blockInfo = blockInfo
-        
+
     def getBrushFileList(self):#Returns a list of strings containing all .preset files
         list = []
         presetdownload = os.listdir(directories.brushesDir)
@@ -987,16 +979,16 @@ class BrushPanel(Panel):
             if p.endswith('.preset'):
                 list.append(os.path.splitext(p)[0])
         return list
-    
+
     def createPresetRow(self): #Creates the brush preset row, called by brushpanel when creating the panel
         self.presets = ["Load Preset:"]
         self.presets.extend(self.getBrushFileList())
         self.presets.append('Remove Presets')
-        
+
         self.presetListButton = ChoiceButton(self.presets, width=100, choose=self.presetSelected)
         self.presetListButton.selectedChoice = "Load Preset:"
         self.saveButton = Button("Save as preset", action=self.openSavePresetDialog)
-        
+
         presetListButtonRow = Row([self.presetListButton])
         saveButtonRow = Row([self.saveButton])
         row = Row([presetListButtonRow, saveButtonRow])
@@ -1006,7 +998,7 @@ class BrushPanel(Panel):
         widget.shrink_wrap()
         widget.anchor = "whtr"
         return widget
-        
+
     def openSavePresetDialog(self): #Handles brush preset input, then calls saveBrushPreset
         panel = Dialog()
         label = Label("Preset Name:")
@@ -1015,16 +1007,16 @@ class BrushPanel(Panel):
         def okPressed():
             panel.dismiss()
             name = nameField.value
-            
+
             if name in ['Load Preset:', 'Remove Presets']:
                 alert("That preset name is reserved. Try pick another preset name.")
                 return
-            
+
             for p in ['<','>',':','\"', '/', '\\', '|', '?', '*', '.']:
                 if p in name:
                     alert('Invalid character in file name')
                     return
-                
+
             self.saveBrushPreset(name)
             self.tool.toolSelected()
 
@@ -1032,7 +1024,7 @@ class BrushPanel(Panel):
         cancelButton = Button("Cancel", action=panel.dismiss)
         namerow = Row([label,nameField])
         buttonRow = Row([okButton,cancelButton])
-        
+
         panel.add(Column([namerow, buttonRow]))
         panel.shrink_wrap()
         panel.present()
@@ -1049,7 +1041,7 @@ class BrushPanel(Panel):
             name = p[presetTable.selectedIndex] + ".preset"
             os.remove(os.path.join(directories.brushesDir, name))
             self.tool.toolSelected()
-            
+
         def selectTableRow(i, evt):
             presetTable.selectedIndex = i
             if evt.num_clicks == 2:
@@ -1068,8 +1060,8 @@ class BrushPanel(Panel):
         panel.add(Column((choiceCol, row)))
         panel.shrink_wrap()
         panel.present()
-        
-        
+
+
     def presetSelected(self): #Called ons selecting item on Load Preset, to check if remove preset is selected. Calls removePreset if true, loadPreset(name) otherwise.
         choice = self.presetListButton.selectedChoice
         if choice == 'Remove Presets':
@@ -1161,10 +1153,10 @@ class BrushTool(CloneTool):
             self.options.extend(m.options)
 
         self._brushMode = self.brushModes[0]
-        BrushSettings.updateBrushOffset.addObserver(self)
-        BrushSettings.brushSizeW.addObserver(self, 'brushSizeW', callback=self._setBrushSize)
-        BrushSettings.brushSizeH.addObserver(self, 'brushSizeH', callback=self._setBrushSize)
-        BrushSettings.brushSizeL.addObserver(self, 'brushSizeL', callback=self._setBrushSize)
+        config.brush.updateBrushOffset.addObserver(self)
+        config.brush.brushSizeW.addObserver(self, 'brushSizeW', callback=self._setBrushSize)
+        config.brush.brushSizeH.addObserver(self, 'brushSizeH', callback=self._setBrushSize)
+        config.brush.brushSizeL.addObserver(self, 'brushSizeL', callback=self._setBrushSize)
 
     panel = None
 
@@ -1214,9 +1206,9 @@ class BrushTool(CloneTool):
     @brushSize.setter
     def brushSize(self, val):
         (w, h, l) = [max(1, min(i, self.maxBrushSize)) for i in val]
-        BrushSettings.brushSizeH.set(h)
-        BrushSettings.brushSizeL.set(l)
-        BrushSettings.brushSizeW.set(w)
+        config.brush.brushSizeH.set(h)
+        config.brush.brushSizeL.set(l)
+        config.brush.brushSizeW.set(w)
 
     maxBrushSize = 4096
 
@@ -1242,7 +1234,7 @@ class BrushTool(CloneTool):
     brushHollow = False
     topsoilDepth = 1
 
-    chooseBlockImmediately = BrushSettings.chooseBlockImmediately.configProperty()
+    chooseBlockImmediately = config.brush.chooseBlockImmediately.property()
 
     _blockInfo = pymclevel.alphaMaterials.Stone
 
@@ -1268,12 +1260,12 @@ class BrushTool(CloneTool):
 
     @property
     def brushAlpha(self):
-        return BrushSettings.alpha.get()
+        return config.brush.alpha.get()
 
     @brushAlpha.setter
     def brushAlpha(self, f):
         f = min(1.0, max(0.0, f))
-        BrushSettings.alpha.set(f)
+        config.brush.alpha.set(f)
         self.setupPreview()
 
     def importPaste(self):
@@ -1488,7 +1480,7 @@ class BrushTool(CloneTool):
             self.brushSize = L, H, W
             self.reticleOffset = offs
             self.editor.cameraToolDistance = dist
-            rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
+            rotateBlockBrush = config.settings.rotateBlockBrush.get()
             if (rotateBlockBrush):
                 self.panel.rotate()
 
@@ -1503,7 +1495,7 @@ class BrushTool(CloneTool):
             self.brushSize = W, L, H
             self.reticleOffset = offs
             self.editor.cameraToolDistance = dist
-            rotateBlockBrush = leveleditor.Settings.rotateBlockBrush.get()
+            rotateBlockBrush = config.settings.rotateBlockBrush.get()
             if (rotateBlockBrush):
                 self.panel.roll()
 
