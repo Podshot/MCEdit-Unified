@@ -49,6 +49,8 @@ def GetSelectionColor(colorWord=None):
     if colorWord is None:
         colorWord = config.selection.color.get()
 
+    colorWord = config.convert(colorWord)
+
     colorValues = config.selectionColors[colorWord].get()
     try:
         values = colorValues.translate(None, '[]()').split(',')
