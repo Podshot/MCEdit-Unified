@@ -816,11 +816,14 @@ class CloneTool(EditorTool):
                 if self.panel and (widg is self.panel.nudgeButton or widg.parent is self.panel.nudgeButton):
                     color = self.color
             except:
-                if self.panel and (widg is self.panel.offsetInput.nudgeButton or widg.parent is self.panel.offsetInput.nudgeButton):
-                    color = self.color
+                try:
+                    if self.panel and (widg is self.panel.offsetInput.nudgeButton or widg.parent is self.panel.offsetInput.nudgeButton):
+                        color = self.color
+                except:
+                    pass
             finally:
                 try:
-                    self.editor.drawConstructionCube(selectionBox, color)
+                    self.editor.drawConstructionCube(self.getDestBox(), color)
                 except:
                     pass
 
@@ -887,7 +890,7 @@ class CloneTool(EditorTool):
         self.copyBiomes = not self.copyBiomes
 
     def option4(self):
-    	self.staticCommands = not self.staticCommands
+        self.staticCommands = not self.staticCommands
 
     def option5(self):
         self.moveSpawnerPos = not self.moveSpawnerPos
