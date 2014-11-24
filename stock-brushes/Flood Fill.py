@@ -17,7 +17,7 @@ def createInputs(self):
     {'Indiscriminate': False},
     )
 
-def apply(self, op, point):
+def apply(op, point):
 
     undoLevel = pymclevel.MCInfdevOldLevel(mkundotemp(), create=True)
     dirtyChunks = set()
