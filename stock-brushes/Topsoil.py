@@ -16,7 +16,7 @@ def createInputs(self):
     )
 
 
-def applyToChunkSlices(op, chunk, slices, brushBox, brushBoxThisChunk):
+def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
 
     depth = op.options['Depth']
     blocktype = op.options['Block']
