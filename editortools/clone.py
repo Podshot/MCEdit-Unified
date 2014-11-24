@@ -30,6 +30,7 @@ from operation import Operation
 import pymclevel
 from pymclevel.box import Vector
 from renderer import PreviewRenderer
+import pygame
 
 from select import SelectionOperation
 from pymclevel.pocket import PocketWorld
@@ -796,6 +797,22 @@ class CloneTool(EditorTool):
         for i in range(self.repeatCount):
             self.editor.drawConstructionCube(box, color)
             box = BoundingBox(box.origin + delta, box.size)
+
+    def drawToolMarkers(self):
+        selectionBox = self.selectionBox()
+        if (selectionBox):
+            widg = self.editor.find_widget(pygame.mouse.get_pos())
+            try:
+                if self.panel and (widg is self.panel.nudgeButton or widg.parent is self.panel.nudgeButton):
+                    color = self.color
+            except:
+                if self.panel and (widg is self.panel.offsetInput.nudgeButton or widg.parent is self.panel.offsetInput.nudgeButton):
+                    color = self.color
+            finally:
+                try:
+                    self.editor.drawConstructionCube(selectionBox, color)
+                except:
+                    pass
 
     def sourceLevel(self):
         return self.level
