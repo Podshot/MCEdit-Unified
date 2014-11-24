@@ -530,7 +530,7 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         lng = config.settings.langCode.get()
-        if type(lng) == str and type(DEF_ENC) == str:
+        if type(lng) == str and type(DEF_ENC) == str and DEF_ENC != None:
             lng = lng.decode(DEF_ENC)
         try:
             o, n, sc = albow.translate.setLang(self.langs[lng])
