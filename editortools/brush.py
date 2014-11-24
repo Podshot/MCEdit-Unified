@@ -571,6 +571,7 @@ class BrushTool(CloneTool):
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
+        print loadedBrushOptions
         for key in loadedBrushOptions:
             if key.endswith('blockID'):
                 self.options[key[:-7]] = self.editor.level.materials.blockWithID(loadedBrushOptions[key], loadedBrushOptions[key[:-7] + 'blockData'])
