@@ -10,6 +10,9 @@ def createInputs(self):
     {'Import':self.importSchematic},
     )    
     
+def importSchematic(self):
+    pass
+    
 def getDirtyBox(self, point, size):
     pass
 
