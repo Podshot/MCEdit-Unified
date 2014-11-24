@@ -64,6 +64,10 @@ class Config(object):
             value = "Button 5"
         return value
 
+    def convert(self, key):
+        vals = key.replace('-', ' ').translate(None, '()').lower().split(' ')
+        return vals[0] + "".join(x.title() for x in vals[1:])
+
     def transformConfig(self):
         if self.config.has_section("Version") and self.config.get("Version", "version") == "1.1.1.1":
             i = 1

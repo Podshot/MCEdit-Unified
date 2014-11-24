@@ -451,32 +451,32 @@ class KeyConfigPanel(Dialog):
         preset = self.choiceButton.selectedChoice
         keypairs = self.presets[preset]
         for configKey, k in keypairs:
-            oldOne = config.keys[configKey].get()
+            oldOne = config.keys[config.convert(configKey)].get()
             if k != oldOne:
                 self.changesNum = True
                 if configKey not in self.changes:
                     self.changes[configKey] = oldOne
-                config.keys[configKey].set(k)
+                config.keys[config.convert(configKey)].set(k)
 
     def getRowData(self, i):
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
-            key = config.keys[configKey].get()
+            key = config.keys[config.convert(configKey)].get()
             if key == 'mouse3':
                 key = 'Button 3'
-                config.keys[configKey].set("Button 3")
+                config.keys[config.convert(configKey)].set("Button 3")
             elif key == 'mouse4':
                 key = 'Scroll Up'
-                config.keys[configKey].set("Scroll Up")
+                config.keys[config.convert(configKey)].set("Scroll Up")
             elif key == 'mouse5':
                 key = 'Scroll Down'
-                config.keys[configKey].set("Scroll Down")
+                config.keys[config.convert(configKey)].set("Scroll Down")
             elif key == 'mouse6':
                 key = 'Button 4'
-                config.keys[configKey].set("Button 4")
+                config.keys[config.convert(configKey)].set("Button 4")
             elif key == 'mouse7':
                 key = 'Button 5'
-                config.keys[configKey].set("Button 5")
+                config.keys[config.convert(configKey)].set("Button 5")
 
         else:
             key = ""
@@ -499,7 +499,7 @@ class KeyConfigPanel(Dialog):
                     self.done()
                 elif result == "Don't Save":
                     for k in self.changes.keys():
-                        config.keys[k].set(self.changes[k])
+                        config.keys[config.convert(k)].set(self.changes[k])
                     self.changesNum = False
                     self.changes = {}
                     self.choiceButton.selectedChoice = self.oldChoice
@@ -581,13 +581,13 @@ class KeyConfigPanel(Dialog):
                                      "Press a new key.\n\n"
                                      "Press ESC to cancel. Press Shift-ESC to unbind."))
                     return True
-            oldkey = config.keys[configKey].get()
-            config.keys[configKey].set(keyname)
+            oldkey = config.keys[config.convert(configKey)].get()
+            config.keys[config.convert(configKey)].set(keyname)
             if configKey not in self.changes:
                 self.changes[configKey] = oldkey
             self.changesNum = True
         elif keyname == "Shift-Escape":
-            config.keys[configKey].set("None")
+            config.keys[config.convert(configKey)].set("None")
         elif keyname != "Escape":
             self.askAssignKey(configKey,
                                      _("You can't use the key {0}. "

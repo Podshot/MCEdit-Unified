@@ -583,8 +583,8 @@ class MCEdit(GLViewport):
         if not albow.translate.buildTemplate:
             langs = self.optionsPanel.getLanguageChoices()
             lng = config.settings.langCode.get()
-            if type(lng) == str and type(DEF_ENC) == str:
-                lng = lng.decode(DEF_ENC)
+            # if type(lng) == str and type(DEF_ENC) == str:
+            #     lng = lng.decode(DEF_ENC)
             albow.translate.setLang(langs.get(lng, "English (US)"))
         self.optionsPanel.initComponents()
         self.graphicsPanel = graphicsPanel(self)
@@ -943,7 +943,7 @@ class MCEdit(GLViewport):
             answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
             if answer == "Yes":
                 for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
-                    config.keys[configKey].set(k)
+                    config.keys[config.convert(configKey)].set(k)
         config.version.version.set("1.1.2.0")
         config.save()
         if "-causeError" in sys.argv:

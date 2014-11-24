@@ -24,7 +24,7 @@ class NudgeButton(GLBackground):
 
         # tooltipBacking = Panel()
         # tooltipBacking.bg_color = (0, 0, 0, 0.6)
-        keys = [config.keys[k].get() for k in ("forward", "back", "left", "right", "up", "down")]
+        keys = [config.keys[config.convert(k)].get() for k in ("forward", "back", "left", "right", "up", "down")]
 
         nudgeLabel.tooltipText = _("Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.").format(
             *keys)
