@@ -154,9 +154,6 @@ class BrushPanel(Panel):
                 tool.importPaste()
             else:
                 tool.loadLevel(stack[0])
-            tool.centery = 0
-            tool.centerx = -(tool.level.Width / 2)
-            tool.centerz = -(tool.level.Length / 2)
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -579,9 +576,8 @@ class BrushTool(CloneTool):
             elif key.endswith('blockData'):
                 pass
             elif key == "Mode":
-                if self.selectedBrushMode in self.brushModes.keys():
-                    self.selectedBrushMode = loadedBrushOptions[key]
-                    self.brushMode = self.brushModes[self.selectedBrushMode]
+                self.selectedBrushMode = loadedBrushOptions[key]
+                self.brushMode = self.brushModes[self.selectedBrushMode]
             else:
                 self.options[key] = loadedBrushOptions[key]
         self.setupPreview()
@@ -873,7 +869,7 @@ class BrushTool(CloneTool):
         Returns a box around the Brush given point and size of the brush.
         """
         if hasattr(self.brushMode, 'createDirtyBox'):
-            return self.brushMode.createDirtyBox(point, tool)
+            return self.brushMode.createDirtyBox(self.brushMode, point, tool)
         else:
             size = tool.getBrushSize()
             origin = map(lambda x, s: x - (s >> 1), point, size)
@@ -999,9 +995,6 @@ class BrushTool(CloneTool):
     def loadLevel(self, level):
         self.level = level
         self.options['Minimum Spacing'] = min([s / 4 for s in level.size])
-        self.options['centerx'] = -level.Width / 2
-        self.options['centery'] = 0
-        self.options['centerz'] = -level.Length /2
         CloneTool.setupPreview(self, alpha = self.settings['brushAlpha'])
 
 
