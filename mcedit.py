@@ -124,20 +124,20 @@ class FileOpener(albow.Widget):
         helpColumn = []
 
 #        label = albow.Label("{0}/{1}/{2}/{3}/{4}/{5}".format(
-#            config.config.get('Keys', 'Forward'),
-#            config.config.get('Keys', 'Left'),
-#            config.config.get('Keys', 'Back'),
-#            config.config.get('Keys', 'Right'),
-#            config.config.get('Keys', 'Up'),
-#            config.config.get('Keys', 'Down'),
+#            config.keys.forward.get(),
+#            config.keys.left.get(),
+#            config.keys.back.get(),
+#            config.keys.right.get(),
+#            config.keys.up.get(),
+#            config.keys.down.get(),
 #        ) + _(" to move"))
         label = albow.Label(_("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
-            config.config.get('Keys', 'Forward'),
-            config.config.get('Keys', 'Left'),
-            config.config.get('Keys', 'Back'),
-            config.config.get('Keys', 'Right'),
-            config.config.get('Keys', 'Up'),
-            config.config.get('Keys', 'Down'),
+            config.keys.forward.get(),
+            config.keys.left.get(),
+            config.keys.back.get(),
+            config.keys.right.get(),
+            config.keys.up.get(),
+            config.keys.down.get(),
         ))
         label.anchor = 'whrt'
         label.align = 'r'
@@ -149,11 +149,11 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-#        addHelp("{0}".format(config.config.get('Keys', 'Brake')) + _(" to slow down"))
-        addHelp(_("{0} to slow down").format(config.config.get('Keys', 'Brake')))
+#        addHelp("{0}".format(config.keys.brake.get()) + _(" to slow down"))
+        addHelp(_("{0} to slow down").format(config.keys.brake.get()))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp(_("Hold {0} for details").format(config.config.get('Keys', 'Show Block Info')))
+        addHelp(_("Hold {0} for details").format(config.keys.showBlockInfo.get()))
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
@@ -184,9 +184,9 @@ class FileOpener(albow.Widget):
                 shortname = shortname[:37] + "..."
             shortnames.append(shortname)
 
-        hotkeys = ([(config.config.get('Keys', 'New World'), 'Create New World', self.createNewWorld),
-                    (config.config.get('Keys', 'Quick Load'), 'Quick Load', self.mcedit.editor.askLoadWorld),
-                    (config.config.get('Keys', 'Open'), 'Open...', self.promptOpenAndLoad)] + [
+        hotkeys = ([(config.keys.newWorld.get(), 'Create New World', self.createNewWorld),
+                    (config.keys.quickLoad.get(), 'Quick Load', self.mcedit.editor.askLoadWorld),
+                    (config.keys.open.get(), 'Open...', self.promptOpenAndLoad)] + [
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
@@ -216,15 +216,15 @@ class FileOpener(albow.Widget):
             raise SystemExit
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
-        if keyname == config.config.get('Keys', 'Quick Load'):
+        if keyname == config.keys.quickLoad.get():
             self.mcedit.editor.askLoadWorld()
-        if keyname == config.config.get('Keys', 'New World'):
+        if keyname == config.keys.newWorld.get():
             self.createNewWorld()
-        if keyname == config.config.get('Keys', 'Open'):
+        if keyname == config.keys.open.get():
             self.promptOpenAndLoad()
-        if keyname == config.config.get('Keys', 'Quit'):
+        if keyname == config.keys.quit.get():
             self.mcedit.confirm_quit()
-        if keyname == config.config.get('Keys', 'Take a Screenshot'):
+        if keyname == config.keys.takeAScreenshot.get():
             self.mcedit.editor.take_screenshot()
 
     def promptOpenAndLoad(self):
@@ -939,12 +939,12 @@ class MCEdit(GLViewport):
         config.settings.reportCrashesAsked.set(True)
 
         config.save()
-        if "update" in config.config.get("Version", "version"):
+        if "update" in config.version.version.get():
             answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
             if answer == "Yes":
                 for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
-                    config.config.set("Keys", configKey, k)
-        config.config.set("Version", "version", "1.1.2.0")
+                    config.keys[configKey].set(k)
+        config.version.version.set("1.1.2.0")
         config.save()
         if "-causeError" in sys.argv:
             raise ValueError, "Error requested via -causeError"
@@ -1019,7 +1019,7 @@ def main(argv):
 #        client.timeout = 5
 #
 # Disabled Crash Reporting Option
-#       client.disabled = not config.config.getboolean("Settings", "report crashes new")
+#       client.disabled = not config.settings.reportCrashesNew.get()
 #       client.disabled = True
 #
 #       def _reportingChanged(val):

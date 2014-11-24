@@ -912,7 +912,7 @@ class BrushPanel(Panel):
 
         if self.tool.brushMode.name != "Flood Fill":
             spaceRow = IntInputRow("Line Spacing", ref=self.minimumSpacingOption, min=1,
-                                   tooltipText=("Hold {0} to draw lines").format(config.config.get("Keys", "Brush Line Tool")))
+                                   tooltipText=("Hold {0} to draw lines").format(config.keys.brushLineTool.get()))
             col.append(spaceRow)
         col = Column(col)
 
@@ -1294,11 +1294,11 @@ class BrushTool(CloneTool):
     @property
     def statusText(self):
         return _("Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.").format(
-            P=config.config.get("Keys", "Pick Block"),
-            R=config.config.get("Keys", "Increase Brush"),
-            F=config.config.get("Keys", "Decrease Brush"),
-            E=config.config.get("Keys", "Rotate (Brush)"),
-            G=config.config.get("Keys", "Roll (Brush)"),
+            P=config.keys.pickBlock.get(),
+            R=config.keys.increaseBrush.get(),
+            F=config.keys.decreaseBrush.get(),
+            E=config.keys.rotateBrush.get(),
+            G=config.keys.rollBrush.get(),
             )
 
     @property
@@ -1390,16 +1390,16 @@ class BrushTool(CloneTool):
 
     def keyDown(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        if keyname == config.keys.pickBlock.get():
             self.useKey = 1
-        if keyname == config.config.get("Keys", "Brush Line Tool"):
+        if keyname == config.keys.brushLineTool.get():
             self.brushLineKey = 1
 
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        if keyname == config.keys.pickBlock.get():
             self.useKey = 0
-        if keyname == config.config.get("Keys", "Brush Line Tool"):
+        if keyname == config.keys.brushLineTool.get():
             self.brushLineKey = 0
             self.lastPosition = None
 
@@ -1410,7 +1410,7 @@ class BrushTool(CloneTool):
 
         if self.brushLineKey == 1:
             for move in self.editor.movements:
-                if move in config.config.get("Keys", "Brush Line Tool"):
+                if move in config.keys.brushLineTool.get():
                     self.editor.save = 1
             self.editor.get_root().shiftClicked = 0
             self.editor.get_root().shiftPlaced = -2

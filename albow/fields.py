@@ -325,7 +325,8 @@ class IntField(Field):
 
     @property
     def increment(self):
-        if (config.config.get("Keys", "Fast Increment Modifier") == "Shift" and key.get_mods() & KMOD_SHIFT) or (config.config.get("Keys", "Fast Increment Modifier") == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (config.config.get("Keys", "Fast Increment Modifier") == "Alt" and key.get_mods() & KMOD_ALT):
+        fastIncrementModifier = config.keys.fastIncrementModifier.get()
+        if (fastIncrementModifier == "Shift" and key.get_mods() & KMOD_SHIFT) or (fastIncrementModifier == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (fastIncrementModifier == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
         else:
             return self._increment
@@ -443,7 +444,8 @@ class FloatField(Field):
 
     @property
     def increment(self):
-        if (config.config.get("Keys", "Fast Increment Modifier") == "Shift" and key.get_mods() & KMOD_SHIFT) or (config.config.get("Keys", "Fast Increment Modifier") == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (config.config.get("Keys", "Fast Increment Modifier") == "Alt" and key.get_mods() & KMOD_ALT):
+        fastIncrementModifier = config.keys.fastIncrementModifier.get()
+        if (fastIncrementModifier == "Shift" and key.get_mods() & KMOD_SHIFT) or (fastIncrementModifier == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (fastIncrementModifier == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
         return self._increment
 

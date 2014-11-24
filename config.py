@@ -130,7 +130,7 @@ class ConfigSection(object):
         return self.__getitem__(key)
 
     def items(self):
-        return self._items
+        return [(i.name, i.get()) for k, i in self._items.iteritems()]
 
 
 class ConfigValue(object):

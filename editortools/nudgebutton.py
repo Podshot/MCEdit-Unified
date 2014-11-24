@@ -24,7 +24,7 @@ class NudgeButton(GLBackground):
 
         # tooltipBacking = Panel()
         # tooltipBacking.bg_color = (0, 0, 0, 0.6)
-        keys = [config.config.get("Keys", k) for k in ("Forward", "Back", "Left", "Right", "Up", "Down")]
+        keys = [config.keys[k].get() for k in ("forward", "back", "left", "right", "up", "down")]
 
         nudgeLabel.tooltipText = _("Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.").format(
             *keys)
@@ -48,9 +48,9 @@ class NudgeButton(GLBackground):
         self.editor.key_down(evt, 1, 1)
 
         keyname = keys.getKey(evt)
-        if keyname == config.config.get("Keys", "Up"):
+        if keyname == config.keys.up.get():
             self.nudge(Vector(0, 1, 0))
-        if keyname == config.config.get("Keys", "Down"):
+        if keyname == config.keys.down.get():
             self.nudge(Vector(0, -1, 0))
 
         Z = self.get_root().mcedit.editor.mainViewport.cameraVector  # xxx mouthful
@@ -64,13 +64,13 @@ class NudgeButton(GLBackground):
         left = forward[2], forward[1], -forward[0]
         right = map(int.__neg__, left)
 
-        if keyname == config.config.get("Keys", "Forward"):
+        if keyname == config.keys.forward.get():
             self.nudge(Vector(*forward))
-        if keyname == config.config.get("Keys", "Back"):
+        if keyname == config.keys.back.get():
             self.nudge(Vector(*back))
-        if keyname == config.config.get("Keys", "Left"):
+        if keyname == config.keys.left.get():
             self.nudge(Vector(*left))
-        if keyname == config.config.get("Keys", "Right"):
+        if keyname == config.keys.right.get():
             self.nudge(Vector(*right))
 
     def key_up(self, evt):

@@ -420,12 +420,12 @@ class KeyConfigPanel(Dialog):
 
         buttonRow = albow.Row(buttonRow)
 
-        choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad","WASD Old"], choose=self.choosePreset)
-        if config.config.get("Keys", "Forward") == "Up":
+        choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad", "WASD Old"], choose=self.choosePreset)
+        if config.keys.forward.get() == "Up":
             choiceButton.selectedChoice = "Arrows"
-        elif config.config.get("Keys", "Forward") == "[8]":
+        elif config.keys.forward.get() == "[8]":
             choiceButton.selectedChoice = "Numpad"
-        elif config.config.get("Keys", "Brake") == "Space":
+        elif config.keys.brake.get() == "Space":
             choiceButton.selectedChoice = "WASD Old"
 
         self.oldChoice = choiceButton.selectedChoice
@@ -438,8 +438,8 @@ class KeyConfigPanel(Dialog):
         self.shrink_wrap()
 
     def presentControls(self):
-      self.present()
-      self.oldChoice = self.choiceButton.selectedChoice
+        self.present()
+        self.oldChoice = self.choiceButton.selectedChoice
 
     def done(self):
         self.changesNum = False
@@ -451,32 +451,32 @@ class KeyConfigPanel(Dialog):
         preset = self.choiceButton.selectedChoice
         keypairs = self.presets[preset]
         for configKey, k in keypairs:
-            oldOne = config.config.get("Keys", configKey)
+            oldOne = config.keys[configKey].get()
             if k != oldOne:
                 self.changesNum = True
                 if configKey not in self.changes:
                     self.changes[configKey] = oldOne
-                config.config.set("Keys", configKey, k)
+                config.keys[configKey].set(k)
 
     def getRowData(self, i):
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
-            key = config.config.get("Keys", configKey)
+            key = config.keys[configKey].get()
             if key == 'mouse3':
                 key = 'Button 3'
-                config.config.set("Keys", configKey, "Button 3")
+                config.keys[configKey].set("Button 3")
             elif key == 'mouse4':
                 key = 'Scroll Up'
-                config.config.set("Keys", configKey, "Scroll Up")
+                config.keys[configKey].set("Scroll Up")
             elif key == 'mouse5':
                 key = 'Scroll Down'
-                config.config.set("Keys", configKey, "Scroll Down")
+                config.keys[configKey].set("Scroll Down")
             elif key == 'mouse6':
                 key = 'Button 4'
-                config.config.set("Keys", configKey, "Button 4")
+                config.keys[configKey].set("Button 4")
             elif key == 'mouse7':
                 key = 'Button 5'
-                config.config.set("Keys", configKey, "Button 5")
+                config.keys[configKey].set("Button 5")
 
         else:
             key = ""
@@ -499,7 +499,7 @@ class KeyConfigPanel(Dialog):
                     self.done()
                 elif result == "Don't Save":
                     for k in self.changes.keys():
-                        config.config.set("Keys", k, self.changes[k])
+                        config.keys[k].set(self.changes[k])
                     self.changesNum = False
                     self.changes = {}
                     self.choiceButton.selectedChoice = self.oldChoice
@@ -509,7 +509,7 @@ class KeyConfigPanel(Dialog):
                 self.dismiss()
         elif keyname == 'Up' and self.selectedKeyIndex > 0:
             self.selectedKeyIndex -= 1
-        elif keyname == 'Down' and self.selectedKeyIndex < len(self.keyConfigKeys)-1:
+        elif keyname == 'Down' and self.selectedKeyIndex < len(self.keyConfigKeys) - 1:
             self.selectedKeyIndex += 1
         elif keyname == 'Return':
             self.enter += 1
@@ -518,7 +518,7 @@ class KeyConfigPanel(Dialog):
         self.get_root().mcedit.editor.key_down(evt, 1, 1)
 
     def key_up(self, evt):
-      self.get_root().mcedit.editor.key_up(evt)
+        self.get_root().mcedit.editor.key_up(evt)
 
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
@@ -568,12 +568,12 @@ class KeyConfigPanel(Dialog):
         self.enter = 0
         if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             if "Modifier" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
-              self.askAssignKey(configKey,
+                self.askAssignKey(configKey,
                                      _("{0} is not a modifier. "
                                      "Press a new key.\n\n"
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname))
-              return True
+                return True
             if configKey == 'Down' or configKey == 'Up' or configKey == 'Back' or configKey == 'Forward' or configKey == 'Left' or configKey == 'Right':
                 if 'Ctrl' in keyname:
                     self.askAssignKey(configKey,
@@ -581,13 +581,13 @@ class KeyConfigPanel(Dialog):
                                      "Press a new key.\n\n"
                                      "Press ESC to cancel. Press Shift-ESC to unbind."))
                     return True
-            oldkey = config.config.get("Keys", configKey)
-            config.config.set("Keys", configKey, keyname)
+            oldkey = config.keys[configKey].get()
+            config.keys[configKey].set(keyname)
             if configKey not in self.changes:
                 self.changes[configKey] = oldkey
             self.changesNum = True
         elif keyname == "Shift-Escape":
-            config.config.set("Keys", configKey, "None")
+            config.keys[configKey].set("None")
         elif keyname != "Escape":
             self.askAssignKey(configKey,
                                      _("You can't use the key {0}. "

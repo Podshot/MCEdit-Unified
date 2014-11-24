@@ -231,22 +231,22 @@ class CloneToolPanel(Panel):
         self.tool = tool
 
         rotateRow = Row((
-            Label(config.config.get("Keys", "Rotate (Clone)")),
+            Label(config.keys.rotateClone.get()),
             Button("Rotate", width=80, action=tool.rotate, enable=self.transformEnable),
         ))
 
         rollRow = Row((
-            Label(config.config.get("Keys", "Roll (Clone)")),
+            Label(config.keys.rollClone.get()),
             Button("Roll", width=80, action=tool.roll, enable=self.transformEnable),
         ))
 
         flipRow = Row((
-            Label(config.config.get("Keys", "Flip")),
+            Label(config.keys.flip.get()),
             Button("Flip", width=80, action=tool.flip, enable=self.transformEnable),
         ))
 
         mirrorRow = Row((
-            Label(config.config.get("Keys", "Mirror")),
+            Label(config.keys.mirror.get()),
             Button("Mirror", width=80, action=tool.mirror, enable=self.transformEnable),
         ))
 
@@ -441,7 +441,7 @@ class CloneTool(EditorTool):
         if self.destPoint is None:
             return "Click to set this item down."
         if self.draggingFace is not None:
-            return "Mousewheel to move along the third axis. Hold {0} to only move along one axis.".format(config.config.get("Keys", "Snap Clone to Axis"))
+            return "Mousewheel to move along the third axis. Hold {0} to only move along one axis.".format(config.keys.snapCloneToAxis.get())
 
         return "Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm."
 
@@ -970,12 +970,12 @@ class CloneTool(EditorTool):
 
     def keyDown(self,evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Snap Clone to Axis'):
+        if keyname == config.keys.snapCloneToAxis.get():
             self.snapCloneKey = 1
 
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Snap Clone to Axis'):
+        if keyname == config.keys.snapCloneToAxis.get():
             self.snapCloneKey = 0
 
     def increaseToolReach(self):

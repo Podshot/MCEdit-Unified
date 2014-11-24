@@ -77,7 +77,7 @@ class FillToolPanel(Panel):
         self.fillButton = Button("Fill", action=tool.confirm, width=self.blockButton.width)
         self.fillButton.tooltipText = "Shortcut: Enter"
 
-        rollkey = config.config.get("Keys", "Replace Shortcut")
+        rollkey = config.keys.replaceShortcut.get()
 
         self.replaceLabel = replaceLabel = Label("Replace", width=self.blockButton.width)
         replaceLabel.mouse_down = lambda a: self.tool.toggleReplacing()
@@ -104,7 +104,7 @@ class FillToolPanel(Panel):
             self.swapButton = Button("Swap", action=self.swapBlockTypes, width=self.blockButton.width)
             self.swapButton.fg_color = (255, 255, 255, 255)
             self.swapButton.highlight_color = (60, 255, 60, 255)
-            swapkey = config.config.get("Keys", "Swap")
+            swapkey = config.keys.swap.get()
 
             self.swapButton.tooltipText = "Shortcut: {0}".format(swapkey)
 
@@ -373,7 +373,7 @@ class FillTool(EditorTool):
     @property
     def statusText(self):
         return _("Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.").format(
-            hotkey=self.hotkey, R=config.config.get("Keys", "Replace Shortcut"))
+            hotkey=self.hotkey, R=config.keys.replaceShortcut.get())
 
     @property
     def worldTooltipText(self):
@@ -405,10 +405,10 @@ class FillTool(EditorTool):
 
     def keyDown(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = 1
 
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = 0
