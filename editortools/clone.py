@@ -412,7 +412,7 @@ class CloneTool(EditorTool):
 
     panelClass = CloneToolPanel
     # color = (0.89, 0.65, 0.35, 0.33)
-    color = (0.3, 1.0, 0.3, 0.19)
+    color = (0.7, 0.3, 0.7, 0.7)
 
     def __init__(self, *args):
         self.rotation = 0

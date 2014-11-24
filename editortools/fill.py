@@ -169,7 +169,7 @@ class FillTool(EditorTool):
     replaceBlockInfo = pymclevel.alphaMaterials.Air
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
-    color = (0.3, 1.0, 0.3, 0.19)
+    color = (0.7, 0.3, 0.7, 0.7)
 
     def __init__(self, *args, **kw):
         EditorTool.__init__(self, *args, **kw)
