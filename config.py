@@ -65,7 +65,7 @@ class Config(object):
         return value
 
     def transformConfig(self):
-        if self.config.get("Version", "version") == "1.1.1.1":
+        if self.config.has_section("Version") and self.config.get("Version", "version") == "1.1.1.1":
             i = 1
             for (name, value) in self.config.items("Keys"):
                 if name != "Swap View" and name != "Toggle Fps Counter":
