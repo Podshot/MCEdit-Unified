@@ -390,7 +390,7 @@ class OptionsPanel(Dialog):
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
         lng = config.settings.langCode.get()
-        if type(lng) == str and type(DEF_ENC) == str and DEF_ENC != None:
+        if type(lng) == str and type(DEF_ENC) == str and DEF_ENC != None and lng != None:
             lng = lng.decode(DEF_ENC)
         langNames = self.getLanguageChoices(lng).keys()
         langNames.sort()
@@ -530,7 +530,7 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         lng = config.settings.langCode.get()
-        if type(lng) == str and type(DEF_ENC) == str and DEF_ENC != None:
+        if type(lng) == str and type(DEF_ENC) == str and DEF_ENC != None and lng != None:
             lng = lng.decode(DEF_ENC)
         try:
             o, n, sc = albow.translate.setLang(self.langs[lng])
@@ -546,7 +546,7 @@ class OptionsPanel(Dialog):
                 o = u"en_US"
             config.settings.langCode.set(self.sgnal.get(o))
             lng = config.settings.langCode.get()
-            if type(lng) == str:
+            if type(lng) == str and lng != None:
                 lng = lng.decode("utf-8")
             albow.translate.setLang(lng)
         elif o != n:
