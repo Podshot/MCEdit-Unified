@@ -116,18 +116,18 @@ class BrushPanel(Panel):
         in the brush file.
         """
         presets = self.createPresetRow()
-        
+
         self.brushModeButtonLabel = Label("Mode:")
         self.brushModeButton = ChoiceButton(sorted([mode for mode in tool.brushModes]),
                                        width=150,
                                        choose=self.brushModeChanged)
-        modeRow = Row([self.brushModeButtonLabel, self.brushModeButton])   
-             
+        modeRow = Row([self.brushModeButtonLabel, self.brushModeButton])
+
         self.brushStyleButtonLabel = Label("Style:")
         self.brushStyleButton = ValueButton(ref=ItemRef(self.tool.options, "Style"),
                                             action=self.tool.swapBrushStyles,
                                             width=150)
-        
+
         styleRow = Row([self.brushStyleButtonLabel, self.brushStyleButton])
         self.brushModeButton.selectedChoice = self.tool.selectedBrushMode
         optionsColumn = []
@@ -152,7 +152,7 @@ class BrushPanel(Panel):
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
         self.shrink_wrap()
-        
+
     def createField(self, key, value):
         """
         Creates a field matching the input type.
@@ -190,7 +190,7 @@ class BrushPanel(Panel):
         elif type == 'str':
             object = Label(value)
         return object
-    
+
     def brushModeChanged(self):
         """
         Called on selecting a brushMode, sets it in BrushTool as well.
@@ -199,7 +199,7 @@ class BrushPanel(Panel):
         self.tool.brushMode = self.tool.brushModes[self.tool.selectedBrushMode]
         self.tool.saveBrushPreset('__temp__')
         self.tool.showPanel()
-           
+
     def getBrushFileList(self):
         """
         Returns a list of strings of all .preset files in the brushes directory.
@@ -212,7 +212,7 @@ class BrushPanel(Panel):
         if '__temp__' in list:
             list.remove('__temp__')
         return list
-    
+
     def createPresetRow(self):
         """
         Creates the brush preset widget, called by BrushPanel when creating the panel.
@@ -234,7 +234,7 @@ class BrushPanel(Panel):
         widget.shrink_wrap()
         widget.anchor = "whtr"
         return widget
-        
+
     def openSavePresetDialog(self):
         """
         Opens up a dialgo to input the name of the to save Preset.
@@ -246,7 +246,7 @@ class BrushPanel(Panel):
         def okPressed():
             panel.dismiss()
             name = nameField.value
-            
+
             if name in ['Load Preset:', 'Remove Presets', '__temp__']:
                 alert("That preset name is reserved. Try pick another preset name.")
                 return
@@ -255,7 +255,7 @@ class BrushPanel(Panel):
                 if p in name:
                     alert('Invalid character in file name')
                     return
-                
+
             self.tool.saveBrushPreset(name)
             self.tool.showPanel()
 
@@ -302,7 +302,7 @@ class BrushPanel(Panel):
         panel.add(Column((choiceCol, row)))
         panel.shrink_wrap()
         panel.present()
-        
+
     def presetSelected(self):
         """
         Called ons selecting item on Load Preset, to check if remove preset is selected. Calls removePreset if true, loadPreset(name) otherwise.
@@ -316,8 +316,8 @@ class BrushPanel(Panel):
             self.tool.loadBrushPreset(choice)
         choice = "Load Preset:"
         self.tool.showPanel()
-        
-        
+
+
 class BrushToolOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
@@ -336,11 +336,11 @@ class BrushToolOptions(ToolOptions):
         self.add(col)
         self.shrink_wrap()
         return
-    
+
 class BrushTool(CloneTool):
     tooltipText = "Brush\nRight-click for options"
     toolIconName = "brush"
-    
+
     options = {
     'Style':'Round',
     }
@@ -367,8 +367,8 @@ class BrushTool(CloneTool):
         self.draggedPositions = []
         self.pickBlockKey = False
         self.lineToolKey = False
-        
-        
+
+
     """
     Property reticleOffset.
     Used to determine the distance between the block the cursor is pointing at, and the center of the brush.
@@ -383,7 +383,7 @@ class BrushTool(CloneTool):
     @reticleOffset.setter
     def reticleOffset(self, val):
         self._reticleOffset = val
-    
+
     """
     Properties W,H,L. Used to reset the Brush Preview whenever they change.
     """
@@ -408,7 +408,7 @@ class BrushTool(CloneTool):
     def L(self, val):
         self.options['L'] = val
         self.setupPreview()
-        
+
     """
     Statustext property, rendered in the black line at the bottom of the screen.
     """
@@ -421,7 +421,7 @@ class BrushTool(CloneTool):
             E=config.keys.rotateBrush.get(),
             G=config.keys.rollBrush.get(),
             )
-            
+
 
     def toolEnabled(self):
         """
@@ -429,7 +429,7 @@ class BrushTool(CloneTool):
         It does not need a selection.
         """
         return True
-    
+
     def setupBrushModes(self):
         """
         Makes a dictionary of all mode names and their corresponding module. If no name is found, it uses the name of the file.
@@ -454,7 +454,7 @@ class BrushTool(CloneTool):
             if not hasattr(self.options, 'Minimum Spacing'):
                 self.options['Minimum Spacing'] = 1
         self.renderedBlock = None
-        
+
     def importStockBrushModes(self):
         """
         Imports all Stock Brush Modes from their files.
@@ -475,11 +475,11 @@ class BrushTool(CloneTool):
         modes = (self.tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
         return modes
-    
+
     def tryStockImport(self, name):
         """
         Imports a brush module. Called by importBrushModules
-        :param name, name of the module to import. 
+        :param name, name of the module to import.
         """
         try:
             globals()[name] = m = imp.load_source(name, os.path.join(directories.getDataDir(), u'stock-brushes', (name+ ".py")))
@@ -491,11 +491,11 @@ class BrushTool(CloneTool):
             alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
             return object()
 
-    
+
     def tryImport(self, name):
         """
         Imports a brush module. Called by importBrushModules
-        :param name, name of the module to import. 
+        :param name, name of the module to import.
         """
         try:
             globals()[name] = m = imp.load_source(name, os.path.join(directories.brushesDir, (name+ ".py")))
@@ -507,7 +507,7 @@ class BrushTool(CloneTool):
             alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
             return object()
 
-        
+
     def toolSelected(self):
         """
         Applies options of BrushToolOptions.
@@ -543,8 +543,8 @@ class BrushTool(CloneTool):
             else:
                 self.loadLevel(stack[0])
 
-        
-    
+
+
     def saveBrushPreset(self, name):
         """
         Saves current brush presets in a file name.preset
@@ -561,9 +561,9 @@ class BrushTool(CloneTool):
         name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
         f.write(repr(optionsToSave))
-        
+
     def loadBrushPreset(self, name):
-        """ 
+        """
         Loads a brush preset name.preset
         :param name, name of the preset to load.
         """
@@ -586,7 +586,7 @@ class BrushTool(CloneTool):
         self.showPanel()
         self.setupPreview()
 
-        
+
     @property
     def worldTooltipText(self):
         """
@@ -604,16 +604,16 @@ class BrushTool(CloneTool):
             except Exception, e:
                 return repr(e)
 
-        
+
     def keyDown(self, evt):
         """
         Triggered on pressing a key,
         sets the corresponding variable to True
         """
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = True
-        if keyname == config.config.get("Keys", "Brush Line Tool"):
+        if keyname == config.keys.brushLineTool.get():
             self.lineToolKey = True
 
     def keyUp(self, evt):
@@ -622,12 +622,12 @@ class BrushTool(CloneTool):
         sets the corresponding variable to False
         """
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = False
-        if keyname == config.config.get("Keys", "Brush Line Tool"):
+        if keyname == config.keys.brushLineTool.get():
             self.lineToolKey = False
             self.draggedPositions = []
-            
+
     @alertException
     def mouseDown(self, evt, pos, direction):
         """
@@ -652,7 +652,7 @@ class BrushTool(CloneTool):
         Called on dragging the mouse.
         Adds the current point to draggedPositions.
         """
-        
+
         if getattr(self.brushMode, 'draggableBrush', True):
             if len(self.draggedPositions):  #If we're dragging the mouse
                 direction = self.draggedDirection
@@ -660,7 +660,7 @@ class BrushTool(CloneTool):
                 if any([abs(a - b) >= self.options['Minimum Spacing']
                         for a, b in zip(point, self.draggedPositions[-1])]):
                     self.dragLineToPoint(point)
-    
+
     def dragLineToPoint(self, point):
         """
         Calculates the new point and adds it to self.draggedPositions.
@@ -669,7 +669,7 @@ class BrushTool(CloneTool):
         if getattr(self.brushMode, 'draggableBrush', True):
             if self.lineToolKey:
                 for move in self.editor.movements:
-                    if move in config.config.get("Keys", "Brush Line Tool"):
+                    if move in config.keys.brushLineTool.get():
                         self.editor.save = 1
                 if len(self.draggedPositions):
                     points = bresenham.bresenham(self.draggedPositions[0], point)
@@ -705,7 +705,7 @@ class BrushTool(CloneTool):
         brushStyleIndex %= 3
         self.options["Style"] = styles[brushStyleIndex]
         self.setupPreview()
-        
+
     def toolReselected(self):
         """
         Called on reselecting the brush.
@@ -722,7 +722,7 @@ class BrushTool(CloneTool):
             self.options[key] = blockPicker.blockInfo
         self.setupPreview()
 
-    
+
     def showPanel(self):
         """
         Removes old panels.
@@ -744,14 +744,14 @@ class BrushTool(CloneTool):
         """
         brushSizeOffset = max(self.getBrushSize()) + 1
         return max(1, (0.5 * brushSizeOffset))
-                   
+
     def resetToolDistance(self):
         """
         Resets the distance of the brush in right-click mode, appropriate to the size of the brush.
         """
         distance = 6 + max(self.getBrushSize()) * 1.25
         self.editor.cameraToolDistance = distance
-        
+
     def resetToolReach(self):
         """
         Resets reticleOffset or tooldistance in right-click mode.
@@ -761,19 +761,19 @@ class BrushTool(CloneTool):
         else:
             self.reticleOffset = self.offsetMax()
         return True
-        
+
     def getBrushSize(self):
         """
         Returns an array of the sizes of the brush.
         Called by methods that need the size of the brush like createBrushMask
-        """ 
+        """
         size = []
         for dim in ['W','H','L']:
             size.append(self.options[dim])
         return size
-    
-    @alertException 
-    def setupPreview(self): 
+
+    @alertException
+    def setupPreview(self):
         """
         Creates the Brush Preview
         Passes it as a FakeLevel object to the renderer
@@ -821,10 +821,10 @@ class BrushTool(CloneTool):
                     f.Blocks[mask] = 255
                 self.chunkCache[cx, cz] = f
                 return f
-        
+
         self.level = FakeLevel()
         CloneTool.setupPreview(self, alpha=self.settings['brushAlpha'])
-        
+
     def getReticlePoint(self, pos, direction):
         """
         Calculates the position of the reticle.
@@ -833,7 +833,7 @@ class BrushTool(CloneTool):
         if len(self.draggedPositions):
             direction = self.draggedDirection
         return map(lambda a, b: a + (b * self.reticleOffset), pos, direction)
-    
+
     def increaseToolReach(self):
         """
         Called on scrolling up (default).
@@ -856,7 +856,7 @@ class BrushTool(CloneTool):
         self.reticleOffset = max(self.reticleOffset - 1, 0)
         return True
 
-    
+
     def drawToolReticle(self):
         """
         Draws a yellow reticle at every position where you dragged the brush.
@@ -866,7 +866,7 @@ class BrushTool(CloneTool):
             drawTerrainCuttingWire(BoundingBox(pos, (1, 1, 1)),
                                    (0.75, 0.75, 0.1, 0.4),
                                    (1.0, 1.0, 0.5, 1.0))
-            
+
     def getDirtyBox(self, point, tool):
         """
         Returns a box around the Brush given point and size of the brush.
@@ -877,7 +877,7 @@ class BrushTool(CloneTool):
             size = tool.getBrushSize()
             origin = map(lambda x, s: x - (s >> 1), point, size)
             return BoundingBox(origin, size)
-        
+
     def drawTerrainReticle(self):
         """
         Draws the white reticle where the cursor is pointing.
@@ -891,7 +891,7 @@ class BrushTool(CloneTool):
         if self.options[getattr(self.brushMode, 'mainBlock', 'Block')] != self.renderedBlock and not getattr(self.brushMode, 'addPasteButton', False):
             self.setupPreview()
             self.renderedBlock = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
-        
+
         if self.pickBlockKey == 1: #Alt is pressed
             self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
         else:
@@ -926,7 +926,7 @@ class BrushTool(CloneTool):
         for key in ('W', 'H', 'L'):
             self.options[key] = self.options[key] + 1
         self.setupPreview()
-        
+
     def swap(self):
         main = getattr(self.brushMode, 'mainBlock', 'Block')
         secondary = getattr(self.brushMode, 'secondaryBlock', 'Block To Replace')
@@ -980,7 +980,7 @@ class BrushTool(CloneTool):
             self.options['H'] = self.options['W']
             self.options['W'] = H
         self.setupPreview()
-        
+
     def importPaste(self):
         """
         Hack for paste to import a level.
@@ -1094,5 +1094,3 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         return mask[1:-1, 1:-1, 1:-1]
     else:
         return mask
-    
-    

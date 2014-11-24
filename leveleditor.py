@@ -2756,13 +2756,13 @@ class LevelEditor(GLViewport):
             if keyname == config.keys.blocksOnlyModifier.get() + '-' + config.keys.rollBrush.get():
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.roll(blocksOnly=True)
-            if keyname == config.config.get('Keys', 'Decrease Brush'):
+            if keyname == config.keys.decreaseBrush.get():
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.decreaseBrushSize()
-            if keyname == config.config.get('Keys', 'Increase Brush'):
+            if keyname == config.keys.increaseBrush.get():
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.increaseBrushSize()
-            if keyname == config.config.get('Keys', 'Rotate (Brush)'):
+            if keyname == config.keys.rotateBrush.get():
                 if "Brush" in "{0}".format(self.currentTool):
                     self.currentTool.rotate(blocksOnly=False)
             if keyname == config.keys.rollBrush.get():
