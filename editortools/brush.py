@@ -929,7 +929,7 @@ class BrushTool(CloneTool):
 
     def swap(self):
         main = getattr(self.brushMode, 'mainBlock', 'Block')
-        secondary = getattr(self.brushMode, 'secondaryBlock', 'Block To Replace')
+        secondary = getattr(self.brushMode, 'secondaryBlock', 'Block To Replace With')
         bi = self.options[main]
         self.options[main] = self.options[secondary]
         self.options[secondary] = bi
