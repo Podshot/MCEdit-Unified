@@ -4,20 +4,19 @@ import mcplatform
 import pymclevel
 
 displayName = 'Paste'
-addPasteButton = True
 
 def createInputs(self):
     self.inputs = (
+    {'Import':self.importSchematic},
     )    
-        
-def getDirtyBox(self, point, tool):
-    point = []
-    for p, c in zip(point, ['center' + ['x', 'y', 'z']]):
-        point.append(p + tool.options[c])
-    return BoundingBox(point, tool.level.size)
+    
+def importSchematic(self):
+    pass
+    
+def getDirtyBox(self, point, size):
+    pass
 
-
-def apply(self, op, chunk, slices, brushBox, brushBoxThisChunk):
+def applyToChunkSlices(op, chunk, slices, brushBox, brushBoxThisChunk):
     brushMask = createBrushMask(op.tool.getBrushSize(), op.options['Style'], brushBox.origin, brushBoxThisChunk, op.options['Noise'], op.options['Hollow'])
 
     blocks = chunk.Blocks[slices]
