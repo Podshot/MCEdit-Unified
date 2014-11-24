@@ -23,7 +23,7 @@ def createInputs(self):
     {'Fill Air': True},
     )
 
-def applyToChunkSlices(op, chunk, slices, brushBox, brushBoxThisChunk):
+def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     brushMask = createBrushMask(op.tool.getBrushSize(), op.options['Style'], brushBox.origin, brushBoxThisChunk, op.options['Noise'], op.options['Hollow'])
 
     blocks = chunk.Blocks[slices]

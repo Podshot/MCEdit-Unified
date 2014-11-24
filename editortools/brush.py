@@ -79,7 +79,7 @@ class BrushOperation(Operation):
             yield 0, len(self.points), _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
             if hasattr(self.brushMode, 'apply'):
                 for i, point in enumerate(self.points):
-                    f = self.brushMode.apply(self, point)
+                    f = self.brushMode.apply(self.brushMode, self, point)
                     if hasattr(f, "__iter__"):
                         for progress in f:
                             yield progress
@@ -93,7 +93,7 @@ class BrushOperation(Operation):
                     for i, point in enumerate(self.points):
                         brushBox = self.tool.getDirtyBox(point, self.tool)
                         brushBoxThisChunk, slices = chunk.getChunkSlicesForBox(brushBox)
-                        f = self.brushMode.applyToChunkSlices(self, chunk, slices, brushBox, brushBoxThisChunk)
+                        f = self.brushMode.applyToChunkSlices(self.brushMode, self, chunk, slices, brushBox, brushBoxThisChunk)
                         if brushBoxThisChunk.volume == 0: f = None
                         if hasattr(f, "__iter__"):
                             for progress in f:
@@ -145,6 +145,10 @@ class BrushPanel(Panel):
                 row.append(field)
             row = Row(row)
             optionsColumn.append(row)
+        if getattr(tool.brushMode, 'addPasteButton', False) :
+            importButton = Button("Import", action=tool.importPaste)
+            importRow = Row([importButton])
+            optionsColumn.append(importRow)
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -172,8 +176,6 @@ class BrushPanel(Panel):
             object = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma)
         elif type == 'bool':
             object = CheckBoxLabel(key, ref=reference)
-        elif type == 'function':
-            object = Button(key, action=value)
         elif type == 'Block':
             if not hasattr(self.tool.recentBlocks, key):
                 self.tool.recentBlocks[key] = []
@@ -812,7 +814,7 @@ class BrushTool(CloneTool):
                     f.Blocks[mask] = 255
                 self.chunkCache[cx, cz] = f
                 return f
-
+        
         self.level = FakeLevel()
         CloneTool.setupPreview(self, alpha=self.settings['brushAlpha'])
         
@@ -971,6 +973,34 @@ class BrushTool(CloneTool):
             self.options['H'] = self.options['W']
             self.options['W'] = H
         self.setupPreview()
+        
+    def importPaste(self):
+        """
+        Hack for paste to import a level.
+        """
+        clipFilename = mcplatform.askOpenFile(title='Choose a schematic or level...', schematics=True)
+        # xxx mouthful
+        if clipFilename:
+            try:
+                self.loadLevel(pymclevel.fromFile(clipFilename, readonly=True))
+            except Exception, e:
+                alert("Failed to load file %s" % clipFilename)
+                self.brushMode = "Fill"
+                return
+
+    def loadLevel(self, level):
+        self.level = level
+        self.minimumSpacing = min([s / 4 for s in level.size])
+        self.centerx, self.centery, self.centerz = -level.Width / 2, 0, -level.Length / 2
+        CloneTool.setupPreview(self)
+
+        self.level = level
+        self.options['Minimum Spacing'] = min([s / 4 for s in level.size])
+        self.options['centerx'] = -level.Width / 2
+        self.options['centery'] = 0
+        self.options['centerz'] = -level.Length /2
+        CloneTool.setupPreview(self, alpha = self.settings['brushAlpha'])
+
 
 def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100, hollow=False):
     """
