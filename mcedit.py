@@ -1025,7 +1025,7 @@ def main(argv):
 #       def _reportingChanged(val):
 #           client.disabled = not val
 #
-#       Settings.reportCrashes.addObserver(client, '_enabled', _reportingChanged)
+#       config.settings.reportCrashes.addObserver(client, '_enabled', _reportingChanged)
 #       client.reportErrors()
 #       client.hook()
 #   except (ImportError, UnicodeError) as e:

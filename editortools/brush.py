@@ -950,7 +950,7 @@ class BrushTool(CloneTool):
                 bl.blockData = data[0][0][0]
             self.showPanel()
 
-        if leveleditor.Settings.rotateBlockBrush.get() or blocksOnly:
+        if config.settings.rotateBlockBrush.get() or blocksOnly:
             rotateBlock()
         if not blocksOnly:
             W = self.options['W']
@@ -973,7 +973,7 @@ class BrushTool(CloneTool):
                 bl.blockData = data[0][0][0]
             self.showPanel()
 
-        if leveleditor.Settings.rotateBlockBrush.get() or blocksOnly:
+        if config.settings.rotateBlockBrush.get() or blocksOnly:
             rollBlock()
         if not blocksOnly:
             H = self.options['H']
