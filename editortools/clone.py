@@ -95,7 +95,7 @@ class CoordsInput(Widget):
 
 
 class BlockCopyOperation(Operation):
-    def __init__(self, editor, sourceLevel, sourceBox, destLevel, destPoint, copyAir, copyWater, copyBiomes, staticCommands, moveSpawnerPos):
+    def __init__(self, editor, sourceLevel, sourceBox, destLevel, destPoint, copyAir, copyWater, copyBiomes, staticCommands, moveSpawnerPos, regenerateUUID):
         super(BlockCopyOperation, self).__init__(editor, destLevel)
         self.sourceLevel = sourceLevel
         self.sourceBox = sourceBox
@@ -105,6 +105,7 @@ class BlockCopyOperation(Operation):
         self.copyBiomes = copyBiomes
         self.staticCommands = staticCommands
         self.moveSpawnerPos = moveSpawnerPos
+        self.regenerateUUID = regenerateUUID
         self.sourceBox, self.destPoint = block_copy.adjustCopyParameters(self.level, self.sourceLevel, self.sourceBox,
                                                                          self.destPoint)
 
@@ -135,7 +136,7 @@ class BlockCopyOperation(Operation):
 
         with setWindowCaption("Copying - "):
             i = self.level.copyBlocksFromIter(self.sourceLevel, self.sourceBox, self.destPoint, blocksToCopy,
-                                              create=True, biomes=self.copyBiomes, staticCommands=self.staticCommands, moveSpawnerPos=self.moveSpawnerPos, first=False)
+                                              create=True, biomes=self.copyBiomes, staticCommands=self.staticCommands, moveSpawnerPos=self.moveSpawnerPos, regenerateUUID=self.regenerateUUID, first=False)
             showProgress(_("Copying {0:n} blocks...").format(self.sourceBox.volume), i)
 
     def bufferSize(self):
@@ -144,7 +145,7 @@ class BlockCopyOperation(Operation):
 
 class CloneOperation(Operation):
     def __init__(self, editor, sourceLevel, sourceBox, originSourceBox, destLevel, destPoint, copyAir, copyWater,
-                 copyBiomes, staticCommands, moveSpawnerPos,repeatCount):
+                 copyBiomes, staticCommands, moveSpawnerPos, regenerateUUID, repeatCount):
         super(CloneOperation, self).__init__(editor, destLevel)
 
         self.blockCopyOps = []
@@ -156,7 +157,7 @@ class CloneOperation(Operation):
 
         for i in range(repeatCount):
             op = BlockCopyOperation(editor, sourceLevel, sourceBox, destLevel, destPoint, copyAir, copyWater,
-                                    copyBiomes, staticCommands, moveSpawnerPos)
+                                    copyBiomes, staticCommands, moveSpawnerPos, regenerateUUID)
             dirty = op.dirtyBox()
 
             # bounds check - xxx move to BoundingBox
@@ -340,6 +341,14 @@ class CloneToolPanel(Panel):
 
         moveSpawnerPosRow = Row((self.moveSpawnerPosCheckBox, self.moveSpawnerPosLabel))
 
+        self.regenerateUUIDCheckBox = CheckBox(ref=AttrRef(self.tool, "regenerateUUID"))
+        self.regenerateUUIDLabel = Label("Regenerate UUID")
+        self.regenerateUUIDLabel.mouse_down = self.regenerateUUIDCheckBox.mouse_down
+        self.regenerateUUIDLabel.tooltipText = "Check to automatically generate new UUIDs for entities.\nShortcut: Alt-6"
+        self.regenerateUUIDCheckBox.tooltipText = self.regenerateUUIDLabel.tooltipText
+
+        regenerateUUIDRow = Row((self.regenerateUUIDCheckBox, self.regenerateUUIDLabel))
+
         self.performButton = Button("Clone", width=100, align="c")
         self.performButton.tooltipText = "Shortcut: Enter"
         self.performButton.action = tool.confirm
@@ -347,11 +356,11 @@ class CloneToolPanel(Panel):
         if self.useOffsetInput:
             col = Column((
             rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.offsetInput, repeatRow, scaleRow, copyAirRow,
-            copyWaterRow, copyBiomesRow, staticCommandsRow, moveSpawnerPosRow,self.performButton))
+            copyWaterRow, copyBiomesRow, staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow, self.performButton))
         else:
             col = Column((
             rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.nudgeButton, copyAirRow, copyWaterRow, copyBiomesRow,
-            staticCommandsRow, moveSpawnerPosRow,self.performButton))
+            staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow, self.performButton))
 
         self.add(col)
         self.anchor = "lwh"
@@ -444,6 +453,7 @@ class CloneTool(EditorTool):
     copyBiomes = config.clone.copyBiomes.property()
     staticCommands = config.clone.staticCommands.property()
     moveSpawnerPos = config.clone.moveSpawnerPos.property()
+    regenerateUUID = config.clone.regenerateUUID.property()
 
     def nudge(self, nudge):
         if self.destPoint is None:
@@ -1044,6 +1054,7 @@ class CloneTool(EditorTool):
                             copyBiomes=self.copyBiomes,
                             staticCommands=self.staticCommands,
                             moveSpawnerPos=self.moveSpawnerPos,
+                            regenerateUUID=self.regenerateUUID,
                             repeatCount=self.repeatCount)
 
         self.editor.toolbar.selectTool(

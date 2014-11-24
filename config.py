@@ -500,6 +500,7 @@ definitions = {
         ("copyBiomes", "Copy Biomes", True),
         ("staticCommands", "Change Coordinates", False),
         ("moveSpawnerPos", "Change Spawners Pos", False),
+        ("regenerateUUID", "Regenerate UUIDs", True),
         ("placeImmediately", "Place Immediately", True)
     ],
     ("fill", "Fill"): [
