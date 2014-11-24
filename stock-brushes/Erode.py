@@ -14,7 +14,7 @@ def createInputs(self):
     {'Minimum Spacing': 1}
     )
 
-def apply(op, point):
+def apply(self, op, point):
     brushBox = op.tool.getDirtyBox(point, op.tool.getBrushSize()).expand(1)
 
     if brushBox.volume > 1048576:
