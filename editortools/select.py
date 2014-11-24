@@ -1160,6 +1160,8 @@ class SelectionTool(EditorTool):
     @alertException
     def deleteEntities(self, recordUndo=True):
         box = self.selectionBox()
+        if box is None:
+            return
 
         with setWindowCaption("WORKING - "):
             self.editor.freezeStatus("Removing entities...")
