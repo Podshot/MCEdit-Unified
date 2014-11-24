@@ -150,8 +150,13 @@ class BrushPanel(Panel):
             importRow = Row([importButton])
             optionsColumn.append(importRow)
             stack = tool.editor.copyStack
-            if len(stack) != 0:
+            if len(stack) == 0:
+                tool.importPaste()
+            else:
                 tool.loadLevel(stack[0])
+            tool.centery = 0
+            tool.centerx = -(tool.level.Width / 2)
+            tool.centerz = -(tool.level.Length / 2)
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -575,7 +580,8 @@ class BrushTool(CloneTool):
                 pass
             elif key == "Mode":
                 self.selectedBrushMode = loadedBrushOptions[key]
-                self.brushMode = self.brushModes[self.selectedBrushMode]
+                if self.selectedBrushMode in self.brushModes.keys():
+                    self.brushMode = self.brushModes[self.selectedBrushMode]
             else:
                 self.options[key] = loadedBrushOptions[key]
         self.setupPreview()
