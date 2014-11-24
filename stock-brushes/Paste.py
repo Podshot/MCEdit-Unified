@@ -3,8 +3,10 @@ from editortools.brush import createBrushMask
 import mcplatform
 import pymclevel
 from pymclevel import BoundingBox
+
 displayName = 'Paste'
 addPasteButton = True
+disableStyleButton = True
 
 def createInputs(self):
     self.inputs= (         

@@ -10,6 +10,7 @@ import logging
 log = logging.getLogger(__name__)
 
 displayName = 'Flood Fill'
+disableStyleButton = True
 
 def createInputs(self):
     self.inputs = (
