@@ -149,6 +149,9 @@ class BrushPanel(Panel):
             importButton = Button("Import", action=tool.importPaste)
             importRow = Row([importButton])
             optionsColumn.append(importRow)
+            stack = tool.editor.copyStack
+            if len(stack) != 0:
+                tool.loadLevel(stack[0])
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -575,7 +578,6 @@ class BrushTool(CloneTool):
                 self.brushMode = self.brushModes[self.selectedBrushMode]
             else:
                 self.options[key] = loadedBrushOptions[key]
-        print self.options
         self.setupPreview()
         self.showPanel()
 
@@ -989,11 +991,6 @@ class BrushTool(CloneTool):
                 return
 
     def loadLevel(self, level):
-        self.level = level
-        self.minimumSpacing = min([s / 4 for s in level.size])
-        self.centerx, self.centery, self.centerz = -level.Width / 2, 0, -level.Length / 2
-        CloneTool.setupPreview(self)
-
         self.level = level
         self.options['Minimum Spacing'] = min([s / 4 for s in level.size])
         self.options['centerx'] = -level.Width / 2
