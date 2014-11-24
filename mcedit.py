@@ -390,13 +390,14 @@ class OptionsPanel(Dialog):
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
         lng = config.settings.langCode.get()
-        if type(lng) == str and type(DEF_ENC) == str and DEF_ENC != None and lng != None:
-            lng = lng.decode(DEF_ENC)
-        langNames = self.getLanguageChoices(lng).keys()
-        langNames.sort()
+
+        langs = sorted(self.getLanguageChoices().items())
+
+        langNames = [k for k, v in langs]
+
         self.languageButton = mceutils.ChoiceButton(langNames, choose=self.changeLanguage)
-        if lng in self.languageButton.choices:
-            self.languageButton.selectedChoice = lng
+        if self.sgnal[lng] in self.languageButton.choices:
+            self.languageButton.selectedChoice = self.sgnal[lng]
 
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
@@ -489,9 +490,11 @@ class OptionsPanel(Dialog):
         return langs
 
     def changeLanguage(self):
-        lng = self.languageButton.selectedChoice
-        if type(lng) == unicode: # and DEF_ENC != "UTF-8":
-            lng = lng.encode(DEF_ENC)
+        langName = self.languageButton.selectedChoice
+        if langName not in self.langs:
+            lng = "en_US"
+        else:
+            lng = self.langs[langName]
         config.settings.langCode.set(lng)
 
     def portableButtonTooltip(self):
@@ -530,25 +533,16 @@ class OptionsPanel(Dialog):
     def dismiss(self, *args, **kwargs):
         """Used to change the language."""
         lng = config.settings.langCode.get()
-        if type(lng) == str and type(DEF_ENC) == str and DEF_ENC != None and lng != None:
-            lng = lng.decode(DEF_ENC)
         try:
-            o, n, sc = albow.translate.setLang(self.langs[lng])
+            o, n, sc = albow.translate.setLang(lng)
         except:
-            o, n, sc = albow.translate.setLang(self.sgnal[lng])
-        if type(o) == str:
-            o = o.encode("utf-8")
-        if type(n) == str:
-            n = n.encode("utf-8")
-        if not sc and n != u"en_US":
+            o, n, sc = albow.translate.setLang(self.langs[lng])
+        if not sc and n != "en_US":
             albow.alert(_("{} is not a valid language").format("%s [%s]"%(self.sgnal[n], n)))
             if o == n:
-                o = u"en_US"
-            config.settings.langCode.set(self.sgnal.get(o))
-            lng = config.settings.langCode.get()
-            if type(lng) == str and lng != None:
-                lng = lng.decode("utf-8")
-            albow.translate.setLang(lng)
+                o = "en_US"
+            config.settings.langCode.set(o)
+            albow.translate.setLang(o)
         elif o != n:
             editor = self.mcedit.editor
             if editor and editor.unsavedEdits:
@@ -581,11 +575,12 @@ class MCEdit(GLViewport):
 
         self.optionsPanel = OptionsPanel(self)
         if not albow.translate.buildTemplate:
-            langs = self.optionsPanel.getLanguageChoices()
+            self.optionsPanel.getLanguageChoices()
             lng = config.settings.langCode.get()
-            # if type(lng) == str and type(DEF_ENC) == str:
-            #     lng = lng.decode(DEF_ENC)
-            albow.translate.setLang(langs.get(lng, "English (US)"))
+            if lng not in self.optionsPanel.sgnal:
+                lng = "en_US"
+                config.settings.langCode.set(lng)
+            albow.translate.setLang(lng)
         self.optionsPanel.initComponents()
         self.graphicsPanel = graphicsPanel(self)
 

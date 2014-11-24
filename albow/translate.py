@@ -105,14 +105,14 @@ strNum = 0
 template = {} # {"string": number}
 buildTemplate = False
 trnHeader = """# TRANSLATION BASICS
-# 
+#
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
 # As long as the numbers match, it will translate the specified English string to the new language.
 # Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes and other special characters can be used.
-# 
+#
 # The space (' ') separating the strings from the numbers is mandatory.
 # The file must also be encoded in UTF-8 or it won't work. Most editors should support this.
-# 
+#
 # See TRANSLATION.txt for more detailed information.
 #"""
 
@@ -212,7 +212,7 @@ def setLangPath(path):
         global langPath
         langPath = path
         return True
-    lg.debug("'path' is not valid")
+    log.debug("'path' is not valid")
     log.debug("setLangPath >>>")
     return False
 
