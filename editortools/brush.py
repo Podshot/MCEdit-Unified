@@ -149,11 +149,6 @@ class BrushPanel(Panel):
             importButton = Button("Import", action=tool.importPaste)
             importRow = Row([importButton])
             optionsColumn.append(importRow)
-            stack = tool.editor.copyStack
-            if len(stack) == 0:
-                tool.importPaste()
-            else:
-                tool.loadLevel(stack[0])
         optionsColumn = Column(optionsColumn)
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -541,6 +536,13 @@ class BrushTool(CloneTool):
             print 'No __temp__ file found.'
             self.showPanel()
             self.setupPreview()
+        if getattr(self.brushMode, 'addPasteButton', False):
+            stack = self.editor.copyStack
+            if len(stack) == 0:
+                self.importPaste()
+            else:
+                self.loadLevel(stack[0])
+
         
     
     def saveBrushPreset(self, name):
@@ -571,7 +573,6 @@ class BrushTool(CloneTool):
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
-        print loadedBrushOptions
         for key in loadedBrushOptions:
             if key.endswith('blockID'):
                 self.options[key[:-7]] = self.editor.level.materials.blockWithID(loadedBrushOptions[key], loadedBrushOptions[key[:-7] + 'blockData'])
@@ -887,7 +888,7 @@ class BrushTool(CloneTool):
             self.optionBackup = copy.copy(self.options)
         if not hasattr(self, 'brushMode'):
             return
-        if self.options[getattr(self.brushMode, 'mainBlock', 'Block')] != self.renderedBlock:
+        if self.options[getattr(self.brushMode, 'mainBlock', 'Block')] != self.renderedBlock and not getattr(self.brushMode, 'addPasteButton', False):
             self.setupPreview()
             self.renderedBlock = self.options[getattr(self.brushMode, 'mainBlock', 'Block')]
         
@@ -985,7 +986,6 @@ class BrushTool(CloneTool):
         Hack for paste to import a level.
         """
         clipFilename = mcplatform.askOpenFile(title='Choose a schematic or level...', schematics=True)
-        # xxx mouthful
         if clipFilename:
             try:
                 self.loadLevel(pymclevel.fromFile(clipFilename, readonly=True))
