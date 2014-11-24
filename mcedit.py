@@ -583,7 +583,7 @@ class MCEdit(GLViewport):
         if not albow.translate.buildTemplate:
             langs = self.optionsPanel.getLanguageChoices()
             lng = config.settings.langCode.get()
-            if type(lng) == str and lng != None:
+            if type(lng) == str and type(DEF_ENC) == str:
                 lng = lng.decode(DEF_ENC)
             albow.translate.setLang(langs.get(lng, "English (US)"))
         self.optionsPanel.initComponents()
