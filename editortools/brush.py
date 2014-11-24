@@ -145,7 +145,7 @@ class BrushPanel(Panel):
                 row.append(field)
             row = Row(row)
             optionsColumn.append(row)
-        if getattr(tool.brushMode, 'addPasteButton', False) :
+        if getattr(tool.brushMode, 'addPasteButton', False):
             importButton = Button("Import", action=tool.importPaste)
             importRow = Row([importButton])
             optionsColumn.append(importRow)
@@ -535,7 +535,12 @@ class BrushTool(CloneTool):
         if self.settings['updateBrushOffset']:
             self.reticleOffset = self.offsetMax()
         self.resetToolDistance()
-        self.loadBrushPreset('__temp__')
+        if os.path.isfile(os.path.join(directories.brushesDir, '__temp__.preset')):
+            self.loadBrushPreset('__temp__')
+        else:
+            print 'No __temp__ file found.'
+            self.showPanel()
+            self.setupPreview()
         
     
     def saveBrushPreset(self, name):
@@ -564,10 +569,6 @@ class BrushTool(CloneTool):
         try:
             f = open(os.path.join(directories.brushesDir, name), "r")
         except:
-            if name == '__temp__.preset':
-                self.setupPreview()
-                self.showPanel()
-                return
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
         for key in loadedBrushOptions:
@@ -580,8 +581,8 @@ class BrushTool(CloneTool):
                 self.brushMode = self.brushModes[self.selectedBrushMode]
             else:
                 self.options[key] = loadedBrushOptions[key]
-        self.setupPreview()
         self.showPanel()
+        self.setupPreview()
 
         
     @property
