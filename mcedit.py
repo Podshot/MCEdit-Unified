@@ -390,7 +390,7 @@ class OptionsPanel(Dialog):
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
         lng = config.settings.langCode.get()
-        if type(lng) == str: # and DEF_ENC != "UTF-8":
+        if type(lng) == str and lng is not None: # and DEF_ENC != "UTF-8":
             lng = lng.decode(DEF_ENC)
         langNames = self.getLanguageChoices(lng).keys()
         langNames.sort()
