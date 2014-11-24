@@ -579,8 +579,8 @@ class BrushTool(CloneTool):
             elif key.endswith('blockData'):
                 pass
             elif key == "Mode":
-                self.selectedBrushMode = loadedBrushOptions[key]
                 if self.selectedBrushMode in self.brushModes.keys():
+                    self.selectedBrushMode = loadedBrushOptions[key]
                     self.brushMode = self.brushModes[self.selectedBrushMode]
             else:
                 self.options[key] = loadedBrushOptions[key]
