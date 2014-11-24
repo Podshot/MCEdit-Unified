@@ -55,31 +55,6 @@ from __builtin__ import __import__
 
 log = logging.getLogger(__name__)
 
-class BrushMode(object):
-    def apply(self, op, point):
-        """
-        Called by BrushOperation for brush modes that can't be implemented using applyToChunk
-        """
-        pass
-
-    def applyToChunk(self, op, chunk, point):
-        """
-        Called by BrushOperation to apply this brush mode to the given chunk with a brush centered on point.
-        Default implementation will compute:
-          brushBox: a BoundingBox for the world area affected by this brush,
-          brushBoxThisChunk: a box for the portion of this chunk affected by this brush,
-          slices: a tuple of slices that can index the chunk's Blocks array to select the affected area.
-
-        These three parameters are passed to applyToChunkSlices along with the chunk and the brush operation.
-        Brush modes must implement either applyToChunk or applyToChunkSlices
-        """
-        brushBox = self.brushBoxForPointAndOptions(point, op.options)
-
-        brushBoxThisChunk, slices = chunk.getChunkSlicesForBox(brushBox)
-        if brushBoxThisChunk.volume == 0: return
-
-        return self.applyToChunkSlices(op, chunk, slices, brushBox, brushBoxThisChunk)
-
 class BrushOperation(Operation):
     def __init__(self, tool):
         super(BrushOperation, self).__init__(tool.editor, tool.editor.level)
@@ -87,7 +62,7 @@ class BrushOperation(Operation):
         self.points = tool.draggedPositions
         self.options = tool.options
         self.brushMode = tool.brushMode
-        boxes = [self.tool.getDirtyBox(p, self.tool.getBrushSize()) for p in self.points]
+        boxes = [self.tool.getDirtyBox(p, self.tool) for p in self.points]
         self._dirtyBox = reduce(lambda a, b: a.union(b), boxes)
 
     def dirtyBox(self):
@@ -116,7 +91,7 @@ class BrushOperation(Operation):
                         continue
                     chunk = self.level.getChunk(*cPos)
                     for i, point in enumerate(self.points):
-                        brushBox = self.tool.getDirtyBox(point, self.tool.getBrushSize())
+                        brushBox = self.tool.getDirtyBox(point, self.tool)
                         brushBoxThisChunk, slices = chunk.getChunkSlicesForBox(brushBox)
                         f = self.brushMode.applyToChunkSlices(self, chunk, slices, brushBox, brushBoxThisChunk)
                         if brushBoxThisChunk.volume == 0: f = None
@@ -197,6 +172,8 @@ class BrushPanel(Panel):
             object = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma)
         elif type == 'bool':
             object = CheckBoxLabel(key, ref=reference)
+        elif type == 'function':
+            object = Button(key, action=value)
         elif type == 'Block':
             if not hasattr(self.tool.recentBlocks, key):
                 self.tool.recentBlocks[key] = []
@@ -566,7 +543,7 @@ class BrushTool(CloneTool):
                 optionsToSave[key + 'blockData'] = self.options[key].blockData
             else:
                 optionsToSave[key] = self.options[key]
-        optionsToSave["Mode"] = self.selectedBrushMode
+        optionsToSave["Mode"] = getattr(self, 'selectedBrushMode', 'Fill')
         name = name + ".preset"
         f = open(os.path.join(directories.brushesDir, name), "w")
         f.write(repr(optionsToSave))
@@ -881,13 +858,14 @@ class BrushTool(CloneTool):
                                    (0.75, 0.75, 0.1, 0.4),
                                    (1.0, 1.0, 0.5, 1.0))
             
-    def getDirtyBox(self, point, size):
+    def getDirtyBox(self, point, tool):
         """
         Returns a box around the Brush given point and size of the brush.
         """
         if hasattr(self.brushMode, 'createDirtyBox'):
-            return self.brushMode.createDirtyBox(point, size)
+            return self.brushMode.createDirtyBox(point, tool)
         else:
+            size = tool.getBrushSize()
             origin = map(lambda x, s: x - (s >> 1), point, size)
             return BoundingBox(origin, size)
         
@@ -916,7 +894,7 @@ class BrushTool(CloneTool):
                 with gl.glBegin(GL.GL_LINES):
                     GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))  #Center of reticle block
                     GL.glVertex3f(*map(lambda a, b: a + 0.5 + b * 0.5, pos, direction))  #Top side of surface block
-            dirtyBox = self.getDirtyBox(reticlePoint, self.getBrushSize())
+            dirtyBox = self.getDirtyBox(reticlePoint, self)
             self.drawTerrainPreview(dirtyBox.origin)
             if self.lineToolKey == True and len(self.draggedPositions) and getattr(self.brushMode, 'draggableBrush', True): #If dragging mouse with Linetool pressed.
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
