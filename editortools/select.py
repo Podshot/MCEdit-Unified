@@ -132,10 +132,6 @@ class SelectionToolPanel(Panel):
         nudgeBlocksButton.bg_color = (0.3, 1.0, 0.3, 0.35)
         self.nudgeBlocksButton = nudgeBlocksButton
 
-        nudgeSelectionButton = NudgeButton(self.editor)
-        nudgeSelectionButton.nudge = tool.nudgeSelection
-        nudgeSelectionButton.bg_color = tool.selectionColor + (0.7,)
-
         deleteBlocksButton = Button("Delete Blocks", action=self.tool.deleteBlocks)
         deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: {0}").format(config.config.get('Keys', 'Delete Blocks'))
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
@@ -168,9 +164,8 @@ class SelectionToolPanel(Panel):
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
-        nudgeRow = Row((nudgeBlocksButton, nudgeSelectionButton))
         buttonsColumn = (
-            nudgeRow,
+            nudgeBlocksButton,
             deselectButton,
             selectButton,
             deleteBlocksButton,
@@ -547,21 +542,31 @@ class SelectionTool(EditorTool):
 
             self.editor.add(self.nudgePanel)
 
+            self.nudgeSelectionButton = NudgeButton(self.editor)
+            self.nudgeSelectionButton.nudge = self.nudgeSelection
+            self.nudgeSelectionButton.bg_color = self.selectionColor + (0.7,)
+            self.nudgeSelectionButton.anchor = "twh"
+
         if hasattr(self, 'sizeLabel'):
             self.nudgePanel.remove(self.sizeLabel)
         self.sizeLabel = Label(self.sizeLabelText())
-        self.sizeLabel.anchor = "twh"
+        self.sizeLabel.anchor = "wh"
         self.sizeLabel.tooltipText = _("{0:n} blocks").format(self.selectionBox().volume)
 
         # self.nudgePanelColumn = Column( (self.sizeLabel, self.nudgeRow) )
         self.nudgePanel.top = self.nudgePanel.left = 0
 
         self.nudgePanel.add(self.sizeLabel)
+
+        self.nudgePanel.add(self.nudgeSelectionButton)
+        self.nudgePanel.height += (self.nudgeSelectionButton.height + self.sizeLabel.height)
         self.nudgeRow.top = self.sizeLabel.bottom
+        self.sizeLabel.top = self.nudgeSelectionButton.bottom
 
         self.nudgePanel.shrink_wrap()
         self.sizeLabel.centerx = self.nudgePanel.centerx
         self.nudgeRow.centerx = self.nudgePanel.centerx
+        self.nudgeSelectionButton.centerx = self.nudgePanel.centerx
 
         self.nudgePanel.bottom = self.editor.toolbar.top
         self.nudgePanel.centerx = self.editor.centerx
