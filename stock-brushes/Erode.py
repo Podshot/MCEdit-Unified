@@ -15,14 +15,14 @@ def createInputs(self):
     )
 
 def apply(self, op, point):
-    brushBox = op.tool.getDirtyBox(point, op.tool.getBrushSize()).expand(1)
+    brushBox = op.tool.getDirtyBox(point, op.tool).expand(1)
 
     if brushBox.volume > 1048576:
         print "Affected area is too big for this brush mode"
         return
-    
+
     erosionStrength = op.options["Strength"]
-    
+
     erosionArea = op.level.extractSchematic(brushBox, entities=False)
     if erosionArea is None:
         return
