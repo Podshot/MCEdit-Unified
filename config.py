@@ -156,6 +156,8 @@ class ConfigValue(object):
         try:
             if self.type is bool:
                 return self.config.getboolean(self.section, self.name)
+            if self.type is unicode:
+                return self.type(self.config.get(self.section, self.name).decode(DEF_ENC))
             return self.type(self.config.get(self.section, self.name))
         except:
             if self.default is None:
@@ -176,6 +178,8 @@ class ConfigValue(object):
 
     def set(self, value):
         log.debug("Property Change: %15s %30s = %s", self.section, self.name, value)
+        if self.type is unicode and type(value) is unicode:
+            value = value.encode(DEF_ENC)
         self.config.set(self.section, self.name, str(value))
         self._notifyObservers(value)
 
@@ -478,7 +482,7 @@ definitions = {
         ("viewMode", "View Mode", "Camera"),
         ("undoLimit", "Undo Limit", 20),
         ("recentWorlds", "Recent Worlds", ['']),
-        ("resourcePack", "Resource Pack", "Default")
+        ("resourcePack", "Resource Pack", u"Default")
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

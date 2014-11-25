@@ -765,15 +765,15 @@ class ResourcePackHandler:
             pass
         self._resource_packs = setup_resource_packs()
         self._selected_resource_pack = config.settings.resourcePack.get()
-        if DEF_ENC == "UTF-8" and type(self._selected_resource_pack) == str:
-            self._selected_resource_pack = self._selected_resource_pack.decode(DEF_ENC)
-        else:
-            try:
-                self._selected_resource_pack = self._selected_resource_pack.encode(DEF_ENC)
-                if self._selected_resource_pack.startswith("u'"):
-                    self._selected_resource_pack = eval(self._selected_resource_pack)
-            except Exception, e:
-                print e
+        # if DEF_ENC == "UTF-8" and type(self._selected_resource_pack) == str:
+        #     self._selected_resource_pack = self._selected_resource_pack.decode(DEF_ENC)
+        # else:
+        #     try:
+        #         self._selected_resource_pack = self._selected_resource_pack.encode(DEF_ENC)
+        #         if self._selected_resource_pack.startswith("u'"):
+        #             self._selected_resource_pack = eval(self._selected_resource_pack)
+        #     except Exception, e:
+        #         print e
         if self._selected_resource_pack not in self._resource_packs.keys():
             self.set_selected_resource_pack_name("Default")
 
