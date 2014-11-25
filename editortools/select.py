@@ -452,6 +452,9 @@ class SelectionTool(EditorTool):
         from albow import theme
 
         theme.root.sel_color = tuple(int(x * 112) for x in self.selectionColor)
+        if self.nudgePanel is not None:
+        	self.hideNudgePanel()
+        	self.showPanel()
 
     # --- Nudge functions ---
 
