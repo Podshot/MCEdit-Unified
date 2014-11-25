@@ -767,15 +767,12 @@ class CameraViewport(GLViewport):
         nameField = TextField(width=100)
         trackOutput = CheckBox()
 
-        if tileEntity["Command"].value != "":
-            commandField.value = tileEntity["Command"].value
-            oldCommand = commandField.value
-        if "TrackOutput" in tileEntity:
-            trackOutput.value = tileEntity["TrackOutput"].value
-            oldTrackOutput = trackOutput.value
-        if "CustomName" in tileEntity:
-            nameField.value = tileEntity["CustomName"].value
-            oldNameField = nameField.value
+        commandField.value = tileEntity["Command"].value
+        oldCommand = commandField.value
+        trackOutput.value = tileEntity["TrackOutput"].value
+        oldTrackOutput = trackOutput.value
+        nameField.value = tileEntity["CustomName"].value
+        oldNameField = nameField.value
 
         def updateCommandBlock():
             if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value:
