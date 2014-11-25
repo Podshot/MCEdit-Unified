@@ -3021,8 +3021,15 @@ class LevelEditor(GLViewport):
         else:
             levelFormat = "Unknown"
         formatLabel = Label(levelFormat)
-        items.append(Label("Format:"))
-        items.append(formatLabel)
+        items.append(Row([Label("Format:"),formatLabel]))
+        
+        nameField = TextField(width=150, ref=AttrRef(self.level, 'LevelName'))
+        def alt21():
+            print nameField.get_text_and_insertion_point()
+            nameField.insert_char(u'\xa7')
+        alt21button = Button(u"\xa7", action=alt21)
+        label = Label("Name:")
+        items.append(Row((label, nameField,alt21button)))
 
         if hasattr(self.level, 'Time'):
             time = self.level.Time
@@ -3065,11 +3072,11 @@ class LevelEditor(GLViewport):
             b = Button(gametype(t), action=action)
             b.gametype = t
 
+
             gametypeRow = Row((Label("Game Type: "), b))
-
             items.append(gametypeRow)
-
         if isinstance(self.level, pymclevel.MCInfdevOldLevel):
+
             chunkCount = self.level.chunkCount
             chunkCountLabel = Label(_("Number of chunks: {0}").format(chunkCount))
 
