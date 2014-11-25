@@ -2418,18 +2418,16 @@ class LevelEditor(GLViewport):
         if self.level:
             if None != f:
                 (focusPoint, direction) = f
-                self.currentTool.mouseDown(evt, focusPoint, direction)
                 if focusPoint is not None and direction is not None:
                     self.currentTool.mouseDown(evt, focusPoint, direction)
- 
+
     def toolMouseUp(self, evt, f):  # xxx f is a tuple
          if self.level:
              if None != f:
                  (focusPoint, direction) = f
-                 self.currentTool.mouseUp(evt, focusPoint, direction)
                  if focusPoint is not None and direction is not None:
                     self.currentTool.mouseUp(evt, focusPoint, direction)
- 
+
     def mouse_up(self, evt):
          button = keys.remapMouseButton(evt.button)
          evt.dict['keyname'] = "mouse{0}".format(button)
@@ -3026,7 +3024,7 @@ class LevelEditor(GLViewport):
             levelFormat = "Unknown"
         formatLabel = Label(levelFormat)
         items.append(Row([Label("Format:"),formatLabel]))
-        
+
         nameField = TextField(width=150, ref=AttrRef(self.level, 'LevelName'))
         def alt21():
             print nameField.get_text_and_insertion_point()
