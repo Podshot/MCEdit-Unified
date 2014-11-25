@@ -989,7 +989,7 @@ class MCEdit(GLViewport):
         self.editor.renderer.discardAllChunks()
         self.editor.deleteAllCopiedSchematics()
         python = sys.executable
-        os.execl(python, python, * sys.argv)
+        os.execl(python, python, * sys.argv[1:])
 
 def main(argv):
     """
