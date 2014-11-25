@@ -22,6 +22,8 @@ import ConfigParser
 
 from locale import getdefaultlocale
 DEF_ENC = getdefaultlocale()[1]
+if DEF_ENC is None:
+    DEF_ENC = "UTF-8"
 
 import directories
 import weakref
@@ -293,7 +295,7 @@ class ColorValue(ListValue):
 
     def get(self):
         values = super(ColorValue, self).get()
-        return (min(max(x, 0.0), 1.0) for x in values)
+        return tuple(min(max(x, 0.0), 1.0) for x in values)
 
 
 class ConfigDict(collections.MutableMapping):
