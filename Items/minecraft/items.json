@@ -916,7 +916,7 @@
     "chicken": {
         "id": 365, 
         "name": "Raw Chicken", 
-        "texture": "chicked_raw.png",
+        "texture": "chicken_raw.png",
         "optainable": true, 
         "maxdamage": 0, 
         "stacksize": 64
