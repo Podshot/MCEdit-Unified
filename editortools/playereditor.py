@@ -41,6 +41,7 @@ class Inventory(Dialog):
 
         self.click_outside_response = 0
 
+
         self.playerInv = playerTag["Inventory"]
         inv = []
         hotbar = []
@@ -72,4 +73,6 @@ class Inventory(Dialog):
 
         self.add(background)
         self.add(col)
+
+        self.shrink_wrap()
 

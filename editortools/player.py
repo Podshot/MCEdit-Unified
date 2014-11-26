@@ -188,6 +188,7 @@ class PlayerAddOperation(Operation):
 class PlayerEditOperation(Operation):
     undoTag = None
 
+
     def __init__(self, tool, player="Player"):
         super(PlayerEditOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
