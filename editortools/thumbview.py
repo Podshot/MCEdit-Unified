@@ -1,11 +1,14 @@
 from OpenGL import GLU, GL
 from numpy import array
-from albow import Widget
+from albow import Widget, Image
 from albow.openglwidgets import GLPerspective
 from glutils import FramebufferTexture, gl
 import pymclevel
+from pymclevel.items import items
 from renderer import PreviewRenderer
-
+import os
+import pygame
+import directories
 
 class ThumbView(GLPerspective):
     def __init__(self, sch, **kw):
@@ -108,3 +111,50 @@ class BlockThumbView(Widget):
             self.thumb.drawBackground = False
             for i in self.thumb.renderer.chunkWorker:
                 pass
+
+
+class ItemThumbView(Widget):
+
+    def __init__(self, materials, id_, data, **kw):
+        Widget.__init__(self, **kw)
+        self.materials = materials
+        self.id_ = id_
+        self.data = data
+        if "texture" in items.items[id_]:
+            self.setAsItem()
+        else:
+            self.setAsBlock()
+
+    thumb = None
+
+    def setAsItem(self):
+        self.is_gl_container = False
+        if self.thumb:
+            self.thumb.set_parent(None)
+
+        texture = items.items[self.id_]["texture"]
+        if type(texture) != str and type(texture) != unicode:
+            if len(texture) -1 >= self.data:
+                texture = texture[self.data]
+        image = pygame.image.load(os.path.join(directories.getDataDir(), "item-textures", self.id_.split(":")[0], texture))
+        image = pygame.transform.scale(image, (48, 48))
+        self.thumb = Image(image)
+        self.add(self.thumb)
+        self.thumb.size = self.size
+
+    def setAsBlock(self):
+        self.is_gl_container = True
+
+        if self.thumb:
+            self.thumb.set_parent(None)
+
+        sch = pymclevel.MCSchematic(shape=(1, 1, 1), mats=self.materials)
+        sch.Blocks[:] = items.items[self.id_]["id"]
+        sch.Data[:] = self.data
+
+        self.thumb = ThumbView(sch)
+        self.add(self.thumb)
+        self.thumb.size = self.size
+        self.thumb.drawBackground = False
+        for i in self.thumb.renderer.chunkWorker:
+            pass

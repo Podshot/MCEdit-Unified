@@ -916,7 +916,7 @@
     "chicken": {
         "id": 365, 
         "name": "Raw Chicken", 
-        "texture": "chicked_raw.png",
+        "texture": "chicken_raw.png",
         "optainable": true, 
         "maxdamage": 0, 
         "stacksize": 64
@@ -977,7 +977,6 @@
         "maxdamage": 0, 
         "stacksize": 64
     }, 
-    "_comment":"Datavalues not supported yet!",
     "potion": {
         "id": 373, 
         "name": "Potion", 
@@ -1058,7 +1057,6 @@
         "maxdamage": 0, 
         "stacksize": 64
     }, 
-    "_comment2": "Datavalues not Supported yet!",
     "spawn_egg": {
         "id": 383, 
         "name": "Spawn Egg", 

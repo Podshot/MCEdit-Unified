@@ -48,33 +48,38 @@ class Items(object):
             except:
                 pass
             try:
-                f = open(os.path.join(itemsdir, file_, "blocks.json"))
-                itempack = json.load(f.read())
+                f = open(os.path.join(itemsdir, file_, "blocks.json"), 'r')
+                itempack = json.load(f)
 
                 itempacknew = {}
 
                 for item in itempack:
-                    itempacknew[file_ + ":" + item] = itempack.pop(item)
+                    itempacknew[file_ + ":" + item] = itempack.get(item)
                 self.items.update(itempacknew)
             except:
                 pass
         
 
-    def findItem(self, id=0, damage=None):
+    def findItem(self, id_=0, damage=None):
         try:
-            item = self.items[id]
+            item = self.items[id_]
         except:
             item = [self.items[x] for x in self.items if self.items[x]["id"] == id][0]
         if damage <= item["maxdamage"]:
             if type(item["name"]) == str or type(item["name"]) == unicode:
-                return ItemType(id, item["name"], item["maxdamage"], damage, item["stacksize"])
+                return ItemType(id_, item["name"], item["maxdamage"], damage, item["stacksize"])
             else:
                 if type(item["name"][damage]) == str or type(item["name"][damage]) == unicode:
-                    return ItemType(id, item["name"][damage], item["maxdamage"], damage, item["stacksize"])
+                    return ItemType(id_, item["name"][damage], item["maxdamage"], damage, item["stacksize"])
                 else: 
                     raise ItemNotFound()
         else:
             raise ItemNotFound()
+
+    def getNewId(self, id_=0):
+        if type(id_) != str and type(id_) != unicode:
+            id_ = [x for x in self.items if self.items[x]["id"] == id_]
+        return id_
 
 class ItemNotFound(KeyError):
     pass

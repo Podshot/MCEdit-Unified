@@ -188,14 +188,14 @@ class PlayerAddOperation(Operation):
 class PlayerEditOperation(Operation):
     undoTag = None
 
-    def __init__(self, tool, pos, player="Player"):
+    def __init__(self, tool, player="Player"):
         super(PlayerEditOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
         self.level = self.tool.editor.level
         self.player = player
 
     def perform(self, recordUndo=True):
-        inv = Inventory(self.player, self.level.getPlayerTag(self.player))
+        inv = Inventory(version_utils.getPlayerNameFromUUID(self.player), self.level.getPlayerTag(self.player), self.level.materials)
         inv.present()
 
     def undo(self):
