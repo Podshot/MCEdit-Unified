@@ -1,4 +1,4 @@
-#-# Language (Country)
+#-# Korean (Korea)
 #-# font regular: DEFAULT
 #-# font bold: DEFAULT
 # TRANSLATION BASICS
@@ -20,18 +20,18 @@ o0 Autobrake
 t0 자동 멈춤
 o1 Swap Axes Looking Down
 t1 아래를 볼 때 방향 반전
-o2 Camera Acceleration: 
+o2 Camera Acceleration:
 t2 카메라 가속:
-o3 Camera Drag: 
+o3 Camera Drag:
 t3 카메라 드래그:
-o4 Camera Max Speed: 
+o4 Camera Max Speed:
 t4 카메라 최고 속도:
-o5 Camera Braking Speed: 
+o5 Camera Braking Speed:
 t5 카메라 멈추는 속도:
-o6 Mouse Speed: 
+o6 Mouse Speed:
 t6 마우스 감도:
-o7 Undo Limit: 
-t7 실행 취소 제한: 
+o7 Undo Limit:
+t7 실행 취소 제한:
 o8 Invert Mouse
 t8 마우스 반전
 o9 Low Detail Height
@@ -62,11 +62,11 @@ o21 Options
 t21 설정
 o22 OK
 t22 확인
-o23 Field of View: 
+o23 Field of View:
 t23 시야 범위:
-o24 Target FPS: 
+o24 Target FPS:
 t24 최대 프레임:
-o25 Vertex Buffer Limit (MB): 
+o25 Vertex Buffer Limit (MB):
 t25 버텍스 버퍼 제한 (MB):
 o26 Fast Leaves
 t26 빠른 나뭇잎
@@ -94,8 +94,8 @@ o37 Numpad
 t37 숫자패드
 o38 WASD Old
 t38 WASD 옛날
-o39 Presets: 
-t39 기본 설정: 
+o39 Presets:
+t39 기본 설정:
 o40 MCEdit
 t40 MCEdit
 o41 <
@@ -130,7 +130,7 @@ o55 Grey
 t55 회색
 o56 Black
 t56 검은색
-o57 Color: 
+o57 Color:
 t57 색상:
 o58 Show Previous Selection
 t58 최근 선택 영역 보기
@@ -146,7 +146,7 @@ o63 Place Immediately
 t63 바로 설치하기
 o64 Clone Options
 t64 복제 설정
-o65 Alpha: 
+o65 Alpha:
 t65 투명도:
 o66 Choose Block Immediately
 t66 블럭 바로 선택하기
@@ -378,9 +378,9 @@ o177 Restart
 t177 재시작
 o178 Later
 t178 나중에
-o179 Loading 
+o179 Loading
 t179 로딩중
-o180  - MCEdit 
+o180  - MCEdit
 t180  - MCEdit
 o181 Overworld
 t181 오버월드
@@ -427,11 +427,11 @@ t201 선택 영역 내의 모든 엔티티를 제거합니다.
 o202 Delete Tile Ticks
 t202 타일 틱 제거
 o203 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t203 선택 영역 내의 모든 타일 틱을 제거합니다. 타일 틱은 예정된 블럭 업데이트입니다. 
+t203 선택 영역 내의 모든 타일 틱을 제거합니다. 타일 틱은 예정된 블럭 업데이트입니다.
 o204 Analyze
 t204 분석
 o205 Count the different blocks and entities in the selection and display the totals.
-t205 선택 영역 내의 블럭과 엔티티의 수를 세고 총합을 보여줍니다.  
+t205 선택 영역 내의 블럭과 엔티티의 수를 세고 총합을 보여줍니다.
 o206 Export
 t206 내보내기
 o207 Expand the selection to the edges of the chunks within
@@ -512,7 +512,7 @@ o241 Mode:
 t241 모드:
 o242 Brush:
 t242 브러쉬:
-o243 Chance: 
+o243 Chance:
 t243 확률:
 o244 Hollow
 t244 빈 내부
@@ -528,13 +528,13 @@ o249 Shortcut: Alt-1
 t249 단축키: Alt-1
 o250 ---
 t250 ---
-o251 Weight 1: 
+o251 Weight 1:
 t251 Weight 1:
-o252 Weight 2: 
+o252 Weight 2:
 t252 Weight 2:
-o253 Weight 3: 
+o253 Weight 3:
 t253 Weight 3:
-o254 Weight 4: 
+o254 Weight 4:
 t254 Weight 4:
 o255 Shortcut: Alt-3
 t255 단축키: Alt-3
@@ -546,9 +546,9 @@ o258 Click to replace {0} ({1}:{2})
 t258 클릭해서 {0} ({1}:{2})를 바꾸기
 o259 Noise
 t259 노이즈
-o260 Strength: 
+o260 Strength:
 t260 강도:
-o261 Depth: 
+o261 Depth:
 t261 깊이:
 o262 Only Change Natural Earth
 t262 자연적인 블럭만 변경
@@ -560,8 +560,8 @@ o265 y
 t265 y
 o266 z
 t266 z
-o267 COPYING - 
-t267 복사중 - 
+o267 COPYING -
+t267 복사중 -
 o268 Rotate
 t268 회전
 o269 Roll
@@ -1045,7 +1045,7 @@ o485 Cold Taiga M
 t485 Cold Taiga M
 o486 Mega Spruce Taiga
 t486 Mega Spruce Taiga
-o487 Mega Spruce Taiga 
+o487 Mega Spruce Taiga
 t487 Mega Spruce Taiga
 o488 Extreme Hills+ M
 t488 Extreme Hills+ M
@@ -1073,7 +1073,7 @@ o499 Players
 t499 플레이어
 o500 Player Name
 t500 플레이어 이름
-o501 Player: 
+o501 Player:
 t501 플레이어:
 o502 Goto Player
 t502 플레이어로 가기
@@ -1112,136 +1112,136 @@ t518 삭제할 설정을 선택하세요.
 o519  does not have a value yet.
 t519  아직 값이 없습니다.
 o520 Version {} is available
-t520 
+t520
 o521 Download
-t521 
+t521
 o522 View
-t522 
+t522
 o523 Ignore
-t523 
+t523
 o524 Space
-t524 
+t524
 o525 Tab
-t525 
+t525
 o526 Delete
-t526 
+t526
 o527 Scroll Up
-t527 
+t527
 o528 Scroll Down
-t528 
+t528
 o529 Button 3
-t529 
+t529
 o530 Alt
-t530 
+t530
 o531 Ctrl
-t531 
+t531
 o532 Creating a new world.
-t532 
+t532
 o533 Minecraft Server
-t533 
+t533
 o534 Flatland
-t534 
+t534
 o535 Generator:
-t535 
+t535
 o536 Will automatically download and use the latest version
-t536 
-o537 Height: 
-t537 
+t536
+o537 Height:
+t537
 o538 Grass
-t538 
+t538
 o539 Server version:
-t539 
+t539
 o540 or
-t540 
+t540
 o541 Check for Updates
-t541 
+t541
 o542 Advanced
-t542 
+t542
 o543 Open Server Storage
-t543 
+t543
 o544 Reveal World Cache
-t544 
+t544
 o545 Delete World Cache
-t545 
+t545
 o546 Advanced...
-t546 
+t546
 o547 Simulate world
-t547 
+t547
 o548 Use snapshot versions
-t548 
-o549 X: 
-t549 
-o550 Y: 
-t550 
-o551 Z: 
-t551 
-o552 f: 
-t552 
-o553 Seed: 
-t553 
-o554 East-West Chunks: 
-t554 
-o555 North-South Chunks: 
-t555 
+t548
+o549 X:
+t549
+o550 Y:
+t550
+o551 Z:
+t551
+o552 f:
+t552
+o553 Seed:
+t553
+o554 East-West Chunks:
+t554
+o555 North-South Chunks:
+t555
 o556 Survival
-t556 
+t556
 o557 Game Type:
-t557 
+t557
 o558 Cancel
-t558 
+t558
 o559 Creative
-t559 
+t559
 o560 Style:
-t560 
+t560
 o561 H
-t561 
+t561
 o562 L
-t562 
+t562
 o563 W
-t563 
+t563
 o564 Minimum Spacing
-t564 
+t564
 o565 Regenerate UUID
-t565 
+t565
 o566 Replace blocks with any data value. Only useful for Replace operations.
-t566 
+t566
 o567 Entities
-t567 
+t567
 o568 Items
-t568 
+t568
 o569 TileEntities
-t569 
+t569
 o570 TileTicks
-t570 
+t570
 o571 Unpopulated Chunks
-t571 
+t571
 o572 Sky
-t572 
+t572
 o573 Fog
-t573 
+t573
 o574 Ceiling
-t574 
+t574
 o575 Chunk Redraw
-t575 
+t575
 o576 Hidden Ores
-t576 
+t576
 o577 Bedrock
-t577 
+t577
 o578 Coal
-t578 
+t578
 o579 Iron
-t579 
+t579
 o580 Lapis Lazuli
-t580 
+t580
 o581 Redstone
-t581 
+t581
 o582 Gold
-t582 
+t582
 o583 Diamond
-t583 
+t583
 o584 Nether Quartz
-t584 
+t584
 o585 Shortcut: {0}
 t585 단축키: {0}
 o586 View Distance ({0})
-t586 
+t586
