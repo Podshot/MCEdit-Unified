@@ -38,6 +38,7 @@ class Config(object):
         for (sectionKey, sectionName), items in definitions.iteritems():
             self._sections[sectionKey] = ConfigSection(self.config, sectionName, items)
             setattr(self, sectionKey, self._sections[sectionKey])
+        self.save()
 
     def __getitem__(self, section):
         return self._sections[section]
@@ -45,7 +46,7 @@ class Config(object):
     def getPath(self):
         return directories.configFilePath
 
-    def transformKey(value, i=0):
+    def transformKey(self, value, i=0):
         if 'left' in value and len(value) > 5:
             value = value[5:]
         elif 'right' in value and len(value) > 6:
@@ -70,25 +71,35 @@ class Config(object):
         vals = key.replace('-', ' ').translate(None, '()').lower().split(' ')
         return vals[0] + "".join(x.title() for x in vals[1:])
 
+    def reset(self):
+        for section in self.config.sections():
+            self.config.remove_section(section)
+
     def transformConfig(self):
         if self.config.has_section("Version") and self.config.has_option("Version", "version"):
-            if self.config.get("Version", "version") == "1.1.1.1":
-                i = 1
-                for (name, value) in self.config.items("Keys"):
-                    if name != "Swap View" and name != "Toggle Fps Counter":
-                        self.config.set("Keys", name, self.transformKey(value, i))
-                    elif name == "Swap View":
-                        self.config.set("Keys", "View Distance", self.transformKey(value, i))
-                        self.config.set("Keys", "Swap View", "None")
-                    elif name == "Toggle Fps Counter":
-                        self.config.set("Keys", "Debug Overlay", self.transformKey(value, i))
-                        self.config.set("Keys", "Toggle Fps Counter", "None")
-                    i += 1
-                if self.config.get("Keys", "Brake") == "Space":
-                    self.config.set("Version", "version", "1.1.2.0-update")
-                else:
-                    self.config.set("Version", "version", "1.1.2.0-new")
-                self.save()
+            version = self.config.get("Version", "version")
+        else:
+            self.reset()
+            return
+
+        if version == "1.1.1.1":
+            i = 1
+            for (name, value) in self.config.items("Keys"):
+                if name != "Swap View" and name != "Toggle Fps Counter":
+                    self.config.set("Keys", name, self.transformKey(value, i))
+                elif name == "Swap View":
+                    self.config.set("Keys", "View Distance", self.transformKey(value, i))
+                    self.config.set("Keys", "Swap View", "None")
+                elif name == "Toggle Fps Counter":
+                    self.config.set("Keys", "Debug Overlay", self.transformKey(value, i))
+                    self.config.set("Keys", "Toggle Fps Counter", "None")
+                i += 1
+            if self.config.get("Keys", "Brake") == "Space":
+                version = "1.1.2.0-update"
+            else:
+                version = "1.1.2.0-new"
+            self.config.set("Version", "version", version)
+            self.save()
 
     def load(self):
         log.info("Loading config...")
@@ -129,6 +140,7 @@ class ConfigSection(object):
             value.config = config
             value.section = section
             self._items[value.key] = value
+            value.get()
 
     def __getitem__(self, key):
         return self._items[key]
