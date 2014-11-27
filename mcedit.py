@@ -536,13 +536,7 @@ class OptionsPanel(Dialog):
         try:
             o, n, sc = albow.translate.setLang(lng)
         except:
-            try:
-                o, n, sc = albow.translate.setLang(self.langs[lng])
-            except Exception, e:
-                logger.exception(e)
-                albow.alert(_("Could not change language."))
-                Dialog.dismiss(self, *args, **kwargs)
-                return
+            o, n, sc = albow.translate.setLang(self.langs[lng])
         if not sc and n != "en_US":
             albow.alert(_("{} is not a valid language").format("%s [%s]"%(self.sgnal[n], n)))
             if o == n:
@@ -586,12 +580,7 @@ class MCEdit(GLViewport):
             if lng not in self.optionsPanel.sgnal:
                 lng = "en_US"
                 config.settings.langCode.set(lng)
-            try:
-                albow.translate.setLang(lng)
-            except Exception, e:
-                logger.exception(e)
-                albow.translate.setLang("en_US")
-
+            albow.translate.setLang(lng)
         self.optionsPanel.initComponents()
         self.graphicsPanel = graphicsPanel(self)
 

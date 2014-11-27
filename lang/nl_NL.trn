@@ -20,24 +20,24 @@ o0 Autobrake
 t0 Automatisch remmen
 o1 Swap Axes Looking Down
 t1 Verwissel assen als je naar beneden kijkt
-o2 Camera Acceleration:
-t2 Camera Versnelling:
-o3 Camera Drag:
-t3 Camera Sleep:
-o4 Camera Max Speed:
-t4 Maximale Camera Snelheid:
-o5 Camera Braking Speed:
-t5 Camera remsnelheid:
-o6 Mouse Speed:
-t6 Muissnelheid:
-o7 Undo Limit:
-t7 Limiet aan ongedaan maken:
+o2 Camera Acceleration: 
+t2 Camera Versnelling: 
+o3 Camera Drag: 
+t3 Camera Sleep: 
+o4 Camera Max Speed: 
+t4 Maximale Camera Snelheid: 
+o5 Camera Braking Speed: 
+t5 Camera remsnelheid: 
+o6 Mouse Speed: 
+t6 Muissnelheid: 
+o7 Undo Limit: 
+t7 Limiet aan ongedaan maken: 
 o8 Invert Mouse
 t8 Muis omkeren
 o9 Low Detail Height
 t9 Lage detail hoogte
 o10 Block Buffer (MB):
-t10 Blokbuffer (MB):
+t10 Blokbuffer (MB): 
 o11 Set Window Placement
 t11 Herstel scherm positie
 o12 Rotate block with brush
@@ -62,12 +62,12 @@ o21 Options
 t21 Opties
 o22 OK
 t22 OK
-o23 Field of View:
-t23 Zichtsveldgrootte:
-o24 Target FPS:
+o23 Field of View: 
+t23 Zichtsveldgrootte: 
+o24 Target FPS: 
 t24 FPS doel:
-o25 Vertex Buffer Limit (MB):
-t25 Buffer limiet (MB):
+o25 Vertex Buffer Limit (MB): 
+t25 Buffer limiet (MB): 
 o26 Fast Leaves
 t26 Snelle bladeren
 o27 Rough Graphics
@@ -94,7 +94,7 @@ o37 Numpad
 t37 Numpad
 o38 WASD Old
 t38 WASD Oud
-o39 Presets:
+o39 Presets: 
 t39 Presets:
 o40 MCEdit
 t40 MCEdit
@@ -130,24 +130,24 @@ o55 Grey
 t55 Grijs
 o56 Black
 t56 Zwart
-o57 Color:
-t57 Kleur:
+o57 Color: 
+t57 Kleur: 
 o58 Show Previous Selection
 t58 Laat laatste selectie zien
 o59 R:
-t59
+t59 
 o60 G:
-t60
+t60 
 o61 B:
-t61
+t61 
 o62 Selection Options
 t62 Selectie Opties
 o63 Place Immediately
 t63 Plaats Onmiddellijk
 o64 Clone Options
 t64 Kloon Opties
-o65 Alpha:
-t65 Alpha:
+o65 Alpha: 
+t65 Alpha:  
 o66 Choose Block Immediately
 t66 Kies blok direct
 o67 Reset Distance When Brush Size Changes
@@ -378,9 +378,9 @@ o177 Restart
 t177 Herstart
 o178 Later
 t178 Later
-o179 Loading
-t179
-o180  - MCEdit
+o179 Loading 
+t179 
+o180  - MCEdit 
 t180  - MCEdit
 o181 Overworld
 t181 Bovenwereld
@@ -437,7 +437,7 @@ t206 Exporteer
 o207 Expand the selection to the edges of the chunks within
 t207 Vergroot de selectie naar de randen van de chunks in de selectie
 o208 Selected Chunks:
-t208 Geselecteerde chunks:
+t208 Geselecteerde chunks: 
 o209 Extract
 t209 Extraheer
 o210 Create
@@ -472,7 +472,7 @@ o224 ...
 t224 ...
 o225 Select
 Right-click for options
-t225
+t225 
 o226 Remove the selection. Shortcut: {0}
 t226 Verwijder alle entities in de selectie
 o227 Fill the selection with Air. Shortcut: {0}
@@ -487,10 +487,10 @@ o231 Export the selection to a .schematic file. Shortcut: {0}
 t231 Exporteer de selectie naar een .schematic bestand. Sneltoets: {0}
 o232 Clone
 Right-click for options
-t232
+t232 
 o233 Brush
 Right-click for options
-t233
+t233 
 o234 Fill
 t234 Vul
 o235 Varied Fill
@@ -506,11 +506,11 @@ t239 Erodeer
 o240 Topsoil
 t240 Bovengrond
 o241 Mode:
-t241 Modus:
+t241 Modus: 
 o242 Brush:
-t242 Kwast:
-o243 Chance:
-t243 Kans:
+t242 Kwast: 
+o243 Chance: 
+t243 Kans: 
 o244 Hollow
 t244 Hol
 o245 Fill Air
@@ -525,14 +525,14 @@ o249 Shortcut: Alt-1
 t249 Sneltoets: ALT-1
 o250 ---
 t250 ---
-o251 Weight 1:
-t251 Gewicht 1:
-o252 Weight 2:
-t252 Gewicht 2:
-o253 Weight 3:
-t253 Gewicht 3:
-o254 Weight 4:
-t254 Gewicht 4:
+o251 Weight 1: 
+t251 Gewicht 1: 
+o252 Weight 2: 
+t252 Gewicht 2: 
+o253 Weight 3: 
+t253 Gewicht 3: 
+o254 Weight 4: 
+t254 Gewicht 4: 
 o255 Shortcut: Alt-3
 t255 Sneltoets: ALT-3
 o256 Hold {0} to draw lines
@@ -543,10 +543,10 @@ o258 Click to replace {0} ({1}:{2})
 t258 Klik om te vervangen {0} ({1}:{2})
 o259 Noise
 t259 Ruis
-o260 Strength:
-t260 Kracht:
-o261 Depth:
-t261 Diepte:
+o260 Strength: 
+t260 Kracht: 
+o261 Depth: 
+t261 Diepte: 
 o262 Only Change Natural Earth
 t262 Verandeer alleen natuurlijke grond
 o263 Import
@@ -557,7 +557,7 @@ o265 y
 t265 y
 o266 z
 t266 z
-o267 COPYING -
+o267 COPYING - 
 t267 KOPIËREN -
 o268 Rotate
 t268 Draai
@@ -597,7 +597,7 @@ o283 Shortcut: Enter
 t283 Sneltoets: Enter
 o284 Fill and Replace
 Right-click for options
-t284
+t284 
 o285 Fill with:
 t285 Vullen met:
 o286 Search
@@ -649,7 +649,7 @@ t308 Blindheid (geen mob effect)
 o309 Night Vision (no effect)
 t309 Nachtkijken (geen mob effect)
 o310 Mining Fatigue (no mob effectg)
-t310 Moe van het mijnen (geen mob effect)
+t310 Moe van het mijnen (geen mob effect) 
 o311 Jump Boost
 t311 Spring oppepper
 o312 Effect
@@ -768,7 +768,7 @@ o368 General Trade
 t368 Gewone Handelsoptie
 o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t369        Draai de Positie van je Handelaar
+t369        Draai de Positie van je Handelaar 
 *Kan alleen gebruikt worden als Niet Bewegen is aangevinkt*
 o370 Y-Axis
 t370 Y-As
@@ -799,24 +799,24 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
-t375 Om een winkel te maken, stop de eerste te kopen items in de bovenste vakje(s) van de kist.
-Stop het tweede te kopen item in het middelste vakje (optioneel).
-Stop het te verkopen item in het onderste vakje.
-Klik op de kist die je wilt en kies wat je wilt, klik dan op Enter
-*Alle Items moeten in dezelfde rij zijn*
-
-Geavanceerd, kleine ervaring in notepad ++ is vereist.
-Om de maximale hoeveelheid handelsopties aan te passen:
-1) Onvink 'Handelsopties oneindig'
-2) Open the createshops filter met Notepad ++ (link:http://notepad-plus-plus.org/) of kladblok
-*Het filter is in je MCEdit map*
-3) Scroll naar:
-anders:
-offer[uses] = Tag_Int(0)
-offer[maxUses] = Tag_Int(1)
-4) Verander de hoeveelheid die je wilt.
-
- *NB: Verander alleen de nummers hierboven, als je iets anders verandert gaat het filter kapot*
+t375 Om een winkel te maken, stop de eerste te kopen items in de bovenste vakje(s) van de kist. 
+Stop het tweede te kopen item in het middelste vakje (optioneel). 
+Stop het te verkopen item in het onderste vakje. 
+Klik op de kist die je wilt en kies wat je wilt, klik dan op Enter 
+*Alle Items moeten in dezelfde rij zijn* 
+ 
+Geavanceerd, kleine ervaring in notepad ++ is vereist. 
+Om de maximale hoeveelheid handelsopties aan te passen: 
+1) Onvink 'Handelsopties oneindig' 
+2) Open the createshops filter met Notepad ++ (link:http://notepad-plus-plus.org/) of kladblok 
+*Het filter is in je MCEdit map* 
+3) Scroll naar: 
+anders: 
+offer[uses] = Tag_Int(0) 
+offer[maxUses] = Tag_Int(1) 
+4) Verander de hoeveelheid die je wilt. 
+ 
+ *NB: Verander alleen de nummers hierboven, als je iets anders verandert gaat het filter kapot*  
 o376 Trade Notes
 t376 Handelsnotities
 o377 Include position data
@@ -867,7 +867,7 @@ o399 Operation:
 t399 Operatie:
 o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t400
+t400 
 o401 Documentation
 t401 Documentatie
 o402 Forester script by dudecon
@@ -993,7 +993,7 @@ t461 Bedekt Bos
 o462 Cold Taiga
 t462 Koude Taiga
 o463 Cold Taiga Hills
-t463 Koude Taigaheuvels
+t463 Koude Taigaheuvels 
 o464 Mega Taiga
 t464 Mega Taiga
 o465 Mega Taiga Hills
@@ -1040,7 +1040,7 @@ o485 Cold Taiga M
 t485 Koude Taiga M
 o486 Mega Spruce Taiga
 t486 Mega Dennen Taiga
-o487 Mega Spruce Taiga
+o487 Mega Spruce Taiga 
 t487 Mega Dennen Taiga
 o488 Extreme Hills+ M
 t488 Extreme Heuvels+ M
@@ -1068,7 +1068,7 @@ o499 Players
 t499 Spelers
 o500 Player Name
 t500 Spelernaam
-o501 Player:
+o501 Player: 
 t501 Speler:
 o502 Goto Player
 t502 Ga naar Speler
@@ -1107,136 +1107,136 @@ t518 Selecteer Preset om te verwijderen
 o519  does not have a value yet.
 t519  heeft nog geen waard
 o520 Version {} is available
-t520
+t520 
 o521 Download
-t521
+t521 
 o522 View
-t522
+t522 
 o523 Ignore
-t523
+t523 
 o524 Space
-t524
+t524 
 o525 Tab
-t525
+t525 
 o526 Delete
-t526
+t526 
 o527 Scroll Up
-t527
+t527 
 o528 Scroll Down
-t528
+t528 
 o529 Button 3
-t529
+t529 
 o530 Alt
-t530
+t530 
 o531 Ctrl
-t531
+t531 
 o532 Creating a new world.
-t532
+t532 
 o533 Minecraft Server
-t533
+t533 
 o534 Flatland
-t534
+t534 
 o535 Generator:
-t535
+t535 
 o536 Will automatically download and use the latest version
-t536
-o537 Height:
-t537
+t536 
+o537 Height: 
+t537 
 o538 Grass
-t538
+t538 
 o539 Server version:
-t539
+t539 
 o540 or
-t540
+t540 
 o541 Check for Updates
-t541
+t541 
 o542 Advanced
-t542
+t542 
 o543 Open Server Storage
-t543
+t543 
 o544 Reveal World Cache
-t544
+t544 
 o545 Delete World Cache
-t545
+t545 
 o546 Advanced...
-t546
+t546 
 o547 Simulate world
-t547
+t547 
 o548 Use snapshot versions
-t548
-o549 X:
-t549
-o550 Y:
-t550
-o551 Z:
-t551
-o552 f:
-t552
-o553 Seed:
-t553
-o554 East-West Chunks:
-t554
-o555 North-South Chunks:
-t555
+t548 
+o549 X: 
+t549 
+o550 Y: 
+t550 
+o551 Z: 
+t551 
+o552 f: 
+t552 
+o553 Seed: 
+t553 
+o554 East-West Chunks: 
+t554 
+o555 North-South Chunks: 
+t555 
 o556 Survival
-t556
+t556 
 o557 Game Type:
-t557
+t557 
 o558 Cancel
-t558
+t558 
 o559 Creative
-t559
+t559 
 o560 Style:
-t560
+t560 
 o561 H
-t561
+t561 
 o562 L
-t562
+t562 
 o563 W
-t563
+t563 
 o564 Minimum Spacing
-t564
+t564 
 o565 Regenerate UUID
-t565
+t565 
 o566 Replace blocks with any data value. Only useful for Replace operations.
-t566
+t566 
 o567 Entities
-t567
+t567 
 o568 Items
-t568
+t568 
 o569 TileEntities
-t569
+t569 
 o570 TileTicks
-t570
+t570 
 o571 Unpopulated Chunks
-t571
+t571 
 o572 Sky
-t572
+t572 
 o573 Fog
-t573
+t573 
 o574 Ceiling
-t574
+t574 
 o575 Chunk Redraw
-t575
+t575 
 o576 Hidden Ores
-t576
+t576 
 o577 Bedrock
-t577
+t577 
 o578 Coal
-t578
+t578 
 o579 Iron
-t579
+t579 
 o580 Lapis Lazuli
-t580
+t580 
 o581 Redstone
-t581
+t581 
 o582 Gold
-t582
+t582 
 o583 Diamond
-t583
+t583 
 o584 Nether Quartz
-t584
+t584 
 o585 Shortcut: {0}
 t585 Sneltoets: {0}
 o586 View Distance ({0})
-t586
+t586 
