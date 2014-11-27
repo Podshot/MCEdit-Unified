@@ -71,23 +71,24 @@ class Config(object):
         return vals[0] + "".join(x.title() for x in vals[1:])
 
     def transformConfig(self):
-        if self.config.has_section("Version") and self.config.get("Version", "version") == "1.1.1.1":
-            i = 1
-            for (name, value) in self.config.items("Keys"):
-                if name != "Swap View" and name != "Toggle Fps Counter":
-                    self.config.set("Keys", name, self.transformKey(value, i))
-                elif name == "Swap View":
-                    self.config.set("Keys", "View Distance", self.transformKey(value, i))
-                    self.config.set("Keys", "Swap View", "None")
-                elif name == "Toggle Fps Counter":
-                    self.config.set("Keys", "Debug Overlay", self.transformKey(value, i))
-                    self.config.set("Keys", "Toggle Fps Counter", "None")
-                i += 1
-            if self.config.get("Keys", "Brake") == "Space":
-                self.config.set("Version", "version", "1.1.2.0-update")
-            else:
-                self.config.set("Version", "version", "1.1.2.0-new")
-            self.save()
+        if self.config.has_section("Version") and self.config.has_option("Version", "version"):
+            if self.config.get("Version", "version") == "1.1.1.1":
+                i = 1
+                for (name, value) in self.config.items("Keys"):
+                    if name != "Swap View" and name != "Toggle Fps Counter":
+                        self.config.set("Keys", name, self.transformKey(value, i))
+                    elif name == "Swap View":
+                        self.config.set("Keys", "View Distance", self.transformKey(value, i))
+                        self.config.set("Keys", "Swap View", "None")
+                    elif name == "Toggle Fps Counter":
+                        self.config.set("Keys", "Debug Overlay", self.transformKey(value, i))
+                        self.config.set("Keys", "Toggle Fps Counter", "None")
+                    i += 1
+                if self.config.get("Keys", "Brake") == "Space":
+                    self.config.set("Version", "version", "1.1.2.0-update")
+                else:
+                    self.config.set("Version", "version", "1.1.2.0-new")
+                self.save()
 
     def load(self):
         log.info("Loading config...")
