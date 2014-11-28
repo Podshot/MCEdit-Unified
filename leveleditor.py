@@ -760,6 +760,7 @@ class CameraViewport(GLViewport):
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["Command"] = pymclevel.TAG_String()
             tileEntity["CustomName"] = pymclevel.TAG_String("@")
+            tileEntity["TrackOutput"] = pymclevel.TAG_Byte(0)
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Command Block")
@@ -787,7 +788,7 @@ class CameraViewport(GLViewport):
 
         okBTN = Button("OK", action=updateCommandBlock)
         cancel = Button("Cancel", action=panel.dismiss)
-        column = [titleLabel, Row((Label("Command"), commandField)), Row((Label("Custom Name"), nameField)), Row((Label("Track Ouput"), trackOutput)), okBTN, cancel]
+        column = [titleLabel, Row((Label("Command"), commandField)), Row((Label("Custom Name"), nameField)), Row((Label("Track Output"), trackOutput)), okBTN, cancel]
         panel.add(Column(column))
         panel.shrink_wrap()
         panel.present()
@@ -3027,7 +3028,6 @@ class LevelEditor(GLViewport):
 
         nameField = TextField(width=300, ref=AttrRef(self.level, 'LevelName'))
         def alt21():
-            nameField.insertion_point = len(nameField.text)
             nameField.insert_char(u'\xa7')
         alt21button = Button(u"\xa7", action=alt21)
         label = Label("Name:")

@@ -27,13 +27,10 @@ class Items(object):
     items = {}
 
     def __init__(self, filename=None):
-        itemsdir = os.path.join(directories.docsFolder, "Items")
+        itemsdir = os.path.join(directories.getDataDir(), "Items")
 
         if not os.path.exists(itemsdir):
-            if os.path.exists(os.path.join(directories.getDataDir(), "Items")):
-                shutil.copytree(os.path.join(directories.getDataDir(), "Items"), itemsdir)
-            else:
-                raise Exception("Couldn't find Item Files. Please reinstall MCEdit!")
+            raise Exception("Couldn't find Item Files. Please reinstall MCEdit!")
 
         for file_ in os.listdir(itemsdir):
             try:
@@ -48,13 +45,13 @@ class Items(object):
             except:
                 pass
             try:
-                f = open(os.path.join(itemsdir, file_, "blocks.json"))
-                itempack = json.load(f.read())
+                f = open(os.path.join(itemsdir, file_, "blocks.json"), 'r')
+                itempack = json.load(f)
 
                 itempacknew = {}
 
                 for item in itempack:
-                    itempacknew[file_ + ":" + item] = itempack.pop(item)
+                    itempacknew[file_ + ":" + item] = itempack.get(item)
                 self.items.update(itempacknew)
             except:
                 pass

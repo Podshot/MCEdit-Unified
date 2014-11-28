@@ -51,6 +51,8 @@ import pymclevel
 from pymclevel.mclevelbase import exhaust
 import random
 from __builtin__ import __import__
+from locale import getdefaultlocale
+DEF_ENC = getdefaultlocale()[1]
 
 
 log = logging.getLogger(__name__)
@@ -482,7 +484,10 @@ class BrushTool(CloneTool):
         :param name, name of the module to import.
         """
         try:
-            globals()[name] = m = imp.load_source(name, os.path.join(directories.getDataDir(), u'stock-brushes', (name+ ".py")))
+            path = os.path.join(directories.getDataDir(), u'stock-brushes', (name+ ".py"))
+            if type(path) == unicode and DEF_ENC != "UTF-8":
+                path = path.encode(DEF_ENC)
+            globals()[name] = m = imp.load_source(name, path)
             m.materials = self.editor.level.materials
             m.createInputs(m)
             return m
@@ -498,7 +503,10 @@ class BrushTool(CloneTool):
         :param name, name of the module to import.
         """
         try:
-            globals()[name] = m = imp.load_source(name, os.path.join(directories.brushesDir, (name+ ".py")))
+            path = os.path.join(directories.brushesDir, (name+ ".py"))
+            if type(path) == unicode and DEF_END != "UTF-8":
+                path = path.encode(DEF_ENC)
+            globals()[name] = m = imp.load_source(name, path)
             m.materials = self.editor.level.materials
             m.createInputs(m)
             return m

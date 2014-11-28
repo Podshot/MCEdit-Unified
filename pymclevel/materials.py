@@ -93,6 +93,7 @@ class MCMaterials(object):
 
         self.Air = self.addBlock(0,
                                  name="Air",
+                                 texture=(0x0, 0x150),
                                  opacity=0,
         )
 

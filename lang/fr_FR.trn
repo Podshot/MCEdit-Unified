@@ -540,261 +540,251 @@ o255 Shortcut: Alt-3
 t255 Raccourci : Alt-3
 o256 Hold {0} to draw lines
 t256 Maintenir {0} pour tracer des lignes
-o257 Stone
-t257 
-o258 Air
-t258 
-o259 Indiscriminate
-t259 Sans distinction
-o260 Click to replace {0} ({1}:{2})
-t260 Cliquer pour remplacer {0} ({1}:{2})
-o261 Click to replace Dirt (3:0)
-t261 
-o262 Click to replace Stone (1:0)
-t262 
-o263 Noise
-t263 Bruit
-o264 Strength: 
-t264 Force : 
-o265 Depth: 
-t265 Profondeur : 
-o266 Only Change Natural Earth
-t266 Changer seulement la terre naturelle
-o267 Import
-t267 Importer
-o268 x
-t268 x
-o269 y
-t269 y
-o270 z
-t270 z
-o271 COPYING - 
-t271 COPIE - 
-o272 Rotate
-t272 Rotation
-o273 Roll
-t273 Tourner
-o274 Chunk Align
-t274 Alignement chunk(?)
-o275 Repeat
-t275 Répéter
-o276 Scale Factor
-t276 Facteur d'échelle
-o277 Copy Air
-t277 Copier l'air
-o278 Copy Water
-t278 Copier l'eau
-o279 Copy Biomes
-t279 Copier les biomes
-o280 Change Coordinates
-t280 Changer coords.
-o281 Change Spawners
-t281 Changer spawners
-o282 Clone
-t282 Cloner
-o283 When the clone tool is chosen, place the clone at the selection right away.
-t283 When the clone tool is chosen, place the clone at the selection right away.(310)
-o284 Shortcut: Alt-2
-t284 Raccourci : Alt-2
-o285 Check to automatically change command block static coordinates when moved.
+o257 Indiscriminate
+t257 Sans distinction
+o258 Click to replace {0} ({1}:{2})
+t258 Cliquer pour remplacer {0} ({1}:{2})
+o259 Noise
+t259 Bruit
+o260 Strength: 
+t260 Force : 
+o261 Depth: 
+t261 Profondeur : 
+o262 Only Change Natural Earth
+t262 Changer seulement la terre naturelle
+o263 Import
+t263 Importer
+o264 x
+t264 x
+o265 y
+t265 y
+o266 z
+t266 z
+o267 COPYING - 
+t267 COPIE - 
+o268 Rotate
+t268 Rotation
+o269 Roll
+t269 Tourner
+o270 Chunk Align
+t270 Alignement chunk(?)
+o271 Repeat
+t271 Répéter
+o272 Scale Factor
+t272 Facteur d'échelle
+o273 Copy Air
+t273 Copier l'air
+o274 Copy Water
+t274 Copier l'eau
+o275 Copy Biomes
+t275 Copier les biomes
+o276 Change Coordinates
+t276 Changer coords.
+o277 Change Spawners
+t277 Changer spawners
+o278 Clone
+t278 Cloner
+o279 When the clone tool is chosen, place the clone at the selection right away.
+t279 When the clone tool is chosen, place the clone at the selection right away.(310)
+o280 Shortcut: Alt-2
+t280 Raccourci : Alt-2
+o281 Check to automatically change command block static coordinates when moved.
 Shortcut: Alt-4
-t285 Cocher pour changer automatiquement les coord. statiques des blocs de commande en mouvement.
+t281 Cocher pour changer automatiquement les coord. statiques des blocs de commande en mouvement.
 Raccourci : Alt-4
-o286 Check to automatically change the position of the mobs in spawners when moved.
+o282 Check to automatically change the position of the mobs in spawners when moved.
 Shortcut: Alt-5
-t286 Cocher pour changer automatiquement la position des monstres des spawners en mouvement.
+t282 Cocher pour changer automatiquement la position des monstres des spawners en mouvement.
 Raccourci : Alt-5
-o287 Shortcut: Enter
-t287 Raccourci : Entrée
-o288 Fill and Replace
+o283 Shortcut: Enter
+t283 Raccourci : Entrée
+o284 Fill and Replace
 Right-click for options
-t288 Remplir et remplacer
+t284 Remplir et remplacer
 Clic-droit pour les options
-o289 Fill with:
-t289 Remplir avec :
-o290 Search
-t290 Recherche
-o291 Name
-t291 Nom
-o292 ID
-t292 ID
-o293 Any Subtype
-t293 Tout sous-type
-o294 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
-t294 {hotkey} pour choisir un bloc. {R} pour passer en mode 'Remplacement'. Cliquer 'Remplir' ou Entrée pour confirmer.
-o295 Find:
-t295 Checher :
-o296 Replace with:
-t296 Remplacer avec :
-o297 Shortcut: {0}
-t297 Raccourci : {0}
-o298 When the fill tool is chosen, prompt for a block type.
-t298 Demander un type de bloc quand l'outil Remplir est choisie
-o299 Filter
-t299 Filtrer
-o300 Invisibility (no effect)
-t300 Invisibilité (sans effet)
-o301 Strength
-t301 Force
-o302 Nausea (no mob effect)
-t302 Nausée (joueurs seuls)
-o303 Weakness
-t303 Faiblesse
-o304 Speed (no mob effect)
-t304 Vitesse (joueurs seuls)
-o305 Water Breathing
-t305 Respiration aquatique
-o306 Regeneration
-t306 Régénération
-o307 Poison
-t307 Poison
-o308 Resistance
-t308 Résistance
-o309 Hunger (no mob effect)
-t309 Faim (joueurs seuls)
-o310 Haste (no mob effect)
-t310 Hâte (joueurs seuls)
-o311 Fire Resistance
-t311 Résist. au feu
-o312 Slowness (no mob effect)
-t312 Lenteur (joueurs seuls)
-o313 Blindness (no mob effect)
-t313 Aveuglement (joueurs seuls)
-o314 Night Vision (no effect)
-t314 Vision nocturne (sans effet)
-o315 Mining Fatigue (no mob effectg)
-t315 Fatigue de la mine (joueurs seuls)
-o316 Jump Boost
-t316 Saut augmenté
-o317 Effect
-t317 Effet
-o318 Level
-t318 Niveau
-o319 Duration (Seconds)
-t319 Durrée (secondes)
-o320 Add Potion Effect to Mobs
-t320 Ajouter effet de potion aus monstres
-o321 Banslimes
-t321 Bannir slimes
-o322 Change Mob Properties
-t322 Changer prop. des monstres
-o323 Chunk Surface Repair
-t323 Réparer surface des chunks
-o324 Classic Water Flood
-t324 Innondation classique
-o325 Colorwires
-t325 Fils colorés
-o326 Create Busses
-t326 Créer des bus
-o327 Create Shops
-t327 Créer magasins
-o328 Create Spawners
-t328 Créer spawners
-o329 Decliff
-t329 Antifalaises
-o330 Find
-t330 Chercher
-o331 Forester
-t331 Forestier
-o332 Make Mobs Invincible
-t332 Monstres invincibles
-o333 Setbiome
-t333 Choix des biomes
-o334 Smooth
-t334 Adoucir
-o335 Filter:
-t335 Filtrer :
-o336 Update Filters
-t336 MàJ des filtres
-o337 Max Seed
-t337 Vitesse max
-o338 Health
-t338 Santé
-o339 VelocityX
-t339 VélocitéX
-o340 VelocityY
-t340 VélocitéY
-o341 VelocityZ
-t341 VélocitéZ
-o342 Fire
-t342 Feu
-o343 FallDistance
-t343 Dist. chute
-o344 AttackTime
-t344 Temps attaque
-o345 HurtTime
-t345 Temps blessure
-o346 Lightning
-t346 Foudre
-o347 No Lightning
-t347 Sans foudre
-o348 Lightning Creeper
-t348 Creeper de foudre
-o349 Enderman Block Id
-t349 Id bloc Enderman
-o350 Enderman Block Data
-t350 Données bloc Enderman
-o351 Villager (green)
-t351 Villageois (vert)
-o352 Farmer (brown)
-t352 Fermier (marron)
-o353 Butcher (white apron)
-t353 Boucher (tablier blanc)
-o354 Librarian (white)
-t354 Bibliothécaire (blanc)
-o355 Blacksmith (black apron)
-t355 Forgeron (tablier noir)
-o356 Priest (purple)
-t356 Prêtre (violet)
-o357 Villager Profession
-t357 Profession du villageois
-o358 Slime Size
-t358 Taille du slime
-o359 Breeding Mode Ticks
-t359 Ticks mode accouplement
-o360 Child/Adult Age
-t360 Enfant/Adulte
-o361 Repairs the backwards surfaces made by old versions of Minecraft.
-t361 Répare les surfaces crées par les anciennes versions de Minecraft.
-o362 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t362 Fait couler l'eau de la région vers l'extérieur et le bas. Elle est ransformée en blocs sources. Équivalent à "Classic Water" dans Minecraft.
-o363 Flood Water
-t363 Remplir eau
-o364 Flood Lava
-t364 Remplir lave
-o365 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t365 Ceci est une version modifiée à la demande de DragonQuiz du filtre Create Shops de SethBling.
-o366 Profession
-t366 Profession
-o367 Add Stopping Trade
-t367 Ajouter arrêter commerce
-o368 Invulnerable Villager
-t368 Villageois invulnerable
-o369 Make Unlimited Trades
-t369 Échanges illimités
-o370 Give Experience per a Trade
-t370 Donner expérience par échange
-o371 Make Villager not Move
-t371 Villageois immobile
-o372 Villager Name
-t372 Nom du villageois
-o373 General Trade
-t373 Commerce
-o374       Rotate the Position of your Trader
+o285 Fill with:
+t285 Remplir avec :
+o286 Search
+t286 Recherche
+o287 Name
+t287 Nom
+o288 ID
+t288 ID
+o289 Any Subtype
+t289 Tout sous-type
+o290 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
+t290 {hotkey} pour choisir un bloc. {R} pour passer en mode 'Remplacement'. Cliquer 'Remplir' ou Entrée pour confirmer.
+o291 Find:
+t291 Checher :
+o292 Replace with:
+t292 Remplacer avec :
+o293 When the fill tool is chosen, prompt for a block type.
+t293 Demander un type de bloc quand l'outil Remplir est choisie
+o294 Filter
+t294 Filtrer
+o295 Invisibility (no effect)
+t295 Invisibilité (sans effet)
+o296 Strength
+t296 Force
+o297 Nausea (no mob effect)
+t297 Nausée (joueurs seuls)
+o298 Weakness
+t298 Faiblesse
+o299 Speed (no mob effect)
+t299 Vitesse (joueurs seuls)
+o300 Water Breathing
+t300 Respiration aquatique
+o301 Regeneration
+t301 Régénération
+o302 Poison
+t302 Poison
+o303 Resistance
+t303 Résistance
+o304 Hunger (no mob effect)
+t304 Faim (joueurs seuls)
+o305 Haste (no mob effect)
+t305 Hâte (joueurs seuls)
+o306 Fire Resistance
+t306 Résist. au feu
+o307 Slowness (no mob effect)
+t307 Lenteur (joueurs seuls)
+o308 Blindness (no mob effect)
+t308 Aveuglement (joueurs seuls)
+o309 Night Vision (no effect)
+t309 Vision nocturne (sans effet)
+o310 Mining Fatigue (no mob effectg)
+t310 Fatigue de la mine (joueurs seuls)
+o311 Jump Boost
+t311 Saut augmenté
+o312 Effect
+t312 Effet
+o313 Level
+t313 Niveau
+o314 Duration (Seconds)
+t314 Durrée (secondes)
+o315 Add Potion Effect to Mobs
+t315 Ajouter effet de potion aus monstres
+o316 Banslimes
+t316 Bannir slimes
+o317 Change Mob Properties
+t317 Changer prop. des monstres
+o318 Chunk Surface Repair
+t318 Réparer surface des chunks
+o319 Classic Water Flood
+t319 Innondation classique
+o320 Colorwires
+t320 Fils colorés
+o321 Create Busses
+t321 Créer des bus
+o322 Create Shops
+t322 Créer magasins
+o323 Create Spawners
+t323 Créer spawners
+o324 Decliff
+t324 Antifalaises
+o325 Find
+t325 Chercher
+o326 Forester
+t326 Forestier
+o327 Make Mobs Invincible
+t327 Monstres invincibles
+o328 Setbiome
+t328 Choix des biomes
+o329 Smooth
+t329 Adoucir
+o330 Filter:
+t330 Filtrer :
+o331 Update Filters
+t331 MàJ des filtres
+o332 Max Seed
+t332 Vitesse max
+o333 Health
+t333 Santé
+o334 VelocityX
+t334 VélocitéX
+o335 VelocityY
+t335 VélocitéY
+o336 VelocityZ
+t336 VélocitéZ
+o337 Fire
+t337 Feu
+o338 FallDistance
+t338 Dist. chute
+o339 AttackTime
+t339 Temps attaque
+o340 HurtTime
+t340 Temps blessure
+o341 Lightning
+t341 Foudre
+o342 No Lightning
+t342 Sans foudre
+o343 Lightning Creeper
+t343 Creeper de foudre
+o344 Enderman Block Id
+t344 Id bloc Enderman
+o345 Enderman Block Data
+t345 Données bloc Enderman
+o346 Villager (green)
+t346 Villageois (vert)
+o347 Farmer (brown)
+t347 Fermier (marron)
+o348 Butcher (white apron)
+t348 Boucher (tablier blanc)
+o349 Librarian (white)
+t349 Bibliothécaire (blanc)
+o350 Blacksmith (black apron)
+t350 Forgeron (tablier noir)
+o351 Priest (purple)
+t351 Prêtre (violet)
+o352 Villager Profession
+t352 Profession du villageois
+o353 Slime Size
+t353 Taille du slime
+o354 Breeding Mode Ticks
+t354 Ticks mode accouplement
+o355 Child/Adult Age
+t355 Enfant/Adulte
+o356 Repairs the backwards surfaces made by old versions of Minecraft.
+t356 Répare les surfaces crées par les anciennes versions de Minecraft.
+o357 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
+t357 Fait couler l'eau de la région vers l'extérieur et le bas. Elle est ransformée en blocs sources. Équivalent à "Classic Water" dans Minecraft.
+o358 Flood Water
+t358 Remplir eau
+o359 Flood Lava
+t359 Remplir lave
+o360 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
+t360 Ceci est une version modifiée à la demande de DragonQuiz du filtre Create Shops de SethBling.
+o361 Profession
+t361 Profession
+o362 Add Stopping Trade
+t362 Ajouter arrêter commerce
+o363 Invulnerable Villager
+t363 Villageois invulnerable
+o364 Make Unlimited Trades
+t364 Échanges illimités
+o365 Give Experience per a Trade
+t365 Donner expérience par échange
+o366 Make Villager not Move
+t366 Villageois immobile
+o367 Villager Name
+t367 Nom du villageois
+o368 General Trade
+t368 Commerce
+o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t374       Rotation du marchand
+t369       Rotation du marchand
 *N'utiliser que si le villageois est immobile*
-o375 Y-Axis
-t375 Axe Y
-o376 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t376 Tourner son corps. 0 pour face à l'ouest. Doit être entre -180 et 180 degrés.
-o377 X-Axis
-t377 Axe X
-o378 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t378 Tourner horizontalement sa tête. 0 pour l'horizontale. Doit être entre -90 (haut) et 180 (bas) degrés.
-o379 Rotation
-t379 Rotation
-o380 To create a shop first put your buy in the top slot(s) of the chest.
+o370 Y-Axis
+t370 Axe Y
+o371 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
+t371 Tourner son corps. 0 pour face à l'ouest. Doit être entre -180 et 180 degrés.
+o372 X-Axis
+t372 Axe X
+o373 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
+t373 Tourner horizontalement sa tête. 0 pour l'horizontale. Doit être entre -90 (haut) et 180 (bas) degrés.
+o374 Rotation
+t374 Rotation
+o375 To create a shop first put your buy in the top slot(s) of the chest.
 Second put a second buy in the middle slot(optional).
 Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
@@ -813,7 +803,7 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
-t380 Pour créer un magasin, mettez d'abord votre achat dans le slot suppérieur du coffre.
+t375 Pour créer un magasin, mettez d'abord votre achat dans le slot suppérieur du coffre.
 Ensuite, mettez un autre achat dans le slot du milieu.
 
 Terminez en mettant un troisième dans celui du bas.
@@ -846,293 +836,427 @@ offer[maxUses] = TAG_Int(1)
 *Note : ne changez que les nombres audessus. Changer autre chose résulterai dans un disfonctionnement du filtre.*
 
 
-o381 Trade Notes
-t381 Notes
-o382 Include position data
-t382 Inclure données pos.
-o383 Both
-t383 Les deux
-o384 Lower Only
-t384 Baisser seulement
-o385 Raise Only
-t385 Élever seulement
-o386 Raise/Lower
-t386 Élever/Baisser
-o387 TileEntity
-t387 TileEntity
-o388 Entity
-t388 Entité
-o389 Block
-t389 Bloc
-o390 Match by:
-t390 Corresp. par :
-o391 Match block type (for TileEntity searches):
-t391 Corresp. au type de bloc (rech. de TielEntity) :
-o392 Match block:
-t392 Corresp. au bloc :
-o393 Match block data:
-t393 Corresp. aux données bloc :
-o394 Match tile entities (for Block searches):
-t394 Corresp. "TileEntities" (rech. de blocs) :
-o395 "None" for Name or Value will match any tag's Name or Value respectively.
-t395 "None" pour le nom ou la valeur cherchera tous nom ou valeur de tag.
-o396 Match Tag Name:
-t396 Corresp. nom de tag :
-o397 Match Tag Value:
-t397 Corresp. valeur de tag :
-o398 Case insensitive:
-t398 Insensible à la casse :
-o399 Any
-t399 Tous
-o400 Match Tag Type:
-t400 Corresp. type de tag :
-o401 Start New Search
-t401 Nouvelle recherche
-o402 Find Next
-t402 Suivant
-o403 Dump Found Coordinates
-t403 Récup. coord. trouvées
-o404 Operation:
-t404 Opération :
-o405 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o376 Trade Notes
+t376 Notes
+o377 Include position data
+t377 Inclure données pos.
+o378 Both
+t378 Les deux
+o379 Lower Only
+t379 Baisser seulement
+o380 Raise Only
+t380 Élever seulement
+o381 Raise/Lower
+t381 Élever/Baisser
+o382 TileEntity
+t382 TileEntity
+o383 Entity
+t383 Entité
+o384 Block
+t384 Bloc
+o385 Match by:
+t385 Corresp. par :
+o386 Match block type (for TileEntity searches):
+t386 Corresp. au type de bloc (rech. de TielEntity) :
+o387 Match block:
+t387 Corresp. au bloc :
+o388 Match block data:
+t388 Corresp. aux données bloc :
+o389 Match tile entities (for Block searches):
+t389 Corresp. "TileEntities" (rech. de blocs) :
+o390 "None" for Name or Value will match any tag's Name or Value respectively.
+t390 "None" pour le nom ou la valeur cherchera tous nom ou valeur de tag.
+o391 Match Tag Name:
+t391 Corresp. nom de tag :
+o392 Match Tag Value:
+t392 Corresp. valeur de tag :
+o393 Case insensitive:
+t393 Insensible à la casse :
+o394 Any
+t394 Tous
+o395 Match Tag Type:
+t395 Corresp. type de tag :
+o396 Start New Search
+t396 Nouvelle recherche
+o397 Find Next
+t397 Suivant
+o398 Dump Found Coordinates
+t398 Récup. coord. trouvées
+o399 Operation:
+t399 Opération :
+o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t405 Ce filtre est conçu pour rechercher les données NBT dans les entités et les TileEntities. Il peut aussi être utilisé pour chercher des blocs.  "Corresp. par" détermine le type d'objet à chercher en priorité.  La recherche des entités et les TileEntities est relativement rapide. Celle des blocs est proportionnelle à la taille de la sélection, car chaque bloc sélectionné est examiné). Toute recherche d'entité ignore les réglages pour les blocs. Les recherches de TileEntities tenterons de correspondre au type de bloc (si "Corresp. au type de bloc" est coché) ; celles de blocs aux TileEntities (si Corresp. "TileEntities" est coché).  Les recherches de TileEntities avec un type de bloc sont plus rapides.  La recherche de bloc peut égalelement trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
+t400 Ce filtre est conçu pour rechercher les données NBT dans les entités et les TileEntities. Il peut aussi être utilisé pour chercher des blocs.  "Corresp. par" détermine le type d'objet à chercher en priorité.  La recherche des entités et les TileEntities est relativement rapide. Celle des blocs est proportionnelle à la taille de la sélection, car chaque bloc sélectionné est examiné). Toute recherche d'entité ignore les réglages pour les blocs. Les recherches de TileEntities tenterons de correspondre au type de bloc (si "Corresp. au type de bloc" est coché) ; celles de blocs aux TileEntities (si Corresp. "TileEntities" est coché).  Les recherches de TileEntities avec un type de bloc sont plus rapides.  La recherche de bloc peut égalelement trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
 Utiliser "Nouvelle recherche" pour chercher à nouveau dans la sélection. "Suivant" parcours les résultats.
-o406 Documentation
-t406 Documentation
-o407 Forester script by dudecon
-t407 Script Forestier par dudecon
-o408 Procedural
-t408 Procédurier
-o409 Normal
-t409 Normal
-o410 Bamboo
-t410 BamBou
-o411 Palm
-t411 Palmier
-o412 Stickly
-t412 Stickly
-o413 Round
-t413 Rond
-o414 Cone
-t414 Cône
-o415 Rainforest
-t415 Forêt trop. humide
-o416 Mangrove
-t416 Mangrove
-o417 Shape
-t417 Forme
-o418 Tree Count
-t418 Nb arbres
-o419 Tree Height
-t419 Hauteur arbres
-o420 Height Variation
-t420 Vario hauteur
-o421 Branch Density
-t421 Densité des branches
-o422 Trunk Thickness
-t422 Épaiss. des troncs
-o423 Broken Trunk
-t423 Troncs cassés
-o424 Hollow Trunk
-t424 Tronc creux
-o425 Wood
-t425 Bois
-o426 Foliage
-t426 Feuillage
-o427 Foliage Density
-t427 Densité du feuillage
-o428 Yes
-t428 Oui
-o429 To Stone
-t429 à la pierre
-o430 Hanging
-t430 Suspendu
-o431 No
-t431 Non
-o432 Roots
-t432 Racines
-o433 Root Buttresses
-t433 Racines buttées
-o434 Wood Material
-t434 Matériau du bois
-o435 Leaf Material
-t435 Matériau des feuilles
-o436 Plant On
-t436 Planter sur
-o437 Ocean
-t437 Océan
-o438 Plains
-t438 Plaines
-o439 Desert
-t439 Désert
-o440 Extreme Hills
-t440 Collines extrêmes
-o441 Forest
-t441 Forêt
-o442 Taiga
-t442 Taïga
-o443 Swamppland
-t443 Marais
-o444 River
-t444 Rivière
-o445 Hell (Nether)
-t445 Enfer (Nether)
-o446 Sky (End)
-t446 Ciel (End)
-o447 Frozen Ocean
-t447 Océan gelé
-o448 Frozen River
-t448 Rivière gelée
-o449 Ice Plains
-t449 Plaines de glace
-o450 Ice Mountains
-t450 Montagnes de glace
-o451 Mushroom Island
-t451 Île champignons
-o452 Mushroom Island Shore
-t452 Rive des îles champignons
-o453 Beach
-t453 Plage
-o454 Desert Hills
-t454 Collines du désert
-o455 Forest Hills
-t455 Collines de la forêt
-o456 Taiga Hills
-t456 Collines de la taïga
-o457 Extreme Hills Edge
-t457 Bord des collines extrêmes
-o458 Jungle
-t458 Jungle
-o459 Jungle Hills
-t459 Collines de la jungle
-o460 Jungle Edge
-t460 Bord de la jungle
-o461 Deep Ocean
-t461 Océan profond
-o462 Stone Beach
-t462 Plage de roche
-o463 Cold Beach
-t463 Plage froide
-o464 Birch Forest
-t464 Forêt de bouleaux
-o465 Birch Forest Hills
-t465 Collines de la forêt de bouleaux
-o466 Roofed Forest
-t466 Forêt couverte
-o467 Cold Taiga
-t467 Taïga froide
-o468 Cold Taiga Hills
-t468 Collines de la taïga froide
-o469 Mega Taiga
-t469 Méga taïga
-o470 Mega Taiga Hills
-t470 Collines de la méga taïga
-o471 Extreme Hills+
-t471 Collines extrêmes+
-o472 Savanna
-t472 Savane
-o473 Savanna Plateau
-t473 Plateau de la savane
-o474 Messa
-t474 Mesa
-o475 Messa Plateau F
-t475 Mesa Plateau F
-o476 Messa Plateau
-t476 Mesa Plateau
-o477 Sunflower Plains
-t477 Plaine de tournesols
-o478 Desert M
-t478 Désert M
-o479 Extreme Hills M
-t479 Collines extrêmes M
-o480 Flower Forest
-t480 Forêt de fleurs
-o481 Taiga M
-t481 Taïga M
-o482 Swampland M
-t482 Marais M
-o483 Ice Plains Spikes
-t483 Stalagmites des plaines de glace
-o484 Ice Mountains Spikes
-t484 Stalagmites des montagnes de glace
-o485 Jungle M
-t485 Jungle M
-o486 JungleEdge M
-t486 Bord de la jungle M
-o487 Birch Forest M
-t487 Forêt de bouleaux M
-o488 Birch Forest Hills M
-t488 Collines de la forêt de bouleaux M
-o489 Roofed Forest M
-t489 Forêt couverte M
-o490 Cold Taiga M
-t490 Taïga froide M
-o491 Mega Spruce Taiga
-t491 Méga taïga avec épicéas
-o492 Mega Spruce Taiga 
-t492 Méga taïga avec épicéas 
-o493 Extreme Hills+ M
-t493 Collines extrêmes+ M
-o494 Savanna M
-t494 Savane M
-o495 Savanna Plateau M
-t495 Plateau de la savane M
-o496 Mesa (Bryce)
-t496 Mesa (Bryce)
-o497 Mesa Plateau F M
-t497 Mesa Plateau F M
-o498 Mesa Plateau M
-t498 Mesa Plateau M
-o499 (Uncalculated)
-t499 (non calculé)
-o500 Biome
-t500 Biome
-o501 Repeat count
-t501 Nb répétitions
-o502 Depth
-t502 Profondeur
-o503 Pick a block:
-t503 Choisissez un bloc :
-o504 Players
-t504 Joueurs
-o505 Player Name
-t505 Nom du joueur
-o506 Player: 
-t506 Joueur : 
-o507 Goto Player
-t507 Aller au joueur
-o508 Goto Player's View
-t508 Aller à la vue joueur
-o509 Move Player
-t509 Déplacer joueur
-o510 Align Player to Camera
-t510 Aligner le joueur à la caméra
-o511 Player
-t511 Joueur
-o512 Chunk Control
-t512 Contrôle de chunk 
-o513 Move Spawn Point
-t513 Déplacer point de spawn
-o514 Goto Spawn
-t514 Aller au spawn
-o515 Take a Screenshot
-t515 Capture d'écran
-o516 Load Preset:
-t516 Charg. préréglages
-o517 Remove Presets
-t517 Enlever préréglafes
-o518 Save as preset
-t518 Sauver préréglages
-o519 Preset Name:
-t519 Nom préréglage :
-o520 That preset name is reserved. Try pick another preset name.
-t520 Ce nom est réservé. Choisissez-en un autre pour ces préréglage.
-o521 Invalid character in file name
-t521 Caractère non-valide dans le nom de fichier
-o522 No presets saved
-t522 Aucun préréglage sauvé
-o523 Select preset to delete
-t523 Chosissez un préréglage à supprimer
-o524  does not have a value yet.
-t524  n'a pas encore de valeur.
+o401 Documentation
+t401 Documentation
+o402 Forester script by dudecon
+t402 Script Forestier par dudecon
+o403 Procedural
+t403 Procédurier
+o404 Normal
+t404 Normal
+o405 Bamboo
+t405 BamBou
+o406 Palm
+t406 Palmier
+o407 Stickly
+t407 Stickly
+o408 Round
+t408 Rond
+o409 Cone
+t409 Cône
+o410 Rainforest
+t410 Forêt trop. humide
+o411 Mangrove
+t411 Mangrove
+o412 Shape
+t412 Forme
+o413 Tree Count
+t413 Nb arbres
+o414 Tree Height
+t414 Hauteur arbres
+o415 Height Variation
+t415 Vario hauteur
+o416 Branch Density
+t416 Densité des branches
+o417 Trunk Thickness
+t417 Épaiss. des troncs
+o418 Broken Trunk
+t418 Troncs cassés
+o419 Hollow Trunk
+t419 Tronc creux
+o420 Wood
+t420 Bois
+o421 Foliage
+t421 Feuillage
+o422 Foliage Density
+t422 Densité du feuillage
+o423 Yes
+t423 Oui
+o424 To Stone
+t424 à la pierre
+o425 Hanging
+t425 Suspendu
+o426 No
+t426 Non
+o427 Roots
+t427 Racines
+o428 Root Buttresses
+t428 Racines buttées
+o429 Wood Material
+t429 Matériau du bois
+o430 Leaf Material
+t430 Matériau des feuilles
+o431 Plant On
+t431 Planter sur
+o432 Ocean
+t432 Océan
+o433 Plains
+t433 Plaines
+o434 Desert
+t434 Désert
+o435 Extreme Hills
+t435 Collines extrêmes
+o436 Forest
+t436 Forêt
+o437 Taiga
+t437 Taïga
+o438 Swamppland
+t438 Marais
+o439 River
+t439 Rivière
+o440 Hell (Nether)
+t440 Enfer (Nether)
+o441 Sky (End)
+t441 Ciel (End)
+o442 Frozen Ocean
+t442 Océan gelé
+o443 Frozen River
+t443 Rivière gelée
+o444 Ice Plains
+t444 Plaines de glace
+o445 Ice Mountains
+t445 Montagnes de glace
+o446 Mushroom Island
+t446 Île champignons
+o447 Mushroom Island Shore
+t447 Rive des îles champignons
+o448 Beach
+t448 Plage
+o449 Desert Hills
+t449 Collines du désert
+o450 Forest Hills
+t450 Collines de la forêt
+o451 Taiga Hills
+t451 Collines de la taïga
+o452 Extreme Hills Edge
+t452 Bord des collines extrêmes
+o453 Jungle
+t453 Jungle
+o454 Jungle Hills
+t454 Collines de la jungle
+o455 Jungle Edge
+t455 Bord de la jungle
+o456 Deep Ocean
+t456 Océan profond
+o457 Stone Beach
+t457 Plage de roche
+o458 Cold Beach
+t458 Plage froide
+o459 Birch Forest
+t459 Forêt de bouleaux
+o460 Birch Forest Hills
+t460 Collines de la forêt de bouleaux
+o461 Roofed Forest
+t461 Forêt couverte
+o462 Cold Taiga
+t462 Taïga froide
+o463 Cold Taiga Hills
+t463 Collines de la taïga froide
+o464 Mega Taiga
+t464 Méga taïga
+o465 Mega Taiga Hills
+t465 Collines de la méga taïga
+o466 Extreme Hills+
+t466 Collines extrêmes+
+o467 Savanna
+t467 Savane
+o468 Savanna Plateau
+t468 Plateau de la savane
+o469 Messa
+t469 Mesa
+o470 Messa Plateau F
+t470 Mesa Plateau F
+o471 Messa Plateau
+t471 Mesa Plateau
+o472 Sunflower Plains
+t472 Plaine de tournesols
+o473 Desert M
+t473 Désert M
+o474 Extreme Hills M
+t474 Collines extrêmes M
+o475 Flower Forest
+t475 Forêt de fleurs
+o476 Taiga M
+t476 Taïga M
+o477 Swampland M
+t477 Marais M
+o478 Ice Plains Spikes
+t478 Stalagmites des plaines de glace
+o479 Ice Mountains Spikes
+t479 Stalagmites des montagnes de glace
+o480 Jungle M
+t480 Jungle M
+o481 JungleEdge M
+t481 Bord de la jungle M
+o482 Birch Forest M
+t482 Forêt de bouleaux M
+o483 Birch Forest Hills M
+t483 Collines de la forêt de bouleaux M
+o484 Roofed Forest M
+t484 Forêt couverte M
+o485 Cold Taiga M
+t485 Taïga froide M
+o486 Mega Spruce Taiga
+t486 Méga taïga avec épicéas
+o487 Mega Spruce Taiga 
+t487 Méga taïga avec épicéas 
+o488 Extreme Hills+ M
+t488 Collines extrêmes+ M
+o489 Savanna M
+t489 Savane M
+o490 Savanna Plateau M
+t490 Plateau de la savane M
+o491 Mesa (Bryce)
+t491 Mesa (Bryce)
+o492 Mesa Plateau F M
+t492 Mesa Plateau F M
+o493 Mesa Plateau M
+t493 Mesa Plateau M
+o494 (Uncalculated)
+t494 (non calculé)
+o495 Biome
+t495 Biome
+o496 Repeat count
+t496 Nb répétitions
+o497 Depth
+t497 Profondeur
+o498 Pick a block:
+t498 Choisissez un bloc :
+o499 Players
+t499 Joueurs
+o500 Player Name
+t500 Nom du joueur
+o501 Player: 
+t501 Joueur : 
+o502 Goto Player
+t502 Aller au joueur
+o503 Goto Player's View
+t503 Aller à la vue joueur
+o504 Move Player
+t504 Déplacer joueur
+o505 Align Player to Camera
+t505 Aligner le joueur à la caméra
+o506 Player
+t506 Joueur
+o507 Chunk Control
+t507 Contrôle de chunk 
+o508 Move Spawn Point
+t508 Déplacer point de spawn
+o509 Goto Spawn
+t509 Aller au spawn
+o510 Take a Screenshot
+t510 Capture d'écran
+o511 Load Preset:
+t511 Charg. préréglages
+o512 Remove Presets
+t512 Enlever préréglafes
+o513 Save as preset
+t513 Sauver préréglages
+o514 Preset Name:
+t514 Nom préréglage :
+o515 That preset name is reserved. Try pick another preset name.
+t515 Ce nom est réservé. Choisissez-en un autre pour ces préréglage.
+o516 Invalid character in file name
+t516 Caractère non-valide dans le nom de fichier
+o517 No presets saved
+t517 Aucun préréglage sauvé
+o518 Select preset to delete
+t518 Chosissez un préréglage à supprimer
+o519  does not have a value yet.
+t519  n'a pas encore de valeur
+o520 Version {} is available
+t520 
+o521 Download
+t521 
+o522 View
+t522 
+o523 Ignore
+t523 
+o524 Space
+t524 
+o525 Tab
+t525 
+o526 Delete
+t526 
+o527 Scroll Up
+t527 
+o528 Scroll Down
+t528 
+o529 Button 3
+t529 
+o530 Alt
+t530 
+o531 Ctrl
+t531 
+o532 Creating a new world.
+t532 
+o533 Minecraft Server
+t533 
+o534 Flatland
+t534 
+o535 Generator:
+t535 
+o536 Will automatically download and use the latest version
+t536 
+o537 Height: 
+t537 
+o538 Grass
+t538 
+o539 Server version:
+t539 
+o540 or
+t540 
+o541 Check for Updates
+t541 
+o542 Advanced
+t542 
+o543 Open Server Storage
+t543 
+o544 Reveal World Cache
+t544 
+o545 Delete World Cache
+t545 
+o546 Advanced...
+t546 
+o547 Simulate world
+t547 
+o548 Use snapshot versions
+t548 
+o549 X: 
+t549 
+o550 Y: 
+t550 
+o551 Z: 
+t551 
+o552 f: 
+t552 
+o553 Seed: 
+t553 
+o554 East-West Chunks: 
+t554 
+o555 North-South Chunks: 
+t555 
+o556 Survival
+t556 
+o557 Game Type:
+t557 
+o558 Cancel
+t558 
+o559 Creative
+t559 
+o560 Style:
+t560 
+o561 H
+t561 
+o562 L
+t562 
+o563 W
+t563 
+o564 Minimum Spacing
+t564 
+o565 Regenerate UUID
+t565 
+o566 Replace blocks with any data value. Only useful for Replace operations.
+t566 
+o567 Entities
+t567 
+o568 Items
+t568 
+o569 TileEntities
+t569 
+o570 TileTicks
+t570 
+o571 Unpopulated Chunks
+t571 
+o572 Sky
+t572 
+o573 Fog
+t573 
+o574 Ceiling
+t574 
+o575 Chunk Redraw
+t575 
+o576 Hidden Ores
+t576 
+o577 Bedrock
+t577 
+o578 Coal
+t578 
+o579 Iron
+t579 
+o580 Lapis Lazuli
+t580 
+o581 Redstone
+t581 
+o582 Gold
+t582 
+o583 Diamond
+t583 
+o584 Nether Quartz
+t584 
+o585 Shortcut: {0}
+t585 Raccourci : {0}
+o586 View Distance ({0})
+t586 
