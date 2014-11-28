@@ -3025,13 +3025,13 @@ class LevelEditor(GLViewport):
         formatLabel = Label(levelFormat)
         items.append(Row([Label("Format:"),formatLabel]))
 
-        nameField = TextField(width=150, ref=AttrRef(self.level, 'LevelName'))
+        nameField = TextField(width=300, ref=AttrRef(self.level, 'LevelName'))
         def alt21():
-            print nameField.get_text_and_insertion_point()
+            nameField.insertion_point = len(nameField.text)
             nameField.insert_char(u'\xa7')
         alt21button = Button(u"\xa7", action=alt21)
         label = Label("Name:")
-        items.append(Row((label, nameField,alt21button)))
+        items.append(Row((label, nameField, alt21button)))
 
         if hasattr(self.level, 'Time'):
             time = self.level.Time

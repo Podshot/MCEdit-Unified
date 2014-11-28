@@ -82,6 +82,9 @@ class TextEditor(Widget):
             elif event.key == K_v:
                 try:
                     t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    DEF_ENC = locale.getdefaultlocale()[1]
+                    if type(t) == unicode and DEF_ENC != "UTF-8":
+                        t = t.encode(DEF_ENC)
                     self.text = t
                 except:
                     print "scrap not available"
