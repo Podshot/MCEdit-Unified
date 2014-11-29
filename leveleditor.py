@@ -1756,8 +1756,7 @@ class LevelEditor(GLViewport):
     fboCache = None
 
     def __getMaxCopies(self):
-#        return Settings.maxCopies.get()
-        return self.__maxCopies
+        return config.settings.maxCopies.get() or self.__maxCopies
 
     def __setMaxCopies(self, *args, **kwargs):
         return
