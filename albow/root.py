@@ -112,15 +112,10 @@ class RootWidget(Widget):
         self.altAction = None
         self.ctrlAction = None
         self.editor = None
-
-    def turn_off_focus(self):
-        self.editor.focus_switch = None
-
-    def get_camera_vector(self):
-        return self.editor.get_camera_vector()
+        self.selectTool = None
 
     def get_nudge_block(self):
-        return self.editor.currentTool.panel.nudgeBlocksButton
+        return self.selectTool.panel.nudgeBlocksButton
 
     def set_timer(self, ms):
         pygame.time.set_timer(USEREVENT, ms)
@@ -151,6 +146,7 @@ class RootWidget(Widget):
     def run_modal(self, modal_widget):
         if self.editor is None:
             self.editor = self.mcedit.editor
+            self.selectTool = self.editor.toolbar.tools[0]
         old_captured_widget = None
 
         if self.captured_widget:

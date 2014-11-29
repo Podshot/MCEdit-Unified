@@ -2453,7 +2453,7 @@ class LevelEditor(GLViewport):
 
         evt.dict['keyname'] = "mouse{0}".format(button)
         self.mcedit.focus_switch = self
-        self.focus_switch = None
+        self.turn_off_focus()
         self.key_down(evt)
 
     '''
@@ -2476,6 +2476,9 @@ class LevelEditor(GLViewport):
 
     def mouseLookOn(self):
         self.mainViewport.mouseLookOn()
+
+    def turn_off_focus(self):
+        self.focus_switch = None
 
     @property
     def blockFaceUnderCursor(self):
