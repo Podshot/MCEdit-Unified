@@ -118,6 +118,11 @@ root.disabled_bg_color = None
 root.RootWidget = Theme('RootWidget')
 root.RootWidget.bg_color = (0, 0, 0)
 
+root.ItemThumbView = Theme('ItemThumbView')
+root.ItemThumbView.fg_color = (255, 255, 0)
+root.ItemThumbView.hover_color = (255, 255, 225)
+root.ItemThumbView.bg_color = (48, 48, 48)
+
 root.Button = Theme('Button')
 root.Button.font = (17, "DejaVuSans-Bold.ttf")
 root.Button.fg_color = (255, 255, 0)

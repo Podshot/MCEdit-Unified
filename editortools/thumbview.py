@@ -32,7 +32,7 @@ class ThumbView(GLPerspective):
 
     def clear(self):
         if self.drawBackground:
-            GL.glClearColor(0.25, 0.27, 0.77, 1.0)
+            GL.glClearColor(self.parent.bg_color[0]/255.0, self.parent.bg_color[1]/255.0, self.parent.bg_color[2]/255.0, 1.0)
         else:
             GL.glClearColor(0.0, 0.0, 0.0, 0.0)
         GL.glClear(GL.GL_DEPTH_BUFFER_BIT | GL.GL_COLOR_BUFFER_BIT)
@@ -114,9 +114,9 @@ class BlockThumbView(Widget):
 
 
 class ItemThumbView(Widget):
-
     def __init__(self, materials, id_, data, **kw):
         Widget.__init__(self, **kw)
+        self.drawBackground = True
         self.materials = materials
         self.id_ = id_
         self.data = data
@@ -137,10 +137,11 @@ class ItemThumbView(Widget):
             if len(texture) -1 >= self.data:
                 texture = texture[self.data]
         image = pygame.image.load(os.path.join(directories.getDataDir(), "item-textures", self.id_.split(":")[0], texture))
-        image = pygame.transform.scale(image, (48, 48))
+        image = pygame.transform.scale(image, self.size)
         self.thumb = Image(image)
         self.add(self.thumb)
         self.thumb.size = self.size
+        self.thumb.drawBackground = True
 
     def setAsBlock(self):
         self.is_gl_container = True
@@ -155,6 +156,6 @@ class ItemThumbView(Widget):
         self.thumb = ThumbView(sch)
         self.add(self.thumb)
         self.thumb.size = self.size
-        self.thumb.drawBackground = False
+        self.thumb.drawBackground = True
         for i in self.thumb.renderer.chunkWorker:
             pass
