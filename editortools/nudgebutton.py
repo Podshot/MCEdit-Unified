@@ -53,7 +53,7 @@ class NudgeButton(GLBackground):
         if keyname == config.keys.down.get():
             self.nudge(Vector(0, -1, 0))
 
-        Z = self.editor.get_camera_vector()
+        Z = self.editor.mainViewport.cameraVector
         absZ = map(abs, Z)
         if absZ[0] < absZ[2]:
             forward = (0, 0, (-1 if Z[2] < 0 else 1))

@@ -438,7 +438,7 @@ class PlayerPositionTool(EditorTool):
             if self.editor.mainViewport.pitch < 0:
                 self.editor.mainViewport.pitch = -self.editor.mainViewport.pitch
                 self.editor.mainViewport.cameraVector = self.editor.mainViewport._cameraVector()
-            cv = self.editor.get_camera_vector()
+            cv = self.editor.mainViewport.cameraVector
 
             pos = self.editor.level.getPlayerPosition(player)
             pos = map(lambda p, c: p - c * 5, pos, cv)
@@ -690,7 +690,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         self.editor.add(self.panel)
 
     def gotoSpawn(self):
-        cv = self.editor.get_camera_vector()
+        cv = self.editor.mainViewport.cameraVector
 
         pos = self.editor.level.playerSpawnPosition()
         pos = map(lambda p, c: p - c * 5, pos, cv)

@@ -1670,9 +1670,6 @@ class LevelEditor(GLViewport):
 
     _viewMode = None
 
-    def get_camera_vector(self):
-        return self.mainViewport.cameraVector
-
     @property
     def viewMode(self):
         return self._viewMode
