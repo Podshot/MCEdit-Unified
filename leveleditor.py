@@ -217,6 +217,8 @@ class CameraViewport(GLViewport):
         config.settings.fov.addObserver(self, "fovSetting", callback=self.updateFov)
 
         self.mouseVector = (0, 0, 0)
+
+        self.root = self.get_root()
         # self.add(DebugDisplay(self, "cameraPosition", "blockFaceUnderCursor", "mouseVector", "mouse3dPoint"))
 
     @property
@@ -384,7 +386,7 @@ class CameraViewport(GLViewport):
         # if (x, y) not in self.rect:
         # return (0, 0, 0);  # xxx
 
-        y = self.get_root().height - y
+        y = self.root.height - y
         point1 = unproject(x, y, 0.0)
         point2 = unproject(x, y, 1.0)
         v = numpy.array(point2) - point1
@@ -400,7 +402,7 @@ class CameraViewport(GLViewport):
             GL.glReadBuffer(GL.GL_BACK)
         except Exception:
             logging.exception('Exception during glReadBuffer')
-        ws = self.get_root().size
+        ws = self.root.size
         if center:
             x, y = ws
             x //= 2
@@ -524,7 +526,7 @@ class CameraViewport(GLViewport):
     startingMousePosition = None
 
     def mouseLookOn(self):
-        root.get_root().capture_mouse(self)
+        self.root.capture_mouse(self)
         self.focus_switch = None
         self.startingMousePosition = mouse.get_pos()
 
@@ -532,14 +534,14 @@ class CameraViewport(GLViewport):
             self.avoidMouseJumpBug = 2
 
     def mouseLookOff(self):
-        root.get_root().capture_mouse(None)
+        self.root.capture_mouse(None)
         if self.startingMousePosition:
             mouse.set_pos(*self.startingMousePosition)
         self.startingMousePosition = None
 
     @property
     def mouseMovesCamera(self):
-        return root.get_root().captured_widget is not None
+        return self.root.captured_widget is not None
 
     def toggleMouseLook(self):
         if not self.mouseMovesCamera:
@@ -1373,7 +1375,7 @@ class CameraViewport(GLViewport):
 
             self.editor.noRaycaster = 0
 
-            root.get_root().update_tooltip()
+            self.root.update_tooltip()
 
             focusPair = self.blockFaceUnderCursor
 
@@ -1667,6 +1669,9 @@ class LevelEditor(GLViewport):
         self.deleteAllCopiedSchematics()
 
     _viewMode = None
+
+    def get_camera_vector(self):
+        return self.mainViewport.cameraVector
 
     @property
     def viewMode(self):
@@ -2349,7 +2354,7 @@ class LevelEditor(GLViewport):
         if self.renderer.needsImmediateRedraw:
             self.invalidate()
 
-        if self.get_root().do_draw:
+        if self.root.do_draw:
             frameDuration = self.getFrameDuration()
 
             while frameDuration > (datetime.now() - self.frameStartTime):
@@ -2804,7 +2809,7 @@ class LevelEditor(GLViewport):
                 self.redo()
             if keyname == config.keys.save.get():
                 self.saveFile()
-                self.root.ctrlClicked = -1
+                self.root.fix_sticky_ctrl()
             if keyname == config.keys.newWorld.get():
                 self.createNewLevel()
             if keyname == config.keys.closeWorld.get():
@@ -2910,7 +2915,7 @@ class LevelEditor(GLViewport):
             if keyname == 'F7':
                 self.testBoardKey = 1
 
-            self.root.ctrlClicked = -1
+            self.root.fix_sticky_ctrl()
 
     def showGotoPanel(self):
 
@@ -2957,14 +2962,14 @@ class LevelEditor(GLViewport):
     def closeEditor(self):
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
-            self.root.ctrlClicked = -1
+            self.root.fix_sticky_ctrl()
             if answer == "Save":
                 self.saveFile()
             if answer == "Cancel":
                 return
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
-        self.root.ctrlClicked = -1
+        self.root.fix_sticky_ctrl()
         self.mainViewport.mouseLookOff()
         self.level = None
         self.renderer.stopWork()
@@ -3181,7 +3186,7 @@ class LevelEditor(GLViewport):
 
         def loadWorld():
             self.mcedit.loadFile(worldData[worldTable.selectedWorldIndex][3].filename)
-            self.root.ctrlClicked = -1
+            self.root.fix_sticky_ctrl()
 
         def click_row(i, evt):
             worldTable.selectedWorldIndex = i
@@ -3443,7 +3448,7 @@ class LevelEditor(GLViewport):
             if op.changedLevel:
                 self.addUnsavedEdit()
 
-        self.root.ctrlClicked = -1
+        self.root.fix_sticky_ctrl()
 
     def redo(self):
         if len(self.redoStack) == 0:
@@ -3463,7 +3468,7 @@ class LevelEditor(GLViewport):
             if op.changedLevel:
                 self.addUnsavedEdit()
 
-        self.root.ctrlClicked = -1
+        self.root.fix_sticky_ctrl()
 
     def invalidateBox(self, box):
         self.renderer.invalidateChunksInBox(box)

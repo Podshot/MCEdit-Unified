@@ -569,8 +569,11 @@ def showProgress(progressText, progressIterator, cancel=False):
     class ProgressWidget(Dialog):
         progressFraction = 0.0
         firstDraw = False
+        root = None
 
         def draw(self, surface):
+            if self.root is None:
+                self.root = self.get_root()
             Widget.draw(self, surface)
             frameStart = datetime.now()
             frameInterval = timedelta(0, 1, 0) / 2
@@ -630,16 +633,16 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
         def key_down(self, event):
-            self.get_root().mcedit.editor.key_down(event, 1, 1)
+            self.root.editor.key_down(event, 1, 1)
 
         def key_up(self, event):
-            self.get_root().mcedit.editor.key_up(event)
+            self.root.editor.key_up(event)
 
         def mouse_up(self, event):
             try:
-                if "SelectionTool" in "{0}".format(self.get_root().mcedit.editor.currentTool):
-                    if self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.count > 0:
-                        self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.mouse_up(event)
+                if "SelectionTool" in "{0}".format(self.root.editor.currentTool):
+                    if self.root.get_nudge_block().count > 0:
+                        self.root.get_nudge_block().mouse_up(event)
             except:
                 pass
 

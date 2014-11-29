@@ -227,6 +227,8 @@ class FileOpener(albow.Widget):
         if keyname == config.keys.takeAScreenshot.get():
             self.mcedit.editor.take_screenshot()
 
+        self.get_root().fix_sticky_ctrl()
+
     def promptOpenAndLoad(self):
         try:
             filename = mcplatform.askOpenFile()

@@ -21,6 +21,7 @@ class NudgeButton(GLBackground):
         self.count = 0
         self.add(nudgeLabel)
         self.shrink_wrap()
+        self.root = self.get_root()
 
         # tooltipBacking = Panel()
         # tooltipBacking.bg_color = (0, 0, 0, 0.6)
@@ -41,7 +42,7 @@ class NudgeButton(GLBackground):
             self.editor.rightClickNudge = 0
         self.count -= 1
         if self.count <= 0:
-            self.get_root().mcedit.editor.focus_switch = None  # xxxx restore focus to editor better
+            self.root.turn_off_focus()
             self.count = 0
 
     def key_down(self, evt):
@@ -53,7 +54,7 @@ class NudgeButton(GLBackground):
         if keyname == config.keys.down.get():
             self.nudge(Vector(0, -1, 0))
 
-        Z = self.get_root().mcedit.editor.mainViewport.cameraVector  # xxx mouthful
+        Z = self.root.get_camera_vector()
         absZ = map(abs, Z)
         if absZ[0] < absZ[2]:
             forward = (0, 0, (-1 if Z[2] < 0 else 1))

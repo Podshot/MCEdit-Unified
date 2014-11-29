@@ -937,7 +937,7 @@ class SelectionTool(EditorTool):
                             origin = [o + off for o, off in zip(box.origin, offs)]
                             size = [s - off * 2 for s, off in zip(box.size, offs)]
 
-                            cv = self.editor.mainViewport.cameraVector
+                            cv = self.editor.get_camera_vector()
                             for i in range(3):
                                 if cv[i] > 0:
                                     origin[i] -= offs[i]

@@ -113,7 +113,7 @@ class EditorTool(object):
     # pass
 
     def findBestTrackingPlane(self, face):
-        cv = list(self.editor.mainViewport.cameraVector)
+        cv = list(self.editor.get_camera_vector())
         cv[face >> 1] = 0
         cv = map(abs, cv)
 
@@ -208,7 +208,7 @@ class EditorTool(object):
 
         dim1, dim2 = dim + 1, dim + 2
         dim1, dim2 = dim1 % 3, dim2 % 3
-        cv = self.editor.mainViewport.cameraVector
+        cv = self.editor.get_camera_vector()
 
         # determine if a click was within self.edge_factor of the edge of a selection box side. if so, click through
         # to the opposite side
