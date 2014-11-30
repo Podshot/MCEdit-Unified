@@ -409,7 +409,7 @@ class ChoiceButton(ValueButton):
         self.scroll_items = scroll_items
         self.choices = choices or ["[UNDEFINED]"]
 
-        widths = [self.font.size(c)[0] for c in choices] + [self.width]
+        widths = [self.font.size(_(c))[0] for c in choices] + [self.width]
         if len(widths):
             self.width = max(widths) + self.margin * 2
 

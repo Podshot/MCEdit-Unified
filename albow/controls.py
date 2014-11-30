@@ -308,7 +308,7 @@ class ValueButton(ButtonBase, ValueDisplay):
     align = 'c'
 
     def get_text(self):
-        return self.format_value(self.value)
+        return self.format_value(_(self.value))
 
 
 
