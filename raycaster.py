@@ -81,16 +81,20 @@ def firstBlock(origin, direction, level, radius, viewMode=None):
     startPos =  map(int,map(math.floor,origin))
     block = level.blockAt(*startPos)
     callback = None
+    tooMuch = 0
     if (block == 8 or block == 9):
         callback = _WaterCallback()
     else:
         callback = _StandardCallback()
     for i in _rawRaycast(origin,direction):
+        tooMuch += 1
         block = level.blockAt(*i[0])
         if (callback.check(i[0],block)):
             return i[0],i[1]
         if (_tooFar(origin, i[0], radius) or _tooHighOrLow(i[0])):
             raise TooFarException("There are no valid blocks within range")
+        if tooMuch >= 720:
+            return i[0], i[1]
 
 def _tooFar(origin, position, radius):
     x = abs(origin[0] - position[0])
@@ -123,8 +127,10 @@ class _WaterCallback(Callback):
 
     def check(self, position, block):
         if (block == 8 or block == 9):
+            print "Test1"
             return False
         elif (block == 0):
+            print "Test2"
             self.escapedBlock = True
             return False
         elif (self.escapedBlock and block != 0 ):

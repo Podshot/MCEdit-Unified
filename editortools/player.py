@@ -47,31 +47,40 @@ class PlayerRemoveOperation(Operation):
             alert(_("Cannot perform action while saving is taking place"))
             return
 
+        if recordUndo:
+            self.undoTag = self.level.getPlayerTag(self.player)
+
+        self.level.players.remove(self.player)
         if self.player != "Player":
-            if recordUndo:
-                self.undoTag = self.level.getPlayerTag(self.player)
-
-            self.level.players.remove(self.player)
             self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
-
-            while self.tool.panel.table.index >= len(self.tool.panel.players):
-                self.tool.panel.table.index -= 1
-            self.tool.markerList.invalidate()
-
-            pos = self.tool.revPlayerPos[self.player]
-            del self.tool.playerPos[pos]
-            del self.tool.playerTexture[self.player]
-            del self.tool.revPlayerPos[self.player]
-
         else:
-            alert("Can't delete the default Player!")
+            self.tool.panel.players.remove("Player")
+
+        while self.tool.panel.table.index >= len(self.tool.panel.players):
+            self.tool.panel.table.index -= 1
+        if len(self.tool.panel.players) == 0:
+            self.tool.hidePanel()
+            self.tool.showPanel()
+        self.tool.markerList.invalidate()
+
+        pos = self.tool.revPlayerPos[self.player]
+        del self.tool.playerPos[pos]
+        if self.player != "Player":
+            del self.tool.playerTexture[self.player]
+        else:
+            del self.level.root_tag["Data"]["Player"]
+        del self.tool.revPlayerPos[self.player]
 
     def undo(self):
         if not (self.undoTag is None):
-            self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.undoTag
+            if self.player != "Player":
+                self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.undoTag
 
             self.level.players.append(self.player)
-            self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
+            if self.player != "Player":
+                self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
+            else:
+            	self.tool.panel.players.append("Player")
 
         self.tool.markerList.invalidate()
 
@@ -139,9 +148,8 @@ class PlayerAddOperation(Operation):
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
         self.tool.movingPlayer = self.uuid
-
-        print(self.level.players)
-        print(self.tool.panel.players)
+        self.tool.hidePanel()
+        self.tool.showPanel()
 
     def newPlayer(self):
         playerTag = nbt.TAG_Compound()
@@ -321,10 +329,11 @@ class PlayerPositionPanel(Panel):
             players = self.level.players or ["[No players]"]
             if not self.level.oldPlayerFolderFormat:
                 for player in players:
-                    if player != "Player":
+                    if player != "Player" and player != "[No players]":
                         self.player_UUID[version_utils.getPlayerNameFromUUID(player)] = player
-                self.player_UUID["Player"] = "Player"
-                players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player" else x.lower())
+                if "[No players]" not in players:
+                    self.player_UUID["Player"] = "Player"
+                    players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player" else x.lower())
 
         else:
             players = ["Player"]
@@ -361,7 +370,11 @@ class PlayerPositionPanel(Panel):
     @property
     def selectedPlayer(self):
         if not self.level.oldPlayerFolderFormat:
-            return self.player_UUID[self.players[self.table.index]]
+            player = self.players[self.table.index]
+            if player != "Player" and player != "[No players]":
+                return self.player_UUID[player]
+            else:
+            	return player
         else:
             return self.players[self.table.index]
 
@@ -387,32 +400,35 @@ class PlayerPositionTool(EditorTool):
     def removePlayer(self):
         player = self.panel.selectedPlayer
 
-        op = PlayerRemoveOperation(self, player)
+        if player != "[No players]":
+            op = PlayerRemoveOperation(self, player)
 
-        self.editor.addOperation(op)
-        self.editor.addUnsavedEdit()
+            self.editor.addOperation(op)
+            self.editor.addUnsavedEdit()
 
     @alertException
     def movePlayer(self):
-        self.movingPlayer = self.panel.selectedPlayer
+        if self.panel.selectedPlayer != "[No players]":
+            self.movingPlayer = self.panel.selectedPlayer
 
     @alertException
     def movePlayerToCamera(self):
         player = self.panel.selectedPlayer
-        pos = self.editor.mainViewport.cameraPosition
-        y = self.editor.mainViewport.yaw
-        p = self.editor.mainViewport.pitch
-        d = self.editor.level.dimNo
+        if player != "[No players]":
+            pos = self.editor.mainViewport.cameraPosition
+            y = self.editor.mainViewport.yaw
+            p = self.editor.mainViewport.pitch
+            d = self.editor.level.dimNo
 
-        op = PlayerMoveOperation(self, pos, player, (y, p))
-        self.movingPlayer = None
-        self.editor.addOperation(op)
-        self.editor.addUnsavedEdit()
+            op = PlayerMoveOperation(self, pos, player, (y, p))
+            self.movingPlayer = None
+            self.editor.addOperation(op)
+            self.editor.addUnsavedEdit()
 
     @alertException
     def reloadSkins(self):
         for player in self.editor.level.players:
-            if player != "Player":
+            if player != "Player" and player != "[No players]":
                 del self.playerTexture[player]
                 self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
 
