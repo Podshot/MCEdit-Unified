@@ -561,7 +561,7 @@ class IResourcePack:
                 new_terrain.paste(image, slot, image)
                 self.propogated_textures.append(slot)
             except Exception, e:
-#                print e
+                # print e
                 pass
         copy = self.old_terrain.copy()
 
@@ -600,8 +600,8 @@ class ZipResourcePack(IResourcePack):
         zfile = zipfile.ZipFile(self.zipfile)
         for name in zfile.infolist():
             if name.filename.endswith(".png"):
-                if name.filename.startswith("assets/minecraft/textures/blocks"):
-                    block_name = name.filename.split("/")[-1]
+                if name.filename.startswith(os.path.join("assets", "minecraft", "textures", "blocks")):
+                    block_name = name.filename.split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
                     zfile.extract(name.filename, self.texture_path)
                     possible_texture = Image.open(os.path.join(self.texture_path, name.filename))

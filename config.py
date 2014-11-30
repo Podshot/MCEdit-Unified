@@ -497,7 +497,8 @@ definitions = {
         ("viewMode", "View Mode", "Camera"),
         ("undoLimit", "Undo Limit", 20),
         ("recentWorlds", "Recent Worlds", ['']),
-        ("resourcePack", "Resource Pack", u"Default")
+        ("resourcePack", "Resource Pack", u"Default"),
+        ("maxCopies", "Copy stack size", 32),
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

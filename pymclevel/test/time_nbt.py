@@ -9,6 +9,8 @@ from timeit import timeit
 path = "testfiles/TileTicks.nbt"
 test_data = file(path, "rb").read()
 
+test_file = None
+resaved_test_file = None
 
 def load_file():
     global test_file

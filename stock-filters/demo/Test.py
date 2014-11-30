@@ -73,7 +73,7 @@ def perform(level, box, options):
         widget.add(lbl)
         widget.add(btn)
         widget.shrink_wrap()
-        editor.addExternalWidget(widget)        
+        editor.addExternalWidget(widget)
     elif op == "Scoreboard Editing (Objective)":
         scoreboard = level.init_scoreboard()
         test_objective = TAG_Compound()
@@ -86,7 +86,7 @@ def perform(level, box, options):
         for objective in score.Objectives:
             print "Objective Name: " + str(objective["Name"].value)
     elif op == "Scoreboard Editing (Team)":
-        if level.scoreboard != None:
+        if level.scoreboard is not None:
             for team in level.scoreboard.Teams:
                 print "Team Name: " + str(team.DisplayName)
     elif op == "Player Data":

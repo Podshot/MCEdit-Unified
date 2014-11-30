@@ -38,7 +38,7 @@ log = getLogger(__name__)
 DIM_NETHER = -1
 DIM_END = 1
 
-__all__ = ["ZeroChunk", "AnvilChunk", "ChunkedLevelMixin", "MCInfdevOldLevel", "MCAlphaDimension", "ZipSchematic"]
+__all__ = ["ZeroChunk", "AnvilChunk", "ChunkedLevelMixin", "MCInfdevOldLevel", "MCAlphaDimension"]
 _zeros = {}
 
 

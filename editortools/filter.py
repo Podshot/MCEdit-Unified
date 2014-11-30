@@ -419,7 +419,7 @@ class FilterTool(EditorTool):
                         urllib.urlretrieve(versionJSON["Download-URL"],
                                            os.path.join(filtersDir, "updates", versionJSON["Name"]))
                         updatedFilters = updatedFilters + 1
-        for f in os.listdir(os.path.join(filtersDi ,"updates")):
+        for f in os.listdir(os.path.join(filtersDir ,"updates")):
             shutil.copy(os.path.join(filtersDir, "updates", f), filtersDir)
         shutil.rmtree(os.path.join(filtersDir, "updates"))
         self.finishedUpdatingWidget = Widget()

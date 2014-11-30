@@ -324,7 +324,7 @@ class PlayerPositionPanel(Panel):
                     if player != "Player":
                         self.player_UUID[version_utils.getPlayerNameFromUUID(player)] = player
                 self.player_UUID["Player"] = "Player"
-                players = self.player_UUID.keys()
+                players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player" else x.lower())
 
         else:
             players = ["Player"]

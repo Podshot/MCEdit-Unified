@@ -41,7 +41,7 @@ class NudgeButton(GLBackground):
             self.editor.rightClickNudge = 0
         self.count -= 1
         if self.count <= 0:
-            self.get_root().mcedit.editor.focus_switch = None  # xxxx restore focus to editor better
+            self.editor.turn_off_focus()
             self.count = 0
 
     def key_down(self, evt):
@@ -53,7 +53,7 @@ class NudgeButton(GLBackground):
         if keyname == config.keys.down.get():
             self.nudge(Vector(0, -1, 0))
 
-        Z = self.get_root().mcedit.editor.mainViewport.cameraVector  # xxx mouthful
+        Z = self.editor.mainViewport.cameraVector
         absZ = map(abs, Z)
         if absZ[0] < absZ[2]:
             forward = (0, 0, (-1 if Z[2] < 0 else 1))

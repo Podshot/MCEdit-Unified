@@ -166,7 +166,7 @@ def getPlayerSkin(uuid, force=False):
     for entry in playerJSON["properties"]:
         if entry["name"] == "textures":
             texturesJSON = json.loads(base64.b64decode(entry["value"]))
-            urllib.urlretrieve(os.path.join(texturesJSON["textures"]["SKIN"]["url"], "player-skins", uuid.replace("-","_")+".png"))
+            urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
     player_skin = Image.open(toReturn)
     if player_skin.size == (64,64):

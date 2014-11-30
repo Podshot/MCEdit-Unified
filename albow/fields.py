@@ -2,6 +2,7 @@
 # Albow - Fields
 #
 #-# Modified by D.C.-G. for translation purpose
+import locale
 from pygame import draw
 import pygame
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT
@@ -26,6 +27,7 @@ class TextEditor(Widget):
         if upper is not None:
             self.upper = upper
         self.insertion_point = None
+        self.root = self.get_root()
 
     def get_text(self):
         return self._text
@@ -52,7 +54,7 @@ class TextEditor(Widget):
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
-        self.get_root().mcedit.editor.key_down(event, 1, 1)
+        self.root.editor.key_down(event, 1, 1)
         if not (event.cmd or event.alt):
             k = event.key
             if k == K_LEFT:
@@ -99,11 +101,9 @@ class TextEditor(Widget):
         self.call_parent_handler('key_down', event)
 
     def key_up(self, event):
-        self.get_root().mcedit.editor.key_up(event)
+        self.root.editor.key_up(event)
         if  event.key == K_LALT or event.key == K_RALT:
-            print self.tempValue
             self.tempValue = []
-            
 
     def get_text_and_insertion_point(self):
         text = self.get_text()
