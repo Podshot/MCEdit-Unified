@@ -4,7 +4,7 @@
 #-# Modified by D.C.-G. for translation purpose
 from pygame import draw
 import pygame
-from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN
+from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT
 from widget import Widget, overridable_property
 from controls import Control
 from config import config
@@ -17,7 +17,7 @@ from translate import _
 class TextEditor(Widget):
     upper = False
     tab_stop = True
-
+    tempValue = []
     _text = u""
 
     def __init__(self, width, upper=None, **kwds):
@@ -64,7 +64,7 @@ class TextEditor(Widget):
             if k == K_TAB:
                 self.attention_lost()
                 self.tab_to_next()
-                return
+                return                
             try:
                 c = event.unicode
             except ValueError:
@@ -72,6 +72,11 @@ class TextEditor(Widget):
             if k != K_DOWN and k != K_UP:
                 if self.insert_char(c) != 'pass':
                     return
+        if event.alt:
+            for n in range(256, 267): #Numpad 1-9
+                if event.key == n:
+                    self.tempValue.append(n-256)
+
         if event.cmd and event.unicode:
             if event.key == K_c:
                 try:
@@ -88,7 +93,6 @@ class TextEditor(Widget):
                     self.text = t
                 except:
                     print "scrap not available"
-                    #print repr(t)
             else:
                 self.attention_lost()
 
@@ -96,6 +100,10 @@ class TextEditor(Widget):
 
     def key_up(self, event):
         self.get_root().mcedit.editor.key_up(event)
+        if  event.key == K_LALT or event.key == K_RALT:
+            print self.tempValue
+            self.tempValue = []
+            
 
     def get_text_and_insertion_point(self):
         text = self.get_text()
