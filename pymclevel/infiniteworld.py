@@ -30,7 +30,6 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent, ChunkAccessDenied,Chunk
 import nbt
 from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
-from schematic import ZipSchematic
 import version_utils
 import player
 
@@ -39,7 +38,7 @@ log = getLogger(__name__)
 DIM_NETHER = -1
 DIM_END = 1
 
-__all__ = ["ZeroChunk", "AnvilChunk", "ChunkedLevelMixin", "MCInfdevOldLevel", "MCAlphaDimension", "ZipSchematic"]
+__all__ = ["ZeroChunk", "AnvilChunk", "ChunkedLevelMixin", "MCInfdevOldLevel", "MCAlphaDimension"]
 _zeros = {}
 
 
