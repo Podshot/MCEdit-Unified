@@ -30,6 +30,7 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent, ChunkAccessDenied,Chunk
 import nbt
 from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
+from schematic import ZipSchematic
 import version_utils
 import player
 

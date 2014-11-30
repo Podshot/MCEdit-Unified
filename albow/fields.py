@@ -2,6 +2,7 @@
 # Albow - Fields
 #
 #-# Modified by D.C.-G. for translation purpose
+import locale
 from pygame import draw
 import pygame
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN

@@ -11,16 +11,16 @@ https://gamedev.stackexchange.com/questions/47362/cast-ray-to-select-block-in-vo
 """
 def _rawRaycast(origin, direction):
     def _signum(x):
-         if (x > 0):
-             return 1
-         elif(x < 0):
+        if (x > 0):
+            return 1
+        elif(x < 0):
             return -1
-         else:
+        else:
             return 0
 
     def _intbound(s,ds):
         if (ds<0):
-           return _intbound(-s,-ds)
+            return _intbound(-s,-ds)
         else:
             s = s % 1
             return (1-s)/ds

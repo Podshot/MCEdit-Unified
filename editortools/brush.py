@@ -504,7 +504,7 @@ class BrushTool(CloneTool):
         """
         try:
             path = os.path.join(directories.brushesDir, (name+ ".py"))
-            if type(path) == unicode and DEF_END != "UTF-8":
+            if type(path) == unicode and DEF_ENC != "UTF-8":
                 path = path.encode(DEF_ENC)
             globals()[name] = m = imp.load_source(name, path)
             m.materials = self.editor.level.materials

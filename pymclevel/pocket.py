@@ -66,7 +66,7 @@ class PocketChunksFile(object):
             for i in xrange(sector, sector + count):
                 if i >= len(self.freeSectors):
                     # raise RegionMalformed("Region file offset table points to sector {0} (past the end of the file)".format(i))
-                    print  "Region file offset table points to sector {0} (past the end of the file)".format(i)
+                    print "Region file offset table points to sector {0} (past the end of the file)".format(i)
                     needsRepair = True
                     break
                 if self.freeSectors[i] is False:
@@ -341,7 +341,7 @@ class PocketWorld(ChunkedLevelMixin, MCLevel):
                 return False
             filename = os.path.dirname(filename)
 
-        return all([os.path.exists(os.path.join(filename, f)) for f in clp])
+        return all([os.path.exists(os.path.join(filename, fl)) for fl in clp])
 
     def saveInPlaceGen(self):
         for chunk in self._loadedChunks.itervalues():

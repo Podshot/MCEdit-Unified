@@ -2527,16 +2527,16 @@ class LevelEditor(GLViewport):
                     self.currentTool.mouseDown(evt, focusPoint, direction)
 
     def toolMouseUp(self, evt, f):  # xxx f is a tuple
-         if self.level:
-             if None != f:
-                 (focusPoint, direction) = f
-                 if focusPoint is not None and direction is not None:
+        if self.level:
+            if None != f:
+                (focusPoint, direction) = f
+                if focusPoint is not None and direction is not None:
                     self.currentTool.mouseUp(evt, focusPoint, direction)
 
     def mouse_up(self, evt):
-         button = keys.remapMouseButton(evt.button)
-         evt.dict['keyname'] = "mouse{0}".format(button)
-         self.key_up(evt)
+        button = keys.remapMouseButton(evt.button)
+        evt.dict['keyname'] = "mouse{0}".format(button)
+        self.key_up(evt)
 
     def mouse_drag(self, evt):
         # if 'button' not in evt.dict or evt.button != 1:

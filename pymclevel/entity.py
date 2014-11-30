@@ -184,7 +184,7 @@ class TileEntity(object):
                             part = part[13:len(part)-2]
                             parts.append(part)
                         x, y, z = parts
-                        pos = [float(part) for part in coords(x, y, z, moveSpawnerPos)]
+                        pos = [float(p) for p in coords(x, y, z, moveSpawnerPos)]
                         Entity.setpos(mob, pos)
 
         if eTag['id'].value == "Control":
