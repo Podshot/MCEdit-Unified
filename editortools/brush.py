@@ -219,13 +219,13 @@ class BrushPanel(Panel):
         """
         Creates the brush preset widget, called by BrushPanel when creating the panel.
         """
-        self.presets = ["Load Preset:"]
+        self.presets = ["Load Preset"]
         self.presets.extend(self.getBrushFileList())
         self.presets.append('Remove Presets')
 
         self.presetListButton = ChoiceButton(self.presets, width=100, choose=self.presetSelected)
-        self.presetListButton.selectedChoice = "Load Preset:"
-        self.saveButton = Button("Save as preset", action=self.openSavePresetDialog)
+        self.presetListButton.selectedChoice = "Load Preset"
+        self.saveButton = Button("Save as Preset", action=self.openSavePresetDialog)
 
         presetListButtonRow = Row([self.presetListButton])
         saveButtonRow = Row([self.saveButton])
@@ -249,7 +249,7 @@ class BrushPanel(Panel):
             panel.dismiss()
             name = nameField.value
 
-            if name in ['Load Preset:', 'Remove Presets', '__temp__']:
+            if name in ['Load Preset', 'Remove Presets', '__temp__']:
                 alert("That preset name is reserved. Try pick another preset name.")
                 return
 
@@ -312,11 +312,11 @@ class BrushPanel(Panel):
         choice = self.presetListButton.selectedChoice
         if choice == 'Remove Presets':
             self.removePreset()
-        elif choice == 'Load Preset:':
+        elif choice == 'Load Preset':
             return
         else:
             self.tool.loadBrushPreset(choice)
-        choice = "Load Preset:"
+        choice = "Load Preset"
         self.tool.showPanel()
 
 
