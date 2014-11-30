@@ -18,7 +18,6 @@ from translate import _
 class TextEditor(Widget):
     upper = False
     tab_stop = True
-    tempValue = []
     _text = u""
 
     def __init__(self, width, upper=None, **kwds):
@@ -74,11 +73,6 @@ class TextEditor(Widget):
             if k != K_DOWN and k != K_UP:
                 if self.insert_char(c) != 'pass':
                     return
-        if event.alt:
-            for n in range(256, 267): #Numpad 1-9
-                if event.key == n:
-                    self.tempValue.append(n-256)
-
         if event.cmd and event.unicode:
             if event.key == K_c:
                 try:
@@ -102,8 +96,6 @@ class TextEditor(Widget):
 
     def key_up(self, event):
         self.root.editor.key_up(event)
-        if  event.key == K_LALT or event.key == K_RALT:
-            self.tempValue = []
 
     def get_text_and_insertion_point(self):
         text = self.get_text()
