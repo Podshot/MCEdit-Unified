@@ -610,174 +610,172 @@ o291 Find:
 t291 
 o292 Replace with:
 t292 
-o293 Shortcut: {0}
+o293 When the fill tool is chosen, prompt for a block type.
 t293 
-o294 When the fill tool is chosen, prompt for a block type.
+o294 Filter
 t294 
-o295 Filter
+o295 Invisibility (no effect)
 t295 
-o296 Invisibility (no effect)
+o296 Strength
 t296 
-o297 Strength
+o297 Nausea (no mob effect)
 t297 
-o298 Nausea (no mob effect)
+o298 Weakness
 t298 
-o299 Weakness
+o299 Speed (no mob effect)
 t299 
-o300 Speed (no mob effect)
+o300 Water Breathing
 t300 
-o301 Water Breathing
+o301 Regeneration
 t301 
-o302 Regeneration
+o302 Poison
 t302 
-o303 Poison
+o303 Resistance
 t303 
-o304 Resistance
+o304 Hunger (no mob effect)
 t304 
-o305 Hunger (no mob effect)
+o305 Haste (no mob effect)
 t305 
-o306 Haste (no mob effect)
+o306 Fire Resistance
 t306 
-o307 Fire Resistance
+o307 Slowness (no mob effect)
 t307 
-o308 Slowness (no mob effect)
+o308 Blindness (no mob effect)
 t308 
-o309 Blindness (no mob effect)
+o309 Night Vision (no effect)
 t309 
-o310 Night Vision (no effect)
+o310 Mining Fatigue (no mob effectg)
 t310 
-o311 Mining Fatigue (no mob effectg)
+o311 Jump Boost
 t311 
-o312 Jump Boost
+o312 Effect
 t312 
-o313 Effect
+o313 Level
 t313 
-o314 Level
+o314 Duration (Seconds)
 t314 
-o315 Duration (Seconds)
+o315 Add Potion Effect to Mobs
 t315 
-o316 Add Potion Effect to Mobs
+o316 Banslimes
 t316 
-o317 Banslimes
+o317 Change Mob Properties
 t317 
-o318 Change Mob Properties
+o318 Chunk Surface Repair
 t318 
-o319 Chunk Surface Repair
+o319 Classic Water Flood
 t319 
-o320 Classic Water Flood
+o320 Colorwires
 t320 
-o321 Colorwires
+o321 Create Busses
 t321 
-o322 Create Busses
+o322 Create Shops
 t322 
-o323 Create Shops
+o323 Create Spawners
 t323 
-o324 Create Spawners
+o324 Decliff
 t324 
-o325 Decliff
+o325 Find
 t325 
-o326 Find
+o326 Forester
 t326 
-o327 Forester
+o327 Make Mobs Invincible
 t327 
-o328 Make Mobs Invincible
+o328 Setbiome
 t328 
-o329 Setbiome
+o329 Smooth
 t329 
-o330 Smooth
+o330 Filter:
 t330 
-o331 Filter:
+o331 Update Filters
 t331 
-o332 Update Filters
+o332 Max Seed
 t332 
-o333 Max Seed
+o333 Health
 t333 
-o334 Health
+o334 VelocityX
 t334 
-o335 VelocityX
+o335 VelocityY
 t335 
-o336 VelocityY
+o336 VelocityZ
 t336 
-o337 VelocityZ
+o337 Fire
 t337 
-o338 Fire
+o338 FallDistance
 t338 
-o339 FallDistance
+o339 AttackTime
 t339 
-o340 AttackTime
+o340 HurtTime
 t340 
-o341 HurtTime
+o341 Lightning
 t341 
-o342 Lightning
+o342 No Lightning
 t342 
-o343 No Lightning
+o343 Lightning Creeper
 t343 
-o344 Lightning Creeper
+o344 Enderman Block Id
 t344 
-o345 Enderman Block Id
+o345 Enderman Block Data
 t345 
-o346 Enderman Block Data
+o346 Villager (green)
 t346 
-o347 Villager (green)
+o347 Farmer (brown)
 t347 
-o348 Farmer (brown)
+o348 Butcher (white apron)
 t348 
-o349 Butcher (white apron)
+o349 Librarian (white)
 t349 
-o350 Librarian (white)
+o350 Blacksmith (black apron)
 t350 
-o351 Blacksmith (black apron)
+o351 Priest (purple)
 t351 
-o352 Priest (purple)
+o352 Villager Profession
 t352 
-o353 Villager Profession
+o353 Slime Size
 t353 
-o354 Slime Size
+o354 Breeding Mode Ticks
 t354 
-o355 Breeding Mode Ticks
+o355 Child/Adult Age
 t355 
-o356 Child/Adult Age
+o356 Repairs the backwards surfaces made by old versions of Minecraft.
 t356 
-o357 Repairs the backwards surfaces made by old versions of Minecraft.
+o357 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
 t357 
-o358 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
+o358 Flood Water
 t358 
-o359 Flood Water
+o359 Flood Lava
 t359 
-o360 Flood Lava
+o360 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
 t360 
-o361 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
+o361 Profession
 t361 
-o362 Profession
+o362 Add Stopping Trade
 t362 
-o363 Add Stopping Trade
+o363 Invulnerable Villager
 t363 
-o364 Invulnerable Villager
+o364 Make Unlimited Trades
 t364 
-o365 Make Unlimited Trades
+o365 Give Experience per a Trade
 t365 
-o366 Give Experience per a Trade
+o366 Make Villager not Move
 t366 
-o367 Make Villager not Move
+o367 Villager Name
 t367 
-o368 Villager Name
+o368 General Trade
 t368 
-o369 General Trade
-t369 
-o370       Rotate the Position of your Trader
+o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
+t369 
+o370 Y-Axis
 t370 
-o371 Y-Axis
+o371 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
 t371 
-o372 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
+o372 X-Axis
 t372 
-o373 X-Axis
+o373 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
 t373 
-o374 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
+o374 Rotation
 t374 
-o375 Rotation
-t375 
-o376 To create a shop first put your buy in the top slot(s) of the chest.
+o375 To create a shop first put your buy in the top slot(s) of the chest.
 Second put a second buy in the middle slot(optional).
 Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
@@ -796,427 +794,439 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
+t375 
+o376 Trade Notes
 t376 
-o377 Trade Notes
+o377 Include position data
 t377 
-o378 Include position data
+o378 Both
 t378 
-o379 Both
+o379 Lower Only
 t379 
-o380 Lower Only
+o380 Raise Only
 t380 
-o381 Raise Only
+o381 Raise/Lower
 t381 
-o382 Raise/Lower
+o382 TileEntity
 t382 
-o383 TileEntity
+o383 Entity
 t383 
-o384 Entity
+o384 Block
 t384 
-o385 Block
+o385 Match by:
 t385 
-o386 Match by:
+o386 Match block type (for TileEntity searches):
 t386 
-o387 Match block type (for TileEntity searches):
+o387 Match block:
 t387 
-o388 Match block:
+o388 Match block data:
 t388 
-o389 Match block data:
+o389 Match tile entities (for Block searches):
 t389 
-o390 Match tile entities (for Block searches):
+o390 "None" for Name or Value will match any tag's Name or Value respectively.
 t390 
-o391 "None" for Name or Value will match any tag's Name or Value respectively.
+o391 Match Tag Name:
 t391 
-o392 Match Tag Name:
+o392 Match Tag Value:
 t392 
-o393 Match Tag Value:
+o393 Case insensitive:
 t393 
-o394 Case insensitive:
+o394 Any
 t394 
-o395 Any
+o395 Match Tag Type:
 t395 
-o396 Match Tag Type:
+o396 Start New Search
 t396 
-o397 Start New Search
+o397 Find Next
 t397 
-o398 Find Next
+o398 Dump Found Coordinates
 t398 
-o399 Dump Found Coordinates
+o399 Operation:
 t399 
-o400 Operation:
-t400 
-o401 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
+t400 
+o401 Documentation
 t401 
-o402 Documentation
+o402 Forester script by dudecon
 t402 
-o403 Forester script by dudecon
+o403 Procedural
 t403 
-o404 Procedural
+o404 Normal
 t404 
-o405 Normal
+o405 Bamboo
 t405 
-o406 Bamboo
+o406 Palm
 t406 
-o407 Palm
+o407 Stickly
 t407 
-o408 Stickly
+o408 Round
 t408 
-o409 Round
+o409 Cone
 t409 
-o410 Cone
+o410 Rainforest
 t410 
-o411 Rainforest
+o411 Mangrove
 t411 
-o412 Mangrove
+o412 Shape
 t412 
-o413 Shape
+o413 Tree Count
 t413 
-o414 Tree Count
+o414 Tree Height
 t414 
-o415 Tree Height
+o415 Height Variation
 t415 
-o416 Height Variation
+o416 Branch Density
 t416 
-o417 Branch Density
+o417 Trunk Thickness
 t417 
-o418 Trunk Thickness
+o418 Broken Trunk
 t418 
-o419 Broken Trunk
+o419 Hollow Trunk
 t419 
-o420 Hollow Trunk
+o420 Wood
 t420 
-o421 Wood
+o421 Foliage
 t421 
-o422 Foliage
+o422 Foliage Density
 t422 
-o423 Foliage Density
+o423 Yes
 t423 
-o424 Yes
+o424 To Stone
 t424 
-o425 To Stone
+o425 Hanging
 t425 
-o426 Hanging
+o426 No
 t426 
-o427 No
+o427 Roots
 t427 
-o428 Roots
+o428 Root Buttresses
 t428 
-o429 Root Buttresses
+o429 Wood Material
 t429 
-o430 Wood Material
+o430 Leaf Material
 t430 
-o431 Leaf Material
+o431 Plant On
 t431 
-o432 Plant On
+o432 Ocean
 t432 
-o433 Ocean
+o433 Plains
 t433 
-o434 Plains
+o434 Desert
 t434 
-o435 Desert
+o435 Extreme Hills
 t435 
-o436 Extreme Hills
+o436 Forest
 t436 
-o437 Forest
+o437 Taiga
 t437 
-o438 Taiga
+o438 Swamppland
 t438 
-o439 Swamppland
+o439 River
 t439 
-o440 River
+o440 Hell (Nether)
 t440 
-o441 Hell (Nether)
+o441 Sky (End)
 t441 
-o442 Sky (End)
+o442 Frozen Ocean
 t442 
-o443 Frozen Ocean
+o443 Frozen River
 t443 
-o444 Frozen River
+o444 Ice Plains
 t444 
-o445 Ice Plains
+o445 Ice Mountains
 t445 
-o446 Ice Mountains
+o446 Mushroom Island
 t446 
-o447 Mushroom Island
+o447 Mushroom Island Shore
 t447 
-o448 Mushroom Island Shore
+o448 Beach
 t448 
-o449 Beach
+o449 Desert Hills
 t449 
-o450 Desert Hills
+o450 Forest Hills
 t450 
-o451 Forest Hills
+o451 Taiga Hills
 t451 
-o452 Taiga Hills
+o452 Extreme Hills Edge
 t452 
-o453 Extreme Hills Edge
+o453 Jungle
 t453 
-o454 Jungle
+o454 Jungle Hills
 t454 
-o455 Jungle Hills
+o455 Jungle Edge
 t455 
-o456 Jungle Edge
+o456 Deep Ocean
 t456 
-o457 Deep Ocean
+o457 Stone Beach
 t457 
-o458 Stone Beach
+o458 Cold Beach
 t458 
-o459 Cold Beach
+o459 Birch Forest
 t459 
-o460 Birch Forest
+o460 Birch Forest Hills
 t460 
-o461 Birch Forest Hills
+o461 Roofed Forest
 t461 
-o462 Roofed Forest
+o462 Cold Taiga
 t462 
-o463 Cold Taiga
+o463 Cold Taiga Hills
 t463 
-o464 Cold Taiga Hills
+o464 Mega Taiga
 t464 
-o465 Mega Taiga
+o465 Mega Taiga Hills
 t465 
-o466 Mega Taiga Hills
+o466 Extreme Hills+
 t466 
-o467 Extreme Hills+
+o467 Savanna
 t467 
-o468 Savanna
+o468 Savanna Plateau
 t468 
-o469 Savanna Plateau
+o469 Messa
 t469 
-o470 Messa
+o470 Messa Plateau F
 t470 
-o471 Messa Plateau F
+o471 Messa Plateau
 t471 
-o472 Messa Plateau
+o472 Sunflower Plains
 t472 
-o473 Sunflower Plains
+o473 Desert M
 t473 
-o474 Desert M
+o474 Extreme Hills M
 t474 
-o475 Extreme Hills M
+o475 Flower Forest
 t475 
-o476 Flower Forest
+o476 Taiga M
 t476 
-o477 Taiga M
+o477 Swampland M
 t477 
-o478 Swampland M
+o478 Ice Plains Spikes
 t478 
-o479 Ice Plains Spikes
+o479 Ice Mountains Spikes
 t479 
-o480 Ice Mountains Spikes
+o480 Jungle M
 t480 
-o481 Jungle M
+o481 JungleEdge M
 t481 
-o482 JungleEdge M
+o482 Birch Forest M
 t482 
-o483 Birch Forest M
+o483 Birch Forest Hills M
 t483 
-o484 Birch Forest Hills M
+o484 Roofed Forest M
 t484 
-o485 Roofed Forest M
+o485 Cold Taiga M
 t485 
-o486 Cold Taiga M
+o486 Mega Spruce Taiga
 t486 
-o487 Mega Spruce Taiga
+o487 Mega Spruce Taiga 
 t487 
-o488 Mega Spruce Taiga 
+o488 Extreme Hills+ M
 t488 
-o489 Extreme Hills+ M
+o489 Savanna M
 t489 
-o490 Savanna M
+o490 Savanna Plateau M
 t490 
-o491 Savanna Plateau M
+o491 Mesa (Bryce)
 t491 
-o492 Mesa (Bryce)
+o492 Mesa Plateau F M
 t492 
-o493 Mesa Plateau F M
+o493 Mesa Plateau M
 t493 
-o494 Mesa Plateau M
+o494 (Uncalculated)
 t494 
-o495 (Uncalculated)
+o495 Biome
 t495 
-o496 Biome
+o496 Repeat count
 t496 
-o497 Repeat count
+o497 Depth
 t497 
-o498 Depth
+o498 Pick a block:
 t498 
-o499 Pick a block:
+o499 Players
 t499 
-o500 Players
+o500 Player Name
 t500 
-o501 Player Name
+o501 Player: 
 t501 
-o502 Player: 
+o502 Goto Player
 t502 
-o503 Goto Player
+o503 Goto Player's View
 t503 
-o504 Goto Player's View
+o504 Move Player
 t504 
-o505 Move Player
+o505 Align Player to Camera
 t505 
-o506 Align Player to Camera
+o506 Player
 t506 
-o507 Player
+o507 Chunk Control
 t507 
-o508 Chunk Control
+o508 Move Spawn Point
 t508 
-o509 Move Spawn Point
+o509 Goto Spawn
 t509 
-o510 Goto Spawn
+o510 Take a Screenshot
 t510 
-o511 Take a Screenshot
+o511 Load Preset
 t511 
-o512 Load Preset:
+o512 Remove Presets
 t512 
-o513 Remove Presets
+o513 Save as Preset
 t513 
-o514 Save as preset
+o514 Preset Name:
 t514 
-o515 Preset Name:
+o515 That preset name is reserved. Try pick another preset name.
 t515 
-o516 That preset name is reserved. Try pick another preset name.
+o516 Invalid character in file name
 t516 
-o517 Invalid character in file name
+o517 No presets saved
 t517 
-o518 No presets saved
+o518 Select preset to delete
 t518 
-o519 Select preset to delete
+o519  does not have a value yet.
 t519 
-o520  does not have a value yet.
+o520 Version {} is available
 t520 
-o521 Version {} is available
+o521 Download
 t521 
-o522 Download
+o522 View
 t522 
-o523 View
+o523 Ignore
 t523 
-o524 Ignore
+o524 Space
 t524 
-o525 Space
+o525 Tab
 t525 
-o526 Tab
+o526 Delete
 t526 
-o527 Delete
+o527 Scroll Up
 t527 
-o528 Scroll Up
+o528 Scroll Down
 t528 
-o529 Scroll Down
+o529 Button 3
 t529 
-o530 Button 3
+o530 Alt
 t530 
-o531 Alt
+o531 Ctrl
 t531 
-o532 Ctrl
+o532 Creating a new world.
 t532 
-o533 Creating a new world.
+o533 Minecraft Server
 t533 
-o534 Minecraft Server
+o534 Flatland
 t534 
-o535 Flatland
+o535 Generator:
 t535 
-o536 Generator:
+o536 Will automatically download and use the latest version
 t536 
-o537 Will automatically download and use the latest version
+o537 Height: 
 t537 
-o538 Height: 
+o538 Grass
 t538 
-o539 Grass
+o539 Server version:
 t539 
-o540 Server version:
+o540 or
 t540 
-o541 or
+o541 Check for Updates
 t541 
-o542 Check for Updates
+o542 Advanced
 t542 
-o543 Advanced
+o543 Open Server Storage
 t543 
-o544 Open Server Storage
+o544 Reveal World Cache
 t544 
-o545 Reveal World Cache
+o545 Delete World Cache
 t545 
-o546 Delete World Cache
+o546 Advanced...
 t546 
-o547 Advanced...
+o547 Simulate world
 t547 
-o548 Simulate world
+o548 Use snapshot versions
 t548 
-o549 Use snapshot versions
+o549 X: 
 t549 
-o550 X: 
+o550 Y: 
 t550 
-o551 Y: 
+o551 Z: 
 t551 
-o552 Z: 
+o552 f: 
 t552 
-o553 f: 
+o553 Seed: 
 t553 
-o554 Seed: 
+o554 East-West Chunks: 
 t554 
-o555 East-West Chunks: 
+o555 North-South Chunks: 
 t555 
-o556 North-South Chunks: 
+o556 Survival
 t556 
-o557 Survival
+o557 Game Type:
 t557 
-o558 Game Type:
+o558 Cancel
 t558 
-o559 Cancel
+o559 Creative
 t559 
-o560 Creative
+o560 Style:
 t560 
-o561 Style:
+o561 H
 t561 
-o562 H
+o562 L
 t562 
-o563 L
+o563 W
 t563 
-o564 W
+o564 Minimum Spacing
 t564 
-o565 Minimum Spacing
+o565 Regenerate UUID
 t565 
-o566 Regenerate UUID
+o566 Replace blocks with any data value. Only useful for Replace operations.
 t566 
-o567 Replace blocks with any data value. Only useful for Replace operations.
+o567 Entities
 t567 
-o568 Entities
+o568 Items
 t568 
-o569 Items
+o569 TileEntities
 t569 
-o570 TileEntities
+o570 TileTicks
 t570 
-o571 TileTicks
+o571 Unpopulated Chunks
 t571 
-o572 Unpopulated Chunks
+o572 Sky
 t572 
-o573 Sky
+o573 Fog
 t573 
-o574 Fog
+o574 Ceiling
 t574 
-o575 Ceiling
+o575 Chunk Redraw
 t575 
-o576 Chunk Redraw
+o576 Hidden Ores
 t576 
-o577 Hidden Ores
+o577 Bedrock
 t577 
-o578 Bedrock
+o578 Coal
 t578 
-o579 Coal
+o579 Iron
 t579 
-o580 Iron
+o580 Lapis Lazuli
 t580 
-o581 Lapis Lazuli
+o581 Redstone
 t581 
-o582 Redstone
+o582 Gold
 t582 
-o583 Gold
+o583 Diamond
 t583 
-o584 Diamond
+o584 Nether Quartz
 t584 
-o585 Nether Quartz
+o585 Shortcut: {0}
 t585 
-o586 Shortcut: {0}
+o586 View Distance ({0})
 t586 
-o587 View Distance ({0})
+o587 Copy Stack Size: 
 t587 
+o588 Add Player
+t588 
+o589 Remove Player
+t589 
+o590 Reload Skins
+t590 
+o591 Previous Page
+t591 
+o592 Next Page
+t592 

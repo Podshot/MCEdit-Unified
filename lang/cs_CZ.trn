@@ -1108,11 +1108,11 @@ o509 Goto Spawn
 t509 Aller au spawn
 o510 Take a Screenshot
 t510 Capture d'écran
-o511 Load Preset:
+o511 Load Preset
 t511 Charg. préréglages
 o512 Remove Presets
 t512 Enlever préréglafes
-o513 Save as preset
+o513 Save as Preset
 t513 Sauver préréglages
 o514 Preset Name:
 t514 Nom préréglage :
@@ -1260,3 +1260,15 @@ o585 Shortcut: {0}
 t585 Raccourci : {0}
 o586 View Distance ({0})
 t586 View Distance ({0})
+o587 Copy Stack Size: 
+t587 
+o588 Add Player
+t588 
+o589 Remove Player
+t589 
+o590 Reload Skins
+t590 
+o591 Previous Page
+t591 
+o592 Next Page
+t592 

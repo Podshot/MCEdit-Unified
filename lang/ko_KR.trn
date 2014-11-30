@@ -1093,11 +1093,11 @@ o509 Goto Spawn
 t509 스폰으로 이동
 o510 Take a Screenshot
 t510 스크린샷 찍기
-o511 Load Preset:
+o511 Load Preset
 t511 설정 불러오기
 o512 Remove Presets
 t512 설정 삭제
-o513 Save as preset
+o513 Save as Preset
 t513 설정 저장
 o514 Preset Name:
 t514 설정 이름:
@@ -1245,3 +1245,15 @@ o585 Shortcut: {0}
 t585 단축키: {0}
 o586 View Distance ({0})
 t586 
+o587 Copy Stack Size: 
+t587 
+o588 Add Player
+t588 
+o589 Remove Player
+t589 
+o590 Reload Skins
+t590 
+o591 Previous Page
+t591 
+o592 Next Page
+t592 

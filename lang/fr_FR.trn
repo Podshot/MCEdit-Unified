@@ -663,7 +663,7 @@ t313 Niveau
 o314 Duration (Seconds)
 t314 Durrée (secondes)
 o315 Add Potion Effect to Mobs
-t315 Ajouter effet de potion aus monstres
+t315 Ajouter effet de potion aux monstres
 o316 Banslimes
 t316 Bannir slimes
 o317 Change Mob Properties
@@ -1108,11 +1108,11 @@ o509 Goto Spawn
 t509 Aller au spawn
 o510 Take a Screenshot
 t510 Capture d'écran
-o511 Load Preset:
+o511 Load Preset
 t511 Charg. préréglages
 o512 Remove Presets
 t512 Enlever préréglafes
-o513 Save as preset
+o513 Save as Preset
 t513 Sauver préréglages
 o514 Preset Name:
 t514 Nom préréglage :
@@ -1127,136 +1127,148 @@ t518 Chosissez un préréglage à supprimer
 o519  does not have a value yet.
 t519  n'a pas encore de valeur
 o520 Version {} is available
-t520 
+t520 La version {} est disponnible.
 o521 Download
-t521 
+t521 Télécharger
 o522 View
-t522 
+t522 Voir
 o523 Ignore
-t523 
+t523 Ignorer
 o524 Space
-t524 
+t524 Espace
 o525 Tab
-t525 
+t525 Tab
 o526 Delete
-t526 
+t526 Supprimer
 o527 Scroll Up
-t527 
+t527 Défil. haut
 o528 Scroll Down
-t528 
+t528 Défil. bas
 o529 Button 3
-t529 
+t529 Boutton 3
 o530 Alt
-t530 
+t530 Alt
 o531 Ctrl
-t531 
+t531 Ctrl
 o532 Creating a new world.
-t532 
+t532 Créer un nouveau monde.
 o533 Minecraft Server
-t533 
+t533 Serveur Minecraft
 o534 Flatland
-t534 
+t534 Monde plat
 o535 Generator:
-t535 
+t535 Générateur :
 o536 Will automatically download and use the latest version
-t536 
+t536 Téléchargent et utilisation automatique de la dernière version
 o537 Height: 
-t537 
+t537 Hauteur : 
 o538 Grass
-t538 
+t538 Herbe
 o539 Server version:
-t539 
+t539 Version serveur :
 o540 or
-t540 
+t540 ou
 o541 Check for Updates
-t541 
+t541 Vérifier les MàJ
 o542 Advanced
-t542 
+t542 Avancé
 o543 Open Server Storage
-t543 
+t543 Ouvrir stockage des serveurs
 o544 Reveal World Cache
-t544 
+t544 Révéler cache des mondes
 o545 Delete World Cache
-t545 
+t545 Effacer cahche des mondes
 o546 Advanced...
-t546 
+t546 Avancé...
 o547 Simulate world
-t547 
+t547 Simuler monde
 o548 Use snapshot versions
-t548 
+t548 Utiliser les versions snapshot
 o549 X: 
-t549 
+t549 X : 
 o550 Y: 
-t550 
+t550 Y : 
 o551 Z: 
-t551 
+t551 Z : 
 o552 f: 
-t552 
+t552 f : 
 o553 Seed: 
-t553 
+t553 Graine :
 o554 East-West Chunks: 
-t554 
+t554 Chunks Est-Ouest : 
 o555 North-South Chunks: 
-t555 
+t555 Chunks Nord-Sud : 
 o556 Survival
-t556 
+t556 Survie
 o557 Game Type:
-t557 
+t557 Type de jeu :
 o558 Cancel
-t558 
+t558 Annuler
 o559 Creative
-t559 
+t559 Créatif
 o560 Style:
-t560 
+t560 Style :
 o561 H
-t561 
+t561 H
 o562 L
-t562 
+t562 l
 o563 W
-t563 
+t563 L
 o564 Minimum Spacing
-t564 
+t564 Espacement min.
 o565 Regenerate UUID
-t565 
+t565 Regénrérer UUID
 o566 Replace blocks with any data value. Only useful for Replace operations.
-t566 
+t566 Remplacer les blocs avec toute valeur. Utile seulement pour le remplacement.
 o567 Entities
-t567 
+t567 Entités
 o568 Items
-t568 
+t568 Objets
 o569 TileEntities
-t569 
+t569 TileEntities
 o570 TileTicks
-t570 
+t570 TileTicks
 o571 Unpopulated Chunks
-t571 
+t571 Chunks non-peuplés
 o572 Sky
-t572 
+t572 Ciel
 o573 Fog
-t573 
+t573 Brume
 o574 Ceiling
-t574 
+t574 Plafond
 o575 Chunk Redraw
-t575 
+t575 Rafraîch. chunks
 o576 Hidden Ores
-t576 
+t576 Minerais cachés
 o577 Bedrock
-t577 
+t577 Roche-mère
 o578 Coal
-t578 
+t578 Charbon
 o579 Iron
-t579 
+t579 Fer
 o580 Lapis Lazuli
-t580 
+t580 Lapis-lazuli
 o581 Redstone
-t581 
+t581 Redstone
 o582 Gold
-t582 
+t582 Or
 o583 Diamond
-t583 
+t583 Diamant
 o584 Nether Quartz
-t584 
+t584 Quartz du Nether
 o585 Shortcut: {0}
 t585 Raccourci : {0}
 o586 View Distance ({0})
-t586 
+t586 Distance de vue ({0})
+o587 Copy Stack Size: 
+t587 Taille tampon de copie : 
+o588 Add Player
+t588 Ajout. joueur
+o589 Remove Player
+t589 Suppr. joueur
+o590 Reload Skins
+t590 Recharger skins
+o591 Previous Page
+t591 Page préc.
+o592 Next Page
+t592 Page suiv.

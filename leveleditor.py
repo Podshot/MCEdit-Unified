@@ -1775,7 +1775,7 @@ class LevelEditor(GLViewport):
             for sch in self.copyStack[self.maxCopies:]:
                 self.deleteCopiedSchematic(sch)
 
-        prevButton = Button("Previous page")
+        prevButton = Button("Previous Page")
 
         self.thumbCache = thumbCache = self.thumbCache or {}
         self.fboCache = self.fboCache or {}
@@ -1865,7 +1865,7 @@ class LevelEditor(GLViewport):
             this.shrink_wrap()
             this.width = 0 + this.orgwidth
 
-        nextButton = Button("Next page", action=lambda: changeCopyPage(panel, 1), width=prevButton.width, height=prevButton.height)
+        nextButton = Button("Next Page", action=lambda: changeCopyPage(panel, 1), width=prevButton.width, height=prevButton.height)
         prevButton.action=lambda: changeCopyPage(panel, -1)
         if len(panel.pages) < 2:
             prevButton.enabled = False

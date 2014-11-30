@@ -1068,11 +1068,11 @@ o509 Goto Spawn
 t509 
 o510 Take a Screenshot
 t510 
-o511 Load Preset:
+o511 Load Preset
 t511 
 o512 Remove Presets
 t512 
-o513 Save as preset
+o513 Save as Preset
 t513 
 o514 Preset Name:
 t514 
@@ -1220,3 +1220,15 @@ o585 Shortcut: {0}
 t585 
 o586 View Distance ({0})
 t586 
+o587 Copy Stack Size: 
+t587 
+o588 Add Player
+t588 
+o589 Remove Player
+t589 
+o590 Reload Skins
+t590 
+o591 Previous Page
+t591 
+o592 Next Page
+t592 

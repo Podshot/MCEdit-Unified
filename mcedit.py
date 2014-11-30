@@ -355,7 +355,7 @@ class OptionsPanel(Dialog):
         undoLimitRow = mceutils.IntInputRow("Undo Limit: ",
                                             ref=config.settings.undoLimit, width=100, min=0)
 
-        maxCopiesRow = mceutils.IntInputRow("Copy Stack size: ",
+        maxCopiesRow = mceutils.IntInputRow("Copy Stack Size: ",
                                             ref=config.settings.maxCopies, width=100, min=0,
                                             tooltipText="Maximum number of copied objects.")
 
