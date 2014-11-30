@@ -40,6 +40,7 @@ import copy
 import time
 import numpy
 from config import config
+from config import DEF_ENC
 import frustum
 import logging
 import glutils
@@ -2326,7 +2327,8 @@ class LevelEditor(GLViewport):
         filename = self.level.filename
         s = os.path.split(filename)
         title = os.path.split(s[0])[1] + os.sep + s[1] + _(u" - MCEdit ") + release.get_version()
-        title = title.encode('ascii', 'replace')
+        if DEF_ENC != "UTF-8":
+            title = title.encode('utf-8')
         display.set_caption(title)
 
     @mceutils.alertException
