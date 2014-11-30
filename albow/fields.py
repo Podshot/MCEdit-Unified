@@ -65,7 +65,7 @@ class TextEditor(Widget):
             if k == K_TAB:
                 self.attention_lost()
                 self.tab_to_next()
-                return                
+                return
             try:
                 c = event.unicode
             except ValueError:
@@ -91,8 +91,6 @@ class TextEditor(Widget):
                     print "scrap not available"
             else:
                 self.attention_lost()
-
-        self.call_parent_handler('key_down', event)
 
     def key_up(self, event):
         self.root.editor.key_up(event)
