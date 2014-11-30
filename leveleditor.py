@@ -2219,7 +2219,6 @@ class LevelEditor(GLViewport):
 
         self.renderer.position = self.currentViewport.cameraPosition
         self.renderer.loadNearbyChunks()
-        self.toolbar.selectTool(-1)
 
     def loadLevel(self, level):
         """
@@ -2239,6 +2238,7 @@ class LevelEditor(GLViewport):
         self.selectionTool.selectNone()
 
         [t.levelChanged() for t in self.toolbar.tools]
+        self.toolbar.selectTool(-1)
 
         if isinstance(self.level, pymclevel.MCInfdevOldLevel):
             if self.level.parentWorld:
@@ -4061,7 +4061,8 @@ class EditorToolbar(GLOrtho):
         if not t.toolEnabled():
             return
         if self.parent.currentTool == t:
-            self.parent.currentTool.toolReselected()
+            if toolNumber != 0:
+                self.parent.currentTool.toolReselected()
         else:
             self.parent.selectionTool.hidePanel()
             if self.parent.currentTool != None:
