@@ -3134,11 +3134,9 @@ class LevelEditor(GLViewport):
             levelFormat = "Unknown"
         formatLabel = Label(levelFormat)
         items.append(Row([Label("Format:"),formatLabel]))
-        
-        name = self.level.LevelName
+
         nameField = TextField(width=300, ref=AttrRef(self.level, 'LevelName'))
         def alt21():
-            nameField.insertion_point = len(nameField.text)
             nameField.insert_char(u'\xa7')
         alt21button = Button(u"\xa7", action=alt21)
         label = Label("Name:")
@@ -3245,10 +3243,6 @@ class LevelEditor(GLViewport):
 
         if hasattr(self.level, 'RandomSeed'):
             if seed != self.level.RandomSeed:
-                self.addUnsavedEdit()
-        
-        if hasattr(self.level, 'LevelName'):
-            if name != self.level.LevelName:
                 self.addUnsavedEdit()
 
     def swapViewDistance(self):
@@ -3827,7 +3821,7 @@ class LevelEditor(GLViewport):
         self.currentTool.selectionChanged()
 
     def addOperation(self, op):
-        if self.record  :
+        if self.recordUndo:
             self.undoStack.append(op)
             if len(self.undoStack) > self.undoLimit:
                 self.undoStack.pop(0)
