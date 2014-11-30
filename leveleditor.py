@@ -2219,6 +2219,7 @@ class LevelEditor(GLViewport):
 
         self.renderer.position = self.currentViewport.cameraPosition
         self.renderer.loadNearbyChunks()
+        self.toolbar.selectTool(-1)
 
     def loadLevel(self, level):
         """
