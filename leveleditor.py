@@ -3311,8 +3311,10 @@ class LevelEditor(GLViewport):
                 d.dismiss("Cancel")
             elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
                 worldTable.selectedWorldIndex -= 1
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
             elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds)-1:
                 worldTable.selectedWorldIndex += 1
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
             elif keyname == "Return":
                 loadWorld()
                 d.dismiss("Cancel")

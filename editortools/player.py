@@ -47,6 +47,11 @@ class PlayerRemoveOperation(Operation):
             alert(_("Cannot perform action while saving is taking place"))
             return
 
+        if self.player == "Player":
+            answer = ask(_("Are you sure you want to delete the default player?"), ["Yes", "Cancel"])
+            if answer == "Cancel":
+                return
+
         if recordUndo:
             self.undoTag = self.level.getPlayerTag(self.player)
 
