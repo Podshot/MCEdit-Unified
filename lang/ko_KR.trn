@@ -2,14 +2,14 @@
 #-# font regular: NotoSansKr-Light.ttf
 #-# font bold: NotoSansKr-Medium.ttf
 # TRANSLATION BASICS
-# 
+#
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
 # As long as the numbers match, it will translate the specified English string to the new language.
 # Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes and other special characters can be used.
-# 
+#
 # The space (' ') separating the strings from the numbers is mandatory.
 # The file must also be encoded in UTF-8 or it won't work. Most editors should support this.
-# 
+#
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
 # The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
@@ -408,408 +408,382 @@ o192 Frames per second.
 t192 초당 프레임 수
 o193 Chunks per second.
 t193 초당 청크 수
-o194 Shortcut: {0}
-t194 단축키: {0}
-o195 Chunk View
-t195 청크 카메라
-o196 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
-t196 마우스 버튼을 이곳에서 놓아서 {0} 선택 영억 코너를 놓으세요. {1}을 눌러서 코너를 변경하세요.
-o197 Release the mouse button to finish the selection
-t197 마우스 버튼을 놓아서 선택을 완료하세요.
-o198 Nudge
-t198 이동
-o199 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
-t199 클릭하고 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 블럭씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
-o200 {0:n} blocks
-t200 {0:n} 블럭
-o201 Fill the selection with Air. Shortcut: {0}
-t201 선택 영역을 공기로 채웁니다. 단축키: {0}
-o202 Delete Entities
-t202 엔티티 제거
-o203 Remove all entities within the selection
-t203 선택 영역 내의 모든 엔티티를 제거합니다.
-o204 Delete Tile Ticks
-t204 타일 틱 제거
-o205 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t205 선택 영역 내의 모든 타일 틱을 제거합니다. 타일 틱은 예정된 블럭 업데이트입니다. 
-o206 Analyze
-t206 분석
-o207 Count the different blocks and entities in the selection and display the totals.
-t207 선택 영역 내의 블럭과 엔티티의 수를 세고 총합을 보여줍니다.  
-o208 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t208 선택 영역 내의 블럭과 엔티티를 복사한 다음에 모두 삭제합니다. 단축키: {0}
-o209 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t209 선택 영역 내의 블럭과 엔티티를 모두 복사합니다. 단축키: {0}
-o210 Import the last item taken by Cut or Copy. Shortcut: {0}
-t210 최근에 잘라내기 또는 복사로 저장된 것을 가져옵니다. 단축키: {0}
-o211 Export
-t211 내보내기
-o212 Export the selection to a .schematic file. Shortcut: {0}
-t212 선택 영역을 .schematic 파일로 내보냅니다. 단축키: {0}
-o213 Expand the selection to the edges of the chunks within
-t213 선택 영역을 청크 경계까지 늘립니다.
-o214 Remove the selection. Shortcut: {0}
-t214 선택 영역을 제거합니다. 단축키: {0}
-o215 Selected Chunks:
-t215 선택된 청크:
-o216 Extract
-t216 Extract
-o217 Create
-t217 Create
-o218 Prune
-t218 Prune
-o219 Relight
-t219 Relight
-o220 Repop
-t220 Repop
-o221 Don't Repop
-t221 Repop 안함
-o222 Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.
-t222 클릭하고 드래그해서 청크를 선택하세요. {0}을 눌러서 선택을 취소하거나 {1}을 눌러서 선택하세요.
-o223 {0} chunks
-t223 {0} 청크
-o224 Create new chunks within the selection.
-t224 선택 영역 내에 새로운 청크를 생성합니다.
-o225 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
-t225 선택된 청크를 삭제합니다. 마인크래프트는 청크에 가까이 다가가면 다시 생성할 것입니다.
-o226 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
-t226 선택된 청크를 제외한 월드를 제거합니다. 선택 영역 밖의 청크는 삭제되고, 빈 region 파일들을 삭제됩니다.
-o227 Recalculate light values across the selected chunks
-t227 선택된 청크의 빛 값을 다시 계산합니다.
-o228 Extract these chunks to individual chunk files
-t228 청크들을 독립적인 청크 파일로 내보냅니다.
-o229 Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.
-t229 선택된 청크를 repopulation을 위해 마크합니다. 다음에 마인크래프트로 들어가면 나무, 광물, 그리고 다른 기능들이 다시 생성되 있을 것입니다.
-o230 Unmark the selected chunks. They will not repopulate the next time you play the game.
-t230 선택된 청크의 마크를 취소합니다. 다음에 게임을 플레이하면 repopulate하지 않을 것입니다.
-o231 ...
-t231 ...
-o232 Select
+o194 Chunk View
+t194 청크 카메라
+o195 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
+t195 마우스 버튼을 이곳에서 놓아서 {0} 선택 영억 코너를 놓으세요. {1}을 눌러서 코너를 변경하세요.
+o196 Release the mouse button to finish the selection
+t196 마우스 버튼을 놓아서 선택을 완료하세요.
+o197 Nudge
+t197 이동
+o198 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+t198 클릭하고 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 블럭씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
+o199 {0:n} blocks
+t199 {0:n} 블럭
+o200 Delete Entities
+t200 엔티티 제거
+o201 Remove all entities within the selection
+t201 선택 영역 내의 모든 엔티티를 제거합니다.
+o202 Delete Tile Ticks
+t202 타일 틱 제거
+o203 Removes all tile ticks within selection. Tile ticks are scheduled block updates
+t203 선택 영역 내의 모든 타일 틱을 제거합니다. 타일 틱은 예정된 블럭 업데이트입니다. 
+o204 Analyze
+t204 분석
+o205 Count the different blocks and entities in the selection and display the totals.
+t205 선택 영역 내의 블럭과 엔티티의 수를 세고 총합을 보여줍니다.  
+o206 Export
+t206 내보내기
+o207 Expand the selection to the edges of the chunks within
+t207 선택 영역을 청크 경계까지 늘립니다.
+o208 Selected Chunks:
+t208 선택된 청크:
+o209 Extract
+t209 Extract
+o210 Create
+t210 Create
+o211 Prune
+t211 Prune
+o212 Relight
+t212 Relight
+o213 Repop
+t213 Repop
+o214 Don't Repop
+t214 Repop 안함
+o215 Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.
+t215 클릭하고 드래그해서 청크를 선택하세요. {0}을 눌러서 선택을 취소하거나 {1}을 눌러서 선택하세요.
+o216 {0} chunks
+t216 {0} 청크
+o217 Create new chunks within the selection.
+t217 선택 영역 내에 새로운 청크를 생성합니다.
+o218 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
+t218 선택된 청크를 삭제합니다. 마인크래프트는 청크에 가까이 다가가면 다시 생성할 것입니다.
+o219 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
+t219 선택된 청크를 제외한 월드를 제거합니다. 선택 영역 밖의 청크는 삭제되고, 빈 region 파일들을 삭제됩니다.
+o220 Recalculate light values across the selected chunks
+t220 선택된 청크의 빛 값을 다시 계산합니다.
+o221 Extract these chunks to individual chunk files
+t221 청크들을 독립적인 청크 파일로 내보냅니다.
+o222 Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.
+t222 선택된 청크를 repopulation을 위해 마크합니다. 다음에 마인크래프트로 들어가면 나무, 광물, 그리고 다른 기능들이 다시 생성되 있을 것입니다.
+o223 Unmark the selected chunks. They will not repopulate the next time you play the game.
+t223 선택된 청크의 마크를 취소합니다. 다음에 게임을 플레이하면 repopulate하지 않을 것입니다.
+o224 ...
+t224 ...
+o225 Select
 Right-click for options
-t232 선택
+t225 선택
 우클릭으로 설정
-o233 Remove the selection. Shortcut: {0}
-t233 선택 영역을 제거합니다. 단축키: {0}
-o234 Fill the selection with Air. Shortcut: {0}
-t234 선택 영역을 공기로 채웁니다. 단축키: {0}
-o235 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t235 선택 영역 내의 블럭과 엔티티를 복사하고 모두 삭제합니다. 단축키: {0}
-o236 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t236 선택 영역 내의 블럭과 엔티티를 모두 복사합니다. 단축키: {0}
-o237 Import the last item taken by Cut or Copy. Shortcut: {0}
-t237 최근에 잘라내기 또는 복사로 저장된 것을 가져옵니다. 단축키: {0}
-o238 Export the selection to a .schematic file. Shortcut: {0}
-t238 선택 영역을 .schematic 파일로 내보냅니다. 단축키: {0}
-o239 Clone
+o226 Remove the selection. Shortcut: {0}
+t226 선택 영역을 제거합니다. 단축키: {0}
+o227 Fill the selection with Air. Shortcut: {0}
+t227 선택 영역을 공기로 채웁니다. 단축키: {0}
+o228 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
+t228 선택 영역 내의 블럭과 엔티티를 복사하고 모두 삭제합니다. 단축키: {0}
+o229 Take a copy of all blocks and entities within the selection. Shortcut: {0}
+t229 선택 영역 내의 블럭과 엔티티를 모두 복사합니다. 단축키: {0}
+o230 Import the last item taken by Cut or Copy. Shortcut: {0}
+t230 최근에 잘라내기 또는 복사로 저장된 것을 가져옵니다. 단축키: {0}
+o231 Export the selection to a .schematic file. Shortcut: {0}
+t231 선택 영역을 .schematic 파일로 내보냅니다. 단축키: {0}
+o232 Clone
 Right-click for options
-t239 복제
+t232 복제
 우클릭으로 설정
-o240 Brush
+o233 Brush
 Right-click for options
-t240 브러쉬
+t233 브러쉬
 우클릭으로 설정
-o241 Fill
-t241 채우기
-o242 Varied Fill
-t242 Varied 채우기
-o243 Flood Fill
-t243 Flood 채우기
-o244 Replace
-t244 바꾸기
-o245 Varied Replace
-t245 Varied 바꾸기
-o246 Erode
-t246 침식
-o247 Topsoil
-t247 Topsoil
-o248 Mode:
-t248 모드:
-o249 Brush:
-t249 브러쉬:
-o250 Chance: 
-t250 확률:
-o251 Hollow
-t251 빈 내부
-o252 Fill Air
-t252 공기 채우기
-o253 Line Spacing
-t253 브러쉬 간격
-o254 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
-t254 클릭하고 드래그해서 블럭을 놓으세요. 블럭 고르기: {P}-클릭. 늘리기: {R}. 줄이기: {F}. 회전: {E}. 굴리기: {G}. 마우스휠로 거리를 조절하세요.
-o255 Whenever the brush size changes, reset the distance to the brush blocks.
-t255 브러쉬 크기가 변경되면 거리를 브러쉬 블럭으로 초기화합니ㅏㄷ.
-o256 Shortcut: Alt-1
-t256 단축키: Alt-1
-o257 ---
-t257 ---
-o258 Weight 1: 
-t258 Weight 1:
-o259 Weight 2: 
-t259 Weight 2:
-o260 Weight 3: 
-t260 Weight 3:
-o261 Weight 4: 
-t261 Weight 4:
-o262 Shortcut: Alt-3
-t262 단축키: Alt-3
-o263 Hold {0} to draw lines
-t263 {0}를 눌러서 선을 그리세요.
-o264 Stone
-t264 돌
-o265 Air
-t265 공기
-o266 Indiscriminate
-t266 무분별
-o267 Click to replace {0} ({1}:{2})
-t267 클릭해서 {0} ({1}:{2})를 바꾸기
-o268 Click to replace Dirt (3:0)
-t268 클릭해서 흙 (3:0)을 바꾸기
-o269 Click to replace Stone (1:0)
-t269 클릭해서 돌 (1:0)을 바꾸기
-o270 Noise
-t270 노이즈
-o271 Strength: 
-t271 강도:
-o272 Depth: 
-t272 깊이:
-o273 Only Change Natural Earth
-t273 자연적인 블럭만 변경
-o274 Import
-t274 불러오기
-o275 x
-t275 x
-o276 y
-t276 y
-o277 z
-t277 z
-o278 COPYING - 
-t278 복사중 - 
-o279 Rotate
-t279 회전
-o280 Roll
-t280 굴리기
-o281 Chunk Align
-t281 청크에 정렬
-o282 Repeat
-t282 반복
-o283 Scale Factor
-t283 크기 비율
-o284 Copy Air
-t284 공기 복사
-o285 Copy Water
-t285 물 복사
-o286 Copy Biomes
-t286 바이옴 복사
-o287 Change Coordinates
-t287 좌표 변경
-o288 Change Spawners
-t288 스포너 변경
-o289 Clone
-t289 복제
-o290 When the clone tool is chosen, place the clone at the selection right away.
-t290 복제 도구가 선택되면, 선택 영역에 바로 복제합니다.
-o291 Shortcut: Alt-2
-t291 단축키: Alt-2
-o292 Check to automatically change command block static coordinates when moved.
+o234 Fill
+t234 채우기
+o235 Varied Fill
+t235 Varied 채우기
+o236 Flood Fill
+t236 Flood 채우기
+o237 Replace
+t237 바꾸기
+o238 Varied Replace
+t238 Varied 바꾸기
+o239 Erode
+t239 침식
+o240 Topsoil
+t240 Topsoil
+o241 Mode:
+t241 모드:
+o242 Brush:
+t242 브러쉬:
+o243 Chance: 
+t243 확률:
+o244 Hollow
+t244 빈 내부
+o245 Fill Air
+t245 공기 채우기
+o246 Line Spacing
+t246 브러쉬 간격
+o247 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
+t247 클릭하고 드래그해서 블럭을 놓으세요. 블럭 고르기: {P}-클릭. 늘리기: {R}. 줄이기: {F}. 회전: {E}. 굴리기: {G}. 마우스휠로 거리를 조절하세요.
+o248 Whenever the brush size changes, reset the distance to the brush blocks.
+t248 브러쉬 크기가 변경되면 거리를 브러쉬 블럭으로 초기화합니ㅏㄷ.
+o249 Shortcut: Alt-1
+t249 단축키: Alt-1
+o250 ---
+t250 ---
+o251 Weight 1: 
+t251 Weight 1:
+o252 Weight 2: 
+t252 Weight 2:
+o253 Weight 3: 
+t253 Weight 3:
+o254 Weight 4: 
+t254 Weight 4:
+o255 Shortcut: Alt-3
+t255 단축키: Alt-3
+o256 Hold {0} to draw lines
+t256 {0}를 눌러서 선을 그리세요.
+o257 Indiscriminate
+t257 무분별
+o258 Click to replace {0} ({1}:{2})
+t258 클릭해서 {0} ({1}:{2})를 바꾸기
+o259 Noise
+t259 노이즈
+o260 Strength: 
+t260 강도:
+o261 Depth: 
+t261 깊이:
+o262 Only Change Natural Earth
+t262 자연적인 블럭만 변경
+o263 Import
+t263 불러오기
+o264 x
+t264 x
+o265 y
+t265 y
+o266 z
+t266 z
+o267 COPYING - 
+t267 복사중 - 
+o268 Rotate
+t268 회전
+o269 Roll
+t269 굴리기
+o270 Chunk Align
+t270 청크에 정렬
+o271 Repeat
+t271 반복
+o272 Scale Factor
+t272 크기 비율
+o273 Copy Air
+t273 공기 복사
+o274 Copy Water
+t274 물 복사
+o275 Copy Biomes
+t275 바이옴 복사
+o276 Change Coordinates
+t276 좌표 변경
+o277 Change Spawners
+t277 스포너 변경
+o278 Clone
+t278 복제
+o279 When the clone tool is chosen, place the clone at the selection right away.
+t279 복제 도구가 선택되면, 선택 영역에 바로 복제합니다.
+o280 Shortcut: Alt-2
+t280 단축키: Alt-2
+o281 Check to automatically change command block static coordinates when moved.
 Shortcut: Alt-4
-t292 체크하면 움직일 때 커맨드 블럭의 고정 좌표도 함께 움직입니다.
+t281 체크하면 움직일 때 커맨드 블럭의 고정 좌표도 함께 움직입니다.
 단축키: Alt-4
-o293 Check to automatically change the position of the mobs in spawners when moved.
+o282 Check to automatically change the position of the mobs in spawners when moved.
 Shortcut: Alt-5
-t293 체크하면 움직일 때 스포너의 몹들도 함께 움직입니다.
-o294 Shortcut: Enter
-t294 단축키: 엔터
-o295 Fill and Replace
+t282 체크하면 움직일 때 스포너의 몹들도 함께 움직입니다.
+o283 Shortcut: Enter
+t283 단축키: 엔터
+o284 Fill and Replace
 Right-click for options
-t295 채우기, 바꾸기
+t284 채우기, 바꾸기
 우클릭으로 설정
-o296 Fill with:
-t296 이것으로 채우기:
-o297 Search
-t297 검색
-o298 Name
-t298 이름
-o299 ID
-t299 ID
-o300 Any Subtype
-t300 메타데이터 무시
-o301 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
-t301 {hotkey}를 눌러서 블럭을 선택하세요. {R}을 눌러서 바꾸기 모드에 진입하세요. 채우기나 엔터를 눌러 확인하세요.
-o302 Shortcut: {0}
-t302 단축키: {0}
-o303 Find:
-t303 찾기:
-o304 Replace with:
-t304 이것으로 바꾸기:
-o305 Shortcut: {0}
-t305 단축키: {0}
-o306 When the fill tool is chosen, prompt for a block type.
-t306 채우기 도구가 선택되면 블럭을 상기시킵니다.
-o307 Filter
-t307 필터
-o308 Invisibility (no effect)
-t308 Invisibility (no effect)
-o309 Strength
-t309 Strength
-o310 Nausea (no mob effect)
-t310 Nausea (no mob effect)
-o311 Weakness
-t311 Weakness
-o312 Speed (no mob effect)
-t312 Speed (no mob effect)
-o313 Water Breathing
-t313 Water Breathing
-o314 Regeneration
-t314 Regeneration
-o315 Poison
-t315 Poison
-o316 Resistance
-t316 Resistance
-o317 Hunger (no mob effect)
-t317 Hunger (no mob effect)
-o318 Haste (no mob effect)
-t318 Haste (no mob effect)
-o319 Fire Resistance
-t319 Fire Resistance
-o320 Slowness (no mob effect)
-t320 Slowness (no mob effect)
-o321 Blindness (no mob effect)
-t321 Blindness (no mob effect)
-o322 Night Vision (no effect)
-t322 Night Vision (no effect)
-o323 Mining Fatigue (no mob effectg)
-t323 Mining Fatigue (no mob effectg
-o324 Jump Boost
-t324 Jump Boost
-o325 Effect
-t325 Effect
-o326 Level
-t326 Level
-o327 Duration (Seconds)
-t327 Duration (Seconds)
-o328 Add Potion Effect to Mobs
-t328 Add Potion Effect to Mobs
-o329 Banslimes
-t329 Banslimes
-o330 Change Mob Properties
-t330 Change Mob Properties
-o331 Chunk Surface Repair
-t331 Chunk Surface Repair
-o332 Classic Water Flood
-t332 Classic Water Flood
-o333 Colorwires
-t333 Colorwires
-o334 Create Busses
-t334 Create Busses
-o335 Create Shops
-t335 Create Shops
-o336 Create Spawners
-t336 Create Spawners
-o337 Decliff
-t337 Decliff
-o338 Find
-t338 Find
-o339 Forester
-t339 Forester
-o340 Make Mobs Invincible
-t340 Make Mobs Invincible
-o341 Setbiome
-t341 Setbiome
-o342 Smooth
-t342 Smooth
-o343 Filter:
-t343 Filter:
-o344 Update Filters
-t344 Update Filters
-o345 Max Seed
-t345 Max Seed
-o346 Health
-t346 Health
-o347 VelocityX
-t347 VelocityX
-o348 VelocityY
-t348 VelocityY
-o349 VelocityZ
-t349 VelocityZ
-o350 Fire
-t350 Fire
-o351 FallDistance
-t351 FallDistance
-o352 AttackTime
-t352 AttackTime
-o353 HurtTime
-t353 HurtTime
-o354 Lightning
-t354 Lightning
-o355 No Lightning
-t355 No Lightning
-o356 Lightning Creeper
-t356 Lightning Creeper
-o357 Enderman Block Id
-t357 Enderman Block Id
-o358 Enderman Block Data
-t358 Enderman Block Data
-o359 Villager (green)
-t359 Villager (green)
-o360 Farmer (brown)
-t360 Farmer (brown)
-o361 Butcher (white apron)
-t361 Butcher (white apron)
-o362 Librarian (white)
-t362 Librarian (white)
-o363 Blacksmith (black apron)
-t363 Blacksmith (black apron)
-o364 Priest (purple)
-t364 Priest (purple)
-o365 Villager Profession
-t365 Villager Profession
-o366 Slime Size
-t366 Slime Size
-o367 Breeding Mode Ticks
-t367 Breeding Mode Ticks
-o368 Child/Adult Age
-t368 Child/Adult Age
-o369 Repairs the backwards surfaces made by old versions of Minecraft.
-t369 오래된 버전의 마인크래프트가 만든 거꾸로 된 표면을 수정합니다.
-o370 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t370 선택 영역 내의 물을 옆과 아래로 퍼지게 합니다. 클래식 버전의 물이랑 유사합니다.
-o371 Flood Water
-t371 물
-o372 Flood Lava
-t372 용암
-o373 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t373 SethBling의 Create Shop 필터를 수정한 버전입니다.
-o374 Profession
-t374 Profession
-o375 Add Stopping Trade
-t375 Add Stopping Trade
-o376 Invulnerable Villager
-t376 Invulnerable Villager
-o377 Make Unlimited Trades
-t377 Make Unlimited Trades
-o378 Give Experience per a Trade
-t378 Give Experience per a Trade
-o379 Make Villager not Move
-t379 Make Villager not Move
-o380 Villager Name
-t380 Villager Name
-o381 General Trade
-t381 General Trade
-o382       Rotate the Position of your Trader
+o285 Fill with:
+t285 이것으로 채우기:
+o286 Search
+t286 검색
+o287 Name
+t287 이름
+o288 ID
+t288 ID
+o289 Any Subtype
+t289 메타데이터 무시
+o290 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
+t290 {hotkey}를 눌러서 블럭을 선택하세요. {R}을 눌러서 바꾸기 모드에 진입하세요. 채우기나 엔터를 눌러 확인하세요.
+o291 Find:
+t291 찾기:
+o292 Replace with:
+t292 이것으로 바꾸기:
+o293 When the fill tool is chosen, prompt for a block type.
+t293 채우기 도구가 선택되면 블럭을 상기시킵니다.
+o294 Filter
+t294 필터
+o295 Invisibility (no effect)
+t295 Invisibility (no effect)
+o296 Strength
+t296 Strength
+o297 Nausea (no mob effect)
+t297 Nausea (no mob effect)
+o298 Weakness
+t298 Weakness
+o299 Speed (no mob effect)
+t299 Speed (no mob effect)
+o300 Water Breathing
+t300 Water Breathing
+o301 Regeneration
+t301 Regeneration
+o302 Poison
+t302 Poison
+o303 Resistance
+t303 Resistance
+o304 Hunger (no mob effect)
+t304 Hunger (no mob effect)
+o305 Haste (no mob effect)
+t305 Haste (no mob effect)
+o306 Fire Resistance
+t306 Fire Resistance
+o307 Slowness (no mob effect)
+t307 Slowness (no mob effect)
+o308 Blindness (no mob effect)
+t308 Blindness (no mob effect)
+o309 Night Vision (no effect)
+t309 Night Vision (no effect)
+o310 Mining Fatigue (no mob effectg)
+t310 Mining Fatigue (no mob effectg
+o311 Jump Boost
+t311 Jump Boost
+o312 Effect
+t312 Effect
+o313 Level
+t313 Level
+o314 Duration (Seconds)
+t314 Duration (Seconds)
+o315 Add Potion Effect to Mobs
+t315 Add Potion Effect to Mobs
+o316 Banslimes
+t316 Banslimes
+o317 Change Mob Properties
+t317 Change Mob Properties
+o318 Chunk Surface Repair
+t318 Chunk Surface Repair
+o319 Classic Water Flood
+t319 Classic Water Flood
+o320 Colorwires
+t320 Colorwires
+o321 Create Busses
+t321 Create Busses
+o322 Create Shops
+t322 Create Shops
+o323 Create Spawners
+t323 Create Spawners
+o324 Decliff
+t324 Decliff
+o325 Find
+t325 Find
+o326 Forester
+t326 Forester
+o327 Make Mobs Invincible
+t327 Make Mobs Invincible
+o328 Setbiome
+t328 Setbiome
+o329 Smooth
+t329 Smooth
+o330 Filter:
+t330 Filter:
+o331 Update Filters
+t331 Update Filters
+o332 Max Seed
+t332 Max Seed
+o333 Health
+t333 Health
+o334 VelocityX
+t334 VelocityX
+o335 VelocityY
+t335 VelocityY
+o336 VelocityZ
+t336 VelocityZ
+o337 Fire
+t337 Fire
+o338 FallDistance
+t338 FallDistance
+o339 AttackTime
+t339 AttackTime
+o340 HurtTime
+t340 HurtTime
+o341 Lightning
+t341 Lightning
+o342 No Lightning
+t342 No Lightning
+o343 Lightning Creeper
+t343 Lightning Creeper
+o344 Enderman Block Id
+t344 Enderman Block Id
+o345 Enderman Block Data
+t345 Enderman Block Data
+o346 Villager (green)
+t346 Villager (green)
+o347 Farmer (brown)
+t347 Farmer (brown)
+o348 Butcher (white apron)
+t348 Butcher (white apron)
+o349 Librarian (white)
+t349 Librarian (white)
+o350 Blacksmith (black apron)
+t350 Blacksmith (black apron)
+o351 Priest (purple)
+t351 Priest (purple)
+o352 Villager Profession
+t352 Villager Profession
+o353 Slime Size
+t353 Slime Size
+o354 Breeding Mode Ticks
+t354 Breeding Mode Ticks
+o355 Child/Adult Age
+t355 Child/Adult Age
+o356 Repairs the backwards surfaces made by old versions of Minecraft.
+t356 오래된 버전의 마인크래프트가 만든 거꾸로 된 표면을 수정합니다.
+o357 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
+t357 선택 영역 내의 물을 옆과 아래로 퍼지게 합니다. 클래식 버전의 물이랑 유사합니다.
+o358 Flood Water
+t358 물
+o359 Flood Lava
+t359 용암
+o360 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
+t360 SethBling의 Create Shop 필터를 수정한 버전입니다.
+o361 Profession
+t361 Profession
+o362 Add Stopping Trade
+t362 Add Stopping Trade
+o363 Invulnerable Villager
+t363 Invulnerable Villager
+o364 Make Unlimited Trades
+t364 Make Unlimited Trades
+o365 Give Experience per a Trade
+t365 Give Experience per a Trade
+o366 Make Villager not Move
+t366 Make Villager not Move
+o367 Villager Name
+t367 Villager Name
+o368 General Trade
+t368 General Trade
+o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t382 주민의 방향을 회전시킵니다.
+t369 주민의 방향을 회전시킵니다.
 *Not Move가 체크되어 있어야 사용이 가능합니다.*
-o383 Y-Axis
-t383 Y-Axis
-o384 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t384 몸의 방향을 변경합니다. 서쪽이 0이고 -180에서 180 사이여야 합니다.
-o385 X-Axis
-t385 X-Axis
-o386 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t386 머리의 방향을 변경합니다. 앞을 볼 때가 0이고 양수가 아래쪽을 봅니다. -90에서 90 사이여야 합니다.
-o387 Rotation
-t387 회전
-o388 To create a shop first put your buy in the top slot(s) of the chest.
+o370 Y-Axis
+t370 Y-Axis
+o371 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
+t371 몸의 방향을 변경합니다. 서쪽이 0이고 -180에서 180 사이여야 합니다.
+o372 X-Axis
+t372 X-Axis
+o373 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
+t373 머리의 방향을 변경합니다. 앞을 볼 때가 0이고 양수가 아래쪽을 봅니다. -90에서 90 사이여야 합니다.
+o374 Rotation
+t374 회전
+o375 To create a shop first put your buy in the top slot(s) of the chest.
 Second put a second buy in the middle slot(optional).
 Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
@@ -828,7 +802,7 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
-t388 To create a shop first put your buy in the top slot(s) of the chest.
+t375 To create a shop first put your buy in the top slot(s) of the chest.
 Second put a second buy in the middle slot(optional).
 Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
@@ -847,293 +821,427 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
-o389 Trade Notes
-t389 Trade Notes
-o390 Include position data
-t390 Include position data
-o391 Both
-t391 Both
-o392 Lower Only
-t392 Lower Only
-o393 Raise Only
-t393 Raise Only
-o394 Raise/Lower
-t394 Raise/Lower
-o395 TileEntity
-t395 TileEntity
-o396 Entity
-t396 Entity
-o397 Block
-t397 Block
-o398 Match by:
-t398 Match by:
-o399 Match block type (for TileEntity searches):
-t399 Match block type (for TileEntity searches):
-o400 Match block:
-t400 Match block:
-o401 Match block data:
-t401 Match block data:
-o402 Match tile entities (for Block searches):
-t402 Match tile entities (for Block searches):
-o403 "None" for Name or Value will match any tag's Name or Value respectively.
-t403 "None" for Name or Value will match any tag's Name or Value respectively.
-o404 Match Tag Name:
-t404 Match Tag Name:
-o405 Match Tag Value:
-t405 Match Tag Value:
-o406 Case insensitive:
-t406 Case insensitive:
-o407 Any
-t407 Any
-o408 Match Tag Type:
-t408 Match Tag Type:
-o409 Start New Search
-t409 Start New Search
-o410 Find Next
-t410 Find Next
-o411 Dump Found Coordinates
-t411 Dump Found Coordinates
-o412 Operation:
-t412 Operation:
-o413 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o376 Trade Notes
+t376 Trade Notes
+o377 Include position data
+t377 Include position data
+o378 Both
+t378 Both
+o379 Lower Only
+t379 Lower Only
+o380 Raise Only
+t380 Raise Only
+o381 Raise/Lower
+t381 Raise/Lower
+o382 TileEntity
+t382 TileEntity
+o383 Entity
+t383 Entity
+o384 Block
+t384 Block
+o385 Match by:
+t385 Match by:
+o386 Match block type (for TileEntity searches):
+t386 Match block type (for TileEntity searches):
+o387 Match block:
+t387 Match block:
+o388 Match block data:
+t388 Match block data:
+o389 Match tile entities (for Block searches):
+t389 Match tile entities (for Block searches):
+o390 "None" for Name or Value will match any tag's Name or Value respectively.
+t390 "None" for Name or Value will match any tag's Name or Value respectively.
+o391 Match Tag Name:
+t391 Match Tag Name:
+o392 Match Tag Value:
+t392 Match Tag Value:
+o393 Case insensitive:
+t393 Case insensitive:
+o394 Any
+t394 Any
+o395 Match Tag Type:
+t395 Match Tag Type:
+o396 Start New Search
+t396 Start New Search
+o397 Find Next
+t397 Find Next
+o398 Dump Found Coordinates
+t398 Dump Found Coordinates
+o399 Operation:
+t399 Operation:
+o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t413 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+t400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-o414 Documentation
-t414 문서
-o415 Forester script by dudecon
-t415 Forester script by dudecon
-o416 Procedural
-t416 절차
-o417 Normal
-t417 보통
-o418 Bamboo
-t418 대나무
-o419 Palm
-t419 야자나무
-o420 Stickly
-t420 Stickly
-o421 Round
-t421 원형
-o422 Cone
-t422 원뿔
-o423 Rainforest
-t423 우림
-o424 Mangrove
-t424 맹그로브
-o425 Shape
-t425 모양
-o426 Tree Count
-t426 나무 개수
-o427 Tree Height
-t427 나무 높이
-o428 Height Variation
-t428 높이 변화
-o429 Branch Density
-t429 나뭇가지 밀도
-o430 Trunk Thickness
-t430 나무의 몸통 두께
-o431 Broken Trunk
-t431 부서진 몸통
-o432 Hollow Trunk
-t432 빈 몸통
-o433 Wood
-t433 나무
-o434 Foliage
-t434 나뭇잎
-o435 Foliage Density
-t435 나뭇잎 밀도
-o436 Yes
-t436 예
-o437 To Stone
-t437 돌에
-o438 Hanging
-t438 매달림
-o439 No
-t439 아니오
-o440 Roots
-t440 뿌리
-o441 Root Buttresses
-t441 뿌리 지지대
-o442 Wood Material
-t442 나무 재질
-o443 Leaf Material
-t443 나뭇잎 재질
-o444 Plant On
-t444 식물
-o445 Ocean
-t445 Ocean
-o446 Plains
-t446 Plains
-o447 Desert
-t447 Desert
-o448 Extreme Hills
-t448 Extreme Hills
-o449 Forest
-t449 Forest
-o450 Taiga
-t450 Taiga
-o451 Swamppland
-t451 Swamppland
-o452 River
-t452 River
-o453 Hell (Nether)
-t453 Hell (Nether)
-o454 Sky (End)
-t454 Sky (End)
-o455 Frozen Ocean
-t455 Frozen Ocean
-o456 Frozen River
-t456 Frozen River
-o457 Ice Plains
-t457 Ice Plains
-o458 Ice Mountains
-t458 Ice Mountains
-o459 Mushroom Island
-t459 Mushroom Island
-o460 Mushroom Island Shore
-t460 Mushroom Island Shore
-o461 Beach
-t461 Beach
-o462 Desert Hills
-t462 Desert Hills
-o463 Forest Hills
-t463 Forest Hills
-o464 Taiga Hills
-t464 Taiga Hills
-o465 Extreme Hills Edge
-t465 Extreme Hills Edge
-o466 Jungle
-t466 Jungle
-o467 Jungle Hills
-t467 Jungle Hills
-o468 Jungle Edge
-t468 Jungle Edge
-o469 Deep Ocean
-t469 Deep Ocean
-o470 Stone Beach
-t470 Stone Beach
-o471 Cold Beach
-t471 Cold Beach
-o472 Birch Forest
-t472 Birch Forest
-o473 Birch Forest Hills
-t473 Birch Forest Hills
-o474 Roofed Forest
-t474 Roofed Forest
-o475 Cold Taiga
-t475 Cold Taiga
-o476 Cold Taiga Hills
-t476 Cold Taiga Hills
-o477 Mega Taiga
-t477 Mega Taiga
-o478 Mega Taiga Hills
-t478 Mega Taiga Hills
-o479 Extreme Hills+
-t479 Extreme Hills+
-o480 Savanna
-t480 Savanna
-o481 Savanna Plateau
-t481 Savanna Plateau
-o482 Messa
-t482 Messa
-o483 Messa Plateau F
-t483 Messa Plateau F
-o484 Messa Plateau
-t484 Messa Plateau
-o485 Sunflower Plains
-t485 Sunflower Plains
-o486 Desert M
-t486 Desert M
-o487 Extreme Hills M
-t487 Extreme Hills M
-o488 Flower Forest
-t488 Flower Forest
-o489 Taiga M
-t489 Taiga M
-o490 Swampland M
-t490 Swampland M
-o491 Ice Plains Spikes
-t491 Ice Plains Spikes
-o492 Ice Mountains Spikes
-t492 Ice Mountains Spikes
-o493 Jungle M
-t493 Jungle M
-o494 JungleEdge M
-t494 JungleEdge M
-o495 Birch Forest M
-t495 Birch Forest M
-o496 Birch Forest Hills M
-t496 Birch Forest Hills M
-o497 Roofed Forest M
-t497 Roofed Forest M
-o498 Cold Taiga M
-t498 Cold Taiga M
-o499 Mega Spruce Taiga
-t499 Mega Spruce Taiga
-o500 Mega Spruce Taiga 
-t500 Mega Spruce Taiga
-o501 Extreme Hills+ M
-t501 Extreme Hills+ M
-o502 Savanna M
-t502 Savanna M
-o503 Savanna Plateau M
-t503 Savanna Plateau M
-o504 Mesa (Bryce)
-t504 Mesa (Bryce)
-o505 Mesa Plateau F M
-t505 Mesa Plateau F M
-o506 Mesa Plateau M
-t506 Mesa Plateau M
-o507 (Uncalculated)
-t507 (Uncalculated)
-o508 Biome
-t508 바이옴
-o509 Repeat count
-t509 반복 횟수
-o510 Depth
-t510 깊이
-o511 Pick a block:
-t511 블럭 선택:
-o512 Players
-t512 플레이어
-o513 Player Name
-t513 플레이어 이름
-o514 Player: 
-t514 플레이어:
-o515 Goto Player
-t515 플레이어로 가기
-o516 Goto Player's View
-t516 플레이어 시야로 가기
-o517 Move Player
-t517 플레이어 이동
-o518 Align Player to Camera
-t518 카메라에 플레이어 정렬
-o519 Player
-t519 플레이어
-o520 Chunk Control
-t520 청크 컨트롤
-o521 Move Spawn Point
-t521 스폰 지점 이동
-o522 Goto Spawn
-t522 스폰으로 이동
-o523 Take a Screenshot
-t523 스크린샷 찍기
-o524 Load Preset:
-t524 설정 불러오기
-o525 Remove Presets
-t525 설정 삭제
-o526 Save as preset
-t526 설정 저장
-o527 Preset Name:
-t527 설정 이름:
-o528 That preset name is reserved. Try pick another preset name.
-t528 이미 사용된 이름입니다. 다른 이름을 사용하세요.
-o529 Invalid character in file name
-t529 이름에 잘못된 문자가 있습니다.
-o530 No presets saved
-t530 저장된 설정이 없습니다.
-o531 Select preset to delete
-t531 삭제할 설정을 선택하세요.
-o532  does not have a value yet.
-t532  아직 값이 없습니다.
+o401 Documentation
+t401 문서
+o402 Forester script by dudecon
+t402 Forester script by dudecon
+o403 Procedural
+t403 절차
+o404 Normal
+t404 보통
+o405 Bamboo
+t405 대나무
+o406 Palm
+t406 야자나무
+o407 Stickly
+t407 Stickly
+o408 Round
+t408 원형
+o409 Cone
+t409 원뿔
+o410 Rainforest
+t410 우림
+o411 Mangrove
+t411 맹그로브
+o412 Shape
+t412 모양
+o413 Tree Count
+t413 나무 개수
+o414 Tree Height
+t414 나무 높이
+o415 Height Variation
+t415 높이 변화
+o416 Branch Density
+t416 나뭇가지 밀도
+o417 Trunk Thickness
+t417 나무의 몸통 두께
+o418 Broken Trunk
+t418 부서진 몸통
+o419 Hollow Trunk
+t419 빈 몸통
+o420 Wood
+t420 나무
+o421 Foliage
+t421 나뭇잎
+o422 Foliage Density
+t422 나뭇잎 밀도
+o423 Yes
+t423 예
+o424 To Stone
+t424 돌에
+o425 Hanging
+t425 매달림
+o426 No
+t426 아니오
+o427 Roots
+t427 뿌리
+o428 Root Buttresses
+t428 뿌리 지지대
+o429 Wood Material
+t429 나무 재질
+o430 Leaf Material
+t430 나뭇잎 재질
+o431 Plant On
+t431 식물
+o432 Ocean
+t432 Ocean
+o433 Plains
+t433 Plains
+o434 Desert
+t434 Desert
+o435 Extreme Hills
+t435 Extreme Hills
+o436 Forest
+t436 Forest
+o437 Taiga
+t437 Taiga
+o438 Swamppland
+t438 Swamppland
+o439 River
+t439 River
+o440 Hell (Nether)
+t440 Hell (Nether)
+o441 Sky (End)
+t441 Sky (End)
+o442 Frozen Ocean
+t442 Frozen Ocean
+o443 Frozen River
+t443 Frozen River
+o444 Ice Plains
+t444 Ice Plains
+o445 Ice Mountains
+t445 Ice Mountains
+o446 Mushroom Island
+t446 Mushroom Island
+o447 Mushroom Island Shore
+t447 Mushroom Island Shore
+o448 Beach
+t448 Beach
+o449 Desert Hills
+t449 Desert Hills
+o450 Forest Hills
+t450 Forest Hills
+o451 Taiga Hills
+t451 Taiga Hills
+o452 Extreme Hills Edge
+t452 Extreme Hills Edge
+o453 Jungle
+t453 Jungle
+o454 Jungle Hills
+t454 Jungle Hills
+o455 Jungle Edge
+t455 Jungle Edge
+o456 Deep Ocean
+t456 Deep Ocean
+o457 Stone Beach
+t457 Stone Beach
+o458 Cold Beach
+t458 Cold Beach
+o459 Birch Forest
+t459 Birch Forest
+o460 Birch Forest Hills
+t460 Birch Forest Hills
+o461 Roofed Forest
+t461 Roofed Forest
+o462 Cold Taiga
+t462 Cold Taiga
+o463 Cold Taiga Hills
+t463 Cold Taiga Hills
+o464 Mega Taiga
+t464 Mega Taiga
+o465 Mega Taiga Hills
+t465 Mega Taiga Hills
+o466 Extreme Hills+
+t466 Extreme Hills+
+o467 Savanna
+t467 Savanna
+o468 Savanna Plateau
+t468 Savanna Plateau
+o469 Messa
+t469 Messa
+o470 Messa Plateau F
+t470 Messa Plateau F
+o471 Messa Plateau
+t471 Messa Plateau
+o472 Sunflower Plains
+t472 Sunflower Plains
+o473 Desert M
+t473 Desert M
+o474 Extreme Hills M
+t474 Extreme Hills M
+o475 Flower Forest
+t475 Flower Forest
+o476 Taiga M
+t476 Taiga M
+o477 Swampland M
+t477 Swampland M
+o478 Ice Plains Spikes
+t478 Ice Plains Spikes
+o479 Ice Mountains Spikes
+t479 Ice Mountains Spikes
+o480 Jungle M
+t480 Jungle M
+o481 JungleEdge M
+t481 JungleEdge M
+o482 Birch Forest M
+t482 Birch Forest M
+o483 Birch Forest Hills M
+t483 Birch Forest Hills M
+o484 Roofed Forest M
+t484 Roofed Forest M
+o485 Cold Taiga M
+t485 Cold Taiga M
+o486 Mega Spruce Taiga
+t486 Mega Spruce Taiga
+o487 Mega Spruce Taiga 
+t487 Mega Spruce Taiga
+o488 Extreme Hills+ M
+t488 Extreme Hills+ M
+o489 Savanna M
+t489 Savanna M
+o490 Savanna Plateau M
+t490 Savanna Plateau M
+o491 Mesa (Bryce)
+t491 Mesa (Bryce)
+o492 Mesa Plateau F M
+t492 Mesa Plateau F M
+o493 Mesa Plateau M
+t493 Mesa Plateau M
+o494 (Uncalculated)
+t494 (Uncalculated)
+o495 Biome
+t495 바이옴
+o496 Repeat count
+t496 반복 횟수
+o497 Depth
+t497 깊이
+o498 Pick a block:
+t498 블럭 선택:
+o499 Players
+t499 플레이어
+o500 Player Name
+t500 플레이어 이름
+o501 Player: 
+t501 플레이어:
+o502 Goto Player
+t502 플레이어로 가기
+o503 Goto Player's View
+t503 플레이어 시야로 가기
+o504 Move Player
+t504 플레이어 이동
+o505 Align Player to Camera
+t505 카메라에 플레이어 정렬
+o506 Player
+t506 플레이어
+o507 Chunk Control
+t507 청크 컨트롤
+o508 Move Spawn Point
+t508 스폰 지점 이동
+o509 Goto Spawn
+t509 스폰으로 이동
+o510 Take a Screenshot
+t510 스크린샷 찍기
+o511 Load Preset:
+t511 설정 불러오기
+o512 Remove Presets
+t512 설정 삭제
+o513 Save as preset
+t513 설정 저장
+o514 Preset Name:
+t514 설정 이름:
+o515 That preset name is reserved. Try pick another preset name.
+t515 이미 사용된 이름입니다. 다른 이름을 사용하세요.
+o516 Invalid character in file name
+t516 이름에 잘못된 문자가 있습니다.
+o517 No presets saved
+t517 저장된 설정이 없습니다.
+o518 Select preset to delete
+t518 삭제할 설정을 선택하세요.
+o519  does not have a value yet.
+t519  아직 값이 없습니다.
+o520 Version {} is available
+t520 
+o521 Download
+t521 
+o522 View
+t522 
+o523 Ignore
+t523 
+o524 Space
+t524 
+o525 Tab
+t525 
+o526 Delete
+t526 
+o527 Scroll Up
+t527 
+o528 Scroll Down
+t528 
+o529 Button 3
+t529 
+o530 Alt
+t530 
+o531 Ctrl
+t531 
+o532 Creating a new world.
+t532 
+o533 Minecraft Server
+t533 
+o534 Flatland
+t534 
+o535 Generator:
+t535 
+o536 Will automatically download and use the latest version
+t536 
+o537 Height: 
+t537 
+o538 Grass
+t538 
+o539 Server version:
+t539 
+o540 or
+t540 
+o541 Check for Updates
+t541 
+o542 Advanced
+t542 
+o543 Open Server Storage
+t543 
+o544 Reveal World Cache
+t544 
+o545 Delete World Cache
+t545 
+o546 Advanced...
+t546 
+o547 Simulate world
+t547 
+o548 Use snapshot versions
+t548 
+o549 X: 
+t549 
+o550 Y: 
+t550 
+o551 Z: 
+t551 
+o552 f: 
+t552 
+o553 Seed: 
+t553 
+o554 East-West Chunks: 
+t554 
+o555 North-South Chunks: 
+t555 
+o556 Survival
+t556 
+o557 Game Type:
+t557 
+o558 Cancel
+t558 
+o559 Creative
+t559 
+o560 Style:
+t560 
+o561 H
+t561 
+o562 L
+t562 
+o563 W
+t563 
+o564 Minimum Spacing
+t564 
+o565 Regenerate UUID
+t565 
+o566 Replace blocks with any data value. Only useful for Replace operations.
+t566 
+o567 Entities
+t567 
+o568 Items
+t568 
+o569 TileEntities
+t569 
+o570 TileTicks
+t570 
+o571 Unpopulated Chunks
+t571 
+o572 Sky
+t572 
+o573 Fog
+t573 
+o574 Ceiling
+t574 
+o575 Chunk Redraw
+t575 
+o576 Hidden Ores
+t576 
+o577 Bedrock
+t577 
+o578 Coal
+t578 
+o579 Iron
+t579 
+o580 Lapis Lazuli
+t580 
+o581 Redstone
+t581 
+o582 Gold
+t582 
+o583 Diamond
+t583 
+o584 Nether Quartz
+t584 
+o585 Shortcut: {0}
+t585 단축키: {0}
+o586 View Distance ({0})
+t586 

@@ -217,6 +217,8 @@ class CameraViewport(GLViewport):
         config.settings.fov.addObserver(self, "fovSetting", callback=self.updateFov)
 
         self.mouseVector = (0, 0, 0)
+
+        self.root = self.get_root()
         # self.add(DebugDisplay(self, "cameraPosition", "blockFaceUnderCursor", "mouseVector", "mouse3dPoint"))
 
     @property
@@ -384,7 +386,7 @@ class CameraViewport(GLViewport):
         # if (x, y) not in self.rect:
         # return (0, 0, 0);  # xxx
 
-        y = self.get_root().height - y
+        y = self.root.height - y
         point1 = unproject(x, y, 0.0)
         point2 = unproject(x, y, 1.0)
         v = numpy.array(point2) - point1
@@ -400,7 +402,7 @@ class CameraViewport(GLViewport):
             GL.glReadBuffer(GL.GL_BACK)
         except Exception:
             logging.exception('Exception during glReadBuffer')
-        ws = self.get_root().size
+        ws = self.root.size
         if center:
             x, y = ws
             x //= 2
@@ -524,7 +526,7 @@ class CameraViewport(GLViewport):
     startingMousePosition = None
 
     def mouseLookOn(self):
-        root.get_root().capture_mouse(self)
+        self.root.capture_mouse(self)
         self.focus_switch = None
         self.startingMousePosition = mouse.get_pos()
 
@@ -532,14 +534,14 @@ class CameraViewport(GLViewport):
             self.avoidMouseJumpBug = 2
 
     def mouseLookOff(self):
-        root.get_root().capture_mouse(None)
+        self.root.capture_mouse(None)
         if self.startingMousePosition:
             mouse.set_pos(*self.startingMousePosition)
         self.startingMousePosition = None
 
     @property
     def mouseMovesCamera(self):
-        return root.get_root().captured_widget is not None
+        return self.root.captured_widget is not None
 
     def toggleMouseLook(self):
         if not self.mouseMovesCamera:
@@ -760,6 +762,7 @@ class CameraViewport(GLViewport):
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["Command"] = pymclevel.TAG_String()
             tileEntity["CustomName"] = pymclevel.TAG_String("@")
+            tileEntity["TrackOutput"] = pymclevel.TAG_Byte(0)
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Command Block")
@@ -787,7 +790,7 @@ class CameraViewport(GLViewport):
 
         okBTN = Button("OK", action=updateCommandBlock)
         cancel = Button("Cancel", action=panel.dismiss)
-        column = [titleLabel, Row((Label("Command"), commandField)), Row((Label("Custom Name"), nameField)), Row((Label("Track Ouput"), trackOutput)), okBTN, cancel]
+        column = [titleLabel, Row((Label("Command"), commandField)), Row((Label("Custom Name"), nameField)), Row((Label("Track Output"), trackOutput)), okBTN, cancel]
         panel.add(Column(column))
         panel.shrink_wrap()
         panel.present()
@@ -1372,7 +1375,7 @@ class CameraViewport(GLViewport):
 
             self.editor.noRaycaster = 0
 
-            root.get_root().update_tooltip()
+            self.root.update_tooltip()
 
             focusPair = self.blockFaceUnderCursor
 
@@ -1505,11 +1508,14 @@ class ChunkViewport(CameraViewport):
 
 class LevelEditor(GLViewport):
     anchor = "tlbr"
+    __maxCopies = 32
 
     def __init__(self, mcedit):
         self.mcedit = mcedit
         rect = mcedit.rect
         GLViewport.__init__(self, rect)
+
+        self.currentCopyPage = 0
 
         self.frames = 0
         self.frameStartTime = datetime.now()
@@ -1712,8 +1718,6 @@ class LevelEditor(GLViewport):
         else:
             config.settings.viewMode.set("Chunk")
 
-    maxCopies = 10
-
     def addCopiedSchematic(self, sch):
         self.copyStack.insert(0, sch)
         if len(self.copyStack) > self.maxCopies:
@@ -1744,24 +1748,49 @@ class LevelEditor(GLViewport):
             return
 
         self.copyPanel = self.createCopyPanel()
-        self.copyPanel.topright = self.topright
+        self.copyPanel.right = self.mainViewport.right
+        self.copyPanel.top = self.subwidgets[0].bottom + 2
         self.add(self.copyPanel)
 
     thumbCache = None
     fboCache = None
 
+    def __getMaxCopies(self):
+        return config.settings.maxCopies.get() or self.__maxCopies
+
+    def __setMaxCopies(self, *args, **kwargs):
+        return
+
+    def __delMaxCopies(self):
+        return
+
+    maxCopies = property(__getMaxCopies, __setMaxCopies, __delMaxCopies, "Copy stack size.")
+
     def createCopyPanel(self):
         panel = GLBackground()
         panel.bg_color = (0.0, 0.0, 0.0, 0.5)
+        panel.pages = []
+        if len(self.copyStack) > self.maxCopies:
+            for sch in self.copyStack[self.maxCopies:]:
+                self.deleteCopiedSchematic(sch)
+
+        prevButton = Button("Previous page")
+
         self.thumbCache = thumbCache = self.thumbCache or {}
         self.fboCache = self.fboCache or {}
         for k in self.thumbCache.keys():
             if k not in self.copyStack:
                 del self.thumbCache[k]
 
-        def createOneCopyPanel(sch):
+        inner_height = 0
+        itemNo = Label("#%s"%("W" * len("%s"%self.maxCopies)), doNotTranslate=True)
+        fixedwidth = 0 + itemNo.width
+        del itemNo
+
+        def createOneCopyPanel(sch, i):
             p = GLBackground()
             p.bg_color = (0.0, 0.0, 0.0, 0.4)
+            itemNo = Label("#%s%s"%(" " * (len("%s"%self.maxCopies) - len("%s"%(i + 1))), (i + 1)), doNotTranslate=True)
             thumb = thumbCache.get(sch)
             if thumb is None:
                 thumb = ThumbView(sch)
@@ -1773,15 +1802,91 @@ class LevelEditor(GLViewport):
             saveButton = Button("Save", action=lambda: (self.exportSchematic(sch)))
             sizeLabel = Label("{0} x {1} x {2}".format(sch.Length, sch.Width, sch.Height))
 
-            p.add(Row((thumb, Column((sizeLabel, Row((deleteButton, saveButton))), spacing=5))))
+            r = Row((itemNo, thumb, Column((sizeLabel, Row((deleteButton, saveButton))), spacing=5)))
+            p.add(r)
+            itemNo.width = 0 + fixedwidth
             p.shrink_wrap()
             return p
 
-        copies = [createOneCopyPanel(sch) for sch in self.copyStack]
+        page = []
+        for i in range(len(self.copyStack)):
+            sch = self.copyStack[i]
+            p = createOneCopyPanel(sch, i)
+            if inner_height + p.height + 2 <= (self.netherPanel.top - 2) - (self.subwidgets[0].bottom + 2) - prevButton.height - (panel.margin * 2):
+                inner_height += p.height + 2
+                page.append(p)
+            else:
+                inner_height = p.height
+                panel.pages.append(Column(page, spacing=2, align="l"))
+                panel.pages[-1].shrink_wrap()
+                page = [p]
+        if page != []:
+            panel.pages.append(Column(page, spacing=2, align="l"))
+            panel.pages[-1].shrink_wrap()
 
-        panel.add(Column(copies, align="l"))
+        prevButton.shrink_wrap()
+        self.currentCopyPage = min(self.currentCopyPage, len(panel.pages) - 1)
+        col = Column([panel.pages[self.currentCopyPage]], spacing=2, align="l")
+        col.shrink_wrap()
+
+        def changeCopyPage(this, delta):
+            if delta > 0:
+                m = min
+                a = self.currentCopyPage + delta, len(this.pages) -1
+            elif delta < 0:
+                m = max
+                a = self.currentCopyPage - 1, 0
+            else:
+                return
+            self.currentCopyPage = m(*a)
+            for i in range(len(this.pages)):
+                page = this.pages[i]
+                if i == self.currentCopyPage:
+                    page.visible = True
+                    this.subwidgets[0].subwidgets[1].subwidgets[0] = page
+                    page.parent = this.subwidgets[0].subwidgets[1]
+                else:
+                    page.visible = False
+            page = this.pages[self.currentCopyPage]
+            pb = this.subwidgets[0].subwidgets[0].subwidgets[0]
+            nb = this.subwidgets[0].subwidgets[0].subwidgets[1]
+            if self.currentCopyPage == 0:
+                pb.enabled = False
+                nb.enabled = True
+            elif 0 < self.currentCopyPage < len(this.pages) -1:
+                pb.enabled = True
+                nb.enabled = True
+            elif self.currentCopyPage == len(this.pages) -1:
+                pb.enabled = True
+                nb.enabled = False
+            this.subwidgets[0].subwidgets[1].shrink_wrap()
+            this.subwidgets[0].shrink_wrap()
+            this.shrink_wrap()
+            this.width = 0 + this.orgwidth
+
+        nextButton = Button("Next page", action=lambda: changeCopyPage(panel, 1), width=prevButton.width, height=prevButton.height)
+        prevButton.action=lambda: changeCopyPage(panel, -1)
+        if len(panel.pages) < 2:
+            prevButton.enabled = False
+            nextButton.enabled = False
+        elif self.currentCopyPage == 0:
+            prevButton.enabled = False
+            nextButton.enabled = True
+        elif 0 < self.currentCopyPage < len(panel.pages) -1:
+            prevButton.enabled = True
+            nextButton.enabled = True
+        elif self.currentCopyPage == len(panel.pages) -1:
+            prevButton.enabled = True
+            nextButton.enabled = False
+        btns = Row((prevButton, nextButton), spacing=2, align='c')
+        btns.shrink_wrap()
+        mainCol = Column((btns, col), spacing=2, align='c')
+        mainCol.shrink_wrap()
+        panel.add(mainCol)
+
         panel.shrink_wrap()
         panel.anchor = "whrt"
+        panel.orgwidth = 0 + panel.width
         return panel
 
     @mceutils.alertException
@@ -2348,7 +2453,7 @@ class LevelEditor(GLViewport):
         if self.renderer.needsImmediateRedraw:
             self.invalidate()
 
-        if self.get_root().do_draw:
+        if self.root.do_draw:
             frameDuration = self.getFrameDuration()
 
             while frameDuration > (datetime.now() - self.frameStartTime):
@@ -2422,16 +2527,16 @@ class LevelEditor(GLViewport):
                     self.currentTool.mouseDown(evt, focusPoint, direction)
 
     def toolMouseUp(self, evt, f):  # xxx f is a tuple
-         if self.level:
-             if None != f:
-                 (focusPoint, direction) = f
-                 if focusPoint is not None and direction is not None:
+        if self.level:
+            if None != f:
+                (focusPoint, direction) = f
+                if focusPoint is not None and direction is not None:
                     self.currentTool.mouseUp(evt, focusPoint, direction)
 
     def mouse_up(self, evt):
-         button = keys.remapMouseButton(evt.button)
-         evt.dict['keyname'] = "mouse{0}".format(button)
-         self.key_up(evt)
+        button = keys.remapMouseButton(evt.button)
+        evt.dict['keyname'] = "mouse{0}".format(button)
+        self.key_up(evt)
 
     def mouse_drag(self, evt):
         # if 'button' not in evt.dict or evt.button != 1:
@@ -2447,7 +2552,7 @@ class LevelEditor(GLViewport):
 
         evt.dict['keyname'] = "mouse{0}".format(button)
         self.mcedit.focus_switch = self
-        self.focus_switch = None
+        self.turn_off_focus()
         self.key_down(evt)
 
     '''
@@ -2470,6 +2575,9 @@ class LevelEditor(GLViewport):
 
     def mouseLookOn(self):
         self.mainViewport.mouseLookOn()
+
+    def turn_off_focus(self):
+        self.focus_switch = None
 
     @property
     def blockFaceUnderCursor(self):
@@ -2803,7 +2911,7 @@ class LevelEditor(GLViewport):
                 self.redo()
             if keyname == config.keys.save.get():
                 self.saveFile()
-                self.root.ctrlClicked = -1
+                self.root.fix_sticky_ctrl()
             if keyname == config.keys.newWorld.get():
                 self.createNewLevel()
             if keyname == config.keys.closeWorld.get():
@@ -2909,7 +3017,7 @@ class LevelEditor(GLViewport):
             if keyname == 'F7':
                 self.testBoardKey = 1
 
-            self.root.ctrlClicked = -1
+            self.root.fix_sticky_ctrl()
 
     def showGotoPanel(self):
 
@@ -2956,14 +3064,14 @@ class LevelEditor(GLViewport):
     def closeEditor(self):
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
-            self.root.ctrlClicked = -1
+            self.root.fix_sticky_ctrl()
             if answer == "Save":
                 self.saveFile()
             if answer == "Cancel":
                 return
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
-        self.root.ctrlClicked = -1
+        self.root.fix_sticky_ctrl()
         self.mainViewport.mouseLookOff()
         self.level = None
         self.renderer.stopWork()
@@ -3025,12 +3133,12 @@ class LevelEditor(GLViewport):
         formatLabel = Label(levelFormat)
         items.append(Row([Label("Format:"),formatLabel]))
 
-        nameField = TextField(width=150, ref=AttrRef(self.level, 'LevelName'))
+        nameField = TextField(width=300, ref=AttrRef(self.level, 'LevelName'))
         def alt21():
             nameField.insert_char(u'\xa7')
         alt21button = Button(u"\xa7", action=alt21)
         label = Label("Name:")
-        items.append(Row((label, nameField,alt21button)))
+        items.append(Row((label, nameField, alt21button)))
 
         if hasattr(self.level, 'Time'):
             time = self.level.Time
@@ -3180,7 +3288,7 @@ class LevelEditor(GLViewport):
 
         def loadWorld():
             self.mcedit.loadFile(worldData[worldTable.selectedWorldIndex][3].filename)
-            self.root.ctrlClicked = -1
+            self.root.fix_sticky_ctrl()
 
         def click_row(i, evt):
             worldTable.selectedWorldIndex = i
@@ -3442,7 +3550,7 @@ class LevelEditor(GLViewport):
             if op.changedLevel:
                 self.addUnsavedEdit()
 
-        self.root.ctrlClicked = -1
+        self.root.fix_sticky_ctrl()
 
     def redo(self):
         if len(self.redoStack) == 0:
@@ -3462,7 +3570,7 @@ class LevelEditor(GLViewport):
             if op.changedLevel:
                 self.addUnsavedEdit()
 
-        self.root.ctrlClicked = -1
+        self.root.fix_sticky_ctrl()
 
     def invalidateBox(self, box):
         self.renderer.invalidateChunksInBox(box)

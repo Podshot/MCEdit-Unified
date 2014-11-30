@@ -409,6 +409,7 @@ class KeyConfigPanel(Dialog):
         self.changes = {}
         self.changesNum = False
         self.enter = 0
+        self.root = self.get_root()
         tableWidget = albow.Widget()
         tableWidget.add(keyConfigTable)
         tableWidget.shrink_wrap()
@@ -515,10 +516,10 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
-        self.get_root().mcedit.editor.key_down(evt, 1, 1)
+        self.root.editor.key_down(evt, 1, 1)
 
     def key_up(self, evt):
-        self.get_root().mcedit.editor.key_up(evt)
+        self.root.editor.key_up(evt)
 
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from PIL import Image
 import zipfile
 import directories
@@ -561,7 +561,7 @@ class IResourcePack:
                 new_terrain.paste(image, slot, image)
                 self.propogated_textures.append(slot)
             except Exception, e:
-#                print e
+                # print e
                 pass
         copy = self.old_terrain.copy()
 
@@ -732,19 +732,20 @@ def setup_resource_packs():
     except OSError:
         pass
     terrains["Default"] = DefaultResourcePack()
-    zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")
-    folderResourcePacks = os.listdir(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")))
-    for zip_tex_pack in zipResourcePacks:
-        zrp = ZipResourcePack(zip_tex_pack)
-        if not zrp.isEmpty:
-            if not zrp.tooBig:
-                terrains[zrp.pack_name] = zrp
-    for folder_tex_pack in folderResourcePacks:
-        if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", folder_tex_pack)):
-            frp = FolderResourcePack(folder_tex_pack)
-            if not frp.isEmpty:
-                if not frp.tooBig:
-                    terrains[frp.pack_name] = frp
+    if os.path.exists(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")):
+        zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")
+        folderResourcePacks = os.listdir(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")))
+        for zip_tex_pack in zipResourcePacks:
+            zrp = ZipResourcePack(zip_tex_pack)
+            if not zrp.isEmpty:
+                if not zrp.tooBig:
+                    terrains[zrp.pack_name] = zrp
+        for folder_tex_pack in folderResourcePacks:
+            if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", folder_tex_pack)):
+                frp = FolderResourcePack(folder_tex_pack)
+                if not frp.isEmpty:
+                    if not frp.tooBig:
+                        terrains[frp.pack_name] = frp
     for tex in terrains.keys():
         pack = terrains[tex]
         if not os.path.exists(pack.terrain_path()):

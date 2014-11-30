@@ -1,4 +1,4 @@
-#-# Français (France)
+#-# Čeština (Czech Republic)
 #-# font regular: DEFAULT
 #-# font bold: DEFAULT
 # TRANSLATION BASICS
@@ -17,85 +17,85 @@
 # See TRANSLATION.txt for more detailed information.
 #
 o0 Autobrake
-t0 Ral. auto
+t0 Automatická brzda
 o1 Swap Axes Looking Down
-t1 Inverser axes vue en bas
-o2 Camera Acceleration: 
-t2 Accélération caméra : 
-o3 Camera Drag: 
-t3 Glissement caméra : 
-o4 Camera Max Speed: 
-t4 Vitesse max caméra : 
-o5 Camera Braking Speed: 
-t5 Vitesse ral. caméra : 
-o6 Mouse Speed: 
-t6 Vitesse souris : 
-o7 Undo Limit: 
-t7 Limite annulations : 
+t1 Prohodit osy při pohledu dolů
+o2 Camera Acceleration:
+t2 Zrychlení kamery:
+o3 Camera Drag:
+t3 Odpor kamery:
+o4 Camera Max Speed:
+t4 Maximální rychlost kamery:
+o5 Camera Braking Speed:
+t5 Brzdná rychlost kamery:
+o6 Mouse Speed:
+t6 Rychlost kursoru:
+o7 Undo Limit:
+t7 Limit zpětných operací:
 o8 Invert Mouse
-t8 Inverser souris
+t8 Invertovat myš
 o9 Low Detail Height
-t9 Hauteur détails faibles
+t9 Výška pro jednodušší grafiky
 o10 Block Buffer (MB):
-t10 Tampons des blocks (MB) :
+t10 Vyrovnávací paměť bloků (MB):
 o11 Set Window Placement
-t11 Positionnement fenêtre
+t11 Umístění okna
 o12 Rotate block with brush
-t12 Rotation bloc avec brosse
+t12 Otáčet bloky se štětcem
 o13 Window Resize Alert
-t13 Alerte taille fenêtre
+t13 Upozornění na změnu velikosti okna
 o14 Visibility Check
-t14 Test de visibilité
+t14 Kontrola viditelnosti
 o15 Long-Distance Mode
-t15 Mode longue distance
+t15 Mód dlouhé vzdálenosti
 o16 Fly Mode
-t16 Mode vol
+t16 Mód létání
 o17 Language
-t17 Langue
+t17 Jazyk
 o18 Static Coords While Nudging
-t18 Coords statique en poussant
+t18 Statické koordináty při posouvání
 o19 Change Spawners While Nudging
-t19 Changer spawners en poussant
+t19 Měnit spawnery při posouvání
 o20 Change
-t20 Changer
+t20 Změnit
 o21 Options
-t21 Options
+t21 Nastavení
 o22 OK
 t22 OK
-o23 Field of View: 
-t23 Champ de vision :
-o24 Target FPS: 
-t24 FPS désirées :
-o25 Vertex Buffer Limit (MB): 
-t25 Limite du tampon des vertex (MO) : 
+o23 Field of View:
+t23 Zorný úhel:
+o24 Target FPS:
+t24 Cílové FPS:
+o25 Vertex Buffer Limit (MB):
+t25 Vertex Buffer Limit (MB) :
 o26 Fast Leaves
-t26 Feuillages rapides
+t26 Neprůhledné listy
 o27 Rough Graphics
-t27 Graphismes bruts
+t27 Jednoduchá grafika
 o28 Enable Mouse Lag
-t28 Activer délai souris
+t28 Povolit zpomalení myši
 o29 Default
-t29 Défaut
+t29 Výchozí hodnoty
 o30 Settings
-t30 Réglages
+t30 Nastavení
 o31 Command
-t31 Commande
+t31 Příkaz
 o32 Assigned Key
-t32 Touche
+t32 Klávesa
 o33 Assign Key...
-t33 Choisir touche
+t33 Přiřadit klávesu...
 o34 Done
-t34 Terminé
+t34 Konec
 o35 WASD
 t35 WASD
 o36 Arrows
-t36 Flèches
+t36 Kurzorové šipky
 o37 Numpad
-t37 Pavé num
+t37 Numerické klávesy
 o38 WASD Old
-t38 Ancien WASD
-o39 Presets: 
-t39 Presets: 
+t38 WASD - staré
+o39 Presets:
+t39 Předvolby:
 o40 MCEdit
 t40 MCEdit
 o41 <
@@ -103,263 +103,263 @@ t41 <
 o42 >
 t42 >
 o43 Show...
-t43 Voir...
+t43 Ukázat...
 o44 Camera View
-t44 Vue caméra
+t44 Pohled kamery
 o45 Record Undo
-t45 Enregidtrer histo.
+t45 Zaznamenat zpětný krok
 o46 View Distance:
-t46 Distance de vue :
+t46 Vzdálenost pohledu:
 o47 [UNDEFINED]
-t47 [INDÉFINI]
+t47 [NEDEFINOVÁNO]
 o48 White
-t48 Blanc
+t48 Bílá
 o49 Blue
-t49 Bleu
+t49 Modrá
 o50 Green
-t50 Vert
+t50 Zelená
 o51 Red
-t51 Rouge
+t51 Červená
 o52 Teal
-t52 Taupe
+t52 Tyrkysová
 o53 Pink
-t53 Rose
+t53 Růžová
 o54 Yellow
-t54 Jaune
+t54 Žlutá
 o55 Grey
-t55 Gris
+t55 Šedá
 o56 Black
-t56 Noir
-o57 Color: 
-t57 Couleur : 
+t56 Černá
+o57 Color:
+t57 Barva:
 o58 Show Previous Selection
-t58 Voir séléction précédante
+t58 Zobrazit předchozí výběr
 o59 R:
 t59 R:
 o60 G:
-t60 V:
+t60 G:
 o61 B:
 t61 B:
 o62 Selection Options
-t62 Options de sélection
+t62 Nastavění výběru
 o63 Place Immediately
-t63 Placer immédiatement
+t63 Okamžitě umístit
 o64 Clone Options
-t64 Option de clonage
-o65 Alpha: 
-t65 Alpha : 
+t64 Nastavení klonování
+o65 Alpha:
+t65 Alfa:
 o66 Choose Block Immediately
-t66 Choisir bloc immédiatement
+t66 Okamžitě zvolit blok
 o67 Reset Distance When Brush Size Changes
-t67 RÀZ distance quand la taille de brosse change
+t67 Vynulovat vzdálenost při změně velikosti štětce
 o68 Brush Options
-t68 Option de brosse
+t68 Nastavení štětce
 o69 Fill Options
-t69 Otption de ramplissage
+t69 Nastavení výplně
 o70 Spawn Position Safety
-t70 Sécurité position de spawn
+t70 Bezpečná spawn pozice
 o71 Spawn Point Options
-t71 Option point de spawn
+t71 Nastavení spawn pozice
 o72 Create New World
-t72 Créer nouveau monde
+t72 Vytvořit nový svět
 o73 Ctrl-
 t73 Ctrl-
 o74 Quick Load
-t74 Chargement rapide 
+t74 Rychle načíst
 o75 Open...
-t75 Ouvrir...
+t75 Otevřít...
 o76 Save
-t76 Sauver
+t76 Uložit
 o77 Reload
-t77 Recharger
+t77 Znovu načíst
 o78 Close
-t78 Fermer
+t78 Zavřít
 o79 Goto
-t79 Aller à
+t79 Jít na
 o80 World Info
-t80 Infos monde
+t80 Informace o světě
 o81 Undo
-t81 Annuler
+t81 Zpět
 o82 Redo
-t82 Refaire
+t82 Znovu
 o83 Select All
-t83 Tout sélectionner
+t83 Vybrat vše
 o84 Deselect
-t84 Déselectionner
+t84 Zrušit výběr
 o85 Quit
-t85 Quitter
+t85 Zavřít
 o86 Controls
-t86 Contrôles
+t86 Ovládání
 o87 Graphics
-t87 Graphismes
+t87 Grafika
 o88 Homepage
-t88 Site web
+t88 Webová stránka
 o89 About MCEdit
-t89 À propos...
+t89 O MCEditu
 o90 Recent Changes
-t90 Dernier changements
+t90 Poslední změny
 o91 License
 t91 Licence
 o92 Config Files Folder
-t92 Dossier de configuration
+t92 Konfigurační složka
 o93 {0}/{1}/{2}/{3}/{4}/{5} to move
-t93 {0}/{1}/{2}/{3}/{4}/{5} pour déplacement
+t93 {0}/{1}/{2}/{3}/{4}/{5} pro pohyb
 o94 {0} to slow down
-t94 {0} pour rallentir
+t94 {0} pro zpomalení
 o95 Right-click to toggle camera control
-t95 Clic-droit pour activer le contrôle caméra
+t95 Klikněte pravým tlačítkem pro přepnutí kamery
 o96 Mousewheel to control tool distance
-t96 Molette pour contrôle de la distance
+t96 Kolečko ovládá vzdálenost nástroje
 o97 Hold {0} for details
-t97 Maintenir {0} pour les détails
+t97 Zmáčkněte {0} pro detail
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
-t98 Attention: n'ouvrez un monde que dans un seul programme simultanément. Si vous ouvrez un monde en même temps avec MCEdit et Minecraft, vous perdrez votre travail et endommagerez éventuellement votre sauvegarde.
+t98 Pozor: Svět otevírejte jen v jednom programu v jednu chvíli. Pokud svět otevřete zároveň v MCEditu a Minecraftu, ztratíte své změny a můžete poškodit svůj svět.
 
- Si vous utilisez Minecraft 1.3 ou inférieur, vous devez quiter complettement le jeu avant d'utiliser MCEdit.
+ Pokud používáte Minecraft 1.3 nebo starší, musíte ho kompletně uzařít před používáním MCEditu.
 o99 Don't remind me again.
-t99 Ne pas me le rappeler.
+t99 Neupozorňovat mě znovu.
 o100 <Movement>
-t100 <Déplacement>
+t100 <Pohyb>
 o101 Forward
-t101 Avant
+t101 Vpřed
 o102 Back
-t102 Arrière
+t102 Vzad
 o103 Left
-t103 Gauche
+t103 Vlevo
 o104 Right
-t104 Droite
+t104 Vpravo
 o105 Up
-t105 Haut
+t105 Nahoru
 o106 Down
-t106 Bas
+t106 Dolů
 o107 Brake
-t107 Rallentir
+t107 Brzda
 o108 <Camera>
-t108 <Caméra>
+t108 <Kamera>
 o109 Pan Up
-t109 Pano haut
+t109 Otočit nahoru
 o110 Pan Down
-t110 Pano bas
+t110 Otočit dolů
 o111 Pan Left
-t111 Pano gauche
+t111 Otočit vlevo
 o112 Pan Right
-t112 Pano droite
+t112 Otočit vpravo
 o113 Toggle View
-t113 Activer vue
+t113 Přepnout pohled
 o114 Goto Panel
-t114 Aller au panneau
+t114 Panel Jít na
 o115 View Distance
-t115 Distance de vue
+t115 Vzdálenost pohledu
 o116 Toggle Renderer
-t116 Activer rendu
+t116 Přepnout vykreslování
 o117 <Blocks>
-t117 <Blocs>
+t117 <Bloky>
 o118 Swap
-t118 Inverser
+t118 Prohodit
 o119 Delete Blocks
-t119 Supprimer blocs
+t119 Smazat bloky
 o120 Increase Reach
-t120 Aug. portée
+t120 Zvětšit dosah
 o121 Decrease Reach
-t121 Dim. portée
+t121 Zmenšit dosah
 o122 Reset Reach
-t122 RÀZ portée
+t122 Vynulovat dosah
 o123 Export Selection
-t123 Exporter sélection
+t123 Exportovat výběr
 o124 Brush Line Tool
-t124 Outil ligne
+t124 Přímočarý štětec
 o125 <Clone>
-t125 <Cloner>
+t125 <Klonování>
 o126 Rotate (Clone)
-t126 Rotation (Clone)
+t126 Otočit (Klonování)
 o127 Roll (Clone)
-t127 Tourner (Clone)
+t127 Valit (Klonování)
 o128 Flip
-t128 Retourner
+t128 Převrátit
 o129 Mirror
-t129 Mirroir
+t129 Zrcadlit
 o130 <Brush>
-t130 <Brosse>
+t130 <Štětec>
 o131 Rotate (Brush)
-t131 Rotation (Brosse)
+t131 Otočit (Štětec)
 o132 Roll (Brush)
-t132 Tourner (Brosse)
+t132 Valit (Štětec)
 o133 Increase Brush
-t133 Augmanter brosse
+t133 Zvětšit štětec
 o134 Decrease Brush
-t134 Diminuer brosse
+t134 Zmenšit štětec
 o135 <Fill and Replace>
-t135 Remplir et remplacer
+t135 <Vyplnit a nahradit>
 o136 Replace Shortcut
-t136 Raacourci remplacer
+t136 Nahradit zkratku
 o137 <Functions>
-t137 <Fonctions>
+t137 <Funkce>
 o138 Cut
-t138 Couper
+t138 Vyjmout
 o139 Copy
-t139 Copier
+t139 Kopírovat
 o140 Paste
-t140 Coller
+t140 Vložit
 o141 <Options>
-t141 <Options>
+t141 <Nastavení>
 o142 None
-t142 Aucun
+t142 Nic
 o143 <Menu>
 t143 <Menu>
 o144 New World
-t144 Nouveau monde
+t144 Nový svět
 o145 Open
-t145 Ouvrir
+t145 Oteřít
 o146 Reload World
-t146 Recharger monde
+t146 Znovu načíst svět
 o147 Close World
-t147 Fermer monde
+t147 Zavřít svět
 o148 <Advanced>
-t148 <Avancé>
+t148 <Pokročilé>
 o149 Debug Overlay
-t149 Superpos. débug
+t149 Testovací informace
 o150 Show Block Info
-t150 Voir infos bloc
+t150 Zobrazit informace o bloku
 o151 Pick Block
-t151 Choisir bloc
+t151 Zvolit blok
 o152 Select Chunks
-t152 Sélect. chunks
+t152 Vybrat chunky
 o153 Deselect Chunks
-t153 Déselect. chunks
+t153 Zrušit volbu chunků
 o154 Snap Clone to Axis
-t154 Pos. clone sur axe
+t154 Přichytávat klonování k osám
 o155 Blocks-Only Modifier
-t155 Modif. blocs seuls
+t155 Modifikátor - pouze bloky
 o156 Fast Increment Modifier
-t156 Modif. incrément rapide
+t156 Modifikátor - rychlé zvětšování
 o157 Leaves are solid, like Minecraft's 'Fast' graphics
-t157 Les feuillages sont 'solides', comme pour l'option 'Rapides' des graphismes de Minecraft
+t157 Textura listů je neprůhledná, jako 'Rychlá' grafika v Minecraftu
 o158 All blocks are drawn the same way (overrides 'Fast Leaves')
-t158 Tous les blocs sont dessinés de la même manière (passe outre 'Feuillages rapides')
+t158 Všechny bloky jsou vykreslovány stejně (potlačí 'Neprůhledné listy')
 o159 Enable choppy mouse movement for faster loading.
-t159 Active des mouvement de souris saccadés pour des chargements plus rapides.
+t159 Povolit zpomalenou kursor pro rychlejší načítání
 o160 Point here and use mousewheel to adjust
-t160 Utilisez la molette pour changer
+t160 Hodnotu změňte kolečkem myši
 o161 Install Mode: Portable
-t161 Type d'installation : Portable
+t161 Mód instalace: přenosný
 o162 Install Mode: Fixed
-t162 Type d'installation : Résidente
+t162 Mód instalace: stálý
 o163 Change the direction of the Forward and Backward keys when looking down
-t163 Inverser les direction Avant et Arrière quand la vue pointe vers le bas
+t163 Prohodit směr Vpřed a Vzad při pohledu dolů
 o164 When you are this far above the top of the world, move fast and use low-detail mode.
-t164 Mouvements rapides et faibles détails lorsque au-dessus du monde et au-delà de cette hauteur.
+t164 Když jste v této výšce nad světem, grafika se zjednodušší.
 o165 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
-t165 Taille du tampon mémoire pour les données temporaires. Quand cette taille est atteinte, le disque est utilisé.
+t165 Množství paměti pro dočasné úložiště. Pokud je třeba více, je použit disk.
 o166 Change the position of the mobs in spawners while nudging.
-t166 Changer la pos. des monstres dans les spawner en poussant.
+t166 Změnit pozici mobů při posunu spawnerů.
 o167 Change static coordinates in command blocks while nudging.
-t167 Changer les coords statiques dans des blocs de commande en poussant.
+t167 Změnit statické koordináty při posunu command blocků.
 o168 Always target the farthest block under the cursor, even in mouselook mode.
-t168 Toujours viser le bloc le plus loin avec le curseur, même an vue souris
+t168 Vždy zacílit nejvzdálenější blok pod kursorem.
 o169 Moving forward and Backward will not change your altitude in Fly Mode.
-t169 Le déplacement avant/arrière ne modifie pas l'altitude en mode vol.
+t169 V módu letu pohyb vpřed a vzad nezmění výšku.
 o170 Apply brake when not pressing movement keys
 t170 Rallentir quand aucune touche de mouvement n'est appuyée
 o171 Reverse the up and down motion of the mouse.
@@ -378,10 +378,10 @@ o177 Restart
 t177 Redémarrer
 o178 Later
 t178 Plus tard
-o179 Loading 
-t179 Chargement : 
-o180  - MCEdit 
-t180  - MCEdit 
+o179 Loading
+t179 Chargement :
+o180  - MCEdit
+t180  - MCEdit
 o181 Overworld
 t181 Surface
 o182 The End
@@ -441,7 +441,7 @@ t208 Chunks sélectionnés :
 o209 Extract
 t209 Extraire
 o210 Create
-t210 Créer 
+t210 Créer
 o211 Prune
 t211 Tailler
 o212 Relight
@@ -512,8 +512,8 @@ o241 Mode:
 t241 Mode :
 o242 Brush:
 t242 Brosse :
-o243 Chance: 
-t243 Chance : 
+o243 Chance:
+t243 Chance :
 o244 Hollow
 t244 Vide(?)
 o245 Fill Air
@@ -528,14 +528,14 @@ o249 Shortcut: Alt-1
 t249 Raccourci : Alt-1
 o250 ---
 t250 ---
-o251 Weight 1: 
-t251 Poids 1 : 
-o252 Weight 2: 
-t252 Poids 2 : 
-o253 Weight 3: 
-t253 Poids 3 : 
-o254 Weight 4: 
-t254 Poids 4 : 
+o251 Weight 1:
+t251 Poids 1 :
+o252 Weight 2:
+t252 Poids 2 :
+o253 Weight 3:
+t253 Poids 3 :
+o254 Weight 4:
+t254 Poids 4 :
 o255 Shortcut: Alt-3
 t255 Raccourci : Alt-3
 o256 Hold {0} to draw lines
@@ -546,10 +546,10 @@ o258 Click to replace {0} ({1}:{2})
 t258 Cliquer pour remplacer {0} ({1}:{2})
 o259 Noise
 t259 Bruit
-o260 Strength: 
-t260 Force : 
-o261 Depth: 
-t261 Profondeur : 
+o260 Strength:
+t260 Force :
+o261 Depth:
+t261 Profondeur :
 o262 Only Change Natural Earth
 t262 Changer seulement la terre naturelle
 o263 Import
@@ -560,8 +560,8 @@ o265 y
 t265 y
 o266 z
 t266 z
-o267 COPYING - 
-t267 COPIE - 
+o267 COPYING -
+t267 COPIE -
 o268 Rotate
 t268 Rotation
 o269 Roll
@@ -1060,8 +1060,8 @@ o485 Cold Taiga M
 t485 Taïga froide M
 o486 Mega Spruce Taiga
 t486 Méga taïga avec épicéas
-o487 Mega Spruce Taiga 
-t487 Méga taïga avec épicéas 
+o487 Mega Spruce Taiga
+t487 Méga taïga avec épicéas
 o488 Extreme Hills+ M
 t488 Collines extrêmes+ M
 o489 Savanna M
@@ -1088,8 +1088,8 @@ o499 Players
 t499 Joueurs
 o500 Player Name
 t500 Nom du joueur
-o501 Player: 
-t501 Joueur : 
+o501 Player:
+t501 Joueur :
 o502 Goto Player
 t502 Aller au joueur
 o503 Goto Player's View
@@ -1101,7 +1101,7 @@ t505 Aligner le joueur à la caméra
 o506 Player
 t506 Joueur
 o507 Chunk Control
-t507 Contrôle de chunk 
+t507 Contrôle de chunk
 o508 Move Spawn Point
 t508 Déplacer point de spawn
 o509 Goto Spawn
@@ -1127,136 +1127,136 @@ t518 Chosissez un préréglage à supprimer
 o519  does not have a value yet.
 t519  n'a pas encore de valeur
 o520 Version {} is available
-t520 
+t520 Version {} is available
 o521 Download
-t521 
+t521 Download
 o522 View
-t522 
+t522 View
 o523 Ignore
-t523 
+t523 Ignore
 o524 Space
-t524 
+t524 Space
 o525 Tab
-t525 
+t525 Tab
 o526 Delete
-t526 
+t526 Delete
 o527 Scroll Up
-t527 
+t527 Scroll Up
 o528 Scroll Down
-t528 
+t528 Scroll Down
 o529 Button 3
-t529 
+t529 Button 3
 o530 Alt
-t530 
+t530 Alt
 o531 Ctrl
-t531 
+t531 Ctrl
 o532 Creating a new world.
-t532 
+t532 Creating a new world.
 o533 Minecraft Server
-t533 
+t533 Minecraft Server
 o534 Flatland
-t534 
+t534 Flatland
 o535 Generator:
-t535 
+t535 Generator:
 o536 Will automatically download and use the latest version
-t536 
-o537 Height: 
-t537 
+t536 Will automatically download and use the latest version
+o537 Height:
+t537 Height:
 o538 Grass
-t538 
+t538 Grass
 o539 Server version:
-t539 
+t539 Server version:
 o540 or
-t540 
+t540 or
 o541 Check for Updates
-t541 
+t541 Check for Updates
 o542 Advanced
-t542 
+t542 Advanced
 o543 Open Server Storage
-t543 
+t543 Open Server Storage
 o544 Reveal World Cache
-t544 
+t544 Reveal World Cache
 o545 Delete World Cache
-t545 
+t545 Delete World Cache
 o546 Advanced...
-t546 
+t546 Advanced...
 o547 Simulate world
-t547 
+t547 Simulate world
 o548 Use snapshot versions
-t548 
-o549 X: 
-t549 
-o550 Y: 
-t550 
-o551 Z: 
-t551 
-o552 f: 
-t552 
-o553 Seed: 
-t553 
-o554 East-West Chunks: 
-t554 
-o555 North-South Chunks: 
-t555 
+t548 Use snapshot versions
+o549 X:
+t549 X:
+o550 Y:
+t550 Y:
+o551 Z:
+t551 Z:
+o552 f:
+t552 f:
+o553 Seed:
+t553 Seed:
+o554 East-West Chunks:
+t554 East-West Chunks:
+o555 North-South Chunks:
+t555 North-South Chunks:
 o556 Survival
-t556 
+t556 Survival
 o557 Game Type:
-t557 
+t557 Game Type:
 o558 Cancel
-t558 
+t558 Cancel
 o559 Creative
-t559 
+t559 Creative
 o560 Style:
-t560 
+t560 Style:
 o561 H
-t561 
+t561 H
 o562 L
-t562 
+t562 L
 o563 W
-t563 
+t563 W
 o564 Minimum Spacing
-t564 
+t564 Minimum Spacing
 o565 Regenerate UUID
-t565 
+t565 Regenerate UUID
 o566 Replace blocks with any data value. Only useful for Replace operations.
-t566 
+t566 Replace blocks with any data value. Only useful for Replace operations.
 o567 Entities
-t567 
+t567 Entities
 o568 Items
-t568 
+t568 Items
 o569 TileEntities
-t569 
+t569 TileEntities
 o570 TileTicks
-t570 
+t570 TileTicks
 o571 Unpopulated Chunks
-t571 
+t571 Unpopulated Chunks
 o572 Sky
-t572 
+t572 Sky
 o573 Fog
-t573 
+t573 Fog
 o574 Ceiling
-t574 
+t574 Ceiling
 o575 Chunk Redraw
-t575 
+t575 Chunk Redraw
 o576 Hidden Ores
-t576 
+t576 Hidden Ores
 o577 Bedrock
-t577 
+t577 Bedrock
 o578 Coal
-t578 
+t578 Coal
 o579 Iron
-t579 
+t579 Iron
 o580 Lapis Lazuli
-t580 
+t580 Lapis Lazuli
 o581 Redstone
-t581 
+t581 Redstone
 o582 Gold
-t582 
+t582 Gold
 o583 Diamond
-t583 
+t583 Diamond
 o584 Nether Quartz
-t584 
+t584 Nether Quartz
 o585 Shortcut: {0}
 t585 Raccourci : {0}
 o586 View Distance ({0})
-t586 
+t586 View Distance ({0})

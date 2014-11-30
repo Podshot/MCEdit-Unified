@@ -22,7 +22,7 @@ inputs = [    (("Match by:",("TileEntity","Entity","Block")),
             ("Match Tag Type:",tuple(("Any",))+tuple(tagtypes.keys())),
             ("Operation:",("Start New Search","Find Next","Dump Found Coordinates")),
             ("Options","title")),
-            
+
             (("Documentation","title"),
             ("This filter is designed to search for NBT in either Entities or TileEntities.  "
              "It can also be used to search for blocks.  \"Match by\" determines which type of object "
@@ -36,7 +36,7 @@ inputs = [    (("Match by:",("TileEntity","Entity","Block")),
              "a specific direction.\n\"Start New Search\" will re-search through the selected volume, while \"Find Next\" "
              "will iterate through the search results of the previous search.","label"))
             ]
-            
+
 try:
     search
 except NameError:
@@ -128,17 +128,17 @@ def perform(level, box, options):
     caseSensitive = not options["Case insensitive:"]
     matchtagtype = tagtypes[options["Match Tag Type:"]] if options["Match Tag Type:"] != "Any" else "Any"
     op = options["Operation:"]
-    
+
     if not caseSensitive:
         matchname = matchname.upper()
         matchval = matchval.upper()
-    
+
     if matchtile and matchname == "" and matchval == "":
         raise Exception("\nInvalid Tag Name and Value; the present values will match every tag of the specified type.")
 
     if search == None or op == "Start New Search" or op == "Dump Found Coordinates":
         search = []
-        
+
     if not search:
         if by == "Block":
             for x in xrange(box.minx, box.maxx):
@@ -199,7 +199,7 @@ def perform(level, box, options):
 
                 newBox = BoundingBox(s, (1,1,1))
                 editor.selectionTool.setSelection(newBox)
-                    
+
                 if not editor.YesNoWidget("Matching blocks/tile entities found at "+str(s)+".\nContinue search?"):
                     raise Exception("\nSearch halted.")
             else:

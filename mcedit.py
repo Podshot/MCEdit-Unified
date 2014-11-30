@@ -227,6 +227,8 @@ class FileOpener(albow.Widget):
         if keyname == config.keys.takeAScreenshot.get():
             self.mcedit.editor.take_screenshot()
 
+        self.get_root().fix_sticky_ctrl()
+
     def promptOpenAndLoad(self):
         try:
             filename = mcplatform.askOpenFile()
@@ -353,6 +355,10 @@ class OptionsPanel(Dialog):
         undoLimitRow = mceutils.IntInputRow("Undo Limit: ",
                                             ref=config.settings.undoLimit, width=100, min=0)
 
+        maxCopiesRow = mceutils.IntInputRow("Copy Stack size: ",
+                                            ref=config.settings.maxCopies, width=100, min=0,
+                                            tooltipText="Maximum number of copied objects.")
+
         invertRow = mceutils.CheckBoxLabel("Invert Mouse",
                                            ref=config.controls.invertMousePitch,
                                            tooltipText="Reverse the up and down motion of the mouse.")
@@ -429,6 +435,7 @@ class OptionsPanel(Dialog):
             blockBufferRow,
             mouseSpeedRow,
             undoLimitRow,
+            maxCopiesRow,
         )
 
         options = (

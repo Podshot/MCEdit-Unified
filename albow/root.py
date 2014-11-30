@@ -111,6 +111,11 @@ class RootWidget(Widget):
         self.shiftAction = None
         self.altAction = None
         self.ctrlAction = None
+        self.editor = None
+        self.selectTool = None
+
+    def get_nudge_block(self):
+        return self.selectTool.panel.nudgeBlocksButton
 
     def set_timer(self, ms):
         pygame.time.set_timer(USEREVENT, ms)
@@ -126,16 +131,22 @@ class RootWidget(Widget):
         if widget:
             pygame.mouse.set_visible(False)
             pygame.event.set_grab(True)
-            get_root().captured_widget = widget
+            self.captured_widget = widget
         else:
             pygame.mouse.set_visible(True)
             pygame.event.set_grab(False)
-            get_root().captured_widget = None
+            self.captured_widget = None
 
     frames = 0
     hover_widget = None
 
+    def fix_sticky_ctrl(self):
+        self.ctrlClicked = -1
+
     def run_modal(self, modal_widget):
+        if self.editor is None:
+            self.editor = self.mcedit.editor
+            self.selectTool = self.editor.toolbar.tools[0]
         old_captured_widget = None
 
         if self.captured_widget:

@@ -361,7 +361,7 @@ def dist_to_mat(cord, vec, matidxlist, mcmap, invert=False, limit=False):
             break
         else:
             block_value = return_dict['B']
-        if (block_value in matidxlist) and (invert == False):
+        if (block_value in matidxlist) and (invert is False):
             break
         elif (block_value not in matidxlist) and invert:
             break

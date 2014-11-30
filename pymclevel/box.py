@@ -33,7 +33,8 @@ class Vector(_Vector):
 
     def normalize(self):
         l = self.length()
-        if l == 0: return self
+        if l == 0:
+            return self
         return self / l
 
     def intfloor(self):

@@ -63,11 +63,11 @@ def maxadj(heightmap, slice_no, cliff_pos, dir, pushup, maxstep, slice_width):
     for cur_pos in range(cliff_pos, end, dir):
         if pushup:
             ret = ret + \
-                  max([0, maxstep - dir * heightmap[slice_no, cur_pos] + \
+                  max([0, maxstep - dir * heightmap[slice_no, cur_pos] +
                        dir * heightmap[slice_no, cur_pos + dir]])
         else:
             ret = ret + \
-                  min([0, -maxstep + dir * heightmap[slice_no, cur_pos] - \
+                  min([0, -maxstep + dir * heightmap[slice_no, cur_pos] -
                        dir * heightmap[slice_no, cur_pos + dir]])
 
     return ret
@@ -97,18 +97,18 @@ def adjheight(orig, new, slice_no, cliff_pos, dir, adj, can_adj, maxstep, slice_
         for cur_pos in range(cliff_pos, end, dir):
             if adj > 0:
                 done_adj = done_adj + \
-                           max([0, maxstep - orig[slice_no, cur_pos] + \
+                           max([0, maxstep - orig[slice_no, cur_pos] +
                                 orig[slice_no, cur_pos + dir]])
 
                 if orig[slice_no, cur_pos] - \
                         orig[slice_no, cur_pos + dir] > 0:
-                    cur_adj = max([0, cur_adj - orig[slice_no, cur_pos] + \
+                    cur_adj = max([0, cur_adj - orig[slice_no, cur_pos] +
                                    orig[slice_no, cur_pos + dir]])
                     prev = adj - cur_adj
             else:
                 done_adj = done_adj + \
-                           min([0, -maxstep + \
-                                orig[slice_no, cur_pos] - \
+                           min([0, -maxstep +
+                                orig[slice_no, cur_pos] -
                                 orig[slice_no, cur_pos + dir]])
                 if orig[slice_no, cur_pos] - \
                         orig[slice_no, cur_pos + dir] > 0:
@@ -161,7 +161,7 @@ def perform(level, box, options):
         cliff_height = 0
         # determine pos and height of cliff in this slice
         for cur_pos in range(0, slice_width - 1):
-            if abs(heightmap[slice_no, cur_pos] - \
+            if abs(heightmap[slice_no, cur_pos] -
                     heightmap[slice_no, cur_pos + 1]) > abs(cliff_height):
                 cliff_height = \
                     heightmap[slice_no, cur_pos] - \
@@ -236,7 +236,8 @@ def perform(level, box, options):
                         column[oh + 1:oh + 2] == am.Ice.ID:
             for cur_pos in range(oh + 1, schema.Height):
                 if column[cur_pos:cur_pos + 1] != am.Water.ID and \
-                                column[cur_pos:cur_pos + 1] != am.Ice.ID: break
+                                column[cur_pos:cur_pos + 1] != am.Ice.ID:
+                    break
                 Waterdepth = Waterdepth + 1
 
         if delta == 0:
