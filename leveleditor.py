@@ -3827,7 +3827,7 @@ class LevelEditor(GLViewport):
         self.currentTool.selectionChanged()
 
     def addOperation(self, op):
-        if self.record  :
+        if self.recordUndo:
             self.undoStack.append(op)
             if len(self.undoStack) > self.undoLimit:
                 self.undoStack.pop(0)
