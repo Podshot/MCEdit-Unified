@@ -75,6 +75,8 @@ class PlayerRemoveOperation(Operation):
         if not (self.undoTag is None):
             if self.player != "Player":
                 self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.undoTag
+            else:
+                self.level.root_tag["Data"]["Player"] = self.undoTag
 
             self.level.players.append(self.player)
             if self.player != "Player":
