@@ -127,10 +127,8 @@ class _WaterCallback(Callback):
 
     def check(self, position, block):
         if (block == 8 or block == 9):
-            print "Test1"
             return False
         elif (block == 0):
-            print "Test2"
             self.escapedBlock = True
             return False
         elif (self.escapedBlock and block != 0 ):
