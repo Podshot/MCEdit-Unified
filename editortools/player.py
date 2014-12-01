@@ -125,7 +125,7 @@ class PlayerAddOperation(Operation):
                 self.uuid = version_utils.getUUIDFromPlayerName(self.player)
                 self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
             except:
-                action = ask("Could not get {}'s UUID. Please make sure, that you are connectedto the internet and that the player {} exists".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
+                action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
                 if action == "Enter UUID manually":
                     self.uuid = input_text_buttons("Enter a Player UUID: ", 160)
                     if not self.uuid:
