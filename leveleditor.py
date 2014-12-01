@@ -3570,7 +3570,7 @@ class LevelEditor(GLViewport):
 
     @mceutils.alertException
     def undo(self):
-        if len(self.undoStack) == 0 or self.unsavedEdits == 0:
+        if len(self.undoStack) == 0:
             return
         with mceutils.setWindowCaption("UNDOING - "):
             self.freezeStatus("Undoing the previous operation...")
@@ -3584,7 +3584,8 @@ class LevelEditor(GLViewport):
             changedBox = op.dirtyBox()
             if changedBox is not None:
                 self.invalidateBox(changedBox)
-            self.removeUnsavedEdit()
+            if ".SelectionOperation" not in "{}".format(op):
+                self.removeUnsavedEdit()
 
         self.root.fix_sticky_ctrl()
 
