@@ -125,7 +125,8 @@ function getDownload(platform,version,bittage) {
 		var release = releaseData[i];
 		for (var x = 0; x < release.assets.length; x++) {
 			var asset = release.assets[x];
-			if (asset.name == 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit.zip') {
+            var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit';
+			if (asset.name == name + '.zip' || asset.name == name + '.exe' || asset.name == name + '.msi') {
 				return asset;
 			}
 		}
