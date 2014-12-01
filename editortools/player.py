@@ -406,7 +406,7 @@ class PlayerPositionPanel(Panel):
             if player != "Player" and player != "[No players]":
                 return self.player_UUID[player]
             else:
-            	return player
+                return player
         else:
             return self.players[self.table.index]
 
@@ -462,10 +462,15 @@ class PlayerPositionTool(EditorTool):
 
     @alertException
     def reloadSkins(self):
-        for player in self.editor.level.players:
-            if player != "Player" and player != "[No players]":
-                del self.playerTexture[player]
-                self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
+        result = ask("This pulls skins from the online server, this may take a while", ["Ok", "Cancel"])
+        if result == "Ok":
+            try:
+                for player in self.editor.level.players:
+                    if player != "Player" and player != "[No players]" and player in self.playerTexture.keys():
+                        del self.playerTexture[player]
+                        self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
+            except:
+                raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
 
     def gotoPlayerCamera(self):
         player = self.panel.selectedPlayer
