@@ -41,6 +41,7 @@ class PlayerRemoveOperation(Operation):
         self.tool = tool
         self.player = player
         self.level = self.tool.editor.level
+        self.canUndo = False
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -75,6 +76,7 @@ class PlayerRemoveOperation(Operation):
         else:
             del self.level.root_tag["Data"]["Player"]
         del self.tool.revPlayerPos[self.player]
+        self.canUndo = True
 
     def undo(self):
         if not (self.undoTag is None):
@@ -89,6 +91,11 @@ class PlayerRemoveOperation(Operation):
             else:
             	self.tool.panel.players.append("Player")
 
+            if "[No players]" in self.tool.panel.players:
+                self.tool.panel.players.remove("[No players]")
+                self.tool.hidePanel()
+                self.tool.showPanel()
+
         self.tool.markerList.invalidate()
 
     def redo(self):
@@ -101,6 +108,7 @@ class PlayerAddOperation(Operation):
         super(PlayerAddOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
         self.level = self.tool.editor.level
+        self.canUndo = False
 
     def perform(self, recordUndo=True):
         self.player = input_text_buttons("Enter a Player Name: ", 160)
@@ -157,6 +165,7 @@ class PlayerAddOperation(Operation):
         self.tool.movingPlayer = self.uuid
         self.tool.hidePanel()
         self.tool.showPanel()
+        self.canUndo = True
 
     def newPlayer(self):
         playerTag = nbt.TAG_Compound()
@@ -207,6 +216,7 @@ class PlayerMoveOperation(Operation):
     def __init__(self, tool, pos, player="Player", yp=(None, None)):
         super(PlayerMoveOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
+        self.canUndo = False
         self.pos = pos
         self.player = player
         self.yp = yp
@@ -230,6 +240,7 @@ class PlayerMoveOperation(Operation):
             level.setPlayerPosition(self.pos, self.player)
             level.setPlayerDimension(level.dimNo, self.player)
             self.tool.markerList.invalidate()
+            self.canUndo = True
 
         except pymclevel.PlayerNotFound, e:
             print "Player move failed: ", e
@@ -295,6 +306,7 @@ class PlayerSpawnMoveOperation(Operation):
     def __init__(self, tool, pos):
         super(PlayerSpawnMoveOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool, self.pos = tool, pos
+        self.canUndo = False
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -310,6 +322,7 @@ class PlayerSpawnMoveOperation(Operation):
         self.undoPos = level.playerSpawnPosition()
         level.setPlayerSpawnPosition(self.pos)
         self.tool.markerList.invalidate()
+        self.canUndo = True
 
     def undo(self):
         if self.undoPos is not None:
@@ -402,7 +415,8 @@ class PlayerPositionTool(EditorTool):
         op = PlayerAddOperation(self)
 
         self.editor.addOperation(op)
-        self.editor.addUnsavedEdit()
+        if op.canUndo:
+            self.editor.addUnsavedEdit()
 
     @alertException
     def removePlayer(self):
@@ -412,7 +426,8 @@ class PlayerPositionTool(EditorTool):
             op = PlayerRemoveOperation(self, player)
 
             self.editor.addOperation(op)
-            self.editor.addUnsavedEdit()
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
 
     @alertException
     def movePlayer(self):
@@ -431,7 +446,8 @@ class PlayerPositionTool(EditorTool):
             op = PlayerMoveOperation(self, pos, player, (y, p))
             self.movingPlayer = None
             self.editor.addOperation(op)
-            self.editor.addUnsavedEdit()
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
 
     @alertException
     def reloadSkins(self):
@@ -780,7 +796,8 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         op = PlayerSpawnMoveOperation(self, pos)
         try:
             self.editor.addOperation(op)
-            self.editor.addUnsavedEdit()
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
             self.markerList.invalidate()
 
         except SpawnPositionInvalid, e:
@@ -811,7 +828,8 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
                 op = PlayerSpawnMoveOperation(self, pos)
                 try:
                     self.editor.addOperation(op)
-                    self.editor.addUnsavedEdit()
+                    if op.canUndo:
+                        self.editor.addUnsavedEdit()
                     self.markerList.invalidate()
                 except SpawnPositionInvalid, e:
                     alert(str(e))

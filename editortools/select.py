@@ -181,6 +181,7 @@ class NudgeBlocksOperation(Operation):
         self.sourceBox = sourceBox
         self.destBox = BoundingBox(sourceBox.origin + direction, sourceBox.size)
         self.nudgeSelection = NudgeSelectionOperation(editor.selectionTool, direction)
+        self.canUndo = False
 
     def dirtyBox(self):
         return self.sourceBox.union(self.destBox)
@@ -208,6 +209,8 @@ class NudgeBlocksOperation(Operation):
             self.editor.invalidateBox(dirtyBox)
 
             self.nudgeSelection.perform(recordUndo)
+            if self.nudgeSelection.canUndo:
+                self.canUndo = True
 
     def undo(self):
         super(NudgeBlocksOperation, self).undo()
@@ -470,9 +473,9 @@ class SelectionTool(EditorTool):
             return
 
         op = NudgeBlocksOperation(self.editor, self.editor.level, self.selectionBox(), dir)
-
         self.editor.addOperation(op)
-        self.editor.addUnsavedEdit()
+        if op.canUndo:
+            self.editor.addUnsavedEdit()
 
     def nudgeSelection(self, dir):
         if self.editor.rightClickNudge == 1:
@@ -1114,7 +1117,8 @@ class SelectionTool(EditorTool):
 
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
-            self.editor.addUnsavedEdit()
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
 
     @alertException
     def deleteTileTicks(self, recordUndo=True):
@@ -1125,6 +1129,11 @@ class SelectionTool(EditorTool):
             level = self.editor.level
             editor = self.editor
             class DeleteTileTicksOperation(Operation):
+                def __init__(self, editor, level):
+                    self.editor = editor
+                    self.level = level
+                    self.canUndo = True
+
                 def perform(self, recordUndo=True):
                     self.undoTileTicks = level.getTileTicksInBox(box)
                     level.removeTileTicksInBox(box)
@@ -1143,10 +1152,10 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateTileTicksInBox(box)
 
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
-            if recordUndo:
-                self.editor.addOperation(op)
+            self.editor.addOperation(op)
             self.editor.invalidateBox(box)
-            self.editor.addUnsavedEdit()
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
 
 
     @alertException
@@ -1161,6 +1170,11 @@ class SelectionTool(EditorTool):
             editor = self.editor
 
             class DeleteEntitiesOperation(Operation):
+                def __init__(self, editor, level):
+                    self.editor = editor
+                    self.level = level
+                    self.canUndo = True
+
                 def perform(self, recordUndo=True):
                     self.undoEntities = level.getEntitiesInBox(box)
                     level.removeEntitiesInBox(box)
@@ -1179,10 +1193,10 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateEntitiesInBox(box)
 
             op = DeleteEntitiesOperation(self.editor, self.editor.level)
-            if recordUndo:
-                self.editor.addOperation(op)
+            self.editor.addOperation(op)
             self.editor.invalidateBox(box)
-            self.editor.addUnsavedEdit()
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
 
     @alertException
     def analyzeSelection(self):
@@ -1256,6 +1270,7 @@ class SelectionOperation(Operation):
         super(SelectionOperation, self).__init__(selectionTool.editor, selectionTool.editor.level)
         self.selectionTool = selectionTool
         self.points = points
+        self.canUndo = True
 
     def perform(self, recordUndo=True):
         self.undoPoints = self.selectionTool.getSelectionPoints()
@@ -1285,6 +1300,7 @@ class NudgeSelectionOperation(Operation):
         self.direction = direction
         self.undoPoints = selectionTool.getSelectionPoints()
         self.newPoints = [p + direction for p in self.undoPoints]
+        self.canUndo = True
 
     def perform(self, recordUndo=True):
         self.selectionTool.setSelectionPoints(self.newPoints)

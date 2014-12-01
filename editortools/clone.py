@@ -108,6 +108,7 @@ class BlockCopyOperation(Operation):
         self.regenerateUUID = regenerateUUID
         self.sourceBox, self.destPoint = block_copy.adjustCopyParameters(self.level, self.sourceLevel, self.sourceBox,
                                                                          self.destPoint)
+        self.canUndo = False
 
     def dirtyBox(self):
         return BoundingBox(self.destPoint, self.sourceBox.size)
@@ -122,6 +123,7 @@ class BlockCopyOperation(Operation):
         sourceBox = self.sourceBox
 
         if recordUndo:
+            self.canUndo = True
             self.undoLevel = self.extractUndo(self.level, BoundingBox(self.destPoint, self.sourceBox.size))
 
         blocksToCopy = None
@@ -192,6 +194,8 @@ class CloneOperation(Operation):
             self._dirtyBox = None
             self.selectionOps = []
 
+        self.canUndo = False
+
     selectOriginalAfterRepeat = True
 
     def dirtyBox(self):
@@ -211,6 +215,7 @@ class CloneOperation(Operation):
 
             [i.perform(False) for i in self.blockCopyOps]
             [i.perform(recordUndo) for i in self.selectionOps]
+            self.canUndo = True
 
     def undo(self):
         super(CloneOperation, self).undo()
@@ -1063,9 +1068,9 @@ class CloneTool(EditorTool):
         self.editor.toolbar.selectTool(
             -1)  # deselect tool so that the clone tool's selection change doesn't update its schematic
 
-        self.editor.addUnsavedEdit()
-
         self.editor.addOperation(op)
+        if op.canUndo:
+            self.editor.addUnsavedEdit()
 
         dirtyBox = op.dirtyBox()
         if dirtyBox:

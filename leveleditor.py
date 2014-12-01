@@ -999,11 +999,17 @@ class CameraViewport(GLViewport):
         level = self.editor.level
 
         class ChestEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.canUndo = False
+
             def perform(self, recordUndo=True):
                 if self.level.saving:
                     alert("Cannot perform action while saving is taking place")
                     return
                 level.addTileEntity(tileEntityTag)
+                self.canUndo = True
 
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntityTag)
@@ -1017,9 +1023,9 @@ class CameraViewport(GLViewport):
 
         if chestWidget.dirty:
             op = ChestEditOperation(self.editor, self.editor.level)
-            op.perform()
             self.editor.addOperation(op)
-            self.editor.addUnsavedEdit()
+            if self.canUndo:
+                self.editor.addUnsavedEdit()
 
     rightMouseDragStart = None
 
@@ -2392,7 +2398,6 @@ class LevelEditor(GLViewport):
 
         self.saveInfoLabel = Label(self.saveInfoLabelText)
         self.saveInfoLabel.anchor = "blwh"
-        # saveInfoLabel.width = 500
 
         self.saveInfoBackground.add(self.saveInfoLabel)
         self.saveInfoBackground.shrink_wrap()
@@ -2402,6 +2407,25 @@ class LevelEditor(GLViewport):
 
         self.add(self.saveInfoBackground)
         self.saveInfoBackground = self.saveInfoBackground
+
+    def removeUnsavedEdit(self):
+        if self.unsavedEdits:
+            self.unsavedEdits -= 1
+            self.remove(self.saveInfoBackground)
+            self.saveInfoBackground = GLBackground()
+            self.saveInfoBackground.bg_color = (0.0, 0.0, 0.0, 0.6)
+
+            self.saveInfoLabel = Label(self.saveInfoLabelText)
+            self.saveInfoLabel.anchor = "blwh"
+
+            self.saveInfoBackground.add(self.saveInfoLabel)
+            self.saveInfoBackground.shrink_wrap()
+
+            self.saveInfoBackground.left = 50
+            self.saveInfoBackground.bottom = self.toolbar.toolbarRectInWindowCoords()[1]
+
+            self.add(self.saveInfoBackground)
+            self.saveInfoBackground = self.saveInfoBackground
 
     def clearUnsavedEdits(self):
         if self.unsavedEdits:
@@ -3544,7 +3568,7 @@ class LevelEditor(GLViewport):
 
     @mceutils.alertException
     def undo(self):
-        if len(self.undoStack) == 0:
+        if len(self.undoStack) == 0 or self.unsavedEdits == 0:
             return
         with mceutils.setWindowCaption("UNDOING - "):
             self.freezeStatus("Undoing the previous operation...")
@@ -3558,8 +3582,7 @@ class LevelEditor(GLViewport):
             changedBox = op.dirtyBox()
             if changedBox is not None:
                 self.invalidateBox(changedBox)
-            if op.changedLevel:
-                self.addUnsavedEdit()
+            self.removeUnsavedEdit()
 
         self.root.fix_sticky_ctrl()
 
@@ -3830,12 +3853,12 @@ class LevelEditor(GLViewport):
         self.currentTool.selectionChanged()
 
     def addOperation(self, op):
-        if self.recordUndo:
+        self.performWithRetry(op)
+
+        if self.recordUndo and op.canUndo:
             self.undoStack.append(op)
             if len(self.undoStack) > self.undoLimit:
                 self.undoStack.pop(0)
-
-        self.performWithRetry(op)
 
     recordUndo = True
 
