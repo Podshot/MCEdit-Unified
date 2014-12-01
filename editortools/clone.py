@@ -426,7 +426,7 @@ class CloneTool(EditorTool):
     placeImmediately = config.clone.placeImmediately.property()
 
     panelClass = CloneToolPanel
-    color = (0.7, 0.3, 0.7, 0.7)
+    color = (0.3, 1.0, 0.3, 0.35)
 
     def __init__(self, *args):
         self.rotation = 0
