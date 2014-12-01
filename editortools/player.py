@@ -360,7 +360,7 @@ class PlayerPositionPanel(Panel):
             players = ["Player"]
         self.players = players
         tableview = TableView(columns=[
-            TableColumn("Player Name", 200),
+            TableColumn("Player Name(s):", 200),
         ])
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
