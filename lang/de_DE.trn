@@ -81,7 +81,7 @@ t30 Einstellungen
 o31 Command
 t31 Befehl
 o32 Assigned Key
-t32 Zugewiesene taste
+t32 Zugewiesene Taste
 o33 Assign Key...
 t33 Taste zuweisen...
 o34 Done
@@ -173,9 +173,9 @@ t76 Speichern
 o77 Reload
 t77 Neuladen
 o78 Close
-t78 Schliessen
+t78 Welt Schliessen
 o79 Goto
-t79 Zu ... gehen
+t79 Position wechseln
 o80 World Info
 t80 Weltinformationen
 o81 Undo
@@ -187,7 +187,7 @@ t83 Alles anwählen
 o84 Deselect
 t84 Abwählen
 o85 Quit
-t85 Schliessen
+t85 MCEdit Beenden
 o86 Controls
 t86 Tasten
 o87 Graphics
@@ -201,7 +201,7 @@ t90 Vergangene Änderungen
 o91 License
 t91 Lizenz
 o92 Config Files Folder
-t92 Konfiguration Dateiordner
+t92 Konfigurations Dateiordner
 o93 {0}/{1}/{2}/{3}/{4}/{5} to move
 t93 {0}/{1}/{2}/{3}/{4}/{5} zu verschieben
 o94 {0} to slow down
@@ -219,7 +219,7 @@ t98 Warnung: Öffnen Sie eine Welt zu einem Zeitpunkt nur in einem Programm. Wen
 
 Wenn Sie Minecraft 1.3 oder früher verwenden, müssen Sie Minecraft komplett schliessen bevor Sie MCEdit nutzen.
 o99 Don't remind me again.
-t99 Erinnern Sie mich nicht nochmal.
+t99 Nicht nochmal erinnern.
 o100 <Movement>
 t100 <Bewegung>
 o101 Forward
@@ -363,180 +363,183 @@ t169 Vorwärts und rückwärts bewegen wird die Höhe im Flugmodus nicht ändern
 o170 Apply brake when not pressing movement keys
 t170 Bremse bestätigen, wenn keine Bewegungstasten gedrückt werden
 o171 Reverse the up and down motion of the mouse.
-t171 
+t171 Die Auf- und Abwärtsbewegung der Maus umkehren.
 o172 Do a visibility check on chunks while loading. May cause a crash.
-t172 
+t172 Führen Sie einen Sichtbarkeits Check beim Laden von Chunks durch. Kann zu einem Absturz führen.
 o173 When rotating your brush, also rotate the orientation of the block your brushing with
-t173 
+t173 Beim Drehen vom Pinsel, drehen Sie auch die Ausrichtung von dem Block den Sie grad beim Pinsel benutzen
 o174 Choose your language.
-t174 
+t174 Wählen Sie Ihre Sprache aus.
 o175 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t175 
+t175 Klicken Sie hier damit sich MCEdit von selbst installiert, indem Sie die Einstellungen und Schematics in das Programmverzeichnis verschieben
 o176 You must restart MCEdit to see language changes
-t176 
+t176 Sie müssen MCEdit neustarten, damit die Sprache übernommen wird
 o177 Restart
-t177 
+t177 Neustart
 o178 Later
-t178 
+t178 Später
 o179 Loading 
-t179 
+t179 Laden
 o180  - MCEdit 
-t180 
+t180  - MCEdit
 o181 Overworld
-t181 
+t181 Oberwelt
 o182 The End
-t182 
+t182 Das Ende
 o183 Nether
-t183 
+t183 Nether
 o184 Goto Dimension
-t184 
+t184 Dimension wechseln
 o185 Chunks: %d
-t185 
+t185 Chunks: %d
 o186 fps: %0.1f
-t186 
+t186 fps: %0.1f
 o187 MBv: %0.1f
-t187 
+t187 MBv: %0.1f
 o188 cps: %0.1f
-t188 
+t188 cps: %0.1f
 o189 Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.
-t189 
+t189 Klicken oder ziehen Sie, um eine Auswahl zu markieren. Ziehen Sie an den Auswahlwänden, um die Größe zu ändern. Klicken Sie in der Nähe der Kante, um die gegenüberliegende Wand zu versetzen.
 o190 Number of chunks loaded into the renderer.
-t190 
+t190 Anzahl der Chunks die im Renderer geladen sind.
 o191 Memory used for vertexes
-t191 
+t191 Speicher der für Vertexes genutzt wird.
 o192 Frames per second.
-t192 
+t192 Bilder pro Sekunde.
 o193 Chunks per second.
-t193 
+t193 Chunks pro Sekunde.
 o194 Chunk View
-t194 
+t194 Chunk Ansicht
 o195 Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.
-t195 
+t195 Lassen Sie die Maustaste hier los, um die {0} ausgewählte Ecke zu platzieren. Drücken Sie {1}, um die Ecken zu wechseln.
 o196 Release the mouse button to finish the selection
-t196 
+t196 Lassen Sie die Maustaste los, um die Auswahl zu beenden
 o197 Nudge
-t197 
+t197 Verschieben
 o198 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
-t198 
+t198 Klicken und halten. Währen Sie halten, verwenden Sie die Bewegungstasten ({0} / {1} / {2} / {3} / {4} / {5}) zum verschieben. Linke Maustaste um einen Block zu verschieben.Rechte Maustaste, um einen größeren Abstand zu verschieben.
 o199 {0:n} blocks
-t199 
+t199 {0:n} Blöcke
 o200 Delete Entities
-t200 
+t200 Entities löschen
 o201 Remove all entities within the selection
-t201 
+t201 Alle Entities in der Auswahl entfernen
 o202 Delete Tile Ticks
-t202 
+t202 Tile Ticks löschen
 o203 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t203 
+t203 Alle tile Ticks in der Auswahl entfernen. Tile Ticks sind geplannte Blockaktualisierungen
 o204 Analyze
-t204 
+t204 Analysieren
 o205 Count the different blocks and entities in the selection and display the totals.
-t205 
+t205 Zählt die verschiedenen Blöcke und Entities in der Auswahl und zeigt die totale Summen.
 o206 Export
-t206 
+t206 Exportieren
 o207 Expand the selection to the edges of the chunks within
-t207 
+t207 Erweitern Sie die Auswahl innerhalb der Chunkränder
 o208 Selected Chunks:
-t208 
+t208 Ausgewählte Chunks:
 o209 Extract
-t209 
+t209 Extrahieren
 o210 Create
-t210 
+t210 Erstellem
 o211 Prune
-t211 
+t211 Beschneiden
 o212 Relight
-t212 
+t212 Neu erleuchten
 o213 Repop
-t213 
+t213 Erneut aufsetzen
 o214 Don't Repop
-t214 
+t214 Nicht erneut aufsetzen
 o215 Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.
-t215 
+t215 Klicken und ziehen, um Chunks auszuwählen. Halten Sie {0}, um Chunks abzuwählen. Halten Sie {1}, um Chunks auszuwählen.
 o216 {0} chunks
-t216 
+t216 {0} Chunks
 o217 Create new chunks within the selection.
-t217 
+t217 Erstellen Sie neue Chunks innerhalb der Auswahl.
 o218 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
-t218 
+t218 Löschen Sie die ausgewählten Chunks von der Festplatte. Minecraft wird sie neuerstellen wenn Sie das nächste Mal in der Nähe sind.
 o219 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
-t219 
+t219 Beschneiden Sie die Welt, so dass nur die ausgewählten Chunks übrig bleiben. Jeder Chunk außerhalb der Auswahl wird entfernt und leere Region Dateien werden von der Festplatte gelöscht
 o220 Recalculate light values across the selected chunks
-t220 
+t220 Lichtwerte für die ausgewählten Chunks neu berechnen
 o221 Extract these chunks to individual chunk files
-t221 
+t221 Extrahieren Sie diese Chunks auf einzelne Chunkdateien
 o222 Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.
-t222 
+t222 Markieren Sie die ausgewählten Chunks für Wiederbelebung. Das nächste Mal, wenn Sie Minecraft spielen, werden die Chunks Bäume, Erze und andere Features regeneriert haben.
 o223 Unmark the selected chunks. They will not repopulate the next time you play the game.
-t223 
+t223 Wählen Sie die selektierten Chunks ab. Sie werden nicht wiederbelebt, wenn Sie das nächste Mal das Spiel spielen.
 o224 ...
-t224 
+t224 ...
 o225 Select
 Right-click for options
-t225 
+t225 Auswählen
+Rechtsklick für Optionen
 o226 Remove the selection. Shortcut: {0}
-t226 
+t226 Entfernen der Auswahl. Shortcut: {0}
 o227 Fill the selection with Air. Shortcut: {0}
-t227 
+t227 Füllen der Auswahl mit Luft. Shortcut: {0}
 o228 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t228 
+t228 Nehmen Sie eine Kopie aller Blöcke und Entities innerhalb der Auswahl, um dann alles in der Auswahl zu löschen. Shortcut: {0}
 o229 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t229 
+t229 Nehmen Sie eine Kopie aller Blöcke und Entities innerhalb der Auswahl. Shortcut: {0}
 o230 Import the last item taken by Cut or Copy. Shortcut: {0}
-t230 
+t230 Importieren Sie das letzte Item, genommen von Ausschneiden oder Kopieren. Shortcut: {0}
 o231 Export the selection to a .schematic file. Shortcut: {0}
-t231 
+t231 Exportieren Sie die Auswahl in eine .schematic Datei. Shortcut: {0}
 o232 Clone
 Right-click for options
-t232 
+t232 Kopieren
+Rechtsklick für Optionen
 o233 Brush
 Right-click for options
-t233 
+t233 Pinsel
+Rechtsklick für Optionen
 o234 Fill
-t234 
+t234 Füllen
 o235 Varied Fill
-t235 
+t235 Varierend füllen
 o236 Flood Fill
-t236 
+t236 Überfüllt füllen
 o237 Replace
-t237 
+t237 Ersetzen
 o238 Varied Replace
-t238 
+t238 Varierend ersetzen
 o239 Erode
-t239 
+t239 Aushöhlen
 o240 Topsoil
-t240 
+t240 Mutterboden
 o241 Mode:
-t241 
+t241 Modus:
 o242 Brush:
-t242 
+t242 Pinsel:
 o243 Chance: 
-t243 
+t243 Chance:
 o244 Hollow
-t244 
+t244 Unterhöhlen
 o245 Fill Air
-t245 
+t245 Luft füllen
 o246 Line Spacing
-t246 
+t246 Linien Abstand
 o247 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
-t247 
+t247 Klicken und ziehen, um Blöcke zu platzieren. Block wählen: {P} -Klick. Erhöhen: {R}. Abnahme: {F}. Drehen: {E}. Rollen: {G}. Mausrad, um Abstand einzustellen.
 o248 Whenever the brush size changes, reset the distance to the brush blocks.
-t248 
+t248 Wann immer die Pinselgröße ändert, setzen Sie den Abstand zu den Blöcken die markiert sind mit dem Pinsel zurück.
 o249 Shortcut: Alt-1
-t249 
+t249 Shortcut: Alt-1
 o250 ---
-t250 
+t250 ---
 o251 Weight 1: 
-t251 
+t251 Gewicht 1:
 o252 Weight 2: 
-t252 
+t252 Gewicht 2:
 o253 Weight 3: 
-t253 
+t253 Gewicht 3:
 o254 Weight 4: 
-t254 
+t254 Gewicht 4:
 o255 Shortcut: Alt-3
-t255 
+t255 Shortcut: Alt-3
 o256 Hold {0} to draw lines
-t256 
+t256 Halten Sie {0} um Linien zu zeichnen
 o257 Indiscriminate
 t257 
 o258 Click to replace {0} ({1}:{2})
