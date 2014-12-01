@@ -844,7 +844,7 @@ class CameraViewport(GLViewport):
         chestWidget = ChestWidget()
         chestItemTable = TableView(columns=[
             TableColumn("Slot", 60, "l", fmt=slotFormat),
-            TableColumn("ID / ID Name", 345, "l"),  # Widened to accept the much longer 1.8 internal names
+            TableColumn("ID / ID Name", 345, "l"),
             TableColumn("DMG", 50, "l"),
             TableColumn("Count", 65, "l"),
 
@@ -980,7 +980,7 @@ class CameraViewport(GLViewport):
             item["id"] = pymclevel.TAG_String("minecraft:")
             item["Damage"] = pymclevel.TAG_Short(0)
             item["Slot"] = pymclevel.TAG_Byte(slot)
-            item["Count"] = pymclevel.TAG_Byte(0)
+            item["Count"] = pymclevel.TAG_Byte(1)
             tileEntityTag["Items"].append(item)
 
         addItemButton = Button("New Item (1.7+)", action=addItem, enable=addEnable)
@@ -1024,7 +1024,7 @@ class CameraViewport(GLViewport):
         if chestWidget.dirty:
             op = ChestEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
-            if self.canUndo:
+            if op.canUndo:
                 self.editor.addUnsavedEdit()
 
     rightMouseDragStart = None

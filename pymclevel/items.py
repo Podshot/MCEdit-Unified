@@ -3,6 +3,7 @@ import json
 import directories
 import os
 import shutil
+import types
 
 logger = getLogger(__name__)
 
@@ -61,7 +62,7 @@ class Items(object):
         try:
             item = self.items[id]
         except:
-            item = [self.items[x] for x in self.items if self.items[x]["id"] == id][0]
+            item = self.findItemID(id)
         if damage <= item["maxdamage"]:
             if type(item["name"]) == str or type(item["name"]) == unicode:
                 return ItemType(id, item["name"], item["maxdamage"], damage, item["stacksize"])
@@ -72,6 +73,14 @@ class Items(object):
                     raise ItemNotFound()
         else:
             raise ItemNotFound()
+
+    def findItemID(self, id):
+        for item in self.items:
+            itemTemp = self.items[item]
+            if type(itemTemp) != types.UnicodeType:
+                if itemTemp["id"] == id:
+                    return self.items[item]
+        raise ItemNotFound()
 
 class ItemNotFound(KeyError):
     pass
