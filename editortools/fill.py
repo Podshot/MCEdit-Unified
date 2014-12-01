@@ -38,6 +38,7 @@ class BlockFillOperation(Operation):
         self.destBox = destBox
         self.blockInfo = blockInfo
         self.blocksToReplace = blocksToReplace
+        self.canUndo = False
 
     def name(self):
         return _("Fill with ") + self.blockInfo.name
@@ -55,6 +56,7 @@ class BlockFillOperation(Operation):
 
         fill = self.level.fillBlocksIter(destBox, self.blockInfo, blocksToReplace=self.blocksToReplace)
         showProgress("Replacing blocks...", fill, cancel=True)
+        self.canUndo = True
 
     def bufferSize(self):
         return self.destBox.volume * 2

@@ -535,7 +535,7 @@ definitions = {
     ],
     ("selection", "Selection"): [
         ("showPreviousSelection", "Show Previous Selection", True),
-        ("color", "Color", "teal")
+        ("color", "Color", "white")
     ],
     ("selectionColors", "Selection Colors"): [
         ColorValue("white", "white", (1.0, 1.0, 1.0)),

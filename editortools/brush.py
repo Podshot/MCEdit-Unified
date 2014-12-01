@@ -66,6 +66,7 @@ class BrushOperation(Operation):
         self.brushMode = tool.brushMode
         boxes = [self.tool.getDirtyBox(p, self.tool) for p in self.points]
         self._dirtyBox = reduce(lambda a, b: a.union(b), boxes)
+        self.canUndo = False
 
     def dirtyBox(self):
         return self._dirtyBox
@@ -75,6 +76,7 @@ class BrushOperation(Operation):
             alert(_("Cannot perform action while saving is taking place"))
             return
         if recordUndo:
+            self.canUndo = True
             self.undoLevel = self.extractUndo(self.level, self._dirtyBox)
 
         def _perform():
@@ -699,7 +701,8 @@ class BrushTool(CloneTool):
         size = self.getBrushSize()
         op = BrushOperation(self)
         self.editor.addOperation(op)
-        self.editor.addUnsavedEdit()
+        if op.canUndo:
+            self.editor.addUnsavedEdit()
         self.editor.invalidateBox(op.dirtyBox())
         self.draggedPositions = []
 
