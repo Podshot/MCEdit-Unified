@@ -2412,7 +2412,7 @@ class LevelEditor(GLViewport):
 
     def removeUnsavedEdit(self):
         self.unsavedEdits -= 1
-            if self.unsavedEdits:
+        if self.unsavedEdits:
             self.remove(self.saveInfoBackground)
             self.saveInfoBackground = GLBackground()
             self.saveInfoBackground.bg_color = (0.0, 0.0, 0.0, 0.6)
