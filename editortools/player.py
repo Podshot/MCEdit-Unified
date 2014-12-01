@@ -93,8 +93,8 @@ class PlayerRemoveOperation(Operation):
 
             if "[No players]" in self.tool.panel.players:
                 self.tool.panel.players.remove("[No players]")
-                self.tool.hidePanel()
-                self.tool.showPanel()
+            self.tool.hidePanel()
+            self.tool.showPanel()
 
         self.tool.markerList.invalidate()
 
