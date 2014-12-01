@@ -183,7 +183,18 @@ class PlayerAddOperation(Operation):
         playerTag["Inventory"] = nbt.TAG_List()
 
         playerTag['Motion'] = nbt.TAG_List([nbt.TAG_Double(0) for i in range(3)])
-        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([0.5, 2.8, 0.5][i]) for i in range(3)])
+        spawn = self.level.playerSpawnPosition()
+        spawnX = spawn[0]
+        spawnZ = spawn[2]
+        blocks = [self.level.blockAt(spawnX, i, spawnZ) for i in range(self.level.Height)]
+        i = self.level.Height
+        done = False
+        for index, b in enumerate(reversed(blocks)):
+            if b != 0 and not done:
+                i = index
+                done = True
+        spawnY = self.level.Height - i        
+        playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([spawnX, spawnY, spawnZ][i]) for i in range(3)])
         playerTag['Rotation'] = nbt.TAG_List([nbt.TAG_Float(0), nbt.TAG_Float(0)])
 
         return playerTag
