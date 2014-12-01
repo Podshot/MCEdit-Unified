@@ -2218,10 +2218,7 @@ class LevelEditor(GLViewport):
 
         self.removeNetherPanel()
 
-        self.undoStack = []
         self.loadLevel(level)
-        self.recordUndo = True
-        self.clearUnsavedEdits()
 
         self.renderer.position = self.currentViewport.cameraPosition
         self.renderer.loadNearbyChunks()
@@ -2239,6 +2236,11 @@ class LevelEditor(GLViewport):
 
         self.renderer.level = level
         self.addWorker(self.renderer)
+
+        self.undoStack = []
+        self.redoStack = []
+        self.recordUndo = True
+        self.clearUnsavedEdits()
 
         self.initWindowCaption()
         self.selectionTool.selectNone()
@@ -2409,8 +2411,8 @@ class LevelEditor(GLViewport):
         self.saveInfoBackground = self.saveInfoBackground
 
     def removeUnsavedEdit(self):
-        if self.unsavedEdits:
-            self.unsavedEdits -= 1
+        self.unsavedEdits -= 1
+            if self.unsavedEdits:
             self.remove(self.saveInfoBackground)
             self.saveInfoBackground = GLBackground()
             self.saveInfoBackground.bg_color = (0.0, 0.0, 0.0, 0.6)
