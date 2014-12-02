@@ -27,7 +27,6 @@ from urllib2 import HTTPError
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
     if forceNetwork:
         try:
-            print "Loading {} from network".format(player)
             playerJSONResponse = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(player)).read()
             playerJSON = json.loads(playerJSONResponse)
             if seperator:
@@ -47,11 +46,13 @@ def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
                 print "{} doesn't exist, will not cache".format(userCachePath)
             else:
                 try:
-                    print "Reading {} from disk".format(userCachePath)
                     f = open(userCachePath,"r+")
                     usercache = json.loads(f.read())
                 except:
                     print "Error loading {} from disk".format(userCachePath)
+
+                    os.remove(userCachePath)
+                    f = open(userCachePath, 'ar+')
                     usercache = {}
 
             try:
@@ -78,7 +79,6 @@ def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
                     f.close()
             except:
                 print "Error writing {} to disk".format(userCachePath)
-            print usercache[uuid]
             return uuid
 
         except:
@@ -93,7 +93,6 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
     '''
     if forceNetwork:
         try:
-            print "Loading {} from network".format(uuid)
             nuuid = uuid.replace("-", "")
             playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
             playerJSON = json.loads(playerJSONResponse)
@@ -111,7 +110,6 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
                 print "{} doesn't exist, will not cache".format(userCachePath)
             else:
                 try:
-                    print "Reading {} from disk".format(userCachePath)
                     f = open(userCachePath,"r+")
                     usercache = json.loads(f.read())
                 except:
@@ -143,7 +141,6 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
             except:
                 print "Error writing {} to disk".format(userCachePath)
             try:
-                print usercache[uuid]
                 return usercache[uuid]["username"]
             except:
                 print "Error returning uuid"
