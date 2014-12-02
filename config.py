@@ -493,12 +493,12 @@ definitions = {
         ("drawUnpopulatedChunks", "draw unpopulated chunks", True),
         ("vertexBufferLimit", "vertex buffer limit", 384),
         ("vsync", "vertical sync", 0),
-        ("visibilityCheck", "visibility check", False),
         ("viewMode", "View Mode", "Camera"),
         ("undoLimit", "Undo Limit", 20),
         ("recentWorlds", "Recent Worlds", ['']),
         ("resourcePack", "Resource Pack", u"Default"),
         ("maxCopies", "Copy stack size", 32),
+        ("superSecretSettings", "Super Secret Settings", False),
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

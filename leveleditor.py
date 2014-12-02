@@ -206,6 +206,7 @@ class CameraViewport(GLViewport):
 
         config.settings.drawSky.addObserver(self)
         config.settings.drawFog.addObserver(self)
+        config.settings.superSecretSettings.addObserver(self)
         config.settings.showCeiling.addObserver(self)
         config.controls.cameraAccel.addObserver(self, "accelFactor")
         config.controls.cameraMaxSpeed.addObserver(self, "maxSpeed")
@@ -214,7 +215,6 @@ class CameraViewport(GLViewport):
         config.controls.autobrake.addObserver(self)
         config.controls.swapAxes.addObserver(self)
 
-        config.settings.visibilityCheck.addObserver(self)
         config.settings.fov.addObserver(self, "fovSetting", callback=self.updateFov)
 
         self.mouseVector = (0, 0, 0)
@@ -253,13 +253,12 @@ class CameraViewport(GLViewport):
     flyMode = config.settings.flyMode.property()
 
     def tickCamera(self, frameStartTime, inputs, inSpace):
-        if (frameStartTime - self.lastTick).microseconds > self.tickInterval * 1000:
-            timeDelta = frameStartTime - self.lastTick
-            self.lastTick = frameStartTime
-        else:
+        timePassed = (frameStartTime - self.lastTick).microseconds
+        if timePassed <= self.tickInterval * 1000:
             return
 
-        timeDelta = float(timeDelta.microseconds) / 1000000.
+        self.lastTick = frameStartTime
+        timeDelta = float(timePassed) / 1000000.
         timeDelta = min(timeDelta, 0.125)  # 8fps lower limit!
         drag = config.controls.cameraDrag.get()
         accel_factor = drag + config.controls.cameraAccel.get()
@@ -267,10 +266,11 @@ class CameraViewport(GLViewport):
         # if we're in space, move faster
 
         drag_epsilon = 10.0 * timeDelta
-        max_speed = self.maxSpeed
 
         if self.brake:
             max_speed = self.brakeMaxSpeed
+        else:
+            max_speed = self.maxSpeed
 
         if inSpace:
             accel_factor *= 3.0
@@ -341,7 +341,7 @@ class CameraViewport(GLViewport):
         self.cameraPosition = map(lambda p, d: p + d * timeDelta, self.cameraPosition, velocity)
         if self.cameraPosition[1] > 3800.:
             self.cameraPosition[1] = 3800.
-        if self.cameraPosition[1] < -1000.:
+        elif self.cameraPosition[1] < -1000.:
             self.cameraPosition[1] = -1000.
 
         self.velocity = velocity
@@ -424,12 +424,12 @@ class CameraViewport(GLViewport):
 
         return newpoint
 
-    def updateBlockFaceUnderCursor(self, noRaycaster=0):
+    def updateBlockFaceUnderCursor(self):
         focusPair = None
         if not self.enableMouseLag or self.editor.frames & 1:
             self.updateMouseVector()
             if self.editor.mouseEntered:
-                if not self.mouseMovesCamera and noRaycaster == 0:
+                if not self.mouseMovesCamera:
                     try:
                         focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level ,100, config.settings.viewMode.get())
                     except TooFarException as e:
@@ -1352,13 +1352,10 @@ class CameraViewport(GLViewport):
         self.render()
 
     def render(self):
-        # if self.visibilityCheck:
-        if True:
-            self.viewingFrustum = frustum.Frustum.fromViewingMatrix()
-        else:
-            self.viewingFrustum = None
+        self.viewingFrustum = frustum.Frustum.fromViewingMatrix()
 
-        # self.editor.drawStars()
+        if self.superSecretSettings:
+            self.editor.drawStars()
         if self.drawSky:
             self.drawSkyBackground()
         if self.drawFog:
@@ -1368,28 +1365,22 @@ class CameraViewport(GLViewport):
 
         self.editor.renderer.viewingFrustum = self.viewingFrustum
         self.editor.renderer.draw()
-        focusPair = None
 
         if self.showCeiling and not self.editor.renderer.inSpace():
             self.drawCeiling()
 
         if self.editor.level:
             try:
-                self.updateBlockFaceUnderCursor(self.editor.noRaycaster)
+                self.updateBlockFaceUnderCursor()
             except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
                 logging.debug("Updating cursor block: %s", e)
                 self.blockFaceUnderCursor = (None, None)
 
-            self.editor.noRaycaster = 0
-
             self.root.update_tooltip()
 
-            focusPair = self.blockFaceUnderCursor
-
-            (blockPosition, faceDirection) = focusPair
+            (blockPosition, faceDirection) = self.blockFaceUnderCursor
             if None != blockPosition:
                 self.editor.updateInspectionString(blockPosition)
-                # for t in self.toolbar.tools:
 
                 if self.find_widget(mouse.get_pos()) == self:
                     ct = self.editor.currentTool
@@ -1401,7 +1392,6 @@ class CameraViewport(GLViewport):
 
             for t in self.editor.toolbar.tools:
                 t.drawTerrainMarkers()
-            for t in self.editor.toolbar.tools:
                 t.drawToolMarkers()
 
         if self.drawFog:
@@ -1544,7 +1534,6 @@ class LevelEditor(GLViewport):
         self.copyStack = []
 
         self.level = None
-        self.noRaycaster = 0
 
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
@@ -2246,7 +2235,8 @@ class LevelEditor(GLViewport):
         self.selectionTool.selectNone()
 
         [t.levelChanged() for t in self.toolbar.tools]
-        self.toolbar.selectTool(-1)
+        if "select" not in "{}".format(self.currentTool):
+            self.toolbar.selectTool(0)
 
         if isinstance(self.level, pymclevel.MCInfdevOldLevel):
             if self.level.parentWorld:
@@ -3000,7 +2990,7 @@ class LevelEditor(GLViewport):
 
             if keyname == 'Escape':
                 if "select" not in "{}".format(self.currentTool):
-                    self.toolbar.selectTool(-1)
+                    self.toolbar.selectTool(0)
                 else:
                     self.mouseLookOff()
                     self.showControls()
@@ -3088,7 +3078,6 @@ class LevelEditor(GLViewport):
             if self.currentViewport is self.chunkViewport:
                 self.swapViewports()
             self.mainViewport.cameraPosition = destPoint
-            self.noRaycaster = 1
 
     def closeEditor(self):
         if self.unsavedEdits:
@@ -3851,7 +3840,7 @@ class LevelEditor(GLViewport):
 
     def selectionChanged(self):
         if not self.currentTool.toolEnabled():
-            self.toolbar.selectTool(-1)
+            self.toolbar.selectTool(0)
 
         self.currentTool.selectionChanged()
 
@@ -3991,7 +3980,7 @@ class LevelEditor(GLViewport):
             raise MemoryError("Out of memory. Please restart MCEdit.")
         if hasattr(self.level, 'compressAllChunks'):
             self.level.compressAllChunks()
-        self.toolbar.selectTool(-1)
+        self.toolbar.selectTool(0)
 
         self.renderer.viewDistance = self.renderer.viewDistance - 4
         self.renderer.discardAllChunks()
@@ -4089,8 +4078,7 @@ class EditorToolbar(GLOrtho):
         if not t.toolEnabled():
             return
         if self.parent.currentTool == t:
-            if toolNumber != 0:
-                self.parent.currentTool.toolReselected()
+            self.parent.currentTool.toolReselected()
         else:
             self.parent.selectionTool.hidePanel()
             if self.parent.currentTool != None:

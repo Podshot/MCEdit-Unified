@@ -383,9 +383,9 @@ class OptionsPanel(Dialog):
                                                ref=config.settings.shouldResizeAlert,
                                                tooltipText="Reminds you that the cursor won't work correctly after resizing the window.")
 
-        visibilityCheckRow = mceutils.CheckBoxLabel("Visibility Check",
-                                                    ref=config.settings.visibilityCheck,
-                                                    tooltipText="Do a visibility check on chunks while loading. May cause a crash.")
+        superSecretSettingsRow = mceutils.CheckBoxLabel("Super Secret Settings",
+                                                ref=config.settings.superSecretSettings,
+                                                tooltipText="Weird stuff happen!")
 
         longDistanceRow = mceutils.CheckBoxLabel("Long-Distance Mode",
                                                  ref=config.settings.longDistanceMode,
@@ -444,7 +444,7 @@ class OptionsPanel(Dialog):
                     autoBrakeRow,
                     swapAxesRow,
                     invertRow,
-                    visibilityCheckRow,
+                    superSecretSettingsRow,
                     staticCommandsNudgeRow,
                     moveSpawnerPosNudgeRow,
                     rotateBlockBrushRow,
