@@ -149,28 +149,33 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
             return uuid
         
 def getPlayerSkin(uuid, force=False):
+    # FIXME: Rewrite to use skins.minecraft.net
+    # Refrence: http://skins.minecraft.net/MinecraftSkins/Podshot.png
     toReturn = 'char.png'
-    if os.path.exists(os.path.join("player-skins", uuid.replace("-","_")+".png")) and not force:
-        player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-        if player_skin.size == (64,64):
-            player_skin = player_skin.crop((0,0,64,32))
-            player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-            player_skin.close()
-        return os.path.join("player-skins", uuid.replace("-","_")+".png")
     try:
-        os.mkdir("player-skins")
-    except OSError:
-        pass
-    playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
-    playerJSON = json.loads(playerJSONResponse)
-    for entry in playerJSON["properties"]:
-        if entry["name"] == "textures":
-            texturesJSON = json.loads(base64.b64decode(entry["value"]))
-            urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], os.path.join("player-skins", uuid.replace("-","_")+".png"))
-            toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
-    player_skin = Image.open(toReturn)
-    if player_skin.size == (64,64):
-        player_skin = player_skin.crop((0,0,64,32))
-        player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-        player_skin.close()
-    return toReturn
+        if os.path.exists(os.path.join("player-skins", uuid.replace("-","_")+".png")) and not force:
+            player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
+            if player_skin.size == (64,64):
+                player_skin = player_skin.crop((0,0,64,32))
+                player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
+                player_skin.close()
+            return os.path.join("player-skins", uuid.replace("-","_")+".png")
+        try:
+            os.mkdir("player-skins")
+        except OSError:
+            pass
+        playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
+        playerJSON = json.loads(playerJSONResponse)
+        for entry in playerJSON["properties"]:
+            if entry["name"] == "textures":
+                texturesJSON = json.loads(base64.b64decode(entry["value"]))
+                urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], os.path.join("player-skins", uuid.replace("-","_")+".png"))
+                toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
+                player_skin = Image.open(toReturn)
+            if player_skin.size == (64,64):
+                player_skin = player_skin.crop((0,0,64,32))
+                player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
+                player_skin.close()
+        return toReturn
+    except:
+        return 'char.png'
