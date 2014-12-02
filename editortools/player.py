@@ -459,6 +459,10 @@ class PlayerPositionTool(EditorTool):
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
+                
+    def delete_skin(self, uuid):
+        del self.playerTexture[uuid]
+        self.playerTexture[uuid] = loadPNGTexture('char.png')
 
     @alertException
     def reloadSkins(self):
@@ -468,7 +472,7 @@ class PlayerPositionTool(EditorTool):
                 for player in self.editor.level.players:
                     if player != "Player" and player != "[No players]" and player in self.playerTexture.keys():
                         del self.playerTexture[player]
-                        self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True))
+                        self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True, instance=self))
             except:
                 raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
 

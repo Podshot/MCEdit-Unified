@@ -149,9 +149,7 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
             print "Error getting the username for {}".format(uuid)
             return uuid
         
-def getPlayerSkin(uuid, force=False):
-    # FIXME: Rewrite to use skins.minecraft.net
-    # Refrence: http://skins.minecraft.net/MinecraftSkins/Podshot.png
+def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     SKIN_URL = "http://skins.minecraft.net/MinecraftSkins/{}.png"
     toReturn = 'char.png'
     try:
@@ -166,7 +164,7 @@ def getPlayerSkin(uuid, force=False):
                 player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
         else:
-            playername = getPlayerNameFromUUID(uuid)
+            playername = getPlayerNameFromUUID(uuid,forceNetwork=True)
             urllib.urlretrieve(SKIN_URL.format(playername), os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
             player_skin = Image.open(toReturn)
@@ -175,6 +173,11 @@ def getPlayerSkin(uuid, force=False):
                 player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
     except IOError:
         print "Couldn't find Image file ("+str(uuid.replace("-","_")+".png")+") or the file may be corrupted"
+        print "Trying to re-download skin...."
+        if not trying_again and instance != None:
+            instance.delete_skin(uuid)
+            os.remove(os.path.join("player-skins", uuid.replace("-","_")+".png"))
+            toReturn = getPlayerSkin(uuid, force=True, trying_again=True)
         pass
     except HTTPError:
         print "Couldn't connect to a network"
