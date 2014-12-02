@@ -115,6 +115,9 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
                     usercache = json.loads(f.read())
                 except:
                     print "Error loading {} from disk".format(userCachePath)
+                    
+                    os.remove(userCachePath)
+                    f = open(userCachePath, 'ar+')
                     usercache = {}
 
             try:
