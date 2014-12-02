@@ -440,7 +440,6 @@ class FilterTool(EditorTool):
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
                 name = m.__name__
-                del sys.modules[name]
                 del m
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
 
