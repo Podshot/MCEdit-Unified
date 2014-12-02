@@ -658,15 +658,15 @@ class PlayerPositionTool(EditorTool):
         GL.glDisable(GL.GL_CULL_FACE)
 
 
-    @property
-    def statusText(self):
-        if not self.panel:
-            return ""
-        player = self.panel.selectedPlayer
-        if player == "Player":
-            return "Click to move the player"
-
-        return _("Click to move the player \"{0}\"").format(player)
+    #@property
+    #def statusText(self):
+    #    if not self.panel:
+    #        return ""
+    #    player = self.panel.selectedPlayer
+    #    if player == "Player":
+    #        return "Click to move the player"
+#
+    #    return _("Click to move the player \"{0}\"").format(player)
 
     @alertException
     def mouseDown(self, evt, pos, direction):

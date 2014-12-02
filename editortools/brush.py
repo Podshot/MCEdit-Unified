@@ -181,7 +181,7 @@ class BrushPanel(Panel):
         elif type == 'bool':
             object = CheckBoxLabel(key, ref=reference)
         elif type == 'Block':
-            if not hasattr(self.tool.recentBlocks, key):
+            if key not in self.tool.recentBlocks:
                 self.tool.recentBlocks[key] = []
             wcb = getattr(self.tool.brushMode, 'wildcardBlocks', [])
             aw = False
@@ -565,6 +565,12 @@ class BrushTool(CloneTool):
             if self.options[key].__class__.__name__ == 'Block':
                 optionsToSave[key + 'blockID'] = self.options[key].ID
                 optionsToSave[key + 'blockData'] = self.options[key].blockData
+                saveList = []
+                if key in self.recentBlocks:
+                    blockList = self.recentBlocks[key]
+                    for b in blockList:
+                        saveList.append((b.ID, b.blockData))
+                    optionsToSave[key + 'recentBlocks'] = saveList
             else:
                 optionsToSave[key] = self.options[key]
         optionsToSave["Mode"] = getattr(self, 'selectedBrushMode', 'Fill')
@@ -585,9 +591,18 @@ class BrushTool(CloneTool):
         loadedBrushOptions = ast.literal_eval(f.read())
         for key in loadedBrushOptions:
             if key.endswith('blockID'):
-                self.options[key[:-7]] = self.editor.level.materials.blockWithID(loadedBrushOptions[key], loadedBrushOptions[key[:-7] + 'blockData'])
+                key = key[:-7]
+                self.options[key] = self.editor.level.materials.blockWithID(loadedBrushOptions[key + 'blockID'], loadedBrushOptions[key+ 'blockData'])
+                if key + 'recentBlocks' in loadedBrushOptions:    
+                    list = []
+                    blockList = loadedBrushOptions[key + 'recentBlocks']
+                    for b in blockList:
+                        list.append(self.editor.level.materials.blockWithID(b[0], b[1]))
+                    self.recentBlocks[key] = list
             elif key.endswith('blockData'):
-                pass
+                continue
+            elif key.endswith('recentBlocks'):
+                continue
             elif key == "Mode":
                 self.selectedBrushMode = loadedBrushOptions[key]
                 self.brushMode = self.brushModes[self.selectedBrushMode]
