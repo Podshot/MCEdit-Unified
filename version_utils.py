@@ -164,7 +164,6 @@ def getPlayerSkin(uuid, force=False):
             if player_skin.size == (64,64):
                 player_skin = player_skin.crop((0,0,64,32))
                 player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-                player_skin.close()
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
         else:
             playername = getPlayerNameFromUUID(uuid)
@@ -174,7 +173,6 @@ def getPlayerSkin(uuid, force=False):
             if player_skin.size == (64,64):
                 player_skin = player_skin.crop((0,0,64,32))
                 player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-                player_skin.close()
     except IOError:
         print "Couldn't find Image file ("+str(uuid.replace("-","_")+".png")+") or the file may be corrupted"
         pass
