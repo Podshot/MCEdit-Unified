@@ -7,6 +7,7 @@ import base64  # @UnusedImport
 from pymclevel.mclevelbase import PlayerNotFound
 import urllib
 from PIL import Image
+from urllib2 import HTTPError
 
 #def getPlayerSkinURL(uuid):
 #    try:
@@ -154,7 +155,41 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
 def getPlayerSkin(uuid, force=False):
     # FIXME: Rewrite to use skins.minecraft.net
     # Refrence: http://skins.minecraft.net/MinecraftSkins/Podshot.png
+    SKIN_URL = "http://skins.minecraft.net/MinecraftSkins/{}.png"
     toReturn = 'char.png'
+    try:
+        os.mkdir("player-skins")
+    except OSError:
+        pass
+    try:
+        if os.path.exists(os.path.join("player-skins", uuid.replace("-", "_")+".png")) and not force:
+            player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
+            if player_skin.size == (64,64):
+                player_skin = player_skin.crop((0,0,64,32))
+                player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
+                player_skin.close()
+            toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
+        else:
+            playername = getPlayerNameFromUUID(uuid)
+            urllib.urlretrieve(SKIN_URL.format(playername), os.path.join("player-skins", uuid.replace("-","_")+".png"))
+            toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
+            player_skin = Image.open(toReturn)
+            if player_skin.size == (64,64):
+                player_skin = player_skin.crop((0,0,64,32))
+                player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
+                player_skin.close()
+    except IOError:
+        print "Couldn't find Image file ("+str(uuid.replace("-","_")+".png")+") or the file may be corrupted"
+        pass
+    except HTTPError:
+        print "Couldn't connect to a network"
+        raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
+        pass
+    except Exception, e:
+        print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
+        pass
+    return toReturn
+    '''
     try:
         if os.path.exists(os.path.join("player-skins", uuid.replace("-","_")+".png")) and not force:
             player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
@@ -182,3 +217,4 @@ def getPlayerSkin(uuid, force=False):
         return toReturn
     except:
         return 'char.png'
+    '''
