@@ -14,13 +14,13 @@ def createInputs(self):
     {'Hollow': False},
     {'Noise': 100},
     {'W': (3, 1, 4096), 'H': (3, 1, 4096), 'L': (3, 1, 4096)},
-    {'Block': materials.blockWithID(0, 0)},
+    {'Block': materials.blockWithID(1, 0)},
     {'Block 1': materials.blockWithID(1, 0)},
     {'Block 2': materials.blockWithID(1, 0)},
     {'Block 3': materials.blockWithID(1, 0)},
     {'Block 4': materials.blockWithID(1, 0)},
-    {'Weight 1': (0, 0, None), 'Weight 2': (0, 0, None)},
-    {'Weight 3': (0, 0, None), 'Weight 4': (0, 0, None)},
+    {'Weight 1': (1, 0, None), 'Weight 2': (1, 0, None)},
+    {'Weight 3': (1, 0, None), 'Weight 4': (1, 0, None)},
     {'Minimum Spacing': 1},
     )
 

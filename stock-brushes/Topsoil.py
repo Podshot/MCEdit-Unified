@@ -9,7 +9,7 @@ def createInputs(self):
     {'Hollow': False},
     {'Noise': 100},
     {'W': (3, 1, 4096), 'H': (3, 1, 4096), 'L': (3, 1, 4096)},
-    {'Block': materials.blockWithID(0, 0)},
+    {'Block': materials.blockWithID(1, 0)},
     {'Depth': (1)},
     {'Only Change Natural Earth': False},
     {'Minimum Spacing': 1},
