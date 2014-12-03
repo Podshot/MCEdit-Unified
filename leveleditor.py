@@ -3717,7 +3717,7 @@ class LevelEditor(GLViewport):
             self.workInfoPanel.topright = self.topright
             self.add(self.workInfoPanel)
 
-    def doWorkUnit(self):
+    def doWorkUnit(self, onMenu=0):
         if len(self.workers):
             try:
                 w = self.workers.popleft()
@@ -3727,7 +3727,7 @@ class LevelEditor(GLViewport):
                 if hasattr(w, "needsRedraw") and w.needsRedraw:
                     self.invalidate()
 
-        else:
+        elif onMenu == 0:
             time.sleep(0.001)
 
     def updateInspectionString(self, blockPosition):

@@ -207,7 +207,7 @@ class FileOpener(albow.Widget):
         self.mcedit.editor.drawStars()
 
     def idleevent(self, evt):
-        self.mcedit.editor.doWorkUnit()
+        self.mcedit.editor.doWorkUnit(1)
         #self.invalidate()
 
     def key_down(self, evt):
