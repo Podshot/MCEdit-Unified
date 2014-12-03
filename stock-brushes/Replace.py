@@ -3,8 +3,8 @@ from editortools.brush import createBrushMask
 from pymclevel import block_fill
 
 displayName = 'Replace'
-mainBlock = 'Block'
-secondaryBlock = 'Block To Replace With'
+mainBlock = 'Block To Replace With'
+secondaryBlock = 'Block'
 wildcardBlocks = ['Block']
 
 def createInputs(self):
