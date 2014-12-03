@@ -663,7 +663,7 @@ class BrushTool(CloneTool):
         if self.pickBlockKey == True:
             id = self.editor.level.blockAt(*pos)
             data = self.editor.level.blockDataAt(*pos)
-            key = getattr(self.brushMode, 'MainBlock', 'Block')
+            key = getattr(self.brushMode, 'mainBlock', 'Block')
             self.options[key] = self.editor.level.materials.blockWithID(id, data)
             self.showPanel()
         else:
