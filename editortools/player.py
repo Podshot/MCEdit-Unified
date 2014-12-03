@@ -57,16 +57,17 @@ class PlayerRemoveOperation(Operation):
             self.undoTag = self.level.getPlayerTag(self.player)
 
         self.level.players.remove(self.player)
-        if self.player != "Player":
-            self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
-        else:
-            self.tool.panel.players.remove("Player")
+        if self.tool.panel:
+            if self.player != "Player":
+                self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
+            else:
+                self.tool.panel.players.remove("Player")
 
-        while self.tool.panel.table.index >= len(self.tool.panel.players):
-            self.tool.panel.table.index -= 1
-        if len(self.tool.panel.players) == 0:
-            self.tool.hidePanel()
-            self.tool.showPanel()
+            while self.tool.panel.table.index >= len(self.tool.panel.players):
+                self.tool.panel.table.index -= 1
+            if len(self.tool.panel.players) == 0:
+                self.tool.hidePanel()
+                self.tool.showPanel()
         self.tool.markerList.invalidate()
 
         pos = self.tool.revPlayerPos[self.player]
@@ -86,15 +87,16 @@ class PlayerRemoveOperation(Operation):
                 self.level.root_tag["Data"]["Player"] = self.undoTag
 
             self.level.players.append(self.player)
-            if self.player != "Player":
-                self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
-            else:
-            	self.tool.panel.players.append("Player")
-
-            if "[No players]" in self.tool.panel.players:
-                self.tool.panel.players.remove("[No players]")
-            self.tool.hidePanel()
-            self.tool.showPanel()
+            if self.tool.panel:
+                if self.player != "Player":
+                    self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
+                else:
+                	self.tool.panel.players.append("Player")
+                
+                if "[No players]" in self.tool.panel.players:
+                    self.tool.panel.players.remove("[No players]")
+                self.tool.hidePanel()
+                self.tool.showPanel()
 
         self.tool.markerList.invalidate()
 
@@ -120,41 +122,41 @@ class PlayerAddOperation(Operation):
         elif len(self.player) < 4:
             alert("Name to short. Minimum name length is 4.")
             return
-        else:
-            try:
-                self.uuid = version_utils.getUUIDFromPlayerName(self.player)
-                self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
-            except:
-                action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
-                if action == "Enter UUID manually":
-                    self.uuid = input_text_buttons("Enter a Player UUID: ", 160)
-                    if not self.uuid:
-                        return
-                    self.player = version_utils.getPlayerNameFromUUID(self.uuid)
-                    if self.player == self.uuid.replace("-", ""):
-                        if ask("UUID was not found. Continue anyways?") == "Cancel":
-                            return
-                else:
-                    return
-            if self.uuid in self.level.players:
-                alert("Player already exists in this World.")
+        try:
+            self.uuid = version_utils.getUUIDFromPlayerName(self.player)
+            self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
+        except:
+            action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
+            if action != "Enter UUID manually":
+            	return
+            self.uuid = input_text_buttons("Enter a Player UUID: ", 160)
+            if not self.uuid:
                 return
+            self.player = version_utils.getPlayerNameFromUUID(self.uuid)
+            if self.player == self.uuid.replace("-", ""):
+                if ask("UUID was not found. Continue anyways?") == "Cancel":
+                    return
+        if self.uuid in self.level.players:
+            alert("Player already exists in this World.")
+            return
 
-            self.playerTag = self.newPlayer()
+        self.playerTag = self.newPlayer()
 
-
+        if self.tool.panel:
             self.tool.panel.players.append(self.player)
 
-            if self.level.oldPlayerFolderFormat:
-                self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.playerTag
+        if self.level.oldPlayerFolderFormat:
+            self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.playerTag
 
-                self.level.players.append(self.player)
+            self.level.players.append(self.player)
+            if self.tool.panel: 
                 self.tool.panel.player_UUID[self.player] = self.player
 
-            else:
-                self.level.playerTagCache[self.level.getPlayerPath(self.uuid)] = self.playerTag
+        else:
+            self.level.playerTagCache[self.level.getPlayerPath(self.uuid)] = self.playerTag
 
-                self.level.players.append(self.uuid)
+            self.level.players.append(self.uuid)
+            if self.tool.panel:
                 self.tool.panel.player_UUID[self.player] = self.uuid
 
         self.tool.playerPos[(0,0,0)] = self.uuid
@@ -163,8 +165,9 @@ class PlayerAddOperation(Operation):
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
         self.tool.movingPlayer = self.uuid
-        self.tool.hidePanel()
-        self.tool.showPanel()
+        if self.tool.panel:
+            self.tool.hidePanel()
+            self.tool.showPanel()
         self.canUndo = True
 
     def newPlayer(self):
@@ -201,8 +204,9 @@ class PlayerAddOperation(Operation):
 
     def undo(self):
         self.level.players.remove(self.uuid)
-        self.tool.panel.players.remove(self.player)
-        self.tool.panel.player_UUID.pop(self.player)
+        if self.tool.panel:
+            self.tool.panel.players.remove(self.player)
+            self.tool.panel.player_UUID.pop(self.player)
         del self.tool.playerPos[(0,0,0)]
         del self.tool.revPlayerPos[self.uuid]
         del self.tool.playerTexture[self.uuid]
@@ -214,8 +218,9 @@ class PlayerAddOperation(Operation):
             self.level.playerTagCache[self.level.getPlayerPath(self.uuid)] = self.playerTag
 
             self.level.players.append(self.uuid)
-            self.tool.panel.players.append(self.player)
-            self.tool.panel.player_UUID[self.player] = self.uuid
+            if self.tool.panel:
+                self.tool.panel.players.append(self.player)
+                self.tool.panel.player_UUID[self.player] = self.uuid
 
         self.tool.markerList.invalidate()
 
