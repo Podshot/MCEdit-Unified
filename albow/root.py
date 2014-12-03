@@ -482,6 +482,10 @@ class RootWidget(Widget):
 
         music.music_end()
 
+    def resized(self, *args, **kwargs):
+        Widget.resized(self, *args, **kwargs)
+        print self.size
+
 #---------------------------------------------------------------------------
 
 from time import time

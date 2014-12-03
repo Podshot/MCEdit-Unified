@@ -231,7 +231,7 @@ class CloneToolPanel(Panel):
     def transformEnable(self):
         return not isinstance(self.tool.level, pymclevel.MCInfdevOldLevel)
 
-    def __init__(self, tool, editor):
+    def __init__(self, tool, editor, _parent=None):
         Panel.__init__(self)
         self.tool = tool
 
@@ -358,18 +358,37 @@ class CloneToolPanel(Panel):
         self.performButton.tooltipText = "Shortcut: Enter"
         self.performButton.action = tool.confirm
         self.performButton.enable = lambda: (tool.destPoint is not None)
-        if self.useOffsetInput:
-            col = Column((
-            rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.offsetInput, repeatRow, scaleRow, copyAirRow,
-            copyWaterRow, copyBiomesRow, staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow, self.performButton))
-        else:
-            col = Column((
-            rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.nudgeButton, copyAirRow, copyWaterRow, copyBiomesRow,
-            staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow, self.performButton))
 
+        max_height = self.tool.editor.mainViewport.height - self.tool.editor.netherPanel.height - self.tool.editor.subwidgets[0].height - self.performButton.height - 2
+
+        def buildPage(*items):
+            height = 0
+            cls = []
+            idx = 0
+            for i, r in enumerate(items):
+                r.margin=0
+                r.shrink_wrap()
+                height += r.height
+                print height, max_height, self.tool.editor.height
+                if height > max_height:
+                    cls.append(Column(items[idx:i], spacing=2, margin=0))
+                    idx = i
+                    height = 0
+            cls.append(Column(items[idx:], spacing=2, margin=0))
+            return cls
+
+        if self.useOffsetInput:
+            cols = buildPage(rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.offsetInput, repeatRow, scaleRow, copyAirRow,
+                      copyWaterRow, copyBiomesRow, staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow)
+        else:
+            cols = buildPage(rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.nudgeButton, copyAirRow, copyWaterRow, copyBiomesRow,
+                             staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow)
+
+        row = Row(cols, spacing=0, margin=2)
+        row.shrink_wrap()
+        col = Column((row, self.performButton), spacing=2)
         self.add(col)
         self.anchor = "lwh"
-
         self.shrink_wrap()
 
 

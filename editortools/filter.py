@@ -75,6 +75,9 @@ class FilterModuleOptions(Widget):
     is_gl_container = True
 
     def __init__(self, tool, module, *args, **kw):
+        self._parent = None
+        if '_parent' in kw.keys():
+            self._parent = kw.pop('_parent')
         Widget.__init__(self, *args, **kw)
         self.tool = tool
         pages = TabPanel()
@@ -116,7 +119,7 @@ class FilterModuleOptions(Widget):
         rows = []
         cols = []
         height = 0
-        max_height = 550
+        max_height = self.tool.editor.mainViewport.height - self.tool.updatePanel.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
@@ -233,7 +236,6 @@ class FilterModuleOptions(Widget):
                 h += r.height
                 if h > height / 2:
                     break
-
             cols.append(Column(rows[:i]))
             rows = rows[i:]
         # cols.append(Column(rows))
@@ -286,11 +288,21 @@ class FilterToolPanel(Panel):
         if self.selectedFilterName is None or self.selectedFilterName not in tool.filterNames:
             self.selectedFilterName = tool.filterNames[0]
 
+        self.filterSelect = ChoiceButton(tool.filterNames, choose=self.filterChanged)
+        self.filterSelect.selectedChoice = self.selectedFilterName
+
+        filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
+        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
+        filterLabel.tooltipText = "Click to open filters folder"
+        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect))
+
+        self.confirmButton = Button("Filter", action=self.tool.confirm)
+
         self.filterOptionsPanel = None
         while self.filterOptionsPanel is None:
             module = self.tool.filterModules[self.selectedFilterName]
             try:
-                self.filterOptionsPanel = FilterModuleOptions(self.tool, module)
+                self.filterOptionsPanel = FilterModuleOptions(self.tool, module, _parent=self)
             except Exception, e:
                 alert(_("Error creating filter inputs for {0}: {1}").format(module, e))
                 traceback.print_exc()
@@ -299,16 +311,6 @@ class FilterToolPanel(Panel):
 
             if len(tool.filterNames) == 0:
                 raise ValueError("No filters loaded!")
-
-        self.filterSelect = ChoiceButton(tool.filterNames, choose=self.filterChanged)
-        self.filterSelect.selectedChoice = self.selectedFilterName
-
-        self.confirmButton = Button("Filter", action=self.tool.confirm)
-
-        filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
-        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
-        filterLabel.tooltipText = "Click to open filters folder"
-        filterSelectRow = Row((filterLabel, self.filterSelect))
 
         self.add(Column((filterSelectRow, self.filterOptionsPanel, self.confirmButton)))
 
@@ -337,7 +339,6 @@ class FilterOperation(Operation):
         self.box = box
         self.filter = filter
         self.options = options
-        self.canUndo = False
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -348,7 +349,6 @@ class FilterOperation(Operation):
 
         self.filter.perform(self.level, BoundingBox(self.box), self.options)
 
-        self.canUndo = True
         pass
 
     def dirtyBox(self):
@@ -363,6 +363,14 @@ class FilterTool(EditorTool):
         EditorTool.__init__(self, editor)
 
         self.filterModules = {}
+
+        self.updatePanel = Panel()
+        updateButton = Button("Update Filters", action=self.updateFilters)
+        self.updatePanel.add(updateButton)
+        self.updatePanel.shrink_wrap()
+
+        self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
+        self.editor.add(self.updatePanel)
 
         self.panel = FilterToolPanel(self)
 
@@ -389,14 +397,6 @@ class FilterTool(EditorTool):
         self.panel.midleft = self.editor.midleft
 
         self.editor.add(self.panel)
-
-        self.updatePanel = Panel()
-        updateButton = Button("Update Filters", action=self.updateFilters)
-        self.updatePanel.add(updateButton)
-        self.updatePanel.shrink_wrap()
-
-        self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
-        self.editor.add(self.updatePanel)
 
     def hidePanel(self):
         self.panel.saveOptions()
@@ -440,6 +440,7 @@ class FilterTool(EditorTool):
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
                 name = m.__name__
+                del sys.modules[name]
                 del m
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
 
@@ -482,7 +483,6 @@ class FilterTool(EditorTool):
             self.editor.level.showProgress = showProgress
 
             self.editor.addOperation(op)
-            if op.canUndo:
-                self.editor.addUnsavedEdit()
+            self.editor.addUnsavedEdit()
 
             self.editor.invalidateBox(self.selectionBox())

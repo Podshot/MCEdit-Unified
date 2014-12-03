@@ -375,9 +375,24 @@ class PlayerPositionPanel(Panel):
         else:
             players = ["Player"]
         self.players = players
+
+        max_height = self.tool.editor.mainViewport.height - self.tool.editor.netherPanel.height - self.tool.editor.subwidgets[0].height - self.margin - 2
+
+        addButton = Button("Add Player", action=self.tool.addPlayer)
+        removeButton = Button("Remove Player", action=self.tool.removePlayer)
+        gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
+        gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
+        moveButton = Button("Move Player", action=self.tool.movePlayer)
+        moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
+        reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins)
+
+        print max_height
+        max_height -= sum((a.height for a in (addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)))
+        print max_height
+
         tableview = TableView(columns=[
             TableColumn("Player Name(s):", 200),
-        ])
+        ], height=max_height)
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
         tableview.row_data = lambda i: (players[i],)
@@ -391,16 +406,10 @@ class PlayerPositionPanel(Panel):
         self.table = tableview
         col = [self.table]
 
-        addButton = Button("Add Player", action=self.tool.addPlayer)
-        removeButton = Button("Remove Player", action=self.tool.removePlayer)
-        gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
-        gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
-        moveButton = Button("Move Player", action=self.tool.movePlayer)
-        moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
-        reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins)
         col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
 
-        col = Column(col)
+        col = Column(col, margin=0, spacing=2)
+        col.shrink_wrap()
         self.add(col)
         self.shrink_wrap()
 
