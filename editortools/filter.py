@@ -339,6 +339,7 @@ class FilterOperation(Operation):
         self.box = box
         self.filter = filter
         self.options = options
+        self.canUndo = False
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -349,6 +350,7 @@ class FilterOperation(Operation):
 
         self.filter.perform(self.level, BoundingBox(self.box), self.options)
 
+        self.canUndo = True
         pass
 
     def dirtyBox(self):
@@ -483,6 +485,8 @@ class FilterTool(EditorTool):
             self.editor.level.showProgress = showProgress
 
             self.editor.addOperation(op)
+            if po.canUndo:
+                self.editor.addUnsavedEdit()
             self.editor.addUnsavedEdit()
 
             self.editor.invalidateBox(self.selectionBox())
