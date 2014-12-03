@@ -441,8 +441,7 @@ class BrushTool(CloneTool):
         Called by toolSelected
         """
         self.importedBrushModes = self.importBrushModes()
-        self.stockBrushModes = self.importStockBrushModes()
-        for m in itertools.chain(self.importedBrushModes, self.stockBrushModes):
+        for m in self.importedBrushModes:
             if m.displayName:
                 self.brushModes[m.displayName] = m
             else:
@@ -459,53 +458,24 @@ class BrushTool(CloneTool):
                 self.options['Minimum Spacing'] = 1
         self.renderedBlock = None
 
-    def importStockBrushModes(self):
+    def importBrushModes(self):
         """
         Imports all Stock Brush Modes from their files.
         Called by setupBrushModes
         """
         sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters'))
-        modes = (self.tryStockImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes'))))
+        modes = [self.tryImport(x[:-3], 'stock-brushes') for x in filter(lambda x: x.endswith(".py"), os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes')))]
+        modes.extend([self.tryImport(x[:-3], directories.brushesDir) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir))])
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
         return modes
 
-
-    def importBrushModes(self):
-        """
-        Imports all Brush Modes from their files.
-        Called by setupBrushModes
-        """
-        sys.path.append(directories.brushesDir)
-        modes = (self.tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir)))
-        modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
-        return modes
-
-    def tryStockImport(self, name):
+    def tryImport(self, name, dir):
         """
         Imports a brush module. Called by importBrushModules
         :param name, name of the module to import.
         """
         try:
-            path = os.path.join(directories.getDataDir(), u'stock-brushes', (name+ ".py"))
-            if type(path) == unicode and DEF_ENC != "UTF-8":
-                path = path.encode(DEF_ENC)
-            globals()[name] = m = imp.load_source(name, path)
-            m.materials = self.editor.level.materials
-            m.createInputs(m)
-            return m
-        except Exception, e:
-            print traceback.format_exc()
-            alert(_(u"Exception while importing brush mode {}. See console for details.\n\n{}").format(name, e))
-            return object()
-
-
-    def tryImport(self, name):
-        """
-        Imports a brush module. Called by importBrushModules
-        :param name, name of the module to import.
-        """
-        try:
-            path = os.path.join(directories.brushesDir, (name+ ".py"))
+            path = os.path.join(dir, (name+ ".py"))
             if type(path) == unicode and DEF_ENC != "UTF-8":
                 path = path.encode(DEF_ENC)
             globals()[name] = m = imp.load_source(name, path)
