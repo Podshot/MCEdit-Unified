@@ -20,6 +20,9 @@ from raycaster import TooFarException
 import raycaster
 import keys
 import pygame
+from albow.fields import FloatField
+from mceutils import ChoiceButton, TextInputRow
+from editortools.blockview import BlockButton
 
 """
 leveleditor.py
@@ -2036,10 +2039,151 @@ class LevelEditor(GLViewport):
         self.yon.dismiss()
         self.user_yon_response = False
 
-    def addExternalWidget(self, widget):
-        self._external_widget = widget
-        self._external_widget.bg_color = (0.0, 0.0, 0.6)
-        self._external_widget.present()
+    def addExternalWidget(self, provided_fields):
+        
+        def addNumField(wid, name, val, minimum=None, maximum=None, increment=0.1):
+            if isinstance(val, float):
+                ftype = FloatField
+                if isinstance(increment, int):
+                    increment = float(increment)
+            else:
+                ftype = IntField
+                if increment == 0.1:
+                    increment = 1
+                if isinstance(increment, float):
+                    increment = int(round(increment))
+
+            if minimum == maximum:
+                minimum = None
+                maximum = None
+
+            field = ftype(value=val, width=100, min=minimum, max=maximum)
+            field._increment = increment
+            wid.inputDict[name] = AttrRef(field, 'value')
+            return Row([Label(name), field])
+    
+        widget = Widget()
+        rows = []
+        cols = []
+        max_height = self.mainViewport.height
+        widget.inputDict = {}
+        for inputName, inputType in provided_fields:
+            if isinstance(inputType, tuple):
+                if isinstance(inputType[0], (int, long, float)):
+                    if len(inputType) == 2:
+                        min, max = inputType
+                        val = min
+                        increment = 0.1
+                    elif len(inputType) == 3:
+                        val, min, max = inputType
+                        increment = 0.1
+                    elif len(inputType) == 4:
+                        val, min, max, increment = inputType
+                    rows.append(addNumField(widget, inputName, val, min, max, increment))
+                
+                if isinstance(inputType[0], (str, unicode)):
+                    isChoiceButton = False
+                    
+                    if inputType[0] == "string":
+                        keywords = []
+                        width = None
+                        value = None
+                        for keyword in inputType:
+                            if isinstance(keyword, (str, unicode)) and keyword != "string":
+                                keywords.append(keyword)
+                        for word in keywords:
+                            splitWord = word.split('=')
+                            if len(splitWord) > 1:
+                                v = None
+                                key = None
+
+                                try:
+                                    v = int(splitWord[1])
+                                except:
+                                    pass
+
+                                key = splitWord[0]
+                                if v is not None:
+                                    if key == "lines":
+                                        lin = v
+                                    elif key == "width":
+                                        width = v
+                                else:
+                                    if key == "value":
+                                        value = splitWord[1]
+                        if val is None:
+                            value = ""
+                        if width is None:
+                            width = 200
+                            
+                        field = TextField(value=value,width=width)
+                        widget.inputDict[inputName] = AttrRef(field, 'value')
+                        row = Row((Label(inputName), field))
+                        rows.append(row)
+                    else:
+                        isChoiceButton = True
+                    
+                    if isChoiceButton:
+                        choiceButton = ChoiceButton(map(str, inputType))
+                        widget.inputDict[inputName] = AttrRef(choiceButton, 'selectedChoice')
+                        rows.append(Row((Label(inputName), choiceButton)))
+            elif isinstance(inputType, bool):
+                chkbox = CheckBox(value=inputType)
+                widget.inputDict[inputName] = AttrRef(chkbox, 'value')
+                row = Row((Label(inputName),chkbox))
+                rows.append(row)
+                    
+            elif isinstance(inputType, (int, float)):
+                rows.append(addNumField(widget, inputName, inputType))
+                    
+            elif inputType == "blocktype" or isinstance(inputType, pymclevel.materials.Block):
+                blockButton = BlockButton(self.level.materials)
+                if isinstance(inputType, pymclevel.materials.Block):
+                    blockButton.blockInfo = inputType
+                row = Column((Label(inputName), blockButton))
+                widget.inputDict[inputName] = AttrRef(blockButton, 'blockInfo')
+                    
+                rows.append(row)
+            elif inputType == "label":
+                rows.append(wrapped_label(inputName, 50))
+                
+            elif inputType == "string":
+                input = None
+                if input != None:
+                    size = input
+                else:
+                    size = 200
+                field = TextField(value="")
+                row = TextInputRow(inputName, ref=AttrRef(field, 'value'), width=size)
+                widget.inputDict[inputName] = AttrRef(field, 'value')
+                rows.append(row)
+            else:
+                raise ValueError(("Unknown option type", inputType))
+        height = sum(r.height for r in rows)
+
+        if height > max_height:
+            h = 0
+            for i, r in enumerate(rows):
+                h += r.height
+                if h > height / 2:
+                    break
+            cols.append(Column(rows[:i]))
+            rows = rows[i:]
+        print "appending rows to cols"
+        print rows
+        if len(rows):
+            cols.append(Column(rows))
+
+        if len(cols):
+            widget.add(Row(cols))
+        
+        widget.shrink_wrap()
+        result = Dialog(widget, ["Ok", "Cancel"]).present()
+        if result == "Ok":
+            return dict((k, v.get()) for k, v in widget.inputDict.iteritems())
+        else:
+            return "user cancled"
+
 
     def Notify(self, msg):
         ask(msg, ["Close"], cancel=0)
