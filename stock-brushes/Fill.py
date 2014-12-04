@@ -1,5 +1,6 @@
 from pymclevel.materials import Block
 from editortools.brush import createBrushMask
+import numpy
 
 displayName = 'Fill'
 mainBlock = 'Block'
