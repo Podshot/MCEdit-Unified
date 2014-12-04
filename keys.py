@@ -516,7 +516,7 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
-        self.root.editor.key_down(evt, 1, 1)
+        self.root.editor.key_down(evt, True, True)
 
     def key_up(self, evt):
         self.root.editor.key_up(evt)

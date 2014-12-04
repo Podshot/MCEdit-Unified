@@ -45,7 +45,7 @@ class NudgeButton(GLBackground):
             self.count = 0
 
     def key_down(self, evt):
-        self.editor.key_down(evt, 1, 1)
+        self.editor.key_down(evt, True, True)
 
         keyname = keys.getKey(evt)
         if keyname == config.keys.up.get():

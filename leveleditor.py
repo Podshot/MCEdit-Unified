@@ -1537,7 +1537,7 @@ class LevelEditor(GLViewport):
 
         self.cameraInputs = [0., 0., 0.]
         self.cameraPanKeys = [0., 0.]
-        self.usedKeys = [0, 0, 0, 0, 0, 0]
+        self.usedKeys = [False, False, False, False, False, False]
         self.movements = [
             config.keys.left.get(),
             config.keys.right.get(),
@@ -1548,7 +1548,7 @@ class LevelEditor(GLViewport):
         ]
         self.movementMath = [-1, 1, 1, -1, 1, -1]
         self.movementNum = [0, 0, 2, 2, 1, 1]
-        self.notMove = [0, 0, 0, 0, 0, 0]
+        self.notMove = [False, False, False, False, False, False]
         self.rightClickNudge = 0
         self.root = self.get_root()
         self.cameraToolDistance = self.defaultCameraToolDistance
@@ -2717,6 +2717,17 @@ class LevelEditor(GLViewport):
             reach *= 0.95
         return reach
 
+    def stopMovementKeys(self, keyNum, keyDown, notMove=False):
+        if (not notMove and keyDown) or (not keyDown and not self.notMove[keyNum]):
+            self.usedKeys[keyNum] = keyDown
+            if not keyDown:
+                self.cameraInputs[self.movementNum[keyNum]] -= self.movementMath[keyNum]
+            else:
+                self.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
+                self.notMove[keyNum] = False
+            return
+        self.notMove[keyNum] = keyDown
+
     def key_up(self, evt):
         self.currentTool.keyUp(evt)
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
@@ -2736,27 +2747,9 @@ class LevelEditor(GLViewport):
 
         if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname = keys.getKey(evt, 1)
-            d = self.cameraInputs
-            keysClicked = []
-            if tempKeyname == config.keys.left.get():
-                keysClicked.append(0)
-            if tempKeyname == config.keys.right.get():
-                keysClicked.append(1)
-            if tempKeyname == config.keys.forward.get():
-                keysClicked.append(2)
-            if tempKeyname == config.keys.back.get():
-                keysClicked.append(3)
-            if tempKeyname == config.keys.up.get():
-                keysClicked.append(4)
-            if tempKeyname == config.keys.down.get():
-                keysClicked.append(5)
-
-            for clickedKey in keysClicked:
-                if self.notMove[clickedKey] == 0:
-                    self.usedKeys[clickedKey] = 0
-                    d[self.movementNum[clickedKey]] += (self.movementMath[clickedKey] * -1)
-                else:
-                    self.notMove[clickedKey] = 0
+            for i, key in enumerate(self.movements):
+                if tempKeyname == key:
+                    self.stopMovementKeys(i, False)
 
         if keyname == config.keys.brake.get():
             self.mainViewport.brakeOff()
@@ -2792,7 +2785,7 @@ class LevelEditor(GLViewport):
     def screenshot_notify(self):
         self.diag.dismiss()
 
-    def key_down(self, evt, notMove=0, onlyKeys=0):
+    def key_down(self, evt, notMove=False, onlyKeys=False):
         self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
         if keyname == 'mouse1' or keyname == 'mouse2':
@@ -2814,37 +2807,16 @@ class LevelEditor(GLViewport):
 
         if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname = keys.getKey(evt, 1)
-            d = self.cameraInputs
-            keysClicked = []
-            if tempKeyname == config.keys.left.get() and self.usedKeys[0] == 0:
-                keysClicked.append(0)
-            if tempKeyname == config.keys.right.get() and self.usedKeys[1] == 0:
-                keysClicked.append(1)
-            if tempKeyname == config.keys.forward.get() and self.usedKeys[2] == 0:
-                keysClicked.append(2)
-            if tempKeyname == config.keys.back.get() and self.usedKeys[3] == 0:
-                keysClicked.append(3)
-            if tempKeyname == config.keys.up.get() and self.usedKeys[4] == 0:
-                keysClicked.append(4)
-            if tempKeyname == config.keys.down.get() and self.usedKeys[5] == 0:
-                keysClicked.append(5)
+            for i, key in enumerate(self.movements):
+                if tempKeyname == key:
+                    if not self.usedKeys[i]:
+                        self.stopMovementKeys(i, True, notMove)
+                    elif evt.ctrl or evt.meta:
+                        self.usedKeys[i] = False
+                        d[self.movementNum[i]] -= self.movementMath[i]
+                        self.notMove[i] = True
 
-            for clickedKey in keysClicked:
-                if notMove == 0:
-                    d[self.movementNum[clickedKey]] += self.movementMath[clickedKey]
-                    self.usedKeys[clickedKey] = 1
-                    self.notMove[clickedKey] = 0
-                else:
-                    self.notMove[clickedKey] = 1
-
-            if evt.ctrl or evt.meta:
-                for i in range(0, 6):
-                    if self.usedKeys[i] == 1:
-                        self.usedKeys[i] = 0
-                        d[self.movementNum[i]] += (self.movementMath[i] * -1)
-                        self.notMove[i] = 1
-
-        if onlyKeys == 0:
+        if not onlyKeys:
             if keyname == config.keys.longDistanceMode.get():
                 self.longDistanceMode = not self.longDistanceMode
             if keyname == "Alt-1" or keyname == "Alt-2" or keyname == "Alt-3" or keyname == "Alt-4" or keyname == "Alt-5":
@@ -3334,7 +3306,7 @@ class LevelEditor(GLViewport):
                 loadWorld()
                 d.dismiss("Cancel")
 
-            self.key_down(evt, 1, 1)
+            self.key_down(evt, True, True)
 
         def key_up(evt):
             self.key_up(evt)

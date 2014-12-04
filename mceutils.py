@@ -633,7 +633,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
         def key_down(self, event):
-            self.root.editor.key_down(event, 1, 1)
+            self.root.editor.key_down(event, True, True)
 
         def key_up(self, event):
             self.root.editor.key_up(event)

@@ -60,7 +60,7 @@ class Dialog(Modal, Widget):
                 self.dismiss(response)
 
     def key_down(self, e):
-        self.root.editor.key_down(e, 1, 1)
+        self.root.editor.key_down(e, True, True)
 
     def key_up(self, e):
         self.root.editor.key_up(e)
