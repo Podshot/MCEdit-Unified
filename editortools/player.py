@@ -384,7 +384,7 @@ class PlayerPositionPanel(Panel):
         gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
         moveButton = Button("Move Player", action=self.tool.movePlayer)
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
-        reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins)
+        reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
         print max_height
         max_height -= sum((a.height for a in (addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)))
@@ -480,15 +480,15 @@ class PlayerPositionTool(EditorTool):
 
     @alertException
     def reloadSkins(self):
-        result = ask("This pulls skins from the online server, this may take a while", ["Ok", "Cancel"])
-        if result == "Ok":
-            try:
-                for player in self.editor.level.players:
-                    if player != "Player" and player != "[No players]" and player in self.playerTexture.keys():
-                        del self.playerTexture[player]
-                        self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True, instance=self))
-            except:
-                raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
+        #result = ask("This pulls skins from the online server, so this may take a while", ["Ok", "Cancel"])
+        #if result == "Ok":
+        try:
+            for player in self.editor.level.players:
+                if player != "Player" and player != "[No players]" and player in self.playerTexture.keys():
+                    del self.playerTexture[player]
+                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True, instance=self))
+        except:
+            raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
 
     def gotoPlayerCamera(self):
         player = self.panel.selectedPlayer
