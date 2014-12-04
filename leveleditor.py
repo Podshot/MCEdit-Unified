@@ -2966,54 +2966,46 @@ class LevelEditor(GLViewport):
                 name = "option" + keyname[len(keyname) - 1:]
                 if hasattr(self.currentTool, name):
                     getattr(self.currentTool, name)()
-            blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
-            if keyname == blocksOnlyModifier + '-' + config.keys.flip.get():
-                if "clone" in "{0}".format(self.currentTool):
-                    self.currentTool.flip(blocksOnly=True)
-            if keyname == blocksOnlyModifier + '-' + config.keys.rollClone.get():
-                if "clone" in "{0}".format(self.currentTool):
-                    self.currentTool.roll(blocksOnly=True)
-            if keyname == blocksOnlyModifier + '-' + config.keys.rotateClone.get():
-                if "clone" in "{0}".format(self.currentTool):
-                    self.currentTool.rotate(blocksOnly=True)
-            if keyname == blocksOnlyModifier + '-' + config.keys.mirror.get():
-                if "clone" in "{0}".format(self.currentTool):
-                    self.currentTool.mirror(blocksOnly=True)
-            if keyname == config.keys.flip.get():
-                if "clone" in "{0}".format(self.currentTool):
+            
+            if "clone" in "{}".format(self.currentTool):
+                blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
+                if keyname.startswith(blocksOnlyModifier):
+                    tempKeyname = keyname[len(blocksOnlyModifier)+1:]
+                    blocksOnly = True
+                else:
+                    tempKeyname = keyname
+                    blocksOnly = False
+                
+                if tempKeyname == config.keys.flip.get():
                     self.currentTool.flip(blocksOnly=False)
-            if keyname == config.keys.rollClone.get():
-                if "clone" in "{0}".format(self.currentTool):
-                    self.currentTool.roll(blocksOnly=False)
-            if keyname == config.keys.rotateClone.get():
-                if "clone" in "{0}".format(self.currentTool):
-                    self.currentTool.rotate(blocksOnly=False)
-            if keyname == config.keys.mirror.get():
-                if "clone" in "{0}".format(self.currentTool):
-                    self.currentTool.mirror(blocksOnly=False)
+                if tempKeyname == config.keys.rollClone.get():
+                    self.currentTool.roll(blocksOnly)
+                if tempKeyname == config.keys.rotateClone.get():
+                    self.currentTool.rotate(blocksOnly)
+                if tempKeyname == config.keys.mirror.get():
+                    self.currentTool.mirror(blocksOnly)
 
-            if keyname == config.keys.blocksOnlyModifier.get() + '-' + config.keys.rotateBrush.get():
-                if "Brush" in "{0}".format(self.currentTool):
-                    self.currentTool.rotate(blocksOnly=True)
-            if keyname == config.keys.blocksOnlyModifier.get() + '-' + config.keys.rollBrush.get():
-                if "Brush" in "{0}".format(self.currentTool):
-                    self.currentTool.roll(blocksOnly=True)
-            if keyname == config.keys.decreaseBrush.get():
-                if "Brush" in "{0}".format(self.currentTool):
+            if "Brush" in "{}".format(self.currentTool):
+                if keyname == config.keys.decreaseBrush.get():
                     self.currentTool.decreaseBrushSize()
-            if keyname == config.keys.increaseBrush.get():
-                if "Brush" in "{0}".format(self.currentTool):
+                if keyname == config.keys.increaseBrush.get():
                     self.currentTool.increaseBrushSize()
-            if keyname == config.keys.rotateBrush.get():
-                if "Brush" in "{0}".format(self.currentTool):
-                    self.currentTool.rotate(blocksOnly=False)
-            if keyname == config.keys.rollBrush.get():
-                if "Brush" in "{0}".format(self.currentTool):
-                    self.currentTool.roll(blocksOnly=False)
 
-            if keyname == config.keys.replaceShortcut.get():
-                if "fill" in "{0}".format(self.currentTool):
-                    self.currentTool.toggleReplacing()
+                blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
+                if keyname.startswith(blocksOnlyModifier):
+                    tempKeyname = keyname[len(blockOnlyModifier)+1:]
+                    blocksOnly = True
+                else:
+                    tempKeyname = keyname
+                    blocksOnly = False
+            
+                if tempKeyname == config.keys.rotateBrush.get():
+                    self.currentTool.rotate(blocksOnly)
+                if tempKeyname == config.keys.rollBrush.get():
+                    self.currentTool.roll(blocksOnly)
+
+            if "fill" in "{}".format(self.currentTool) and keyname == config.keys.replaceShortcut.get():
+                self.currentTool.toggleReplacing()
 
             if keyname == config.keys.quit.get():
                 self.quit()
@@ -3059,21 +3051,6 @@ class LevelEditor(GLViewport):
             if keyname == config.keys.exportSelection.get():
                 self.selectionTool.exportSelection()
 
-            #if keyname == 'Ctrl-Alt-F9':
-            #    self.parent.reloadEditor()
-                # ===========================================================
-                # debugPanel = Panel()
-                # buttonColumn = [
-                #    Button("Reload Editor", action=self.parent.reloadEditor),
-                # ]
-                # debugPanel.add(Column(buttonColumn))
-                # debugPanel.shrink_wrap()
-                # self.add_centered(debugPanel)
-                # ===========================================================
-
-            #if keyname == 'Shift-Ctrl-F9':
-            #    raise GL.GLError(err=1285,
-            #    description="User pressed CONTROL-SHIFT-F9, requesting a GL Memory Error")
             if keyname == 'Ctrl-Alt-F9':
                 try:
                     expr = input_text(">>> ", 600)
@@ -3081,10 +3058,6 @@ class LevelEditor(GLViewport):
                     alert("Result: {0!r}".format(eval(expr, globals(), locals())))
                 except Exception, e:
                     alert("Exception: {0!r}".format(e))
-
-            #if keyname == 'Ctrl-F10':
-            #    def causeError():
-            #        raise ValueError("User pressed CONTROL-F10, requesting a program error.")
 
             if keyname == 'Ctrl-Alt-F10':
                 alert("MCEdit, a Minecraft World Editor\n\nCopyright 2010 David Rio Vierra")
@@ -3122,13 +3095,6 @@ class LevelEditor(GLViewport):
 
             if keyname == config.keys.confirmConstruction.get():
                 self.confirmConstruction()
-
-            # =======================================================================
-            # if keyname == config.keys.toggleFlatShading.get():
-            #    self.renderer.swapMipmapping()
-            # if keyname == config.keys.toggleLighting.get():
-            #    self.renderer.toggleLighting()
-            # =======================================================================
 
             if keyname == config.keys.debugOverlay.get():
                 self.swapDebugLevels()
