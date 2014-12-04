@@ -2169,8 +2169,6 @@ class LevelEditor(GLViewport):
                     break
             cols.append(Column(rows[:i]))
             rows = rows[i:]
-        print "appending rows to cols"
-        print rows
         if len(rows):
             cols.append(Column(rows))
 
@@ -2182,7 +2180,7 @@ class LevelEditor(GLViewport):
         if result == "Ok":
             return dict((k, v.get()) for k, v in widget.inputDict.iteritems())
         else:
-            return "user cancled"
+            return "user canceled"
 
 
     def Notify(self, msg):
