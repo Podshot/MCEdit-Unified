@@ -2967,16 +2967,17 @@ class LevelEditor(GLViewport):
                 name = "option" + keyname[len(keyname) - 1:]
                 if hasattr(self.currentTool, name):
                     getattr(self.currentTool, name)()
-            if keyname == config.keys.blocksOnlyModifier.get() + '-' + config.keys.flip.get():
+            blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
+            if keyname == blocksOnlyModifier + '-' + config.keys.flip.get():
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.flip(blocksOnly=True)
-            if keyname == config.keys.blocksOnlyModifier.get() + '-' + config.keys.rollClone.get():
+            if keyname == blocksOnlyModifier + '-' + config.keys.rollClone.get():
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.roll(blocksOnly=True)
-            if keyname == config.keys.blocksOnlyModifier.get() + '-' + config.keys.rotateClone.get():
+            if keyname == blocksOnlyModifier + '-' + config.keys.rotateClone.get():
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.rotate(blocksOnly=True)
-            if keyname == config.keys.blocksOnlyModifier.get() + '-' + config.keys.mirror.get():
+            if keyname == blocksOnlyModifier + '-' + config.keys.mirror.get():
                 if "clone" in "{0}".format(self.currentTool):
                     self.currentTool.mirror(blocksOnly=True)
             if keyname == config.keys.flip.get():
