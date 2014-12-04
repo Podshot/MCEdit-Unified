@@ -442,7 +442,6 @@ class FilterTool(EditorTool):
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
                 name = m.__name__
-                del sys.modules[name]
                 del m
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
 
@@ -485,7 +484,7 @@ class FilterTool(EditorTool):
             self.editor.level.showProgress = showProgress
 
             self.editor.addOperation(op)
-            if po.canUndo:
+            if op.canUndo:
                 self.editor.addUnsavedEdit()
             self.editor.addUnsavedEdit()
 

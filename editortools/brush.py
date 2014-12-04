@@ -321,6 +321,9 @@ class BrushPanel(Panel):
         choice = "Load Preset"
         self.tool.showPanel()
 
+    def selectionChanged(self):
+        pass
+
 
 class BrushToolOptions(ToolOptions):
     def __init__(self, tool):
