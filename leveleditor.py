@@ -2614,7 +2614,7 @@ class LevelEditor(GLViewport):
         if self.renderer.needsImmediateRedraw:
             self.invalidate()
 
-        if self.root.do_draw:
+        if self.root.bonus_draw_time < 50:
             frameDuration = self.getFrameDuration()
 
             while frameDuration > (datetime.now() - self.frameStartTime):
@@ -2860,7 +2860,7 @@ class LevelEditor(GLViewport):
         return reach
 
     def stopMovementKeys(self, keyNum, keyDown, notMove=False):
-        if (not notMove and keyDown) or (not keyDown and not self.notMove[keyNum]):
+        if not self.notMove[keyNum] and ((not notMove and keyDown) or not keyDown):
             self.usedKeys[keyNum] = keyDown
             if not keyDown:
                 self.cameraInputs[self.movementNum[keyNum]] -= self.movementMath[keyNum]
@@ -2951,12 +2951,13 @@ class LevelEditor(GLViewport):
             tempKeyname = keys.getKey(evt, 1)
             for i, key in enumerate(self.movements):
                 if tempKeyname == key:
-                    if not self.usedKeys[i]:
-                        self.stopMovementKeys(i, True, notMove)
-                    elif evt.ctrl or evt.meta:
-                        self.usedKeys[i] = False
-                        d[self.movementNum[i]] -= self.movementMath[i]
+                    if evt.ctrl or evt.meta:
+                        if self.usedKeys[i]:
+                            self.usedKeys[i] = False
+                            self.cameraInputs[self.movementNum[i]] -= self.movementMath[i]
                         self.notMove[i] = True
+                    elif not self.usedKeys[i]:
+                        self.stopMovementKeys(i, True, notMove)
 
         if not onlyKeys:
             if keyname == config.keys.longDistanceMode.get():

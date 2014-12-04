@@ -90,7 +90,7 @@ class RootWidget(Widget):
     #  is_gl     True if OpenGL surface
 
     redraw_every_frame = False
-    do_draw = False
+    bonus_draw_time = 0
     _is_gl_container = True
 
     def __init__(self, surface):
@@ -173,19 +173,18 @@ class RootWidget(Widget):
             num_clicks = 0
             last_click_time = start_time
             last_click_button = 0
-            self.do_draw = True
 
             while modal_widget.modal_result is None:
                 try:
                     self.hover_widget = self.find_widget(pygame.mouse.get_pos())
-                    if self.do_draw:
+                    if self.bonus_draw_time < 50:
+                        self.bonus_draw_time += 1
                         if self.is_gl:
                             self.gl_clear()
                             self.gl_draw_all(self, (0, 0))
                             GL.glFlush()
                         else:
                             self.draw_all(self.surface)
-                        self.do_draw = False
                         pygame.display.flip()
                         self.frames += 1
                     #events = [pygame.event.wait()]
@@ -224,7 +223,7 @@ class RootWidget(Widget):
                         if type == QUIT:
                             self.quit()
                         elif type == MOUSEBUTTONDOWN:
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             t = datetime.now()
                             if t - last_click_time <= double_click_time and event.button == last_click_button:
                                 num_clicks += 1
@@ -247,7 +246,7 @@ class RootWidget(Widget):
                             mouse_widget.notify_attention_loss()
                             mouse_widget.handle_mouse('mouse_down', event)
                         elif type == MOUSEMOTION:
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             add_modifiers(event)
                             modal_widget.dispatch_key('mouse_delta', event)
                             last_mouse_event = event
@@ -264,7 +263,7 @@ class RootWidget(Widget):
                                 mouse_widget.handle_mouse('mouse_move', event)
                         elif type == MOUSEBUTTONUP:
                             add_modifiers(event)
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             mouse_widget = self.find_widget(event.pos)
                             if self.captured_widget:
                                 mouse_widget = self.captured_widget
@@ -305,7 +304,7 @@ class RootWidget(Widget):
                                     self.ctrlClicked = 0
                             if self.dont == 0:
                                 set_modifier(key, True)
-                                self.do_draw = True
+                                self.bonus_draw_time = 0
                                 self.send_key(modal_widget, 'key_down', event)
                                 if last_mouse_event_handler:
                                     event.dict['pos'] = last_mouse_event.pos
@@ -324,7 +323,7 @@ class RootWidget(Widget):
                                 self.ctrlClicked = 0
                                 self.ctrlPlaced = -1
                             set_modifier(key, False)
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
                                 event.dict['pos'] = last_mouse_event.pos
@@ -335,7 +334,8 @@ class RootWidget(Widget):
                         elif type == USEREVENT:
                             make_scheduled_calls()
                             if not is_modal:
-                                self.do_draw = self.redraw_every_frame
+                                if self.redraw_every_frame:
+                                    self.bonus_draw_time = 0
                                 if last_mouse_event_handler:
                                     event.dict['pos'] = last_mouse_event.pos
                                     event.dict['local'] = last_mouse_event.local
@@ -344,7 +344,7 @@ class RootWidget(Widget):
                                 self.begin_frame()
                         elif type == VIDEORESIZE:
                             #add_modifiers(event)
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             self.size = (event.w, event.h)
                             #self.dispatch_key('reshape', event)
                         elif type == ACTIVEEVENT:

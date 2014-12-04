@@ -552,7 +552,7 @@ class Widget(object):
 
     def invalidate(self):
         if self.root:
-            self.root.do_draw = True
+            self.root.bonus_draw_time = 0
 
     def get_cursor(self, event):
         return arrow_cursor
