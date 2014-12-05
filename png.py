@@ -110,8 +110,8 @@ has RGB components:
 
 Boxed row flat pixel::
 
-  list([R,G,B, R,G,B, R,G,B],
-       [R,G,B, R,G,B, R,G,B])
+    list([R,G,B, R,G,B, R,G,B],
+        [R,G,B, R,G,B, R,G,B])
 
 Each row appears as its own list, but the pixels are flattened so that
 three values for one pixel simply follow the three values for the previous
@@ -124,16 +124,16 @@ explicit list (so that streaming is possible).
 
 Flat row flat pixel::
 
-  [R,G,B, R,G,B, R,G,B,
-   R,G,B, R,G,B, R,G,B]
+    [R,G,B, R,G,B, R,G,B,
+    R,G,B, R,G,B, R,G,B]
 
 The entire image is one single giant sequence of colour values.
 Generally an array will be used (to save space), not a list.
 
 Boxed row boxed pixel::
 
-  list([ (R,G,B), (R,G,B), (R,G,B) ],
-       [ (R,G,B), (R,G,B), (R,G,B) ])
+    list([ (R,G,B), (R,G,B), (R,G,B) ],
+        [ (R,G,B), (R,G,B), (R,G,B) ])
 
 Each row appears in its own list, but each pixel also appears in its own
 tuple.  A serious memory burn in Python.

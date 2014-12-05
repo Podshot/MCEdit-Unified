@@ -805,4 +805,3 @@ def extractAnySchematicIter(level, box):
 
 MCLevel.extractAnySchematic = extractAnySchematic
 MCLevel.extractAnySchematicIter = extractAnySchematicIter
-

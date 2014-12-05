@@ -563,4 +563,3 @@ try:
                       TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError)
 except ImportError:
     pass
-

@@ -85,4 +85,3 @@ def apply(self, op, point):
     showProgress("Flood fill...", spread([point]), cancel=True)
     op.editor.invalidateChunks(dirtyChunks)
     op.undoLevel = undoLevel
-
