@@ -1,6 +1,6 @@
-# MCEdit
+# MCEdit-Unified
 
-MCEdit is an open-source, BSD-licenced world editor for the viral indie hit [Minecraft](http://www.minecraft.net/). For downloads and update info, visit the official website at [khroki.github.io/MCEdit-Unified](http://khroki.github.io/MCEdit-Unified/). The rest of this file is intended for computer programmers, Linux/Mac users, and those who wish to run from source.
+MCEdit-Unified is an updated fork of the original MCEdit by Codewarrior. The previous license still applies. MCEdit-Unified is an open-source, BSD-licensed world editor for the viral indie hit [Minecraft](http://www.minecraft.net/). For downloads and update info, visit the official website at [khroki.github.io/MCEdit-Unified](http://khroki.github.io/MCEdit-Unified/). The rest of this file is intended for computer programmers, Linux/Mac users, and those who wish to run from source.
 
 ## Localisation
 
@@ -22,9 +22,9 @@ Localisation file formats are a work in progress and should not be considered a 
 
 ## Running from source
 
-MCEdit is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 (Python 3 is not supported) at a minimum before getting started. Easy_install / pip is reccommended.
+MCEdit-Unified is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 (Python 3 is not supported) at a minimum before getting started. Easy_install / pip is reccommended.
 
-Clone MCEdit using your github client of choice:
+Clone MCEdit-Unified using your github client of choice:
 
 `>git clone https://github.com/Khroki/MCEdit-Unified`
 
@@ -54,5 +54,5 @@ Debian and Ubuntu Linux users can install the following packages via apt-get to 
 
 `$sudo apt-get install python-opengl python-pygame python-yaml python-numpy`
 
-You should now be able to run MCEdit with `python mcedit.py` assuming you've installed all the dependencies correctly.
+You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
 
