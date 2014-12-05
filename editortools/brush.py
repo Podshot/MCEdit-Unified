@@ -35,7 +35,7 @@ from editortools.tooloptions import ToolOptions
 from glbackground import Panel, GLBackground
 from glutils import gl
 import itertools
-import keys
+from albow.root import get_root
 import leveleditor
 import logging
 from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, FloatInputRow, alertException, drawTerrainCuttingWire
@@ -374,6 +374,7 @@ class BrushTool(CloneTool):
         self.draggedPositions = []
         self.pickBlockKey = False
         self.lineToolKey = False
+        self.root = get_root()
 
 
     """
@@ -608,7 +609,7 @@ class BrushTool(CloneTool):
         Triggered on pressing a key,
         sets the corresponding variable to True
         """
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = True
         if keyname == config.keys.brushLineTool.get():
@@ -619,7 +620,7 @@ class BrushTool(CloneTool):
         Triggered on releasing a key,
         sets the corresponding variable to False
         """
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = False
         if keyname == config.keys.brushLineTool.get():

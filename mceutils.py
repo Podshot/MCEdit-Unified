@@ -633,10 +633,10 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
         def key_down(self, event):
-            self.root.editor.key_down(event, True, True)
+            self.root.dontMove = True
 
         def key_up(self, event):
-            self.root.editor.key_up(event)
+            pass
 
         def mouse_up(self, event):
             try:

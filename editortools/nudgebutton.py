@@ -4,7 +4,6 @@ from albow.translate import _
 from pymclevel.box import Vector
 from config import config
 from glbackground import GLBackground
-import keys
 
 
 class NudgeButton(GLBackground):
@@ -21,6 +20,7 @@ class NudgeButton(GLBackground):
         self.count = 0
         self.add(nudgeLabel)
         self.shrink_wrap()
+        self.root = self.get_root()
 
         # tooltipBacking = Panel()
         # tooltipBacking.bg_color = (0, 0, 0, 0.6)
@@ -45,9 +45,9 @@ class NudgeButton(GLBackground):
             self.count = 0
 
     def key_down(self, evt):
-        self.editor.key_down(evt, True, True)
+        self.root.dontMove = True
 
-        keyname = keys.getKey(evt)
+        keyname = self.root.getKey(evt)
         if keyname == config.keys.up.get():
             self.nudge(Vector(0, 1, 0))
         if keyname == config.keys.down.get():
@@ -74,4 +74,4 @@ class NudgeButton(GLBackground):
             self.nudge(Vector(*right))
 
     def key_up(self, evt):
-        self.editor.key_up(evt)
+        pass

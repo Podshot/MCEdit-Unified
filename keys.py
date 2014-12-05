@@ -14,32 +14,6 @@ def remapMouseButton(button):
         return buttons[button]
     return button
 
-def getKey(evt, i=0):
-    keyname = key.name(evt.key)
-    if 'left' in keyname and len(keyname) > 5:
-        keyname = keyname[5:]
-    elif 'right' in keyname and len(keyname) > 6:
-        keyname = keyname[6:]
-    try:
-        keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
-    finally:
-        if keyname == 'Meta':
-            keyname = 'Ctrl'
-        newKeyname = ""
-        if evt.shift == True and keyname != "Shift" and i != 1:
-            newKeyname += "Shift-"
-        if (evt.ctrl == True or evt.cmd == True) and keyname != "Ctrl" and i != 1:
-            newKeyname += "Ctrl-"
-        if evt.alt == True and keyname != "Alt" and i != 1:
-            newKeyname += "Alt-"
-
-        keyname = newKeyname + keyname
-
-        if keyname == 'Enter':
-            keyname = 'Return'
-
-        return keyname
-
 class KeyConfigPanel(Dialog):
     keyConfigKeys = [
         "<Movement>",
@@ -409,7 +383,8 @@ class KeyConfigPanel(Dialog):
         self.changes = {}
         self.changesNum = False
         self.enter = 0
-        self.editor = self.get_root().editor
+        self.root = None
+        self.editor = None
         tableWidget = albow.Widget()
         tableWidget.add(keyConfigTable)
         tableWidget.shrink_wrap()
@@ -446,6 +421,23 @@ class KeyConfigPanel(Dialog):
         self.changesNum = False
         self.changes = {}
         config.save()
+
+        self.editor.movements = [
+            config.keys.left.get(),
+            config.keys.right.get(),
+            config.keys.forward.get(),
+            config.keys.back.get(),
+            config.keys.up.get(),
+            config.keys.down.get()
+        ]
+
+        self.editor.cameraPanKeys = [
+            config.keys.panLeft.get(),
+            config.keys.panRight.get(),
+            config.keys.panUp.get(),
+            config.keys.panDown.get()
+        ]
+        
         self.dismiss()
 
     def choosePreset(self):
@@ -460,6 +452,9 @@ class KeyConfigPanel(Dialog):
                 config.keys[config.convert(configKey)].set(k)
 
     def getRowData(self, i):
+        if self.root is None:
+          self.root = self.get_root()
+          self.editor = self.root.editor
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
             key = config.keys[config.convert(configKey)].get()
@@ -481,7 +476,7 @@ class KeyConfigPanel(Dialog):
             self.askAssignSelectedKey()
 
     def key_down(self, evt):
-        keyname = getKey(evt)
+        keyname = self.root.getKey(evt)
         if keyname == 'Escape':
             if self.changesNum:
                 result = albow.ask("Do you want to save your changes?", ["Save", "Don't Save", "Cancel"])
@@ -505,10 +500,10 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
-        self.editor.key_down(evt, True, True)
+        self.root.dontMove = True
 
     def key_up(self, evt):
-        self.editor.key_up(evt)
+        pass
 
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
@@ -528,7 +523,7 @@ class KeyConfigPanel(Dialog):
         panel.shrink_wrap()
 
         def panelKeyUp(evt):
-            keyname = getKey(evt)
+            keyname = self.root.getKey(evt)
             panel.dismiss(keyname)
 
         def panelMouseUp(evt):
@@ -564,7 +559,7 @@ class KeyConfigPanel(Dialog):
                                      "Press ESC to cancel. Press Shift-ESC to unbind.")
                                      .format(keyname))
                 return True
-            if configKey == 'Down' or configKey == 'Up' or configKey == 'Back' or configKey == 'Forward' or configKey == 'Left' or configKey == 'Right':
+            if configKey in ['Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right']:
                 if 'Ctrl' in keyname:
                     self.askAssignKey(configKey,
                                      _("Movement keys can't use Ctrl. "

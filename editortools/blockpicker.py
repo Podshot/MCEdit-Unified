@@ -5,7 +5,7 @@ from editortools import blockview
 from glbackground import GLBackground
 from mceutils import CheckBoxLabel
 from pymclevel import materials
-import keys
+from albow.root import get_root
 from pymclevel.materials import Block
 
 
@@ -23,6 +23,7 @@ class BlockPicker(Dialog):
     is_gl_container = True
 
     def __init__(self, blockInfo, materials, *a, **kw):
+        self.root = get_root()
         self.allowWildcards = False
         Dialog.__init__(self, *a, **kw)
         panelWidth = 518
@@ -219,7 +220,7 @@ class BlockPicker(Dialog):
         self.blockButton.blockInfo = self.blockInfo
 
     def key_down(self, evt):
-        keyname = keys.getKey(evt)
+        keyname = self.root.getKey(evt)
         if keyname == "Up" and self.selectedBlockIndex > 0:
             self.selectedBlockIndex -= 1
             self.tableview.rows.scroll_to_item(self.selectedBlockIndex)

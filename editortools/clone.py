@@ -41,7 +41,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from config import config
-import keys
+from albow.root import get_root
 
 
 class CoordsInput(Widget):
@@ -396,6 +396,7 @@ class CloneToolOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
+        self.root = get_root()
         self.autoPlaceCheckBox = CheckBox(ref=AttrRef(tool, "placeImmediately"))
         self.autoPlaceLabel = Label("Place Immediately")
         self.autoPlaceLabel.mouse_down = self.autoPlaceCheckBox.mouse_down
@@ -993,12 +994,12 @@ class CloneTool(EditorTool):
         self.draggingStartPoint = None
 
     def keyDown(self,evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.snapCloneToAxis.get():
             self.snapCloneKey = 1
 
     def keyUp(self, evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.snapCloneToAxis.get():
             self.snapCloneKey = 0
 

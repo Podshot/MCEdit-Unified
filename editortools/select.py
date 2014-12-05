@@ -35,7 +35,7 @@ from fill import BlockFillOperation
 import tempfile
 from pymclevel import nbt
 import logging
-import keys
+from albow.root import get_root
 
 log = logging.getLogger(__name__)
 
@@ -245,6 +245,7 @@ class SelectionTool(EditorTool):
         self.infoKey = 0
         self.selectKey = 0
         self.deselectKey = 0
+        self.root = get_root()
 
         self.optionsPanel = SelectionToolOptions(self)
 
@@ -741,7 +742,7 @@ class SelectionTool(EditorTool):
             self.editor.toolbar.selectTool(8)
 
     def keyDown(self, evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.showBlockInfo.get():
             self.infoKey = 1
         if keyname == config.keys.selectChunks.get():
@@ -750,7 +751,7 @@ class SelectionTool(EditorTool):
             self.deselectKey = 1
 
     def keyUp(self, evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.showBlockInfo.get():
             self.infoKey = 0
         if keyname == config.keys.selectChunks.get():

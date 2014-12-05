@@ -6,6 +6,8 @@
 
 import sys
 import pygame
+
+from pygame import key
 from pygame.locals import *
 #from pygame.time import get_ticks
 from pygame.event import Event
@@ -101,7 +103,7 @@ class RootWidget(Widget):
         widget.root_widget = self
         self.is_gl = surface.get_flags() & OPENGL != 0
         self.idle_handlers = []
-        self.dont = 0
+        self.dont = False
         self.shiftClicked = 0
         self.shiftPlaced = -2
         self.ctrlClicked = 0
@@ -113,6 +115,15 @@ class RootWidget(Widget):
         self.ctrlAction = None
         self.editor = None
         self.selectTool = None
+        self.movementMath = [-1, 1, 1, -1, 1, -1]
+        self.movementNum = [0, 0, 2, 2, 1, 1]
+        self.notMove = [False, False, False, False, False, False]
+        self.usedKeys = [False, False, False, False, False, False]
+        self.cameraMath = [-1., 1., -1., 1.]
+        self.cameraNum = [0, 0, 1, 1]
+        self.notMoveCamera = [False, False, False, False]
+        self.usedCameraKeys = [False, False, False, False]
+        self.dontMove = False
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -218,7 +229,7 @@ class RootWidget(Widget):
                     for event in events:
                         #if event.type:
                         #log.debug("%s", event)
-                        self.dont = 0
+                        self.dont = False
                         type = event.type
                         if type == QUIT:
                             self.quit()
@@ -285,26 +296,55 @@ class RootWidget(Widget):
                                     self.shiftClicked += 1
                                     self.shiftAction = event
                                 elif self.shiftPlaced == -1:
-                                    self.dont = 1
+                                    self.dont = True
                                     self.shiftPlaced = -2
                             elif temp == 'alt':
                                 if self.altPlaced != i and self.altPlaced != -1:
                                     self.altClicked += 1
                                     self.altAction = event
                                 elif self.altPlaced == -1:
-                                    self.dont = 1
+                                    self.dont = True
                                     self.altPlaced = -2
                             elif (temp == 'ctrl' or temp == 'meta'):
                                 if self.ctrlPlaced != i and self.ctrlPlaced != -1 and self.ctrlClicked != -1:
                                     self.ctrlClicked += 1
                                     self.ctrlAction = event
                                 elif self.ctrlPlaced == -1 or self.ctrlClicked == -1:
-                                    self.dont = 1
+                                    self.dont = True
                                     self.ctrlPlaced = -2
                                     self.ctrlClicked = 0
-                            if self.dont == 0:
+                            if not self.dont:
                                 set_modifier(key, True)
+                                add_modifiers(event)
                                 self.bonus_draw_time = 0
+
+                                keyname = event.dict.get('keyname', None) or self.getKey(event)
+                                if 'mouse' not in keyname and 'Mouse' not in keyname and self.editor.level:
+                                    tempKeyname = self.getKey(event, True)
+                                    for i, key in enumerate(self.editor.movements):
+                                        if tempKeyname == key:
+                                            if event.ctrl or event.meta:
+                                                if self.usedKeys[i]:
+                                                    self.usedKeys[i] = False
+                                                    self.editor.cameraInputs[self.movementNum[i]] -= self.movementMath[i]
+                                                    self.notMove[i] = True
+                                                elif not self.notMove[i]:
+                                                    self.notMove[i] = True
+                                            elif not self.usedKeys[i]:
+                                                self.changeMovementKeys(i, True, self.dontMove)
+
+                                    for i, key in enumerate(self.editor.cameraPan):
+                                        if tempKeyname == key:
+                                            if event.ctrl or event.meta:
+                                                if self.usedCameraKeys[i]:
+                                                    self.usedCameraKeys[i] = False
+                                                    self.cameraPanKeys[self.cameraNum[i]] = self.cameraMath[i]
+                                                    self.notMoveCamera[i] = True
+                                                elif not self.notMoveCamera[i]:
+                                                    self.notMoveCamera[i] = True
+                                            elif not self.usedCameraKeys[i]:
+                                                self.changeCameraKeys(i, True, self.dontMove)
+
                                 self.send_key(modal_widget, 'key_down', event)
                                 if last_mouse_event_handler:
                                     event.dict['pos'] = last_mouse_event.pos
@@ -323,7 +363,21 @@ class RootWidget(Widget):
                                 self.ctrlClicked = 0
                                 self.ctrlPlaced = -1
                             set_modifier(key, False)
+                            add_modifiers(event)
                             self.bonus_draw_time = 0
+                            
+                            self.dontMove = False
+                            keyname = event.dict.get('keyname', None) or self.getKey(event)
+                            if 'mouse' not in keyname and 'Mouse' not in keyname and self.editor.level:
+                                tempKeyname = self.getKey(event, True)
+                                for i, key in enumerate(self.editor.movements):
+                                    if tempKeyname == key:
+                                        self.changeMovementKeys(i, False)
+                                
+                                for i, key in enumerate(self.editor.cameraPan):
+                                    if tempKeyname == key:
+                                        self.changeCameraKeys(i, False)
+
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
                                 event.dict['pos'] = last_mouse_event.pos
@@ -366,6 +420,54 @@ class RootWidget(Widget):
 
         clicked_widget = None
 
+    def getKey(self, evt, movement=False):
+        keyname = key.name(evt.key)
+        if 'left' in keyname and len(keyname) > 5:
+            keyname = keyname[5:]
+        elif 'right' in keyname and len(keyname) > 6:
+            keyname = keyname[6:]
+        try:
+            keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
+        finally:
+            if keyname == 'Meta':
+                keyname = 'Ctrl'
+            newKeyname = ""
+            if evt.shift and keyname != "Shift" and not movement:
+                newKeyname += "Shift-"
+            if (evt.ctrl or evt.cmd) and keyname != "Ctrl" and not movement:
+                newKeyname += "Ctrl-"
+            if evt.alt and keyname != "Alt" and not movement:
+                newKeyname += "Alt-"
+
+            keyname = newKeyname + keyname
+
+            if keyname == 'Enter':
+                keyname = 'Return'
+
+            return keyname
+
+    def changeMovementKeys(self, keyNum, keyDown, notMove=False):
+        if not self.notMove[keyNum] and ((not notMove and keyDown) or not keyDown):
+            self.usedKeys[keyNum] = keyDown
+            if keyDown:
+                self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
+                self.notMove[keyNum] = False
+            else:
+                self.editor.cameraInputs[self.movementNum[keyNum]] -= self.movementMath[keyNum]
+            return
+        self.notMove[keyNum] = keyDown
+
+    def changeCameraKeys(self, keyNum, keyDown, notMove=False):
+        if not self.notMoveCamera[keyNum] and ((not notMove and keyDown) or not keyDown):
+            self.usedCameraKeys[keyNum] = keyDown
+            if keyDown:
+                self.editor.cameraPanKeys[self.cameraNum[keyNum]] = self.cameraMath[keyNum]
+            else:
+                self.editor.cameraPanKeys[self.cameraNum[keyNum]] = 0.
+                self.notMove[keyNum] = False
+            return
+        self.notMoveCamera[keyNum] = keyDown
+
     def call_idle_handlers(self, event):
         def call(ref):
             widget = ref()
@@ -388,7 +490,6 @@ class RootWidget(Widget):
         self.idle_handlers.remove(ref(widget))
 
     def send_key(self, widget, name, event):
-        add_modifiers(event)
         widget.dispatch_key(name, event)
 
     def begin_frame(self):

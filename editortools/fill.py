@@ -28,7 +28,7 @@ from operation import Operation
 from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
 from config import config
-import keys
+from albow.root import get_root
 import pymclevel
 
 
@@ -170,6 +170,7 @@ class FillTool(EditorTool):
         EditorTool.__init__(self, *args, **kw)
         self.optionsPanel = FillToolOptions(self)
         self.pickBlockKey = 0
+        self.root = get_root()
 
     @property
     def blockInfo(self):
@@ -406,11 +407,11 @@ class FillTool(EditorTool):
             return self.editor.selectionTool.mouseDown(evt, pos, dir)
 
     def keyDown(self, evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = 1
 
     def keyUp(self, evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = 0

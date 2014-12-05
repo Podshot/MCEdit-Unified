@@ -464,7 +464,7 @@ class Widget(object):
                 self.dismiss(self.enter_response)
                 return
         elif k == K_ESCAPE:
-            self.root.fix_sticky_ctrl
+            self.root.fix_sticky_ctrl()
             if self.cancel_response is not None:
                 self.dismiss(self.cancel_response)
                 return
@@ -490,6 +490,8 @@ class Widget(object):
 
     def present(self, centered=True):
         #print "Widget: presenting with rect", self.rect
+        if self.root is None:
+            self.root = self.get_root()
         if centered:
             self.center = self.root.center
         self.root.add(self)

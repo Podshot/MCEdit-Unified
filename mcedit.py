@@ -120,17 +120,10 @@ class FileOpener(albow.Widget):
         albow.Widget.__init__(self, *args, **kwargs)
         self.anchor = 'tlbr'
         self.mcedit = mcedit
+        self.root = self.get_root()
 
         helpColumn = []
 
-#        label = albow.Label("{0}/{1}/{2}/{3}/{4}/{5}".format(
-#            config.keys.forward.get(),
-#            config.keys.left.get(),
-#            config.keys.back.get(),
-#            config.keys.right.get(),
-#            config.keys.up.get(),
-#            config.keys.down.get(),
-#        ) + _(" to move"))
         label = albow.Label(_("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
             config.keys.forward.get(),
             config.keys.left.get(),
@@ -149,7 +142,6 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-#        addHelp("{0}".format(config.keys.brake.get()) + _(" to slow down"))
         addHelp(_("{0} to slow down").format(config.keys.brake.get()))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
@@ -211,7 +203,7 @@ class FileOpener(albow.Widget):
         #self.invalidate()
 
     def key_down(self, evt):
-        keyname = keys.getKey(evt)
+        keyname = self.root.getKey(evt)
         if keyname == 'Alt-F4':
             raise SystemExit
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
@@ -227,7 +219,7 @@ class FileOpener(albow.Widget):
         if keyname == config.keys.takeAScreenshot.get():
             self.mcedit.editor.take_screenshot()
 
-        self.get_root().fix_sticky_ctrl()
+        self.root.fix_sticky_ctrl()
 
     def promptOpenAndLoad(self):
         try:
