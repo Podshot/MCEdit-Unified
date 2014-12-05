@@ -579,7 +579,10 @@ class IResourcePack:
             os.remove(self._terrain_path)
             self._isEmpty = True
         if self._too_big:
-            os.remove(self._terrain_path)
+            try:
+                os.remove(self._terrain_path)
+            except:
+                pass
         del self.block_image
 
 
@@ -600,7 +603,7 @@ class ZipResourcePack(IResourcePack):
         zfile = zipfile.ZipFile(self.zipfile)
         for name in zfile.infolist():
             if name.filename.endswith(".png"):
-                if name.filename.startswith(os.path.join("assets", "minecraft", "textures", "blocks")):
+                if name.filename.startswith("assets/minecraft/textures/blocks"):
                     block_name = name.filename.split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
                     zfile.extract(name.filename, self.texture_path)
@@ -637,7 +640,7 @@ class ZipResourcePack(IResourcePack):
                     else:
                         if possible_texture.size == (32, 32):
                             self.block_image[block_name] = possible_texture.resize((16, 16))
-                        if possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
+                        elif possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
                             self.big_textures_counted = self.big_textures_counted + 1
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
