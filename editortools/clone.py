@@ -418,7 +418,6 @@ class CloneTool(EditorTool):
     repeatCount = 1
     _scaleFactor = 1.0
     _chunkAlign = False
-    self.root = get_root()
 
     @property
     def scaleFactor(self):
@@ -460,6 +459,7 @@ class CloneTool(EditorTool):
         self.destPoint = None
 
         self.snapCloneKey = 0
+        self.root = get_root()
 
     @property
     def statusText(self):
