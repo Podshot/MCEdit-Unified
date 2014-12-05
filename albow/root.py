@@ -123,7 +123,6 @@ class RootWidget(Widget):
         self.cameraNum = [0, 0, 1, 1]
         self.notMoveCamera = [False, False, False, False]
         self.usedCameraKeys = [False, False, False, False]
-        self.dontMove = False
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -332,7 +331,7 @@ class RootWidget(Widget):
                                                 elif not self.notMove[i]:
                                                     self.notMove[i] = True
                                             elif not self.usedKeys[i]:
-                                                self.changeMovementKeys(i, True, self.dontMove, levelExist=levelExist)
+                                                self.changeMovementKeys(i, True, levelExist)
 
                                     for i, key in enumerate(self.editor.cameraPan):
                                         if tempKeyname == key:
@@ -344,7 +343,7 @@ class RootWidget(Widget):
                                                 elif not self.notMoveCamera[i]:
                                                     self.notMoveCamera[i] = True
                                             elif not self.usedCameraKeys[i]:
-                                                self.changeCameraKeys(i, True, self.dontMove, levelExist=levelExist)
+                                                self.changeCameraKeys(i, True, levelExist)
 
                                 self.send_key(modal_widget, 'key_down', event)
                                 if last_mouse_event_handler:
@@ -367,18 +366,17 @@ class RootWidget(Widget):
                             add_modifiers(event)
                             self.bonus_draw_time = 0
                             
-                            self.dontMove = False
                             keyname = event.dict.get('keyname', None) or self.getKey(event)
                             levelExist = self.editor.level is not None
                             if 'mouse' not in keyname and 'Mouse' not in keyname:
                                 tempKeyname = self.getKey(event, True)
                                 for i, key in enumerate(self.editor.movements):
                                     if tempKeyname == key:
-                                        self.changeMovementKeys(i, False, levelExist=levelExist)
+                                        self.changeMovementKeys(i, False, levelExist)
                                 
                                 for i, key in enumerate(self.editor.cameraPan):
                                     if tempKeyname == key:
-                                        self.changeCameraKeys(i, False, levelExist=levelExist)
+                                        self.changeCameraKeys(i, False, levelExist)
 
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
@@ -448,8 +446,8 @@ class RootWidget(Widget):
 
             return keyname
 
-    def changeMovementKeys(self, keyNum, keyDown, notMove=False, levelExist=True):
-        if not self.notMove[keyNum] and ((not notMove and keyDown) or not keyDown):
+    def changeMovementKeys(self, keyNum, keyDown, levelExist):
+        if not self.notMove[keyNum] and ((not self.editor.dontMove and keyDown) or not keyDown):
             self.usedKeys[keyNum] = keyDown
             if keyDown:
                 if levelExist:
@@ -461,8 +459,8 @@ class RootWidget(Widget):
             return
         self.notMove[keyNum] = keyDown
 
-    def changeCameraKeys(self, keyNum, keyDown, notMove=False, levelExist=True):
-        if not self.notMoveCamera[keyNum] and ((not notMove and keyDown) or not keyDown):
+    def changeCameraKeys(self, keyNum, keyDown, levelExist):
+        if not self.notMoveCamera[keyNum] and ((not self.editor.dontMove and keyDown) or not keyDown):
             self.usedCameraKeys[keyNum] = keyDown
             if keyDown:
                 if levelExist:
@@ -473,6 +471,29 @@ class RootWidget(Widget):
                 self.notMoveCamera[keyNum] = False
             return
         self.notMoveCamera[keyNum] = keyDown
+
+    def handling_ctrl(self, event):
+        levelExist = self.editor.level is not None
+        keyname = event.dict.get('keyname', None) or self.getKey(event)
+        if 'mouse' not in keyname and 'Mouse' not in keyname and self.editor.level:
+            tempKeyname = self.getKey(event, True)
+            for i, key in enumerate(self.editor.movements):
+                if tempKeyname == key:
+                    if self.usedKeys[i]:
+                        self.usedKeys[i] = False
+                        self.editor.cameraInputs[self.movementNum[i]] -= self.movementMath[i]
+                        self.notMove[i] = True
+                    elif not self.notMove[i]:
+                        self.notMove[i] = True
+
+            for i, key in enumerate(self.editor.cameraPan):
+                if tempKeyname == key:
+                    if self.usedCameraKeys[i]:
+                        self.usedCameraKeys[i] = False
+                        self.cameraPanKeys[self.cameraNum[i]] = self.cameraMath[i]
+                        self.notMoveCamera[i] = True
+                    elif not self.notMoveCamera[i]:
+                        self.notMoveCamera[i] = True
 
     def call_idle_handlers(self, event):
         def call(ref):

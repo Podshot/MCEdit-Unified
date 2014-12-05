@@ -60,7 +60,7 @@ class Dialog(Modal, Widget):
                 self.dismiss(response)
 
     def key_down(self, e):
-        self.root.dontMove = True
+        self.root.handling_ctrl(e)
 
     def key_up(self, e):
         pass

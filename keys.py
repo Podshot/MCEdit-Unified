@@ -502,7 +502,7 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
-        self.root.dontMove = True
+        self.editor.handling_ctrl(evt)
 
     def key_up(self, evt):
         pass
