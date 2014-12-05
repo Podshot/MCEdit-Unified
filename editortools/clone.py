@@ -396,7 +396,6 @@ class CloneToolOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
-        self.root = get_root()
         self.autoPlaceCheckBox = CheckBox(ref=AttrRef(tool, "placeImmediately"))
         self.autoPlaceLabel = Label("Place Immediately")
         self.autoPlaceLabel.mouse_down = self.autoPlaceCheckBox.mouse_down
@@ -419,6 +418,7 @@ class CloneTool(EditorTool):
     repeatCount = 1
     _scaleFactor = 1.0
     _chunkAlign = False
+    self.root = get_root()
 
     @property
     def scaleFactor(self):
