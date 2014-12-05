@@ -431,7 +431,7 @@ class KeyConfigPanel(Dialog):
             config.keys.down.get()
         ]
 
-        self.editor.cameraPanKeys = [
+        self.editor.cameraPan = [
             config.keys.panLeft.get(),
             config.keys.panRight.get(),
             config.keys.panUp.get(),
@@ -453,8 +453,9 @@ class KeyConfigPanel(Dialog):
 
     def getRowData(self, i):
         if self.root is None:
-          self.root = self.get_root()
-          self.editor = self.root.editor
+            self.root = self.get_root()
+        if self.editor is None:
+            self.editor = self.root.editor
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
             key = config.keys[config.convert(configKey)].get()
