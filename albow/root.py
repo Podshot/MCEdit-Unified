@@ -447,7 +447,7 @@ class RootWidget(Widget):
             return keyname
 
     def changeMovementKeys(self, keyNum, keyDown, levelExist):
-        if not self.notMove[keyNum] and ((not self.editor.dontMove and keyDown) or not keyDown):
+        if not self.notMove[keyNum]:
             self.usedKeys[keyNum] = keyDown
             if keyDown:
                 if levelExist:
@@ -460,7 +460,7 @@ class RootWidget(Widget):
         self.notMove[keyNum] = keyDown
 
     def changeCameraKeys(self, keyNum, keyDown, levelExist):
-        if not self.notMoveCamera[keyNum] and ((not self.editor.dontMove and keyDown) or not keyDown):
+        if not self.notMoveCamera[keyNum]:
             self.usedCameraKeys[keyNum] = keyDown
             if keyDown:
                 if levelExist:
