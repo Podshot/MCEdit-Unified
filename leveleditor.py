@@ -1101,7 +1101,7 @@ class CameraViewport(GLViewport):
         elif button == 3 and sys.platform == "darwin" and evt.alt:
             self.leftClickDown(evt)
         else:
-            evt.dict['keyname'] = "mouse{0}".format(button)
+            evt.dict['keyname'] = "mouse{}".format(button)
             self.editor.key_down(evt)
 
         self.editor.focus_on(None)
@@ -1120,7 +1120,7 @@ class CameraViewport(GLViewport):
         elif button == 3 and sys.platform == "darwin" and evt.alt:
             self.leftClickUp(evt)
         else:
-            evt.dict['keyname'] = "mouse{0}".format(button)
+            evt.dict['keyname'] = "mouse{}".format(button)
             self.editor.key_up(evt)
 
     def mouse_drag(self, evt):
@@ -1549,6 +1549,15 @@ class LevelEditor(GLViewport):
             config.keys.up.get(),
             config.keys.down.get()
         ]
+        self.different_keys = {
+            "mouse1": "Mouse1",
+            "mouse2": "Mouse2",
+            "mouse3": "Button 3",
+            "mouse4": "Scroll Up",
+            "mouse5": "Scroll Down",
+            "mouse6": "Button 4",
+            "mouse7": "Button 5"
+        }
         self.movementMath = [-1, 1, 1, -1, 1, -1]
         self.movementNum = [0, 0, 2, 2, 1, 1]
         self.notMove = [False, False, False, False, False, False]
@@ -2696,7 +2705,7 @@ class LevelEditor(GLViewport):
 
     def mouse_up(self, evt):
         button = keys.remapMouseButton(evt.button)
-        evt.dict['keyname'] = "mouse{0}".format(button)
+        evt.dict['keyname'] = "mouse{}".format(button)
         self.key_up(evt)
 
     def mouse_drag(self, evt):
@@ -2711,7 +2720,7 @@ class LevelEditor(GLViewport):
     def mouse_down(self, evt):
         button = keys.remapMouseButton(evt.button)
 
-        evt.dict['keyname'] = "mouse{0}".format(button)
+        evt.dict['keyname'] = "mouse{}".format(button)
         self.mcedit.focus_switch = self
         self.turn_off_focus()
         self.key_down(evt)
@@ -2873,19 +2882,10 @@ class LevelEditor(GLViewport):
     def key_up(self, evt):
         self.currentTool.keyUp(evt)
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-
-        if keyname == 'mouse1' or keyname == 'mouse2':
-            keyname = 'M' + keyname[1:]
-        elif keyname == 'mouse3':
-            keyname = 'Button 3'
-        elif keyname == 'mouse4':
-            keyname = 'Scroll Up'
-        elif keyname == 'mouse5':
-            keyname = 'Scroll Down'
-        elif keyname == 'mouse6':
-            keyname = 'Button 4'
-        elif keyname == 'mouse7':
-            keyname = 'Button 5'
+        try:
+        	keyname = self.different_keys[keyname]
+        except:
+        	pass
 
         if 'Mouse' not in keyname and 'Scroll' not in keyname and 'Button' not in keyname:
             tempKeyname = keys.getKey(evt, 1)
@@ -2930,18 +2930,10 @@ class LevelEditor(GLViewport):
     def key_down(self, evt, notMove=False, onlyKeys=False):
         self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == 'mouse1' or keyname == 'mouse2':
-            keyname = 'M' + keyname[1:]
-        elif keyname == 'mouse3':
-            keyname = 'Button 3'
-        elif keyname == 'mouse4':
-            keyname = 'Scroll Up'
-        elif keyname == 'mouse5':
-            keyname = 'Scroll Down'
-        elif keyname == 'mouse6':
-            keyname = 'Button 4'
-        elif keyname == 'mouse7':
-            keyname = 'Button 5'
+        try:
+        	keyname = self.different_keys[keyname]
+        except:
+        	pass
 
         if keyname == "Alt-F4":
             self.quit()

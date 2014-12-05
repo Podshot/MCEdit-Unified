@@ -409,7 +409,7 @@ class KeyConfigPanel(Dialog):
         self.changes = {}
         self.changesNum = False
         self.enter = 0
-        self.root = self.get_root()
+        self.editor = self.get_root().editor
         tableWidget = albow.Widget()
         tableWidget.add(keyConfigTable)
         tableWidget.shrink_wrap()
@@ -463,21 +463,10 @@ class KeyConfigPanel(Dialog):
         configKey = self.keyConfigKeys[i]
         if self.isConfigKey(configKey):
             key = config.keys[config.convert(configKey)].get()
-            if key == 'mouse3':
-                key = 'Button 3'
-                config.keys[config.convert(configKey)].set("Button 3")
-            elif key == 'mouse4':
-                key = 'Scroll Up'
-                config.keys[config.convert(configKey)].set("Scroll Up")
-            elif key == 'mouse5':
-                key = 'Scroll Down'
-                config.keys[config.convert(configKey)].set("Scroll Down")
-            elif key == 'mouse6':
-                key = 'Button 4'
-                config.keys[config.convert(configKey)].set("Button 4")
-            elif key == 'mouse7':
-                key = 'Button 5'
-                config.keys[config.convert(configKey)].set("Button 5")
+            try:
+                key = self.editor.different_keys[key]
+            except:
+                pass
 
         else:
             key = ""
@@ -516,10 +505,10 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
-        self.root.editor.key_down(evt, True, True)
+        self.editor.key_down(evt, True, True)
 
     def key_up(self, evt):
-        self.root.editor.key_up(evt)
+        self.editor.key_up(evt)
 
     def askAssignSelectedKey(self):
         self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
