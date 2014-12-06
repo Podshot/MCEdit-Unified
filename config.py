@@ -499,6 +499,7 @@ definitions = {
         ("resourcePack", "Resource Pack", u"Default"),
         ("maxCopies", "Copy stack size", 32),
         ("superSecretSettings", "Super Secret Settings", False),
+#        ("fontProportion", "Fonts Proportion", 100),
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

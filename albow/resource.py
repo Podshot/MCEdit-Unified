@@ -31,6 +31,8 @@ sound_cache = {}
 text_cache = {}
 cursor_cache = {}
 
+#font_proportion = 100 # %
+
 
 def _resource_path(default_prefix, names, prefix=""):
     path = os.path.join(resource_dir, prefix or default_prefix, *names)
@@ -83,6 +85,9 @@ def get_font(size, *names, **kwds):
     key = (path, size)
     font = font_cache.get(key)
     if not font:
+#        size = float(size * 1000)
+#        size = size / float(100)
+#        size = int(size * font_proportion / 1000)
         try:
             font = pygame.font.Font(path, size)
             log.debug("Font %s loaded."%path)
