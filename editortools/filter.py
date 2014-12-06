@@ -79,6 +79,7 @@ class FilterModuleOptions(Widget):
         if '_parent' in kw.keys():
             self._parent = kw.pop('_parent')
         Widget.__init__(self, *args, **kw)
+        self.spacing = 2
         self.tool = tool
         pages = TabPanel()
         pages.is_gl_container = True
@@ -120,6 +121,7 @@ class FilterModuleOptions(Widget):
         cols = []
         height = 0
         max_height = self.tool.editor.mainViewport.height - self.tool.updatePanel.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
+        print max_height
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
@@ -228,7 +230,8 @@ class FilterModuleOptions(Widget):
             else:
                 raise ValueError(("Unknown option type", optionType))
 
-        height = sum(r.height for r in rows)
+        height = sum(r.height for r in rows) + (len(rows) -1) * self.spacing
+        print height
 
         if height > max_height:
             h = 0
@@ -372,9 +375,11 @@ class FilterTool(EditorTool):
         self.updatePanel.shrink_wrap()
 
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
-        self.editor.add(self.updatePanel)
+#        self.editor.add(self.updatePanel)
 
         self.panel = FilterToolPanel(self)
+#        if self.panel.parent:
+#            self.updatePanel.parent.remove(self.updatePanel)
 
     @property
     def statusText(self):
@@ -391,6 +396,7 @@ class FilterTool(EditorTool):
         if self.panel.parent:
             self.editor.remove(self.panel)
 
+        self.editor.add(self.updatePanel)
         self.reloadFilters()
 
         # self.panel = FilterToolPanel(self)
