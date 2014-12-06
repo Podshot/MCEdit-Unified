@@ -1112,148 +1112,148 @@ t518 삭제할 설정을 선택하세요.
 o519  does not have a value yet.
 t519  아직 값이 없습니다.
 o520 Version {} is available
-t520 
+t520 버전 {}이 사용 가능합니다.
 o521 Download
-t521 
+t521 다운로드
 o522 View
-t522 
+t522 보기
 o523 Ignore
-t523 
+t523 무시
 o524 Space
-t524 
+t524 Space
 o525 Tab
-t525 
+t525 Tab
 o526 Delete
-t526 
+t526 Delete
 o527 Scroll Up
-t527 
+t527 Scroll Up
 o528 Scroll Down
-t528 
+t528 Scroll Down
 o529 Button 3
-t529 
+t529 Button 3
 o530 Alt
-t530 
+t530 Alt
 o531 Ctrl
-t531 
+t531 Ctrl
 o532 Creating a new world.
-t532 
+t532 새로운 월드를 생성 중.
 o533 Minecraft Server
-t533 
+t533 마인크래프트
 o534 Flatland
-t534 
+t534 평지
 o535 Generator:
-t535 
+t535 생성기:
 o536 Will automatically download and use the latest version
-t536 
+t536 자동으로 최신 버전을 다운로드하고 사용합니다.
 o537 Height: 
-t537 
+t537 높이: 
 o538 Grass
-t538 
+t538 잔디
 o539 Server version:
-t539 
+t539 서버 버전:
 o540 or
-t540 
+t540 또는 
 o541 Check for Updates
-t541 
+t541 업데이트 확인
 o542 Advanced
-t542 
+t542 고급
 o543 Open Server Storage
-t543 
+t543 서버 저장소 열기
 o544 Reveal World Cache
-t544 
+t544 월드 캐시 Reveal
 o545 Delete World Cache
-t545 
+t545 월드 캐시 삭제
 o546 Advanced...
-t546 
+t546 고급...
 o547 Simulate world
-t547 
+t547 월드 시뮬레이션
 o548 Use snapshot versions
-t548 
+t548 스냅샷 버전 사용
 o549 X: 
-t549 
+t549 X: 
 o550 Y: 
-t550 
+t550 Y: 
 o551 Z: 
-t551 
+t551 Z: 
 o552 f: 
-t552 
+t552 f: 
 o553 Seed: 
-t553 
+t553 시드: 
 o554 East-West Chunks: 
-t554 
+t554 동-서 청크: 
 o555 North-South Chunks: 
-t555 
+t555 남-북 청크: 
 o556 Survival
-t556 
+t556 서바이벌
 o557 Game Type:
-t557 
+t557 게임 모드:
 o558 Cancel
-t558 
+t558 취소
 o559 Creative
-t559 
+t559 크리에이티브
 o560 Style:
-t560 
+t560 스타일:
 o561 H
-t561 
+t561 H
 o562 L
-t562 
+t562 L
 o563 W
-t563 
+t563 W
 o564 Minimum Spacing
-t564 
+t564 최소한의 간격
 o565 Regenerate UUID
-t565 
+t565 UUID 재생성
 o566 Replace blocks with any data value. Only useful for Replace operations.
-t566 
+t566 데이터 값을 무시하고 블럭을 바꿉니다. '바꾸기' 작업에만 유용합니다.
 o567 Entities
-t567 
+t567 엔티티
 o568 Items
-t568 
+t568 아이템
 o569 TileEntities
-t569 
+t569 타일 엔티티
 o570 TileTicks
-t570 
+t570 타일 틱
 o571 Unpopulated Chunks
-t571 
+t571 무인 청크
 o572 Sky
-t572 
+t572 하늘
 o573 Fog
-t573 
+t573 안개
 o574 Ceiling
-t574 
+t574 천장
 o575 Chunk Redraw
-t575 
+t575 청크 변경
 o576 Hidden Ores
-t576 
+t576 숨겨진 광물
 o577 Bedrock
-t577 
+t577 배드락
 o578 Coal
-t578 
+t578 석탄
 o579 Iron
-t579 
+t579 철
 o580 Lapis Lazuli
-t580 
+t580 청금석
 o581 Redstone
-t581 
+t581 레드스톤
 o582 Gold
-t582 
+t582 금
 o583 Diamond
-t583 
+t583 다이아몬드
 o584 Nether Quartz
-t584 
+t584 석영
 o585 Shortcut: {0}
 t585 단축키: {0}
 o586 View Distance ({0})
-t586 
+t586 시야 ({0})
 o587 Copy Stack Size: 
-t587 
+t587 복사 Stack Size: 
 o588 Add Player
-t588 
+t588 플레이어 추가
 o589 Remove Player
-t589 
+t589 플레이어 제거
 o590 Reload Skins
-t590 
+t590 스킨 다시 로딩
 o591 Previous Page
-t591 
+t591 이전 페이지
 o592 Next Page
-t592 
+t592 다음 페이지
