@@ -351,10 +351,10 @@ class OptionsPanel(Dialog):
                                             ref=config.settings.maxCopies, width=100, min=0,
                                             tooltipText="Maximum number of copied objects.")
 
-        fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
-                                            ref=config.settings.fontProportion, width=100, min=0,
-                                            tooltipText="Fonts sizing proportion. The number is a percentage.")
-        albow.resource.font_proportion = config.settings.fontProportion.get()
+#        fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
+#                                            ref=config.settings.fontProportion, width=100, min=0,
+#                                            tooltipText="Fonts sizing proportion. The number is a percentage.")
+#        albow.resource.font_proportion = config.settings.fontProportion.get()
 
         invertRow = mceutils.CheckBoxLabel("Invert Mouse",
                                            ref=config.controls.invertMousePitch,
