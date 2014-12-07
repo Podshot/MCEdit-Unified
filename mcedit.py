@@ -351,6 +351,7 @@ class OptionsPanel(Dialog):
                                             ref=config.settings.maxCopies, width=100, min=0,
                                             tooltipText="Maximum number of copied objects.")
 
+        # FONT SIZE
 #        fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
 #                                            ref=config.settings.fontProportion, width=100, min=0,
 #                                            tooltipText="Fonts sizing proportion. The number is a percentage.")
@@ -433,7 +434,7 @@ class OptionsPanel(Dialog):
             mouseSpeedRow,
             undoLimitRow,
             maxCopiesRow,
-            fontProportion,
+#            fontProportion, # FONT SIZE
         )
 
         options = (
