@@ -44,7 +44,7 @@
 
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2" style="text-align:right;"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 			}
 			$('#changelog').show();
@@ -63,6 +63,18 @@
 			}
 		}
 	</script>
+	<style>
+		@media (min-width: 992px) {
+			.releasenote-title {
+				text-align: right;
+			}
+		}
+		@media (max-width: 991px) {
+			.releasenote-title {
+				text-align: center;
+			}
+		}
+	</style>
 </head>
 <body>
 	<div class="container">
