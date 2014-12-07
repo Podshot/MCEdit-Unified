@@ -52,7 +52,7 @@ For windows users if `easy_install` cannot find a library you need, or you can't
 
 Debian and Ubuntu Linux users can install the following packages via apt-get to grab all the dependencies easily and install them into the system python. This also downloads all libraries required to build these modules using `pip install`
 
-`$sudo apt-get install python-opengl python-pygame python-yaml python-numpy`
+`$sudo apt-get install python-opengl python-pygame python-yaml python-numpy python-xlib`
 
 You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
 

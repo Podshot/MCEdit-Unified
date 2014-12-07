@@ -614,6 +614,29 @@ class MCEdit(GLViewport):
 
         self.fileOpener.focus()
 
+        #-# LINUX resize and placement debug
+#        if sys.platform == 'linux2':
+#            print display.get_wm_info()
+##            dis = display.get_wm_info()['display']
+#            win = display.get_wm_info()['window']
+#            print win
+#            import Xlib.display
+#            dis = Xlib.display.Display()
+#            win = dis.create_resource_object('window', win)
+#            print dir(win)
+#            print win.get_attributes()
+#            print win.get_geometry()
+#            wmClass = win.get_wm_class()
+#            print dir(dis)
+#            wParent = win.query_tree().parent
+#            print wParent.get_geometry()
+#            print self.root.size
+#            razear
+#            import Xlib.protocol.request
+#            winAttributes = Xlib.protocol.request.GetWindowAttributes(dis, 0, win)
+#            print winAttributes
+#            print mcplatform.gtk.window_list_toplevels()
+
     editor = None
 
     def reloadEditor(self):
@@ -805,6 +828,8 @@ class MCEdit(GLViewport):
         if hasattr(albow.translate, "saveTemplate"):
             albow.translate.saveTemplate()
         #-#
+        self.saveWindowPosition()
+        config.save()
         if self.editor.unsavedEdits:
             result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
@@ -976,7 +1001,8 @@ class MCEdit(GLViewport):
                 traceback.print_exc()
                 mcedit.editor.handleMemoryError()
 
-    def restart(self):
+    def saveWindowPosition(self):
+        """Save the window position in the configuration handler."""
         if sys.platform == "win32" and config.settings.setWindowPlacement.get():
             (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                 display.get_wm_info()['window'])
@@ -990,7 +1016,17 @@ class MCEdit(GLViewport):
             config.settings.windowX.set(X)
             config.settings.windowY.set(Y)
             config.settings.windowShowCmd.set(showCmd)
+        elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            win = display.get_wm_info()['window']
+            dis = mcplatform.Xlib.display.Display()
+            win = dis.create_resource_object('window', win)
+            wParent = win.query_tree().parent.query_tree().parent
+            geom = wParent.get_geometry()
+            config.settings.windowX.set(geom.x)
+            config.settings.windowY.set(geom.y)
 
+    def restart(self):
+        self.saveWindowPosition()
         config.save()
         self.editor.renderer.discardAllChunks()
         self.editor.deleteAllCopiedSchematics()
@@ -1167,6 +1203,13 @@ class GLDisplayContext(object):
 
             config.settings.setWindowPlacement.set(True)
             config.save()
+        elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            dis = mcplatform.Xlib.display.Display()
+            dRoot = dis.screen().root
+            win = dRoot.get_full_property(dis.intern_atom('_NET_ACTIVE_WINDOW'), mcplatform.Xlib.X.AnyPropertyType).value[0]
+            win = dis.create_resource_object('window', win)
+            win.configure(x=config.settings.windowX.get(), y=config.settings.windowY.get())
+            dis.sync()
 
         try:
             iconpath = os.path.join(directories.getDataDir(), 'favicon.png')
