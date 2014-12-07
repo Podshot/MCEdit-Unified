@@ -610,9 +610,10 @@ class RootWidget(Widget):
 
         music.music_end()
 
-    def resized(self, *args, **kwargs):
-        Widget.resized(self, *args, **kwargs)
-        print self.size
+    #-# Used for debugging the resize stuff.
+#    def resized(self, *args, **kwargs):
+#        Widget.resized(self, *args, **kwargs)
+#        print self.size
 
 #---------------------------------------------------------------------------
 

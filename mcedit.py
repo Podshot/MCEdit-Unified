@@ -767,18 +767,24 @@ class MCEdit(GLViewport):
         if not self.editor.renderer.render:
             self.editor.renderer.render = True
 
-        #surf = pygame.display.get_surface()
-        #assert isinstance(surf, pygame.Surface)
-        #dw, dh = surf.get_size()
+        dis = None
+        if sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            dis = mcplatform.Xlib.display.Display()
+            win = dis.create_resource_object('window', display.get_wm_info()['window'])
+            geom = win.query_tree().parent.get_geometry()
 
         if w >= 1000 and h >= 700:
             config.settings.windowWidth.set(w)
             config.settings.windowHeight.set(h)
             config.save()
+            if dis:
+                win.configure(height=geom.height, width=geom.width)
         elif w !=0 and h !=0:
             config.settings.windowWidth.set(1000)
             config.settings.windowHeight.set(700)
             config.save()
+            if dis:
+                win.configure(height=700, width=1000)
         if dw > 20 or dh > 20:
             if not hasattr(self, 'resizeAlert'):
                 self.resizeAlert = self.shouldResizeAlert
@@ -786,6 +792,8 @@ class MCEdit(GLViewport):
                 albow.alert(
                     "Window size increased. You may have problems using the cursor until MCEdit is restarted.")
                 self.resizeAlert = False
+        if dis:
+            dis.sync()
 
     shouldResizeAlert = config.settings.shouldResizeAlert.property()
 
