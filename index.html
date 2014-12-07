@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/stylesheet.css">
-    <link rel="shortcut icon" href="favicon.ico">
+	<link rel="shortcut icon" href="favicon.ico">
 
 	<script>
 		function pageTrigger() {
@@ -71,21 +71,39 @@
 				<div class="jumbotron" style="height:320px;text-align:center;" id="downloads">
 					<div class="row">
 						<div class="col-md-3 col-md-offset-3">
-							<i class="fa fa-apple fa-5x"></i>
-							<br><br>Mac OS X<br><br>
+							<span class="hidden-xs hidden-sm">
+								<i class="fa fa-apple fa-5x"></i>
+								<br><br><span style="font-size:16pt">Mac OS X</span><br><br>
+							</span>
+							<span class="hidden-md hidden-lg">
+								<i class="fa fa-apple fa-2x"></i>
+								<span style="font-size:16pt">&nbsp;Mac OS X<br></span>
+							</span>
 							<span id="OSX-downloads">
 
 							</span>
 						</div>
 						<div class="col-md-3">
-							<i class="fa fa-windows fa-5x"></i>
-							<br><br>Windows<br><br>
+							<span class="hidden-xs hidden-sm">
+								<i class="fa fa-windows fa-5x"></i>
+								<br><br><span style="font-size:16pt">Windows</span><br><br>
+							</span>
+							<span class="hidden-md hidden-lg">
+								<br><br>
+								<i class="fa fa-windows fa-2x"></i>
+								<span style="font-size:16pt">&nbsp;Windows<br></span>
+							</span>
 							<span id="Win-downloads">
 
 							</span>
 						</div>
 					</div>
-					<div class="row" style="position:absolute;bottom:40px;">
+					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:40px;">
+						<div class="col-md-12">
+							<i class="fa fa-linux"></i> Linux requires <a href="http://github.com/Khroki/MCEdit-Unified/releases">running from source.</a>
+						</div>
+					</div>
+					<div class="row hidden-md hidden-lg" style="position:absolute;bottom:0px;">
 						<div class="col-md-12">
 							<i class="fa fa-linux"></i> Linux requires <a href="http://github.com/Khroki/MCEdit-Unified/releases">running from source.</a>
 						</div>
