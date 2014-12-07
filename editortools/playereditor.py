@@ -5,6 +5,7 @@ from albow import resource
 from pymclevel.items import items
 import thumbview
 from blockview import BlockButton
+from itemview import ItemButton
 from glbackground import GLBackground
 
 
@@ -107,7 +108,7 @@ class Inventory(Dialog):
         lbl = Label(self.player)
 
         armorbar = Column(self.armor, spacing=d, align='c')
-        options = BlockButton(self.materials)
+        options = ItemButton(self.materials)
 
         top = Row([armorbar, options], spacing=d, align='c')
 
