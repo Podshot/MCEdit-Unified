@@ -1,9 +1,9 @@
 {
-	"root": "./",
+	"root": "http://khroki.github.io/MCEdit-Unified/",
 	"navbar": [
 		{
 			"displayname": "Home",
-			"url": "."
+			"url": "index.html"
 		},
 		{
 			"displayname": "About",
