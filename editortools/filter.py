@@ -121,7 +121,6 @@ class FilterModuleOptions(Widget):
         cols = []
         height = 0
         max_height = self.tool.editor.mainViewport.height - self.tool.updatePanel.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
-        print max_height
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
@@ -231,7 +230,6 @@ class FilterModuleOptions(Widget):
                 raise ValueError(("Unknown option type", optionType))
 
         height = sum(r.height for r in rows) + (len(rows) -1) * self.spacing
-        print height
 
         if height > max_height:
             h = 0
@@ -271,6 +269,7 @@ class FilterToolPanel(Panel):
         Panel.__init__(self)
 
         self.savedOptions = {}
+        self._recording = False
 
         self.tool = tool
         self.selectedFilterName = None
@@ -290,14 +289,23 @@ class FilterToolPanel(Panel):
 
         if self.selectedFilterName is None or self.selectedFilterName not in tool.filterNames:
             self.selectedFilterName = tool.filterNames[0]
-
+        
+        tool.names_list = []
+        for name in tool.filterNames:
+            if name.startswith("[Macro]"):
+                name = name.replace("[Macro]", "")
+            tool.names_list.append(name)
         self.filterSelect = ChoiceButton(tool.filterNames, choose=self.filterChanged)
         self.filterSelect.selectedChoice = self.selectedFilterName
+        
+        if not self._recording:
+            self.macro_button = Button("Record a Macro", action=self.start_record_macro)
+            
 
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
         filterLabel.tooltipText = "Click to open filters folder"
-        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect))
+        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button))
 
         self.confirmButton = Button("Filter", action=self.tool.confirm)
 
@@ -325,9 +333,39 @@ class FilterToolPanel(Panel):
             self.filterOptionsPanel.options = self.savedOptions[self.selectedFilterName]
 
     def filterChanged(self):
+        print "Filter Selected: "+self.filterSelect.selectedChoice
         self.saveOptions()
         self.selectedFilterName = self.filterSelect.selectedChoice
         self.reload()
+        
+
+    def stop_record_macro(self):
+        self.macro_button.text = "Record a Macro"
+        self.macro_button.tooltipText = ""
+        self.macro_button.action = self.start_record_macro
+        self._recording = False
+        import json
+        for entry in self.macro_steps:
+            print str(entry["Step"])+": "+str(entry["Name"])
+        pass
+    
+    
+    def start_record_macro(self):
+        self.macro_steps = []
+        self.current_step = 0
+        self.macro_button.text = "Stop recording"
+        self.macro_button.tooltipText = "Currently recording a macro"
+        self.macro_button.action = self.stop_record_macro
+        self._recording = True
+        pass
+    
+    def addMacroStep(self, name=None, inputs=None):
+        data = {}
+        data["Name"] = name
+        data["Step"] = self.current_step
+        data["Inputs"] = inputs
+        self.current_step = self.current_step + 1
+        self.macro_steps.append(data)
 
     filterOptionsPanel = None
 
@@ -337,12 +375,13 @@ class FilterToolPanel(Panel):
 
 
 class FilterOperation(Operation):
-    def __init__(self, editor, level, box, filter, options):
+    def __init__(self, editor, level, box, filter, options, panel):
         super(FilterOperation, self).__init__(editor, level)
         self.box = box
         self.filter = filter
         self.options = options
         self.canUndo = False
+        self.panel = panel
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -350,8 +389,11 @@ class FilterOperation(Operation):
             return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
-
-        self.filter.perform(self.level, BoundingBox(self.box), self.options)
+        
+        if not self.panel._recording:
+            self.filter.perform(self.level, BoundingBox(self.box), self.options)
+        else:
+            self.panel.addMacroStep(name=self.panel.filterSelect.selectedChoice, inputs=self.options)
 
         self.canUndo = True
         pass
@@ -485,10 +527,10 @@ class FilterTool(EditorTool):
             filterModule = self.filterModules[self.panel.filterSelect.selectedChoice]
 
             op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), filterModule,
-                                 self.panel.filterOptionsPanel.options)
+                                 self.panel.filterOptionsPanel.options, self.panel)
 
             self.editor.level.showProgress = showProgress
-
+            
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
