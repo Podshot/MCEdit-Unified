@@ -30,6 +30,7 @@ class BO2:
                 self.__blocks[block[0]] = block[1]
             for location in  self.__blocks.keys():
                 location = location.split(",")
+                self.__fixedLocation.append(location[1]+","+location[2]+","+location[0])
                 # Format is Y,X,Z where 'Z' is elevation. WHO DECIDED THAT?!?
             print self.__blocks
         pass
