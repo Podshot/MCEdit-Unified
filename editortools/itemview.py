@@ -45,7 +45,7 @@ class ItemView(GLOrtho):
                                                      - 1, 1,
                                                      1, 1,
                                                      1, -1, ], dtype='float32'))
-        texOrigin = array(self.materials.blockTextures[id_, data, 0])
+        texOrigin = array(self.materials.blockTextures[items.items[id_]["id"], data, 0])
         texOrigin *= pixelScale
 
         GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, array([texOrigin[0], texOrigin[1] + texSize,
