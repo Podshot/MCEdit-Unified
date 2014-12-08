@@ -4,7 +4,9 @@ import os
 
 class BO3:
     
-    def __init__(self):
+    def __init__(self,filename=''):
+        if filename != '':
+            pass
         pass
 def parse_bo3(bo3_file):
     pass
@@ -17,7 +19,7 @@ class BO2:
     
     def __init__(self, filename=''):
         self.__meta = {}
-        self.__rawBlocks = {}
+        self.__blocks = {}
         if filename != '':
             self._parser.read(filename)
             self.__version = self._parser.get('META', 'version')
@@ -25,10 +27,10 @@ class BO2:
                 self.__meta[item[0]] = item[1]
                 
             for block in self._parser.items("DATA"):
-                self.__rawBlocks[block[0]] = block[1]
+                self.__blocks[block[0]] = block[1]
                 
             # Format is Y,X,Z where 'Z' is elevation. WHO DECIDED THAT?!?
-            print self.__rawBlocks
+            print self.__blocks
         pass
     
     @property
