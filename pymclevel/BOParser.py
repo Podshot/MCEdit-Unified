@@ -13,26 +13,22 @@ def save_bo3(bo3_file):
     pass
 
 class BO2:
-    parser = ConfigParser.RawConfigParser()
+    _parser = ConfigParser.RawConfigParser()
     
     def __init__(self, filename=''):
         self.__meta = {}
         self.__rawBlocks = {}
-        self.__fixedBlocks = {}
-        self.__rawLocations = []
-        self.__fixedLocation = []
         if filename != '':
-            self.parser.read(filename)
-            self.__version = self.parser.get('META', 'version')
-            for item in self.parser.items("META"):
+            self._parser.read(filename)
+            self.__version = self._parser.get('META', 'version')
+            for item in self._parser.items("META"):
                 self.__meta[item[0]] = item[1]
-            for block in self.parser.items("DATA"):
-                self.__blocks[block[0]] = block[1]
-            for location in  self.__blocks.keys():
-                location = location.split(",")
-                self.__fixedLocation.append(location[1]+","+location[2]+","+location[0])
-                # Format is Y,X,Z where 'Z' is elevation. WHO DECIDED THAT?!?
-            print self.__blocks
+                
+            for block in self._parser.items("DATA"):
+                self.__rawBlocks[block[0]] = block[1]
+                
+            # Format is Y,X,Z where 'Z' is elevation. WHO DECIDED THAT?!?
+            print self.__rawBlocks
         pass
     
     @property
