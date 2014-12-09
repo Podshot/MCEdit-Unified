@@ -257,7 +257,7 @@ class CameraViewport(GLViewport):
 
     def tickCamera(self, frameStartTime, inputs, inSpace):
         timePassed = (frameStartTime - self.lastTick).microseconds
-        if timePassed <= self.tickInterval * 1000:
+        if timePassed <= self.tickInterval * 1000 or not pygame.key.get_focused():
             return
 
         self.lastTick = frameStartTime
@@ -2903,6 +2903,8 @@ class LevelEditor(GLViewport):
             self.testBoardKey = 0
 
     def key_down(self, evt):
+        if not pygame.key.get_focused():
+            return
         self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         try:
