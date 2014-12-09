@@ -200,7 +200,8 @@ class RootWidget(Widget):
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
-                    if (self.shiftClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.shiftClicked >= 250 and self.mcedit.editor.focus_switch != None):
+                    print self.shiftClicked
+                    if (self.shiftClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.shiftClicked >= 3 and self.mcedit.editor.focus_switch != None):
                         events.append(self.shiftAction)
                         self.shiftPlaced = len(events)-1
                         self.shiftClicked = 1
@@ -208,7 +209,7 @@ class RootWidget(Widget):
                         self.shiftClicked += 1
                     else:
                         self.shiftPlaced = -2
-                    if (self.altClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.altClicked >= 250 and self.mcedit.editor.focus_switch != None):
+                    if (self.altClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.altClicked >= 3 and self.mcedit.editor.focus_switch != None):
                         events.append(self.altAction)
                         self.altPlaced = len(events)-1
                         self.altClicked = 1
@@ -216,7 +217,7 @@ class RootWidget(Widget):
                         self.altClicked += 1
                     else:
                         self.altPlaced = -2
-                    if (self.ctrlClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.ctrlClicked >= 250 and self.mcedit.editor.focus_switch != None):
+                    if (self.ctrlClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.ctrlClicked >= 3 and self.mcedit.editor.focus_switch != None):
                         events.append(self.ctrlAction)
                         self.ctrlPlaced = len(events)-1
                         self.ctrlClicked = 1
