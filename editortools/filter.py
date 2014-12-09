@@ -339,25 +339,28 @@ class FilterToolPanel(Panel):
             self.filterOptionsPanel.options = self.savedOptions[self.selectedFilterName]
 
 
+    def run_macro(self):
+        self.tool.run_macro(self.macro_data)
+    
+    
     def reload_macro(self):
         for i in list(self.subwidgets):
             self.remove(i)
-        macro_data = self.macro_json["Macros"][self.selectedFilterName.replace("[Macro] ", "")]
-        print macro_data
+        self.macro_data = self.macro_json["Macros"][self.selectedFilterName.replace("[Macro] ", "")]
         self.filterOptionsPanel = None
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
         filterLabel.tooltipText = "Click to open filters folder"
         self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button))
-        self.confirmButton = Button("Run Macro", action=self.tool.confirm)
+        self.confirmButton = Button("Run Macro", action=self.run_macro)
         
         self.filterOptionsPanel = Widget()
         infoColList = []
-        stepsLabel = wrapped_label("Number of steps: "+str(macro_data["Number of steps"]), 300)
+        stepsLabel = wrapped_label("Number of steps: "+str(self.macro_data["Number of steps"]), 300)
         infoColList.append(stepsLabel)
-        for step in sorted(macro_data.keys()):
+        for step in sorted(self.macro_data.keys()):
             if step != "Number of steps":
-                infoColList.append(wrapped_label("Step "+str(int(step)+1)+": "+str(macro_data[step]["Name"]),300))
+                infoColList.append(wrapped_label("Step "+str(int(step)+1)+": "+str(self.macro_data[step]["Name"]),300))
         self.filterOptionsPanel.add(Column(infoColList))
         self.filterOptionsPanel.shrink_wrap()
         
@@ -618,3 +621,21 @@ class FilterTool(EditorTool):
             self.editor.addUnsavedEdit()
 
             self.editor.invalidateBox(self.selectionBox())
+            
+    def run_macro(self, macro_steps):
+        
+        with setWindowCaption("APPYLING FILTER MACRO - "):
+            for step in sorted(macro_steps.keys()):
+                if step != "Number of steps":
+                    modul = self.filterModules[macro_steps[step]["Name"]]
+                    
+                    op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), modul,
+                                         macro_steps[step]["Inputs"], self.panel)
+                    
+                    self.editor.level.showProgress = showProgress
+                    
+                    self.editor.addOperation(op)
+                    
+            self.editor.addUnsavedEdit()
+            self.editor.invalidateBox(self.selectionBox())
+            
