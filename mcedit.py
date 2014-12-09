@@ -264,15 +264,10 @@ class graphicsPanel(Dialog):
                                                    ref=config.settings.enableMouseLag,
                                                  tooltipText="Enable choppy mouse movement for faster loading.")
 
-#        self.resourcePackButton = mceutils.ChoiceButton(map(str,resource_packs.packs.get_available_resource_packs()), choose=self.change_texture)
-#        self.resourcePackButton = mceutils.ChoiceButton(resource_packs.packs.get_available_resource_packs(), choose=self.change_texture)
         packs = resource_packs.packs.get_available_resource_packs()
-#        if not DEF_ENC.startswith('UTF'):
-#            for i in range(len(packs)):
-#                try:
-#                    packs[i] = packs[i].encode(DEF_ENC)
-#                except:
-#                    pass
+        packs.remove('Default')
+        packs.sort()
+        packs.insert(0, 'Default')
         self.resourcePackButton = mceutils.ChoiceButton(packs, choose=self.change_texture)
         self.resourcePackButton.selectedChoice = resource_packs.packs.get_selected_resource_pack_name()
 

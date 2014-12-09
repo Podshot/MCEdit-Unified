@@ -522,9 +522,7 @@ class IResourcePack:
             for texy in xrange(0,33):
                 self.all_texture_slots.append((step(texx),step(texy)))
         self._terrain_name = self._pack_name.replace(" ", "_")+".png"
-#        self._terrain_path = "terrain-textures"+os.path.sep+self._terrain_name.replace(" ", "_")
         self._terrain_path = os.path.join("terrain-textures", self._terrain_name.replace(" ", "_"))
-#        print repr(self._terrain_path)
 
     @property
     def pack_name(self):
@@ -561,7 +559,6 @@ class IResourcePack:
                 new_terrain.paste(image, slot, image)
                 self.propogated_textures.append(slot)
             except Exception, e:
-                # print e
                 pass
         copy = self.old_terrain.copy()
 
@@ -604,10 +601,10 @@ class ZipResourcePack(IResourcePack):
         for name in zfile.infolist():
             if name.filename.endswith(".png"):
                 if name.filename.startswith("assets/minecraft/textures/blocks"):
-                    block_name = name.filename.split(os.path.sep)[-1]
+                    block_name = os.path.normpath(name.filename).split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
                     zfile.extract(name.filename, self.texture_path)
-                    possible_texture = Image.open(os.path.join(self.texture_path, name.filename))
+                    possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
                     if possible_texture.size == (16, 16):
                         self.block_image[block_name] = possible_texture
                         if block_name.startswith("repeater_") or block_name.startswith("comparator_"):
@@ -735,6 +732,7 @@ def setup_resource_packs():
     except OSError:
         pass
     terrains["Default"] = DefaultResourcePack()
+    
     if os.path.exists(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")):
         zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")
         folderResourcePacks = os.listdir(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")))
@@ -769,15 +767,6 @@ class ResourcePackHandler:
             pass
         self._resource_packs = setup_resource_packs()
         self._selected_resource_pack = config.settings.resourcePack.get()
-        # if DEF_ENC == "UTF-8" and type(self._selected_resource_pack) == str:
-        #     self._selected_resource_pack = self._selected_resource_pack.decode(DEF_ENC)
-        # else:
-        #     try:
-        #         self._selected_resource_pack = self._selected_resource_pack.encode(DEF_ENC)
-        #         if self._selected_resource_pack.startswith("u'"):
-        #             self._selected_resource_pack = eval(self._selected_resource_pack)
-        #     except Exception, e:
-        #         print e
         if self._selected_resource_pack not in self._resource_packs.keys():
             self.set_selected_resource_pack_name("Default")
 
