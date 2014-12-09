@@ -295,7 +295,12 @@ class FilterToolPanel(Panel):
             if name.startswith("[Macro]"):
                 name = name.replace("[Macro]", "")
             tool.names_list.append(name)
-        self.filterSelect = ChoiceButton(tool.filterNames, choose=self.filterChanged)
+        if os.path.exists(os.path.join(directories.getCacheDir(), "macros.json")):
+            self.macro_json = json.load(open(os.path.join(directories.getCacheDir(), "macros.json"), 'rb'))
+            for saved_macro in self.macro_json["Macros"].keys():
+                name = "[Macro] "+saved_macro
+                tool.names_list.append(name)
+        self.filterSelect = ChoiceButton(tool.names_list, choose=self.filterChanged)
         self.filterSelect.selectedChoice = self.selectedFilterName
         
         if not self._recording:
@@ -306,8 +311,9 @@ class FilterToolPanel(Panel):
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
         filterLabel.tooltipText = "Click to open filters folder"
         self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button))
-
-        self.confirmButton = Button("Filter", action=self.tool.confirm)
+        
+        if not self._recording:
+            self.confirmButton = Button("Filter", action=self.tool.confirm)
 
         self.filterOptionsPanel = None
         while self.filterOptionsPanel is None:
@@ -332,11 +338,47 @@ class FilterToolPanel(Panel):
         if self.selectedFilterName in self.savedOptions:
             self.filterOptionsPanel.options = self.savedOptions[self.selectedFilterName]
 
+
+    def reload_macro(self):
+        for i in list(self.subwidgets):
+            self.remove(i)
+        macro_data = self.macro_json["Macros"][self.selectedFilterName.replace("[Macro] ", "")]
+        print macro_data
+        self.filterOptionsPanel = None
+        filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
+        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
+        filterLabel.tooltipText = "Click to open filters folder"
+        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button))
+        self.confirmButton = Button("Run Macro", action=self.tool.confirm)
+        
+        self.filterOptionsPanel = Widget()
+        infoColList = []
+        stepsLabel = wrapped_label("Number of steps: "+str(macro_data["Number of steps"]), 300)
+        infoColList.append(stepsLabel)
+        for step in sorted(macro_data.keys()):
+            if step != "Number of steps":
+                infoColList.append(wrapped_label("Step "+str(int(step)+1)+": "+str(macro_data[step]["Name"]),300))
+        self.filterOptionsPanel.add(Column(infoColList))
+        self.filterOptionsPanel.shrink_wrap()
+        
+        self.add(Column((filterSelectRow, self.filterOptionsPanel, self.confirmButton)))
+
+        self.shrink_wrap()
+        if self.parent:
+            self.centery = self.parent.centery
+        pass
+    
+    
     def filterChanged(self):
         print "Filter Selected: "+self.filterSelect.selectedChoice
-        self.saveOptions()
-        self.selectedFilterName = self.filterSelect.selectedChoice
-        self.reload()
+        if not self.filterSelect.selectedChoice.startswith("[Macro]"):
+            self.saveOptions()
+            self.selectedFilterName = self.filterSelect.selectedChoice
+            self.reload()
+        else:
+            self.saveOptions()
+            self.selectedFilterName = self.filterSelect.selectedChoice
+            self.reload_macro()
         
 
     def set_save(self):
@@ -346,8 +388,6 @@ class FilterToolPanel(Panel):
     
     def stop_record_macro(self):
         
-        def serialize():
-            pass
         self.macro_diag = Dialog()
         macroNameLabel = Label("Macro Name: ")
         macroNameField = TextField()
@@ -363,9 +403,13 @@ class FilterToolPanel(Panel):
         self.macro_button.action = self.start_record_macro
         self._recording = False
         if self._save_macro:
-            #if os.path.exists(os.path.join(directories.getCacheDir(), "macros.json")):
-            if False:
-                macro_dict = json.load(open(os.path.join(directories.getCacheDir(), "macros.json")), 'rb')
+            if os.path.exists(os.path.join(directories.getCacheDir(), "macros.json")):
+                try:
+                    macro_dict = json.load(open(os.path.join(directories.getCacheDir(), "macros.json"), 'rb'))
+                except ValueError:
+                    macro_dict = {}
+                    macro_dict["Macros"] = {}
+                    self.tool
             else:
                 macro_dict = {}
                 macro_dict["Macros"] = {}
@@ -377,11 +421,11 @@ class FilterToolPanel(Panel):
                 for inp in entry["Inputs"].keys():
                     print "Type: "+str(type(entry["Inputs"][inp]))
                     if isinstance(entry["Inputs"][inp], pymclevel.materials.Block) or entry["Inputs"][inp] == "blocktype":
-                        
-                        pass
-                #macro_dict["Macros"][macroNameField.get_text()][entry["Step"]] = {"Name":entry["Name"],"Inputs":inputs}
-            #with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
-            #    json.dump(macro_dict, f)
+                        print str(entry["Inputs"][inp].ID)+":"+str(entry["Inputs"][inp].blockData)
+                        entry["Inputs"][inp] = "block-"+str(entry["Inputs"][inp].ID)+":"+str(entry["Inputs"][inp].blockData)
+                macro_dict["Macros"][macroNameField.get_text()][entry["Step"]] = {"Name":entry["Name"],"Inputs":entry["Inputs"]}
+            with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
+                json.dump(macro_dict, f)
             
         pass
     
@@ -392,6 +436,7 @@ class FilterToolPanel(Panel):
         self.macro_button.text = "Stop recording"
         self.macro_button.tooltipText = "Currently recording a macro"
         self.macro_button.action = self.stop_record_macro
+        self.confirmButton.text = "Add macro"
         self._recording = True
         pass
     
