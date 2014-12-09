@@ -200,7 +200,6 @@ class RootWidget(Widget):
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
-                    print self.shiftClicked
                     if (self.shiftClicked >= 1 and self.mcedit.editor.focus_switch == None) or (self.shiftClicked >= 3 and self.mcedit.editor.focus_switch != None):
                         events.append(self.shiftAction)
                         self.shiftPlaced = len(events)-1
