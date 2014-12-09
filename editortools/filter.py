@@ -24,7 +24,7 @@ from glbackground import Panel
 from mceutils import ChoiceButton, alertException, setWindowCaption, showProgress, TextInputRow
 import mcplatform
 from operation import Operation
-from albow.dialogs import wrapped_label, alert
+from albow.dialogs import wrapped_label, alert, Dialog
 import pymclevel
 from pymclevel import BoundingBox
 import urllib2
@@ -339,14 +339,50 @@ class FilterToolPanel(Panel):
         self.reload()
         
 
+    def set_save(self):
+        self._save_macro = True
+        self.macro_diag.dismiss()
+    
+    
     def stop_record_macro(self):
+        
+        def serialize():
+            pass
+        self.macro_diag = Dialog()
+        macroNameLabel = Label("Macro Name: ")
+        macroNameField = TextField()
+        input_row = Row((macroNameLabel, macroNameField))
+        saveButton = Button("Save", action=self.set_save)
+        closeButton = Button("Close", action=self.macro_diag.dismiss)
+        button_row = Row((saveButton, closeButton))
+        self.macro_diag.add(Column((input_row, button_row)))
+        self.macro_diag.shrink_wrap()
+        self.macro_diag.present()
         self.macro_button.text = "Record a Macro"
         self.macro_button.tooltipText = ""
         self.macro_button.action = self.start_record_macro
         self._recording = False
-        import json
-        for entry in self.macro_steps:
-            print str(entry["Step"])+": "+str(entry["Name"])
+        if self._save_macro:
+            #if os.path.exists(os.path.join(directories.getCacheDir(), "macros.json")):
+            if False:
+                macro_dict = json.load(open(os.path.join(directories.getCacheDir(), "macros.json")), 'rb')
+            else:
+                macro_dict = {}
+                macro_dict["Macros"] = {}
+            macro_dict["Macros"][macroNameField.get_text()] = {}
+            for entry in self.macro_steps:
+                print str(entry["Step"])+": "+str(entry["Name"])
+                print macroNameField.get_text()
+                print "Inputs: "+str(entry["Inputs"])
+                for inp in entry["Inputs"].keys():
+                    print "Type: "+str(type(entry["Inputs"][inp]))
+                    if isinstance(entry["Inputs"][inp], pymclevel.materials.Block) or entry["Inputs"][inp] == "blocktype":
+                        
+                        pass
+                #macro_dict["Macros"][macroNameField.get_text()][entry["Step"]] = {"Name":entry["Name"],"Inputs":inputs}
+            #with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
+            #    json.dump(macro_dict, f)
+            
         pass
     
     
