@@ -560,6 +560,8 @@ class CameraViewport(GLViewport):
         mobs = self.mobs
 
         tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
+
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
             tileEntity["id"] = pymclevel.TAG_String("MobSpawner")
@@ -570,7 +572,6 @@ class CameraViewport(GLViewport):
             tileEntity["EntityId"] = pymclevel.TAG_String(mobs[0])
 
         self.editor.level.addTileEntity(tileEntity)
-        self.editor.addUnsavedEdit()
 
         panel = Dialog()
 
@@ -618,13 +619,42 @@ class CameraViewport(GLViewport):
         panel.shrink_wrap()
         panel.present()
 
-        tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+        class MonsterSpawnerEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+        if id != selectedMob():
+            tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+            op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
+            self.editor.addOperation(op)
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
 
     @mceutils.alertException
     def editSign(self, point):
 
         block = self.editor.level.blockAt(*point)
         tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         linekeys = ["Text" + str(i) for i in range(1, 5)]
 
@@ -670,12 +700,42 @@ class CameraViewport(GLViewport):
             currentField.text += c  # xxx view hierarchy
             currentField.insertion_point = len(currentField.text)
 
-        def changeSign():
-            self.editor.addUnsavedEdit()
-            for l, f in zip(linekeys, lineFields):
-                tileEntity[l] = pymclevel.TAG_String(f.value[:15])
-            panel.dismiss()
+        class SignEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
 
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+        def changeSign():
+            unsavedChanges = False
+            for l, f in zip(linekeys, lineFields):
+                oldText = "{}".format(tileEntity[l])
+                tileEntity[l] = pymclevel.TAG_String(f.value[:15])
+                if "{}".format(tileEntity[l]) != oldText and not unsavedChanges:
+                    unsavedChanges = True
+            if unsavedChanges:
+            	op = SignEditOperation(self.editor, self.editor.level)
+                self.editor.addOperation(op)
+                if op.canUndo:
+                    self.editor.addUnsavedEdit()
+            panel.dismiss()
 
         colorMenu = mceutils.MenuButton("Color Code...", colors, menu_picked=menu_picked)
 
@@ -690,6 +750,7 @@ class CameraViewport(GLViewport):
         block = self.editor.level.blockAt(*point)
         blockData = self.editor.level.blockDataAt(*point)
         tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
         skullTypes = {
             "Skeleton": 0,
             "Wither Skeleton": 1,
@@ -729,14 +790,40 @@ class CameraViewport(GLViewport):
 
         oldUserName = usernameField.value
         skullMenu.selectedChoice = inverseSkullType[tileEntity["SkullType"].value]
+        oldSelectedSkull = skullMenu.selectedChoice
+
+        class SkullEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateSkull():
-            if usernameField.value != oldUserName:
-                if usernameField.value != "":
-                    tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
-                    tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullMenu.selectedChoice])
-                    if "Owner" in tileEntity:
-                        del tileEntity["Owner"]
+            if usernameField.value != oldUserName or oldSelectedSkull != skullMenu.selectedChoice:
+                tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
+                tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullMenu.selectedChoice])
+                if "Owner" in tileEntity:
+                    del tileEntity["Owner"]
+                op = SkullEditOperation(self.editor, self.editor.level)
+                self.editor.addOperation(op)
+                if op.canUndo:
                     self.editor.addUnsavedEdit()
 
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
@@ -757,6 +844,7 @@ class CameraViewport(GLViewport):
         block = self.editor.level.blockAt(*point)
         blockData = self.editor.level.blockDataAt(*point)
         tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
             tileEntity = pymclevel.TAG_Compound()
@@ -781,12 +869,39 @@ class CameraViewport(GLViewport):
         nameField.value = tileEntity["CustomName"].value
         oldNameField = nameField.value
 
+        class CommandBlockEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
         def updateCommandBlock():
             if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value:
                 tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
                 tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
                 tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
-                self.editor.addUnsavedEdit()
+                
+                op = CommandBlockEditOperation(self.editor, self.editor.level)
+                self.editor.addOperation(op)
+                if op.canUndo:
+                    self.editor.addUnsavedEdit()
 
             chunk = self.editor.level.getChunk(int(int(point[0])/16), int(int(point[2])/16))
             chunk.dirty = True
@@ -1005,6 +1120,7 @@ class CameraViewport(GLViewport):
             def __init__(self, tool, level):
                 self.tool = tool
                 self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
                 self.canUndo = False
 
             def perform(self, recordUndo=True):
@@ -1016,11 +1132,10 @@ class CameraViewport(GLViewport):
 
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntityTag)
-                level.addTileEntity(undoBackupEntityTag)
+                level.addTileEntity(self.undoBackupEntityTag)
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntityTag), (1, 1, 1))
 
             def redo(self):
-                self.undoBackupEntityTag = copy.deepcopy(tileEntityTag)
                 level.addTileEntity(self.redoBackupEntityTag)
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntityTag), (1, 1, 1))
 
