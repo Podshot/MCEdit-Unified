@@ -273,6 +273,7 @@ class FilterToolPanel(Panel):
 
         self.tool = tool
         self.selectedFilterName = None
+        self.usingMacro = False
         if len(self.tool.filterModules):
             self.reload()
 
@@ -340,10 +341,14 @@ class FilterToolPanel(Panel):
 
 
     def run_macro(self):
+        #for step in self.macro_data.keys():
+            #for inpu in self.macro_data[step]["Inputs"].keys():
+                #print inpu
         self.tool.run_macro(self.macro_data)
     
     
     def reload_macro(self):
+        self.usingMacro = True
         for i in list(self.subwidgets):
             self.remove(i)
         self.macro_data = self.macro_json["Macros"][self.selectedFilterName.replace("[Macro] ", "")]
@@ -429,6 +434,7 @@ class FilterToolPanel(Panel):
                 macro_dict["Macros"][macroNameField.get_text()][entry["Step"]] = {"Name":entry["Name"],"Inputs":entry["Inputs"]}
             with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
                 json.dump(macro_dict, f)
+        self.reload()
             
         pass
     
@@ -466,6 +472,7 @@ class FilterOperation(Operation):
         self.options = options
         self.canUndo = False
         self.panel = panel
+        self.wasMacroOperation = False
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -478,6 +485,8 @@ class FilterOperation(Operation):
             self.filter.perform(self.level, BoundingBox(self.box), self.options)
         else:
             self.panel.addMacroStep(name=self.panel.filterSelect.selectedChoice, inputs=self.options)
+            self.wasMacroOperation = True
+            
 
         self.canUndo = True
         pass
@@ -533,7 +542,8 @@ class FilterTool(EditorTool):
         self.editor.add(self.panel)
 
     def hidePanel(self):
-        self.panel.saveOptions()
+        if not self.panel.usingMacro:
+            self.panel.saveOptions()
         if self.panel.parent:
             self.panel.parent.remove(self.panel)
             self.updatePanel.parent.remove(self.updatePanel)
@@ -616,11 +626,12 @@ class FilterTool(EditorTool):
             self.editor.level.showProgress = showProgress
             
             self.editor.addOperation(op)
-            if op.canUndo:
+            if not op.wasMacroOperation:
+                if op.canUndo:
+                    self.editor.addUnsavedEdit()
                 self.editor.addUnsavedEdit()
-            self.editor.addUnsavedEdit()
 
-            self.editor.invalidateBox(self.selectionBox())
+                self.editor.invalidateBox(self.selectionBox())
             
     def run_macro(self, macro_steps):
         
@@ -635,7 +646,6 @@ class FilterTool(EditorTool):
                     self.editor.level.showProgress = showProgress
                     
                     self.editor.addOperation(op)
-                    
-            self.editor.addUnsavedEdit()
-            self.editor.invalidateBox(self.selectionBox())
+                    self.editor.addUnsavedEdit()
+                    self.editor.invalidateBox(self.selectionBox())
             
