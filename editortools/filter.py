@@ -371,7 +371,6 @@ class FilterToolPanel(Panel):
         self.shrink_wrap()
         if self.parent:
             self.centery = self.parent.centery
-        pass
     
     
     def filterChanged(self):
@@ -428,8 +427,6 @@ class FilterToolPanel(Panel):
             with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
                 json.dump(macro_dict, f)
         self.reload()
-            
-        pass
     
     
     def start_record_macro(self):
@@ -440,7 +437,6 @@ class FilterToolPanel(Panel):
         self.macro_button.action = self.stop_record_macro
         self.confirmButton = Button("Add macro", action=self.tool.confirm)
         self._recording = True
-        pass
     
     def addMacroStep(self, name=None, inputs=None):
         data = {}
