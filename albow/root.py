@@ -183,6 +183,7 @@ class RootWidget(Widget):
             num_clicks = 0
             last_click_time = start_time
             last_click_button = 0
+            self.bonus_draw_time = 0
 
             while modal_widget.modal_result is None:
                 try:
