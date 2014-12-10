@@ -419,14 +419,10 @@ class FilterToolPanel(Panel):
                 macro_dict = {}
                 macro_dict["Macros"] = {}
             macro_dict["Macros"][macroNameField.get_text()] = {}
+            macro_dict["Macros"][macroNameField.get_text()]["Number of steps"] = len(self.macro_steps)
             for entry in self.macro_steps:
-                print str(entry["Step"])+": "+str(entry["Name"])
-                print macroNameField.get_text()
-                print "Inputs: "+str(entry["Inputs"])
                 for inp in entry["Inputs"].keys():
-                    print "Type: "+str(type(entry["Inputs"][inp]))
                     if isinstance(entry["Inputs"][inp], pymclevel.materials.Block) or entry["Inputs"][inp] == "blocktype":
-                        print str(entry["Inputs"][inp].ID)+":"+str(entry["Inputs"][inp].blockData)
                         entry["Inputs"][inp] = "block-"+str(entry["Inputs"][inp].ID)+":"+str(entry["Inputs"][inp].blockData)
                 macro_dict["Macros"][macroNameField.get_text()][entry["Step"]] = {"Name":entry["Name"],"Inputs":entry["Inputs"]}
             with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
@@ -442,7 +438,7 @@ class FilterToolPanel(Panel):
         self.macro_button.text = "Stop recording"
         self.macro_button.tooltipText = "Currently recording a macro"
         self.macro_button.action = self.stop_record_macro
-        self.confirmButton.text = "Add macro"
+        self.confirmButton = Button("Add macro", action=self.tool.confirm)
         self._recording = True
         pass
     
