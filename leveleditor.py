@@ -2740,7 +2740,7 @@ class LevelEditor(GLViewport):
         if self.renderer.needsImmediateRedraw:
             self.invalidate()
 
-        if self.root.bonus_draw_time < 50:
+        if self.root.bonus_draw_time < self.renderer.viewDistance*3:
             frameDuration = self.getFrameDuration()
 
             while frameDuration > (datetime.now() - self.frameStartTime):
