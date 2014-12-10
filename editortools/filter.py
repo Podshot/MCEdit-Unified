@@ -374,7 +374,6 @@ class FilterToolPanel(Panel):
     
     
     def filterChanged(self):
-        print "Filter Selected: "+self.filterSelect.selectedChoice
         if not self.filterSelect.selectedChoice.startswith("[Macro]"):
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
