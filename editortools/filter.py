@@ -341,9 +341,6 @@ class FilterToolPanel(Panel):
 
 
     def run_macro(self):
-        #for step in self.macro_data.keys():
-            #for inpu in self.macro_data[step]["Inputs"].keys():
-                #print inpu
         self.tool.run_macro(self.macro_data)
     
     
@@ -460,7 +457,7 @@ class FilterToolPanel(Panel):
     filterOptionsPanel = None
 
     def saveOptions(self):
-        if self.filterOptionsPanel:
+        if self.filterOptionsPanel and not self.usingMacro:
             self.savedOptions[self.selectedFilterName] = self.filterOptionsPanel.options
 
 
@@ -633,13 +630,20 @@ class FilterTool(EditorTool):
 
                 self.editor.invalidateBox(self.selectionBox())
             
+    @alertFilterException
     def run_macro(self, macro_steps):
         
         with setWindowCaption("APPYLING FILTER MACRO - "):
             for step in sorted(macro_steps.keys()):
                 if step != "Number of steps":
                     modul = self.filterModules[macro_steps[step]["Name"]]
-                    
+                    for minput in macro_steps[step]["Inputs"].keys():
+                        if isinstance(macro_steps[step]["Inputs"][minput], (str, unicode)):
+                            if macro_steps[step]["Inputs"][minput].startswith("block-"):
+                                toFind = macro_steps[step]["Inputs"][minput].replace("block-","").split(":")
+                                for possible in pymclevel.alphaMaterials.allBlocks:
+                                    if possible.ID == int(toFind[0]) and possible.blockData == int(toFind[1]):
+                                        macro_steps[step]["Inputs"][minput] = possible
                     op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), modul,
                                          macro_steps[step]["Inputs"], self.panel)
                     
