@@ -391,6 +391,8 @@ class RootWidget(Widget):
                             if not is_modal:
                                 if self.redraw_every_frame:
                                     self.bonus_draw_time = 0
+                                else:
+                                    self.bonus_draw_time += 1
                                 if last_mouse_event_handler:
                                     event.dict['pos'] = last_mouse_event.pos
                                     event.dict['local'] = last_mouse_event.local
