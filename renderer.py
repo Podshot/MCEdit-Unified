@@ -3153,7 +3153,7 @@ def rendermain():
                                                                                     len(renderer.chunkRenderers))
 
     # display.init( (640, 480), OPENGL | DOUBLEBUF )
-    from mcedit import GLDisplayContext
+    from utilities.gl_display_context import GLDisplayContext
     from OpenGL import GLU
 
     cxt = GLDisplayContext()
