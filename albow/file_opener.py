@@ -48,7 +48,7 @@ class FileOpener(albow.Widget):
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
         helpColumn.anchor = "whrt"
-        #helpColumn.is_gl_container = True
+        # helpColumn.is_gl_container = True
         self.add(helpColumn)
 
         keysColumn = [albow.Label("")]
@@ -93,12 +93,12 @@ class FileOpener(albow.Widget):
         self.sideColumn = sideColumn
 
     def gl_draw_self(self, root, offset):
-        #self.mcedit.editor.mainViewport.setPerspective();
+        # self.mcedit.editor.mainViewport.setPerspective();
         self.mcedit.editor.drawStars()
 
     def idleevent(self, evt):
         self.mcedit.editor.doWorkUnit(onMenu=True)
-        #self.invalidate()
+        # self.invalidate()
 
     def key_down(self, evt):
         keyname = self.root.getKey(evt)

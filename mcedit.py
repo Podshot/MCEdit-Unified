@@ -31,12 +31,14 @@ from OpenGL import GL
 logger.setLevel(logging.DEBUG)
 
 logfile = 'mcedit.log'
-#if hasattr(sys, 'frozen'):
-#    if sys.platform == "win32":
-#        import esky
-#        app = esky.Esky(sys.executable)
+
+# if hasattr(sys, 'frozen'):
+#     if sys.platform == "win32":
+#         import esky
+#         app = esky.Esky(sys.executable)
+
+#         logfile = os.path.join(app.appdir, logfile)
 #
-#        logfile = os.path.join(app.appdir, logfile)
 if sys.platform == "darwin":
     logfile = os.path.expanduser("~/Library/Logs/mcedit.log")
 fh = logging.FileHandler(logfile, mode="w")
@@ -68,29 +70,29 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 import albow
-# TODO: Language Detection
 import locale
 DEF_ENC = locale.getdefaultlocale()[1]
-from albow.translate import _
-#!# for debugging
-from albow.translate import getPlatInfo
-#!#
+from albow.translate import _, getPlatInfo
+
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
+
 from config import config
-import directories
-#-#
+
 albow.resource.resource_dir = directories.getDataDir()
-#-#
+
+import panels
 import functools
 import glutils
 import leveleditor
-#-# Building translation template
+
+# Building translation template
 if "-tt" in sys.argv:
     albow.translate.buildTemplate = True
     albow.translate.loadTemplate()
-#-#
+
+
 import mceutils
 import mcplatform
 from mcplatform import platform_open
@@ -110,72 +112,6 @@ import traceback
 getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
 ESCAPE = '\033'
-
-
-class graphicsPanel(Dialog):
-    anchor = 'wh'
-
-    def __init__(self, mcedit):
-        Dialog.__init__(self)
-
-        self.mcedit = mcedit
-
-        fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
-                                                ref=config.settings.fov, width=100, min=25, max=120)
-
-        targetFPSRow = mceutils.IntInputRow("Target FPS: ",
-                                            ref=config.settings.targetFPS, width=100, min=1, max=60)
-
-        bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
-                                              ref=config.settings.vertexBufferLimit, width=100, min=0)
-
-        fastLeavesRow = mceutils.CheckBoxLabel("Fast Leaves",
-                                               ref=config.settings.fastLeaves,
-                                               tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
-
-        roughGraphicsRow = mceutils.CheckBoxLabel("Rough Graphics",
-                                                  ref=config.settings.roughGraphics,
-                                                  tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
-
-        enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
-                                                   ref=config.settings.enableMouseLag,
-                                                 tooltipText="Enable choppy mouse movement for faster loading.")
-
-        packs = resource_packs.packs.get_available_resource_packs()
-        packs.remove('Default')
-        packs.sort()
-        packs.insert(0, 'Default')
-        self.resourcePackButton = mceutils.ChoiceButton(packs, choose=self.change_texture)
-        self.resourcePackButton.selectedChoice = resource_packs.packs.get_selected_resource_pack_name()
-
-        settingsColumn = albow.Column((fastLeavesRow,
-                                       roughGraphicsRow,
-                                       enableMouseLagRow,
-                                       #                                  texturePackRow,
-                                       fieldOfViewRow,
-                                       targetFPSRow,
-                                       bufferLimitRow,
-                                       self.resourcePackButton,
-                                      ), align='r')
-
-        settingsColumn = albow.Column((albow.Label("Settings"),
-                                       settingsColumn))
-
-        settingsRow = albow.Row((settingsColumn,))
-
-        optionsColumn = albow.Column((settingsRow, albow.Button("OK", action=self.dismiss)))
-
-        self.add(optionsColumn)
-        self.shrink_wrap()
-
-    def _reloadTextures(self, pack):
-        if hasattr(pymclevel.alphaMaterials, "terrainTexture"):
-            self.mcedit.displayContext.loadTextures()
-
-    def change_texture(self):
-        resource_packs.packs.set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
-        self.mcedit.displayContext.loadTextures()
-    texturePack = config.settings.skin.property(_reloadTextures)
 
 
 class OptionsPanel(Dialog):
@@ -460,7 +396,7 @@ class MCEdit(GLViewport):
                 config.settings.langCode.set(lng)
             albow.translate.setLang(lng)
         self.optionsPanel.initComponents()
-        self.graphicsPanel = graphicsPanel(self)
+        self.graphicsPanel = panels.GraphicsPanel(self)
 
         self.keyConfigPanel = keys.KeyConfigPanel()
 
