@@ -188,7 +188,7 @@ class RootWidget(Widget):
             while modal_widget.modal_result is None:
                 try:
                     self.hover_widget = self.find_widget(pygame.mouse.get_pos())
-                    if self.bonus_draw_time < self.editor.renderer.viewDistance:
+                    if self.bonus_draw_time < 5:
                         self.bonus_draw_time += 1
                         if self.is_gl:
                             self.gl_clear()
