@@ -204,13 +204,6 @@ class BrushPanel(Panel):
         self.tool.saveBrushPreset('__temp__')
         self.tool.setupPreview()
         self.tool.showPanel()
-        if getattr(self.tool.brushMode, 'addPasteButton', False):
-            stack = self.tool.editor.copyStack
-            if len(stack) == 0:
-                self.tool.importPaste()
-            else:
-                self.tool.loadLevel(stack[0])
-
 
     def getBrushFileList(self):
         """
@@ -1003,13 +996,7 @@ class BrushTool(CloneTool):
                 alert("Failed to load file %s" % clipFilename)
                 self.brushMode = "Fill"
                 return
-        else:
-            self.brushMode = self.brushModes.values()[0]
-            self.selectedBrushMode = self.panel.brushModeButton.selectedChoice = self.brushModes.keys()[0]
-            self.setupPreview()
-            self.showPanel()
-        
-    
+
     def loadLevel(self, level):
         self.level = level
         self.options['Minimum Spacing'] = min([s / 4 for s in level.size])
