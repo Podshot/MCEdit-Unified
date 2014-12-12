@@ -580,10 +580,15 @@ class MCEdit(GLViewport):
             win = display.get_wm_info()['window']
             dis = mcplatform.Xlib.display.Display()
             win = dis.create_resource_object('window', win)
-            wParent = win.query_tree().parent.query_tree().parent
-            geom = wParent.get_geometry()
-            config.settings.windowX.set(geom.x)
-            config.settings.windowY.set(geom.y)
+            curDesk = os.environ.get('XDG_CURRENT_DESKTOP')
+            if curDesk == 'GNOME':
+                wParent = win.query_tree().parent.query_tree().parent
+            elif curDesk == 'KDE':
+                wParent = win.query_tree().parent.query_tree().parent.query_tree().parent
+            if wParent:
+                geom = wParent.get_geometry()
+                config.settings.windowX.set(geom.x)
+                config.settings.windowY.set(geom.y)
 
     def restart(self):
         self.saveWindowPosition()

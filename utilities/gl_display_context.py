@@ -65,11 +65,22 @@ class GLDisplayContext(object):
             config.settings.setWindowPlacement.set(True)
             config.save()
         elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            # Looks like KDE need to loose time or to instanciate Xlib atoms to get the right window to place at screen
+            # Keep this code untill the end of the 'for windowID in windowIDs' loop
+            dis = mcplatform.Xlib.display.Display()
+            root = dis.screen().root
+            windowIDs = root.get_full_property(dis.intern_atom('_NET_CLIENT_LIST'), mcplatform.Xlib.X.AnyPropertyType).value
+            for windowID in windowIDs:
+                window = dis.create_resource_object('window', windowID)
+                name = window.get_wm_name() # Title
+                pid = window.get_full_property(dis.intern_atom('_NET_WM_PID'), mcplatform.Xlib.X.AnyPropertyType) # PID
+
             dis = mcplatform.Xlib.display.Display()
             dRoot = dis.screen().root
             win = dRoot.get_full_property(dis.intern_atom('_NET_ACTIVE_WINDOW'), mcplatform.Xlib.X.AnyPropertyType).value[0]
             win = dis.create_resource_object('window', win)
             win.configure(x=config.settings.windowX.get(), y=config.settings.windowY.get())
+#            self.win = win
             dis.sync()
 
         try:
