@@ -202,6 +202,7 @@ class BrushPanel(Panel):
         self.tool.selectedBrushMode = self.brushModeButton.selectedChoice
         self.tool.brushMode = self.tool.brushModes[self.tool.selectedBrushMode]
         self.tool.saveBrushPreset('__temp__')
+        self.tool.setupPreview()
         self.tool.showPanel()
 
     def getBrushFileList(self):
