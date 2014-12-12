@@ -369,7 +369,6 @@ class CloneToolPanel(Panel):
                 r.margin=0
                 r.shrink_wrap()
                 height += r.height
-                print height, max_height, self.tool.editor.height
                 if height > max_height:
                     cls.append(Column(items[idx:i], spacing=2, margin=0))
                     idx = i

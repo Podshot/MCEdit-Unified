@@ -121,7 +121,6 @@ class FilterModuleOptions(Widget):
         cols = []
         height = 0
         max_height = self.tool.editor.mainViewport.height - self.tool.updatePanel.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
-        print max_height
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
@@ -231,7 +230,6 @@ class FilterModuleOptions(Widget):
                 raise ValueError(("Unknown option type", optionType))
 
         height = sum(r.height for r in rows) + (len(rows) -1) * self.spacing
-        print height
 
         if height > max_height:
             h = 0

@@ -219,7 +219,7 @@ def fromFile(filename, loadInfinite=True, readonly=False):
                 os.path.basename(filename)))
 
     if NewPocketWorld._isLevel(filename):
-        raise ValueError("Don't have Pocket Edition 9+ support yet!")
+        raise ValueError("Don't have Pocket Edition 0.9+ support yet!")
 
     if os.path.isdir(filename):
         raise ValueError("Folder {0} was not identified as a Minecraft level.".format(os.path.basename(filename)))
