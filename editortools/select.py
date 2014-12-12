@@ -1069,14 +1069,15 @@ class SelectionTool(EditorTool):
         points[pointNumber] = newPoint
         self.setSelectionPoints(points)
 
-    def setSelectionPoints(self, points):
+    def setSelectionPoints(self, points, changeSelection=True):
         if points:
             self.bottomLeftPoint, self.topRightPoint = [Vector(*p) if p else None for p in points]
         else:
             self.bottomLeftPoint = self.topRightPoint = None
 
-        self._selectionChanged()
-        self.editor.selectionChanged()
+        if changeSelection:
+            self._selectionChanged()
+            self.editor.selectionChanged()
 
     def _selectionChanged(self):
         if self.selectionBox():
@@ -1281,14 +1282,18 @@ class SelectionOperation(Operation):
         self.redoPoints = self.selectionTool.getSelectionPoints()
         points = self.points
         self.points = self.undoPoints
-        self.perform()
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        changeSelection = "select" in "{}".format(self.editor.currentTool) 
+        self.selectionTool.setSelectionPoints(self.points, changeSelection)
         self.points = points
 
     def redo(self):
         self.undoPoints = self.selectionTool.getSelectionPoints()
         points = self.points
         self.points = self.redoPoints
-        self.perform()
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        changeSelection = "select" in "{}".format(self.editor.currentTool) 
+        self.selectionTool.setSelectionPoints(self.points, changeSelection)
         self.points = points
 
 
