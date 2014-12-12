@@ -57,6 +57,7 @@ import mcplatform
 import pymclevel
 import renderer
 import directories
+import panels
 
 from math import isnan
 from os.path import dirname, isdir
@@ -86,7 +87,7 @@ from pymclevel.entity import Entity
 
 try:
     import resource  # @UnresolvedImport
-    resource.setrlimit(resource.RLIMIT_NOFILE, (500,-1))
+    resource.setrlimit(resource.RLIMIT_NOFILE, (500, -1))
 except:
     pass
 
@@ -94,61 +95,6 @@ except:
 
 
 arch = platform.architecture()[0]
-
-class ControlPanel(Panel):
-    @classmethod
-    def getHeader(cls):
-        header = Label("MCEdit {0} ({1})".format(release.get_version(), arch), font=get_font(18, "DejaVuSans-Bold.ttf"))
-        return header
-
-    def __init__(self, editor):
-        Panel.__init__(self)
-        self.editor = editor
-
-        self.bg_color = (0, 0, 0, 0.8)
-
-        header = self.getHeader()
-        keysColumn = [Label("")]
-        buttonsColumn = [header]
-
-        cmd = mcplatform.cmd_name
-        hotkeys = ([(config.keys.newWorld.get(), "Create New World",
-                     editor.mcedit.createNewWorld),
-                    (config.keys.quickLoad.get(), "Quick Load", editor.askLoadWorld),
-                    (config.keys.open.get(), "Open...", editor.askOpenFile),
-                    (config.keys.save.get(), "Save", editor.saveFile),
-                    (config.keys.reloadWorld.get(), "Reload", editor.reload),
-                    (config.keys.closeWorld.get(), "Close", editor.closeEditor),
-                    (config.keys.gotoPanel.get(), "Goto", editor.showGotoPanel),
-                    (config.keys.worldInfo.get(), "World Info", editor.showWorldInfo),
-                    (config.keys.undo.get(), "Undo", editor.undo),
-                    (config.keys.redo.get(), "Redo", editor.redo),
-                    (config.keys.selectAll.get(), "Select All", editor.selectAll),
-                    (config.keys.deselect.get(), "Deselect", editor.deselect),
-                    (config.keys.viewDistance.get(),
-                     AttrRef(editor, 'viewDistanceLabelText'), editor.swapViewDistance),
-                    (config.keys.quit.get(), "Quit", editor.quit),
-                   ])
-
-        buttons = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
-
-        sideColumn = editor.mcedit.makeSideColumn()
-
-        self.add(Row([buttons, sideColumn]))
-        self.shrink_wrap()
-
-    def key_down(self, evt):
-        if key.name(evt.key) == 'escape':
-            self.dismiss()
-        else:
-            self.editor.key_down(evt)
-
-    def key_up(self, evt):
-        self.editor.key_up(evt)
-
-    def mouse_down(self, e):
-        if e not in self:
-            self.dismiss()
 
 
 def unproject(x, y, z):
@@ -897,7 +843,7 @@ class CameraViewport(GLViewport):
                 tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
                 tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
                 tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
-                
+
                 op = CommandBlockEditOperation(self.editor, self.editor.level)
                 self.editor.addOperation(op)
                 if op.canUndo:
@@ -1789,9 +1735,8 @@ class LevelEditor(GLViewport):
         self.currentTool = None
         self.toolbar.selectTool(0)
 
-        self.controlPanel = ControlPanel(self)
+        self.controlPanel = panels.ControlPanel(self)
         self.controlPanel.topleft = mcEditButton.bottomleft
-
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
@@ -2166,7 +2111,7 @@ class LevelEditor(GLViewport):
         self.user_yon_response = False
 
     def addExternalWidget(self, provided_fields):
-        
+
         def addNumField(wid, name, val, minimum=None, maximum=None, increment=0.1):
             if isinstance(val, float):
                 ftype = FloatField
@@ -2187,7 +2132,7 @@ class LevelEditor(GLViewport):
             field._increment = increment
             wid.inputDict[name] = AttrRef(field, 'value')
             return Row([Label(name), field])
-    
+
         widget = Widget()
         rows = []
         cols = []
@@ -2206,10 +2151,10 @@ class LevelEditor(GLViewport):
                     elif len(inputType) == 4:
                         val, min, max, increment = inputType
                     rows.append(addNumField(widget, inputName, val, min, max, increment))
-                
+
                 if isinstance(inputType[0], (str, unicode)):
                     isChoiceButton = False
-                    
+
                     if inputType[0] == "string":
                         keywords = []
                         width = None
@@ -2241,14 +2186,14 @@ class LevelEditor(GLViewport):
                             value = ""
                         if width is None:
                             width = 200
-                            
+
                         field = TextField(value=value,width=width)
                         widget.inputDict[inputName] = AttrRef(field, 'value')
                         row = Row((Label(inputName), field))
                         rows.append(row)
                     else:
                         isChoiceButton = True
-                    
+
                     if isChoiceButton:
                         choiceButton = ChoiceButton(map(str, inputType))
                         widget.inputDict[inputName] = AttrRef(choiceButton, 'selectedChoice')
@@ -2258,21 +2203,21 @@ class LevelEditor(GLViewport):
                 widget.inputDict[inputName] = AttrRef(chkbox, 'value')
                 row = Row((Label(inputName),chkbox))
                 rows.append(row)
-                    
+
             elif isinstance(inputType, (int, float)):
                 rows.append(addNumField(widget, inputName, inputType))
-                    
+
             elif inputType == "blocktype" or isinstance(inputType, pymclevel.materials.Block):
                 blockButton = BlockButton(self.level.materials)
                 if isinstance(inputType, pymclevel.materials.Block):
                     blockButton.blockInfo = inputType
                 row = Column((Label(inputName), blockButton))
                 widget.inputDict[inputName] = AttrRef(blockButton, 'blockInfo')
-                    
+
                 rows.append(row)
             elif inputType == "label":
                 rows.append(wrapped_label(inputName, 50))
-                
+
             elif inputType == "string":
                 input = None
                 if input != None:
@@ -2300,7 +2245,7 @@ class LevelEditor(GLViewport):
 
         if len(cols):
             widget.add(Row(cols))
-        
+
         widget.shrink_wrap()
         result = Dialog(widget, ["Ok", "Cancel"]).present()
         if result == "Ok":
@@ -3037,7 +2982,7 @@ class LevelEditor(GLViewport):
             name = "option" + keyname[len(keyname) - 1:]
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
-            
+
         if "clone" in "{}".format(self.currentTool):
             blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
             if keyname.startswith(blocksOnlyModifier):
@@ -3046,7 +2991,7 @@ class LevelEditor(GLViewport):
             else:
                 tempKeyname = keyname
                 blocksOnly = False
-                
+
             if tempKeyname == config.keys.flip.get():
                 self.currentTool.flip(blocksOnly=False)
             if tempKeyname == config.keys.rollClone.get():
@@ -3069,7 +3014,7 @@ class LevelEditor(GLViewport):
             else:
                 tempKeyname = keyname
                 blocksOnly = False
-            
+
             if tempKeyname == config.keys.rotateBrush.get():
                 self.currentTool.rotate(blocksOnly)
             if tempKeyname == config.keys.rollBrush.get():
@@ -3293,7 +3238,7 @@ class LevelEditor(GLViewport):
             levelFormat = "Unknown"
         formatLabel = Label(levelFormat)
         items.append(Row([Label("Format:"),formatLabel]))
-        
+
         name = self.level.LevelName
         nameField = TextField(width=300, ref=AttrRef(self.level, 'LevelName'))
         def alt21():
@@ -3405,7 +3350,7 @@ class LevelEditor(GLViewport):
         if hasattr(self.level, 'RandomSeed'):
             if seed != self.level.RandomSeed:
                 self.addUnsavedEdit()
-        
+
         if hasattr(self.level, 'LevelName'):
             if name != self.level.LevelName:
                 self.addUnsavedEdit()

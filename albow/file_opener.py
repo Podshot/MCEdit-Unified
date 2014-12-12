@@ -1,7 +1,7 @@
 import os
 import logging
 
-import leveleditor
+import panels
 import pymclevel
 import albow
 import mceutils
@@ -52,7 +52,7 @@ class FileOpener(albow.Widget):
         self.add(helpColumn)
 
         keysColumn = [albow.Label("")]
-        buttonsColumn = [leveleditor.ControlPanel.getHeader()]
+        buttonsColumn = [panels.ControlPanel.getHeader()]
 
         shortnames = []
         for world in self.mcedit.recentWorlds():
