@@ -768,6 +768,8 @@ class BrushTool(CloneTool):
         Called by methods that need the size of the brush like createBrushMask
         """
         size = []
+        if getattr(self.brushMode, 'disableStyleButton', False):
+            return (1,1,1)
         for dim in ['W','H','L']:
             size.append(self.options[dim])
         return size
