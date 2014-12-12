@@ -2211,7 +2211,7 @@ class LevelEditor(GLViewport):
             changedBox = op.dirtyBox()
             if changedBox is not None:
                 self.invalidateBox(changedBox)
-            if ".SelectionOperation" not in "{}".format(op):
+            if ".SelectionOperation" not in "{}".format(op) and ".NudgeSelectionOperation" not in "{}".format(op):
                 self.removeUnsavedEdit()
 
         self.root.fix_sticky_ctrl()

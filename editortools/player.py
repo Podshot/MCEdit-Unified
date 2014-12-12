@@ -386,9 +386,7 @@ class PlayerPositionPanel(Panel):
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
-        print max_height
         max_height -= sum((a.height for a in (addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)))
-        print max_height
 
         tableview = TableView(columns=[
             TableColumn("Player Name(s):", 200),

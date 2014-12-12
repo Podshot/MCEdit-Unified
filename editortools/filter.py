@@ -492,6 +492,5 @@ class FilterTool(EditorTool):
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
-            self.editor.addUnsavedEdit()
 
             self.editor.invalidateBox(self.selectionBox())

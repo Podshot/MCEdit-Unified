@@ -493,7 +493,7 @@ class RootWidget(Widget):
                 if tempKeyname == key:
                     if self.usedCameraKeys[i]:
                         self.usedCameraKeys[i] = False
-                        self.editor.cameraPanKeys[self.cameraNum[i]] = self.cameraMath[i]
+                        self.editor.cameraPanKeys[self.cameraNum[i]] = 0.
                         self.notMoveCamera[i] = True
                     elif not self.notMoveCamera[i]:
                         self.notMoveCamera[i] = True
