@@ -438,7 +438,7 @@ class KeyConfigPanel(Dialog):
             config.keys.panUp.get(),
             config.keys.panDown.get()
         ]
-        
+
         self.dismiss()
 
     def choosePreset(self):
@@ -502,7 +502,7 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
-        self.editor.handling_ctrl(evt)
+        self.root.handling_ctrl(evt)
 
     def key_up(self, evt):
         pass
