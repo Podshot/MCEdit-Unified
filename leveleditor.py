@@ -939,6 +939,7 @@ class LevelEditor(GLViewport):
                 'Wasn\'t able to open a file {file => %s}' % filename
             )
             alert(_(u"I don't know how to open {0}:\n\n{1!r}").format(filename, e))
+            self.closeEditor()
             return
 
         assert level

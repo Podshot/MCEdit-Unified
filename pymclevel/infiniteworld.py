@@ -1383,7 +1383,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     @classmethod
     def _isLevel(cls, filename):
 
-        if os.path.exists(os.path.join(filename, "chunks.dat")):
+        if os.path.exists(os.path.join(filename, "chunks.dat")) or os.path.exists(os.path.join(filename, "db")):
             return False  # exclude Pocket Edition folders
 
         if not os.path.isdir(filename):
@@ -1393,6 +1393,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             filename = os.path.dirname(filename)
 
         files = os.listdir(filename)
+        if "db" in files:
+            return False
         if "level.dat" in files or "level.dat_old" in files:
             return True
 
