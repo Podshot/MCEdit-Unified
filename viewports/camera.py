@@ -305,7 +305,7 @@ class CameraViewport(GLViewport):
 
             # otherwise, find the block at a controllable distance in front of the camera
             if focusPair is None:
-                if self.blockFaceUnderCursor is None:
+                if self.blockFaceUnderCursor is None or self.mouseMovesCamera:
                     focusPair = (self.getCameraPoint(), (0, 0, 0))
                 else:
                     focusPair = self.blockFaceUnderCursor
