@@ -305,7 +305,10 @@ class CameraViewport(GLViewport):
 
             # otherwise, find the block at a controllable distance in front of the camera
             if focusPair is None:
-                focusPair = (self.getCameraPoint(), (0, 0, 0))
+                if self.blockFaceUnderCursor is None:
+                    focusPair = (self.getCameraPoint(), (0, 0, 0))
+                else:
+                    focusPair = self.blockFaceUnderCursor
 
             self.blockFaceUnderCursor = focusPair
 
@@ -1348,13 +1351,14 @@ class CameraViewport(GLViewport):
             self.drawCeiling()
 
         if self.editor.level:
-            try:
-                self.updateBlockFaceUnderCursor()
-            except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
-                logging.debug("Updating cursor block: %s", e)
-                self.blockFaceUnderCursor = (None, None)
+            if pygame.key.get_focused():
+                try:
+                    self.updateBlockFaceUnderCursor()
+                except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
+                    logging.debug("Updating cursor block: %s", e)
+                    self.blockFaceUnderCursor = (None, None)
 
-            self.root.update_tooltip()
+                self.root.update_tooltip()
 
             (blockPosition, faceDirection) = self.blockFaceUnderCursor
             if None != blockPosition:
