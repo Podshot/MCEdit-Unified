@@ -1016,7 +1016,7 @@ class TerrainPopulatedRenderer(EntityRendererGeneric):
     layer = Layer.TerrainPopulated
     vertexTemplate = numpy.zeros((6, 4, 6), 'float32')
     vertexTemplate[_XYZ] = faceVertexTemplates[_XYZ]
-    vertexTemplate[_XYZ] *= (16, 128, 16)
+    vertexTemplate[_XYZ] *= (16, 256, 16)
     color = (255, 200, 155)
     vertexTemplate.view('uint8')[_RGBA] = color + (72,)
 
