@@ -491,6 +491,7 @@ definitions = {
         ("drawTileEntities", "draw tile entities", True),
         ("drawTileTicks", "draw tile ticks", False),
         ("drawUnpopulatedChunks", "draw unpopulated chunks", True),
+        ("drawChunkBorders", "draw chunk borders", False),
         ("vertexBufferLimit", "vertex buffer limit", 384),
         ("vsync", "vertical sync", 0),
         ("viewMode", "View Mode", "Camera"),

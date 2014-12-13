@@ -218,6 +218,8 @@ class LevelEditor(GLViewport):
             col.append(mceutils.CheckBoxLabel("TileTicks", ref=config.settings.drawTileTicks))
             col.append(mceutils.CheckBoxLabel("Unpopulated Chunks", fg_color=renderer.TerrainPopulatedRenderer.color,
                                               ref=config.settings.drawUnpopulatedChunks))
+            col.append(mceutils.CheckBoxLabel("Chunks Borders", fg_color=renderer.ChunkBorderRenderer.color,
+                                              ref=config.settings.drawChunkBorders))
 
             col.append(mceutils.CheckBoxLabel("Sky", ref=config.settings.drawSky))
             col.append(mceutils.CheckBoxLabel("Fog", ref=config.settings.drawFog))
