@@ -270,6 +270,7 @@ class FilterToolPanel(Panel):
 
         self.savedOptions = {}
         self._recording = False
+        self._save_macro = False
 
         self.tool = tool
         self.selectedFilterName = None
