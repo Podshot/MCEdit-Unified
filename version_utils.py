@@ -94,9 +94,9 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
     if forceNetwork:
         try:
             nuuid = uuid.replace("-", "")
-            playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(nuuid)).read()
+            playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
             playerJSON = json.loads(playerJSONResponse)
-            return playerJSON["name"]
+            return playerJSON[0]
         except:
             raise PlayerNotFound(uuid)
     else:
