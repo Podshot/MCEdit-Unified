@@ -41,17 +41,7 @@ log = logging.getLogger(__name__)
 
 
 def GetSelectionColor(colorWord=None):
-    # TODO: this whole function code is now perhaps equivalent to this,
-    # apart from case-sensitiveness handling and previous format fix:
-    # return ColorSettings.defaultColors.get((colorWord or config.selection.color.get()).lower(),
-    # ColorSettings(colorWord.lower(), (1.0, 1.0, 1.0))).get()
-    if colorWord is None:
-        colorWord = config.selection.color.get()
-
-    colorWord = config.convert(colorWord)
-
-    values = config.selectionColors[colorWord].get()
-    return values
+    return config.selectionColors[config.convert(colorWord or config.selection.color.get())].get()
 
 
 class SelectionToolOptions(ToolOptions):
@@ -222,7 +212,6 @@ class NudgeBlocksOperation(Operation):
 
 
 class SelectionTool(EditorTool):
-    # selectionColor = (1.0, .9, .9)
     color = (0.7, 0., 0.7)
     surfaceBuild = False
     toolIconName = "selection2"
@@ -301,147 +290,6 @@ class SelectionTool(EditorTool):
 
         except Exception, e:
             return repr(e)
-
-    def worldTooltipForBlock(self, pos):
-        blockdata = self.editor.level.blockDataAt(*pos)
-        x, y, z = pos
-        cx, cz = x / 16, z / 16
-        if isinstance(self.editor.level, pymclevel.MCInfdevOldLevel):
-
-            if y == 0:
-                try:
-                    chunk = self.editor.level.getChunk(cx, cz)
-                except pymclevel.ChunkNotPresent:
-                    return _("Chunk not present.")
-                if not chunk.HeightMap.any():
-                    if self.editor.level.blockAt(x, y, z):
-                        return _("Chunk HeightMap is incorrect! Please relight this chunk as soon as possible!")
-                    else:
-                        return _("Chunk is present and filled with air.")
-
-        block = self.editor.level.blockAt(*pos)
-        if block in (pymclevel.alphaMaterials.Chest.ID,
-                     pymclevel.alphaMaterials.Furnace.ID,
-                     pymclevel.alphaMaterials.LitFurnace.ID,
-                     pymclevel.alphaMaterials.Dispenser.ID,
-                     pymclevel.alphaMaterials.Hopper.ID,
-                     pymclevel.alphaMaterials.Dropper.ID):
-            t = self.editor.level.tileEntityAt(*pos)
-            if t:
-                containerID = t["id"].value
-                if "Items" in t:
-                    items = t["Items"]
-                    d = defaultdict(int)
-                    for item in items:
-                        if "id" in item and "Count" in item:
-                            d[item["id"].value] += item["Count"].value
-
-                    if len(d):
-                        items = sorted((v, k) for (k, v) in d.iteritems())
-                        try:
-                            top = pymclevel.items.items.findItem(items[0][1]).name
-                        except Exception, e:
-                            top = repr(e)
-                        return _("{0} contains {len} items. (Mostly {top}) \n\nDouble-click to edit {0}.").format(
-                            containerID, len=len(d), top=top)
-                    else:
-                        if containerID == "Trap":
-                            return _("Empty {0}. \n\nDouble-click to edit {0}.").format("Dispenser")
-                        else:
-                            return _("Empty {0}. \n\nDouble-click to edit {0}.").format(containerID)
-            else:
-                # return _("Double-click to initialize {0}.").format(pymclevel.alphaMaterials.names[block][blockdata])
-                #Will undo when container initialization is fixed.
-                if block == pymclevel.alphaMaterials.Chest.ID:
-                    chest = nbt.TAG_Compound()
-                    chest["id"] = nbt.TAG_String("Chest")
-                    chest["x"] = nbt.TAG_Int(x)
-                    chest["y"] = nbt.TAG_Int(y)
-                    chest["z"] = nbt.TAG_Int(z)
-                    chest["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(chest)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Furnace.ID:
-                    furnace = nbt.TAG_Compound()
-                    furnace["id"] = nbt.TAG_String("Furnace")
-                    furnace["x"] = nbt.TAG_Int(x)
-                    furnace["y"] = nbt.TAG_Int(y)
-                    furnace["z"] = nbt.TAG_Int(z)
-                    furnace["BurnTime"] = nbt.TAG_Short(0)
-                    furnace["CookTime"] = nbt.TAG_Short(0)
-                    furnace["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(furnace)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.LitFurnace.ID:
-                    litfurnace = nbt.TAG_Compound()
-                    litfurnace["id"] = nbt.TAG_String("Furnace")
-                    litfurnace["x"] = nbt.TAG_Int(x)
-                    litfurnace["y"] = nbt.TAG_Int(y)
-                    litfurnace["z"] = nbt.TAG_Int(z)
-                    litfurnace["BurnTime"] = nbt.TAG_Short(0)
-                    litfurnace["CookTime"] = nbt.TAG_Short(0)
-                    litfurnace["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(litfurnace)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Dispenser.ID:
-                    dispenser = nbt.TAG_Compound()
-                    dispenser["id"] = nbt.TAG_String("Trap")
-                    dispenser["x"] = nbt.TAG_Int(x)
-                    dispenser["y"] = nbt.TAG_Int(y)
-                    dispenser["z"] = nbt.TAG_Int(z)
-                    dispenser["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(dispenser)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Dropper.ID:
-                    dropper = nbt.TAG_Compound()
-                    dropper["id"] = nbt.TAG_String("Dropper")
-                    dropper["x"] = nbt.TAG_Int(x)
-                    dropper["y"] = nbt.TAG_Int(y)
-                    dropper["z"] = nbt.TAG_Int(z)
-                    dropper["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(dropper)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Hopper.ID:
-                    hopper = nbt.TAG_Compound()
-                    hopper["id"] = nbt.TAG_String("Hopper")
-                    hopper["x"] = nbt.TAG_Int(x)
-                    hopper["y"] = nbt.TAG_Int(y)
-                    hopper["z"] = nbt.TAG_Int(z)
-                    hopper["TransferCooldown"] = nbt.TAG_Int(0)
-                    hopper["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(hopper)
-                    chunk.dirty = True
-                return "Uninitialized {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
-        if block == pymclevel.alphaMaterials.MonsterSpawner.ID:
-
-            t = self.editor.level.tileEntityAt(*pos)
-            if t:
-                id = t["EntityId"].value
-            else:
-                id = "[Undefined]"
-
-            return _("{id} spawner. \n\nDouble-click to edit spawner.").format(id=id)
-
-        if block in (pymclevel.alphaMaterials.Sign.ID,
-                     pymclevel.alphaMaterials.WallSign.ID):
-            t = self.editor.level.tileEntityAt(*pos)
-            if t:
-                signtext = u"\n".join(t["Text" + str(x)].value for x in range(1, 5))
-            else:
-                signtext = "Undefined"
-            #return _("Sign text: \n%s\n\n"Double-click to edit sign.") #-# better to use this
-            return _("Sign text: \n") + signtext + "\n\n" + _("Double-click to edit sign.")
-
-        absentTexture = (
-        self.editor.level.materials.blockTextures[block, blockdata, 0] == pymclevel.materials.NOTEX).all()
-        if absentTexture:
-            return self.describeBlockAt(pos)
 
     @alertException
     def selectChunks(self):
@@ -550,7 +398,6 @@ class SelectionTool(EditorTool):
         self.sizeLabel.anchor = "wh"
         self.sizeLabel.tooltipText = _("{0:n} blocks").format(self.selectionBox().volume)
 
-        # self.nudgePanelColumn = Column( (self.sizeLabel, self.nudgeRow) )
         self.nudgePanel.top = self.nudgePanel.left = 0
 
         self.nudgePanel.add(self.sizeLabel)
@@ -594,8 +441,6 @@ class SelectionTool(EditorTool):
         self.selectOtherCorner()
 
     def toolSelected(self):
-        # if self.clearSelectionImmediately:
-        # self.setSelectionPoints(None)
         self.showPanel()
 
     def clampPos(self, pos):
@@ -627,7 +472,6 @@ class SelectionTool(EditorTool):
 
     @property
     def statusText(self):
-        # return "selectionInProgress {0} clickSelectionInProgress {1}".format(self.selectionInProgress, self.clickSelectionInProgress)
         if self.selectionInProgress:
             pd = self.editor.blockFaceUnderCursor
             if pd:
@@ -666,8 +510,6 @@ class SelectionTool(EditorTool):
     dragResizePosition = None
 
     def mouseDown(self, evt, pos, direction):
-        # self.selectNone()
-
         pos = self.clampPos(pos)
         if self.selectionBox() and not self.selectionInProgress:
             face, point = self.boxFaceUnderCursor(self.selectionBox())
@@ -676,7 +518,6 @@ class SelectionTool(EditorTool):
                 self.dragResizeFace = face
                 self.dragResizeDimension = self.findBestTrackingPlane(face)
 
-                # point = map(int, point)
                 self.dragResizePosition = point[self.dragResizeDimension]
 
                 return
@@ -876,7 +717,6 @@ class SelectionTool(EditorTool):
                     # draw highlighted block faces when nudging
                     if (widg.parent == n or widg == n):
                         GL.glEnable(GL.GL_BLEND)
-                        # drawCube(BoundingBox((sx, sy, sz), (1,1,1)))
                         nudgefaces = numpy.array([
                                                      selectionBox.minx, selectionBox.miny, selectionBox.minz,
                                                      selectionBox.minx, selectionBox.maxy, selectionBox.minz,
@@ -1087,8 +927,7 @@ class SelectionTool(EditorTool):
             self.hideNudgePanel()
 
     def getSelectionPoint(self, pointNumber):
-        return (self.bottomLeftPoint, self.topRightPoint)[
-            pointNumber]  # lisp programmers think this doesn't evaluate 'self.topRightPoint' - lol!
+        return (self.bottomLeftPoint, self.topRightPoint)[pointNumber]
 
     def getSelectionPoints(self):
         return [self.bottomLeftPoint, self.topRightPoint]
