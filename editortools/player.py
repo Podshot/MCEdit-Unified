@@ -92,7 +92,7 @@ class PlayerRemoveOperation(Operation):
                     self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
                 else:
                 	self.tool.panel.players.append("Player")
-                
+
                 if "[No players]" in self.tool.panel.players:
                     self.tool.panel.players.remove("[No players]")
                 self.tool.hidePanel()
@@ -149,7 +149,7 @@ class PlayerAddOperation(Operation):
             self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.playerTag
 
             self.level.players.append(self.player)
-            if self.tool.panel: 
+            if self.tool.panel:
                 self.tool.panel.player_UUID[self.player] = self.player
 
         else:
@@ -196,7 +196,7 @@ class PlayerAddOperation(Operation):
             if b != 0 and not done:
                 i = index
                 done = True
-        spawnY = self.level.Height - i        
+        spawnY = self.level.Height - i
         playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([spawnX, spawnY, spawnZ][i]) for i in range(3)])
         playerTag['Rotation'] = nbt.TAG_List([nbt.TAG_Float(0), nbt.TAG_Float(0)])
 
@@ -471,7 +471,7 @@ class PlayerPositionTool(EditorTool):
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
-                
+
     def delete_skin(self, uuid):
         del self.playerTexture[uuid]
         self.playerTexture[uuid] = loadPNGTexture('char.png')

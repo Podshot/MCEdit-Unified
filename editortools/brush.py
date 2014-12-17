@@ -53,7 +53,8 @@ import random
 from __builtin__ import __import__
 from locale import getdefaultlocale
 DEF_ENC = getdefaultlocale()[1]
-
+if DEF_ENC is None:
+    DEF_ENC = "UTF-8"
 
 log = logging.getLogger(__name__)
 
@@ -568,7 +569,7 @@ class BrushTool(CloneTool):
             if key.endswith('blockID'):
                 key = key[:-7]
                 self.options[key] = self.editor.level.materials.blockWithID(loadedBrushOptions[key + 'blockID'], loadedBrushOptions[key+ 'blockData'])
-                if key + 'recentBlocks' in loadedBrushOptions:    
+                if key + 'recentBlocks' in loadedBrushOptions:
                     list = []
                     blockList = loadedBrushOptions[key + 'recentBlocks']
                     for b in blockList:

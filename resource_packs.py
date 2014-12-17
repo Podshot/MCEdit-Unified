@@ -8,6 +8,8 @@ from config import config
 
 import locale
 DEF_ENC = locale.getdefaultlocale()[1]
+if DEF_ENC is None:
+    DEF_ENC = "UTF-8"
 
 try:
     import resource  # @UnresolvedImport
@@ -732,7 +734,7 @@ def setup_resource_packs():
     except OSError:
         pass
     terrains["Default"] = DefaultResourcePack()
-    
+
     if os.path.exists(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")):
         zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")
         folderResourcePacks = os.listdir(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")))

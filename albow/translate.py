@@ -94,6 +94,8 @@ def getPlatInfo(**kwargs):
 
 
 enc = locale.getdefaultlocale()[1]
+if enc is None:
+    enc = "UTF-8"
 
 string_cache = {}
 font_lang_cache = {}
