@@ -28,7 +28,6 @@ class PlayerCache:
     
     SUCCESS = 0
     FAILED = 1
-    
 
     def __convert(self):
         jsonFile = None
@@ -95,19 +94,58 @@ class PlayerCache:
             else:
                 return self.FAILED
         else:
-            print self._playerCacheList
             for p in self._playerCacheList:
-                if p["UUID (Separator)"] == uuid:
+                if p["UUID (Separator)"] == uuid and p["WasSuccessful"]:
                     return p["Playername"]
-            if not alreadyInCache:
-                result = self.getPlayerFromUUID(uuid, forceNetwork=True)
-                if result != self.FAILED:
-                    player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
-                    self._playerCacheList.append(player)
-                    return self.FAILED
+            result = self.getPlayerFromUUID(uuid, forceNetwork=True)
+            if result != self.FAILED:
+                player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
+                self._playerCacheList.append(player)
+                return self.FAILED
     
-    def getPlayerFromPlayername(self, playername, forceNewtork=False):
-        pass
+    def getPlayerFromPlayername(self, playername, forceNetwork=False):
+        if forceNetwork:
+            response = None
+            try:
+                response = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(playername)).read()
+            except urllib2.URLError:
+                return self.FAILED
+            if response is not None and response != "":
+                playerJSON = json.loads(response)
+                player = {}
+                player["Playername"] = playername
+                player["UUID (No Separator)"] = playerJSON["id"]
+                player["UUID (Separator)"] = ""
+                player["WasSuccessful"] = True
+                player["Timstamp"] = time.time()
+                self._playerCacheList.append(player)
+                self._save()
+            else:
+                return self.FAILED
+        else:
+            for p in self._playerCacheList:
+                if p["Playername"] == playername and p["WasSuccessful"]:
+                    return p["Playername"]
+            result = self.getPlayerFromPlayername(playername, forceNetwork=True)
+            if result != self.FAILED:
+                player = {"Playername":playername,"UUID (Separator)":"<Unknown>","UUID (No Separator)":"<Unknown>","Timestamp":"<Invalid>","WasSuccessful":False}
+                self._playerCacheList.append(player)
+                return self.FAILED
+    
+    # 0 if for a list of the playernames, 1 is for a dictionary of all player data
+    def getAllPlayersKnown(self, returnType=0):
+        toReturn = None
+        if returnType == 0:
+            toReturn = []
+            for p in self._playerCacheList:
+                toReturn.append(p["Playername"])
+        elif returnType == 1:
+            toReturn = {}
+            for p in self._playerCacheList:
+                toReturn[p["Playername"]] = p
+        return toReturn
+        
+        
     
     def __formats(self):
         player = {
