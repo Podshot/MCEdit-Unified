@@ -24,6 +24,70 @@ from urllib2 import HTTPError
 
 #print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
 
+class PlayerCache:
+    
+    SUCCESS = 0
+    FAILED = 1
+    
+    def __init__(self):
+        self._playerCacheList = []
+        if not os.path.exists(userCachePath):
+            with open(userCachePath, "w") as out:
+                json.dump(self._playerCacheDict, out)
+        else:
+            try:
+                with open(userCachePath) as json_in:
+                    self._playerCacheDict = json.load(json_in)
+            except:
+                print "usercache.json is corrupted"
+                self._playerCacheList = []
+    
+    def addPlayerFromUUID(self, uuid, forceNetwork=False):
+        alreadyInCache = False
+        if forceNetwork:
+            response = None
+            try:
+                response = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(uuid.replace("-",""))).read()
+            except urllib2.URLError:
+                return self.FAILED
+            print "Response: "+str(response)
+            if response is not None and response != "":
+                print "json"
+                #playerJSON = json.loads(response)
+                #print playerJSON
+            else:
+                return self.FAILED
+        else:
+            for p in self._playerCacheList:
+                if p["UUID"] == uuid:
+                    alreadyInCache = True
+            if not alreadyInCache:
+                result = self.addPlayerFromUUID(uuid, forceNetwork=True)
+                if result != self.FAILED:
+                    player = {"Playername":"<Unknown>","UUID":uuid,"Timestamp":"<Invalid>","WasSuccessful":False}
+                    self._playerCacheList
+                    return uuid
+    
+    def addPlayerFromPlayername(self, playername, forceNewtork=False):
+        pass
+    
+    def getPlayerFromUUID(self, uuid):
+        pass
+    
+    def getPlayerFromPlayername(self, playername):
+        pass
+    
+    def __formats(self):
+        player = {
+                  "Playername":"<Username>",
+                  "UUID":"<uuid>",
+                  "Timestamp":"<timestamp>",
+                  # WasSuccessful will be true if the UUID/Player name was retrieved successfully
+                  "WasSuccessful":True
+                  }
+        pass
+                
+            
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
     if forceNetwork:
         try:
@@ -216,3 +280,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     except:
         return 'char.png'
     '''
+
+
+cache = PlayerCache()
+print cache.addPlayerFromUUID("2cb08a59-51f3-4e98-bd09-85d9747e80df", forceNetwork=True)
