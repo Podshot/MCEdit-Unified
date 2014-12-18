@@ -29,52 +29,84 @@ class PlayerCache:
     SUCCESS = 0
     FAILED = 1
     
+
+    def __convert(self):
+        jsonFile = None
+        try:
+            jsonFile = json.load(open(userCachePath))
+        except ValueError:
+            # Assuming JSON file is corrupted, deletes file and creates new one
+            os.remove(userCachePath)
+            with open(userCachePath, 'w') as json_out:
+                json.dump([], json_out)
+        if jsonFile is not None:
+            for old_player in jsonFile.keys():
+                player = jsonFile[old_player]
+                new_player = {}
+                new_player["Playername"] = player["username"]
+                new_player["UUID (No Separator)"] = old_player.replace("-","")
+                new_player["UUID (Separator)"] = old_player
+                new_player["WasSuccessful"] = True
+                new_player["Timstamp"] = player["timestamp"]
+                self._playerCacheList.append(new_player)
+            self._save()
+            print "Convert usercache.json"
+    
+    
     def __init__(self):
         self._playerCacheList = []
         if not os.path.exists(userCachePath):
             with open(userCachePath, "w") as out:
-                json.dump(self._playerCacheDict, out)
-        else:
-            try:
-                with open(userCachePath) as json_in:
-                    self._playerCacheDict = json.load(json_in)
-            except:
-                print "usercache.json is corrupted"
-                self._playerCacheList = []
+                json.dump(self._playerCacheList, out)
+        with open(userCachePath) as f:
+            line = f.readline()
+            if line.startswith("{"):
+                self.__convert();
+        try:
+            with open(userCachePath) as json_in:
+                self._playerCacheList = json.load(json_in)
+        except:
+            print "usercache.json is corrupted"
     
-    def addPlayerFromUUID(self, uuid, forceNetwork=False):
+
+    def _save(self):
+        with open(userCachePath, "w") as out:
+            json.dump(self._playerCacheList, out)
+    
+    
+    def getPlayerFromUUID(self, uuid, forceNetwork=False):
+        player = {}
         alreadyInCache = False
         if forceNetwork:
             response = None
             try:
-                response = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(uuid.replace("-",""))).read()
+                response = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
             except urllib2.URLError:
                 return self.FAILED
-            print "Response: "+str(response)
             if response is not None and response != "":
-                print "json"
-                #playerJSON = json.loads(response)
-                #print playerJSON
+                playerJSON = json.loads(response)
+                player["Playername"] = playerJSON["name"]
+                player["UUID (No Separator)"] = playerJSON["id"]
+                player["UUID (Separator)"] = uuid
+                player["WasSuccessful"] = True
+                player["Timstamp"] = time.time()
+                self._playerCacheList.append(player)
+                self._save()
             else:
                 return self.FAILED
         else:
+            print self._playerCacheList
             for p in self._playerCacheList:
-                if p["UUID"] == uuid:
-                    alreadyInCache = True
+                if p["UUID (Separator)"] == uuid:
+                    return p["Playername"]
             if not alreadyInCache:
-                result = self.addPlayerFromUUID(uuid, forceNetwork=True)
+                result = self.getPlayerFromUUID(uuid, forceNetwork=True)
                 if result != self.FAILED:
-                    player = {"Playername":"<Unknown>","UUID":uuid,"Timestamp":"<Invalid>","WasSuccessful":False}
-                    self._playerCacheList
-                    return uuid
+                    player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
+                    self._playerCacheList.append(player)
+                    return self.FAILED
     
-    def addPlayerFromPlayername(self, playername, forceNewtork=False):
-        pass
-    
-    def getPlayerFromUUID(self, uuid):
-        pass
-    
-    def getPlayerFromPlayername(self, playername):
+    def getPlayerFromPlayername(self, playername, forceNewtork=False):
         pass
     
     def __formats(self):
@@ -283,4 +315,4 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
 
 
 cache = PlayerCache()
-print cache.addPlayerFromUUID("2cb08a59-51f3-4e98-bd09-85d9747e80df", forceNetwork=True)
+print cache.getPlayerFromUUID("2cb08a59-51f3-4e98-bd09-85d9747e80df", forceNetwork=False)
