@@ -24,7 +24,7 @@ from urllib2 import HTTPError
 
 #print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
 
-class PlayerCache:
+class __PlayerCache:
     
     SUCCESS = 0
     FAILED = 1
@@ -74,8 +74,8 @@ class PlayerCache:
     
     
     def getPlayerFromUUID(self, uuid, forceNetwork=False):
+        print uuid
         player = {}
-        alreadyInCache = False
         if forceNetwork:
             response = None
             try:
@@ -91,6 +91,7 @@ class PlayerCache:
                 player["Timstamp"] = time.time()
                 self._playerCacheList.append(player)
                 self._save()
+                return playerJSON["name"]
             else:
                 return self.FAILED
         else:
@@ -98,12 +99,12 @@ class PlayerCache:
                 if p["UUID (Separator)"] == uuid and p["WasSuccessful"]:
                     return p["Playername"]
             result = self.getPlayerFromUUID(uuid, forceNetwork=True)
-            if result != self.FAILED:
+            if result == self.FAILED:
                 player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
                 self._playerCacheList.append(player)
                 return self.FAILED
     
-    def getPlayerFromPlayername(self, playername, forceNetwork=False):
+    def getPlayerFromPlayername(self, playername, forceNetwork=False, separator=True):
         if forceNetwork:
             response = None
             try:
@@ -115,19 +116,24 @@ class PlayerCache:
                 player = {}
                 player["Playername"] = playername
                 player["UUID (No Separator)"] = playerJSON["id"]
-                player["UUID (Separator)"] = ""
+                uuid = playerJSON["id"][:4]+"-"+playerJSON["id"][4:8]+"-"+playerJSON["id"][8:12]+"-"+playerJSON["id"][12:16]+"-"+playerJSON["id"][16:]
+                player["UUID (Separator)"] = uuid
                 player["WasSuccessful"] = True
                 player["Timstamp"] = time.time()
                 self._playerCacheList.append(player)
                 self._save()
+                if separator:
+                    return uuid
+                else:
+                    return playerJSON["id"]
             else:
                 return self.FAILED
         else:
             for p in self._playerCacheList:
                 if p["Playername"] == playername and p["WasSuccessful"]:
-                    return p["Playername"]
+                    return p["UUID (Separator)"]
             result = self.getPlayerFromPlayername(playername, forceNetwork=True)
-            if result != self.FAILED:
+            if result == self.FAILED:
                 player = {"Playername":playername,"UUID (Separator)":"<Unknown>","UUID (No Separator)":"<Unknown>","Timestamp":"<Invalid>","WasSuccessful":False}
                 self._playerCacheList.append(player)
                 return self.FAILED
@@ -352,5 +358,5 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     '''
 
 
-cache = PlayerCache()
-print cache.getPlayerFromUUID("2cb08a59-51f3-4e98-bd09-85d9747e80df", forceNetwork=False)
+playercache = __PlayerCache()
+print playercache.getPlayerFromUUID("2cb08a59-51f3-4e98-bd09-85d9747e80df", forceNetwork=False)

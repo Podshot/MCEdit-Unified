@@ -59,7 +59,8 @@ class PlayerRemoveOperation(Operation):
         self.level.players.remove(self.player)
         if self.tool.panel:
             if self.player != "Player":
-                self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
+                #self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
+                self.tool.panel.players.remove(version_utils.playercache.getPlayerFromUUID(self.player))
             else:
                 self.tool.panel.players.remove("Player")
 
@@ -89,9 +90,9 @@ class PlayerRemoveOperation(Operation):
             self.level.players.append(self.player)
             if self.tool.panel:
                 if self.player != "Player":
-                    self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
+                    self.tool.panel.players.append(version_utils.playercache.getPlayerFromUUID(self.player))
                 else:
-                	self.tool.panel.players.append("Player")
+                    self.tool.panel.players.append("Player")
 
                 if "[No players]" in self.tool.panel.players:
                     self.tool.panel.players.remove("[No players]")
@@ -123,16 +124,18 @@ class PlayerAddOperation(Operation):
             alert("Name to short. Minimum name length is 4.")
             return
         try:
-            self.uuid = version_utils.getUUIDFromPlayerName(self.player)
-            self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
+            self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)
+            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid) #Case Corrected
+            if self.uuid == version_utils.playercache.FAILED or self.player == version_utils.playercache.FAILED:
+                raise ValueError("Player Cache failed to find player")
         except:
             action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":
-            	return
+                return
             self.uuid = input_text_buttons("Enter a Player UUID: ", 160)
             if not self.uuid:
                 return
-            self.player = version_utils.getPlayerNameFromUUID(self.uuid)
+            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)
             if self.player == self.uuid.replace("-", ""):
                 if ask("UUID was not found. Continue anyways?") == "Cancel":
                     return
@@ -366,7 +369,7 @@ class PlayerPositionPanel(Panel):
             if not self.level.oldPlayerFolderFormat:
                 for player in players:
                     if player != "Player" and player != "[No players]":
-                        self.player_UUID[version_utils.getPlayerNameFromUUID(player)] = player
+                        self.player_UUID[version_utils.playercache.getPlayerFromUUID(player)] = player
                 if "Player" in players:
                     self.player_UUID["Player"] = "Player"
                 if "[No players]" not in players:
