@@ -126,8 +126,6 @@ class PlayerAddOperation(Operation):
         try:
             self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)
             self.player = version_utils.playercache.getPlayerFromUUID(self.uuid) #Case Corrected
-            if self.uuid == version_utils.playercache.FAILED or self.player == version_utils.playercache.FAILED:
-                raise ValueError("Player Cache failed to find player")
         except:
             action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":

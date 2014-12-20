@@ -74,14 +74,13 @@ class __PlayerCache:
     
     
     def getPlayerFromUUID(self, uuid, forceNetwork=False):
-        print uuid
         player = {}
         if forceNetwork:
             response = None
             try:
                 response = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
             except urllib2.URLError:
-                return self.FAILED
+                return uuid
             if response is not None and response != "":
                 playerJSON = json.loads(response)
                 player["Playername"] = playerJSON["name"]
@@ -93,16 +92,16 @@ class __PlayerCache:
                 self._save()
                 return playerJSON["name"]
             else:
-                return self.FAILED
+                return uuid
         else:
             for p in self._playerCacheList:
                 if p["UUID (Separator)"] == uuid and p["WasSuccessful"]:
                     return p["Playername"]
             result = self.getPlayerFromUUID(uuid, forceNetwork=True)
-            if result == self.FAILED:
+            if result == uuid:
                 player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
                 self._playerCacheList.append(player)
-                return self.FAILED
+                return uuid
     
     def getPlayerFromPlayername(self, playername, forceNetwork=False, separator=True):
         if forceNetwork:
@@ -110,7 +109,7 @@ class __PlayerCache:
             try:
                 response = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(playername)).read()
             except urllib2.URLError:
-                return self.FAILED
+                return playername
             if response is not None and response != "":
                 playerJSON = json.loads(response)
                 player = {}
@@ -127,7 +126,7 @@ class __PlayerCache:
                 else:
                     return playerJSON["id"]
             else:
-                return self.FAILED
+                return playername
         else:
             for p in self._playerCacheList:
                 if p["Playername"] == playername and p["WasSuccessful"]:
@@ -136,7 +135,7 @@ class __PlayerCache:
             if result == self.FAILED:
                 player = {"Playername":playername,"UUID (Separator)":"<Unknown>","UUID (No Separator)":"<Unknown>","Timestamp":"<Invalid>","WasSuccessful":False}
                 self._playerCacheList.append(player)
-                return self.FAILED
+                return playername
     
     # 0 if for a list of the playernames, 1 is for a dictionary of all player data
     def getAllPlayersKnown(self, returnType=0):
