@@ -358,4 +358,3 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
 
 
 playercache = __PlayerCache()
-print playercache.getPlayerFromUUID("2cb08a59-51f3-4e98-bd09-85d9747e80df", forceNetwork=False)
