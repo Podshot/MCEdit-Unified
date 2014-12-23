@@ -24,6 +24,145 @@ from urllib2 import HTTPError
 
 #print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
 
+class __PlayerCache:
+    
+    SUCCESS = 0
+    FAILED = 1
+
+    def __convert(self):
+        jsonFile = None
+        try:
+            jsonFile = json.load(open(userCachePath))
+        except ValueError:
+            # Assuming JSON file is corrupted, deletes file and creates new one
+            os.remove(userCachePath)
+            with open(userCachePath, 'w') as json_out:
+                json.dump([], json_out)
+        if jsonFile is not None:
+            for old_player in jsonFile.keys():
+                player = jsonFile[old_player]
+                new_player = {}
+                new_player["Playername"] = player["username"]
+                new_player["UUID (No Separator)"] = old_player.replace("-","")
+                new_player["UUID (Separator)"] = old_player
+                new_player["WasSuccessful"] = True
+                new_player["Timstamp"] = player["timestamp"]
+                self._playerCacheList.append(new_player)
+            self._save()
+            print "Convert usercache.json"
+    
+    
+    def __init__(self):
+        self._playerCacheList = []
+        if not os.path.exists(userCachePath):
+            with open(userCachePath, "w") as out:
+                json.dump(self._playerCacheList, out)
+        with open(userCachePath) as f:
+            line = f.readline()
+            if line.startswith("{"):
+                self.__convert();
+        try:
+            with open(userCachePath) as json_in:
+                self._playerCacheList = json.load(json_in)
+        except:
+            print "usercache.json is corrupted"
+    
+
+    def _save(self):
+        with open(userCachePath, "w") as out:
+            json.dump(self._playerCacheList, out)
+    
+    
+    def getPlayerFromUUID(self, uuid, forceNetwork=False):
+        player = {}
+        if forceNetwork:
+            response = None
+            try:
+                response = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
+            except urllib2.URLError:
+                return uuid
+            if response is not None and response != "":
+                playerJSON = json.loads(response)
+                player["Playername"] = playerJSON["name"]
+                player["UUID (No Separator)"] = playerJSON["id"]
+                player["UUID (Separator)"] = uuid
+                player["WasSuccessful"] = True
+                player["Timstamp"] = time.time()
+                self._playerCacheList.append(player)
+                self._save()
+                return playerJSON["name"]
+            else:
+                return uuid
+        else:
+            for p in self._playerCacheList:
+                if p["UUID (Separator)"] == uuid and p["WasSuccessful"]:
+                    return p["Playername"]
+            result = self.getPlayerFromUUID(uuid, forceNetwork=True)
+            if result == uuid:
+                player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
+                self._playerCacheList.append(player)
+                return uuid
+    
+    def getPlayerFromPlayername(self, playername, forceNetwork=False, separator=True):
+        if forceNetwork:
+            response = None
+            try:
+                response = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(playername)).read()
+            except urllib2.URLError:
+                return playername
+            if response is not None and response != "":
+                playerJSON = json.loads(response)
+                player = {}
+                player["Playername"] = playername
+                player["UUID (No Separator)"] = playerJSON["id"]
+                uuid = playerJSON["id"][:4]+"-"+playerJSON["id"][4:8]+"-"+playerJSON["id"][8:12]+"-"+playerJSON["id"][12:16]+"-"+playerJSON["id"][16:]
+                player["UUID (Separator)"] = uuid
+                player["WasSuccessful"] = True
+                player["Timstamp"] = time.time()
+                self._playerCacheList.append(player)
+                self._save()
+                if separator:
+                    return uuid
+                else:
+                    return playerJSON["id"]
+            else:
+                return playername
+        else:
+            for p in self._playerCacheList:
+                if p["Playername"] == playername and p["WasSuccessful"]:
+                    return p["UUID (Separator)"]
+            result = self.getPlayerFromPlayername(playername, forceNetwork=True)
+            if result == self.FAILED:
+                player = {"Playername":playername,"UUID (Separator)":"<Unknown>","UUID (No Separator)":"<Unknown>","Timestamp":"<Invalid>","WasSuccessful":False}
+                self._playerCacheList.append(player)
+                return playername
+    
+    # 0 if for a list of the playernames, 1 is for a dictionary of all player data
+    def getAllPlayersKnown(self, returnType=0):
+        toReturn = None
+        if returnType == 0:
+            toReturn = []
+            for p in self._playerCacheList:
+                toReturn.append(p["Playername"])
+        elif returnType == 1:
+            toReturn = {}
+            for p in self._playerCacheList:
+                toReturn[p["Playername"]] = p
+        return toReturn
+        
+        
+    
+    def __formats(self):
+        player = {
+                  "Playername":"<Username>",
+                  "UUID":"<uuid>",
+                  "Timestamp":"<timestamp>",
+                  # WasSuccessful will be true if the UUID/Player name was retrieved successfully
+                  "WasSuccessful":True
+                  }
+        pass
+                
+            
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
     if forceNetwork:
         try:
@@ -216,3 +355,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     except:
         return 'char.png'
     '''
+
+
+playercache = __PlayerCache()
+print playercache.getPlayerFromUUID("2cb08a59-51f3-4e98-bd09-85d9747e80df", forceNetwork=False)
