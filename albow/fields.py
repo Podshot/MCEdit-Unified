@@ -11,6 +11,7 @@ from controls import Control
 from config import config
 #-#
 from translate import _
+import pyperclip
 #-#
 #---------------------------------------------------------------------------
 
@@ -76,13 +77,15 @@ class TextEditor(Widget):
         if event.cmd and event.unicode:
             if event.key == K_c:
                 try:
-                    pygame.scrap.put(SCRAP_TEXT, self.text)
+                    #pygame.scrap.put(SCRAP_TEXT, self.text)
+                    pyperclip.copy(self.text)
                 except:
                     print "scrap not available"
 
             elif event.key == K_v:
                 try:
-                    t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    t = pyperclip.paste()
                     DEF_ENC = locale.getdefaultlocale()[1]
                     if DEF_ENC is None:
                         DEF_ENC = "en_US.UTF-8" #Mac fallback
@@ -647,13 +650,15 @@ class TextEditorWrapped(Widget):
         if event.cmd and event.unicode:
             if event.key == K_c:
                 try:
-                    pygame.scrap.put(SCRAP_TEXT, self.text)
+                    #pygame.scrap.put(SCRAP_TEXT, self.text)
+                    pyperclip.copy(self.text)
                 except:
                     print "scrap not available"
 
             elif event.key == K_v:
                 try:
-                    t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    t = pyperclip.paste() 
                     if t != None:
                         if self.insertion_point is not None:
                             self.text = self.text[:self.insertion_point] + t + self.text[self.insertion_point:]
