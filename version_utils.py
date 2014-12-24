@@ -148,8 +148,7 @@ class __PlayerCache:
             toReturn = {}
             for p in self._playerCacheList:
                 toReturn[p["Playername"]] = p
-        return toReturn
-        
+        return toReturn        
         
     
     def __formats(self):
@@ -162,6 +161,7 @@ class __PlayerCache:
                   }
         pass
                 
+playercache = __PlayerCache()
             
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
     if forceNetwork:
@@ -296,6 +296,12 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     except OSError:
         pass
     try:
+        # Checks to see if the skin even exists
+        urllib2.urlopen(SKIN_URL.format(playercache.getPlayerFromUUID(uuid, forceNetwork=True)))
+    except urllib2.URLError as e:
+        if "Not Found" in e.msg:
+            return toReturn
+    try:
         if os.path.exists(os.path.join("player-skins", uuid.replace("-", "_")+".png")) and not force:
             player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
             if player_skin.size == (64,64):
@@ -303,7 +309,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
                 player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
         else:
-            playername = getPlayerNameFromUUID(uuid,forceNetwork=True)
+            playername = playercache.getPlayerFromUUID(uuid,forceNetwork=True)
             urllib.urlretrieve(SKIN_URL.format(playername), os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
             player_skin = Image.open(toReturn)
@@ -326,35 +332,3 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
         print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
         pass
     return toReturn
-    '''
-    try:
-        if os.path.exists(os.path.join("player-skins", uuid.replace("-","_")+".png")) and not force:
-            player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-            if player_skin.size == (64,64):
-                player_skin = player_skin.crop((0,0,64,32))
-                player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-                player_skin.close()
-            return os.path.join("player-skins", uuid.replace("-","_")+".png")
-        try:
-            os.mkdir("player-skins")
-        except OSError:
-            pass
-        playerJSONResponse = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
-        playerJSON = json.loads(playerJSONResponse)
-        for entry in playerJSON["properties"]:
-            if entry["name"] == "textures":
-                texturesJSON = json.loads(base64.b64decode(entry["value"]))
-                urllib.urlretrieve(texturesJSON["textures"]["SKIN"]["url"], os.path.join("player-skins", uuid.replace("-","_")+".png"))
-                toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
-                player_skin = Image.open(toReturn)
-            if player_skin.size == (64,64):
-                player_skin = player_skin.crop((0,0,64,32))
-                player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
-                player_skin.close()
-        return toReturn
-    except:
-        return 'char.png'
-    '''
-
-
-playercache = __PlayerCache()
