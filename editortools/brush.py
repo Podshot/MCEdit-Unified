@@ -54,7 +54,7 @@ from __builtin__ import __import__
 from locale import getdefaultlocale
 DEF_ENC = getdefaultlocale()[1]
 if DEF_ENC is None:
-    DEF_ENC = "UTF-8"
+    DEF_ENC = "en_US.UTF-8"
 
 log = logging.getLogger(__name__)
 
