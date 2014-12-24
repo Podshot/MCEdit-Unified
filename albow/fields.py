@@ -85,7 +85,7 @@ class TextEditor(Widget):
                     t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
                     DEF_ENC = locale.getdefaultlocale()[1]
                     if DEF_ENC is None:
-                        DEF_ENC = "UTF-8"
+                        DEF_ENC = "en_US.UTF-8" #Mac fallback
                     if type(t) == unicode and DEF_ENC != "UTF-8":
                         t = t.encode(DEF_ENC)
                     self.text = t
