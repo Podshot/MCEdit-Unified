@@ -301,12 +301,13 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
         os.mkdir("player-skins")
     except OSError:
         pass
-    try:
-        # Checks to see if the skin even exists
-        urllib2.urlopen(SKIN_URL.format(playercache.getPlayerFromUUID(uuid, forceNetwork=True)))
-    except urllib2.URLError as e:
-        if "Not Found" in e.msg:
-            return toReturn
+    if force or not os.path.exists(os.path.join("player-skins", uuid.replace("-", "_")+".png")):
+        try:
+            # Checks to see if the skin even exists
+            urllib2.urlopen(SKIN_URL.format(playercache.getPlayerFromUUID(uuid, forceNetwork=True)))
+        except urllib2.URLError as e:
+            if "Not Found" in e.msg:
+                return toReturn
     try:
         if os.path.exists(os.path.join("player-skins", uuid.replace("-", "_")+".png")) and not force:
             player_skin = Image.open(os.path.join("player-skins", uuid.replace("-","_")+".png"))
