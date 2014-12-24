@@ -164,6 +164,8 @@ class __PlayerCache:
 playercache = __PlayerCache()
             
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
+    return playercache.getPlayerFromPlayername(player, forceNetwork, seperator)
+    '''
     if forceNetwork:
         try:
             playerJSONResponse = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(player)).read()
@@ -223,12 +225,15 @@ def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
         except:
             print "Error getting the uuid for {}".format(player)
             raise PlayerNotFound(player)
+    '''
 
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
     '''
     Gets the Username from a UUID
     :param uuid: The Player's UUID
     :param forceNetwork: Forces use Mojang's API instead of first looking in the usercache.json
+    '''
+    return playercache.getPlayerFromUUID(uuid, forceNetwork)
     '''
     if forceNetwork:
         try:
@@ -287,6 +292,7 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
         except:
             print "Error getting the username for {}".format(uuid)
             return uuid
+    '''
         
 def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     SKIN_URL = "http://skins.minecraft.net/MinecraftSkins/{}.png"
