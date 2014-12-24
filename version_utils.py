@@ -71,11 +71,52 @@ class __PlayerCache:
     def _save(self):
         with open(userCachePath, "w") as out:
             json.dump(self._playerCacheList, out)
+            
+    def _removePlayerWithName(self, name):
+        toRemove = None
+        for p in self._playerCacheList:
+            if p["Playername"] == name:
+                toRemove = p
+        if toRemove != None:
+            self._playerCacheList.remove(toRemove)
+            self._save()
     
+    def _removePlayerWithUUID(self, uuid, seperator=True):
+        toRemove = None
+        for p in self._playerCacheList:
+            if seperator:
+                if p["UUID (Separator)"] == uuid:
+                    toRemove = p
+            else:
+                if p["UUID (No Separator)"] == uuid:
+                    toRemove = p
+        if toRemove != None:
+            self._playerCacheList.remove(toRemove)
+            self._save()
+            
+    def nameInCache(self, name):
+        isInCache = False
+        for p in self._playerCacheList:
+            if p["Playername"] == name:
+                isInCache = True
+        return isInCache
+    
+    def uuidInCache(self, uuid, seperator=True):
+        isInCache = False
+        for p in self._playerCacheList:
+            if seperator:
+                if p["UUID (Separator)"] == uuid:
+                    isInCache = True
+            else:
+                if p["UUID (No Separator)"] == uuid:
+                    isInCache = True
+        return isInCache 
     
     def getPlayerFromUUID(self, uuid, forceNetwork=False):
         player = {}
         if forceNetwork:
+            if self.uuidInCache(uuid):
+                self._removePlayerWithUUID(uuid)
             response = None
             try:
                 response = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
@@ -105,6 +146,8 @@ class __PlayerCache:
     
     def getPlayerFromPlayername(self, playername, forceNetwork=False, separator=True):
         if forceNetwork:
+            if self.nameInCache(playername):
+                self._removePlayerWithName(playername)
             response = None
             try:
                 response = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(playername)).read()
@@ -304,7 +347,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     if force or not os.path.exists(os.path.join("player-skins", uuid.replace("-", "_")+".png")):
         try:
             # Checks to see if the skin even exists
-            urllib2.urlopen(SKIN_URL.format(playercache.getPlayerFromUUID(uuid, forceNetwork=True)))
+            urllib2.urlopen(SKIN_URL.format(playercache.getPlayerFromUUID(uuid, forceNetwork=False)))
         except urllib2.URLError as e:
             if "Not Found" in e.msg:
                 return toReturn
@@ -316,7 +359,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
                 player_skin.save(os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
         else:
-            playername = playercache.getPlayerFromUUID(uuid,forceNetwork=True)
+            playername = playercache.getPlayerFromUUID(uuid,forceNetwork=False)
             urllib.urlretrieve(SKIN_URL.format(playername), os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = os.path.join("player-skins", uuid.replace("-","_")+".png")
             player_skin = Image.open(toReturn)
