@@ -145,6 +145,6 @@ elif os.name == 'posix' or platform.system() == 'Linux':
             getcb = gtkGetClipboard
             setcb = gtkSetClipboard
         except Exception:
-                raise Exception('Pyperclip requires the gtk module installed or the xclip command.')
+            raise Exception('Pyperclip requires the gtk module installed or the xclip command.')
 copy = setcb
 paste = getcb

@@ -38,10 +38,6 @@ class GLDisplayContext(object):
         display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
 
         d = display.set_mode(self.getWindowSize(), self.displayMode())
-        #try:
-            #pygame.scrap.init()
-        #except:
-            #logging.warning('PyGame clipboard integration disabled.')
 
         display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
         if sys.platform == 'win32' and config.settings.setWindowPlacement.get():
