@@ -561,6 +561,7 @@ class IResourcePack:
                 new_terrain.paste(image, slot, image)
                 self.propogated_textures.append(slot)
             except Exception, e:
+                print "An Exception occurred while trying to parse textures for {}".format(self._pack_name)
                 pass
         copy = self.old_terrain.copy()
 
@@ -577,7 +578,9 @@ class IResourcePack:
         if self.propogated_textures == []:
             os.remove(self._terrain_path)
             self._isEmpty = True
+            print "{} did not replace any textures".format(self._pack_name)
         if self._too_big:
+            print "{} seems to be a higher resolution than supported".format(self._pack_name)
             try:
                 os.remove(self._terrain_path)
             except:
@@ -733,7 +736,7 @@ def setup_resource_packs():
         os.mkdir("terrain-textures")
     except OSError:
         pass
-    terrains["Default"] = DefaultResourcePack()
+    terrains["Default Resource Pack"] = DefaultResourcePack()
 
     if os.path.exists(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")):
         zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")

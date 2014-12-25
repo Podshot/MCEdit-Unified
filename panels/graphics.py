@@ -36,9 +36,9 @@ class GraphicsPanel(Dialog):
                                                  tooltipText="Enable choppy mouse movement for faster loading.")
 
         packs = resource_packs.packs.get_available_resource_packs()
-        packs.remove('Default')
+        packs.remove('Default Resource Pack')
         packs.sort()
-        packs.insert(0, 'Default')
+        packs.insert(0, 'Default Resource Pack')
         self.resourcePackButton = mceutils.ChoiceButton(packs, choose=self.change_texture)
         self.resourcePackButton.selectedChoice = resource_packs.packs.get_selected_resource_pack_name()
 
