@@ -9,7 +9,7 @@ from config import config
 import locale
 DEF_ENC = locale.getdefaultlocale()[1]
 if DEF_ENC is None:
-    DEF_ENC = "en_US.UTF-8"
+    DEF_ENC = "UTF-8"
 
 try:
     import resource  # @UnresolvedImport

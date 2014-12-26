@@ -73,7 +73,7 @@ import albow
 import locale
 DEF_ENC = locale.getdefaultlocale()[1]
 if DEF_ENC is None:
-    DEF_ENC = "en_US.UTF-8"
+    DEF_ENC = "UTF-8"
 from albow.translate import _, getPlatInfo
 
 from albow.dialogs import Dialog
