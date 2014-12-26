@@ -585,12 +585,16 @@ class IResourcePack:
             os.remove(self._terrain_path)
             self._isEmpty = True
             print u"{} did not replace any textures".format(self._pack_name)
-        if self._too_big:
-            print "{} seems to be a higher resolution than supported".format(self._pack_name)
-            try:
-                os.remove(self._terrain_path)
-            except:
-                pass
+
+        del self.block_image
+
+    def handle_too_big_packs(self):
+        self._too_big = True
+        print u"{} seems to be a higher resolution than supported".format(self._pack_name)
+        try:
+            os.remove(self._terrain_path)
+        except:
+            pass
         del self.block_image
 
 
@@ -653,8 +657,9 @@ class ZipResourcePack(IResourcePack):
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
         if self.big_textures_counted >= self.big_textures_max:
-            self._too_big = True
-        self.parse_terrain_png()
+            self.handle_too_big_packs()
+        else:
+            self.parse_terrain_png()
 
 
 class FolderResourcePack(IResourcePack):
@@ -713,8 +718,9 @@ class FolderResourcePack(IResourcePack):
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
         if self.big_textures_counted >= self.big_textures_max:
-            self._too_big = True
-        self.parse_terrain_png()
+            self.handle_too_big_packs()
+        else:
+            self.parse_terrain_png()
 
 class DefaultResourcePack(IResourcePack):
 
