@@ -7,6 +7,7 @@ import shutil
 from config import config
 
 import locale
+import traceback
 DEF_ENC = locale.getdefaultlocale()[1]
 if DEF_ENC is None:
     DEF_ENC = "UTF-8"
@@ -504,6 +505,7 @@ textureSlots = {
 class IResourcePack:
 
     def __init__(self):
+        self.__stop = False
         tpBasePath = type(os.path.join(directories.parentDir, "textures"))
         tpPackName = type(self._pack_name)
         texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
@@ -548,21 +550,25 @@ class IResourcePack:
     def parse_terrain_png(self):
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
-            try:
-                image = self.block_image[tex]
-                # Scrappy fix for non-RGBA images.
-                # Originally made to debug Unicode stuff.
-                # The images that needed this conversion gave fully transparent
-                # textures in MCEdit.
-                # if image.mode != "RGBA":
-                #     image.convert("RGBA")
-                #     image.putalpha(255)
-                slot = textureSlots[tex]
-                new_terrain.paste(image, slot, image)
-                self.propogated_textures.append(slot)
-            except Exception, e:
-                print "An Exception occurred while trying to parse textures for {}".format(self._pack_name)
-                pass
+            if not self.__stop:
+                try:
+                    image = self.block_image[tex]
+                    # Scrappy fix for non-RGBA images.
+                    # Originally made to debug Unicode stuff.
+                    # The images that needed this conversion gave fully transparent
+                    # textures in MCEdit.
+                    # if image.mode != "RGBA":
+                    #     image.convert("RGBA")
+                    #     image.putalpha(255)
+                    slot = textureSlots[tex]
+                    new_terrain.paste(image, slot, image)
+                    self.propogated_textures.append(slot)
+                except:
+                    print "An Exception occurred while trying to parse textures for {}".format(self._pack_name)
+                    traceback.print_stack()
+                    self.__stop = True
+                    self._isEmpty = True
+                    pass
         copy = self.old_terrain.copy()
 
         for t in self.all_texture_slots:
