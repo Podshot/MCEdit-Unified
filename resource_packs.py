@@ -578,7 +578,7 @@ class IResourcePack:
         if self.propogated_textures == []:
             os.remove(self._terrain_path)
             self._isEmpty = True
-            print "{} did not replace any textures".format(self._pack_name)
+            print u"{} did not replace any textures".format(self._pack_name)
         if self._too_big:
             print "{} seems to be a higher resolution than supported".format(self._pack_name)
             try:
@@ -773,7 +773,7 @@ class ResourcePackHandler:
         self._resource_packs = setup_resource_packs()
         self._selected_resource_pack = config.settings.resourcePack.get()
         if self._selected_resource_pack not in self._resource_packs.keys():
-            self.set_selected_resource_pack_name("Default")
+            self.set_selected_resource_pack_name("Default Resource Pack")
 
     @property
     def resource_packs(self):
