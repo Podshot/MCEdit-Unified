@@ -550,7 +550,7 @@ class IResourcePack:
     def parse_terrain_png(self):
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
-            if not self.__stop:
+            if not self.__stop and tex in textureSlots.keys():
                 try:
                     image = self.block_image[tex]
                     # Scrappy fix for non-RGBA images.
