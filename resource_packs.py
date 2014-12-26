@@ -553,13 +553,14 @@ class IResourcePack:
             if not self.__stop:
                 try:
                     image = self.block_image[tex]
+                    print image
                     # Scrappy fix for non-RGBA images.
                     # Originally made to debug Unicode stuff.
                     # The images that needed this conversion gave fully transparent
                     # textures in MCEdit.
-                    # if image.mode != "RGBA":
-                    #     image.convert("RGBA")
-                    #     image.putalpha(255)
+                    if image.mode != "RGBA":
+                        image.convert("RGBA")
+                        image.putalpha(255)
                     slot = textureSlots[tex]
                     new_terrain.paste(image, slot, image)
                     self.propogated_textures.append(slot)
