@@ -2600,8 +2600,6 @@ class MCRenderer(object):
             return
         if self.level.saving:
             return
-        cx = wx >> 4
-        cz = wz >> 4
 
         if distance is None:
             d = self.effectiveViewDistance
@@ -2763,8 +2761,7 @@ class MCRenderer(object):
         self.invalidateChunks(box.chunkPositions, [Layer.TileTicks])
 
     def invalidateChunks(self, chunks, layers=None):
-        for c in chunks:
-            cx, cz = c
+        for (cx, cz) in chunks:
             self.invalidateChunk(cx, cz, layers)
 
         self.stopWork()
@@ -2901,8 +2898,7 @@ class MCRenderer(object):
                 chunkPosition[:, :, (0, 2)] += chunks[:, numpy.newaxis, :]
                 chunkPosition *= 16
                 GL.glVertexPointer(3, GL.GL_FLOAT, 0, chunkPosition.ravel())
-                # chunkPosition *= 8
-                GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, (chunkPosition[..., (0, 2)] * 8).ravel())
+                GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, (chunkPosition[..., (0, 2)] * 16).ravel())
                 GL.glDrawArrays(GL.GL_QUADS, 0, len(chunkPosition) * 4)
 
             GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
