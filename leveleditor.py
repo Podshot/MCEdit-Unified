@@ -1546,13 +1546,13 @@ class LevelEditor(GLViewport):
                 blocksOnly = False
 
             if tempKeyname == config.keys.flip.get():
-                self.currentTool.flip(blocksOnly=False)
+                self.currentTool.flip(blocksOnly=blocksOnly)
             if tempKeyname == config.keys.rollClone.get():
-                self.currentTool.roll(blocksOnly)
+                self.currentTool.roll(blocksOnly=blocksOnly)
             if tempKeyname == config.keys.rotateClone.get():
-                self.currentTool.rotate(blocksOnly)
+                self.currentTool.rotate(blocksOnly=blocksOnly)
             if tempKeyname == config.keys.mirror.get():
-                self.currentTool.mirror(blocksOnly)
+                self.currentTool.mirror(blocksOnly=blocksOnly)
 
         if "Brush" in "{}".format(self.currentTool):
             if keyname == config.keys.decreaseBrush.get():
@@ -1569,9 +1569,9 @@ class LevelEditor(GLViewport):
                 blocksOnly = False
 
             if tempKeyname == config.keys.rotateBrush.get():
-                self.currentTool.rotate(blocksOnly)
+                self.currentTool.rotate(blocksOnly=blocksOnly)
             if tempKeyname == config.keys.rollBrush.get():
-                self.currentTool.roll(blocksOnly)
+                self.currentTool.roll(blocksOnly=blocksOnly)
 
         if "fill" in "{}".format(self.currentTool) and keyname == config.keys.replaceShortcut.get():
             self.currentTool.toggleReplacing()
