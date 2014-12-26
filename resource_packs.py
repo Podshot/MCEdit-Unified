@@ -553,7 +553,6 @@ class IResourcePack:
             if not self.__stop:
                 try:
                     image = self.block_image[tex]
-                    print image
                     # Scrappy fix for non-RGBA images.
                     # Originally made to debug Unicode stuff.
                     # The images that needed this conversion gave fully transparent
