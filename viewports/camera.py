@@ -540,22 +540,22 @@ class CameraViewport(GLViewport):
             f.value = tileEntity[l].value
 
         colors = [
-            "Black",
-            "Blue",
-            "Green",
-            "Cyan",
-            "Red",
-            "Purple",
-            "Yellow",
-            "Light Gray",
-            "Dark Gray",
-            "Light Blue",
-            "Bright Green",
-            "Bright Blue",
-            "Bright Red",
-            "Bright Purple",
-            "Bright Yellow",
-            "White",
+            "\xa70  Black",
+            "\xa71  Dark Blue",
+            "\xa72  Dark Green",
+            "\xa73  Dark Aqua",
+            "\xa74  Dark Red",
+            "\xa75  Dark Purple",
+            "\xa76  Gold",
+            "\xa77  Gray",
+            "\xa78  Dark Gray",
+            "\xa79  Blue",
+            "\xa7a  Green",
+            "\xa7b  Aqua",
+            "\xa7c  Red",
+            "\xa7d  Light Purple",
+            "\xa7e  Yellow",
+            "\xa7f  White",
         ]
 
         def menu_picked(index):
@@ -601,7 +601,7 @@ class CameraViewport(GLViewport):
                     self.editor.addUnsavedEdit()
             panel.dismiss()
 
-        colorMenu = mceutils.MenuButton("Color Code...", colors, menu_picked=menu_picked)
+        colorMenu = mceutils.MenuButton("Add Color Code...", colors, menu_picked=menu_picked)
 
         column = [Label("Edit Sign")] + lineFields + [colorMenu, Button("OK", action=changeSign)]
 
