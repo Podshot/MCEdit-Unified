@@ -535,7 +535,7 @@ class CameraViewport(GLViewport):
 
         panel = Dialog()
 
-        lineFields = [TextField(width=150) for l in linekeys]
+        lineFields = [TextField(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
             f.value = tileEntity[l].value
 
@@ -722,7 +722,7 @@ class CameraViewport(GLViewport):
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Command Block")
-        commandField = TextField(width=200)
+        commandField = TextField(width=500)
         nameField = TextField(width=100)
         trackOutput = CheckBox()
 
@@ -773,7 +773,7 @@ class CameraViewport(GLViewport):
 
         okBTN = Button("OK", action=updateCommandBlock)
         cancel = Button("Cancel", action=panel.dismiss)
-        column = [titleLabel, Row((Label("Command"), commandField)), Row((Label("Custom Name"), nameField)), Row((Label("Track Output"), trackOutput)), okBTN, cancel]
+        column = [titleLabel, Label("Command:"), commandField, Row((Label("Custom Name:"), nameField)), Row((Label("Track Output"), trackOutput)), okBTN, cancel]
         panel.add(Column(column))
         panel.shrink_wrap()
         panel.present()
