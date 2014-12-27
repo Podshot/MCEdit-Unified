@@ -563,9 +563,11 @@ class IResourcePack:
                     slot = textureSlots[tex]
                     new_terrain.paste(image, slot, image)
                     self.propogated_textures.append(slot)
-                except:
+                except Exception as e:
                     print "An Exception occurred while trying to parse textures for {}".format(self._pack_name)
                     traceback.print_stack()
+                    print "Exception Message: "+str(e)
+                    print "Exception type: "+str(type(e))
                     self.__stop = True
                     self._isEmpty = True
                     pass
