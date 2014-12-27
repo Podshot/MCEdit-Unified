@@ -591,7 +591,7 @@ class CameraViewport(GLViewport):
             unsavedChanges = False
             for l, f in zip(linekeys, lineFields):
                 oldText = "{}".format(tileEntity[l])
-                tileEntity[l] = pymclevel.TAG_String(f.value[:15])
+                tileEntity[l] = pymclevel.TAG_String(f.value[:255])
                 if "{}".format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
