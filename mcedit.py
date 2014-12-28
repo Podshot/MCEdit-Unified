@@ -413,8 +413,12 @@ class MCEdit(GLViewport):
         raise SystemExit
 
     @classmethod
+    def fetch_version(self):
+        with self.version_lock:
+            self.version_info = release.fetch_new_version_info()
+
     def check_for_version(self):
-        new_version = release.check_for_new_version()
+        new_version = release.check_for_new_version(self.version_info)
         if new_version is not False:
             answer = albow.ask(
                 _('Version {} is available').format(new_version["tag_name"]),
@@ -450,9 +454,13 @@ class MCEdit(GLViewport):
         if mcedit.droppedLevel:
             mcedit.loadFile(mcedit.droppedLevel)
 
-        new_version_thread = threading.Thread(target=self.check_for_version)
-        new_version_thread.start()
-        
+        self.version_lock = threading.Lock()
+        self.version_info = None
+        self.version_checked = False
+
+        fetch_version_thread = threading.Thread(target=self.fetch_version)
+        fetch_version_thread.start()
+
 
 # Disabled old update code
 #       if hasattr(sys, 'frozen'):
@@ -590,7 +598,7 @@ class MCEdit(GLViewport):
             dis = mcplatform.Xlib.display.Display()
             win = dis.create_resource_object('window', win)
             curDesk = os.environ.get('XDG_CURRENT_DESKTOP')
-            if curDesk == 'GNOME':
+            if curDesk in ('GNOME', 'X-Cinnamon'):
                 wParent = win.query_tree().parent.query_tree().parent
             elif curDesk == 'KDE':
                 wParent = win.query_tree().parent.query_tree().parent.query_tree().parent

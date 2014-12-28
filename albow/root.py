@@ -187,6 +187,12 @@ class RootWidget(Widget):
 
             while modal_widget.modal_result is None:
                 try:
+
+                    if not self.mcedit.version_checked:
+                        if not self.mcedit.version_lock.locked():
+                            self.mcedit.version_checked = True
+                            self.mcedit.check_for_version()
+
                     self.hover_widget = self.find_widget(pygame.mouse.get_pos())
                     if self.bonus_draw_time < 1:
                         self.bonus_draw_time += 1
@@ -366,7 +372,7 @@ class RootWidget(Widget):
                             set_modifier(key, False)
                             add_modifiers(event)
                             self.bonus_draw_time = 0
-                            
+
                             keyname = event.dict.get('keyname', None) or self.getKey(event)
                             levelExist = self.editor.level is not None
                             if 'mouse' not in keyname and 'Mouse' not in keyname:
@@ -374,7 +380,7 @@ class RootWidget(Widget):
                                 for i, key in enumerate(self.editor.movements):
                                     if tempKeyname == key:
                                         self.changeMovementKeys(i, False, levelExist)
-                                
+
                                 for i, key in enumerate(self.editor.cameraPan):
                                     if tempKeyname == key:
                                         self.changeCameraKeys(i, False, levelExist)
