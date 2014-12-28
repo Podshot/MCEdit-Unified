@@ -69,14 +69,11 @@ class GLDisplayContext(object):
             for windowID in windowIDs:
                 window = dis.create_resource_object('window', windowID)
                 name = window.get_wm_name() # Title
+                if "MCEdit ~ Unified" in name:
+                    win = window
                 pid = window.get_full_property(dis.intern_atom('_NET_WM_PID'), mcplatform.Xlib.X.AnyPropertyType) # PID
-
-            dis = mcplatform.Xlib.display.Display()
-            dRoot = dis.screen().root
-            win = dRoot.get_full_property(dis.intern_atom('_NET_ACTIVE_WINDOW'), mcplatform.Xlib.X.AnyPropertyType).value[0]
-            win = dis.create_resource_object('window', win)
             win.configure(x=config.settings.windowX.get(), y=config.settings.windowY.get())
-#            self.win = win
+            self.win = win
             dis.sync()
 
         try:
