@@ -10,23 +10,27 @@ from pymclevel import TAG_Compound
 displayName = "Add Potion Effect to Mobs"
 
 Effects = {
+"Speed": 1,
+"Slowness": 2,
 "Strength": 5,
 "Jump Boost": 8,
 "Regeneration": 10,
+"Resistance": 11,
 "Fire Resistance": 12,
 "Water Breathing": 13,
-"Resistance": 11,
+"Invisibility": 14,
 "Weakness": 18,
 "Poison": 19,
-"Speed (no mob effect)": 1,
-"Slowness (no mob effect)": 2,
+"Wither": 20,
+"Health Boost": 21,
+"Absorption": 22,
 "Haste (no mob effect)": 3,
-"Mining Fatigue (no mob effectg)": 4,
+"Mining Fatigue (no mob effect)": 4,
 "Nausea (no mob effect)": 9,
 "Blindness (no mob effect)": 15,
 "Hunger (no mob effect)": 17,
-"Invisibility (no effect)": 14,
 "Night Vision (no effect)": 16,
+"Saturation (no mob effect)": 23,
 }
 
 EffectKeys = ()
