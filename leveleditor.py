@@ -993,6 +993,7 @@ class LevelEditor(GLViewport):
         self.addWorker(self.renderer)
 
         self.undoStack = []
+        self.afterSaveUndoStack = []
         self.redoStack = []
         self.recordUndo = True
         self.clearUnsavedEdits()
@@ -1143,7 +1144,7 @@ class LevelEditor(GLViewport):
                 return
 
         self.recordUndo = True
-        self.clearUnsavedEdits()
+        self.clearUnsavedEdits(True)
 
     def addUnsavedEdit(self):
         if self.unsavedEdits:
@@ -1185,10 +1186,16 @@ class LevelEditor(GLViewport):
             self.add(self.saveInfoBackground)
             self.saveInfoBackground = self.saveInfoBackground
 
-    def clearUnsavedEdits(self):
+    def clearUnsavedEdits(self, saving=False):
         if self.unsavedEdits:
             self.unsavedEdits = 0
             self.remove(self.saveInfoBackground)
+            if saving:
+                for operation in self.undoStack:
+                    self.afterSaveUndoStack.append(operation)
+                self.undoStack = []
+                while len(self.afterSaveUndoStack) > self.undoLimit:
+                    self.afterSaveUndoStack.pop(0)
 
     @property
     def saveInfoLabelText(self):
@@ -2191,20 +2198,24 @@ class LevelEditor(GLViewport):
         if schematic is None:
             return
         self.currentTool.cancel()
-        craneTool = self.toolbar.tools[5]  # xxx
-        self.currentTool = craneTool
-        craneTool.loadLevel(schematic)
+        self.currentTool = self.toolbar.tools[5]
+        self.currentTool.loadLevel(schematic)
 
     def deleteSelectedBlocks(self):
         self.selectionTool.deleteBlocks()
 
     @mceutils.alertException
     def undo(self):
-        if len(self.undoStack) == 0:
+        if len(self.undoStack) == 0 and len(self.afterSaveUndoStack) == 0:
             return
         with mceutils.setWindowCaption("UNDOING - "):
             self.freezeStatus("Undoing the previous operation...")
-            op = self.undoStack.pop()
+            if len(self.undoStack) > 0:
+                op = self.undoStack.pop()
+                normalUndo = True
+            else:
+            	op = self.afterSaveUndoStack.pop()
+            	normalUndo = False
 
             if self.recordUndo:
                 self.redoStack.append(op)
@@ -2215,7 +2226,10 @@ class LevelEditor(GLViewport):
             if changedBox is not None:
                 self.invalidateBox(changedBox)
             if ".SelectionOperation" not in str(op) and ".NudgeSelectionOperation" not in str(op):
-                self.removeUnsavedEdit()
+                if normalUndo:
+                    self.removeUnsavedEdit()
+                else:
+                	self.addUnsavedEdit()
 
         self.root.fix_sticky_ctrl()
 
