@@ -29,7 +29,7 @@ Effects = {
 "Nausea (no mob effect)": 9,
 "Blindness (no mob effect)": 15,
 "Hunger (no mob effect)": 17,
-"Night Vision (no effect)": 16,
+"Night Vision (no mob effect)": 16,
 "Saturation (no mob effect)": 23,
 }
 
