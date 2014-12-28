@@ -1188,8 +1188,6 @@ class LevelEditor(GLViewport):
     def clearUnsavedEdits(self):
         if self.unsavedEdits:
             self.unsavedEdits = 0
-            self.undoStack = []
-            self.redoStack = []
             self.remove(self.saveInfoBackground)
 
     @property
