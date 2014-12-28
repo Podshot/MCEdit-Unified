@@ -586,13 +586,13 @@ class IResourcePack:
         if self.propogated_textures == []:
             os.remove(self._terrain_path)
             self._isEmpty = True
-            print u"{} did not replace any textures".format(self._pack_name)
+            #print u"{} did not replace any textures".format(self._pack_name)
 
         del self.block_image
 
     def handle_too_big_packs(self):
         self._too_big = True
-        print u"{} seems to be a higher resolution than supported".format(self._pack_name)
+        #print u"{} seems to be a higher resolution than supported".format(self._pack_name)
         try:
             os.remove(self._terrain_path)
         except:
