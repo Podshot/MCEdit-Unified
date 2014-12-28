@@ -43,11 +43,17 @@ def getMD5HashesForRelease():
                 flines.append(name)
                 files.append(asset["name"])
                 print "["+str(time.ctime())+"][MD5 Hasher] Finished getting MD5 hash for <Mac OS X 64bit asset>"
-    print "["+str(time.ctime())+"][MD5 Hasher] Removing zip files"
+        if "Lin" in asset["name"]:
+            if "64bit" in asset["name"]:
+                print "["+str(time.ctime())+"][MD5 Hasher] Found <Linux 64bit asset>"
+                name = "* Linux 64bit MD5 Hash - `"+str(getMD5Hash(asset["browser_download_url"], asset["name"]))+"` \n"
+                flines.append(name)
+                files.append(asset["name"])
+                print "["+str(time.ctime())+"][MD5 Hasher] Finished getting MD5 hash for <Linux 64bit asset>"
+    print "["+str(time.ctime())+"][MD5 Hasher] Cleaning up files"
     for z in files:
         os.remove(z)
-    print "["+str(time.ctime())+"][MD5 Hasher] Removed zip files"
-    print "["+str(time.ctime())+"][MD5 Hasher] Writing MD5.txt file"
+    print "["+str(time.ctime())+"][MD5 Hasher] Writing md5_hashes.txt file"
     with open("md5_hashes.txt", 'wb') as hashes:
         hashes.writelines(flines)
     print "["+str(time.ctime())+"][MD5 Hasher] Finished writing MD5.txt file"
