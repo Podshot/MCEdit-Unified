@@ -37,13 +37,19 @@ def is_dev():
             return current["development"]
     except:
         raise
-def check_for_new_version():
+
+
+def fetch_new_version_info():
+    return json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
+
+
+def check_for_new_version(release_api_response):
     '''
     Checks for a new MCEdit-Unified version, if the current one is not in development mode
     '''
     try:
         if not is_dev():
-            release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
+            # release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
             version = release_api_response[0]
             if version["tag_name"] != get_release_tag():
                 is_64bit = sys.maxsize > 2**32
