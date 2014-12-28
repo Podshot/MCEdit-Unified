@@ -59,7 +59,7 @@ class BlockView(GLOrtho):
 
     @property
     def tooltipText(self):
-        return "{0}".format(self.blockInfo.name)
+        return str(self.blockInfo.name)
 
 
 class BlockButton(ButtonBase, Panel):
@@ -163,7 +163,7 @@ class BlockButton(ButtonBase, Panel):
 
     @property
     def tooltipText(self):
-        return "{0}".format(self.blockInfo.name)
+        return str(self.blockInfo.name)
 
     def action(self):
         blockPicker = blockpicker.BlockPicker(self.blockInfo, self.materials, allowWildcards=self.allowWildcards)

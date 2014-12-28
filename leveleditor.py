@@ -1001,7 +1001,7 @@ class LevelEditor(GLViewport):
         self.selectionTool.selectNone()
 
         [t.levelChanged() for t in self.toolbar.tools]
-        if "select" not in "{}".format(self.currentTool):
+        if "select" not in str(self.currentTool):
             self.toolbar.selectTool(0)
 
         if isinstance(self.level, pymclevel.MCInfdevOldLevel):
@@ -1536,7 +1536,7 @@ class LevelEditor(GLViewport):
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
 
-        if "clone" in "{}".format(self.currentTool):
+        if "clone" in str(self.currentTool):
             blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
             if keyname.startswith(blocksOnlyModifier):
                 tempKeyname = keyname[len(blocksOnlyModifier)+1:]
@@ -1554,7 +1554,7 @@ class LevelEditor(GLViewport):
             if tempKeyname == config.keys.mirror.get():
                 self.currentTool.mirror(blocksOnly=blocksOnly)
 
-        if "Brush" in "{}".format(self.currentTool):
+        if "Brush" in str(self.currentTool):
             if keyname == config.keys.decreaseBrush.get():
                 self.currentTool.decreaseBrushSize()
             if keyname == config.keys.increaseBrush.get():
@@ -1573,7 +1573,7 @@ class LevelEditor(GLViewport):
             if tempKeyname == config.keys.rollBrush.get():
                 self.currentTool.roll(blocksOnly=blocksOnly)
 
-        if "fill" in "{}".format(self.currentTool) and keyname == config.keys.replaceShortcut.get():
+        if "fill" in str(self.currentTool) and keyname == config.keys.replaceShortcut.get():
             self.currentTool.toggleReplacing()
 
         if keyname == config.keys.quit.get():
@@ -1646,7 +1646,7 @@ class LevelEditor(GLViewport):
             self.currentTool.swap()
 
         if keyname == 'Escape':
-            if "select" not in "{}".format(self.currentTool):
+            if "select" not in str(self.currentTool):
                 self.toolbar.selectTool(0)
             else:
                 self.mouseLookOff()
@@ -2214,7 +2214,7 @@ class LevelEditor(GLViewport):
             changedBox = op.dirtyBox()
             if changedBox is not None:
                 self.invalidateBox(changedBox)
-            if ".SelectionOperation" not in "{}".format(op) and ".NudgeSelectionOperation" not in "{}".format(op):
+            if ".SelectionOperation" not in str(op) and ".NudgeSelectionOperation" not in str(op):
                 self.removeUnsavedEdit()
 
         self.root.fix_sticky_ctrl()

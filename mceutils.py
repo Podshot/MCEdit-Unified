@@ -640,7 +640,7 @@ def showProgress(progressText, progressIterator, cancel=False):
 
         def mouse_up(self, event):
             try:
-                if "SelectionTool" in "{0}".format(self.root.editor.currentTool):
+                if "SelectionTool" in str(self.root.editor.currentTool):
                     if self.root.get_nudge_block().count > 0:
                         self.root.get_nudge_block().mouse_up(event)
             except:

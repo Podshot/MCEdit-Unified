@@ -497,7 +497,7 @@ class CloneTool(EditorTool):
         self.updateOffsets()
 
     def selectionChanged(self):
-        if self.selectionBox() is not None:
+        if self.selectionBox() is not None and "CloneToolPanel" in str(self.panel):
             self.updateSchematic()
             self.updateOffsets()
 
