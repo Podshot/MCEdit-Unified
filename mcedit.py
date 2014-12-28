@@ -110,6 +110,7 @@ import release
 import shutil
 import sys
 import traceback
+import threading
 
 from utilities.gl_display_context import GLDisplayContext
 
@@ -412,23 +413,7 @@ class MCEdit(GLViewport):
         raise SystemExit
 
     @classmethod
-    def main(self):
-        displayContext = GLDisplayContext()
-
-        rootwidget = RootWidget(displayContext.display)
-        mcedit = MCEdit(displayContext)
-        rootwidget.displayContext = displayContext
-        rootwidget.confirm_quit = mcedit.confirm_quit
-        rootwidget.mcedit = mcedit
-
-        rootwidget.add(mcedit)
-        rootwidget.focus_switch = mcedit
-        if 0 == len(pymclevel.alphaMaterials.yamlDatas):
-            albow.alert("Failed to load minecraft.yaml. Check the console window for details.")
-
-        if mcedit.droppedLevel:
-            mcedit.loadFile(mcedit.droppedLevel)
-
+    def check_for_version(self):
         new_version = release.check_for_new_version()
         if new_version is not False:
             answer = albow.ask(
@@ -446,6 +431,28 @@ class MCEdit(GLViewport):
             elif answer == "Download":
                 platform_open(new_version["asset"]["browser_download_url"])
                 albow.alert(_(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
+
+    @classmethod
+    def main(self):
+        displayContext = GLDisplayContext()
+
+        rootwidget = RootWidget(displayContext.display)
+        mcedit = MCEdit(displayContext)
+        rootwidget.displayContext = displayContext
+        rootwidget.confirm_quit = mcedit.confirm_quit
+        rootwidget.mcedit = mcedit
+
+        rootwidget.add(mcedit)
+        rootwidget.focus_switch = mcedit
+        if 0 == len(pymclevel.alphaMaterials.yamlDatas):
+            albow.alert("Failed to load minecraft.yaml. Check the console window for details.")
+
+        if mcedit.droppedLevel:
+            mcedit.loadFile(mcedit.droppedLevel)
+
+        new_version_thread = threading.Thread(target=self.check_for_version)
+        new_version_thread.start()
+        
 
 # Disabled old update code
 #       if hasattr(sys, 'frozen'):
