@@ -1194,8 +1194,6 @@ class LevelEditor(GLViewport):
                 for operation in self.undoStack:
                     self.afterSaveUndoStack.append(operation)
                 self.undoStack = []
-                while len(self.afterSaveUndoStack) > self.undoLimit:
-                    self.afterSaveUndoStack.pop(0)
 
     @property
     def saveInfoLabelText(self):
