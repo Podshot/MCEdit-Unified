@@ -627,9 +627,9 @@ class ChunkCalculator(object):
         skyLight = chunk.SkyLight
         finalLight = self.whiteLight
 
-        if lights != None:
+        if lights is not None:
             finalLight = lights
-        if skyLight != None:
+        if skyLight is not None:
             finalLight = numpy.maximum(skyLight, lights)
 
         areaBlockLights = numpy.ones((chunkWidth + 2, chunkLength + 2, chunkHeight + 2), numpy.uint8)
