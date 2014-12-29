@@ -1,5 +1,5 @@
 var releaseData = {};
-var platforms = ["OSX","Win"];
+var platforms = ["OSX","Win", "Lin"];
 var requests = {};
 function getJSON(url){
 	if (requests[url]) {
@@ -129,7 +129,7 @@ function getDownload(platform,version,bittage) {
 		for (var x = 0; x < release.assets.length; x++) {
 			var asset = release.assets[x];
             var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit';
-			if (asset.name == name + '.zip' || asset.name == name + '.exe' || asset.name == name + '.msi') {
+			if (asset.name == name + '.zip' || asset.name == name + '.exe' || asset.name == name + '.msi' || asset.name == name + '.run') {
 				return asset;
 			}
 		}
