@@ -2208,6 +2208,9 @@ class LevelEditor(GLViewport):
             return
         with mceutils.setWindowCaption("UNDOING - "):
             self.freezeStatus("Undoing the previous operation...")
+            wasSelectionBox = False
+            if self.selectionBox():
+            	wasSelectionBox = True
             if len(self.undoStack) > 0:
                 op = self.undoStack.pop()
                 normalUndo = True
@@ -2223,6 +2226,9 @@ class LevelEditor(GLViewport):
             changedBox = op.dirtyBox()
             if changedBox is not None:
                 self.invalidateBox(changedBox)
+            if not self.selectionBox() and wasSelectionBox:
+            	self.toolbar.selectTool(0)
+            	self.toolbar.tools[0].currentCorner = 1
             if ".SelectionOperation" not in str(op) and ".NudgeSelectionOperation" not in str(op):
                 if normalUndo:
                     self.removeUnsavedEdit()
