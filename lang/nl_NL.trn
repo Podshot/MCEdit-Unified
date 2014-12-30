@@ -1,4 +1,4 @@
-#-# Nederlands (Nederland)
+#-# Language (Country)
 #-# font regular: DEFAULT
 #-# font bold: DEFAULT
 # TRANSLATION BASICS
@@ -1252,3 +1252,33 @@ o591 Previous Page
 t591 
 o592 Next Page
 t592 
+o593 Super Secret Settings
+t593 
+o594 Default Resource Pack
+t594 
+o595 Square
+t595 
+o596 Record a Macro
+t596 
+o597 Health Boost
+t597 
+o598 Saturation (no mob effect)
+t598 
+o599 Wither
+t599 
+o600 Invisibility
+t600 
+o601 Slowness
+t601 
+o602 Absorption
+t602 
+o603 Night Vision (no mob effect)
+t603 
+o604 Speed
+t604 
+o605 Mining Fatigue (no mob effect)
+t605 
+o606 Player Name(s):
+t606 
+o607 Chunks Borders
+t607 

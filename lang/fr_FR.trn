@@ -1,4 +1,4 @@
-#-# Français (France)
+#-# Language (Country)
 #-# font regular: DEFAULT
 #-# font bold: DEFAULT
 # TRANSLATION BASICS
@@ -1271,4 +1271,34 @@ t590 Recharger skins
 o591 Previous Page
 t591 Page préc.
 o592 Next Page
-t592 Page suiv.
+t592 Page suiv
+o593 Super Secret Settings
+t593 Super Secret Settings
+o594 Default Resource Pack
+t594 Pack de ressources par défaut
+o595 Square
+t595 Carré
+o596 Record a Macro
+t596 Enregis. macro
+o597 Health Boost
+t597 Augmenter santé
+o598 Saturation (no mob effect)
+t598 Saturation (faim) (joueur seul)
+o599 Wither
+t599 Wither
+o600 Invisibility
+t600 Invisibilité
+o601 Slowness
+t601 Lenteur
+o602 Absorption
+t602 Absorbtion
+o603 Night Vision (no mob effect)
+t603 Vision nocturne (joueur seul)
+o604 Speed
+t604 Vitesse
+o605 Mining Fatigue (no mob effect)
+t605 Fatigue du mineur (joueur seul)
+o606 Player Name(s):
+t606 Nom joueur(s) :
+o607 Chunks Borders
+t607 Bords des chunks

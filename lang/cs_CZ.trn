@@ -1,4 +1,4 @@
-#-# Čeština (Czech Republic)
+#-# Language (Country)
 #-# font regular: DEFAULT
 #-# font bold: DEFAULT
 # TRANSLATION BASICS
@@ -20,18 +20,18 @@ o0 Autobrake
 t0 Automatická brzda
 o1 Swap Axes Looking Down
 t1 Prohodit osy při pohledu dolů
-o2 Camera Acceleration:
-t2 Zrychlení kamery:
-o3 Camera Drag:
-t3 Odpor kamery:
-o4 Camera Max Speed:
-t4 Maximální rychlost kamery:
-o5 Camera Braking Speed:
-t5 Brzdná rychlost kamery:
-o6 Mouse Speed:
-t6 Rychlost kursoru:
-o7 Undo Limit:
-t7 Limit zpětných operací:
+o2 Camera Acceleration: 
+t2 
+o3 Camera Drag: 
+t3 
+o4 Camera Max Speed: 
+t4 
+o5 Camera Braking Speed: 
+t5 
+o6 Mouse Speed: 
+t6 
+o7 Undo Limit: 
+t7 
 o8 Invert Mouse
 t8 Invertovat myš
 o9 Low Detail Height
@@ -62,12 +62,12 @@ o21 Options
 t21 Nastavení
 o22 OK
 t22 OK
-o23 Field of View:
-t23 Zorný úhel:
-o24 Target FPS:
-t24 Cílové FPS:
-o25 Vertex Buffer Limit (MB):
-t25 Vertex Buffer Limit (MB) :
+o23 Field of View: 
+t23 
+o24 Target FPS: 
+t24 
+o25 Vertex Buffer Limit (MB): 
+t25 
 o26 Fast Leaves
 t26 Neprůhledné listy
 o27 Rough Graphics
@@ -94,8 +94,8 @@ o37 Numpad
 t37 Numerické klávesy
 o38 WASD Old
 t38 WASD - staré
-o39 Presets:
-t39 Předvolby:
+o39 Presets: 
+t39 
 o40 MCEdit
 t40 MCEdit
 o41 <
@@ -130,8 +130,8 @@ o55 Grey
 t55 Šedá
 o56 Black
 t56 Černá
-o57 Color:
-t57 Barva:
+o57 Color: 
+t57 
 o58 Show Previous Selection
 t58 Zobrazit předchozí výběr
 o59 R:
@@ -146,8 +146,8 @@ o63 Place Immediately
 t63 Okamžitě umístit
 o64 Clone Options
 t64 Nastavení klonování
-o65 Alpha:
-t65 Alfa:
+o65 Alpha: 
+t65 
 o66 Choose Block Immediately
 t66 Okamžitě zvolit blok
 o67 Reset Distance When Brush Size Changes
@@ -378,10 +378,10 @@ o177 Restart
 t177 Redémarrer
 o178 Later
 t178 Plus tard
-o179 Loading
-t179 Chargement :
-o180  - MCEdit
-t180  - MCEdit
+o179 Loading 
+t179 
+o180  - MCEdit 
+t180 
 o181 Overworld
 t181 Surface
 o182 The End
@@ -512,8 +512,8 @@ o241 Mode:
 t241 Mode :
 o242 Brush:
 t242 Brosse :
-o243 Chance:
-t243 Chance :
+o243 Chance: 
+t243 
 o244 Hollow
 t244 Vide(?)
 o245 Fill Air
@@ -528,14 +528,14 @@ o249 Shortcut: Alt-1
 t249 Raccourci : Alt-1
 o250 ---
 t250 ---
-o251 Weight 1:
-t251 Poids 1 :
-o252 Weight 2:
-t252 Poids 2 :
-o253 Weight 3:
-t253 Poids 3 :
-o254 Weight 4:
-t254 Poids 4 :
+o251 Weight 1: 
+t251 
+o252 Weight 2: 
+t252 
+o253 Weight 3: 
+t253 
+o254 Weight 4: 
+t254 
 o255 Shortcut: Alt-3
 t255 Raccourci : Alt-3
 o256 Hold {0} to draw lines
@@ -546,10 +546,10 @@ o258 Click to replace {0} ({1}:{2})
 t258 Cliquer pour remplacer {0} ({1}:{2})
 o259 Noise
 t259 Bruit
-o260 Strength:
-t260 Force :
-o261 Depth:
-t261 Profondeur :
+o260 Strength: 
+t260 
+o261 Depth: 
+t261 
 o262 Only Change Natural Earth
 t262 Changer seulement la terre naturelle
 o263 Import
@@ -560,8 +560,8 @@ o265 y
 t265 y
 o266 z
 t266 z
-o267 COPYING -
-t267 COPIE -
+o267 COPYING - 
+t267 
 o268 Rotate
 t268 Rotation
 o269 Roll
@@ -1060,8 +1060,8 @@ o485 Cold Taiga M
 t485 Taïga froide M
 o486 Mega Spruce Taiga
 t486 Méga taïga avec épicéas
-o487 Mega Spruce Taiga
-t487 Méga taïga avec épicéas
+o487 Mega Spruce Taiga 
+t487 
 o488 Extreme Hills+ M
 t488 Collines extrêmes+ M
 o489 Savanna M
@@ -1088,8 +1088,8 @@ o499 Players
 t499 Joueurs
 o500 Player Name
 t500 Nom du joueur
-o501 Player:
-t501 Joueur :
+o501 Player: 
+t501 
 o502 Goto Player
 t502 Aller au joueur
 o503 Goto Player's View
@@ -1160,8 +1160,8 @@ o535 Generator:
 t535 Generator:
 o536 Will automatically download and use the latest version
 t536 Will automatically download and use the latest version
-o537 Height:
-t537 Height:
+o537 Height: 
+t537 
 o538 Grass
 t538 Grass
 o539 Server version:
@@ -1184,20 +1184,20 @@ o547 Simulate world
 t547 Simulate world
 o548 Use snapshot versions
 t548 Use snapshot versions
-o549 X:
-t549 X:
-o550 Y:
-t550 Y:
-o551 Z:
-t551 Z:
-o552 f:
-t552 f:
-o553 Seed:
-t553 Seed:
-o554 East-West Chunks:
-t554 East-West Chunks:
-o555 North-South Chunks:
-t555 North-South Chunks:
+o549 X: 
+t549 
+o550 Y: 
+t550 
+o551 Z: 
+t551 
+o552 f: 
+t552 
+o553 Seed: 
+t553 
+o554 East-West Chunks: 
+t554 
+o555 North-South Chunks: 
+t555 
 o556 Survival
 t556 Survival
 o557 Game Type:
@@ -1272,3 +1272,33 @@ o591 Previous Page
 t591 
 o592 Next Page
 t592 
+o593 Super Secret Settings
+t593 
+o594 Default Resource Pack
+t594 
+o595 Square
+t595 
+o596 Record a Macro
+t596 
+o597 Health Boost
+t597 
+o598 Saturation (no mob effect)
+t598 
+o599 Wither
+t599 
+o600 Invisibility
+t600 
+o601 Slowness
+t601 
+o602 Absorption
+t602 
+o603 Night Vision (no mob effect)
+t603 
+o604 Speed
+t604 
+o605 Mining Fatigue (no mob effect)
+t605 
+o606 Player Name(s):
+t606 
+o607 Chunks Borders
+t607 
