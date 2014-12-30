@@ -1,4 +1,4 @@
-#-# Language (Country)
+#-# Čeština (Czech Republic)
 #-# font regular: DEFAULT
 #-# font bold: DEFAULT
 # TRANSLATION BASICS
@@ -21,17 +21,17 @@ t0 Automatická brzda
 o1 Swap Axes Looking Down
 t1 Prohodit osy při pohledu dolů
 o2 Camera Acceleration: 
-t2 
+t2 Zrychlení kamery: 
 o3 Camera Drag: 
-t3 
+t3 Odpor kamery: 
 o4 Camera Max Speed: 
-t4 
+t4 Maximální rychlost kamery:
 o5 Camera Braking Speed: 
-t5 
+t5 Brzdná rychlost kamery: 
 o6 Mouse Speed: 
-t6 
+t6 Rychlost kursoru: 
 o7 Undo Limit: 
-t7 
+t7 Limit zpětných operací: 
 o8 Invert Mouse
 t8 Invertovat myš
 o9 Low Detail Height
@@ -63,11 +63,11 @@ t21 Nastavení
 o22 OK
 t22 OK
 o23 Field of View: 
-t23 
+t23 Zorný úhel: 
 o24 Target FPS: 
-t24 
+t24 Cílové FPS: 
 o25 Vertex Buffer Limit (MB): 
-t25 
+t25 Vertex Buffer Limit (MB) : 
 o26 Fast Leaves
 t26 Neprůhledné listy
 o27 Rough Graphics
@@ -95,7 +95,7 @@ t37 Numerické klávesy
 o38 WASD Old
 t38 WASD - staré
 o39 Presets: 
-t39 
+t39 Předvolby: 
 o40 MCEdit
 t40 MCEdit
 o41 <
@@ -147,7 +147,7 @@ t63 Okamžitě umístit
 o64 Clone Options
 t64 Nastavení klonování
 o65 Alpha: 
-t65 
+t65 Alfa: 
 o66 Choose Block Immediately
 t66 Okamžitě zvolit blok
 o67 Reset Distance When Brush Size Changes
@@ -379,9 +379,9 @@ t177 Redémarrer
 o178 Later
 t178 Plus tard
 o179 Loading 
-t179 
+t179 Chargement : 
 o180  - MCEdit 
-t180 
+t180  - MCEdit 
 o181 Overworld
 t181 Surface
 o182 The End
@@ -513,7 +513,7 @@ t241 Mode :
 o242 Brush:
 t242 Brosse :
 o243 Chance: 
-t243 
+t243 Chance : 
 o244 Hollow
 t244 Vide(?)
 o245 Fill Air
@@ -529,13 +529,13 @@ t249 Raccourci : Alt-1
 o250 ---
 t250 ---
 o251 Weight 1: 
-t251 
+t251 Poids 1 : 
 o252 Weight 2: 
-t252 
+t252 Poids 2 : 
 o253 Weight 3: 
-t253 
+t253 Poids 3 : 
 o254 Weight 4: 
-t254 
+t254 Poids 4 : 
 o255 Shortcut: Alt-3
 t255 Raccourci : Alt-3
 o256 Hold {0} to draw lines
@@ -547,9 +547,9 @@ t258 Cliquer pour remplacer {0} ({1}:{2})
 o259 Noise
 t259 Bruit
 o260 Strength: 
-t260 
+t260 Force : 
 o261 Depth: 
-t261 
+t261 Profondeur : 
 o262 Only Change Natural Earth
 t262 Changer seulement la terre naturelle
 o263 Import
@@ -561,7 +561,7 @@ t265 y
 o266 z
 t266 z
 o267 COPYING - 
-t267 
+t267 COPIE - 
 o268 Rotate
 t268 Rotation
 o269 Roll
@@ -1058,8 +1058,8 @@ o484 Roofed Forest M
 t484 Forêt couverte M
 o485 Cold Taiga M
 t485 Taïga froide M
-o486 Mega Spruce Taiga
-t486 Méga taïga avec épicéas
+o486 Mega Spruce Taiga 
+t486 Méga taïga avec épicéas 
 o487 Mega Spruce Taiga 
 t487 
 o488 Extreme Hills+ M

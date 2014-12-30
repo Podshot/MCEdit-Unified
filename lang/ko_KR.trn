@@ -1,6 +1,6 @@
-#-# Language (Country)
-#-# font regular: DEFAULT
-#-# font bold: DEFAULT
+#-# Korean (Korea)
+#-# font regular: NotoSansKr-Light.ttf
+#-# font bold: NotoSansKr-Medium.ttf
 # TRANSLATION BASICS
 #
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
