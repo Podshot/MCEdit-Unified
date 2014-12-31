@@ -1435,7 +1435,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self._allChunks.update(self._loadedChunkData.iterkeys())
 
     def getRegionForChunk(self, cx, cz):
-        return self.worldFolder.getRegionFile(cx, cz)
+        return self.worldFolder.getRegionForChunk(cx, cz)
 
     # --- Chunk I/O ---
 
