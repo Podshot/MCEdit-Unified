@@ -4,6 +4,7 @@ import directories
 import os
 import shutil
 import config
+import modelhandler
 # FIXME: Reduce loading time by checking if a previous parsed texture is present before re-parsing
 # TODO: Add support for folder resource packs
 try:
@@ -530,6 +531,9 @@ class ZipResourcePack(IResourcePack):
         self.zipfile = zipfileFile
         self._pack_name = zipfileFile.split(os.path.sep)[-1][:-4]
         self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+        self.model_path = directories.parentDir+os.path.sep+"models"+os.path.sep+self._pack_name+os.path.sep
+        self.model_path_extended = os.path.join(self.model_path, "assets", "minecraft", "models")
+        self._extracted_models = []
         self._isEmpty = False
         self._too_big = False
         self.big_textures_counted = 0 
@@ -595,6 +599,15 @@ class ZipResourcePack(IResourcePack):
                             self.big_textures_counted = self.big_textures_counted + 1
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
+            if name.filename.endswith(".json"):
+                if name.filename.startswith("assets/minecraft/models/block"):
+                    model_name = name.filename.split("/")[-1]
+                    model_name = model_name.split(".")[0]
+                    zfile.extract(name.filename, self.model_path)
+                    self._extracted_models.append((name.filename, model_name))
+        for model in self._extracted_models:
+            modelhandler.Model(model[1], file_obj=open(self.model_path+model[0]), modeldir=self.model_path_extended).render()
+            pass
         if self.big_textures_counted >= self.big_textures_max:
             self._too_big = True
         self.parse_terrain_png()
@@ -661,7 +674,7 @@ def setup_resource_packs():
         os.mkdir("terrain-textures")
     except OSError:
         pass
-    terrains["Default"] = DefaultResourcePack()
+    terrains["Default Resource Pack"] = DefaultResourcePack()
     zipResourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
     folderResourcePacks = os.listdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"))
     for zip_tex_pack in zipResourcePacks:
