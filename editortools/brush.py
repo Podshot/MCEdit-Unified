@@ -19,9 +19,11 @@ import copy
 from OpenGL import GL
 import datetime
 import os
+import sys
 from albow import AttrRef, ItemRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextField, TableView, TableColumn
 from albow.dialogs import Dialog
-from albow.translate import _
+import albow.translate
+_ = albow.translate._
 import ast
 import bresenham
 from clone import CloneTool
@@ -43,8 +45,6 @@ import mcplatform
 from numpy import newaxis
 import numpy
 from operation import Operation, mkundotemp
-import os
-import sys
 from os.path import basename
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
@@ -125,7 +125,9 @@ class BrushPanel(Panel):
         self.brushModeButtonLabel = Label("Mode:")
         self.brushModeButton = ChoiceButton(sorted([mode for mode in tool.brushModes]),
                                        width=150,
-                                       choose=self.brushModeChanged)
+                                       choose=self.brushModeChanged,
+                                       doNotTranslate=True,
+                                       )
         modeRow = Row([self.brushModeButtonLabel, self.brushModeButton])
 
         self.brushStyleButtonLabel = Label("Style:")
@@ -164,6 +166,10 @@ class BrushPanel(Panel):
         :param key, key to store the value in, also the name of the label if type is float or int.
         :param value, default value for the field.
         """
+        if hasattr(self.tool.brushMode, "trn"):
+            doNotTranslate = True
+        else:
+            doNotTranslate = False
         type = value.__class__.__name__
         mi = 0
         ma = 100
@@ -175,13 +181,7 @@ class BrushPanel(Panel):
             type = value[0].__class__.__name__
             mi = value[1]
             ma = value[2]
-        if type == 'int':
-            object = IntInputRow(key, ref=reference, width=50, min=mi, max=ma)
-        elif type == 'float':
-            object = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma)
-        elif type == 'bool':
-            object = CheckBoxLabel(key, ref=reference)
-        elif type == 'Block':
+        if type == 'Block':
             if key not in self.tool.recentBlocks:
                 self.tool.recentBlocks[key] = []
             wcb = getattr(self.tool.brushMode, 'wildcardBlocks', [])
@@ -192,8 +192,18 @@ class BrushPanel(Panel):
                                  recentBlocks = self.tool.recentBlocks[key],
                                  allowWildcards = aw
                                  )
-        elif type == 'str':
-            object = Label(value)
+        else:
+            if doNotTranslate:
+                key = self.tool.brushMode.trn._(key)
+                value = self.tool.brushMode.trn._(value)
+            if type == 'int':
+                object = IntInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
+            elif type == 'float':
+                object = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
+            elif type == 'bool':
+                object = CheckBoxLabel(key, ref=reference, doNotTranslate=doNotTranslate)
+            elif type == 'str':
+                object = Label(value, doNotTranslate=doNotTranslate)
         return object
 
     def brushModeChanged(self):
@@ -446,7 +456,11 @@ class BrushTool(CloneTool):
         self.importedBrushModes = self.importBrushModes()
         for m in self.importedBrushModes:
             if m.displayName:
-                self.brushModes[m.displayName] = m
+                if hasattr(m, "trn"):
+                    displayName = m.trn._(m.displayName)
+                else:
+                    displayName = _(m.displayName)
+                self.brushModes[displayName] = m
             else:
                 self.brushModes[m.__name__] = m
             if m.inputs:
@@ -468,8 +482,9 @@ class BrushTool(CloneTool):
         """
         sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters'))
         modes = [self.tryImport(x[:-3], 'stock-brushes') for x in filter(lambda x: x.endswith(".py"), os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes')))]
-        modes.extend([self.tryImport(x[:-3], directories.brushesDir) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir))])
+        cust_modes = [self.tryImport(x[:-3], directories.brushesDir) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir))]
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)
+        modes.extend(filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs') and hasattr(m, 'trn'), cust_modes))
         return modes
 
     def tryImport(self, name, dir):
@@ -477,11 +492,26 @@ class BrushTool(CloneTool):
         Imports a brush module. Called by importBrushModules
         :param name, name of the module to import.
         """
+        if dir != "stock-brushes":
+            embeded = False
+        else:
+            embeded = True
         try:
             path = os.path.join(dir, (name+ ".py"))
             if type(path) == unicode and DEF_ENC != "UTF-8":
                 path = path.encode(DEF_ENC)
             globals()[name] = m = imp.load_source(name, path)
+            if not embeded:
+                if "albow.translate" in sys.modules.keys():
+                    del sys.modules["albow.translate"]
+                if "trn" in sys.modules.keys():
+                    del sys.modules["trn"]
+                import albow.translate as trn
+                trn_path = os.path.join(directories.brushesDir, name)
+                if os.path.exists(trn_path):
+                    trn.setLangPath(trn_path)
+                    trn.buildTranslation(config.settings.langCode.get())
+                m.trn = trn
             m.materials = self.editor.level.materials
             m.createInputs(m)
             return m
@@ -557,30 +587,36 @@ class BrushTool(CloneTool):
         :param name, name of the preset to load.
         """
         name = name+'.preset'
+        finish = True
         try:
             f = open(os.path.join(directories.brushesDir, name), "r")
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
-        for key in loadedBrushOptions:
-            if key.endswith('blockID'):
-                key = key[:-7]
-                self.options[key] = self.editor.level.materials.blockWithID(loadedBrushOptions[key + 'blockID'], loadedBrushOptions[key+ 'blockData'])
-                if key + 'recentBlocks' in loadedBrushOptions:
-                    list = []
-                    blockList = loadedBrushOptions[key + 'recentBlocks']
-                    for b in blockList:
-                        list.append(self.editor.level.materials.blockWithID(b[0], b[1]))
-                    self.recentBlocks[key] = list
-            elif key.endswith('blockData'):
-                continue
-            elif key.endswith('recentBlocks'):
-                continue
-            elif key == "Mode":
-                self.selectedBrushMode = loadedBrushOptions[key]
-                self.brushMode = self.brushModes[self.selectedBrushMode]
-            else:
-                self.options[key] = loadedBrushOptions[key]
+        # check if the brush is loaded first and unconditionaly, since custom brushes can be deleted.
+        brushMode = self.brushModes.get("Mode", None)
+        if brushMode is not None:
+            self.selectedBrushMode = loadedBrushOptions["Mode"]
+            self.brushMode = brushMode
+            for key in loadedBrushOptions:
+                if key.endswith('blockID'):
+                    key = key[:-7]
+                    self.options[key] = self.editor.level.materials.blockWithID(loadedBrushOptions[key + 'blockID'], loadedBrushOptions[key+ 'blockData'])
+                    if key + 'recentBlocks' in loadedBrushOptions:
+                        list = []
+                        blockList = loadedBrushOptions[key + 'recentBlocks']
+                        for b in blockList:
+                            list.append(self.editor.level.materials.blockWithID(b[0], b[1]))
+                        self.recentBlocks[key] = list
+                elif key.endswith('blockData'):
+                    continue
+                elif key.endswith('recentBlocks'):
+                    continue
+#                elif key == "Mode":
+#                    self.selectedBrushMode = loadedBrushOptions[key]
+#                    self.brushMode = self.brushModes[self.selectedBrushMode]
+                else:
+                    self.options[key] = loadedBrushOptions[key]
         self.showPanel()
         self.setupPreview()
 
