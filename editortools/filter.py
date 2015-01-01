@@ -17,7 +17,9 @@ import os
 import traceback
 import uuid
 from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextField
-from albow.translate import _
+import albow.translate
+_ = albow.translate._
+from config import config
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel
@@ -47,7 +49,7 @@ def alertFilterException(func):
     return _func
 
 
-def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
+def addNumField(page, optionName, oName, val, min=None, max=None, increment=0.1):
     if isinstance(val, float):
         ftype = FloatField
         if isinstance(increment, int):
@@ -67,7 +69,7 @@ def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
     field._increment = increment
     page.optionDict[optionName] = AttrRef(field, 'value')
 
-    row = Row([Label(optionName), field])
+    row = Row([Label(oName, doNotTranslate=True), field])
     return row
 
 
@@ -90,13 +92,14 @@ class FilterModuleOptions(Widget):
         self.giveEditorObject(module)
         print "Creating options for ", module
         if hasattr(module, "inputs"):
+            trn = getattr(module, "trn", None)
             if isinstance(module.inputs, list):
                 for tabData in module.inputs:
-                    title, page, pageRect = self.makeTabPage(self.tool, tabData)
+                    title, page, pageRect = self.makeTabPage(self.tool, tabData, trn=trn)
                     pages.add_page(title, page)
                     pages.set_rect(pageRect.union(pages._rect))
             elif isinstance(module.inputs, tuple):
-                title, page, pageRect = self.makeTabPage(self.tool, module.inputs)
+                title, page, pageRect = self.makeTabPage(self.tool, module.inputs, trn=trn)
                 pages.add_page(title, page)
                 pages.set_rect(pageRect)
         else:
@@ -114,7 +117,7 @@ class FilterModuleOptions(Widget):
         for eachPage in pages.pages:
             self.optionDict = dict(self.optionDict.items() + eachPage.optionDict.items())
 
-    def makeTabPage(self, tool, inputs):
+    def makeTabPage(self, tool, inputs, trn=None):
         page = Widget()
         page.is_gl_container = True
         rows = []
@@ -126,6 +129,10 @@ class FilterModuleOptions(Widget):
         title = "Tab"
 
         for optionName, optionType in inputs:
+            if trn is not None:
+                oName = trn._(optionName)
+            else:
+                oName = _(optionName)
             if isinstance(optionType, tuple):
                 if isinstance(optionType[0], (int, long, float)):
                     if len(optionType) == 3:
@@ -138,7 +145,7 @@ class FilterModuleOptions(Widget):
                     elif len(optionType) == 4:
                         val, min, max, increment = optionType
 
-                    rows.append(addNumField(page, optionName, val, min, max, increment))
+                    rows.append(addNumField(page, optionName, oName, val, min, max, increment))
 
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
@@ -179,38 +186,43 @@ class FilterModuleOptions(Widget):
                         field = TextField(value=val, width=wid)
                         page.optionDict[optionName] = AttrRef(field, 'value')
 
-                        row = Row((Label(optionName), field))
+                        row = Row((Label(oName, doNotTranslate=True), field))
                         rows.append(row)
                     else:
                         isChoiceButton = True
 
                     if isChoiceButton:
-                        choiceButton = ChoiceButton(map(str, optionType))
+                        if trn is not None:
+                            __ = trn._
+                        else:
+                            __ = _
+                        choices = [__("%s"%a) for a in optionType]
+                        choiceButton = ChoiceButton(choices, doNotTranslate=True)
                         page.optionDict[optionName] = AttrRef(choiceButton, 'selectedChoice')
 
-                        rows.append(Row((Label(optionName), choiceButton)))
+                        rows.append(Row((Label(oName, doNotTranslate=True), choiceButton)))
 
             elif isinstance(optionType, bool):
                 cbox = CheckBox(value=optionType)
                 page.optionDict[optionName] = AttrRef(cbox, 'value')
 
-                row = Row((Label(optionName), cbox))
+                row = Row((Label(oName, doNotTranslate=True), cbox))
                 rows.append(row)
 
             elif isinstance(optionType, (int, float)):
-                rows.append(addNumField(self, optionName, optionType))
+                rows.append(addNumField(self, optionName, oName, optionType))
 
             elif optionType == "blocktype" or isinstance(optionType, pymclevel.materials.Block):
                 blockButton = BlockButton(tool.editor.level.materials)
                 if isinstance(optionType, pymclevel.materials.Block):
                     blockButton.blockInfo = optionType
 
-                row = Column((Label(optionName), blockButton))
+                row = Column((Label(oName, doNotTranslate=True), blockButton))
                 page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
 
                 rows.append(row)
             elif optionType == "label":
-                rows.append(wrapped_label(optionName, 50))
+                rows.append(wrapped_label(oName, 50, doNotTranslate=True))
 
             elif optionType == "string":
                 input = None  # not sure how to pull values from filters, but leaves it open for the future. Use this variable to set field width.
@@ -219,12 +231,12 @@ class FilterModuleOptions(Widget):
                 else:
                     size = 200
                 field = TextField(value="")
-                row = TextInputRow(optionName, ref=AttrRef(field, 'value'), width=size)
+                row = TextInputRow(oName, ref=AttrRef(field, 'value'), width=size, doNotTranslate=True)
                 page.optionDict[optionName] = AttrRef(field, 'value')
                 rows.append(row)
 
             elif optionType == "title":
-                title = optionName
+                title = oName
 
             else:
                 raise ValueError(("Unknown option type", optionType))
@@ -239,7 +251,6 @@ class FilterModuleOptions(Widget):
                     break
             cols.append(Column(rows[:i]))
             rows = rows[i:]
-        # cols.append(Column(rows))
 
         if len(rows):
             cols.append(Column(rows))
@@ -302,7 +313,7 @@ class FilterToolPanel(Panel):
             for saved_macro in self.macro_json["Macros"].keys():
                 name = "[Macro] "+saved_macro
                 tool.names_list.append(name)
-        self.filterSelect = ChoiceButton(tool.names_list, choose=self.filterChanged)
+        self.filterSelect = ChoiceButton(tool.names_list, choose=self.filterChanged, doNotTranslate=True)
         self.filterSelect.selectedChoice = self.selectedFilterName
         
         if not self._recording:
@@ -499,11 +510,8 @@ class FilterTool(EditorTool):
         self.updatePanel.shrink_wrap()
 
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
-#        self.editor.add(self.updatePanel)
 
         self.panel = FilterToolPanel(self)
-#        if self.panel.parent:
-#            self.updatePanel.parent.remove(self.updatePanel)
 
     @property
     def statusText(self):
@@ -523,7 +531,6 @@ class FilterTool(EditorTool):
         self.editor.add(self.updatePanel)
         self.reloadFilters()
 
-        # self.panel = FilterToolPanel(self)
         self.panel.reload()
 
         self.panel.midleft = self.editor.midleft
@@ -558,7 +565,7 @@ class FilterTool(EditorTool):
             shutil.copy(os.path.join(filtersDir, "updates", f), filtersDir)
         shutil.rmtree(os.path.join(filtersDir, "updates"))
         self.finishedUpdatingWidget = Widget()
-        lbl = Label("Updated " + str(updatedFilters) + " filter(s) out of " + str(totalFilters))
+        lbl = Label("Updated %s filter(s) out of %s"%(updatedFilters, totalFilters))
         closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
         col = Column((lbl, closeBTN))
         self.finishedUpdatingWidget.bg_color = (0.0, 0.0, 0.6)
@@ -578,7 +585,20 @@ class FilterTool(EditorTool):
 
         def tryImport(name):
             try:
-                return __import__(name)
+                m = __import__(name)
+                listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
+                if name + ".py" not in listdir or name + ".pyc" not in listdir or name + ".pyo" not in listdir:
+                    if "albow.translate" in sys.modules.keys():
+                        del sys.modules["albow.translate"]
+                    if "trn" in sys.modules.keys():
+                        del sys.modules["trn"]
+                    import albow.translate as trn
+                    trn_path = os.path.join(directories.getFiltersDir(), name)
+                    if os.path.exists(trn_path):
+                        trn.setLangPath(trn_path)
+                        trn.buildTranslation(config.settings.langCode.get())
+                    m.trn = trn
+                return m
             except Exception, e:
                 print traceback.format_exc()
                 alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
@@ -587,7 +607,7 @@ class FilterTool(EditorTool):
         filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
-        for m in self.filterModules.itervalues():
+        for n, m in self.filterModules.iteritems():
             try:
                 reload(m)
             except Exception, e:
@@ -601,7 +621,13 @@ class FilterTool(EditorTool):
         return [self.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
     def moduleDisplayName(self, module):
-        return module.displayName if hasattr(module, 'displayName') else module.__name__.capitalize()
+        if hasattr(module, "displayName"):
+            if hasattr(module, "trn"):
+                return module.trn._(module.displayName)
+            else:
+                return module.displayName
+        else:
+            return module.__name__.capitalize()
 
     @alertFilterException
     def confirm(self):
