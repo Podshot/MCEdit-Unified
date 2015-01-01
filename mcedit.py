@@ -275,6 +275,9 @@ class MCEdit(GLViewport):
         def showCacheDir():
             platform_open(directories.getCacheDir())
 
+        def showScreenshotsDir():
+            platform_open(os.path.join(directories.parentDir, "screenshots"))
+
         readmePath = os.path.join(directories.getDataDir(), "README.html")
 
         hotkeys = ([("",
@@ -301,6 +304,9 @@ class MCEdit(GLViewport):
                     ("",
                      "Config Files Folder",
                      showCacheDir),
+                    ("",
+                     "Screenshots Folder",
+                     showScreenshotsDir)
                    ])
 
         c = mceutils.HotkeyColumn(hotkeys)
