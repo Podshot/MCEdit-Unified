@@ -348,7 +348,12 @@ class HotkeyColumn(Widget):
             buttonsColumn = []
 
         Widget.__init__(self)
-        for (hotkey, title, action) in items:
+        for t in items:
+            if len(t) == 3:
+                (hotkey, title, action) = t
+                tooltipText = None
+            else:
+                (hotkey, title, action, tooltipText) = t
             if isinstance(title, (str, unicode)):
                 button = Button(title, action=action)
             else:
@@ -359,6 +364,9 @@ class HotkeyColumn(Widget):
             label.anchor = "wh"
 
             label.height = button.height
+
+            if tooltipText:
+                button.tooltipText = tooltipText
 
             keysColumn.append(label)
             buttonsColumn.append(button)

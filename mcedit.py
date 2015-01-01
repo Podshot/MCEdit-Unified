@@ -291,22 +291,24 @@ class MCEdit(GLViewport):
                      self.showOptions),
                     ("",
                      "Homepage",
-                     lambda: platform_open("http://khroki.github.io/MCEdit-Unified")),
+                     lambda: platform_open("http://www.mcedit-unified.net"),
+                     "http://www.mcedit-unified.net"),
                     ("",
                      "About MCEdit",
-                     lambda: platform_open("http://khroki.github.io/MCEdit-Unified/about.html")),
-                    ("",
-                     "Recent Changes",
-                     lambda: platform_open("http://khroki.github.io/MCEdit-Unified")),
+                     lambda: platform_open("http://www.mcedit-unified.net/about.html"),
+                     "http://www.mcedit-unified.net/about.html"),
                     ("",
                      "License",
-                     showLicense),
+                     showLicense,
+                     os.path.join(directories.getDataDir(), "LICENSE.txt")),
                     ("",
                      "Config Files Folder",
-                     showCacheDir),
+                     showCacheDir,
+                     directories.getCacheDir()),
                     ("",
                      "Screenshots Folder",
-                     showScreenshotsDir)
+                     showScreenshotsDir,
+                     os.path.join(directories.parentDir, "screenshots"))
                    ])
 
         c = mceutils.HotkeyColumn(hotkeys)
