@@ -995,7 +995,7 @@ class SelectionTool(EditorTool):
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
-            if op.canUndo:
+            if op.canUndo and recordUndo:
                 self.editor.addUnsavedEdit()
 
 
@@ -1036,7 +1036,7 @@ class SelectionTool(EditorTool):
             op = DeleteEntitiesOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
-            if op.canUndo:
+            if op.canUndo and recordUndo:
                 self.editor.addUnsavedEdit()
 
     @alertException

@@ -644,7 +644,6 @@ class FilterTool(EditorTool):
             if not op.wasMacroOperation:
                 if op.canUndo:
                     self.editor.addUnsavedEdit()
-                self.editor.addUnsavedEdit()
 
                 self.editor.invalidateBox(self.selectionBox())
             
