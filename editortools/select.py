@@ -1049,6 +1049,7 @@ class SelectionTool(EditorTool):
         self.copySelection()
         self.deleteBlocks()
         self.deleteEntities(False)
+        self.deleteTileTicks(False)
 
     @alertException
     def copySelection(self):
