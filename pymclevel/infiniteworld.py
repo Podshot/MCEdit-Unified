@@ -1294,7 +1294,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     def init_scoreboard(self):
         if os.path.exists(self.worldFolder.getFolderPath("data")):
                 if os.path.exists(self.worldFolder.getFolderPath("data")+"/scoreboard.dat"):
-                    return nbt.load(self.level.worldFolder.getFolderPath("data")+"/scoreboard.dat")
+                    return nbt.load(self.worldFolder.getFolderPath("data")+"/scoreboard.dat")
                 else:
                     root_tag = nbt.TAG_Compound()
                     root_tag["data"] = nbt.TAG_Compound()

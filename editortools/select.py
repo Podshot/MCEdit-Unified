@@ -993,9 +993,10 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateTileTicksInBox(box)
 
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
+            op.canUndo = recordUndo
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
-            if op.canUndo and recordUndo:
+            if op.canUndo:
                 self.editor.addUnsavedEdit()
 
 
@@ -1034,9 +1035,10 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateEntitiesInBox(box)
 
             op = DeleteEntitiesOperation(self.editor, self.editor.level)
+            op.canUndo = recordUndo
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
-            if op.canUndo and recordUndo:
+            if op.canUndo:
                 self.editor.addUnsavedEdit()
 
     @alertException
