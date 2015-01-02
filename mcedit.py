@@ -9,6 +9,10 @@ mcedit.py
 
 Startup, main menu, keyboard configuration, automatic updating.
 """
+#-# splashscreen
+import splash
+#-#
+
 import resource_packs
 import OpenGL
 import sys
@@ -112,6 +116,9 @@ import sys
 import traceback
 import threading
 
+#-# used for startup profiling
+import time
+#-#
 from utilities.gl_display_context import GLDisplayContext
 
 getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
@@ -422,10 +429,16 @@ class MCEdit(GLViewport):
 
     @classmethod
     def fetch_version(self):
+        t1 = time.time()
+        print "\n+++ Entering MCEdit.fetch_version() at", t1
         with self.version_lock:
             self.version_info = release.fetch_new_version_info()
+        t2 = time.time()
+        print "\n--- Exiting MCEdit.fetch_version() at", t2, "duration:", t2 -t1
 
     def check_for_version(self):
+        t1 = time.time()
+        print "\n+++ Entering MCEdit.check_for_version() at", t1
         new_version = release.check_for_new_version(self.version_info)
         if new_version is not False:
             answer = albow.ask(
@@ -443,31 +456,64 @@ class MCEdit(GLViewport):
             elif answer == "Download":
                 platform_open(new_version["asset"]["browser_download_url"])
                 albow.alert(_(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
+        t2 = time.time()
+        print "\n--- Exiting MCEdit.check_for_version() at", t2, "duration:", t2 -t1
 
     @classmethod
     def main(self):
+        t1 = time.time()
+        print "\n+++ Entering MCEdit.main() at", t1 # 1
         displayContext = GLDisplayContext()
+        i = 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 2
 
         rootwidget = RootWidget(displayContext.display)
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 3
         mcedit = MCEdit(displayContext)
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 4
         rootwidget.displayContext = displayContext
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 5
         rootwidget.confirm_quit = mcedit.confirm_quit
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 6
         rootwidget.mcedit = mcedit
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 7
 
         rootwidget.add(mcedit)
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 8
         rootwidget.focus_switch = mcedit
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 9
         if 0 == len(pymclevel.alphaMaterials.yamlDatas):
             albow.alert("Failed to load minecraft.yaml. Check the console window for details.")
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 10
 
         if mcedit.droppedLevel:
             mcedit.loadFile(mcedit.droppedLevel)
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 11
 
         self.version_lock = threading.Lock()
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 12
         self.version_info = None
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 13
         self.version_checked = False
+        i += 1
+        print "    MCEdit.main() step %03d"%(i), time.time() - t1 # 14
 
         fetch_version_thread = threading.Thread(target=self.fetch_version)
         fetch_version_thread.start()
+        t2 = time.time()
+        i += 1
+        print "\n--- Exiting MCEdit.main() at", t2, "duration:", t2 - t1
 
 
 # Disabled old update code
@@ -661,16 +707,18 @@ def main(argv):
 #   except (ImportError, UnicodeError) as e:
 #       pass
 
-    try:
-        display.init()
-    except pygame.error, e:
-        os.environ['SDL_VIDEODRIVER'] = 'directx'
-        try:
-            display.init()
-        except pygame.error:
-            os.environ['SDL_VIDEODRIVER'] = 'windib'
-            display.init()
-
+    #?# move this beside MCEdit.main() call? or in MCEdit.main()? or in MCEdit.__init__()?
+    # Seem to be useless
+#    try:
+#        display.init()
+#    except pygame.error, e:
+#        os.environ['SDL_VIDEODRIVER'] = 'directx'
+#        try:
+#            display.init()
+#        except pygame.error:
+#            os.environ['SDL_VIDEODRIVER'] = 'windib'
+#            display.init()
+    #?#
     pygame.font.init()
 
     try:
