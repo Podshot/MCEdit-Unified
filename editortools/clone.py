@@ -255,8 +255,12 @@ class CloneToolPanel(Panel):
             Button("Mirror", width=80, action=tool.mirror, enable=self.transformEnable),
         ))
 
+        self.alignCheckBox = CheckBox(ref=AttrRef(self.tool, 'chunkAlign'))
+        self.alignLabel = Label("Chunk Align")
+        self.alignLabel.mouse_down = self.alignCheckBox.mouse_down
+
         alignRow = Row((
-            CheckBox(ref=AttrRef(self.tool, 'chunkAlign')), Label("Chunk Align")
+            self.alignCheckBox, self.alignLabel
         ))
 
         # headerLabel = Label("Clone Offset")
