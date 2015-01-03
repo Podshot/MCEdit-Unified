@@ -1,7 +1,7 @@
-from OpenGL import GL
+from OpenGL import GL, GLU
 from config import config
 import pygame
-from pygame import display
+from pygame import display, image
 import logging
 import release
 import sys
@@ -17,8 +17,8 @@ import functools
 
 
 class GLDisplayContext(object):
-    def __init__(self):
-        self.reset()
+    def __init__(self, splash=None):
+        self.reset(splash)
 
     def getWindowSize(self):
         w, h = (config.settings.windowWidth.get(), config.settings.windowHeight.get())
@@ -27,7 +27,7 @@ class GLDisplayContext(object):
     def displayMode(self):
         return pygame.OPENGL | pygame.RESIZABLE | pygame.DOUBLEBUF
 
-    def reset(self):
+    def reset(self, splash=None):
         pygame.key.set_repeat(500, 100)
 
         try:
@@ -37,7 +37,27 @@ class GLDisplayContext(object):
 
         display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
 
-        d = display.set_mode(self.getWindowSize(), self.displayMode())
+        wwh = self.getWindowSize()
+        d = display.set_mode(wwh, self.displayMode())
+
+        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
+        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
+        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+
+        # textures are 256x256, so with this we can specify pixel coordinates
+        GL.glMatrixMode(GL.GL_TEXTURE)
+        GL.glScale(1 / 256., 1 / 256., 1 / 256.)
+
+        if splash:
+            swh = splash.get_size()
+            x, y = (wwh[0] / 2 - swh[0] / 2, wwh[1] / 2 - swh[1] / 2)
+            w, h = swh
+            data = image.tostring(splash, 'RGBA', 1)
+            GL.glWindowPos2d(x, y)
+            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+            GL.glDrawPixels(w, h,
+                            GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, numpy.fromstring(data, dtype='uint8'))
+            display.flip()
 
         display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
         if sys.platform == 'win32' and config.settings.setWindowPlacement.get():
@@ -61,17 +81,14 @@ class GLDisplayContext(object):
             config.settings.setWindowPlacement.set(True)
             config.save()
         elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
-            # Looks like KDE need to loose time or to instanciate Xlib atoms to get the right window to place at screen
-            # Keep this code untill the end of the 'for windowID in windowIDs' loop
             dis = mcplatform.Xlib.display.Display()
             root = dis.screen().root
             windowIDs = root.get_full_property(dis.intern_atom('_NET_CLIENT_LIST'), mcplatform.Xlib.X.AnyPropertyType).value
             for windowID in windowIDs:
                 window = dis.create_resource_object('window', windowID)
-                name = window.get_wm_name() # Title
+                name = window.get_wm_name()
                 if "MCEdit ~ Unified" in name:
                     win = window
-                pid = window.get_full_property(dis.intern_atom('_NET_WM_PID'), mcplatform.Xlib.X.AnyPropertyType) # PID
             win.configure(x=config.settings.windowX.get(), y=config.settings.windowY.get())
             self.win = win
             dis.sync()
@@ -85,14 +102,6 @@ class GLDisplayContext(object):
             logging.warning('Unable to set icon: {0!r}'.format(e))
 
         self.display = d
-
-        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
-        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
-        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
-
-        # textures are 256x256, so with this we can specify pixel coordinates
-        GL.glMatrixMode(GL.GL_TEXTURE)
-        GL.glScale(1 / 256., 1 / 256., 1 / 256.)
 
         self.loadTextures()
 
