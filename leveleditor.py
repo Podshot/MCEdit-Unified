@@ -174,7 +174,7 @@ class LevelEditor(GLViewport):
             "mouse6": "Button 4",
             "mouse7": "Button 5"
         }
-        self.rightClickNudge = 0
+        self.rightClickNudge = False
         self.root = self.get_root()
         self.cameraToolDistance = self.defaultCameraToolDistance
 
@@ -1522,12 +1522,16 @@ class LevelEditor(GLViewport):
         if keyname == config.keys.brake.get():
             self.mainViewport.brakeOff()
 
+        if keyname == config.keys.fastNudge.get():
+            self.rightClickNudge = False
+
         if keyname == 'F7':
             self.testBoardKey = 0
 
     def key_down(self, evt):
         if not pygame.key.get_focused():
             return
+
         self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         try:
@@ -1545,6 +1549,9 @@ class LevelEditor(GLViewport):
             name = "option" + keyname[len(keyname) - 1:]
             if hasattr(self.currentTool, name):
                 getattr(self.currentTool, name)()
+
+        if keyname == config.keys.fastNudge.get():
+            self.rightClickNudge = True
 
         if "clone" in str(self.currentTool):
             blocksOnlyModifier = config.keys.blocksOnlyModifier.get()

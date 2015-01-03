@@ -424,6 +424,7 @@ definitions = {
         ("snapCloneToAxis", "snap clone to axis", "Ctrl"),
         ("blocksOnlyModifier", "blocks-only modifier", "Alt"),
         ("fastIncrementModifier", "fast increment modifier", "Ctrl"),
+        ("fastNudge", "fast nudge", "None"),
 
         ("takeAScreenshot", "take a screenshot", "F6"),
 
@@ -549,6 +550,18 @@ definitions = {
         ColorValue("yellow", "yellow", (1.0, 1.0, 0.75)),
         ColorValue("grey", "grey", (0.6, 0.6, 0.6)),
         ColorValue("black", "black", (0.0, 0.0, 0.0))
+    ],
+    ("fastNudgeSettings", "Fast Nudge Settings"): [
+        ("blocksWidth", "Blocks Width", False),
+        ("blocksWidthNumber", "Blocks Width Number", 16),
+        ("selectionWidth", "Selection Width", False),
+        ("selectionWidthNumber", "Selection Width Number", 16),
+        ("pointsWidth", "Points Width", False),
+        ("pointsWidthNumber", "Points Width Number", 16),
+        ("cloneWidth", "clone Width", True),
+        ("cloneWidthNumber", "Clone Width Number", 16),
+        ("importWidth", "Import Width", False),
+        ("importWidthNumber", "Import Width Number", 8),
     ]
 }
 

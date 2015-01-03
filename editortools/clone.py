@@ -24,7 +24,7 @@ from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
 from glutils import gl
-from mceutils import setWindowCaption, showProgress, alertException, drawFace
+from mceutils import setWindowCaption, showProgress, alertException, drawFace, CheckBoxLabel, IntInputRow
 import mcplatform
 from operation import Operation
 import pymclevel
@@ -406,8 +406,16 @@ class CloneToolOptions(ToolOptions):
         tooltipText = "When the clone tool is chosen, place the clone at the selection right away."
         self.autoPlaceLabel.tooltipText = self.autoPlaceCheckBox.tooltipText = tooltipText
 
+        spaceLabel = Label("")
+        cloneNudgeLabel = Label("Clone Fast Nudge Settings:")
+        cloneNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
+                                                ref=config.fastNudgeSettings.cloneWidth,
+                                                tooltipText="Moves clone by his width")
+        cloneNudgeNumber = IntInputRow("Width of clone movement: ",
+                                                ref=config.fastNudgeSettings.cloneWidthNumber, width=100, min=2, max=50)
+
         row = Row((self.autoPlaceCheckBox, self.autoPlaceLabel))
-        col = Column((Label("Clone Options"), row, Button("OK", action=self.dismiss)))
+        col = Column((Label("Clone Options"), row, spaceLabel, cloneNudgeLabel, cloneNudgeCheckBox, cloneNudgeNumber, Button("OK", action=self.dismiss)))
 
         self.add(col)
         self.shrink_wrap()
@@ -474,7 +482,10 @@ class CloneTool(EditorTool):
         return "Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm."
 
     def quickNudge(self, nudge):
-        return map(int.__mul__, nudge, self.selectionBox().size)
+        if config.fastNudgeSettings.cloneWidth.get():
+            return map(int.__mul__, nudge, self.selectionBox().size)
+        nudgeWidth = config.fastNudgeSettings.cloneWidthNumber.get()
+        return map(lambda x: x * nudgeWidth, nudge)
 
     copyAir = config.clone.copyAir.property()
     copyWater = config.clone.copyWater.property()
@@ -493,7 +504,7 @@ class CloneTool(EditorTool):
             x, y, z = nudge
             nudge = x << 4, y, z << 4
 
-        if self.editor.rightClickNudge == 1:
+        if self.editor.rightClickNudge:
             nudge = self.quickNudge(nudge)
 
         # self.panel.performButton.enabled = True
@@ -1116,6 +1127,22 @@ class CloneTool(EditorTool):
 class ConstructionToolPanel(CloneToolPanel):
     useOffsetInput = False
 
+class ConstructionToolOptions(ToolOptions):
+    def __init__(self, tool):
+        Panel.__init__(self)
+        self.tool = tool
+
+        importNudgeLabel = Label("Import Fast Nudge Settings:")
+        importNudgeCheckBox = CheckBoxLabel("Move by the width of schematic ",
+                                                ref=config.fastNudgeSettings.importWidth,
+                                                tooltipText="Moves selection by his width")
+        importNudgeNumber = IntInputRow("Width of import movement: ",
+                                                ref=config.fastNudgeSettings.importWidthNumber, width=100, min=2, max=50)
+
+        col = Column((Label("Import Options"), importNudgeLabel, importNudgeCheckBox, importNudgeNumber, Button("OK", action=self.dismiss)))
+
+        self.add(col)
+        self.shrink_wrap()
 
 class ConstructionTool(CloneTool):
     surfaceBuild = True
@@ -1134,12 +1161,15 @@ class ConstructionTool(CloneTool):
         pass
 
     def quickNudge(self, nudge):
-        return map(lambda x: x * 8, nudge)
+        if config.fastNudgeSettings.importWidth.get():
+            return map(int.__mul__, nudge, self.selectionBox().size)
+        nudgeWidth = config.fastNudgeSettings.importWidthNumber.get()
+        return map(lambda x: x * nudgeWidth, nudge)
 
     def __init__(self, *args):
         CloneTool.__init__(self, *args)
         self.level = None
-        self.optionsPanel = None
+        self.optionsPanel = ConstructionToolOptions(self)
         self.testBoardKey = 0
 
     @property

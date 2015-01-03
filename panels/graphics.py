@@ -18,22 +18,22 @@ class GraphicsPanel(Dialog):
                                                 ref=config.settings.fov, width=100, min=25, max=120)
 
         targetFPSRow = mceutils.IntInputRow("Target FPS: ",
-                                            ref=config.settings.targetFPS, width=100, min=1, max=60)
+                                                ref=config.settings.targetFPS, width=100, min=1, max=60)
 
         bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
-                                              ref=config.settings.vertexBufferLimit, width=100, min=0)
+                                                ref=config.settings.vertexBufferLimit, width=100, min=0)
 
         fastLeavesRow = mceutils.CheckBoxLabel("Fast Leaves",
-                                               ref=config.settings.fastLeaves,
-                                               tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
+                                                ref=config.settings.fastLeaves,
+                                                tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
 
         roughGraphicsRow = mceutils.CheckBoxLabel("Rough Graphics",
-                                                  ref=config.settings.roughGraphics,
-                                                  tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
+                                                ref=config.settings.roughGraphics,
+                                                tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
 
         enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
-                                                   ref=config.settings.enableMouseLag,
-                                                 tooltipText="Enable choppy mouse movement for faster loading.")
+                                                ref=config.settings.enableMouseLag,
+                                                tooltipText="Enable choppy mouse movement for faster loading.")
 
         packs = resource_packs.packs.get_available_resource_packs()
         packs.remove('Default Resource Pack')

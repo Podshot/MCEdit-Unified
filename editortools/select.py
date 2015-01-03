@@ -63,6 +63,25 @@ class SelectionToolOptions(ToolOptions):
         colorRow = Row((Label("Color: ", align="r"), self.colorPopupButton))
         okButton = Button("OK", action=self.dismiss)
         showPreviousRow = CheckBoxLabel("Show Previous Selection", ref=AttrRef(tool, 'showPreviousSelection'))
+        spaceLabel = Label("")
+        blocksNudgeLabel = Label("Blocks Fast Nudge Settings:")
+        blocksNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
+                                                ref=config.fastNudgeSettings.blocksWidth,
+                                                tooltipText="Moves selection by his width")
+        blocksNudgeNumber = IntInputRow("Width of blocks movement: ",
+                                                ref=config.fastNudgeSettings.blocksWidthNumber, width=100, min=2, max=50)
+        selectionNudgeLabel = Label("Selection Fast Nudge Settings:")
+        selectionNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
+                                                ref=config.fastNudgeSettings.selectionWidth,
+                                                tooltipText="Moves selection by his width")
+        selectionNudgeNumber = IntInputRow("Width of selection movement: ",
+                                                ref=config.fastNudgeSettings.selectionWidthNumber, width=100, min=2, max=50)
+        pointsNudgeLabel = Label("Points Fast Nudge Settings:")
+        pointsNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
+                                                ref=config.fastNudgeSettings.pointsWidth,
+                                                tooltipText="Moves points by the selection's width")
+        pointsNudgeNumber = IntInputRow("Width of points movement: ",
+                                                ref=config.fastNudgeSettings.pointsWidthNumber, width=100, min=2, max=50)
 
         def set_colorvalue(ch):
             i = "RGB".index(ch)
@@ -90,7 +109,7 @@ class SelectionToolOptions(ToolOptions):
                              for ch in "RGB"]
 
         colorValuesRow = Row(colorValuesInputs)
-        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, okButton))
+        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))
 
         self.add(col)
         self.shrink_wrap()
@@ -312,8 +331,12 @@ class SelectionTool(EditorTool):
 
     @alertException
     def nudgeBlocks(self, dir):
-        if self.editor.rightClickNudge == 1:
-            dir = dir * (16, 16, 16)
+        if self.editor.rightClickNudge:
+            if config.fastNudgeSettings.blocksWidth.get():
+                dir = map(int.__mul__, dir, self.selectionBox().size)
+            else:
+                nudgeWidth = config.fastNudgeSettings.blocksWidthNumber.get()
+                dir = map(lambda x: x * nudgeWidth, dir)
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
@@ -328,7 +351,11 @@ class SelectionTool(EditorTool):
 
     def nudgeSelection(self, dir):
         if self.editor.rightClickNudge == 1:
-            dir = dir * (16, 16, 16)
+            if config.fastNudgeSettings.selectionWidth.get():
+                dir = map(int.__mul__, dir, self.selectionBox().size)
+            else:
+                nudgeWidth = config.fastNudgeSettings.selectionWidthNumber.get()
+                dir = map(lambda x: x * nudgeWidth, dir)
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
@@ -343,7 +370,11 @@ class SelectionTool(EditorTool):
         if self.selectionBox() is None:
             return
         if self.editor.rightClickNudge == 1:
-            n = n * (16, 16, 16)
+            if config.fastNudgeSettings.pointsWidth.get():
+                n = map(int.__mul__, n, self.selectionBox().size)
+            else:
+                nudgeWidth = config.fastNudgeSettings.pointsWidthNumber.get()
+                n = map(lambda x: x * nudgeWidth, n)
         self.setSelectionPoint(p, self.getSelectionPoint(p) + n)
 
     def nudgeBottomLeft(self, n):

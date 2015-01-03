@@ -68,6 +68,7 @@ class KeyConfigPanel(Dialog):
         "Copy",
         "Paste",
         "Take a Screenshot",
+        "Fast Nudge",
         "",
         "<Options>",
         "Long-Distance Mode",
@@ -141,6 +142,7 @@ class KeyConfigPanel(Dialog):
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
                     ("Take a Screenshot", "F6"),
+                    ("Fast Nudge", "None"),
 
                     ("Long-Distance Mode", "Alt-Z"),
                     ("Fly Mode", "None"),
@@ -209,6 +211,7 @@ class KeyConfigPanel(Dialog):
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
                     ("Take a Screenshot", "F6"),
+                    ("Fast Nudge", "None"),
 
                     ("Long-Distance Mode", "Alt-Z"),
                     ("Fly Mode", "None"),
@@ -277,6 +280,7 @@ class KeyConfigPanel(Dialog):
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
                     ("Take a Screenshot", "F6"),
+                    ("Fast Nudge", "None"),
 
                     ("Long-Distance Mode", "Alt-Z"),
                     ("Fly Mode", "None"),
@@ -345,6 +349,7 @@ class KeyConfigPanel(Dialog):
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
                     ("Take a Screenshot", "F6"),
+                    ("Fast Nudge", "Shift"),
 
                     ("Long-Distance Mode", "Alt-Z"),
                     ("Fly Mode", "None"),
@@ -516,8 +521,10 @@ class KeyConfigPanel(Dialog):
         panel = Panel()
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
-        if labelString is None:
+        if labelString is None and configKey != "Fast Nudge":
             labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
+        elif labelString is None:
+            labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
         label = albow.Label(labelString)
         panel.add(label)
         panel.shrink_wrap()
@@ -547,7 +554,7 @@ class KeyConfigPanel(Dialog):
         keyname = panel.present()
         if keyname == "Return" and self.enter == 1:
             self.enter = 0
-            self.askAssignKey(configKey, _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey))
+            self.askAssignKey(configKey)
             return True
 
         self.enter = 0
@@ -560,9 +567,9 @@ class KeyConfigPanel(Dialog):
                                     .format(keyname))
                 return True
             if configKey in ['Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right']:
-                if 'Ctrl' in keyname:
+                if 'Ctrl' in keyname or '-' in keyname:
                     self.askAssignKey(configKey,
-                                    _("Movement keys can't use Ctrl. "
+                                    _("Movement keys can't use Ctrl or be with modifiers. "
                                     "Press a new key.\n\n"
                                     "Press ESC to cancel. Press Shift-ESC to unbind."))
                     return True
