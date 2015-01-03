@@ -502,8 +502,6 @@ class KeyConfigPanel(Dialog):
             self.enter += 1
             self.askAssignSelectedKey()
 
-        self.root.handling_ctrl(evt)
-
     def key_up(self, evt):
         pass
 

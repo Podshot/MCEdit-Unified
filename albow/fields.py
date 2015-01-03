@@ -54,7 +54,6 @@ class TextEditor(Widget):
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
-        self.root.handling_ctrl(event)
         if not (event.cmd or event.alt):
             k = event.key
             if k == K_LEFT:
@@ -98,7 +97,7 @@ class TextEditor(Widget):
                 self.attention_lost()
 
     def key_up(self, event):
-        self.root.editor.key_up(event)
+        pass
 
     def get_text_and_insertion_point(self):
         text = self.get_text()
@@ -154,6 +153,7 @@ class TextEditor(Widget):
         return True
 
     def mouse_down(self, e):
+        self.root.notMove = True
         self.focus()
         if e.num_clicks == 2:
             self.insertion_point = None

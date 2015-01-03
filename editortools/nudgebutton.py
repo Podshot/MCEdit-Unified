@@ -1,7 +1,6 @@
 #-# Modified by D.C.-G. for translation purpose
 from albow import Label
 from albow.translate import _
-from pymclevel.box import Vector
 from config import config
 from glbackground import GLBackground
 
@@ -31,12 +30,17 @@ class NudgeButton(GLBackground):
         # tooltipBacking.shrink_wrap()
 
     def mouse_down(self, event):
+        self.root.notMove = True
+        self.root.nudge = self
         self.count += 1
         self.focus()
         if event.button == 3:
             self.editor.rightClickNudge = 1
 
     def mouse_up(self, event):
+        self.root.notMove = False
+        self.nudgeCount = 0
+        self.root.nudge = None
         if event.button == 3:
             self.editor.rightClickNudge = 0
         self.count -= 1
@@ -45,33 +49,7 @@ class NudgeButton(GLBackground):
             self.count = 0
 
     def key_down(self, evt):
-        self.root.handling_ctrl(evt)
-
-        keyname = self.root.getKey(evt)
-        if keyname == config.keys.up.get():
-            self.nudge(Vector(0, 1, 0))
-        if keyname == config.keys.down.get():
-            self.nudge(Vector(0, -1, 0))
-
-        Z = self.editor.mainViewport.cameraVector
-        absZ = map(abs, Z)
-        if absZ[0] < absZ[2]:
-            forward = (0, 0, (-1 if Z[2] < 0 else 1))
-        else:
-            forward = ((-1 if Z[0] < 0 else 1), 0, 0)
-
-        back = map(int.__neg__, forward)
-        left = forward[2], forward[1], -forward[0]
-        right = map(int.__neg__, left)
-
-        if keyname == config.keys.forward.get():
-            self.nudge(Vector(*forward))
-        if keyname == config.keys.back.get():
-            self.nudge(Vector(*back))
-        if keyname == config.keys.left.get():
-            self.nudge(Vector(*left))
-        if keyname == config.keys.right.get():
-            self.nudge(Vector(*right))
+        pass
 
     def key_up(self, evt):
         pass

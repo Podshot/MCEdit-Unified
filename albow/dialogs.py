@@ -60,7 +60,7 @@ class Dialog(Modal, Widget):
                 self.dismiss(response)
 
     def key_down(self, e):
-        self.root.handling_ctrl(e)
+        pass
 
     def key_up(self, e):
         pass

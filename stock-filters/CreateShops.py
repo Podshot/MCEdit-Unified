@@ -58,19 +58,6 @@ inputs = [( ("General Trade","title"),
 	"Third put a sell in the bottom slot.\n"
 	"Click the chest you want and choose what you want and click hit enter\n"
 	"*All items must be in the same row*\n"
-	"\n"
-	"Advanced, little experience in notepad ++ is recommended.\n"
-	"To change the amount of trades:\n"
-	"1) Uncheck 'Unlimited Trades'\n"
-	"2) Open the createshops filter using Notepad++ (link:http://notepad-plus-plus.org/) or notepad\n"
-	"*The filter is where you put the MCEdit folder*\n"
-	"3) Scroll to:\n" 
-	            "else:\n"
-				"offer[uses] = TAG_Int(0)\n"
-				"offer[maxUses] = TAG_Int(1)\n"
-	"4) Change the amount you want\n"
-	"\n"
-	"*Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*\n"
 	,"label")),
 	]
 	

@@ -641,7 +641,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
         def key_down(self, event):
-            self.root.handling_ctrl(event)
+            pass
 
         def key_up(self, event):
             pass

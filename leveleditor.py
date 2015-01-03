@@ -1985,8 +1985,6 @@ class LevelEditor(GLViewport):
                 loadWorld()
                 d.dismiss("Cancel")
 
-            self.root.handling_ctrl(evt)
-
         def key_up(evt):
             pass
 

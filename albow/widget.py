@@ -406,6 +406,7 @@ class Widget(object):
                 break
             focus = parent.focus_switch
             if focus and focus is not widget:
+                self.root.notMove = False
                 focus.dispatch_attention_loss()
             widget = parent
 

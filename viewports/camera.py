@@ -1351,14 +1351,13 @@ class CameraViewport(GLViewport):
             self.drawCeiling()
 
         if self.editor.level:
-            if pygame.key.get_focused():
-                try:
-                    self.updateBlockFaceUnderCursor()
-                except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
-                    logging.debug("Updating cursor block: %s", e)
-                    self.blockFaceUnderCursor = (None, None)
+            try:
+                self.updateBlockFaceUnderCursor()
+            except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
+                logging.debug("Updating cursor block: %s", e)
+                self.blockFaceUnderCursor = (None, None)
 
-                self.root.update_tooltip()
+            self.root.update_tooltip()
 
             (blockPosition, faceDirection) = self.blockFaceUnderCursor
             if None != blockPosition:
