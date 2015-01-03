@@ -1262,3 +1262,47 @@ o650 Player Name(s):
 t650 
 o663 Chunks Borders
 t663 
+o664 Fast Nudge
+t664 
+o665 Clone Fast Nudge Settings
+t665 
+o666 Move by the width of selection 
+t666 
+o667 Moves clone by his width
+t667 
+o668 Width of clone movement: 
+t668 
+o669 Import Fast Nudge Settings:
+t669 
+o670 Move by the width of schematic 
+t670 
+o671 Moves selection by his width
+t671 
+o672 Width of import movement: 
+t672 
+o673 Import Options
+t673 
+o674 Blocks Fast Nudge Settings:
+t674 
+o675 Selection Fast Nudge Settings:
+t675 
+o676 Points Fast Nudge Settings:
+t676 
+o677 Moves points by the selection's width
+t677 
+o678 Width of points movement: 
+t678 
+o679 Do you want to save your changes?
+t679 
+o680 Don't Save
+t680 
+o681 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t681 
+o682 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
+t682 
+o683 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t683 
+o684 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t684 
+o685 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t685 

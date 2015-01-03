@@ -561,17 +561,13 @@ class KeyConfigPanel(Dialog):
         if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             if "Modifier" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
                 self.askAssignKey(configKey,
-                                    _("{0} is not a modifier. "
-                                    "Press a new key.\n\n"
-                                    "Press ESC to cancel. Press Shift-ESC to unbind.")
+                                    _("{0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.")
                                     .format(keyname))
                 return True
             if configKey in ['Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right']:
                 if 'Ctrl' in keyname or '-' in keyname:
                     self.askAssignKey(configKey,
-                                    _("Movement keys can't use Ctrl or be with modifiers. "
-                                    "Press a new key.\n\n"
-                                    "Press ESC to cancel. Press Shift-ESC to unbind."))
+                                    "Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.")
                     return True
             oldkey = config.keys[config.convert(configKey)].get()
             config.keys[config.convert(configKey)].set(keyname)
@@ -582,9 +578,7 @@ class KeyConfigPanel(Dialog):
             config.keys[config.convert(configKey)].set("None")
         elif keyname != "Escape":
             self.askAssignKey(configKey,
-                                    _("You can't use the key {0}. "
-                                    "Press a new key.\n\n"
-                                    "Press ESC to cancel. Press Shift-ESC to unbind.")
+                                    _("You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.")
                                     .format(keyname))
             return True
 
