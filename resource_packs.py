@@ -611,7 +611,10 @@ class ZipResourcePack(IResourcePack):
         IResourcePack.__init__(self)
 
         if not os.path.exists(self._terrain_path):
-            self.open_pack()
+            try:
+                self.open_pack()
+            except Exception, e:
+                print ("Error while trying to load one of the resource packs: {}").format(e)
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
@@ -621,6 +624,7 @@ class ZipResourcePack(IResourcePack):
                     block_name = os.path.normpath(name.filename).split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
                     zfile.extract(name.filename, self.texture_path)
+                    name.filename = name.filename.replace("._", "")
                     possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
                     if possible_texture.size == (16, 16):
                         self.block_image[block_name] = possible_texture
