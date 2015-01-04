@@ -1280,3 +1280,47 @@ o606 Player Name(s):
 t606 
 o607 Chunks Borders
 t607 
+o608 Fast Nudge
+t608 
+o609 Clone Fast Nudge Settings
+t609 
+o610 Move by the width of selection 
+t610 
+o611 Moves clone by his width
+t611 
+o612 Width of clone movement: 
+t612 
+o613 Import Fast Nudge Settings:
+t613 
+o614 Move by the width of schematic 
+t614 
+o615 Moves selection by his width
+t615 
+o616 Width of import movement: 
+t616 
+o617 Import Options
+t617 
+o618 Blocks Fast Nudge Settings:
+t618 
+o619 Selection Fast Nudge Settings:
+t619 
+o620 Points Fast Nudge Settings:
+t620 
+o621 Moves points by the selection's width
+t621 
+o622 Width of points movement: 
+t622 
+o623 Do you want to save your changes?
+t623 
+o624 Don't Save
+t624 
+o625 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t625 
+o626 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
+t626 
+o627 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t627 
+o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t628 
+o629 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t629 

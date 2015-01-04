@@ -1232,77 +1232,75 @@ o592 Next Page
 t592 
 o593 Super Secret Settings
 t593 
-o594 
+o594 Default Resource Pack
 t594 
-o601 Default Resource Pack
+o595 Square
+t595 
+o596 Record a Macro
+t596 
+o597 Health Boost
+t597 
+o598 Saturation (no mob effect)
+t598 
+o599 Wither
+t599 
+o600 Invisibility
+t600 
+o601 Slowness
 t601 
-o632 Square
-t632 
-o640 Record a Macro
-t640 
-o641 Health Boost
-t641 
-o642 Saturation (no mob effect)
-t642 
-o643 Wither
-t643 
-o644 Invisibility
-t644 
-o645 Slowness
-t645 
-o646 Absorption
-t646 
-o647 Night Vision (no mob effect)
-t647 
-o648 Speed
-t648 
-o649 Mining Fatigue (no mob effect)
-t649 
-o650 Player Name(s):
-t650 
-o663 Chunks Borders
-t663 
-o664 Fast Nudge
-t664 
-o665 Clone Fast Nudge Settings
-t665 
-o666 Move by the width of selection 
-t666 
-o667 Moves clone by his width
-t667 
-o668 Width of clone movement: 
-t668 
-o669 Import Fast Nudge Settings:
-t669 
-o670 Move by the width of schematic 
-t670 
-o671 Moves selection by his width
-t671 
-o672 Width of import movement: 
-t672 
-o673 Import Options
-t673 
-o674 Blocks Fast Nudge Settings:
-t674 
-o675 Selection Fast Nudge Settings:
-t675 
-o676 Points Fast Nudge Settings:
-t676 
-o677 Moves points by the selection's width
-t677 
-o678 Width of points movement: 
-t678 
-o679 Do you want to save your changes?
-t679 
-o680 Don't Save
-t680 
-o681 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t681 
-o682 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
-t682 
-o683 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t683 
-o684 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t684 
-o685 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t685 
+o602 Absorption
+t602 
+o603 Night Vision (no mob effect)
+t603 
+o604 Speed
+t604 
+o605 Mining Fatigue (no mob effect)
+t605 
+o606 Player Name(s):
+t606 
+o607 Chunks Borders
+t607 
+o608 Fast Nudge
+t608 
+o609 Clone Fast Nudge Settings
+t609 
+o610 Move by the width of selection 
+t610 
+o611 Moves clone by his width
+t611 
+o612 Width of clone movement: 
+t612 
+o613 Import Fast Nudge Settings:
+t613 
+o614 Move by the width of schematic 
+t614 
+o615 Moves selection by his width
+t615 
+o616 Width of import movement: 
+t616 
+o617 Import Options
+t617 
+o618 Blocks Fast Nudge Settings:
+t618 
+o619 Selection Fast Nudge Settings:
+t619 
+o620 Points Fast Nudge Settings:
+t620 
+o621 Moves points by the selection's width
+t621 
+o622 Width of points movement: 
+t622 
+o623 Do you want to save your changes?
+t623 
+o624 Don't Save
+t624 
+o625 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t625 
+o626 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
+t626 
+o627 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t627 
+o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t628 
+o629 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t629 
