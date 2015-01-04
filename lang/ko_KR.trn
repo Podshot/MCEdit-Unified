@@ -1287,3 +1287,47 @@ o606 Player Name(s):
 t606 플레이어 이름:
 o607 Chunks Borders
 t607 청크 경계
+o664 Fast Nudge
+t664 빠른 이동
+o665 Clone Fast Nudge Settings
+t665 복제의 빠른 이동 설정
+o666 Move by the width of selection 
+t666 선택 영역의 길이만큼 이동
+o667 Moves clone by his width
+t667 복제할 범위의 길이만큼 이동합니다
+o668 Width of clone movement: 
+t668 복제의 빠른 이동 거리: 
+o669 Import Fast Nudge Settings:
+t669 불러오기의 빠른 이동 설정:
+o670 Move by the width of schematic 
+t670 schematic의 길이만큼 이동
+o671 Moves selection by his width
+t671 선택한 범위의 길이만큼 이동합니다
+o672 Width of import movement: 
+t672 불러오기의 이동 거리: 
+o673 Import Options
+t673 불러오기의 설정
+o674 Blocks Fast Nudge Settings:
+t674 블럭의 빠른 이동 설정:
+o675 Selection Fast Nudge Settings:
+t675 선택 영역의 빠른 이동 설정:
+o676 Points Fast Nudge Settings:
+t676 포인트의 빠른 이동 설정:
+o677 Moves points by the selection's width
+t677 포인트의 길이만큼 이동합니다
+o678 Width of points movement: 
+t678 포인트의 이동 거리: 
+o679 Do you want to save your changes?
+t679 저장하시겠습니까?
+o680 Don't Save
+t680 저장 안함
+o681 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t681 작업을 지정할 키를 누르십시오 \"{0}\"\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o682 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
+t682 작업을 지정할 키를 누르십시오 \"{0}\"\n키가 없다면 우클릭으로 빠른 이동을 합니다.\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o683 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t683 {0}는 modifier가 아닙니다. 다른 키를 누르십시오.\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o684 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t684 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o685 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+t685 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
