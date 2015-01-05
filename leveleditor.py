@@ -434,7 +434,11 @@ class LevelEditor(GLViewport):
         for i in range(len(self.copyStack)):
             sch = self.copyStack[i]
             p = createOneCopyPanel(sch, i)
-            if inner_height + p.height + 2 <= (self.netherPanel.top - 2) - (self.subwidgets[0].bottom + 2) - prevButton.height - (panel.margin * 2):
+            if self.netherPanel is None:
+                bottom = pygame.display.get_surface().get_height() - 60
+            else:
+                bottom = self.netherPanel.top - 2
+            if inner_height + p.height + 2 <= bottom - (self.subwidgets[0].bottom + 2) - prevButton.height - (panel.margin * 2):
                 inner_height += p.height + 2
                 page.append(p)
             else:
