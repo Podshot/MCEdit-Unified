@@ -87,6 +87,8 @@ class MCMaterials(object):
 
         self.idStr = [""] * id_limit
 
+        self.id_limit = id_limit
+
         self.color = self.flatColors
         self.brightness = self.lightEmission
         self.opacity = self.lightAbsorption
