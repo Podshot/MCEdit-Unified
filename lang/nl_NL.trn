@@ -1314,13 +1314,22 @@ o623 Do you want to save your changes?
 t623 
 o624 Don't Save
 t624 
-o625 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+o625 Press a key to assign to the action "{0}"
+
+Press ESC to cancel. Press Shift-ESC to unbind.
 t625 
-o626 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
+o626 Press a key to assign to the action "{0}"
+No key means right click to fast nudge.
+Press ESC to cancel. Press Shift-ESC to unbind.
 t626 
-o627 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+o627 {0} is not a modifier. Press a new key.
+Press ESC to cancel. Press Shift-ESC to unbind.
 t627 
-o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+
+Press ESC to cancel. Press Shift-ESC to unbind.
 t628 
-o629 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
+o629 You can't use the key {0}. Press a new key.
+
+Press ESC to cancel. Press Shift-ESC to unbind.
 t629 

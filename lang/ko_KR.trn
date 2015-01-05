@@ -1321,13 +1321,33 @@ o623 Do you want to save your changes?
 t623 저장하시겠습니까?
 o624 Don't Save
 t624 저장 안함
-o625 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t625 작업을 지정할 키를 누르십시오 \"{0}\"\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o626 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
-t626 작업을 지정할 키를 누르십시오 \"{0}\"\n키가 없다면 우클릭으로 빠른 이동을 합니다.\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o627 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t627 {0}는 modifier가 아닙니다. 다른 키를 누르십시오.\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t628 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o629 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t629 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.\n\n취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o625 Press a key to assign to the action "{0}"
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t625 작업을 지정할 키를 누르십시오 "{0}"
+
+취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o626 Press a key to assign to the action "{0}"
+No key means right click to fast nudge.
+Press ESC to cancel. Press Shift-ESC to unbind.
+t626 작업을 지정할 키를 누르십시오 "{0}"
+키가 없다면 우클릭으로 빠른 이동을 합니다.
+취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o627 {0} is not a modifier. Press a new key.
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t627 {0}는 modifier가 아닙니다. 다른 키를 누르십시오.
+
+취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t628 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
+
+취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+o629 You can't use the key {0}. Press a new key.
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t629 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
+
+취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.

@@ -1,4 +1,4 @@
-from OpenGL import GL, GLU
+from OpenGL import GL
 from config import config
 import pygame
 from pygame import display, image

@@ -1303,46 +1303,64 @@ t606 Nom joueur(s) :
 o607 Chunks Borders
 t607 Bords des chunks
 o608 Fast Nudge
-t608 
+t608 Pousser rapide
 o609 Clone Fast Nudge Settings
-t609 
+t609 Régl. posser rapide clonage
 o610 Move by the width of selection 
-t610 
+t610 Dépl. par largeur de sélection 
 o611 Moves clone by his width
-t611 
+t611 Dépl. clone par sa largeur
 o612 Width of clone movement: 
-t612 
+t612 Taille mouvement clone : 
 o613 Import Fast Nudge Settings:
-t613 
+t613 Import. réglages pousser rapide
 o614 Move by the width of schematic 
-t614 
+t614 Dépl. par largeur du schematic
 o615 Moves selection by his width
-t615 
+t615 Dépl.sélection par sa largeur
 o616 Width of import movement: 
-t616 
+t616 Taill du dépl. de l'import
 o617 Import Options
-t617 
+t617 Options d'import
 o618 Blocks Fast Nudge Settings:
-t618 
+t618 Régl. dépl. rapide des blocs
 o619 Selection Fast Nudge Settings:
-t619 
+t619 Régl. dépl. rapide des sélections
 o620 Points Fast Nudge Settings:
-t620 
+t620 Régl. dépl. rapides des points :
 o621 Moves points by the selection's width
-t621 
+t621 Déplace les points par la taille de la sélection
 o622 Width of points movement: 
-t622 
+t622 Taille des dépl. des points : 
 o623 Do you want to save your changes?
-t623 
+t623 Sauvegarder les changements ?
 o624 Don't Save
-t624 
-o625 Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t625 
-o626 Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.
-t626 
-o627 {0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t627 
-o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t628 
-o629 You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.
-t629 
+t624 Ne pas sauver
+o625 Press a key to assign to the action "{0}"
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t625 Appuyez sur une touche pour l'action "{0}"
+
+ESC pour annuler. SHIFT-ESC pour supprimer.
+o626 Press a key to assign to the action "{0}"
+No key means right click to fast nudge.
+Press ESC to cancel. Press Shift-ESC to unbind.
+t626 Appuyez sur une touche pour l'action "{0}"
+Acune touche = clic-droit.
+ESC pour annuler. SHIFT-ESC pour supprimer.
+o627 {0} is not a modifier. Press a new key.
+Press ESC to cancel. Press Shift-ESC to unbind.
+t627 {0} n'est pas un modificateur. Choisissez une autre touche.
+ESC pour annuler. SHIFT-ESC pour supprimer.
+o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t628 Les touche de mouvement ne peuvent être associée à Ctrl ou un autre modificateur.
+Choisissez-en une autre.
+ESC pour annuler. SHIFT-ESC pour supprimer.
+o629 You can't use the key {0}. Press a new key.
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t629 Vous ne pouvez utiliser la touche {0}. Choisissez-en une autre.
+
+ESC pour annuler. SHIFT-ESC pour supprimer.

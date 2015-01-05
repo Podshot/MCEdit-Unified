@@ -2,8 +2,7 @@
 # Taken from http://www.pygame.org/project-Splash+screen-1186-.html by Rock Achu (rockhachu2)
 # and tweaked ;)
 import pygame
-import time
-import os, sys
+import os
 print 'Splash load...'
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
