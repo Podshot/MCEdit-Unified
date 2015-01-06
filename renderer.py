@@ -1,5 +1,3 @@
-#HERE BE DRAGONS
-
 """Copyright (c) 2010-2012 David Rio Vierra
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -47,6 +45,7 @@ import numpy
 from OpenGL import GL
 import pymclevel
 import sys
+from config import config
 # import time
 
 
@@ -321,11 +320,8 @@ class ChunkCalculator(object):
         # del xArray, zArray, yArray
         self.nullVertices = numpy.zeros((0,) * len(self.precomputedVertices[0].shape),
                                         dtype=self.precomputedVertices[0].dtype)
-        import leveleditor
-
-        Settings = leveleditor.Settings
-        Settings.fastLeaves.addObserver(self)
-        Settings.roughGraphics.addObserver(self)
+        config.settings.fastLeaves.addObserver(self)
+        config.settings.roughGraphics.addObserver(self)
 
     class renderstatePlain(object):
         @classmethod
@@ -511,7 +507,6 @@ class ChunkCalculator(object):
         if 0 == len(cr.invalidLayers):
             #            layers = set(br.layer for br in cr.blockRenderers)
             #            assert set() == cr.visibleLayers.difference(layers)
-
             return
 
         lod = cr.detailLevel
@@ -532,6 +527,7 @@ class ChunkCalculator(object):
             ItemRenderer,
             TileTicksRenderer,
             TerrainPopulatedRenderer,
+            ChunkBorderRenderer,
             LowDetailBlockRenderer,
             OverheadBlockRenderer,
         ]
@@ -631,9 +627,9 @@ class ChunkCalculator(object):
         skyLight = chunk.SkyLight
         finalLight = self.whiteLight
 
-        if lights != None:
+        if lights is not None:
             finalLight = lights
-        if skyLight != None:
+        if skyLight is not None:
             finalLight = numpy.maximum(skyLight, lights)
 
         areaBlockLights = numpy.ones((chunkWidth + 2, chunkLength + 2, chunkHeight + 2), numpy.uint8)
@@ -780,7 +776,8 @@ class Layer:
     TileEntities = "TileEntities"
     TileTicks = "TileTicks"
     TerrainPopulated = "TerrainPopulated"
-    AllLayers = (Blocks, Entities, Monsters, Items, TileEntities, TileTicks, TerrainPopulated)
+    ChunkBorder = "ChunkBorder"
+    AllLayers = (Blocks, Entities, Monsters, Items, TileEntities, TileTicks, TerrainPopulated, ChunkBorder)
 
 
 class BlockRenderer(object):
@@ -1014,13 +1011,12 @@ class TileTicksRenderer(EntityRendererGeneric):
                                                            (0xff, 0xff, 0xff, 0x44),
                                                            chunkPosition=chunk.chunkPosition))
         yield
-
-
+        
 class TerrainPopulatedRenderer(EntityRendererGeneric):
     layer = Layer.TerrainPopulated
     vertexTemplate = numpy.zeros((6, 4, 6), 'float32')
     vertexTemplate[_XYZ] = faceVertexTemplates[_XYZ]
-    vertexTemplate[_XYZ] *= (16, 128, 16)
+    vertexTemplate[_XYZ] *= (16, 256, 16)
     color = (255, 200, 155)
     vertexTemplate.view('uint8')[_RGBA] = color + (72,)
 
@@ -1035,7 +1031,6 @@ class TerrainPopulatedRenderer(EntityRendererGeneric):
 
         GL.glDepthMask(False)
 
-        # GL.glDrawArrays(GL.GL_QUADS, 0, len(buf) * 4)
         GL.glDisable(GL.GL_CULL_FACE)
 
         with gl.glEnable(GL.GL_DEPTH_TEST):
@@ -1055,22 +1050,17 @@ class TerrainPopulatedRenderer(EntityRendererGeneric):
         GL.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL)
         GL.glDepthMask(True)
 
-    #        GL.glPolygonOffset(DepthOffset.TerrainWire, DepthOffset.TerrainWire)
-    #        with gl.glEnable(GL.GL_POLYGON_OFFSET_FILL, GL.GL_DEPTH_TEST):
-    #            GL.glDrawArrays(GL.GL_QUADS, 0, len(buf) * 4)
-    #
-
-    def makeChunkVertices(self, chunk):
+    def makeChunkVertices(self, chunk):   
         neighbors = self.chunkCalculator.getNeighboringChunks(chunk)
-
+        
         def getpop(ch):
             return getattr(ch, "TerrainPopulated", True)
-
+        
         pop = getpop(chunk)
         yield
         if pop:
             return
-
+        
         visibleFaces = [
             getpop(neighbors[pymclevel.faces.FaceXIncreasing]),
             getpop(neighbors[pymclevel.faces.FaceXDecreasing]),
@@ -1079,11 +1069,58 @@ class TerrainPopulatedRenderer(EntityRendererGeneric):
             getpop(neighbors[pymclevel.faces.FaceZIncreasing]),
             getpop(neighbors[pymclevel.faces.FaceZDecreasing]),
         ]
+
         visibleFaces = numpy.array(visibleFaces, dtype='bool')
         verts = self.vertexTemplate[visibleFaces]
         self.vertexArrays.append(verts)
 
         yield
+
+class ChunkBorderRenderer(EntityRendererGeneric):
+    layer = Layer.ChunkBorder
+    color = (0, 210, 225)
+    vertexTemplate = numpy.zeros((6, 4, 6), 'float32')
+    vertexTemplate[_XYZ] = faceVertexTemplates[_XYZ]
+    vertexTemplate[_XYZ] *= (16, 256, 16)
+    vertexTemplate.view('uint8')[_RGBA] = color + (150,)
+   
+    def makeChunkVertices(self, chunk):
+        visibleFaces = [
+            True,
+            True,
+            True,
+            True,
+            True,
+            True,
+        ]
+        yield
+        visibleFaces = numpy.array(visibleFaces, dtype='bool')
+        verts = self.vertexTemplate[visibleFaces]
+        self.vertexArrays.append(verts)
+        yield
+
+ 
+    def drawFaceVertices(self, buf):
+        if 0 == len(buf):
+            return
+        stride = elementByteLength
+  
+        GL.glVertexPointer(3, GL.GL_FLOAT, stride, (buf.ravel()))
+        GL.glTexCoordPointer(2, GL.GL_FLOAT, stride, (buf.ravel()[3:]))
+        GL.glColorPointer(4, GL.GL_UNSIGNED_BYTE, stride, (buf.view(dtype=numpy.uint8).ravel()[20:]))
+  
+        GL.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE)
+  
+        GL.glLineWidth(1)
+        with gl.glEnable(GL.GL_DEPTH_TEST):
+            GL.glDrawArrays(GL.GL_QUADS, 0, len(buf) * 4)
+        GL.glLineWidth(2.0)
+        with gl.glEnable(GL.GL_DEPTH_TEST):
+            GL.glDrawArrays(GL.GL_QUADS, 0, len(buf) * 4)
+        GL.glLineWidth(1.0)
+  
+        GL.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL)
+
 
 
 class LowDetailBlockRenderer(BlockRenderer):
@@ -2389,31 +2426,32 @@ class MCRenderer(object):
 
         self.chunkIterator = None
 
-        import leveleditor
+        config.settings.fastLeaves.addObserver(self)
 
-        Settings = leveleditor.Settings
+        config.settings.roughGraphics.addObserver(self)
+        config.settings.showHiddenOres.addObserver(self)
+        config.settings.vertexBufferLimit.addObserver(self)
 
-        Settings.fastLeaves.addObserver(self)
+        config.settings.drawEntities.addObserver(self)
+        config.settings.drawTileEntities.addObserver(self)
+        config.settings.drawTileTicks.addObserver(self)
+        config.settings.drawUnpopulatedChunks.addObserver(self, "drawTerrainPopulated")
+        config.settings.drawChunkBorders.addObserver(self, "drawChunkBorder")
+        config.settings.drawMonsters.addObserver(self)
+        config.settings.drawItems.addObserver(self)
 
-        Settings.roughGraphics.addObserver(self)
-        Settings.showHiddenOres.addObserver(self)
-        Settings.vertexBufferLimit.addObserver(self)
+        config.settings.showChunkRedraw.addObserver(self, "showRedraw")
+        config.settings.spaceHeight.addObserver(self)
+        config.settings.targetFPS.addObserver(self, "targetFPS")
 
-        Settings.drawEntities.addObserver(self)
-        Settings.drawTileEntities.addObserver(self)
-        Settings.drawTileTicks.addObserver(self)
-        Settings.drawUnpopulatedChunks.addObserver(self, "drawTerrainPopulated")
-        Settings.drawMonsters.addObserver(self)
-        Settings.drawItems.addObserver(self)
-
-        Settings.showChunkRedraw.addObserver(self, "showRedraw")
-        Settings.spaceHeight.addObserver(self)
-        Settings.targetFPS.addObserver(self, "targetFPS")
-
-        for ore in Settings.hiddableOres.get():
-            getattr(Settings, "showOre{}".format(ore)).addObserver(self, callback=lambda x, id=ore: self.showOre(id, x))
+        for ore in config.settings.hiddableOres.get():
+            config.settings["showOre{}".format(ore)].addObserver(self, callback=lambda x, id=ore: self.showOre(id, x))
 
         self.level = level
+            
+        if self.level.__class__.__name__ in ("FakeLevel","MCSchematic"):
+            self.toggleLayer(False, 'ChunkBorder')
+
 
     chunkClass = ChunkRenderer
     calculatorClass = ChunkCalculator
@@ -2454,7 +2492,8 @@ class MCRenderer(object):
     drawMonsters = layerProperty(Layer.Monsters)
     drawItems = layerProperty(Layer.Items)
     drawTerrainPopulated = layerProperty(Layer.TerrainPopulated)
-
+    drawChunkBorder = layerProperty(Layer.ChunkBorder)
+    
     def inSpace(self):
         if self.level is None:
             return True
@@ -2561,8 +2600,6 @@ class MCRenderer(object):
             return
         if self.level.saving:
             return
-        cx = wx >> 4
-        cz = wz >> 4
 
         if distance is None:
             d = self.effectiveViewDistance
@@ -2724,8 +2761,7 @@ class MCRenderer(object):
         self.invalidateChunks(box.chunkPositions, [Layer.TileTicks])
 
     def invalidateChunks(self, chunks, layers=None):
-        for c in chunks:
-            cx, cz = c
+        for (cx, cz) in chunks:
             self.invalidateChunk(cx, cz, layers)
 
         self.stopWork()
@@ -2799,8 +2835,84 @@ class MCRenderer(object):
         self.loadChunksStartingFrom(box.origin[0] + box.width / 2, box.origin[2] + box.length / 2,
                                     max(box.width, box.length))
 
+    _floorTexture = None
+
+    @property
+    def floorTexture(self):
+        if self._floorTexture is None:
+            self._floorTexture = Texture(self.makeFloorTex)
+        return self._floorTexture
+
+    def makeFloorTex(self):
+        color0 = (0xff, 0xff, 0xff, 0x22)
+        color1 = (0xff, 0xff, 0xff, 0x44)
+
+        img = numpy.array([color0, color1, color1, color0], dtype='uint8')
+
+        GL.glTexParameter(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST)
+        GL.glTexParameter(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST)
+
+        GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 2, 2, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, img)
+
     def invalidateChunkMarkers(self):
         self.loadableChunkMarkers.invalidate()
+
+    def _drawLoadableChunkMarkers(self):
+        if self.level.chunkCount:
+            chunkSet = set(self.level.allChunks)
+
+            sizedChunks = chunkMarkers(chunkSet)
+
+            GL.glPushAttrib(GL.GL_FOG_BIT)
+            GL.glDisable(GL.GL_FOG)
+
+            GL.glEnable(GL.GL_BLEND)
+            GL.glEnable(GL.GL_POLYGON_OFFSET_FILL)
+            GL.glPolygonOffset(DepthOffset.ChunkMarkers, DepthOffset.ChunkMarkers)
+            GL.glEnable(GL.GL_DEPTH_TEST)
+
+            GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
+            GL.glEnable(GL.GL_TEXTURE_2D)
+            GL.glColor(1.0, 1.0, 1.0, 1.0)
+
+            self.floorTexture.bind()
+            # chunkColor = numpy.zeros(shape=(chunks.shape[0], 4, 4), dtype='float32')
+            #            chunkColor[:]= (1, 1, 1, 0.15)
+            #
+            #            cc = numpy.array(chunks[:,0] + chunks[:,1], dtype='int32')
+            #            cc &= 1
+            #            coloredChunks = cc > 0
+            #            chunkColor[coloredChunks] = (1, 1, 1, 0.28)
+            #            chunkColor *= 255
+            #            chunkColor = numpy.array(chunkColor, dtype='uint8')
+            #
+            # GL.glColorPointer(4, GL.GL_UNSIGNED_BYTE, 0, chunkColor)
+            for size, chunks in sizedChunks.iteritems():
+                if not len(chunks):
+                    continue
+                chunks = numpy.array(chunks, dtype='float32')
+
+                chunkPosition = numpy.zeros(shape=(chunks.shape[0], 4, 3), dtype='float32')
+                chunkPosition[:, :, (0, 2)] = numpy.array(((0, 0), (0, 1), (1, 1), (1, 0)), dtype='float32')
+                chunkPosition[:, :, (0, 2)] *= size
+                chunkPosition[:, :, (0, 2)] += chunks[:, numpy.newaxis, :]
+                chunkPosition *= 16
+                GL.glVertexPointer(3, GL.GL_FLOAT, 0, chunkPosition.ravel())
+                GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, (chunkPosition[..., (0, 2)] * 16).ravel())
+                GL.glDrawArrays(GL.GL_QUADS, 0, len(chunkPosition) * 4)
+
+            GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
+            GL.glDisable(GL.GL_TEXTURE_2D)
+            GL.glDisable(GL.GL_BLEND)
+            GL.glDisable(GL.GL_DEPTH_TEST)
+            GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
+            GL.glPopAttrib()
+
+    def drawLoadableChunkMarkers(self):
+        if not self.isPreviewer or isinstance(self.level, pymclevel.MCInfdevOldLevel):
+            self.loadableChunkMarkers.call(self._drawLoadableChunkMarkers)
+
+            # self.drawCompressedChunkMarkers()
 
     needsImmediateRedraw = False
     viewingFrustum = None
@@ -2875,6 +2987,17 @@ class MCRenderer(object):
             dx, dy, dz = self.origin
             GL.glTranslate(dx, dy, dz)
 
+            GL.glEnable(GL.GL_CULL_FACE)
+            GL.glEnable(GL.GL_DEPTH_TEST)
+
+            self.level.materials.terrainTexture.bind()
+            GL.glEnable(GL.GL_TEXTURE_2D)
+            GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
+
+            offset = DepthOffset.PreviewRenderer if self.isPreviewer else DepthOffset.Renderer
+            GL.glPolygonOffset(offset, offset)
+            GL.glEnable(GL.GL_POLYGON_OFFSET_FILL)
+
             self.createMasterLists()
             try:
                 self.callMasterLists()
@@ -2884,6 +3007,16 @@ class MCRenderer(object):
                     self.errorLimit -= 1
                     traceback.print_exc()
                     print e
+
+            GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
+
+            GL.glDisable(GL.GL_CULL_FACE)
+            GL.glDisable(GL.GL_DEPTH_TEST)
+
+            GL.glDisable(GL.GL_TEXTURE_2D)
+            GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
+            # if self.drawLighting:
+            self.drawLoadableChunkMarkers()
 
         if self.level.materials.name in ("Pocket", "Alpha"):
             GL.glMatrixMode(GL.GL_TEXTURE)
@@ -3063,7 +3196,7 @@ def rendermain():
                                                                                     len(renderer.chunkRenderers))
 
     # display.init( (640, 480), OPENGL | DOUBLEBUF )
-    from mcedit import GLDisplayContext
+    from utilities.gl_display_context import GLDisplayContext
     from OpenGL import GLU
 
     cxt = GLDisplayContext()
