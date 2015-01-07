@@ -1,8 +1,5 @@
 This file is to note down what needs to be fixed, and anything that badly needs an upgrade. Although this document was written to just keep things straightened out, any help is appreciated. 
 
-- [ ] Fix chunk view compass and keyboard movement:
-	- Currently the compass and movement rotation is wrong when in chunk view mode, the movement sensitivity in chunk mode is also well below what it should be.
-	- Files: possibly leveleditor.py
 - [ ] Reimplement automatic updating
 	- Because I build using pyinstaller instead of py2exe, mcedit will need to be changed from esky to updater4pyi.
 	- File: mcedit.py

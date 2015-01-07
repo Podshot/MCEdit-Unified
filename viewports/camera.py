@@ -139,13 +139,20 @@ class CameraViewport(GLViewport):
         if inSpace:
             accel_factor *= 3.0
             max_speed *= 3.0
+        elif config.settings.viewMode.get() == "Chunk":
+            accel_factor *= 2.0
+            max_speed *= 2.0
 
         pi = self.editor.cameraPanKeys
         mouseSpeed = config.controls.mouseSpeed.get()
         self.yaw += pi[0] * mouseSpeed
         self.pitch += pi[1] * mouseSpeed
-
-        if self.flyMode:
+        
+        if config.settings.viewMode.get() == "Chunk":
+            (dx, dy, dz) = (0, -0.25, -1)
+            self.yaw = yaw = -180
+            self.pitch = pitch = 10
+        elif self.flyMode:
             (dx, dy, dz) = self._anglesToVector(self.yaw, 0)
         elif self.swapAxes:
             p = self.pitch
