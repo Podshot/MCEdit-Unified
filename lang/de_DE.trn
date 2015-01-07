@@ -27,7 +27,7 @@ t3 Kamera ziehen:
 o4 Camera Max Speed: 
 t4 Kamera Max Schnelligkeit:
 o5 Camera Braking Speed: 
-t5 Kamera Bremsung Schnelligkeit:
+t5 Kamera Bremse Schnelligkeit:
 o6 Mouse Speed: 
 t6 Maus Schnelligkeit:
 o7 Undo Limit: 
@@ -165,7 +165,7 @@ t72 Neue Welt erstellen
 o73 Ctrl-
 t73 Strg-
 o74 Quick Load
-t74 Schnelles laden
+t74 Schnelles Laden
 o75 Open...
 t75 Öffnen...
 o76 Save
@@ -193,7 +193,7 @@ t86 Tasten
 o87 Graphics
 t87 Grafik
 o88 Homepage
-t88 Startseite
+t88 Webseite
 o89 About MCEdit
 t89 Über MCEdit
 o90 Recent Changes
@@ -201,13 +201,13 @@ t90 Vergangene Änderungen
 o91 License
 t91 Lizenz
 o92 Config Files Folder
-t92 Konfigurations Dateiordner
+t92 Konfigurations Ordner
 o93 {0}/{1}/{2}/{3}/{4}/{5} to move
-t93 {0}/{1}/{2}/{3}/{4}/{5} zu verschieben
+t93 {0}/{1}/{2}/{3}/{4}/{5} um sich zu bewegen
 o94 {0} to slow down
-t94 {0} zu verlangsamen
+t94 {0} um zu verlangsamen
 o95 Right-click to toggle camera control
-t95 Rechts-Klick um Kamera Kontroller umzuschalten
+t95 Rechts-Klick um Kamera Kontrolle umzuschalten
 o96 Mousewheel to control tool distance
 t96 Mausrad um Steuerungstoolentfernung zu kontrollieren
 o97 Hold {0} for details
@@ -543,7 +543,7 @@ t256 Halten Sie {0} um Linien zu zeichnen
 o257 Indiscriminate
 t257 Willkürlich
 o258 Click to replace {0} ({1}:{2})
-t258 Drücke um {0} ({1}:{2}) zu ersetzen
+t258 Klicken um {0} ({1}:{2}) zu ersetzen
 o259 Noise
 t259 Rauschen
 o260 Strength: 
@@ -551,7 +551,7 @@ t260 Stärke:
 o261 Depth: 
 t261 Tiefe:
 o262 Only Change Natural Earth
-t262 
+t262 Nur natürliche Erde wechseln
 o263 Import
 t263 Importiere
 o264 x
@@ -567,7 +567,7 @@ t268 Drehen
 o269 Roll
 t269 Rollen
 o270 Chunk Align
-t270 Chunk justieren
+t270 Chunk anpassen
 o271 Repeat
 t271 Wiederholen
 o272 Scale Factor
@@ -585,16 +585,16 @@ t277 Ändere Spawners
 o278 Clone
 t278 Klone
 o279 When the clone tool is chosen, place the clone at the selection right away.
-t279 Wenn das Clone Werkzeug ausgewählt ist, setzte den Klon an der Auswahl sofort.
+t279 Wenn das Klone Werkzeug ausgewählt ist, platziere den Klon an der Auswahl sofort.
 o280 Shortcut: Alt-2
 t280 Tastenkürzel: Alt-2
 o281 Check to automatically change command block static coordinates when moved.
 Shortcut: Alt-4
-t281 Einticken um automatisch statische Koordinaten in Befehlsblöcken zu ändern wenn bewegt.
+t281 Überprüft um automatisch statische Koordinaten in Befehlsblöcken zu ändern wenn bewegt.
 Tastenkürzel: Alt-4
 o282 Check to automatically change the position of the mobs in spawners when moved.
 Shortcut: Alt-5
-t282 Einticken um automatisch die Position von den Mobs in Spawner zu ändern wenn bewegt.
+t282 Überprüft um automatisch die Position von den Mobs in Spawner zu ändern wenn bewegt.
 Tastenkürzel: Alt-5
 o283 Shortcut: Enter
 t283 Tastenkürzel: Enter
@@ -613,13 +613,13 @@ t288 ID
 o289 Any Subtype
 t289 Jede Untertyp
 o290 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
-t290 Drücke {hotkey} um einen Block auszuwählen. Drücke {R} für den Ersetzen Modus. Klicke auf Füllen oder drücke Enter um zu bestätigen
+t290 Drücke {hotkey} um einen Block auszuwählen. Drücke {R} für den Ersetzen Modus. Klicke Füllen oder drücke Enter um zu bestätigen.
 o291 Find:
 t291 Finde:
 o292 Replace with:
 t292 Ersetze mit:
 o293 When the fill tool is chosen, prompt for a block type.
-t293 Wenn das Füllen Werkzeug ausgewählt ist, wähle für ein Blocktyp
+t293 Wenn das Füllen Werkzeug ausgewählt ist, wähle einen Blocktypen.
 o294 Filter
 t294 Filter
 o295 Invisibility (no effect)
@@ -633,11 +633,11 @@ t298 Schwäche
 o299 Speed (no mob effect)
 t299 Schnelligkeit (kein Mob Effekt)
 o300 Water Breathing
-t300 Unterwasseratem
+t300 Unterwasseratmung
 o301 Regeneration
 t301 Regeneration
 o302 Poison
-t302 Vergift
+t302 Vergiftung
 o303 Resistance
 t303 Resistenz
 o304 Hunger (no mob effect)
@@ -673,9 +673,9 @@ t318 Chunk Oberfläche Reparatur
 o319 Classic Water Flood
 t319 Klassische Wasser Überflutung
 o320 Colorwires
-t320 
+t320 Farbige Drähte
 o321 Create Busses
-t321 Erstelle Busses
+t321 Erstelle Bus
 o322 Create Shops
 t322 Erstelle Shops
 o323 Create Spawners
@@ -687,17 +687,17 @@ t325 Finde
 o326 Forester
 t326 Förster
 o327 Make Mobs Invincible
-t327 Mache Mobs unsichbar
+t327 Mache Mobs unsichtbar
 o328 Setbiome
 t328 Setze Biom
 o329 Smooth
 t329 Glatt
 o330 Filter:
-t330 Filter: 
+t330 Filter:
 o331 Update Filters
 t331 Filter aktualisieren
 o332 Max Seed
-t332 Max Schnelligkeit
+t332 Max Seed
 o333 Health
 t333 Gesundheit
 o334 VelocityX
@@ -711,15 +711,15 @@ t337 Feuer
 o338 FallDistance
 t338 Fallhöhe
 o339 AttackTime
-t339 
+t339 Angriffszeit
 o340 HurtTime
-t340 
+t340 Schmerzenszeit
 o341 Lightning
 t341 Blitz
 o342 No Lightning
 t342 Kein Blitz
 o343 Lightning Creeper
-t343 Blitzcreeper
+t343 Geladener Creeper
 o344 Enderman Block Id
 t344 Enderman Block Id
 o345 Enderman Block Data
@@ -735,11 +735,11 @@ t349 Bibliothekar (weiß)
 o350 Blacksmith (black apron)
 t350 Schmied (schwarze Schürze)
 o351 Priest (purple)
-t351 Priestter (Violet)
+t351 Priester (Violett)
 o352 Villager Profession
 t352 Bewohner Beruf
 o353 Slime Size
-t353 Slime Große
+t353 Schleim Größe
 o354 Breeding Mode Ticks
 t354 Zucht Modus Ticks
 o355 Child/Adult Age
@@ -757,11 +757,11 @@ t360 Das ist eine modifizierte Version von SethBling's Create Shops Filter von D
 o361 Profession
 t361 Beruf
 o362 Add Stopping Trade
-t362 
+t362 Füge Stoppender Handel hinzu
 o363 Invulnerable Villager
 t363 Unverwundbarer Bewohner
 o364 Make Unlimited Trades
-t364 Mache Unendlicher Handel
+t364 Mache Unendliche Handel
 o365 Give Experience per a Trade
 t365 Gebe Erfahrung je Handel
 o366 Make Villager not Move
@@ -769,11 +769,11 @@ t366 Mache dass die Bewohner sich nicht bewegen
 o367 Villager Name
 t367 Bewohner Name
 o368 General Trade
-t368 Allgemein Handel
+t368 Allgemeiner Handel
 o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
 t369       Rotiere die Position von deinem Händler
-*Kann nur benutzt werden wenn Nicht Bewegen angetickt ist*
+*Kann nur benutzt werden wenn Nicht Bewegen eingeschalten ist*
 o370 Y-Axis
 t370 Y-Achse
 o371 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
@@ -803,28 +803,28 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
-t375 Um einen Shop zu erstellen musst du die Kaufsachen in die oberste Reihe der Kiste.
-Zweitens packe in die Mittlere Reihe eine zweite Kauf-Sache (optional).
-Drittens packe die Verkaufssachen in die unterste Reihe,
+t375 Um einen Shop zu erstellen musst du die Kaufsache in die oberste Reihe der Kiste tun.
+Zweitens packe in die Mittlere Reihe eine zweite Kaufsache (optional).
+Drittens packe die Verkaufssachen in die unterste Reihe.
 Klicke eine Kiste und wähle was du willst und drücke Enter
-*Alle Items müssen in der selbe Spalte sein*
+*Alle Items müssen in der selben Spalte sein*
 
 Fortgeschritten, etwas Erfahrung in Notepad++ ist empfohlen.
-Um die Anzahl der Handeln zu ändern:
+Um die Anzahl der Handel zu ändern:
 1) Wähle 'Unendlicher Handel' ab
 2) Öffne den createshops Filter mit Notepad++ (link:http://notepad-plus-plus.org/) oder den Editor
-*Der Filter ist da wo der MCEdit Order ist*
+*Der Filter ist da wo der MCEdit Ordner ist*
 3) Scrolle zu:
 ansonsten:
 offer[uses] = TAG_Int(0)
 offer[maxUses] = TAG_Int(1)
 4) Ändere die Menge die du willst
 
-*Notiz: Ändere nur die Nummer oben, ändere anderes und der Filter funktioniert nicht mehr richtig*
+*Notiz: Ändere nur die Nummer wie oben, ändere anderes und der Filter funktioniert nicht mehr richtig*
 o376 Trade Notes
 t376 Handel Notizen
 o377 Include position data
-t377 
+t377 Schliesse Positionsdaten ein
 o378 Both
 t378 Beide
 o379 Lower Only
@@ -876,9 +876,9 @@ t400 Dieser Filter sucht nach NBT in Entities oder TileEntities. Es kann auch na
 o401 Documentation
 t401 Dokumentation
 o402 Forester script by dudecon
-t402 Förster script von dedecon
+t402 Förster script von dudecon
 o403 Procedural
-t403 Prozessual
+t403 Procedural
 o404 Normal
 t404 Normal
 o405 Bamboo
@@ -892,7 +892,7 @@ t408 Rund
 o409 Cone
 t409 Kegel
 o410 Rainforest
-t410 Regenwalt
+t410 Regenwald
 o411 Mangrove
 t411 Mangrovenbaum
 o412 Shape
@@ -948,7 +948,7 @@ t436 Wald
 o437 Taiga
 t437 Taiga
 o438 Swamppland
-t438 Sumpf
+t438 Sumpfland
 o439 River
 t439 Fluß
 o440 Hell (Nether)
@@ -956,13 +956,13 @@ t440 Hölle (Nether)
 o441 Sky (End)
 t441 Himmel (Ende)
 o442 Frozen Ocean
-t442 Gefrohener Ozean
+t442 Gefrorener Ozean
 o443 Frozen River
-t443 Gefrohener Fluss
+t443 Gefrorener Fluss
 o444 Ice Plains
-t444 Eis Ebenen
+t444 Tundra
 o445 Ice Mountains
-t445 Eisberg
+t445 Eisige Berge
 o446 Mushroom Island
 t446 Pilzinsel
 o447 Mushroom Island Shore
@@ -970,17 +970,17 @@ t447 Pilzinselküste
 o448 Beach
 t448 Strand
 o449 Desert Hills
-t449 Wüste Hühel
+t449 Wüstenhügel
 o450 Forest Hills
-t450 Wald Hügel
+t450 Waldhügel
 o451 Taiga Hills
-t451 Taiga Hügel
+t451 Taigahügel
 o452 Extreme Hills Edge
-t452 Extreme Hügel Rand
+t452 Extreme Berge Rand
 o453 Jungle
 t453 Dschungel
 o454 Jungle Hills
-t454 Dschungel Hügel
+t454 Dschungelhügel
 o455 Jungle Edge
 t455 Dschungelrand
 o456 Deep Ocean
@@ -992,83 +992,83 @@ t458 Kalter Strand
 o459 Birch Forest
 t459 Birkenwald
 o460 Birch Forest Hills
-t460 Birkenwald Hügel
+t460 Birkenwaldhügel
 o461 Roofed Forest
-t461 Überdachter Wald
+t461 Dichter Wald
 o462 Cold Taiga
 t462 Kalte Taiga
 o463 Cold Taiga Hills
 t463 Kalte Taiga Hügel
 o464 Mega Taiga
-t464 
+t464 Mega Taiga
 o465 Mega Taiga Hills
-t465 
+t465 Mega Taiga Hügel
 o466 Extreme Hills+
-t466 Extreme Hügel
+t466 Extreme Berge+
 o467 Savanna
 t467 Savanne
 o468 Savanna Plateau
-t468 
+t468 Savannenhochebene
 o469 Messa
-t469 
+t469 Tafelberg
 o470 Messa Plateau F
-t470 
+t470 Tafelberghochebene F
 o471 Messa Plateau
-t471 
+t471 Tafelberghochebene
 o472 Sunflower Plains
-t472 
+t472 Sonnenblumen-Ebene
 o473 Desert M
-t473 
+t473 Wüste M
 o474 Extreme Hills M
-t474 
+t474 Extreme Berge M
 o475 Flower Forest
-t475 
+t475 Blumenwald
 o476 Taiga M
-t476 
+t476 Taiga M
 o477 Swampland M
-t477 
+t477 Sumpfland M
 o478 Ice Plains Spikes
-t478 
+t478 Eiszapfen-Tundra
 o479 Ice Mountains Spikes
 t479 
 o480 Jungle M
-t480 
+t480 Dschungel M
 o481 JungleEdge M
-t481 
+t481 Dschungelrand M
 o482 Birch Forest M
-t482 
+t482 Birkenwald M
 o483 Birch Forest Hills M
-t483 
+t483 Birkenwaldhügel M
 o484 Roofed Forest M
-t484 
+t484 Dichter Wald M
 o485 Cold Taiga M
-t485 
+t485 Verschneite Taiga M
 o486 Mega Spruce Taiga
-t486 
+t486 Riesenfichten-Taiga
 o487 Mega Spruce Taiga 
-t487 
+t487 Riesenfichten-Taigahügel
 o488 Extreme Hills+ M
-t488 
+t488 Extreme Berge+ M
 o489 Savanna M
-t489 
+t489 Savanne M
 o490 Savanna Plateau M
-t490 
+t490 Savannenhochebene M
 o491 Mesa (Bryce)
-t491 
+t491 Bryce Canyon Tafelberg
 o492 Mesa Plateau F M
-t492 
+t492 Tafelberghochebene F M
 o493 Mesa Plateau M
-t493 
+t493 Tafelberghochebene M
 o494 (Uncalculated)
 t494 (Unberechnet)
 o495 Biome
-t495 Boime
+t495 Biom
 o496 Repeat count
-t496 Anzahl der Wiederholung
+t496 Wiederholungsanzahl
 o497 Depth
 t497 Tiefe
 o498 Pick a block:
-t498 Suche einen Block aus
+t498 Suche einen Block aus:
 o499 Players
 t499 Spielern
 o500 Player Name
@@ -1092,7 +1092,7 @@ t508 Bewege Spawnpunkt
 o509 Goto Spawn
 t509 Gehe zu Spawn
 o510 Take a Screenshot
-t510 Mache ein Bildschirmfoto
+t510 Mache ein Screenshot
 o511 Load Preset
 t511 Lade Voreinstellung
 o512 Remove Presets
@@ -1258,13 +1258,13 @@ t591 Verherige Seite
 o592 Next Page
 t592 Nächste Seite
 o593 Super Secret Settings
-t593 Super geheime Einstellungen
+t593 Super Secret Settings
 o594 Default Resource Pack
 t594 Standard Ressourcen Packet
 o595 Square
 t595 Quadrat
 o596 Record a Macro
-t596 Ein Makro Aufnehmen
+t596 Ein Makro aufnehmen
 o597 Health Boost
 t597 Lebens Boost
 o598 Saturation (no mob effect)
@@ -1288,17 +1288,17 @@ t606 Spieler Namen:
 o607 Chunks Borders
 t607 Chunkgrenze
 o608 Fast Nudge
-t608 Schnelles schieben
+t608 Schnelles Schieben
 o609 Clone Fast Nudge Settings
-t609 Klone schnrlles schieben Einstellungen
+t609 Klone schnelles Schieben Einstellungen
 o610 Move by the width of selection 
-t610 Bewegung von dieser Breite des Auswahls
+t610 Verschiebe von dieser Breite der Auswahl
 o611 Moves clone by his width
 t611 Bewegt Klon von dieser Breite
 o612 Width of clone movement: 
 t612 Breite von Klonbewegung: 
 o613 Import Fast Nudge Settings:
-t613 Importiere schnelles schieben Einstellungen:
+t613 Importiere schnelles Schieben Einstellungen:
 o614 Move by the width of schematic 
 t614 Bewege von der Breite von der Schematic
 o615 Moves selection by his width
@@ -1308,15 +1308,15 @@ t616 Breite von Importbewegeung:
 o617 Import Options
 t617 Importieren Optionen
 o618 Blocks Fast Nudge Settings:
-t618 Block schnelles schieben Einstellungen
+t618 Blockiert schnelles Schieben Einstellungen
 o619 Selection Fast Nudge Settings:
-t619 Auswahl schnelles schieben Einstellungen
+t619 Auswahl schnelles Schieben Einstellungen:
 o620 Points Fast Nudge Settings:
-t620 Punkte schnelles schrieben Einstellungen
+t620 Punktet schnelles Schieben Einstellungen:
 o621 Moves points by the selection's width
-t621 Bewege Punkte von der Auswahlbreite
+t621 Beweget Punkte von der Auswahlbreite
 o622 Width of points movement: 
-t622 Breite von Punktebewegung
+t622 Breite von Punktebewegung:
 o623 Do you want to save your changes?
 t623 Möchten Sie die Änderungen speichern?
 o624 Don't Save
@@ -1324,23 +1324,23 @@ t624 Nicht Speichern
 o625 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 Drücke eine Taste um die folgende Aktion zu geben: "{0}"
+t625 Drücke eine Taste um ihr folgende Aktion zu geben: "{0}"
 
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o626 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t626 Drücke eine Taste um die folgende Aktion zu geben: "{0}"
-Keine Taste heißt Rechtsklick für schnelles schieben.
+t626 Drücke eine Taste um ihr folgende Aktion zu geben: "{0}"
+Keine Taste meint Rechtsklick für schnelles Schieben.
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o627 {0} is not a modifier. Press a new key.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t627 {0} ist kein Modifikator. Drücken Sie eine neue Taste.
+t627 {0} ist kein Bestimmer. Drücken Sie eine neue Taste.
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t628 Bewegungstastem können nicht mit Strg oder mit Modifizierer verwendet werden. Drücken sie eine neue Taste.
+t628 Bewegungstasten können nicht mit Strg oder mit Bestimmer verwendet werden. Drücken sie eine neue Taste.
 
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o629 You can't use the key {0}. Press a new key.
