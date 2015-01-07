@@ -4,7 +4,7 @@ import release
 
 operations = {
     "Yes/No Dialog": 1,
-    "Custom Dialog (Hi Button)": 2,
+    "Custom Dialog": 2,
     "Scoreboard Editing (Objective)": 3,
     "Scoreboard Editing (Team)": 4,
     "Player Data": 5,
@@ -41,7 +41,7 @@ def yesFUNC(level, box):
 
 def perform(level, box, options):
     ver = release.get_version()
-    if "fork" in ver.lower():
+    if "unified" in ver.lower():
         try:
             data.editor = editor
             data.isFork = True
@@ -65,15 +65,33 @@ def perform(level, box, options):
             raise Exception("Response was Yes")
         else:
             raise Exception("Response was No")
-    elif op == "Custom Dialog (Hi Button)":
-        widget = Widget()
-        widget.bg_color = (0.0, 0.0, 0.6)
-        lbl = Label("Test Message from a External Widget")
-        btn = Button("Hi", action=hiAction)
-        widget.add(lbl)
-        widget.add(btn)
-        widget.shrink_wrap()
-        editor.addExternalWidget(widget)        
+    elif op == "Custom Dialog":
+        entities = {}
+        chunks = []
+        for (chunk, slices, point) in level.getChunkSlices(box):
+            for e in chunk.Entities:
+                x = e["Pos"][0].value
+                y = e["Pos"][1].value
+                z = e["Pos"][2].value
+                
+                if (x,y,z) in box:
+                    keyname = "{0} - {1},{2},{3}".format(e["id"].value,int(x),int(y),int(z))
+                    entities[keyname] = e
+                    chunks.append(chunk)
+        thing = (
+                 ("Entity", tuple(sorted(entities.keys()))),
+                 ("Entity Name", ("string")),
+                 ("Replace existing names?", False),
+                 )
+        result = editor.addExternalWidget(thing)
+        if result != "user canceled":
+            entity = entities[result["Entity"]]
+            if "CustomName" not in result["Entity"]:
+                entity["CustomName"] = TAG_String(result["Entity Name"])
+            elif "CustomName" in result["Entity"] and result["Replace existing names?"]:
+                result["Entity"]["CustomName"] = TAG_String(result["Entity Name"])
+            for c in chunks:
+                c.dirty = True
     elif op == "Scoreboard Editing (Objective)":
         scoreboard = level.init_scoreboard()
         test_objective = TAG_Compound()
@@ -86,7 +104,7 @@ def perform(level, box, options):
         for objective in score.Objectives:
             print "Objective Name: " + str(objective["Name"].value)
     elif op == "Scoreboard Editing (Team)":
-        if level.scoreboard != None:
+        if level.scoreboard is not None:
             for team in level.scoreboard.Teams:
                 print "Team Name: " + str(team.DisplayName)
     elif op == "Player Data":

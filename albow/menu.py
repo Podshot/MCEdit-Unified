@@ -67,6 +67,8 @@ class Menu(Dialog):
         self.scroll_page = scroll_page
         Dialog.__init__(self, **kwds)
 
+        self.root = self.get_root()
+
         h = self.font.get_linesize()
         if self.scrolling:
             self.height = h * self.scroll_items + h
@@ -74,7 +76,7 @@ class Menu(Dialog):
             self.height = h * len(self._items) + h
 
     def present(self, client, pos):
-        client = client or get_root()
+        client = client or self.root
         self.topleft = client.local_to_global(pos)
         focus = get_focus()
         font = self.font
@@ -99,8 +101,7 @@ class Menu(Dialog):
         self.size = (width, height)
         self._hilited = None
 
-        root = get_root()
-        self.rect.clamp_ip(root.rect)
+        self.rect.clamp_ip(self.root.rect)
 
         return Dialog.present(self, centered=False)
 

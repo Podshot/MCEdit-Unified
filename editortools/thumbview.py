@@ -14,6 +14,7 @@ class ThumbView(GLPerspective):
         self.schematic = sch
         self.renderer = PreviewRenderer(sch)
         self.fboSize = (128, 128)
+        self.root = self.get_root()
         # self.renderer.position = (sch.Length / 2, 0, sch.Height / 2)
 
     def setup_modelview(self):
@@ -66,7 +67,7 @@ class ThumbView(GLPerspective):
         GL.glPushAttrib(GL.GL_SCISSOR_BIT)
         r = self.rect
         r = r.move(*self.local_to_global_offset())
-        GL.glScissor(r.x, self.get_root().height - r.y - r.height, r.width, r.height)
+        GL.glScissor(r.x, self.root.height - r.y - r.height, r.width, r.height)
         with gl.glEnable(GL.GL_SCISSOR_TEST):
             self.clear()
             self.renderer.draw()

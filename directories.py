@@ -1,3 +1,4 @@
+﻿# -*- coding: utf-8 -*-
 """Copyright (c) 2010-2012 David Rio Vierra
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -71,7 +72,7 @@ def getDataDir():
             return x.decode(sys.getfilesystemencoding())
 
         argzero = fsdecode(os.path.abspath(sys.argv[0]))
-        if hasattr(sys, 'frozen'):
+        if argzero.endswith('.exe'):
             dataDir = os.path.dirname(fsdecode(sys.executable))
         else:
             dataDir = os.path.dirname(argzero)

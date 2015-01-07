@@ -87,13 +87,15 @@ class MCMaterials(object):
 
         self.idStr = [""] * id_limit
 
+        self.id_limit = id_limit
+
         self.color = self.flatColors
         self.brightness = self.lightEmission
         self.opacity = self.lightAbsorption
 
         self.Air = self.addBlock(0,
                                  name="Air",
-                                 texture=(0x80, 0xB0),
+                                 texture=(0x0, 0x150),
                                  opacity=0,
         )
 
@@ -187,7 +189,12 @@ class MCMaterials(object):
             f = file(path)
         try:
             log.info(u"Loading block info from %s", f)
-            blockyaml = yaml.load(f)
+            try:
+                log.debug("Trying YAML CLoader")
+                blockyaml = yaml.load(f, Loader=yaml.CLoader)
+            except:
+                log.debug("CLoader not preset, falling back to Python YAML")
+                blockyaml = yaml.load(f)
             self.addYamlBlocks(blockyaml)
 
         except Exception, e:

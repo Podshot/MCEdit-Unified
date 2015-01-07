@@ -11,7 +11,7 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
- # import resource_packs # not the right place, moving it a bit furtehr
+# import resource_packs # not the right place, moving it a bit furtehr
 
 """
 mceutils.py
@@ -173,7 +173,7 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
             x2, y2, z,
             x2, y2, z2,
         ), dtype='f4')
-    if textureVertices == None:
+    if textureVertices is None:
         textureVertices = numpy.array(
             (
                 0, -dy * 16,
@@ -348,7 +348,12 @@ class HotkeyColumn(Widget):
             buttonsColumn = []
 
         Widget.__init__(self)
-        for (hotkey, title, action) in items:
+        for t in items:
+            if len(t) == 3:
+                (hotkey, title, action) = t
+                tooltipText = None
+            else:
+                (hotkey, title, action, tooltipText) = t
             if isinstance(title, (str, unicode)):
                 button = Button(title, action=action)
             else:
@@ -359,6 +364,9 @@ class HotkeyColumn(Widget):
             label.anchor = "wh"
 
             label.height = button.height
+
+            if tooltipText:
+                button.tooltipText = tooltipText
 
             keysColumn.append(label)
             buttonsColumn.append(button)
@@ -409,7 +417,7 @@ class ChoiceButton(ValueButton):
         self.scroll_items = scroll_items
         self.choices = choices or ["[UNDEFINED]"]
 
-        widths = [self.font.size(c)[0] for c in choices] + [self.width]
+        widths = [self.font.size(_(c))[0] for c in choices] + [self.width]
         if len(widths):
             self.width = max(widths) + self.margin * 2
 
@@ -483,7 +491,7 @@ def FloatInputRow(title, *args, **kw):
 
 
 def IntInputRow(title, *args, **kw):
-    return Row((Label(_(title), tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
 
 
 from albow.dialogs import Dialog
@@ -515,7 +523,7 @@ def compareMD5Hashes(found_filters):
     '''
     ff = {}
     for filter in found_filters:
-        ff[filter.split(os.path.sep)[-1]] = filter
+        ff[os.path.split(filter)[-1]] = filter
     try:
         if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
             filterDict = {}
@@ -525,7 +533,7 @@ def compareMD5Hashes(found_filters):
         filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "stock-filters"), ".py")
         filterBundle = {}
         for bundled in filterInBundledFolder:
-            filterBundle[bundled.split(os.path.sep)[-1]] = bundled
+            filterBundle[os.path.split(bundled)[-1]] = bundled
         hashJSON = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
         for filt in ff.keys():
             realName = filt
@@ -569,8 +577,11 @@ def showProgress(progressText, progressIterator, cancel=False):
     class ProgressWidget(Dialog):
         progressFraction = 0.0
         firstDraw = False
+        root = None
 
         def draw(self, surface):
+            if self.root is None:
+                self.root = self.get_root()
             Widget.draw(self, surface)
             frameStart = datetime.now()
             frameInterval = timedelta(0, 1, 0) / 2
@@ -630,18 +641,18 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
         def key_down(self, event):
-            self.get_root().mcedit.editor.key_down(event, 1, 1)
+            pass
 
         def key_up(self, event):
-            self.get_root().mcedit.editor.key_up(event)
+            pass
 
         def mouse_up(self, event):
             try:
-                if "SelectionTool" in "{0}".format(self.get_root().mcedit.editor.currentTool):
-                    if self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.count > 0:
-                        self.get_root().mcedit.editor.currentTool.panel.nudgeBlocksButton.mouse_up(event)
+                if "SelectionTool" in str(self.root.editor.currentTool):
+                    if self.root.get_nudge_block().count > 0:
+                        self.root.get_nudge_block().mouse_up(event)
             except:
-                pass 
+                pass
 
     widget = ProgressWidget()
     widget.progressText = _(progressText)

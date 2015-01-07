@@ -648,7 +648,6 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
         yield
 
     def saveToFile(self, filename):
-        super(ZipSchematic, self).saveInPlace()
         schematicDat = nbt.TAG_Compound()
         schematicDat.name = "Mega Schematic"
 
@@ -805,4 +804,3 @@ def extractAnySchematicIter(level, box):
 
 MCLevel.extractAnySchematic = extractAnySchematic
 MCLevel.extractAnySchematicIter = extractAnySchematicIter
-

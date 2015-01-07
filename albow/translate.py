@@ -94,6 +94,8 @@ def getPlatInfo(**kwargs):
 
 
 enc = locale.getdefaultlocale()[1]
+if enc is None:
+    enc = "UTF-8"
 
 string_cache = {}
 font_lang_cache = {}
@@ -105,14 +107,14 @@ strNum = 0
 template = {} # {"string": number}
 buildTemplate = False
 trnHeader = """# TRANSLATION BASICS
-# 
+#
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
 # As long as the numbers match, it will translate the specified English string to the new language.
 # Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes and other special characters can be used.
-# 
+#
 # The space (' ') separating the strings from the numbers is mandatory.
 # The file must also be encoded in UTF-8 or it won't work. Most editors should support this.
-# 
+#
 # See TRANSLATION.txt for more detailed information.
 #"""
 
@@ -125,13 +127,64 @@ def _(string, doNotTranslate=False):
         return string
     if type(string) not in (str, unicode):
         return string
+    trn = string_cache.get(string, string.replace("\n", "\n\n"))
     if buildTemplate:
         global template
         global strNum
-        if u"%s"%string not in template.values():
-            template[strNum] = u"%s"%string
+        if (string, None) not in [(a, None) for a, b in template.values()]:
+            template[len(template.keys())] = (string, "")
             strNum += 1
-    return string_cache.get(string, string.replace("\n", "\n\n"))
+    return trn or string
+
+#-------------------------------------------------------------------------------
+def loadTemplate(fName="template.trn"):
+    """Load the template fName file in the global template variable.
+    Returns the template."""
+    global template
+    global trnHeader
+    global strNum
+    fName = os.path.join(getLangPath(), fName)
+    if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
+        oldData = codecs.open(fName, "r", "utf-8").read() + "\x00"
+        trnHeader = u""
+        # find the first oXX
+        start = re.search(ur"^o\d+[ ]", oldData, re.M|re.S)
+        if start:
+            start = start.start()
+        else:
+            print "*** %s malformed. Could not find entry point.\n    Template not loaded."%os.path.split(fName)[-1]
+        trnHeader += oldData[:max(0, start - 1)]
+        trnPattern = re.compile(ur"^o\d+[ ]|^t\d+[ ]", re.M|re.S)
+        grps = re.finditer(trnPattern, oldData)
+        oStart = -1
+        oEnd = -1
+        tStart = -1
+        tEnd = -1
+        org = None
+        num = 0
+        oNum = -1
+        tNum = -1
+        for grp in grps:
+            g = grp.group()
+            if g.startswith(u"o"):
+                oStart = grp.end()
+                tEnd = grp.start() -1
+                oNum = int(g[1:])
+            elif g.startswith(u"t"):
+                oEnd = grp.start() -1
+                tStart = grp.end()
+                tNum = int(g[1:])
+            if oNum == tNum:
+                org = oldData[oStart:oEnd]
+            if tStart > -1 and (tEnd > -1):
+                if tEnd >= tStart:
+                    template[num] = (org, oldData[tStart:tEnd])
+                    num += 1
+                    tStart = -1
+                    tEnd = -1
+        template[num] = (org, oldData[tStart:tEnd])
+        strNum = num
+    return template
 
 #-------------------------------------------------------------------------------
 def saveTemplate():
@@ -142,8 +195,10 @@ def saveTemplate():
         keys = template.keys()
         keys.sort()
         for key in keys:
-            value = template[key]
-            f.write(u"\no%s %s\nt%s "%(key, value, key))
+            org, trn = template[key]
+#            f.write(u"\no%s %s\nt%s "%(key, value, key))
+#            f.write(u"\no%s %s"%(key, value.replace(u"\nt%s", u"\nt%s"%key)))
+            f.write(u"\no%s %s\nt%s %s"%(key, org, key, trn))
         f.close()
 
 #-------------------------------------------------------------------------------
@@ -159,7 +214,7 @@ def setLangPath(path):
         global langPath
         langPath = path
         return True
-    lg.debug("'path' is not valid")
+    log.debug("'path' is not valid")
     log.debug("setLangPath >>>")
     return False
 

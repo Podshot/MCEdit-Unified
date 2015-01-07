@@ -214,7 +214,7 @@ class ButtonBase(Control):
                 self._highlighted = False
                 if self.enabled:
                     self.call_handler('action')
-        self.get_root().ctrlClicked = -1
+        self.get_root().fix_sticky_ctrl()
 
 
 
@@ -308,7 +308,7 @@ class ValueButton(ButtonBase, ValueDisplay):
     align = 'c'
 
     def get_text(self):
-        return self.format_value(self.value)
+        return self.format_value(_(self.value))
 
 
 

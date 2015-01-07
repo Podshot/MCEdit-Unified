@@ -24,5 +24,3 @@ def nested_string(tag, indent_string="  ", indent=0):
         result += "%s(%r)" % (tag.__class__.__name__, tag.value)
 
     return result
-
-

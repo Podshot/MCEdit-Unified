@@ -13,4 +13,3 @@ class SessionLockTest(unittest.TestCase):
             level.saveInPlace()
 
         self.assertRaises(SessionLockLost, touch)
-

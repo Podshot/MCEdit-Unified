@@ -25,6 +25,7 @@ class Dialog(Modal, Widget):
     def __init__(self, client=None, responses=None,
                  default=0, cancel=-1, **kwds):
         Widget.__init__(self, **kwds)
+        self.root = self.get_root()
         if client or responses:
             rows = []
             w1 = 0
@@ -59,10 +60,10 @@ class Dialog(Modal, Widget):
                 self.dismiss(response)
 
     def key_down(self, e):
-        self.get_root().mcedit.editor.key_down(e, 1, 1)
+        pass
 
     def key_up(self, e):
-        self.get_root().mcedit.editor.key_up(e)
+        pass
 
 
 

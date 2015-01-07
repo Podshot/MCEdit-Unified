@@ -98,6 +98,7 @@ class Widget(object):
         self.focus_switch = None
         self.is_modal = False
         self.set(**kwds)
+        self.root = self.get_root()
 
     def set(self, **kwds):
         for name, value in kwds.iteritems():
@@ -276,12 +277,12 @@ class Widget(object):
         self.subwidgets.append(widget)
         if hasattr(widget, "idleevent"):
             #print "Adding idle handler for ", widget
-            self.get_root().add_idle_handler(widget)
+            self.root.add_idle_handler(widget)
 
     def _remove(self, widget):
         if hasattr(widget, "idleevent"):
             #print "Removing idle handler for ", widget
-            self.get_root().remove_idle_handler(widget)
+            self.root.remove_idle_handler(widget)
         self.subwidgets.remove(widget)
 
         if self.focus_switch is widget:
@@ -405,6 +406,7 @@ class Widget(object):
                 break
             focus = parent.focus_switch
             if focus and focus is not widget:
+                self.root.notMove = False
                 focus.dispatch_attention_loss()
             widget = parent
 
@@ -463,7 +465,7 @@ class Widget(object):
                 self.dismiss(self.enter_response)
                 return
         elif k == K_ESCAPE:
-            self.get_root().ctrlClicked = -1
+            self.root.fix_sticky_ctrl()
             if self.cancel_response is not None:
                 self.dismiss(self.cancel_response)
                 return
@@ -485,19 +487,20 @@ class Widget(object):
 
     @property
     def is_hover(self):
-        return self.get_root().hover_widget is self
+        return self.root.hover_widget is self
 
     def present(self, centered=True):
         #print "Widget: presenting with rect", self.rect
-        root = self.get_root()
+        if self.root is None:
+            self.root = self.get_root()
         if centered:
-            self.center = root.center
-        root.add(self)
+            self.center = self.root.center
+        self.root.add(self)
         try:
-            root.run_modal(self)
+            self.root.run_modal(self)
             self.dispatch_attention_loss()
         finally:
-            root.remove(self)
+            self.root.remove(self)
         #print "Widget.present: returning", self.modal_result
         return self.modal_result
 
@@ -505,7 +508,6 @@ class Widget(object):
         self.modal_result = value
 
     def get_root(self):
-        # Deprecated, use root.get_root()
         return root_widget
 
     def get_top_widget(self):
@@ -552,9 +554,8 @@ class Widget(object):
             self._rect.size = add(rmax.topleft, rmax.bottomright)
 
     def invalidate(self):
-        root = self.get_root()
-        if root:
-            root.do_draw = True
+        if self.root:
+            self.root.bonus_draw_time = 0
 
     def get_cursor(self, event):
         return arrow_cursor
@@ -698,8 +699,7 @@ class Widget(object):
         return r.collidepoint(p)
 
     def get_mouse(self):
-        root = self.get_root()
-        return root.get_mouse_for(self)
+        return self.root.get_mouse_for(self)
 
     def get_menu_bar(self):
         return self._menubar

@@ -1,18 +1,22 @@
+# -*- coding: utf-8 -*-
 from PIL import Image
 import zipfile
 import directories
 import os
 import shutil
-import config
+from config import config
+
+import locale
+import traceback
+DEF_ENC = locale.getdefaultlocale()[1]
+if DEF_ENC is None:
+    DEF_ENC = "UTF-8"
 
 try:
     import resource  # @UnresolvedImport
     resource.setrlimit(resource.RLIMIT_NOFILE, (500,-1))
 except:
     pass
-
-Settings = config.Settings("Settings")
-Settings.resource_pack = Settings("Resource Pack", "Default")
 
 def step(slot):
     texSlot = slot*16
@@ -499,12 +503,16 @@ textureSlots = {
     }
 
 class IResourcePack:
-    
+
     def __init__(self):
-        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+        self.__stop = False
+        tpBasePath = type(os.path.join(directories.parentDir, "textures"))
+        tpPackName = type(self._pack_name)
+        texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
+        self.texture_path = texture_path
         self._isEmpty = False
         self._too_big = False
-        self.big_textures_counted = 0 
+        self.big_textures_counted = 0
         self.big_textures_max = 10
         try:
             os.makedirs(self.texture_path)
@@ -518,44 +526,58 @@ class IResourcePack:
             for texy in xrange(0,33):
                 self.all_texture_slots.append((step(texx),step(texy)))
         self._terrain_name = self._pack_name.replace(" ", "_")+".png"
-        self._terrain_path = "terrain-textures"+os.path.sep+self._terrain_name.replace(" ", "_")
-                
+        self._terrain_path = os.path.join("terrain-textures", self._terrain_name.replace(" ", "_"))
+
     @property
     def pack_name(self):
         return self._pack_name
-    
+
     @property
     def terrain_name(self):
         return self._terrain_name
-    
+
     def terrain_path(self):
         return self._terrain_path
-    
+
     @property
     def isEmpty(self):
         return self._isEmpty
-    
+
     @property
     def tooBig(self):
         return self._too_big
-    
+
     def parse_terrain_png(self):
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
-            try:
-                image = self.block_image[tex]
-                slot = textureSlots[tex]
-                new_terrain.paste(image, slot, image)
-                self.propogated_textures.append(slot)
-            except:
-                pass
+            if not self.__stop and tex in textureSlots.keys():
+                try:
+                    image = self.block_image[tex]
+                    # Scrappy fix for non-RGBA images.
+                    # Originally made to debug Unicode stuff.
+                    # The images that needed this conversion gave fully transparent
+                    # textures in MCEdit.
+                    if image.mode != "RGBA":
+                        image.convert("RGBA")
+                        image.putalpha(255)
+                    slot = textureSlots[tex]
+                    new_terrain.paste(image, slot, image)
+                    self.propogated_textures.append(slot)
+                except Exception as e:
+                    print "An Exception occurred while trying to parse textures for {}".format(self._pack_name)
+                    traceback.print_stack()
+                    print "Exception Message: "+str(e)
+                    print "Exception type: "+str(type(e))
+                    self.__stop = True
+                    self._isEmpty = True
+                    pass
         copy = self.old_terrain.copy()
 
         for t in self.all_texture_slots:
             if t not in self.propogated_textures:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
                 new_terrain.paste(old_tex, t, old_tex)
-                
+
         new_terrain.save(self._terrain_path)
         try:
             os.remove(self._pack_name.replace(" ", "_")+".png")
@@ -564,33 +586,46 @@ class IResourcePack:
         if self.propogated_textures == []:
             os.remove(self._terrain_path)
             self._isEmpty = True
-        if self._too_big:
-            os.remove(self._terrain_path)
+            #print u"{} did not replace any textures".format(self._pack_name)
+
         del self.block_image
-    
+
+    def handle_too_big_packs(self):
+        self._too_big = True
+        #print u"{} seems to be a higher resolution than supported".format(self._pack_name)
+        try:
+            os.remove(self._terrain_path)
+        except:
+            pass
+        del self.block_image
+
 
 class ZipResourcePack(IResourcePack):
     '''
     Represents a single Resource Pack
     '''
 
-    def __init__(self, zipfileFile):
+    def __init__(self, zipfileFile, noEncConvert=False):
         self.zipfile = zipfileFile
-        self._pack_name = zipfileFile.split(os.path.sep)[-1][:-4]
+        self._pack_name = os.path.splitext(os.path.split(zipfileFile)[-1])[0]
         IResourcePack.__init__(self)
-        
+
         if not os.path.exists(self._terrain_path):
-            self.open_pack()
+            try:
+                self.open_pack()
+            except Exception, e:
+                print ("Error while trying to load one of the resource packs: {}").format(e)
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
         for name in zfile.infolist():
             if name.filename.endswith(".png"):
                 if name.filename.startswith("assets/minecraft/textures/blocks"):
-                    block_name = name.filename.split("/")[-1]
+                    block_name = os.path.normpath(name.filename).split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
                     zfile.extract(name.filename, self.texture_path)
-                    possible_texture = Image.open(self.texture_path+name.filename)
+                    name.filename = name.filename.replace("._", "")
+                    possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
                     if possible_texture.size == (16, 16):
                         self.block_image[block_name] = possible_texture
                         if block_name.startswith("repeater_") or block_name.startswith("comparator_"):
@@ -623,33 +658,34 @@ class ZipResourcePack(IResourcePack):
                     else:
                         if possible_texture.size == (32, 32):
                             self.block_image[block_name] = possible_texture.resize((16, 16))
-                        if possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
+                        elif possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
                             self.big_textures_counted = self.big_textures_counted + 1
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
         if self.big_textures_counted >= self.big_textures_max:
-            self._too_big = True
-        self.parse_terrain_png()
-        
-        
+            self.handle_too_big_packs()
+        else:
+            self.parse_terrain_png()
+
+
 class FolderResourcePack(IResourcePack):
-    
-    def __init__(self, folder):
+
+    def __init__(self, folder, noEncConvert=False):
         self._folder = folder
         self._pack_name = self._folder.replace(" ", "_")
         IResourcePack.__init__(self)
-        self._full_path = os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+self._folder
-        self.texture_path = directories.parentDir+os.path.sep+"textures"+os.path.sep+self._pack_name+os.path.sep
+        self._full_path = os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", self._folder)
+        self.texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
         if not os.path.exists(self._terrain_path):
             self.add_textures()
-        
+
     def add_textures(self):
-        base_path = self._full_path+os.path.sep+"assets"+os.path.sep+"minecraft"+os.path.sep+"textures"+os.path.sep+"blocks"
+        base_path = os.path.join(self._full_path, "assets", "minecraft", "textures", "blocks")
         if os.path.exists(base_path):
             files = os.listdir(base_path)
             for tex_file in files:
                 if tex_file.endswith(".png"):
-                    possible_texture = Image.open(base_path+os.path.sep+tex_file)
+                    possible_texture = Image.open(os.path.join(base_path, tex_file))
                     block_name = tex_file[:-4]
                     if possible_texture.size == (16, 16):
                         self.block_image[block_name] = possible_texture
@@ -688,55 +724,48 @@ class FolderResourcePack(IResourcePack):
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
         if self.big_textures_counted >= self.big_textures_max:
-            self._too_big = True
-        self.parse_terrain_png()
-        
+            self.handle_too_big_packs()
+        else:
+            self.parse_terrain_png()
+
 class DefaultResourcePack(IResourcePack):
-    
+
     def __init__(self):
         self._isEmpty = False
         self._too_big = False
         self._terrain_path = "terrain.png"
         self._pack_name = "Default"
-    
+
     def terrain_path(self):
         return self._terrain_path
-    
+
     @property
     def isEmpty(self):
         return self._isEmpty
-    
+
     @property
     def tooBig(self):
         return self._too_big
-    
-    
+
+
 def setup_resource_packs():
     terrains = {}
     try:
         os.mkdir("terrain-textures")
     except OSError:
         pass
-    terrains["Default"] = DefaultResourcePack()
-    zipResourcePacks = directories.getAllOfAFile(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"), ".zip")
-    folderResourcePacks = os.listdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks"))
-    for zip_tex_pack in zipResourcePacks:
-        try:
-            zip_tex_pack.decode('ascii')
-        except UnicodeDecodeError:
-            pass
-        else:
+    terrains["Default Resource Pack"] = DefaultResourcePack()
+
+    if os.path.exists(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")):
+        zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")
+        folderResourcePacks = os.listdir(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")))
+        for zip_tex_pack in zipResourcePacks:
             zrp = ZipResourcePack(zip_tex_pack)
             if not zrp.isEmpty:
                 if not zrp.tooBig:
                     terrains[zrp.pack_name] = zrp
-    for folder_tex_pack in folderResourcePacks:
-        if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")+os.path.sep+folder_tex_pack):
-            try:
-                folder_tex_pack.decode('ascii')
-            except UnicodeDecodeError:
-                pass
-            else:
+        for folder_tex_pack in folderResourcePacks:
+            if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", folder_tex_pack)):
                 frp = FolderResourcePack(folder_tex_pack)
                 if not frp.isEmpty:
                     if not frp.tooBig:
@@ -746,7 +775,7 @@ def setup_resource_packs():
         if not os.path.exists(pack.terrain_path()):
             del terrains[tex]
     try:
-        shutil.rmtree(directories.parentDir+os.path.sep+"textures")
+        shutil.rmtree(os.path.join(directories.parentDir, "textures"))
     except:
         print "Could not remove \"textures\" directory"
         pass
@@ -756,13 +785,13 @@ class ResourcePackHandler:
 
     def __init__(self):
         try:
-            os.mkdir(directories.parentDir+os.path.sep+"textures")
+            os.mkdir(os.path.join(directories.parentDir, "textures"))
         except OSError:
             pass
         self._resource_packs = setup_resource_packs()
-        self._selected_resource_pack = Settings.resource_pack.get()
+        self._selected_resource_pack = config.settings.resourcePack.get()
         if self._selected_resource_pack not in self._resource_packs.keys():
-            self.set_selected_resource_pack_name("Default")
+            self.set_selected_resource_pack_name("Default Resource Pack")
 
     @property
     def resource_packs(self):
@@ -778,7 +807,7 @@ class ResourcePackHandler:
         return self._selected_resource_pack
 
     def set_selected_resource_pack_name(self, name):
-        Settings.resource_pack.set(name)
+        config.settings.resourcePack.set(name)
         self._selected_resource_pack = name
 
     def get_selected_resource_pack(self):

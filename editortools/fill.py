@@ -27,11 +27,9 @@ from mceutils import showProgress, CheckBoxLabel, alertException, setWindowCapti
 from operation import Operation
 from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
-import config
-import keys
+from config import config
+from albow.root import get_root
 import pymclevel
-FillSettings = config.Settings("Fill")
-FillSettings.chooseBlockImmediately = FillSettings("Choose Block Immediately", True)
 
 
 class BlockFillOperation(Operation):
@@ -40,13 +38,14 @@ class BlockFillOperation(Operation):
         self.destBox = destBox
         self.blockInfo = blockInfo
         self.blocksToReplace = blocksToReplace
+        self.canUndo = False
 
     def name(self):
         return _("Fill with ") + self.blockInfo.name
 
     def perform(self, recordUndo=True):
         if self.level.saving:
-            alert(_("Cannot perform action while saving is taking place"))
+            alert("Cannot perform action while saving is taking place")
             return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.destBox)
@@ -57,6 +56,7 @@ class BlockFillOperation(Operation):
 
         fill = self.level.fillBlocksIter(destBox, self.blockInfo, blocksToReplace=self.blocksToReplace)
         showProgress("Replacing blocks...", fill, cancel=True)
+        self.canUndo = True
 
     def bufferSize(self):
         return self.destBox.volume * 2
@@ -79,7 +79,7 @@ class FillToolPanel(Panel):
         self.fillButton = Button("Fill", action=tool.confirm, width=self.blockButton.width)
         self.fillButton.tooltipText = "Shortcut: Enter"
 
-        rollkey = config.config.get("Keys", "Replace Shortcut")
+        rollkey = config.keys.replaceShortcut.get()
 
         self.replaceLabel = replaceLabel = Label("Replace", width=self.blockButton.width)
         replaceLabel.mouse_down = lambda a: self.tool.toggleReplacing()
@@ -106,7 +106,7 @@ class FillToolPanel(Panel):
             self.swapButton = Button("Swap", action=self.swapBlockTypes, width=self.blockButton.width)
             self.swapButton.fg_color = (255, 255, 255, 255)
             self.swapButton.highlight_color = (60, 255, 60, 255)
-            swapkey = config.config.get("Keys", "Swap")
+            swapkey = config.keys.swap.get()
 
             self.swapButton.tooltipText = "Shortcut: {0}".format(swapkey)
 
@@ -149,7 +149,7 @@ class FillToolOptions(ToolOptions):
         Panel.__init__(self)
         self.tool = tool
         self.autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
-                                                ref=FillSettings.chooseBlockImmediately.propertyRef(),
+                                                ref=config.fill.chooseBlockImmediately,
                                                 tooltipText="When the fill tool is chosen, prompt for a block type.")
 
         col = Column((Label("Fill Options"), self.autoChooseCheckBox, Button("OK", action=self.dismiss)))
@@ -164,11 +164,13 @@ class FillTool(EditorTool):
     replaceBlockInfo = pymclevel.alphaMaterials.Air
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
+    color = (0.75, 1.0, 1.0, 0.7)
 
     def __init__(self, *args, **kw):
         EditorTool.__init__(self, *args, **kw)
         self.optionsPanel = FillToolOptions(self)
         self.pickBlockKey = 0
+        self.root = get_root()
 
     @property
     def blockInfo(self):
@@ -213,7 +215,7 @@ class FillTool(EditorTool):
                 self.blockInfo = blockPicker.blockInfo
                 self.showPanel()
 
-    chooseBlockImmediately = FillSettings.chooseBlockImmediately.configProperty()
+    chooseBlockImmediately = config.fill.chooseBlockImmediately.property()
 
     def toolReselected(self):
         self.showPanel()
@@ -231,7 +233,10 @@ class FillTool(EditorTool):
         with setWindowCaption("REPLACING - "):
             self.editor.freezeStatus("Replacing %0.1f million blocks" % (float(box.volume) / 1048576.,))
 
+            self.blockInfo = self.panel.blockButton.blockInfo
+
             if self.replacing:
+                self.replaceBlockInfo = self.panel.replaceBlockButton.blockInfo
                 if self.blockInfo.wildcard:
                     print "Wildcard replace"
                     blocksToReplace = []
@@ -371,7 +376,7 @@ class FillTool(EditorTool):
     @property
     def statusText(self):
         return _("Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.").format(
-            hotkey=self.hotkey, R=config.config.get("Keys", "Replace Shortcut"))
+            hotkey=self.hotkey, R=config.keys.replaceShortcut.get())
 
     @property
     def worldTooltipText(self):
@@ -402,11 +407,11 @@ class FillTool(EditorTool):
             return self.editor.selectionTool.mouseDown(evt, pos, dir)
 
     def keyDown(self, evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
+        if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = 1
 
     def keyUp(self, evt):
-        keyname = evt.dict.get('keyname', None) or keys.getKey(evt)
-        if keyname == config.config.get('Keys', 'Pick Block'):
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
+        if keyname == config.keys.pickBlock.get():
             self.pickBlockKey = 0
