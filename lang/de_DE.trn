@@ -27,7 +27,7 @@ t3 Kamera ziehen:
 o4 Camera Max Speed: 
 t4 Kamera Max Schnelligkeit:
 o5 Camera Braking Speed: 
-t5 Kamera Bremsung Schnelligkeit:
+t5 Kamera Bremse Schnelligkeit:
 o6 Mouse Speed: 
 t6 Maus Schnelligkeit:
 o7 Undo Limit: 
@@ -43,7 +43,7 @@ t11 Fenster Platzierung setzen
 o12 Rotate block with brush
 t12 Block drehen mit Pinsel
 o13 Window Resize Alert
-t13 Fenstergrösse ändern Benachrichtigung
+t13 Fenstergrössenänderung Benachrichtigung
 o14 Visibility Check
 t14 Sichtbarkeit prüfen
 o15 Long-Distance Mode
@@ -67,7 +67,7 @@ t23 Sichtfeld:
 o24 Target FPS: 
 t24 Gewünschte FPS:
 o25 Vertex Buffer Limit (MB): 
-t25 Vertex Puffer Limit (MB):
+t25 Vertex Puffer Limite (MB):
 o26 Fast Leaves
 t26 Schnelles Laub
 o27 Rough Graphics
@@ -107,9 +107,9 @@ t43 Anzeigen...
 o44 Camera View
 t44 Kamera Ansicht
 o45 Record Undo
-t45 Rückgängig Aufzeichnen
+t45 Rückgängig speichern
 o46 View Distance:
-t46 Sichtweite:
+t46 Sichtweite
 o47 [UNDEFINED]
 t47 [NICHT DEFINIERT]
 o48 White
@@ -147,7 +147,7 @@ t63 Sofort platzieren
 o64 Clone Options
 t64 Klon Optionen
 o65 Alpha: 
-t65 Tanzparenz:
+t65 Alpha:
 o66 Choose Block Immediately
 t66 Block schnell auswählen
 o67 Reset Distance When Brush Size Changes
@@ -163,9 +163,9 @@ t71 Spawnpositionoptionen
 o72 Create New World
 t72 Neue Welt erstellen
 o73 Ctrl-
-t73 Strg-
+t73 Ctrl-
 o74 Quick Load
-t74 Schnelles laden
+t74 Schnelles Laden
 o75 Open...
 t75 Öffnen...
 o76 Save
@@ -173,27 +173,27 @@ t76 Speichern
 o77 Reload
 t77 Neuladen
 o78 Close
-t78 Schliessen
+t78 Welt Schliessen
 o79 Goto
-t79 Gehe zu
+t79 Position wechseln
 o80 World Info
-t80 Weltinformationen
+t80 Welt Informationen
 o81 Undo
 t81 Rückgängig
 o82 Redo
 t82 Wiederholen
 o83 Select All
-t83 Alles auswählen
+t83 Alles anwählen
 o84 Deselect
 t84 Abwählen
 o85 Quit
-t85 Beenden
+t85 MCEdit Beenden
 o86 Controls
 t86 Tasten
 o87 Graphics
 t87 Grafik
 o88 Homepage
-t88 Startseite
+t88 Webseite
 o89 About MCEdit
 t89 Über MCEdit
 o90 Recent Changes
@@ -201,13 +201,13 @@ t90 Vergangene Änderungen
 o91 License
 t91 Lizenz
 o92 Config Files Folder
-t92 Konfigurations Dateiordner
+t92 Konfigurations Ordner
 o93 {0}/{1}/{2}/{3}/{4}/{5} to move
-t93 {0}/{1}/{2}/{3}/{4}/{5} zu verschieben
+t93 {0}/{1}/{2}/{3}/{4}/{5} um sich zu bewegen
 o94 {0} to slow down
-t94 {0} zu verlangsamen
+t94 {0} um zu verlangsamen
 o95 Right-click to toggle camera control
-t95 Rechts-Klick um Kamera Kontroller umzuschalten
+t95 Rechts-Klick um Kamera Kontrolle umzuschalten
 o96 Mousewheel to control tool distance
 t96 Mausrad um Steuerungstoolentfernung zu kontrollieren
 o97 Hold {0} for details
@@ -223,7 +223,7 @@ t99 Nicht nochmal erinnern.
 o100 <Movement>
 t100 <Bewegung>
 o101 Forward
-t101 Vorwärts
+t101 Vorwährts
 o102 Back
 t102 Zurück
 o103 Left
@@ -239,9 +239,9 @@ t107 Pause
 o108 <Camera>
 t108 <Kamera>
 o109 Pan Up
-t109 Ganz oben
+t109 Ganzoben
 o110 Pan Down
-t110 Ganz unten
+t110 Ganzunten
 o111 Pan Left
 t111 Ganzlinks
 o112 Pan Right
@@ -269,7 +269,7 @@ t122 Reichweite zurücksetzen
 o123 Export Selection
 t123 Auswahl exportieren
 o124 Brush Line Tool
-t124 Pinsellinie Werkzeug
+t124 Pinsellinie Tool
 o125 <Clone>
 t125 <Klonen>
 o126 Rotate (Clone)
@@ -293,7 +293,7 @@ t134 Pinsel verkleinern
 o135 <Fill and Replace>
 t135 <Füllen und ersetzen>
 o136 Replace Shortcut
-t136 Ersetzen Tastenkürzel
+t136 Ersetzen Shortcut
 o137 <Functions>
 t137 <Funktionen>
 o138 Cut
@@ -317,7 +317,7 @@ t146 Welt neuladen
 o147 Close World
 t147 Welt schliessen
 o148 <Advanced>
-t148 <Fortgeschritten>
+t148 <Vortgeschritten>
 o149 Debug Overlay
 t149 Debug Auflage
 o150 Show Block Info
@@ -389,7 +389,7 @@ t182 Das Ende
 o183 Nether
 t183 Nether
 o184 Goto Dimension
-t184 Gehe zu Dimension
+t184 Dimension wechseln
 o185 Chunks: %d
 t185 Chunks: %d
 o186 fps: %0.1f
@@ -441,7 +441,7 @@ t208 Ausgewählte Chunks:
 o209 Extract
 t209 Extrahieren
 o210 Create
-t210 Erstellen
+t210 Erstellem
 o211 Prune
 t211 Beschneiden
 o212 Relight
@@ -457,7 +457,7 @@ t216 {0} Chunks
 o217 Create new chunks within the selection.
 t217 Erstellen Sie neue Chunks innerhalb der Auswahl.
 o218 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
-t218 Löschen Sie die ausgewählten Chunks von der Festplatte. Minecraft wird sie neu erstellen wenn Sie das nächste Mal in der Nähe sind.
+t218 Löschen Sie die ausgewählten Chunks von der Festplatte. Minecraft wird sie neuerstellen wenn Sie das nächste Mal in der Nähe sind.
 o219 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
 t219 Beschneiden Sie die Welt, so dass nur die ausgewählten Chunks übrig bleiben. Jeder Chunk außerhalb der Auswahl wird entfernt und leere Region Dateien werden von der Festplatte gelöscht
 o220 Recalculate light values across the selected chunks
@@ -475,17 +475,17 @@ Right-click for options
 t225 Auswählen
 Rechtsklick für Optionen
 o226 Remove the selection. Shortcut: {0}
-t226 Entfernen der Auswahl. Tastenkürzel: {0}
+t226 Entfernen der Auswahl. Shortcut: {0}
 o227 Fill the selection with Air. Shortcut: {0}
-t227 Füllen der Auswahl mit Luft. Tastenkürzel: {0}
+t227 Füllen der Auswahl mit Luft. Shortcut: {0}
 o228 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t228 Nehmen Sie eine Kopie aller Blöcke und Entities innerhalb der Auswahl, um dann alles in der Auswahl zu löschen. Tastenkürzel: {0}
+t228 Nehmen Sie eine Kopie aller Blöcke und Entities innerhalb der Auswahl, um dann alles in der Auswahl zu löschen. Shortcut: {0}
 o229 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t229 Nehmen Sie eine Kopie aller Blöcke und Entities innerhalb der Auswahl. Tastenkürzel: {0}
+t229 Nehmen Sie eine Kopie aller Blöcke und Entities innerhalb der Auswahl. Shortcut: {0}
 o230 Import the last item taken by Cut or Copy. Shortcut: {0}
-t230 Importieren Sie das letzte Item, genommen von Ausschneiden oder Kopieren. Tastenkürzel: {0}
+t230 Importieren Sie das letzte Item, genommen von Ausschneiden oder Kopieren. Shortcut: {0}
 o231 Export the selection to a .schematic file. Shortcut: {0}
-t231 Exportieren Sie die Auswahl in eine .schematic Datei. Tastenkürzel: {0}
+t231 Exportieren Sie die Auswahl in eine .schematic Datei. Shortcut: {0}
 o232 Clone
 Right-click for options
 t232 Kopieren
@@ -525,7 +525,7 @@ t247 Klicken und ziehen, um Blöcke zu platzieren. Block wählen: {P} -Klick. Er
 o248 Whenever the brush size changes, reset the distance to the brush blocks.
 t248 Wann immer die Pinselgröße ändert, setzen Sie den Abstand zu den Blöcken die markiert sind mit dem Pinsel zurück.
 o249 Shortcut: Alt-1
-t249 Tastenkürzel: Alt-1
+t249 Shortcut: Alt-1
 o250 ---
 t250 ---
 o251 Weight 1: 
@@ -537,23 +537,23 @@ t253 Gewicht 3:
 o254 Weight 4: 
 t254 Gewicht 4:
 o255 Shortcut: Alt-3
-t255 Tastenkürzel: Alt-3
+t255 Shortcut: Alt-3
 o256 Hold {0} to draw lines
 t256 Halten Sie {0} um Linien zu zeichnen
 o257 Indiscriminate
-t257 Willkürlich
+t257 Wahllos
 o258 Click to replace {0} ({1}:{2})
-t258 Drücke um {0} ({1}:{2}) zu ersetzen
+t258 Klicken um zu ersetzen {0} ({1}:{2})
 o259 Noise
-t259 Rauschen
+t259 Lärm
 o260 Strength: 
 t260 Stärke:
 o261 Depth: 
 t261 Tiefe:
 o262 Only Change Natural Earth
-t262 
+t262 Nur natürliche Erde wechseln
 o263 Import
-t263 Importiere
+t263 Importieren
 o264 x
 t264 x
 o265 y
@@ -561,99 +561,99 @@ t265 y
 o266 z
 t266 z
 o267 COPYING - 
-t267 KOPIERE -
+t267 KOPIERT -
 o268 Rotate
-t268 Drehen
+t268 Rotieren
 o269 Roll
 t269 Rollen
 o270 Chunk Align
-t270 Chunk justieren
+t270 Chunk anpassen
 o271 Repeat
 t271 Wiederholen
 o272 Scale Factor
 t272 Skalierungsfaktor
 o273 Copy Air
-t273 Kopiere Luft
+t273 Luft kopieren
 o274 Copy Water
-t274 Kopiere Wasser
+t274 Wasser kopieren
 o275 Copy Biomes
-t275 Kopiere Water
+t275 Biome kopieren
 o276 Change Coordinates
-t276 Ändere Koordinaten
+t276 Koordinaten wechseln
 o277 Change Spawners
-t277 Ändere Spawners
+t277 Spawner wechseln
 o278 Clone
-t278 Klone
+t278 Klonen
 o279 When the clone tool is chosen, place the clone at the selection right away.
-t279 Wenn das Clone Werkzeug ausgewählt ist, setzte den Klon an der Auswahl sofort.
+t279 Wenn das Klon-Werkzeug gewählt ist, platzieren Sie den Klon bei der Auswahl sofort.
 o280 Shortcut: Alt-2
-t280 Tastenkürzel: Alt-2
+t280 Kurzbefehl: Alt-2
 o281 Check to automatically change command block static coordinates when moved.
 Shortcut: Alt-4
-t281 Einticken um automatisch statische Koordinaten in Befehlsblöcken zu ändern wenn bewegt.
-Tastenkürzel: Alt-4
+t281 Überprüft um automatisch Befehlsblock statische Koordinaten wenn verschoben zu wechseln.
+Kurzbefehl: Alt-4
 o282 Check to automatically change the position of the mobs in spawners when moved.
 Shortcut: Alt-5
-t282 Einticken um automatisch die Position von den Mobs in Spawner zu ändern wenn bewegt.
-Tastenkürzel: Alt-5
+t282 Überprüft um automatisch die Position von den Mobs in den Spawners wenn verschoben zu wechseln
+Kurzbefehl: Alt-4
 o283 Shortcut: Enter
-t283 Tastenkürzel: Enter
+t283 Kurzbefehl: Eingabetaste
 o284 Fill and Replace
 Right-click for options
 t284 Füllen und Ersetzen
-Rechtsklick für Optionen
+Rechte Maustaste für Optionen
 o285 Fill with:
 t285 Füllen mit:
 o286 Search
-t286 Suche
+t286 Suchen
 o287 Name
 t287 Name
 o288 ID
 t288 ID
 o289 Any Subtype
-t289 Jede Untertyp
+t289 Jede Unterart
 o290 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
-t290 Drücke {hotkey} um einen Block auszuwählen. Drücke {R} für den Ersetzen Modus. Klicke auf Füllen oder drücke Enter um zu bestätigen
+t290 Drücke {hotkey} um einen Block auszuwählen. Drücke {R} um den Austauschmodus einzuschalten. Klicke füllen oder drücke die Eingabetaste um zu bestätigen.
 o291 Find:
-t291 Finde:
+t291 Finden:
 o292 Replace with:
-t292 Ersetze mit:
+t292 Austauschen mit:
 o293 When the fill tool is chosen, prompt for a block type.
-t293 Wenn das Füllen Werkzeug ausgewählt ist, wähle für ein Blocktyp
+t293 Wenn das Füll Werkzeug ausgewählt ist, entscheide dich für einen Block Typen.
 o294 Filter
 t294 Filter
 o295 Invisibility (no effect)
-t295 Unsichbar (kein Effekt)
+t295 Unsichtbarkeit (Kein Effekt)
 o296 Strength
 t296 Stärke
 o297 Nausea (no mob effect)
-t297 Übelkeit (kein Mob Effekt)
+t297 Übelkeit (Kein Mob Effekt)
 o298 Weakness
 t298 Schwäche
 o299 Speed (no mob effect)
-t299 Schnelligkeit (kein Mob Effekt)
+t299 Schnelligkeit (Kein Mob Effekt)
 o300 Water Breathing
-t300 Unterwasseratem
+t300 Unterwasseratmung
 o301 Regeneration
-t301 Regeneration
+t301 Regenaration
 o302 Poison
-t302 Vergift
+t302 Vergiftung
 o303 Resistance
 t303 Resistenz
 o304 Hunger (no mob effect)
-t304 Hunger (kein Mob Effekt)
+t304 Hunger (Kein Mob Effekt)
 o305 Haste (no mob effect)
-t305 Eile (kein Mob Effekt)
+t305 Eile (Kein Mob Effekt)
 o306 Fire Resistance
-t306 Fezer Resistenz
+t306 Feuerschutz
 o307 Slowness (no mob effect)
-t307 Langsamkeit (kein Mob Effekt)
+t307 Langsamkeit (Kein Mob Effekt)
 o308 Blindness (no mob effect)
-t308 Blindheit (kein Mob Effekt)
+t308 Blindheit (Kein Mob Effekt)
 o309 Night Vision (no effect)
-t309 Nachtsicht (kein Effekt)
+t309 Nachtsicht (Kein Mob Effekt)
 o310 Mining Fatigue (no mob effectg)
-t310 Abbaulähmung (kein Mob Effekt)
+t310 Abbaulähmung (Kein Mob Effekt)
 o311 Jump Boost
 t311 Sprungkraft
 o312 Effect
@@ -663,127 +663,126 @@ t313 Level
 o314 Duration (Seconds)
 t314 Dauer (Sekunden)
 o315 Add Potion Effect to Mobs
-t315 Füge Statuseffekt an Mobs hinzu
+t315 Statuseffekte den Mobs hinzufügen
 o316 Banslimes
-t316 
+t316 Schleime verbieten
 o317 Change Mob Properties
-t317 Ändere Mob Eigentschaften
+t317 Mob Eigenschaften ändern
 o318 Chunk Surface Repair
-t318 Chunk Oberfläche Reparatur
+t318 Chunk Oberfläche Reperatur
 o319 Classic Water Flood
-t319 Klassische Wasser Überflutung
+t319 Klassische Wasser Flut
 o320 Colorwires
-t320 
+t320 Farbige Drähte
 o321 Create Busses
-t321 Erstelle Busses
+t321 Busse erstellen
 o322 Create Shops
-t322 Erstelle Shops
+t322 Geschäfte erstellen
 o323 Create Spawners
-t323 Erstelle Spawners
+t323 Spawner erstellen
 o324 Decliff
-t324 
+t324 ???
 o325 Find
-t325 Finde
+t325 Finden
 o326 Forester
-t326 Förster
+t326 Wälder
 o327 Make Mobs Invincible
-t327 Mache Mobs unsichbar
+t327 Mache Mobs Unsichtbar
 o328 Setbiome
-t328 Setze Biom
+t328 Biom setzen
 o329 Smooth
-t329 Glatt
+t329 Flüssig
 o330 Filter:
-t330 Filter: 
+t330 Filter:
 o331 Update Filters
-t331 Filter aktualisieren
+t331 Filter updaten
 o332 Max Seed
-t332 Max Schnelligkeit
+t332 Max Seed
 o333 Health
-t333 Gesundheit
+t333 Leben
 o334 VelocityX
-t334 TempoX
+t334 VelocityX
 o335 VelocityY
-t335 TempoY
+t335 VelocityY
 o336 VelocityZ
-t336 TempoZ
+t336 VelocityZ
 o337 Fire
 t337 Feuer
 o338 FallDistance
-t338 Fallhöhe
+t338 FallDistanz
 o339 AttackTime
-t339 
+t339 AngriffsZeit
 o340 HurtTime
-t340 
+t340 SchmerzensZeit
 o341 Lightning
 t341 Blitz
 o342 No Lightning
 t342 Kein Blitz
 o343 Lightning Creeper
-t343 Blitzcreeper
+t343 Geladener Creeper
 o344 Enderman Block Id
-t344 Enderman Block Id
+t344 Endermann Block Id
 o345 Enderman Block Data
-t345 Enderman Block Daten
+t345 Endermann Block Daten
 o346 Villager (green)
-t346 Bewohner (grün)
+t346 Dorfbewohner (grün)
 o347 Farmer (brown)
 t347 Bauer (braun)
 o348 Butcher (white apron)
-t348 Metzger (weiße Schürze)
+t348 Metzger (weisse Schürtze)
 o349 Librarian (white)
-t349 Bibliothekar (weiß)
+t349 Bibliotheker (weiss)
 o350 Blacksmith (black apron)
-t350 Schmied (schwarze Schürze)
+t350 Schwarzer Schmiede (schwarze Schürze)
 o351 Priest (purple)
-t351 Priestter (Violet)
+t351 Priester (violett)
 o352 Villager Profession
-t352 Bewohner Beruf
+t352 Dorfbewohner Beruf
 o353 Slime Size
-t353 Slime Große
+t353 Schleimgrösse
 o354 Breeding Mode Ticks
-t354 Zucht Modus Ticks
+t354 
 o355 Child/Adult Age
-t355 Kind/Erwachsener Alter
+t355 
 o356 Repairs the backwards surfaces made by old versions of Minecraft.
-t356 Repariere die rückwärtz Oberfläche von der alten Versionen von Minecraft
+t356 
 o357 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t357 Fließt das Wasser in der Region nach außen und nach unten, bekommen volle Wasserblöcke in dem Prozess. Das ist ähnlich wie Minecraft Classic Wasser.
+t357 
 o358 Flood Water
-t358 Überflute Wasser
+t358 
 o359 Flood Lava
-t359 Überflute Lava
+t359 
 o360 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t360 Das ist eine modifizierte Version von SethBling's Create Shops Filter von DragonQuiz's Anfrage
+t360 
 o361 Profession
-t361 Beruf
+t361 
 o362 Add Stopping Trade
 t362 
 o363 Invulnerable Villager
-t363 Unverwundbarer Bewohner
+t363 
 o364 Make Unlimited Trades
-t364 Mache Unendlicher Handel
+t364 
 o365 Give Experience per a Trade
-t365 Gebe Erfahrung je Handel
+t365 
 o366 Make Villager not Move
-t366 Mache dass die Bewohner sich nicht bewegen
+t366 
 o367 Villager Name
-t367 Bewohner Name
+t367 
 o368 General Trade
-t368 Allgemein Handel
+t368 
 o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t369       Rotiere die Position von deinem Händler
-*Kann nur benutzt werden wenn Nicht Bewegen angetickt ist*
+t369 
 o370 Y-Axis
-t370 Y-Achse
+t370 
 o371 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t371 Ändert die Körperrotation. Westen ist 0. Muss zwischen -180 bis 180 Grad sein.
+t371 
 o372 X-Axis
-t372 X-Achse
+t372 
 o373 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t373 Ändert die Kopfrotation Horizontal ist 0. Positive Werte zeigen nach unten. Muss zwischen -90 bis 90 Grad sein.
+t373 
 o374 Rotation
-t374 Rotation
+t374 
 o375 To create a shop first put your buy in the top slot(s) of the chest.
 Second put a second buy in the middle slot(optional).
 Third put a sell in the bottom slot.
@@ -803,210 +802,192 @@ offer[maxUses] = TAG_Int(1)
 
 *Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 
-t375 Um einen Shop zu erstellen musst du die Kaufsachen in die oberste Reihe der Kiste.
-Zweitens packe in die Mittlere Reihe eine zweite Kauf-Sache (optional).
-Drittens packe die Verkaufssachen in die unterste Reihe,
-Klicke eine Kiste und wähle was du willst und drücke Enter
-*Alle Items müssen in der selbe Spalte sein*
-
-Fortgeschritten, etwas Erfahrung in Notepad++ ist empfohlen.
-Um die Anzahl der Handeln zu ändern:
-1) Wähle 'Unendlicher Handel' ab
-2) Öffne den createshops Filter mit Notepad++ (link:http://notepad-plus-plus.org/) oder den Editor
-*Der Filter ist da wo der MCEdit Order ist*
-3) Scrolle zu:
-ansonsten:
-offer[uses] = TAG_Int(0)
-offer[maxUses] = TAG_Int(1)
-4) Ändere die Menge die du willst
-
-*Notiz: Ändere nur die Nummer oben, ändere anderes und der Filter funktioniert nicht mehr richtig*
+t375 
 o376 Trade Notes
-t376 Handel Notizen
+t376 
 o377 Include position data
 t377 
 o378 Both
-t378 Beide
+t378 
 o379 Lower Only
-t379 Nur tiefer
+t379 
 o380 Raise Only
-t380 Nur erhöhen
+t380 
 o381 Raise/Lower
-t381 Erhöhen/tiefer
+t381 
 o382 TileEntity
-t382 TileEntity
+t382 
 o383 Entity
-t383 Entity
+t383 
 o384 Block
-t384 Block
+t384 
 o385 Match by:
-t385 Angleichen von:
+t385 
 o386 Match block type (for TileEntity searches):
-t386 Blocktyp abgleichen (für TileEntitysuche):
+t386 
 o387 Match block:
-t387 Block abgleichen:
+t387 
 o388 Match block data:
-t388 Block Daten Abgleichen:
+t388 
 o389 Match tile entities (for Block searches):
-t389 TileEntites abgleichen (für Blockesuche):
+t389 
 o390 "None" for Name or Value will match any tag's Name or Value respectively.
-t390 "None" für Name oder Wert wird jede Kennzeichen Name oder Wert abgegleicht.
+t390 
 o391 Match Tag Name:
-t391 Kennzeichen Name abgleichen:
+t391 
 o392 Match Tag Value:
-t392 Kennzeichen Wert abgleichen:
+t392 
 o393 Case insensitive:
-t393 Groß/Kleinschreibung beachten:
+t393 
 o394 Any
-t394 Jede
+t394 
 o395 Match Tag Type:
-t395 Kennzeichentyp abgleichen:
+t395 
 o396 Start New Search
-t396 Starte eine neue Suche
+t396 
 o397 Find Next
-t397 Finde nächste
+t397 
 o398 Dump Found Coordinates
-t398 Dumpe gefundene Koordinaten
+t398 
 o399 Operation:
-t399 Operation:
+t399 
 o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t400 Dieser Filter sucht nach NBT in Entities oder TileEntities. Es kann auch nach Blöcken gesucht werden. "Abgleichen von" entscheidet welcher Typ vom Objekt ist priorisiert während der Suche. Entities und TileEntities wird relativ schnell gesucht während die Schnelligkeit bei der Suche von Block direkt propotzional zu der Auswahlgröße (weil jede Block in der Auswahl gesucht wird). Alle Entitysuche ignoriert die Blöcke Einstellungen; TileEntitysuche versucht zu "Blocktyp abgleichen" wenn angetickt, und Blocksuche versucht zu "Abgleichen von TileEntity" markierung wenn angetickt.  Es ist schneller TileEntitysuche mit einem Blocktyp abzugleichen statt andersherum. Blockabgleiche kann auch optional Block Daten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln die eine bestimmte Richtung zeigen.
-"Starte neue Suche" wird in der Auswahl neu suchen, während "Finde Nächste" die Suchresultate von der vorherige Suche durchgeht.
+t400 
 o401 Documentation
-t401 Dokumentation
+t401 
 o402 Forester script by dudecon
-t402 Förster script von dedecon
+t402 
 o403 Procedural
-t403 Prozessual
+t403 
 o404 Normal
-t404 Normal
+t404 
 o405 Bamboo
-t405 Bambus
+t405 
 o406 Palm
-t406 Palme
+t406 
 o407 Stickly
-t407 Ekelhaft
+t407 
 o408 Round
-t408 Rund
+t408 
 o409 Cone
-t409 Kegel
+t409 
 o410 Rainforest
-t410 Regenwalt
+t410 
 o411 Mangrove
-t411 Mangrovenbaum
+t411 
 o412 Shape
-t412 Form
+t412 
 o413 Tree Count
-t413 Baumanzahl
+t413 
 o414 Tree Height
-t414 Baumhöhe
+t414 
 o415 Height Variation
-t415 Höhevariation
+t415 
 o416 Branch Density
-t416 Verzweigungdichte
+t416 
 o417 Trunk Thickness
-t417 Baumstammdicke
+t417 
 o418 Broken Trunk
-t418 Kaputten Baustamm
+t418 
 o419 Hollow Trunk
-t419 Hohlen Baumstamm
+t419 
 o420 Wood
-t420 Holz
+t420 
 o421 Foliage
-t421 Laub
+t421 
 o422 Foliage Density
-t422 Laundichte
+t422 
 o423 Yes
-t423 Ja
+t423 
 o424 To Stone
-t424 Zu Stein
+t424 
 o425 Hanging
-t425 Hängen
+t425 
 o426 No
-t426 Nein
+t426 
 o427 Roots
-t427 Wurzel
+t427 
 o428 Root Buttresses
-t428 Wurzel Strebewerk
+t428 
 o429 Wood Material
-t429 Holz Material
+t429 
 o430 Leaf Material
-t430 Laub Material
+t430 
 o431 Plant On
-t431 Pflanze auf
+t431 
 o432 Ocean
-t432 Ozean
+t432 
 o433 Plains
-t433 Ebenen
+t433 
 o434 Desert
-t434 Wüste
+t434 
 o435 Extreme Hills
-t435 Extreme Hügel
+t435 
 o436 Forest
-t436 Wald
+t436 
 o437 Taiga
-t437 Taiga
+t437 
 o438 Swamppland
-t438 Sumpf
+t438 
 o439 River
-t439 Fluß
+t439 
 o440 Hell (Nether)
-t440 Hölle (Nether)
+t440 
 o441 Sky (End)
-t441 Himmel (Ende)
+t441 
 o442 Frozen Ocean
-t442 Gefrohener Ozean
+t442 
 o443 Frozen River
-t443 Gefrohener Fluss
+t443 
 o444 Ice Plains
-t444 Eis Ebenen
+t444 
 o445 Ice Mountains
-t445 Eisberg
+t445 
 o446 Mushroom Island
-t446 Pilzinsel
+t446 
 o447 Mushroom Island Shore
-t447 Pilzinselküste
+t447 
 o448 Beach
-t448 Strand
+t448 
 o449 Desert Hills
-t449 Wüste Hühel
+t449 
 o450 Forest Hills
-t450 Wald Hügel
+t450 
 o451 Taiga Hills
-t451 Taiga Hügel
+t451 
 o452 Extreme Hills Edge
-t452 Extreme Hügel Rand
+t452 
 o453 Jungle
-t453 Dschungel
+t453 
 o454 Jungle Hills
-t454 Dschungel Hügel
+t454 
 o455 Jungle Edge
-t455 Dschungelrand
+t455 
 o456 Deep Ocean
-t456 Tiefer Ozean
+t456 
 o457 Stone Beach
-t457 Steinstrand
+t457 
 o458 Cold Beach
-t458 Kalter Strand
+t458 
 o459 Birch Forest
-t459 Birkenwald
+t459 
 o460 Birch Forest Hills
-t460 Birkenwald Hügel
+t460 
 o461 Roofed Forest
-t461 Überdachter Wald
+t461 
 o462 Cold Taiga
-t462 Kalte Taiga
+t462 
 o463 Cold Taiga Hills
-t463 Kalte Taiga Hügel
+t463 
 o464 Mega Taiga
 t464 
 o465 Mega Taiga Hills
 t465 
 o466 Extreme Hills+
-t466 Extreme Hügel
+t466 
 o467 Savanna
-t467 Savanne
+t467 
 o468 Savanna Plateau
 t468 
 o469 Messa
@@ -1060,292 +1041,283 @@ t492
 o493 Mesa Plateau M
 t493 
 o494 (Uncalculated)
-t494 (Unberechnet)
+t494 
 o495 Biome
-t495 Boime
+t495 
 o496 Repeat count
-t496 Anzahl der Wiederholung
+t496 
 o497 Depth
-t497 Tiefe
+t497 
 o498 Pick a block:
-t498 Suche einen Block aus
+t498 
 o499 Players
-t499 Spielern
+t499 
 o500 Player Name
-t500 Spieler Name
+t500 
 o501 Player: 
-t501 Spieler:
+t501 
 o502 Goto Player
-t502 Gehe zu Spieler
+t502 
 o503 Goto Player's View
-t503 Gehe zu Spielers Sicht
+t503 
 o504 Move Player
-t504 Bewege Spieler
+t504 
 o505 Align Player to Camera
-t505 Richte Sicht des Spielers zu der Kamera aus
+t505 
 o506 Player
-t506 Spieler
+t506 
 o507 Chunk Control
-t507 Chunk Kontroll
+t507 
 o508 Move Spawn Point
-t508 Bewege Spawnpunkt
+t508 
 o509 Goto Spawn
-t509 Gehe zu Spawn
+t509 
 o510 Take a Screenshot
-t510 Mache ein Bildschirmfoto
+t510 
 o511 Load Preset
-t511 Lade Voreinstellung
+t511 
 o512 Remove Presets
-t512 Entferne Voreinstellung
+t512 
 o513 Save as Preset
-t513 Speichere Voreinstellung
+t513 
 o514 Preset Name:
-t514 Voreinstellung Name:
+t514 
 o515 That preset name is reserved. Try pick another preset name.
-t515 Die Voreinstellung Name ist reseviert. Nehme einen anderen Namen.
+t515 
 o516 Invalid character in file name
-t516 Unerlaubte Zeichen in Dateiname
+t516 
 o517 No presets saved
-t517 Keine Voreinstellungen gespeichert
+t517 
 o518 Select preset to delete
-t518 Wähle Voreinstellung zum löschen
+t518 
 o519  does not have a value yet.
-t519  hat noch keinen Wert
+t519 
 o520 Version {} is available
-t520 Version {} ist verfügbar
+t520 
 o521 Download
-t521 Herrunterladen
+t521 
 o522 View
-t522 Sicht
+t522 
 o523 Ignore
-t523 Ignoriere
+t523 
 o524 Space
-t524 Leetzeichen
+t524 
 o525 Tab
-t525 Tabulator
+t525 
 o526 Delete
-t526 Lösche
+t526 
 o527 Scroll Up
-t527 Scroll nach oben
+t527 
 o528 Scroll Down
-t528 Scroll nach unten
+t528 
 o529 Button 3
-t529 Knopf 3
+t529 
 o530 Alt
 t530 Alt
 o531 Ctrl
-t531 Strg
+t531 Ctrl
 o532 Creating a new world.
-t532 Erstelle eine neue Welt.
+t532 
 o533 Minecraft Server
 t533 Minecraft Server
 o534 Flatland
-t534 Flaches land
+t534 
 o535 Generator:
-t535 Generator:
+t535 
 o536 Will automatically download and use the latest version
-t536 Wird automatisch aktuelle Version herrunterladen
+t536 
 o537 Height: 
-t537 Höhe
+t537 
 o538 Grass
-t538 Grass
+t538 
 o539 Server version:
-t539 Server Version:
+t539 
 o540 or
 t540 oder
 o541 Check for Updates
-t541 Suche nach Aktualisierungen
+t541 
 o542 Advanced
-t542 Erweitert
+t542 
 o543 Open Server Storage
-t543 Öffne Server Speicherplatz
+t543 
 o544 Reveal World Cache
-t544 Zeige Welt Puffer
+t544 
 o545 Delete World Cache
-t545 Lösche Welt Puffer
+t545 
 o546 Advanced...
-t546 Erweitert...
+t546 
 o547 Simulate world
-t547 Simuliere Welt
+t547 
 o548 Use snapshot versions
-t548 Benutze Snapsot Versionen
+t548 
 o549 X: 
-t549 X: 
+t549 X:
 o550 Y: 
-t550 Y: 
+t550 Y:
 o551 Z: 
-t551 Z: 
+t551 Z:
 o552 f: 
-t552 f: 
+t552 f:
 o553 Seed: 
-t553 Seed: 
+t553 
 o554 East-West Chunks: 
-t554 Ost-West Chunks: 
+t554 
 o555 North-South Chunks: 
-t555 Norden-Süden Chunks: 
+t555 
 o556 Survival
-t556 Überleben
+t556 
 o557 Game Type:
-t557 Spielmodus:
+t557 
 o558 Cancel
-t558 Abbrechen
+t558 
 o559 Creative
-t559 Kreativ
+t559 
 o560 Style:
-t560 Stil:
+t560 
 o561 H
-t561 H
+t561 
 o562 L
-t562 L
+t562 
 o563 W
-t563 W
+t563 
 o564 Minimum Spacing
-t564 Minimum Abstand
+t564 
 o565 Regenerate UUID
-t565 Regeneriere UUID
+t565 
 o566 Replace blocks with any data value. Only useful for Replace operations.
-t566 Ersetze Blöcke mit jede Datenwert. Nur sinnvoll für Ersetzen Operationen.
+t566 
 o567 Entities
 t567 Entities
 o568 Items
-t568 Items
+t568 Gegenstände
 o569 TileEntities
 t569 TileEntities
 o570 TileTicks
 t570 TileTicks
 o571 Unpopulated Chunks
-t571 Unbesuchte Chunks
+t571 
 o572 Sky
-t572 Himmel
+t572 
 o573 Fog
-t573 Nebel
+t573 
 o574 Ceiling
-t574 Dach
+t574 
 o575 Chunk Redraw
-t575 Chunk neu Zeichnen
+t575 
 o576 Hidden Ores
-t576 Versteckte Erze
+t576 
 o577 Bedrock
-t577 Bedrock
+t577 
 o578 Coal
-t578 Kohle
+t578 
 o579 Iron
-t579 Eisen
+t579 
 o580 Lapis Lazuli
-t580 Lapis Lazuli
+t580 
 o581 Redstone
-t581 Redstone
+t581 
 o582 Gold
-t582 Gold
+t582 
 o583 Diamond
-t583 Diamant
+t583 
 o584 Nether Quartz
-t584 Nether Quarz
+t584 
 o585 Shortcut: {0}
-t585 Tastenkürzel: {0}
+t585 
 o586 View Distance ({0})
-t586 Sichtweite ({0})
+t586 
 o587 Copy Stack Size: 
-t587 Kopiere Stack große: 
+t587 
 o588 Add Player
-t588 Spieler hinzufügen
+t588 
 o589 Remove Player
-t589 Spieler löschen
+t589 
 o590 Reload Skins
-t590 Skin neuladen
+t590 
 o591 Previous Page
-t591 Verherige Seite
+t591 
 o592 Next Page
-t592 Nächste Seite
+t592 
 o593 Super Secret Settings
-t593 Super geheime Einstellungen
+t593 
 o594 Default Resource Pack
-t594 Standard Ressourcen Packet
+t594 
 o595 Square
-t595 Quadrat
+t595 
 o596 Record a Macro
-t596 Ein Makro Aufnehmen
+t596 
 o597 Health Boost
-t597 Lebens Boost
+t597 
 o598 Saturation (no mob effect)
-t598 Sättigung (kein Mob Effekt)
+t598 
 o599 Wither
-t599 Wither
+t599 
 o600 Invisibility
-t600 Unsichbarkeit
+t600 
 o601 Slowness
-t601 Langsamkeit
+t601 
 o602 Absorption
-t602 Absorption
+t602 
 o603 Night Vision (no mob effect)
-t603 Nachtsicht (kein Mob Effekt)
+t603 
 o604 Speed
-t604 Schnelligkeit
+t604 
 o605 Mining Fatigue (no mob effect)
-t605 Abbaulähmung (kein Mob Effekt)
+t605 
 o606 Player Name(s):
-t606 Spieler Namen:
+t606 
 o607 Chunks Borders
-t607 Chunkgrenze
+t607 
 o608 Fast Nudge
-t608 Schnelles schieben
+t608 
 o609 Clone Fast Nudge Settings
-t609 Klone schnrlles schieben Einstellungen
+t609 
 o610 Move by the width of selection 
-t610 Bewegung von dieser Breite des Auswahls
+t610 
 o611 Moves clone by his width
-t611 Bewegt Klon von dieser Breite
+t611 
 o612 Width of clone movement: 
-t612 Breite von Klonbewegung: 
+t612 
 o613 Import Fast Nudge Settings:
-t613 Importiere schnelles schieben Einstellungen:
+t613 
 o614 Move by the width of schematic 
-t614 Bewege von der Breite von der Schematic
+t614 
 o615 Moves selection by his width
-t615 Bewege Auswahl von dieser Breite
+t615 
 o616 Width of import movement: 
-t616 Breite von Importbewegeung: 
+t616 
 o617 Import Options
-t617 Importieren Optionen
+t617 
 o618 Blocks Fast Nudge Settings:
-t618 Block schnelles schieben Einstellungen
+t618 
 o619 Selection Fast Nudge Settings:
-t619 Auswahl schnelles schieben Einstellungen
+t619 
 o620 Points Fast Nudge Settings:
-t620 Punkte schnelles schrieben Einstellungen
+t620 
 o621 Moves points by the selection's width
-t621 Bewege Punkte von der Auswahlbreite
+t621 
 o622 Width of points movement: 
-t622 Breite von Punktebewegung
+t622 
 o623 Do you want to save your changes?
-t623 Möchten Sie die Änderungen speichern?
+t623 
 o624 Don't Save
-t624 Nicht Speichern
+t624 
 o625 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 Drücke eine Taste um die folgende Aktion zu geben: "{0}"
-
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+t625 
 o626 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t626 Drücke eine Taste um die folgende Aktion zu geben: "{0}"
-Keine Taste heißt Rechtsklick für schnelles schieben.
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+t626 
 o627 {0} is not a modifier. Press a new key.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t627 {0} ist kein Modifikator. Drücken Sie eine neue Taste.
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+t627 
 o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t628 Bewegungstastem können nicht mit Strg oder mit Modifizierer verwendet werden. Drücken sie eine neue Taste.
-
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+t628 
 o629 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t629 Du kannst die Taste {0} nicht benutzen. Drücken Sie eine neue Taste.
-
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+t629 
