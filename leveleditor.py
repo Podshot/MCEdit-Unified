@@ -1096,7 +1096,7 @@ class LevelEditor(GLViewport):
     def initWindowCaption(self):
         filename = self.level.filename
         s = os.path.split(filename)
-        title = os.path.split(s[0])[1] + os.sep + s[1] + _(u" - MCEdit ") + release.get_version()
+        title = os.path.split(s[0])[1] + os.sep + s[1] + _(u" - MCEdit ~ ") + release.get_version()
         if DEF_ENC != "UTF-8":
             title = title.encode('utf-8')
         display.set_caption(title)
@@ -1759,6 +1759,7 @@ class LevelEditor(GLViewport):
         self.renderer.level = None
         self.mcedit.removeEditor()
         self.controlPanel.dismiss()
+        display.set_caption("MCEdit ~ " + release.get_version())
 
     def repairRegions(self):
         worldFolder = self.level.worldFolder
