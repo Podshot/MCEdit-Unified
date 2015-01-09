@@ -1,6 +1,6 @@
 #-# Modified by D.C.-G. for translation purpose
 import textwrap
-from pygame import event
+from pygame import event, key
 from pygame.locals import *
 from widget import Widget
 from controls import Label, Button
@@ -129,6 +129,14 @@ def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
         box.cancel_response = None
     box.add(col)
     box.shrink_wrap()
+
+    def dispatchKeyForAsk(name, evt):
+        if name == "key_down":
+            if key.name(evt.key) == "return" or key.name(evt.key) == "enter":
+                if default is not None:
+                    box.dismiss(responses[default])
+
+    box.dispatch_key = dispatchKeyForAsk
     return box.present()
 
 
