@@ -1364,3 +1364,5 @@ Press ESC to cancel. Press Shift-ESC to unbind.
 t629 Vous ne pouvez utiliser la touche {0}. Choisissez-en une autre.
 
 ESC pour annuler. SHIFT-ESC pour supprimer.
+o630 Reset to default
+t630 

@@ -21,6 +21,31 @@ class OptionsPanel(Dialog):
 
         self.langs = {}
         self.sgnal = {}
+        self.portableVar = albow.AttrRef(self, 'portableLabelText')
+        self.saveOldPortable = self.portableVar.get()
+
+        self.saveOldConfig = {
+            config.controls.autobrake:                 config.controls.autobrake.get(),
+            config.controls.swapAxes:                  config.controls.swapAxes.get(),
+            config.controls.cameraAccel:               config.controls.cameraAccel.get(),
+            config.controls.cameraDrag:                config.controls.cameraDrag.get(),
+            config.controls.cameraMaxSpeed:            config.controls.cameraMaxSpeed.get(),
+            config.controls.cameraBrakingSpeed:        config.controls.cameraBrakingSpeed.get(),
+            config.controls.mouseSpeed:                config.controls.mouseSpeed.get(),
+            config.settings.undoLimit:                 config.settings.undoLimit.get(),
+            config.settings.maxCopies:                 config.settings.maxCopies.get(),
+            config.controls.invertMousePitch:          config.controls.invertMousePitch.get(),
+            config.settings.spaceHeight:               config.settings.spaceHeight.get(),
+            albow.AttrRef(self, 'blockBuffer'):        albow.AttrRef(self, 'blockBuffer').get(),
+            config.settings.setWindowPlacement:        config.settings.setWindowPlacement.get(),
+            config.settings.rotateBlockBrush:          config.settings.rotateBlockBrush.get(),
+            config.settings.shouldResizeAlert:         config.settings.shouldResizeAlert.get(),
+            config.settings.superSecretSettings:       config.settings.superSecretSettings.get(),
+            config.settings.longDistanceMode:          config.settings.longDistanceMode.get(),
+            config.settings.flyMode:                   config.settings.flyMode.get(),
+            config.settings.langCode:                  config.settings.langCode.get()
+        }
+
 
     def initComponents(self):
         """Initilize the window components. Call this after translation hs been loaded."""
@@ -122,7 +147,7 @@ class OptionsPanel(Dialog):
 
         goPortableButton.tooltipText = self.portableButtonTooltip()
         goPortableRow = albow.Row(
-            (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
+            (albow.ValueDisplay(ref=self.portableVar, width=250, align='r'), goPortableButton))
 
 # Disabled Crash Reporting Option
 #       reportRow = mceutils.CheckBoxLabel("Report Errors",
@@ -169,7 +194,12 @@ class OptionsPanel(Dialog):
 
         settingsRow = albow.Row((optionsColumn,))
 
-        optionsColumn = albow.Column((settingsRow, albow.Button("OK", action=self.dismiss)))
+        buttonsRow = albow.Row((albow.Button("OK", action=self.dismiss), albow.Button("Cancel", action=self.cancel)))
+
+        resetToDefaultRow = albow.Row((albow.Button("Reset to default", action=self.resetDefault), ))
+
+        optionsColumn = albow.Column((settingsRow, buttonsRow, resetToDefaultRow))
+        optionsColumn.key_down = self.key_down
 
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -267,4 +297,66 @@ class OptionsPanel(Dialog):
                 self.mcedit.restart()
             elif result == "Later":
                 pass
+        
+        for key in self.saveOldConfig.keys():
+            self.saveOldConfig[key] = key.get()
+
+        config.save()
         Dialog.dismiss(self, *args, **kwargs)
+
+    def cancel(self, *args, **kwargs):
+        Changes = False
+        for key in self.saveOldConfig.keys():
+            if key.get() != self.saveOldConfig[key]:
+                Changes = True
+        oldLanguage = self.saveOldConfig[config.settings.langCode]
+        if config.settings.langCode.get() != oldLanguage:
+            Changes = True
+        newPortable = self.portableVar.get()
+        if newPortable != self.saveOldPortable:
+            Changes = True
+        if not Changes:
+            Dialog.dismiss(self, *args, **kwargs)
+            return
+
+        result = albow.ask("Do you want to save your changes?", ["Save", "Don't Save", "Cancel"])
+        if result == "Cancel":
+            return
+        if result == "Save":
+            self.dismiss(*args, **kwargs)
+            return
+
+        print oldLanguage
+        if config.settings.langCode.get() != oldLanguage:
+            self.languageButton.selectedChoice = self.sgnal[oldLanguage]
+            self.changeLanguage()
+
+        if newPortable != self.saveOldPortable:
+            self.portableVar.set(newPortable)
+            self.togglePortable()
+
+        for key in self.saveOldConfig.keys():
+            key.set(self.saveOldConfig[key])
+
+        config.save()
+        Dialog.dismiss(self, *args, **kwargs)
+
+    def resetDefault(self):
+        for key in self.saveOldConfig.keys():
+            if "AttrRef" in str(key):
+                key.set(config.settings.blockBuffer.default / 1048576)
+            elif "lang" not in str(key):
+                key.set(key.default)
+
+        if config.settings.langCode.get() != "en_US":
+            config.settings.langCode.set("en_US")
+            self.changeLanguage()
+        if "Fixed" not in self.portableVar.get():
+            self.portableVar.set("Install Mode: Fixed")
+            self.togglePortable()
+
+    def dispatch_key(self, name, evt):
+        if name == "key_down":
+            keyname = self.get_root().getKey(evt)
+            if keyname == 'Escape':
+                self.cancel()
