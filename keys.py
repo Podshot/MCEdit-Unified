@@ -398,9 +398,11 @@ class KeyConfigPanel(Dialog):
         self.keyConfigTable = keyConfigTable
 
         buttonRow = (albow.Button("Assign Key...", action=self.askAssignSelectedKey),
-                    albow.Button("Done", action=self.done))
+                    albow.Button("Done", action=self.done), albow.Button("Cancel", action=self.cancel))
 
         buttonRow = albow.Row(buttonRow)
+
+        resetToDefaultRow = albow.Row((albow.Button("Reset to default", action=self.resetDefault),))
 
         choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad", "WASD Old"], choose=self.choosePreset)
         if config.keys.forward.get() == "Up":
@@ -415,7 +417,7 @@ class KeyConfigPanel(Dialog):
         choiceRow = albow.Row((albow.Label("Presets: "), choiceButton))
         self.choiceButton = choiceButton
 
-        col = albow.Column((tableWidget, choiceRow, buttonRow))
+        col = albow.Column((tableWidget, choiceRow, buttonRow, resetToDefaultRow))
         self.add(col)
         self.shrink_wrap()
 
@@ -482,23 +484,30 @@ class KeyConfigPanel(Dialog):
         if evt.num_clicks == 2:
             self.askAssignSelectedKey()
 
+    def resetDefault(self):
+        self.choiceButton.selectedChoice = "WASD"
+        self.choosePreset()
+
+    def cancel(self):
+        if self.changesNum:
+            result = albow.ask("Do you want to save your changes?", ["Save", "Don't Save", "Cancel"])
+            if result == "Save":
+                self.done()
+            elif result == "Don't Save":
+                for k in self.changes.keys():
+                    config.keys[config.convert(k)].set(self.changes[k])
+                self.changesNum = False
+                self.changes = {}
+                self.choiceButton.selectedChoice = self.oldChoice
+                config.save()
+                self.dismiss()
+        else:
+            self.dismiss()
+
     def key_down(self, evt):
         keyname = self.root.getKey(evt)
         if keyname == 'Escape':
-            if self.changesNum:
-                result = albow.ask("Do you want to save your changes?", ["Save", "Don't Save", "Cancel"])
-                if result == "Save":
-                    self.done()
-                elif result == "Don't Save":
-                    for k in self.changes.keys():
-                        config.keys[config.convert(k)].set(self.changes[k])
-                    self.changesNum = False
-                    self.changes = {}
-                    self.choiceButton.selectedChoice = self.oldChoice
-                    config.save()
-                    self.dismiss()
-            else:
-                self.dismiss()
+            self.cancel()
         elif keyname == 'Up' and self.selectedKeyIndex > 0:
             self.selectedKeyIndex -= 1
         elif keyname == 'Down' and self.selectedKeyIndex < len(self.keyConfigKeys) - 1:
