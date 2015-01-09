@@ -132,7 +132,7 @@ def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
 
     def dispatchKeyForAsk(name, evt):
         if name == "key_down":
-            if key.name(evt.key) == "return" or key.name(evt.key) == "enter":
+            if box.root.getKey(evt) == "Return":
                 if default is not None:
                     box.dismiss(responses[default])
 

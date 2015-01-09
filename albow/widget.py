@@ -493,6 +493,8 @@ class Widget(object):
         #print "Widget: presenting with rect", self.rect
         if self.root is None:
             self.root = self.get_root()
+        if "ControlPanel" not in str(self):
+            self.root.notMove = True
         if centered:
             self.center = self.root.center
         self.root.add(self)
@@ -502,9 +504,12 @@ class Widget(object):
         finally:
             self.root.remove(self)
         #print "Widget.present: returning", self.modal_result
+        if "ControlPanel" not in str(self):
+            self.root.notMove = False
         return self.modal_result
 
     def dismiss(self, value=True):
+        self.root.notMove = False
         self.modal_result = value
 
     def get_root(self):
