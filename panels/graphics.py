@@ -14,6 +14,17 @@ class GraphicsPanel(Dialog):
 
         self.mcedit = mcedit
 
+        self.saveOldConfig = {
+            config.settings.fov: config.settings.fov.get(),
+            config.settings.targetFPS: config.settings.targetFPS.get(),
+            config.settings.vertexBufferLimit: config.settings.vertexBufferLimit.get(),
+            config.settings.fastLeaves: config.settings.fastLeaves.get(),
+            config.settings.roughGraphics: config.settings.roughGraphics.get(),
+            config.settings.enableMouseLag: config.settings.enableMouseLag.get()
+        }
+
+        self.saveOldResourcePack = resource_packs.packs.get_selected_resource_pack_name()
+
         fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
                                                 ref=config.settings.fov, width=100, min=25, max=120)
 
@@ -40,7 +51,7 @@ class GraphicsPanel(Dialog):
         packs.sort()
         packs.insert(0, 'Default Resource Pack')
         self.resourcePackButton = mceutils.ChoiceButton(packs, choose=self.change_texture)
-        self.resourcePackButton.selectedChoice = resource_packs.packs.get_selected_resource_pack_name()
+        self.resourcePackButton.selectedChoice = self.saveOldResourcePack
 
         settingsColumn = albow.Column((fastLeavesRow,
                                        roughGraphicsRow,
@@ -57,7 +68,11 @@ class GraphicsPanel(Dialog):
 
         settingsRow = albow.Row((settingsColumn,))
 
-        optionsColumn = albow.Column((settingsRow, albow.Button("OK", action=self.dismiss)))
+        buttonsRow = albow.Row((albow.Button("OK", action=self.dismiss), albow.Button("Cancel", action=self.cancel)))
+
+        resetToDefaultRow = albow.Row((albow.Button("Reset to default", action=self.resetDefault),))
+
+        optionsColumn = albow.Column((settingsRow, buttonsRow, resetToDefaultRow))
 
         self.add(optionsColumn)
         self.shrink_wrap()
@@ -70,3 +85,53 @@ class GraphicsPanel(Dialog):
         resource_packs.packs.set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
         self.mcedit.displayContext.loadTextures()
     texturePack = config.settings.skin.property(_reloadTextures)
+
+    def dismiss(self, *args, **kwargs):
+        for key in self.saveOldConfig.keys():
+            self.saveOldConfig[key] = key.get()
+        self.saveOldResourcePack = self.resourcePackButton.selectedChoice
+
+        config.save()
+        Dialog.dismiss(self, *args, **kwargs)
+
+    def cancel(self, *args, **kwargs):
+        Changes = False
+        for key in self.saveOldConfig.keys():
+            if key.get() != self.saveOldConfig[key]:
+                Changes = True
+        if self.saveOldResourcePack != self.resourcePackButton.selectedChoice:
+            Changes = True
+
+        if not Changes:
+            Dialog.dismiss(self, *args, **kwargs)
+            return
+
+        result = albow.ask("Do you want to save your changes?", ["Save", "Don't Save", "Cancel"])
+        if result == "Cancel":
+            return
+        if result == "Save":
+            self.dismiss(*args, **kwargs)
+            return
+
+        for key in self.saveOldConfig.keys():
+            key.set(self.saveOldConfig[key])
+        if self.resourcePackButton.selectedChoice != self.saveOldResourcePack:
+            self.resourcePackButton.selectedChoice = self.saveOldResourcePack
+            self.change_texture()
+        config.save()
+        Dialog.dismiss(self, *args, **kwargs)
+
+    def resetDefault(self):
+        for key in self.saveOldConfig.keys():
+            key.set(key.default)
+        if self.resourcePackButton.selectedChoice != "Default Resource Pack":
+            self.resourcePackButton.selectedChoice = "Default Resource Pack"
+            self.change_texture()
+
+        config.save()
+
+    def dispatch_key(self, name, evt):
+        if name == "key_down":
+            keyname = self.get_root().getKey(evt)
+            if keyname == 'Escape':
+                self.cancel()

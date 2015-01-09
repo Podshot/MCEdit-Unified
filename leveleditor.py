@@ -1814,8 +1814,7 @@ class LevelEditor(GLViewport):
         formatLabel = Label(levelFormat)
         items.append(Row([Label("Format:"),formatLabel]))
 
-        name = self.level.LevelName
-        nameField = TextField(width=300, ref=AttrRef(self.level, 'LevelName'))
+        nameField = TextField(width=300, value=self.level.LevelName)
         def alt21():
             nameField.insertion_point = len(nameField.text)
             nameField.insert_char(u'\xa7')
@@ -1833,7 +1832,7 @@ class LevelEditor(GLViewport):
 
             d, h, m, tick = decomposeMCTime(time)
 
-            dayInput = IntField(value=d, min=1)  # ref=AttrRef(self, "Day"))
+            dayInput = IntField(value=d, min=1)
             items.append(Row((Label("Day: "), dayInput)))
 
             timeInput = TimeField(value=(h, m))
@@ -1841,9 +1840,9 @@ class LevelEditor(GLViewport):
             items.append(timeInputRow)
 
         if hasattr(self.level, 'RandomSeed'):
-            seed = self.level.RandomSeed
-            seedInputRow = mceutils.IntInputRow("RandomSeed: ", width=250, ref=AttrRef(self.level, "RandomSeed"))
-            items.append(seedInputRow)
+            seedField = IntField(width=250, value=self.level.RandomSeed)
+            seedLabel = Label("RandomSeed: ")
+            items.append(Row((seedLabel, seedField)))
 
         if hasattr(self.level, 'GameType'):
             t = self.level.GameType
@@ -1858,8 +1857,6 @@ class LevelEditor(GLViewport):
                 if b.gametype < 2:
                     b.gametype = 1 - b.gametype
                     b.text = gametype(b.gametype)
-                    self.level.GameType = b.gametype
-                    self.addUnsavedEdit()
 
             b = Button(gametype(t), action=action)
             b.gametype = t
@@ -1907,12 +1904,60 @@ class LevelEditor(GLViewport):
 
         col = Column(items)
 
-        col = Column((col, Button("OK", action=worldInfoPanel.dismiss)))
+        self.change = False
+
+        def dismiss(*args, **kwargs):
+            self.change = True
+            worldInfoPanel.dismiss(self, *args, **kwargs)
+
+        def cancel(*args, **kwargs):
+            Changes = False
+            if hasattr(self.level, 'Time'):
+                h, m = timeInput.value
+                time = composeMCTime(dayInput.value, h, m, tick)
+                time -= timezoneAdjust
+                if self.level.Time != time:
+                    Changes = True
+            if hasattr(self.level, 'RandomSeed'):
+                if seedField.value != self.level.RandomSeed:
+                    Changes = True
+            if hasattr(self.level, 'LevelName'):
+                if nameField.value != self.level.LevelName:
+                    Changes = True
+            if hasattr(self.level, 'GameType'):
+                if b.gametype != self.level.GameType:
+                    Changes = True
+
+            if not Changes:
+                worldInfoPanel.dismiss(self, *args, **kwargs)
+                return
+
+            result = ask("Do you want to keep your changes?", ["Yes", "No", "Cancel"])
+            if result == "Cancel":
+                return
+            if result == "No":
+                worldInfoPanel.dismiss(self, *args, **kwargs)
+                return
+            if result == "Yes":
+                dismiss(*args, **kwargs)
+
+        col = Column((col, Row((Button("OK", action=dismiss), Button("Cancel", action=cancel)))))
 
         worldInfoPanel.add(col)
         worldInfoPanel.shrink_wrap()
 
+        def dispatchKey(name, evt):
+            if name == "key_down":
+                keyname = self.get_root().getKey(evt)
+                if keyname == 'Escape':
+                    cancel()
+
+        worldInfoPanel.dispatch_key = dispatchKey
+
         worldInfoPanel.present()
+        if not self.change:
+            return
+
         if hasattr(self.level, 'Time'):
             h, m = timeInput.value
             time = composeMCTime(dayInput.value, h, m, tick)
@@ -1923,11 +1968,18 @@ class LevelEditor(GLViewport):
                 self.addUnsavedEdit()
 
         if hasattr(self.level, 'RandomSeed'):
-            if seed != self.level.RandomSeed:
+            if seedField.value != self.level.RandomSeed:
+                self.level.RandomSeed = seedField.value
                 self.addUnsavedEdit()
 
         if hasattr(self.level, 'LevelName'):
-            if name != self.level.LevelName:
+            if nameField.value != self.level.LevelName:
+                self.level.LevelName = nameField.value
+                self.addUnsavedEdit()
+
+        if hasattr(self.level, 'GameType'):
+            if b.gametype != self.level.GameType:
+                self.level.GameType = b.gametype
                 self.addUnsavedEdit()
 
     def swapViewDistance(self):

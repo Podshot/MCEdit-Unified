@@ -1366,3 +1366,5 @@ t629 Vous ne pouvez utiliser la touche {0}. Choisissez-en une autre.
 ESC pour annuler. SHIFT-ESC pour supprimer.
 o630 Reset to default
 t630 
+o631 Do you want to keep your changes?
+t631 

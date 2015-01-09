@@ -196,7 +196,7 @@ class OptionsPanel(Dialog):
 
         buttonsRow = albow.Row((albow.Button("OK", action=self.dismiss), albow.Button("Cancel", action=self.cancel)))
 
-        resetToDefaultRow = albow.Row((albow.Button("Reset to default", action=self.resetDefault), ))
+        resetToDefaultRow = albow.Row((albow.Button("Reset to default", action=self.resetDefault),))
 
         optionsColumn = albow.Column((settingsRow, buttonsRow, resetToDefaultRow))
         optionsColumn.key_down = self.key_down
@@ -326,7 +326,6 @@ class OptionsPanel(Dialog):
             self.dismiss(*args, **kwargs)
             return
 
-        print oldLanguage
         if config.settings.langCode.get() != oldLanguage:
             self.languageButton.selectedChoice = self.sgnal[oldLanguage]
             self.changeLanguage()
@@ -354,6 +353,8 @@ class OptionsPanel(Dialog):
         if "Fixed" not in self.portableVar.get():
             self.portableVar.set("Install Mode: Fixed")
             self.togglePortable()
+
+        config.save()
 
     def dispatch_key(self, name, evt):
         if name == "key_down":

@@ -1335,3 +1335,5 @@ Press ESC to cancel. Press Shift-ESC to unbind.
 t629 
 o630 Reset to default
 t630 
+o631 Do you want to keep your changes?
+t631 

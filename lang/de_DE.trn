@@ -1351,3 +1351,5 @@ t629 Du kannst die Taste {0} nicht benutzen. Drücken Sie eine neue Taste.
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o630 Reset to default
 t630 
+o631 Do you want to keep your changes?
+t631 
