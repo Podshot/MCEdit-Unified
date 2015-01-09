@@ -63,7 +63,7 @@ t21 Optionen
 o22 OK
 t22 OK
 o23 Field of View: 
-t23 Sichtfeld:
+t23 Sichtfeld(FOV):
 o24 Target FPS: 
 t24 Gewünschte FPS:
 o25 Vertex Buffer Limit (MB): 
@@ -93,7 +93,7 @@ t36 Pfeile
 o37 Numpad
 t37 Nummernfeld
 o38 WASD Old
-t38 WASD Alt
+t38 WASD(Alt)
 o39 Presets: 
 t39 Voreinstellungen:
 o40 MCEdit
@@ -235,25 +235,25 @@ t105 Oben
 o106 Down
 t106 Unten
 o107 Brake
-t107 Pause
+t107 Verlangsamen
 o108 <Camera>
 t108 <Kamera>
 o109 Pan Up
-t109 Ganz oben
+t109 Nach oben
 o110 Pan Down
-t110 Ganz unten
+t110 Nach unten
 o111 Pan Left
-t111 Ganzlinks
+t111 Nach links
 o112 Pan Right
-t112 Ganzrechts
+t112 Nach rechts
 o113 Toggle View
-t113 Sichtumschalten
+t113 Sicht umschalten
 o114 Goto Panel
-t114 Zum Panel gehen 
+t114 Gehe zu Panel
 o115 View Distance
 t115 Sichtweite
 o116 Toggle Renderer
-t116 Renderer aktivieren
+t116 Renderer de-/aktivieren
 o117 <Blocks>
 t117 <Blöcke>
 o118 Swap
@@ -293,7 +293,7 @@ t134 Pinsel verkleinern
 o135 <Fill and Replace>
 t135 <Füllen und ersetzen>
 o136 Replace Shortcut
-t136 Ersetzen Tastenkürzel
+t136 Ersetzen
 o137 <Functions>
 t137 <Funktionen>
 o138 Cut
@@ -323,9 +323,9 @@ t149 Debug Auflage
 o150 Show Block Info
 t150 Blockinfo anzeigen
 o151 Pick Block
-t151 Block wählen
+t151 Block Wähler
 o152 Select Chunks
-t152 Chunks wählen
+t152 Chunks auswählen
 o153 Deselect Chunks
 t153 Chunks abwählen
 o154 Snap Clone to Axis
@@ -371,7 +371,7 @@ t173 Beim Drehen vom Pinsel, drehen Sie auch die Ausrichtung von dem Block den S
 o174 Choose your language.
 t174 Wählen Sie Ihre Sprache aus.
 o175 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t175 Klicken Sie hier damit sich MCEdit von selbst installiert, indem Sie die Einstellungen und Schematics in das Programmverzeichnis verschieben
+t175 Klicken damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in das Programmverzeichnis verschoben werden
 o176 You must restart MCEdit to see language changes
 t176 Sie müssen MCEdit neustarten, damit die Sprache übernommen wird
 o177 Restart
@@ -1120,21 +1120,21 @@ t522 Sicht
 o523 Ignore
 t523 Ignoriere
 o524 Space
-t524 Leetzeichen
+t524 Leerzeichen
 o525 Tab
-t525 Tabulator
+t525 Tab
 o526 Delete
-t526 Lösche
+t526 Delete
 o527 Scroll Up
 t527 Scroll nach oben
 o528 Scroll Down
 t528 Scroll nach unten
 o529 Button 3
-t529 Knopf 3
+t529 Mittlere Maustaste
 o530 Alt
 t530 Alt
 o531 Ctrl
-t531 Strg
+t531 Ctrl
 o532 Creating a new world.
 t532 Erstelle eine neue Welt.
 o533 Minecraft Server
@@ -1349,3 +1349,61 @@ Press ESC to cancel. Press Shift-ESC to unbind.
 t629 Du kannst die Taste {0} nicht benutzen. Drücken Sie eine neue Taste.
 
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+o630 MCEdit Unified v1.2.5.0 for Minecraft 1.8
+t630 MCEdit Unified v1.2.5.0 für Minecraft 1.8
+o630 MCEdit Unified v1.2.5.0 for Minecraft 1.8 (64bit)
+t630 MCEdit Unified v1.2.5.0 für Minecraft 1.8 (64bit)
+o631 Screenshots Folder
+t631 Screenshot Ordner
+o632 Uses the Latest Snapshot Terrain Generation
+t632 Verwendet die neueste Snapshot Terrain-Generation
+o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+t633 Simuliert die Welt für ein paar Sekunden, nachdem sie generiert wurde. Reduziert die Dateigröße durch Verarbeitung aller TileTicks.
+o634 Last Played
+t634 Zuletzt gespielt
+o635 Level Name (filename)
+t635 Level Name (Dateiname)
+o636 Dims
+t636 Dimensionen
+o637 Load
+t637 Laden
+o638 Maximum number of copied objects.
+t638 Maximale Nummer von Objekten.
+o639 Try to save and restore the window position.
+t639 Versucht die Fensterposition zu speichern und wiederherzustellen.
+o640 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+t640 Das wird dein MCEdit "portabel" machen, dadurch deine Einstellungen und Schematics in den selben Ordner verschoben werden wie {0}. Fortsetzen?
+o641 MCEditData
+t641 MCEditDateien
+o642 This will move your settings and schematics to your Documents folder. Continue?
+t642 Das wird deine Enstellungen und Schematics in deinen Dokumenten Ordner verschieben. Fortsetzen?
+o643 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
+t643 Klicken damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in den Dokumenten Ordner verschoben werden
+o644 Goto Position:
+t644 Gehe zu Position:
+o645 (click anywhere to teleport)
+t645 (Klicke irgendwohin um zu teleportieren)
+o646 Shortcut: Tab
+t646 Tastenkürzel: Tab
+o647 Format:
+t647 Format:
+o648 Name:
+t648 Name:
+o649 Minecraft Infinite World (Anvil Format)
+t649 Minecraft Unendliche Welt (Anvil Format)
+o650 Day:
+t650 Tag:
+o651 Time of day:
+t651 Zeit des Tages:
+o652 RandomSeed:
+t652 Startwert:
+o653 Game Type:
+t653 Spielmodus:
+o654 Number of chunks: {0}
+t654 Anzahl an Chunks: {0}
+o655 Number of regions: {0}
+t655 Anzahl an Regionen: {0}
+o656 Repair regions
+t656 Regionen reparieren
+o657 Open Folder
+t657 Ordner öffnen

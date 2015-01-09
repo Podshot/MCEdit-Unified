@@ -1333,3 +1333,61 @@ o629 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
 t629 
+o630 MCEdit Unified v1.2.5.0 for Minecraft 1.8
+t630 
+o630 MCEdit Unified v1.2.5.0 for Minecraft 1.8 (64bit)
+t630 
+o631 Screenshots Folder
+t631 
+o632 Uses the Latest Snapshot Terrain Generation
+t632 
+o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+t633 
+o634 Last Played
+t634 
+o635 Level Name (filename)
+t635 
+o636 Dims
+t636 
+o637 Load
+t637 
+o638 Maximum number of copied objects.
+t638 
+o639 Try to save and restore the window position.
+t639 
+o640 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+t640 
+o641 MCEditData
+t641 
+o642 This will move your settings and schematics to your Documents folder. Continue?
+t642
+o643 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
+t643
+o644 GoTo Position:
+t644 
+o645 (click anywhere to teleport)
+t645 
+o646 Shortcut: Tab
+t646 
+o647 Format:
+t647 
+o648 Name:
+t648 
+o649 Minecraft Infinite World (Anvil Format)
+t649 
+o650 Day:
+t650 
+o651 Time of day:
+t651 
+o652 RandomSeed:
+t652 
+o653 Game Type:
+t653 
+o654 Number of chunks: {0}
+t654
+o655 Number of regions: {0}
+t655 
+o656 Repair regions
+t656 
+o657 Open Folder
+t657 
