@@ -1355,3 +1355,57 @@ o630 Reset to default
 t630 기본 설정으로 되돌리기
 o631 Do you want to keep your changes?
 t631 변경 내용을 저장하시겠습니까?
+o632 Screenshots Folder
+t632 
+o633 Uses the Latest Snapshot Terrain Generation
+t633 
+o634 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+t634 
+o635 Last Played
+t635 
+o636 Level Name (filename)
+t636 
+o637 Dims
+t637 
+o638 Load
+t638 
+o639 Maximum number of copied objects.
+t639 
+o640 Try to save and restore the window position.
+t640 
+o641 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+t641 
+o642 MCEditData
+t642 
+o643 This will move your settings and schematics to your Documents folder. Continue?
+t643
+o644 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
+t644
+o645 GoTo Position:
+t645 
+o646 (click anywhere to teleport)
+t646 
+o647 Shortcut: Tab
+t647 
+o648 Format:
+t648 
+o649 Name:
+t649 
+o650 Minecraft Infinite World (Anvil Format)
+t650 
+o651 Day:
+t651 
+o652 Time of day:
+t652 
+o653 RandomSeed:
+t653 
+o654 Game Type:
+t654 
+o655 Number of chunks: {0}
+t655
+o656 Number of regions: {0}
+t656 
+o657 Repair regions
+t657 
+o658 Open Folder
+t658 
