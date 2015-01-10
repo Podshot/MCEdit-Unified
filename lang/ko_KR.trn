@@ -1324,13 +1324,13 @@ t624 저장 안함
 o625 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 작업을 지정할 키를 누르십시오 "{0}"
+t625 "{0}" 작업을 지정할 키를 누르십시오
 
 취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
 o626 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t626 작업을 지정할 키를 누르십시오 "{0}"
+t626 "{0}" 작업을 지정할 키를 누르십시오
 키가 없다면 우클릭으로 빠른 이동을 합니다.
 취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
 o627 {0} is not a modifier. Press a new key.
@@ -1352,6 +1352,6 @@ t629 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
 
 취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
 o630 Reset to default
-t630 
+t630 기본 설정으로 되돌리기
 o631 Do you want to keep your changes?
-t631 
+t631 변경 내용을 저장하시겠습니까?
