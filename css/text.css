@@ -1,0 +1,19 @@
+p.hr1 {
+    text-align:center;
+	font-family:arial, sans-serif;
+	font-size:15px;
+}
+hr { 
+    display:block;
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+    margin-left:auto;
+    margin-right:auto;
+    border-style:ridge;
+    border-width:1px;
+}
+.footer {
+	text-align:center;
+	font-family:arial, sans-serif;
+	font-size:12px;
+}
