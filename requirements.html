@@ -1,108 +1,125 @@
-<html>
-<head>
-	<title>MCEdit Unified</title>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/scripts.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/stylesheet.css">
+<!DOCTYPE html>
+<html lang="en-US">
+<meta charset="utf-8">
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
+</script>
+<![endif]-->
 
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<title>MCEdit Unified - Requirements</title>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/stylesheet.css">
+<link rel="stylesheet" href="css/text.css">
 
-	  ga('create', 'UA-57749723-1', 'auto');
-	  ga('send', 'pageview');
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-57749723-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
-	</script>
+<script>
+  function pageTrigger() {
+  }
+</script>
 
-	<script>
-		function pageTrigger() {
-
-		}
-	</script>
-</head>
 <body>
-	<div class="container">
-		<div class="row">
-			<div class=" col-md-6 col-md-offset-3">
-                <p style="text-align:center;">The below are the supported system requirements, lower specs may work but we can't promise functionality. This is partially due to lack of equipment to test with.</p>
-				<table class="table table-bordered" style="font-size:12px;">
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <b>Windows</b>
-                        </td>
-                        <td>
-                            <b>Mac</b>
-                        </td>
-                        <td>
-                            <b>Linux</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Operating System</b>
-                        </td>
-                        <td>
-                            XP SP3<br>
-                            or newer<br>
-                        </td>
-                        <td>
-                            OSX 10.6.8 Snow Leopard*<br>
-                            or newer
+<div class="container">
+<div class="row">
+<div class=" col-md-6 col-md-offset-3">
+<p style="text-align:center;">The below are the supported system requirements, lower specs may work but we can't promise functionality. This is partially due to lack of equipment to test with.<br>
+<b>Note:</b> These are the requirements for mcedit-unified, for the requirements for <a href="http://mcedit.net">mcedit 2</a> you may continue use this as a reference until the requirements are available.
+</p>
+<table class="table table-bordered" style="font-size:12px;">
+  <tr style="text-align:center;">
+	<td>
+	</td>
+	<td>
+	  <b>Windows</b>
+	</td>
+	<td>
+      <b>Mac</b>
+    </td>
+    <td>
+      <b>Linux</b>
+    </td>
+  </tr>
+  <tr style="text-align:center;">
+    <td>
+      <b>Operating System</b>
+    </td>
+    <td>
+	  XP SP3 or newer
+	</td>
+    <td>
+	  OSX 10.6.8 Snow Leopard^ or newer
+    </td>
+    <td>
+	  Any Linux variant with python 2.7
+    </td>
+   </tr>
+  <tr style="text-align:center;">
+    <td>
+      <b>Processor</b>
+    </td>
+    <td>
+      Intel Core 2 Duo or better^^
+    </td>
+    <td>
+      Intel Core 2 Duo or better^^
+    </td>
+    <td>
+      2.5ghz Pentium 4 or better
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      <b>Ram</b>
+    </td>
+    <td colspan="3" style="text-align:center;">
+      2GB or higher (4GB is better)
+    </td>
+  </tr>
+  <tr>
+	<td style="text-align:center;">
+      <b>Video Card</b>
+    </td>
+    <td colspan="3" style="text-align:center;">
+      Any fully OpenGL 1.1 compatible graphics card
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      <b>Free Disk Space</b>
+    </td>
+    <td colspan="3" style="text-align:center;">
+	  1 - 1.5GB
+    </td>
+   </tr>
+</table>
+<p>
+<b>Notes:</b><br>
+^Not thoroughly tested with versions below 10.9 Mavericks.<br>
+^^This is due to the speed on how fast mcedit-unified can run and any other programs that are currently on without crashing.<br>
+If you currently are running mcedit-unified on Intel Core 2 Duo or lower you may continue to do so, but you may recieve a crash on newer released versions of mcedit-unifed.
+</p>
+</div>
+</div>
+</div>
 
-                        </td>
-                        <td>
-                            Any Linux variant<br>
-                            with python 2.7
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Processor</b>
-                        </td>
-                        <td>
-                            2.5ghz Pentium 4 or Better
-                        </td>
-                        <td>
-                            Any Intel Processor
-                        </td>
-                        <td>
-                            2.5ghz Pentium 4 or Better
-                        </td>
-                    <tr>
-                        <td>
-                            <b>Ram</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            2GB
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Video Card</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            Any fully OpenGL 1.1 compatible graphics card
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Free Disk Space</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-							1GB
-                        </td>
-                    </tr>
-				</table>
-                *Not thoroughly tested with versions below 10.9 Mavericks.
-			</div>
-		</div>
-	</div>
+<hr>
+<div class="footer">
+&copy; 2010-2014 David Rio Vierra (<a href="https://twitter.com/codewarrior0">Codewarrior0</a>). 
+&copy; 2014-2015 <a href="http://khroki.github.io/MCEdit-Unified/contributors.html">Khroki and all of the contributers</a>.
+All Rights Reserved to their respective ownership.
+</div>
+</hr>
+
 </body>
 </html>
