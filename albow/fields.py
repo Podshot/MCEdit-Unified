@@ -524,6 +524,7 @@ class TextEditorWrapped(Widget):
         focused = self.has_focus()
         text, i, il = self.get_text_and_insertion_data()
         ip = self.insertion_point
+        self.doFix = True
 
         self.updateTextWrap()
 
@@ -619,10 +620,13 @@ class TextEditorWrapped(Widget):
                 x, h = font.size(self.textL[il][:i])
             else:
                 x, h = (0, font.size("X")[1])
-            if self.insertion_point != self.insertion_step:
+            if ip != i:
+                if self.doFix:
+                    self.move_insertion_point(-1)
+                    self.doFix = False
                 x += font.size(self.textL[il][i])[0]
-            if len(self.text) == self.insertion_point:
-                self.insertion_point -= 1
+                if not self.doFix:
+                    self.move_insertion_point(1)
             x += frame.left
             y = frame.top + h * (il - self.topLine)
             draw.line(surface, fg, (x, y), (x, y + h - 1))
