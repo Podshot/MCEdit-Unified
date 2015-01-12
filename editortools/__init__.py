@@ -19,3 +19,5 @@ from clone import CloneTool, ConstructionTool
 from filter import FilterTool
 from player import PlayerPositionTool, PlayerSpawnPositionTool
 from chunk import ChunkTool
+from nbtexplorer import NBTExplorerTool
+

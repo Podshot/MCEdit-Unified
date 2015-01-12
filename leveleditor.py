@@ -823,6 +823,7 @@ class LevelEditor(GLViewport):
                                                   editortools.PlayerPositionTool(self),
                                                   editortools.PlayerSpawnPositionTool(self),
                                                   editortools.ChunkTool(self),
+                                                  editortools.NBTExplorerTool(self),
         ])
 
         self.toolbar.anchor = 'bwh'
@@ -2723,16 +2724,16 @@ class LevelEditor(GLViewport):
 
 class EditorToolbar(GLOrtho):
     # is_gl_container = True
-    toolbarSize = (184, 24)
+    toolbarSize = (204, 24)
     tooltipsUp = True
 
-    toolbarTextureSize = (182., 22.)
+    toolbarTextureSize = (202., 22.)
 
     currentToolTextureRect = (0., 22., 24., 24.)
     toolbarWidthRatio = 0.5  # toolbar's width as fraction of screen width.
 
     def toolbarSizeForScreenWidth(self, width):
-        f = max(1, int(width + 398) / 400)
+        f = max(1, int(width + 418) / 420)
 
         return map(lambda x: x * f, self.toolbarSize)
 
@@ -2774,13 +2775,13 @@ class EditorToolbar(GLOrtho):
 
         (tx, ty, tw, th) = self.toolbarRectInWindowCoords()
 
-        toolNumber = 9. * x / tw
-        return min(int(toolNumber), 8)
+        toolNumber = float(len(self.tools)) * x / tw
+        return min(int(toolNumber), len(self.tools) - 1)
 
     def mouse_down(self, evt):
         if self.parent.level:
             toolNo = self.toolNumberUnderMouse(evt.pos)
-            if toolNo < 0 or toolNo > 8:
+            if toolNo < 0 or toolNo > len(self.tools) - 1:
                 return
             if evt.button == 1:
                 self.selectTool(toolNo)
@@ -2824,7 +2825,7 @@ class EditorToolbar(GLOrtho):
         pw = float(pw)
         ph = float(ph)
         x, y = self.toolbarSizeForScreenWidth(pw)
-        tw = x * 180. / 182.
+        tw = x * 200. / 202.
         th = y * 20. / 22.
 
         tx = (pw - tw) / 2
