@@ -1,20 +1,24 @@
 #
 # Albow - Fields
 #
-
+#-# Modified by D.C.-G. for translation purpose
+import locale
 from pygame import draw
 import pygame
-from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN
+from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT
 from widget import Widget, overridable_property
 from controls import Control
-
+from config import config
+#-#
+from translate import _
+import pyperclip
+#-#
 #---------------------------------------------------------------------------
 
 
 class TextEditor(Widget):
     upper = False
     tab_stop = True
-
     _text = u""
 
     def __init__(self, width, upper=None, **kwds):
@@ -23,12 +27,13 @@ class TextEditor(Widget):
         if upper is not None:
             self.upper = upper
         self.insertion_point = None
+        self.root = self.get_root()
 
     def get_text(self):
         return self._text
 
     def set_text(self, text):
-        self._text = text
+        self._text = _(text)
 
     text = overridable_property('text')
 
@@ -49,6 +54,7 @@ class TextEditor(Widget):
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
+        self.root.notMove = True
         if not (event.cmd or event.alt):
             k = event.key
             if k == K_LEFT:
@@ -65,26 +71,34 @@ class TextEditor(Widget):
                 c = event.unicode
             except ValueError:
                 c = ""
-            if self.insert_char(c) != 'pass':
-                return
+            if k != K_DOWN and k != K_UP:
+                if self.insert_char(c) != 'pass':
+                    return
         if event.cmd and event.unicode:
             if event.key == K_c:
                 try:
-                    pygame.scrap.put(SCRAP_TEXT, self.text)
+                    #pygame.scrap.put(SCRAP_TEXT, self.text)
+                    pyperclip.copy(self.text)
                 except:
                     print "scrap not available"
 
             elif event.key == K_v:
                 try:
-                    t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    t = pyperclip.paste()
+                    DEF_ENC = locale.getdefaultlocale()[1]
+                    if DEF_ENC is None:
+                        DEF_ENC = "UTF-8"
+                    if type(t) == unicode and DEF_ENC != "UTF-8":
+                        t = t.encode(DEF_ENC)
                     self.text = t
                 except:
                     print "scrap not available"
-                    #print repr(t)
             else:
                 self.attention_lost()
 
-        self.call_parent_handler('key_down', event)
+    def key_up(self, event):
+        pass
 
     def get_text_and_insertion_point(self):
         text = self.get_text()
@@ -107,40 +121,40 @@ class TextEditor(Widget):
     def insert_char(self, c):
         if self.upper:
             c = c.upper()
-        if c <= "\x7f":
-            if c == "\x08" or c == "\x7f":
+        if c == "\x08" or c == "\x7f":
+            text, i = self.get_text_and_insertion_point()
+            if i is None:
+                text = ""
+                i = 0
+            else:
+                text = text[:i - 1] + text[i:]
+                i -= 1
+            self.change_text(text)
+            self.insertion_point = i
+            return
+        elif c == "\r" or c == "\x03":
+            return self.call_handler('enter_action')
+        elif c == "\x1b":
+            return self.call_handler('escape_action')
+        elif c >= "\x20":
+            if self.allow_char(c):
                 text, i = self.get_text_and_insertion_point()
                 if i is None:
-                    text = ""
-                    i = 0
+                    text = c
+                    i = 1
                 else:
-                    text = text[:i - 1] + text[i:]
-                    i -= 1
+                    text = text[:i] + c + text[i:]
+                    i += 1
                 self.change_text(text)
                 self.insertion_point = i
                 return
-            elif c == "\r" or c == "\x03":
-                return self.call_handler('enter_action')
-            elif c == "\x1b":
-                return self.call_handler('escape_action')
-            elif c >= "\x20":
-                if self.allow_char(c):
-                    text, i = self.get_text_and_insertion_point()
-                    if i is None:
-                        text = c
-                        i = 1
-                    else:
-                        text = text[:i] + c + text[i:]
-                        i += 1
-                    self.change_text(text)
-                    self.insertion_point = i
-                    return
         return 'pass'
 
     def allow_char(self, c):
         return True
 
     def mouse_down(self, e):
+        self.root.notMove = True
         self.focus()
         if e.num_clicks == 2:
             self.insertion_point = None
@@ -230,7 +244,7 @@ class Field(Control, TextEditor):
 
     def set_text(self, text):
         self.editing = True
-        self._text = text
+        self._text = _(text)
         if self.should_commit_immediately(text):
             self.commit()
 
@@ -300,9 +314,12 @@ class TextField(Field):
     type = unicode
     _value = u""
 
+    def should_commit_immediately(self, text):
+        return True
+
 
 class IntField(Field):
-    tooltipText = "Point here and use mousewheel to adjust"
+    tooltipText = _("Point here and use mousewheel to adjust")
 
     def type(self, i):
         try:
@@ -318,10 +335,9 @@ class IntField(Field):
 
     @property
     def increment(self):
-        if key.get_mods() & KMOD_SHIFT:
+        fastIncrementModifier = config.keys.fastIncrementModifier.get()
+        if (fastIncrementModifier == "Shift" and key.get_mods() & KMOD_SHIFT) or (fastIncrementModifier == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (fastIncrementModifier == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
-        else:
-            return self._increment
         return self._increment
 
     @increment.setter
@@ -420,14 +436,14 @@ class TimeField(Field):
 
 
 from pygame import key
-from pygame.locals import KMOD_SHIFT
+from pygame.locals import KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META
 
 
 class FloatField(Field):
     type = float
-    _increment = 1.0
+    _increment = 0.1
     _shift_increment = 16.0
-    tooltipText = "Point here and use mousewheel to adjust"
+    tooltipText = _("Point here and use mousewheel to adjust")
 
     allowed_chars = '-+.0123456789f'
 
@@ -436,7 +452,8 @@ class FloatField(Field):
 
     @property
     def increment(self):
-        if key.get_mods() & KMOD_SHIFT:
+        fastIncrementModifier = config.keys.fastIncrementModifier.get()
+        if (fastIncrementModifier == "Shift" and key.get_mods() & KMOD_SHIFT) or (fastIncrementModifier == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (fastIncrementModifier == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
         return self._increment
 
@@ -491,7 +508,7 @@ class TextEditorWrapped(Widget):
         return self._text
 
     def set_text(self, text):
-        self._text = text
+        self._text = _(text)
         self.textChanged = True
 
     text = overridable_property('text')
@@ -602,6 +619,10 @@ class TextEditorWrapped(Widget):
                 x, h = font.size(self.textL[il][:i])
             else:
                 x, h = (0, font.size("X")[1])
+            if self.insertion_point != self.insertion_step:
+                x += font.size(self.textL[il][i])[0]
+            if len(self.text) == self.insertion_point:
+                self.insertion_point -= 1
             x += frame.left
             y = frame.top + h * (il - self.topLine)
             draw.line(surface, fg, (x, y), (x, y + h - 1))
@@ -634,13 +655,15 @@ class TextEditorWrapped(Widget):
         if event.cmd and event.unicode:
             if event.key == K_c:
                 try:
-                    pygame.scrap.put(SCRAP_TEXT, self.text)
+                    #pygame.scrap.put(SCRAP_TEXT, self.text)
+                    pyperclip.copy(self.text)
                 except:
                     print "scrap not available"
 
             elif event.key == K_v:
                 try:
-                    t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    t = pyperclip.paste() 
                     if t != None:
                         if self.insertion_point is not None:
                             self.text = self.text[:self.insertion_point] + t + self.text[self.insertion_point:]
@@ -668,6 +691,9 @@ class TextEditorWrapped(Widget):
                 self.attention_lost()
 
         self.call_parent_handler('key_down', event)
+
+    def key_up(self, event):
+        pass
 
     def get_text_and_insertion_point(self):
         text = self.get_text()
@@ -801,7 +827,7 @@ class TextEditorWrapped(Widget):
                     self.selection_end = None
                 elif i > 0:
                     text = text[:i - 1] + text[i:]
-                    i -= 1
+                    i -= 1   
                 self.change_text(text)
                 self.insertion_point = i
                 self.sync_line_and_step()
@@ -928,7 +954,7 @@ class TextEditorWrapped(Widget):
         return i
 
     def change_text(self, text):
-        self.set_text(text)
+        self.set_text(_(text))
         self.textChanged = True
         self.updateTextWrap()
         self.call_handler('change_action')
@@ -1034,7 +1060,7 @@ class FieldWrapped(Control, TextEditorWrapped):
         if x == self.empty:
             return ""
         else:
-            return self.format % x
+            return self.format % _(x)
 
     def get_text(self):
         if self.editing:
@@ -1044,7 +1070,7 @@ class FieldWrapped(Control, TextEditorWrapped):
 
     def set_text(self, text):
         self.editing = True
-        self._text = text
+        self._text = _(text)
         if self.should_commit_immediately(text):
             self.commit()
 

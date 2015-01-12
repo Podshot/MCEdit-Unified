@@ -1,14 +1,22 @@
 # !/usr/bin/env python2.7
-# -*- coding: utf8 -*_
+# -*- coding: utf_8 -*-
+# import resource_packs # not the right place, moving it a bit further
+
+#-# Modified by D.C.-G. for translation purpose
+
 """
 mcedit.py
 
 Startup, main menu, keyboard configuration, automatic updating.
 """
+import splash
+
+import resource_packs
 import OpenGL
 import sys
 import os
 import directories
+import keys
 
 if "-debug" not in sys.argv:
     OpenGL.ERROR_CHECKING = False
@@ -25,15 +33,16 @@ from OpenGL import GL
 logger.setLevel(logging.DEBUG)
 
 logfile = 'mcedit.log'
-'''if hasattr(sys, 'frozen'):
-    if sys.platform == "win32":
-        import esky
-        app = esky.Esky(sys.executable)
 
-        logfile = os.path.join(app.appdir, logfile)
-    elif sys.platform == "darwin":
-        logfile = os.path.expanduser("~/Library/Logs/" + logfile)
-'''
+# if hasattr(sys, 'frozen'):
+#     if sys.platform == "win32":
+#         import esky
+#         app = esky.Esky(sys.executable)
+
+#         logfile = os.path.join(app.appdir, logfile)
+#
+if sys.platform == "darwin":
+    logfile = os.path.expanduser("~/Library/Logs/mcedit.log")
 fh = logging.FileHandler(logfile, mode="w")
 fh.setLevel(logging.DEBUG)
 
@@ -63,575 +72,53 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 import albow
+import locale
+DEF_ENC = locale.getdefaultlocale()[1]
+if DEF_ENC is None:
+    DEF_ENC = "UTF-8"
+from albow.translate import _, getPlatInfo
+
 from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
-import config
-import directories
+
+from config import config
+
+albow.resource.resource_dir = directories.getDataDir()
+
+import panels
 import functools
-from glbackground import Panel
 import glutils
 import leveleditor
-from leveleditor import ControlSettings, Settings
+
+# Building translation template
+if "-tt" in sys.argv:
+    albow.translate.buildTemplate = True
+    albow.translate.loadTemplate()
+
+
 import mceutils
 import mcplatform
 from mcplatform import platform_open
 import numpy
+from pymclevel.minecraft_server import ServerJarStorage
 
 import os
 import os.path
 import pygame
-from pygame import display, key, rect
+from pygame import display, rect
 import pymclevel
 import release
 import shutil
 import sys
 import traceback
-import Tkinter
-import ttk
-import tkMessageBox
-import tkSimpleDialog
+import threading
+
+from utilities.gl_display_context import GLDisplayContext
+
+getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
 ESCAPE = '\033'
-
-
-class FileOpener(albow.Widget):
-    is_gl_container = True
-
-    def __init__(self, mcedit, *args, **kwargs):
-        kwargs['rect'] = mcedit.rect
-        albow.Widget.__init__(self, *args, **kwargs)
-        self.anchor = 'tlbr'
-        self.mcedit = mcedit
-
-        helpColumn = []
-
-        label = albow.Label("{0} {1} {2} {3} {4} {5}".format(
-            config.config.get('Keys', 'Forward'),
-            config.config.get('Keys', 'Left'),
-            config.config.get('Keys', 'Back'),
-            config.config.get('Keys', 'Right'),
-            config.config.get('Keys', 'Up'),
-            config.config.get('Keys', 'Down'),
-        ).upper() + " to move")
-        label.anchor = 'whrt'
-        label.align = 'r'
-        helpColumn.append(label)
-
-        def addHelp(text):
-            label = albow.Label(text)
-            label.anchor = 'whrt'
-            label.align = "r"
-            helpColumn.append(label)
-
-        addHelp("{0}".format(config.config.get('Keys', 'Brake').upper()) + " to slow down")
-        addHelp("Right-click to toggle camera control")
-        addHelp("Mousewheel to control tool distance")
-        addHelp("Hold SHIFT to move along a major axis")
-        addHelp("Hold ALT for details")
-
-        helpColumn = albow.Column(helpColumn, align="r")
-        helpColumn.topright = self.topright
-        helpColumn.anchor = "whrt"
-        #helpColumn.is_gl_container = True
-        self.add(helpColumn)
-
-        keysColumn = [albow.Label("")]
-        buttonsColumn = [leveleditor.ControlPanel.getHeader()]
-
-        shortnames = []
-        for world in self.mcedit.recentWorlds():
-            shortname = os.path.basename(world)
-            try:
-                if pymclevel.MCInfdevOldLevel.isLevel(world):
-                    lev = pymclevel.MCInfdevOldLevel(world, readonly=True)
-                    shortname = lev.LevelName
-                    if lev.LevelName != lev.displayName:
-                        shortname = u"{0} ({1})".format(lev.LevelName, lev.displayName)
-            except Exception, e:
-                logging.warning(
-                    'Couldn\'t get name from recent world: {0!r}'.format(e))
-
-            if shortname == "level.dat":
-                shortname = os.path.basename(os.path.dirname(world))
-
-            if len(shortname) > 40:
-                shortname = shortname[:37] + "..."
-            shortnames.append(shortname)
-
-        hotkeys = ([(str.upper(config.config.get('Keys', 'New World')), 'Create New World', self.createNewWorld),
-                    (str.upper(config.config.get('Keys', 'Load')), 'Quick Load', self.mcedit.editor.askLoadWorld),
-                    (str.upper(config.config.get('Keys', 'Open')), 'Open File...', self.promptOpenAndLoad)] + [
-                       ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
-                       for i, world in enumerate(self.mcedit.recentWorlds())])
-
-        commandRow = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
-        commandRow.anchor = 'lrh'
-
-        sideColumn = mcedit.makeSideColumn()
-        sideColumn.anchor = 'wh'
-
-        contentRow = albow.Row((commandRow, sideColumn))
-        contentRow.center = self.center
-        contentRow.anchor = "rh"
-        self.add(contentRow)
-        self.sideColumn = sideColumn
-
-    def gl_draw_self(self, root, offset):
-        #self.mcedit.editor.mainViewport.setPerspective();
-        self.mcedit.editor.drawStars()
-
-    def idleevent(self, evt):
-        self.mcedit.editor.doWorkUnit()
-        #self.invalidate()
-
-    def key_down(self, evt):
-        keyname = key.name(evt.key)
-        if keyname == 'f4' and (key.get_mods() & (pygame.KMOD_ALT | pygame.KMOD_LALT | pygame.KMOD_RALT)):
-            raise SystemExit
-        if keyname in ('f1', 'f2', 'f3', 'f4', 'f5'):
-            self.mcedit.loadRecentWorldNumber(int(keyname[1]))
-        if keyname is config.config.get('Keys', 'Load'):
-            self.mcedit.editor.askLoadWorld()
-        if keyname is config.config.get('Keys', 'New World'):
-            self.createNewWorld()
-        if keyname is config.config.get('Keys', 'Open'):
-            self.promptOpenAndLoad()
-        if keyname is config.config.get('Keys', 'Quit'):
-            self.mcedit.editor.confirm_quit()
-
-    def promptOpenAndLoad(self):
-        try:
-            filename = mcplatform.askOpenFile()
-            if filename:
-                self.mcedit.loadFile(filename)
-        except Exception, e:
-            logging.error('Error during proptOpenAndLoad: {0!r}'.format(e))
-
-    def createNewWorld(self):
-        self.parent.createNewWorld()
-
-    def createLoadButtonHandler(self, filename):
-        return lambda: self.mcedit.loadFile(filename)
-
-
-class KeyConfigPanel(Dialog):
-    keyConfigKeys = [
-        "<Movement Controls>",
-        "Forward",
-        "Back",
-        "Left",
-        "Right",
-        "Up",
-        "Down",
-        "Brake",
-        "",
-        "<Camera Controls>",
-        "Pan Left",
-        "Pan Right",
-        "Pan Up",
-        "Pan Down",
-        "",
-        "<Tool Controls>",
-        "Rotate",
-        "Roll",
-        "Flip",
-        "Mirror",
-        "Swap",
-        "Increase Reach",
-        "Decrease Reach",
-        "Reset Reach",
-        "",
-        "<Function Controls [Ctrl+]>",
-        "Quit",
-        "Swap View",
-        "Select All",
-        "Deselect",
-        "Cut",
-        "Copy",
-        "Paste",
-        "Reload World",
-        "Open",
-        "Load",
-        "Undo",
-        "Save",
-        "New World",
-        "Close World",
-        "World Info",
-        "Goto Panel",
-        "Export Selection"
-    ]
-
-    presets = {"WASD": [
-        ("Forward", "w"),
-        ("Back", "s"),
-        ("Left", "a"),
-        ("Right", "d"),
-        ("Up", "q"),
-        ("Down", "z"),
-        ("Brake", "space"),
-
-        ("Rotate", "e"),
-        ("Roll", "r"),
-        ("Flip", "f"),
-        ("Mirror", "g"),
-        ("Swap", "x"),
-        ("Increase Reach", "mouse4"),
-        ("Decrease Reach", "mouse5"),
-        ("Reset Reach", "mouse3"),
-    ],
-               "Arrows": [
-                   ("Forward", "up"),
-                   ("Back", "down"),
-                   ("Left", "left"),
-                   ("Right", "right"),
-                   ("Up", "page up"),
-                   ("Down", "page down"),
-                   ("Brake", "space"),
-
-                   ("Rotate", "home"),
-                   ("Roll", "end"),
-                   ("Flip", "insert"),
-                   ("Mirror", "delete"),
-                   ("Swap", "\\"),
-                   ("Increase Reach", "mouse4"),
-                   ("Decrease Reach", "mouse5"),
-                   ("Reset Reach", "mouse3"),
-               ],
-               "Numpad": [
-                   ("Forward", "[8]"),
-                   ("Back", "[5]"),
-                   ("Left", "[4]"),
-                   ("Right", "[6]"),
-                   ("Up", "[9]"),
-                   ("Down", "[3]"),
-                   ("Brake", "[0]"),
-
-                   ("Rotate", "[-]"),
-                   ("Roll", "[+]"),
-                   ("Flip", "[/]"),
-                   ("Mirror", "[*]"),
-                   ("Swap", "[.]"),
-                   ("Increase Reach", "mouse4"),
-                   ("Decrease Reach", "mouse5"),
-                   ("Reset Reach", "mouse3"),
-               ]}
-
-    selectedKeyIndex = 0
-
-    def __init__(self):
-        Dialog.__init__(self)
-        keyConfigTable = albow.TableView(
-            columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
-        keyConfigTable.num_rows = lambda: len(self.keyConfigKeys)
-        keyConfigTable.row_data = self.getRowData
-        keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
-        keyConfigTable.click_row = self.selectTableRow
-        tableWidget = albow.Widget()
-        tableWidget.add(keyConfigTable)
-        tableWidget.shrink_wrap()
-
-        self.keyConfigTable = keyConfigTable
-
-        buttonRow = (albow.Button("Assign Key...", action=self.askAssignSelectedKey),
-                     albow.Button("Done", action=self.dismiss))
-
-        buttonRow = albow.Row(buttonRow)
-
-        choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad"], choose=self.choosePreset)
-        if config.config.get("Keys", "Forward") == "up":
-            choiceButton.selectedChoice = "Arrows"
-        if config.config.get("Keys", "Forward") == "[8]":
-            choiceButton.selectedChoice = "Numpad"
-
-        choiceRow = albow.Row((albow.Label("Presets: "), choiceButton))
-        self.choiceButton = choiceButton
-
-        col = albow.Column((tableWidget, choiceRow, buttonRow))
-        self.add(col)
-        self.shrink_wrap()
-
-    def choosePreset(self):
-        preset = self.choiceButton.selectedChoice
-        keypairs = self.presets[preset]
-        for configKey, key in keypairs:
-            config.config.set("Keys", configKey, key)
-
-    def getRowData(self, i):
-        configKey = self.keyConfigKeys[i]
-        if self.isConfigKey(configKey):
-            key = config.config.get("Keys", configKey)
-        else:
-            key = ""
-        return configKey, key
-
-    def isConfigKey(self, configKey):
-        return not (len(configKey) == 0 or configKey[0] == "<")
-
-    def selectTableRow(self, i, evt):
-        self.selectedKeyIndex = i
-        if evt.num_clicks == 2:
-            self.askAssignSelectedKey()
-
-    def askAssignSelectedKey(self):
-        self.askAssignKey(self.keyConfigKeys[self.selectedKeyIndex])
-
-    def askAssignKey(self, configKey, labelString=None):
-        if not self.isConfigKey(configKey):
-            return
-
-        panel = Panel()
-        panel.bg_color = (0.5, 0.5, 0.6, 1.0)
-
-        if labelString is None:
-            labelString = "Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.".format(configKey)
-        label = albow.Label(labelString)
-        panel.add(label)
-        panel.shrink_wrap()
-
-        def panelKeyUp(evt):
-            keyname = key.name(evt.key)
-            panel.dismiss(keyname)
-
-        def panelMouseUp(evt):
-            button = leveleditor.remapMouseButton(evt.button)
-            if button > 2:
-                keyname = "mouse{0}".format(button)
-                panel.dismiss(keyname)
-
-        panel.key_up = panelKeyUp
-        panel.mouse_up = panelMouseUp
-
-        keyname = panel.present()
-        if keyname != "escape":
-            occupiedKeys = [(v, k) for (k, v) in config.config.items("Keys") if v == keyname]
-            oldkey = config.config.get("Keys", configKey)
-            config.config.set("Keys", configKey, keyname)
-            '''for keyname, setting in occupiedKeys:
-                if self.askAssignKey(setting,
-                                     "The key {0} is no longer bound to {1}.\n"
-                                     "Press a new key for the action \"{1}\"\n\n"
-                                     "Press ESC to cancel."
-                                     .format(keyname, setting)):
-                    config.config.set("Keys", configKey, oldkey)
-                    return True'''  #Only disabled as currently you can't input modifiers, reenable if fixed and edit leveleditor.py as needed
-        else:
-            return True
-
-
-class graphicsPanel(Dialog):
-    anchor = 'wh'
-
-    def __init__(self, mcedit):
-        Dialog.__init__(self)
-
-        self.mcedit = mcedit
-    
-        fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
-                                                ref=Settings.fov.propertyRef(), width=100, min=25, max=120)
-
-        targetFPSRow = mceutils.IntInputRow("Target FPS: ",
-                                            ref=Settings.targetFPS.propertyRef(), width=100, min=1, max=60)
-
-        bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
-                                              ref=Settings.vertexBufferLimit.propertyRef(), width=100, min=0)
-
-        fastLeavesRow = mceutils.CheckBoxLabel("Fast Leaves",
-                                               ref=Settings.fastLeaves.propertyRef(),
-                                               tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
-
-        roughGraphicsRow = mceutils.CheckBoxLabel("Rough Graphics",
-                                                  ref=Settings.roughGraphics.propertyRef(),
-                                                  tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
-
-        enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
-                                                   ref=Settings.enableMouseLag.propertyRef(),
-                                                   tooltipText="Enable choppy mouse movement for faster loading.")
-
-        settingsColumn = albow.Column((fastLeavesRow,
-                                       roughGraphicsRow,
-                                       enableMouseLagRow,
-                                       #                                  texturePackRow,
-                                       fieldOfViewRow,
-                                       targetFPSRow,
-                                       bufferLimitRow,
-                                      ), align='r')
-
-        settingsColumn = albow.Column((albow.Label("Settings"),
-                                       settingsColumn))
-
-        settingsRow = albow.Row((settingsColumn,))
-
-        optionsColumn = albow.Column((settingsRow, albow.Button("OK", action=self.dismiss)))
-
-        self.add(optionsColumn)
-        self.shrink_wrap()
-
-    def _reloadTextures(self, pack):
-        if hasattr(pymclevel.alphaMaterials, "terrainTexture"):
-            self.mcedit.displayContext.loadTextures()
-
-    texturePack = Settings.skin.configProperty(_reloadTextures)
-
-
-class OptionsPanel(Dialog):
-    anchor = 'wh'
-
-    def __init__(self, mcedit):
-        Dialog.__init__(self)
-
-        self.mcedit = mcedit
-
-        autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
-                                              ref=ControlSettings.autobrake.propertyRef(),
-                                              tooltipText="Apply brake when not pressing movement keys")
-
-        swapAxesRow = mceutils.CheckBoxLabel("Swap Axes Looking Down",
-                                             ref=ControlSettings.swapAxes.propertyRef(),
-                                             tooltipText="Change the direction of the Forward and Backward keys when looking down")
-
-        cameraAccelRow = mceutils.FloatInputRow("Camera Acceleration: ",
-                                                ref=ControlSettings.cameraAccel.propertyRef(), width=100, min=5.0)
-
-        cameraDragRow = mceutils.FloatInputRow("Camera Drag: ",
-                                               ref=ControlSettings.cameraDrag.propertyRef(), width=100, min=1.0)
-
-        cameraMaxSpeedRow = mceutils.FloatInputRow("Camera Max Speed: ",
-                                                   ref=ControlSettings.cameraMaxSpeed.propertyRef(), width=100, min=1.0)
-
-        cameraBrakeSpeedRow = mceutils.FloatInputRow("Camera Braking Speed: ",
-                                                     ref=ControlSettings.cameraBrakingSpeed.propertyRef(), width=100,
-                                                     min=1.0)
-
-        mouseSpeedRow = mceutils.FloatInputRow("Mouse Speed: ",
-                                               ref=ControlSettings.mouseSpeed.propertyRef(), width=100, min=0.1,
-                                               max=20.0)
-
-        undoLimitRow = mceutils.IntInputRow("Undo Limit: ",
-                                            ref=Settings.undoLimit.propertyRef(), width=100, min=0)
-
-        invertRow = mceutils.CheckBoxLabel("Invert Mouse",
-                                           ref=ControlSettings.invertMousePitch.propertyRef(),
-                                           tooltipText="Reverse the up and down motion of the mouse.")
-
-        spaceHeightRow = mceutils.IntInputRow("Low Detail Height",
-                                              ref=Settings.spaceHeight.propertyRef(),
-                                              tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
-
-        blockBufferRow = mceutils.IntInputRow("Block Buffer (MB):",
-                                              ref=albow.AttrRef(self, 'blockBuffer'), min=1,
-                                              tooltipText="Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.")
-
-        setWindowPlacementRow = mceutils.CheckBoxLabel("Set Window Placement",
-                                                       ref=Settings.setWindowPlacement.propertyRef(),
-                                                       tooltipText="Try to save and restore the window position.")
-
-        windowSizeRow = mceutils.CheckBoxLabel("Window Resize Alert",
-                                               ref=Settings.shouldResizeAlert.propertyRef(),
-                                               tooltipText="Reminds you that the cursor won't work correctly after resizing the window.")
-
-        visibilityCheckRow = mceutils.CheckBoxLabel("Visibility Check",
-                                                    ref=Settings.visibilityCheck.propertyRef(),
-                                                    tooltipText="Do a visibility check on chunks while loading. May cause a crash.")
-
-        longDistanceRow = mceutils.CheckBoxLabel("Long-Distance Mode",
-                                                 ref=Settings.longDistanceMode.propertyRef(),
-                                                 tooltipText="Always target the farthest block under the cursor, even in mouselook mode. Shortcut: ALT-Z")
-
-        flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
-                                            ref=Settings.flyMode.propertyRef(),
-                                            tooltipText="Moving forward and backward will not change your altitude in Fly Mode.")
-
-        self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
-
-        goPortableButton.tooltipText = self.portableButtonTooltip()
-        goPortableRow = albow.Row(
-            (albow.ValueDisplay(ref=albow.AttrRef(self, 'portableLabelText'), width=250, align='r'), goPortableButton))
-
-# Disabled Crash Reporting Option
-#       reportRow = mceutils.CheckBoxLabel("Report Errors",
-#                                          ref=Settings.reportCrashes.propertyRef(),
-#                                          tooltipText="Automatically report errors to the developer.")
-
-        inputs = (
-            spaceHeightRow,
-            cameraAccelRow,
-            cameraDragRow,
-            cameraMaxSpeedRow,
-            cameraBrakeSpeedRow,
-            blockBufferRow,
-            mouseSpeedRow,
-            undoLimitRow,
-        )
-
-        options = (
-                      longDistanceRow,
-                      flyModeRow,
-                      autoBrakeRow,
-                      swapAxesRow,
-                      invertRow,
-                      visibilityCheckRow,
-                  ) + (
-                      ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
-# Disabled Crash Reporting Option
-#                 ) + (
-#                     reportRow,
-                  ) + (
-                      (sys.platform == "win32") and (setWindowPlacementRow,) or ()
-                  ) + (
-                      goPortableRow,
-                  )
-
-        rightcol = albow.Column(options, align='r')
-        leftcol = albow.Column(inputs, align='r')
-
-        optionsColumn = albow.Column((albow.Label("Options"),
-                                      albow.Row((leftcol, rightcol), align="t")))
-
-        settingsRow = albow.Row((optionsColumn,))
-
-        optionsColumn = albow.Column((settingsRow, albow.Button("OK", action=self.dismiss)))
-
-        self.add(optionsColumn)
-        self.shrink_wrap()
-
-    @property
-    def blockBuffer(self):
-        return Settings.blockBuffer.get() / 1048576
-
-    @blockBuffer.setter
-    def blockBuffer(self, val):
-        Settings.blockBuffer.set(int(val * 1048576))
-
-    def portableButtonTooltip(self):
-        return (
-        "Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder",
-        "Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder")[
-            mcplatform.portable]
-
-    @property
-    def portableLabelText(self):
-        return ("Install Mode: Portable", "Install Mode: Fixed")[1 - mcplatform.portable]
-
-    def togglePortable(self):
-        textChoices = [
-            "This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?".format(
-                (sys.platform == "darwin" and "the MCEdit application" or "MCEditData")),
-            "This will move your settings and schematics to your Documents folder. Continue?",
-        ]
-        if sys.platform == "darwin":
-            textChoices[
-                1] = "This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?"
-
-        alertText = textChoices[mcplatform.portable]
-        if albow.ask(alertText) == "OK":
-            try:
-                [mcplatform.goPortable, mcplatform.goFixed][mcplatform.portable]()
-            except Exception, e:
-                traceback.print_exc()
-                albow.alert(u"Error while moving files: {0}".format(repr(e)))
-
-        self.goPortableButton.tooltipText = self.portableButtonTooltip()
 
 
 class MCEdit(GLViewport):
@@ -649,10 +136,18 @@ class MCEdit(GLViewport):
             config.config.add_section("Recent Worlds")
             self.setRecentWorlds([""] * 5)
 
-        self.optionsPanel = OptionsPanel(self)
-        self.graphicsPanel = graphicsPanel(self)
+        self.optionsPanel = panels.OptionsPanel(self)
+        if not albow.translate.buildTemplate:
+            self.optionsPanel.getLanguageChoices()
+            lng = config.settings.langCode.get()
+            if lng not in self.optionsPanel.sgnal:
+                lng = "en_US"
+                config.settings.langCode.set(lng)
+            albow.translate.setLang(lng)
+        self.optionsPanel.initComponents()
+        self.graphicsPanel = panels.GraphicsPanel(self)
 
-        self.keyConfigPanel = KeyConfigPanel()
+        self.keyConfigPanel = keys.KeyConfigPanel()
 
         self.droppedLevel = None
         self.reloadEditor()
@@ -663,15 +158,15 @@ class MCEdit(GLViewport):
         if len(sys.argv) > 1:
             for arg in sys.argv[1:]:
                 f = arg.decode(sys.getfilesystemencoding())
-                if os.path.isdir(os.path.join(pymclevel.saveFileDir, f)):
-                    f = os.path.join(pymclevel.saveFileDir, f)
+                if os.path.isdir(os.path.join(pymclevel.minecraftSaveFileDir, f)):
+                    f = os.path.join(pymclevel.minecraftSaveFileDir, f)
                     self.droppedLevel = f
                     break
                 if os.path.exists(f):
                     self.droppedLevel = f
                     break
 
-        self.fileOpener = FileOpener(self)
+        self.fileOpener = albow.FileOpener(self)
         self.add(self.fileOpener)
 
         self.fileOpener.focus()
@@ -715,7 +210,7 @@ class MCEdit(GLViewport):
         self.graphicsPanel.present()
 
     def showKeyConfig(self):
-        self.keyConfigPanel.present()
+        self.keyConfigPanel.presentControls()
 
     def loadRecentWorldNumber(self, i):
         worlds = list(self.recentWorlds())
@@ -755,12 +250,17 @@ class MCEdit(GLViewport):
 
     def makeSideColumn(self):
         def showLicense():
-            platform_open(os.path.join(directories.dataDir, "LICENSE.txt"))
+            platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
+        def showCacheDir():
+            platform_open(directories.getCacheDir())
 
-        readmePath = os.path.join(directories.dataDir, "README.html")
+        def showScreenshotsDir():
+            platform_open(os.path.join(directories.parentDir, "screenshots"))
+
+        readmePath = os.path.join(directories.getDataDir(), "README.html")
 
         hotkeys = ([("",
-                     "Keys",
+                     "Controls",
                      self.showKeyConfig),
                     ("",
                      "Graphics",
@@ -770,16 +270,24 @@ class MCEdit(GLViewport):
                      self.showOptions),
                     ("",
                      "Homepage",
-                     lambda: platform_open("http://khroki.github.io/MCEdit-Unified")),
+                     lambda: platform_open("http://www.mcedit-unified.net"),
+                     "http://www.mcedit-unified.net"),
                     ("",
                      "About MCEdit",
-                     lambda: platform_open("http://khroki.github.io/MCEdit-Unified/about.html")),
-                    ("",
-                     "Recent Changes",
-                     lambda: platform_open("http://khroki.github.io/MCEdit-Unified")),
+                     lambda: platform_open("http://www.mcedit-unified.net/about.html"),
+                     "http://www.mcedit-unified.net/about.html"),
                     ("",
                      "License",
-                     showLicense),
+                     showLicense,
+                     os.path.join(directories.getDataDir(), "LICENSE.txt")),
+                    ("",
+                     "Config Files Folder",
+                     showCacheDir,
+                     directories.getCacheDir()),
+                    ("",
+                     "Screenshots Folder",
+                     showScreenshotsDir,
+                     os.path.join(directories.parentDir, "screenshots"))
                    ])
 
         c = mceutils.HotkeyColumn(hotkeys)
@@ -801,26 +309,35 @@ class MCEdit(GLViewport):
         if not self.editor.renderer.render:
             self.editor.renderer.render = True
 
-        surf = pygame.display.get_surface()
-        assert isinstance(surf, pygame.Surface)
-        dw, dh = surf.get_size()
+        dis = None
+        if sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            dis = mcplatform.Xlib.display.Display()
+            win = dis.create_resource_object('window', display.get_wm_info()['window'])
+            geom = win.query_tree().parent.get_geometry()
 
-        if w > 0 and h > 0:
-            Settings.windowWidth.set(w)
-            Settings.windowHeight.set(h)
-            config.saveConfig()
+        if w >= 1000 and h >= 700:
+            config.settings.windowWidth.set(w)
+            config.settings.windowHeight.set(h)
+            config.save()
+            if dis:
+                win.configure(height=geom.height, width=geom.width)
+        elif w !=0 and h !=0:
+            config.settings.windowWidth.set(1000)
+            config.settings.windowHeight.set(700)
+            config.save()
+            if dis:
+                win.configure(height=700, width=1000)
+        if dw > 20 or dh > 20:
+            if not hasattr(self, 'resizeAlert'):
+                self.resizeAlert = self.shouldResizeAlert
+            if self.resizeAlert:
+                albow.alert(
+                    "Window size increased. You may have problems using the cursor until MCEdit is restarted.")
+                self.resizeAlert = False
+        if dis:
+            dis.sync()
 
-        if pygame.version.vernum == (1, 9, 1):
-            if sys.platform == "win32":
-                if w - dw > 20 or h - dh > 20:
-                    if not hasattr(self, 'resizeAlert'):
-                        self.resizeAlert = self.shouldResizeAlert
-                    if self.resizeAlert:
-                        albow.alert(
-                            "Window size increased. You may have problems using the cursor until MCEdit is restarted.")
-                        self.resizeAlert = False
-
-    shouldResizeAlert = Settings.shouldResizeAlert.configProperty()
+    shouldResizeAlert = config.settings.shouldResizeAlert.property()
 
     def loadFile(self, filename):
         if os.path.exists(filename):
@@ -852,13 +369,19 @@ class MCEdit(GLViewport):
 
     def removeEditor(self):
         self.remove(self.editor)
-        self.fileOpener = FileOpener(self)
+        self.fileOpener = albow.FileOpener(self)
         self.add(self.fileOpener)
         self.focus_switch = self.fileOpener
 
     def confirm_quit(self):
+        #-# saving language template
+        if hasattr(albow.translate, "saveTemplate"):
+            albow.translate.saveTemplate()
+        #-#
+        self.saveWindowPosition()
+        config.save()
         if self.editor.unsavedEdits:
-            result = albow.ask("There are {0} unsaved changes.".format(self.editor.unsavedEdits),
+            result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
             if result == "Save and Quit":
                 self.saveAndQuit()
@@ -876,11 +399,33 @@ class MCEdit(GLViewport):
     def justQuit(self):
         raise SystemExit
 
-    closeMinecraftWarning = Settings.closeMinecraftWarning.configProperty()
+    @classmethod
+    def fetch_version(self):
+        with self.version_lock:
+            self.version_info = release.fetch_new_version_info()
+
+    def check_for_version(self):
+        new_version = release.check_for_new_version(self.version_info)
+        if new_version is not False:
+            answer = albow.ask(
+                _('Version {} is available').format(new_version["tag_name"]),
+                [
+                    'Download',
+                    'View',
+                    'Ignore'
+                ],
+                default=1,
+                cancel=2
+            )
+            if answer == "View":
+                platform_open(new_version["html_url"])
+            elif answer == "Download":
+                platform_open(new_version["asset"]["browser_download_url"])
+                albow.alert(_(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
 
     @classmethod
     def main(self):
-        displayContext = GLDisplayContext()
+        displayContext = GLDisplayContext(splash.splash)
 
         rootwidget = RootWidget(displayContext.display)
         mcedit = MCEdit(displayContext)
@@ -896,23 +441,13 @@ class MCEdit(GLViewport):
         if mcedit.droppedLevel:
             mcedit.loadFile(mcedit.droppedLevel)
 
-        new_version = release.check_for_new_version()
-        if new_version is not False:
-            answer = albow.ask(
-                'Version {} is available'.format(new_version["tag_name"]),
-                [
-                    'Download',
-                    'View',
-                    'Ignore'
-                ],
-                default=1,
-                cancel=2
-            )
-            if answer == "View":
-                platform_open(new_version["html_url"])
-            elif answer == "Download":
-                platform_open(new_version["asset"]["browser_download_url"])
-                albow.alert(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.'.format(new_version["asset"]["name"]))
+        self.version_lock = threading.Lock()
+        self.version_info = None
+        self.version_checked = False
+
+        fetch_version_thread = threading.Thread(target=self.fetch_version)
+        fetch_version_thread.start()
+
 
 # Disabled old update code
 #       if hasattr(sys, 'frozen'):
@@ -965,20 +500,20 @@ class MCEdit(GLViewport):
 #                   try:
 #                       app.auto_update(callback)
 #                   except (esky.EskyVersionError, EnvironmentError):
-#                       albow.alert("Failed to install update %s" % update_version)
+#                       albow.alert(_("Failed to install update %s") % update_version)
 #                   else:
-#                       albow.alert("Version %s installed. Restart MCEdit to begin using it." % update_version)
+#                       albow.alert(_("Version %s installed. Restart MCEdit to begin using it.") % update_version)
 #                       raise SystemExit()
 
-        if mcedit.closeMinecraftWarning:
+        if config.settings.closeMinecraftWarning.get():
             answer = albow.ask(
                 "Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.\n\n If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.",
                 ["Don't remind me again.", "OK"], default=1, cancel=1)
             if answer == "Don't remind me again.":
-                mcedit.closeMinecraftWarning = False
+                config.settings.closeMinecraftWarning.set(False)
 
 # Disabled Crash Reporting Option
-#       if not Settings.reportCrashesAsked.get():
+#       if not config.settings.reportCrashesAsked.get():
 #           answer = albow.ask(
 #               "When an error occurs, MCEdit can report the details of the error to its developers. "
 #               "The error report will include your operating system version, MCEdit version, "
@@ -988,12 +523,19 @@ class MCEdit(GLViewport):
 #               "Enable error reporting?",
 #               ["Yes", "No"],
 #               default=0)
-#           Settings.reportCrashes.set(answer == "Yes")
-#           Settings.reportCrashesAsked.set(True)
-        Settings.reportCrashes.set(False)
-        Settings.reportCrashesAsked.set(True)
+#           config.settings.reportCrashes.set(answer == "Yes")
+#           config.settings.reportCrashesAsked.set(True)
+        config.settings.reportCrashes.set(False)
+        config.settings.reportCrashesAsked.set(True)
 
-        config.saveConfig()
+        config.save()
+        if "update" in config.version.version.get():
+            answer = albow.ask("There are new default controls. Do you want to replace your current controls with the new ones?", ["Yes", "No"])
+            if answer == "Yes":
+                for configKey, k in keys.KeyConfigPanel.presets["WASD"]:
+                    config.keys[config.convert(configKey)].set(k)
+        config.version.version.set("1.1.2.0")
+        config.save()
         if "-causeError" in sys.argv:
             raise ValueError, "Error requested via -causeError"
 
@@ -1001,7 +543,7 @@ class MCEdit(GLViewport):
             try:
                 rootwidget.run()
             except SystemExit:
-                if sys.platform == "win32" and Settings.setWindowPlacement.get():
+                if sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
                     X, Y, r, b = rect
@@ -1011,11 +553,11 @@ class MCEdit(GLViewport):
                                 showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
                         showCmd = mcplatform.win32con.SW_SHOWNORMAL
 
-                    Settings.windowX.set(X)
-                    Settings.windowY.set(Y)
-                    Settings.windowShowCmd.set(showCmd)
+                    config.settings.windowX.set(X)
+                    config.settings.windowY.set(Y)
+                    config.settings.windowShowCmd.set(showCmd)
 
-                config.saveConfig()
+                config.save()
                 mcedit.editor.renderer.discardAllChunks()
                 mcedit.editor.deleteAllCopiedSchematics()
                 raise
@@ -1023,39 +565,80 @@ class MCEdit(GLViewport):
                 traceback.print_exc()
                 mcedit.editor.handleMemoryError()
 
+    def saveWindowPosition(self):
+        """Save the window position in the configuration handler."""
+        if sys.platform == "win32" and config.settings.setWindowPlacement.get():
+            (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
+                display.get_wm_info()['window'])
+            X, Y, r, b = rect
+            #w = r-X
+            #h = b-Y
+            if (showCmd == mcplatform.win32con.SW_MINIMIZE or
+                        showCmd == mcplatform.win32con.SW_SHOWMINIMIZED):
+                showCmd = mcplatform.win32con.SW_SHOWNORMAL
+
+            config.settings.windowX.set(X)
+            config.settings.windowY.set(Y)
+            config.settings.windowShowCmd.set(showCmd)
+        elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            win = display.get_wm_info()['window']
+            dis = mcplatform.Xlib.display.Display()
+            win = dis.create_resource_object('window', win)
+            curDesk = os.environ.get('XDG_CURRENT_DESKTOP')
+            if curDesk in ('GNOME', 'X-Cinnamon'):
+                wParent = win.query_tree().parent.query_tree().parent
+            elif curDesk == 'KDE':
+                wParent = win.query_tree().parent.query_tree().parent.query_tree().parent
+            if wParent:
+                geom = wParent.get_geometry()
+                config.settings.windowX.set(geom.x)
+                config.settings.windowY.set(geom.y)
+
+    def restart(self):
+        self.saveWindowPosition()
+        config.save()
+        self.editor.renderer.discardAllChunks()
+        self.editor.deleteAllCopiedSchematics()
+        python = sys.executable
+        if sys.argv[0].endswith('.exe') or hasattr(sys, 'frozen'):
+            os.execl(python, python, * sys.argv[1:])
+        else:
+            os.execl(python, python, * sys.argv)
 
 def main(argv):
     """
     Setup display, bundled schematics. Handle unclean
     shutdowns.
     """
-    try:
-        import squash_python
 
-        squash_python.uploader.SquashUploader.headers.pop("Content-encoding", None)
-        squash_python.uploader.SquashUploader.headers.pop("Accept-encoding", None)
-
-        version = release.get_version()
-        client = squash_python.get_client()
-        client.APIKey = "6ea52b17-ac76-4fd8-8db4-2d7303473ca2"
-        client.environment = "testing" if "build" in version else "production"
-        client.host = "http://bugs.mcedit.net"
-        client.notifyPath = "/bugs.php"
-        client.revision = release.get_commit()
-        client.build = version
-        client.timeout = 5
+# This should eventually be revived, what is "squash_python"?
+#    try:
+#        import squash_python
+#
+#        squash_python.uploader.SquashUploader.headers.pop("Content-encoding", None)
+#        squash_python.uploader.SquashUploader.headers.pop("Accept-encoding", None)
+#
+#        version = release.get_version()
+#        client = squash_python.get_client()
+#        client.APIKey = "6ea52b17-ac76-4fd8-8db4-2d7303473ca2"
+#        client.environment = "unknown"
+#        client.host = "http://pixelhost.ezekielelin.com"
+#        client.notifyPath = "/mcedit_bugs.php"
+#        client.build = version
+#        client.timeout = 5
+#
 # Disabled Crash Reporting Option
-#       client.disabled = not config.config.getboolean("Settings", "report crashes new")
-        client.disabled = True
-
-        def _reportingChanged(val):
-            client.disabled = not val
-
-        Settings.reportCrashes.addObserver(client, '_enabled', _reportingChanged)
-        client.reportErrors()
-        client.hook()
-    except (ImportError, UnicodeError) as e:
-        pass
+#       client.disabled = not config.settings.reportCrashesNew.get()
+#       client.disabled = True
+#
+#       def _reportingChanged(val):
+#           client.disabled = not val
+#
+#       config.settings.reportCrashes.addObserver(client, '_enabled', _reportingChanged)
+#       client.reportErrors()
+#       client.hook()
+#   except (ImportError, UnicodeError) as e:
+#       pass
 
     try:
         display.init()
@@ -1066,40 +649,60 @@ def main(argv):
         except pygame.error:
             os.environ['SDL_VIDEODRIVER'] = 'windib'
             display.init()
-
     pygame.font.init()
 
     try:
-        if not os.path.exists(mcplatform.schematicsDir):
+        if not os.path.exists(directories.schematicsDir):
             shutil.copytree(
-                os.path.join(directories.dataDir, u'stock-schematics'),
-                mcplatform.schematicsDir
+                os.path.join(directories.getDataDir(), u'stock-schematics'),
+                directories.schematicsDir
             )
     except Exception, e:
         logging.warning('Error copying bundled schematics: {0!r}'.format(e))
         try:
-            os.mkdir(mcplatform.schematicsDir)
+            os.mkdir(directories.schematicsDir)
         except Exception, e:
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
 
     try:
-        if not os.path.exists(mcplatform.filtersDir):
+        if not os.path.exists(directories.brushesDir):
             shutil.copytree(
-                os.path.join(directories.dataDir, u'filters'),
-                mcplatform.filtersDir
+                os.path.join(directories.getDataDir(), u'Brushes'),
+                directories.brushesDir
             )
+    except Exception, e:
+        logging.warning('Error copying bundled Brushes: {0!r}'.format(e))
+        try:
+            os.mkdir(directories.brushesDir)
+        except Exception, e:
+            logging.warning('Error creating Brushes folder: {0!r}'.format(e))
+
+    try:
+        if not os.path.exists(directories.filtersDir):
+            shutil.copytree(
+                os.path.join(directories.getDataDir(), u'stock-filters'),
+                directories.filtersDir
+            )
+        else:
+            # Start hashing the filter dir
+            mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
     except Exception, e:
         logging.warning('Error copying bundled filters: {0!r}'.format(e))
         try:
-            os.mkdir(mcplatform.filtersDir)
+            os.mkdir(directories.filtersDir)
         except Exception, e:
             logging.warning('Error creating filters folder: {0!r}'.format(e))
 
-    if mcplatform.filtersDir not in [s.decode(sys.getfilesystemencoding())
+    if directories.filtersDir not in [s.decode(sys.getfilesystemencoding())
                           if isinstance(s, str)
                           else s
                           for s in sys.path]:
-        sys.path.append(mcplatform.filtersDir.encode(sys.getfilesystemencoding()))
+        sys.path.append(directories.filtersDir.encode(sys.getfilesystemencoding()))
+
+    try:
+        ServerJarStorage()
+    except Exception, e:
+        logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
 
     try:
         MCEdit.main()
@@ -1116,125 +719,8 @@ def main(argv):
     return 0
 
 
-class GLDisplayContext(object):
-    def __init__(self):
-        self.reset()
-
-    def getWindowSize(self):
-        w, h = (Settings.windowWidth.get(), Settings.windowHeight.get())
-        return max(20, w), max(20, h)
-
-    def displayMode(self):
-        return pygame.OPENGL | pygame.RESIZABLE | pygame.DOUBLEBUF
-
-    def reset(self):
-        pygame.key.set_repeat(500, 100)
-
-        try:
-            display.gl_set_attribute(pygame.GL_SWAP_CONTROL, Settings.vsync.get())
-        except Exception, e:
-            logging.warning('Unable to set vertical sync: {0!r}'.format(e))
-
-        display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
-
-        d = display.set_mode(self.getWindowSize(), self.displayMode())
-        try:
-            pygame.scrap.init()
-        except:
-            logging.warning('PyGame clipboard integration disabled.')
-
-        display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
-        if sys.platform == 'win32' and Settings.setWindowPlacement.get():
-            Settings.setWindowPlacement.set(False)
-            config.saveConfig()
-            X, Y = Settings.windowX.get(), Settings.windowY.get()
-
-            if X:
-                w, h = self.getWindowSize()
-                hwndOwner = display.get_wm_info()['window']
-
-                flags, showCmd, ptMin, ptMax, rect = mcplatform.win32gui.GetWindowPlacement(hwndOwner)
-                realW = rect[2] - rect[0]
-                realH = rect[3] - rect[1]
-
-                showCmd = Settings.windowShowCmd.get()
-                rect = (X, Y, X + realW, Y + realH)
-
-                mcplatform.win32gui.SetWindowPlacement(hwndOwner, (0, showCmd, ptMin, ptMax, rect))
-
-            Settings.setWindowPlacement.set(True)
-            config.saveConfig()
-
-        try:
-            iconpath = os.path.join(directories.dataDir, 'favicon.png')
-            iconfile = file(iconpath, 'rb')
-            icon = pygame.image.load(iconfile, 'favicon.png')
-            display.set_icon(icon)
-        except Exception, e:
-            logging.warning('Unable to set icon: {0!r}'.format(e))
-
-        self.display = d
-
-        GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
-        GL.glAlphaFunc(GL.GL_NOTEQUAL, 0)
-        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
-
-        # textures are 256x256, so with this we can specify pixel coordinates
-        GL.glMatrixMode(GL.GL_TEXTURE)
-        GL.glScale(1 / 256., 1 / 256., 1 / 256.)
-
-        self.loadTextures()
-
-    def getTerrainTexture(self, level):
-        return self.terrainTextures.get(level.materials.name, self.terrainTextures["Alpha"])
-
-    def loadTextures(self):
-        self.terrainTextures = {}
-
-        def makeTerrainTexture(mats):
-            w, h = 1, 1
-            teximage = numpy.zeros((w, h, 4), dtype='uint8')
-            teximage[:] = 127, 127, 127, 255
-
-            GL.glTexImage2D(
-                GL.GL_TEXTURE_2D,
-                0,
-                GL.GL_RGBA8,
-                w,
-                h,
-                0,
-                GL.GL_RGBA,
-                GL.GL_UNSIGNED_BYTE,
-                teximage
-            )
-
-        textures = (
-            (pymclevel.classicMaterials, 'terrain-classic.png'),
-            (pymclevel.indevMaterials, 'terrain-classic.png'),
-            (pymclevel.alphaMaterials, 'terrain.png'),
-            (pymclevel.pocketMaterials, 'terrain-pocket.png')
-        )
-
-        for mats, matFile in textures:
-            try:
-                if mats.name == 'Alpha':
-                    tex = mceutils.loadAlphaTerrainTexture()
-                else:
-                    tex = mceutils.loadPNGTexture(matFile)
-                self.terrainTextures[mats.name] = tex
-            except Exception, e:
-                logging.warning(
-                    'Unable to load terrain from {0}, using flat colors.'
-                    'Error was: {1!r}'.format(matFile, e)
-                )
-                self.terrainTextures[mats.name] = glutils.Texture(
-                    functools.partial(makeTerrainTexture, mats)
-                )
-            mats.terrainTexture = self.terrainTextures[mats.name]
-
 def getSelectedMinecraftVersion():
-    import json
-    profile = getMinecraftProfileJSON()[getSelectedProfile()]
+    profile = directories.getMinecraftProfileJSON()[directories.getSelectedProfile()]
     if 'lastVersionId' in profile:
         return profile['lastVersionId']
     else:

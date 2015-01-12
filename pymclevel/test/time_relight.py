@@ -34,6 +34,3 @@ def manmade_relight():
 if __name__ == '__main__':
     natural_relight()
     manmade_relight()
-
-
-

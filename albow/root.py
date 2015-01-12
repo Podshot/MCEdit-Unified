@@ -6,6 +6,8 @@
 
 import sys
 import pygame
+
+from pygame import key
 from pygame.locals import *
 #from pygame.time import get_ticks
 from pygame.event import Event
@@ -13,10 +15,11 @@ from pygame.event import Event
 from glbackground import *
 import widget
 from widget import Widget
-from controls import Label
 
 from datetime import datetime, timedelta
 from albow.dialogs import wrapped_label
+
+from pymclevel.box import Vector
 
 start_time = datetime.now()
 
@@ -91,7 +94,7 @@ class RootWidget(Widget):
     #  is_gl     True if OpenGL surface
 
     redraw_every_frame = False
-    do_draw = False
+    bonus_draw_time = 0
     _is_gl_container = True
 
     def __init__(self, surface):
@@ -102,6 +105,18 @@ class RootWidget(Widget):
         widget.root_widget = self
         self.is_gl = surface.get_flags() & OPENGL != 0
         self.idle_handlers = []
+        self.editor = None
+        self.selectTool = None
+        self.movementMath = [-1, 1, 1, -1, 1, -1]
+        self.movementNum = [0, 0, 2, 2, 1, 1]
+        self.cameraMath = [-1., 1., -1., 1.]
+        self.cameraNum = [0, 0, 1, 1]
+        self.notMove = False
+        self.nudge = None
+        self.nudgeCount = 0
+
+    def get_nudge_block(self):
+        return self.selectTool.panel.nudgeBlocksButton
 
     def set_timer(self, ms):
         pygame.time.set_timer(USEREVENT, ms)
@@ -117,16 +132,22 @@ class RootWidget(Widget):
         if widget:
             pygame.mouse.set_visible(False)
             pygame.event.set_grab(True)
-            get_root().captured_widget = widget
+            self.captured_widget = widget
         else:
             pygame.mouse.set_visible(True)
             pygame.event.set_grab(False)
-            get_root().captured_widget = None
+            self.captured_widget = None
 
     frames = 0
     hover_widget = None
 
+    def fix_sticky_ctrl(self):
+        self.ctrlClicked = -1
+
     def run_modal(self, modal_widget):
+        if self.editor is None:
+            self.editor = self.mcedit.editor
+            self.selectTool = self.editor.toolbar.tools[0]
         old_captured_widget = None
 
         if self.captured_widget:
@@ -153,33 +174,38 @@ class RootWidget(Widget):
             num_clicks = 0
             last_click_time = start_time
             last_click_button = 0
-            self.do_draw = True
+            self.bonus_draw_time = 0
 
             while modal_widget.modal_result is None:
                 try:
-                    self.hover_widget = self.find_widget(mouse.get_pos())
-                    if self.do_draw:
+                    if not self.mcedit.version_checked:
+                        if not self.mcedit.version_lock.locked():
+                            self.mcedit.version_checked = True
+                            self.mcedit.check_for_version()
+
+                    self.hover_widget = self.find_widget(pygame.mouse.get_pos())
+                    if self.bonus_draw_time < 1:
+                        self.bonus_draw_time += 1
                         if self.is_gl:
                             self.gl_clear()
                             self.gl_draw_all(self, (0, 0))
                             GL.glFlush()
                         else:
                             self.draw_all(self.surface)
-                        self.do_draw = False
                         pygame.display.flip()
                         self.frames += 1
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
+                    
                     for event in events:
                         #if event.type:
                         #log.debug("%s", event)
-
                         type = event.type
                         if type == QUIT:
                             self.quit()
                         elif type == MOUSEBUTTONDOWN:
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             t = datetime.now()
                             if t - last_click_time <= double_click_time and event.button == last_click_button:
                                 num_clicks += 1
@@ -202,7 +228,7 @@ class RootWidget(Widget):
                             mouse_widget.notify_attention_loss()
                             mouse_widget.handle_mouse('mouse_down', event)
                         elif type == MOUSEMOTION:
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             add_modifiers(event)
                             modal_widget.dispatch_key('mouse_delta', event)
                             last_mouse_event = event
@@ -219,7 +245,7 @@ class RootWidget(Widget):
                                 mouse_widget.handle_mouse('mouse_move', event)
                         elif type == MOUSEBUTTONUP:
                             add_modifiers(event)
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             mouse_widget = self.find_widget(event.pos)
                             if self.captured_widget:
                                 mouse_widget = self.captured_widget
@@ -236,16 +262,27 @@ class RootWidget(Widget):
                         elif type == KEYDOWN:
                             key = event.key
                             set_modifier(key, True)
-                            self.do_draw = True
+                            add_modifiers(event)
+                            self.bonus_draw_time = 0
+
+                            levelExist = self.editor.level is not None
+                            keyname = event.dict.get('keyname', None) or self.getKey(event)
+
                             self.send_key(modal_widget, 'key_down', event)
                             if last_mouse_event_handler:
                                 event.dict['pos'] = last_mouse_event.pos
                                 event.dict['local'] = last_mouse_event.local
                                 last_mouse_event_handler.setup_cursor(event)
                         elif type == KEYUP:
+                            self.nudgeCount = 0
                             key = event.key
                             set_modifier(key, False)
-                            self.do_draw = True
+                            add_modifiers(event)
+                            self.bonus_draw_time = 0
+
+                            keyname = event.dict.get('keyname', None) or self.getKey(event)
+                            levelExist = self.editor.level is not None
+
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
                                 event.dict['pos'] = last_mouse_event.pos
@@ -256,7 +293,10 @@ class RootWidget(Widget):
                         elif type == USEREVENT:
                             make_scheduled_calls()
                             if not is_modal:
-                                self.do_draw = self.redraw_every_frame
+                                if self.redraw_every_frame:
+                                    self.bonus_draw_time = 0
+                                else:
+                                    self.bonus_draw_time += 1
                                 if last_mouse_event_handler:
                                     event.dict['pos'] = last_mouse_event.pos
                                     event.dict['local'] = last_mouse_event.local
@@ -265,7 +305,7 @@ class RootWidget(Widget):
                                 self.begin_frame()
                         elif type == VIDEORESIZE:
                             #add_modifiers(event)
-                            self.do_draw = True
+                            self.bonus_draw_time = 0
                             self.size = (event.w, event.h)
                             #self.dispatch_key('reshape', event)
                         elif type == ACTIVEEVENT:
@@ -274,6 +314,23 @@ class RootWidget(Widget):
                         elif type == NOEVENT:
                             add_modifiers(event)
                             self.call_idle_handlers(event)
+
+                    allKeys = pygame.key.get_pressed()
+                    self.editor.cameraInputs = [0., 0., 0., 0., 0., 0.]
+                    self.editor.cameraPanKeys = [0., 0., 0., 0.]
+                    for i, keys in enumerate(allKeys):
+                        if keys:
+                            keyName = self.getKey(movement=True, keyname=pygame.key.name(i))
+                            if self.editor.level:
+                                for i, key in enumerate(self.editor.movements):
+                                    if keyName == key:
+                                        if not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
+                                            self.changeMovementKeys(i, keyName)
+
+                                for i, key in enumerate(self.editor.cameraPan):
+                                    if keyName == key:
+                                        if not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
+                                            self.changeCameraKeys(i)
 
                 except Cancel:
                     pass
@@ -284,6 +341,75 @@ class RootWidget(Widget):
                 self.capture_mouse(old_captured_widget)
 
         clicked_widget = None
+
+    def getKey(self, evt=None, movement=False, keyname=None):
+        if keyname is None:
+            keyname = key.name(evt.key)
+        if 'left' in keyname and len(keyname) > 5:
+            keyname = keyname[5:]
+        elif 'right' in keyname and len(keyname) > 6:
+            keyname = keyname[6:]
+        try:
+            keyname = keyname.replace(keyname[0], keyname[0].upper(), 1)
+        finally:
+            if keyname == 'Meta':
+                keyname = 'Ctrl'
+            newKeyname = ""
+            if not movement:
+                if evt.shift and keyname != "Shift":
+                    newKeyname += "Shift-"
+                if (evt.ctrl or evt.cmd) and keyname != "Ctrl":
+                    newKeyname += "Ctrl-"
+                if evt.alt and keyname != "Alt":
+                    newKeyname += "Alt-"
+
+            keyname = newKeyname + keyname
+
+            if keyname == 'Enter':
+                keyname = 'Return'
+
+            return keyname
+
+    def changeMovementKeys(self, keyNum, keyname):
+        if self.editor.level is not None and not self.notMove:
+            self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
+        elif self.notMove and self.nudge is not None and self.nudgeCount < 1:
+            if keyname == self.editor.movements[4]:
+                self.nudge.nudge(Vector(0, 1, 0))
+            if keyname == self.editor.movements[5]:
+                self.nudge.nudge(Vector(0, -1, 0))
+
+            Z = self.editor.mainViewport.cameraVector
+            absZ = map(abs, Z)
+            if absZ[0] < absZ[2]:
+                forward = (0, 0, (-1 if Z[2] < 0 else 1))
+            else:
+                forward = ((-1 if Z[0] < 0 else 1), 0, 0)
+
+            back = map(int.__neg__, forward)
+            left = forward[2], forward[1], -forward[0]
+            right = map(int.__neg__, left)
+
+            if keyname == self.editor.movements[2]:
+                self.nudge.nudge(Vector(*forward))
+            if keyname == self.editor.movements[3]:
+                self.nudge.nudge(Vector(*back))
+            if keyname == self.editor.movements[0]:
+                self.nudge.nudge(Vector(*left))
+            if keyname == self.editor.movements[1]:
+                self.nudge.nudge(Vector(*right))
+
+            self.nudgeCount += 1
+
+        elif self.notMove and self.nudge is not None:
+            if self.nudgeCount == 250:
+                self.nudgeCount = 0
+            else:
+                self.nudgeCount += 1
+
+    def changeCameraKeys(self, keyNum):
+        if self.editor.level is not None and not self.notMove:
+            self.editor.cameraPanKeys[self.cameraNum[keyNum]] = self.cameraMath[keyNum]
 
     def call_idle_handlers(self, event):
         def call(ref):
@@ -307,7 +433,6 @@ class RootWidget(Widget):
         self.idle_handlers.remove(ref(widget))
 
     def send_key(self, widget, name, event):
-        add_modifiers(event)
         widget.dispatch_key(name, event)
 
     def begin_frame(self):
@@ -357,7 +482,7 @@ class RootWidget(Widget):
 
     def update_tooltip(self, pos=None):
         if pos is None:
-            pos = mouse.get_pos()
+            pos = pygame.mouse.get_pos()
         if self.captured_widget:
             mouse_widget = self.captured_widget
             pos = mouse_widget.center
@@ -400,6 +525,11 @@ class RootWidget(Widget):
         import music
 
         music.music_end()
+
+    #-# Used for debugging the resize stuff.
+#    def resized(self, *args, **kwargs):
+#        Widget.resized(self, *args, **kwargs)
+#        print self.size
 
 #---------------------------------------------------------------------------
 

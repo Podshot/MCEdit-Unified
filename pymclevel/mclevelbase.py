@@ -31,6 +31,17 @@ class ChunkMalformed(ChunkNotPresent):
     pass
 
 
+class ChunkConcurrentException(Exception):
+    """Exception that is raised when a chunk is being modified while
+    saving is taking place"""
+    pass
+
+
+class ChunkAccessDenied(ChunkNotPresent):
+    """Exception that is raised when a chunk is trying to be read from disk while
+    saving is taking place"""
+    pass
+
 def exhaust(_iter):
     """Functions named ending in "Iter" return an iterable object that does
     long-running work and yields progress information on each call. exhaust()

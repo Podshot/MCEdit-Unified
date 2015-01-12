@@ -1,11 +1,12 @@
+#-# Modified by D.C.-G. for translation purpose
 import textwrap
-from pygame import Rect, event
+from pygame import event, key
 from pygame.locals import *
 from widget import Widget
 from controls import Label, Button
 from layout import Row, Column
 from fields import TextField
-
+from translate import _
 
 class Modal(object):
     enter_response = True
@@ -24,6 +25,7 @@ class Dialog(Modal, Widget):
     def __init__(self, client=None, responses=None,
                  default=0, cancel=-1, **kwds):
         Widget.__init__(self, **kwds)
+        self.root = self.get_root()
         if client or responses:
             rows = []
             w1 = 0
@@ -57,6 +59,13 @@ class Dialog(Modal, Widget):
             if response is not None:
                 self.dismiss(response)
 
+    def key_down(self, e):
+        pass
+
+    def key_up(self, e):
+        pass
+
+
 
 class QuickDialog(Dialog):
     """ Dialog that closes as soon as you click outside or press a key"""
@@ -73,7 +82,10 @@ class QuickDialog(Dialog):
 
 
 def wrapped_label(text, wrap_width, **kwds):
-    paras = text.split("\n")
+    # paras = text.split("\n")
+    text = _(text)
+    kwds['doNotTranslate'] = True
+    paras = text.split("\n\n")
     text = "\n".join([textwrap.fill(para, wrap_width) for para in paras])
     return Label(text, **kwds)
 
@@ -117,6 +129,14 @@ def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
         box.cancel_response = None
     box.add(col)
     box.shrink_wrap()
+
+    def dispatchKeyForAsk(name, evt):
+        if name == "key_down":
+            if box.root.getKey(evt) == "Return":
+                if default is not None:
+                    box.dismiss(responses[default])
+
+    box.dispatch_key = dispatchKeyForAsk
     return box.present()
 
 
@@ -141,6 +161,48 @@ def input_text(prompt, width, initial=None, **kwds):
     tf.left = lb.right + 5
     box.add(lb)
     box.add(tf)
+    tf.focus()
+    box.shrink_wrap()
+    if box.present():
+        return tf.get_text()
+    else:
+        return None
+
+
+def input_text_buttons(prompt, width, initial=None, **kwds):
+    box = Dialog(**kwds)
+    d = box.margin
+
+    def ok():
+        box.dismiss(True)
+
+    def cancel():
+        box.dismiss(False)
+
+    buts = []
+    buts.append(Button("OK", action=ok))
+    buts.append(Button("Cancel", action=cancel))
+
+    brow = Row(buts, spacing=d)
+
+
+    lb = Label(prompt)
+    lb.topleft = (d, d)
+    tf = TextField(width)
+    if initial:
+        tf.set_text(initial)
+    tf.enter_action = ok
+    tf.escape_action = cancel
+    tf.top = lb.top
+    tf.left = lb.right + 5
+
+    trow = Row([lb, tf], spacing=d)
+
+    col = Column([trow, brow], spacing=d, align='c')
+
+    col.topleft = (d, d)
+
+    box.add(col)
     tf.focus()
     box.shrink_wrap()
     if box.present():

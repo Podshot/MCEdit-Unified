@@ -13,11 +13,7 @@ from entity import TileEntity
 def blockReplaceTable(blocksToReplace):
     blocktable = numpy.zeros((materials.id_limit, 16), dtype='bool')
     for b in blocksToReplace:
-        if b.hasVariants:
             blocktable[b.ID, b.blockData] = True
-        else:
-            blocktable[b.ID] = True
-
     return blocktable
 
 
@@ -32,18 +28,12 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
     else:
         chunkIterator = level.getChunkSlices(box)
 
-    # shouldRetainData = (not blockInfo.hasVariants and not any([b.hasVariants for b in blocksToReplace]))
-    # if shouldRetainData:
-    # log.info( "Preserving data bytes" )
-    shouldRetainData = False  # xxx old behavior overwrote blockdata with 0 when e.g. replacing water with lava
-
     log.info("Replacing {0} with {1}".format(blocksToReplace, blockInfo))
 
     changesLighting = True
     blocktable = None
     if len(blocksToReplace):
         blocktable = blockReplaceTable(blocksToReplace)
-        shouldRetainData = all([blockrotation.SameRotationType(blockInfo, b) for b in blocksToReplace])
 
         newAbsorption = level.materials.lightAbsorption[blockInfo.ID]
         oldAbsorptions = [level.materials.lightAbsorption[b.ID] for b in blocksToReplace]
@@ -83,8 +73,7 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
             # don't waste time relighting and copying if the mask is empty
             if blockCount:
                 blocks[:][mask] = blockInfo.ID
-                if not shouldRetainData:
-                    data[mask] = blockInfo.blockData
+                data[mask] = blockInfo.blockData
             else:
                 skipped += 1
                 needsLighting = False
@@ -98,8 +87,7 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
 
         else:
             blocks[:] = blockInfo.ID
-            if not shouldRetainData:
-                data[:] = blockInfo.blockData
+            data[:] = blockInfo.blockData
             chunk.removeTileEntitiesInBox(box)
 
         chunk.chunkChanged(needsLighting)

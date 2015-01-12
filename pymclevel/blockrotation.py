@@ -3,6 +3,15 @@ from materials import alphaMaterials
 from numpy import arange, zeros
 
 
+def genericRoll(cls):
+    rotation = arange(16, dtype='uint8')
+    if hasattr(cls, "Up") and hasattr(cls, "Down"):
+        rotation[cls.Up] = cls.North
+        rotation[cls.Down] = cls.South
+        rotation[cls.South] = cls.Up
+        rotation[cls.North] = cls.Down
+    return rotation
+
 def genericVerticalFlip(cls):
     rotation = arange(16, dtype='uint8')
     if hasattr(cls, "Up") and hasattr(cls, "Down"):
@@ -64,6 +73,7 @@ rotationClasses = []
 
 def genericFlipRotation(cls):
     cls.rotateLeft = genericRotation(cls)
+    cls.roll = genericRoll(cls)
 
     cls.flipVertical = genericVerticalFlip(cls)
     cls.flipEastWest = genericEastWestFlip(cls)
@@ -84,10 +94,14 @@ class Torch:
     North = 2
     West = 3
     East = 4
+    # on the bottom
+    Up = 5
 
 
 genericFlipRotation(Torch)
-
+Torch.roll = arange(16, dtype='uint8')
+Torch.roll[Torch.Up] = Torch.North
+Torch.roll[Torch.South] = Torch.Up
 
 class Ladder:
     blocktypes = [alphaMaterials.Ladder.ID]
@@ -116,37 +130,25 @@ class Stair:
 
 genericFlipRotation(Stair)
 
+Stair.roll = arange(16, dtype='uint8')
+Stair.roll[Stair.East] = Stair.East
+Stair.roll[Stair.West] = Stair.West
+Stair.roll[Stair.TopEast] = Stair.TopEast
+Stair.roll[Stair.TopWest] = Stair.TopWest
 
+Stair.roll[Stair.North] = Stair.South
+Stair.roll[Stair.South] = Stair.TopSouth
+Stair.roll[Stair.TopSouth] = Stair.TopNorth
+Stair.roll[Stair.TopNorth] = Stair.North
+
+# data value 0-8 bottom and 9-15 Top
 class HalfSlab:
-    blocktypes = [alphaMaterials.StoneSlab.ID]
-
-    StoneSlab = 0
-    SandstoneSlab = 1
-    WoodenSlab = 2
-    CobblestoneSlab = 3
-    BrickSlab = 4
-    StoneBrickSlab = 5
-    TopStoneSlab = 8
-    TopSandstoneSlab = 9
-    TopWoodenSlab = 10
-    TopCobblestoneSlab = 11
-    TopBrickSlab = 12
-    TopStoneBrickSlab = 13
-
+    blocktypes = [b.ID for b in alphaMaterials.AllSlabs]
 
 HalfSlab.flipVertical = arange(16, dtype='uint8')
-HalfSlab.flipVertical[HalfSlab.StoneSlab] = HalfSlab.TopStoneSlab
-HalfSlab.flipVertical[HalfSlab.SandstoneSlab] = HalfSlab.TopSandstoneSlab
-HalfSlab.flipVertical[HalfSlab.WoodenSlab] = HalfSlab.TopWoodenSlab
-HalfSlab.flipVertical[HalfSlab.CobblestoneSlab] = HalfSlab.TopCobblestoneSlab
-HalfSlab.flipVertical[HalfSlab.BrickSlab] = HalfSlab.TopBrickSlab
-HalfSlab.flipVertical[HalfSlab.StoneBrickSlab] = HalfSlab.TopStoneBrickSlab
-HalfSlab.flipVertical[HalfSlab.TopStoneSlab] = HalfSlab.StoneSlab
-HalfSlab.flipVertical[HalfSlab.TopSandstoneSlab] = HalfSlab.SandstoneSlab
-HalfSlab.flipVertical[HalfSlab.TopWoodenSlab] = HalfSlab.WoodenSlab
-HalfSlab.flipVertical[HalfSlab.TopCobblestoneSlab] = HalfSlab.CobblestoneSlab
-HalfSlab.flipVertical[HalfSlab.TopBrickSlab] = HalfSlab.BrickSlab
-HalfSlab.flipVertical[HalfSlab.TopStoneBrickSlab] = HalfSlab.StoneBrickSlab
+for i in range(8):
+    HalfSlab.flipVertical[i] = i + 8
+    HalfSlab.flipVertical[i + 8] = i
 rotationClasses.append(HalfSlab)
 
 
@@ -234,6 +236,8 @@ generic8wayRotation(Rail)
 Rail.rotateLeft[Rail.NorthSouth] = Rail.EastWest
 Rail.rotateLeft[Rail.EastWest] = Rail.NorthSouth
 
+Rail.roll = arange(16, dtype='uint8')
+Rail.roll[Rail.North] = Rail.South
 
 def applyBit(apply):
     def _applyBit(class_or_array):
@@ -242,6 +246,10 @@ def applyBit(apply):
                       class_or_array.flipNorthSouth,
                       class_or_array.rotateLeft):
                 apply(a)
+            if hasattr(class_or_array, "flipVertical"):
+                apply(class_or_array.flipVertical)
+            if hasattr(class_or_array, "roll"):
+                apply(class_or_array.roll)
         else:
             array = class_or_array
             apply(array)
@@ -287,41 +295,52 @@ rotationClasses.append(PoweredDetectorRail)
 class Lever:
     blocktypes = [alphaMaterials.Lever.ID]
     ThrownBit = 0x8
-    Up = 0
+    # DownSouth indicates floor lever pointing South in off state
+    DownSouth = 0
     South = 1
     North = 2
     West = 3
     East = 4
-    EastWest = 5
-    NorthSouth = 6
-    Down = 7
+    UpSouth = 5
+    UpWest = 6
+    DownWest = 7
 
 
 Lever.rotateLeft = genericRotation(Lever)
-Lever.rotateLeft[Lever.NorthSouth] = Lever.EastWest
-Lever.rotateLeft[Lever.EastWest] = Lever.NorthSouth
-Lever.rotateLeft[Lever.Up] = Lever.Down
-Lever.rotateLeft[Lever.Down] = Lever.Up
+Lever.rotateLeft[Lever.UpSouth] = Lever.UpWest
+Lever.rotateLeft[Lever.UpWest] = Lever.UpSouth
+Lever.rotateLeft[Lever.DownSouth] = Lever.DownWest
+Lever.rotateLeft[Lever.DownWest] = Lever.DownSouth
 Lever.flipEastWest = genericEastWestFlip(Lever)
 Lever.flipNorthSouth = genericNorthSouthFlip(Lever)
+Lever.flipVertical = arange(16, dtype='uint8')
+Lever.flipVertical[Lever.UpSouth] = Lever.DownSouth
+Lever.flipVertical[Lever.DownSouth] = Lever.UpSouth
+Lever.flipVertical[Lever.UpWest] = Lever.DownWest
+Lever.flipVertical[Lever.DownWest] = Lever.UpWest
+Lever.roll = arange(16, dtype='uint8')
+Lever.roll[Lever.North] = Lever.DownSouth
+Lever.roll[Lever.South] = Lever.UpSouth
+Lever.roll[Lever.DownSouth] = Lever.South
+Lever.roll[Lever.DownWest] = Lever.South
+Lever.roll[Lever.UpSouth] = Lever.North
+Lever.roll[Lever.UpWest] = Lever.North
+
 applyThrownBit(Lever)
 rotationClasses.append(Lever)
 
-
+@genericFlipRotation
 class Button:
     blocktypes = [alphaMaterials.Button.ID, alphaMaterials.WoodenButton.ID]
     PressedBit = 0x8
+    Down = 0
     South = 1
     North = 2
     West = 3
     East = 4
+    Up = 5
 
-
-Button.rotateLeft = genericRotation(Button)
-Button.flipEastWest = genericEastWestFlip(Button)
-Button.flipNorthSouth = genericNorthSouthFlip(Button)
 applyThrownBit(Button)
-rotationClasses.append(Button)
 
 
 class SignPost:
@@ -397,6 +416,16 @@ genericFlipRotation(Bed)
 applyBit8(Bed)
 applyBit4(Bed)
 
+class EndPortal:
+    blocktypes = [alphaMaterials.PortalFrame.ID]
+    West = 0
+    North = 1
+    East = 2
+    South = 3
+
+
+genericFlipRotation(EndPortal)
+applyBit4(EndPortal)
 
 class Door:
     blocktypes = [
@@ -480,6 +509,17 @@ Log.rotateLeft[Log.Type3EastWest] = Log.Type3NorthSouth
 Log.rotateLeft[Log.Type4NorthSouth] = Log.Type4EastWest
 Log.rotateLeft[Log.Type4EastWest] = Log.Type4NorthSouth
 
+Log.roll = arange(16, dtype='uint8')
+Log.roll[Log.Type1NorthSouth] = Log.Type1Up
+Log.roll[Log.Type2NorthSouth] = Log.Type2Up
+Log.roll[Log.Type3NorthSouth] = Log.Type3Up
+Log.roll[Log.Type4NorthSouth] = Log.Type4Up
+
+Log.roll[Log.Type1Up] = Log.Type1NorthSouth
+Log.roll[Log.Type2Up] = Log.Type2NorthSouth
+Log.roll[Log.Type3Up] = Log.Type3NorthSouth
+Log.roll[Log.Type4Up] = Log.Type4NorthSouth
+
 rotationClasses.append(Log)
 
 
@@ -518,7 +558,6 @@ genericFlipRotation(Trapdoor)
 applyOpenedBit = applyBit8
 applyOpenedBit(Trapdoor)
 
-
 class PistonBody:
     blocktypes = [alphaMaterials.StickyPiston.ID, alphaMaterials.Piston.ID]
 
@@ -529,7 +568,7 @@ class PistonBody:
     North = 4
     South = 5
 
-
+genericRoll(PistonBody)
 genericFlipRotation(PistonBody)
 applyPistonBit = applyBit8
 applyPistonBit(PistonBody)
@@ -570,7 +609,10 @@ class HugeMushroom:
 
 
 generic8wayRotation(HugeMushroom)
-
+HugeMushroom.roll = arange(16, dtype='uint8')
+HugeMushroom.roll[HugeMushroom.Southeast] = HugeMushroom.Northeast
+HugeMushroom.roll[HugeMushroom.South] = HugeMushroom.North
+HugeMushroom.roll[HugeMushroom.Southwest] = HugeMushroom.Northwest
 
 class Vines:
     blocktypes = [alphaMaterials.Vines.ID]
@@ -614,20 +656,24 @@ applyAnvilBit(Anvil)
 class Hay:
     blocktypes = [alphaMaterials.HayBlock.ID]
 
-    East = 4
-    West = 4
-    North = 8
-    South = 8
+    Up = 0
+    Down = 0
+    East = 8
+    West = 8
+    North = 4
+    South = 4
 
 
 @genericFlipRotation
 class QuartzPillar:
     blocktypes = [alphaMaterials.BlockofQuartz.ID]
 
-    East = 3
-    West = 3
-    North = 4
-    South = 4
+    Up = 2
+    Down = 2
+    East = 4
+    West = 4
+    North = 3
+    South = 3
 
 @genericFlipRotation
 class NetherPortal:
@@ -716,6 +762,9 @@ class Hopper:
     North = 4
     South = 5
 
+Hopper.roll = arange(16, dtype='uint8')
+Hopper.roll[Hopper.Down] = Hopper.South
+Hopper.roll[Hopper.North] = Hopper.Down
 
 @genericFlipRotation 
 class Dropper:
@@ -771,6 +820,7 @@ class BlockRotation:
     flipEastWest = masterRotationTable("flipEastWest")
     flipNorthSouth = masterRotationTable("flipNorthSouth")
     flipVertical = masterRotationTable("flipVertical")
+    roll = masterRotationTable("roll")
     typeTable = rotationTypeTable()
 
 
@@ -793,3 +843,6 @@ def FlipEastWest(blocks, data):
 
 def RotateLeft(blocks, data):
     data[:] = BlockRotation.rotateLeft[blocks, data]
+
+def Roll(blocks, data):
+    data[:] = BlockRotation.roll[blocks, data]

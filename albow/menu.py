@@ -3,13 +3,13 @@
 #    Albow - Pull-down or pop-up menu
 #
 #---------------------------------------------------------------------------
-
+#-# Modified by D.C.-G. for translation purpose
 import sys
 from root import get_root, get_focus
 from dialogs import Dialog
 from theme import ThemeProperty
 from pygame import Rect, draw
-
+from translate import _
 #---------------------------------------------------------------------------
 
 
@@ -33,7 +33,7 @@ class MenuItem(object):
             text, key = text.split("/", 1)
         else:
             key = ""
-        self.text = text
+        self.text = _(text)
         if key:
             keyname = key[-1]
             mods = key[:-1]
@@ -59,13 +59,15 @@ class Menu(Dialog):
 
     def __init__(self, title, items, scrolling=False, scroll_items=30,
                  scroll_page=5, **kwds):
-        self.title = title
+        self.title = _(title)
         self.items = items
         self._items = [MenuItem(*item) for item in items]
         self.scrolling = scrolling and len(self._items) > scroll_items
         self.scroll_items = scroll_items
         self.scroll_page = scroll_page
         Dialog.__init__(self, **kwds)
+
+        self.root = self.get_root()
 
         h = self.font.get_linesize()
         if self.scrolling:
@@ -74,7 +76,7 @@ class Menu(Dialog):
             self.height = h * len(self._items) + h
 
     def present(self, client, pos):
-        client = client or get_root()
+        client = client or self.root
         self.topleft = client.local_to_global(pos)
         focus = get_focus()
         font = self.font
@@ -99,8 +101,7 @@ class Menu(Dialog):
         self.size = (width, height)
         self._hilited = None
 
-        root = get_root()
-        self.rect.clamp_ip(root.rect)
+        self.rect.clamp_ip(self.root.rect)
 
         return Dialog.present(self, centered=False)
 

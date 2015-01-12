@@ -19,6 +19,7 @@ lib64/
 parts/
 sdist/
 var/
+ENV/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -54,12 +55,28 @@ docs/_build/
 # PyBuilder
 target/
 filters/modifyitemstrings.py
+build.bat
 
 # Eclipse
-
+.externalToolBuilders
 .metadata
 *.xcodeproj
 .project
 .pydevproject
 .settings
+.idea/
+*.iml
 Thumbs.db
+
+# MCEdit stuff
+filters.json
+pymclevel/.git/
+*.lnk
+Filters/
+Schematics/
+terrain-textures/
+player-skins/
+
+# Profiler Data
+*.svg
+*.profile

@@ -11,32 +11,29 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+# import resource_packs # not the right place, moving it a bit furtehr
 
 """
 mceutils.py
 
 Exception catching, some basic box drawing, texture pack loading, oddball UI elements
 """
-
+# Modified by D.C.-G. for translation purpose
+import resource_packs
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
-import config
-from cStringIO import StringIO
+from albow.translate import _
 from datetime import datetime
 import directories
-import httplib
-import mcplatform
 import numpy
-from OpenGL import GL, GLU
+from OpenGL import GL
 import os
-import platform
 import png
-from pygame import display, image, Surface
+from pygame import display
 import pymclevel
-import release
-import sys
-import traceback
-import zipfile
+import json
+import hashlib
+import shutil
 
 import logging
 
@@ -48,21 +45,10 @@ def alertException(func):
         except root.Cancel:
             alert("Canceled.")
         except pymclevel.infiniteworld.SessionLockLost as e:
-            alert(e.message + "\n\nYour changes cannot be saved.")
-
+            alert(e.message + _("\n\nYour changes cannot be saved."))
         except Exception, e:
             logging.exception("Exception:")
-            if ask("Error during {0}: {1!r}".format(func, e)[:1000], ["Report Error", "Okay"], default=1,
-                   cancel=0) == "Report Error":
-                try:
-                    import squash_python
-
-                    squash_python.get_client().recordException(*sys.exc_info())
-                except ImportError:
-                    pass
-                except Exception:
-                    logging.exception("Error while recording exception data:")
-
+            ask(_("Error during {0}: {1!r}").format(func, e)[:1000], ["OK"], cancel=0)
     return _alertException
 
 
@@ -187,7 +173,7 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
             x2, y2, z,
             x2, y2, z2,
         ), dtype='f4')
-    if textureVertices == None:
+    if textureVertices is None:
         textureVertices = numpy.array(
             (
                 0, -dy * 16,
@@ -271,13 +257,10 @@ def drawTerrainCuttingWire(box,
     # glDepthMask(True)
 
 
-# texturePacksDir = os.path.join(pymclevel.minecraftDir, "texturepacks")
-
-
 def loadAlphaTerrainTexture():
     pngFile = None
 
-    texW, texH, terraindata = loadPNGFile(os.path.join(directories.dataDir, "terrain.png"))
+    texW, texH, terraindata = loadPNGFile(os.path.join(directories.getDataDir(), resource_packs.packs.get_selected_resource_pack().terrain_path()))
 
     def _loadFunc():
         loadTextureFunc(texW, texH, terraindata)
@@ -318,7 +301,7 @@ def loadTextureFunc(w, h, ndata):
 
 
 def loadPNGTexture(filename, *a, **kw):
-    filename = os.path.join(directories.dataDir, filename)
+    filename = os.path.join(directories.getDataDir(), filename)
     try:
         w, h, ndata = loadPNGFile(filename)
 
@@ -365,7 +348,12 @@ class HotkeyColumn(Widget):
             buttonsColumn = []
 
         Widget.__init__(self)
-        for (hotkey, title, action) in items:
+        for t in items:
+            if len(t) == 3:
+                (hotkey, title, action) = t
+                tooltipText = None
+            else:
+                (hotkey, title, action, tooltipText) = t
             if isinstance(title, (str, unicode)):
                 button = Button(title, action=action)
             else:
@@ -376,6 +364,9 @@ class HotkeyColumn(Widget):
             label.anchor = "wh"
 
             label.height = button.height
+
+            if tooltipText:
+                button.tooltipText = tooltipText
 
             keysColumn.append(label)
             buttonsColumn.append(button)
@@ -426,7 +417,7 @@ class ChoiceButton(ValueButton):
         self.scroll_items = scroll_items
         self.choices = choices or ["[UNDEFINED]"]
 
-        widths = [self.font.size(c)[0] for c in choices] + [self.width]
+        widths = [self.font.size(_(c))[0] for c in choices] + [self.width]
         if len(widths):
             self.width = max(widths) + self.margin * 2
 
@@ -513,7 +504,9 @@ def TextInputRow(title, *args, **kw):
 
 def setWindowCaption(prefix):
     caption = display.get_caption()[0]
-
+    prefix = _(prefix)
+    if type(prefix) == unicode:
+        prefix = prefix.encode("utf8")
     class ctx:
         def __enter__(self):
             display.set_caption(prefix + caption)
@@ -523,6 +516,55 @@ def setWindowCaption(prefix):
 
     return ctx()
 
+def compareMD5Hashes(found_filters):
+    '''
+    Compares the MD5 Hashes of filters
+    :param found_filters: A list of filter paths
+    '''
+    ff = {}
+    for filter in found_filters:
+        ff[os.path.split(filter)[-1]] = filter
+    try:
+        if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
+            filterDict = {}
+            filterDict["filters"] = {}
+            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
+                json.dump(filterDict, j)
+        filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "stock-filters"), ".py")
+        filterBundle = {}
+        for bundled in filterInBundledFolder:
+            filterBundle[os.path.split(bundled)[-1]] = bundled
+        hashJSON = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+        for filt in ff.keys():
+            realName = filt
+            if realName in filterBundle.keys():
+                with open(ff[filt], 'r') as filtr:
+                    filterData = filtr.read()
+                    if realName in hashJSON["filters"]:
+                        old_hash = hashJSON["filters"][realName]
+                        bundledData = None
+                        with open(filterBundle[realName]) as bundledFilter:
+                            bundledData = bundledFilter.read()
+                        if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData != None:
+                            shutil.copy(filterBundle[realName], directories.filtersDir)
+                            hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
+                        if old_hash != hashlib.md5(filterData).hexdigest() and hashlib.md5(filterData).hexdigest() != hashlib.md5(bundledData).hexdigest():
+                            shutil.copy(filterBundle[realName], directories.filtersDir)
+                            hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
+                    else:
+                        hashJSON["filters"][realName] = hashlib.md5(filterData).hexdigest()
+        for bundled in filterBundle.keys():
+            if bundled not in ff.keys():
+                shutil.copy(filterBundle[bundled], directories.filtersDir)
+                data = None
+                with open(filterBundle[bundled], 'r') as f:
+                    data = f.read()
+                if data != None:
+                    hashJSON[bundled] = hashlib.md5(data).hexdigest()
+        with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
+            json.dump(hashJSON, done)
+    except Exception, e:
+        print ('Error: {}'.format(e))
 
 def showProgress(progressText, progressIterator, cancel=False):
     """Show the progress for a long-running synchronous operation.
@@ -535,8 +577,11 @@ def showProgress(progressText, progressIterator, cancel=False):
     class ProgressWidget(Dialog):
         progressFraction = 0.0
         firstDraw = False
+        root = None
 
         def draw(self, surface):
+            if self.root is None:
+                self.root = self.get_root()
             Widget.draw(self, surface)
             frameStart = datetime.now()
             frameInterval = timedelta(0, 1, 0) / 2
@@ -586,7 +631,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             delta = ((datetime.now() - self.startTime))
             progressPercent = (int(self.progressFraction * 10000))
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
-            return "Time left: {0}".format(left)
+            return _("Time left: {0}").format(left)
 
         def cancel(self):
             if cancel:
@@ -595,8 +640,22 @@ def showProgress(progressText, progressIterator, cancel=False):
         def idleevent(self, evt):
             self.invalidate()
 
+        def key_down(self, event):
+            pass
+
+        def key_up(self, event):
+            pass
+
+        def mouse_up(self, event):
+            try:
+                if "SelectionTool" in str(self.root.editor.currentTool):
+                    if self.root.get_nudge_block().count > 0:
+                        self.root.get_nudge_block().mouse_up(event)
+            except:
+                pass
+
     widget = ProgressWidget()
-    widget.progressText = progressText
+    widget.progressText = _(progressText)
     widget.statusText = ""
     widget.progressAmount = 0.0
 

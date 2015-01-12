@@ -66,7 +66,7 @@ class PocketChunksFile(object):
             for i in xrange(sector, sector + count):
                 if i >= len(self.freeSectors):
                     # raise RegionMalformed("Region file offset table points to sector {0} (past the end of the file)".format(i))
-                    print  "Region file offset table points to sector {0} (past the end of the file)".format(i)
+                    print "Region file offset table points to sector {0} (past the end of the file)".format(i)
                     needsRepair = True
                     break
                 if self.freeSectors[i] is False:
@@ -341,13 +341,14 @@ class PocketWorld(ChunkedLevelMixin, MCLevel):
                 return False
             filename = os.path.dirname(filename)
 
-        return all([os.path.exists(os.path.join(filename, f)) for f in clp])
+        return all([os.path.exists(os.path.join(filename, fl)) for fl in clp])
 
-    def saveInPlace(self):
+    def saveInPlaceGen(self):
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
                 self.chunkFile.saveChunk(chunk)
                 chunk.dirty = False
+            yield
 
     def containsChunk(self, cx, cz):
         if cx > 31 or cz > 31 or cx < 0 or cz < 0:
@@ -429,3 +430,16 @@ class PocketChunk(LightedChunk):
                         packData(self.BlockLight).tostring(),
                         self.DirtyColumns.tostring(),
         ])
+
+class NewPocketWorld():
+    @classmethod
+    def _isLevel(self, filename):
+        clp = ("db", "level.dat")
+
+        if not os.path.isdir(filename):
+            f = os.path.basename(filename)
+            if f not in clp:
+                return False
+            filename = os.path.dirname(filename)
+
+        return all([os.path.exists(os.path.join(filename, fl)) for fl in clp])

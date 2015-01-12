@@ -180,4 +180,3 @@ class TestNBT():
         duration = time.time() - startTime
 
         assert duration < 1.0  # Will fail when not using _nbt.pyx
-

@@ -11,10 +11,11 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
+#-# Modified by D.C.-G. for translation purpose
 from OpenGL import GL
 import numpy
-import pygame
-from albow import Label, Button, Column
+from albow import Label, Button, Column, alert
+from albow.translate import _
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
 from editortools.blockview import BlockButton
@@ -24,12 +25,11 @@ from glbackground import Panel
 from glutils import Texture
 from mceutils import showProgress, CheckBoxLabel, alertException, setWindowCaption
 from operation import Operation
+from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
-import config
+from config import config
+from albow.root import get_root
 import pymclevel
-
-FillSettings = config.Settings("Fill")
-FillSettings.chooseBlockImmediately = FillSettings("Choose Block Immediately", True)
 
 
 class BlockFillOperation(Operation):
@@ -38,11 +38,15 @@ class BlockFillOperation(Operation):
         self.destBox = destBox
         self.blockInfo = blockInfo
         self.blocksToReplace = blocksToReplace
+        self.canUndo = False
 
     def name(self):
-        return "Fill with " + self.blockInfo.name
+        return _("Fill with ") + self.blockInfo.name
 
     def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert("Cannot perform action while saving is taking place")
+            return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.destBox)
 
@@ -52,6 +56,7 @@ class BlockFillOperation(Operation):
 
         fill = self.level.fillBlocksIter(destBox, self.blockInfo, blocksToReplace=self.blocksToReplace)
         showProgress("Replacing blocks...", fill, cancel=True)
+        self.canUndo = True
 
     def bufferSize(self):
         return self.destBox.volume * 2
@@ -72,9 +77,9 @@ class FillToolPanel(Panel):
 
         self.fillWithLabel = Label("Fill with:", width=self.blockButton.width, align="c")
         self.fillButton = Button("Fill", action=tool.confirm, width=self.blockButton.width)
-        self.fillButton.tooltipText = "Shortcut: ENTER"
+        self.fillButton.tooltipText = "Shortcut: Enter"
 
-        rollkey = config.config.get("Keys", "Roll").upper()
+        rollkey = config.keys.replaceShortcut.get()
 
         self.replaceLabel = replaceLabel = Label("Replace", width=self.blockButton.width)
         replaceLabel.mouse_down = lambda a: self.tool.toggleReplacing()
@@ -101,12 +106,12 @@ class FillToolPanel(Panel):
             self.swapButton = Button("Swap", action=self.swapBlockTypes, width=self.blockButton.width)
             self.swapButton.fg_color = (255, 255, 255, 255)
             self.swapButton.highlight_color = (60, 255, 60, 255)
-            swapkey = config.config.get("Keys", "Swap").upper()
+            swapkey = config.keys.swap.get()
 
             self.swapButton.tooltipText = "Shortcut: {0}".format(swapkey)
 
             self.fillButton = Button("Replace", action=tool.confirm, width=self.blockButton.width)
-            self.fillButton.tooltipText = "Shortcut: ENTER"
+            self.fillButton.tooltipText = "Shortcut: Enter"
 
             col = (self.fillWithLabel,
                    self.blockButton,
@@ -144,7 +149,7 @@ class FillToolOptions(ToolOptions):
         Panel.__init__(self)
         self.tool = tool
         self.autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
-                                                ref=FillSettings.chooseBlockImmediately.propertyRef(),
+                                                ref=config.fill.chooseBlockImmediately,
                                                 tooltipText="When the fill tool is chosen, prompt for a block type.")
 
         col = Column((Label("Fill Options"), self.autoChooseCheckBox, Button("OK", action=self.dismiss)))
@@ -159,10 +164,13 @@ class FillTool(EditorTool):
     replaceBlockInfo = pymclevel.alphaMaterials.Air
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
+    color = (0.75, 1.0, 1.0, 0.7)
 
     def __init__(self, *args, **kw):
         EditorTool.__init__(self, *args, **kw)
         self.optionsPanel = FillToolOptions(self)
+        self.pickBlockKey = 0
+        self.root = get_root()
 
     @property
     def blockInfo(self):
@@ -207,10 +215,7 @@ class FillTool(EditorTool):
                 self.blockInfo = blockPicker.blockInfo
                 self.showPanel()
 
-            else:
-                self.editor.toolbar.selectTool(-1)
-
-    chooseBlockImmediately = FillSettings.chooseBlockImmediately.configProperty()
+    chooseBlockImmediately = config.fill.chooseBlockImmediately.property()
 
     def toolReselected(self):
         self.showPanel()
@@ -228,7 +233,10 @@ class FillTool(EditorTool):
         with setWindowCaption("REPLACING - "):
             self.editor.freezeStatus("Replacing %0.1f million blocks" % (float(box.volume) / 1048576.,))
 
+            self.blockInfo = self.panel.blockButton.blockInfo
+
             if self.replacing:
+                self.replaceBlockInfo = self.panel.replaceBlockButton.blockInfo
                 if self.blockInfo.wildcard:
                     print "Wildcard replace"
                     blocksToReplace = []
@@ -251,8 +259,39 @@ class FillTool(EditorTool):
         self.editor.invalidateBox(box)
         self.editor.toolbar.selectTool(-1)
 
-    def roll(self):
-        self.toggleReplacing()
+    def roll(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            Roll(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+        else:
+            self.toggleReplacing()
+
+    def mirror(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            yaw = int(self.editor.mainViewport.yaw) % 360
+            if (yaw >= 45 and yaw < 135) or (yaw > 225 and yaw <= 315):
+                FlipEastWest(id,data)
+            else:
+                FlipNorthSouth(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+
+    def flip(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            FlipVertical(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
+
+    def rotate(self, amount=1, blocksOnly=False):
+        if blocksOnly:
+            id = [self._blockInfo.ID]
+            data = [self._blockInfo.blockData]
+            RotateLeft(id,data)
+            self.blockInfo = self.editor.level.materials[(id[0], data[0])]
 
     def toggleReplacing(self):
         self.replacing = not self.replacing
@@ -289,8 +328,8 @@ class FillTool(EditorTool):
                 w, h = terrainTexture.data.shape[:2]
                 s = s * w / pixelWidth
                 t = t * h / pixelWidth
-                texData = numpy.array(terrainTexture.data[t:t + h / 16, s:s + w / 16])
-                GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 16, h / 16, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
+                texData = numpy.array(terrainTexture.data[t:t + h / 32, s:s + w / 32])
+                GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 32, h / 32, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
                                 texData)
 
             return _func
@@ -299,7 +338,7 @@ class FillTool(EditorTool):
             self.blockTextures[type] = Texture(blockTexFunc(type))
 
     def drawToolReticle(self):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.pickBlockKey == 1:
             # eyedropper mode
             self.editor.drawWireCubeReticle(color=(0.2, 0.6, 0.9, 1.0))
 
@@ -336,19 +375,19 @@ class FillTool(EditorTool):
 
     @property
     def statusText(self):
-        return "Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press ENTER to confirm.".format(
-            hotkey=self.hotkey, R=config.config.get("Keys", "Roll").upper())
+        return _("Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.").format(
+            hotkey=self.hotkey, R=config.keys.replaceShortcut.get())
 
     @property
     def worldTooltipText(self):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.pickBlockKey == 1:
             try:
                 if self.editor.blockFaceUnderCursor is None:
                     return
                 pos = self.editor.blockFaceUnderCursor[0]
                 blockID = self.editor.level.blockAt(*pos)
                 blockdata = self.editor.level.blockDataAt(*pos)
-                return "Click to use {0} ({1}:{2})".format(
+                return _("Click to use {0} ({1}:{2})").format(
                     self.editor.level.materials.blockWithID(blockID, blockdata).name, blockID, blockdata)
 
             except Exception, e:
@@ -359,10 +398,20 @@ class FillTool(EditorTool):
 
     @alertException
     def mouseDown(self, evt, pos, dir):
-        if pygame.key.get_mods() & pygame.KMOD_ALT:
+        if self.pickBlockKey == 1:
             id = self.editor.level.blockAt(*pos)
             data = self.editor.level.blockDataAt(*pos)
 
             self.blockInfo = self.editor.level.materials.blockWithID(id, data)
         else:
             return self.editor.selectionTool.mouseDown(evt, pos, dir)
+
+    def keyDown(self, evt):
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
+        if keyname == config.keys.pickBlock.get():
+            self.pickBlockKey = 1
+
+    def keyUp(self, evt):
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
+        if keyname == config.keys.pickBlock.get():
+            self.pickBlockKey = 0

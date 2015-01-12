@@ -8,4 +8,3 @@ class TestMCR(anvil_test.TestAnvilLevel):
     def setUp(self):
         self.indevLevel = TempLevel("hell.mclevel")
         self.anvilLevel = TempLevel("PyTestWorld")
-

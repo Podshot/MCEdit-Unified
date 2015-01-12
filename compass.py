@@ -1,12 +1,12 @@
 """
     compass
 """
-from __future__ import absolute_import, division, print_function, unicode_literals
 import logging
 from OpenGL import GL
 from drawable import Drawable
 from glutils import gl
 from mceutils import loadPNGTexture
+from config import config
 
 log = logging.getLogger(__name__)
 
@@ -48,6 +48,8 @@ class CompassOverlay(Drawable):
             GL.glLoadIdentity()
 
             yaw, pitch = self.yawPitch
+            if config.settings.viewMode.get() == "Chunk":
+                yaw = -180
             GL.glTranslatef(1. - size, size, 0.0)  # position on upper right corner
             GL.glRotatef(180 - yaw, 0., 0., 1.)  # adjust to north
             GL.glColor3f(1., 1., 1.)

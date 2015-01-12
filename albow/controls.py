@@ -1,14 +1,14 @@
 #
 # Albow - Controls
 #
+#-# Modified by D.C.-G. for translation purpose
 
 from pygame import Rect, draw
+
 from widget import Widget, overridable_property
 from theme import ThemeProperty
-from utils import blit_in_rect, frame_rect
 import resource
-
-#---------------------------------------------------------------------------
+from translate import _
 
 
 class Control(object):
@@ -50,8 +50,6 @@ class Control(object):
         self._enabled = x
 
 
-#---------------------------------------------------------------------------
-
 
 class AttrRef(object):
     def __init__(self, obj, attr):
@@ -65,8 +63,6 @@ class AttrRef(object):
         setattr(self.obj, self.attr, x)
 
 
-#---------------------------------------------------------------------------
-
 
 class ItemRef(object):
     def __init__(self, obj, item):
@@ -79,8 +75,6 @@ class ItemRef(object):
     def set(self, x):
         self.obj[self.item] = x
 
-
-#---------------------------------------------------------------------------
 
 
 class Label(Widget):
@@ -102,6 +96,7 @@ class Label(Widget):
     def __init__(self, text, width=None, **kwds):
         Widget.__init__(self, **kwds)
         font = self.font
+        text = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
         lines = text.split("\n")
         tw, th = 0, 0
         for line in lines:
@@ -123,7 +118,7 @@ class Label(Widget):
         return self._text
 
     def set_text(self, x):
-        self._text = x
+        self._text = _(x)
 
     def get_align(self):
         return self._align
@@ -194,8 +189,6 @@ class SmallLabel(Label):
     """Small text size. See theme.py"""
 
 
-#---------------------------------------------------------------------------
-
 
 class ButtonBase(Control):
     align = 'c'
@@ -204,7 +197,8 @@ class ButtonBase(Control):
     default_choice_bg_color = ThemeProperty('default_choice_bg_color')
 
     def mouse_down(self, event):
-        if self.enabled:
+        button = event.button
+        if self.enabled and button == 1:
             self._highlighted = True
 
     def mouse_drag(self, event):
@@ -214,14 +208,16 @@ class ButtonBase(Control):
             self.invalidate()
 
     def mouse_up(self, event):
-        if event in self:
+        button = event.button
+        if event in self and button == 1:
             if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
                 self._highlighted = False
                 if self.enabled:
                     self.call_handler('action')
+        self.get_root().fix_sticky_ctrl()
 
 
-#---------------------------------------------------------------------------
+
 
 
 class Button(ButtonBase, Label):
@@ -232,8 +228,6 @@ class Button(ButtonBase, Label):
             kwds['enable'] = enable
         Label.__init__(self, text, **kwds)
 
-
-#---------------------------------------------------------------------------
 
 
 class Image(Widget):
@@ -275,14 +269,10 @@ class Image(Widget):
 #        frame = self.get_margin_rect()
 #        surf.blit(self.image, frame)
 
-#---------------------------------------------------------------------------
-
 
 class ImageButton(ButtonBase, Image):
     pass
 
-
-#---------------------------------------------------------------------------
 
 
 class ValueDisplay(Control, Label):
@@ -318,10 +308,8 @@ class ValueButton(ButtonBase, ValueDisplay):
     align = 'c'
 
     def get_text(self):
-        return self.format_value(self.value)
+        return self.format_value(_(self.value))
 
-
-#---------------------------------------------------------------------------
 
 
 class CheckControl(Control):
@@ -331,8 +319,6 @@ class CheckControl(Control):
     def get_highlighted(self):
         return self.value
 
-
-#---------------------------------------------------------------------------
 
 
 class CheckWidget(Widget):
@@ -360,14 +346,10 @@ class CheckWidget(Widget):
                 draw.lines(surf, fg, False, [p1, p2, p3])
 
 
-#---------------------------------------------------------------------------
-
 
 class CheckBox(CheckControl, CheckWidget):
     pass
 
-
-#---------------------------------------------------------------------------
 
 
 class RadioControl(Control):
@@ -379,8 +361,6 @@ class RadioControl(Control):
     def mouse_down(self, e):
         self.value = self.setting
 
-
-#---------------------------------------------------------------------------
 
 
 class RadioButton(RadioControl, CheckWidget):

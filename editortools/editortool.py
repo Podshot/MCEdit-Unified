@@ -2,6 +2,7 @@ from OpenGL import GL
 import numpy
 from depths import DepthOffset
 from pymclevel import BoundingBox
+from config import config
 
 
 class EditorTool(object):
@@ -54,16 +55,16 @@ class EditorTool(object):
         self.previewRenderer.draw()
         GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
 
-    def rotate(self, amount=1):
+    def rotate(self, amount=1, blocksOnly=False):
         pass
 
-    def roll(self, amount=1):
+    def roll(self, amount=1, blocksOnly=False):
         pass
 
-    def flip(self, amount=1):
+    def flip(self, amount=1, blocksOnly=False):
         pass
 
-    def mirror(self, amount=1):
+    def mirror(self, amount=1, blocksOnly=False):
         pass
 
     def swap(self, amount=1):
@@ -80,6 +81,12 @@ class EditorTool(object):
         pass
 
     def mouseDrag(self, evt, pos, direction):
+        pass
+
+    def keyDown(self, evt):
+        pass
+
+    def keyUp(self, evt):
         pass
 
     def increaseToolReach(self):
@@ -283,9 +290,8 @@ class EditorTool(object):
 
     @property
     def maxBlocks(self):
-        from leveleditor import Settings
 
-        return Settings.blockBuffer.get() / 2  # assume block buffer in bytes
+        return config.settings.blockBuffer.get() / 2  # assume block buffer in bytes
 
     def showPanel(self):
         pass

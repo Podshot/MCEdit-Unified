@@ -1,0 +1,80 @@
+TRANSLATION FILE FORMAT DOCUMENTATION
+
+These files work by mapping original english strings(o##) to the new translated
+strings(t##).
+As long as the numbers match, it will translate the specified english string to
+the new language.
+Any text formatting is preserved, so new lines, tabs, spaces, brackets, quotes
+and other special characters can be used.
+
+The white space (' ') after each tag, and numbers are mandatory.
+The file must also be encoded in UTF-8 or it won't work. Most editors should
+support this. This is also mandatory, or you can experience weird aspect in the
+program.
+
+The first line of .trn files must start with #-# followed by a space and the
+Language (Country) pair. This isn't mandatory, but, if it is not used, the file
+name (without its extention) will be used as language name.
+
+The second and third lines ca be used to specify particuliar fonts to use.
+They can be ommited or use DEFAULT as value to use the default fonts.
+
+
+Syntax example:
+
+#-# Français (France)
+#-# font regular: DEFAULT
+#-# font bold: myFancyFontOfTheDeath.ttf
+#
+o0 This is the first entry.
+t0 Ceci est la première entrée.
+o1 Here is the second one.
+You can see it is splitted on two lines.
+t1 Voici la deuxième.
+Vous pouvez constater qu'elle est sur deux lignes.
+
+The 'o##' markers on the begining of a line marks the original string;
+the 't##', the translations.
+Strings can be splited on several lines and contain any sort of
+characters (thus, be aware of unicode).
+
+Files are named according to their language name, e.g. fr_FR.trn for
+french.
+The extension .trn is an arbitrary convention, but must be respected to load
+the files.
+
+As convention, english is considered as the default language, and the
+file en_EN.trn would never be present.
+
+If you have issues with this, you can report on the site you have downloaded
+the program.
+Just open an 'issue' topic and let be the more precise you can. Joining .log
+files and screenshots will be usefull!
+
+
+TRANSLATION TEMPLATE BUILDING
+
+Be very cautious with template building. Your actual template will be replaced
+with the new. Thus many efforts have been made to preserve template.trn and
+only add the strings which are not yet in.
+
+To start the build, you have to launch MCEdit via the command line. Simply open
+a command console, 'cd' to your MCEdit folder and type 'mcedit -tt'.
+The language used during this operation is english. If you switch to another
+language during the process, some entries can be duplicated in the template;
+it can be possible to see translated string as if they were original ones (with
+an 'o##' marker before).
+
+In order to collect the strings, you will have to go everywhere in the programm
+and open all the dialogs, windows, and other widgets.
+
+To finish the build, just close MCEdit.
+
+You can also add strings to an existing translation:
+* Backup (or rename with an othe extension) template.trn and the .trn file you
+  want to add the strings.
+* Rename the .trn file to template.trn.
+* Start the template building and proceed as explained above.
+* Rename template.trn with its original name.
+* Restore the template, et voilà!
+

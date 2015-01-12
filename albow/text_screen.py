@@ -6,7 +6,7 @@ from pygame import Rect
 from pygame.locals import *
 from screen import Screen
 from theme import FontProperty
-from resource import get_image, get_font, get_text
+from resource import get_text
 from vectors import add, maximum
 from controls import Button
 

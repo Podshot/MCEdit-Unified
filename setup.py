@@ -88,7 +88,7 @@ SETUP_COMMON = {
             '_nbt.*'
         ],
         'filters': [
-            'filters/**'
+            'stock-filters/**'
         ],
         'stock-schematics': [
             'stock-schematics/**'
@@ -180,13 +180,14 @@ def main():
     include_dirs = ['fonts', 'toolicons', 'stock-schematics', 'filters']
     data_files = get_data_files(include_dirs) + [
         ('', [
-            'README.html',
+            'README.md',
             'favicon.png',
             'terrain-classic.png',
             'terrain-pocket.png',
             'char.png',
             'gui.png',
             'terrain.png',
+            'TRANSLATION.txt',
             #'RELEASE-VERSION',
             #'GIT-COMMIT',
         ])
@@ -199,8 +200,9 @@ def main():
         windows=['mcedit.py'],
         options={
             "py2exe": {
-                "includes": ["ctypes", "logging"],
-                "excludes": ["OpenGL"]
+                "includes": ["ctypes", "logging", "OpenGL"],
+                # "excludes": ["OpenGL"]
+                "excludes": []
             }
         }
     )

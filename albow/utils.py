@@ -1,4 +1,4 @@
-from pygame import draw, Surface
+from pygame import Surface
 from pygame.locals import SRCALPHA
 
 
@@ -11,7 +11,7 @@ def frame_rect(surface, color, rect, thick=1):
 
 
 def blit_tinted(surface, image, pos, tint, src_rect=None):
-    from Numeric import array, add, minimum
+    from Numeric import add, minimum
     from pygame.surfarray import array3d, pixels3d
 
     if src_rect:

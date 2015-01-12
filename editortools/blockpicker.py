@@ -5,7 +5,7 @@ from editortools import blockview
 from glbackground import GLBackground
 from mceutils import CheckBoxLabel
 from pymclevel import materials
-
+from albow.root import get_root
 from pymclevel.materials import Block
 
 
@@ -23,10 +23,12 @@ class BlockPicker(Dialog):
     is_gl_container = True
 
     def __init__(self, blockInfo, materials, *a, **kw):
+        self.root = get_root()
         self.allowWildcards = False
         Dialog.__init__(self, *a, **kw)
-        panelWidth = 435
+        panelWidth = 518
 
+        self.click_outside_response = 0
         self.materials = materials
         self.anySubtype = blockInfo.wildcard
 
@@ -59,14 +61,21 @@ class BlockPicker(Dialog):
 
         def formatBlockName(x):
             block = self.matchingBlocks[x]
-            r = "({id}:{data}) {name}".format(name=block.name, id=block.ID, data=block.blockData)
+            r = "{name}".format(name=block.name)
             if block.aka:
                 r += " [{0}]".format(block.aka)
 
             return r
 
+        def formatBlockID(x):
+            block = self.matchingBlocks[x]
+            ident = "({id}:{data})".format (id=block.ID, data=block.blockData)
+            return ident
+
         tableview = TableView(columns=[TableColumn(" ", 24, "l", lambda x: ""),
-                                       TableColumn("(ID) Name [Aliases]", 376, "l", formatBlockName)])
+                                       TableColumn("Name", 415, "l", formatBlockName),
+                                       TableColumn("ID", 45, "l", formatBlockID)
+                                       ])
         tableicons = [blockview.BlockView(materials) for i in range(tableview.rows.num_rows())]
         for t in tableicons:
             t.size = (16, 16)
@@ -205,10 +214,19 @@ class BlockPicker(Dialog):
         else:
             self.matchingBlocks = blocks
 
-        if oldBlock in self.matchingBlocks:
-            self.selectedBlockIndex = self.matchingBlocks.index(oldBlock)
-        else:
-            self.selectedBlockIndex = 0
+        self.selectedBlockIndex = 0
 
         self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
         self.blockButton.blockInfo = self.blockInfo
+
+    def key_down(self, evt):
+        keyname = self.root.getKey(evt)
+        if keyname == "Up" and self.selectedBlockIndex > 0:
+            self.selectedBlockIndex -= 1
+            self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+            self.blockButton.blockInfo = self.blockInfo
+
+        elif keyname == "Down" and self.selectedBlockIndex < len(self.matchingBlocks):
+            self.selectedBlockIndex += 1
+            self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+            self.blockButton.blockInfo = self.blockInfo

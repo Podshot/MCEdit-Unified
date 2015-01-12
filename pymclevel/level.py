@@ -7,7 +7,7 @@ Created on Jul 22, 2011
 import blockrotation
 from box import BoundingBox
 from collections import defaultdict
-from entity import Entity, TileEntity
+from entity import Entity, TileEntity, TileTick
 import itertools
 from logging import getLogger
 import materials
@@ -130,6 +130,8 @@ class MCLevel(object):
     materials = materials.classicMaterials
     isInfinite = False
 
+    saving = False
+
     root_tag = None
 
     Height = None
@@ -199,16 +201,28 @@ class MCLevel(object):
     def addTileEntity(self, entityTag):
         pass
 
+    def addTileTick(self, entityTag):
+        pass
+
+    def addTileTicks(self, tileTicks):
+        pass
+
     def getEntitiesInBox(self, box):
         return []
 
     def getTileEntitiesInBox(self, box):
         return []
 
+    def getTileTicksInBox(self, box):
+        return []
+
     def removeEntitiesInBox(self, box):
         pass
 
     def removeTileEntitiesInBox(self, box):
+        pass
+
+    def removeTileTicksInBox(self, box):
         pass
 
     @property
@@ -252,7 +266,7 @@ class MCLevel(object):
         f.BlockLight = whiteLight
         f.SkyLight = whiteLight
 
-        f.Entities, f.TileEntities = self._getFakeChunkEntities(cx, cz)
+        f.Entities, f.TileEntities, f.TileTicks = self._getFakeChunkEntities(cx, cz)
 
         f.root_tag = nbt.TAG_Compound()
 
@@ -383,9 +397,14 @@ class MCLevel(object):
 
     from block_copy import copyBlocksFrom, copyBlocksFromIter
 
+    def saveInPlaceGen(self):
+        self.saveToFile(self.filename)
+        yield
 
     def saveInPlace(self):
-        self.saveToFile(self.filename)
+        gen = self.saveInPlaceGen()
+        for _ in gen:
+            pass
 
     # --- Player Methods ---
     def setPlayerPosition(self, pos, player="Player"):
@@ -431,6 +450,12 @@ class EntityLevel(MCLevel):
         """Returns a list of references to tile entities in this chunk, whose positions are within box"""
         return [ent for ent in self.TileEntities if TileEntity.pos(ent) in box]
 
+    def getTileTicksInBox(self, box):
+        if hasattr(self, "TileTicks"):
+            return [ent for ent in self.TileTicks if TileTick.pos(ent) in box]
+        else:
+            return []
+
     def removeEntitiesInBox(self, box):
 
         newEnts = []
@@ -446,13 +471,12 @@ class EntityLevel(MCLevel):
 
         return entsRemoved
 
-    def removeTileEntitiesInBox(self, box):
-
+    def removeTileEntities(self, func):
         if not hasattr(self, "TileEntities"):
             return
         newEnts = []
         for ent in self.TileEntities:
-            if TileEntity.pos(ent) in box:
+            if func(TileEntity.pos(ent)):
                 continue
             newEnts.append(ent)
 
@@ -462,6 +486,28 @@ class EntityLevel(MCLevel):
         self.TileEntities.value[:] = newEnts
 
         return entsRemoved
+
+    def removeTileEntitiesInBox(self, box):
+        return self.removeTileEntities(lambda p:p in box)
+
+    def removeTileTicks(self, func):
+        if not hasattr(self, "TileTicks"):
+            return
+        newEnts = []
+        for ent in self.TileTicks:
+            if func(TileTick.pos(ent)):
+                continue
+            newEnts.append(ent)
+
+        entsRemoved = len(self.TileTicks) - len(newEnts)
+        log.debug("Removed {0} tile tickss".format(entsRemoved))
+
+        self.TileTicks.value[:] = newEnts
+
+        return entsRemoved
+
+    def removeTileTicksInBox(self, box):
+        return self.removeTileTicks(lambda p: p in box)
 
     def addEntities(self, entities):
         for e in entities:
@@ -496,16 +542,31 @@ class EntityLevel(MCLevel):
         self.TileEntities.append(tileEntityTag)
         self._fakeEntities = None
 
+    def addTileTick(self, tickTag):
+        assert isinstance(tickTag, nbt.TAG_Compound)
+        if hasattr(self, "TileTicks"):
+            def differentPosition(a):
+                return not ((tickTag is a) or TileTick.pos(a) == TileTick.pos(tickTag))
+
+            self.TileTicks.value[:] = filter(differentPosition, self.TileTicks)
+
+            self.TileTicks.append(tickTag)
+            self._fakeEntities = None
+
+    def addTileTicks(self, tileTicks):
+        for e in tileTicks:
+            self.addTileTick(e)
+
     _fakeEntities = None
 
     def _getFakeChunkEntities(self, cx, cz):
         """distribute entities into sublists based on fake chunk position
-        _fakeEntities keys are (cx, cz) and values are (Entities, TileEntities)"""
+        _fakeEntities keys are (cx, cz) and values are (Entities, TileEntities, TileTicks)"""
         if self._fakeEntities is None:
-            self._fakeEntities = defaultdict(lambda: (nbt.TAG_List(), nbt.TAG_List()))
-            for i, e in enumerate((self.Entities, self.TileEntities)):
+            self._fakeEntities = defaultdict(lambda: (nbt.TAG_List(), nbt.TAG_List(), nbt.TAG_List()))
+            for i, e in enumerate((self.Entities, self.TileEntities, self.TileTicks)):
                 for ent in e:
-                    x, y, z = [Entity, TileEntity][i].pos(ent)
+                    x, y, z = [Entity, TileEntity, TileTick][i].pos(ent)
                     ecx, ecz = map(lambda x: (int(floor(x)) >> 4), (x, z))
 
                     self._fakeEntities[ecx, ecz][i].append(ent)

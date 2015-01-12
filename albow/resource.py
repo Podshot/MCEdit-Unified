@@ -1,33 +1,29 @@
 # -*- coding: utf-8 -*-
+#-# Modified by D.C.-G. for translation purpose
 import os
 import sys
+
+import logging
+log = logging.getLogger(__name__)
+
 import pygame
 from pygame.locals import RLEACCEL
-
-# default_font_name = "Vera.ttf"
+from translate import langPath
 optimize_images = True
 run_length_encode = False
 
 
-def find_resource_dir():
-    try:
-        from directories import dataDir
+__curLang = "default"
 
-        return dataDir
-    except:
-        pass
-    dir = sys.path[0]
-    while 1:
-        path = os.path.join(dir, "MCEditData")
-        if os.path.exists(path):
-            return path
-        parent = os.path.dirname(dir)
-        if parent == dir:
-            raise SystemError("albow: Unable to find Resources directory")
-        dir = parent
+def getCurLang():
+    return __curLang
 
+def setCurLang(lang):
+    global __curLang
+    __curLang = lang
 
-resource_dir = find_resource_dir()
+font_lang_cache = {}
+resource_dir = "Resources"
 
 image_cache = {}
 font_cache = {}
@@ -35,9 +31,14 @@ sound_cache = {}
 text_cache = {}
 cursor_cache = {}
 
+#font_proportion = 100 # %
+
 
 def _resource_path(default_prefix, names, prefix=""):
-    return os.path.join(resource_dir, prefix or default_prefix, *names)
+    path = os.path.join(resource_dir, prefix or default_prefix, *names)
+    if type(path) == unicode:
+        path = path.encode(sys.getfilesystemencoding())
+    return path
 
 
 def resource_path(*names, **kwds):
@@ -74,17 +75,34 @@ def get_image(*names, **kwds):
 
 
 def get_font(size, *names, **kwds):
+    global font_cache
+    lngs_fontNm = font_lang_cache.get(names[-1], {})
+    fontNm = lngs_fontNm.get(getCurLang(), None)
+    if fontNm:
+        names = [a for a in names[:-1]]
+        names.append(fontNm)
     path = _resource_path("fonts", names, **kwds)
     key = (path, size)
     font = font_cache.get(key)
     if not font:
+#        size = float(size * 1000)
+#        size = size / float(100)
+#        size = int(size * font_proportion / 1000)
         try:
             font = pygame.font.Font(path, size)
+            log.debug("Font %s loaded."%path)
         except Exception, e:
+            log.debug("PyGame could not load font.")
+            log.debug("Exception: %s"%e)
+            log.debug("Trying with sys.getfilesystemencoding()")
             try:
-                font = pygame.font.Font(path.encode(sys.getfilesystemencoding()), size)
+                path = path.encode(sys.getfilesystemencoding())
+                font = pygame.font.Font(path, size)
+                log.debug("Font %s loaded."%path)
             except Exception, e:
-                print "Couldn't get font {0}, using sysfont".format((path, size))
+                log.debug("PyGame could not load font.")
+                log.debug("Exception: %s"%e)
+                log.debug("Loading sysfont")
                 font = pygame.font.SysFont("Courier New", size)
         font_cache[key] = font
     return font
@@ -148,7 +166,10 @@ def missing_sound(e, name):
 
 
 def get_text(*names, **kwds):
-    path = _resource_path("text", names, **kwds)
+    #-# Try at first the 'lang/text' folder
+    path = _resource_path(os.path.join(langPath, "text"), names, **kwds)
+    if not os.path.exists(path):
+        path = _resource_path("text", names, **kwds)
     text = text_cache.get(path)
     if text is None:
         text = open(path, "rU").read()
