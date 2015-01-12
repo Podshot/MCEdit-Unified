@@ -619,6 +619,10 @@ class TextEditorWrapped(Widget):
                 x, h = font.size(self.textL[il][:i])
             else:
                 x, h = (0, font.size("X")[1])
+            if self.insertion_point != self.insertion_step:
+                x += font.size(self.textL[il][i])[0]
+            if len(self.text) == self.insertion_point:
+                self.insertion_point -= 1
             x += frame.left
             y = frame.top + h * (il - self.topLine)
             draw.line(surface, fg, (x, y), (x, y + h - 1))
@@ -823,7 +827,7 @@ class TextEditorWrapped(Widget):
                     self.selection_end = None
                 elif i > 0:
                     text = text[:i - 1] + text[i:]
-                    i -= 1
+                    i -= 1   
                 self.change_text(text)
                 self.insertion_point = i
                 self.sync_line_and_step()
