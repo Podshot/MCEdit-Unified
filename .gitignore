@@ -61,3 +61,11 @@ filters/modifyitemstrings.py
 .project
 .pydevproject
 .settings
+
+filters.json
+Filters/
+Schematics/
+pymclevel/
+mcedit-debug.bat - Snelkoppeling.lnk
+player-skins/
+terrain-textures/

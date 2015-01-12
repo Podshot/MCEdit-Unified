@@ -1,20 +1,50 @@
 {
 	"TrazLander": {
-		
+		"role": "Scout/Hunter",
+		"twitter": "TrazLander",
+		"youtube": "TrazLand",
+		"reddit": "TrazLander"
 	},
 	"Khroki": {
+		"role": "Organizer",
 		"reddit": "Karthex"
 	},
 	"Podshot": {
+		"role": "Code Wizard",
 		"twitter": "Podshot_",
 		"reddit": "Podshot"
 	},
 	"ezfe": {
+		"role": "Mac Expert",
+		"payment": "http://pixelhost.ezekielelin.com/payments/?payment_item_id=mcedit",
 		"twitter": "ezekielfe",
 		"youtube": "EzekielFilms",
 		"reddit": "superezfe"
 	},
 	"Aiybe": {
-		
+	},
+	"Rubisk": {
+		"role": "Brush Code",
+		"twitter": "Rubisks",
+        "youtube": "RubiskMC",
+        "reddit": "Rubisk"
+	},
+	"naor2013": {
+		"role": "Jack of All Trades"
+	},
+	"LaChal": {
+		"role": "Translation Code"
+	},
+	"freundTech": {
+		"role": "(Just another) Linux Guy",
+		"twitter": "freundTech",
+		"youtube": "freundTech",
+		"reddit": "freundTech"
+	},
+	"MobileCrafter": {
+		"role": "German Translation"
+	},
+	"OniOniOn-": {
+		"role": "Korean Translation"
 	}
 }

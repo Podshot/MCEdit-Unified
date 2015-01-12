@@ -1,5 +1,5 @@
 var releaseData = {};
-var platforms = ["OSX","Win"];
+var platforms = ["OSX","Win", "Lin"];
 var requests = {};
 function getJSON(url){
 	if (requests[url]) {
@@ -102,17 +102,24 @@ function getLatestRelease() {
 
 	return ret_val;
 }
+
+function parseURL ( href ) {
+	var anchor = document.createElement( "a" );
+	anchor.href = href;
+	return anchor;
+}
+
 function generatePageStructure() {
 	var navjson = getJSON('navbar.json');
-	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container nav-container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="' + navjson.root + '">MCEdit Fork</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
+	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container nav-container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="./">MCEdit Unified</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
 		var navitem = navbar[i];
-		var active = location.href.replace('#','') == navjson.root + navitem.url;
+		var active = location.href == parseURL( navitem.url ).href;
 		if (active) {
-			$('title').html('MCEdit Fork - ' + navitem.displayname);
+			$('title').html('MCEdit Unified - ' + navitem.displayname);
 		}
-		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navjson.root + navitem.url + '">' + navitem.displayname + '</a></li>')
+		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navitem.url + '">' + navitem.displayname + '</a></li>');
 	}
 	return true;
 }
@@ -121,7 +128,8 @@ function getDownload(platform,version,bittage) {
 		var release = releaseData[i];
 		for (var x = 0; x < release.assets.length; x++) {
 			var asset = release.assets[x];
-			if (asset.name == 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit.zip') {
+            var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit';
+			if (asset.name == name + '.zip' || asset.name == name + '.exe' || asset.name == name + '.msi' || asset.name == name + '.run') {
 				return asset;
 			}
 		}
@@ -134,7 +142,7 @@ function loadFailError() {
 	} else {
 		localStorage.setItem('errorCount',localStorage.getItem('errorCount') + 1);
 	}
-	$('title').html('MCEdit Fork - Load Error');
+	$('title').html('MCEdit Unified - Load Error');
 	$('body').html('<h1>An error occured loading the page.</h1><br>Please <a class="btn btn-default btn-xs" href="#" onclick="location.reload()">refresh</a> the page.');
 	if (localStorage.getItem('errorCount') > 2) {
 		$('body').append('<br><br><a onclick="localStorage.setItem(\'errorCount\',0);" href="http://github.com/Khroki/MCEdit-Unified/issues/new" class="btn btn-xs btn-danger"><i class="fa fa-exclamation-triangle"></i> Report an Issue</a>');
@@ -162,7 +170,7 @@ $(document).ready(function(){
 			alert('An error occured loading the webpage. Please try again later.');
 		}
 	} else {
-		$('title').html('MCEdit Fork - Rate Limit Exceeded');
+		$('title').html('MCEdit Unified - Rate Limit Exceeded');
 		$('body').html('<h1>Rate Limit Exceeded</h1><br>Click <a href="https://github.com/Khroki/MCEdit-Unified">here</a> to go to the repository page instead.');
 		$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 	}
