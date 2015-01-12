@@ -5,7 +5,7 @@ from pygame.locals import *
 from widget import Widget
 from controls import Label, Button
 from layout import Row, Column
-from fields import TextField
+from fields import TextFieldWrapped
 from translate import _
 
 class Modal(object):
@@ -152,7 +152,7 @@ def input_text(prompt, width, initial=None, **kwds):
 
     lb = Label(prompt)
     lb.topleft = (d, d)
-    tf = TextField(width)
+    tf = TextFieldWrapped(width)
     if initial:
         tf.set_text(initial)
     tf.enter_action = ok
@@ -188,7 +188,7 @@ def input_text_buttons(prompt, width, initial=None, **kwds):
 
     lb = Label(prompt)
     lb.topleft = (d, d)
-    tf = TextField(width)
+    tf = TextFieldWrapped(width)
     if initial:
         tf.set_text(initial)
     tf.enter_action = ok

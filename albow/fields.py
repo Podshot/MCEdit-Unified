@@ -628,6 +628,7 @@ class TextEditorWrapped(Widget):
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
+        self.get_root().notMove = True
         if not (event.cmd or event.alt):
             k = event.key
             if k == K_LEFT:
@@ -861,6 +862,7 @@ class TextEditorWrapped(Widget):
         return True
 
     def mouse_down(self, e):
+        self.get_root().notMove = True
         self.focus()
         if e.button == 1:
             if e.num_clicks == 2:

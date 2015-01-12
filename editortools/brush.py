@@ -20,7 +20,7 @@ from OpenGL import GL
 import datetime
 import os
 import sys
-from albow import AttrRef, ItemRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextField, TableView, TableColumn
+from albow import AttrRef, ItemRef, Button, ValueDisplay, Row, Label, ValueButton, Column, IntField, FloatField, alert, CheckBox, TextFieldWrapped, TableView, TableColumn
 from albow.dialogs import Dialog
 import albow.translate
 _ = albow.translate._
@@ -257,7 +257,7 @@ class BrushPanel(Panel):
         """
         panel = Dialog()
         label = Label("Preset Name:")
-        nameField = TextField(width=200)
+        nameField = TextFieldWrapped(width=200)
 
         def okPressed():
             panel.dismiss()

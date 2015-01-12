@@ -8,7 +8,7 @@ from pygame.locals import *
 from albow.widget import Widget
 from albow.dialogs import Dialog, ask, alert
 from albow.controls import Label, Button
-from albow.fields import TextField
+from albow.fields import TextFieldWrapped
 from albow.layout import Row, Column
 from albow.palette_view import PaletteView
 from albow.theme import ThemeProperty
@@ -110,7 +110,7 @@ class FileDialog(Dialog):
         if prompt:
             label = Label(prompt)
         if self.saving:
-            filename_box = TextField(self.box_width)
+            filename_box = TextFieldWrapped(self.box_width)
             filename_box.change_action = self.update
             filename_box._enter_action = filename_box.enter_action
             filename_box.enter_action = self.enter_action

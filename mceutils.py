@@ -483,7 +483,7 @@ def CheckBoxLabel(title, *args, **kw):
     return row
 
 
-from albow import FloatField, IntField, TextField
+from albow import FloatField, IntField, TextFieldWrapped
 
 
 def FloatInputRow(title, *args, **kw):
@@ -499,7 +499,7 @@ from datetime import timedelta
 
 
 def TextInputRow(title, *args, **kw):
-    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextField(*args, **kw)))
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextFieldWrapped(*args, **kw)))
 
 
 def setWindowCaption(prefix):

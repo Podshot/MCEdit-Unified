@@ -16,7 +16,7 @@ import collections
 import os
 import traceback
 import uuid
-from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextField
+from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped
 import albow.translate
 _ = albow.translate._
 from config import config
@@ -183,7 +183,7 @@ class FilterModuleOptions(Widget):
                         if wid is None:
                             wid = 200
 
-                        field = TextField(value=val, width=wid)
+                        field = TextFieldWrapped(value=val, width=wid)
                         page.optionDict[optionName] = AttrRef(field, 'value')
 
                         row = Row((Label(oName, doNotTranslate=True), field))
@@ -230,7 +230,7 @@ class FilterModuleOptions(Widget):
                     size = input
                 else:
                     size = 200
-                field = TextField(value="")
+                field = TextFieldWrapped(value="")
                 row = TextInputRow(oName, ref=AttrRef(field, 'value'), width=size, doNotTranslate=True)
                 page.optionDict[optionName] = AttrRef(field, 'value')
                 rows.append(row)
@@ -405,7 +405,7 @@ class FilterToolPanel(Panel):
         
         self.macro_diag = Dialog()
         macroNameLabel = Label("Macro Name: ")
-        macroNameField = TextField()
+        macroNameField = TextFieldWrapped()
         input_row = Row((macroNameLabel, macroNameField))
         saveButton = Button("Save", action=self.set_save)
         closeButton = Button("Close", action=self.macro_diag.dismiss)

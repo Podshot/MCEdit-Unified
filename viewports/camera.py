@@ -22,7 +22,7 @@ from datetime import datetime, timedelta
 from OpenGL import GL
 from OpenGL import GLU
 
-from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, TableView, TextField, Widget, CheckBox, TextFieldWrapped
+from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, TableView, Widget, CheckBox, TextFieldWrapped
 from albow.controls import Label, ValueDisplay
 from albow.dialogs import Dialog, wrapped_label
 from albow.openglwidgets import GLViewport
@@ -542,7 +542,7 @@ class CameraViewport(GLViewport):
 
         panel = Dialog()
 
-        lineFields = [TextField(width=400) for l in linekeys]
+        lineFields = [TextFieldWrapped(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
             f.value = tileEntity[l].value
 
@@ -648,7 +648,7 @@ class CameraViewport(GLViewport):
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Skull Data")
-        usernameField = TextField(width=150)
+        usernameField = TextFieldWrapped(width=150)
         panel = Dialog()
         skullMenu = mceutils.ChoiceButton(map(str, skullTypes))
 
@@ -730,7 +730,7 @@ class CameraViewport(GLViewport):
 
         titleLabel = Label("Edit Command Block")
         commandField = TextFieldWrapped(width=500)
-        nameField = TextField(width=100)
+        nameField = TextFieldWrapped(width=100)
         trackOutput = CheckBox()
 
         commandField.value = tileEntity["Command"].value

@@ -69,7 +69,7 @@ from OpenGL import GL
 from OpenGL import GLU
 
 from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_text, IntField, Menu, root, Row, \
-    TableColumn, TableView, TextField, TimeField, Widget, CheckBox
+    TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
 from albow.controls import Label, SmallValueDisplay, ValueDisplay
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
@@ -743,7 +743,7 @@ class LevelEditor(GLViewport):
                         if width is None:
                             width = 200
 
-                        field = TextField(value=value,width=width)
+                        field = TextFieldWrapped(value=value,width=width)
                         widget.inputDict[inputName] = AttrRef(field, 'value')
                         row = Row((Label(inputName), field))
                         rows.append(row)
@@ -780,7 +780,7 @@ class LevelEditor(GLViewport):
                     size = input
                 else:
                     size = 200
-                field = TextField(value="")
+                field = TextFieldWrapped(value="")
                 row = TextInputRow(inputName, ref=AttrRef(field, 'value'), width=size)
                 widget.inputDict[inputName] = AttrRef(field, 'value')
                 rows.append(row)
@@ -1815,7 +1815,7 @@ class LevelEditor(GLViewport):
         formatLabel = Label(levelFormat)
         items.append(Row([Label("Format:"),formatLabel]))
 
-        nameField = TextField(width=300, value=self.level.LevelName)
+        nameField = TextFieldWrapped(width=300, value=self.level.LevelName)
         def alt21():
             nameField.insertion_point = len(nameField.text)
             nameField.insert_char(u'\xa7')

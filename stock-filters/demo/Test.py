@@ -1,4 +1,4 @@
-from albow import Widget, Label, Button, TextField
+from albow import Widget, Label, Button, TextFieldWrapped
 from pymclevel.nbt import *
 import release
 

@@ -1,4 +1,4 @@
-from albow import Label, TextField, Row, TableView, TableColumn, Column, Widget, Button, AttrRef
+from albow import Label, TextFieldWrapped, Row, TableView, TableColumn, Column, Widget, Button, AttrRef
 from albow.dialogs import Dialog
 from editortools import thumbview
 from editortools import blockview
@@ -46,7 +46,7 @@ class BlockPicker(Dialog):
         lbl = Label("Search")
         # lbl.rect.topleft = (0,0)
 
-        fld = TextField(300)
+        fld = TextFieldWrapped(300)
         # fld.rect.topleft = (100, 10)
         # fld.centery = lbl.centery
         # fld.left = lbl.right
