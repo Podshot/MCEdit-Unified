@@ -593,11 +593,11 @@ class BrushTool(CloneTool):
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
-        # check if the brush is loaded first and unconditionaly, since custom brushes can be deleted.
-        brushMode = self.brushModes.get("Mode", None)
+        
+        brushMode = self.brushModes.get(loadedBrushOptions.get("Mode", None), None)
         if brushMode is not None:
             self.selectedBrushMode = loadedBrushOptions["Mode"]
-            self.brushMode = brushMode
+            self.brushMode = self.brushModes[self.selectedBrushMode]
             for key in loadedBrushOptions:
                 if key.endswith('blockID'):
                     key = key[:-7]
