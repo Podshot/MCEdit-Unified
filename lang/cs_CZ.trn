@@ -1382,9 +1382,9 @@ t641
 o642 MCEditData
 t642 
 o643 This will move your settings and schematics to your Documents folder. Continue?
-t643
+t643 
 o644 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t644
+t644 
 o645 GoTo Position:
 t645 
 o646 (click anywhere to teleport)
@@ -1406,7 +1406,7 @@ t653
 o654 Game Type:
 t654 
 o655 Number of chunks: {0}
-t655
+t655 
 o656 Number of regions: {0}
 t656 
 o657 Repair regions

@@ -74,6 +74,7 @@ class Tree(Column):
     def __init__(self, *args, **kwargs):
         self.selected_item_index = None
         self.selected_item = None
+        self.styles = kwargs.pop('styles', {})
         self.compound_types = [dict,] + kwargs.pop('compound_types', [])
         self.show_fields = kwargs.pop('show_fields', False)
         self.deployed = []
@@ -106,8 +107,6 @@ class Tree(Column):
                 meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
                 if not meth is None:
                     v = meth(k, v)
-#                else:
-#                    v_items = v.items()
                 ks = v.keys()
                 ks.sort()
                 ks.reverse()
@@ -126,9 +125,16 @@ class Tree(Column):
                     fields = [v,]
             head = Surface((self.bullet_size * (lvl + 1), self.bullet_size), SRCALPHA)
             if _c:
-                getattr(self, 'draw_%s_bullet'%{False: 'closed', True: 'opened'}[id in self.deployed])(head, self.bullet_color_active)
+                meth = getattr(self, 'draw_%s_bullet'%{False: 'closed', True: 'opened'}[id in self.deployed])
             else:
-                self.draw_closed_bullet(head, self.bullet_color_inactive)
+                meth = getattr(self, 'draw_%s_bullet'%v.__class__.__name__, None)
+                if not meth:
+                    meth = self.draw_deadend_bullet
+            bg, fg, shape, text = self.styles.get(type(v),
+                                                  ({True: self.bullet_color_active, False: self.bullet_color_inactive}[_c],
+                                                   self.fg_color, 'square', ''),
+                                                 )
+            meth(head, bg, fg, shape, text)
             rows.append([head, k, fields, [w] * len(fields), p, c, id, type(v), lvl])
         self.rows = rows
 
@@ -160,13 +166,17 @@ class Tree(Column):
         r.inflate_ip(-4, -4)
         return r
 
-    def draw_closed_bullet(self, surf, c):
+    def draw_deadend_bullet(self, surf, bg, fg, shape, text):
         r = self.get_bullet_rect(surf)
-        draw.polygon(surf, c, [r.topleft, r.midright, r.bottomleft])
+        draw.polygon(surf, bg, [r.midtop, r.midright, r.midbottom, r.midleft])
 
-    def draw_opened_bullet(self, surf, c):
+    def draw_closed_bullet(self, surf, bg, fg, shape, text):
         r = self.get_bullet_rect(surf)
-        draw.polygon(surf, c, [r.topleft, r.midbottom, r.topright])
+        draw.polygon(surf, bg, [r.topleft, r.midright, r.bottomleft])
+
+    def draw_opened_bullet(self, surf, bg, fg, shape, text):
+        r = self.get_bullet_rect(surf)
+        draw.polygon(surf, bg, [r.topleft, r.midbottom, r.topright])
 
     def draw_tree_cell(self, surf, i, data, cell_rect, column):
         """..."""

@@ -6,11 +6,13 @@
 #
 # Display NBT structure
 #
-from pygame import key
-from albow import Column, Row, Label, Tree, TableView, TableColumn
+from pygame import key, draw
+from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
+    IntField, TextField
 from albow.theme import root
 scroll_button_size = 0 + root.PaletteView.scroll_button_size
 del root
+from albow.utils import blit_in_rect
 from albow.translate import _
 from glbackground import Panel
 from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
@@ -18,11 +20,37 @@ from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Floa
      TAG_Short_Array
 from editortools.editortool import EditorTool
 
+USE_BULLET_STYLES = False
+USE_BULLET_TEXT = False
+
+#-----------------------------------------------------------------------------
+styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
+          TAG_Byte_Array: ((20,20,200), None, 'square', 'B'),
+          TAG_Double: ((20,200,20), None, 'circle', 'd'),
+          TAG_Float: ((200,20,20), None, 'circle', 'f'),
+          TAG_Int: ((16,160,160), None, 'circle', 'i'),
+          TAG_Int_Array: ((16,160,160), None, 'square', 'I'),
+          TAG_List: ((200,200,200), (0,0,0), 'square', 'L'),
+          TAG_Long: ((200,20,200), None, 'circle', 'l'),
+          TAG_Short: ((200,200,20), (0,0,0), 'circle', 's'),
+          TAG_Short_Array: ((200,200,20), None, 'square', 'S'),
+          TAG_String: ((60,60,60), None, 'circle', 's'),
+          }
+
 
 #-----------------------------------------------------------------------------
 class NBTTree(Tree):
     def __init__(self, *args, **kwargs):
         self._parent = kwargs.pop('_parent', None)
+        styles = kwargs.get('styles', {})
+        for key in styles.keys():
+            if hasattr(key, '__name__'):
+                name = key.__name__
+            elif type(key) in (str, unicode):
+                name = key
+            else:
+                name = repr(key)
+            setattr(self, 'draw_%s_bullet'%name, self.draw_TAG_bullet)
         Tree.__init__(self, *args, **kwargs)
 
     def click_item(self, *args, **kwargs):
@@ -30,16 +58,53 @@ class NBTTree(Tree):
         if self._parent:
             self._parent.update_side_panel(self.selected_item)
 
-    def parse_TAG_List(self, name, data):
-        value = {}
-        for i in range(len(data)):
-            item = data[i]
-            value["%s%s%s"%(name, ("0" * (len(data) - 1)), i)] = item
-        return value
+    def draw_square(self, surf, bg, r):
+        draw.polygon(surf, bg, [r.topleft, r.topright, r.bottomright, r.bottomleft])
+
+    def draw_circle(self, surf, bg, r):
+        draw.circle(surf, bg, ((r.left + r.right) / 2, (r.top + r.bottom) / 2), min(r.height / 2, r.width / 2))
+
+    def draw_TAG_bullet(self, surf, bg, fg, shape, text):
+        r = self.get_bullet_rect(surf)
+        meth = getattr(self, 'draw_%s'%shape, None)
+        if meth and USE_BULLET_STYLES:
+            meth(surf, bg, r)
+        else:
+            self.draw_deadend_bullet(surf, self.bullet_color_inactive, fg, shape, text)
+        if text and USE_BULLET_TEXT:
+            buf = self.font.render(text, True, fg or self.fg_color)
+            blit_in_rect(surf, buf, r, 'c')
+
 
 #-----------------------------------------------------------------------------
-class NBTInvetory(Column):
-    pass
+class SlotEditor(Panel):
+    def __init__(self, inventory, data):
+        Panel.__init__(self)
+        self.inventory = inventory
+        slot, id, count, damage = data
+        self.slot = slot
+        self.id = TextField(text=id, doNotTranslate=True)
+        self.count = IntField(text="%s"%count)
+        self.damage = IntField(text="%s"%damage)
+        header = Label(_("Inventory Slot #%s")%slot, doNotTranslate=True)
+        row = Row([Label("id"), self.id,
+                   Label("Count"), self.count,
+                   Label("Damage"), self.damage,
+                   ])
+        buttons = Row([Button("Save", action=self.dismiss), Button("Cancel", action=self.cancel)])
+        col = Column([header, row, buttons], spacing=2)
+        self.add(col)
+        self.shrink_wrap()
+
+    def cancel(self, *args, **kwargs):
+        kwargs['save'] = False
+        self.dismiss(*args, **kwargs)
+
+    def dismiss(self, *args, **kwargs):
+        if kwargs.pop('save', True):
+            data = [self.slot, self.id.text, self.count.text, self.damage.text]
+            self.inventory.change_value(data)
+        Panel.dismiss(self, *args, **kwargs)
 
 
 #-----------------------------------------------------------------------------
@@ -53,15 +118,35 @@ class NBTExplorerToolPanel(Panel):
         data = {}
         if hasattr(editor.level, 'root_tag'):
             data = editor.level.root_tag['Data']
+        self.data = data
         header = Label("NBT Explorer")
         self.max_height = max_height = editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height - editor.statusLabel.height - header.height - (self.margin * 2)
-        col = NBTTree(height=max_height, inner_width=250, data=data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self)
+        self.tree = NBTTree(height=max_height, inner_width=250, data=data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=styles)
+        col = Column([self.tree,
+                      Row([
+#                           Button("Save", action=self.save_NBT),
+                           Button("Reset", action=self.reset, tooltipText="Reset ALL your changes in the NBT data."),
+                           Button("Close", action=self.close),
+                          ],
+                          margin=1, spacing=4,
+                         )
+                     ],
+                     margin=0, spacing=2)
         col.shrink_wrap()
         row = [col,]
-        row.append(Column([Label("", width=250),], height=max_height))
+        row.append(Column([Label("", width=300),], height=max_height))
         self.add(Column([header, Row(row)]))
         self.shrink_wrap()
         self.side_panel = None
+
+    def save_NBT(self):
+        pass
+
+    def reset(self):
+        pass
+
+    def close(self):
+        self.parent.nbtTool.hidePanel()
 
     def key_down(self, evt):
         if key.name(evt.key) == 'escape':
@@ -88,19 +173,35 @@ class NBTExplorerToolPanel(Panel):
         else:
             for itm in items:
                 rows.append(Row([Label("%s"%itm.value, align='l'),]))
+        if self.side_panel:
+            self.side_panel.set_parent(None)
         if rows:
-            if self.side_panel:
-                self.side_panel.set_parent(None)
-            col = Column(rows, align='l')
+            col = Column(rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height)
             col.set_parent(self.subwidgets[0].subwidgets[1])
-            col.topleft = self.subwidgets[0].subwidgets[1].subwidgets[0].topright
+            col.top = self.subwidgets[0].subwidgets[1].top
+            col.left = self.subwidgets[0].subwidgets[1].subwidgets[0].right
+            col.bottom = self.subwidgets[0].subwidgets[1].subwidgets[0].bottom
             col.shrink_wrap()
             self.side_panel = col
+
 
     def build_attributes(self, items):
         rows = []
         attributes = items[0]
-        print attributes
+        names = [a['Name'].value for a in attributes]
+        indexes = [] + names
+        names.sort()
+        for name in names:
+            item = attributes[indexes.index(name)]
+            rows.append(Row([Label(name.split('.')[-1], align='l'), Label("%s"%item['Base'].value, align='l')],  margin=0))
+            mods = item.get('Modifiers', [])
+            for mod in mods:
+                keys = mod.keys()
+                keys.remove('Name')
+                rows.append(Row([Label('-> Name', align='l'), Label("%s"%mod['Name'].value, align='l')], margin=0))
+                keys.sort()
+                for key in keys:
+                    rows.append(Row([Label('    %s'%key, align='l'), Label("%s"%mod[key].value, align='l')], margin=0))
         return rows
 
     def build_motion(self, items):
@@ -128,7 +229,7 @@ class NBTExplorerToolPanel(Panel):
         for item in items:
             s = int(item['Slot'].value)
             slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
-        width = self.width / 2 - self.margin * 4 - scroll_button_size
+        width = self.width / 2 - self.margin * 4 # - scroll_button_size
         c0w = max(15, self.font.size("00")[0]) + 4
         c2w = max(15, self.font.size("00")[0]) + 4
         c3w = max(15, self.font.size("000")[0]) + 4
@@ -139,18 +240,39 @@ class NBTExplorerToolPanel(Panel):
                      TableColumn("C", c2w),
                      TableColumn("D", c3w),
                      ]
-        table = TableView(height=self.max_height - (self.margin * 2),
+        height = self.subwidgets[0].subwidgets[1].subwidgets[0].height
+        table = TableView(height=height - (self.margin * 2),
                           width=width,
-                          nrows=((self.max_height - (self.margin * 2) - font_height / 2) / font_height),
+                          nrows=((height - (self.margin * 2) - font_height / 2) / font_height),
                           columns=tableCols,
                           row_height=font_height,
                           header_height=font_height / 2)
+        table.rows.tooltipText = "Double-click to edit"
+        table.selected_row = None
+        table.slots = slots
         def num_rows():
             return len(slots)
         table.num_rows = num_rows
         def row_data(n):
             return slots[n]
         table.row_data = row_data
+        def click_row(n, e):
+            table.selected_row = n
+            if e.num_clicks > 1:
+                SlotEditor(table, row_data(n)).present()
+        table.click_row = click_row
+        def row_is_selected(n):
+            return n == table.selected_row
+        table.row_is_selected = row_is_selected
+        def change_value(data):
+            s, i, c, d = data
+            table.slots[s] = slots[s] = data
+            for slot in self.data['Player']['Inventory']:
+                if slot['Slot'].value == s:
+                    slot['id'].value = 'minecraft:%s'%i
+                    slot['Count'].value = int(c)
+                    slot['Damage'].value = int(d)
+        table.change_value = change_value
         rows.append(table)
         return rows
 
