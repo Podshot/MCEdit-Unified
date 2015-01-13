@@ -8,7 +8,7 @@
 #
 from pygame import key, draw
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    IntField, TextField
+    IntField, TextFieldWrapped
 from albow.theme import root
 scroll_button_size = 0 + root.PaletteView.scroll_button_size
 del root
@@ -83,9 +83,9 @@ class SlotEditor(Panel):
         self.inventory = inventory
         slot, id, count, damage = data
         self.slot = slot
-        self.id = TextField(text=id, doNotTranslate=True)
-        self.count = IntField(text="%s"%count)
-        self.damage = IntField(text="%s"%damage)
+        self.id = TextFieldWrapped(text=id, doNotTranslate=True, width=300)
+        self.count = IntField(text="%s"%count, min=-64, max=64)
+        self.damage = IntField(text="%s"%damage, min=-32768, max=32767)
         header = Label(_("Inventory Slot #%s")%slot, doNotTranslate=True)
         row = Row([Label("id"), self.id,
                    Label("Count"), self.count,
