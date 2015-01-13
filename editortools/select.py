@@ -976,6 +976,7 @@ class SelectionTool(EditorTool):
                 self.editor.toolbar.tools[8].destroyChunks(box.chunkPositions)
             elif resp == "Fill with Air":
                 self._deleteBlocks()
+                self.editor.renderer.discardAllChunks()
         else:
             self._deleteBlocks()
 

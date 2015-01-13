@@ -260,7 +260,7 @@ class ChunkTool(EditorTool):
             showProgress("Deleting chunks...", _destroyChunks())
 
         self.editor.renderer.invalidateChunkMarkers()
-        self.editor.renderer.discardChunks(chunks)
+        self.editor.renderer.discardAllChunks()
         # self.editor.addUnsavedEdit()
 
     @alertException
