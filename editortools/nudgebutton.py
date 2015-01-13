@@ -3,6 +3,7 @@ from albow import Label
 from albow.translate import _
 from config import config
 from glbackground import GLBackground
+import pygame
 
 
 class NudgeButton(GLBackground):
@@ -49,7 +50,16 @@ class NudgeButton(GLBackground):
             self.count = 0
 
     def key_down(self, evt):
-        pass
+        if not pygame.key.get_focused():
+            return
+
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
+
+        if keyname == config.keys.fastNudge.get():
+            self.editor.rightClickNudge = True
 
     def key_up(self, evt):
-        pass
+        keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
+
+        if keyname == config.keys.fastNudge.get():
+            self.editor.rightClickNudge = False
