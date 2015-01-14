@@ -8,7 +8,7 @@
 #
 from pygame import key, draw
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    IntField, TextFieldWrapped
+    FloatField, IntField, TextFieldWrapped
 from albow.theme import root
 scroll_button_size = 0 + root.PaletteView.scroll_button_size
 del root
@@ -19,11 +19,12 @@ from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Floa
      TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
      TAG_Short_Array
 from editortools.editortool import EditorTool
+import copy
 
+#-----------------------------------------------------------------------------
 USE_BULLET_STYLES = False
 USE_BULLET_TEXT = False
 
-#-----------------------------------------------------------------------------
 styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
           TAG_Byte_Array: ((20,20,200), None, 'square', 'B'),
           TAG_Double: ((20,200,20), None, 'circle', 'd'),
@@ -36,6 +37,17 @@ styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
           TAG_Short_Array: ((200,200,20), None, 'square', 'S'),
           TAG_String: ((60,60,60), None, 'circle', 's'),
           }
+
+
+#-----------------------------------------------------------------------------
+field_types = {TAG_Byte: (IntField, (0, 256)),
+             TAG_Double: (FloatField, None),
+             TAG_Float: (FloatField, None),
+             TAG_Int: (IntField, (-2147483647,+2147483647)),
+             TAG_Long: (IntField, (-9223372036854775807,+9223372036854775807)),
+             TAG_Short: (IntField, (0, 65536)),
+             TAG_String: (TextFieldWrapped, None),
+            }
 
 
 #-----------------------------------------------------------------------------
@@ -115,16 +127,13 @@ class NBTExplorerToolPanel(Panel):
         Panel.__init__(self)
         self.editor = editor
         self.displayed_item = None
-        data = {}
-        if hasattr(editor.level, 'root_tag'):
-            data = editor.level.root_tag['Data']
-        self.data = data
+        self.init_data()
         header = Label("NBT Explorer")
         self.max_height = max_height = editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height - editor.statusLabel.height - header.height - (self.margin * 2)
-        self.tree = NBTTree(height=max_height, inner_width=250, data=data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=styles)
+        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=styles)
         col = Column([self.tree,
                       Row([
-#                           Button("Save", action=self.save_NBT),
+                           Button("Save", action=self.save_NBT),
                            Button("Reset", action=self.reset, tooltipText="Reset ALL your changes in the NBT data."),
                            Button("Close", action=self.close),
                           ],
@@ -140,10 +149,18 @@ class NBTExplorerToolPanel(Panel):
         self.side_panel = None
 
     def save_NBT(self):
-        pass
+        if hasattr(self.editor.level, 'root_tag'):
+            self.editor.level.root_tag['Data'].update(self.data)
+
+    def init_data(self):
+        data = {}
+        if hasattr(self.editor.level, 'root_tag'):
+            data = copy.deepcopy(self.editor.level.root_tag['Data'])
+        self.data = data
 
     def reset(self):
-        pass
+        self.editor.nbtTool.hidePanel()
+        self.editor.nbtTool.showPanel()
 
     def close(self):
         self.parent.nbtTool.hidePanel()
@@ -165,6 +182,8 @@ class NBTExplorerToolPanel(Panel):
         if item == self.displayed_item:
             return
         self.displayed_item = item
+        if self.side_panel:
+            self.side_panel.set_parent(None)
         items = item[2]
         rows = []
         meth = getattr(self, 'build_%s'%item[1].lower(), None)
@@ -172,16 +191,29 @@ class NBTExplorerToolPanel(Panel):
             rows = meth(items)
         else:
             for itm in items:
-                rows.append(Row([Label("%s"%itm.value, align='l'),]))
-        if self.side_panel:
-            self.side_panel.set_parent(None)
+                t = itm.__class__.__name__
+                rows.append(Row([Label("Data Type:"), Label(t)]))
+                if type(itm) in field_types.keys():
+                    f, bounds = field_types[type(itm)]
+                    if f == TextFieldWrapped:
+                        field = f(text=itm.value, width=300)
+                    if bounds:
+                        field = f(text="%s"%itm.value, min=bounds[0], max=bounds[1])
+                    else:
+                        field = f(text="%s"%itm.value)
+                    row = Row([field,])
+                else:
+                    row = Row([Label("%s"%itm.value, align='l'),])
+                if f == TextFieldWrapped:
+                    row.width = 250
+                rows.append(row)
         if rows:
             col = Column(rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height)
             col.set_parent(self.subwidgets[0].subwidgets[1])
             col.top = self.subwidgets[0].subwidgets[1].top
             col.left = self.subwidgets[0].subwidgets[1].subwidgets[0].right
             col.bottom = self.subwidgets[0].subwidgets[1].subwidgets[0].bottom
-            col.shrink_wrap()
+#            col.shrink_wrap()
             self.side_panel = col
 
 
@@ -229,7 +261,7 @@ class NBTExplorerToolPanel(Panel):
         for item in items:
             s = int(item['Slot'].value)
             slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
-        width = self.width / 2 - self.margin * 4 # - scroll_button_size
+        width = self.width / 2 - self.margin * 4
         c0w = max(15, self.font.size("00")[0]) + 4
         c2w = max(15, self.font.size("00")[0]) + 4
         c3w = max(15, self.font.size("000")[0]) + 4
