@@ -26,9 +26,7 @@ class MCLevelAdapter(object):
     def block(self, x, y, z):
         if not self.check_box_3d(x, y, z):
             return None
-        d = {}
-        d['B'] = self.level.blockAt(x, y, z)
-        d['D'] = self.level.blockDataAt(x, y, z)
+        d = {'B': self.level.blockAt(x, y, z), 'D': self.level.blockDataAt(x, y, z)}
         return d
 
     def set_block(self, x, y, z, d):

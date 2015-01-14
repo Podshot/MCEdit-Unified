@@ -11,7 +11,8 @@ __author__ = 'Rio'
 
 
 class TestNBT():
-    def testLoad(self):
+    @staticmethod
+    def testLoad():
         "Load an indev level."
         level = nbt.load("testfiles/hell.mclevel")
 
@@ -26,13 +27,16 @@ class TestNBT():
 
         return level
 
-    def testLoadUncompressed(self):
+    @staticmethod
+    def testLoadUncompressed():
         root_tag = nbt.load("testfiles/uncompressed.nbt")
 
-    def testLoadNBTExplorer(self):
+    @staticmethod
+    def testLoadNBTExplorer():
         root_tag = nbt.load("testfiles/modified_by_nbtexplorer.dat")
 
-    def testCreate(self):
+    @staticmethod
+    def testCreate():
         "Create an indev level."
 
         # The root of an NBT file is always a TAG_Compound.
@@ -125,7 +129,8 @@ class TestNBT():
         level["Entities"][0] = nbt.TAG_Compound([nbt.TAG_String("Creeper", "id"),
                                                  nbt.TAG_List([nbt.TAG_Double(d) for d in (1, 1, 1)], "Pos")])
 
-    def testMultipleCompound(self):
+    @staticmethod
+    def testMultipleCompound():
         """ According to rumor, some TAG_Compounds store several tags with the same name. Once I find a chunk file
         with such a compound, I need to test TAG_Compound.get_all()"""
 
@@ -139,8 +144,8 @@ class TestNBT():
         # Save the entire TAG structure to a different file.
         TempLevel("atlantis.mclevel", createFunc=level.save)  # xxx don't use templevel here
 
-
-    def testList(self):
+    @staticmethod
+    def testList():
         tag = nbt.TAG_List()
         tag.append(nbt.TAG_Int(258))
         del tag[0]
@@ -171,7 +176,8 @@ class TestNBT():
         else:
             assert False
 
-    def testSpeed(self):
+    @staticmethod
+    def testSpeed():
         d = join("testfiles", "TileTicks_chunks")
         files = [join(d, f) for f in os.listdir(d)]
         startTime = time.time()

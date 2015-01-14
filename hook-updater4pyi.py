@@ -24,4 +24,4 @@ elif updater4pyi.util.is_win():
 
 # from hookutils import collect_data_files
 #datas = collect_data_files('updater4pyi')
-print "DATAS IS\n\t%r" % (datas)
+print "DATAS IS\n\t%r" % datas

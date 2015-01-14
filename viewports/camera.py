@@ -22,7 +22,8 @@ from datetime import datetime, timedelta
 from OpenGL import GL
 from OpenGL import GLU
 
-from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, TableView, Widget, CheckBox, TextFieldWrapped
+from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, TableView, Widget, CheckBox, \
+    TextFieldWrapped
 from albow.controls import Label, ValueDisplay
 from albow.dialogs import Dialog, wrapped_label
 from albow.openglwidgets import GLViewport
@@ -64,7 +65,7 @@ class CameraViewport(GLViewport):
 
         # A state machine to dodge an apparent bug in pygame that generates erroneous mouse move events
         # 0 = bad event already happened
-        #   1 = app just started or regained focus since last bad event
+        # 1 = app just started or regained focus since last bad event
         #   2 = mouse cursor was hidden after state 1, next event will be bad
         self.avoidMouseJumpBug = 1
 
@@ -147,11 +148,11 @@ class CameraViewport(GLViewport):
         mouseSpeed = config.controls.mouseSpeed.get()
         self.yaw += pi[0] * mouseSpeed
         self.pitch += pi[1] * mouseSpeed
-        
+
         if config.settings.viewMode.get() == "Chunk":
             (dx, dy, dz) = (0, -0.25, -1)
-            self.yaw = yaw = -180
-            self.pitch = pitch = 10
+            self.yaw = -180
+            self.pitch = 10
         elif self.flyMode:
             (dx, dy, dz) = self._anglesToVector(self.yaw, 0)
         elif self.swapAxes:
@@ -186,7 +187,7 @@ class CameraViewport(GLViewport):
         # apply drag
         if speed:
             if self.autobrake and not any(inputs):
-                speed = 0.15 * speed
+                speed *= 0.15
             else:
 
                 sign = speed / abs(speed)
@@ -234,7 +235,8 @@ class CameraViewport(GLViewport):
     def _cameraVector(self):
         return self._anglesToVector(self.yaw, self.pitch)
 
-    def _anglesToVector(self, yaw, pitch):
+    @staticmethod
+    def _anglesToVector(yaw, pitch):
         def nanzero(x):
             if isnan(x):
                 return 0
@@ -302,7 +304,8 @@ class CameraViewport(GLViewport):
             if self.editor.mouseEntered:
                 if not self.mouseMovesCamera:
                     try:
-                        focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level, 100, config.settings.viewMode.get())
+                        focusPair = raycaster.firstBlock(self.cameraPosition, self._mouseVector(), self.editor.level,
+                                                         100, config.settings.viewMode.get())
                     except TooFarException:
                         mouse3dPoint = self._blockUnderCursor()
                         focusPair = self._findBlockFaceUnderCursor(mouse3dPoint)
@@ -523,7 +526,6 @@ class CameraViewport(GLViewport):
     @mceutils.alertException
     def editSign(self, point):
 
-        block = self.editor.level.blockAt(*point)
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
@@ -618,8 +620,6 @@ class CameraViewport(GLViewport):
 
     @mceutils.alertException
     def editSkull(self, point):
-        block = self.editor.level.blockAt(*point)
-        blockData = self.editor.level.blockDataAt(*point)
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
         skullTypes = {
@@ -712,8 +712,6 @@ class CameraViewport(GLViewport):
     @mceutils.alertException
     def editCommandBlock(self, point):
         panel = Dialog()
-        block = self.editor.level.blockAt(*point)
-        blockData = self.editor.level.blockDataAt(*point)
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
@@ -780,7 +778,8 @@ class CameraViewport(GLViewport):
 
         okBTN = Button("OK", action=updateCommandBlock)
         cancel = Button("Cancel", action=panel.dismiss)
-        column = [titleLabel, Label("Command:"), commandField, Row((Label("Custom Name:"), nameField)), Row((Label("Track Output"), trackOutput)), okBTN, cancel]
+        column = [titleLabel, Label("Command:"), commandField, Row((Label("Custom Name:"), nameField)),
+                  Row((Label("Track Output"), trackOutput)), okBTN, cancel]
         panel.add(Column(column))
         panel.shrink_wrap()
         panel.present()
@@ -908,7 +907,6 @@ class CameraViewport(GLViewport):
 
                     for player in self.editor.level.players:
                         tag = self.editor.level.getPlayerTag(player)
-                        l = len(tag["Inventory"])
                         tag["Inventory"].value = [t for t in tag["Inventory"].value if not matches(t)]
 
                     for chunk in self.editor.level.getChunks():
@@ -1022,7 +1020,6 @@ class CameraViewport(GLViewport):
         self.toggleMouseLook()
 
     def rightClickUp(self, evt):
-        x, y = evt.pos
         if self.rightMouseDragStart is None:
             return
 
@@ -1139,7 +1136,7 @@ class CameraViewport(GLViewport):
                 # self.oldMousePosition = (x, y)
                 # if (self.startingMousePosition[0] - x > adjustLimit or self.startingMousePosition[1] - y > adjustLimit or
                 # self.startingMousePosition[0] - x < -adjustLimit or self.startingMousePosition[1] - y < -adjustLimit):
-                #    mouse.set_pos(*self.startingMousePosition)
+                # mouse.set_pos(*self.startingMousePosition)
                 #    event.get(MOUSEMOTION)
                 #    self.oldMousePosition = (self.startingMousePosition)
 
@@ -1174,7 +1171,8 @@ class CameraViewport(GLViewport):
     def drawFloorQuad(self):
         self.floorQuadList.call(self._drawFloorQuad)
 
-    def _drawCeiling(self):
+    @staticmethod
+    def _drawCeiling():
         lines = []
         minz = minx = -256
         maxz = maxx = 256
@@ -1257,7 +1255,8 @@ class CameraViewport(GLViewport):
             self.skyList = glutils.DisplayList()
         self.skyList.call(self._drawSkyBackground)
 
-    def _drawSkyBackground(self):
+    @staticmethod
+    def _drawSkyBackground():
         GL.glMatrixMode(GL.GL_MODELVIEW)
         GL.glPushMatrix()
         GL.glLoadIdentity()
@@ -1313,7 +1312,8 @@ class CameraViewport(GLViewport):
 
         GL.glFogf(GL.GL_FOG_DENSITY, 0.002)
 
-    def disableFog(self):
+    @staticmethod
+    def disableFog():
         GL.glDisable(GL.GL_FOG)
 
     def getCameraPoint(self):

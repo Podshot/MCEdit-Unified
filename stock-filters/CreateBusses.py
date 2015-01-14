@@ -30,19 +30,19 @@ Up = (0, 1, 0)
 
 def getHorizDir((x1, y1, z1), (x2, y2, z2)):
     if abs(x2 - x1) > abs(z2 - z1):
-        return (sign(x2 - x1), 0, 0)
+        return sign(x2 - x1), 0, 0
     else:
-        if (z2 == z1):
-            return (1, 0, 0)
+        if z2 == z1:
+            return 1, 0, 0
         else:
-            return (0, 0, sign(z2 - z1))
+            return 0, 0, sign(z2 - z1)
 
 
 def getSecondaryDir((x1, y1, z1), (x2, y2, z2)):
     if abs(x2 - x1) > abs(z2 - z1):
-        return (0, 0, sign(z2 - z1))
+        return 0, 0, sign(z2 - z1)
     else:
-        return (sign(x2 - x1), 0, 0)
+        return sign(x2 - x1), 0, 0
 
 
 def leftOf((dx1, dy1, dz1), (dx2, dy2, dz2)):
@@ -50,11 +50,11 @@ def leftOf((dx1, dy1, dz1), (dx2, dy2, dz2)):
 
 
 def rotateRight((dx, dy, dz)):
-    return ((-dz, dy, dx))
+    return -dz, dy, dx
 
 
 def rotateLeft((dx, dy, dz)):
-    return ((dz, dy, -dx))
+    return dz, dy, -dx
 
 
 def allAdjacentSamePlane(dir, secondaryDir):
@@ -169,7 +169,7 @@ def allAdjacentDown(dir, secondaryDir):
 
 
 def getDir((x, y, z), (dx, dy, dz)):
-    return (x + dx, y + dy, z + dz)
+    return x + dx, y + dy, z + dz
 
 
 def dist((x1, y1, z1), (x2, y2, z2)):
@@ -185,7 +185,7 @@ def below((x1, y1, z1), (x2, y2, z2)):
 
 
 def insideBox(box, (x, y, z)):
-    return x >= box.minx and x < box.maxx and y >= box.miny and y < box.maxy and z >= box.minz and z < box.maxz
+    return box.minx <= x < box.maxx and box.miny <= y < box.maxy and box.minz <= z < box.maxz
 
 
 Colors = {
@@ -225,7 +225,7 @@ class BusCreator:
             for y in xrange(self.box.miny, self.box.maxy):
                 for z in xrange(self.box.minz, self.box.maxz):
                     (color, start) = self.isTerminal((x, y, z))
-                    if color != None and start != None:
+                    if color is not None and start is not None:
                         if start:
                             if color in self.starts:
                                 raise Exception("Duplicate starting point for " + Colors[color] + " bus")
@@ -255,7 +255,6 @@ class BusCreator:
 
                         self.guides[color].append(rs)
 
-
     def isTerminal(self, (x, y, z)):
         pos = (x, y, z)
         for dir in HorizDirs:
@@ -276,9 +275,9 @@ class BusCreator:
             if self.getBlockDataAt(getDir(otherPos, Down)) != data:  # the wool colors don't match
                 continue
 
-            return (data, towards)
+            return data, towards
 
-        return (None, None)
+        return None, None
 
     def pickAllPaths(self):
         for color in range(0, 16):
@@ -294,14 +293,14 @@ class BusCreator:
             minGuide = None
             for guide in self.guides[color]:
                 guideDist = dist(currentPos, guide)
-                if minDist == None or guideDist < minDist:
+                if minDist is None or guideDist < minDist:
                     minDist = guideDist
                     minGuide = guide
 
             if dist(currentPos, self.ends[color]) == 1:
                 return
 
-            if minGuide == None:
+            if minGuide is None:
                 return
 
             self.path[color] = self.path[color] + (minGuide,)
@@ -317,17 +316,16 @@ class BusCreator:
         prevGuide = None
         self.power = 1
         for guide in self.path[color]:
-            if prevGuide != None:
+            if prevGuide is not None:
                 self.createConnection(prevGuide, guide, color)
 
             prevGuide = guide
-
 
     def createConnection(self, pos1, pos2, color):
         currentPos = pos1
 
         while currentPos != pos2:
-            self.power = self.power + 1
+            self.power += 1
 
             hdir = getHorizDir(currentPos, pos2)
             secondaryDir = getSecondaryDir(currentPos, pos2)
@@ -362,7 +360,6 @@ class BusCreator:
             if not placed:
                 # raise Exception("Algorithm failed to create bus for " + Colors[color] + " wire.")
                 return
-
 
     def canPlaceRedstone(self, pos, fromPos, destinationPos, restrictions):
         if restrictions == 1 and above(pos, fromPos):  # repeater
@@ -408,7 +405,6 @@ class BusCreator:
                 return False
 
         return True
-
 
     def placeRedstone(self, pos, color):
         self.setBlockAt(pos, 55)  # redstone
@@ -471,4 +467,3 @@ class BusCreator:
             return True
 
         return False
-		

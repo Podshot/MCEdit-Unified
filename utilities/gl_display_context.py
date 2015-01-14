@@ -20,11 +20,13 @@ class GLDisplayContext(object):
     def __init__(self, splash=None):
         self.reset(splash)
 
-    def getWindowSize(self):
+    @staticmethod
+    def getWindowSize():
         w, h = (config.settings.windowWidth.get(), config.settings.windowHeight.get())
         return max(20, w), max(20, h)
 
-    def displayMode(self):
+    @staticmethod
+    def displayMode():
         return pygame.OPENGL | pygame.RESIZABLE | pygame.DOUBLEBUF
 
     def reset(self, splash=None):
@@ -66,7 +68,6 @@ class GLDisplayContext(object):
             X, Y = config.settings.windowX.get(), config.settings.windowY.get()
 
             if X:
-                w, h = self.getWindowSize()
                 hwndOwner = display.get_wm_info()['window']
 
                 flags, showCmd, ptMin, ptMax, rect = mcplatform.win32gui.GetWindowPlacement(hwndOwner)

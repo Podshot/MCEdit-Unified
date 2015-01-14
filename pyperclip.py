@@ -47,15 +47,18 @@
 # * Removed Python 3 compatability
 # * Removed PyQT support
 
-import platform, os
+import platform
+import os
+
 
 def winGetClipboard():
     ctypes.windll.user32.OpenClipboard(None)
-    pcontents = ctypes.windll.user32.GetClipboardData(1) # 1 is CF_TEXT
+    pcontents = ctypes.windll.user32.GetClipboardData(1)  # 1 is CF_TEXT
     data = ctypes.c_char_p(pcontents).value
     #ctypes.windll.kernel32.GlobalUnlock(pcontents)
     ctypes.windll.user32.CloseClipboard()
     return data
+
 
 def winSetClipboard(text):
     text = str(text)
@@ -69,11 +72,13 @@ def winSetClipboard(text):
     ctypes.windll.user32.SetClipboardData(1, hCd)
     ctypes.windll.user32.CloseClipboard()
 
+
 def macSetClipboard(text):
     text = str(text)
     outf = os.popen('pbcopy', 'w')
     outf.write(text)
     outf.close()
+
 
 def macGetClipboard():
     outf = os.popen('pbpaste', 'r')
@@ -81,8 +86,10 @@ def macGetClipboard():
     outf.close()
     return content
 
+
 def gtkGetClipboard():
     return gtk.Clipboard().wait_for_text()
+
 
 def gtkSetClipboard(text):
     global cb
@@ -91,12 +98,15 @@ def gtkSetClipboard(text):
     cb.set_text(text)
     cb.store()
 
+
 def qtGetClipboard():
     return str(cb.text())
+
 
 def qtSetClipboard(text):
     text = str(text)
     cb.setText(text)
+
 
 def xclipSetClipboard(text):
     text = str(text)
@@ -104,17 +114,20 @@ def xclipSetClipboard(text):
     outf.write(text)
     outf.close()
 
+
 def xclipGetClipboard():
     outf = os.popen('xclip -selection c -o', 'r')
     content = outf.read()
     outf.close()
     return content
 
+
 def xselSetClipboard(text):
     text = str(text)
     outf = os.popen('xsel -i', 'w')
     outf.write(text)
     outf.close()
+
 
 def xselGetClipboard():
     outf = os.popen('xsel -o', 'r')

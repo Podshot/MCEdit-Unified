@@ -24,6 +24,8 @@ __author__ = 'Rio'
 
 # Thank you, Stackoverflow
 # http://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
+
+
 def which(program):
     def is_exe(f):
         return os.path.exists(f) and os.access(f, os.X_OK)
@@ -57,7 +59,6 @@ def getVersions(doSnapshot):
     versionSite = urllib2.urlopen("http://s3.amazonaws.com/Minecraft.Download/versions/versions.json")
     versionSiteResponse = versionSite.read()
     versionJSON = json.loads(versionSiteResponse)
-    version = None
     if doSnapshot:
         version = versionJSON["latest"]["snapshot"]
     else:
@@ -360,15 +361,13 @@ class MCServerChunkGenerator(object):
     def generateAtPosition(self, tempWorld, tempDir, cx, cz):
         return exhaust(self.generateAtPositionIter(tempWorld, tempDir, cx, cz))
 
-    def addEULA(self, tempDir):
-        eulaLines = []
-        eulaLines.append(
-            "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n")
-        eulaLines.append("#Wed Jul 23 21:10:11 EDT 2014\n")
-        eulaLines.append("eula=true\n")
+    @staticmethod
+    def addEULA(tempDir):
+        eulaLines = [
+            "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n",
+            "#Wed Jul 23 21:10:11 EDT 2014\n", "eula=true\n"]
         with open(tempDir + "/" + "eula.txt", "w") as f:
             f.writelines(eulaLines)
-
 
     def generateAtPositionIter(self, tempWorld, tempDir, cx, cz, simulate=False):
         tempWorldRW = infiniteworld.MCInfdevOldLevel(tempWorld.filename)
@@ -429,10 +428,10 @@ class MCServerChunkGenerator(object):
         try:
             tempChunkBytes = tempWorld._getChunkBytes(cx, cz)
         except ChunkNotPresent, e:
-            raise ChunkNotPresent, "While generating a world in {0} using server {1} ({2!r})".format(tempWorld,
+            raise ChunkNotPresent("While generating a world in {0} using server {1} ({2!r})".format(tempWorld,
                                                                                                      self.serverJarFile,
                                                                                                      e), sys.exc_info()[
-                2]
+                2])
 
         level.worldFolder.saveChunk(cx, cz, tempChunkBytes)
         level._allChunks = None

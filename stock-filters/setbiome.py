@@ -14,7 +14,7 @@ from pymclevel import TAG_String
 from numpy import zeros
 
 inputs = (
-    ("Biome", ( "Ocean",
+    ("Biome",  ("Ocean",
                 "Plains",
                 "Desert",
                 "Extreme Hills",

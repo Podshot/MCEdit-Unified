@@ -5,6 +5,7 @@ import numpy
 displayName = 'Fill'
 mainBlock = 'Block'
 
+
 def createInputs(self):
     self.inputs = (
     {'Hollow': False},
@@ -15,6 +16,7 @@ def createInputs(self):
     {'Minimum Spacing': 1}
     )
 
+
 def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     brushMask = createBrushMask(op.tool.getBrushSize(), op.options['Style'], brushBox.origin, brushBoxThisChunk, op.options['Noise'], op.options['Hollow'])
 
@@ -23,7 +25,7 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
 
     airFill = op.options['Fill Air']
 
-    if airFill == False:
+    if not airFill:
         airtable = numpy.zeros((materials.id_limit, 16), dtype='bool')
         airtable[0] = True
         replaceMaskAir = airtable[blocks, data]

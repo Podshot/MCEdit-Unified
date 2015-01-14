@@ -290,7 +290,7 @@ class LevelDBTestCasesMixIn(object):
 
     def testKeysWithZeroBytes(self):
         db = self.db_class(self.db_path, create_if_missing=True)
-        key_with_zero_byte = ("\x01\x00\x02\x03\x04")
+        key_with_zero_byte = "\x01\x00\x02\x03\x04"
         db.put(key_with_zero_byte, "hey")
         self.assertEqual(db.get(key_with_zero_byte), "hey")
         it = db.iterator().seekFirst()
@@ -302,7 +302,7 @@ class LevelDBTestCasesMixIn(object):
 
     def testValuesWithZeroBytes(self):
         db = self.db_class(self.db_path, create_if_missing=True)
-        value_with_zero_byte = ("\x01\x00\x02\x03\x04")
+        value_with_zero_byte = "\x01\x00\x02\x03\x04"
         db.put("hey", value_with_zero_byte)
         self.assertEqual(db.get("hey"), value_with_zero_byte)
         it = db.iterator().seekFirst()

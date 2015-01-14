@@ -15,8 +15,10 @@ run_length_encode = False
 
 __curLang = "default"
 
+
 def getCurLang():
     return __curLang
+
 
 def setCurLang(lang):
     global __curLang
@@ -112,13 +114,16 @@ class DummySound(object):
     def fadeout(self, x):
         pass
 
-    def get_length(self):
+    @staticmethod
+    def get_length():
         return 0.0
 
-    def get_num_channels(self):
+    @staticmethod
+    def get_num_channels():
         return 0
 
-    def get_volume(self):
+    @staticmethod
+    def get_volume():
         return 0.0
 
     def play(self, *args):

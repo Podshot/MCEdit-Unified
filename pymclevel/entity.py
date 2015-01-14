@@ -92,7 +92,6 @@ class TileEntity(object):
         for a, p in zip('xyz', pos):
             tag[a] = nbt.TAG_Int(p)
 
-
     @classmethod
     def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first):
         #You'll need to use this function twice
@@ -110,32 +109,32 @@ class TileEntity(object):
                 return float(x)
 
         def coordX(x, argument):
-            if first == True:
+            if first:
                 x = str(num(x)) + '!' + str(num(x) + copyOffset[0])
-            elif argument == True and x.find("!") >= 0:
+            elif argument and x.find("!") >= 0:
                 x = x[x.index("!") + 1:]
                 x = str(num(x) + copyOffset[0])
-            elif argument == False and x.find("!") >= 0:
+            elif not argument and x.find("!") >= 0:
                 x = x[:x.index("!")]
             return x
 
         def coordY(y, argument):
-            if first == True:
+            if first:
                 y = str(num(y)) + '!' + str(num(y) + copyOffset[1])
-            elif argument == True and y.find("!") >= 0:
+            elif argument and y.find("!") >= 0:
                 y = y[y.index("!") + 1:]
                 y = str(num(y) + copyOffset[1])
-            elif argument == False and y.find("!") >= 0:
+            elif not argument and y.find("!") >= 0:
                 y = y[:y.index("!")]
             return y
 
         def coordZ(z, argument):
-            if first == True:
+            if first:
                 z = str(num(z)) + '!' + str(num(z) + copyOffset[2])
-            elif argument == True and z.find("!") >= 0:
+            elif argument and z.find("!") >= 0:
                 z = z[z.index("!") + 1:]
                 z = str(num(z) + copyOffset[2])
-            elif argument == False and z.find("!") >= 0:
+            elif not argument and z.find("!") >= 0:
                 z = z[:z.index("!")]
             return z
 
@@ -159,7 +158,7 @@ class TileEntity(object):
 
             for mob in mobs:
                 if "Pos" in mob:
-                    if first == True:
+                    if first:
                         pos = Entity.pos(mob)
                         x, y, z = [str(part) for part in pos]
                         x, y, z = coords(x, y, z, moveSpawnerPos)
@@ -169,7 +168,7 @@ class TileEntity(object):
                     elif 'Temp1' in mob and 'Temp2' in mob and 'Temp3' in mob:
                         x = mob['Temp1']
                         y = mob['Temp2']
-                        z= mob['Temp3']
+                        z = mob['Temp3']
                         del mob['Temp1']
                         del mob['Temp2']
                         del mob['Temp3']
@@ -190,13 +189,10 @@ class TileEntity(object):
                 old_selector = selector
                 try:
                     char_num = 0
-                    x = ""
-                    y = ""
-                    z = ""
                     new_selector = ""
                     dont_copy = 0
                     if len(selector) > 4:
-                        if selector[3] >= '0' and selector[3] <= '9':
+                        if '0' <= selector[3] <= '9':
                             new_selector = selector[:3]
                             end_char_x = selector.find(',', 4, len(selector)-1)
                             if end_char_x == -1:
@@ -224,14 +220,14 @@ class TileEntity(object):
                                 if dont_copy != 0:
                                     dont_copy -= 1
                                 else:
-                                    if (char != 'x' and char != 'y' and char != 'z') or letter == True:
+                                    if (char != 'x' and char != 'y' and char != 'z') or letter:
                                         new_selector += char
                                         if char == '[' or char == ',':
                                             letter = False
                                         else:
                                             letter = True
 
-                                    elif char == 'x' and letter == False:
+                                    elif char == 'x' and not letter:
                                         new_selector += selector[char_num:char_num + 2]
                                         char_x = char_num + 2
                                         end_char_x = selector.find(',', char_num + 3, len(selector)-1)
@@ -242,7 +238,7 @@ class TileEntity(object):
                                         x = coordX(x, staticCommands)
                                         new_selector += x
 
-                                    elif char == 'y' and letter == False:
+                                    elif char == 'y' and not letter:
                                         new_selector += selector[char_num:char_num + 2]
                                         char_y = char_num + 2
                                         end_char_y = selector.find(',', char_num + 3, len(selector)-1)
@@ -253,7 +249,7 @@ class TileEntity(object):
                                         y = coordY(y, staticCommands)
                                         new_selector += y
 
-                                    elif char == 'z' and letter == False:
+                                    elif char == 'z' and not letter:
                                         new_selector += selector[char_num:char_num + 2]
                                         char_z = char_num + 2
                                         end_char_z = selector.find(',', char_num + 3, len(selector)-1)
@@ -292,8 +288,8 @@ class TileEntity(object):
                     stillExecuting = True
                     execute = True
                     saving_command = ""
-                    while stillExecuting == True:
-                        if Slash == True:
+                    while stillExecuting:
+                        if Slash:
                             saving_command += '/'
                         x, y, z = words[2:5]
                         words[2:5] = coords(x, y, z, staticCommands)
@@ -353,13 +349,13 @@ class TileEntity(object):
                         z = coordZ(z, staticCommands)
 
                     words[2:4] = x, z
-                if Slash == True:
+                if Slash:
                     command = '/'
                 else:
                     command = ""
                 command += ' '.join(words)
 
-                if execute == True:
+                if execute:
                     command = saving_command + command
                 eTag['Command'].value = command
             except:
@@ -429,7 +425,7 @@ class Entity(object):
             "VillagerGolem": 99,
             "EntityHorse": 100,
             "Rabbit": 101,
-            "Villager":120,
+            "Villager": 120,
             "EnderCrystal": 200}
 
     monsters = ["Creeper",
@@ -549,6 +545,7 @@ class Entity(object):
             if v == entity:
                 return Entity.entityList[entity]
         return "No ID"
+
 
 class TileTick(object):
     @classmethod

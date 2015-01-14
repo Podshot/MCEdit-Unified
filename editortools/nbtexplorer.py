@@ -70,10 +70,12 @@ class NBTTree(Tree):
         if self._parent:
             self._parent.update_side_panel(self.selected_item)
 
-    def draw_square(self, surf, bg, r):
+    @staticmethod
+    def draw_square(surf, bg, r):
         draw.polygon(surf, bg, [r.topleft, r.topright, r.bottomright, r.bottomleft])
 
-    def draw_circle(self, surf, bg, r):
+    @staticmethod
+    def draw_circle(surf, bg, r):
         draw.circle(surf, bg, ((r.left + r.right) / 2, (r.top + r.bottom) / 2), min(r.height / 2, r.width / 2))
 
     def draw_TAG_bullet(self, surf, bg, fg, shape, text):
@@ -142,8 +144,7 @@ class NBTExplorerToolPanel(Panel):
                      ],
                      margin=0, spacing=2)
         col.shrink_wrap()
-        row = [col,]
-        row.append(Column([Label("", width=300),], height=max_height))
+        row = [col, Column([Label("", width=300), ], height=max_height)]
         self.add(Column([header, Row(row)]))
         self.shrink_wrap()
         self.side_panel = None
@@ -195,8 +196,6 @@ class NBTExplorerToolPanel(Panel):
                 rows.append(Row([Label("Data Type:"), Label(t)]))
                 if type(itm) in field_types.keys():
                     f, bounds = field_types[type(itm)]
-                    if f == TextFieldWrapped:
-                        field = f(text=itm.value, width=300)
                     if bounds:
                         field = f(text="%s"%itm.value, min=bounds[0], max=bounds[1])
                     else:
@@ -216,8 +215,8 @@ class NBTExplorerToolPanel(Panel):
 #            col.shrink_wrap()
             self.side_panel = col
 
-
-    def build_attributes(self, items):
+    @staticmethod
+    def build_attributes(items):
         rows = []
         attributes = items[0]
         names = [a['Name'].value for a in attributes]
@@ -239,7 +238,8 @@ class NBTExplorerToolPanel(Panel):
     def build_motion(self, items):
         return self.build_pos(items)
 
-    def build_pos(self, items):
+    @staticmethod
+    def build_pos(items):
         rows = []
         pos = items[0]
         rows.append(Row([Label("X", align='l'), Label("%s"%pos[0].value, align='l')]))
@@ -247,7 +247,8 @@ class NBTExplorerToolPanel(Panel):
         rows.append(Row([Label("Z", align='l'), Label("%s"%pos[2].value, align='l')]))
         return rows
 
-    def build_rotation(self, items):
+    @staticmethod
+    def build_rotation(items):
         rows = []
         rotation = items[0]
         rows.append(Row([Label("Y", align='l'), Label("%s"%rotation[0].value, align='l')]))
@@ -282,20 +283,25 @@ class NBTExplorerToolPanel(Panel):
         table.rows.tooltipText = "Double-click to edit"
         table.selected_row = None
         table.slots = slots
+
         def num_rows():
             return len(slots)
         table.num_rows = num_rows
+
         def row_data(n):
             return slots[n]
         table.row_data = row_data
+
         def click_row(n, e):
             table.selected_row = n
             if e.num_clicks > 1:
                 SlotEditor(table, row_data(n)).present()
         table.click_row = click_row
+
         def row_is_selected(n):
             return n == table.selected_row
         table.row_is_selected = row_is_selected
+
         def change_value(data):
             s, i, c, d = data
             table.slots[s] = slots[s] = data
@@ -313,6 +319,7 @@ class NBTExplorerToolPanel(Panel):
 class NBTExplorerTool(EditorTool):
     """..."""
     tooltipText = "Dive into level NBT structure."
+
     def __init__(self, editor):
         """..."""
         self.toolIconName = 'nbtexplorer'

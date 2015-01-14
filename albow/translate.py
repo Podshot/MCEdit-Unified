@@ -57,6 +57,8 @@ import json
 import resource
 
 import platform, locale
+
+
 def getPlatInfo(**kwargs):
     """kwargs: dict: {"module_name": module,...}
     used to display version information about modules."""
@@ -121,6 +123,7 @@ trnHeader = """# TRANSLATION BASICS
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
 #-------------------------------------------------------------------------------
+
 def _(string, doNotTranslate=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
     if doNotTranslate:
@@ -137,6 +140,7 @@ def _(string, doNotTranslate=False):
     return trn or string
 
 #-------------------------------------------------------------------------------
+
 def loadTemplate(fName="template.trn"):
     """Load the template fName file in the global template variable.
     Returns the template."""
@@ -187,6 +191,7 @@ def loadTemplate(fName="template.trn"):
     return template
 
 #-------------------------------------------------------------------------------
+
 def saveTemplate():
     if buildTemplate:
         fName = os.path.abspath(os.path.join(getLangPath(), "template.trn"))
@@ -219,13 +224,16 @@ def setLangPath(path):
     return False
 
 #-------------------------------------------------------------------------------
+
 def getLangPath():
     """..."""
     return langPath
 
 #-------------------------------------------------------------------------------
+
 def getLang():
     return lang
+
 
 def setLang(newlang):
     """Set the actual language. Returns old and new languages and string_cache in a tulpe.
@@ -233,7 +241,6 @@ def setLang(newlang):
     newlang: str: new laguage to load in the format <language>_<country>"""
     global lang
     oldLang = "" + lang
-    result = False
     if not lang == newlang:
         sc, result = buildTranslation(newlang)
         lang = newlang
@@ -245,7 +252,7 @@ def setLang(newlang):
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
     """Returns encoded/decoded data."""
-    return data # disabled for now, but can be use full in the future
+    return data  # disabled for now, but can be use full in the future
     if type(data) == str:
         data = data.decode(newEnc)
     elif type(data) == unicode:
@@ -286,6 +293,8 @@ def getLangName(file, path=None):
 
 from time import asctime, time
 #-------------------------------------------------------------------------------
+
+
 def buildTranslation(lang,suppressAlert=False):
     """Finds the file corresponding to 'lang' builds up string_cache.
     If the file is not valid, does nothing.
@@ -320,6 +329,7 @@ def buildTranslation(lang,suppressAlert=False):
             grps2 = re.findall(r"^t\d+[ ]", data, re.M|re.S)
             log.warning("    Unpaired original and translated strings. %s is longer (oXX: %s, tXX: %s)."%({True: "tXX", False: "oXX"}[len(grps1) < len(grps2)], len(grps1), len(grps2)))
             bugStrs = []
+
             def compLists(lst1, lst1N, lst2, lst2N, repl, bugStrs=bugStrs):
                 bug = []
                 for item in lst1:

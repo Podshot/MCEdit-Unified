@@ -139,7 +139,7 @@ class SelectionToolPanel(Panel):
         deleteTileTicksButton.tooltipText = "Removes all tile ticks within selection. Tile ticks are scheduled block updates"
         # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
-        analyzeButton.tooltipText ="Count the different blocks and entities in the selection and display the totals."
+        analyzeButton.tooltipText = "Count the different blocks and entities in the selection and display the totals."
         cutButton = Button("Cut", action=self.tool.cutSelection)
         cutButton.tooltipText = _("Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}").format(
             config.keys.cut.get())
@@ -297,15 +297,12 @@ class SelectionTool(EditorTool):
             box = self.selectionBoxInProgress()
             if box:
                 size = "{s[0]} W x {s[2]} L x {s[1]} H".format(s=box.size)
-                text = size
             if size:
                 return size
             elif self.dragResizeFace is not None:
                 return None
             else:
                 return self.describeBlockAt(pos)
-
-            return text.strip()
 
         except Exception, e:
             return repr(e)
@@ -713,7 +710,7 @@ class SelectionTool(EditorTool):
     def drawToolMarkers(self):
 
         selectionBox = self.selectionBox()
-        if (selectionBox):
+        if selectionBox:
             widg = self.editor.find_widget(pygame.mouse.get_pos())
 
             # these corners stay even while using the chunk tool.
@@ -721,7 +718,7 @@ class SelectionTool(EditorTool):
             lineWidth = 3
             for t, c, n in ((self.bottomLeftPoint, self.bottomLeftColor, self.bottomLeftNudge),
                             (self.topRightPoint, self.topRightColor, self.topRightNudge)):
-                if t != None:
+                if t is not None:
                     (sx, sy, sz) = t
                     if self.selectionInProgress:
                         if t == self.getSelectionPoint(self.currentCorner):
@@ -737,7 +734,7 @@ class SelectionTool(EditorTool):
                     alpha = 0.4
                     try:
                         bt = self.editor.level.blockAt(sx, sy, sz)
-                        if (bt):
+                        if bt:
                             alpha = 0.2
                     except (EnvironmentError, pymclevel.ChunkNotPresent):
                         pass
@@ -746,7 +743,7 @@ class SelectionTool(EditorTool):
                     lineWidth += 1
 
                     # draw highlighted block faces when nudging
-                    if (widg.parent == n or widg == n):
+                    if widg.parent == n or widg == n:
                         GL.glEnable(GL.GL_BLEND)
                         nudgefaces = numpy.array([
                                                      selectionBox.minx, selectionBox.miny, selectionBox.minz,
@@ -859,7 +856,7 @@ class SelectionTool(EditorTool):
         if self.dragResizeFace is not None:
             self.showPanel()  # xxx do this every frame while dragging because our UI kit is bad
 
-        if ((self.selectionInProgress or self.clickSelectionInProgress) and otherCorner != None):
+        if (self.selectionInProgress or self.clickSelectionInProgress) and otherCorner is not None:
             GL.glPolygonOffset(DepthOffset.PotentialSelection, DepthOffset.PotentialSelection)
 
             pos, direction = self.editor.blockFaceUnderCursor
@@ -892,7 +889,7 @@ class SelectionTool(EditorTool):
 
         try:
             bt = self.editor.level.blockAt(*pos)
-            if (bt):
+            if bt:
                 # #                textureCoords = materials[bt][0]
                 alpha = 0.12
         except (EnvironmentError, pymclevel.ChunkNotPresent):
@@ -920,8 +917,9 @@ class SelectionTool(EditorTool):
         else:
             self.setSelectionPoints(self.selectionPointsFromBox(box))
 
-    def selectionPointsFromBox(self, box):
-        return (box.origin, map(lambda x: x - 1, box.maximum))
+    @staticmethod
+    def selectionPointsFromBox(box):
+        return box.origin, map(lambda x: x - 1, box.maximum)
 
     def selectNone(self):
         self.setSelectionPoints(None)
@@ -1001,6 +999,7 @@ class SelectionTool(EditorTool):
             self.editor.freezeStatus("Removing Tile Ticks...")
             level = self.editor.level
             editor = self.editor
+
             class DeleteTileTicksOperation(Operation):
                 def __init__(self, editor, level):
                     self.editor = editor
@@ -1030,7 +1029,6 @@ class SelectionTool(EditorTool):
             self.editor.invalidateBox(box)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
-
 
     @alertException
     def deleteEntities(self, recordUndo=True):

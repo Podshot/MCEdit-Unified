@@ -46,7 +46,6 @@ class OptionsPanel(Dialog):
             config.settings.langCode:                  config.settings.langCode.get()
         }
 
-
     def initComponents(self):
         """Initilize the window components. Call this after translation hs been loaded."""
         autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
@@ -238,7 +237,8 @@ class OptionsPanel(Dialog):
             lng = self.langs[langName]
         config.settings.langCode.set(lng)
 
-    def portableButtonTooltip(self):
+    @staticmethod
+    def portableButtonTooltip():
         return (
         "Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder",
         "Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder")[

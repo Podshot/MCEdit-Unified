@@ -5,8 +5,10 @@ import json
 import os
 import time
 
+
 class NotAModule(Exception):
     pass
+
 
 def getMD5Hash(url, name):
     print "["+str(time.ctime())+"][MD5 Hasher] Downloading <"+name+">"
@@ -16,11 +18,11 @@ def getMD5Hash(url, name):
         print "["+str(time.ctime())+"][MD5 Hasher] Finished downloading <"+name+">"
         return hashlib.md5(data).hexdigest()
 
+
 def getMD5HashesForRelease():
     files = []
     flines = []
     release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
-    tag = release_api_response[0]["tag_name"]
     print "["+str(time.ctime())+"][MD5 Hasher] Looping through collected assets"
     for asset in release_api_response[0]["assets"]:
         if "Win" in asset["name"]:

@@ -114,15 +114,15 @@ class DisplayList(object):
         self.invalidate()
 
     @classmethod
-    def invalidateAllLists(self):
+    def invalidateAllLists(cls):
         allLists = []
-        for listref in self.allLists:
+        for listref in cls.allLists:
             list = listref()
             if list:
                 list.invalidate()
                 allLists.append(listref)
 
-        self.allLists = allLists
+        cls.allLists = allLists
 
     def invalidate(self):
         if self._list:

@@ -339,7 +339,7 @@ class Profile(Object):
                     assert call.ratio is not None
 
         # Aggregate the input for each cycle
-        for cycle in self.cycles:
+        for _ in self.cycles:
             total = inevent.null()
             for function in self.functions.itervalues():
                 total = inevent.aggregate(total, function[inevent])
@@ -537,7 +537,8 @@ class Profile(Object):
             for function in cycle.functions:
                 sys.stderr.write('  Function %s\n' % (function.name,))
 
-    def _dump_events(self, events):
+    @staticmethod
+    def _dump_events(events):
         for event, value in events.iteritems():
             sys.stderr.write('    %s: %s\n' % (event.name, event.format(value)))
 
@@ -1094,7 +1095,7 @@ class CallgrindParser(LineParser):
             self.parse_cost_line_def() or \
             self.parse_cost_summary()
 
-    _detail_keys = set(('cmd', 'pid', 'thread', 'part'))
+    _detail_keys = {'cmd', 'pid', 'thread', 'part'}
 
     def parse_part_detail(self):
         return self.parse_keys(self._detail_keys)
@@ -1338,7 +1339,8 @@ class OprofileParser(LineParser):
             function_total.samples += function.samples
             self.update_subentries_dict(callees_total, callees)
 
-    def update_subentries_dict(self, totals, partials):
+    @staticmethod
+    def update_subentries_dict(totals, partials):
         for partial in partials.itervalues():
             try:
                 total = totals[partial.id]
@@ -1440,7 +1442,7 @@ class OprofileParser(LineParser):
         if entry.symbol.startswith('"') and entry.symbol.endswith('"'):
             entry.symbol = entry.symbol[1:-1]
         entry.id = ':'.join((entry.application, entry.image, source, entry.symbol))
-        entry.self = fields.get('self', None) != None
+        entry.self = fields.get('self', None) is not None
         if entry.self:
             entry.id += ':self'
         if entry.symbol:
@@ -1530,7 +1532,8 @@ class SysprofParser(XmlParser):
             return value[1:-1]
         return value
 
-    def build_profile(self, objects, nodes):
+    @staticmethod
+    def build_profile(objects, nodes):
         profile = Profile()
 
         profile[SAMPLES] = 0
@@ -2031,10 +2034,12 @@ class AQtimeParser(XmlParser):
         #call[TOTAL_TIME_RATIO] = fields['% with Children'] / 100.0
         return call
 
-    def build_id(self, fields):
+    @staticmethod
+    def build_id(fields):
         return ':'.join([fields['Module Name'], fields['Unit Name'], fields['Routine Name']])
 
-    def build_name(self, fields):
+    @staticmethod
+    def build_name(fields):
         # TODO: use more fields
         return fields['Routine Name']
 
@@ -2055,7 +2060,8 @@ class PstatsParser:
         self.profile = Profile()
         self.function_ids = {}
 
-    def get_function_name(self, (filename, line, name)):
+    @staticmethod
+    def get_function_name((filename, line, name)):
         module = os.path.splitext(filename)[0]
         module = os.path.basename(module)
         return "%s:%d:%s" % (module, line, name)
@@ -2198,7 +2204,7 @@ class Theme:
         - http://www.w3.org/TR/css3-color/#hsl-color
         """
 
-        h = h % 1.0
+        h %= 1.0
         s = min(max(s, 0.0), 1.0)
         l = min(max(l, 0.0), 1.0)
 
@@ -2218,7 +2224,8 @@ class Theme:
 
         return r, g, b
 
-    def _hue_to_rgb(self, m1, m2, h):
+    @staticmethod
+    def _hue_to_rgb(m1, m2, h):
         if h < 0.0:
             h += 1.0
         elif h > 1.0:
@@ -2389,7 +2396,8 @@ class DotWriter:
             raise TypeError
         self.write(s)
 
-    def color(self, (r, g, b)):
+    @staticmethod
+    def color((r, g, b)):
 
         def float2int(f):
             if f <= 0.0:
@@ -2400,7 +2408,8 @@ class DotWriter:
 
         return "#" + "".join(["%02x" % float2int(c) for c in (r, g, b)])
 
-    def escape(self, s):
+    @staticmethod
+    def escape(s):
         s = s.encode('utf-8')
         s = s.replace('\\', r'\\')
         s = s.replace('\n', r'\n')
@@ -2566,7 +2575,8 @@ class Main:
 
         return name
 
-    def wrap_function_name(self, name):
+    @staticmethod
+    def wrap_function_name(name):
         """Split the function name on multiple lines."""
 
         if len(name) > 32:

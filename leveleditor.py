@@ -206,32 +206,24 @@ class LevelEditor(GLViewport):
                                       get_value=lambda: _("MBv: %0.1f") % (self.renderer.bufferUsage / 1000000.),
                                       tooltipText="Memory used for vertexes")
 
-
         def showViewOptions():
-            col = []
-            col.append(mceutils.CheckBoxLabel("Entities", fg_color=(0xff, 0x22, 0x22),
-                                              ref=config.settings.drawEntities))
-            col.append(
-                mceutils.CheckBoxLabel("Items", fg_color=(0x22, 0xff, 0x22), ref=config.settings.drawItems))
-            col.append(mceutils.CheckBoxLabel("TileEntities", fg_color=(0xff, 0xff, 0x22),
-                                              ref=config.settings.drawTileEntities))
-            col.append(mceutils.CheckBoxLabel("TileTicks", ref=config.settings.drawTileTicks))
-            col.append(mceutils.CheckBoxLabel("Unpopulated Chunks", fg_color=renderer.TerrainPopulatedRenderer.color,
-                                              ref=config.settings.drawUnpopulatedChunks))
-            col.append(mceutils.CheckBoxLabel("Chunks Borders", fg_color=renderer.ChunkBorderRenderer.color,
-                                              ref=config.settings.drawChunkBorders))
-
-            col.append(mceutils.CheckBoxLabel("Sky", ref=config.settings.drawSky))
-            col.append(mceutils.CheckBoxLabel("Fog", ref=config.settings.drawFog))
-            col.append(mceutils.CheckBoxLabel("Ceiling",
-                                              ref=config.settings.showCeiling))
-
-            col.append(mceutils.CheckBoxLabel("Chunk Redraw", fg_color=(0xff, 0x99, 0x99),
-                                              ref=config.settings.showChunkRedraw))
-
-            col.append(mceutils.CheckBoxLabel("Hidden Ores",
-                                              ref=config.settings.showHiddenOres,
-                                              tooltipText="Check to show/hide specific ores using the settings below."))
+            col = [mceutils.CheckBoxLabel("Entities", fg_color=(0xff, 0x22, 0x22),
+                                          ref=config.settings.drawEntities),
+                   mceutils.CheckBoxLabel("Items", fg_color=(0x22, 0xff, 0x22), ref=config.settings.drawItems),
+                   mceutils.CheckBoxLabel("TileEntities", fg_color=(0xff, 0xff, 0x22),
+                                          ref=config.settings.drawTileEntities),
+                   mceutils.CheckBoxLabel("TileTicks", ref=config.settings.drawTileTicks),
+                   mceutils.CheckBoxLabel("Unpopulated Chunks", fg_color=renderer.TerrainPopulatedRenderer.color,
+                                          ref=config.settings.drawUnpopulatedChunks),
+                   mceutils.CheckBoxLabel("Chunks Borders", fg_color=renderer.ChunkBorderRenderer.color,
+                                          ref=config.settings.drawChunkBorders),
+                   mceutils.CheckBoxLabel("Sky", ref=config.settings.drawSky),
+                   mceutils.CheckBoxLabel("Fog", ref=config.settings.drawFog), mceutils.CheckBoxLabel("Ceiling",
+                                                                                                      ref=config.settings.showCeiling),
+                   mceutils.CheckBoxLabel("Chunk Redraw", fg_color=(0xff, 0x99, 0x99),
+                                          ref=config.settings.showChunkRedraw), mceutils.CheckBoxLabel("Hidden Ores",
+                                                                                                       ref=config.settings.showHiddenOres,
+                                                                                                       tooltipText="Check to show/hide specific ores using the settings below.")]
 
             for ore in config.settings.hiddableOres.get():
                 col.append(mceutils.CheckBoxLabel(self.level.materials[ore].name.replace(" Ore", ""),
@@ -334,7 +326,8 @@ class LevelEditor(GLViewport):
         self.chunkViewport.size = self.mainViewport.size = self.viewportContainer.size
         self.renderer.loadNearbyChunks()
 
-    def swapViewports(self):
+    @staticmethod
+    def swapViewports():
         if config.settings.viewMode.get() == "Chunk":
             config.settings.viewMode.set("Camera")
         else:
@@ -346,7 +339,8 @@ class LevelEditor(GLViewport):
             self.deleteCopiedSchematic(self.copyStack[-1])
         self.updateCopyPanel()
 
-    def _deleteSchematic(self, sch):
+    @staticmethod
+    def _deleteSchematic(sch):
         if hasattr(sch, 'close'):
             sch.close()
         if sch.filename and os.path.exists(sch.filename):
@@ -446,7 +440,7 @@ class LevelEditor(GLViewport):
                 panel.pages.append(Column(page, spacing=2, align="l"))
                 panel.pages[-1].shrink_wrap()
                 page = [p]
-        if page != []:
+        if page:
             panel.pages.append(Column(page, spacing=2, align="l"))
             panel.pages[-1].shrink_wrap()
 
@@ -473,7 +467,6 @@ class LevelEditor(GLViewport):
                     page.parent = this.subwidgets[0].subwidgets[1]
                 else:
                     page.visible = False
-            page = this.pages[self.currentCopyPage]
             pb = this.subwidgets[0].subwidgets[0].subwidgets[0]
             nb = this.subwidgets[0].subwidgets[0].subwidgets[1]
             if self.currentCopyPage == 0:
@@ -655,7 +648,6 @@ class LevelEditor(GLViewport):
         waiter = None
         while waiter is None:
             if self.user_yon_response is not None:
-                waiter = True
                 return self.user_yon_response
 
     def yes(self):
@@ -722,7 +714,6 @@ class LevelEditor(GLViewport):
                             splitWord = word.split('=')
                             if len(splitWord) > 1:
                                 v = None
-                                key = None
 
                                 try:
                                     v = int(splitWord[1])
@@ -731,9 +722,7 @@ class LevelEditor(GLViewport):
 
                                 key = splitWord[0]
                                 if v is not None:
-                                    if key == "lines":
-                                        lin = v
-                                    elif key == "width":
+                                    if key == "width":
                                         width = v
                                 else:
                                     if key == "value":
@@ -776,7 +765,7 @@ class LevelEditor(GLViewport):
 
             elif inputType == "string":
                 input = None
-                if input != None:
+                if input is not None:
                     size = input
                 else:
                     size = 200
@@ -809,8 +798,8 @@ class LevelEditor(GLViewport):
         else:
             return "user canceled"
 
-
-    def Notify(self, msg):
+    @staticmethod
+    def Notify(msg):
         ask(msg, ["Close"], cancel=0)
 
     def reloadToolbar(self):
@@ -842,7 +831,8 @@ class LevelEditor(GLViewport):
 
     longDistanceMode = config.settings.longDistanceMode.property()
 
-    def genSixteenBlockTexture(self):
+    @staticmethod
+    def genSixteenBlockTexture():
         has12 = GL.glGetString(GL.GL_VERSION) >= "1.2"
         if has12:
             maxLevel = 2
@@ -888,7 +878,8 @@ class LevelEditor(GLViewport):
 
         return Texture(makeSixteenBlockTex, mode)
 
-    def showProgress(self, *a, **kw):
+    @staticmethod
+    def showProgress(*a, **kw):
         return mceutils.showProgress(*a, **kw)
 
     def drawConstructionCube(self, box, color, texture=None):
@@ -1140,8 +1131,9 @@ class LevelEditor(GLViewport):
             self.freezeStatus("Saving...")
             chunks = self.level.chunkCount
             count = [0]
+
             def copyChunks():
-                for i in self.level.saveInPlaceGen():
+                for _ in self.level.saveInPlaceGen():
                     count[0] += 1
                     yield count[0],chunks
 
@@ -1459,7 +1451,8 @@ class LevelEditor(GLViewport):
 
     fractionalReachAdjustment = True
 
-    def postMouseMoved(self):
+    @staticmethod
+    def postMouseMoved():
         evt = event.Event(MOUSEMOTION, rel=(0, 0), pos=mouse.get_pos(), buttons=mouse.get_pressed())
         event.post(evt)
 
@@ -1510,7 +1503,8 @@ class LevelEditor(GLViewport):
         self.diag.shrink_wrap()
         self.diag.present()
 
-    def open_screenshots_folder(self):
+    @staticmethod
+    def open_screenshots_folder():
         platform_open(os.path.join(directories.parentDir, "screenshots"))
 
     def screenshot_notify(self):
@@ -1520,9 +1514,9 @@ class LevelEditor(GLViewport):
         self.currentTool.keyUp(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         try:
-        	keyname = self.different_keys[keyname]
+            keyname = self.different_keys[keyname]
         except:
-        	pass
+            pass
 
         if keyname == config.keys.brake.get():
             self.mainViewport.brakeOff()
@@ -1540,9 +1534,9 @@ class LevelEditor(GLViewport):
         self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         try:
-        	keyname = self.different_keys[keyname]
+            keyname = self.different_keys[keyname]
         except:
-        	pass
+            pass
 
         if keyname == "Alt-F4":
             self.quit()
@@ -1816,6 +1810,7 @@ class LevelEditor(GLViewport):
         items.append(Row([Label("Format:"),formatLabel]))
 
         nameField = TextFieldWrapped(width=300, value=self.level.LevelName)
+
         def alt21():
             nameField.insertion_point = len(nameField.text)
             nameField.insert_char(u'\xa7')
@@ -1861,7 +1856,6 @@ class LevelEditor(GLViewport):
 
             b = Button(gametype(t), action=action)
             b.gametype = t
-
 
             gametypeRow = Row((Label("Game Type: "), b))
             items.append(gametypeRow)
@@ -2278,13 +2272,13 @@ class LevelEditor(GLViewport):
             self.freezeStatus("Undoing the previous operation...")
             wasSelectionBox = False
             if self.selectionBox():
-            	wasSelectionBox = True
+                wasSelectionBox = True
             if len(self.undoStack) > 0:
                 op = self.undoStack.pop()
                 normalUndo = True
             else:
-            	op = self.afterSaveUndoStack.pop()
-            	normalUndo = False
+                op = self.afterSaveUndoStack.pop()
+                normalUndo = False
 
             if self.recordUndo:
                 self.redoStack.append(op)
@@ -2295,13 +2289,13 @@ class LevelEditor(GLViewport):
             if changedBox is not None:
                 self.invalidateBox(changedBox)
             if not self.selectionBox() and wasSelectionBox:
-            	self.toolbar.selectTool(0)
-            	self.toolbar.tools[0].currentCorner = 1
+                self.toolbar.selectTool(0)
+                self.toolbar.tools[0].currentCorner = 1
             if ".SelectionOperation" not in str(op) and ".NudgeSelectionOperation" not in str(op):
                 if normalUndo:
                     self.removeUnsavedEdit()
                 else:
-                	self.addUnsavedEdit()
+                    self.addUnsavedEdit()
 
         self.root.fix_sticky_ctrl()
 
@@ -2537,10 +2531,12 @@ class LevelEditor(GLViewport):
 
         GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
 
-    def drawString(self, x, y, color, string):
+    @staticmethod
+    def drawString(x, y, color, string):
         return
 
-    def freezeStatus(self, string):
+    @staticmethod
+    def freezeStatus(string):
         return
 
     #        GL.glColor(1.0, 0., 0., 1.0)
@@ -2709,7 +2705,7 @@ class LevelEditor(GLViewport):
             self.level.compressAllChunks()
         self.toolbar.selectTool(0)
 
-        self.renderer.viewDistance = self.renderer.viewDistance - 4
+        self.renderer.viewDistance -= 4
         self.renderer.discardAllChunks()
 
         logging.warning(
@@ -2789,7 +2785,7 @@ class EditorToolbar(GLOrtho):
                 self.showToolOptions(toolNo)
 
     def showToolOptions(self, toolNumber):
-        if toolNumber < len(self.tools) and toolNumber >= 0:
+        if len(self.tools) > toolNumber >= 0:
             t = self.tools[toolNumber]
             # if not t.toolEnabled():
             #    return
@@ -2808,7 +2804,7 @@ class EditorToolbar(GLOrtho):
             self.parent.currentTool.toolReselected()
         else:
             self.parent.selectionTool.hidePanel()
-            if self.parent.currentTool != None:
+            if self.parent.currentTool is not None:
                 self.parent.currentTool.cancel()
             self.parent.currentTool = t
             self.parent.currentTool.toolSelected()
@@ -2875,7 +2871,7 @@ class EditorToolbar(GLOrtho):
             if tool.toolIconName is None:
                 continue
             try:
-                if not tool.toolIconName in self.toolTextures:
+                if tool.toolIconName not in self.toolTextures:
                     filename = "toolicons" + os.sep + "{0}.png".format(tool.toolIconName)
                     self.toolTextures[tool.toolIconName] = mceutils.loadPNGTexture(filename)
                 x = 20 * i + 4

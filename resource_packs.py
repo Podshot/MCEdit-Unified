@@ -18,6 +18,7 @@ try:
 except:
     pass
 
+
 def step(slot):
     texSlot = slot*16
     return texSlot
@@ -502,12 +503,11 @@ textureSlots = {
     # Start Comparator Block
     }
 
+
 class IResourcePack:
 
     def __init__(self):
         self.__stop = False
-        tpBasePath = type(os.path.join(directories.parentDir, "textures"))
-        tpPackName = type(self._pack_name)
         texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
         self.texture_path = texture_path
         self._isEmpty = False
@@ -583,7 +583,7 @@ class IResourcePack:
             os.remove(self._pack_name.replace(" ", "_")+".png")
         except:
             pass
-        if self.propogated_textures == []:
+        if not self.propogated_textures:
             os.remove(self._terrain_path)
             self._isEmpty = True
             #print u"{} did not replace any textures".format(self._pack_name)
@@ -614,7 +614,7 @@ class ZipResourcePack(IResourcePack):
             try:
                 self.open_pack()
             except Exception, e:
-                print ("Error while trying to load one of the resource packs: {}").format(e)
+                print "Error while trying to load one of the resource packs: {}".format(e)
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
@@ -659,7 +659,7 @@ class ZipResourcePack(IResourcePack):
                         if possible_texture.size == (32, 32):
                             self.block_image[block_name] = possible_texture.resize((16, 16))
                         elif possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
-                            self.big_textures_counted = self.big_textures_counted + 1
+                            self.big_textures_counted += 1
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
         if self.big_textures_counted >= self.big_textures_max:
@@ -720,13 +720,14 @@ class FolderResourcePack(IResourcePack):
                         if possible_texture.size == (32, 32):
                             self.block_image[block_name] = possible_texture.resize((16, 16))
                         if possible_texture.size == (64, 64) or possible_texture.size == (128, 128) or possible_texture.size == (256, 256):
-                            self.big_textures_counted = self.big_textures_counted + 1
+                            self.big_textures_counted += 1
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
         if self.big_textures_counted >= self.big_textures_max:
             self.handle_too_big_packs()
         else:
             self.parse_terrain_png()
+
 
 class DefaultResourcePack(IResourcePack):
 
@@ -780,6 +781,7 @@ def setup_resource_packs():
         print "Could not remove \"textures\" directory"
         pass
     return terrains
+
 
 class ResourcePackHandler:
 

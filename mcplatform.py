@@ -55,13 +55,14 @@ try:
         raise ImportError
     hasGtk = True
 except ImportError:
-    hasGtk = False #Using old method as fallback
+    hasGtk = False  #Using old method as fallback
 
 
 texturePacksDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "texturepacks")
 #Compatibility layer for filters:
 filtersDir = directories.filtersDir
 schematicsDir = directories.schematicsDir
+
 
 def getTexturePacks():
     try:
@@ -106,6 +107,7 @@ else:
     cmd_name = "Ctrl"
     option_name = "Alt"
 
+
 def OSXVersionChecker(name,compare):
     """Rediculously complicated function to compare current System version to inputted version."""
     if compare != 'gt' and compare != 'lt' and compare != 'eq' and compare != 'gteq' and compare != 'lteq':
@@ -119,43 +121,42 @@ def OSXVersionChecker(name,compare):
 
             major, minor, patch = 10, 0, 0
 
-            if (name.lower() == 'cheetah'):
+            if name.lower() == 'cheetah':
                 minor = 0
                 patch = 4
-            elif (name.lower() == 'puma'):
+            elif name.lower() == 'puma':
                 minor = 1
                 patch = 5
-            elif (name.lower() == 'jaguar'):
+            elif name.lower() == 'jaguar':
                 minor = 2
                 patch = 8
-            elif (name.lower() == 'panther'):
+            elif name.lower() == 'panther':
                 minor = 3
                 patch = 9
-            elif (name.lower() == 'tiger'):
+            elif name.lower() == 'tiger':
                 minor = 4
                 patch = 11
-            elif (name.lower() == 'snow_leopard'):
+            elif name.lower() == 'snow_leopard':
                 minor = 5
                 patch = 8
-            elif (name.lower() == 'snow_leopard'):
+            elif name.lower() == 'snow_leopard':
                 minor = 6
                 patch = 8
-            elif (name.lower() == 'lion'):
+            elif name.lower() == 'lion':
                 minor = 7
                 patch = 5
-            elif (name.lower() == 'mountain_lion'):
+            elif name.lower() == 'mountain_lion':
                 minor = 8
                 patch = 5
-            elif (name.lower() == 'mavericks'):
+            elif name.lower() == 'mavericks':
                 minor = 9
                 patch = 5
-            elif (name.lower() == 'yosemite'):
+            elif name.lower() == 'yosemite':
                 minor = 10
                 patch = 0
             else:
                 major = 0
 
-            ret_val = 0
             if int(systemVersion[0]) > int(major):
                 ret_val = 1
             elif int(systemVersion[0]) < int(major):
@@ -260,11 +261,12 @@ def askOpenFileWin32(title, schematics, initialDir):
             Title=title,
             Filter=f,
         )
-    except Exception, e:
+    except Exception:
         #print "Open File: ", e
         pass
     else:
         return filename
+
 
 def askOpenFileGtk(title, suffixes, initialDir):
     chooser = gtk.FileChooserDialog(title,
@@ -294,10 +296,11 @@ def askOpenFileGtk(title, suffixes, initialDir):
         filename = chooser.get_filename()
     else:
         chooser.destroy()
-        return # pressed cancel
+        return  # pressed cancel
     chooser.destroy()
 
     return filename
+
 
 def askSaveSchematic(initialDir, displayName, fileFormat):
     return askSaveFile(initialDir,
@@ -395,9 +398,6 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                                     filename=defaultName,
                                     pathname=None)
     return filename
-
-
-
 #   if sys.platform == "win32":
 #       try:
 #

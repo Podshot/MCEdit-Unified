@@ -8,11 +8,13 @@ from glbackground import Panel
 
 ESCAPE = '\033'
 
+
 def remapMouseButton(button):
     buttons = [0, 1, 3, 2, 4, 5, 6, 7]  # mouse2 is right button, mouse3 is middle
     if button < len(buttons):
         return buttons[button]
     return button
+
 
 class KeyConfigPanel(Dialog):
     keyConfigKeys = [
@@ -373,7 +375,6 @@ class KeyConfigPanel(Dialog):
                     ("Fast Increment Modifier", "Shift")
                 ]}
 
-
     selectedKeyIndex = 0
 
     def __init__(self):
@@ -476,7 +477,8 @@ class KeyConfigPanel(Dialog):
             key = ""
         return configKey, key
 
-    def isConfigKey(self, configKey):
+    @staticmethod
+    def isConfigKey(configKey):
         return not (len(configKey) == 0 or configKey[0] == "<")
 
     def selectTableRow(self, i, evt):

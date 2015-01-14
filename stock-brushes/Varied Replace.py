@@ -9,6 +9,7 @@ displayName = "Varied Replace"
 mainBlock = "Block 1"
 secondaryBlock = "Block"
 
+
 def createInputs(self):
     self.inputs = (
     {'Hollow': False},
@@ -24,10 +25,10 @@ def createInputs(self):
     {'Minimum Spacing': 1},
     )
 
+
 def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     brushMask = createBrushMask(op.tool.getBrushSize(), op.options['Style'], brushBox.origin, brushBoxThisChunk, op.options['Noise'], op.options['Hollow'])
 
-    airFill = op.options['Fill Air']
     replaceWith1 = op.options['Block 1']
     chanceA = op.options['Weight 1']
     replaceWith2 = op.options['Block 2']
@@ -46,7 +47,6 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     blocks = chunk.Blocks[slices]
     data = chunk.Data[slices]
 
-    replaceWith = op.options['Block']
     if op.options['Block'].wildcard:
         print "Wildcard replace"
         blocksToReplace = []
@@ -64,17 +64,15 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     brushMaskOption3 = numpy.copy(brushMask)
     brushMaskOption4 = numpy.copy(brushMask)
 
-    x=-1
-    y=-1
-    z=-1
+    x = -1
 
-    for array_x in brushMask:
+    for _ in brushMask:
         x += 1
         y = -1
-        for array_y in brushMask[x]:
+        for _ in brushMask[x]:
             y += 1
-            z=-1
-            for array_z in brushMask[x][y]:
+            z = -1
+            for _ in brushMask[x][y]:
                 z += 1
                 if brushMask[x][y][z]:
                     randomChance = random.randint(1, totalChance)

@@ -107,5 +107,5 @@ class BlockThumbView(Widget):
             self.add(self.thumb)
             self.thumb.size = self.size
             self.thumb.drawBackground = False
-            for i in self.thumb.renderer.chunkWorker:
+            for _ in self.thumb.renderer.chunkWorker:
                 pass

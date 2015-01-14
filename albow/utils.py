@@ -21,7 +21,6 @@ def blit_tinted(surface, image, pos, tint, src_rect=None):
     src_rgb = array3d(image)
     buf_rgb = pixels3d(buf)
     buf_rgb[...] = minimum(255, add(tint, src_rgb)).astype('b')
-    buf_rgb = None
     surface.blit(buf, pos)
 
 

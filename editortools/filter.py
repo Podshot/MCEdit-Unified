@@ -87,7 +87,6 @@ class FilterModuleOptions(Widget):
         pages.is_gl_container = True
         self.pages = pages
         self.optionDict = {}
-        pageTabContents = []
 
         self.giveEditorObject(module)
         print "Creating options for ", module
@@ -109,7 +108,7 @@ class FilterModuleOptions(Widget):
         self.add(pages)
         self.shrink_wrap()
         if len(pages.pages):
-            if (pages.current_page != None):
+            if pages.current_page is not None:
                 pages.show_page(pages.current_page)
             else:
                 pages.show_page(pages.pages[0])
@@ -122,7 +121,6 @@ class FilterModuleOptions(Widget):
         page.is_gl_container = True
         rows = []
         cols = []
-        height = 0
         max_height = self.tool.editor.mainViewport.height - self.tool.updatePanel.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
         page.optionDict = {}
         page.tool = tool
@@ -161,7 +159,6 @@ class FilterModuleOptions(Widget):
                             splitWord = keyword.split('=')
                             if len(splitWord) > 1:
                                 v = None
-                                key = None
 
                                 try:
                                     v = int(splitWord[1])
@@ -170,9 +167,7 @@ class FilterModuleOptions(Widget):
 
                                 key = splitWord[0]
                                 if v is not None:
-                                    if key == "lines":
-                                        lin = v
-                                    elif key == "width":
+                                    if key == "width":
                                         wid = v
                                 else:
                                     if key == "value":
@@ -226,7 +221,7 @@ class FilterModuleOptions(Widget):
 
             elif optionType == "string":
                 input = None  # not sure how to pull values from filters, but leaves it open for the future. Use this variable to set field width.
-                if input != None:
+                if input is not None:
                     size = input
                 else:
                     size = 200
@@ -259,7 +254,7 @@ class FilterModuleOptions(Widget):
             page.add(Row(cols))
         page.shrink_wrap()
 
-        return (title, page, page._rect)
+        return title, page, page._rect
 
     @property
     def options(self):
@@ -318,7 +313,6 @@ class FilterToolPanel(Panel):
         
         if not self._recording:
             self.macro_button = Button("Record a Macro", action=self.start_record_macro)
-            
 
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
@@ -351,11 +345,9 @@ class FilterToolPanel(Panel):
         if self.selectedFilterName in self.savedOptions:
             self.filterOptionsPanel.options = self.savedOptions[self.selectedFilterName]
 
-
     def run_macro(self):
         self.tool.run_macro(self.macro_data)
-    
-    
+
     def reload_macro(self):
         self.usingMacro = True
         for i in list(self.subwidgets):
@@ -383,8 +375,7 @@ class FilterToolPanel(Panel):
         self.shrink_wrap()
         if self.parent:
             self.centery = self.parent.centery
-    
-    
+
     def filterChanged(self):
         if not self.filterSelect.selectedChoice.startswith("[Macro]"):
             self.saveOptions()
@@ -394,13 +385,11 @@ class FilterToolPanel(Panel):
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
             self.reload_macro()
-        
 
     def set_save(self):
         self._save_macro = True
         self.macro_diag.dismiss()
-    
-    
+
     def stop_record_macro(self):
         
         self.macro_diag = Dialog()
@@ -422,12 +411,9 @@ class FilterToolPanel(Panel):
                 try:
                     macro_dict = json.load(open(os.path.join(directories.getCacheDir(), "macros.json"), 'rb'))
                 except ValueError:
-                    macro_dict = {}
-                    macro_dict["Macros"] = {}
-                    self.tool
+                    macro_dict = {"Macros": {}}
             else:
-                macro_dict = {}
-                macro_dict["Macros"] = {}
+                macro_dict = {"Macros": {}}
             macro_dict["Macros"][macroNameField.get_text()] = {}
             macro_dict["Macros"][macroNameField.get_text()]["Number of steps"] = len(self.macro_steps)
             for entry in self.macro_steps:
@@ -438,8 +424,7 @@ class FilterToolPanel(Panel):
             with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
                 json.dump(macro_dict, f)
         self.reload()
-    
-    
+
     def start_record_macro(self):
         self.macro_steps = []
         self.current_step = 0
@@ -450,11 +435,8 @@ class FilterToolPanel(Panel):
         self._recording = True
     
     def addMacroStep(self, name=None, inputs=None):
-        data = {}
-        data["Name"] = name
-        data["Step"] = self.current_step
-        data["Inputs"] = inputs
-        self.current_step = self.current_step + 1
+        data = {"Name": name, "Step": self.current_step, "Inputs": inputs}
+        self.current_step += 1
         self.macro_steps.append(data)
 
     filterOptionsPanel = None
@@ -486,7 +468,6 @@ class FilterOperation(Operation):
         else:
             self.panel.addMacroStep(name=self.panel.filterSelect.selectedChoice, inputs=self.options)
             self.wasMacroOperation = True
-            
 
         self.canUndo = True
         pass
@@ -553,15 +534,15 @@ class FilterTool(EditorTool):
         except OSError:
             pass
         for module in self.filterModules.values():
-            totalFilters = totalFilters + 1
+            totalFilters += 1
             if hasattr(module, "UPDATE_URL") and hasattr(module, "VERSION"):
                 if isinstance(module.UPDATE_URL, (str, unicode)) and isinstance(module.VERSION, (str, unicode)):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"],
                                            os.path.join(filtersDir, "updates", versionJSON["Name"]))
-                        updatedFilters = updatedFilters + 1
-        for f in os.listdir(os.path.join(filtersDir ,"updates")):
+                        updatedFilters += 1
+        for f in os.listdir(os.path.join(filtersDir, "updates")):
             shutil.copy(os.path.join(filtersDir, "updates", f), filtersDir)
         shutil.rmtree(os.path.join(filtersDir, "updates"))
         self.finishedUpdatingWidget = Widget()
@@ -579,7 +560,6 @@ class FilterTool(EditorTool):
     def reloadFilters(self):
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
-                name = m.__name__
                 del m
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
 
@@ -620,7 +600,8 @@ class FilterTool(EditorTool):
     def filterNames(self):
         return [self.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
-    def moduleDisplayName(self, module):
+    @staticmethod
+    def moduleDisplayName(module):
         if hasattr(module, "displayName"):
             if hasattr(module, "trn"):
                 return module.trn._(module.displayName)
@@ -669,4 +650,3 @@ class FilterTool(EditorTool):
                     self.editor.addOperation(op)
                     self.editor.addUnsavedEdit()
                     self.editor.invalidateBox(self.selectionBox())
-            

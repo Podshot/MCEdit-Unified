@@ -10,6 +10,7 @@ import materials
 from entity import Entity, TileEntity
 from copy import deepcopy
 
+
 def convertBlocks(destLevel, sourceLevel, blocks, blockData):
     return materials.convertBlocks(destLevel.materials, sourceLevel.materials, blocks, blockData)
 
@@ -31,9 +32,6 @@ def sourceMaskFunc(blocksToCopy):
 
 
 def adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint):
-    # if the destination box is outside the level, it and the source corners are moved inward to fit.
-    (dx, dy, dz) = map(int, destinationPoint)
-
     log.debug(u"Asked to copy {} blocks \n\tfrom {} in {}\n\tto {} in {}".format(
         sourceBox.volume, sourceBox, sourceLevel, destinationPoint, destLevel))
     if destLevel.Width == 0:

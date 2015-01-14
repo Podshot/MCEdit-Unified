@@ -12,6 +12,7 @@ test_data = file(path, "rb").read()
 test_file = None
 resaved_test_file = None
 
+
 def load_file():
     global test_file
     test_file = nbt.load(buf=test_data)
@@ -19,10 +20,9 @@ def load_file():
 
 def save_file():
     global resaved_test_file
-    s = StringIO()
     resaved_test_file = test_file.save(compressed=False)
     # resaved_test_file = test_file.save(buf=s)
-    #resaved_test_file = s.getvalue()
+    # resaved_test_file = s.getvalue()
 
 
 print "File: ", path

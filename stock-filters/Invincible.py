@@ -17,7 +17,7 @@ def perform(level, box, options):
             y = e["Pos"][1].value
             z = e["Pos"][2].value
 
-            if x >= box.minx and x < box.maxx and y >= box.miny and y < box.maxy and z >= box.minz and z < box.maxz:
+            if box.minx <= x < box.maxx and box.miny <= y < box.maxy and box.minz <= z < box.maxz:
                 if "Health" in e:
                     if "ActiveEffects" not in e:
                         e["ActiveEffects"] = TAG_List()

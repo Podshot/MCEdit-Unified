@@ -192,7 +192,6 @@ class BoundingBox(object):
     def __cmp__(self, b):
         return cmp((self.origin, self.size), (b.origin, b.size))
 
-
     # --- Chunk positions ---
 
     @property

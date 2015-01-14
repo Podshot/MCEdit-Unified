@@ -45,8 +45,8 @@ class TableView(Column):
         Column.__init__(self, contents, align='l', spacing=s, **kwds)
         if header:
             header.font = self.header_font or self.font
-            header.fg_color = fg_color = self.header_fg_color or self.fg_color
-            header.bg_color = bg_color = self.header_bg_color or self.bg_color
+            header.fg_color = self.header_fg_color or self.fg_color
+            header.bg_color = self.header_bg_color or self.bg_color
         rows.font = self.font
         rows.fg_color = self.fg_color
         rows.bg_color = self.bg_color
@@ -78,13 +78,15 @@ class TableView(Column):
         buf = font.render(unicode(data), True, self.fg_color)
         blit_in_rect(surf, buf, cell_rect, align)
 
-    def row_is_selected(self, n):
+    @staticmethod
+    def row_is_selected(n):
         return False
 
     def click_row(self, n, e):
         pass
 
-    def click_column_header(self, col):
+    @staticmethod
+    def click_column_header(col):
         print "click_column_header: ", col
 
     def click_header(self, n, e):
@@ -170,7 +172,7 @@ class TableHeaderView(TableRowBase):
     #        self.parent.draw_header_cell(surf, i, text, cell_rect, column)
 
     def row_data(self, row):
-        None
+        pass
 
     def draw_table_cell(self, surf, i, data, cell_rect, column):
         self.parent.draw_header_cell(surf, i, cell_rect, column)

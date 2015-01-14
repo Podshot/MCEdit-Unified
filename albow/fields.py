@@ -321,7 +321,8 @@ class TextField(Field):
 class IntField(Field):
     tooltipText = _("Point here and use mousewheel to adjust")
 
-    def type(self, i):
+    @staticmethod
+    def type(i):
         try:
             return eval(i)
         except:
@@ -390,7 +391,8 @@ class TimeField(Field):
     def allow_char(self, c):
         return c in self.allowed_chars
 
-    def type(self, i):
+    @staticmethod
+    def type(i):
         h, m = 0, 0
         i = i.upper()
 
@@ -574,7 +576,7 @@ class TextEditorWrapped(Widget):
                     lineOffsetS = startLine - self.topLine
                     lineOffsetE = endLine - self.topLine
                     lDiff = lineOffsetE - lineOffsetS
-                    while lDiff > 1 and lineOffsetS + lDiff >= 0 and lineOffsetS + lDiff < self.dispLines:
+                    while lDiff > 1 and 0 <= lDiff + lineOffsetS + lDiff < self.dispLines:
                         y = frame.top + lineOffsetS * h + (lDiff - 1) * h
                         rects.append(pygame.Rect(frame.left, y, frame.right - frame.left, h))
                         lDiff += -1
@@ -594,7 +596,7 @@ class TextEditorWrapped(Widget):
                     lineOffsetE = startLine - self.topLine
                     lineOffsetS = endLine - self.topLine
                     lDiff = lineOffsetE - lineOffsetS
-                    while lDiff > 1 and lineOffsetS + lDiff >= 0 and lineOffsetS + lDiff < self.dispLines:
+                    while lDiff > 1 and 0 <= lDiff + lineOffsetS + lDiff < self.dispLines:
                         y = frame.top + lineOffsetS * h + (lDiff - 1) * h
                         rects.append(pygame.Rect(frame.left, y, frame.right - frame.left, h))
                         lDiff += -1
@@ -616,7 +618,7 @@ class TextEditorWrapped(Widget):
 
         # Draw Cursor if Applicable
         if focused and ip is not None and i is not None and il is not None:
-            if (self.textL):
+            if self.textL:
                 x, h = font.size(self.textL[il][:i])
             else:
                 x, h = (0, font.size("X")[1])
@@ -669,7 +671,7 @@ class TextEditorWrapped(Widget):
                 try:
                     #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
                     t = pyperclip.paste() 
-                    if t != None:
+                    if t is not None:
                         if self.insertion_point is not None:
                             self.text = self.text[:self.insertion_point] + t + self.text[self.insertion_point:]
                             self.insertion_point += len(t)
@@ -800,7 +802,7 @@ class TextEditorWrapped(Widget):
                 self.insertion_line = 0
         if i is None:
             self.insertion_step = 0
-        elif il + d >= 0 and il + d < len(self.textL):
+        elif 0 <= d + il + d < len(self.textL):
             self.insertion_line = il + d
         if self.insertion_line > 0:
             self.insertion_point = self.textRefList[self.insertion_line - 1] + self.insertion_step
@@ -862,7 +864,8 @@ class TextEditorWrapped(Widget):
                     return
         return 'pass'
 
-    def allow_char(self, c):
+    @staticmethod
+    def allow_char(c):
         return True
 
     def mouse_down(self, e):
@@ -911,7 +914,6 @@ class TextEditorWrapped(Widget):
                 else:
                     self.selection_end = i
 
-
     def pos_to_index(self, x, y):
         text = self.get_text()
         textL = self.textL
@@ -927,7 +929,7 @@ class TextEditorWrapped(Widget):
             if line >= dispLines:
                 line = dispLines - 1
 
-            line = line + topLine
+            line += topLine
 
             if line >= len(textL):
                 line = len(textL) - 1
@@ -978,7 +980,7 @@ class TextEditorWrapped(Widget):
         font = self.font
         frame = self.get_margin_rect()
         frameW, frameH = frame.size
-        if (self.textChanged):
+        if self.textChanged:
             ix = 0
             iz = 0
             textLi = 0
@@ -1080,7 +1082,8 @@ class FieldWrapped(Control, TextEditorWrapped):
         if self.should_commit_immediately(text):
             self.commit()
 
-    def should_commit_immediately(self, text):
+    @staticmethod
+    def should_commit_immediately(text):
         return False
 
     def enter_action(self):

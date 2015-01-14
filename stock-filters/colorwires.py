@@ -22,7 +22,8 @@ class RedstoneGroups:
     def __init__(self, level):
         self.level = level
 
-    def isRedstone(self, blockid):
+    @staticmethod
+    def isRedstone(blockid):
         return blockid == 55 or blockid == 93 or blockid == 94
 
     def testblock(self, pos):
@@ -33,11 +34,11 @@ class RedstoneGroups:
                 return
             self.group[pos] = self.currentgroup
             self.testneighbors(pos)
-            self.currentgroup = self.currentgroup + 1
+            self.currentgroup += 1
 
     def testneighbors(self, (x, y, z)):
         for dy in xrange(-1, 2, 1):
-            if y + dy >= 0 and y + dy <= 255:
+            if 0 <= dy + y + dy <= 255:
                 self.testneighbor((x, y, z), (x - 1, y + dy, z))
                 self.testneighbor((x, y, z), (x + 1, y + dy, z))
                 self.testneighbor((x, y, z), (x, y + dy, z - 1))
@@ -103,7 +104,6 @@ class RedstoneGroups:
             return True
 
         return False
-
 
     def connected(self, (x1, y1, z1), (x2, y2, z2)):
         blockid1 = self.level.blockAt(x1, y1, z1)

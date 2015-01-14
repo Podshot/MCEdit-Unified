@@ -72,15 +72,12 @@ def getDataDir():
             return x.decode(sys.getfilesystemencoding())
 
         argzero = fsdecode(os.path.abspath(sys.argv[0]))
-        if argzero.endswith('.exe'):
-            dataDir = os.path.dirname(fsdecode(sys.executable))
-        else:
-            dataDir = os.path.dirname(argzero)
         dataDir = os.getcwdu()
     else:
         dataDir = os.getcwdu()
 
     return dataDir
+
 
 def win32_appdata():
     # try to use win32 api to get the AppData folder since python doesn't populate os.environ with unicode strings.
@@ -102,6 +99,7 @@ def win32_appdata():
             print "Error while getting AppData folder using SHGetSpecialFolderLocation: {0!r}".format(e)
 
             return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
+
 
 def getMinecraftProfileJSON():
     """Returns a dictionary object with the minecraft profile information"""
@@ -135,9 +133,8 @@ def getMinecraftLauncherDirectory():
     else:
         return os.path.expanduser("~/.minecraft")
 
-def getDocumentsFolder():
-    docsFolder = None
 
+def getDocumentsFolder():
     if sys.platform == "win32":
         try:
             import win32com.client
@@ -149,7 +146,7 @@ def getDocumentsFolder():
             print e
             try:
                 docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_MYDOCUMENTS, 0, 0)
-            except Exception, e:
+            except Exception:
                 userprofile = os.environ['USERPROFILE'].decode(sys.getfilesystemencoding())
                 docsFolder = os.path.join(userprofile, "Documents")
 
@@ -163,6 +160,7 @@ def getDocumentsFolder():
         pass
 
     return docsFolder
+
 
 def getSelectedProfile():
     '''
@@ -229,7 +227,6 @@ def goPortable():
     brushesDir = portableBrushesDir
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
-    jarStorageDir = portableJarStorageDir
     portable = True
     return True
 
@@ -275,17 +272,14 @@ def goFixed():
     brushesDir = fixedBrushesDir
     configFilePath = fixedConfigFilePath
     filtersDir = fixedFiltersDir
-    jarStorageDir = fixedJarStorageDir
     portable = False
-
-
 
 
 def fixedConfigExists():
     if sys.platform == "darwin":
         return True
     # Check for files at portable locations. Cannot be Mac because config doesn't move
-    return (os.path.exists(fixedConfigFilePath) or not os.path.exists(portableConfigFilePath))
+    return os.path.exists(fixedConfigFilePath) or not os.path.exists(portableConfigFilePath)
 
 
 if fixedConfigExists():
@@ -318,6 +312,7 @@ else:
 #else:
 #    serverJarStorageDir = fixedJarStorageDir
 
+
 def getAllOfAFile(file_dir, ext):
     '''
     Returns a list of all the files the direcotry with the specified file extenstion
@@ -325,6 +320,7 @@ def getAllOfAFile(file_dir, ext):
     :param ext: The file extension (IE: ".py")
     '''
     return glob.glob(file_dir+"/*"+ext)
+
 
 def getCacheDir():
     """Returns the path to the cache folder. This folder is the Application Support folder on OS X, and the Documents Folder on Windows."""

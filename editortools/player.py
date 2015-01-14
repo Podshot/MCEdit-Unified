@@ -33,6 +33,7 @@ import version_utils
 
 log = logging.getLogger(__name__)
 
+
 class PlayerRemoveOperation(Operation):
     undoTag = None
 
@@ -104,6 +105,7 @@ class PlayerRemoveOperation(Operation):
     def redo(self):
         self.perform()
 
+
 class PlayerAddOperation(Operation):
     playerTag = None
 
@@ -125,7 +127,7 @@ class PlayerAddOperation(Operation):
             return
         try:
             self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)
-            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid) #Case Corrected
+            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)  #Case Corrected
         except:
             action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":
@@ -290,7 +292,8 @@ class PlayerMoveOperation(Operation):
             level.setPlayerOrientation(self.redoYP, self.player)
             self.tool.markerList.invalidate()
 
-    def bufferSize(self):
+    @staticmethod
+    def bufferSize():
         return 20
 
 
@@ -467,7 +470,6 @@ class PlayerPositionTool(EditorTool):
             pos = self.editor.mainViewport.cameraPosition
             y = self.editor.mainViewport.yaw
             p = self.editor.mainViewport.pitch
-            d = self.editor.level.dimNo
 
             op = PlayerMoveOperation(self, pos, player, (y, p))
             self.movingPlayer = None
@@ -668,14 +670,13 @@ class PlayerPositionTool(EditorTool):
         size = (0.5, 0.5, 0.5)
         box = FloatBox(origin, size)
 
-        if realCoords != None and self.playerPos[realCoords] != "Player":
+        if realCoords is not None and self.playerPos[realCoords] != "Player":
             drawCube(box,
                      texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts)
         else:
             drawCube(box,
                      texture=self.charTex, textureVertices=self.texVerts)
         GL.glDisable(GL.GL_CULL_FACE)
-
 
     #@property
     #def statusText(self):
@@ -700,7 +701,7 @@ class PlayerPositionTool(EditorTool):
         if self.recordMove:
             self.editor.addOperation(op)
         else:
-            self.editor.performWithRetry(op) #Prevent recording of Undo when adding player
+            self.editor.performWithRetry(op)  #Prevent recording of Undo when adding player
             self.recordMove = True
         self.editor.addUnsavedEdit()
 

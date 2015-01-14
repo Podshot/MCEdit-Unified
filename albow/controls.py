@@ -50,7 +50,6 @@ class Control(object):
         self._enabled = x
 
 
-
 class AttrRef(object):
     def __init__(self, obj, attr):
         self.obj = obj
@@ -63,7 +62,6 @@ class AttrRef(object):
         setattr(self.obj, self.attr, x)
 
 
-
 class ItemRef(object):
     def __init__(self, obj, item):
         self.obj = obj
@@ -74,7 +72,6 @@ class ItemRef(object):
 
     def set(self, x):
         self.obj[self.item] = x
-
 
 
 class Label(Widget):
@@ -189,7 +186,6 @@ class SmallLabel(Label):
     """Small text size. See theme.py"""
 
 
-
 class ButtonBase(Control):
     align = 'c'
     action = None
@@ -227,7 +223,6 @@ class Button(ButtonBase, Label):
         if enable:
             kwds['enable'] = enable
         Label.__init__(self, text, **kwds)
-
 
 
 class Image(Widget):
@@ -274,7 +269,6 @@ class ImageButton(ButtonBase, Image):
     pass
 
 
-
 class ValueDisplay(Control, Label):
     format = "%s"
     align = 'l'
@@ -311,14 +305,12 @@ class ValueButton(ButtonBase, ValueDisplay):
         return self.format_value(_(self.value))
 
 
-
 class CheckControl(Control):
     def mouse_down(self, e):
         self.value = not self.value
 
     def get_highlighted(self):
         return self.value
-
 
 
 class CheckWidget(Widget):
@@ -346,10 +338,8 @@ class CheckWidget(Widget):
                 draw.lines(surf, fg, False, [p1, p2, p3])
 
 
-
 class CheckBox(CheckControl, CheckWidget):
     pass
-
 
 
 class RadioControl(Control):
@@ -360,7 +350,6 @@ class RadioControl(Control):
 
     def mouse_down(self, e):
         self.value = self.setting
-
 
 
 class RadioButton(RadioControl, CheckWidget):

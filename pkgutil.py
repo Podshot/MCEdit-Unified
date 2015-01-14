@@ -15,6 +15,7 @@ __all__ = [
     'ImpImporter', 'ImpLoader', 'read_code', 'extend_path',
 ]
 
+
 def read_code(stream):
     # This helper is needed in order for the PEP 302 emulation to
     # correctly handle compiled files
@@ -24,13 +25,14 @@ def read_code(stream):
     if magic != imp.get_magic():
         return None
 
-    stream.read(4) # Skip timestamp
+    stream.read(4)  # Skip timestamp
     return marshal.load(stream)
 
 
 def simplegeneric(func):
     """Make a trivial single-dispatch generic function"""
     registry = {}
+
     def wrapper(*args, **kw):
         ob = args[0]
         try:
@@ -251,7 +253,8 @@ class ImpLoader:
         # normal; i.e. this is just a wrapper for standard import machinery
         return mod
 
-    def get_data(self, pathname):
+    @staticmethod
+    def get_data(pathname):
         return open(pathname, "rb").read()
 
     def _reopen(self):
@@ -271,7 +274,6 @@ class ImpLoader:
         return fullname
 
     def is_package(self, fullname):
-        fullname = self._fix_name(fullname)
         return self.etc[2]==imp.PKG_DIRECTORY
 
     def get_code(self, fullname=None):
@@ -292,7 +294,6 @@ class ImpLoader:
         return self.code
 
     def get_source(self, fullname=None):
-        fullname = self._fix_name(fullname)
         if self.source is None:
             mod_type = self.etc[2]
             if mod_type==imp.PY_SOURCE:
@@ -310,13 +311,10 @@ class ImpLoader:
                 self.source = self._get_delegate().get_source()
         return self.source
 
-
     def _get_delegate(self):
         return ImpImporter(self.filename).find_module('__init__')
 
     def get_filename(self, fullname=None):
-        fullname = self._fix_name(fullname)
-        mod_type = self.etc[2]
         if self.etc[2]==imp.PKG_DIRECTORY:
             return self._get_delegate().get_filename()
         elif self.etc[2] in (imp.PY_SOURCE, imp.PY_COMPILED, imp.C_EXTENSION):
@@ -440,6 +438,7 @@ def iter_importers(fullname=""):
     if '.' not in fullname:
         yield ImpImporter()
 
+
 def get_loader(module_or_name):
     """Get a PEP 302 "loader" object for module_or_name
 
@@ -464,6 +463,7 @@ def get_loader(module_or_name):
     else:
         fullname = module_or_name
     return find_loader(fullname)
+
 
 def find_loader(fullname):
     """Find a PEP 302 "loader" object for fullname
@@ -519,13 +519,13 @@ def extend_path(path, name):
         # frozen package.  Return the path unchanged in that case.
         return path
 
-    pname = os.path.join(*name.split('.')) # Reconstitute as relative path
+    pname = os.path.join(*name.split('.'))  # Reconstitute as relative path
     # Just in case os.extsep != '.'
     sname = os.extsep.join(name.split('.'))
     sname_pkg = sname + os.extsep + "pkg"
     init_py = "__init__" + os.extsep + "py"
 
-    path = path[:] # Start with a copy of the existing path
+    path = path[:]  # Start with a copy of the existing path
 
     for dir in sys.path:
         if not isinstance(dir, basestring) or not os.path.isdir(dir):
@@ -550,10 +550,11 @@ def extend_path(path, name):
                     line = line.rstrip('\n')
                     if not line or line.startswith('#'):
                         continue
-                    path.append(line) # Don't check for existence!
+                    path.append(line)  # Don't check for existence!
                 f.close()
 
     return path
+
 
 def get_data(package, resource):
     """Get a resource from a package.

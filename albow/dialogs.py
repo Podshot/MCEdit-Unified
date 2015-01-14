@@ -66,7 +66,6 @@ class Dialog(Modal, Widget):
         pass
 
 
-
 class QuickDialog(Dialog):
     """ Dialog that closes as soon as you click outside or press a key"""
 
@@ -179,12 +178,9 @@ def input_text_buttons(prompt, width, initial=None, **kwds):
     def cancel():
         box.dismiss(False)
 
-    buts = []
-    buts.append(Button("OK", action=ok))
-    buts.append(Button("Cancel", action=cancel))
+    buts = [Button("OK", action=ok), Button("Cancel", action=cancel)]
 
     brow = Row(buts, spacing=d)
-
 
     lb = Label(prompt)
     lb.topleft = (d, d)

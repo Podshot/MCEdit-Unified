@@ -1,6 +1,7 @@
 import nbt
 import version_utils
 
+
 class Player:
 
     def __init__(self, playerNBTFile):

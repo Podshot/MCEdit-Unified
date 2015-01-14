@@ -155,14 +155,16 @@ class mce(object):
     debug = False
     needsSave = False
 
-    def readInt(self, command):
+    @staticmethod
+    def readInt(command):
         try:
             val = int(command.pop(0))
         except ValueError:
             raise UsageError("Cannot understand numeric input")
         return val
 
-    def prettySplit(self, command):
+    @staticmethod
+    def prettySplit(command):
         cmdstring = " ".join(command)
 
         lex = shlex.shlex(cmdstring)
@@ -275,7 +277,8 @@ class mce(object):
 
         return blockInfo
 
-    def readBlocksToCopy(self, command):
+    @staticmethod
+    def readBlocksToCopy(command):
         blocksToCopy = range(materials.id_limit)
         while len(command):
             word = command.pop()
@@ -287,7 +290,8 @@ class mce(object):
 
         return blocksToCopy
 
-    def _box(self, command):
+    @staticmethod
+    def _box(command):
         """
         Boxes:
 
@@ -328,7 +332,8 @@ class mce(object):
         self.debug = not self.debug
         print "Debug", ("disabled", "enabled")[self.debug]
 
-    def _log(self, command):
+    @staticmethod
+    def _log(command):
         """
     log [ <number> ]
 
@@ -450,7 +455,6 @@ class mce(object):
         Counts all of the block types in every chunk of the world.
         """
         blockCounts = zeros((65536,), 'uint64')
-        sizeOnDisk = 0
 
         print "Analyzing {0} chunks...".format(self.level.chunkCount)
         # for input to bincount, create an array of uint16s by
@@ -1065,7 +1069,7 @@ class mce(object):
             if ticks < 0:
                 ticks += 18000
 
-            ampm = ("AM", "PM")[hours > 11 and hours < 24]
+            ampm = ("AM", "PM")[11 < hours < 24]
             print "Changed time to {0}:{1:02} {2}".format(hours % 12 or 12, minutes, ampm)
             self.level.Time = ticks
             self.needsSave = True
@@ -1181,7 +1185,7 @@ class mce(object):
                     c = self.level.getChunk(cx, cz)
 
                     imgarray = numpy.asarray(greyimg.crop((cz * 16, cx * 16, cz * 16 + 16, cx * 16 + 16)))
-                    imgarray = imgarray / 2  # scale to 0-127
+                    imgarray /= 2  # scale to 0-127
 
                     for x in range(16):
                         for z in range(16):
@@ -1329,13 +1333,11 @@ class mce(object):
     With nothing, prints a list of all blocks.
     """
 
-        searchName = None
         if len(command):
             searchName = " ".join(command)
             try:
                 searchNumber = int(searchName)
             except ValueError:
-                searchNumber = None
                 matches = self.level.materials.blocksMatching(searchName)
             else:
                 matches = [b for b in self.level.materials.allBlocks if b.ID == searchNumber]
@@ -1402,7 +1404,7 @@ class mce(object):
                 try:
                     world = raw_input("Please enter world name or path to world folder: ")
                     self.loadWorld(world)
-                except EOFError, e:
+                except EOFError:
                     print "End of input."
                     raise SystemExit
                 except Exception, e:
@@ -1420,7 +1422,6 @@ class mce(object):
 
         else:
             # process many commands on standard input, maybe interactively
-            command = [""]
             self.batchMode = True
             while True:
                 try:
@@ -1428,7 +1429,7 @@ class mce(object):
                     print
                     self.processCommand(command)
 
-                except EOFError, e:
+                except EOFError:
                     print "End of file. Saving automatically."
                     self._save([])
                     raise SystemExit
@@ -1452,7 +1453,7 @@ class mce(object):
         commandWords = command.split()
 
         keyword = commandWords.pop(0).lower()
-        if not keyword in self.commands:
+        if keyword not in self.commands:
             matches = filter(lambda x: x.startswith(keyword), self.commands)
             if len(matches) == 1:
                 keyword = matches[0]

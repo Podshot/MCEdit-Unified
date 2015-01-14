@@ -96,7 +96,6 @@ class Tree(Column):
         keys.sort()
         items = [[0, a, data[a], parent, children, keys.index(a) + 1] for a in keys]
         rows = []
-        level = 0
         w = 50
         aId = len(items) + 1
         while items:
@@ -105,7 +104,7 @@ class Tree(Column):
             fields = []
             if type(v) in self.compound_types:
                 meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
-                if not meth is None:
+                if meth is not None:
                     v = meth(k, v)
                 ks = v.keys()
                 ks.sort()
@@ -185,7 +184,8 @@ class Tree(Column):
         else:
             self.draw_image_cell(surf, i, data, cell_rect, column)
 
-    def draw_image_cell(self, surf, i, data, cell_rect, column):
+    @staticmethod
+    def draw_image_cell(surf, i, data, cell_rect, column):
         """..."""
         blit_in_rect(surf, data, cell_rect, 'l')
 

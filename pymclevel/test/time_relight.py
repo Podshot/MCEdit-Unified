@@ -7,6 +7,7 @@ import templevel
 # import logging
 #logging.basicConfig(level=logging.INFO)
 
+
 def natural_relight():
     world = mclevel.fromFile("testfiles/AnvilWorld")
     t = timeit(lambda: world.generateLights(world.allChunks), number=1)

@@ -17,6 +17,7 @@ def get_version():
     except:
         raise
 
+
 def get_release_tag():
     '''
     Gets the stage of development MCEdit-Unified is in
@@ -27,6 +28,8 @@ def get_release_tag():
             return current["tag_name"]
     except:
         raise
+
+
 def is_dev():
     '''
     Checks if MCEdit-Unified is in development mode

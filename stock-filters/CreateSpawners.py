@@ -30,7 +30,7 @@ def perform(level, box, options):
             y = int(entity["Pos"][1].value)
             z = int(entity["Pos"][2].value)
 
-            if x >= box.minx and x < box.maxx and y >= box.miny and y < box.maxy and z >= box.minz and z < box.maxz:
+            if box.minx <= x < box.maxx and box.miny <= y < box.maxy and box.minz <= z < box.maxz:
                 entitiesToRemove.append((chunk, entity))
 
                 level.setBlockAt(x, y, z, 52)

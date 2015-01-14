@@ -12,11 +12,13 @@ log = logging.getLogger(__name__)
 displayName = 'Flood Fill'
 disableStyleButton = True
 
+
 def createInputs(self):
     self.inputs = (
     {'Block': materials.blockWithID(1, 0)},
     {'Indiscriminate': False},
     )
+
 
 def apply(self, op, point):
 
@@ -38,7 +40,7 @@ def apply(self, op, point):
         checkData = False
         if doomedBlock == 2:  # grass
             doomedBlock = 3  # dirt
-    if doomedBlock == op.options['Block'].ID and (doomedBlockData == op.options['Block'].blockData or checkData == False):
+    if doomedBlock == op.options['Block'].ID and (doomedBlockData == op.options['Block'].blockData or not checkData):
         return
 
     x, y, z = point

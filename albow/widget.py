@@ -89,6 +89,7 @@ class Widget(object):
     tooltip = None
     tooltipText = None
     doNotTranslate = False
+
     def __init__(self, rect=None, **kwds):
         if rect and not isinstance(rect, Rect):
             raise TypeError("Widget rect not a pygame.Rect")
@@ -562,7 +563,8 @@ class Widget(object):
         if self.root:
             self.root.bonus_draw_time = 0
 
-    def get_cursor(self, event):
+    @staticmethod
+    def get_cursor(event):
         return arrow_cursor
 
     def predict(self, kwds, name):
@@ -740,7 +742,7 @@ class Widget(object):
         else:
             try:
                 surface = Surface(self.size, SRCALPHA)
-            except Exception, e:
+            except Exception:
                 #size error?
                 return
             self.draw_all(surface)

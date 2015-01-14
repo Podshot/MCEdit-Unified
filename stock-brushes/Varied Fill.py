@@ -8,6 +8,7 @@ displayName = "Varied Fill"
 mainBlock = "Block 1"
 secondaryBlock = "Block"
 
+
 def createInputs(self):
     self.inputs = (
     {'Hollow': False},
@@ -22,6 +23,7 @@ def createInputs(self):
     {'Minimum Spacing': 1},
     {'Fill Air': True},
     )
+
 
 def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     brushMask = createBrushMask(op.tool.getBrushSize(), op.options['Style'], brushBox.origin, brushBoxThisChunk, op.options['Noise'], op.options['Hollow'])
@@ -45,7 +47,7 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
         print "Total Chance value can't be 0."
         return
 
-    if airFill == False:
+    if not airFill:
         airtable = numpy.zeros((materials.id_limit, 16), dtype='bool')
         airtable[0] = True
         replaceMaskAir = airtable[blocks, data]
@@ -56,17 +58,15 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     brushMaskOption3 = numpy.copy(brushMask)
     brushMaskOption4 = numpy.copy(brushMask)
 
-    x=-1
-    y=-1
-    z=-1
+    x = -1
 
-    for array_x in brushMask:
+    for _ in brushMask:
         x += 1
         y = -1
-        for array_y in brushMask[x]:
+        for _ in brushMask[x]:
             y += 1
-            z=-1
-            for array_z in brushMask[x][y]:
+            z = -1
+            for _ in brushMask[x][y]:
                 z += 1
                 if brushMask[x][y][z]:
                     randomChance = random.randint(1, totalChance)

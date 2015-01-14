@@ -43,15 +43,17 @@ class Config(object):
     def __getitem__(self, section):
         return self._sections[section]
 
-    def getPath(self):
+    @staticmethod
+    def getPath():
         return directories.configFilePath
 
-    def transformKey(self, value, i=0):
+    @staticmethod
+    def transformKey(value, i=0):
         if 'left' in value and len(value) > 5:
             value = value[5:]
         elif 'right' in value and len(value) > 6:
             value = value[6:]
-        if value >= 'a' and value <= 'z':
+        if 'a' <= value <= 'z':
             value = value.replace(value[0], value[0].upper(), 1)
         if i >= 36 and "Ctrl-" not in value:
             value = "Ctrl-" + value
@@ -67,7 +69,8 @@ class Config(object):
             value = "Button 5"
         return value
 
-    def convert(self, key):
+    @staticmethod
+    def convert(key):
         vals = key.replace('-', ' ').translate(None, '()').lower().split(' ')
         return vals[0] + "".join(x.title() for x in vals[1:])
 
@@ -352,8 +355,6 @@ class ConfigDict(collections.MutableMapping):
         k.dict = self.dict.copy()
         k.keyorder = list(self.keyorder)
         return k
-
-
 
 # Quick Reference:
 # 7 Bedrock

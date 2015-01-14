@@ -118,7 +118,8 @@ class RootWidget(Widget):
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
 
-    def set_timer(self, ms):
+    @staticmethod
+    def set_timer(ms):
         pygame.time.set_timer(USEREVENT, ms)
 
     def run(self):
@@ -168,7 +169,6 @@ class RootWidget(Widget):
             modal_widget.modal_result = None
             if not modal_widget.focus_switch:
                 modal_widget.tab_to_first()
-            mouse_widget = None
             if clicked_widget:
                 clicked_widget = modal_widget
             num_clicks = 0
@@ -265,9 +265,6 @@ class RootWidget(Widget):
                             add_modifiers(event)
                             self.bonus_draw_time = 0
 
-                            levelExist = self.editor.level is not None
-                            keyname = event.dict.get('keyname', None) or self.getKey(event)
-
                             self.send_key(modal_widget, 'key_down', event)
                             if last_mouse_event_handler:
                                 event.dict['pos'] = last_mouse_event.pos
@@ -279,9 +276,6 @@ class RootWidget(Widget):
                             set_modifier(key, False)
                             add_modifiers(event)
                             self.bonus_draw_time = 0
-
-                            keyname = event.dict.get('keyname', None) or self.getKey(event)
-                            levelExist = self.editor.level is not None
 
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
@@ -342,7 +336,8 @@ class RootWidget(Widget):
 
         clicked_widget = None
 
-    def getKey(self, evt=None, movement=False, keyname=None):
+    @staticmethod
+    def getKey(evt=None, movement=False, keyname=None):
         if keyname is None:
             keyname = key.name(evt.key)
         if 'left' in keyname and len(keyname) > 5:
@@ -432,7 +427,8 @@ class RootWidget(Widget):
 
         self.idle_handlers.remove(ref(widget))
 
-    def send_key(self, widget, name, event):
+    @staticmethod
+    def send_key(widget, name, event):
         widget.dispatch_key(name, event)
 
     def begin_frame(self):
@@ -446,7 +442,7 @@ class RootWidget(Widget):
     def show_tooltip(self, widget, pos):
 
         if hasattr(self, 'currentTooltip'):
-            if self.currentTooltip != None:
+            if self.currentTooltip is not None:
                 self.remove(self.currentTooltip)
 
             self.currentTooltip = None
@@ -500,10 +496,12 @@ class RootWidget(Widget):
             self.capture_mouse(None)
             sys.exit(0)
 
-    def confirm_quit(self):
+    @staticmethod
+    def confirm_quit():
         return True
 
-    def get_mouse_for(self, widget):
+    @staticmethod
+    def get_mouse_for(widget):
         last = last_mouse_event
         event = Event(0, last.dict)
         event.dict['local'] = widget.global_to_local(event.pos)
@@ -521,7 +519,8 @@ class RootWidget(Widget):
             GL.glClearColor(r, g, b, 0.0)
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
-    def music_end(self):
+    @staticmethod
+    def music_end():
         import music
 
         music.music_end()

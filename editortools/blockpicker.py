@@ -69,7 +69,7 @@ class BlockPicker(Dialog):
 
         def formatBlockID(x):
             block = self.matchingBlocks[x]
-            ident = "({id}:{data})".format (id=block.ID, data=block.blockData)
+            ident = "({id}:{data})".format(id=block.ID, data=block.blockData)
             return ident
 
         tableview = TableView(columns=[TableColumn(" ", 24, "l", lambda x: ""),
@@ -198,11 +198,6 @@ class BlockPicker(Dialog):
             print repr(e)
 
         blocks = self.materials.allBlocks
-
-        matches = blocks
-        oldBlock = self.materials.Air
-        if len(self.matchingBlocks):
-            oldBlock = self.matchingBlocks[self.selectedBlockIndex]
 
         if len(text):
             matches = self.materials.blocksMatching(text)

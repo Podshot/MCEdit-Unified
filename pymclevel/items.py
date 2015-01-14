@@ -56,7 +56,6 @@ class Items(object):
                 self.items.update(itempacknew)
             except:
                 pass
-        
 
     def findItem(self, id=0, damage=None):
         try:
@@ -69,7 +68,7 @@ class Items(object):
             else:
                 if type(item["name"][damage]) == str or type(item["name"][damage]) == unicode:
                     return ItemType(id, item["name"][damage], item["maxdamage"], damage, item["stacksize"])
-                else: 
+                else:
                     raise ItemNotFound()
         else:
             raise ItemNotFound()
@@ -81,6 +80,7 @@ class Items(object):
                 if itemTemp["id"] == id:
                     return self.items[item]
         raise ItemNotFound()
+
 
 class ItemNotFound(KeyError):
     pass

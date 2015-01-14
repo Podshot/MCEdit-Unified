@@ -273,7 +273,7 @@ class FillTool(EditorTool):
             id = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
             yaw = int(self.editor.mainViewport.yaw) % 360
-            if (yaw >= 45 and yaw < 135) or (yaw > 225 and yaw <= 315):
+            if (45 <= yaw < 135) or (225 < yaw <= 315):
                 FlipEastWest(id,data)
             else:
                 FlipNorthSouth(id,data)

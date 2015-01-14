@@ -219,7 +219,8 @@ class MCEdit(GLViewport):
 
     numRecentWorlds = 5
 
-    def removeLevelDat(self, filename):
+    @staticmethod
+    def removeLevelDat(filename):
         if filename.endswith("level.dat"):
             filename = os.path.dirname(filename)
         return filename
@@ -244,20 +245,20 @@ class MCEdit(GLViewport):
         rw = [filename] + rw[:self.numRecentWorlds - 1]
         self.setRecentWorlds(rw)
 
-    def setRecentWorlds(self, worlds):
+    @staticmethod
+    def setRecentWorlds(worlds):
         for i, filename in enumerate(worlds):
             config.config.set("Recent Worlds", str(i), filename.encode('utf-8'))
 
     def makeSideColumn(self):
         def showLicense():
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
+
         def showCacheDir():
             platform_open(directories.getCacheDir())
 
         def showScreenshotsDir():
             platform_open(os.path.join(directories.parentDir, "screenshots"))
-
-        readmePath = os.path.join(directories.getDataDir(), "README.html")
 
         hotkeys = ([("",
                      "Controls",
@@ -396,13 +397,14 @@ class MCEdit(GLViewport):
         self.editor.saveFile()
         raise SystemExit
 
-    def justQuit(self):
+    @staticmethod
+    def justQuit():
         raise SystemExit
 
     @classmethod
-    def fetch_version(self):
-        with self.version_lock:
-            self.version_info = release.fetch_new_version_info()
+    def fetch_version(cls):
+        with cls.version_lock:
+            cls.version_info = release.fetch_new_version_info()
 
     def check_for_version(self):
         new_version = release.check_for_new_version(self.version_info)
@@ -424,7 +426,7 @@ class MCEdit(GLViewport):
                 albow.alert(_(' {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.').format(new_version["asset"]["name"]))
 
     @classmethod
-    def main(self):
+    def main(cls):
         displayContext = GLDisplayContext(splash.splash)
 
         rootwidget = RootWidget(displayContext.display)
@@ -441,11 +443,11 @@ class MCEdit(GLViewport):
         if mcedit.droppedLevel:
             mcedit.loadFile(mcedit.droppedLevel)
 
-        self.version_lock = threading.Lock()
-        self.version_info = None
-        self.version_checked = False
+        cls.version_lock = threading.Lock()
+        cls.version_info = None
+        cls.version_checked = False
 
-        fetch_version_thread = threading.Thread(target=self.fetch_version)
+        fetch_version_thread = threading.Thread(target=cls.fetch_version)
         fetch_version_thread.start()
 
 
@@ -537,7 +539,7 @@ class MCEdit(GLViewport):
         config.version.version.set("1.1.2.0")
         config.save()
         if "-causeError" in sys.argv:
-            raise ValueError, "Error requested via -causeError"
+            raise ValueError("Error requested via -causeError")
 
         while True:
             try:
@@ -565,7 +567,8 @@ class MCEdit(GLViewport):
                 traceback.print_exc()
                 mcedit.editor.handleMemoryError()
 
-    def saveWindowPosition(self):
+    @staticmethod
+    def saveWindowPosition():
         """Save the window position in the configuration handler."""
         if sys.platform == "win32" and config.settings.setWindowPlacement.get():
             (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
@@ -605,6 +608,7 @@ class MCEdit(GLViewport):
         else:
             os.execl(python, python, * sys.argv)
 
+
 def main(argv):
     """
     Setup display, bundled schematics. Handle unclean
@@ -642,7 +646,7 @@ def main(argv):
 
     try:
         display.init()
-    except pygame.error, e:
+    except pygame.error:
         os.environ['SDL_VIDEODRIVER'] = 'directx'
         try:
             display.init()
@@ -726,6 +730,7 @@ def getSelectedMinecraftVersion():
     else:
         return '1.8'
 
+
 def getLatestMinecraftVersion(snapshots=False):
     import urllib2
     import json
@@ -735,11 +740,10 @@ def getLatestMinecraftVersion(snapshots=False):
     else:
         return versioninfo['latest']['release']
 
+
 def weird_fix():
     try:
         from OpenGL.platform import win32
-
-        win32
     except Exception:
         pass
 

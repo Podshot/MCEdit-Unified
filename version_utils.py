@@ -24,6 +24,7 @@ from urllib2 import HTTPError
 
 #print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
 
+
 class __PlayerCache:
     
     SUCCESS = 0
@@ -41,17 +42,12 @@ class __PlayerCache:
         if jsonFile is not None:
             for old_player in jsonFile.keys():
                 player = jsonFile[old_player]
-                new_player = {}
-                new_player["Playername"] = player["username"]
-                new_player["UUID (No Separator)"] = old_player.replace("-","")
-                new_player["UUID (Separator)"] = old_player
-                new_player["WasSuccessful"] = True
-                new_player["Timstamp"] = player["timestamp"]
+                new_player = {"Playername": player["username"], "UUID (No Separator)": old_player.replace("-", ""),
+                              "UUID (Separator)": old_player, "WasSuccessful": True, "Timstamp": player["timestamp"]}
                 self._playerCacheList.append(new_player)
             self._save()
             print "Convert usercache.json"
-    
-    
+
     def __init__(self):
         self._playerCacheList = []
         if not os.path.exists(userCachePath):
@@ -60,13 +56,12 @@ class __PlayerCache:
         with open(userCachePath) as f:
             line = f.readline()
             if line.startswith("{"):
-                self.__convert();
+                self.__convert()
         try:
             with open(userCachePath) as json_in:
                 self._playerCacheList = json.load(json_in)
         except:
             print "usercache.json is corrupted"
-    
 
     def _save(self):
         with open(userCachePath, "w") as out:
@@ -77,7 +72,7 @@ class __PlayerCache:
         for p in self._playerCacheList:
             if p["Playername"] == name:
                 toRemove = p
-        if toRemove != None:
+        if toRemove is not None:
             self._playerCacheList.remove(toRemove)
             self._save()
     
@@ -90,7 +85,7 @@ class __PlayerCache:
             else:
                 if p["UUID (No Separator)"] == uuid:
                     toRemove = p
-        if toRemove != None:
+        if toRemove is not None:
             self._playerCacheList.remove(toRemove)
             self._save()
             
@@ -117,7 +112,6 @@ class __PlayerCache:
         if forceNetwork:
             if self.uuidInCache(uuid):
                 self._removePlayerWithUUID(uuid)
-            response = None
             try:
                 response = urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-",""))).read()
             except urllib2.URLError:
@@ -148,16 +142,13 @@ class __PlayerCache:
         if forceNetwork:
             if self.nameInCache(playername):
                 self._removePlayerWithName(playername)
-            response = None
             try:
                 response = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(playername)).read()
             except urllib2.URLError:
                 return playername
             if response is not None and response != "":
                 playerJSON = json.loads(response)
-                player = {}
-                player["Playername"] = playername
-                player["UUID (No Separator)"] = playerJSON["id"]
+                player = {"Playername": playername, "UUID (No Separator)": playerJSON["id"]}
                 uuid = playerJSON["id"][:4]+"-"+playerJSON["id"][4:8]+"-"+playerJSON["id"][8:12]+"-"+playerJSON["id"][12:16]+"-"+playerJSON["id"][16:]
                 player["UUID (Separator)"] = uuid
                 player["WasSuccessful"] = True
@@ -192,9 +183,9 @@ class __PlayerCache:
             for p in self._playerCacheList:
                 toReturn[p["Playername"]] = p
         return toReturn        
-        
-    
-    def __formats(self):
+
+    @staticmethod
+    def __formats():
         player = {
                   "Playername":"<Username>",
                   "UUID":"<uuid>",
@@ -206,6 +197,7 @@ class __PlayerCache:
                 
 playercache = __PlayerCache()
             
+
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
     return playercache.getPlayerFromPlayername(player, forceNetwork, seperator)
     '''
@@ -269,6 +261,7 @@ def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
             print "Error getting the uuid for {}".format(player)
             raise PlayerNotFound(player)
     '''
+
 
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
     '''
@@ -337,6 +330,7 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
             return uuid
     '''
         
+
 def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     SKIN_URL = "http://skins.minecraft.net/MinecraftSkins/{}.png"
     toReturn = 'char.png'
@@ -369,7 +363,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     except IOError:
         print "Couldn't find Image file ("+str(uuid.replace("-","_")+".png")+") or the file may be corrupted"
         print "Trying to re-download skin...."
-        if not trying_again and instance != None:
+        if not trying_again and instance is not None:
             instance.delete_skin(uuid)
             os.remove(os.path.join("player-skins", uuid.replace("-","_")+".png"))
             toReturn = getPlayerSkin(uuid, force=True, trying_again=True)
@@ -378,7 +372,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
         print "Couldn't connect to a network"
         raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
         pass
-    except Exception, e:
+    except Exception:
         print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
         pass
     return toReturn

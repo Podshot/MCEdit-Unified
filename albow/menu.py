@@ -105,7 +105,8 @@ class Menu(Dialog):
 
         return Dialog.present(self, centered=False)
 
-    def command_is_enabled(self, item, focus):
+    @staticmethod
+    def command_is_enabled(item, focus):
         cmd = item.command
         if cmd:
             enabler_name = cmd + '_enabled'

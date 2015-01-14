@@ -141,7 +141,8 @@ class BlockCopyOperation(Operation):
                                               create=True, biomes=self.copyBiomes, staticCommands=self.staticCommands, moveSpawnerPos=self.moveSpawnerPos, regenerateUUID=self.regenerateUUID, first=False)
             showProgress(_("Copying {0:n} blocks...").format(self.sourceBox.volume), i)
 
-    def bufferSize(self):
+    @staticmethod
+    def bufferSize():
         return 123456
 
 
@@ -225,6 +226,7 @@ class CloneOperation(Operation):
         super(CloneOperation, self).redo()
         [i.redo() for i in self.selectionOps]
 
+
 class CloneToolPanel(Panel):
     useOffsetInput = True
 
@@ -290,7 +292,7 @@ class CloneToolPanel(Panel):
         iv = scaleField.increase_value
 
         def scaleFieldDecrease():
-            if scaleField.value > 1 / 8.0 and scaleField.value <= 1.0:
+            if 1 / 8.0 < scaleField.value <= 1.0:
                 scaleField.value *= 0.5
             else:
                 dv()
@@ -711,7 +713,8 @@ class CloneTool(EditorTool):
     #    return self.editor.selectionTool.selectionBox()
     #
     # ===========================================================================
-    def getBlockAt(self):
+    @staticmethod
+    def getBlockAt():
         return None  # use level's blockAt
 
     def getReticleOrigin(self):
@@ -733,8 +736,8 @@ class CloneTool(EditorTool):
             x, y, z = map(lambda p, s: p - s / 2, pos, size)
 
         if self.chunkAlign:
-            x = x & ~0xf
-            z = z & ~0xf
+            x &= ~0xf
+            z &= ~0xf
 
         sy = size[1]
         if sy > lev.Height:  # don't snap really tall stuff to the height
@@ -778,7 +781,7 @@ class CloneTool(EditorTool):
         if self.level is None:
             return
 
-        if self.destPoint != None:
+        if self.destPoint is not None:
             destPoint = self.destPoint
             if self.draggingFace is not None:
                 # debugDrawPoint()
@@ -849,7 +852,7 @@ class CloneTool(EditorTool):
 
     def drawToolMarkers(self):
         selectionBox = self.selectionBox()
-        if (selectionBox):
+        if selectionBox:
             widg = self.editor.find_widget(pygame.mouse.get_pos())
             try:
                 if self.panel and (widg is self.panel.nudgeButton or widg.parent is self.panel.nudgeButton):
@@ -907,7 +910,7 @@ class CloneTool(EditorTool):
     def mirror(self, blocksOnly=False):
         if self.canRotateLevel:
             yaw = int(self.editor.mainViewport.yaw) % 360
-            if (yaw >= 45 and yaw < 135) or (yaw > 225 and yaw <= 315):
+            if (45 <= yaw < 135) or (225 < yaw <= 315):
                 if blocksOnly:
                     self.level.flipEastWestBlocks()
                 else:
@@ -1115,6 +1118,7 @@ class CloneTool(EditorTool):
 
         self.destPoint = None
         self.level = None
+
     def discardPreviewer(self):
         if self.previewRenderer is None:
             return
@@ -1126,6 +1130,7 @@ class CloneTool(EditorTool):
 
 class ConstructionToolPanel(CloneToolPanel):
     useOffsetInput = False
+
 
 class ConstructionToolOptions(ToolOptions):
     def __init__(self, tool):
@@ -1143,6 +1148,7 @@ class ConstructionToolOptions(ToolOptions):
 
         self.add(col)
         self.shrink_wrap()
+
 
 class ConstructionTool(CloneTool):
     surfaceBuild = True

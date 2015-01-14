@@ -17,6 +17,7 @@ inputs = (
     ("Float Field Test (Increments by 0.3)", (0.0, -5.0, 5.0, 0.3)),
     )
 
+
 class StoreData:
     def __init__(self):
         self._isFork = False
@@ -80,7 +81,7 @@ def perform(level, box, options):
                     chunks.append(chunk)
         thing = (
                  ("Entity", tuple(sorted(entities.keys()))),
-                 ("Entity Name", ("string")),
+                 ("Entity Name", "string"),
                  ("Replace existing names?", False),
                  )
         result = editor.addExternalWidget(thing)

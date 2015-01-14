@@ -217,7 +217,7 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
             textureVertices[:] += 0.5
 
     GL.glVertexPointer(3, GL.GL_FLOAT, 0, cubeVertices)
-    if texture != None:
+    if texture is not None:
         GL.glEnable(GL.GL_TEXTURE_2D)
         GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
 
@@ -231,7 +231,7 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
     GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
     GL.glDisable(GL.GL_POLYGON_OFFSET_LINE)
 
-    if texture != None:
+    if texture is not None:
         GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
         GL.glDisable(GL.GL_TEXTURE_2D)
 
@@ -507,6 +507,7 @@ def setWindowCaption(prefix):
     prefix = _(prefix)
     if type(prefix) == unicode:
         prefix = prefix.encode("utf8")
+
     class ctx:
         def __enter__(self):
             display.set_caption(prefix + caption)
@@ -515,6 +516,7 @@ def setWindowCaption(prefix):
             display.set_caption(caption)
 
     return ctx()
+
 
 def compareMD5Hashes(found_filters):
     '''
@@ -526,8 +528,7 @@ def compareMD5Hashes(found_filters):
         ff[os.path.split(filter)[-1]] = filter
     try:
         if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
-            filterDict = {}
-            filterDict["filters"] = {}
+            filterDict = {"filters": {}}
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
                 json.dump(filterDict, j)
         filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "stock-filters"), ".py")
@@ -545,7 +546,7 @@ def compareMD5Hashes(found_filters):
                         bundledData = None
                         with open(filterBundle[realName]) as bundledFilter:
                             bundledData = bundledFilter.read()
-                        if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData != None:
+                        if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData is not None:
                             shutil.copy(filterBundle[realName], directories.filtersDir)
                             hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
                         if old_hash != hashlib.md5(filterData).hexdigest() and hashlib.md5(filterData).hexdigest() != hashlib.md5(bundledData).hexdigest():
@@ -559,12 +560,13 @@ def compareMD5Hashes(found_filters):
                 data = None
                 with open(filterBundle[bundled], 'r') as f:
                     data = f.read()
-                if data != None:
+                if data is not None:
                     hashJSON[bundled] = hashlib.md5(data).hexdigest()
         with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
             json.dump(hashJSON, done)
     except Exception, e:
         print ('Error: {}'.format(e))
+
 
 def showProgress(progressText, progressIterator, cancel=False):
     """Show the progress for a long-running synchronous operation.
@@ -628,7 +630,7 @@ def showProgress(progressText, progressIterator, cancel=False):
 
         @property
         def estimateText(self):
-            delta = ((datetime.now() - self.startTime))
+            delta = (datetime.now() - self.startTime)
             progressPercent = (int(self.progressFraction * 10000))
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
             return _("Time left: {0}").format(left)

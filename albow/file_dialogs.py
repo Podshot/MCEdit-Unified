@@ -13,6 +13,8 @@ from albow.layout import Row, Column
 from albow.palette_view import PaletteView
 from albow.theme import ThemeProperty
 from translate import _
+
+
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
         Widget.__init__(self, **kwds)
@@ -46,7 +48,6 @@ class FileListView(PaletteView):
     def update(self):
         client = self.client
         dir = client.directory
-        suffixes = client.suffixes
 
         def filter(name):
             path = os.path.join(dir, name)
@@ -69,7 +70,6 @@ class FileListView(PaletteView):
     #    draw.rect(surf, self.sel_color, rect)
 
     def draw_item(self, surf, item_no, rect):
-        font = self.font
         color = self.fg_color
         buf = self.font.render(self.names[item_no], True, color)
         surf.blit(buf, rect)

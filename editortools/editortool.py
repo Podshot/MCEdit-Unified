@@ -204,7 +204,6 @@ class EditorTool(object):
         # return the away-facing face
 
         dim = face // 2
-        side = face & 1
 
         dim1, dim2 = dim + 1, dim + 2
         dim1, dim2 = dim1 % 3, dim2 % 3
