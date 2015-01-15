@@ -248,6 +248,10 @@ class OptionsPanel(Dialog):
     def portableLabelText(self):
         return (_("Install Mode: Portable"), _("Install Mode: Fixed"))[1 - directories.portable]
 
+    @portableLabelText.setter
+    def portableLabelText(self, *args, **kwargs):
+        pass
+
     def togglePortable(self):
         if sys.platform == "darwin":
             return False
@@ -312,8 +316,8 @@ class OptionsPanel(Dialog):
         oldLanguage = self.saveOldConfig[config.settings.langCode]
         if config.settings.langCode.get() != oldLanguage:
             Changes = True
-        newPortable = self.portableVar.get()
-        if newPortable != self.saveOldPortable:
+        newPortable = _(self.portableVar.get())
+        if newPortable != _(self.saveOldPortable):
             Changes = True
         if not Changes:
             Dialog.dismiss(self, *args, **kwargs)
@@ -330,7 +334,7 @@ class OptionsPanel(Dialog):
             self.languageButton.selectedChoice = self.sgnal[oldLanguage]
             self.changeLanguage()
 
-        if newPortable != self.saveOldPortable:
+        if _(newPortable) != _(self.saveOldPortable):
             self.portableVar.set(newPortable)
             self.togglePortable()
 
