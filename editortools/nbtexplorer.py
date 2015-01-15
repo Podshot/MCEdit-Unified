@@ -194,17 +194,10 @@ class NBTExplorerToolPanel(Panel):
             for itm in items:
                 t = itm.__class__.__name__
                 rows.append(Row([Label("Data Type:"), Label(t)]))
-                if type(itm) in field_types.keys():
-                    f, bounds = field_types[type(itm)]
-                    if bounds:
-                        field = f(text="%s"%itm.value, min=bounds[0], max=bounds[1])
-                    else:
-                        field = f(text="%s"%itm.value)
-                    row = Row([field,])
-                else:
-                    row = Row([Label("%s"%itm.value, align='l'),])
-                if f == TextFieldWrapped:
-                    row.width = 250
+                field = self.build_field(itm)
+                if type(field) == TextFieldWrapped:
+                    field.set_size_for_text(300)
+                row = Row([field,])
                 rows.append(row)
         if rows:
             col = Column(rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height)
@@ -212,8 +205,20 @@ class NBTExplorerToolPanel(Panel):
             col.top = self.subwidgets[0].subwidgets[1].top
             col.left = self.subwidgets[0].subwidgets[1].subwidgets[0].right
             col.bottom = self.subwidgets[0].subwidgets[1].subwidgets[0].bottom
-#            col.shrink_wrap()
+            col.shrink_wrap()
             self.side_panel = col
+
+    @staticmethod
+    def build_field(itm):
+        if type(itm) in field_types.keys():
+            f, bounds = field_types[type(itm)]
+            if bounds:
+                field = f(text="%s"%itm.value, min=bounds[0], max=bounds[1])
+            else:
+                field = f(text="%s"%itm.value)
+        else:
+            field = Label("%s"%itm.value, align='l', doNotTranslate=True)
+        return field
 
     @staticmethod
     def build_attributes(items):
@@ -224,15 +229,19 @@ class NBTExplorerToolPanel(Panel):
         names.sort()
         for name in names:
             item = attributes[indexes.index(name)]
-            rows.append(Row([Label(name.split('.')[-1], align='l'), Label("%s"%item['Base'].value, align='l')],  margin=0))
+            rows.append(Row([Label(name.split('.')[-1], align='l'), NBTExplorerToolPanel.build_field(item['Base'])],
+                            margin=0))
             mods = item.get('Modifiers', [])
             for mod in mods:
                 keys = mod.keys()
                 keys.remove('Name')
-                rows.append(Row([Label('-> Name', align='l'), Label("%s"%mod['Name'].value, align='l')], margin=0))
+                rows.append(Row([Label("-> Name", align='l'), NBTExplorerToolPanel.build_field(mod['Name'])],
+                                 margin=0))
                 keys.sort()
                 for key in keys:
-                    rows.append(Row([Label('    %s'%key, align='l'), Label("%s"%mod[key].value, align='l')], margin=0))
+                    rows.append(Row([Label('    %s'%key, align='l', doNotTranslate=True, tooltipText=mod[key].__class__.__name__),
+                                     NBTExplorerToolPanel.build_field(mod[key])],
+                                    margin=0))
         return rows
 
     def build_motion(self, items):
@@ -318,7 +327,7 @@ class NBTExplorerToolPanel(Panel):
 #-----------------------------------------------------------------------------
 class NBTExplorerTool(EditorTool):
     """..."""
-    tooltipText = "Dive into level NBT structure."
+    tooltipText = "NBT Explorer\nDive into level NBT structure."
 
     def __init__(self, editor):
         """..."""
