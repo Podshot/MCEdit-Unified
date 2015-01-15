@@ -62,6 +62,7 @@ class __PlayerCache:
                 self._playerCacheList = json.load(json_in)
         except:
             print "usercache.json is corrupted"
+        
 
     def _save(self):
         with open(userCachePath, "w") as out:
@@ -105,7 +106,21 @@ class __PlayerCache:
             else:
                 if p["UUID (No Separator)"] == uuid:
                     isInCache = True
-        return isInCache 
+        return isInCache
+    
+    def _refreshAll(self):
+        playersNeededToBeRefreshed = []
+        try:
+            t = time.time()
+        except:
+            t = 0
+        for player in self._playerCacheList:
+            if player["Timestamp"] != "<Invalid>":
+                if t - player["Timestamp"] < 21600:
+                    playersNeededToBeRefreshed.append(player)
+        for player in playersNeededToBeRefreshed:
+            self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
+        pass
     
     def getPlayerFromUUID(self, uuid, forceNetwork=False):
         player = {}
@@ -172,16 +187,22 @@ class __PlayerCache:
                 return playername
     
     # 0 if for a list of the playernames, 1 is for a dictionary of all player data
-    def getAllPlayersKnown(self, returnType=0):
+    def getAllPlayersKnown(self, returnType=0, include_failed_lookups=False):
         toReturn = None
         if returnType == 0:
             toReturn = []
             for p in self._playerCacheList:
-                toReturn.append(p["Playername"])
+                if p["WasSuccessful"]:
+                    toReturn.append(p["Playername"])
+                elif include_failed_lookups:
+                    toReturn.append(p["Playername"])      
         elif returnType == 1:
             toReturn = {}
             for p in self._playerCacheList:
-                toReturn[p["Playername"]] = p
+                if p["WasSuccessful"]:
+                    toReturn[p["Playername"]] = p
+                elif include_failed_lookups:
+                    toReturn[p["Playername"]] = p
         return toReturn        
 
     @staticmethod
