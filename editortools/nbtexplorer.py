@@ -6,37 +6,65 @@
 #
 # Display NBT structure
 #
-from pygame import key, draw
+from pygame import key, draw, image, Rect
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    FloatField, IntField, TextFieldWrapped
-from albow.theme import root
-scroll_button_size = 0 + root.PaletteView.scroll_button_size
-del root
+    FloatField, IntField, TextFieldWrapped, AttrRef
 from albow.utils import blit_in_rect
 from albow.translate import _
 from glbackground import Panel
 from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
      TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
      TAG_Short_Array
+from albow.theme import root
+scroll_button_size = 0 + root.PaletteView.scroll_button_size
+bullet_color_active = root.Tree.bullet_color_active
+del root
 from editortools.editortool import EditorTool
 import copy
+from directories import getDataDir
+import os
 
 #-----------------------------------------------------------------------------
-USE_BULLET_STYLES = False
+USE_BULLET_STYLES = True
 USE_BULLET_TEXT = False
+USE_BULLET_IMAGES = True
+BULLET_FILE_NAME = 'Nbtsheet.png'
+
+bullet_image = None
+
+def get_bullet_image(index, w=16, h=16):
+    global bullet_image
+    if not bullet_image:
+        bullet_image = image.load(os.path.join(getDataDir(), BULLET_FILE_NAME))
+    r =  Rect(0, 0, w, h)
+    line_length = int(bullet_image.get_width() / w)
+    num_lines = int(bullet_image.get_height() / h)
+    line = int(index / line_length)
+    r.top = line * h
+    r.left = (index - (line * line_length)) * w
+    return bullet_image.subsurface(r)
 
 styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
-          TAG_Byte_Array: ((20,20,200), None, 'square', 'B'),
           TAG_Double: ((20,200,20), None, 'circle', 'd'),
           TAG_Float: ((200,20,20), None, 'circle', 'f'),
           TAG_Int: ((16,160,160), None, 'circle', 'i'),
-          TAG_Int_Array: ((16,160,160), None, 'square', 'I'),
-          TAG_List: ((200,200,200), (0,0,0), 'square', 'L'),
           TAG_Long: ((200,20,200), None, 'circle', 'l'),
           TAG_Short: ((200,200,20), (0,0,0), 'circle', 's'),
-          TAG_Short_Array: ((200,200,20), None, 'square', 'S'),
           TAG_String: ((60,60,60), None, 'circle', 's'),
+          TAG_Compound: (bullet_color_active, None, '', ''),
+          TAG_Byte_Array: ((20,20,200), None, 'square', 'B'),
+          TAG_Int_Array: ((16,160,160), None, 'square', 'I'),
+          TAG_List: ((200,200,200), (0,0,0), 'square', 'L'),
+          TAG_Short_Array: ((200,200,20), None, 'square', 'S'),
           }
+
+if USE_BULLET_IMAGES and os.path.exists(os.path.join(getDataDir(), BULLET_FILE_NAME)):
+    i = 0
+    for key in (TAG_Byte, TAG_Double, TAG_Float, TAG_Int, TAG_Long, TAG_Short, TAG_String, TAG_Compound, TAG_Byte_Array, TAG_Int_Array, TAG_List):
+        styles[key] = (get_bullet_image(i), None, 'image', '')
+        i += 1
+
+    styles[TAG_Short_Array] = styles[TAG_Int_Array]
 
 
 #-----------------------------------------------------------------------------
@@ -71,6 +99,10 @@ class NBTTree(Tree):
             self._parent.update_side_panel(self.selected_item)
 
     @staticmethod
+    def draw_image(surf, bg, r):
+        blit_in_rect(surf, bg, r, 'c')
+
+    @staticmethod
     def draw_square(surf, bg, r):
         draw.polygon(surf, bg, [r.topleft, r.topright, r.bottomright, r.bottomleft])
 
@@ -89,6 +121,8 @@ class NBTTree(Tree):
             buf = self.font.render(text, True, fg or self.fg_color)
             blit_in_rect(surf, buf, r, 'c')
 
+    if USE_BULLET_STYLES and styles.get(TAG_Compound, [''] * 4)[2] != '':
+        draw_opened_bullet = draw_closed_bullet = draw_TAG_bullet
 
 #-----------------------------------------------------------------------------
 class SlotEditor(Panel):
@@ -135,7 +169,7 @@ class NBTExplorerToolPanel(Panel):
         self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=styles)
         col = Column([self.tree,
                       Row([
-                           Button("Save", action=self.save_NBT),
+                           Button("OK", action=self.save_NBT, tooltipText="Save your change in the NBT data."),
                            Button("Reset", action=self.reset, tooltipText="Reset ALL your changes in the NBT data."),
                            Button("Close", action=self.close),
                           ],
@@ -164,7 +198,8 @@ class NBTExplorerToolPanel(Panel):
         self.editor.nbtTool.showPanel()
 
     def close(self):
-        self.parent.nbtTool.hidePanel()
+        self.editor.toolbar.selectTool(0)
+        self.editor.nbtTool.hidePanel()
 
     def key_down(self, evt):
         if key.name(evt.key) == 'escape':
@@ -213,9 +248,9 @@ class NBTExplorerToolPanel(Panel):
         if type(itm) in field_types.keys():
             f, bounds = field_types[type(itm)]
             if bounds:
-                field = f(text="%s"%itm.value, min=bounds[0], max=bounds[1])
+                field = f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1])
             else:
-                field = f(text="%s"%itm.value)
+                field = f(ref=AttrRef(itm, 'value'))
         else:
             field = Label("%s"%itm.value, align='l', doNotTranslate=True)
         return field
@@ -335,9 +370,9 @@ class NBTExplorerTool(EditorTool):
         self.editor = editor
         self.editor.nbtTool = self
 
-    def hidePanel(self):
-        self.editor.remove(self.panel)
-        self.panel = None
+#    def hidePanel(self):
+#        self.editor.remove(self.panel)
+#        self.panel = None
 
     def toolSelected(self):
         self.showPanel()
