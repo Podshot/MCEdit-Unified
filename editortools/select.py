@@ -930,8 +930,11 @@ class SelectionTool(EditorTool):
         self.editor.addOperation(op)
 
     def deselect(self):
-        op = SelectionOperation(self, None)
-        self.editor.addOperation(op)
+        if self.selectionInProgress:
+            self.cancel()
+        if self.selectionBox() is not None:
+            op = SelectionOperation(self, None)
+            self.editor.addOperation(op)
 
     def setSelectionPoint(self, pointNumber, newPoint):
         points = self.getSelectionPoints()
@@ -1155,7 +1158,7 @@ class SelectionOperation(Operation):
         points = self.points
         self.points = self.undoPoints
         self.undoPoints = self.selectionTool.getSelectionPoints()
-        changeSelection = "select" in "{}".format(self.editor.currentTool) 
+        changeSelection = "select" in "{}".format(self.editor.currentTool)
         self.selectionTool.setSelectionPoints(self.points, changeSelection)
         self.points = points
 
@@ -1164,7 +1167,7 @@ class SelectionOperation(Operation):
         points = self.points
         self.points = self.redoPoints
         self.undoPoints = self.selectionTool.getSelectionPoints()
-        changeSelection = "select" in "{}".format(self.editor.currentTool) 
+        changeSelection = "select" in "{}".format(self.editor.currentTool)
         self.selectionTool.setSelectionPoints(self.points, changeSelection)
         self.points = points
 
