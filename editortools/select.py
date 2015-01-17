@@ -930,9 +930,6 @@ class SelectionTool(EditorTool):
         self.editor.addOperation(op)
 
     def deselect(self):
-        if self.selectionInProgress:
-            self.cancel()
-            return
         if self.selectionBox() is not None:
             op = SelectionOperation(self, None)
             self.editor.addOperation(op)

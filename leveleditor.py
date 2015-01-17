@@ -1662,7 +1662,9 @@ class LevelEditor(GLViewport):
             self.currentTool.swap()
 
         if keyname == 'Escape':
-            if "select" not in str(self.currentTool):
+            if self.selectionTool.selectionInProgress:
+                self.selectionTool.cancel()
+            elif "select" not in str(self.currentTool):
                 self.toolbar.selectTool(0)
             else:
                 self.mouseLookOff()
