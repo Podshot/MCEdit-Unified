@@ -7,9 +7,13 @@
 # Display NBT structure
 #
 #
+# TODO:
+# * add local undo/redo for loaded NBT files
+# * change/optimize the undo/redo when edit level NBT data
+# * finish the option panel by adding a title and the selection of the styles
 from pygame import key, draw, image, Rect
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    FloatField, IntField, TextFieldWrapped, AttrRef
+    FloatField, IntField, TextFieldWrapped, AttrRef, ask
 from albow.utils import blit_in_rect
 from albow.translate import _
 from glbackground import Panel
@@ -26,7 +30,7 @@ from editortools.tooloptions import ToolOptions
 import copy
 from directories import getDataDir
 import os
-from mcplatform import askOpenFile, askSaveFile
+import mcplatform
 
 #-----------------------------------------------------------------------------
 USE_BULLET_STYLES = True
@@ -137,6 +141,7 @@ class NBTExplorerOptions(ToolOptions):
         self.add(col)
         self.shrink_wrap()
 
+
 #-----------------------------------------------------------------------------
 class SlotEditor(Panel):
     def __init__(self, inventory, data):
@@ -184,7 +189,6 @@ class NBTExplorerOperation(Operation):
 
             orgNBT = self.toolPanel.nbtObject['Data']
             newNBT = self.toolPanel.data
-#            print "%s"%orgNBT == "%s"%newNBT, orgNBT == newNBT
 
             if "%s"%orgNBT != "%s"%newNBT:
                 if self.level.saving:
@@ -219,6 +223,7 @@ class NBTExplorerOperation(Operation):
             toolPanel.displayed_item = None
             toolPanel.update_side_panel(item)
 
+
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
@@ -236,7 +241,7 @@ class NBTExplorerToolPanel(Panel):
         self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=styles)
         col = Column([self.tree,
                       Row([
-                           Button("OK", action=self.save_NBT, tooltipText="Save your change in the NBT data."),
+                           Button({True: "Save", False: "OK"}[fileName != None], action=self.save_NBT, tooltipText="Save your change in the NBT data."),
                            Button("Reset", action=self.reset, tooltipText="Reset ALL your changes in the NBT data."),
                            Button("Close", action=self.close),
                           ],
@@ -251,14 +256,13 @@ class NBTExplorerToolPanel(Panel):
         self.side_panel = None
 
     def save_NBT(self):
-#        if hasattr(self.editor.level, 'root_tag'):
-#            self.editor.level.root_tag['Data'].update(self.data)
-        op = NBTExplorerOperation(self)
-        self.editor.addOperation(op)
-        if op.canUndo:
-            self.editor.addUnsavedEdit()
         if self.fileName:
-            self.editor.nbtTool.saveFile(self.fileName, self.data)
+            self.editor.nbtTool.saveFile(self.fileName, self.data, self.dontSaveRootTag)
+        else:
+            op = NBTExplorerOperation(self)
+            self.editor.addOperation(op)
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
 
     def init_data(self):
         data = {}
@@ -450,10 +454,11 @@ class NBTExplorerTool(EditorTool):
 
     def loadFile(self, fName=None):
         if not fName:
-            fName = askOpenFile(title="Select a NBT (.dat) file...", suffixes=['dat',])
+            fName = mcplatform.askOpenFile(title="Select a NBT (.dat) file...", suffixes=['dat',])
             if fName:
                 dontSaveRootTag = False
                 nbtObject = load(fName)
+                print nbtObject
                 if not nbtObject.get('Data', None):
                     nbtObject.name = 'Data'
                     dontSaveRootTag = True
@@ -462,6 +467,19 @@ class NBTExplorerTool(EditorTool):
                 self.showPanel(fName, nbtObject, dontSaveRootTag)
                 self.optionsPanel.dismiss()
 
-    def saveFile(self, fName, data):
-        pass
+    def saveFile(self, fName, data, dontSaveRootTag):
+        if os.path.exists(fName):
+            r = ask("File allready exists.\nClick 'OK' to choose one.")
+            if r == 'OK':
+                folder, name = os.path.split(fName)
+                suffix = os.path.splitext(name)[-1][1:]
+                fName = mcplatform.askSaveFile(folder, "Choose a NBT file...", name, 'Folder\0*.dat\0*.*\0\0', suffix)
+            else:
+                return
+        print "fName", fName
+        print data
+        if dontSaveRootTag:
+            if hasattr(data, 'name'):
+                data.name = ""
+        data.save(fName)
 
