@@ -928,6 +928,7 @@ class LevelEditor(GLViewport):
 
         self.freezeStatus(_("Loading ") + filename)
         if self.level:
+            self.selectionTool.endSelection()
             self.level.close()
 
         try:
@@ -1749,6 +1750,7 @@ class LevelEditor(GLViewport):
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.fix_sticky_ctrl()
+        self.selectionTool.endSelection()
         self.mainViewport.mouseLookOff()
         self.level = None
         self.renderer.stopWork()

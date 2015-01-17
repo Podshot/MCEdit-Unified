@@ -7,9 +7,6 @@
 # Display NBT structure
 #
 #
-# TODO
-# Find a way to store individual field changes in the undo stack.
-#
 from pygame import key, draw, image, Rect
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef
