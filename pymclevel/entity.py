@@ -50,6 +50,18 @@ class TileEntity(object):
         ),
     }
 
+    otherNames = {
+        "Furnace": "Furnace",
+        "Sign": "Sign",
+        "Monster Spawner": "MobSpawner",
+        "Chest": "Chest",
+        "Note Block": "Music",
+        "Trapped Chest": "Trap",
+        "Jukebox": "RecordPlayer",
+        "Piston": "Piston",
+        "Cauldron": "Cauldron"
+    }
+
     knownIDs = baseStructures.keys()
     maxItems = {
         "Furnace": 3,

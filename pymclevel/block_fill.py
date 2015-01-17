@@ -48,6 +48,21 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
             if a != newEmission:
                 changesLighting = True
 
+    tileEntity = None
+    for tileEntityName in TileEntity.otherNames.keys():
+        if tileEntityName in blockInfo.name:
+            tileEntity = TileEntity.otherNames[tileEntityName]
+
+    blocksIdToReplace = [block.ID for block in blocksToReplace]
+
+    blocksList = []
+    if tileEntity and box is not None:
+            for x in xrange(box.minx, box.maxx):
+                for y in xrange(box.miny, box.maxy):
+                    for z in xrange(box.minz, box.maxz):
+                        if blocktable is None or level.blockAt(x, y, z) in blocksIdToReplace:
+                            blocksList.append((x, y, z))
+
     i = 0
     skipped = 0
     replaced = 0
@@ -90,6 +105,11 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
             data[:] = blockInfo.blockData
             chunk.removeTileEntitiesInBox(box)
 
+        if blocksList:
+            for position in blocksList:
+                tileEntityObject = TileEntity.Create(tileEntity)
+                TileEntity.setpos(tileEntityObject, position)
+                chunk.addTileEntity(tileEntityObject)
         chunk.chunkChanged(needsLighting)
 
     if len(blocksToReplace):
