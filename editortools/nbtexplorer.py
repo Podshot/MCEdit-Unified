@@ -6,6 +6,10 @@
 #
 # Display NBT structure
 #
+#
+# TODO
+# Find a way to store individual field changes in the undo stack.
+#
 from pygame import key, draw, image, Rect
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef
@@ -20,6 +24,7 @@ scroll_button_size = 0 + root.PaletteView.scroll_button_size
 bullet_color_active = root.Tree.bullet_color_active
 del root
 from editortools.editortool import EditorTool
+from editortools.operation import Operation
 import copy
 from directories import getDataDir
 import os
@@ -156,6 +161,56 @@ class SlotEditor(Panel):
 
 
 #-----------------------------------------------------------------------------
+class NBTExplorerOperation(Operation):
+    def __init__(self, toolPanel):
+        super(NBTExplorerOperation, self).__init__(toolPanel.editor, toolPanel.editor.level)
+        self.toolPanel = toolPanel
+        self.tool = self.editor.nbtTool
+        self.canUndo = False
+
+    def extractUndo(self):
+        return copy.deepcopy(self.level.root_tag['Data'])
+
+    def perform(self, recordUndo=True):
+        if hasattr(self.level, 'root_tag'):
+
+            orgNBT = self.level.root_tag['Data']
+            newNBT = self.toolPanel.data
+#            print "%s"%orgNBT == "%s"%newNBT, orgNBT == newNBT
+
+            if "%s"%orgNBT != "%s"%newNBT:
+                if self.level.saving:
+                    alert(_("Cannot perform action while saving is taking place"))
+                    return
+                if recordUndo:
+                    self.canUndo = True
+                    self.undoLevel = self.extractUndo()
+                self.level.root_tag['Data'].update(self.toolPanel.data)
+
+    def undo(self):
+        if self.undoLevel:
+            self.redoLevel = self.extractUndo()
+            self.toolPanel.data.update(self.undoLevel)
+            self.level.root_tag['Data'].update(self.undoLevel)
+            self.update_tool()
+
+    def redo(self):
+        if self.redoLevel:
+            self.toolPanel.data.update(self.redoLevel)
+            self.level.root_tag['Data'].update(self.redoLevel)
+            self.update_tool()
+
+    def update_tool(self):
+        toolPanel = self.tool.panel
+        index = toolPanel.tree.selected_item_index
+        toolPanel.tree.build_layout()
+        toolPanel.tree.selected_item_index = index
+        item = toolPanel.tree.rows[index]
+        toolPanel.tree.selected_item = item
+        toolPanel.displayed_item = None
+        toolPanel.update_side_panel(item)
+
+#-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
     def __init__(self, editor):
@@ -184,8 +239,12 @@ class NBTExplorerToolPanel(Panel):
         self.side_panel = None
 
     def save_NBT(self):
-        if hasattr(self.editor.level, 'root_tag'):
-            self.editor.level.root_tag['Data'].update(self.data)
+#        if hasattr(self.editor.level, 'root_tag'):
+#            self.editor.level.root_tag['Data'].update(self.data)
+        op = NBTExplorerOperation(self)
+        self.editor.addOperation(op)
+        if op.canUndo:
+            self.editor.addUnsavedEdit()
 
     def init_data(self):
         data = {}
@@ -201,20 +260,8 @@ class NBTExplorerToolPanel(Panel):
         self.editor.toolbar.selectTool(0)
         self.editor.nbtTool.hidePanel()
 
-    def key_down(self, evt):
-        if key.name(evt.key) == 'escape':
-            self.dismiss()
-        else:
-            self.editor.key_down(evt)
-
-    def key_up(self, evt):
-        self.editor.key_up(evt)
-
-    def mouse_down(self, e):
-        if e not in self:
-            self.dismiss()
-
     def update_side_panel(self, item):
+#        print item == self.displayed_item
         if item == self.displayed_item:
             return
         self.displayed_item = item
