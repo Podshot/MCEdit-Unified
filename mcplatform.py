@@ -190,21 +190,20 @@ lastSchematicsDir = None
 lastSaveDir = None
 
 
-def askOpenFile(title='Select a Minecraft level....', schematics=False):
+def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=["mclevel", "dat", "mine", "mine.gz"]):
     global lastSchematicsDir, lastSaveDir
 
     initialDir = lastSaveDir or minecraftSaveFileDir
     if schematics:
         initialDir = lastSchematicsDir or directories.schematicsDir
 
-    def _askOpen():
-        suffixes = ["mclevel", "dat", "mine", "mine.gz"]
+    def _askOpen(_suffixes):
         if schematics:
-            suffixes.append("schematic")
-            suffixes.append("schematic.gz")
-            suffixes.append("zip")
+            _suffixes.append("schematic")
+            _suffixes.append("schematic.gz")
+            _suffixes.append("zip")
 
-            suffixes.append("inv")
+            _suffixes.append("inv")
 
         if sys.platform == "win32":
             return askOpenFileWin32(title, schematics, initialDir)
@@ -212,7 +211,7 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False):
             print "Open File"
             op = AppKit.NSOpenPanel.openPanel()
             op.setTitle_(title)
-            op.setAllowedFileTypes_(suffixes)
+            op.setAllowedFileTypes_(_suffixes)
             op.setAllowsOtherFileTypes_(True)
 
             op.setDirectory_(initialDir)
@@ -224,12 +223,12 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False):
             return op.filename()
 
         elif hasGtk: #Linux (When GTK 2.4 or newer is installed)
-            return askOpenFileGtk(title, suffixes, initialDir)
+            return askOpenFileGtk(title, _suffixes, initialDir)
 
         else:
-            return request_old_filename(suffixes=suffixes, directory=initialDir)
+            return request_old_filename(suffixes=_suffixes, directory=initialDir)
 
-    filename = _askOpen()
+    filename = _askOpen(suffixes)
     if filename:
         if schematics:
             lastSchematicsDir = dirname(filename)

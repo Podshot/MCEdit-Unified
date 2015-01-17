@@ -25,9 +25,11 @@ bullet_color_active = root.Tree.bullet_color_active
 del root
 from editortools.editortool import EditorTool
 from editortools.operation import Operation
+from editortools.tooloptions import ToolOptions
 import copy
 from directories import getDataDir
 import os
+from mcplatform import askOpenFile, askSaveFile
 
 #-----------------------------------------------------------------------------
 USE_BULLET_STYLES = True
@@ -130,6 +132,15 @@ class NBTTree(Tree):
         draw_opened_bullet = draw_closed_bullet = draw_TAG_bullet
 
 #-----------------------------------------------------------------------------
+class NBTExplorerOptions(ToolOptions):
+    def __init__(self, tool):
+        Panel.__init__(self)
+        
+        col = Column((Button("Load file", action=tool.loadFile), Button("OK", action=self.dismiss),))
+        self.add(col)
+        self.shrink_wrap()
+
+#-----------------------------------------------------------------------------
 class SlotEditor(Panel):
     def __init__(self, inventory, data):
         Panel.__init__(self)
@@ -169,12 +180,12 @@ class NBTExplorerOperation(Operation):
         self.canUndo = False
 
     def extractUndo(self):
-        return copy.deepcopy(self.level.root_tag['Data'])
+        return copy.deepcopy(self.toolPanel.nbtObject['Data'])
 
     def perform(self, recordUndo=True):
-        if hasattr(self.level, 'root_tag'):
+        if self.toolPanel.nbtObject:
 
-            orgNBT = self.level.root_tag['Data']
+            orgNBT = self.toolPanel.nbtObject['Data']
             newNBT = self.toolPanel.data
 #            print "%s"%orgNBT == "%s"%newNBT, orgNBT == newNBT
 
@@ -185,38 +196,42 @@ class NBTExplorerOperation(Operation):
                 if recordUndo:
                     self.canUndo = True
                     self.undoLevel = self.extractUndo()
-                self.level.root_tag['Data'].update(self.toolPanel.data)
+                self.toolPanel.nbtObject['Data'].update(self.toolPanel.data)
 
     def undo(self):
         if self.undoLevel:
             self.redoLevel = self.extractUndo()
             self.toolPanel.data.update(self.undoLevel)
-            self.level.root_tag['Data'].update(self.undoLevel)
+            self.toolPanel.nbtObject['Data'].update(self.undoLevel)
             self.update_tool()
 
     def redo(self):
         if self.redoLevel:
             self.toolPanel.data.update(self.redoLevel)
-            self.level.root_tag['Data'].update(self.redoLevel)
+            self.toolPanel.nbtObject['Data'].update(self.redoLevel)
             self.update_tool()
 
     def update_tool(self):
         toolPanel = self.tool.panel
-        index = toolPanel.tree.selected_item_index
-        toolPanel.tree.build_layout()
-        toolPanel.tree.selected_item_index = index
-        item = toolPanel.tree.rows[index]
-        toolPanel.tree.selected_item = item
-        toolPanel.displayed_item = None
-        toolPanel.update_side_panel(item)
+        if toolPanel:
+            index = toolPanel.tree.selected_item_index
+            toolPanel.tree.build_layout()
+            toolPanel.tree.selected_item_index = index
+            item = toolPanel.tree.rows[index]
+            toolPanel.tree.selected_item = item
+            toolPanel.displayed_item = None
+            toolPanel.update_side_panel(item)
 
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
-    def __init__(self, editor):
+    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False):
         """..."""
         Panel.__init__(self)
         self.editor = editor
+        self.nbtObject = nbtObject
+        self.fileName = fileName
+        self.dontSaveRootTag = dontSaveRootTag
         self.displayed_item = None
         self.init_data()
         header = Label("NBT Explorer")
@@ -245,11 +260,15 @@ class NBTExplorerToolPanel(Panel):
         self.editor.addOperation(op)
         if op.canUndo:
             self.editor.addUnsavedEdit()
+        if self.fileName:
+            self.editor.nbtTool.saveFile(self.fileName, self.data)
 
     def init_data(self):
         data = {}
-        if hasattr(self.editor.level, 'root_tag'):
-            data = copy.deepcopy(self.editor.level.root_tag['Data'])
+        if self.nbtObject == None and hasattr(self.editor.level, 'root_tag'):
+            self.nbtObject = self.editor.level.root_tag
+        if self.nbtObject:
+            data = copy.deepcopy(self.nbtObject['Data'])
         self.data = data
 
     def reset(self):
@@ -413,13 +432,10 @@ class NBTExplorerTool(EditorTool):
 
     def __init__(self, editor):
         """..."""
+        self.optionsPanel = NBTExplorerOptions(self)
         self.toolIconName = 'nbtexplorer'
         self.editor = editor
         self.editor.nbtTool = self
-
-#    def hidePanel(self):
-#        self.editor.remove(self.panel)
-#        self.panel = None
 
     def toolSelected(self):
         self.showPanel()
@@ -427,11 +443,28 @@ class NBTExplorerTool(EditorTool):
     def toolReselected(self):
         self.showPanel()
 
-    def showPanel(self):
+    def showPanel(self, fName=None, nbtObject=None, dontSaveRootTag=False):
         """..."""
-        if self.panel is None and self.editor.currentTool in (self, None):
-            self.panel = NBTExplorerToolPanel(self.editor)
+        if (self.panel is None and self.editor.currentTool in (self, None)): # or nbtObject:
+            self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName, dontSaveRootTag=dontSaveRootTag)
             self.panel.left = self.editor.left
             self.panel.centery = self.editor.centery
             self.editor.add(self.panel)
+
+    def loadFile(self, fName=None):
+        if not fName:
+            fName = askOpenFile(title="Select a NBT (.dat) file...", suffixes=['dat',])
+            if fName:
+                dontSaveRootTag = False
+                nbtObject = load(fName)
+                if not nbtObject.get('Data', None):
+                    nbtObject.name = 'Data'
+                    dontSaveRootTag = True
+                    nbtObject = TAG_Compound([nbtObject,])
+                self.editor.currentTool = self
+                self.showPanel(fName, nbtObject, dontSaveRootTag)
+                self.optionsPanel.dismiss()
+
+    def saveFile(self, fName, data):
+        pass
 
