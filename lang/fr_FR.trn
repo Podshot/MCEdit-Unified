@@ -1200,225 +1200,277 @@ o555 North-South Chunks:
 t555 Chunks Nord-Sud : 
 o556 Survival
 t556 Survie
-o557 Game Type:
-t557 Type de jeu :
-o558 Cancel
-t558 Annuler
-o559 Creative
-t559 Créatif
-o560 Style:
-t560 Style :
-o561 H
-t561 H
-o562 L
-t562 l
-o563 W
-t563 L
-o564 Minimum Spacing
-t564 Espacement min.
-o565 Regenerate UUID
-t565 Regénrérer UUID
-o566 Replace blocks with any data value. Only useful for Replace operations.
-t566 Remplacer les blocs avec toute valeur. Utile seulement pour le remplacement.
-o567 Entities
-t567 Entités
-o568 Items
-t568 Objets
-o569 TileEntities
-t569 TileEntities
-o570 TileTicks
-t570 TileTicks
-o571 Unpopulated Chunks
-t571 Chunks non-peuplés
-o572 Sky
-t572 Ciel
-o573 Fog
-t573 Brume
-o574 Ceiling
-t574 Plafond
-o575 Chunk Redraw
-t575 Rafraîch. chunks
-o576 Hidden Ores
-t576 Minerais cachés
-o577 Bedrock
-t577 Roche-mère
-o578 Coal
-t578 Charbon
-o579 Iron
-t579 Fer
-o580 Lapis Lazuli
-t580 Lapis-lazuli
-o581 Redstone
-t581 Redstone
-o582 Gold
-t582 Or
-o583 Diamond
-t583 Diamant
-o584 Nether Quartz
-t584 Quartz du Nether
-o585 Shortcut: {0}
-t585 Raccourci : {0}
-o586 View Distance ({0})
-t586 Distance de vue ({0})
-o587 Copy Stack Size: 
-t587 Taille tampon de copie : 
-o588 Add Player
-t588 Ajout. joueur
-o589 Remove Player
-t589 Suppr. joueur
-o590 Reload Skins
-t590 Recharger skins
-o591 Previous Page
-t591 Page préc.
-o592 Next Page
-t592 Page suiv
-o593 Super Secret Settings
-t593 Super Secret Settings
-o594 Default Resource Pack
-t594 Pack de ressources par défaut
-o595 Square
-t595 Carré
-o596 Record a Macro
-t596 Enregis. macro
-o597 Health Boost
-t597 Augmenter santé
-o598 Saturation (no mob effect)
-t598 Saturation (faim) (joueur seul)
-o599 Wither
-t599 Wither
-o600 Invisibility
-t600 Invisibilité
-o601 Slowness
-t601 Lenteur
-o602 Absorption
-t602 Absorbtion
-o603 Night Vision (no mob effect)
-t603 Vision nocturne (joueur seul)
-o604 Speed
-t604 Vitesse
-o605 Mining Fatigue (no mob effect)
-t605 Fatigue du mineur (joueur seul)
-o606 Player Name(s):
-t606 Nom joueur(s) :
-o607 Chunks Borders
-t607 Bords des chunks
-o608 Fast Nudge
-t608 Pousser rapide
-o609 Clone Fast Nudge Settings
-t609 Régl. posser rapide clonage
-o610 Move by the width of selection 
-t610 Dépl. par largeur de sélection 
-o611 Moves clone by his width
-t611 Dépl. clone par sa largeur
-o612 Width of clone movement: 
-t612 Taille mouvement clone : 
-o613 Import Fast Nudge Settings:
-t613 Import. réglages pousser rapide
-o614 Move by the width of schematic 
-t614 Dépl. par largeur du schematic
-o615 Moves selection by his width
-t615 Dépl.sélection par sa largeur
-o616 Width of import movement: 
-t616 Taill du dépl. de l'import
-o617 Import Options
-t617 Options d'import
-o618 Blocks Fast Nudge Settings:
-t618 Régl. dépl. rapide des blocs
-o619 Selection Fast Nudge Settings:
-t619 Régl. dépl. rapide des sélections
-o620 Points Fast Nudge Settings:
-t620 Régl. dépl. rapides des points :
-o621 Moves points by the selection's width
-t621 Déplace les points par la taille de la sélection
-o622 Width of points movement: 
-t622 Taille des dépl. des points : 
-o623 Do you want to save your changes?
-t623 Sauvegarder les changements ?
-o624 Don't Save
-t624 Ne pas sauver
-o625 Press a key to assign to the action "{0}"
+o557 Cancel
+t557 Annuler
+o558 Creative
+t558 Créatif
+o559 Style:
+t559 Style :
+o560 H
+t560 H
+o561 L
+t561 l
+o562 W
+t562 L
+o563 Minimum Spacing
+t563 Espacement min.
+o564 Regenerate UUID
+t564 Regénrérer UUID
+o565 Replace blocks with any data value. Only useful for Replace operations.
+t565 Remplacer les blocs avec toute valeur. Utile seulement pour le remplacement.
+o566 Entities
+t566 Entités
+o567 Items
+t567 Objets
+o568 TileEntities
+t568 TileEntities
+o569 TileTicks
+t569 TileTicks
+o570 Unpopulated Chunks
+t570 Chunks non-peuplés
+o571 Sky
+t571 Ciel
+o572 Fog
+t572 Brume
+o573 Ceiling
+t573 Plafond
+o574 Chunk Redraw
+t574 Rafraîch. chunks
+o575 Hidden Ores
+t575 Minerais cachés
+o576 Bedrock
+t576 Roche-mère
+o577 Coal
+t577 Charbon
+o578 Iron
+t578 Fer
+o579 Lapis Lazuli
+t579 Lapis-lazuli
+o580 Redstone
+t580 Redstone
+o581 Gold
+t581 Or
+o582 Diamond
+t582 Diamant
+o583 Nether Quartz
+t583 Quartz du Nether
+o584 Shortcut: {0}
+t584 Raccourci : {0}
+o585 View Distance ({0})
+t585 Distance de vue ({0})
+o586 Copy Stack Size: 
+t586 Taille tampon de copie : 
+o587 Add Player
+t587 Ajout. joueur
+o588 Remove Player
+t588 Suppr. joueur
+o589 Reload Skins
+t589 Recharger skins
+o590 Previous Page
+t590 Page préc.
+o591 Next Page
+t591 Page suiv
+o592 Super Secret Settings
+t592 Super Secret Settings
+o593 Default Resource Pack
+t593 Pack de ressources par défaut
+o594 Square
+t594 Carré
+o595 Record a Macro
+t595 Enregis. macro
+o596 Health Boost
+t596 Augmenter santé
+o597 Saturation (no mob effect)
+t597 Saturation (faim) (joueur seul)
+o598 Wither
+t598 Wither
+o599 Invisibility
+t599 Invisibilité
+o600 Slowness
+t600 Lenteur
+o601 Absorption
+t601 Absorbtion
+o602 Night Vision (no mob effect)
+t602 Vision nocturne (joueur seul)
+o603 Speed
+t603 Vitesse
+o604 Mining Fatigue (no mob effect)
+t604 Fatigue du mineur (joueur seul)
+o605 Player Name(s):
+t605 Nom joueur(s) :
+o606 Chunks Borders
+t606 Bords des chunks
+o607 Fast Nudge
+t607 Pousser rapide
+o608 Clone Fast Nudge Settings
+t608 Régl. posser rapide clonage
+o609 Move by the width of selection 
+t609 Dépl. par largeur de sélection 
+o610 Moves clone by his width
+t610 Dépl. clone par sa largeur
+o611 Width of clone movement: 
+t611 Taille mouvement clone : 
+o612 Import Fast Nudge Settings:
+t612 Import. réglages pousser rapide
+o613 Move by the width of schematic 
+t613 Dépl. par largeur du schematic
+o614 Moves selection by his width
+t614 Dépl.sélection par sa largeur
+o615 Width of import movement: 
+t615 Taill du dépl. de l'import
+o616 Import Options
+t616 Options d'import
+o617 Blocks Fast Nudge Settings:
+t617 Régl. dépl. rapide des blocs
+o618 Selection Fast Nudge Settings:
+t618 Régl. dépl. rapide des sélections
+o619 Points Fast Nudge Settings:
+t619 Régl. dépl. rapides des points :
+o620 Moves points by the selection's width
+t620 Déplace les points par la taille de la sélection
+o621 Width of points movement: 
+t621 Taille des dépl. des points : 
+o622 Do you want to save your changes?
+t622 Sauvegarder les changements ?
+o623 Don't Save
+t623 Ne pas sauver
+o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 Appuyez sur une touche pour l'action "{0}"
+t624 Appuyez sur une touche pour l'action "{0}"
 
 ESC pour annuler. SHIFT-ESC pour supprimer.
-o626 Press a key to assign to the action "{0}"
+o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t626 Appuyez sur une touche pour l'action "{0}"
+t625 Appuyez sur une touche pour l'action "{0}"
 Acune touche = clic-droit.
 ESC pour annuler. SHIFT-ESC pour supprimer.
-o627 {0} is not a modifier. Press a new key.
+o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t627 {0} n'est pas un modificateur. Choisissez une autre touche.
+t626 {0} n'est pas un modificateur. Choisissez une autre touche.
 ESC pour annuler. SHIFT-ESC pour supprimer.
-o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t628 Les touche de mouvement ne peuvent être associée à Ctrl ou un autre modificateur.
+t627 Les touche de mouvement ne peuvent être associée à Ctrl ou un autre modificateur.
 Choisissez-en une autre.
 ESC pour annuler. SHIFT-ESC pour supprimer.
-o629 You can't use the key {0}. Press a new key.
+o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t629 Vous ne pouvez utiliser la touche {0}. Choisissez-en une autre.
+t628 Vous ne pouvez utiliser la touche {0}. Choisissez-en une autre.
 
 ESC pour annuler. SHIFT-ESC pour supprimer.
-o630 Reset to default
-t630 
-o631 Do you want to keep your changes?
-t631 
-o632 Screenshots Folder
-t632 
-o633 Uses the Latest Snapshot Terrain Generation
-t633 
-o634 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t634 
-o635 Last Played
-t635 
-o636 Level Name (filename)
+o629 Reset to default
+t629 Valeur par défaut
+o630 Do you want to keep your changes?
+t630 Voulez-vous garder les changements ?
+o631 Screenshots Folder
+t631 Dossier captures d'écran
+o632 Uses the Latest Snapshot Terrain Generation
+t632 Utiliser la génération de terrain de la dernière snapshot
+o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+t633 Simuler le monde pendant quelques secondes après sa génération. Rédis la taille de la sauvegarde en exécutant les TileTicks.
+o634 Last Played
+t634 Joué pour la dernière fois
+o635 Level Name (filename)
+t635 Nom du niveau (nom du fichier)
+o636 Dims
 t636 
-o637 Dims
-t637 
-o638 Load
-t638 
-o639 Maximum number of copied objects.
-t639 
-o640 Try to save and restore the window position.
-t640 
-o641 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+o637 Load
+t637 Charger
+o638 Maximum number of copied objects.
+t638 Nombre maximum de copies.
+o639 Try to save and restore the window position.
+t639 Essayer de sauver et restaurer la position de la fenêtre.
+o640 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+t640 Votre MCEdit sera "portable" en déplaçant vos réglages et schematics vers le même dossier que {0]. Continuer ?
+o641 MCEditData
 t641 
-o642 MCEditData
-t642 
-o643 This will move your settings and schematics to your Documents folder. Continue?
-t643 
-o644 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t644 
-o645 GoTo Position:
-t645 
-o646 (click anywhere to teleport)
-t646 
-o647 Shortcut: Tab
-t647 
-o648 Format:
-t648 
-o649 Name:
-t649 
-o650 Minecraft Infinite World (Anvil Format)
-t650 
-o651 Day:
+o642 This will move your settings and schematics to your Documents folder. Continue?
+t642 Vos réglages et schematics vont être déplacés vers votre dossier Documents. Continuer ?
+o643 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
+t643 Cliquez pour rendre MCEdit persistant an déplaçant ses réglages et schematics vers votre dossier Documents
+o644 GoTo Position:
+t644 Aller à la position :
+o645 (click anywhere to teleport)
+t645 (cliquer n'importe-où pour téléporter)
+o646 Format:
+t646 Format :
+o647 Name:
+t647 Nom :
+o648 Minecraft Infinite World (Anvil Format)
+t648 Monde infini de Minecraft (format Anvil)
+o649 Day:
+t649 Jour :
+o650 Time of day:
+t650 Heure :
+o651 RandomSeed:
 t651 
-o652 Time of day:
-t652 
-o653 RandomSeed:
-t653 
-o654 Game Type:
-t654 
-o655 Number of chunks: {0}
-t655 
-o656 Number of regions: {0}
-t656 
-o657 Repair regions
-t657 
-o658 Open Folder
+o652 Game Type:
+t652 Type de jeu :
+o653 Number of chunks: {0}
+t653 Nombre de chunks : {0}
+o654 Number of regions: {0}
+t654 Nombre de régions : {0}
+o655 Repair regions
+t655 Réparer régions
+o656 Open Folder
+t656 Ouvrir dossier
+o657 Inventory Slot #%s
+t657 Emplacement N° %s
+o658 id
 t658 
+o659 Count
+t659 Nmbr
+o660 Damage
+t660 Dommages
+o661 NBT Explorer
+t661 Explorateur NBT
+o662 Reset
+t662 RàZ
+o663 Reset ALL your changes in the NBT data.
+t663 RàZ de TOUS les changement des données NBT.
+o664 Data Type:
+t664 Type de donnée :
+o665 -> Name
+t665 -> Nom
+o666 Double-click to edit
+t666 Double-clic pour editer
+o667 NBT Explorer
+Right-click for options/load files.
+t667 Explorateur NBT
+Click-droit pour les option/charger des fichiers.
+o668 Save your change in the NBT data.
+t668 Sauve vos changements dans les données NBT.
+o669 Save unsaved edits before loading?
+t669 Sauver les changements avant de charger ?
+o670 {0} unsaved edits.  {1} to save.  {2}
+t670 {0} changements non sauvés.  {1} pour sauver.  {1}
+o671 (UNDO DISABLED)
+t671 (ANNULER DÉSACTIVÉ)
+o672 Save unsaved edits before closing?
+t672 Sauver les changements avant de fermer ?
+o673 Load NBT file...
+t673 Charger fichier NBT...
+o674 NBT Tree Settings
+t674 Réglages d'arbre NBT
+o675 Use Bullet Styles
+t675 Util. style de puces
+o676 Use Bullet Text
+t676 Util. texte de puces
+o677 Use Bullet Images
+t677 Util. images de puces
+o678 Bullet Images File
+t678 Fichier image des puces
+o679 Choose an image file...
+t679 Choisir une image...
+o680 Select a NBT (.dat) file...
+t680 Choisir un fichier NBT (.dat)...
+o681 File allready exists.
+Click 'OK' to choose one.
+t681 Le fichier existe déjà.
+Cliquez 'OK' pour en choisir un.
+o682 Choose a NBT file...
+t682 Choisir un fichier NBT...

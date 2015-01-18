@@ -1185,227 +1185,275 @@ o555 North-South Chunks:
 t555 남-북 청크: 
 o556 Survival
 t556 서바이벌
-o557 Game Type:
-t557 게임 모드:
-o558 Cancel
-t558 취소
-o559 Creative
-t559 크리에이티브
-o560 Style:
-t560 스타일:
-o561 H
-t561 H
-o562 L
-t562 L
-o563 W
-t563 W
-o564 Minimum Spacing
-t564 최소한의 간격
-o565 Regenerate UUID
-t565 UUID 재생성
-o566 Replace blocks with any data value. Only useful for Replace operations.
-t566 데이터 값을 무시하고 블럭을 바꿉니다. '바꾸기' 작업에만 유용합니다.
-o567 Entities
-t567 엔티티
-o568 Items
-t568 아이템
-o569 TileEntities
-t569 타일 엔티티
-o570 TileTicks
-t570 타일 틱
-o571 Unpopulated Chunks
-t571 무인 청크
-o572 Sky
-t572 하늘
-o573 Fog
-t573 안개
-o574 Ceiling
-t574 천장
-o575 Chunk Redraw
-t575 청크 변경
-o576 Hidden Ores
-t576 숨겨진 광물
-o577 Bedrock
-t577 배드락
-o578 Coal
-t578 석탄
-o579 Iron
-t579 철
-o580 Lapis Lazuli
-t580 청금석
-o581 Redstone
-t581 레드스톤
-o582 Gold
-t582 금
-o583 Diamond
-t583 다이아몬드
-o584 Nether Quartz
-t584 석영
-o585 Shortcut: {0}
-t585 단축키: {0}
-o586 View Distance ({0})
-t586 시야 ({0})
-o587 Copy Stack Size: 
-t587 복사 Stack Size: 
-o588 Add Player
-t588 플레이어 추가
-o589 Remove Player
-t589 플레이어 제거
-o590 Reload Skins
-t590 스킨 다시 로딩
-o591 Previous Page
-t591 이전 페이지
-o592 Next Page
-t592 다음 페이지
-o593 Super Secret Settings
-t593 슈퍼 비밀 설정!
-o594 Default Resource Pack
-t594 기본 리소스팩
-o595 Square
-t595 사각형
-o596 Record a Macro
-t596 매크로 녹화
-o597 Health Boost
-t597 체력 신장
-o598 Saturation (no mob effect)
-t598 포만감 (몹 효과 없음)
-o599 Wither
-t599 위더
-o600 Invisibility
-t600 투명화
-o601 Slowness
-t601 구속
-o602 Absorption
-t602 흡수
-o603 Night Vision (no mob effect)
-t603 야간 투시
-o604 Speed
-t604 신속
-o605 Mining Fatigue (no mob effect)
-t605 피로(몹 효과 없음)
-o606 Player Name(s):
-t606 플레이어 이름:
-o607 Chunks Borders
-t607 청크 경계
-o608 Fast Nudge
-t608 빠른 이동
-o609 Clone Fast Nudge Settings
-t609 복제의 빠른 이동 설정
-o610 Move by the width of selection 
-t610 선택 영역의 길이만큼 이동
-o611 Moves clone by his width
-t611 복제할 범위의 길이만큼 이동합니다
-o612 Width of clone movement: 
-t612 복제의 빠른 이동 거리: 
-o613 Import Fast Nudge Settings:
-t613 불러오기의 빠른 이동 설정:
-o614 Move by the width of schematic 
-t614 schematic의 길이만큼 이동
-o615 Moves selection by his width
-t615 선택한 범위의 길이만큼 이동합니다
-o616 Width of import movement: 
-t616 불러오기의 이동 거리: 
-o617 Import Options
-t617 불러오기의 설정
-o618 Blocks Fast Nudge Settings:
-t618 블럭의 빠른 이동 설정:
-o619 Selection Fast Nudge Settings:
-t619 선택 영역의 빠른 이동 설정:
-o620 Points Fast Nudge Settings:
-t620 포인트의 빠른 이동 설정:
-o621 Moves points by the selection's width
-t621 포인트의 길이만큼 이동합니다
-o622 Width of points movement: 
-t622 포인트의 이동 거리: 
-o623 Do you want to save your changes?
-t623 저장하시겠습니까?
-o624 Don't Save
-t624 저장 안함
-o625 Press a key to assign to the action "{0}"
+o557 Cancel
+t557 취소
+o558 Creative
+t558 크리에이티브
+o559 Style:
+t559 스타일:
+o560 H
+t560 H
+o561 L
+t561 L
+o562 W
+t562 W
+o563 Minimum Spacing
+t563 최소한의 간격
+o564 Regenerate UUID
+t564 UUID 재생성
+o565 Replace blocks with any data value. Only useful for Replace operations.
+t565 데이터 값을 무시하고 블럭을 바꿉니다. '바꾸기' 작업에만 유용합니다.
+o566 Entities
+t566 엔티티
+o567 Items
+t567 아이템
+o568 TileEntities
+t568 타일 엔티티
+o569 TileTicks
+t569 타일 틱
+o570 Unpopulated Chunks
+t570 무인 청크
+o571 Sky
+t571 하늘
+o572 Fog
+t572 안개
+o573 Ceiling
+t573 천장
+o574 Chunk Redraw
+t574 청크 변경
+o575 Hidden Ores
+t575 숨겨진 광물
+o576 Bedrock
+t576 배드락
+o577 Coal
+t577 석탄
+o578 Iron
+t578 철
+o579 Lapis Lazuli
+t579 청금석
+o580 Redstone
+t580 레드스톤
+o581 Gold
+t581 금
+o582 Diamond
+t582 다이아몬드
+o583 Nether Quartz
+t583 석영
+o584 Shortcut: {0}
+t584 단축키: {0}
+o585 View Distance ({0})
+t585 시야 ({0})
+o586 Copy Stack Size: 
+t586 복사 Stack Size: 
+o587 Add Player
+t587 플레이어 추가
+o588 Remove Player
+t588 플레이어 제거
+o589 Reload Skins
+t589 스킨 다시 로딩
+o590 Previous Page
+t590 이전 페이지
+o591 Next Page
+t591 다음 페이지
+o592 Super Secret Settings
+t592 슈퍼 비밀 설정!
+o593 Default Resource Pack
+t593 기본 리소스팩
+o594 Square
+t594 사각형
+o595 Record a Macro
+t595 매크로 녹화
+o596 Health Boost
+t596 체력 신장
+o597 Saturation (no mob effect)
+t597 포만감 (몹 효과 없음)
+o598 Wither
+t598 위더
+o599 Invisibility
+t599 투명화
+o600 Slowness
+t600 구속
+o601 Absorption
+t601 흡수
+o602 Night Vision (no mob effect)
+t602 야간 투시
+o603 Speed
+t603 신속
+o604 Mining Fatigue (no mob effect)
+t604 피로(몹 효과 없음)
+o605 Player Name(s):
+t605 플레이어 이름:
+o606 Chunks Borders
+t606 청크 경계
+o607 Fast Nudge
+t607 빠른 이동
+o608 Clone Fast Nudge Settings
+t608 복제의 빠른 이동 설정
+o609 Move by the width of selection 
+t609 선택 영역의 길이만큼 이동
+o610 Moves clone by his width
+t610 복제할 범위의 길이만큼 이동합니다
+o611 Width of clone movement: 
+t611 복제의 빠른 이동 거리: 
+o612 Import Fast Nudge Settings:
+t612 불러오기의 빠른 이동 설정:
+o613 Move by the width of schematic 
+t613 schematic의 길이만큼 이동
+o614 Moves selection by his width
+t614 선택한 범위의 길이만큼 이동합니다
+o615 Width of import movement: 
+t615 불러오기의 이동 거리: 
+o616 Import Options
+t616 불러오기의 설정
+o617 Blocks Fast Nudge Settings:
+t617 블럭의 빠른 이동 설정:
+o618 Selection Fast Nudge Settings:
+t618 선택 영역의 빠른 이동 설정:
+o619 Points Fast Nudge Settings:
+t619 포인트의 빠른 이동 설정:
+o620 Moves points by the selection's width
+t620 포인트의 길이만큼 이동합니다
+o621 Width of points movement: 
+t621 포인트의 이동 거리: 
+o622 Do you want to save your changes?
+t622 저장하시겠습니까?
+o623 Don't Save
+t623 저장 안함
+o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 "{0}" 작업을 지정할 키를 누르십시오
+t624 "{0}" 작업을 지정할 키를 누르십시오
 
 취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o626 Press a key to assign to the action "{0}"
+o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t626 "{0}" 작업을 지정할 키를 누르십시오
+t625 "{0}" 작업을 지정할 키를 누르십시오
 키가 없다면 우클릭으로 빠른 이동을 합니다.
 취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o627 {0} is not a modifier. Press a new key.
+o626 {0} is not a modifier. Press a new key.
+Press ESC to cancel. Press Shift-ESC to unbind.
+t626 
+o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t627 {0}는 modifier가 아닙니다. 다른 키를 누르십시오.
+t627 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
 
 취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t628 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
+t628 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
 
 취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o629 You can't use the key {0}. Press a new key.
-
-Press ESC to cancel. Press Shift-ESC to unbind.
-t629 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
-
-취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
-o630 Reset to default
-t630 기본 설정으로 되돌리기
-o631 Do you want to keep your changes?
-t631 변경 내용을 저장하시겠습니까?
-o632 Screenshots Folder
+o629 Reset to default
+t629 기본 설정으로 되돌리기
+o630 Do you want to keep your changes?
+t630 변경 내용을 저장하시겠습니까?
+o631 Screenshots Folder
+t631 
+o632 Uses the Latest Snapshot Terrain Generation
 t632 
-o633 Uses the Latest Snapshot Terrain Generation
+o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
 t633 
-o634 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
+o634 Last Played
 t634 
-o635 Last Played
+o635 Level Name (filename)
 t635 
-o636 Level Name (filename)
+o636 Dims
 t636 
-o637 Dims
+o637 Load
 t637 
-o638 Load
+o638 Maximum number of copied objects.
 t638 
-o639 Maximum number of copied objects.
+o639 Try to save and restore the window position.
 t639 
-o640 Try to save and restore the window position.
+o640 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
 t640 
-o641 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
+o641 MCEditData
 t641 
-o642 MCEditData
+o642 This will move your settings and schematics to your Documents folder. Continue?
 t642 
-o643 This will move your settings and schematics to your Documents folder. Continue?
+o643 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t643 
-o644 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
+o644 GoTo Position:
 t644 
-o645 GoTo Position:
+o645 (click anywhere to teleport)
 t645 
-o646 (click anywhere to teleport)
+o646 Format:
 t646 
-o647 Shortcut: Tab
+o647 Name:
 t647 
-o648 Format:
+o648 Minecraft Infinite World (Anvil Format)
 t648 
-o649 Name:
+o649 Day:
 t649 
-o650 Minecraft Infinite World (Anvil Format)
+o650 Time of day:
 t650 
-o651 Day:
+o651 RandomSeed:
 t651 
-o652 Time of day:
+o652 Game Type:
 t652 
-o653 RandomSeed:
+o653 Number of chunks: {0}
 t653 
-o654 Game Type:
+o654 Number of regions: {0}
 t654 
-o655 Number of chunks: {0}
+o655 Repair regions
 t655 
-o656 Number of regions: {0}
+o656 Open Folder
 t656 
-o657 Repair regions
+o657 Inventory Slot #%s
 t657 
-o658 Open Folder
+o658 id
 t658 
+o659 Count
+t659 
+o660 Damage
+t660 
+o661 NBT Explorer
+t661 
+o662 Reset
+t662 
+o663 Reset ALL your changes in the NBT data.
+t663 
+o664 Data Type:
+t664 
+o665 -> Name
+t665 
+o666 Double-click to edit
+t666 
+o667 NBT Explorer
+Dive into level NBT structure.
+Right-click for options/load files.
+t667 
+o668 Save your change in the NBT data.
+t668 
+o669 Save unsaved edits before loading?
+t669 
+o670 {0} unsaved edits.  {1} to save.  {2}
+t670 
+o671 (UNDO DISABLED)
+t671 
+o672 Save unsaved edits before closing?
+t672 
+o673 Load NBT file...
+t673 
+o674 NBT Tree Settings
+t674 
+o675 Use Bullet Styles
+t675 
+o676 Use Bullet Text
+t676 
+o677 Use Bullet Images
+t677 
+o678 Bullet Images File
+t678 
+o679 Choose an image file...
+t679 
+o680 Select a NBT (.dat) file...
+t680 
+o681 File allready exists.
+Click 'OK' to choose one.
+t681 
+o682 Choose a NBT file...
+t682 

@@ -1347,27 +1347,80 @@ o645 GoTo Position:
 t645 
 o646 (click anywhere to teleport)
 t646 
-o647 Shortcut: Tab
+o647 Format:
 t647 
-o648 Format:
+o648 Name:
 t648 
-o649 Name:
+o649 Minecraft Infinite World (Anvil Format)
 t649 
-o650 Minecraft Infinite World (Anvil Format)
+o650 Day:
 t650 
-o651 Day:
+o651 Time of day:
 t651 
-o652 Time of day:
+o652 RandomSeed:
 t652 
-o653 RandomSeed:
+o653 Game Type:
 t653 
-o654 Game Type:
+o654 Number of chunks: {0}
 t654 
-o655 Number of chunks: {0}
+o655 Number of regions: {0}
 t655 
-o656 Number of regions: {0}
+o656 Repair regions
 t656 
-o657 Repair regions
+o657 Open Folder
 t657 
-o658 Open Folder
+o658 Inventory Slot #%s
 t658 
+o659 id
+t659 
+o660 Count
+t660 
+o661 Damage
+t661 
+o662 NBT Explorer
+t662 
+o663 Reset
+t663 
+o664 Reset ALL your changes in the NBT data.
+t664 
+o665 Data Type:
+t665 
+o666 -> Name
+t666 
+o667 Double-click to edit
+t667 
+o668 NBT Explorer
+Dive into level NBT structure.
+Right-click for options/load files.
+t668 
+o669 Save your change in the NBT data.
+t669 
+o670 Save unsaved edits before loading?
+t670 
+o671 {0} unsaved edits.  {1} to save.  {2}
+t671 
+o672 (UNDO DISABLED)
+t672 
+o673 Save unsaved edits before closing?
+t673 
+o674 Load NBT file...
+t674 
+o675 NBT Tree Settings
+t675 
+o676 Use Bullet Styles
+t676 
+o677 Use Bullet Text
+t677 
+o678 Use Bullet Images
+t678 
+o679 Bullet Images File
+t679 
+o680 Choose an image file...
+t680 
+o681 Select a NBT (.dat) file...
+t681 
+o682 File allready exists.
+Click 'OK' to choose one.
+t682 
+o683 Choose a NBT file...
+t683 
