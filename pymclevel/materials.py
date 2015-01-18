@@ -285,19 +285,15 @@ class MCMaterials(object):
         type = kw.pop('type', 'NORMAL')
 
         color = kw.pop('mapcolor', self.flatColors[blockID, blockData])
-        self.flatColors[blockID, (blockData or slice(None))] = (tuple(color) + (255,))[:4]
+        self.flatColors[blockID, blockData] = (tuple(color) + (255,))[:4]
 
         texture = kw.pop('texture', None)
 
         if texture:
-            self.blockTextures[blockID, (blockData or slice(None))] = texture
+            self.blockTextures[blockID, blockData] = texture
 
-        if blockData is 0:
-            self.names[blockID] = [name] * 16
-            self.type[blockID] = [type] * 16
-        else:
-            self.names[blockID][blockData] = name
-            self.type[blockID][blockData] = type
+        self.names[blockID][blockData] = name
+        self.type[blockID][blockData] = type
 
         block = Block(self, blockID, blockData)
 

@@ -57,11 +57,9 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
 
     blocksList = []
     if tileEntity and box is not None:
-            for x in xrange(box.minx, box.maxx):
-                for y in xrange(box.miny, box.maxy):
-                    for z in xrange(box.minz, box.maxz):
-                        if blocktable is None or level.blockAt(x, y, z) in blocksIdToReplace:
-                            blocksList.append((x, y, z))
+            for (boxX, boxY, boxZ) in box.positions:
+                if blocktable is None or level.blockAt(boxX, boxY, boxZ) in blocksIdToReplace:
+                    blocksList.append((boxX, boxY, boxZ))
 
     i = 0
     skipped = 0
