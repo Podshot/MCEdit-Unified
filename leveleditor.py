@@ -687,7 +687,7 @@ class LevelEditor(GLViewport):
         max_height = self.mainViewport.height
         widget.inputDict = {}
         for inputName, inputType in provided_fields:
-            if isinstance(inputType, tuple):
+            if isinstance(inputType, tuple) and inputType != ():
                 if isinstance(inputType[0], (int, long, float)):
                     if len(inputType) == 2:
                         min, max = inputType
