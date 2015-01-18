@@ -46,7 +46,7 @@ class ControlPanel(Panel):
                     (config.keys.quit.get(), "Quit", editor.quit),
                    ])
 
-        buttons = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
+        buttons = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn, item_spacing=2)
 
         sideColumn = editor.mcedit.makeSideColumn()
 

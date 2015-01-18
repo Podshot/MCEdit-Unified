@@ -12,6 +12,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
+#.# Marks the layout modifications. -- D.C.-G.
 import sys
 from compass import CompassOverlay
 from editortools.thumbview import ThumbView
@@ -280,7 +281,6 @@ class LevelEditor(GLViewport):
         self.toolbar.selectTool(0)
 
         self.controlPanel = panels.ControlPanel(self)
-        self.controlPanel.topleft = mcEditButton.bottomleft
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
@@ -2595,6 +2595,10 @@ class LevelEditor(GLViewport):
     mouseWasCaptured = False
 
     def showControls(self):
+        #.#
+        self.controlPanel.top = self.subwidgets[0].bottom
+        self.controlPanel.left = (self.width - self.controlPanel.width) / 2
+        #.#
         self.controlPanel.present(False)
 
     infoPanel = None

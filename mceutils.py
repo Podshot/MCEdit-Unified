@@ -19,6 +19,7 @@ mceutils.py
 Exception catching, some basic box drawing, texture pack loading, oddball UI elements
 """
 # Modified by D.C.-G. for translation purpose
+#.# Marks the layout modifications. -- D.C.-G.
 import resource_packs
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
@@ -341,7 +342,7 @@ def normalize_size(x):
 class HotkeyColumn(Widget):
     is_gl_container = True
 
-    def __init__(self, items, keysColumn=None, buttonsColumn=None):
+    def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
         if keysColumn is None:
             keysColumn = []
         if buttonsColumn is None:
@@ -373,9 +374,18 @@ class HotkeyColumn(Widget):
 
         self.buttons = list(buttonsColumn)
 
-        buttonsColumn = Column(buttonsColumn)
+        #.#
+        if item_spacing == None:
+            buttonsColumn = Column(buttonsColumn)
+        else:
+            buttonsColumn = Column(buttonsColumn, spacing=item_spacing)
+        #.#
         buttonsColumn.anchor = self.anchor
-        keysColumn = Column(keysColumn)
+        #.#
+        if item_spacing == None:
+            keysColumn = Column(keysColumn)
+        else:
+            keysColumn = Column(keysColumn, spacing=item_spacing)
 
         commandRow = Row((keysColumn, buttonsColumn))
         self.add(commandRow)
