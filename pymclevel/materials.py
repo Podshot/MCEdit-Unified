@@ -292,8 +292,12 @@ class MCMaterials(object):
         if texture:
             self.blockTextures[blockID, blockData] = texture
 
-        self.names[blockID][blockData] = name
-        self.type[blockID][blockData] = type
+        if blockData is 0:
+            self.names[blockID] = [name] * 16
+            self.type[blockID] = [type] * 16
+        else:
+            self.names[blockID][blockData] = name
+            self.type[blockID][blockData] = type
 
         block = Block(self, blockID, blockData)
 
