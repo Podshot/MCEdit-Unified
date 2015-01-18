@@ -441,8 +441,10 @@ class NBTExplorerToolPanel(Panel):
         rows = []
         items = items[0]
         slots = [["%s"%i,"","0","0"] for i in range(36)]
+        slots_set = []
         for item in items:
             s = int(item['Slot'].value)
+            slots_set.append(s)
             slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
         width = self.width / 2 - self.margin * 4
         c0w = max(15, self.font.size("00")[0]) + 4
@@ -486,12 +488,37 @@ class NBTExplorerToolPanel(Panel):
 
         def change_value(data):
             s, i, c, d = data
-            table.slots[s] = slots[s] = data
-            for slot in self.data['Player']['Inventory']:
-                if slot['Slot'].value == s:
-                    slot['id'].value = 'minecraft:%s'%i
-                    slot['Count'].value = int(c)
-                    slot['Damage'].value = int(d)
+            s = int(s)
+            s_idx = 0
+            if s in slots_set:
+                for slot in self.data['Player']['Inventory']:
+                    if slot['Slot'].value == s:
+                        if not i or int(c) < 1:
+                            del self.data['Player']['Inventory'][s_idx]
+                            i = ""
+                            c = u'0'
+                            d = u'0'
+                        else:
+                            slot['id'].value = 'minecraft:%s'%i
+                            slot['Count'].value = int(c)
+                            slot['Damage'].value = int(d)
+                        break
+                    s_idx += 1
+            else:
+                new_slot = TAG_Compound()
+                new_slot['Slot'] = TAG_Byte(s)
+                new_slot['id'] = TAG_String('minecraft:%s'%i)
+                new_slot['Count'] = TAG_Byte(int(c))
+                new_slot['Damage'] = TAG_Short(int(d))
+                idx = s
+                for slot in self.data['Player']['Inventory']:
+                    if slot['Slot'].value >= s:
+                        idx = slot['Slot'].value
+                        break
+                self.data['Player']['Inventory'].insert(s, new_slot)
+                slots_set.append(s)
+            table.slots[s] = slots[s] = s, i, c, d
+
         table.change_value = change_value
         rows.append(table)
         return rows
