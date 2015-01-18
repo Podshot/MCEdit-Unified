@@ -214,14 +214,16 @@ class BlockPicker(Dialog):
         self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
         self.blockButton.blockInfo = self.blockInfo
 
-    def key_down(self, evt):
-        keyname = self.root.getKey(evt)
-        if keyname == "Up" and self.selectedBlockIndex > 0:
-            self.selectedBlockIndex -= 1
-            self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
-            self.blockButton.blockInfo = self.blockInfo
+    def dispatch_key(self, name, evt):
+        super(BlockPicker, self).dispatch_key(name, evt)
+        if name == "key_down":
+            keyname = self.root.getKey(evt)
+            if keyname == "Up" and self.selectedBlockIndex > 0:
+                self.selectedBlockIndex -= 1
+                self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+                self.blockButton.blockInfo = self.blockInfo
 
-        elif keyname == "Down" and self.selectedBlockIndex < len(self.matchingBlocks):
-            self.selectedBlockIndex += 1
-            self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
-            self.blockButton.blockInfo = self.blockInfo
+            elif keyname == "Down" and self.selectedBlockIndex < len(self.matchingBlocks):
+                self.selectedBlockIndex += 1
+                self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+                self.blockButton.blockInfo = self.blockInfo

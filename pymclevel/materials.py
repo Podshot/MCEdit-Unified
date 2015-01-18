@@ -309,56 +309,6 @@ alphaMaterials = MCMaterials(defaultName="Future Block!")
 alphaMaterials.name = "Alpha"
 alphaMaterials.addYamlBlocksFromFile("minecraft.yaml")
 
-# --- Special treatment for some blocks ---
-
-HugeMushroomTypes = {
-    "Northwest": 1,
-    "North": 2,
-    "Northeast": 3,
-    "East": 6,
-    "Southeast": 9,
-    "South": 8,
-    "Southwest": 7,
-    "West": 4,
-    "Stem": 10,
-    "Top": 5,
-}
-from faces import FaceXDecreasing, FaceXIncreasing, FaceYIncreasing, FaceZDecreasing, FaceZIncreasing
-
-Red = (0xD0, 0x70)
-Brown = (0xE0, 0x70)
-Pore = (0xE0, 0x80)
-Stem = (0xD0, 0x80)
-
-
-def defineShroomFaces(Shroom, id, name):
-    for way, data in sorted(HugeMushroomTypes.items(), key=lambda a: a[1]):
-        loway = way.lower()
-        if way is "Stem":
-            tex = [Stem, Stem, Pore, Pore, Stem, Stem]
-        elif way is "Pore":
-            tex = Pore
-        else:
-            tex = [Pore] * 6
-            tex[FaceYIncreasing] = Shroom
-            if "north" in loway:
-                tex[FaceZDecreasing] = Shroom
-            if "south" in loway:
-                tex[FaceZIncreasing] = Shroom
-            if "west" in loway:
-                tex[FaceXDecreasing] = Shroom
-            if "east" in loway:
-                tex[FaceXIncreasing] = Shroom
-
-        alphaMaterials.addBlock(id, blockData=data,
-                                name="Huge " + name + " Mushroom (" + way + ")",
-                                texture=tex,
-        )
-
-
-defineShroomFaces(Brown, 99, "Brown")
-defineShroomFaces(Red, 100, "Red")
-
 classicMaterials = MCMaterials(defaultName="Not present in Classic")
 classicMaterials.name = "Classic"
 classicMaterials.addYamlBlocksFromFile("classic.yaml")
