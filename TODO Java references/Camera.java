@@ -19,6 +19,9 @@ public class Camera {
 
     private static int width;
     private static int height;
+    
+    private static int winWidth;
+    private static int winHeight;
 
     private static float fov;
     private static float aspect;
