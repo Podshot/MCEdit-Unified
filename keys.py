@@ -1,3 +1,4 @@
+#.# Marks the layout modifications. -- D.C.-G.
 from config import config
 import albow
 import mceutils
@@ -377,8 +378,10 @@ class KeyConfigPanel(Dialog):
 
     selectedKeyIndex = 0
 
-    def __init__(self):
+    def __init__(self, mcedit):
         Dialog.__init__(self)
+        #.#
+        spacing = 0
         keyConfigTable = albow.TableView(nrows=30,
             columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
         keyConfigTable.num_rows = lambda: len(self.keyConfigKeys)
@@ -387,6 +390,7 @@ class KeyConfigPanel(Dialog):
         keyConfigTable.click_row = self.selectTableRow
         keyConfigTable.key_down = self.key_down
         keyConfigTable.key_up = self.key_up
+        #.#
         self.changes = {}
         self.changesNum = False
         self.enter = 0
@@ -418,7 +422,7 @@ class KeyConfigPanel(Dialog):
         choiceRow = albow.Row((albow.Label("Presets: "), choiceButton))
         self.choiceButton = choiceButton
 
-        col = albow.Column((tableWidget, choiceRow, buttonRow, resetToDefaultRow))
+        col = albow.Column((tableWidget, choiceRow, buttonRow, resetToDefaultRow), spacing=spacing, margin=0)
         self.add(col)
         self.shrink_wrap()
 

@@ -3,6 +3,7 @@
 # import resource_packs # not the right place, moving it a bit further
 
 #-# Modified by D.C.-G. for translation purpose
+#.# Marks the layout modifications. -- D.C.-G.
 
 """
 mcedit.py
@@ -147,7 +148,10 @@ class MCEdit(GLViewport):
         self.optionsPanel.initComponents()
         self.graphicsPanel = panels.GraphicsPanel(self)
 
-        self.keyConfigPanel = keys.KeyConfigPanel()
+        #.#
+#        self.keyConfigPanel = keys.KeyConfigPanel()
+        self.keyConfigPanel = keys.KeyConfigPanel(self)
+        #.#
 
         self.droppedLevel = None
         self.reloadEditor()
