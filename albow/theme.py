@@ -137,6 +137,9 @@ root.ValueButton = Theme('ValueButton', base=root.Button)
 
 root.Label = Theme('Label')
 root.Label.margin = 4
+#-#
+root.Label.disabled_color = (64, 64, 64)
+#-#
 
 root.SmallLabel = Theme('SmallLabel')
 root.SmallLabel.font = (10, 'DejaVuSans-Regular.ttf')

@@ -10,10 +10,10 @@
 # TODO:
 # * add local undo/redo for loaded NBT files
 # * change/optimize the undo/redo when edit level NBT data
-# * finish the option panel by adding a title and the selection of the styles
+# * add a style editor and an image wrapper for the bullets
 from pygame import key, draw, image, Rect
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    FloatField, IntField, TextFieldWrapped, AttrRef, ask
+    FloatField, IntField, TextFieldWrapped, AttrRef, CheckBox, Widget, ask
 from albow.utils import blit_in_rect
 from albow.translate import _
 from glbackground import Panel
@@ -23,6 +23,8 @@ from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Floa
 from albow.theme import root
 scroll_button_size = 0 + root.PaletteView.scroll_button_size
 bullet_color_active = root.Tree.bullet_color_active
+fg_color = root.fg_color
+disabled_color = root.Label.disabled_color
 del root
 from editortools.editortool import EditorTool
 from editortools.operation import Operation
@@ -31,19 +33,16 @@ import copy
 from directories import getDataDir
 import os
 import mcplatform
+from mceutils import CheckBoxLabel
+from config import config
 
 #-----------------------------------------------------------------------------
-USE_BULLET_STYLES = True
-USE_BULLET_TEXT = False
-USE_BULLET_IMAGES = True
-BULLET_FILE_NAME = 'Nbtsheet.png'
-
 bullet_image = None
 
 def get_bullet_image(index, w=16, h=16):
     global bullet_image
     if not bullet_image:
-        bullet_image = image.load(os.path.join(getDataDir(), BULLET_FILE_NAME))
+        bullet_image = image.load(config.nbtTreeSettings.bulletFileName.get())
     r =  Rect(0, 0, w, h)
     line_length = int(bullet_image.get_width() / w)
     num_lines = int(bullet_image.get_height() / h)
@@ -52,7 +51,7 @@ def get_bullet_image(index, w=16, h=16):
     r.left = (index - (line * line_length)) * w
     return bullet_image.subsurface(r)
 
-styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
+default_bullet_styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
           TAG_Double: ((20,200,20), None, 'circle', 'd'),
           TAG_Float: ((200,20,20), None, 'circle', 'f'),
           TAG_Int: ((16,160,160), None, 'circle', 'i'),
@@ -66,14 +65,25 @@ styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
           TAG_Short_Array: ((200,200,20), None, 'square', 'S'),
           }
 
-if USE_BULLET_IMAGES and os.path.exists(os.path.join(getDataDir(), BULLET_FILE_NAME)):
-    i = 0
-    for key in (TAG_Byte, TAG_Double, TAG_Float, TAG_Int, TAG_Long, TAG_Short, TAG_String, TAG_Compound, TAG_Byte_Array, TAG_Int_Array, TAG_List):
-        styles[key] = (get_bullet_image(i), None, 'image', '')
-        i += 1
+bullet_styles = copy.deepcopy(default_bullet_styles)
 
-    styles[TAG_Short_Array] = styles[TAG_Int_Array]
+def change_styles():
+    global default_bullet_styles
+    global bullet_styles
+    if config.nbtTreeSettings.useBulletStyles.get() and \
+            config.nbtTreeSettings.useBulletImages.get() and \
+            os.path.exists(config.nbtTreeSettings.bulletFileName.get()):
+        i = 0
+        for key in (TAG_Byte, TAG_Double, TAG_Float, TAG_Int, TAG_Long, TAG_Short, TAG_String, TAG_Compound, TAG_Byte_Array, TAG_Int_Array, TAG_List):
+            bullet_styles[key] = (get_bullet_image(i), None, 'image', '')
+            i += 1
 
+        bullet_styles[TAG_Short_Array] = bullet_styles[TAG_Int_Array]
+    else:
+        bullet_styles = copy.deepcopy(default_bullet_styles)
+    return bullet_styles
+
+change_styles()
 
 #-----------------------------------------------------------------------------
 field_types = {TAG_Byte: (IntField, (0, 256)),
@@ -89,6 +99,8 @@ field_types = {TAG_Byte: (IntField, (0, 256)),
 #-----------------------------------------------------------------------------
 class NBTTree(Tree):
     def __init__(self, *args, **kwargs):
+        if config.nbtTreeSettings.useBulletStyles.get() and bullet_styles.get(TAG_Compound, [''] * 4)[2] != '':
+            self.draw_opened_bullet = self.draw_closed_bullet = self.draw_TAG_bullet
         self._parent = kwargs.pop('_parent', None)
         styles = kwargs.get('styles', {})
         for key in styles.keys():
@@ -121,26 +133,86 @@ class NBTTree(Tree):
     def draw_TAG_bullet(self, surf, bg, fg, shape, text):
         r = self.get_bullet_rect(surf)
         meth = getattr(self, 'draw_%s'%shape, None)
-        if meth and USE_BULLET_STYLES:
+        if meth and config.nbtTreeSettings.useBulletStyles.get():
             meth(surf, bg, r)
         else:
             self.draw_deadend_bullet(surf, self.bullet_color_inactive, fg, shape, text)
-        if text and USE_BULLET_TEXT:
+        if text and config.nbtTreeSettings.useBulletStyles.get() and config.nbtTreeSettings.useBulletText.get():
             buf = self.font.render(text, True, fg or self.fg_color)
             blit_in_rect(surf, buf, r, 'c')
 
-    if USE_BULLET_STYLES and styles.get(TAG_Compound, [''] * 4)[2] != '':
-        draw_opened_bullet = draw_closed_bullet = draw_TAG_bullet
 
 #-----------------------------------------------------------------------------
 class NBTExplorerOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
-        
-        col = Column((Button("Load file", action=tool.loadFile), Button("OK", action=self.dismiss),))
+        useStyleBox = CheckBoxLabel(title="Use Bullet Styles",
+                                    ref=config.nbtTreeSettings.useBulletStyles)
+
+        def mouse_down(e):
+            CheckBox.mouse_down(useStyleBox.subwidgets[1], e)
+            self.useStyleBox_click(e)
+
+        useStyleBox.subwidgets[0].mouse_down = useStyleBox.subwidgets[1].mouse_down = mouse_down
+        self.useStyleBox = useStyleBox
+        useTextBox = CheckBoxLabel(title="Use Bullet Text",
+                                   ref=config.nbtTreeSettings.useBulletText)
+        self.useTextBox = useTextBox
+        useImagesBox = CheckBoxLabel(title="Use Bullet Images",
+                                    ref=config.nbtTreeSettings.useBulletImages)
+        self.useImagesBox = useImagesBox
+        bulletFilePath = Row((Button("Bullet Images File", action=self.open_bullet_file), TextFieldWrapped(ref=config.nbtTreeSettings.bulletFileName, width=300)), margin=0)
+
+        def mouse_down(e):
+            if self.bulletFilePath.subwidgets[1].enabled:
+                TextFieldWrapped.mouse_down(self.bulletFilePath.subwidgets[1], e)
+
+        bulletFilePath.subwidgets[1].mouse_down = mouse_down
+        self.bulletFilePath = bulletFilePath
+
+        def mouse_down(e):
+            CheckBox.mouse_down(useImagesBox.subwidgets[1], e)
+            for sub in bulletFilePath.subwidgets:
+                sub.enabled = config.nbtTreeSettings.useBulletImages.get()
+                if type(sub) == TextFieldWrapped:
+                    if config.nbtTreeSettings.useBulletImages.get():
+                        sub.fg_color = fg_color
+                    else:
+                        sub.fg_color = disabled_color
+
+        useImagesBox.subwidgets[0].mouse_down = useImagesBox.subwidgets[1].mouse_down = mouse_down
+
+        col = Column((
+                      Label("NBT Tree Settings"),
+                      Row((useStyleBox, useTextBox, useImagesBox)),
+                      bulletFilePath,
+                      Button("Load NBT file...", action=tool.loadFile),
+                      Button("OK", action=self.dismiss),
+                    ))
         self.add(col)
         self.shrink_wrap()
+        self.useStyleBox_click(None)
 
+    def useStyleBox_click(self, e):
+        for widget in (self.useTextBox, self.useImagesBox, self.bulletFilePath):
+            for sub in widget.subwidgets:
+                sub.enabled = config.nbtTreeSettings.useBulletStyles.get()
+                if type(sub) in (CheckBox, TextFieldWrapped):
+                    if config.nbtTreeSettings.useBulletStyles.get():
+                        sub.fg_color = fg_color
+                    else:
+                        sub.fg_color = disabled_color
+                if type(sub) == CheckBox:
+                    sub.set_enabled(config.nbtTreeSettings.useBulletStyles.get())
+
+    def open_bullet_file(self):
+        fName = mcplatform.askOpenFile(title="Choose an image file...", suffixes=['png', 'jpg', 'bmp'])
+        if fName:
+            config.nbtTreeSettings.bulletFileName.set(fName)
+
+    def dismiss(self, *args, **kwargs):
+        change_styles()
+        ToolOptions.dismiss(self, *args, **kwargs)
 
 #-----------------------------------------------------------------------------
 class SlotEditor(Panel):
@@ -238,7 +310,7 @@ class NBTExplorerToolPanel(Panel):
         self.init_data()
         header = Label("NBT Explorer")
         self.max_height = max_height = editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height - editor.statusLabel.height - header.height - (self.margin * 2)
-        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=styles)
+        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=bullet_styles)
         col = Column([self.tree,
                       Row([
                            Button({True: "Save", False: "OK"}[fileName != None], action=self.save_NBT, tooltipText="Save your change in the NBT data."),
@@ -429,7 +501,7 @@ class NBTExplorerToolPanel(Panel):
 #-----------------------------------------------------------------------------
 class NBTExplorerTool(EditorTool):
     """..."""
-    tooltipText = "NBT Explorer\nDive into level NBT structure."
+    tooltipText = "NBT Explorer\nDive into level NBT structure.\nRight-click for options/load files."
 
     def __init__(self, editor):
         """..."""
@@ -476,8 +548,6 @@ class NBTExplorerTool(EditorTool):
                 fName = mcplatform.askSaveFile(folder, "Choose a NBT file...", name, 'Folder\0*.dat\0*.*\0\0', suffix)
             else:
                 return
-        print "fName", fName
-        print data
         if dontSaveRootTag:
             if hasattr(data, 'name'):
                 data.name = ""

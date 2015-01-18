@@ -307,7 +307,8 @@ class ValueButton(ButtonBase, ValueDisplay):
 
 class CheckControl(Control):
     def mouse_down(self, e):
-        self.value = not self.value
+        if self.get_enabled():
+            self.value = not self.value
 
     def get_highlighted(self):
         return self.value

@@ -563,7 +563,13 @@ definitions = {
         ("cloneWidthNumber", "Clone Width Number", 16),
         ("importWidth", "Import Width", False),
         ("importWidthNumber", "Import Width Number", 8),
-    ]
+    ],
+    ("nbtTreeSettings", "NBT Tree Settings"): [
+        ("useBulletStyles", "Use Bullet Styles", True),
+        ("useBulletText", "Use Bullet Text", False),
+        ("useBulletImages", "Use Bullet Images", True),
+        ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.png')),
+    ],
 }
 
 
