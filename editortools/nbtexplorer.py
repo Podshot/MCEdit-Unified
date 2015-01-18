@@ -353,7 +353,6 @@ class NBTExplorerToolPanel(Panel):
         self.editor.nbtTool.hidePanel()
 
     def update_side_panel(self, item):
-#        print item == self.displayed_item
         if item == self.displayed_item:
             return
         self.displayed_item = item
@@ -530,7 +529,6 @@ class NBTExplorerTool(EditorTool):
             if fName:
                 dontSaveRootTag = False
                 nbtObject = load(fName)
-                print nbtObject
                 if not nbtObject.get('Data', None):
                     nbtObject.name = 'Data'
                     dontSaveRootTag = True
