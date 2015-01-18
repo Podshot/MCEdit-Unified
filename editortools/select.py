@@ -12,6 +12,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
+#.# Marks the layout modifications. -- D.C.-G.
 
 import os
 from OpenGL import GL
@@ -64,6 +65,9 @@ class SelectionToolOptions(ToolOptions):
         okButton = Button("OK", action=self.dismiss)
         showPreviousRow = CheckBoxLabel("Show Previous Selection", ref=AttrRef(tool, 'showPreviousSelection'))
         spaceLabel = Label("")
+        #.#
+        spaceLabel.height /= 1.5
+        #.#
         blocksNudgeLabel = Label("Blocks Fast Nudge Settings:")
         blocksNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
                                                 ref=config.fastNudgeSettings.blocksWidth,
@@ -109,7 +113,10 @@ class SelectionToolOptions(ToolOptions):
                              for ch in "RGB"]
 
         colorValuesRow = Row(colorValuesInputs)
-        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))
+        #.#
+#        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))
+        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton), spacing=2)
+        #.#
 
         self.add(col)
         self.shrink_wrap()
