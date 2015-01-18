@@ -1468,10 +1468,36 @@ blocks:
 
   - id: 36
     idStr: piston_extension
-    name: Piston Extension [Block 36]
+    name: Piston Extension
+    aka: [Block 36]
     mapcolor: [0, 0, 0]
     tex: [0, 0]
     opacity: 0
+    data:
+      0:
+        name: Piston Extension (Down)
+      1:
+        name: Piston Extension (Up)
+      2:
+        name: Piston Extension (North)
+      3:
+        name: Piston Extension (South)
+      4:
+        name: Piston Extension (West)
+      5:
+        name: Piston Extension (East)
+      8:
+        name: Piston Extension (Sticky, Down)
+      9:
+        name: Piston Extension (Sticky, Up)
+      10:
+        name: Piston Extension (Sticky, North)
+      11:
+        name: Piston Extension (Sticky, South)
+      12:
+        name: Piston Extension (Sticky, West)
+      13:
+        name: Piston Extension (Sticky, East)
 
   - id: 37
     idStr: yellow_flower
@@ -3868,6 +3894,39 @@ blocks:
     tex: [10, 11]
     type: DECORATION_CROSS
     opacity: 0
+    data:
+      0:
+        name: Flower Pot (Legacy Data 0)
+      1:
+        name: Flower Pot (Legacy Data 1)
+      2:
+        name: Flower Pot (Legacy Data 2)
+      3:
+        name: Flower Pot (Legacy Data 3)
+      4:
+        name: Flower Pot (Legacy Data 4)
+      5:
+        name: Flower Pot (Legacy Data 5)
+      6:
+        name: Flower Pot (Legacy Data 6)
+      7:
+        name: Flower Pot (Legacy Data 7)
+      8:
+        name: Flower Pot (Legacy Data 8)
+      9:
+        name: Flower Pot (Legacy Data 9)
+      10:
+        name: Flower Pot (Legacy Data 10)
+      11:
+        name: Flower Pot (Legacy Data 11)
+      12:
+        name: Flower Pot (Legacy Data 12)
+      13:
+        name: Flower Pot (Legacy Data 13)
+      14:
+        name: Flower Pot (Legacy Data 14)
+      15:
+        name: Flower Pot (Legacy Data 15)
 
   - id: 141
     idStr: carrots
