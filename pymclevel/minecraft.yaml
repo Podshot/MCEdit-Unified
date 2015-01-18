@@ -2117,7 +2117,7 @@ blocks:
 
   - id: 64
     idStr: wooden_door
-    name: Wooden Door
+    name: Oak Door
     mapcolor: [136, 109, 67]
     tex: [1, 5]
     type: DOOR
@@ -2126,29 +2126,29 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Wooden Door (Lower, Unopened, East)
+        name: Oak Door (Lower, Unopened, East)
       1:
-        name: Wooden Door (Lower, Unopened, South)
+        name: Oak Door (Lower, Unopened, South)
       2:
-        name: Wooden Door (Lower, Unopened, West)
+        name: Oak Door (Lower, Unopened, West)
       3:
-        name: Wooden Door (Lower, Unopened, North)
+        name: Oak Door (Lower, Unopened, North)
       4:
-        name: Wooden Door (Lower, Opened, East)
+        name: Oak Door (Lower, Opened, East)
       5:
-        name: Wooden Door (Lower, Opened, South)
+        name: Oak Door (Lower, Opened, South)
       6:
-        name: Wooden Door (Lower, Opened, West)
+        name: Oak Door (Lower, Opened, West)
       7:
-        name: Wooden Door (Lower, Opened, North)
+        name: Oak Door (Lower, Opened, North)
       8:
-        name: Wooden Door (Upper, Left Hinge, Unpowered)
+        name: Oak Door (Upper, Left Hinge, Unpowered)
       9:
-        name: Wooden Door (Upper, Right Hinge, Unpowered)
+        name: Oak Door (Upper, Right Hinge, Unpowered)
       10:
-        name: Wooden Door (Upper, Left Hinge, Powered)
+        name: Oak Door (Upper, Left Hinge, Powered)
       11:
-        name: Wooden Door (Upper, Right Hinge, Powered)
+        name: Oak Door (Upper, Right Hinge, Powered)
 
   - id: 65
     idStr: ladder
