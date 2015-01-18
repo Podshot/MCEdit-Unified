@@ -3039,25 +3039,25 @@ blocks:
         name: Red Mushroom Block (All Inside)
         tex: [14, 8]
       1:
-        name: Brown Mushroom Block (Northwest)
+        name: Red Mushroom Block (Northwest)
       2:
-        name: Brown Mushroom Block (North)
+        name: Red Mushroom Block (North)
       3:
-        name: Brown Mushroom Block (Northeast)
+        name: Red Mushroom Block (Northeast)
       4:
-        name: Brown Mushroom Block (West)
+        name: Red Mushroom Block (West)
       5:
-        name: Brown Mushroom Block (Center)
+        name: Red Mushroom Block (Center)
       6:
-        name: Brown Mushroom Block (East)
+        name: Red Mushroom Block (East)
       7:
-        name: Brown Mushroom Block (Southwest)
+        name: Red Mushroom Block (Southwest)
       8:
-        name: Brown Mushroom Block (South)
+        name: Red Mushroom Block (South)
       9:
-        name: Brown Mushroom Block (Southeast)
+        name: Red Mushroom Block (Southeast)
       10:
-        name: Brown Mushroom Block (Stem)
+        name: Red Mushroom Block (Stem)
       14:
         name: Red Mushroom Block (All Outside)
       15:
