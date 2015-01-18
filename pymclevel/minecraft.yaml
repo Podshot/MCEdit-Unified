@@ -1469,7 +1469,7 @@ blocks:
   - id: 36
     idStr: piston_extension
     name: Piston Extension
-    aka: [Block 36]
+    aka: Block 36
     mapcolor: [0, 0, 0]
     tex: [0, 0]
     opacity: 0
