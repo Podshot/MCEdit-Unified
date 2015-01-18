@@ -1,0 +1,29 @@
+1) Remove everything :)
+2) Create some classes, functions and variables
+
+You will need two init methods. One for initialising OpenGL and the other for initialising the world.
+The OpenGL init function will look something like:
+
+def init():
+    window.setup()
+    Camera.resize(fullscreen)
+    Camera.setup(fov, ncp) #ncp or the Near Clipping Plain. ncp is used to set how close an object is to the camera before it is clipped. More allows for less z-fighting in the distance. This value cannot be 0
+    
+######
+TODO: level init
+######
+    
+
+You will need a rendering loop. The loop should look something like:
+
+while True:
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glLoadIdentity()
+    #If you are going to include an update method for movement, etc, this is the place to put it
+    Camera.useView() #Function that updates the camera's rotation and location
+    render()
+    Camera.updateView()
+    
+You will also want a Camera class (referenced above). See the included .java file for details on what that should include.
+The Location class referenced in Camera can be replaced with X, Y, Z, RX (rotationX), RY, RZ, and world (world will be completely different in different projects. Contains variables such as entities and chunks) variables
+The Chunk class should contain all of the blocks from that chunk and some rendering code. Entities can be stored here, however it is probably easier to store them elsewhere.
