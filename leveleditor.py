@@ -2798,9 +2798,6 @@ class EditorToolbar(GLOrtho):
             # if not t.toolEnabled():
             #    return
             if t.optionsPanel:
-                #.#
-                t.top = t.editor.subwidgets[0].bottom
-                #.#
                 t.optionsPanel.present()
 
     def selectTool(self, toolNumber):

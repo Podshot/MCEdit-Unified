@@ -11,9 +11,10 @@
 # * add local undo/redo for loaded NBT files
 # * change/optimize the undo/redo when edit level NBT data
 # * add a style editor and an image wrapper for the bullets
-from pygame import key, draw, image, Rect
+from pygame import key, draw, image, Rect, Surface, SRCALPHA
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, CheckBox, Widget, ask
+from albow.tree import TreeRow
 from albow.utils import blit_in_rect
 from albow.translate import _
 from glbackground import Panel
@@ -246,6 +247,70 @@ class SlotEditor(Panel):
 
 
 #-----------------------------------------------------------------------------
+class ScrollRow(TreeRow):
+    def click_item(self, n, e):
+        self.parent.click_item(n, e)
+
+
+#-----------------------------------------------------------------------------
+class ScrollPanel(Column):
+    column_margin = 2
+    def __init__(self, *args, **kwargs):
+        self.selected_item_index = None
+        self.rows = rows = kwargs.pop('rows', [])
+        self.align = align = kwargs.pop('align', 'l')
+        self.sapcing = spacing = kwargs.pop('spacing', 4)
+        self.draw_zebra = draw_zebra = kwargs.pop('draw_zebra', True)
+        self.row_height = row_height = kwargs.pop('row_height', max([a.height for a in rows] + [self.font.size(' ')[1],]))
+        self.inner_width = kwargs.pop('inner_width', 500)
+        self.scrollRow = scrollRow = ScrollRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
+        Column.__init__(self, [scrollRow,], **kwargs)
+
+    def draw_tree_cell(self, surf, i, data, cell_rect, column):
+        """..."""
+        if type(data) in (str, unicode):
+            self.draw_text_cell(surf, i, data, cell_rect, 'l', self.font)
+        else:
+            self.draw_image_cell(surf, i, data, cell_rect, column)
+
+    @staticmethod
+    def draw_image_cell(surf, i, data, cell_rect, column):
+        """..."""
+        blit_in_rect(surf, data, cell_rect, 'l')
+
+    def draw_text_cell(self, surf, i, data, cell_rect, align, font):
+        buf = font.render(unicode(data), True, self.fg_color)
+        blit_in_rect(surf, buf, cell_rect, align)
+
+    def num_rows(self):
+        return len(self.rows)
+
+    def row_data(self, row):
+        return self.rows[row]
+
+    def column_info(self, row_data):
+        m = self.column_margin
+        d = 2 * m
+        x = 0
+        width = 0
+        subs = row_data.subwidgets
+        for i in range(len(subs)):
+            sub = subs[i]
+            width += sub.width
+            surf = Surface((sub.width, sub.height), SRCALPHA)
+            sub.draw_all(surf)
+            yield i, x + m, sub.width - d, None, surf
+            x += width
+
+    def click_item(self, n, e):
+        if n < len(self.rows):
+            for sub in self.rows[n].subwidgets:
+                self.focus_on(sub)
+                sub.mouse_down(e)
+                sub.invalidate()
+
+
+#-----------------------------------------------------------------------------
 class NBTExplorerOperation(Operation):
     def __init__(self, toolPanel):
         super(NBTExplorerOperation, self).__init__(toolPanel.editor, toolPanel.editor.level)
@@ -254,12 +319,12 @@ class NBTExplorerOperation(Operation):
         self.canUndo = False
 
     def extractUndo(self):
-        return copy.deepcopy(self.toolPanel.nbtObject['Data'])
+        return copy.deepcopy(self.toolPanel.nbtObject[self.toolPanel.dataKeyName])
 
     def perform(self, recordUndo=True):
         if self.toolPanel.nbtObject:
 
-            orgNBT = self.toolPanel.nbtObject['Data']
+            orgNBT = self.toolPanel.nbtObject[self.toolPanel.dataKeyName]
             newNBT = self.toolPanel.data
 
             if "%s"%orgNBT != "%s"%newNBT:
@@ -269,19 +334,19 @@ class NBTExplorerOperation(Operation):
                 if recordUndo:
                     self.canUndo = True
                     self.undoLevel = self.extractUndo()
-                self.toolPanel.nbtObject['Data'].update(self.toolPanel.data)
+                self.toolPanel.nbtObject[self.toolPanel.dataKeyName].update(self.toolPanel.data)
 
     def undo(self):
         if self.undoLevel:
             self.redoLevel = self.extractUndo()
             self.toolPanel.data.update(self.undoLevel)
-            self.toolPanel.nbtObject['Data'].update(self.undoLevel)
+            self.toolPanel.nbtObject[self.toolPanel.dataKeyName].update(self.undoLevel)
             self.update_tool()
 
     def redo(self):
         if self.redoLevel:
             self.toolPanel.data.update(self.redoLevel)
-            self.toolPanel.nbtObject['Data'].update(self.redoLevel)
+            self.toolPanel.nbtObject[self.toolPanel.dataKeyName].update(self.redoLevel)
             self.update_tool()
 
     def update_tool(self):
@@ -299,7 +364,7 @@ class NBTExplorerOperation(Operation):
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
-    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False):
+    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data'):
         """..."""
         Panel.__init__(self)
         self.editor = editor
@@ -307,6 +372,7 @@ class NBTExplorerToolPanel(Panel):
         self.fileName = fileName
         self.dontSaveRootTag = dontSaveRootTag
         self.displayed_item = None
+        self.dataKeyName = dataKeyName
         self.init_data()
         header = Label("NBT Explorer")
         self.max_height = max_height = editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height - editor.statusLabel.height - header.height - (self.margin * 2)
@@ -341,7 +407,7 @@ class NBTExplorerToolPanel(Panel):
         if self.nbtObject == None and hasattr(self.editor.level, 'root_tag'):
             self.nbtObject = self.editor.level.root_tag
         if self.nbtObject:
-            data = copy.deepcopy(self.nbtObject['Data'])
+            data = copy.deepcopy(self.nbtObject[self.dataKeyName])
         self.data = data
 
     def reset(self):
@@ -355,25 +421,35 @@ class NBTExplorerToolPanel(Panel):
     def update_side_panel(self, item):
         if item == self.displayed_item:
             return
+        print item
         self.displayed_item = item
         if self.side_panel:
             self.side_panel.set_parent(None)
-        items = item[2]
+        items = [a for a in item[2]]
         rows = []
         meth = getattr(self, 'build_%s'%item[1].lower(), None)
+        col = True
         if meth and len(items) == 1:
             rows = meth(items)
         else:
+            height = 0
             for itm in items:
                 t = itm.__class__.__name__
                 rows.append(Row([Label("Data Type:"), Label(t)]))
-                field = self.build_field(itm)
-                if type(field) == TextFieldWrapped:
-                    field.set_size_for_text(300)
-                row = Row([field,])
-                rows.append(row)
+                fields = self.build_field(itm)
+                for field in fields:
+                    if type(field) == TextFieldWrapped:
+                        field.set_size_for_text(300)
+                    row = Row([field,])
+                    rows.append(row)
+                    height += row.height
+            if height > self.subwidgets[0].subwidgets[1].height:
+                col = False
         if rows:
-            col = Column(rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height)
+            if col:
+                col = Column(rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height)
+            else:
+                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height, draw_zebra=False, inner_width=300)
             col.set_parent(self.subwidgets[0].subwidgets[1])
             col.top = self.subwidgets[0].subwidgets[1].top
             col.left = self.subwidgets[0].subwidgets[1].subwidgets[0].right
@@ -383,15 +459,32 @@ class NBTExplorerToolPanel(Panel):
 
     @staticmethod
     def build_field(itm):
+        fields = []
         if type(itm) in field_types.keys():
             f, bounds = field_types[type(itm)]
             if bounds:
-                field = f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1])
+                fields = [f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]),]
             else:
-                field = f(ref=AttrRef(itm, 'value'))
+                fields = [f(ref=AttrRef(itm, 'value')),]
+        elif type(itm) in (TAG_Compound, TAG_List):
+#            fields = []
+            for _itm in itm.value:
+                fields.append(Label("%s"%(_itm.name or "%s #%s"%(itm.name or _("Item"), itm.value.index(_itm))), align='l', doNotTranslate=True))
+#                fields.append([a for a in self.build_field(_itm)])
+#                fields.append([a for a in self.build_field(_itm)])
+                fields += NBTExplorerToolPanel.build_field(_itm)
+        elif type(itm) not in (str, unicode):
+#            print type(itm.value), itm.value
+            if type(itm.value) not in (str, unicode, int, float):
+                fld = Label
+                kw = {'align': 'l'}
+            else:
+                fld = TextFieldWrapped
+                kw = {}
+            fields = [fld("%s"%itm.value, doNotTranslate=True, **kw),]
         else:
-            field = Label("%s"%itm.value, align='l', doNotTranslate=True)
-        return field
+            fields = [TextFieldWrapped("%s"%itm, doNotTranslata=True),]
+        return fields
 
     @staticmethod
     def build_attributes(items):
@@ -542,10 +635,11 @@ class NBTExplorerTool(EditorTool):
     def toolReselected(self):
         self.showPanel()
 
-    def showPanel(self, fName=None, nbtObject=None, dontSaveRootTag=False):
+    def showPanel(self, fName=None, nbtObject=None, dontSaveRootTag=False, dataKeyName='Data'):
         """..."""
         if (self.panel is None and self.editor.currentTool in (self, None)): # or nbtObject:
-            self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName, dontSaveRootTag=dontSaveRootTag)
+            self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName,
+                                              dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName)
             self.panel.left = self.editor.left
             self.panel.centery = self.editor.centery
             self.editor.add(self.panel)
@@ -556,12 +650,18 @@ class NBTExplorerTool(EditorTool):
             if fName:
                 dontSaveRootTag = False
                 nbtObject = load(fName)
-                if not nbtObject.get('Data', None):
+                dataKeyName = None
+                if nbtObject.get('Data', None):
+                    dataKeyName = 'Data'
+                elif nbtObject.get('data', None):
+                    dataKeyName = 'data'
+                else:
                     nbtObject.name = 'Data'
+                    dataKeyName = 'Data'
                     dontSaveRootTag = True
                     nbtObject = TAG_Compound([nbtObject,])
                 self.editor.currentTool = self
-                self.showPanel(fName, nbtObject, dontSaveRootTag)
+                self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
                 self.optionsPanel.dismiss()
 
     def saveFile(self, fName, data, dontSaveRootTag):
