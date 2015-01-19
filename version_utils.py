@@ -62,6 +62,7 @@ class __PlayerCache:
                 self._playerCacheList = json.load(json_in)
         except:
             print "usercache.json is corrupted"
+        self._refreshAll()
         
 
     def _save(self):
@@ -116,11 +117,10 @@ class __PlayerCache:
             t = 0
         for player in self._playerCacheList:
             if player["Timestamp"] != "<Invalid>":
-                if t - player["Timestamp"] < 21600:
+                if t - player["Timestamp"] > 21600:
                     playersNeededToBeRefreshed.append(player)
         for player in playersNeededToBeRefreshed:
             self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
-        pass
     
     def getPlayerFromUUID(self, uuid, forceNetwork=False):
         player = {}
@@ -137,7 +137,7 @@ class __PlayerCache:
                 player["UUID (No Separator)"] = playerJSON["id"]
                 player["UUID (Separator)"] = uuid
                 player["WasSuccessful"] = True
-                player["Timstamp"] = time.time()
+                player["Timestamp"] = time.time()
                 self._playerCacheList.append(player)
                 self._save()
                 return playerJSON["name"]
@@ -167,7 +167,7 @@ class __PlayerCache:
                 uuid = playerJSON["id"][:4]+"-"+playerJSON["id"][4:8]+"-"+playerJSON["id"][8:12]+"-"+playerJSON["id"][12:16]+"-"+playerJSON["id"][16:]
                 player["UUID (Separator)"] = uuid
                 player["WasSuccessful"] = True
-                player["Timstamp"] = time.time()
+                player["Timestamp"] = time.time()
                 self._playerCacheList.append(player)
                 self._save()
                 if separator:
