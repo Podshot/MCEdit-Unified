@@ -107,7 +107,7 @@ t43 Anzeigen...
 o44 Camera View
 t44 Kamera Ansicht
 o45 Record Undo
-t45 Rückgängig Aufzeichnen
+t45 Rückgängig aufzeichnen
 o46 View Distance:
 t46 Sichtweite:
 o47 [UNDEFINED]
@@ -1224,7 +1224,7 @@ t574 Chunk neu Zeichnen
 o575 Hidden Ores
 t575 Versteckte Erze
 o576 Bedrock
-t576 Bedrock
+t576 Grundgestein
 o577 Coal
 t577 Kohle
 o578 Iron
@@ -1402,59 +1402,62 @@ t654 Anzahl an Regionen: {0}
 o655 Repair regions
 t655 Regionen reparieren
 o656 Open Folder
-t656 Ordner öffne
+t656 Ordner öffnen
 o657 Inventory Slot #%s
-t657 
+t657 Inventar Slot #%s
 o658 id
-t658 
+t658 ID
 o659 Count
-t659 
+t659 Anzahl
 o660 Damage
-t660 
+t660 Schaden
 o661 NBT Explorer
-t661 
+t661 NBT Explorer
 o662 Reset
-t662 
+t662 Zurücksetzen
 o663 Reset ALL your changes in the NBT data.
-t663 
+t663 Setze ALLE Änderungen in den NBT Daten zurück.
 o664 Data Type:
-t664 
+t664 Daten-Typ:
 o665 -> Name
-t665 
+t665 -> Name
 o666 Double-click to edit
-t666 
+t666 Doppel-Klicken um zu editieren
 o667 NBT Explorer
 Dive into level NBT structure.
 Right-click for options/load files.
-t667 
+t667 NBT Explorer
+Tauch in die Level NBT Struktur ein.
+Rechts-Klick für Optionen/Dateien laden.
 o668 Save your change in the NBT data.
-t668 
+t668 Speichere deine Änderungen in den NBT Daten.
 o669 Save unsaved edits before loading?
-t669 
+t669 Nicht gespeicherte Änderungen speichern bevor laden?
 o670 {0} unsaved edits.  {1} to save.  {2}
-t670 
+t670 {0} nicht gespeicherte Änderungen.  {1} zu speichern.  {2}
 o671 (UNDO DISABLED)
-t671 
+t671 (RÜCKGÄNGIG AUSGESCHALTET)
 o672 Save unsaved edits before closing?
-t672 
+t672 Sollen nicht gespeicherte Änderungen gespeichert werden bevor es geschlossen wird?
 o673 Load NBT file...
-t673 
+t673 Lade NBT Datei...
 o674 NBT Tree Settings
-t674 
+t674 NBT Verzeichnis Einstellungen
 o675 Use Bullet Styles
-t675 
+t675 Benutze Kugel Styles
 o676 Use Bullet Text
-t676 
+t676 Benutze Kugel Text
 o677 Use Bullet Images
-t677 
+t677 Benutze Kugel Bilder
 o678 Bullet Images File
-t678 
+t678 Kugel Bilderdatei
 o679 Choose an image file...
-t679 
+t679 Wähle eine Bilddatei...
 o680 Select a NBT (.dat) file...
-t680 
+t680 Wähle eine NBT (.dat) Datei...
 o681 File allready exists.
 Click 'OK' to choose one.
-t681 
+t681 Datei ist schon vorhanden.
+Klicke 'OK' um eine auszuwählen.
 o682 Choose a NBT file...
-t682 
+t682 Wähle eine NBT Datei aus...
