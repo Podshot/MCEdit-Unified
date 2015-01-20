@@ -675,8 +675,8 @@ class NBTExplorerTool(EditorTool):
         if (self.panel is None and self.editor.currentTool in (self, None)): # or nbtObject:
             self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName,
                                               dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName)
+            self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
             self.panel.left = self.editor.left
-            self.panel.centery = self.editor.centery
             self.editor.add(self.panel)
 
     def loadFile(self, fName=None):
