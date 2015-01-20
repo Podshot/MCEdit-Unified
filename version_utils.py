@@ -47,7 +47,15 @@ class __PlayerCache:
                 self._playerCacheList.append(new_player)
             self._save()
             print "Convert usercache.json"
-
+            
+    def fixAllOfPodshotsBugs(self):
+        for player in self._playerCacheList:
+            if "Timstamp" in player:
+                player["Timestamp"] = player["Timstamp"]
+                del player["Timstamp"]
+        self._save()
+    
+    
     def __init__(self):
         self._playerCacheList = []
         if not os.path.exists(userCachePath):
@@ -62,6 +70,7 @@ class __PlayerCache:
                 self._playerCacheList = json.load(json_in)
         except:
             print "usercache.json is corrupted"
+        self.fixAllOfPodshotsBugs()
         self._refreshAll()
         
 
