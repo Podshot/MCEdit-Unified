@@ -11,7 +11,8 @@
 # * add local undo/redo for loaded NBT files
 # * change/optimize the undo/redo when edit level NBT data
 # * add a style editor and an image wrapper for the bullets
-from pygame import key, draw, image, Rect, Surface, SRCALPHA
+# * rework the scroll panel in order to refresh the subwidgets correctly
+from pygame import key, draw, image, Rect, Surface, SRCALPHA, event, display
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, CheckBox, Widget, ask
 from albow.tree import TreeRow
@@ -256,6 +257,7 @@ class ScrollRow(TreeRow):
 class ScrollPanel(Column):
     column_margin = 2
     def __init__(self, *args, **kwargs):
+        kwargs['margin'] = 0
         self.selected_item_index = None
         self.rows = rows = kwargs.pop('rows', [])
         self.align = align = kwargs.pop('align', 'l')
@@ -263,8 +265,9 @@ class ScrollPanel(Column):
         self.draw_zebra = draw_zebra = kwargs.pop('draw_zebra', True)
         self.row_height = row_height = kwargs.pop('row_height', max([a.height for a in rows] + [self.font.size(' ')[1],]))
         self.inner_width = kwargs.pop('inner_width', 500)
-        self.scrollRow = scrollRow = ScrollRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
+        self.scrollRow = scrollRow = ScrollRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra, spacing=0)
         Column.__init__(self, [scrollRow,], **kwargs)
+        self.shrink_wrap()
 
     def draw_tree_cell(self, surf, i, data, cell_rect, column):
         """..."""
@@ -303,11 +306,48 @@ class ScrollPanel(Column):
             x += width
 
     def click_item(self, n, e):
+# DO NOT STRIP OFF THE COMMENTS IN THIS METHOD
+# THE EVENT HANDLING NEEDS MORE WORK
+#        p = e.local
+#        print p[0] - self.left, p[1] - self.top
+#        print self.local_to_global(e.local)
+#        print self.find_widget(e.pos)
+#        print self.find_widget(e.local)
+#        print self.find_widget(e.local).find_widget(e.local)
+#        <Event(5-MouseButtonDown {'alt': False, 'meta': False, 'ctrl': False, 'shift': False, 'button': 1, 'cmd': False, 'local': [110, 113], 'pos': (397, 234), 'num_clicks': 1})>
         if n < len(self.rows):
             for sub in self.rows[n].subwidgets:
-                self.focus_on(sub)
-                sub.mouse_down(e)
-                sub.invalidate()
+                if sub:
+#                    print (e.local[0] - self.margin, sub.height / 2)
+#                    print self.margin, self.rows[n].rect, self.rows[n].margin, e.local, e.pos
+#                    print self.scrollRow.cell_rect(n, 0), sub.rect
+#                    left = self.margin + self.rows[n].rect.left + self.rows[n].margin + self.scrollRow.cell_rect(n, 0).left + sub.rect.left
+#                    top = self.margin + self.rows[n].rect.top + self.rows[n].margin + self.scrollRow.cell_rect(n, 0).top + sub.rect.top
+#                    _e = event.Event(e.type, {'alt': e.alt, 'meta': e.meta, 'ctrl': e.ctrl, 'shift': e.shift, 'button': e.button, 'cmd': e.cmd, 'num_clicks': e.num_clicks,
+#                                              'local': (e.local[0] - self.margin, sub.height / 2), 'pos': (e.local[0] - self.margin, sub.height / 2)})
+#                    self.focus_on(sub)
+#                    sub.mouse_down(_e)
+#                    print self.find_widget(e.local).find_widget(_e.local)
+#                    sub.invalidate()
+#                    self.rows[n].invalidate()
+#                    self.invalidate()
+#                    self.parent.invalidate()
+#                    display.flip()
+                    x = e.local[0] - self.margin - self.rows[n].rect.left - self.rows[n].margin - self.scrollRow.cell_rect(n, 0).left - sub.rect.left
+                    y = e.local[1] - self.margin - self.rows[n].rect.top - self.rows[n].margin - self.scrollRow.cell_rect(n, 0).top - sub.rect.top
+#                    print left, top
+#                    print sub.top, y, sub.bottom,'|', sub.left ,x ,sub.right
+#                    print sub.top <= y <= sub.bottom and sub.left <= x <= sub.right
+                    if sub.top <= y <= sub.bottom and sub.left <= x <= sub.right:
+                        _e = event.Event(e.type, {'alt': e.alt, 'meta': e.meta, 'ctrl': e.ctrl, 'shift': e.shift, 'button': e.button, 'cmd': e.cmd, 'num_clicks': e.num_clicks,
+                                                  'local': (x, y), 'pos': e.local})
+                        self.focus_on(sub)
+                        sub.mouse_down(_e)
+#                    print sub
+#                    print sub.has_focus()
+#                    sub.mouse_down(_e)
+#                    print sub.has_focus()
+                    break
 
 
 #-----------------------------------------------------------------------------
@@ -421,7 +461,6 @@ class NBTExplorerToolPanel(Panel):
     def update_side_panel(self, item):
         if item == self.displayed_item:
             return
-        print item
         self.displayed_item = item
         if self.side_panel:
             self.side_panel.set_parent(None)
@@ -435,12 +474,12 @@ class NBTExplorerToolPanel(Panel):
             height = 0
             for itm in items:
                 t = itm.__class__.__name__
-                rows.append(Row([Label("Data Type:"), Label(t)]))
+                rows.append(Row([Label("Data Type:"), Label(t)], margin=1))
                 fields = self.build_field(itm)
                 for field in fields:
                     if type(field) == TextFieldWrapped:
                         field.set_size_for_text(300)
-                    row = Row([field,])
+                    row = Row([field,], margin=1)
                     rows.append(row)
                     height += row.height
             if height > self.subwidgets[0].subwidgets[1].height:
@@ -467,14 +506,10 @@ class NBTExplorerToolPanel(Panel):
             else:
                 fields = [f(ref=AttrRef(itm, 'value')),]
         elif type(itm) in (TAG_Compound, TAG_List):
-#            fields = []
             for _itm in itm.value:
                 fields.append(Label("%s"%(_itm.name or "%s #%s"%(itm.name or _("Item"), itm.value.index(_itm))), align='l', doNotTranslate=True))
-#                fields.append([a for a in self.build_field(_itm)])
-#                fields.append([a for a in self.build_field(_itm)])
                 fields += NBTExplorerToolPanel.build_field(_itm)
         elif type(itm) not in (str, unicode):
-#            print type(itm.value), itm.value
             if type(itm.value) not in (str, unicode, int, float):
                 fld = Label
                 kw = {'align': 'l'}

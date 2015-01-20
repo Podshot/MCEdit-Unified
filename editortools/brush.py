@@ -159,7 +159,7 @@ class BrushPanel(Panel):
             importButton = Button("Import", action=tool.importPaste)
             importRow = Row([importButton])
             optionsColumn.append(importRow)
-        optionsColumn = Column(optionsColumn)
+        optionsColumn = Column(optionsColumn, spacing=0)
         self.add(optionsColumn)
         self.shrink_wrap()
 

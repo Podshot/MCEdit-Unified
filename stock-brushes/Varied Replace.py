@@ -12,8 +12,7 @@ secondaryBlock = "Block"
 
 def createInputs(self):
     self.inputs = (
-    {'Hollow': False},
-    {'Noise': 100},
+    {'Hollow': False, 'Noise': 100},
     {'W': (3, 1, 4096), 'H': (3, 1, 4096), 'L': (3, 1, 4096)},
     {'Block': materials.blockWithID(1, 0)},
     {'Block 1': materials.blockWithID(1, 0)},
