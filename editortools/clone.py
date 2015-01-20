@@ -237,22 +237,16 @@ class CloneToolPanel(Panel):
         Panel.__init__(self)
         self.tool = tool
 
-        rotateRow = Row((
+        rotaterollRow = Row((
             Label(config.keys.rotateClone.get()),
             Button("Rotate", width=80, action=tool.rotate, enable=self.transformEnable),
-        ))
-
-        rollRow = Row((
             Label(config.keys.rollClone.get()),
             Button("Roll", width=80, action=tool.roll, enable=self.transformEnable),
         ))
 
-        flipRow = Row((
+        flipmirrorRow = Row((
             Label(config.keys.flip.get()),
             Button("Flip", width=80, action=tool.flip, enable=self.transformEnable),
-        ))
-
-        mirrorRow = Row((
             Label(config.keys.mirror.get()),
             Button("Mirror", width=80, action=tool.mirror, enable=self.transformEnable),
         ))
@@ -365,7 +359,7 @@ class CloneToolPanel(Panel):
         self.performButton.action = tool.confirm
         self.performButton.enable = lambda: (tool.destPoint is not None)
 
-        max_height = self.tool.editor.mainViewport.height - self.tool.editor.netherPanel.height - self.tool.editor.subwidgets[0].height - self.performButton.height - 2
+        max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height # - self.performButton.height - 2
 
         def buildPage(*items):
             height = 0
@@ -383,10 +377,10 @@ class CloneToolPanel(Panel):
             return cls
 
         if self.useOffsetInput:
-            cols = buildPage(rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.offsetInput, repeatRow, scaleRow, copyAirRow,
+            cols = buildPage(rotaterollRow, flipmirrorRow, alignRow, self.offsetInput, repeatRow, scaleRow, copyAirRow,
                       copyWaterRow, copyBiomesRow, staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow)
         else:
-            cols = buildPage(rotateRow, rollRow, flipRow, mirrorRow, alignRow, self.nudgeButton, copyAirRow, copyWaterRow, copyBiomesRow,
+            cols = buildPage(rotaterollRow, flipmirrorRow, alignRow, self.nudgeButton, copyAirRow, copyWaterRow, copyBiomesRow,
                              staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow)
 
         row = Row(cols, spacing=0, margin=2)
@@ -684,7 +678,8 @@ class CloneTool(EditorTool):
         self.panel = self.panelClass(self, self.editor)
         # self.panel.performButton.enabled = False
 
-        self.panel.centery = self.editor.centery
+#        max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height
+        self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
         self.panel.left = self.editor.left
         self.editor.add(self.panel)
 
