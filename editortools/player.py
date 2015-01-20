@@ -382,7 +382,7 @@ class PlayerPositionPanel(Panel):
             players = ["Player"]
         self.players = players
 
-        max_height = self.tool.editor.mainViewport.height - self.tool.editor.netherPanel.height - self.tool.editor.subwidgets[0].height - self.margin - 2
+        max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height - self.margin - 2
 
         addButton = Button("Add Player", action=self.tool.addPlayer)
         removeButton = Button("Remove Player", action=self.tool.removePlayer)
@@ -392,9 +392,11 @@ class PlayerPositionPanel(Panel):
         moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
-        max_height -= sum((a.height for a in (addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)))
+        # The Label("qb", doNotTranslate=True) is not nice, but is used to have a correct layout for the table.
+        btns = (Label("qb", doNotTranslate=True), addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)
+        max_height -= sum((a.height for a in btns)) - len(btns) * 2
 
-        tableview = TableView(columns=[
+        tableview = TableView(nrows=0, row_height=self.font.size(" ")[1], columns=[
             TableColumn("Player Name(s):", 200),
         ], height=max_height)
         tableview.index = 0
@@ -412,7 +414,7 @@ class PlayerPositionPanel(Panel):
 
         col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
 
-        col = Column(col, margin=0, spacing=2)
+        col = Column(col, spacing=2)
         col.shrink_wrap()
         self.add(col)
         self.shrink_wrap()
@@ -583,8 +585,8 @@ class PlayerPositionTool(EditorTool):
         if not self.panel:
             self.panel = PlayerPositionPanel(self)
 
+        self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
         self.panel.left = self.editor.left
-        self.panel.centery = self.editor.centery
 
         self.editor.add(self.panel)
 
