@@ -121,7 +121,7 @@ class FilterModuleOptions(Widget):
         page.is_gl_container = True
         rows = []
         cols = []
-        max_height = self.tool.editor.mainViewport.height - self.tool.updatePanel.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
+        max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
@@ -244,7 +244,7 @@ class FilterModuleOptions(Widget):
                 h += r.height
                 if h > height / 2:
                     break
-            cols.append(Column(rows[:i]))
+            cols.append(Column(rows[:i], spacing=0))
             rows = rows[i:]
 
         if len(rows):
