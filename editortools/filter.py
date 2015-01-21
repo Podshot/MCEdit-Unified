@@ -83,9 +83,8 @@ class FilterModuleOptions(Widget):
         Widget.__init__(self, *args, **kw)
         self.spacing = 2
         self.tool = tool
-        pages = TabPanel()
+        self.pages = pages = TabPanel()
         pages.is_gl_container = True
-        self.pages = pages
         self.optionDict = {}
 
         self.giveEditorObject(module)
@@ -93,10 +92,12 @@ class FilterModuleOptions(Widget):
         if hasattr(module, "inputs"):
             trn = getattr(module, "trn", None)
             if isinstance(module.inputs, list):
+                pgs = []
                 for tabData in module.inputs:
                     title, page, pageRect = self.makeTabPage(self.tool, tabData, trn=trn)
-                    pages.add_page(title, page)
-                    pages.set_rect(pageRect.union(pages._rect))
+                    pgs.append((title, page))
+                pages.set_parent(None)
+                self.pages = pages = TabPanel(pgs)
             elif isinstance(module.inputs, tuple):
                 title, page, pageRect = self.makeTabPage(self.tool, module.inputs, trn=trn)
                 pages.add_page(title, page)
@@ -248,10 +249,10 @@ class FilterModuleOptions(Widget):
             rows = rows[i:]
 
         if len(rows):
-            cols.append(Column(rows))
+            cols.append(Column(rows, spacing=0))
 
         if len(cols):
-            page.add(Row(cols))
+            page.add(Row(cols, spacing=0))
         page.shrink_wrap()
 
         return title, page, page._rect
@@ -337,6 +338,7 @@ class FilterToolPanel(Panel):
                 raise ValueError("No filters loaded!")
 
         self.add(Column((filterSelectRow, self.filterOptionsPanel, self.confirmButton)))
+#        self.filterOptionsPanel.top = (filterSelectRow.bottom - self.filterOptionsPanel.top) / 2 + filterSelectRow.height
 
         self.shrink_wrap()
         if self.parent:
