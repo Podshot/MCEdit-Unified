@@ -14,7 +14,7 @@
 # * rework the scroll panel in order to refresh the subwidgets correctly
 from pygame import key, draw, image, Rect, Surface, SRCALPHA, event, display
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    FloatField, IntField, TextFieldWrapped, AttrRef, CheckBox, Widget, ask
+    FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, ask
 from albow.tree import TreeRow
 from albow.utils import blit_in_rect
 from albow.translate import _
@@ -89,13 +89,18 @@ change_styles()
 
 #-----------------------------------------------------------------------------
 field_types = {TAG_Byte: (IntField, (0, 256)),
-             TAG_Double: (FloatField, None),
-             TAG_Float: (FloatField, None),
-             TAG_Int: (IntField, (-2147483647,+2147483647)),
-             TAG_Long: (IntField, (-9223372036854775807,+9223372036854775807)),
-             TAG_Short: (IntField, (0, 65536)),
-             TAG_String: (TextFieldWrapped, None),
-            }
+               TAG_Double: (FloatField, None),
+               TAG_Float: (FloatField, None),
+               TAG_Int: (IntField, (-2147483647,+2147483647)),
+               TAG_Long: (IntField, (-9223372036854775807,+9223372036854775807)),
+               TAG_Short: (IntField, (0, 65536)),
+               TAG_String: (TextFieldWrapped, None),
+              }
+
+array_types = {TAG_Byte_Array: field_types[TAG_Byte],
+               TAG_Int_Array: field_types[TAG_Int],
+               TAG_Short_Array: field_types[TAG_Short],
+              }
 
 
 #-----------------------------------------------------------------------------
@@ -508,6 +513,12 @@ class NBTExplorerToolPanel(Panel):
                 fields = [f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]),]
             else:
                 fields = [f(ref=AttrRef(itm, 'value')),]
+        elif type(itm) in array_types.keys():
+            idx = 0
+            for _itm in itm.value.tolist():
+                f, bounds = array_types[type(itm)]
+                fields.append(f(ref=ItemRef(itm.value, idx)))
+                idx += 1
         elif type(itm) in (TAG_Compound, TAG_List):
             for _itm in itm.value:
                 fields.append(Label("%s"%(_itm.name or "%s #%s"%(itm.name or _("Item"), itm.value.index(_itm))), align='l', doNotTranslate=True))
@@ -520,6 +531,21 @@ class NBTExplorerToolPanel(Panel):
                 fld = TextFieldWrapped
                 kw = {}
             fields = [fld("%s"%itm.value, doNotTranslate=True, **kw),]
+            if itm.__class__.__name__.endswith('Array'):
+                value = itm.value
+                print value.__class__.__name__
+                if value.__class__.__name__ == 'ndarray':
+#                    print 'T', value.T
+#                    print 'data', value.data
+#                    print 'dtype', value.dtype
+#                    print 'shape', value.shape
+#                    print 'buffer', getattr(value, 'buffer', None)
+#                    ks = dir(value)
+#                    ks.sort()
+#                    for k in ks:
+#                        if not k.startswith('_') and not k.endswith('_'):
+#                            print k, getattr(value, k)
+                    print value.tolist()
         else:
             fields = [TextFieldWrapped("%s"%itm, doNotTranslata=True),]
         return fields
