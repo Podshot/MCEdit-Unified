@@ -509,6 +509,7 @@ class FilterTool(EditorTool):
         if self.panel.parent:
             self.editor.remove(self.panel)
 
+        self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
         self.editor.add(self.updatePanel)
         self.reloadFilters()
 

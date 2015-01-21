@@ -327,6 +327,7 @@ class ScrollPanel(Column):
 #                                              'local': (e.local[0] - self.margin, sub.height / 2), 'pos': (e.local[0] - self.margin, sub.height / 2)})
 #                    self.focus_on(sub)
 #                    sub.mouse_down(_e)
+#                    break
 #                    print self.find_widget(e.local).find_widget(_e.local)
 #                    sub.invalidate()
 #                    self.rows[n].invalidate()
@@ -338,16 +339,18 @@ class ScrollPanel(Column):
 #                    print left, top
 #                    print sub.top, y, sub.bottom,'|', sub.left ,x ,sub.right
 #                    print sub.top <= y <= sub.bottom and sub.left <= x <= sub.right
-                    if sub.top <= y <= sub.bottom and sub.left <= x <= sub.right:
+#                    if sub.top <= y <= sub.bottom and sub.left <= x <= sub.right:
+                    if sub.left <= x <= sub.right:
                         _e = event.Event(e.type, {'alt': e.alt, 'meta': e.meta, 'ctrl': e.ctrl, 'shift': e.shift, 'button': e.button, 'cmd': e.cmd, 'num_clicks': e.num_clicks,
                                                   'local': (x, y), 'pos': e.local})
                         self.focus_on(sub)
                         sub.mouse_down(_e)
+                        break
 #                    print sub
 #                    print sub.has_focus()
 #                    sub.mouse_down(_e)
 #                    print sub.has_focus()
-                    break
+#                    break
 
 
 #-----------------------------------------------------------------------------
