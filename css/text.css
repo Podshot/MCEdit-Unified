@@ -1,0 +1,40 @@
+.note {
+	text-align: center;
+	font-family: arial, sans-serif;
+	font-size: 15px;
+}
+hr { 
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: ridge;
+    border-width: 1px;
+}
+.footer {
+	text-align: center;
+	font-family: arial, sans-serif;
+	font-size: 12px;
+}
+.update {
+	text-align: center;
+	font-size: 14px;
+    background: #C3C3C3;
+    color: #000000;
+    padding: 0.5em 0;
+}
+.underinterface {
+	text-align: right;
+	font-family: arial, sans-serif;
+	margin-right: 340px;
+	font-size: 10px;
+}
+.title {
+	margin: 5px;
+	margin-left: 42px;
+}
+.interface {
+	margin: 5px;
+	margin-left: 50px;
+}
