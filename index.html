@@ -1,154 +1,166 @@
-<html>
-<head>
-	<title>MCEdit Unified</title>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/scripts.js"></script>
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<!--[if lte IE 9]>
+		<p class="update">
+			You are using an out-of-date browser, please update or change your current browser to <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a> (Window XP users are supported),
+			<a href="https://www.mozilla.org/en-US/firefox/new">FireFox</a> (Window XP users are supported) or <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer (IE)</a> 11 for systems using Windows 7,8,8.1. 
+			<br> Check out <a href="http://browsehappy.com/">Browsehappy.com</a> to see the latest version of your browser.
+		</p>
+		<![endif]-->
+		<meta charset="utf-8">
+		<title>MCEdit Unified - Home</title>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/scripts.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/stylesheet.css">
+		<link rel="stylesheet" href="css/text.css">
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  ga('create', 'UA-57749723-1', 'auto');
+		  ga('send', 'pageview');
+		</script>
+		
+		<script>
+			function pageTrigger() {
+				var releaseList = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+				releaseData.sort(compareVersionObject);
+				for (var i = 0; i < releaseData.length; i++) {
+					var note = marked(releaseData[i].body).replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a>');
+					var version = releaseData[i].tag_name;
+					var title = releaseData[i].name
+					if (releaseData[i].prerelease) {
+					  var releaselabel = 'Pre-release';
+					} else {
+						var releaselabel = '';
+					}
+					var releasetimesec = (new Date() - new Date(releaseData[i].published_at)) / 1000;
+					var releasetime = new Date(releaseData[i].published_at).toLocaleDateString();
+					if (releasetimesec < 60) {
+						releasetime = Math.round(releasetimesec) + 's ago';
+					} else if (releasetimesec < 60 * 60) {
+						releasetime = Math.round(releasetimesec / 60) + 'm ago';
+					} else if (releasetimesec < 60 * 60 * 24) {
+						releasetime = Math.round(releasetimesec / 60 / 60) + ' hours ago';
+					} else if (releasetimesec < 60 * 60 * 24 * 30) {
+						releasetime = Math.round(releasetimesec / 60 / 60 / 24) + ' days ago';
+					}
 
-	<script src="js/marked.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/stylesheet.css">
-	<link rel="shortcut icon" href="favicon.ico">
-
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	  ga('create', 'UA-57749723-1', 'auto');
-	  ga('send', 'pageview');
-
-	</script>
-
-	<script>
-		function pageTrigger() {
-			var releaseList = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
-			releaseData.sort(compareVersionObject);
-			for (var i = 0; i < releaseData.length; i++) {
-				var note = marked(releaseData[i].body).replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a>');
-				var version = releaseData[i].tag_name;
-				var title = releaseData[i].name
-				if (releaseData[i].prerelease) {
-					var releaselabel = 'Pre-release';
-				} else {
-					var releaselabel = '';
+					var totalDownloads = 0
+					for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
+						totalDownloads += releaseData[i].assets[x].download_count;
+					}
+					$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
+					releasenote = $('.releasenote[version="' + version + '"]');
+					releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+					releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 				}
-				var releasetimesec = (new Date() - new Date(releaseData[i].published_at)) / 1000;
-				var releasetime = new Date(releaseData[i].published_at).toLocaleDateString();
-				if (releasetimesec < 60) {
-					releasetime = Math.round(releasetimesec) + 's ago';
-				} else if (releasetimesec < 60 * 60) {
-					releasetime = Math.round(releasetimesec / 60) + 'm ago';
-				} else if (releasetimesec < 60 * 60 * 24) {
-					releasetime = Math.round(releasetimesec / 60 / 60) + ' hours ago';
-				} else if (releasetimesec < 60 * 60 * 24 * 30) {
-					releasetime = Math.round(releasetimesec / 60 / 60 / 24) + ' days ago';
+				$('#changelog').show();
+				var latestRelease = releaseData[0];
+				for (var i = 0; i < platforms.length; i++) {
+					var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
+					var asset64 = getDownload(platforms[i],latestRelease.tag_name,64);
+					if (asset32) {
+						$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
+					}
+					if (asset64) {
+						$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
+					}
 				}
-
-				var totalDownloads = 0
-				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
-					totalDownloads += releaseData[i].assets[x].download_count;
-				}
-
-				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
-				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
-				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 			}
-			$('#changelog').show();
-
-
-			var latestRelease = releaseData[0];
-			for (var i = 0; i < platforms.length; i++) {
-				var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
-				var asset64 = getDownload(platforms[i],latestRelease.tag_name,64);
-				if (asset32) {
-					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
-				}
-				if (asset64) {
-					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
-				}
-			}
-		}
-	</script>
+		</script>
+	</head>
+	
 	<style>
-		@media (min-width: 992px) {
+	    @media (min-width: 992px) {
 			.releasenote-title {
 				text-align: right;
 			}
 		}
-		@media (max-width: 991px) {
+	    @media (max-width: 991px) {
 			.releasenote-title {
 				text-align: center;
 			}
 		}
 	</style>
-</head>
-<body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12" style="padding:0xp;">
-				<div class="jumbotron" style="text-align:center;" id="downloads">
-					<div class="row">
-						<div class="col-md-4">
-							<span class="hidden-xs hidden-sm">
-								<i class="fa fa-apple fa-5x"></i>
-								<br><br><span style="font-size:16pt">Mac OS X</span><br><br>
-							</span>
-							<span class="hidden-md hidden-lg">
-								<i class="fa fa-apple fa-2x"></i>
-								<span style="font-size:16pt">&nbsp;Mac OS X<br></span>
-							</span>
-							<span id="OSX-downloads">
 
-							</span>
+	<body>
+		<article>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12" style="padding:0xp;">
+						<div class="jumbotron" style="text-align:center;" id="downloads">
+							<div class="row">
+								<div class="col-md-4">
+									<span class="hidden-xs hidden-sm">
+									    <i class="fa fa-apple fa-5x"></i>
+									    <br><br>
+									<span style="font-size:16pt">Mac OS X</span><br><br>
+									</span>
+									<span class="hidden-md hidden-lg">
+									    <i class="fa fa-apple fa-2x"></i>
+									    <span style="font-size:16pt">&nbsp;Mac OS X<br></span>
+									</span>
+									<span id="OSX-downloads">
+									</span>
+								</div>
+								<div class="col-md-4">
+									<span class="hidden-xs hidden-sm">
+									    <i class="fa fa-windows fa-5x"></i>
+									    <br><br><span style="font-size:16pt">Windows</span><br><br>
+									</span>
+									<span class="hidden-md hidden-lg">
+									    <br><br>
+									    <i class="fa fa-windows fa-2x"></i>
+									    <span style="font-size:16pt">&nbsp;Windows<br></span>
+									</span>
+									<span id="Win-downloads">
+									</span>
+								</div>
+								<div class="col-md-4">
+									<span class="hidden-xs hidden-sm">
+									    <i class="fa fa-linux fa-5x"></i>
+									    <br><br><span style="font-size:16pt">Linux[Beta]</span><br><br>
+									</span>
+									<span class="hidden-md hidden-lg">
+									    <br><br>
+									    <i class="fa fa-linux fa-2x"></i>
+									    <span style="font-size:16pt">&nbsp;Linux[Beta]<br></span>
+									</span>
+									<span id="Lin-downloads">
+									</span>
+								</div>
+							</div>
+							<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:40px;">
+							  <div class="col-md-12">
+								  <i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
+							  </div>
+							</div>
+							<div class="row hidden-md hidden-lg" style="position:absolute;bottom:0px;">
+							  <div class="col-md-12">
+								  <i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
+							  </div>
+							</div>
 						</div>
-						<div class="col-md-4">
-							<span class="hidden-xs hidden-sm">
-								<i class="fa fa-windows fa-5x"></i>
-								<br><br><span style="font-size:16pt">Windows</span><br><br>
-							</span>
-							<span class="hidden-md hidden-lg">
-								<br><br>
-								<i class="fa fa-windows fa-2x"></i>
-								<span style="font-size:16pt">&nbsp;Windows<br></span>
-							</span>
-							<span id="Win-downloads">
-
-							</span>
-						</div>
-                        <div class="col-md-4">
-                            <span class="hidden-xs hidden-sm">
-                                <i class="fa fa-linux fa-5x"></i>
-                                <br><br><span style="font-size:16pt">Linux[Beta]</span><br><br>
-                            </span>
-                            <span class="hidden-md hidden-lg">
-                                <br><br>
-                                <i class="fa fa-linux fa-2x"></i>
-                                <span style="font-size:16pt">&nbsp;Linux[Beta]<br></span>
-                            </span>
-                            <span id="Lin-downloads">
-
-                            </span>
-                        </div>
 					</div>
-					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:40px;">
-						<div class="col-md-12">
-							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
-						</div>
-					</div>
-					<div class="row hidden-md hidden-lg" style="position:absolute;bottom:0px;">
-						<div class="col-md-12">
-							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
-						</div>
-					</div>
+				  <div id="changelog" style="display:none;">
+				  </div>
 				</div>
 			</div>
-			<div id="changelog" style="display:none;">
-			</div>
+		</article>
+
+		<hr>
+		<div class="footer">
+			&copy; 2010-2014 David Rio Vierra (<a href="https://twitter.com/codewarrior0">Codewarrior0</a>). 
+			&copy; 2014-2015 <a href="http://khroki.github.io/MCEdit-Unified/contributors.html">Khroki and all of the contributers</a>.
+			All Rights Reserved to their respective ownership.
 		</div>
+		</hr>
+
 	</body>
-	</html>
+</html>
