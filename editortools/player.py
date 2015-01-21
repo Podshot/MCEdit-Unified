@@ -383,6 +383,7 @@ class PlayerPositionPanel(Panel):
         self.players = players
 
         max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height - self.margin - 2
+        max_height = min(max_height, 500)
 
         addButton = Button("Add Player", action=self.tool.addPlayer)
         removeButton = Button("Remove Player", action=self.tool.removePlayer)
