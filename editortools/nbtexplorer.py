@@ -14,7 +14,8 @@
 # * rework the scroll panel in order to refresh the subwidgets correctly
 from pygame import key, draw, image, Rect, Surface, SRCALPHA, event, display
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, ask
+    FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
+    ask, alert
 from albow.tree import TreeRow
 from albow.utils import blit_in_rect
 from albow.translate import _
@@ -712,6 +713,9 @@ class NBTExplorerTool(EditorTool):
         if not fName:
             fName = mcplatform.askOpenFile(title="Select a NBT (.dat) file...", suffixes=['dat',])
             if fName:
+                if not os.path.isfile(fName):
+                    alert("The selected object is not a file.\nCan't load it.")
+                    return
                 dontSaveRootTag = False
                 nbtObject = load(fName)
                 dataKeyName = None
@@ -740,5 +744,8 @@ class NBTExplorerTool(EditorTool):
         if dontSaveRootTag:
             if hasattr(data, 'name'):
                 data.name = ""
-        data.save(fName)
+        if not os.path.isdir(fName):
+            data.save(fName)
+        else:
+            alert("The selected object is not a file.\nCan't save it.")
 
