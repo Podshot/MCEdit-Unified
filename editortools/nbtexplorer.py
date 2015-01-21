@@ -533,18 +533,18 @@ class NBTExplorerToolPanel(Panel):
         names.sort()
         for name in names:
             item = attributes[indexes.index(name)]
-            rows.append(Row([Label(name.split('.')[-1], align='l'), NBTExplorerToolPanel.build_field(item['Base'])],
+            rows.append(Row([Label(name.split('.')[-1], align='l')] + NBTExplorerToolPanel.build_field(item['Base']),
                             margin=0))
             mods = item.get('Modifiers', [])
             for mod in mods:
                 keys = mod.keys()
                 keys.remove('Name')
-                rows.append(Row([Label("-> Name", align='l'), NBTExplorerToolPanel.build_field(mod['Name'])],
+                rows.append(Row([Label("-> Name", align='l')] + NBTExplorerToolPanel.build_field(mod['Name']),
                                  margin=0))
                 keys.sort()
                 for key in keys:
-                    rows.append(Row([Label('    %s'%key, align='l', doNotTranslate=True, tooltipText=mod[key].__class__.__name__),
-                                     NBTExplorerToolPanel.build_field(mod[key])],
+                    rows.append(Row([Label('    %s'%key, align='l', doNotTranslate=True, tooltipText=mod[key].__class__.__name__)] \
+                                    + NBTExplorerToolPanel.build_field(mod[key]),
                                     margin=0))
         return rows
 
