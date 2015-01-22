@@ -77,7 +77,7 @@ function compareVersionObject(a,b) {
 	return compareVersionString(a.tag_name, b.tag_name) * -1;
 }
 function getLatestRelease() {
-	data = releaseData;
+	var data = releaseData;
 	var prereleases = [];
 	var releases = [];
 	for (var i = 0; i < data.length; i++) {
