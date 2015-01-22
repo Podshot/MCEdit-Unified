@@ -517,7 +517,8 @@ class FilterTool(EditorTool):
 
         self.panel.reload()
 
-        self.panel.midleft = self.editor.midleft
+        self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
+        self.panel.left = self.editor.left
 
         self.editor.add(self.panel)
 

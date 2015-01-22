@@ -532,21 +532,6 @@ class NBTExplorerToolPanel(Panel):
                 fld = TextFieldWrapped
                 kw = {}
             fields = [fld("%s"%itm.value, doNotTranslate=True, **kw),]
-            if itm.__class__.__name__.endswith('Array'):
-                value = itm.value
-                print value.__class__.__name__
-                if value.__class__.__name__ == 'ndarray':
-#                    print 'T', value.T
-#                    print 'data', value.data
-#                    print 'dtype', value.dtype
-#                    print 'shape', value.shape
-#                    print 'buffer', getattr(value, 'buffer', None)
-#                    ks = dir(value)
-#                    ks.sort()
-#                    for k in ks:
-#                        if not k.startswith('_') and not k.endswith('_'):
-#                            print k, getattr(value, k)
-                    print value.tolist()
         else:
             fields = [TextFieldWrapped("%s"%itm, doNotTranslata=True),]
         return fields
