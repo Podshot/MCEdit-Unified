@@ -13,7 +13,7 @@ function getJSON(url){
 				cache: false,
 				async: false
 			}).responseText;
-			ret_val = JSON.parse(response);
+			var ret_val = JSON.parse(response);
 			if (ret_val !== undefined) {
 				requests[url] = ret_val;
 				return requests[url];
