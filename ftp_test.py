@@ -1,15 +1,10 @@
 import ftputil
 import os
-import time
-
-try:
-    os.mkdir("ftp")
-except OSError:
-    pass
+import shutil
 
 class FTPClient:
     
-    def _download(self):
+    def download(self):
         for root, directory, files in self._host.walk(self._host.curdir):
             print "Root: "+root
             print "Directory: "+str(directory)
@@ -28,7 +23,7 @@ class FTPClient:
                 self._host.download(self._host.path.join(root, f), os.path.join('ftp', self._worldname, root, f))
                 
                 
-    def _upload(self):
+    def upload(self):
         for root, directory, files in os.walk(os.path.join('ftp', self._worldname)):
             print "Root: "+root
             print "Directory: "+str(directory)
@@ -47,10 +42,19 @@ class FTPClient:
                 self._host.upload(os.path.join(root, f), self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, ""))
                 
         #self._host.upload(os.path.join('ftp', 'upload_test.txt'), 'upload_test.txt')
+        
+    def cleanup(self):
+        if hasattr(self, '_host'):
+            self._host.close()
+        shutil.rmtree('ftp')
                 
-    def __init__(self):
+    def __init__(self, ip, username='anonymous', password=''):
+        try:
+            os.mkdir("ftp")
+        except OSError:
+            pass
         self.upload_logging = []
-        self._host = ftputil.FTPHost('192.168.200.29', 'anonymous', '')
+        self._host = ftputil.FTPHost(ip, username, password)
         self._worldname = None
         if 'server.properties' in self._host.listdir(self._host.curdir):
             self._host.download('server.properties', os.path.join('ftp', 'server.properties'))
@@ -66,7 +70,7 @@ class FTPClient:
                 pass
             old_dir = self._host.curdir
             self._host.chdir(self._worldname)
-            self._download()
+            self.download()
             self._host.chdir(old_dir)
         print ""
         print ""
@@ -75,10 +79,11 @@ class FTPClient:
         print ""
         print ""
         
-        self._upload()
+        self.upload()
         for line in self.upload_logging:
             print line
         print self._host.getcwd()
+        self.cleanup()
         #with open('upload_logging.txt', 'wb') as f:
             #f.writelines(self.upload_logging)
                         
@@ -103,5 +108,5 @@ class FTPClient:
         #print self._host.curdir
         '''
                 
-client = FTPClient()
+client = FTPClient('192.168.200.29')
             
