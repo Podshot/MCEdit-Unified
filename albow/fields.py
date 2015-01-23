@@ -520,7 +520,6 @@ class TextEditorWrapped(Widget):
 
     def draw(self, surface):
         frame = self.get_margin_rect()
-        frameW, frameH = frame.size
         fg = self.fg_color
         font = self.font
         focused = self.has_focus()
@@ -915,7 +914,6 @@ class TextEditorWrapped(Widget):
                     self.selection_end = i
 
     def pos_to_index(self, x, y):
-        text = self.get_text()
         textL = self.textL
         textRef = self.textRefList
         topLine = self.topLine

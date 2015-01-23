@@ -266,12 +266,13 @@ class ScrollPanel(Column):
         kwargs['margin'] = 0
         self.selected_item_index = None
         self.rows = rows = kwargs.pop('rows', [])
-        self.align = align = kwargs.pop('align', 'l')
-        self.sapcing = spacing = kwargs.pop('spacing', 4)
+        self.align = kwargs.pop('align', 'l')
+        self.sapcing = kwargs.pop('spacing', 4)
         self.draw_zebra = draw_zebra = kwargs.pop('draw_zebra', True)
         self.row_height = row_height = kwargs.pop('row_height', max([a.height for a in rows] + [self.font.size(' ')[1],]))
         self.inner_width = kwargs.pop('inner_width', 500)
         self.scrollRow = scrollRow = ScrollRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra, spacing=0)
+        self.selected = None
         Column.__init__(self, [scrollRow,], **kwargs)
         self.shrink_wrap()
 
@@ -350,7 +351,11 @@ class ScrollPanel(Column):
                         _e = event.Event(e.type, {'alt': e.alt, 'meta': e.meta, 'ctrl': e.ctrl, 'shift': e.shift, 'button': e.button, 'cmd': e.cmd, 'num_clicks': e.num_clicks,
                                                   'local': (x, y), 'pos': e.local})
                         self.focus_on(sub)
+                        if self.selected:
+                            self.selected.is_modal = False
+                        sub.is_modal = True
                         sub.mouse_down(_e)
+                        self.selected = sub
                         break
 #                    print sub
 #                    print sub.has_focus()
