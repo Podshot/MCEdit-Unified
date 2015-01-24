@@ -66,6 +66,7 @@ default_bullet_styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
           TAG_List: ((200,200,200), (0,0,0), 'square', 'L'),
           TAG_Short_Array: ((200,200,20), None, 'square', 'S'),
           }
+default_bullet_styles[dict] = default_bullet_styles[TAG_List]
 
 bullet_styles = copy.deepcopy(default_bullet_styles)
 
@@ -81,6 +82,7 @@ def change_styles():
             i += 1
 
         bullet_styles[TAG_Short_Array] = bullet_styles[TAG_Int_Array]
+        bullet_styles[dict] = bullet_styles[TAG_List]
     else:
         bullet_styles = copy.deepcopy(default_bullet_styles)
     return bullet_styles
@@ -108,7 +110,6 @@ class NBTTree(Tree):
     def __init__(self, *args, **kwargs):
         if config.nbtTreeSettings.useBulletStyles.get() and bullet_styles.get(TAG_Compound, [''] * 4)[2] != '':
             self.draw_opened_bullet = self.draw_closed_bullet = self.draw_TAG_bullet
-        self._parent = kwargs.pop('_parent', None)
         styles = kwargs.get('styles', {})
         for key in styles.keys():
             if hasattr(key, '__name__'):
@@ -142,6 +143,7 @@ class NBTTree(Tree):
         meth = getattr(self, 'draw_%s'%shape, None)
         if meth and config.nbtTreeSettings.useBulletStyles.get():
             meth(surf, bg, r)
+            self.draw_item_text(surf, r, item_text)
         else:
             self.draw_deadend_bullet(surf, self.bullet_color_inactive, fg, shape, text, item_text, lvl)
         if text and config.nbtTreeSettings.useBulletStyles.get() and config.nbtTreeSettings.useBulletText.get():
@@ -149,6 +151,20 @@ class NBTTree(Tree):
             blit_in_rect(surf, buf, r, 'c')
         if config.nbtTreeSettings.useBulletImages.get():
             self.draw_item_text(surf, r, item_text)
+
+    def parse_TAG_List(self, name, data):
+        values = {}
+        i = 0
+        for value in data:
+            if hasattr(value, 'get'):
+                value_name = value.get('Name', None)
+                if value_name:
+                    value_name = value_name.value
+            else:
+                value_name = value.name
+            values[value_name or u"%s #%03d"%(name, i)] = value
+            i += 1
+        return values
 
 
 #-----------------------------------------------------------------------------
@@ -320,7 +336,7 @@ class NBTExplorerToolPanel(Panel):
         self.init_data()
         header = Label("NBT Explorer")
         self.max_height = max_height = editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height - editor.statusLabel.height - header.height - (self.margin * 2)
-        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound], draw_zebra=False, _parent=self, styles=bullet_styles)
+        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound, TAG_List], draw_zebra=False, _parent=self, styles=bullet_styles)
         col = Column([self.tree,
                       Row([
                            Button({True: "Save", False: "OK"}[fileName != None], action=self.save_NBT, tooltipText="Save your change in the NBT data."),
@@ -417,7 +433,7 @@ class NBTExplorerToolPanel(Panel):
                 idx += 1
         elif type(itm) in (TAG_Compound, TAG_List):
             for _itm in itm.value:
-                fields.append(Label("%s"%(_itm.name or "%s #%s"%(itm.name or _("Item"), itm.value.index(_itm))), align='l', doNotTranslate=True))
+                fields.append(Label("%s"%(_itm.name or "%s #%03d"%(itm.name or _("Item"), itm.value.index(_itm))), align='l', doNotTranslate=True))
                 fields += NBTExplorerToolPanel.build_field(_itm)
         elif type(itm) not in (str, unicode):
             if type(itm.value) not in (str, unicode, int, float):

@@ -34,6 +34,7 @@ class Tree(Column):
     def __init__(self, *args, **kwargs):
         self.selected_item_index = None
         self.selected_item = None
+        self._parent = kwargs.pop('_parent', None)
         self.styles = kwargs.pop('styles', {})
         self.compound_types = [dict,] + kwargs.pop('compound_types', [])
         self.show_fields = kwargs.pop('show_fields', False)
@@ -47,6 +48,7 @@ class Tree(Column):
         row_height = self.font.size(' ')[1]
         self.treeRow = treeRow = TreeRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
         Column.__init__(self, [treeRow,], **kwargs)
+
 
     def build_layout(self):
         data = self.data
@@ -62,7 +64,7 @@ class Tree(Column):
             lvl, k, v, p, c, id = items.pop(0)
             _c = False
             fields = []
-            if type(v) in self.compound_types:
+            if type(v) in self.compound_types and not hasattr(self._parent, 'build_%s'%k.lower()):
                 meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
                 if meth is not None:
                     v = meth(k, v)
@@ -80,7 +82,7 @@ class Tree(Column):
             else:
                 if type(v) in (list, tuple):
                     fields = v
-                elif type(v) not in self.compound_types:
+                elif type(v) not in self.compound_types or hasattr(self._parent, 'build_%s'%k.lower()):
                     fields = [v,]
             head = Surface((self.bullet_size * (lvl + 1) + self.font.size(k)[0], self.bullet_size), SRCALPHA)
             if _c:
