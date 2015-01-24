@@ -10,55 +10,15 @@ from albow import Widget
 from theme import ThemeProperty
 from layout import Column
 from palette_view import PaletteView
+from scrollpanel import ScrollRow
 from utils import blit_in_rect
 from pygame import image, Surface, Rect, SRCALPHA, draw
 
 
 #-----------------------------------------------------------------------------
-class TreeRow(PaletteView):
-    def __init__(self, cell_size, nrows, **kwargs):
-        self.draw_zebra = kwargs.pop('draw_zebra', True)
-        scrolling = kwargs.pop('scrolling', True)
-        self.hscrolling = kwargs.pop('hscrolling', True)
-        self.hscroll = None
-        PaletteView.__init__(self, cell_size, nrows, 1, scrolling=scrolling)
-
-    def draw_item(self, surf, row, row_rect):
-        row_data = self.row_data(row)
-        table = self.parent
-        height = row_rect.height
-
-        for i, x, width, column, cell_data in table.column_info(row_data):
-            cell_rect = Rect(x + self.margin, row_rect.top, width, height)
-            self.draw_table_cell(surf, row, cell_data, cell_rect, column)
-
-    def draw_item_and_highlight(self, surface, i, rect, highlight):
-        if self.draw_zebra and i % 2:
-            surface.fill(self.zebra_color, rect)
-        if highlight:
-            self.draw_prehighlight(surface, i, rect)
-        if highlight and self.highlight_style == 'reverse':
-            fg = self.inherited('bg_color') or self.sel_color
-        else:
-            fg = self.fg_color
-        self.draw_item_with(surface, i, rect, fg)
-        if highlight:
-            self.draw_posthighlight(surface, i, rect)
-
-    def draw_table_cell(self, surf, i, data, cell_rect, column):
-        self.parent.draw_tree_cell(surf, i, data, cell_rect, column)
-
+class TreeRow(ScrollRow):
     def click_item(self, n, e):
         self.parent.click_item(n, e.local)
-
-    def item_is_selected(self, n):
-        return n == self.parent.selected_item_index
-
-    def num_items(self):
-        return self.parent.num_rows()
-
-    def row_data(self, row):
-        return self.parent.row_data(row)
 
 
 #-----------------------------------------------------------------------------
@@ -149,7 +109,7 @@ class Tree(Column):
         row = self.rows[n]
         r = self.get_bullet_rect(row[0])
         x = pos[0]
-        if self.margin + r.left <= x <= self.margin + self.treeRow.margin + r.right:
+        if self.margin + r.left - self.treeRow.hscroll <= x <= self.margin + self.treeRow.margin + r.right - self.treeRow.hscroll:
             id = row[6]
             self.deploy(id)
         else:

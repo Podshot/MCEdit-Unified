@@ -11,8 +11,7 @@
 # * add local undo/redo for loaded NBT files
 # * change/optimize the undo/redo when edit level NBT data
 # * add a style editor and an image wrapper for the bullets
-# * rework the scroll panel in order to refresh the subwidgets correctly
-from pygame import key, draw, image, Rect, Surface, SRCALPHA, event, display
+from pygame import key, draw, image, Rect
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
     ScrollPanel, ask, alert
