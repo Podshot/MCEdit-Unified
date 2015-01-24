@@ -38,8 +38,16 @@ class FTPClient:
                 self.upload_logging.append("Source: "+os.path.join(root, f)+'\n')
                 self.upload_logging.append("Target: "+self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, "")+'\n')
                 self.upload_logging.append('++++++++++++++++++++++++++++++++++'+'\n')
-                
-                self._host.upload(os.path.join(root, f), self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, ""))
+                print self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, "")
+                if self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, "").startswith("\\"):
+                    target = self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, "").replace("\\", "", 1)
+                else :
+                    target = self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, "")
+                    
+                if "\\" in target:
+                    target = target.replace("\\", "/")
+                #self._host.upload(os.path.join(root, f), self._host.path.join(root, f).replace("ftp"+os.path.sep+self._worldname, ""))
+                self._host.upload(os.path.join(root, f), target)
                 
         #self._host.upload(os.path.join('ftp', 'upload_test.txt'), 'upload_test.txt')
         
@@ -55,14 +63,20 @@ class FTPClient:
             pass
         self.upload_logging = []
         self._host = ftputil.FTPHost(ip, username, password)
+        print self._host.curdir
         self._worldname = None
         if 'server.properties' in self._host.listdir(self._host.curdir):
             self._host.download('server.properties', os.path.join('ftp', 'server.properties'))
             with open(os.path.join('ftp', 'server.properties'), 'r') as props:
                 content = props.readlines()
-                for prop in content:
-                    if prop.startswith("level-name"):
-                        self._worldname = str(prop.split("=")[1:][0]).rstrip("\n")
+                if len(content) > 1:
+                    for prop in content:
+                        if prop.startswith("level-name"):
+                            self._worldname = str(prop.split("=")[1:][0]).rstrip("\n")
+                else:
+                    for prop in content[0].split('\r'):
+                        if prop.startswith("level-name"):
+                            self._worldname = str(prop.split("=")[1:][0]).rstrip("\r")
         if self._worldname in self._host.listdir(self._host.curdir):
             try:
                 os.mkdir(os.path.join('ftp', self._worldname))
@@ -83,7 +97,7 @@ class FTPClient:
         for line in self.upload_logging:
             print line
         print self._host.getcwd()
-        self.cleanup()
+        #self.cleanup()
         #with open('upload_logging.txt', 'wb') as f:
             #f.writelines(self.upload_logging)
                         
@@ -107,6 +121,5 @@ class FTPClient:
         #self._host.chdir(oldDir)
         #print self._host.curdir
         '''
-                
-client = FTPClient('192.168.200.29')
-            
+      
+client = FTPClient('192.168.200.29')      
