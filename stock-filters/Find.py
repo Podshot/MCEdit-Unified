@@ -2,6 +2,7 @@
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float, TAG_Long, \
     TAG_Byte_Array, TAG_Int_Array
 from pymclevel.box import BoundingBox
+from albow import alert
 
 displayName = "Find"
 
@@ -82,7 +83,7 @@ def FindTagS(nbtData, name, value, tagtype):
 
 def FindTagI(nbtData, name, value, tagtype):
     if type(nbtData) is TAG_List or type(nbtData) is TAG_Compound:
-        if name in nbtData.name.upper() or name == "":
+        if name in (u"%s"%nbtData.name).upper() or name == "":
             if value == "":
                 if type(nbtData) is tagtype or tagtype == 11:
                     return True
@@ -99,14 +100,14 @@ def FindTagI(nbtData, name, value, tagtype):
                 if FindTagI(nbtData[tag], name, value, tagtype):
                     return True
             else:
-                if name in nbtData[tag].name.upper() or name == "":
+                if name in (u"%s"%nbtData[tag].name).upper() or name == "":
                     if value in unicode(nbtData[tag].value).upper():
                         if type(nbtData[tag]) is tagtype or tagtype == 11:
                             return True
         else:
             return False
     else:
-        if name in nbtData.name.upper() or name == "":
+        if name in (u"%s"%nbtData.name).upper() or name == "":
             if value in unicode(nbtData.value).upper():
                 if type(nbtData[tag]) is tagtype or tagtype == 11:
                     return True
@@ -139,7 +140,7 @@ def perform(level, box, options):
         matchval = matchval.upper()
 
     if matchtile and matchname == "" and matchval == "":
-        raise Exception("\nInvalid Tag Name and Value; the present values will match every tag of the specified type.")
+        alert("\nInvalid Tag Name and Value; the present values will match every tag of the specified type.")
 
     if search is None or op == "Start New Search" or op == "Dump Found Coordinates":
         search = []
@@ -191,11 +192,11 @@ def perform(level, box, options):
                         if FindTag(e, matchname, matchval, tagses[matchtagtype], caseSensitive):
                             search.append((x, y, z))
     if not search:
-        raise Exception("\nNo matching blocks/tile entities found")
+        alert("\nNo matching blocks/tile entities found")
     else:
         search.sort()
         if op == "Dump Found Coordinates":
-            raise Exception("\nMatching Coordinates:\n" + "\n".join("%d, %d, %d" % pos for pos in search))
+            alert("\nMatching Coordinates:\n" + "\n".join("%d, %d, %d" % pos for pos in search))
         else:
             for s in search:
                 editor.mainViewport.cameraPosition = (s[0] + 0.5, s[1] + 2, s[2] - 1)
@@ -206,6 +207,6 @@ def perform(level, box, options):
                 editor.selectionTool.setSelection(newBox)
 
                 if not editor.YesNoWidget("Matching blocks/tile entities found at " + str(s) + ".\nContinue search?"):
-                    raise Exception("\nSearch halted.")
+                    alert("\nSearch halted.")
             else:
-                raise Exception("\nEnd of search.")
+                alert("\nEnd of search.")
