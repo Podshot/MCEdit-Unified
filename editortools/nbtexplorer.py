@@ -137,16 +137,18 @@ class NBTTree(Tree):
     def draw_circle(surf, bg, r):
         draw.circle(surf, bg, ((r.left + r.right) / 2, (r.top + r.bottom) / 2), min(r.height / 2, r.width / 2))
 
-    def draw_TAG_bullet(self, surf, bg, fg, shape, text):
-        r = self.get_bullet_rect(surf)
+    def draw_TAG_bullet(self, surf, bg, fg, shape, text, item_text, lvl):
+        r = self.get_bullet_rect(surf, lvl)
         meth = getattr(self, 'draw_%s'%shape, None)
         if meth and config.nbtTreeSettings.useBulletStyles.get():
             meth(surf, bg, r)
         else:
-            self.draw_deadend_bullet(surf, self.bullet_color_inactive, fg, shape, text)
+            self.draw_deadend_bullet(surf, self.bullet_color_inactive, fg, shape, text, item_text, lvl)
         if text and config.nbtTreeSettings.useBulletStyles.get() and config.nbtTreeSettings.useBulletText.get():
             buf = self.font.render(text, True, fg or self.fg_color)
             blit_in_rect(surf, buf, r, 'c')
+        if config.nbtTreeSettings.useBulletImages.get():
+            self.draw_item_text(surf, r, item_text)
 
 
 #-----------------------------------------------------------------------------
@@ -366,9 +368,9 @@ class NBTExplorerToolPanel(Panel):
         self.displayed_item = item
         if self.side_panel:
             self.side_panel.set_parent(None)
-        items = [a for a in item[2]]
+        items = [a for a in item[1]]
         rows = []
-        meth = getattr(self, 'build_%s'%item[1].lower(), None)
+        meth = getattr(self, 'build_%s'%item[3].lower(), None)
         col = True
         if meth and len(items) == 1:
             rows = meth(items)

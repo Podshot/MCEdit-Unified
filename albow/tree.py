@@ -82,7 +82,7 @@ class Tree(Column):
                     fields = v
                 elif type(v) not in self.compound_types:
                     fields = [v,]
-            head = Surface((self.bullet_size * (lvl + 1), self.bullet_size), SRCALPHA)
+            head = Surface((self.bullet_size * (lvl + 1) + self.font.size(k)[0], self.bullet_size), SRCALPHA)
             if _c:
                 meth = getattr(self, 'draw_%s_bullet'%{False: 'closed', True: 'opened'}[id in self.deployed])
             else:
@@ -93,8 +93,8 @@ class Tree(Column):
                                                   ({True: self.bullet_color_active, False: self.bullet_color_inactive}[_c],
                                                    self.fg_color, 'square', ''),
                                                  )
-            meth(head, bg, fg, shape, text)
-            rows.append([head, k, fields, [w] * len(fields), p, c, id, type(v), lvl])
+            meth(head, bg, fg, shape, text, k, lvl)
+            rows.append([head, fields, [w] * len(fields), k, p, c, id, type(v), lvl])
         self.rows = rows
 
     def deploy(self, id):
@@ -107,7 +107,7 @@ class Tree(Column):
     def click_item(self, n, pos):
         """..."""
         row = self.rows[n]
-        r = self.get_bullet_rect(row[0])
+        r = self.get_bullet_rect(row[0], row[8])
         x = pos[0]
         if self.margin + r.left - self.treeRow.hscroll <= x <= self.margin + self.treeRow.margin + r.right - self.treeRow.hscroll:
             id = row[6]
@@ -119,23 +119,30 @@ class Tree(Column):
         self.selected_item_index = n
         self.selected_item = self.rows[n]
 
-    def get_bullet_rect(self, surf):
+    def get_bullet_rect(self, surf, lvl):
         r = Rect(0, 0, self.bullet_size, self.bullet_size)
-        r.left = surf.get_rect().right - self.bullet_size
+        r.left = self.bullet_size * lvl
         r.inflate_ip(-4, -4)
         return r
 
-    def draw_deadend_bullet(self, surf, bg, fg, shape, text):
-        r = self.get_bullet_rect(surf)
+    def draw_item_text(self, surf, r, text):
+        buf = self.font.render(unicode(text), True, self.fg_color)
+        blit_in_rect(surf, buf, Rect(r.right, r.top, surf.get_width() - r.right, r.height), 'c')
+
+    def draw_deadend_bullet(self, surf, bg, fg, shape, text, item_text, lvl):
+        r = self.get_bullet_rect(surf, lvl)
         draw.polygon(surf, bg, [r.midtop, r.midright, r.midbottom, r.midleft])
+        self.draw_item_text(surf, r, item_text)
 
-    def draw_closed_bullet(self, surf, bg, fg, shape, text):
-        r = self.get_bullet_rect(surf)
+    def draw_closed_bullet(self, surf, bg, fg, shape, text, item_text, lvl):
+        r = self.get_bullet_rect(surf, lvl)
         draw.polygon(surf, bg, [r.topleft, r.midright, r.bottomleft])
+        self.draw_item_text(surf, r, item_text)
 
-    def draw_opened_bullet(self, surf, bg, fg, shape, text):
-        r = self.get_bullet_rect(surf)
+    def draw_opened_bullet(self, surf, bg, fg, shape, text, item_text, lvl):
+        r = self.get_bullet_rect(surf, lvl)
         draw.polygon(surf, bg, [r.topleft, r.midbottom, r.topright])
+        self.draw_item_text(surf, r, item_text)
 
     def draw_tree_cell(self, surf, i, data, cell_rect, column):
         """..."""
@@ -163,9 +170,9 @@ class Tree(Column):
         m = self.column_margin
         d = 2 * m
         x = 0
-        for i in range(0,3):
-            if i < 2:
-                width = 50 * (i + 1)
+        for i in range(0,2):
+            if i < 1:
+                width = self.width
                 data = row_data[i]
                 yield i, x + m, width - d, None, data
                 x += width
