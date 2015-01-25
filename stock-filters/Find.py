@@ -4,6 +4,7 @@ from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_
     TAG_Byte_Array, TAG_Int_Array
 from pymclevel.box import BoundingBox
 from albow import alert
+import ast
 
 #-# Use the result page?
 newLayout = True
@@ -234,10 +235,25 @@ def perform(level, box, options):
                     if sub.__class__ == options[""].__class__:
                         break
                     idx += 1
-                tree = options[""].__class__(editor, nbtObject={'Data': treeData}, height=height, no_header=True)
+                def save_NBT():
+                    print dir(level)
+                tree = options[""].__class__(editor, nbtObject={'Data': treeData}, height=height, no_header=True, ok_action=save_NBT)
                 t = options.pop("")
                 parent.subwidgets[idx] = tree
                 tree.set_parent(parent)
+                def mouse_down(e):
+                    if e.button == 1 and e.num_clicks > 1:
+                        if tree.tree.selected_item[3].startswith('(') and tree.tree.selected_item[3].endswith(')'):
+                            s = ast.literal_eval("%s"%tree.tree.selected_item[3])
+                            if s in search:
+                                editor.mainViewport.cameraPosition = (s[0] + 0.5, s[1] + 2, s[2] - 1)
+                                editor.mainViewport.yaw = 0.0
+                                editor.mainViewport.pitch = 45.0
+                                newBox = BoundingBox(s, (1, 1, 1))
+                                editor.selectionTool.setSelection(newBox)
+                    else:
+                        tree.tree.treeRow.__class__.mouse_down(tree.tree.treeRow, e)
+                tree.tree.treeRow.mouse_down = mouse_down
                 options[""] = tree
                 del t
 #                options[""].nbtObject = {'Data': treeData}

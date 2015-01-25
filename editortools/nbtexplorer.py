@@ -335,7 +335,7 @@ class NBTExplorerToolPanel(Panel):
         self.dataKeyName = dataKeyName
         self.init_data()
         btnRow = Row([
-                           Button({True: "Save", False: "OK"}[fileName != None], action=self.save_NBT, tooltipText="Save your change in the NBT data."),
+                           Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
                            Button("Reset", action=self.reset, tooltipText="Reset ALL your changes in the NBT data."),
                            Button("Close", action=self.close),
                           ],
@@ -361,6 +361,7 @@ class NBTExplorerToolPanel(Panel):
         self.side_panel = None
 
     def save_NBT(self):
+        print "save_NBT"
         if self.fileName:
             self.editor.nbtTool.saveFile(self.fileName, self.data, self.dontSaveRootTag)
         else:
@@ -500,7 +501,7 @@ class NBTExplorerToolPanel(Panel):
         rows = []
         rotation = items[0]
         rows.append(Row([Label("Y", align='l'), FloatField(ref=AttrRef(rotation[0], 'value'))]))
-        rows.append(Row([Label("X", align='l'), Label(ref=AttrRef(rotation[1], 'value'))]))
+        rows.append(Row([Label("X", align='l'), FloatField(ref=AttrRef(rotation[1], 'value'))]))
         return rows
 
     def build_inventory(self, items):
