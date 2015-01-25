@@ -1,9 +1,13 @@
 # written by texelelf
+#-# Adding a result pages, and NBT edit stuff
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float, TAG_Long, \
     TAG_Byte_Array, TAG_Int_Array
 from pymclevel.box import BoundingBox
 from albow import alert
 
+#-# Use the result page?
+newLayout = True
+#-#
 displayName = "Find"
 
 tagtypes = {"TAG_Byte": 0, "TAG_Short": 1, "TAG_Int": 2, "TAG_Compound": 3, "TAG_List": 4, "TAG_String": 5,
@@ -38,6 +42,14 @@ inputs = [(("Match by:", ("TileEntity", "Entity", "Block")),
             "a specific direction.\n\"Start New Search\" will re-search through the selected volume, while \"Find Next\" "
             "will iterate through the search results of the previous search.", "label"))
 ]
+
+if newLayout:
+    inputs.insert(1, (("Results", "title"),
+                      ("", ["NBTTree", {}]),
+                     )
+                 )
+
+
 
 try:
     search
@@ -135,6 +147,11 @@ def perform(level, box, options):
     matchtagtype = tagtypes[options["Match Tag Type:"]] if options["Match Tag Type:"] != "Any" else "Any"
     op = options["Operation:"]
 
+    #-#
+    if newLayout:
+        datas = []
+    #-#
+
     if not caseSensitive:
         matchname = matchname.upper()
         matchval = matchval.upper()
@@ -164,6 +181,8 @@ def perform(level, box, options):
                             else:
                                 continue
                         search.append((x, y, z))
+                        if newLayout:
+                            datas.append(data)
         elif by == "TileEntity":
             for (chunk, _, _) in level.getChunkSlices(box):
                 for e in chunk.TileEntities:
@@ -182,6 +201,8 @@ def perform(level, box, options):
                             continue
 
                         search.append((x, y, z))
+                        if newLayout:
+                            datas.append(e)
         else:
             for (chunk, _, _) in level.getChunkSlices(box):
                 for e in chunk.Entities:
@@ -191,6 +212,8 @@ def perform(level, box, options):
                     if (x, y, z) in box:
                         if FindTag(e, matchname, matchval, tagses[matchtagtype], caseSensitive):
                             search.append((x, y, z))
+                            if newLayout:
+                                datas.append(e)
     if not search:
         alert("\nNo matching blocks/tile entities found")
     else:
@@ -198,15 +221,38 @@ def perform(level, box, options):
         if op == "Dump Found Coordinates":
             alert("\nMatching Coordinates:\n" + "\n".join("%d, %d, %d" % pos for pos in search))
         else:
-            for s in search:
-                editor.mainViewport.cameraPosition = (s[0] + 0.5, s[1] + 2, s[2] - 1)
-                editor.mainViewport.yaw = 0.0
-                editor.mainViewport.pitch = 45.0
-
-                newBox = BoundingBox(s, (1, 1, 1))
-                editor.selectionTool.setSelection(newBox)
-
-                if not editor.YesNoWidget("Matching blocks/tile entities found at " + str(s) + ".\nContinue search?"):
-                    alert("\nSearch halted.")
+            #-#
+            if newLayout:
+                treeData = {}
+                for i in range(len(search)):
+                    treeData[u"%s"%(search[i],)] = datas[i]
+                height = options[""].height
+                editor = options[""].editor
+                parent = options[""].parent
+                idx = 0
+                for sub in parent.subwidgets:
+                    if sub.__class__ == options[""].__class__:
+                        break
+                    idx += 1
+                tree = options[""].__class__(editor, nbtObject={'Data': treeData}, height=height, no_header=True)
+                t = options.pop("")
+                parent.subwidgets[idx] = tree
+                tree.set_parent(parent)
+                options[""] = tree
+                del t
+#                options[""].nbtObject = {'Data': treeData}
+#                options[""].init_data()
             else:
-                alert("\nEnd of search.")
+                for s in search:
+                    editor.mainViewport.cameraPosition = (s[0] + 0.5, s[1] + 2, s[2] - 1)
+                    editor.mainViewport.yaw = 0.0
+                    editor.mainViewport.pitch = 45.0
+
+                    newBox = BoundingBox(s, (1, 1, 1))
+                    editor.selectionTool.setSelection(newBox)
+
+                    if not editor.YesNoWidget("Matching blocks/tile entities found at " + str(s) + ".\nContinue search?"):
+                        alert("\nSearch halted.")
+                else:
+                    alert("\nEnd of search.")
+            #-#

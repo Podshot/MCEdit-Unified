@@ -324,7 +324,7 @@ class NBTExplorerOperation(Operation):
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
-    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data'):
+    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', **kwargs):
         """..."""
         Panel.__init__(self)
         self.editor = editor
@@ -334,22 +334,29 @@ class NBTExplorerToolPanel(Panel):
         self.displayed_item = None
         self.dataKeyName = dataKeyName
         self.init_data()
-        header = Label("NBT Explorer")
-        self.max_height = max_height = editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height - editor.statusLabel.height - header.height - (self.margin * 2)
-        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound, TAG_List], draw_zebra=False, _parent=self, styles=bullet_styles)
-        col = Column([self.tree,
-                      Row([
+        btnRow = Row([
                            Button({True: "Save", False: "OK"}[fileName != None], action=self.save_NBT, tooltipText="Save your change in the NBT data."),
                            Button("Reset", action=self.reset, tooltipText="Reset ALL your changes in the NBT data."),
                            Button("Close", action=self.close),
                           ],
                           margin=1, spacing=4,
                          )
-                     ],
-                     margin=0, spacing=2)
+        btnRow.shrink_wrap()
+
+        if kwargs.get('no_header', False):
+            self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - (self.margin * 2) - btnRow.height - 2
+        else:
+            header = Label("NBT Explorer")
+            self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - header.height - (self.margin * 2) - btnRow.height - 2
+        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound, TAG_List], draw_zebra=False, _parent=self, styles=bullet_styles)
+        col = Column([self.tree, btnRow], margin=0, spacing=2)
         col.shrink_wrap()
-        row = [col, Column([Label("", width=300), ], height=max_height)]
-        self.add(Column([header, Row(row)]))
+        row = [col, Column([Label("", width=300), ], height=max_height + btnRow.height + 2)]
+        self.displayRow = Row(row, height=max_height + btnRow.height + 2)
+        if kwargs.get('no_header', False):
+            self.add(Column([self.displayRow,], height=max_height + btnRow.height + 2, margin=0))
+        else:
+            self.add(Column([header, self.displayRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
 
@@ -369,6 +376,11 @@ class NBTExplorerToolPanel(Panel):
         if self.nbtObject:
             data = copy.deepcopy(self.nbtObject[self.dataKeyName])
         self.data = data
+        if hasattr(self, 'tree'):
+            self.tree.set_parent(None)
+            self.tree = NBTTree(height=self.max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound, TAG_List], draw_zebra=False, _parent=self, styles=bullet_styles)
+            self.displayRow.subwidgets[0].subwidgets.insert(0, self.tree)
+            self.tree.set_parent(self.displayRow.subwidgets[0])
 
     def reset(self):
         self.editor.nbtTool.hidePanel()
@@ -402,17 +414,17 @@ class NBTExplorerToolPanel(Panel):
                     row = Row([field,], margin=1)
                     rows.append(row)
                     height += row.height
-            if height > self.subwidgets[0].subwidgets[1].height:
+            if height > self.displayRow.height:
                 col = False
         if rows:
             if col:
-                col = Column(rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height)
+                col = Column(rows, align='l', spacing=0, height=self.displayRow.height)
             else:
-                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.subwidgets[0].subwidgets[1].height, draw_zebra=False, inner_width=300)
-            col.set_parent(self.subwidgets[0].subwidgets[1])
-            col.top = self.subwidgets[0].subwidgets[1].top
-            col.left = self.subwidgets[0].subwidgets[1].subwidgets[0].right
-            col.bottom = self.subwidgets[0].subwidgets[1].subwidgets[0].bottom
+                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=300)
+            col.set_parent(self.displayRow)
+            col.top = self.displayRow.top
+            col.left = self.displayRow.subwidgets[0].right
+            col.bottom = self.displayRow.subwidgets[0].bottom
             col.shrink_wrap()
             self.side_panel = col
 
@@ -436,13 +448,13 @@ class NBTExplorerToolPanel(Panel):
                 fields.append(Label("%s"%(_itm.name or "%s #%03d"%(itm.name or _("Item"), itm.value.index(_itm))), align='l', doNotTranslate=True))
                 fields += NBTExplorerToolPanel.build_field(_itm)
         elif type(itm) not in (str, unicode):
-            if type(itm.value) not in (str, unicode, int, float):
+            if type(getattr(itm, 'value', itm)) not in (str, unicode, int, float):
                 fld = Label
                 kw = {'align': 'l'}
             else:
                 fld = TextFieldWrapped
                 kw = {}
-            fields = [fld("%s"%itm.value, doNotTranslate=True, **kw),]
+            fields = [fld("%s"%getattr(itm, 'value', itm), doNotTranslate=True, **kw),]
         else:
             fields = [TextFieldWrapped("%s"%itm, doNotTranslata=True),]
         return fields
@@ -478,17 +490,17 @@ class NBTExplorerToolPanel(Panel):
     def build_pos(items):
         rows = []
         pos = items[0]
-        rows.append(Row([Label("X", align='l'), Label("%s"%pos[0].value, align='l')]))
-        rows.append(Row([Label("Y", align='l'), Label("%s"%pos[1].value, align='l')]))
-        rows.append(Row([Label("Z", align='l'), Label("%s"%pos[2].value, align='l')]))
+        rows.append(Row([Label("X", align='l'), FloatField(ref=AttrRef(pos[0], 'value'))]))
+        rows.append(Row([Label("Y", align='l'), FloatField(ref=AttrRef(pos[1], 'value'))]))
+        rows.append(Row([Label("Z", align='l'), FloatField(ref=AttrRef(pos[2], 'value'))]))
         return rows
 
     @staticmethod
     def build_rotation(items):
         rows = []
         rotation = items[0]
-        rows.append(Row([Label("Y", align='l'), Label("%s"%rotation[0].value, align='l')]))
-        rows.append(Row([Label("X", align='l'), Label("%s"%rotation[1].value, align='l')]))
+        rows.append(Row([Label("Y", align='l'), FloatField(ref=AttrRef(rotation[0], 'value'))]))
+        rows.append(Row([Label("X", align='l'), Label(ref=AttrRef(rotation[1], 'value'))]))
         return rows
 
     def build_inventory(self, items):
@@ -511,7 +523,7 @@ class NBTExplorerToolPanel(Panel):
                      TableColumn("C", c2w),
                      TableColumn("D", c3w),
                      ]
-        height = self.subwidgets[0].subwidgets[1].subwidgets[0].height
+        height = self.displayRow.subwidgets[0].height
         table = TableView(height=height - (self.margin * 2),
                           width=width,
                           nrows=((height - (self.margin * 2) - font_height / 2) / font_height),

@@ -16,7 +16,7 @@ import collections
 import os
 import traceback
 import uuid
-from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped
+from albow import FloatField, IntField, AttrRef, ItemRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped
 import albow.translate
 _ = albow.translate._
 from config import config
@@ -36,6 +36,9 @@ import shutil
 import directories
 import sys
 import mceutils
+#-#
+from nbtexplorer import NBTExplorerToolPanel
+#-#
 
 
 def alertFilterException(func):
@@ -122,12 +125,14 @@ class FilterModuleOptions(Widget):
         page.is_gl_container = True
         rows = []
         cols = []
-        max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
+        max_height = tool.editor.mainViewport.height - tool.editor.toolbar.height - tool.editor.subwidgets[0].height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
 
-        for optionName, optionType in inputs:
+        for optionSpec in inputs:
+            optionName = optionSpec[0]
+            optionType = optionSpec[1]
             if trn is not None:
                 oName = trn._(optionName)
             else:
@@ -233,6 +238,13 @@ class FilterModuleOptions(Widget):
 
             elif optionType == "title":
                 title = oName
+
+            #-#
+            elif type(optionType) == list and optionType[0].lower() == "nbttree":
+                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True)
+                page.optionDict[optionName] = AttrRef(self, 'nbttree')
+                rows.append(self.nbttree)
+            #-#
 
             else:
                 raise ValueError(("Unknown option type", optionType))
@@ -342,7 +354,7 @@ class FilterToolPanel(Panel):
 
         self.shrink_wrap()
         if self.parent:
-            self.centery = self.parent.centery
+            self.centery = (self.parent.mainViewport.height - self.parent.toolbar.height) / 2 + self.parent.subwidgets[0].height
 
         if self.selectedFilterName in self.savedOptions:
             self.filterOptionsPanel.options = self.savedOptions[self.selectedFilterName]
