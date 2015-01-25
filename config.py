@@ -448,6 +448,7 @@ definitions = {
         ("gotoPanel", "goto panel", "Ctrl-G"),
         ("exportSelection", "export selection", "Ctrl-E"),
         ("toggleRenderer", "toggle renderer", "Ctrl-M"),
+        ("uploadWorld", "upload world", "Ctrl-U"),
     ],
     ("version", "Version"): [
         ("version", "version", "1.1.2.0")
