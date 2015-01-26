@@ -1779,8 +1779,9 @@ class LevelEditor(GLViewport):
         ftp_pass_field = TextFieldWrapped(width=400)
         pass_row = Row((ftp_pass_lbl, ftp_pass_field))
         
-        note = Label("NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server")
-        col = Column((ip_row, user_row, pass_row, note))
+        note_creds = Label("NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server")
+        note_wait = Label("Please wait while MCEdit-Unified downloads the world. It will be opened once completed")
+        col = Column((ip_row, user_row, pass_row, note_creds, note_wait))
         widget.add(col)
         widget.shrink_wrap()
         d = Dialog(widget, ["Connect", "Cancel"])
@@ -1788,7 +1789,10 @@ class LevelEditor(GLViewport):
             print "IP: "+str(ftp_ip_field.get_text())
             print "Username: "+str(ftp_user_field.get_text())
             print "Password: "+str(ftp_pass_field.get_text())
-            self._ftp_client = FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+            if ftp_user_field.get_text() == "" and ftp_pass_field.get_text() == "":
+                self._ftp_client = FTPClient(ftp_ip_field.get_text())
+            else:
+                self._ftp_client = FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
             self.mcedit.loadFile(os.path.join(self._ftp_client.get_level_path(), 'level.dat'))
             self.world_from_ftp = True
             
@@ -1802,6 +1806,10 @@ class LevelEditor(GLViewport):
                 if answer == "Cancel":
                     return
             self._ftp_client.upload()
+            world_list = self.mcedit.recentWorlds()
+            del world_list[0]
+            print world_list
+            self.mcedit.setRecentWorlds(world_list)
             self.clearUnsavedEdits()
             self.unsavedEdits = 0
             self.root.fix_sticky_ctrl()
@@ -1814,6 +1822,7 @@ class LevelEditor(GLViewport):
             self.mcedit.removeEditor()
             self.controlPanel.dismiss()
             display.set_caption("MCEdit ~ " + release.get_version())
+    
             self._ftp_client.cleanup()
 
     def repairRegions(self):
