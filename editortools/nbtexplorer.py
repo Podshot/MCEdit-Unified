@@ -174,11 +174,6 @@ class NBTExplorerOptions(ToolOptions):
         useStyleBox = CheckBoxLabel(title="Use Bullet Styles",
                                     ref=config.nbtTreeSettings.useBulletStyles)
 
-        def mouse_down(e):
-            CheckBox.mouse_down(useStyleBox.subwidgets[1], e)
-            self.useStyleBox_click(e)
-
-        useStyleBox.subwidgets[0].mouse_down = useStyleBox.subwidgets[1].mouse_down = mouse_down
         self.useStyleBox = useStyleBox
         useTextBox = CheckBoxLabel(title="Use Bullet Text",
                                    ref=config.nbtTreeSettings.useBulletText)
@@ -207,10 +202,21 @@ class NBTExplorerOptions(ToolOptions):
 
         useImagesBox.subwidgets[0].mouse_down = useImagesBox.subwidgets[1].mouse_down = mouse_down
 
+        def mouse_down(e):
+            CheckBox.mouse_down(useStyleBox.subwidgets[1], e)
+            useImagesBox.mouse_down(e)
+            self.useStyleBox_click(e)
+
+        useStyleBox.subwidgets[0].mouse_down = useStyleBox.subwidgets[1].mouse_down = mouse_down
+
+        showAllTags = CheckBoxLabel(title="Show all the tags in the tree",
+                                    ref=config.nbtTreeSettings.showAllTags)
+
         col = Column((
                       Label("NBT Tree Settings"),
                       Row((useStyleBox, useTextBox, useImagesBox)),
                       bulletFilePath,
+                      showAllTags,
                       Button("Load NBT file...", action=tool.loadFile),
                       Button("OK", action=self.dismiss),
                     ))
@@ -348,7 +354,8 @@ class NBTExplorerToolPanel(Panel):
         else:
             header = Label("NBT Explorer")
             self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - header.height - (self.margin * 2) - btnRow.height - 2
-        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound, TAG_List], draw_zebra=False, _parent=self, styles=bullet_styles)
+        self.setCompounds()
+        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=self.compounds, draw_zebra=False, _parent=self, styles=bullet_styles)
         col = Column([self.tree, btnRow], margin=0, spacing=2)
         col.shrink_wrap()
         row = [col, Column([Label("", width=300), ], height=max_height + btnRow.height + 2)]
@@ -359,6 +366,14 @@ class NBTExplorerToolPanel(Panel):
             self.add(Column([header, self.displayRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
+
+    def setCompounds(self):
+        if config.nbtTreeSettings.showAllTags.get():
+            compounds = [TAG_Compound, TAG_List]
+        else:
+            compounds = [TAG_Compound,]
+        self.compounds = compounds
+
 
     def save_NBT(self):
         if self.fileName:
@@ -376,9 +391,10 @@ class NBTExplorerToolPanel(Panel):
         if self.nbtObject:
             data = copy.deepcopy(self.nbtObject[self.dataKeyName])
         self.data = data
+        self.setCompounds()
         if hasattr(self, 'tree'):
             self.tree.set_parent(None)
-            self.tree = NBTTree(height=self.max_height, inner_width=250, data=self.data, compound_types=[TAG_Compound, TAG_List], draw_zebra=False, _parent=self, styles=bullet_styles)
+            self.tree = NBTTree(height=self.max_height, inner_width=250, data=self.data, compound_types=self.compounds, draw_zebra=False, _parent=self, styles=bullet_styles)
             self.displayRow.subwidgets[0].subwidgets.insert(0, self.tree)
             self.tree.set_parent(self.displayRow.subwidgets[0])
 
@@ -398,7 +414,10 @@ class NBTExplorerToolPanel(Panel):
             self.side_panel.set_parent(None)
         items = [a for a in item[1]]
         rows = []
-        meth = getattr(self, 'build_%s'%item[3].lower(), None)
+        if config.nbtTreeSettings.showAllTags:
+            meth = None
+        else:
+            meth = getattr(self, 'build_%s'%item[3].lower(), None)
         col = True
         if meth and len(items) == 1:
             rows = meth(items)

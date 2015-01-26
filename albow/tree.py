@@ -64,7 +64,7 @@ class Tree(Column):
             lvl, k, v, p, c, id = items.pop(0)
             _c = False
             fields = []
-            if type(v) in self.compound_types and not hasattr(self._parent, 'build_%s'%k.lower()):
+            if type(v) in self.compound_types:
                 meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
                 if meth is not None:
                     v = meth(k, v)

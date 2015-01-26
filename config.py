@@ -570,6 +570,7 @@ definitions = {
         ("useBulletText", "Use Bullet Text", False),
         ("useBulletImages", "Use Bullet Images", True),
         ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.png')),
+        ("showAllTags", "Show all the tags in the tree", False),
     ],
 }
 
