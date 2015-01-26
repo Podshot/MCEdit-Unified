@@ -226,38 +226,12 @@ def perform(level, box, options):
             if newLayout:
                 treeData = {}
                 for i in range(len(search)):
-                    treeData[u"%s"%(search[i],)] = datas[i]
-                height = options[""].height
-                editor = options[""].editor
-                parent = options[""].parent
-                idx = 0
-                for sub in parent.subwidgets:
-                    if sub.__class__ == options[""].__class__:
-                        break
-                    idx += 1
-                def save_NBT():
-                    print dir(level)
-                tree = options[""].__class__(editor, nbtObject={'Data': treeData}, height=height, no_header=True, ok_action=save_NBT)
-                t = options.pop("")
-                parent.subwidgets[idx] = tree
-                tree.set_parent(parent)
-                def mouse_down(e):
-                    if e.button == 1 and e.num_clicks > 1:
-                        if tree.tree.selected_item[3].startswith('(') and tree.tree.selected_item[3].endswith(')'):
-                            s = ast.literal_eval("%s"%tree.tree.selected_item[3])
-                            if s in search:
-                                editor.mainViewport.cameraPosition = (s[0] + 0.5, s[1] + 2, s[2] - 1)
-                                editor.mainViewport.yaw = 0.0
-                                editor.mainViewport.pitch = 45.0
-                                newBox = BoundingBox(s, (1, 1, 1))
-                                editor.selectionTool.setSelection(newBox)
+                    if by == 'Block':
+                        treeData[u"%s"%(search[i],)] = datas[i]
                     else:
-                        tree.tree.treeRow.__class__.mouse_down(tree.tree.treeRow, e)
-                tree.tree.treeRow.mouse_down = mouse_down
-                options[""] = tree
-                del t
-#                options[""].nbtObject = {'Data': treeData}
-#                options[""].init_data()
+                        treeData[u"%s"%((datas[i]['Pos'][0].value, datas[i]['Pos'][1].value, datas[i]['Pos'][2].value),)] = datas[i]
+                inputs[1][1][1][1] = {'Data': treeData}
+                options[""](inputs[1])
             else:
                 for s in search:
                     editor.mainViewport.cameraPosition = (s[0] + 0.5, s[1] + 2, s[2] - 1)

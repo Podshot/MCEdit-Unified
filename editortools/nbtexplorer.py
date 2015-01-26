@@ -361,7 +361,6 @@ class NBTExplorerToolPanel(Panel):
         self.side_panel = None
 
     def save_NBT(self):
-        print "save_NBT"
         if self.fileName:
             self.editor.nbtTool.saveFile(self.fileName, self.data, self.dontSaveRootTag)
         else:

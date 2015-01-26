@@ -489,7 +489,7 @@ class BrushTool(CloneTool):
         Imports all Stock Brush Modes from their files.
         Called by setupBrushModes
         """
-        sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters'))
+        sys.path.append(os.path.join(directories.getDataDir(), u'stock-filters')) ### Why? Is 'stock-filters' needed here? Should'nt be 'stoch-brushes'?
         modes = [self.tryImport(x[:-3], 'stock-brushes') for x in filter(lambda x: x.endswith(".py"), os.listdir(os.path.join(directories.getDataDir(), u'stock-brushes')))]
         cust_modes = [self.tryImport(x[:-3], directories.brushesDir) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.brushesDir))]
         modes = filter(lambda m: (hasattr(m, "apply") or hasattr(m, 'applyToChunkSlices')) and hasattr(m, 'inputs'), modes)

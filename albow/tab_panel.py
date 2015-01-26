@@ -56,15 +56,18 @@ class TabPanel(Widget):
     def page_height(self):
         return self.height - self.tab_height
 
-    def add_page(self, title, page):
-        self._add_page(title, page)
+    def add_page(self, title, page, idx=None):
+        self._add_page(title, page, idx)
         if not self.current_page:
             self.show_page(page)
 
-    def _add_page(self, title, page):
+    def _add_page(self, title, page, idx=None):
         page.tab_title = _(title)
         page.anchor = 'ltrb'
-        self.pages.append(page)
+        if idx is not None:
+            self.pages.insert(idx, page)
+        else:
+            self.pages.append(page)
 
     def remove_page(self, page):
         try:

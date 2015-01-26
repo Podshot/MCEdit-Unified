@@ -94,13 +94,14 @@ class FilterModuleOptions(Widget):
         print "Creating options for ", module
         if hasattr(module, "inputs"):
             trn = getattr(module, "trn", None)
+            self.trn = trn
             if isinstance(module.inputs, list):
-                pgs = []
+                self.pgs = []
                 for tabData in module.inputs:
                     title, page, pageRect = self.makeTabPage(self.tool, tabData, trn=trn)
-                    pgs.append((title, page))
+                    self.pgs.append((title, page))
                 pages.set_parent(None)
-                self.pages = pages = TabPanel(pgs)
+                self.pages = pages = TabPanel(self.pgs)
             elif isinstance(module.inputs, tuple):
                 title, page, pageRect = self.makeTabPage(self.tool, module.inputs, trn=trn)
                 pages.add_page(title, page)
@@ -119,6 +120,15 @@ class FilterModuleOptions(Widget):
 
         for eachPage in pages.pages:
             self.optionDict = dict(self.optionDict.items() + eachPage.optionDict.items())
+
+    def rebuildTabPage(self, inputs, **kwargs):
+        title, page, rect = self.makeTabPage(self.tool, inputs, self.trn)
+        for i, t, p, s, r in self.pages.iter_tabs():
+            if t == title:
+                self.pages.remove_page(p)
+                break
+        self.pages.add_page(title, page, idx=i)
+        self.pages.show_page(page)
 
     def makeTabPage(self, tool, inputs, trn=None):
         page = Widget()
@@ -242,8 +252,9 @@ class FilterModuleOptions(Widget):
             #-#
             elif type(optionType) == list and optionType[0].lower() == "nbttree":
                 self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True)
-                page.optionDict[optionName] = AttrRef(self, 'nbttree')
+                page.optionDict[optionName] = AttrRef(self, 'rebuildTabPage')
                 rows.append(self.nbttree)
+                self.nbttree.page = len(self.pgs)
             #-#
 
             else:
@@ -506,7 +517,7 @@ class FilterTool(EditorTool):
 
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
 
-        self.panel = FilterToolPanel(self)
+#        self.panel = FilterToolPanel(self)
 
     @property
     def statusText(self):
@@ -520,9 +531,10 @@ class FilterTool(EditorTool):
 
     @alertException
     def showPanel(self):
-        if self.panel.parent:
-            self.editor.remove(self.panel)
+#        if self.panel.parent:
+#            self.editor.remove(self.panel)
 
+        self.panel = FilterToolPanel(self)
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
         self.editor.add(self.updatePanel)
         self.reloadFilters()
@@ -535,11 +547,13 @@ class FilterTool(EditorTool):
         self.editor.add(self.panel)
 
     def hidePanel(self):
-        if not self.panel.usingMacro:
-            self.panel.saveOptions()
-        if self.panel.parent:
-            self.panel.parent.remove(self.panel)
-            self.updatePanel.parent.remove(self.updatePanel)
+        if self.panel:
+            if not self.panel.usingMacro:
+                self.panel.saveOptions()
+            if self.panel.parent:
+                self.panel.parent.remove(self.panel)
+                self.updatePanel.parent.remove(self.updatePanel)
+                del self.panel
 
     def updateFilters(self):
         totalFilters = 0
@@ -582,6 +596,30 @@ class FilterTool(EditorTool):
         def tryImport(name):
             try:
                 m = __import__(name)
+            # [D.C.-G.]
+            # In my experiments in a NBTTree display issue, I went to think
+            # there was somthing wrong with the filters loading/importing. I was
+            # partially right. So I tweaked tihs part, replacing __import__()
+            # with imp.load_source().
+            # This method imports a module accordingly to its path, and can be a
+            # safer way to do the job here, since only the deisred folders are
+            # used to find the files. No missplaced filters in sys.path (e.g.
+            # for backup) can be loaded.
+            # But i don't know if this behaviour is wanted here. I didn't realy
+            # tested...
+            #
+            #import imp
+            #try:
+            #    try:
+            #        path = os.path.join(directories.filtersDir, (name + ".py"))
+            ##        if type(path) == unicode and DEF_ENC != "UTF-8":
+            ##            path = path.encode(DEF_ENC)
+            #        m = imp.load_source(name, path)
+            #    except:
+            #        path = os.path.join(directories.getDataDir(), "stock-filters", (name + ".py"))
+            ##        if type(path) == unicode and DEF_ENC != "UTF-8":
+            ##            path = path.encode(DEF_ENC)
+            #        m = imp.load_source(name, path)
                 listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
                 if name + ".py" not in listdir or name + ".pyc" not in listdir or name + ".pyo" not in listdir:
                     if "albow.translate" in sys.modules.keys():
