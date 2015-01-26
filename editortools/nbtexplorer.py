@@ -414,7 +414,7 @@ class NBTExplorerToolPanel(Panel):
             self.side_panel.set_parent(None)
         items = [a for a in item[1]]
         rows = []
-        if config.nbtTreeSettings.showAllTags:
+        if config.nbtTreeSettings.showAllTags.get():
             meth = None
         else:
             meth = getattr(self, 'build_%s'%item[3].lower(), None)
