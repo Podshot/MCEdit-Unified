@@ -127,8 +127,11 @@ class TextEditor(Widget):
                 text = ""
                 i = 0
             else:
-                text = text[:i - 1] + text[i:]
-                i -= 1
+                if c == "\x08":
+                    text = text[:i - 1] + text[i:]
+                    i -= 1
+                else:
+                    text = text[:i] + text[i + 1:]
             self.change_text(text)
             self.insertion_point = i
             return
@@ -832,8 +835,11 @@ class TextEditorWrapped(Widget):
                     self.selection_start = None
                     self.selection_end = None
                 elif i > 0:
-                    text = text[:i - 1] + text[i:]
-                    i -= 1   
+                    if c == "\x08":
+                        text = text[:i - 1] + text[i:]
+                        i -= 1
+                    else:
+                        text = text[:i] + text[i + 1:]
                 self.change_text(text)
                 self.insertion_point = i
                 self.sync_line_and_step()
