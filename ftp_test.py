@@ -55,6 +55,9 @@ class FTPClient:
         if hasattr(self, '_host'):
             self._host.close()
         shutil.rmtree('ftp')
+        
+    def get_level_path(self):
+        return os.path.join('ftp', self._worldname)
                 
     def __init__(self, ip, username='anonymous', password=''):
         try:
@@ -93,7 +96,7 @@ class FTPClient:
         print ""
         print ""
         
-        self.upload()
+        #self.upload()
         for line in self.upload_logging:
             print line
         print self._host.getcwd()
@@ -122,4 +125,3 @@ class FTPClient:
         #print self._host.curdir
         '''
       
-client = FTPClient('192.168.200.29')      

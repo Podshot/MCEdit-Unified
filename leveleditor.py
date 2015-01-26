@@ -24,6 +24,7 @@ import pygame
 from albow.fields import FloatField
 from mceutils import ChoiceButton, TextInputRow
 from editortools.blockview import BlockButton
+from ftp_test import FTPClient
 
 """
 leveleditor.py
@@ -139,6 +140,7 @@ class LevelEditor(GLViewport):
         self.debugString = ""
 
         self.testBoardKey = 0
+        self.world_from_ftp = False
 
         self.perfSamples = 5
         self.frameSamples = [timedelta(0, 0, 0)] * 5
@@ -1739,6 +1741,7 @@ class LevelEditor(GLViewport):
                 self.swapViewports()
             self.mainViewport.cameraPosition = destPoint
 
+    # TODO: Close marker
     def closeEditor(self):
         if self.unsavedEdits:
             answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
@@ -1759,6 +1762,59 @@ class LevelEditor(GLViewport):
         self.mcedit.removeEditor()
         self.controlPanel.dismiss()
         display.set_caption("MCEdit ~ " + release.get_version())
+        
+    # TODO: Load marker
+    def loadWorldFromFTP(self):
+        widget = Widget()
+        
+        ftp_ip_lbl = Label("FTP Server IP:")
+        ftp_ip_field = TextFieldWrapped(width=400)
+        ip_row = Row((ftp_ip_lbl, ftp_ip_field))
+        
+        ftp_user_lbl = Label("FTP Username:")
+        ftp_user_field = TextFieldWrapped(width=400)
+        user_row = Row((ftp_user_lbl, ftp_user_field))
+        
+        ftp_pass_lbl = Label("FTP Password:")
+        ftp_pass_field = TextFieldWrapped(width=400)
+        pass_row = Row((ftp_pass_lbl, ftp_pass_field))
+        
+        note = Label("NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server")
+        col = Column((ip_row, user_row, pass_row, note))
+        widget.add(col)
+        widget.shrink_wrap()
+        d = Dialog(widget, ["Connect", "Cancel"])
+        if d.present() == "Connect":
+            print "IP: "+str(ftp_ip_field.get_text())
+            print "Username: "+str(ftp_user_field.get_text())
+            print "Password: "+str(ftp_pass_field.get_text())
+            self._ftp_client = FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+            self.mcedit.loadFile(os.path.join(self._ftp_client.get_level_path(), 'level.dat'))
+            self.world_from_ftp = True
+            
+    def uploadChanges(self):
+        if self.world_from_ftp:
+            if self.unsavedEdits:
+                answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
+                self.root.fix_sticky_ctrl()
+                if answer == "Save":
+                    self.saveFile()
+                if answer == "Cancel":
+                    return
+            self._ftp_client.upload()
+            self.clearUnsavedEdits()
+            self.unsavedEdits = 0
+            self.root.fix_sticky_ctrl()
+            self.selectionTool.endSelection()
+            self.mainViewport.mouseLookOff()
+            self.level = None
+            self.renderer.stopWork()
+            self.removeWorker(self.renderer)
+            self.renderer.level = None
+            self.mcedit.removeEditor()
+            self.controlPanel.dismiss()
+            display.set_caption("MCEdit ~ " + release.get_version())
+            self._ftp_client.cleanup()
 
     def repairRegions(self):
         worldFolder = self.level.worldFolder
@@ -2098,11 +2154,14 @@ class LevelEditor(GLViewport):
         worldPanel.add(worldTable)
         worldPanel.shrink_wrap()
 
-        d = Dialog(worldPanel, ["Load", "Cancel"])
+        d = Dialog(worldPanel, ["Load", "From FTP Server", "Cancel"])
         d.key_down = key_down
         d.key_up = key_up
-        if d.present() == "Load":
+        result = d.present()
+        if result == "Load":
             loadWorld()
+        if result == "From FTP Server":
+            self.loadWorldFromFTP()
 
     def askOpenFile(self):
         self.mouseLookOff()

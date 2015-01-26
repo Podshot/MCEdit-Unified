@@ -35,6 +35,7 @@ class ControlPanel(Panel):
                     (config.keys.save.get(), "Save", editor.saveFile),
                     (config.keys.reloadWorld.get(), "Reload", editor.reload),
                     (config.keys.closeWorld.get(), "Close", editor.closeEditor),
+                    (config.keys.uploadWorld.get(), "Upload to FTP Server", editor.uploadChanges),
                     (config.keys.gotoPanel.get(), "Goto", editor.showGotoPanel),
                     (config.keys.worldInfo.get(), "World Info", editor.showWorldInfo),
                     (config.keys.undo.get(), "Undo", editor.undo),
