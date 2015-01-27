@@ -6,19 +6,31 @@
 #
 # Tree widget for albow
 #
-from albow import Widget
+from albow import Widget, Menu
 from theme import ThemeProperty
 from layout import Column
 from palette_view import PaletteView
 from scrollpanel import ScrollRow
 from utils import blit_in_rect
-from pygame import image, Surface, Rect, SRCALPHA, draw
+from pygame import image, Surface, Rect, SRCALPHA, draw, event
 
 
 #-----------------------------------------------------------------------------
 class TreeRow(ScrollRow):
     def click_item(self, n, e):
         self.parent.click_item(n, e.local)
+
+    def mouse_down(self, e):
+        if e.button == 3:
+#            print e
+            _e = event.Event(e.type, {'alt': e.alt, 'meta': e.meta, 'ctrl': e.ctrl,
+                              'shift': e.shift, 'button': 1, 'cmd': e.cmd,
+                              'local': e.local, 'pos': e.pos,
+                              'num_clicks': e.num_clicks})
+            ScrollRow.mouse_down(self, _e)
+            self.parent.show_menu(e.local)
+        else:
+            ScrollRow.mouse_down(self, e)
 
 
 #-----------------------------------------------------------------------------
@@ -32,6 +44,11 @@ class Tree(Column):
     bullet_color_inactive = ThemeProperty('bullet_color_inactive')
 
     def __init__(self, *args, **kwargs):
+        self.menu = [("Add", "add_item"),
+                     ("Delete", "delete_item"),
+                     ("New child", "add_child"),
+                     ("Rename", "rename_item"),
+                     ]
         self.selected_item_index = None
         self.selected_item = None
         self._parent = kwargs.pop('_parent', None)
@@ -49,6 +66,26 @@ class Tree(Column):
         self.treeRow = treeRow = TreeRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
         Column.__init__(self, [treeRow,], **kwargs)
 
+    def add_item(self):
+        print "add_item"
+
+    def add_child(self):
+        print "add_child"
+
+    def delete_item(self):
+        print "delete_item"
+
+    def rename_item(self):
+        print "rename_item"
+
+    def show_menu(self, pos):
+        if self.menu and self.selected_item_index:
+            m = Menu("Menu", self.menu)
+            i = m.present(self, pos)
+            if i > -1:
+                meth = getattr(self, self.menu[i][1], None)
+                if meth:
+                    meth()
 
     def build_layout(self):
         data = self.data
