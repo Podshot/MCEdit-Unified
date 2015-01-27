@@ -24,7 +24,7 @@ import pygame
 from albow.fields import FloatField
 from mceutils import ChoiceButton, TextInputRow
 from editortools.blockview import BlockButton
-from ftp_test import FTPClient
+from ftp_client import FTPClient
 
 """
 leveleditor.py
