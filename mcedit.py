@@ -711,7 +711,7 @@ def main(argv):
         ServerJarStorage()
     except Exception, e:
         logging.warning('Error creating server jar storage folder: {0!r}'.format(e))
-
+        
     try:
         MCEdit.main()
     except Exception as e:
@@ -753,4 +753,16 @@ def weird_fix():
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    try:
+        main(sys.argv)
+    except SystemExit:
+        pass
+    except:
+        traceback.print_exc()
+        print ""
+        print "=================================="
+        print "\t\t\t  MCEdit has crashed"
+        print "=================================="
+        raw_input("Press the Enter key to close this window")
+        pass
+    #sys.exit(main(sys.argv))
