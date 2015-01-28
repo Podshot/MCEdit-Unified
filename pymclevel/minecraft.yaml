@@ -603,11 +603,12 @@ blocks:
   - id: 17
     idStr: log
     name: Wood
+    search: log
     mapcolor: [102, 81, 51]
     tex: [4, 1]
     data:
       0:
-        name: Oak Wood (Upright) [Log]
+        name: Oak Wood (Upright)
         variant: Oak
         axis: x
         tex: [4, 1]
@@ -615,78 +616,78 @@ blocks:
           TOP: [5, 1]
           BOTTOM: [5, 1]
       1:
-        name: Spruce Wood (Upright) [Log]
+        name: Spruce Wood (Upright)
         tex: [4, 7]
         tex_direction:
           TOP: [9, 14]
           BOTTOM: [9, 14]
       2:
-        name: Birch Wood (Upright) [Log]
+        name: Birch Wood (Upright)
         tex: [5, 7]
         tex_direction:
           TOP: [10, 14]
           BOTTOM: [10, 14]
       3:
-        name: Jungle Wood (Upright) [Log]
+        name: Jungle Wood (Upright)
         tex: [9, 9]
         tex_direction:
           TOP: [11, 14]
           BOTTOM: [11, 14]
       4:
-        name: Oak Wood (East/West) [Log]
+        name: Oak Wood (East/West)
         tex: [4, 1]
         tex_direction:
           SIDES: [5, 1]
       5:
-        name: Spruce Wood (East/West) [Log]
+        name: Spruce Wood (East/West)
         tex: [4, 7]
         tex_direction:
           SIDES: [9, 14]
       6:
-        name: Birch Wood (East/West) [Log]
+        name: Birch Wood (East/West)
         tex: [5, 7]
         tex_direction:
           SIDES: [10, 14]
       7:
-        name: Jungle Wood (East/West) [Log]
+        name: Jungle Wood (East/West)
         tex: [9, 9]
         tex_direction:
           SIDES: [11, 14]
       8:
-        name: Oak Wood (North/South) [Log]
+        name: Oak Wood (North/South)
         tex: [4, 1]
         tex_direction:
           FORWARD: [11, 14]
           BACKWARD: [11, 14]
       9:
-        name: Spruce Wood (North/South) [Log]
+        name: Spruce Wood (North/South)
         tex: [4, 7]
         tex_direction:
           FORWARD: [9, 14]
           BACKWARD: [9, 14]
       10:
-        name: Birch Wood (North/South) [Log]
+        name: Birch Wood (North/South)
         tex: [5, 7]
         tex_direction:
           FORWARD: [10, 14]
           BACKWARD: [10, 14]
       11:
-        name: Jungle Wood (North/South) [Log]
+        name: Jungle Wood (North/South)
         tex: [9, 9]
         tex_direction:
           FORWARD: [11, 14]
           BACKWARD: [11, 14]
       12:
-        name: Oak Wood (Bark Only) [Log]
+        name: Oak Wood (Bark Only)
         tex: [4, 1]
       13:
-        name: Spruce Wood (Bark Only) [Log]
+        name: Spruce Wood (Bark Only)
         tex: [4, 7]
       14:
-        name: Birch Wood (Bark Only) [Log]
+        name: Birch Wood (Bark Only)
         tex: [5, 7]
       15:
-        name: Jungle Wood (Bark Only) [Log]
+        name: Jungle Wood (Bark Only)
         tex: [9, 9]
 
   - id: 18
@@ -5063,48 +5064,49 @@ blocks:
   - id: 162
     idStr: log2
     name: Wood (Acacia/Dark Oak)
+    search: log
     mapcolor: [102, 81, 51]
     tex: [3, 15]
     data:
       0:
-        name: Acacia Wood (Upright, Acacia) [Log]
+        name: Acacia Wood (Upright, Acacia)
         tex: [3, 15]
         tex_direction:
           TOP: [13, 13]
           BOTTOM: [13, 13]
       1:
-        name: Dark Oak Wood (Upright, Dark Oak) [Log]
+        name: Dark Oak Wood (Upright, Dark Oak)
         tex: [4, 15]
         tex_direction:
           TOP: [12, 14]
           BOTTOM: [12, 14]
       4:
-        name: Acacia Wood (East/West, Acacia) [Log]
+        name: Acacia Wood (East/West, Acacia)
         tex: [3, 15]
         tex_direction:
           SIDES: [13, 13]
       5:
-        name: Dark Oak Wood (East/West, Dark Oak) [Log]
+        name: Dark Oak Wood (East/West, Dark Oak)
         tex: [4, 15]
         tex_direction:
           SIDES: [12, 14]
       8:
-        name: Acacia Wood (North/South, Acacia) [Log]
+        name: Acacia Wood (North/South, Acacia)
         tex: [3, 15]
         tex_direction:
           FORWARD: [13, 13]
           BACKWARD: [13, 13]
       9:
-        name: Dark Oak Wood (North/South, Dark Oak) [Log]
+        name: Dark Oak Wood (North/South, Dark Oak)
         tex: [4, 15]
         tex_direction:
           FORWARD: [12, 14]
           BACKWARD: [12, 14]
       12:
-        name: Acacia Wood (Bark Only, Acacia) [Log]
+        name: Acacia Wood (Bark Only, Acacia)
         tex: [3, 15]
       13:
-        name: Dark Oak Wood (Bark Only, Dark Oak) [Log]
+        name: Dark Oak Wood (Bark Only, Dark Oak)
         tex: [4, 15]
         
   - id: 163
