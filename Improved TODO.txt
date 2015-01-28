@@ -38,6 +38,7 @@ def init(self):
         for (blocks):
             glBegin(GL_QUADS)
             #render each face here. may differ depending on camera min/max rotation.
+            #use Podshot's resourcepack model loader
             glEnd()
     glEndList()
 
