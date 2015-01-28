@@ -393,7 +393,7 @@ blocks:
   - id: 7
     idStr: bedrock
     name: Bedrock
-    aka: Adminium
+    search: Adminium
     mapcolor: [84, 84, 84]
     tex: [1, 1]
 
@@ -897,6 +897,7 @@ blocks:
   - id: 25
     idStr: noteblock
     name: Note Block
+    search: noteblock
     mapcolor: [114, 88, 56]
     tex: [10, 4]
 
@@ -1019,7 +1020,7 @@ blocks:
   - id: 27
     idStr: golden_rail
     name: Powered Rail
-    aka: Golden
+    search: Golden
     mapcolor: [120, 53, 28]
     tex: [3, 10]
     type: SIMPLE_RAIL
@@ -1227,7 +1228,8 @@ blocks:
         aka: Shrub
       1:
         tex: [7, 2]
-        name: Grass [Tall]
+        name: Grass
+        search: tall
       2:
         tex: [8, 3]
         name: Fern
@@ -1505,7 +1507,7 @@ blocks:
   - id: 37
     idStr: yellow_flower
     name: Dandelion
-    aka: Flower, Yellow
+    search: flower, yellow
     mapcolor: [255, 255, 0]
     tex: [13, 0]
     type: DECORATION_CROSS
@@ -1513,8 +1515,6 @@ blocks:
 
   - id: 38
     idStr: red_flower
-    name: Flower
-    aka: Flower, Red
     mapcolor: [255, 0, 0]
     tex: [12, 0]
     type: DECORATION_CROSS
@@ -1522,38 +1522,39 @@ blocks:
     data:
       0:
         name: Poppy
-        aka: Flower, Red
+        search: flower, red
       1:
         name: Blue Orchid
-        aka: Flower
+        search: flower
         tex: [16, 0]
       2:
         name: Allium
-        aka: Flower
+        search: flower
         tex: [17, 0]
       3:
         name: Azure Bluet
-        aka: Flower, Houstonia
+        aka: Houstonia
+        search: flower
         tex: [18, 0]
       4:
         name: Red Tulip
-        aka: Flower
+        search: flower
         tex: [19, 0]
       5:
         name: Orange Tulip
-        aka: Flower
+        search: flower
         tex: [16, 1]
       6:
         name: White Tulip
-        aka: Flower
+        search: flower
         tex: [17, 1]
       7:
         name: Pink Tulip
-        aka: Flower
+        search: flower
         tex: [18, 1]
       8:
         name: Oxeye Daisy
-        aka: Flower
+        search: flower
         tex: [19, 1]
 
   - id: 39
@@ -1603,7 +1604,8 @@ blocks:
           TOP: [0, 11]
           BOTTOM: [0, 13]
       2:
-        name: Wooden Double Slab (Seamed) [Old Wood]
+        name: Wooden Double Slab (Seamed)
+        aka: Old Wood
         tex: [4, 0]
       3:
         name: Cobblestone Double Slab (Seamed)
@@ -1627,7 +1629,8 @@ blocks:
         name: Sandstone Double Slab (Seamless)
         tex: [0, 11]
       10:
-        name: Wooden Double Slab (Seamless) [Old Wood]
+        name: Wooden Double Slab (Seamless)
+        aka: Old Wood
         tex: [4, 0]
       11:
         name: Cobblestone Double Slab (Seamless)
@@ -1663,7 +1666,8 @@ blocks:
           TOP: [0, 11]
           BOTTOM: [0, 13]
       2:
-        name: Wooden Slab (Bottom) [Old Wood]
+        name: Wooden Slab (Bottom)
+        aka: Old Wood
         tex: [4, 0]
       3:
         name: Cobblestone Slab (Bottom)
@@ -1693,7 +1697,8 @@ blocks:
           TOP: [0, 11]
           BOTTOM: [0, 13]
       10:
-        name: Wooden Slab (Top) [Old Wood]
+        name: Wooden Slab (Top)
+        aka: Old Wood
         tex: [4, 0]
       11:
         name: Cobblestone Slab (Top)
@@ -1748,7 +1753,7 @@ blocks:
   - id: 48
     idStr: mossy_cobblestone
     name: Moss Stone
-    aka: Mossy Cobblestone
+    search: Mossy Cobblestone
     mapcolor: [115, 169, 115]
     tex: [4, 2]
 
@@ -1822,7 +1827,7 @@ blocks:
   - id: 52
     idStr: mob_spawner
     name: Monster Spawner
-    aka: Mob Spawner
+    search: Mob
     mapcolor: [25, 82, 122]
     tex: [1, 4]
     type: SEMISOLID
@@ -1888,7 +1893,7 @@ blocks:
   - id: 55
     idStr: redstone_wire
     name: Redstone Dust
-    aka: Wire
+    search: Wire
     mapcolor: [245, 50, 50]
     tex: [4, 10]
     type: FLOOR
@@ -1942,7 +1947,7 @@ blocks:
   - id: 58
     idStr: crafting_table
     name: Crafting Table
-    aka: Workbench
+    search: Workbench
     mapcolor: [114, 88, 56]
     tex: [12, 3]
     tex_direction:
@@ -1953,7 +1958,7 @@ blocks:
   - id: 59
     idStr: wheat
     name: Wheat
-    aka: Crops
+    search: Crops
     mapcolor: [146, 192, 0]
     tex: [15, 5]
     type: CROPS
@@ -1987,7 +1992,7 @@ blocks:
   - id: 60
     idStr: farmland
     name: Farmland
-    aka: Tilled
+    search: Tilled
     mapcolor: [95, 58, 30]
     tex: [2, 0]
     tex_direction:
@@ -2173,7 +2178,7 @@ blocks:
   - id: 66
     idStr: rail
     name: Rail
-    aka: Minecart Track
+    search: Minecart Track
     mapcolor: [150, 134, 102]
     tex: [0, 8]
     type: MINECART_TRACKS
@@ -2524,7 +2529,7 @@ blocks:
 
   - id: 83
     idStr: reeds
-    aka: Reeds, Papyrus
+    search: reeds, papyrus
     mapcolor: [100, 67, 50]
     tex: [9, 4]
     type: DECORATION_CROSS
@@ -2625,7 +2630,7 @@ blocks:
   - id: 88
     idStr: soul_sand
     name: Soul Sand
-    aka: Slow Sand
+    search: Slow
     mapcolor: [106, 82, 68]
     tex: [8, 6]
 
@@ -2654,7 +2659,7 @@ blocks:
   - id: 91
     idStr: lit_pumpkin
     name: Jack o'Lantern
-    aka: Lit Pumpkin
+    search: lit pumpkin
     mapcolor: [249, 255, 58]
     explored: true
     tex: [6, 7]
@@ -2975,7 +2980,7 @@ blocks:
   - id: 97
     idStr: monster_egg
     name: Monster Egg
-    aka: Silverfish Block
+    search: silverfish block
     mapcolor: [120, 120, 120]
     tex: [1, 0]
     data:
@@ -3020,6 +3025,7 @@ blocks:
   - id: 99
     idStr: brown_mushroom_block
     name: Brown Mushroom Block
+    search: huge
     mapcolor: [145, 109, 85]
     tex: [14, 7]
     type: HUGE_MUSHROOM
@@ -3130,6 +3136,7 @@ blocks:
   - id: 100
     idStr: red_mushroom_block
     name: Red Mushroom Block
+    search: huge
     mapcolor: [181, 29, 27]
     tex: [13, 7]
     type: HUGE_MUSHROOM
@@ -3262,7 +3269,7 @@ blocks:
   - id: 103
     idStr: melon_block
     name: Melon
-    aka: Watermelon, Block
+    search: watermelon, block
     mapcolor: [190, 184, 41]
     tex: [8, 8]
     tex_direction:
@@ -3299,7 +3306,7 @@ blocks:
   - id: 105
     idStr: melon_stem
     name: Melon Stem
-    aka: Watermelon
+    search: watermelon
     mapcolor: [190, 184, 41]
     tex: [15, 6]
     type: STEM
@@ -3466,7 +3473,7 @@ blocks:
   - id: 111
     idStr: waterlily
     name: Lily Pad
-    aka: Waterlily
+    search: Waterlily
     mapcolor: [117, 176, 73]
     tex: [12, 4]
     type: FLOOR
@@ -3534,7 +3541,7 @@ blocks:
   - id: 116
     idStr: enchanting_Table
     name: Enchantment Table
-    aka: Enchanting
+    search: Enchanting
     mapcolor: [88, 23, 22]
     tex: [6, 11]
     type: ENCHANTMENT_TABLE
@@ -3652,7 +3659,7 @@ blocks:
   - id: 122
     idStr: dragon_egg
     name: Dragon Egg
-    aka: Ender Dragon Egg
+    search: Ender
     mapcolor: [45, 1, 51]
     tex: [7, 10]
     brightness: 1
@@ -3667,7 +3674,7 @@ blocks:
   - id: 124
     idStr: lit_redstone_lamp
     name: Redstone Lamp (On)
-    aka: Lit
+    search: Lit
     mapcolor: [208, 152, 70]
     tex: [4, 13]
     brightness: 15
@@ -4177,7 +4184,7 @@ blocks:
   - id: 144
     idStr: skull
     name: Mob Head
-    aka: Skull
+    search: Skull
     mapcolor: [200, 100, 100]
     tex: [2, 15]
     opacity: 0
@@ -4540,7 +4547,7 @@ blocks:
   - id: 151
     idStr: daylight_detector
     name: Daylight Sensor
-    aka: Detector
+    search: Detector
     mapcolor: [255, 100, 255]
     tex: [20,2]
     tex_direction:
@@ -4838,7 +4845,6 @@ blocks:
 
   - id: 159
     idStr: stained_hardened_clay
-    name: Stained Clay
     mapcolor: [150, 100, 50]
     data:
       0:
@@ -5174,6 +5180,7 @@ blocks:
   - id: 166
     idStr: barrier
     name: Barrier
+    search: block
     mapcolor: [255, 255, 255]
     tex: [10, 1]
     type: GLASS
@@ -5440,7 +5447,8 @@ blocks:
     
   - id: 177
     idStr: wall_banner
-    name: Wall-Mounted Banner
+    name: Wall Banner
+    search: mounted
     mapcolor: [20, 20, 20]
     tex: [19, 3]
     opacity: 0
@@ -5457,7 +5465,7 @@ blocks:
   - id: 178
     idStr: daylight_detector_inverted
     name: Daylight Sensor Inverted
-    aka: Detector
+    search: detector
     mapcolor: [255, 100, 255]
     tex: [20,2]
     tex_direction:
