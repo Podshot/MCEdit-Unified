@@ -699,8 +699,6 @@ class TextEditorWrapped(Widget):
             else:
                 self.attention_lost()
 
-        self.call_parent_handler('key_down', event)
-
     def key_up(self, event):
         pass
 
