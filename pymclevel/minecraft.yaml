@@ -63,10 +63,13 @@
 #   name: The name that will show up in X-Ray if you're using it
 #         as one of your highlights (unimportant otherwise)
 #
-# * aka:  Also known as. Alternate names or keywords to be used when searching
+# * aka:  Also known as. Alternate names for blocks, and to be used when searching
 #         for a block by name. This field is also used as a hint when converting
 #         blocks between level formats: The names of the source level's blocks
 #         are matched against both the name and aka of the destination level's.
+#
+# * search:  Hidden words to be used when searching in the block picker. These
+#            words will be completely hidden to the user.
 #
 # * brightness: Light level produced by the block. Default is 0 (no light)
 #
@@ -1020,7 +1023,7 @@ blocks:
   - id: 27
     idStr: golden_rail
     name: Powered Rail
-    search: Golden
+    search: golden
     mapcolor: [120, 53, 28]
     tex: [3, 10]
     type: SIMPLE_RAIL
@@ -1753,7 +1756,7 @@ blocks:
   - id: 48
     idStr: mossy_cobblestone
     name: Moss Stone
-    search: Mossy Cobblestone
+    search: mossy, cobblestone
     mapcolor: [115, 169, 115]
     tex: [4, 2]
 
@@ -1827,7 +1830,7 @@ blocks:
   - id: 52
     idStr: mob_spawner
     name: Monster Spawner
-    search: Mob
+    search: mob
     mapcolor: [25, 82, 122]
     tex: [1, 4]
     type: SEMISOLID
@@ -1893,7 +1896,7 @@ blocks:
   - id: 55
     idStr: redstone_wire
     name: Redstone Dust
-    search: Wire
+    search: wire
     mapcolor: [245, 50, 50]
     tex: [4, 10]
     type: FLOOR
@@ -1947,7 +1950,7 @@ blocks:
   - id: 58
     idStr: crafting_table
     name: Crafting Table
-    search: Workbench
+    search: workbench
     mapcolor: [114, 88, 56]
     tex: [12, 3]
     tex_direction:
@@ -1958,7 +1961,7 @@ blocks:
   - id: 59
     idStr: wheat
     name: Wheat
-    search: Crops
+    search: crops
     mapcolor: [146, 192, 0]
     tex: [15, 5]
     type: CROPS
@@ -1992,7 +1995,7 @@ blocks:
   - id: 60
     idStr: farmland
     name: Farmland
-    search: Tilled
+    search: tilled
     mapcolor: [95, 58, 30]
     tex: [2, 0]
     tex_direction:
@@ -2178,7 +2181,7 @@ blocks:
   - id: 66
     idStr: rail
     name: Rail
-    search: Minecart Track
+    search: minecart track
     mapcolor: [150, 134, 102]
     tex: [0, 8]
     type: MINECART_TRACKS
@@ -2630,7 +2633,7 @@ blocks:
   - id: 88
     idStr: soul_sand
     name: Soul Sand
-    search: Slow
+    search: slow
     mapcolor: [106, 82, 68]
     tex: [8, 6]
 
@@ -2980,7 +2983,7 @@ blocks:
   - id: 97
     idStr: monster_egg
     name: Monster Egg
-    search: silverfish block
+    search: silverfish, block
     mapcolor: [120, 120, 120]
     tex: [1, 0]
     data:
@@ -3473,7 +3476,7 @@ blocks:
   - id: 111
     idStr: waterlily
     name: Lily Pad
-    search: Waterlily
+    search: waterlily
     mapcolor: [117, 176, 73]
     tex: [12, 4]
     type: FLOOR
@@ -3541,7 +3544,7 @@ blocks:
   - id: 116
     idStr: enchanting_Table
     name: Enchantment Table
-    search: Enchanting
+    search: enchanting
     mapcolor: [88, 23, 22]
     tex: [6, 11]
     type: ENCHANTMENT_TABLE
@@ -3659,7 +3662,7 @@ blocks:
   - id: 122
     idStr: dragon_egg
     name: Dragon Egg
-    search: Ender
+    search: ender
     mapcolor: [45, 1, 51]
     tex: [7, 10]
     brightness: 1
@@ -3674,7 +3677,7 @@ blocks:
   - id: 124
     idStr: lit_redstone_lamp
     name: Redstone Lamp (On)
-    search: Lit
+    search: lit
     mapcolor: [208, 152, 70]
     tex: [4, 13]
     brightness: 15
@@ -4184,7 +4187,7 @@ blocks:
   - id: 144
     idStr: skull
     name: Mob Head
-    search: Skull
+    search: skull
     mapcolor: [200, 100, 100]
     tex: [2, 15]
     opacity: 0
@@ -4547,7 +4550,7 @@ blocks:
   - id: 151
     idStr: daylight_detector
     name: Daylight Sensor
-    search: Detector
+    search: detector
     mapcolor: [255, 100, 255]
     tex: [20,2]
     tex_direction:
@@ -5448,7 +5451,7 @@ blocks:
   - id: 177
     idStr: wall_banner
     name: Wall Banner
-    search: mounted
+    search: mount, mounted
     mapcolor: [20, 20, 20]
     tex: [19, 3]
     opacity: 0
