@@ -46,7 +46,7 @@ class Block(object):
             r = self.materials.names[self.ID]
         else:
             r = getattr(self.materials, attr)[self.ID]
-        if attr in ("name", "aka", "color", "type"):
+        if attr in ("name", "aka", "color", "type", "search"):
             r = r[self.blockData]
         return r
 
@@ -72,6 +72,7 @@ class MCMaterials(object):
         self.blockTextures[:] = self.defaultTexture
         self.names = [[defaultName] * 16 for _ in range(id_limit)]
         self.aka = [[""] * 16 for _ in range(id_limit)]
+        self.search = [[""] * 16 for _ in range(id_limit)]
 
         self.type = [["NORMAL"] * 16] * id_limit
         self.blocksByType = defaultdict(list)
@@ -151,6 +152,8 @@ class MCMaterials(object):
         for v in self.allBlocks:
             nameParts = v.name.lower().split(" ")
             for anotherName in v.aka.lower().split(" "):
+                nameParts.append(anotherName)
+            for anotherName in v.search.lower().split(" "):
                 nameParts.append(anotherName)
             i = 0
             spiltNamesUsed = []
@@ -282,6 +285,7 @@ class MCMaterials(object):
         self.lightEmission[blockID] = kw.pop('brightness', self.defaultBrightness)
         self.lightAbsorption[blockID] = kw.pop('opacity', self.defaultOpacity)
         self.aka[blockID][blockData] = kw.pop('aka', "")
+        self.search[blockID][blockData] = kw.pop('search', "")
         type = kw.pop('type', 'NORMAL')
 
         color = kw.pop('mapcolor', self.flatColors[blockID, blockData])
@@ -890,7 +894,7 @@ def guessFilterTable(matsFrom, matsTo):
                     break
         if block is None:
             for b in matsTo.allBlocks:
-                if fromBlock.name in b.aka:
+                if fromBlock.name in b.aka or fromBlock.name in b.search:
                     block = b
                     break
         if block is None:
