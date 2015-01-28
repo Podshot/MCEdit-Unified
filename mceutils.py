@@ -20,6 +20,11 @@ Exception catching, some basic box drawing, texture pack loading, oddball UI ele
 """
 # Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
+#!#
+#!# The stuff in there related to albow should be in albow module.
+#!# This stuff will then be available for components base classes in this GUI module.
+#!# And make albow/widgets more coherent to use.
+#!#
 import resource_packs
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget

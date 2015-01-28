@@ -5,7 +5,8 @@
 import locale
 from pygame import draw
 import pygame
-from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT
+from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT, \
+    K_BACKSPACE, K_DELETE
 from widget import Widget, overridable_property
 from controls import Control
 from config import config
@@ -121,13 +122,13 @@ class TextEditor(Widget):
     def insert_char(self, c):
         if self.upper:
             c = c.upper()
-        if c == "\x08" or c == "\x7f":
+        if c == K_BACKSPACE or c == K_DELETE:
             text, i = self.get_text_and_insertion_point()
             if i is None:
                 text = ""
                 i = 0
             else:
-                if c == "\x08":
+                if c == K_BACKSPACE:
                     text = text[:i - 1] + text[i:]
                     i -= 1
                 else:
@@ -819,7 +820,7 @@ class TextEditorWrapped(Widget):
         if self.upper:
             c = c.upper()
         if c <= u"\xff":
-            if c == "\x08" or c == "\x7f":
+            if c == K_BACKSPACE or c == K_DELETE:
                 text, i = self.get_text_and_insertion_point()
                 if i is None and (self.selection_start is None or self.selection_end is None):
                     text = ""
@@ -833,7 +834,7 @@ class TextEditorWrapped(Widget):
                     self.selection_start = None
                     self.selection_end = None
                 elif i > 0:
-                    if c == "\x08":
+                    if c == K_BACKSPACE:
                         text = text[:i - 1] + text[i:]
                         i -= 1
                     else:
