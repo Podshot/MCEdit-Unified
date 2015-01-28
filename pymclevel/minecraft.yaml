@@ -2181,7 +2181,7 @@ blocks:
   - id: 66
     idStr: rail
     name: Rail
-    search: minecart track
+    search: minecart, track
     mapcolor: [150, 134, 102]
     tex: [0, 8]
     type: MINECART_TRACKS
