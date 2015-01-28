@@ -323,7 +323,7 @@ t149 Debug Auflage
 o150 Show Block Info
 t150 Blockinfo anzeigen
 o151 Pick Block
-t151 Block Wähler
+t151 Block wählen
 o152 Select Chunks
 t152 Chunks auswählen
 o153 Deselect Chunks
@@ -521,7 +521,7 @@ t245 Luft füllen
 o246 Line Spacing
 t246 Linien Abstand
 o247 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
-t247 Klicken und ziehen, um Blöcke zu platzieren. Block wählen: {P} -Klick. Erhöhen: {R}. Abnahme: {F}. Drehen: {E}. Rollen: {G}. Mausrad, um Abstand einzustellen.
+t247 Klicken und ziehen, um Blöcke zu platzieren. Block wählen: {P}-Klick. Erhöhen: {R}. Abnahme: {F}. Drehen: {E}. Rollen: {G}. Mausrad, um Abstand einzustellen.
 o248 Whenever the brush size changes, reset the distance to the brush blocks.
 t248 Wann immer die Pinselgröße ändert, setzen Sie den Abstand zu den Blöcken die markiert sind mit dem Pinsel zurück.
 o249 Shortcut: Alt-1
@@ -665,7 +665,7 @@ t314 Dauer (Sekunden)
 o315 Add Potion Effect to Mobs
 t315 Füge Statuseffekt an Mobs hinzu
 o316 Banslimes
-t316 
+t316 Banslimes
 o317 Change Mob Properties
 t317 Ändere Mob Eigentschaften
 o318 Chunk Surface Repair
@@ -681,7 +681,7 @@ t322 Erstelle Shops
 o323 Create Spawners
 t323 Erstelle Spawners
 o324 Decliff
-t324 
+t324 Decliff
 o325 Find
 t325 Finde
 o326 Forester
@@ -876,7 +876,7 @@ t400 Dieser Filter sucht nach NBT in Entities oder TileEntities. Es kann auch na
 o401 Documentation
 t401 Dokumentation
 o402 Forester script by dudecon
-t402 Förster script von dudecon
+t402 Förster Script von dudecon
 o403 Procedural
 t403 Procedural
 o404 Normal
@@ -1030,7 +1030,7 @@ t477 Sumpfland M
 o478 Ice Plains Spikes
 t478 Eiszapfen-Tundra
 o479 Ice Mountains Spikes
-t479 
+t479 Eisige Berge Spitzen
 o480 Jungle M
 t480 Dschungel M
 o481 JungleEdge M
@@ -1120,7 +1120,7 @@ t522 Sicht
 o523 Ignore
 t523 Ignoriere
 o524 Space
-t524 Leerzeichen
+t524 Leertaste
 o525 Tab
 t525 Tab
 o526 Delete
@@ -1130,11 +1130,11 @@ t527 Scroll nach oben
 o528 Scroll Down
 t528 Scroll nach unten
 o529 Button 3
-t529 Mittlere Maustaste
+t529 Knopf 3
 o530 Alt
 t530 Alt
 o531 Ctrl
-t531 Ctrl
+t531 Strg
 o532 Creating a new world.
 t532 Erstelle eine neue Welt.
 o533 Minecraft Server
@@ -1146,7 +1146,7 @@ t535 Generator:
 o536 Will automatically download and use the latest version
 t536 Wird automatisch aktuelle Version herrunterladen
 o537 Height: 
-t537 Höhe
+t537 Höhe: 
 o538 Grass
 t538 Grass
 o539 Server version:
@@ -1256,7 +1256,7 @@ t590 Verherige Seite
 o591 Next Page
 t591 Nächste Seite
 o592 Super Secret Settings
-t592 Super Secret Settings
+t592 Super geheime Einstellungen
 o593 Default Resource Pack
 t593 Standard Ressourcen Packet
 o594 Square
@@ -1264,7 +1264,7 @@ t594 Quadrat
 o595 Record a Macro
 t595 Ein Makro aufnehmen
 o596 Health Boost
-t596 Lebens Boost
+t596 Leben Boost
 o597 Saturation (no mob effect)
 t597 Sättigung (kein Mob Effekt)
 o598 Wither
@@ -1322,23 +1322,23 @@ t623 Nicht Speichern
 o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t624 Drücke eine Taste um ihr folgende Aktion zu geben: "{0}"
+t624 Drücke eine Taste um "{0}" die Aktion zu geben 
 
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 Drücke eine Taste um ihr folgende Aktion zu geben: "{0}"
-Keine Taste meint Rechtsklick für schnelles Schieben.
+t625 Drücke eine Taste um "{0}" die Aktion zu geben
+Keine Taste ist Rechtsklick für schnelles schieben.
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t626 {0} ist kein Bestimmer. Drücken Sie eine neue Taste.
+t626 {0} ist kein Modifizierer. Drücken Sie eine neue Taste.
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t627 Bewegungstasten können nicht mit Strg oder mit Bestimmer verwendet werden. Drücken sie eine neue Taste.
+t627 Bewegungstasten können nicht mit Strg oder mit Modifizierer verwendet werden. Drücken sie eine neue Taste.
 
 Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
 o628 You can't use the key {0}. Press a new key.
@@ -1372,13 +1372,13 @@ t639 Versucht die Fensterposition zu speichern und wiederherzustellen.
 o640 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
 t640 Das wird dein MCEdit "portabel" machen, dadurch deine Einstellungen und Schematics in den selben Ordner verschoben werden wie {0}. Fortsetzen?
 o641 MCEditData
-t641 MCEditDateien
+t641 MCEditDaten
 o642 This will move your settings and schematics to your Documents folder. Continue?
 t642 Das wird deine Enstellungen und Schematics in deinen Dokumenten Ordner verschieben. Fortsetzen?
 o643 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t643 Klicken damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in den Dokumenten Ordner verschoben werden
 o644 GoTo Position:
-t644 
+t644 Gehe zu Position:
 o645 (click anywhere to teleport)
 t645 (Klicke irgendwohin um zu teleportieren)
 o646 Format:
@@ -1392,7 +1392,7 @@ t649 Tag:
 o650 Time of day:
 t650 Zeit des Tages:
 o651 RandomSeed:
-t651 Startwert:
+t651 ZufälligerSeed:
 o652 Game Type:
 t652 Spielmodus:
 o653 Number of chunks: {0}
@@ -1422,19 +1422,19 @@ t664 Daten-Typ:
 o665 -> Name
 t665 -> Name
 o666 Double-click to edit
-t666 Doppel-Klicken um zu editieren
+t666 Doppel-klick um zu editieren
 o667 NBT Explorer
 Dive into level NBT structure.
 Right-click for options/load files.
 t667 NBT Explorer
-Tauch in die Level NBT Struktur ein.
+Tauch in die Ebene NBT Struktur ein.
 Rechts-Klick für Optionen/Dateien laden.
 o668 Save your change in the NBT data.
 t668 Speichere deine Änderungen in den NBT Daten.
 o669 Save unsaved edits before loading?
-t669 Nicht gespeicherte Änderungen speichern bevor laden?
+t669 Nicht gespeicherte Änderungen speichern vor dem laden?
 o670 {0} unsaved edits.  {1} to save.  {2}
-t670 {0} nicht gespeicherte Änderungen.  {1} zu speichern.  {2}
+t670 {0} nicht gespeicherte Änderungen.  {1} für speichern.  {2}
 o671 (UNDO DISABLED)
 t671 (RÜCKGÄNGIG AUSGESCHALTET)
 o672 Save unsaved edits before closing?
