@@ -73,7 +73,7 @@ class TextEditor(Widget):
             except ValueError:
                 c = ""
             if k != K_DOWN and k != K_UP:
-                if self.insert_char(c) != 'pass':
+                if self.insert_char(c, k) != 'pass':
                     return
         if event.cmd and event.unicode:
             if event.key == K_c:
@@ -119,16 +119,16 @@ class TextEditor(Widget):
             i = max(0, min(i + d, len(text)))
         self.insertion_point = i
 
-    def insert_char(self, c):
+    def insert_char(self, c, k=None):
         if self.upper:
             c = c.upper()
-        if c == K_BACKSPACE or c == K_DELETE:
+        if k == K_BACKSPACE or k == K_DELETE:
             text, i = self.get_text_and_insertion_point()
             if i is None:
                 text = ""
                 i = 0
             else:
-                if c == K_BACKSPACE:
+                if k == K_BACKSPACE:
                     text = text[:i - 1] + text[i:]
                     i -= 1
                 else:
@@ -660,7 +660,7 @@ class TextEditorWrapped(Widget):
                 c = event.unicode
             except ValueError:
                 c = ""
-            if self.insert_char(c) != 'pass':
+            if self.insert_char(c, k) != 'pass':
                 return
         if event.cmd and event.unicode:
             if event.key == K_c:
@@ -816,11 +816,11 @@ class TextEditorWrapped(Widget):
                 self.insertion_point = 0
                 self.insertion_step = 0
 
-    def insert_char(self, c):
+    def insert_char(self, c, k=None):
         if self.upper:
             c = c.upper()
         if c <= u"\xff":
-            if c == K_BACKSPACE or c == K_DELETE:
+            if k == K_BACKSPACE or k == K_DELETE:
                 text, i = self.get_text_and_insertion_point()
                 if i is None and (self.selection_start is None or self.selection_end is None):
                     text = ""
@@ -834,7 +834,7 @@ class TextEditorWrapped(Widget):
                     self.selection_start = None
                     self.selection_end = None
                 elif i > 0:
-                    if c == K_BACKSPACE:
+                    if k == K_BACKSPACE:
                         text = text[:i - 1] + text[i:]
                         i -= 1
                     else:
