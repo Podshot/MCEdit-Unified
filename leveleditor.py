@@ -1824,6 +1824,8 @@ class LevelEditor(GLViewport):
             display.set_caption("MCEdit ~ " + release.get_version())
     
             self._ftp_client.cleanup()
+        else:
+            alert("This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible")
 
     def repairRegions(self):
         worldFolder = self.level.worldFolder
