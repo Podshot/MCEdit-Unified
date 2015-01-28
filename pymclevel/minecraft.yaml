@@ -1433,10 +1433,12 @@ blocks:
       7:
         tex: [2, 7]
         name: Gray Wool
+        search: grey
         mapcolor: [66, 66, 66]
       8:
         tex: [1, 14]
         name: Light Gray Wool
+        search: grey
         mapcolor: [166, 166, 166]
       9:
         tex: [1, 13]
@@ -2890,10 +2892,12 @@ blocks:
         mapcolor: [217, 131, 155]
       7:
         name: Gray Stained Glass
+        search: grey
         tex: [7, 19]
         mapcolor: [66, 66, 66]
       8:
         name: Light Gray Stained Glass
+        search: grey
         tex: [8, 19]
         mapcolor: [166, 166, 166]
       9:
@@ -4867,10 +4871,12 @@ blocks:
         mapcolor: [217, 131, 155]
       7:
         name: Gray Stained Clay
+        search: grey
         tex: [7, 18]
         mapcolor: [66, 66, 66]
       8:
         name: Light Gray Stained Clay
+        search: grey
         tex: [8, 18]
         mapcolor: [166, 166, 166]
       9:
@@ -4959,6 +4965,7 @@ blocks:
         mapcolor: [217, 131, 155]
       7:
         name: Gray Stained Glass Pane
+        search: grey
         tex: [7, 19]
         tex_direction:
             TOP: [7, 17]
@@ -4966,6 +4973,7 @@ blocks:
         mapcolor: [66, 66, 66]
       8:
         name: Light Gray Stained Glass Pane
+        search: grey
         tex: [8, 19]
         tex_direction:
             TOP: [8, 17]
@@ -5295,10 +5303,12 @@ blocks:
       7:
         tex: [2, 7]
         name: Gray Carpet
+        search: grey
         mapcolor: [66, 66, 66]
       8:
         tex: [1, 14]
         name: Light Gray Carpet
+        search: grey
         mapcolor: [166, 166, 166]
       9:
         tex: [1, 13]
