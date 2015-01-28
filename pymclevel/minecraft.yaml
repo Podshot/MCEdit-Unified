@@ -63,7 +63,7 @@
 #   name: The name that will show up in X-Ray if you're using it
 #         as one of your highlights (unimportant otherwise)
 #
-# * aka:  Also known as. Alternate names for blocks, and to be used when searching
+# * aka:  Also known as. Alternate names for blocks that can also be used when searching
 #         for a block by name. This field is also used as a hint when converting
 #         blocks between level formats: The names of the source level's blocks
 #         are matched against both the name and aka of the destination level's.
