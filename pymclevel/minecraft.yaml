@@ -272,19 +272,22 @@ blocks:
         name: Granite
         tex: [4, 16]
       2:
-        name: Polished Granite [Smooth]
+        name: Polished Granite
+        search: smooth
         tex: [5, 16]
       3:
         name: Diorite
         tex: [6, 16]
       4:
-        name: Polished Diorite [Smooth]
+        name: Polished Diorite
+        search: smooth
         tex: [7, 16]
       5:
         name: Andesite
         tex: [8, 16]
       6:
-        name: Polished Andesite [Smooth]
+        name: Polished Andesite
+        search: smooth
         tex: [9, 16]
         
   - id: 2
@@ -1228,7 +1231,7 @@ blocks:
       0:
         tex: [7, 3]
         name: Dead Bush (Drops Seeds)
-        aka: Shrub
+        search: shrub
       1:
         tex: [7, 2]
         name: Grass
@@ -1242,7 +1245,7 @@ blocks:
   - id: 32
     idStr: deadbush
     name: Dead Bush
-    aka: Shrub
+    search: shrub
     mapcolor: [148, 100, 40]
     tex: [7, 3]
     type: DECORATION_CROSS
@@ -2391,6 +2394,7 @@ blocks:
   - id: 76
     idStr: redstone_torch
     name: Redstone Torch (On)
+    search: lit
     mapcolor: [255, 0, 0]
     tex: [3, 6]
     type: TORCH
@@ -2399,15 +2403,15 @@ blocks:
     brightness: 7
     data:
       1:
-        name: Redstone Torch (East) [Lit]
+        name: Redstone Torch (East)
       2:
-        name: Redstone Torch (West) [Lit]
+        name: Redstone Torch (West)
       3:
-        name: Redstone Torch (South) [Lit]
+        name: Redstone Torch (South)
       4:
-        name: Redstone Torch (North) [Lit]
+        name: Redstone Torch (North)
       5:
-        name: Redstone Torch (Up) [Lit]
+        name: Redstone Torch (Up)
 
   - id: 77
     idStr: stone_button
