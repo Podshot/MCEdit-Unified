@@ -7,7 +7,9 @@
 # Tree widget for albow
 #
 from albow import Widget, Menu, IntField, FloatField, TextFieldWrapped, \
-    CheckBox, AttrRef, Label, Row, Button, ask
+    CheckBox, AttrRef, Label, Row, Button, ask, alert
+from albow.translate import _
+from mceutils import ChoiceButton
 from theme import ThemeProperty
 from layout import Column
 from dialogs import Dialog
@@ -18,7 +20,7 @@ from pygame import image, Surface, Rect, SRCALPHA, draw, event
 
 
 #-----------------------------------------------------------------------------
-item_types_map = {dict: ("Compound", None, None),
+item_types_map = {dict: ("Compound", None, {}),
                   int: ("Integer", IntField, 0),
                   float: ("Floating point number", FloatField, 0.0),
                   unicode: ("Text", TextFieldWrapped, ""),
@@ -42,8 +44,16 @@ map_types_items = setup_map_types_items()
 
 
 #-----------------------------------------------------------------------------
+# Tree item builder methods
+def create_base_item(self, i_type, i_name, i_value):
+    return i_name, type(i_type)(i_value)
+
+create_dict = create_int = create_float = create_unicode = create_bool = create_base_item
+
+
+#-----------------------------------------------------------------------------
 class SetupNewItemPanel(Dialog):
-    def __init__(self, type_string, types=map_types_items):
+    def __init__(self, type_string, types=map_types_items, ok_action=None):
         self.type_string = type_string
         self.ok_action = ok_action
         title = Label("Choose default data")
@@ -51,7 +61,7 @@ class SetupNewItemPanel(Dialog):
         self.n = u""
         w_name = TextFieldWrapped(ref=AttrRef(self, 'n'))
         self.w_value = self.get_widget(widget)
-        col = Column([Column([title,]), Row([Label("Name"), w_name], margin=0), Row([Label("Value"), self.w_value], margin=0), Row([Button("OK", action=self.dismiss_ok), Button("Cancel", action=self.dismiss)], margin=0)], margin=0, spacing=2)
+        col = Column([Column([title,]), Row([Label("Name"), w_name], margin=0), Row([Label("Value"), self.w_value], margin=0), Row([Button("OK", action=ok_action or self.dismiss_ok), Button("Cancel", action=self.dismiss)], margin=0)], margin=0, spacing=2)
         Dialog.__init__(self, client=col)
 
     def dismiss_ok(self):
@@ -77,19 +87,21 @@ class SelectItemTypePanel(Dialog):
         self.response = responses[0]
         self.ok_action = ok_action
         title = Label(title)
-        
+        self.w_type = ChoiceButton(responses)
+        col = Column([title, self.w_type, Row([Button("OK", action=ok_action or self.dismiss_ok), Button("Cancel", action=ok_action or self.dismiss)], margin=0)], margin=0, spacing=2)
+        Dialog.__init__(self, client=col)
+
+    def dismiss_ok(self):
+        self.dismiss(self.w_type.selectedChoice)
 
 
 #-----------------------------------------------------------------------------
 def select_item_type(ok_action, types=map_types_items):
-    choices = map_types_items.keys()
+    choices = types.keys()
     choices.sort()
-    choices.append("Cancel")
-    result = ask("Choose item type", responses=choices, default=None)
-#    result = SelectItemTypepanel("Choose item type", responses=choices, default=None).present()
-    if result:
-        panel = SetupNewItemPanel(result, ok_action, types)
-        return panel.present()
+    result = SelectItemTypePanel("Choose item type", responses=choices, default=None).present()
+    if type(result) in (str, unicode):
+        return SetupNewItemPanel(result, types, ok_action).present()
     return None
 
 
@@ -132,6 +144,9 @@ class Tree(Column):
         self.styles = kwargs.pop('styles', {})
         self.compound_types = [dict,] + kwargs.pop('compound_types', [])
         self.item_types = self.compound_types + kwargs.pop('item_types', [int, float, unicode, bool])
+        for t in self.item_types:
+            if 'create_%s'%t.__name__ in globals().keys():
+                setattr(self, 'create_%s'%t.__name__, globals()['create_%s'%t.__name__])
         self.show_fields = kwargs.pop('show_fields', False)
         self.deployed = []
         self.data = data = kwargs.pop("data", {})
@@ -144,35 +159,93 @@ class Tree(Column):
         self.treeRow = treeRow = TreeRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
         Column.__init__(self, [treeRow,], **kwargs)
 
+    @staticmethod
+    def add_item_to_dict(parent, name, item):
+        parent[name] = item
+
+    def add_item_to(self, parent, (name, item)):
+        print 'add_item_to'
+        print '    parent', parent
+        print '    name', name
+        print '    item', item
+        if parent is None:
+            tp = 'dict'
+            parent = self.data
+        else:
+            tp = parent[7].__name__
+            parent = parent[9]
+        if not name:
+            i = 0
+            name = 'Item %03d'%i
+            while name in self.data.keys():
+                i += 1
+                name = 'Item %03d'%i
+        meth = getattr(self, 'add_item_to_%s'%tp, None)
+        if meth:
+            meth(parent, name, item)
+            self.build_layout()
+        else:
+            alert(_("No function implemented to add items to %s type.")%type(parent).__name__, doNotTranslate=True)
+
     def add_item(self):
-        print "add_item", 
+        print "add_item",
         print self.selected_item_index
         print self.selected_item
-        print select_item_type(None, map_types_items)
+        r = select_item_type(None, map_types_items)
+        if r:
+            t, n, v = r
+            meth = getattr(self, 'create_%s'%t.__name__, None)
+            if meth:
+                new_item = meth(self, t, n, v)
+                self.add_item_to(self.get_item_parent(self.selected_item), new_item)
+    #            self.rows.insert(self.selected_item_index, new_item)
 
     def add_child(self):
-        print "add_child"
+        print "add_child",
         print self.selected_item_index
         print self.selected_item
+        r = select_item_type(None, map_types_items)
+        if r:
+            t, n, v = r
+            meth = getattr(self, 'create_%s'%t.__name__, None)
+            if meth:
+                new_item = meth(self, t, n, v)
+                self.add_item_to(self.selected_item, new_item)
+    #            new_item
 
     def delete_item(self):
-        print "delete_item"
+        print "delete_item",
         print self.selected_item_index
         print self.selected_item
 
     def rename_item(self):
-        print "rename_item"
+        print "rename_item",
         print self.selected_item_index
         print self.selected_item
 
+    def get_item_parent(self, item):
+        pid = item[4]
+#        def comp_ids(itm):
+#            return pid == itm[6]
+#        return filter(comp_ids, self.rows)
+        for itm in self.rows:
+            if pid == itm[6]:
+                return itm
+
     def show_menu(self, pos):
         if self.menu and self.selected_item_index:
-            m = Menu("Menu", self.menu)
+            m = Menu("Menu", self.menu, handler=self)
             i = m.present(self, pos)
             if i > -1:
                 meth = getattr(self, self.menu[i][1], None)
                 if meth:
                     meth()
+
+    def add_item_enabled(self):
+        return self.selected_item[6] > 0
+
+    def add_child_enabled(self):
+        return self.selected_item[7] in self.compound_types
 
     def build_layout(self):
         data = self.data
@@ -186,18 +259,21 @@ class Tree(Column):
         aId = len(items) + 1
         while items:
             lvl, k, v, p, c, id = items.pop(0)
+            
             _c = False
             fields = []
             c = [] + c
             if type(v) in self.compound_types:
                 meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
                 if meth is not None:
-                    v = meth(k, v)
-                ks = v.keys()
+                    _v = meth(k, v)
+                else:
+                    _v = v
+                ks = _v.keys()
                 ks.sort()
                 ks.reverse()
                 for a in ks:
-                    b = v[a]
+                    b = _v[a]
                     if id in self.deployed:
                         itm = [lvl + 1, a, b, id, [], aId]
                         items.insert(0, itm)
@@ -221,7 +297,7 @@ class Tree(Column):
                                                    self.fg_color, 'square', ''),
                                                  )
             meth(head, bg, fg, shape, text, k, lvl)
-            rows.append([head, fields, [w] * len(fields), k, p, c, id, type(v), lvl])
+            rows.append([head, fields, [w] * len(fields), k, p, c, id, type(v), lvl, v])
         self.rows = rows
 
     def deploy(self, id):
