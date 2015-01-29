@@ -30,7 +30,6 @@ class BO2:
             self._vertical_tracker[slot] = 0
         '''
         if filename != '':
-            self.__schem = schematic.MCSchematic(shape=(0,0,0))
             self._parser.read(filename)
             self.__version = self._parser.get('META', 'version')
             for item in self._parser.items("META"):
@@ -68,23 +67,14 @@ class BO2:
             print "Lowest: "+str(self._horizontal_tracker_1[0])
             print "Highest: "+str(self._horizontal_tracker_1[1])
             print "Shift: "+str(self._horizontal_tracker_1[2])
-            self.__schem.height = self._vertical_tracker[1]
-            '''
-            for block in self._parser.items("DATA"):
-                #self.__blocks[block[0]] = block[1]
-                coords = block[0].split(",")
-                x = int(coords[0])
-                y = int(coords[1])
-                z = int(coords[2])
-                print x,y,z
-                self.__schem.Blocks[x,y,z] = block[1]
-                self.__schem._update_shape()
-            print self.__schem.Blocks
-            self.__schem.saveToFile(filename="test_bo2.schematic")
-                
-            # Format is Y,X,Z where 'Z' is elevation. WHO DECIDED THAT?!?
-            print self.__blocks
-            '''
+            #self.__schem.height = self._vertical_tracker[1]
+            #self.__schem.length = self._horizontal_tracker_1[1]
+            #self.__schem.Height = self._vertical_tracker[1]
+            #self.__schem.Length = self._horizontal_tracker_1[1]
+            #self.__schem._update_shape()
+            self.__schem = schematic.MCSchematic(shape=(self._horizontal_tracker_1[1], self._vertical_tracker[1], 0))
+            print self.__schem
+            
         pass
     
     @property
