@@ -602,7 +602,7 @@ class LevelEditor(GLViewport):
         tableBacking.shrink_wrap()
 
         def saveToFile():
-            dt = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+            dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
             filename = askSaveFile(directories.docsFolder,
                                    title='Save analysis...',
                                    defaultName=self.level.displayName + "_analysis_" + dt + ".txt",
