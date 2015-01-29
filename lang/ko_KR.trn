@@ -1351,95 +1351,97 @@ t629 기본 설정으로 되돌리기
 o630 Do you want to keep your changes?
 t630 변경 내용을 저장하시겠습니까?
 o631 Screenshots Folder
-t631 
+t631 스크린샷 폴더
 o632 Uses the Latest Snapshot Terrain Generation
-t632 
+t632 최신 스냅샷의 지형 생성 사용
 o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t633 
+t633 월드를 생성하고 몇 초동안 시뮬레이션을 합니다. 타일 틱을 모두 처리해 세이브파일의 용량을 줄여줍니다.
 o634 Last Played
-t634 
+t634 최근 플레이
 o635 Level Name (filename)
-t635 
+t635 레벨명 (파일명)
 o636 Dims
-t636 
+t636 크기
 o637 Load
-t637 
+t637 불러오기
 o638 Maximum number of copied objects.
-t638 
+t638 복사 개수 제한
 o639 Try to save and restore the window position.
-t639 
+t639 윈도우 위치를 저장합니다.
 o640 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t640 
+t640 MCEdit의 설정과 스키메틱을 {0}과 같은 폴더에 집어넣어 이동시킬 수 있게 합니다. 계속하시겠습니까?
 o641 MCEditData
-t641 
+t641 MCEditData
 o642 This will move your settings and schematics to your Documents folder. Continue?
-t642 
+t642 MCEdit의 설정과 스키메틱을 내 문서에 넣습니다. 계속하시겠습니까?
 o643 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t643 
+t643 MCEdit의 설정과 스키메틱을 내 문서에 넣으려면 클릭하세요.
 o644 GoTo Position:
-t644 
+t644 위치로 가기
 o645 (click anywhere to teleport)
-t645 
+t645 (아무 곳이나 클릭해서 텔레포트)
 o646 Format:
-t646 
+t646 형식:
 o647 Name:
-t647 
+t647 이름: 
 o648 Minecraft Infinite World (Anvil Format)
-t648 
+t648 마인크래프트 무한맵 (Anvil Format)
 o649 Day:
-t649 
+t649 날짜
 o650 Time of day:
-t650 
+t650 시간
 o651 RandomSeed:
-t651 
+t651 랜덤 시드
 o652 Game Type:
-t652 
+t652 게임모드
 o653 Number of chunks: {0}
-t653 
+t653 청크 수: {0}
 o654 Number of regions: {0}
-t654 
+t654 지역(region) 수: {0}
 o655 Repair regions
-t655 
+t655 지역(region) 수정
 o656 Open Folder
-t656 
+t656 폴더 열기
 o657 Inventory Slot #%s
-t657 
+t657 인벤토르 슬롯 #%s
 o658 id
-t658 
+t658 아이디
 o659 Count
-t659 
+t659 수
 o660 Damage
-t660 
+t660 데미지
 o661 NBT Explorer
-t661 
+t661 NBT 탐색기
 o662 Reset
-t662 
+t662 초기화
 o663 Reset ALL your changes in the NBT data.
-t663 
+t663 모든 변경사항을 취소합니다.
 o664 Data Type:
-t664 
+t664 데이터 종류
 o665 -> Name
-t665 
+t665 -> 이름
 o666 Double-click to edit
-t666 
+t666 더블클릭하여 수정하십시오.
 o667 NBT Explorer
 Dive into level NBT structure.
 Right-click for options/load files.
-t667 
+t667 NBT 탐색기
+NBT를 수정하세요.
+우클릭으로 옵션과 파일 불러오기가 가능합니다.
 o668 Save your change in the NBT data.
-t668 
+t668 NBT 데이터 저장
 o669 Save unsaved edits before loading?
-t669 
+t669 불러오기 전에 변경사항을 저장할까요?
 o670 {0} unsaved edits.  {1} to save.  {2}
-t670 
+t670 {0} 저장되지 않은 에딧. 저장할 {1}.  {2}
 o671 (UNDO DISABLED)
-t671 
+t671 (뒤로가기 미사용 중)
 o672 Save unsaved edits before closing?
-t672 
+t672 닫기 전에 변경사항을 저장할까요?
 o673 Load NBT file...
-t673 
+t673 NBT 파일 불러오기
 o674 NBT Tree Settings
-t674 
+t674 NBT Tree 설정
 o675 Use Bullet Styles
 t675 
 o676 Use Bullet Text
@@ -1449,11 +1451,12 @@ t677
 o678 Bullet Images File
 t678 
 o679 Choose an image file...
-t679 
+t679 이미지 선택...
 o680 Select a NBT (.dat) file...
-t680 
+t680 NBT (.dat) 파일 선택...
 o681 File allready exists.
 Click 'OK' to choose one.
-t681 
+t681 파일이 이미 존재합니다
+하나를 선택하시려면 'OK'를 눌러주세요.
 o682 Choose a NBT file...
-t682 
+t682 NBT 파일 선택...
