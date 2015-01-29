@@ -1,4 +1,5 @@
 --Rendering code can be hard to read and understand. Please comment your code!--
+--For examples, see /Renderering TODO examples/--
 
 1) Remove everything :)
 2) Create some classes, functions and variables
