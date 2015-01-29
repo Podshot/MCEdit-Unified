@@ -526,7 +526,7 @@ definitions = {
     ("clone", "Clone"): [
         ("copyAir", "Copy Air", True),
         ("copyWater", "Copy Water", True),
-        ("copyBiomes", "Copy Biomes", True),
+        ("copyBiomes", "Copy Biomes", False),
         ("staticCommands", "Change Coordinates", False),
         ("moveSpawnerPos", "Change Spawners Pos", False),
         ("regenerateUUID", "Regenerate UUIDs", True),
