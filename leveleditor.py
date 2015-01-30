@@ -1489,30 +1489,6 @@ class LevelEditor(GLViewport):
             reach *= 0.95
         return reach
 
-    def take_screenshot(self):
-        try:
-            os.mkdir(os.path.join(directories.parentDir, "screenshots"))
-        except OSError:
-            pass
-        screenshot_name = os.path.join(directories.parentDir, "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
-        pygame.image.save(pygame.display.get_surface(), screenshot_name)
-        self.diag = Dialog()
-        lbl = Label("Screenshot taken and saved as '"+screenshot_name+"'")
-        folderBtn = Button("Open Folder", action=self.open_screenshots_folder)
-        btn = Button("Ok", action=self.screenshot_notify)
-        buttonsRow = Row((btn,folderBtn))
-        col = Column((lbl,buttonsRow))
-        self.diag.add(col)
-        self.diag.shrink_wrap()
-        self.diag.present()
-
-    @staticmethod
-    def open_screenshots_folder():
-        platform_open(os.path.join(directories.parentDir, "screenshots"))
-
-    def screenshot_notify(self):
-        self.diag.dismiss()
-
     def key_up(self, evt):
         self.currentTool.keyUp(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
@@ -1610,8 +1586,6 @@ class LevelEditor(GLViewport):
             self.copySelection()
         if keyname == config.keys.paste.get():
             self.pasteSelection()
-        if keyname == config.keys.takeAScreenshot.get():
-            self.take_screenshot()
 
         if keyname == config.keys.reloadWorld.get():
             self.reload()

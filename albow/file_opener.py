@@ -114,8 +114,6 @@ class FileOpener(albow.Widget):
             self.promptOpenAndLoad()
         if keyname == config.keys.quit.get():
             self.mcedit.confirm_quit()
-        if keyname == config.keys.takeAScreenshot.get():
-            self.mcedit.editor.take_screenshot()
 
         self.root.fix_sticky_ctrl()
 

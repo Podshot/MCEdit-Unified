@@ -21,6 +21,12 @@ from albow.dialogs import wrapped_label
 
 from pymclevel.box import Vector
 
+from config import config
+import os
+import directories
+import time
+from dialogs import Dialog, Label, Button, Row, Column
+
 start_time = datetime.now()
 
 mod_cmd = KMOD_LCTRL | KMOD_RCTRL | KMOD_LMETA | KMOD_RMETA
@@ -117,6 +123,31 @@ class RootWidget(Widget):
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
+
+    def take_screenshot(self):
+        try:
+            os.mkdir(os.path.join(directories.parentDir, "screenshots"))
+        except OSError:
+            pass
+        screenshot_name = os.path.join(directories.parentDir, "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
+        pygame.image.save(pygame.display.get_surface(), screenshot_name)
+        self.diag = Dialog()
+        lbl = Label("Screenshot taken and saved as '"+screenshot_name+"'")
+        folderBtn = Button("Open Folder", action=self.open_screenshots_folder)
+        btn = Button("Ok", action=self.screenshot_notify)
+        buttonsRow = Row((btn,folderBtn))
+        col = Column((lbl,buttonsRow))
+        self.diag.add(col)
+        self.diag.shrink_wrap()
+        self.diag.present()
+
+    @staticmethod
+    def open_screenshots_folder():
+        from mcplatform import platform_open
+        platform_open(os.path.join(directories.parentDir, "screenshots"))
+
+    def screenshot_notify(self):
+        self.diag.dismiss()
 
     @staticmethod
     def set_timer(ms):
@@ -264,6 +295,9 @@ class RootWidget(Widget):
                             set_modifier(key, True)
                             add_modifiers(event)
                             self.bonus_draw_time = 0
+                            keyname = self.getKey(event)
+                            if keyname == config.keys.takeAScreenshot.get():
+                                self.take_screenshot()
 
                             self.send_key(modal_widget, 'key_down', event)
                             if last_mouse_event_handler:
@@ -532,7 +566,6 @@ class RootWidget(Widget):
 
 #---------------------------------------------------------------------------
 
-from time import time
 from bisect import insort
 
 scheduled_calls = []
