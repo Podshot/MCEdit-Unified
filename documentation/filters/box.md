@@ -1,6 +1,6 @@
 This file will contain information about the BoundingBox parameter
 
-## BoundingBoundingBox
+## BoundingBox
 
 ### Properties
 
