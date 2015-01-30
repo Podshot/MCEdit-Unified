@@ -48,6 +48,7 @@ from pygame import display
 from albow import request_new_filename, request_old_filename
 from albow.translate import _
 from pymclevel import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
+from datetime import datetime
 
 try:
     import gtk
@@ -302,9 +303,10 @@ def askOpenFileGtk(title, suffixes, initialDir):
 
 
 def askSaveSchematic(initialDir, displayName, fileFormat):
+    dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
     return askSaveFile(initialDir,
                        title=_('Save this schematic...'),
-                       defaultName=displayName + "." + fileFormat,
+                       defaultName=displayName + "_" + dt + "." + fileFormat,
                        filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
                        suffix=fileFormat,
     )
@@ -351,6 +353,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         sp = AppKit.NSSavePanel.savePanel()
         sp.setDirectory_(initialDir)
         sp.setTitle_(title)
+        sp.setNameFieldStringValue_(defaultName)
         sp.setAllowedFileTypes_([suffix])
 
         if sp.runModal() == 0:
