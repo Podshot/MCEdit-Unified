@@ -7,7 +7,7 @@ class BO3:
     
     def __init__(self,filename=''):
         if filename != '':
-            pass
+            return
         pass
 def parse_bo3(bo3_file):
     pass
@@ -24,11 +24,7 @@ class BO2:
         # [0] is lowest point, [1] is highest point, [2] is the amount to shift by
         self._vertical_tracker = [0,0,0]
         self._horizontal_tracker_1 = [0,0,0]
-        '''
-        for slot in range(0,3):
-            self._horizontal_tracker[slot] = 0
-            self._vertical_tracker[slot] = 0
-        '''
+        self._horizontal_tracker_2 = [0,0,0]
         if filename != '':
             self._parser.read(filename)
             self.__version = self._parser.get('META', 'version')
@@ -48,6 +44,12 @@ class BO2:
                 if int(block[0].split(",")[0]) > self._horizontal_tracker_1[1]:
                     self._horizontal_tracker_1[1] = int(block[0].split(",")[0])
                     
+                    
+                if int(block[0].split(",")[1]) < self._horizontal_tracker_2[0]:
+                    self._horizontal_tracker_2[0] = int(block[0].split(",")[1])
+                if int(block[0].split(",")[1]) > self._horizontal_tracker_2[1]:
+                    self._horizontal_tracker_2[1] = int(block[0].split(",")[1])
+                    
             if self._vertical_tracker[0] < 0:
                 self._vertical_tracker[2] = abs(self._vertical_tracker[0])
                 self._vertical_tracker[1] += abs(self._vertical_tracker[0])
@@ -56,6 +58,10 @@ class BO2:
             if self._horizontal_tracker_1[0] < 0:
                 self._horizontal_tracker_1[2] = abs(self._horizontal_tracker_1[0])
                 self._horizontal_tracker_1[1] += abs(self._horizontal_tracker_1[0])
+                
+            if self._horizontal_tracker_2[0] < 0:
+                self._horizontal_tracker_2[2] = abs(self._horizontal_tracker_2[0])
+                self._horizontal_tracker_2[1] += abs(self._horizontal_tracker_2[0])
                 
                 
                 
@@ -67,15 +73,24 @@ class BO2:
             print "Lowest: "+str(self._horizontal_tracker_1[0])
             print "Highest: "+str(self._horizontal_tracker_1[1])
             print "Shift: "+str(self._horizontal_tracker_1[2])
+            print "==== Horizontal Z ===="
+            print "Lowest: "+str(self._horizontal_tracker_2[0])
+            print "Highest: "+str(self._horizontal_tracker_2[1])
+            print "Shift: "+str(self._horizontal_tracker_2[2])
             #self.__schem.height = self._vertical_tracker[1]
             #self.__schem.length = self._horizontal_tracker_1[1]
             #self.__schem.Height = self._vertical_tracker[1]
             #self.__schem.Length = self._horizontal_tracker_1[1]
             #self.__schem._update_shape()
-            self.__schem = schematic.MCSchematic(shape=(self._horizontal_tracker_1[1], self._vertical_tracker[1], 0))
+            self.__schem = schematic.MCSchematic(shape=(self._horizontal_tracker_2[1]+1, self._vertical_tracker[1]+1, self._horizontal_tracker_1[1]+1))
+            for block in self._parser.items("DATA"):
+                coords = block[0].split(",")
+                x = int(coords[1])+self._horizontal_tracker_2[2]
+                y = int(coords[0])+self._horizontal_tracker_1[2]
+                z = int(coords[2])+self._vertical_tracker[2]
+                self.__schem.Blocks[x,y,z] = block[1]
             print self.__schem
-            
-        pass
+            self.__schem.saveToFile(filename="test.schematic")
     
     @property
     def meta(self):
@@ -84,11 +99,6 @@ class BO2:
     @property
     def blocks(self):
         return self.__blocks
-    
-def parse_bo2(bo2_file):
-    pass
 
-def save_bo2(bo2_file):
-    pass
-
-BO2(filename="pymclevel"+os.path.sep+"test"+os.path.sep+'Asteroid1.BO2')
+BO2(filename="pymclevel"+os.path.sep+"test"+os.path.sep+'Test.BO2')
+#BO3(filename=os.path.join("pymclevel", "test", "dragonnest.bo3"))
