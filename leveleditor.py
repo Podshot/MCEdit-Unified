@@ -2121,8 +2121,6 @@ class LevelEditor(GLViewport):
         worldTable = TableView(columns=[
             TableColumn("Last Played", 170, "l"),
             TableColumn("Level Name (filename)", 500, "l"),
-            TableColumn("Dims", 100, "r"),
-
         ])
 
         def dateobj(lp):
@@ -2151,9 +2149,9 @@ class LevelEditor(GLViewport):
                     except:
                         return "[UNABLE TO READ]"
 
-        worldData = [[dateFormat(d), nameFormat(w), str(w.dimensions.keys())[1:-1], w, d]
+        worldData = [[dateFormat(d), nameFormat(w), w, d]
                      for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
-        worldData.sort(key=lambda (a, b, dim, w, d): d, reverse=True)
+        worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
         # worlds = [w[2] for w in worldData]
 
         worldTable.selectedWorldIndex = 0
