@@ -7,7 +7,7 @@
 # Tree widget for albow
 #
 from albow import Widget, Menu, IntField, FloatField, TextFieldWrapped, \
-    CheckBox, AttrRef, Label, Row, Button, ask, alert
+    CheckBox, AttrRef, Label, Row, Button, ask, alert, input_text_buttons
 from albow.translate import _
 from mceutils import ChoiceButton
 from theme import ThemeProperty
@@ -27,20 +27,20 @@ item_types_map = {dict: ("Compound", None, {}),
                   bool: ("Boolean", CheckBox, True),
                  }
 
-def setup_map_types_items(mp=None):
+def setup_map_types_item(mp=None):
     if not mp:
         mp = item_types_map
-    map_types_items = {}
+    map_types_item = {}
     for k, v in mp.items():
-        if v[0] in map_types_items.keys():
-            _v = map_types_items.pop(v[0])
-            map_types_items[u"%s (%s)"%(v[0], _v[0].__name__)] = _v
-            map_types_items[u"%s (%s)"%(v[0], k.__name__)] = v
+        if v[0] in map_types_item.keys():
+            _v = map_types_item.pop(v[0])
+            map_types_item[u"%s (%s)"%(v[0], _v[0].__name__)] = _v
+            map_types_item[u"%s (%s)"%(v[0], k.__name__)] = (k, v[1], v[2])
         else:
-            map_types_items[v[0]] = (k, v[1], v[2])
-    return map_types_items
+            map_types_item[v[0]] = (k, v[1], v[2])
+    return map_types_item
 
-map_types_items = setup_map_types_items()
+map_types_item = setup_map_types_item()
 
 
 #-----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ create_dict = create_int = create_float = create_unicode = create_bool = create_
 
 #-----------------------------------------------------------------------------
 class SetupNewItemPanel(Dialog):
-    def __init__(self, type_string, types=map_types_items, ok_action=None):
+    def __init__(self, type_string, types=map_types_item, ok_action=None):
         self.type_string = type_string
         self.ok_action = ok_action
         title = Label("Choose default data")
@@ -65,7 +65,7 @@ class SetupNewItemPanel(Dialog):
         Dialog.__init__(self, client=col)
 
     def dismiss_ok(self):
-        self.dismiss((self.t, self.n, getattr(self.w_value, 'value', map_types_items.get(self.type_string, [None,] * 3)[2])))
+        self.dismiss((self.t, self.n, getattr(self.w_value, 'value', map_types_item.get(self.type_string, [None,] * 3)[2])))
 
     def get_widget(self, widget):
         if hasattr(widget, 'value'):
@@ -96,7 +96,7 @@ class SelectItemTypePanel(Dialog):
 
 
 #-----------------------------------------------------------------------------
-def select_item_type(ok_action, types=map_types_items):
+def select_item_type(ok_action, types=map_types_item):
     choices = types.keys()
     choices.sort()
     result = SelectItemTypePanel("Choose item type", responses=choices, default=None).present()
@@ -138,12 +138,15 @@ class Tree(Column):
                      ("New child", "add_child"),
                      ("Rename", "rename_item"),
                      ]
+        if not hasattr(self, 'map_types_item'):
+            global map_types_item
+            self.map_types_item = setup_map_types_item()
         self.selected_item_index = None
         self.selected_item = None
         self._parent = kwargs.pop('_parent', None)
         self.styles = kwargs.pop('styles', {})
         self.compound_types = [dict,] + kwargs.pop('compound_types', [])
-        self.item_types = self.compound_types + kwargs.pop('item_types', [int, float, unicode, bool])
+        self.item_types = self.compound_types + kwargs.pop('item_types', [a[0] for a in self.map_types_item.values()] or [int, float, unicode, bool])
         for t in self.item_types:
             if 'create_%s'%t.__name__ in globals().keys():
                 setattr(self, 'create_%s'%t.__name__, globals()['create_%s'%t.__name__])
@@ -164,10 +167,6 @@ class Tree(Column):
         parent[name] = item
 
     def add_item_to(self, parent, (name, item)):
-        print 'add_item_to'
-        print '    parent', parent
-        print '    name', name
-        print '    item', item
         if parent is None:
             tp = 'dict'
             parent = self.data
@@ -188,46 +187,38 @@ class Tree(Column):
             alert(_("No function implemented to add items to %s type.")%type(parent).__name__, doNotTranslate=True)
 
     def add_item(self):
-        print "add_item",
-        print self.selected_item_index
-        print self.selected_item
-        r = select_item_type(None, map_types_items)
-        if r:
+        r = select_item_type(None, self.map_types_item)
+        if type(r) in (list, tuple):
             t, n, v = r
             meth = getattr(self, 'create_%s'%t.__name__, None)
             if meth:
                 new_item = meth(self, t, n, v)
                 self.add_item_to(self.get_item_parent(self.selected_item), new_item)
-    #            self.rows.insert(self.selected_item_index, new_item)
 
     def add_child(self):
-        print "add_child",
-        print self.selected_item_index
-        print self.selected_item
-        r = select_item_type(None, map_types_items)
-        if r:
+        r = select_item_type(None, self.map_types_item)
+        if type(r) in (list, tuple):
             t, n, v = r
             meth = getattr(self, 'create_%s'%t.__name__, None)
             if meth:
                 new_item = meth(self, t, n, v)
                 self.add_item_to(self.selected_item, new_item)
-    #            new_item
 
     def delete_item(self):
-        print "delete_item",
-        print self.selected_item_index
-        print self.selected_item
+        parent = self.get_item_parent(self.selected_item) or self.data
+        del parent[self.selected_item]
+        self.selected_item_index = None
+        self.selected_item = None
+        self.build_layout()
 
     def rename_item(self):
-        print "rename_item",
-        print self.selected_item_index
-        print self.selected_item
+        result = input_text_buttons("Choose a name", 300, self.selected_item[3])
+        if type(result) in (str, unicode):
+            self.selected_item[3] = result
+            self.build_layout()
 
     def get_item_parent(self, item):
         pid = item[4]
-#        def comp_ids(itm):
-#            return pid == itm[6]
-#        return filter(comp_ids, self.rows)
         for itm in self.rows:
             if pid == itm[6]:
                 return itm
