@@ -82,6 +82,7 @@ class FilterModuleOptions(Widget):
 
     def __init__(self, tool, module, *args, **kw):
         self._parent = None
+        self.module = module
         if '_parent' in kw.keys():
             self._parent = kw.pop('_parent')
         Widget.__init__(self, *args, **kw)
@@ -253,6 +254,10 @@ class FilterModuleOptions(Widget):
             #-#
             elif type(optionType) == list and optionType[0].lower() == "nbttree":
                 self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True)
+                self.module.set_tree(self.nbttree.tree)
+                for meth_name in dir(self.module):
+                    if meth_name.startswith('nbttree_'):
+                        setattr(self.nbttree.tree.treeRow, meth_name.split('nbttree_')[-1], getattr(self.module, meth_name))
                 page.optionDict[optionName] = AttrRef(self, 'rebuildTabPage')
                 rows.append(self.nbttree)
                 self.nbttree.page = len(self.pgs)
@@ -475,7 +480,7 @@ class FilterToolPanel(Panel):
         panel = Panel()
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
         if not message:
-            message = _("Press a key to assign to opening the filter \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(self.selectedFilterName)
+            message = _("Press a key to assign to opening the filter \"{0}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(self.selectedFilterName)
         label = albow.Label(message)
         panel.add(label)
         panel.shrink_wrap()
@@ -503,18 +508,18 @@ class FilterToolPanel(Panel):
         panel.mouse_up = panelMouseUp
 
         keyname = panel.present()
-        if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
+        if keyname != "Escape" and keyname != "Ctrl-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
             if keysUsed:
-                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to opening the filter \"{2}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(keyname, keysUsed[0][0], self.selectedFilterName))
+                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to opening the filter \"{2}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(keyname, keysUsed[0][0], self.selectedFilterName))
                 return True
-        elif keyname != "Escape" and keyname != "Shift-Escape":
-            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to opening the filter \"{1}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(keyname, self.selectedFilterName))
+        elif keyname != "Escape" and keyname != "Ctrl-Escape":
+            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to opening the filter \"{1}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(keyname, self.selectedFilterName))
             return True
         elif keyname != "Escape":
             config.config.remove_option("Filter Keys", self.selectedFilterName)
             self.binding_button.tooltipText = "Click to bind opening this filter to a hotkey"
-        if keyname != "Escape" and keyname != "Shift-Escape":
+        if keyname != "Escape" and keyname != "Ctrl-Escape":
             self.binding_button.tooltipText = keyname
             config.config.set("Filter Keys", self.selectedFilterName, keyname)
         config.save()
