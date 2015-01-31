@@ -1423,4 +1423,15 @@ o682 File allready exists.
 Click 'OK' to choose one.
 t682 
 o683 Choose a NBT file...
-t683 
+t683
+o684 Click to bind opening this filter to a hotkey
+t684
+o685 Press a key to assign to opening the filter "{0}"
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t685
+o686 Can't bind. {0} is already used by {1}.
+Press a key to assign to opening the filter "{2}"
+
+Press ESC to cancel. Press Shift-ESC to unbind.
+t686

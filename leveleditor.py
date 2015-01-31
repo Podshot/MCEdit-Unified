@@ -1672,6 +1672,16 @@ class LevelEditor(GLViewport):
         if keyname == 'F7':
             self.testBoardKey = 1
 
+        if self.selectionSize():
+            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
+            if filter_keys:
+                self.toolbar.selectTool(4)
+                filters = [i for i in self.toolbar.tools[4].filterModules if i.lower() == filter_keys[0]]
+                if filters:
+                    self.toolbar.tools[4].panel.selectedFilterName = filters[0]
+                    self.toolbar.tools[4].panel.reload()
+
+
         self.root.fix_sticky_ctrl()
 
     def showGotoPanel(self):

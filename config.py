@@ -572,6 +572,7 @@ definitions = {
         ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.png')),
         ("showAllTags", "Show all the tags in the tree", False),
     ],
+    ("Filter Keys", "Filter Keys"): [],
 }
 
 

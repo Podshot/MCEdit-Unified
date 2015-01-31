@@ -36,6 +36,7 @@ import shutil
 import directories
 import sys
 import mceutils
+import keys
 #-#
 from nbtexplorer import NBTExplorerToolPanel
 #-#
@@ -338,10 +339,16 @@ class FilterToolPanel(Panel):
         if not self._recording:
             self.macro_button = Button("Record a Macro", action=self.start_record_macro)
 
+        if self.selectedFilterName.lower() in config.config._sections["Filter Keys"]:
+            binding_button_tooltiptext = config.config._sections["Filter Keys"][self.selectedFilterName.lower()]
+        else:
+            binding_button_tooltiptext = "Click to bind opening this filter to a hotkey"
+        self.binding_button = Button("*", action=self.bind_key, tooltipText=binding_button_tooltiptext)
+
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
         filterLabel.tooltipText = "Click to open filters folder"
-        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button))
+        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button, self.binding_button))
         
         if not self._recording:
             self.confirmButton = Button("Filter", action=self.tool.confirm)
@@ -463,6 +470,54 @@ class FilterToolPanel(Panel):
         data = {"Name": name, "Step": self.current_step, "Inputs": inputs}
         self.current_step += 1
         self.macro_steps.append(data)
+
+    def bind_key(self, message=None):
+        panel = Panel()
+        panel.bg_color = (0.5, 0.5, 0.6, 1.0)
+        if not message:
+            message = _("Press a key to assign to opening the filter \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(self.selectedFilterName)
+        label = albow.Label(message)
+        panel.add(label)
+        panel.shrink_wrap()
+
+        def panelKeyUp(evt):
+            keyname = self.root.getKey(evt)
+            panel.dismiss(keyname)
+
+        def panelMouseUp(evt):
+            button = keys.remapMouseButton(evt.button)
+            if button == 3:
+                keyname = "Button 3"
+            elif button == 4:
+                keyname = "Scroll Up"
+            elif button == 5:
+                keyname = "Scroll Down"
+            elif button == 6:
+                keyname = "Button 4"
+            elif button == 7:
+                keyname = "Button 5"
+            if button > 2:
+                panel.dismiss(keyname)
+
+        panel.key_up = panelKeyUp
+        panel.mouse_up = panelMouseUp
+
+        keyname = panel.present()
+        if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
+            keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
+            if keysUsed:
+                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to opening the filter \"{2}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(keyname, keysUsed[0][0], self.selectedFilterName))
+                return True
+        elif keyname != "Escape" and keyname != "Shift-Escape":
+            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to opening the filter \"{1}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(keyname, self.selectedFilterName))
+            return True
+        elif keyname != "Escape":
+            config.config.remove_option("Filter Keys", self.selectedFilterName)
+            self.binding_button.tooltipText = "Click to bind opening this filter to a hotkey"
+        if keyname != "Escape" and keyname != "Shift-Escape":
+            self.binding_button.tooltipText = keyname
+            config.config.set("Filter Keys", self.selectedFilterName, keyname)
+        config.save()
 
     filterOptionsPanel = None
 

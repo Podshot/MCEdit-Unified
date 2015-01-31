@@ -49,7 +49,6 @@ def get_bullet_image(index, w=16, h=16):
         bullet_image = image.load(config.nbtTreeSettings.bulletFileName.get())
     r =  Rect(0, 0, w, h)
     line_length = int(bullet_image.get_width() / w)
-    num_lines = int(bullet_image.get_height() / h)
     line = int(index / line_length)
     r.top = line * h
     r.left = (index - (line * line_length)) * w
@@ -763,7 +762,6 @@ class NBTExplorerTool(EditorTool):
                     return
                 dontSaveRootTag = False
                 nbtObject = load(fName)
-                dataKeyName = None
                 if nbtObject.get('Data', None):
                     dataKeyName = 'Data'
                 elif nbtObject.get('data', None):

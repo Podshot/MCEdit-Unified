@@ -584,12 +584,19 @@ class KeyConfigPanel(Dialog):
                     self.askAssignKey(configKey,
                                     "Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.")
                     return True
+            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
+            if filter_keys:
+                self.askAssignKey(configKey,
+                                    _("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(keyname, filter_keys[0]))
+                return True
             oldkey = config.keys[config.convert(configKey)].get()
             config.keys[config.convert(configKey)].set(keyname)
             if configKey not in self.changes:
                 self.changes[configKey] = oldkey
             self.changesNum = True
         elif keyname == "Shift-Escape":
+            if config.keys[config.convert(configKey)].get() != "None":
+                self.changesNum = True
             config.keys[config.convert(configKey)].set("None")
         elif keyname != "Escape":
             self.askAssignKey(configKey,
