@@ -756,6 +756,7 @@ class NBTExplorerTool(EditorTool):
                     dataKeyName = 'Data'
                     dontSaveRootTag = True
                     nbtObject = TAG_Compound([nbtObject,])
+                self.editor.toolbar.removeToolPanels()
                 self.editor.currentTool = self
                 self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
                 self.optionsPanel.dismiss()
