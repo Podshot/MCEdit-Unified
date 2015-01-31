@@ -228,8 +228,10 @@ def perform(level, box, options):
                 for i in range(len(search)):
                     if by == 'Block':
                         treeData[u"%s"%(search[i],)] = datas[i]
-                    else:
+                    elif by == 'Entity':
                         treeData[u"%s"%((datas[i]['Pos'][0].value, datas[i]['Pos'][1].value, datas[i]['Pos'][2].value),)] = datas[i]
+                    else:
+                        treeData[u"%s"%((datas[i]['x'].value, datas[i]['y'].value, datas[i]['z'].value),)] = datas[i]
                 inputs[1][1][1][1] = {'Data': treeData}
                 options[""](inputs[1])
             else:
