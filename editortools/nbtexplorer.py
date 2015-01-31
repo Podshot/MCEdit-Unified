@@ -172,9 +172,27 @@ create_TAG_Byte_Array = create_TAG_Int_Array = create_TAG_Short_Array = create_a
 #-----------------------------------------------------------------------------
 class NBTTree(Tree):
     def __init__(self, *args, **kwargs):
+        styles = kwargs.get('styles', {})
+        self.update_draw_bullets_methods(styles)
+        global map_types_item
+        self.map_types_item = setup_map_types_item(item_types_map)
+        Tree.__init__(self, *args, **kwargs)
+        for t in self.item_types:
+            if 'create_%s'%t.__name__ in globals().keys():
+                setattr(self, 'create_%s'%t.__name__, globals()['create_%s'%t.__name__])
+
+    def _draw_opened_bullet(self, *args, **kwargs):
+        return Tree.draw_opened_bullet(self, *args, **kwargs)
+
+    def _draw_closed_bullet(self, *args, **kwargs):
+        return Tree.draw_closed_bullet(self, *args, **kwargs)
+
+    def update_draw_bullets_methods(self, styles):
         if config.nbtTreeSettings.useBulletStyles.get() and bullet_styles.get(TAG_Compound, [''] * 4)[2] != '':
             self.draw_opened_bullet = self.draw_closed_bullet = self.draw_TAG_bullet
-        styles = kwargs.get('styles', {})
+        else:
+            self.draw_opened_bullet = self._draw_opened_bullet
+            self.draw_closed_bullet = self._draw_closed_bullet
         for key in styles.keys():
             if hasattr(key, '__name__'):
                 name = key.__name__
@@ -183,12 +201,6 @@ class NBTTree(Tree):
             else:
                 name = repr(key)
             setattr(self, 'draw_%s_bullet'%name, self.draw_TAG_bullet)
-        global map_types_item
-        self.map_types_item = setup_map_types_item(item_types_map)
-        Tree.__init__(self, *args, **kwargs)
-        for t in self.item_types:
-            if 'create_%s'%t.__name__ in globals().keys():
-                setattr(self, 'create_%s'%t.__name__, globals()['create_%s'%t.__name__])
 
     @staticmethod
     def add_item_to_TAG_Compound(parent, name, item):
@@ -271,6 +283,7 @@ class NBTTree(Tree):
 class NBTExplorerOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
+        self.tool = tool
         useStyleBox = CheckBoxLabel(title="Use Bullet Styles",
                                     ref=config.nbtTreeSettings.useBulletStyles)
 
@@ -342,7 +355,11 @@ class NBTExplorerOptions(ToolOptions):
             config.nbtTreeSettings.bulletFileName.set(fName)
 
     def dismiss(self, *args, **kwargs):
-        change_styles()
+        bullet_styles = change_styles()
+        if hasattr(self.tool, 'panel') and self.tool.panel is not None:
+            self.tool.panel.tree.styles = bullet_styles
+            self.tool.panel.tree.update_draw_bullets_methods(bullet_styles)
+            self.tool.panel.tree.build_layout()
         ToolOptions.dismiss(self, *args, **kwargs)
 
 #-----------------------------------------------------------------------------
