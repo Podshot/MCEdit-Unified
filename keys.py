@@ -537,9 +537,9 @@ class KeyConfigPanel(Dialog):
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
         if labelString is None and configKey != "Fast Nudge":
-            labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
+            labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(configKey)
         elif labelString is None:
-            labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Shift-ESC to unbind.").format(configKey)
+            labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(configKey)
         label = albow.Label(labelString)
         panel.add(label)
         panel.shrink_wrap()
@@ -573,34 +573,34 @@ class KeyConfigPanel(Dialog):
             return True
 
         self.enter = 0
-        if keyname != "Escape" and keyname != "Shift-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
+        if keyname != "Escape" and keyname != "Ctrl-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             if "Modifier" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
                 self.askAssignKey(configKey,
-                                    _("{0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.")
+                                    _("{0} is not a modifier. Press a new key.\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.")
                                     .format(keyname))
                 return True
             if configKey in ['Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right']:
                 if 'Ctrl' in keyname or '-' in keyname:
                     self.askAssignKey(configKey,
-                                    "Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.")
+                                    "Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.")
                     return True
             filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
             if filter_keys:
                 self.askAssignKey(configKey,
-                                    _("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.").format(keyname, filter_keys[0]))
+                                    _("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(keyname, filter_keys[0]))
                 return True
             oldkey = config.keys[config.convert(configKey)].get()
             config.keys[config.convert(configKey)].set(keyname)
             if configKey not in self.changes:
                 self.changes[configKey] = oldkey
             self.changesNum = True
-        elif keyname == "Shift-Escape":
+        elif keyname == "Ctrl-Escape":
             if config.keys[config.convert(configKey)].get() != "None":
                 self.changesNum = True
             config.keys[config.convert(configKey)].set("None")
         elif keyname != "Escape":
             self.askAssignKey(configKey,
-                                    _("You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Shift-ESC to unbind.")
+                                    _("You can't use the key {0}. Press a new key.\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.")
                                     .format(keyname))
             return True
 
