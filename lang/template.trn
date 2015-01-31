@@ -1296,22 +1296,22 @@ o624 Don't Save
 t624 
 o625 Press a key to assign to the action "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t625 
 o626 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t626 
 o627 {0} is not a modifier. Press a new key.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t627 
 o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t628 
 o629 You can't use the key {0}. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t629 
 o630 Reset to default
 t630 
@@ -1428,10 +1428,10 @@ o684 Click to bind opening this filter to a hotkey
 t684
 o685 Press a key to assign to opening the filter "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t685
 o686 Can't bind. {0} is already used by {1}.
 Press a key to assign to opening the filter "{2}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t686
