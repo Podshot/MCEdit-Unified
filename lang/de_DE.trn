@@ -1321,32 +1321,32 @@ o623 Don't Save
 t623 Nicht Speichern
 o624 Press a key to assign to the action "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t624 Drücke eine Taste um "{0}" die Aktion zu geben 
 
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+Drücken Sie ESC für abbrechen. Drücken Sie Ctrl-ESC für das löschen der Aktion auf dieser Taste.
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t625 Drücke eine Taste um "{0}" die Aktion zu geben
 Keine Taste ist Rechtsklick für schnelles schieben.
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+Drücken Sie ESC für abbrechen. Drücken Sie Ctrl-ESC für das löschen der Aktion auf dieser Taste.
 o626 {0} is not a modifier. Press a new key.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t626 {0} ist kein Modifizierer. Drücken Sie eine neue Taste.
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+Drücken Sie ESC für abbrechen. Drücken Sie Ctrl-ESC für das löschen der Aktion auf dieser Taste.
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t627 Bewegungstasten können nicht mit Strg oder mit Modifizierer verwendet werden. Drücken sie eine neue Taste.
 
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+Drücken Sie ESC für abbrechen. Drücken Sie Ctrl-ESC für das löschen der Aktion auf dieser Taste.
 o628 You can't use the key {0}. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t628 Du kannst die Taste {0} nicht benutzen. Drücken Sie eine neue Taste.
 
-Drücken Sie ESC für abbrechen. Drücken Sie Shift-ESC für das löschen der Aktion auf dieser Taste.
+Drücken Sie ESC für abbrechen. Drücken Sie Ctrl-ESC für das löschen der Aktion auf dieser Taste.
 o629 Reset to default
 t629 Tasten zurücksetzen
 o630 Do you want to keep your changes?
@@ -1465,10 +1465,10 @@ o684 Click to bind opening this filter to a hotkey
 t684
 o685 Press a key to assign to opening the filter "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t685
 o686 Can't bind. {0} is already used by {1}.
 Press a key to assign to opening the filter "{2}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel. Press Ctrl-ESC to unbind.
 t686
