@@ -406,13 +406,13 @@ class NBTExplorerOperation(Operation):
         if self.undoLevel:
             self.redoLevel = self.extractUndo()
             self.toolPanel.data.update(self.undoLevel)
-            self.toolPanel.nbtObject[self.toolPanel.dataKeyName].update(self.undoLevel)
+            self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.undoLevel
             self.update_tool()
 
     def redo(self):
         if self.redoLevel:
             self.toolPanel.data.update(self.redoLevel)
-            self.toolPanel.nbtObject[self.toolPanel.dataKeyName].update(self.redoLevel)
+            self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.redoLevel
             self.update_tool()
 
     def update_tool(self):
