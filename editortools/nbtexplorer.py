@@ -212,6 +212,40 @@ class NBTTree(Tree):
             idx = parent.value.index(self.selected_item[9])
         parent.insert(idx, item)
 
+    def add_item(self, types_item=None):
+        if types_item is None:
+            parent = self.get_item_parent(self.selected_item)
+            p_type = parent[7]
+            if p_type == TAG_List:
+                k = parent[9].list_type
+                v = None
+                for key, value in item_types_map.items():
+                    print key
+                    if globals().get(key.__name__.upper(), -1) == k:
+                        v = value
+                        break
+                if v is None:
+                    return
+                types_item = {v[0]: (key, v[1], v[2])}
+        Tree.add_item(self, types_item)
+
+    def add_child(self, types_item=None):
+        if types_item is None:
+            parent = self.selected_item
+            p_type = parent[7]
+            if p_type == TAG_List:
+                k = parent[9].list_type
+                v = None
+                for key, value in item_types_map.items():
+                    print key
+                    if globals().get(key.__name__.upper(), -1) == k:
+                        v = value
+                        break
+                if v is None:
+                    return
+                types_item = {v[0]: (key, v[1], v[2])}
+        Tree.add_child(self, types_item)
+
     def delete_item(self):
         parent = self.get_item_parent(self.selected_item)
         if parent:

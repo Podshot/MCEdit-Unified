@@ -186,8 +186,8 @@ class Tree(Column):
         else:
             alert(_("No function implemented to add items to %s type.")%type(parent).__name__, doNotTranslate=True)
 
-    def add_item(self):
-        r = select_item_type(None, self.map_types_item)
+    def add_item(self, types_item=None):
+        r = select_item_type(None, types_item or self.map_types_item)
         if type(r) in (list, tuple):
             t, n, v = r
             meth = getattr(self, 'create_%s'%t.__name__, None)
@@ -195,8 +195,8 @@ class Tree(Column):
                 new_item = meth(self, t, n, v)
                 self.add_item_to(self.get_item_parent(self.selected_item), new_item)
 
-    def add_child(self):
-        r = select_item_type(None, self.map_types_item)
+    def add_child(self, types_item=None):
+        r = select_item_type(None, types_item or self.map_types_item)
         if type(r) in (list, tuple):
             t, n, v = r
             meth = getattr(self, 'create_%s'%t.__name__, None)
