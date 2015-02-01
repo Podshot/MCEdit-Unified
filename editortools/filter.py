@@ -333,8 +333,12 @@ class FilterToolPanel(Panel):
             if name.startswith("[Macro]"):
                 name = name.replace("[Macro]", "")
             tool.names_list.append(name)
-        if os.path.exists(os.path.join(directories.getCacheDir(), "macros.json")):
-            self.macro_json = json.load(open(os.path.join(directories.getCacheDir(), "macros.json"), 'rb'))
+        if os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
+            self.macro_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+            if "Macros" not in self.macro_json:
+                self.macro_json["Macros"] = {}
+                with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
+                    json.dump(self.macro_json, f)
             for saved_macro in self.macro_json["Macros"].keys():
                 name = "[Macro] "+saved_macro
                 tool.names_list.append(name)
@@ -444,13 +448,11 @@ class FilterToolPanel(Panel):
         self.macro_button.action = self.start_record_macro
         self._recording = False
         if self._save_macro:
-            if os.path.exists(os.path.join(directories.getCacheDir(), "macros.json")):
+            if os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
                 try:
-                    macro_dict = json.load(open(os.path.join(directories.getCacheDir(), "macros.json"), 'rb'))
+                    macro_dict = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
                 except ValueError:
                     macro_dict = {"Macros": {}}
-            else:
-                macro_dict = {"Macros": {}}
             macro_dict["Macros"][macroNameField.get_text()] = {}
             macro_dict["Macros"][macroNameField.get_text()]["Number of steps"] = len(self.macro_steps)
             for entry in self.macro_steps:
@@ -458,7 +460,7 @@ class FilterToolPanel(Panel):
                     if isinstance(entry["Inputs"][inp], pymclevel.materials.Block) or entry["Inputs"][inp] == "blocktype":
                         entry["Inputs"][inp] = "block-"+str(entry["Inputs"][inp].ID)+":"+str(entry["Inputs"][inp].blockData)
                 macro_dict["Macros"][macroNameField.get_text()][entry["Step"]] = {"Name":entry["Name"],"Inputs":entry["Inputs"]}
-            with open(os.path.join(directories.getCacheDir(), "macros.json"), 'w') as f:
+            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
                 json.dump(macro_dict, f)
         self.reload()
 

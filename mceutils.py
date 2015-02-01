@@ -543,9 +543,16 @@ def compareMD5Hashes(found_filters):
         ff[os.path.split(filter)[-1]] = filter
     try:
         if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
-            filterDict = {"filters": {}}
+            filterDict = {"filter-md5s": {}}
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
                 json.dump(filterDict, j)
+        else:
+            convert = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+            if "filters" in convert:
+                convert["filter-md5s"] = convert["filters"]
+                del convert["filters"]
+                with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
+                    json.dump(convert, done)
         filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "stock-filters"), ".py")
         filterBundle = {}
         for bundled in filterInBundledFolder:
@@ -556,19 +563,19 @@ def compareMD5Hashes(found_filters):
             if realName in filterBundle.keys():
                 with open(ff[filt], 'r') as filtr:
                     filterData = filtr.read()
-                    if realName in hashJSON["filters"]:
-                        old_hash = hashJSON["filters"][realName]
+                    if realName in hashJSON["filter-md5s"]:
+                        old_hash = hashJSON["filter-md5s"][realName]
                         bundledData = None
                         with open(filterBundle[realName]) as bundledFilter:
                             bundledData = bundledFilter.read()
                         if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData is not None:
                             shutil.copy(filterBundle[realName], directories.filtersDir)
-                            hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
+                            hashJSON["filter-md5s"][realName] = hashlib.md5(bundledData).hexdigest()
                         if old_hash != hashlib.md5(filterData).hexdigest() and hashlib.md5(filterData).hexdigest() != hashlib.md5(bundledData).hexdigest():
                             shutil.copy(filterBundle[realName], directories.filtersDir)
-                            hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
+                            hashJSON["filter-md5s"][realName] = hashlib.md5(bundledData).hexdigest()
                     else:
-                        hashJSON["filters"][realName] = hashlib.md5(filterData).hexdigest()
+                        hashJSON["filter-md5s"][realName] = hashlib.md5(filterData).hexdigest()
         for bundled in filterBundle.keys():
             if bundled not in ff.keys():
                 shutil.copy(filterBundle[bundled], directories.filtersDir)
