@@ -494,7 +494,10 @@ class NBTExplorerToolPanel(Panel):
         if kwargs.get('no_header', False):
             self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - (self.margin * 2) - btnRow.height - 2
         else:
-            header = Label("NBT Explorer")
+            title = _("NBT Explorer")
+            if fileName:
+                title += " - %s"%os.path.split(fileName)[-1]
+            header = Label(title, doNotTranslate=True)
             self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - header.height - (self.margin * 2) - btnRow.height - 2
         self.setCompounds()
         self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=self.compounds,

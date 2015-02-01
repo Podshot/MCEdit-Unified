@@ -23,7 +23,7 @@ import copy
 #-----------------------------------------------------------------------------
 item_types_map = {dict: ("Compound", None, {}),
                   int: ("Integer", IntField, 0),
-                  float: ("Floating point number", FloatField, 0.0),
+                  float: ("Floating point", FloatField, 0.0),
                   unicode: ("Text", TextFieldWrapped, ""),
                   bool: ("Boolean", CheckBox, True),
                  }
@@ -35,8 +35,8 @@ def setup_map_types_item(mp=None):
     for k, v in mp.items():
         if v[0] in map_types_item.keys():
             _v = map_types_item.pop(v[0])
-            map_types_item[u"%s (%s)"%(v[0], _v[0].__name__)] = _v
-            map_types_item[u"%s (%s)"%(v[0], k.__name__)] = (k, v[1], v[2])
+            map_types_item[u"%s (%s)"%(_(v[0]), _v[0].__name__)] = _v
+            map_types_item[u"%s (%s)"%(_(v[0]), k.__name__)] = (k, v[1], v[2])
         else:
             map_types_item[v[0]] = (k, v[1], v[2])
     return map_types_item
@@ -76,7 +76,7 @@ class SetupNewItemPanel(Dialog):
         elif widget is None:
             value = Label("This item type is a container. Add chlidren later.")
         else:
-            msg = "*** Error in SelectItemTypePanel.__init__():\n    Widget <%s> has nor 'text' or 'value' member."%widget
+            msg = "*** Error in SelectItemTypePanel.__init__():\n    Widget <%s> has no 'text' or 'value' member."%widget
             print msg
             value = Label(msg)
         return value
@@ -303,16 +303,7 @@ class Tree(Column):
                     aId += 1
         return children
 
-#    def get_item_children(self, item):
-#        children = []
-#        if item:
-#            obj = item[9]
-#            if type(item) == dict:
-                
-#        return children
-
     def show_menu(self, pos):
-#        if self.menu and self.selected_item_index:
         if self.menu:
             m = Menu("Menu", self.menu, handler=self)
             i = m.present(self, pos)
@@ -337,7 +328,6 @@ class Tree(Column):
 
     def add_item_enabled(self):
         return True
-#        return self.selected_item[6] > 0
 
     def add_child_enabled(self):
         if not self.selected_item:
@@ -490,5 +480,4 @@ class Tree(Column):
                     data = repr(data)
                 yield i, x + m, width - d, None, data
                 x += width
-
 
