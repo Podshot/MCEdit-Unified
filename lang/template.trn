@@ -1296,22 +1296,22 @@ o624 Don't Save
 t624 
 o625 Press a key to assign to the action "{0}"
 
-Press ESC to cancel. Press Ctrl-ESC to unbind.
+Press ESC to cancel.
 t625 
 o626 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
-Press ESC to cancel. Press Ctrl-ESC to unbind.
+Press ESC to cancel.
 t626 
 o627 {0} is not a modifier. Press a new key.
-Press ESC to cancel. Press Ctrl-ESC to unbind.
+Press ESC to cancel.
 t627 
 o628 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
-Press ESC to cancel. Press Ctrl-ESC to unbind.
+Press ESC to cancel.
 t628 
 o629 You can't use the key {0}. Press a new key.
 
-Press ESC to cancel. Press Ctrl-ESC to unbind.
+Press ESC to cancel.
 t629 
 o630 Reset to default
 t630 
@@ -1419,19 +1419,21 @@ o680 Choose an image file...
 t680 
 o681 Select a NBT (.dat) file...
 t681 
-o682 File allready exists.
+o682 File already exists.
 Click 'OK' to choose one.
-t682 
+t682
 o683 Choose a NBT file...
 t683
 o684 Click to bind opening this filter to a hotkey
 t684
 o685 Press a key to assign to opening the filter "{0}"
 
-Press ESC to cancel. Press Ctrl-ESC to unbind.
+Press ESC to cancel.
 t685
 o686 Can't bind. {0} is already used by {1}.
 Press a key to assign to opening the filter "{2}"
 
-Press ESC to cancel. Press Ctrl-ESC to unbind.
+Press ESC to cancel.
 t686
+o687 Press to unbind
+t687

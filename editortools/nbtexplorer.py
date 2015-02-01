@@ -819,7 +819,7 @@ class NBTExplorerTool(EditorTool):
 
     def saveFile(self, fName, data, dontSaveRootTag):
         if os.path.exists(fName):
-            r = ask("File allready exists.\nClick 'OK' to choose one.")
+            r = ask("File already exists.\nClick 'OK' to choose one.")
             if r == 'OK':
                 folder, name = os.path.split(fName)
                 suffix = os.path.splitext(name)[-1][1:]
