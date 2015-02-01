@@ -425,6 +425,8 @@ class PlayerPositionPanel(Panel):
         player = self.selectedPlayer
         if player == 'Player':
             alert("Not yet implemented.\nUse the NBT Explorer to edit this player.")
+        elif player == '[No players]':
+            return
         else:
             path = os.path.join(os.path.split(self.level.filename)[0], 'playerdata')
             if not os.path.exists(path):
