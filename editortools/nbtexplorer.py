@@ -220,7 +220,6 @@ class NBTTree(Tree):
                 k = parent[9].list_type
                 v = None
                 for key, value in item_types_map.items():
-                    print key
                     if globals().get(key.__name__.upper(), -1) == k:
                         v = value
                         break
@@ -237,7 +236,6 @@ class NBTTree(Tree):
                 k = parent[9].list_type
                 v = None
                 for key, value in item_types_map.items():
-                    print key
                     if globals().get(key.__name__.upper(), -1) == k:
                         v = value
                         break
