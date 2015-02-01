@@ -11,6 +11,7 @@ inputs = (
     ("Repeat count", (1, 50)),
 )
 
+displayName = "Smooth - 2D"
 
 def perform(level, box, options):
     if box.volume > 16000000:
