@@ -478,13 +478,20 @@ class FilterToolPanel(Panel):
         self.current_step += 1
         self.macro_steps.append(data)
 
+    def unbind(self):
+        config.config.remove_option("Filter Keys", self.selectedFilterName)
+        self.binding_button.tooltipText = "Click to bind opening this filter to a hotkey"
+        self.keys_panel.dismiss()
+
     def bind_key(self, message=None):
         panel = Panel()
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
         if not message:
-            message = _("Press a key to assign to opening the filter \"{0}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(self.selectedFilterName)
+            message = _("Press a key to assign to opening the filter \"{0}\"\n\nPress ESC to cancel.").format(self.selectedFilterName)
         label = albow.Label(message)
-        panel.add(label)
+        unbind_button = Button("Press to unbind", action=self.unbind)
+        column = Column((label, unbind_button))
+        panel.add(column)
         panel.shrink_wrap()
 
         def panelKeyUp(evt):
@@ -509,19 +516,19 @@ class FilterToolPanel(Panel):
         panel.key_up = panelKeyUp
         panel.mouse_up = panelMouseUp
 
+        self.keys_panel = panel
         keyname = panel.present()
-        if keyname != "Escape" and keyname != "Ctrl-Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
+        if type(keyname) is bool:
+            return True
+        if keyname != "Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
             if keysUsed:
-                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to opening the filter \"{2}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(keyname, keysUsed[0][0], self.selectedFilterName))
+                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to opening the filter \"{2}\"\n\nPress ESC to cancel.").format(keyname, keysUsed[0][0], self.selectedFilterName))
                 return True
-        elif keyname != "Escape" and keyname != "Ctrl-Escape":
-            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to opening the filter \"{1}\"\n\nPress ESC to cancel. Press Ctrl-ESC to unbind.").format(keyname, self.selectedFilterName))
-            return True
         elif keyname != "Escape":
-            config.config.remove_option("Filter Keys", self.selectedFilterName)
-            self.binding_button.tooltipText = "Click to bind opening this filter to a hotkey"
-        if keyname != "Escape" and keyname != "Ctrl-Escape":
+            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to opening the filter \"{1}\"\n\nPress ESC to cancel.").format(keyname, self.selectedFilterName))
+            return True
+        if keyname != "Escape":
             self.binding_button.tooltipText = keyname
             config.config.set("Filter Keys", self.selectedFilterName, keyname)
         config.save()
