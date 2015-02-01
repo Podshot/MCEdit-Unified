@@ -385,6 +385,7 @@ class PlayerPositionPanel(Panel):
         max_height = self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height - self.margin - 2
         max_height = min(max_height, 500)
 
+        self.editNBTDataButton = Button("Edit NBT data", action=self.editNBTData, tooltipText="Open the NBT Explorer to edit player's attributes and inventory")
         addButton = Button("Add Player", action=self.tool.addPlayer)
         removeButton = Button("Remove Player", action=self.tool.removePlayer)
         gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
@@ -394,7 +395,7 @@ class PlayerPositionPanel(Panel):
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
         # The Label("qb", doNotTranslate=True) is not nice, but is used to have a correct layout for the table.
-        btns = (Label("qb", doNotTranslate=True), addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)
+        btns = (Label("qb", doNotTranslate=True), self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)
         max_height -= sum((a.height for a in btns)) - len(btns) * 2
 
         tableview = TableView(nrows=0, row_height=self.font.size(" ")[1], columns=[
@@ -413,12 +414,28 @@ class PlayerPositionPanel(Panel):
         self.table = tableview
         col = [self.table]
 
-        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
+        col.extend([self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
 
         col = Column(col, spacing=2)
         col.shrink_wrap()
         self.add(col)
         self.shrink_wrap()
+
+    def editNBTData(self):
+        player = self.selectedPlayer
+        if player == 'Player':
+            alert("Not yet implemented.\nUse the NBT Explorer to edit this player.")
+        else:
+            path = os.path.join(os.path.split(self.level.filename)[0], 'playerdata')
+            if not os.path.exists(path):
+                path = os.path.join(os.path.split(self.level.filename)[0], 'players')
+            if player + '.dat' in os.listdir(path):
+                for tool in self.tool.editor.toolbar.tools:
+                    if tool.__class__.__name__ == 'NBTExplorerTool':
+                        break
+                tool.loadFile(os.path.join(path, player + '.dat'), callingTool=self.tool)
+            else:
+                alert(_("Error while getting player file.\n%s not found.")%(player + '.dat'), doNotTranslate=True)
 
     @property
     def selectedPlayer(self):

@@ -767,6 +767,7 @@ class NBTExplorerTool(EditorTool):
         self.toolIconName = 'nbtexplorer'
         self.editor = editor
         self.editor.nbtTool = self
+        self.callingTool = None
 
     def toolSelected(self):
         self.showPanel()
@@ -783,28 +784,38 @@ class NBTExplorerTool(EditorTool):
             self.panel.left = self.editor.left
             self.editor.add(self.panel)
 
-    def loadFile(self, fName=None):
+    def hidePanel(self):
+        if self.callingTool:
+            tool = 0 + self.callingTool
+            self.callingTool = None
+            self.editor.toolbar.selectTool(tool)
+        else:
+            EditorTool.hidePanel(self)
+
+    def loadFile(self, fName=None, callingTool=None):
         if not fName:
             fName = mcplatform.askOpenFile(title="Select a NBT (.dat) file...", suffixes=['dat',])
-            if fName:
-                if not os.path.isfile(fName):
-                    alert("The selected object is not a file.\nCan't load it.")
-                    return
-                dontSaveRootTag = False
-                nbtObject = load(fName)
-                if nbtObject.get('Data', None):
-                    dataKeyName = 'Data'
-                elif nbtObject.get('data', None):
-                    dataKeyName = 'data'
-                else:
-                    nbtObject.name = 'Data'
-                    dataKeyName = 'Data'
-                    dontSaveRootTag = True
-                    nbtObject = TAG_Compound([nbtObject,])
-                self.editor.toolbar.removeToolPanels()
-                self.editor.currentTool = self
-                self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
-                self.optionsPanel.dismiss()
+        if fName:
+            if not os.path.isfile(fName):
+                alert("The selected object is not a file.\nCan't load it.")
+                return
+            dontSaveRootTag = False
+            nbtObject = load(fName)
+            if nbtObject.get('Data', None):
+                dataKeyName = 'Data'
+            elif nbtObject.get('data', None):
+                dataKeyName = 'data'
+            else:
+                nbtObject.name = 'Data'
+                dataKeyName = 'Data'
+                dontSaveRootTag = True
+                nbtObject = TAG_Compound([nbtObject,])
+            self.editor.toolbar.removeToolPanels()
+            self.editor.currentTool = self
+            self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
+            self.optionsPanel.dismiss()
+        if callingTool in self.editor.toolbar.tools:
+            self.callingTool = self.editor.toolbar.tools.index(callingTool)
 
     def saveFile(self, fName, data, dontSaveRootTag):
         if os.path.exists(fName):
