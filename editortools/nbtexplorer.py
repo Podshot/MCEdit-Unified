@@ -215,17 +215,18 @@ class NBTTree(Tree):
     def add_item(self, types_item=None):
         if types_item is None:
             parent = self.get_item_parent(self.selected_item)
-            p_type = parent[7]
-            if p_type == TAG_List:
-                k = parent[9].list_type
-                v = None
-                for key, value in item_types_map.items():
-                    if globals().get(key.__name__.upper(), -1) == k:
-                        v = value
-                        break
-                if v is None:
-                    return
-                types_item = {v[0]: (key, v[1], v[2])}
+            if parent:
+                p_type = parent[7]
+                if p_type == TAG_List:
+                    k = parent[9].list_type
+                    v = None
+                    for key, value in item_types_map.items():
+                        if globals().get(key.__name__.upper(), -1) == k:
+                            v = value
+                            break
+                    if v is None:
+                        return
+                    types_item = {v[0]: (key, v[1], v[2])}
         Tree.add_item(self, types_item)
 
     def add_child(self, types_item=None):
@@ -504,7 +505,8 @@ class NBTExplorerToolPanel(Panel):
             header = Label("NBT Explorer")
             self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - header.height - (self.margin * 2) - btnRow.height - 2
         self.setCompounds()
-        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=self.compounds, draw_zebra=False, _parent=self, styles=bullet_styles)
+        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=self.compounds,
+                            copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
         col = Column([self.tree, btnRow], margin=0, spacing=2)
         col.shrink_wrap()
         row = [col, Column([Label("", width=300), ], height=max_height + btnRow.height + 2)]
@@ -543,7 +545,8 @@ class NBTExplorerToolPanel(Panel):
         self.setCompounds()
         if hasattr(self, 'tree'):
             self.tree.set_parent(None)
-            self.tree = NBTTree(height=self.max_height, inner_width=250, data=self.data, compound_types=self.compounds, draw_zebra=False, _parent=self, styles=bullet_styles)
+            self.tree = NBTTree(height=self.max_height, inner_width=250, data=self.data, compound_types=self.compounds,
+                                copyBuffer=self.editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
             self.displayRow.subwidgets[0].subwidgets.insert(0, self.tree)
             self.tree.set_parent(self.displayRow.subwidgets[0])
 

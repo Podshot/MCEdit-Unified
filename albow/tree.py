@@ -17,6 +17,7 @@ from palette_view import PaletteView
 from scrollpanel import ScrollRow
 from utils import blit_in_rect
 from pygame import image, Surface, Rect, SRCALPHA, draw, event
+import copy
 
 
 #-----------------------------------------------------------------------------
@@ -137,12 +138,18 @@ class Tree(Column):
                      ("Delete", "delete_item"),
                      ("New child", "add_child"),
                      ("Rename", "rename_item"),
+                     ("", ""),
+                     ("Cut", "cut_item"),
+                     ("Copy", "copy_item"),
+                     ("Paste", "paste_item"),
+                     ("Paste as child", "paste_child"),
                      ]
         if not hasattr(self, 'map_types_item'):
             global map_types_item
             self.map_types_item = setup_map_types_item()
         self.selected_item_index = None
         self.selected_item = None
+        self.copyBuffer = kwargs.pop('copyBuffer', None)
         self._parent = kwargs.pop('_parent', None)
         self.styles = kwargs.pop('styles', {})
         self.compound_types = [dict,] + kwargs.pop('compound_types', [])
@@ -161,6 +168,44 @@ class Tree(Column):
         row_height = self.font.size(' ')[1]
         self.treeRow = treeRow = TreeRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
         Column.__init__(self, [treeRow,], **kwargs)
+
+    def cut_item(self):
+        self.copyBuffer = ([] + self.selected_item, 1)
+        self.delete_item()
+
+    def copy_item(self):
+        self.copyBuffer = ([] + self.selected_item, 0)
+
+    def paste_item(self):
+        parent = self.get_item_parent(self.selected_item)
+        name = self.copyBuffer[0][3]
+        old_name = u"%s"%self.copyBuffer[0][3]
+        if self.copyBuffer[1] == 0:
+            name = input_text_buttons("Choose a name", 300, self.copyBuffer[0][3])
+        else:
+            old_name = ""
+        if name and type(name) in (str, unicode) and name != old_name:
+            new_item = copy.deepcopy(self.copyBuffer[0][9])
+            if hasattr(new_item, 'name'):
+                new_item.name = name
+            self.add_item_to(parent, (name, new_item))
+
+    def paste_child(self):
+        name = self.copyBuffer[0][3]
+        old_name = u"%s"%self.copyBuffer[0][3]
+        names = []
+        children = self.get_item_children(self.selected_item)
+        if children:
+            names = [a[3] for a in children]
+        if name in names:
+            name = input_text_buttons("Choose a name", 300, self.copyBuffer[0][3])
+        else:
+            old_name = ""
+        if name and type(name) in (str, unicode) and name != old_name:
+            new_item = copy.deepcopy(self.copyBuffer[0][9])
+            if hasattr(new_item, 'name'):
+                new_item.name = name
+            self.add_item_to(self.selected_item, (name, new_item))
 
     @staticmethod
     def add_item_to_dict(parent, name, item):
@@ -218,13 +263,54 @@ class Tree(Column):
             self.build_layout()
 
     def get_item_parent(self, item):
-        pid = item[4]
-        for itm in self.rows:
-            if pid == itm[6]:
-                return itm
+        if item:
+            pid = item[4]
+            for itm in self.rows:
+                if pid == itm[6]:
+                    return itm
+
+    def get_item_children(self, item):
+        children = []
+        if item:
+            if item[6] in self.deployed:
+                cIds = item[5]
+                idx = self.rows.index(item)
+                for child in self.rows[idx:]:
+                    if child[8] == item[8] + 1 and child[4] == item[6]:
+                        children.append(child)
+            else:
+                k = item[3]
+                v = item[9]
+                lvl = item[8]
+                id = item[6]
+                aId = len(self.rows) + 1
+                meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
+                if meth is not None:
+                    _v = meth(k, v)
+                else:
+                    _v = v
+                ks = _v.keys()
+                ks.sort()
+                ks.reverse()
+                for a in ks:
+                    b = _v[a]
+                    itm = [lvl + 1, a, b, id, [], aId]
+                    itm = [None, None, None, a, id, [], aId, type(b), lvl + 1, b]
+                    children.insert(0, itm)
+                    aId += 1
+        return children
+
+#    def get_item_children(self, item):
+#        children = []
+#        if item:
+#            obj = item[9]
+#            if type(item) == dict:
+                
+#        return children
 
     def show_menu(self, pos):
-        if self.menu and self.selected_item_index:
+#        if self.menu and self.selected_item_index:
+        if self.menu:
             m = Menu("Menu", self.menu, handler=self)
             i = m.present(self, pos)
             if i > -1:
@@ -232,11 +318,34 @@ class Tree(Column):
                 if meth:
                     meth()
 
+    def cut_item_enabled(self):
+        return self.selected_item is not None
+
+    def copy_item_enabled(self):
+        return self.cut_item_enabled()
+
+    def paste_item_enabled(self):
+        return self.copyBuffer is not None
+
+    def paste_child_enabled(self):
+        if not self.selected_item:
+            return False
+        return self.paste_item_enabled() and self.selected_item[7] in self.compound_types
+
     def add_item_enabled(self):
-        return self.selected_item[6] > 0
+        return True
+#        return self.selected_item[6] > 0
 
     def add_child_enabled(self):
+        if not self.selected_item:
+            return False
         return self.selected_item[7] in self.compound_types
+
+    def delete_item_enabled(self):
+        return self.selected_item is not None
+
+    def rename_item_enabled(self):
+        return self.selected_item is not None
 
     def build_layout(self):
         data = self.data

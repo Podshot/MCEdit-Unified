@@ -150,6 +150,8 @@ class LevelEditor(GLViewport):
         self.redoStack = []
         self.copyStack = []
 
+        self.nbtCopyBuffer = mcedit.nbtCopyBuffer
+
         self.level = None
 
         self.cameraInputs = [0., 0., 0.]

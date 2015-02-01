@@ -154,6 +154,9 @@ class MCEdit(GLViewport):
         #.#
 
         self.droppedLevel = None
+
+        self.nbtCopyBuffer = None
+
         self.reloadEditor()
 
         """

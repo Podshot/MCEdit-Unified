@@ -62,7 +62,7 @@ def set_tree(t):
 
 def nbttree_mouse_down(e):
     if e.num_clicks > 1:
-        if tree.selected_item[3].startswith('(') and tree.selected_item[3].endswith(')'):
+        if tree.selected_item and tree.selected_item[3].startswith('(') and tree.selected_item[3].endswith(')'):
             s = ast.literal_eval(tree.selected_item[3])
             editor.mainViewport.cameraPosition = (s[0] + 0.5, s[1] + 2, s[2] - 1)
             editor.mainViewport.yaw = 0.0
