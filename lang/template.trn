@@ -1424,3 +1424,64 @@ Click 'OK' to choose one.
 t682 
 o683 Choose a NBT file...
 t683 
+o684 The selected object is not a file.
+Can't load it.
+t684 
+o685 The selected object is not a file.
+Can't save it.
+t685 
+o686 Show all the tags in the tree
+t686 
+o687 Compound
+t687 
+o688 Integer
+t688 
+o689 Floating point
+t689 
+o690 Text
+t690 
+o691 Boolean
+t691 
+o692 Choose default data
+t692 
+o693 Item Type: %s
+t693 
+o694 Value
+t694 
+o695 This item type is a container. Add chlidren later.
+t695 
+o696 Choose item type
+t696 
+o697 Choose a name
+t697 
+o698 Byte
+t698 
+o699 Long
+t699 
+o700 Short
+t700 
+o701 String
+t701 
+o702 List
+t702 
+o703 Byte Array
+t703 
+o704 Int Array
+t704 
+o705 Short Array
+t705 
+o706 Click to bind opening this filter to a hotkey
+t706 
+o707 Press a key to assign to opening the filter "{0}"
+
+Press ESC to cancel.
+t707 
+o708 Can't bind. {0} is already used by {1}.
+Press a key to assign to opening the filter "{2}"
+
+Press ESC to cancel.
+t708 
+o709 [No players]
+t709 
+o710 Press to unbind
+t710 

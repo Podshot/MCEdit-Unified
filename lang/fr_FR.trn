@@ -1337,31 +1337,22 @@ t623 Ne pas sauver
 o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t624 Appuyez sur une touche pour l'action "{0}"
-
-ESC pour annuler. SHIFT-ESC pour supprimer.
+t624 
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 Appuyez sur une touche pour l'action "{0}"
-Acune touche = clic-droit.
-ESC pour annuler. SHIFT-ESC pour supprimer.
+t625 
 o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t626 {0} n'est pas un modificateur. Choisissez une autre touche.
-ESC pour annuler. SHIFT-ESC pour supprimer.
+t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t627 Les touche de mouvement ne peuvent être associée à Ctrl ou un autre modificateur.
-Choisissez-en une autre.
-ESC pour annuler. SHIFT-ESC pour supprimer.
+t627 
 o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t628 Vous ne pouvez utiliser la touche {0}. Choisissez-en une autre.
-
-ESC pour annuler. SHIFT-ESC pour supprimer.
+t628 
 o629 Reset to default
 t629 Valeur par défaut
 o630 Do you want to keep your changes?
@@ -1439,9 +1430,9 @@ t665 -> Nom
 o666 Double-click to edit
 t666 Double-clic pour editer
 o667 NBT Explorer
+Dive into level NBT structure.
 Right-click for options/load files.
-t667 Explorateur NBT
-Click-droit pour les option/charger des fichiers.
+t667 
 o668 Save your change in the NBT data.
 t668 Sauve vos changements dans les données NBT.
 o669 Save unsaved edits before loading?
@@ -1473,4 +1464,65 @@ Click 'OK' to choose one.
 t681 Le fichier existe déjà.
 Cliquez 'OK' pour en choisir un.
 o682 Choose a NBT file...
-t682 Choisir un fichier NBT...
+t682 Choisir un fichier NBT..
+o683 The selected object is not a file.
+Can't load it.
+t683 
+o684 The selected object is not a file.
+Can't save it.
+t684 
+o685 Show all the tags in the tree
+t685 
+o686 Compound
+t686 
+o687 Integer
+t687 
+o688 Floating point
+t688 
+o689 Text
+t689 
+o690 Boolean
+t690 
+o691 Choose default data
+t691 
+o692 Item Type: %s
+t692 
+o693 Value
+t693 
+o694 This item type is a container. Add chlidren later.
+t694 
+o695 Choose item type
+t695 
+o696 Choose a name
+t696 
+o697 Byte
+t697 
+o698 Long
+t698 
+o699 Short
+t699 
+o700 String
+t700 
+o701 List
+t701 
+o702 Byte Array
+t702 
+o703 Int Array
+t703 
+o704 Short Array
+t704 
+o705 Click to bind opening this filter to a hotkey
+t705 
+o706 Press a key to assign to opening the filter "{0}"
+
+Press ESC to cancel.
+t706 
+o707 Can't bind. {0} is already used by {1}.
+Press a key to assign to opening the filter "{2}"
+
+Press ESC to cancel.
+t707 
+o708 [No players]
+t708 
+o709 Press to unbind
+t709 

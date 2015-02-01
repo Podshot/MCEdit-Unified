@@ -1322,30 +1322,22 @@ t623 저장 안함
 o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t624 "{0}" 작업을 지정할 키를 누르십시오
-
-취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+t624 
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel. Press Shift-ESC to unbind.
-t625 "{0}" 작업을 지정할 키를 누르십시오
-키가 없다면 우클릭으로 빠른 이동을 합니다.
-취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+t625 
 o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel. Press Shift-ESC to unbind.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t627 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
-
-취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+t627 
 o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel. Press Shift-ESC to unbind.
-t628 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
-
-취소하려면 ESC를 누르십시오. 해제하려면 Shift-ESC를 누르십시오.
+t628 
 o629 Reset to default
 t629 기본 설정으로 되돌리기
 o630 Do you want to keep your changes?
@@ -1457,3 +1449,64 @@ Click 'OK' to choose one.
 t681 
 o682 Choose a NBT file...
 t682 
+o683 The selected object is not a file.
+Can't load it.
+t683 
+o684 The selected object is not a file.
+Can't save it.
+t684 
+o685 Show all the tags in the tree
+t685 
+o686 Compound
+t686 
+o687 Integer
+t687 
+o688 Floating point
+t688 
+o689 Text
+t689 
+o690 Boolean
+t690 
+o691 Choose default data
+t691 
+o692 Item Type: %s
+t692 
+o693 Value
+t693 
+o694 This item type is a container. Add chlidren later.
+t694 
+o695 Choose item type
+t695 
+o696 Choose a name
+t696 
+o697 Byte
+t697 
+o698 Long
+t698 
+o699 Short
+t699 
+o700 String
+t700 
+o701 List
+t701 
+o702 Byte Array
+t702 
+o703 Int Array
+t703 
+o704 Short Array
+t704 
+o705 Click to bind opening this filter to a hotkey
+t705 
+o706 Press a key to assign to opening the filter "{0}"
+
+Press ESC to cancel.
+t706 
+o707 Can't bind. {0} is already used by {1}.
+Press a key to assign to opening the filter "{2}"
+
+Press ESC to cancel.
+t707 
+o708 [No players]
+t708 
+o709 Press to unbind
+t709 
