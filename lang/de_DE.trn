@@ -1144,7 +1144,7 @@ t534 Flaches land
 o535 Generator:
 t535 Generator:
 o536 Will automatically download and use the latest version
-t536 Wird automatisch aktuelle Version herrunterladen
+t536 Wird automatisch aktuelle Version herrunterladen und sie benutzen
 o537 Height: 
 t537 Höhe: 
 o538 Grass
@@ -1322,18 +1322,18 @@ t623 Nicht Speichern
 o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel.
-t624 Drücke eine Taste um "{0}" die Aktion zu geben 
+t624 Drücken Sie eine Taste womit sie mit der Aktion "{0}" belegt wird
 
 Drücken Sie ESC für abbrechen.
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
-t625 Drücke eine Taste um "{0}" die Aktion zu geben
+t625 Drücken Sie eine Taste womit sie mit der Aktion "{0}" belegt wird
 Keine Taste ist Rechtsklick für schnelles schieben.
 Drücken Sie ESC für abbrechen.
 o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel.
-t626 {0} ist kein Modifizierer. Drücken Sie eine neue Taste.
+t626 {0} ist kein Modifizierer. Bitte drücken Sie eine neue Taste.
 Drücken Sie ESC für abbrechen.
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
@@ -1344,7 +1344,7 @@ Drücken Sie ESC für abbrechen.
 o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t628 Du kannst die Taste {0} nicht benutzen. Drücken Sie eine neue Taste.
+t628 Du kannst die Taste {0} nicht benutzen. Bitte drücken Sie eine neue Taste.
 
 Drücken Sie ESC für abbrechen.
 o629 Reset to default
@@ -1462,15 +1462,20 @@ Klicke 'OK' um eine auszuwählen.
 o682 Choose a NBT file...
 t682 Wähle eine NBT Datei aus...
 o684 Click to bind opening this filter to a hotkey
-t684
+t684 Drücken um den Filter mit einem Tastenkürzel zu öffnen
 o685 Press a key to assign to opening the filter "{0}"
 
 Press ESC to cancel.
-t685
+t685 Drücken Sie eine Taste womit Sie den Filter "{0}" öffnen 
+
+Drücken Sie ESC für abbrechen.
 o686 Can't bind. {0} is already used by {1}.
 Press a key to assign to opening the filter "{2}"
 
 Press ESC to cancel.
-t686
+t686 Konnte Taste nicht belegen. {0} ist schon von {1} benutzt.
+Bitte drücken Sie eine Taste womit Sie den Filter "{0}" öffnen 
+
+Drücken Sie ESC für abbrechen.
 o687 Press to unbind
-t687
+t687 Drücken für entfernen des Tastenkürzels
