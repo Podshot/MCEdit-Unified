@@ -107,23 +107,17 @@ array_types = {TAG_Byte_Array: field_types[TAG_Byte],
 
 
 #-----------------------------------------------------------------------------
-# It may be possible that item_types_map and field_types can be merged.
-# It should be done in tree.py.
+class TAG_List_Type(Widget):
+    choices = []
+    def __init__(self, value=None):
+        Widget.__init__(self)
+        self.choiceButton = ChoiceButton(self.choices)
+        self.add(self.choiceButton)
+        self.shrink_wrap()
 
-# TAG_List internal type selecter.
-# This works, but since the len of the TAG_List is 0, the internal data type is
-# overwritten when adding the first element.
-#class TAG_List_Type(Widget):
-#    choices = []
-#    def __init__(self, value=None):
-#        Widget.__init__(self)
-#        self.choiceButton = ChoiceButton(self.choices)
-#        self.add(self.choiceButton)
-#        self.shrink_wrap()
-
-#    @property
-#    def value(self):
-#        return self.choiceButton.selectedChoice
+    @property
+    def value(self):
+        return self.choiceButton.selectedChoice
 
 item_types_map = {TAG_Byte: ("Byte", IntField, 0),
                   TAG_Double: ("Floating point", FloatField, 0.0),
@@ -132,8 +126,7 @@ item_types_map = {TAG_Byte: ("Byte", IntField, 0),
                   TAG_Long: ("Long", IntField, 0),
                   TAG_Short: ("Short", IntField, 0),
                   TAG_String: ("String", TextFieldWrapped, ""),
-#                  TAG_List: ("List", TAG_List_Type, None),
-                  TAG_List: ("List", None, None),
+                  TAG_List: ("List", TAG_List_Type, None),
                   TAG_Compound: ("Compound", None, None),
                   TAG_Byte_Array: ("Byte Array", TextFieldWrapped, ""),
                   TAG_Int_Array: ("Int Array", TextFieldWrapped, ""),
@@ -142,7 +135,7 @@ item_types_map = {TAG_Byte: ("Byte", IntField, 0),
 
 map_types_item = setup_map_types_item(item_types_map)
 
-#TAG_List_Type.choices = map_types_item.keys()
+TAG_List_Type.choices = map_types_item.keys()
 
 #-----------------------------------------------------------------------------
 def create_base_item(self, i_type, i_name, i_value):
@@ -155,8 +148,7 @@ def create_TAG_Compound(self, i_type, i_name, i_value):
     return i_name, i_type([], i_name)
 
 def create_TAG_List(self, i_type, i_name, i_value):
-#    return i_name, i_type([], i_name, globals()[map_types_item[i_value][0].__name__.upper()])
-    return i_name, i_type([], i_name)
+    return i_name, i_type([], i_name, globals()[map_types_item[i_value][0].__name__.upper()])
 
 def create_array_item(self, i_type, i_name, i_value):
     value = i_value.strip().strip('[]').strip()

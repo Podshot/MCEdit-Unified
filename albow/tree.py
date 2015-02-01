@@ -62,7 +62,7 @@ class SetupNewItemPanel(Dialog):
         self.n = u""
         w_name = TextFieldWrapped(ref=AttrRef(self, 'n'))
         self.w_value = self.get_widget(widget)
-        col = Column([Column([title,]), Row([Label("Name"), w_name], margin=0), Row([Label("Value"), self.w_value], margin=0), Row([Button("OK", action=ok_action or self.dismiss_ok), Button("Cancel", action=self.dismiss)], margin=0)], margin=0, spacing=2)
+        col = Column([Column([title,]), Label(_("Item Type: %s")%type_string, doNotTranslate=True), Row([Label("Name"), w_name], margin=0), Row([Label("Value"), self.w_value], margin=0), Row([Button("OK", action=ok_action or self.dismiss_ok), Button("Cancel", action=self.dismiss)], margin=0)], margin=0, spacing=2)
         Dialog.__init__(self, client=col)
 
     def dismiss_ok(self):
@@ -98,9 +98,12 @@ class SelectItemTypePanel(Dialog):
 
 #-----------------------------------------------------------------------------
 def select_item_type(ok_action, types=map_types_item):
-    choices = types.keys()
-    choices.sort()
-    result = SelectItemTypePanel("Choose item type", responses=choices, default=None).present()
+    if len(types) > 1:
+        choices = types.keys()
+        choices.sort()
+        result = SelectItemTypePanel("Choose item type", responses=choices, default=None).present()
+    else:
+        result = types.keys()[0]
     if type(result) in (str, unicode):
         return SetupNewItemPanel(result, types, ok_action).present()
     return None
