@@ -1779,6 +1779,7 @@ class LevelEditor(GLViewport):
                 self._ftp_client = FTPClient(ftp_ip_field.get_text())
             else:
                 self._ftp_client = FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+            self._ftp_client.safe_download()
             self.mcedit.loadFile(os.path.join(self._ftp_client.get_level_path(), 'level.dat'))
             self.world_from_ftp = True
             
@@ -1794,7 +1795,6 @@ class LevelEditor(GLViewport):
             self._ftp_client.upload()
             world_list = self.mcedit.recentWorlds()
             del world_list[0]
-            print world_list
             self.mcedit.setRecentWorlds(world_list)
             self.clearUnsavedEdits()
             self.unsavedEdits = 0
