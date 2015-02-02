@@ -435,6 +435,7 @@ class PlayerPositionPanel(Panel):
                 for tool in self.tool.editor.toolbar.tools:
                     if tool.__class__.__name__ == 'NBTExplorerTool':
                         break
+                tool.revertToPlayerTool = True
                 tool.loadFile(os.path.join(path, player + '.dat'), callingTool=self.tool)
             else:
                 alert(_("Error while getting player file.\n%s not found.")%(player + '.dat'), doNotTranslate=True)

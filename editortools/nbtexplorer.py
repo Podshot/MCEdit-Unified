@@ -481,6 +481,7 @@ class NBTExplorerToolPanel(Panel):
         self.dontSaveRootTag = dontSaveRootTag
         self.displayed_item = None
         self.dataKeyName = dataKeyName
+        self.revertToPlayerTool = False
         self.init_data()
         btnRow = Row([
                            Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
@@ -550,7 +551,10 @@ class NBTExplorerToolPanel(Panel):
         self.editor.nbtTool.showPanel()
 
     def close(self):
-        self.editor.toolbar.selectTool(0)
+        if self.editor.nbtTool.revertToPlayerTool:
+            self.editor.toolbar.selectTool(6)
+        else:
+            self.editor.toolbar.selectTool(0)
         self.editor.nbtTool.hidePanel()
 
     def update_side_panel(self, item):
