@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
-	<head>
-		<!--[if lte IE 9]>
+	<!--[if lte IE 9]>
 		<p class="update">
-			You are using an out-of-date browser, please update or change your current browser to <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a> (Window XP users are supported),
+			Hello, it looks like you are still using an outdated browser, we recommend upgrading to the latest <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a> (Window XP users are supported),
 			<a href="https://www.mozilla.org/en-US/firefox/new">FireFox</a> (Window XP users are supported) or <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer (IE)</a> 11 for systems using Windows 7,8,8.1. 
 			<br> Check out <a href="http://browsehappy.com/">Browsehappy.com</a> to see the latest version of your browser.
 		</p>
-		<![endif]-->
+	<![endif]-->
+	<head>
 		<meta charset="utf-8">
 		<title>MCEdit Unified - Requirements</title>
 		<script src="js/jquery.min.js"></script>
@@ -33,91 +33,171 @@
 	</head>
 	
 	<body>
-		<article>
-			<div class="container">
-				<div class="row">
-					<div class=" col-md-6 col-md-offset-3">
-						<p style="text-align:center;">
-						  The below are the supported system requirements, lower specs may work but we can't promise functionality. This is partially due to lack of equipment to test with.<br>
-						  <b>Note:</b> These are the requirements for mcedit-unified, for the requirements for <a href="http://mcedit.net">mcedit 2</a> you may continue use this as a reference until the requirements are available.
-						</p>
-						<table class="table table-bordered" style="font-size:12px;">
-							<tr style="text-align:center;">
-								<td>
-								</td>
-								<td>
-									<b>Windows</b>
-								</td>
-								<td>
-									<b>Mac</b>
-								</td>
-								<td>
-									<b>Linux</b>
-								</td>
-							</tr>
-							<tr style="text-align:center;">
-								<td>
-									<b>Operating System</b>
-								</td>
-								<td>
-									XP SP3 or newer
-								</td>
-								<td>
-									OSX 10.6.8 Snow Leopard^ or newer
-								</td>
-								<td>
-									Any Linux variant with python 2.7
-								</td>
-							</tr>
-							<tr style="text-align:center;">
-								<td>
-									<b>Processor</b>
-								</td>
-								<td>
-									Intel Core 2 Duo or better^^
-								</td>
-								<td>
-									Intel Core 2 Duo or better^^
-								</td>
-								<td>
-									2.5ghz Pentium 4 or better
-								</td>
-							</tr>
-							<tr>
-								<td style="text-align:center;">
-									<b>Ram</b>
-								</td>
-								<td colspan="3" style="text-align:center;">
-									2GB or higher (4GB is better)
-								</td>
-							</tr>
-							<tr>
-								<td style="text-align:center;">
-									<b>Video Card</b>
-								</td>
-								<td colspan="3" style="text-align:center;">
-									Any fully OpenGL 1.1 compatible graphics card
-								</td>
-							</tr>
-							<tr>
-								<td style="text-align:center;">
-									<b>Free Disk Space</b>
-								</td>
-								<td colspan="3" style="text-align:center;">
-									1 - 1.5GB
-								</td>
-							</tr>
-						</table>
-						<p>
-							<b>Notes:</b><br>
-							^Not thoroughly tested with versions below 10.9 Mavericks.<br>
-							^^This is due to the speed on how fast mcedit-unified can run and any other programs that are currently on without crashing.<br>
-							If you currently are running mcedit-unified on Intel Core 2 Duo or lower you may continue to do so, but you may recieve a crash on newer released versions of mcedit-unifed.
-						</p>
-					</div>
+		<div class="min-requirements">
+			<div class="row">
+				<div class=" col-md-6 col-md-offset-3">
+					<p style="text-align:center;">
+						<b>Minimum requirements for MCEdit-Unified:</b><br>
+					</p>
+					<table class="table table-bordered" style="font-size:12px;">
+						<tr style="text-align:center;">
+							<td>
+							</td>
+							<td>
+								<b>Windows</b>
+							</td>
+							<td>
+								<b>Mac</b>
+							</td>
+							<td>
+								<b>Linux</b>
+							</td>
+						</tr>
+						<tr style="text-align:center;background-color:#E0E0E0">
+							<td>
+								<b>Operating System</b>
+							</td>
+							<td>
+								XP SP3 or newer
+							</td>
+							<td>
+								OSX 10.6.8 (Snow Leopard)* or newer
+							</td>
+							<td>
+								Any variant with python 2.7
+							</td>
+						</tr>
+						<tr style="text-align:center;">
+							<td>
+								<b>Processor</b>
+							</td>
+							<td>
+								Intel: Core 2 Duo or better**<br>
+								AMD: K10 or better
+							</td>
+							<td>
+								Intel: Core 2 Duo or better**
+							</td>
+							<td>
+								Intel: Core 2 Duo or better**<br>
+								AMD: K10 or better
+							</td>
+						</tr>
+						<tr style="text-align:center;background-color:#E0E0E0">
+							<td>
+								<b>Ram</b>
+							</td>
+							<td colspan="3">
+								2GB or higher
+							</td>
+						</tr>
+						<tr style="text-align:center;">
+							<td >
+								<b>Video Card</b>
+							</td>
+							<td colspan="3">
+								Any OpenGL 3.3 compatible graphics card
+							</td>
+						</tr>
+						<tr style="text-align:center;background-color:#E0E0E0">
+							<td>
+								<b>Free Disk Space</b>
+							</td>
+							<td colspan="3">
+								1 - 1.5GB
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
-		</article>
+		</div>
+		
+		<div class="rec-requirements">
+			<div class="row">
+				<div class=" col-md-6 col-md-offset-3">
+					<p style="text-align:center;">
+						<b>Recommended requirements for MCEdit-Unified:</b><br>
+					</p>
+					<table class="table table-bordered" style="font-size:12px;">
+						<tr style="text-align:center;">
+							<td>
+							</td>
+							<td>
+								<b>Windows</b>
+							</td>
+							<td>
+								<b>Mac</b>
+							</td>
+							<td>
+								<b>Linux</b>
+							</td>
+						</tr>
+						<tr style="text-align:center;background-color:#E0E0E0">
+							<td>
+								<b>Operating System</b>
+							</td>
+							<td>
+								7, 8 and 8.1 (64-bit)
+							</td>
+							<td>
+								OSX 10.9.5 (Mavericks) or newer
+							</td>
+							<td>
+								Any variant with python 2.7
+							</td>
+						</tr>
+						<tr style="text-align:center;">
+							<td>
+								<b>Processor</b>
+							</td>
+							<td>
+								Intel: Core i3 (Sandy Bridge) or better<br>
+								AMD: Bulldozer or better
+							</td>
+							<td>
+							Intel: Core i3 (Sandy Bridge) or better
+							</td>
+							<td>
+								Intel: Core i3 (Sandy Bridge) or better<br>
+								AMD: Bulldozer or better
+							</td>
+						</tr>
+						<tr style="text-align:center;background-color:#E0E0E0">
+							<td>
+								<b>Ram</b>
+							</td>
+							<td colspan="3">
+								4GB or higher
+							</td>
+						</tr>
+						<tr style="text-align:center;">
+							<td >
+								<b>Video Card</b>
+							</td>
+							<td colspan="3">
+								Any OpenGL 4.3 compatible graphics card
+							</td>
+						</tr>
+						<tr style="text-align:center;background-color:#E0E0E0">
+							<td>
+								<b>Free Disk Space</b>
+							</td>
+							<td colspan="3">
+									1 - 1.5GB
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="foot-note">
+			<p style="text-align:center;margin-top:10px;margin-left:55px;">
+				<b>Notes:</b><br>
+				*Not thoroughly tested with 10.9.5 Mavericks or below.<br>
+				**Due to the speed on how fast MCEdit-Unified can run and any other programs that are currently on without crashing.<br>
+				If you are currently running MCEdit-Unified on Intel Core 2 Duo or lower you may recieve a crash on newer released versions of MCEdit-Unified.
+			</p>
+		</div>
 		
 		<hr>
 		<div class="footer">
