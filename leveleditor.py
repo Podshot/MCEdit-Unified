@@ -1779,6 +1779,7 @@ class LevelEditor(GLViewport):
                 self._ftp_client = FTPClient(ftp_ip_field.get_text())
             else:
                 self._ftp_client = FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+            self._ftp_client.safe_download()
             self.mcedit.loadFile(os.path.join(self._ftp_client.get_level_path(), 'level.dat'))
             self.world_from_ftp = True
             
@@ -1794,7 +1795,6 @@ class LevelEditor(GLViewport):
             self._ftp_client.upload()
             world_list = self.mcedit.recentWorlds()
             del world_list[0]
-            print world_list
             self.mcedit.setRecentWorlds(world_list)
             self.clearUnsavedEdits()
             self.unsavedEdits = 0
@@ -2856,20 +2856,52 @@ class EditorToolbar(GLOrtho):
 
     def selectTool(self, toolNumber):
         ''' pass a number outside the bounds to pick the selection tool'''
+        print 'toolNumber', toolNumber
         if toolNumber >= len(self.tools) or toolNumber < 0:
             toolNumber = 0
 
         t = self.tools[toolNumber]
+        print t.__class__.__name__
         if not t.toolEnabled():
             return
-        if self.parent.currentTool == t:
-            self.parent.currentTool.toolReselected()
-        else:
+        print "enabled"
+#        if self.parent.currentTool == t:
+#            print "is parent current tool"
+#            self.parent.currentTool.toolReselected()
+#            print "'''"
+#            return
+#        else:
+#            print "is being selected"
+#            self.parent.selectionTool.hidePanel()
+#            print 1
+#            if self.parent.currentTool is not None:
+#                print 1.1
+#                self.parent.currentTool.cancel()
+#                print 1.2
+#            self.parent.currentTool = t
+#            print 2
+#            self.parent.currentTool.toolSelected()
+#            print '"""'
+#            return
+        if self.parent.currentTool != t:
+            print "is being selected"
             self.parent.selectionTool.hidePanel()
+            print 1
             if self.parent.currentTool is not None:
+                print 1.1
                 self.parent.currentTool.cancel()
+                print 1.2
             self.parent.currentTool = t
+            print 2
             self.parent.currentTool.toolSelected()
+            print '"""'
+            return
+        else:
+            print "is parent current tool"
+            self.parent.currentTool.toolReselected()
+            print "'''"
+            return
+        print "---"
 
     def removeToolPanels(self):
         for tool in self.tools:
@@ -2976,7 +3008,9 @@ class EditorToolbar(GLOrtho):
         #    self.gfont.flatPrint("ADLADLADLADLADL")
 
         try:
+            print "self.parent.currentTool", self.parent.currentTool, self.parent.currentTool in self.tools
             currentToolNumber = self.tools.index(self.parent.currentTool)
+            print "currentToolNumber", currentToolNumber
         except ValueError:
             pass
         else:
