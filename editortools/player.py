@@ -459,6 +459,7 @@ class PlayerPositionPanel(Panel):
             if not os.path.exists(path):
                 path = os.path.join(os.path.split(self.level.filename)[0], 'players')
             if player + '.dat' in os.listdir(path):
+<<<<<<< HEAD
 #                for tool in self.tool.editor.toolbar.tools:
 #                    if tool.__class__.__name__ == 'NBTExplorerTool':
 #                        break
@@ -477,6 +478,12 @@ class PlayerPositionPanel(Panel):
                 self.pages.add_page("Data", self.nbttree)
                 self.pages.show_page(self.nbttree)
 
+=======
+                for tool in self.tool.editor.toolbar.tools:
+                    if tool.__class__.__name__ == 'NBTExplorerTool':
+                        break
+                tool.loadFile(os.path.join(path, player + '.dat'), callingTool=self.tool)
+>>>>>>> 61778bf5f04c0b23e3da85e5f7a1606d23ad3bb8
             else:
                 alert(_("Error while getting player file.\n%s not found.")%(player + '.dat'), doNotTranslate=True)
 

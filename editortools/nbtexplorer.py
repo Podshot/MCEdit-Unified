@@ -865,6 +865,7 @@ class NBTExplorerTool(EditorTool):
             self.callingTool = self.editor.toolbar.tools.index(callingTool)
         else:
             self.callingTool = 0
+<<<<<<< HEAD
 #####
 
     def loadFile(self, fName=None, callingTool=None):
@@ -898,6 +899,8 @@ class NBTExplorerTool(EditorTool):
         if True:
 #            self.callingTool = self.editor.toolbar.tools.index(callingTool)
             self.callingTool = callingTool
+=======
+>>>>>>> 61778bf5f04c0b23e3da85e5f7a1606d23ad3bb8
 
     def saveFile(self, fName, data, dontSaveRootTag):
         saveFile(fName, data, dontSaveRootTag)
