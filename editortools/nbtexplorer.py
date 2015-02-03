@@ -558,9 +558,9 @@ class NBTExplorerToolPanel(Panel):
         self.editor.nbtTool.hidePanel()
 #####
 
-    def close(self):
+#    def close(self):
 #        self.editor.toolbar.selectTool(self.editor.nbtTool.callingTool or 0)
-        self.editor.nbtTool.hidePanel()
+#        self.editor.nbtTool.hidePanel()
 
     def update_side_panel(self, item):
         if item == self.displayed_item:
@@ -839,7 +839,7 @@ class NBTExplorerTool(EditorTool):
 #            EditorTool.hidePanel(self)
 
 ##### PODSHOT
-    def loadFile(self, fName=None, callingTool=None):
+    def _loadFile(self, fName=None, callingTool=None):
         if not fName:
             fName = mcplatform.askOpenFile(title="Select a NBT (.dat) file...", suffixes=['dat',])
         if fName:
@@ -896,8 +896,8 @@ class NBTExplorerTool(EditorTool):
         self.optionsPanel.dismiss()
 #        if callingTool in self.editor.toolbar.tools:
         if True:
-#            self.callingTool = self.editor.toolbar.tools.index(callingTool)
-            self.callingTool = callingTool
+            self.callingTool = self.editor.toolbar.tools.index(callingTool)
+#            self.callingTool = callingTool
 
     def saveFile(self, fName, data, dontSaveRootTag):
         saveFile(fName, data, dontSaveRootTag)

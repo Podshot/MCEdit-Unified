@@ -2861,7 +2861,7 @@ class EditorToolbar(GLOrtho):
             toolNumber = 0
 
         t = self.tools[toolNumber]
-        print t.__class__.__name__
+        print "Change to: "+str(t.__class__.__name__)
         if not t.toolEnabled():
             return
         print "enabled"
