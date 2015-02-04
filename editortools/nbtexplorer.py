@@ -490,6 +490,7 @@ class NBTExplorerToolPanel(Panel):
                           margin=1, spacing=4,
                          )
         btnRow.shrink_wrap()
+        self.btnRow = btnRow
 
         if kwargs.get('no_header', False):
             self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - (self.margin * 2) - btnRow.height - 2
@@ -500,14 +501,18 @@ class NBTExplorerToolPanel(Panel):
             header = Label(title, doNotTranslate=True)
             self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - header.height - (self.margin * 2) - btnRow.height - 2
         self.setCompounds()
-        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=self.compounds,
+#        self.tree = NBTTree(height=max_height, inner_width=250, data=self.data, compound_types=self.compounds,
+        self.tree = NBTTree(height=max_height - btnRow.height -2, inner_width=250, data=self.data, compound_types=self.compounds,
                             copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
         col = Column([self.tree, btnRow], margin=0, spacing=2)
         col.shrink_wrap()
-        row = [col, Column([Label("", width=300), ], height=max_height + btnRow.height + 2)]
-        self.displayRow = Row(row, height=max_height + btnRow.height + 2)
+#        row = [col, Column([Label("", width=300), ], height=max_height + btnRow.height + 2)]
+        row = [col, Column([Label("", width=300), ], height=max_height, margin=0)]
+#        self.displayRow = Row(row, height=max_height + btnRow.height + 2)
+        self.displayRow = Row(row, height=max_height, margin=0, spacing=0)
         if kwargs.get('no_header', False):
-            self.add(Column([self.displayRow,], height=max_height + btnRow.height + 2, margin=0))
+#            self.add(Column([self.displayRow,], height=max_height + btnRow.height + 2, margin=0))
+            self.add(Column([self.displayRow,], margin=0)) #, height=max_height + btnRow.height + 2))
         else:
             self.add(Column([header, self.displayRow], margin=0))
         self.shrink_wrap()
@@ -540,7 +545,7 @@ class NBTExplorerToolPanel(Panel):
         self.setCompounds()
         if hasattr(self, 'tree'):
             self.tree.set_parent(None)
-            self.tree = NBTTree(height=self.max_height, inner_width=250, data=self.data, compound_types=self.compounds,
+            self.tree = NBTTree(height=self.max_height - self.btnRow.height - 2, inner_width=250, data=self.data, compound_types=self.compounds,
                                 copyBuffer=self.editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
             self.displayRow.subwidgets[0].subwidgets.insert(0, self.tree)
             self.tree.set_parent(self.displayRow.subwidgets[0])

@@ -1640,6 +1640,11 @@ class LevelEditor(GLViewport):
         if keyname == config.keys.swap.get():
             self.currentTool.swap()
 
+        #!# D.C.-G.
+        #!# Here we have the part which is responsible for the fallback to the
+        #!# select tool when pressing 'Escape' key.
+        #!# It may be interesting to work on this to be able to return to a tool
+        #!# which have called another.
         if keyname == 'Escape':
             if self.selectionTool.selectionInProgress:
                 self.selectionTool.cancel()
@@ -1648,6 +1653,7 @@ class LevelEditor(GLViewport):
             else:
                 self.mouseLookOff()
                 self.showControls()
+        #!#
 
         if keyname == config.keys.confirmConstruction.get():
             self.confirmConstruction()
@@ -2856,52 +2862,22 @@ class EditorToolbar(GLOrtho):
 
     def selectTool(self, toolNumber):
         ''' pass a number outside the bounds to pick the selection tool'''
-        print 'toolNumber', toolNumber
         if toolNumber >= len(self.tools) or toolNumber < 0:
             toolNumber = 0
 
         t = self.tools[toolNumber]
-        print "Change to: "+str(t.__class__.__name__)
         if not t.toolEnabled():
             return
-        print "enabled"
-#        if self.parent.currentTool == t:
-#            print "is parent current tool"
-#            self.parent.currentTool.toolReselected()
-#            print "'''"
-#            return
-#        else:
-#            print "is being selected"
-#            self.parent.selectionTool.hidePanel()
-#            print 1
-#            if self.parent.currentTool is not None:
-#                print 1.1
-#                self.parent.currentTool.cancel()
-#                print 1.2
-#            self.parent.currentTool = t
-#            print 2
-#            self.parent.currentTool.toolSelected()
-#            print '"""'
-#            return
-        if self.parent.currentTool != t:
-            print "is being selected"
-            self.parent.selectionTool.hidePanel()
-            print 1
-            if self.parent.currentTool is not None:
-                print 1.1
-                self.parent.currentTool.cancel()
-                print 1.2
-            self.parent.currentTool = t
-            print 2
-            self.parent.currentTool.toolSelected()
-            print '"""'
+        if self.parent.currentTool == t:
+            self.parent.currentTool.toolReselected()
             return
         else:
-            print "is parent current tool"
-            self.parent.currentTool.toolReselected()
-            print "'''"
+            self.parent.selectionTool.hidePanel()
+            if self.parent.currentTool is not None:
+                self.parent.currentTool.cancel()
+            self.parent.currentTool = t
+            self.parent.currentTool.toolSelected()
             return
-        print "---"
 
     def removeToolPanels(self):
         for tool in self.tools:
@@ -3008,9 +2984,7 @@ class EditorToolbar(GLOrtho):
         #    self.gfont.flatPrint("ADLADLADLADLADL")
 
         try:
-            print "self.parent.currentTool", self.parent.currentTool, self.parent.currentTool in self.tools
             currentToolNumber = self.tools.index(self.parent.currentTool)
-            print "currentToolNumber", currentToolNumber
         except ValueError:
             pass
         else:
