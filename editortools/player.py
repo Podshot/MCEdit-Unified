@@ -16,6 +16,7 @@ from OpenGL import GL
 import numpy
 import os
 from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert, input_text_buttons, TabPanel
+from albow.table_view import TableRowView
 from albow.translate import _
 from config import config
 from editortools.editortool import EditorTool
@@ -420,6 +421,14 @@ class PlayerPositionPanel(Panel):
             tableview.index = i
 
         tableview.click_row = selectTableRow
+
+        def mouse_down(e):
+            if e.num_clicks > 1:
+                self.editNBTData()
+            TableRowView.mouse_down(tableview.rows, e)
+
+        tableview.rows.mouse_down = mouse_down
+
         tableview.rows.tooltipText = "Double-click or use the button below to edit the NBT Data."
 #        tableview.height = h
 #        tableview.shrink_wrap()
