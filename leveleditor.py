@@ -2078,7 +2078,7 @@ class LevelEditor(GLViewport):
             return
 
         def loadWorld():
-            self.mcedit.loadFile(worldData[worldTable.selectedWorldIndex][3].filename)
+            self.mcedit.loadFile(worldData[worldTable.selectedWorldIndex][2].filename)
             self.root.fix_sticky_ctrl()
 
         def click_row(i, evt):
