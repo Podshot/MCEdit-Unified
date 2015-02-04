@@ -485,7 +485,7 @@ class NBTExplorerToolPanel(Panel):
         btnRow = Row([
                            Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
                            Button("Reset", action=kwargs.get('reset_action', self.reset), tooltipText="Reset ALL your changes in the NBT data."),
-                           Button("Close", action=kwargs.get('close_action', self.close)),
+                           Button(kwargs.get('close_text', "Close"), action=kwargs.get('close_action', self.close)),
                           ],
                           margin=1, spacing=4,
                          )

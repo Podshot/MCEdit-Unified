@@ -430,7 +430,8 @@ class PlayerPositionPanel(Panel):
         self.col = col
         def close():
             self.pages.show_page(col)
-        self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject={}, height=max_height, no_header=True, close_action=close)
+        self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject={}, height=max_height, \
+                                            close_text="Go Back", no_header=True, close_action=close)
         self.nbttree.shrink_wrap()
         
         
