@@ -274,7 +274,8 @@ class FilterModuleOptions(Widget):
                 h += r.height
                 if h > height / 2:
                     break
-            cols.append(Column(rows[:i], spacing=0))
+            if rows[:i]:
+                cols.append(Column(rows[:i], spacing=0))
             rows = rows[i:]
 
         if len(rows):
