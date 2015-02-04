@@ -131,6 +131,12 @@ class __PlayerCache:
         for player in playersNeededToBeRefreshed:
             self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
     
+    def force_refresh(self):
+        players = self._playerCacheList
+        for player in players:
+            self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
+            
+    
     def getPlayerFromUUID(self, uuid, forceNetwork=False):
         player = {}
         if forceNetwork:

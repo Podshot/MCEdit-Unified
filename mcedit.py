@@ -13,6 +13,7 @@ Startup, main menu, keyboard configuration, automatic updating.
 import splash
 
 import resource_packs
+import version_utils
 import OpenGL
 import sys
 import os
@@ -266,6 +267,9 @@ class MCEdit(GLViewport):
 
         def showScreenshotsDir():
             platform_open(os.path.join(directories.parentDir, "screenshots"))
+            
+        def refresh():
+            version_utils.playercache.force_refresh()
 
         hotkeys = ([("",
                      "Controls",
@@ -295,7 +299,10 @@ class MCEdit(GLViewport):
                     ("",
                      "Screenshots Folder",
                      showScreenshotsDir,
-                     os.path.join(directories.parentDir, "screenshots"))
+                     os.path.join(directories.parentDir, "screenshots")),
+                    ("",
+                     "Refresh All Player Names",
+                     refresh)
                    ])
 
         c = mceutils.HotkeyColumn(hotkeys)
