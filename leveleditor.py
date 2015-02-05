@@ -2512,8 +2512,7 @@ class LevelEditor(GLViewport):
                 if hasattr(w, "needsRedraw") and w.needsRedraw:
                     self.invalidate()
 
-        elif not onMenu:
-            time.sleep(0.001)
+        time.sleep(0.001)
 
     def updateInspectionString(self, blockPosition):
         self.inspectionString += str(blockPosition) + ": "
