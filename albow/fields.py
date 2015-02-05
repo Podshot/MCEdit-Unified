@@ -92,7 +92,12 @@ class TextEditor(Widget):
                         DEF_ENC = "UTF-8"
                     if type(t) == unicode and DEF_ENC != "UTF-8":
                         t = t.encode(DEF_ENC)
-                    self.text = t
+                    allow = True
+                    for char in t:
+                        if not self.allow_char(char):
+                            allow = False
+                    if allow:
+                        self.text = t
                 except:
                     print "scrap not available"
             else:
