@@ -433,6 +433,16 @@ class FilterToolPanel(Panel):
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
             self.reload_macro()
+            self.macro_button.set_text("Delete Macro")
+            self.macro_button.action = self.delete_macro
+            
+    def delete_macro(self):
+        macro_name = self.selectedFilterName.replace("[Macro] ", "")
+        if macro_name in self.macro_json["Macros"]:
+            del self.macro_json["Macros"][macro_name]
+            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
+                json.dump(self.macro_json, f)
+            self.reload()
 
     def set_save(self):
         self._save_macro = True
