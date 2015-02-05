@@ -133,11 +133,11 @@ class PaletteView(GridView):
 
     def scroll_up(self):
         if self.can_scroll_up():
-            self.scroll -= self.items_per_page() / 2
+            self.scroll -= 1
 
     def scroll_down(self):
         if self.can_scroll_down():
-            self.scroll += self.items_per_page() / 2
+            self.scroll += 1
 
     def scroll_to_item(self, n):
         i = max(0, min(n, self.num_items() - 1))
