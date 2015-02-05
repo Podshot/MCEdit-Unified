@@ -131,10 +131,6 @@ class PaletteView(GridView):
 
         GridView.mouse_down(self, event)
 
-    def dispatch_key(self, name, event):
-        super(PaletteView, self).dispatch_key(name, event)
-        print "Test"
-
     def scroll_up(self):
         if self.can_scroll_up():
             self.scroll -= 1
