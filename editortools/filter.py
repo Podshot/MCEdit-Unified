@@ -321,7 +321,7 @@ class FilterToolPanel(Panel):
         if len(self.tool.filterModules):
             self.reload()
 
-    def reload(self):
+    def reload(self, filterOptionsPanel=None):
         for i in list(self.subwidgets):
             self.remove(i)
 
@@ -356,10 +356,10 @@ class FilterToolPanel(Panel):
             self.macro_button = Button("Record Macro", action=self.start_record_macro)
 
         if self.selectedFilterName.lower() in config.config._sections["Filter Keys"]:
-            binding_button_tooltiptext = config.config._sections["Filter Keys"][self.selectedFilterName.lower()]
+            binding_button_name = config.config._sections["Filter Keys"][self.selectedFilterName.lower()]
         else:
-            binding_button_tooltiptext = "Click to bind opening this filter to a hotkey"
-        self.binding_button = Button("*", action=self.bind_key, tooltipText=binding_button_tooltiptext)
+            binding_button_name = "*"
+        self.binding_button = Button(binding_button_name, action=self.bind_key, tooltipText="Click to bind this filter to a hotkey")
 
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
@@ -487,14 +487,16 @@ class FilterToolPanel(Panel):
 
     def unbind(self):
         config.config.remove_option("Filter Keys", self.selectedFilterName)
-        self.binding_button.tooltipText = "Click to bind opening this filter to a hotkey"
+        self.binding_button.text = "*"
         self.keys_panel.dismiss()
+        self.saveOptions()
+        self.reload()
 
     def bind_key(self, message=None):
         panel = Panel()
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
         if not message:
-            message = _("Press a key to assign to opening the filter \"{0}\"\n\nPress ESC to cancel.").format(self.selectedFilterName)
+            message = _("Press a key to assign to the filter \"{0}\"\n\nPress ESC to cancel.").format(self.selectedFilterName)
         label = albow.Label(message)
         unbind_button = Button("Press to unbind", action=self.unbind)
         column = Column((label, unbind_button))
@@ -530,15 +532,17 @@ class FilterToolPanel(Panel):
         if keyname != "Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
             if keysUsed:
-                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to opening the filter \"{2}\"\n\nPress ESC to cancel.").format(keyname, keysUsed[0][0], self.selectedFilterName))
+                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to the filter \"{2}\"\n\nPress ESC to cancel.").format(keyname, keysUsed[0][0], self.selectedFilterName))
                 return True
         elif keyname != "Escape":
-            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to opening the filter \"{1}\"\n\nPress ESC to cancel.").format(keyname, self.selectedFilterName))
+            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to the filter \"{1}\"\n\nPress ESC to cancel.").format(keyname, self.selectedFilterName))
             return True
         if keyname != "Escape":
-            self.binding_button.tooltipText = keyname
+            self.binding_button.text = keyname
             config.config.set("Filter Keys", self.selectedFilterName, keyname)
         config.save()
+        self.saveOptions()
+        self.reload()
 
     filterOptionsPanel = None
 

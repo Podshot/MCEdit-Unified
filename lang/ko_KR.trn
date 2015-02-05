@@ -1495,14 +1495,14 @@ o703 Int Array
 t703 
 o704 Short Array
 t704 
-o705 Click to bind opening this filter to a hotkey
+o705 Click to bind this filter to a hotkey
 t705 
-o706 Press a key to assign to opening the filter "{0}"
+o706 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
 t706 
 o707 Can't bind. {0} is already used by {1}.
-Press a key to assign to opening the filter "{2}"
+Press a key to assign to the filter "{2}"
 
 Press ESC to cancel.
 t707 

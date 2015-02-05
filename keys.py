@@ -38,32 +38,41 @@ class KeyConfigPanel(Dialog):
         "Goto Panel",
         "View Distance",
         "Toggle Renderer",
+        "Fly Mode",
         "",
-        "<Blocks>",
-        "Swap",
-        "Delete Blocks",
+        "<Selection>",
         "Increase Reach",
         "Decrease Reach",
         "Reset Reach",
-        "Export Selection",
+        "Show Block Info",
+        "Pick Block",
+        "Snap Clone to Axis",
+        "Long-Distance Mode",
+        "Blocks-Only Modifier",
+        "",
+        "<Brush Tool>",
+        "Rotate (Brush)",
+        "Roll (Brush)",
+        "Increase Brush",
+        "Decrease Brush",
         "Brush Line Tool",
         "",
-        "<Clone>",
+        "<Clone Tool>",
         "Rotate (Clone)",
         "Roll (Clone)",
         "Flip",
         "Mirror",
         "",
-        "<Brush>",
-        "Rotate (Brush)",
-        "Roll (Brush)",
-        "Increase Brush",
-        "Decrease Brush",
-        "",
-        "<Fill and Replace>",
+        "<Fill and Replace Tool>",
         "Replace Shortcut",
+        "Swap",
         "",
-        "<Functions>",
+        "<Chunk Control Tool>",
+        "Select Chunks",
+        "Deselect Chunks",
+        "",
+        "<Function>",
+        "Delete Blocks",
         "Select All",
         "Deselect",
         "Undo",
@@ -71,12 +80,7 @@ class KeyConfigPanel(Dialog):
         "Cut",
         "Copy",
         "Paste",
-        "Take a Screenshot",
-        "Fast Nudge",
-        "",
-        "<Options>",
-        "Long-Distance Mode",
-        "Fly Mode",
+        "Export Selection",
         "",
         "<Menu>",
         "New World",
@@ -88,16 +92,33 @@ class KeyConfigPanel(Dialog):
         "World Info",
         "Quit",
         "",
-        "<Advanced>",
+        "<Miscellaneous>",
+        "Take a Screenshot",
         "Debug Overlay",
-        "Show Block Info",
-        "Pick Block",
-        "Select Chunks",
-        "Deselect Chunks",
-        "Snap Clone to Axis",
-        "Blocks-Only Modifier",
+        "Fast Nudge",
         "Fast Increment Modifier"
     ]
+
+    otherNames = {
+        "Goto Panel": "Goto Position",
+        "Show Block Info": "Show Block Info (Hold)",
+        "Pick Block": "Pick Block (Hold + Click)",
+        "Snap Clone to Axis": "Snap Clone to Axis (Hold)",
+        "Blocks-Only Modifier": "Blocks-Only Modifier (Hold)",
+        "Rotate (Brush)": "Rotate",
+        "Roll (Brush)": "Roll",
+        "Increase Brush": "Increase Size",
+        "Decrease Brush": "Decrease Size",
+        "Brush Line Tool": "Line Tool (Hold)",
+        "Rotate (Clone)": "Rotate",
+        "Roll (Clone)": "Roll",
+        "Replace Shortcut": "Replace",
+        "Select Chunks": "Select Chunks (Hold)",
+        "Deselect Chunks": "Deselect Chunks (Hold)",
+        "Delete Blocks": "Delete",
+        "Export Selection": "Export",
+        "Take a Screenshot": "Take Screenshot"
+    }
 
     presets = {
                 "WASD": [
@@ -117,13 +138,21 @@ class KeyConfigPanel(Dialog):
                     ("Goto Panel", "Ctrl-G"),
                     ("View Distance", "Ctrl-F"),
                     ("Toggle Renderer", "Ctrl-M"),
+                    ("Fly Mode", "None"),
 
-                    ("Swap", "X"),
-                    ("Delete Blocks", "Delete"),
                     ("Increase Reach", "Scroll Up"),
                     ("Decrease Reach", "Scroll Down"),
                     ("Reset Reach", "Button 3"),
-                    ("Export Selection", "Ctrl-E"),
+                    ("Show Block Info", "Alt"),
+                    ("Pick Block", "Alt"),
+                    ("Snap Clone to Axis", "Ctrl"),
+                    ("Long-Distance Mode", "Alt-Z"),
+                    ("Blocks-Only Modifier", "Alt"),
+
+                    ("Rotate (Brush)", "E"),
+                    ("Roll (Brush)", "G"),
+                    ("Increase Brush", "R"),
+                    ("Decrease Brush", "F"),
                     ("Brush Line Tool", "Z"),
 
                     ("Rotate (Clone)", "E"),
@@ -131,13 +160,13 @@ class KeyConfigPanel(Dialog):
                     ("Flip", "F"),
                     ("Mirror", "G"),
 
-                    ("Rotate (Brush)", "E"),
-                    ("Roll (Brush)", "G"),
-                    ("Increase Brush", "R"),
-                    ("Decrease Brush", "F"),
-
                     ("Replace Shortcut", "R"),
+                    ("Swap", "X"),
 
+                    ("Select Chunks", "Z"),
+                    ("Deselect Chunks", "Alt"),
+
+                    ("Delete Blocks", "Delete"),
                     ("Select All", "Ctrl-A"),
                     ("Deselect", "Ctrl-D"),
                     ("Undo", "Ctrl-Z"),
@@ -145,11 +174,7 @@ class KeyConfigPanel(Dialog):
                     ("Cut", "Ctrl-X"),
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
-                    ("Take a Screenshot", "F6"),
-                    ("Fast Nudge", "None"),
-
-                    ("Long-Distance Mode", "Alt-Z"),
-                    ("Fly Mode", "None"),
+                    ("Export Selection", "Ctrl-E"),
 
                     ("New World", "Ctrl-N"),
                     ("Quick Load", "Ctrl-L"),
@@ -160,13 +185,9 @@ class KeyConfigPanel(Dialog):
                     ("World Info", "Ctrl-I"),
                     ("Quit", "Ctrl-Q"),
 
+                    ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
-                    ("Show Block Info", "Alt"),
-                    ("Pick Block", "Alt"),
-                    ("Select Chunks", "Z"),
-                    ("Deselect Chunks", "Alt"),
-                    ("Snap Clone to Axis", "Ctrl"),
-                    ("Blocks-Only Modifier", "Alt"),
+                    ("Fast Nudge", "None"),
                     ("Fast Increment Modifier", "Ctrl")
                 ],
                 "Arrows": [
@@ -186,13 +207,21 @@ class KeyConfigPanel(Dialog):
                     ("Goto Panel", "Ctrl-G"),
                     ("View Distance", "Ctrl-F"),
                     ("Toggle Renderer", "Ctrl-M"),
+                    ("Fly Mode", "None"),
 
-                    ("Swap", "\\"),
-                    ("Delete Blocks", "Backspace"),
                     ("Increase Reach", "Scroll Up"),
                     ("Decrease Reach", "Scroll Down"),
                     ("Reset Reach", "Button 3"),
-                    ("Export Selection", "Ctrl-E"),
+                    ("Show Block Info", "Alt"),
+                    ("Pick Block", "Alt"),
+                    ("Snap Clone to Axis", "Ctrl"),
+                    ("Long-Distance Mode", "Alt-Z"),
+                    ("Blocks-Only Modifier", "Alt"),
+
+                    ("Rotate (Brush)", "Home"),
+                    ("Roll (Brush)", "Delete"),
+                    ("Increase Brush", "End"),
+                    ("Decrease Brush", "Insert"),
                     ("Brush Line Tool", "Z"),
 
                     ("Rotate (Clone)", "Home"),
@@ -200,13 +229,13 @@ class KeyConfigPanel(Dialog):
                     ("Flip", "Insert"),
                     ("Mirror", "Delete"),
 
-                    ("Rotate (Brush)", "Home"),
-                    ("Roll (Brush)", "Delete"),
-                    ("Increase Brush", "End"),
-                    ("Decrease Brush", "Insert"),
-
                     ("Replace Shortcut", "R"),
+                    ("Swap", "\\"),
 
+                    ("Select Chunks", "Z"),
+                    ("Deselect Chunks", "Alt"),
+
+                    ("Delete Blocks", "Backspace"),
                     ("Select All", "Ctrl-A"),
                     ("Deselect", "Ctrl-D"),
                     ("Undo", "Ctrl-Z"),
@@ -214,11 +243,7 @@ class KeyConfigPanel(Dialog):
                     ("Cut", "Ctrl-X"),
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
-                    ("Take a Screenshot", "F6"),
-                    ("Fast Nudge", "None"),
-
-                    ("Long-Distance Mode", "Alt-Z"),
-                    ("Fly Mode", "None"),
+                    ("Export Selection", "Ctrl-E"),
 
                     ("New World", "Ctrl-N"),
                     ("Quick Load", "Ctrl-L"),
@@ -229,13 +254,9 @@ class KeyConfigPanel(Dialog):
                     ("World Info", "Ctrl-I"),
                     ("Quit", "Ctrl-Q"),
 
+                    ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
-                    ("Show Block Info", "Alt"),
-                    ("Pick Block", "Alt"),
-                    ("Select Chunks", "Z"),
-                    ("Deselect Chunks", "Alt"),
-                    ("Snap Clone to Axis", "Ctrl"),
-                    ("Blocks-Only Modifier", "Alt"),
+                    ("Fast Nudge", "None"),
                     ("Fast Increment Modifier", "Ctrl")
                 ],
                 "Numpad": [
@@ -255,13 +276,21 @@ class KeyConfigPanel(Dialog):
                     ("Goto Panel", "Ctrl-G"),
                     ("View Distance", "Ctrl-F"),
                     ("Toggle Renderer", "Ctrl-M"),
+                    ("Fly Mode", "None"),
 
-                    ("Swap", "[.]"),
-                    ("Delete Blocks", "Delete"),
                     ("Increase Reach", "Scroll Up"),
                     ("Decrease Reach", "Scroll Down"),
                     ("Reset Reach", "Button 3"),
-                    ("Export Selection", "Ctrl-E"),
+                    ("Show Block Info", "Alt"),
+                    ("Pick Block", "Alt"),
+                    ("Snap Clone to Axis", "Ctrl"),
+                    ("Long-Distance Mode", "Alt-Z"),
+                    ("Blocks-Only Modifier", "Alt"),
+
+                    ("Rotate (Brush)", "[-]"),
+                    ("Roll (Brush)", "[*]"),
+                    ("Increase Brush", "[+]"),
+                    ("Decrease Brush", "[/]"),
                     ("Brush Line Tool", "Z"),
 
                     ("Rotate (Clone)", "[-]"),
@@ -269,13 +298,13 @@ class KeyConfigPanel(Dialog):
                     ("Flip", "[/]"),
                     ("Mirror", "[*]"),
 
-                    ("Rotate (Brush)", "[-]"),
-                    ("Roll (Brush)", "[*]"),
-                    ("Increase Brush", "[+]"),
-                    ("Decrease Brush", "[/]"),
-
                     ("Replace Shortcut", "R"),
+                    ("Swap", "[.]"),
 
+                    ("Select Chunks", "Z"),
+                    ("Deselect Chunks", "Alt"),
+
+                    ("Delete Blocks", "Delete"),
                     ("Select All", "Ctrl-A"),
                     ("Deselect", "Ctrl-D"),
                     ("Undo", "Ctrl-Z"),
@@ -283,11 +312,7 @@ class KeyConfigPanel(Dialog):
                     ("Cut", "Ctrl-X"),
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
-                    ("Take a Screenshot", "F6"),
-                    ("Fast Nudge", "None"),
-
-                    ("Long-Distance Mode", "Alt-Z"),
-                    ("Fly Mode", "None"),
+                    ("Export Selection", "Ctrl-E"),
 
                     ("New World", "Ctrl-N"),
                     ("Quick Load", "Ctrl-L"),
@@ -298,13 +323,9 @@ class KeyConfigPanel(Dialog):
                     ("World Info", "Ctrl-I"),
                     ("Quit", "Ctrl-Q"),
 
+                    ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
-                    ("Show Block Info", "Alt"),
-                    ("Pick Block", "Alt"),
-                    ("Select Chunks", "Z"),
-                    ("Deselect Chunks", "Alt"),
-                    ("Snap Clone to Axis", "Ctrl"),
-                    ("Blocks-Only Modifier", "Alt"),
+                    ("Fast Nudge", "None"),
                     ("Fast Increment Modifier", "Ctrl")
                 ],
                 "WASD Old": [
@@ -324,13 +345,21 @@ class KeyConfigPanel(Dialog):
                     ("Goto Panel", "Ctrl-G"),
                     ("View Distance", "Ctrl-F"),
                     ("Toggle Renderer", "Ctrl-M"),
+                    ("Fly Mode", "None"),
 
-                    ("Swap", "X"),
-                    ("Delete Blocks", "Delete"),
                     ("Increase Reach", "Scroll Up"),
                     ("Decrease Reach", "Scroll Down"),
                     ("Reset Reach", "Button 3"),
-                    ("Export Selection", "Ctrl-E"),
+                    ("Show Block Info", "Alt"),
+                    ("Pick Block", "Alt"),
+                    ("Snap Clone to Axis", "Shift"),
+                    ("Long-Distance Mode", "Alt-Z"),
+                    ("Blocks-Only Modifier", "Alt"),
+
+                    ("Rotate (Brush)", "E"),
+                    ("Roll (Brush)", "G"),
+                    ("Increase Brush", "R"),
+                    ("Decrease Brush", "F"),
                     ("Brush Line Tool", "Shift"),
 
                     ("Rotate (Clone)", "E"),
@@ -338,13 +367,13 @@ class KeyConfigPanel(Dialog):
                     ("Flip", "F"),
                     ("Mirror", "G"),
 
-                    ("Rotate (Brush)", "E"),
-                    ("Roll (Brush)", "G"),
-                    ("Increase Brush", "R"),
-                    ("Decrease Brush", "F"),
-
                     ("Replace Shortcut", "R"),
+                    ("Swap", "X"),
 
+                    ("Select Chunks", "Ctrl"),
+                    ("Deselect Chunks", "Shift"),
+
+                    ("Delete Blocks", "Delete"),
                     ("Select All", "Ctrl-A"),
                     ("Deselect", "Ctrl-D"),
                     ("Undo", "Ctrl-Z"),
@@ -352,11 +381,7 @@ class KeyConfigPanel(Dialog):
                     ("Cut", "Ctrl-X"),
                     ("Copy", "Ctrl-C"),
                     ("Paste", "Ctrl-V"),
-                    ("Take a Screenshot", "F6"),
-                    ("Fast Nudge", "Shift"),
-
-                    ("Long-Distance Mode", "Alt-Z"),
-                    ("Fly Mode", "None"),
+                    ("Export Selection", "Ctrl-E"),
 
                     ("New World", "Ctrl-N"),
                     ("Quick Load", "Ctrl-L"),
@@ -367,13 +392,9 @@ class KeyConfigPanel(Dialog):
                     ("World Info", "Ctrl-I"),
                     ("Quit", "Ctrl-Q"),
 
+                    ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
-                    ("Show Block Info", "Alt"),
-                    ("Pick Block", "Alt"),
-                    ("Select Chunks", "Ctrl"),
-                    ("Deselect Chunks", "Shift"),
-                    ("Snap Clone to Axis", "Shift"),
-                    ("Blocks-Only Modifier", "Alt"),
+                    ("Fast Nudge", "Shift"),
                     ("Fast Increment Modifier", "Shift")
                 ]}
 
@@ -477,6 +498,9 @@ class KeyConfigPanel(Dialog):
                 key = self.editor.different_keys[key]
             except:
                 pass
+
+            if configKey in self.otherNames.keys():
+                configKey = self.otherNames[configKey]
 
         else:
             key = ""
