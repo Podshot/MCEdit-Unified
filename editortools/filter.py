@@ -353,7 +353,7 @@ class FilterToolPanel(Panel):
         self.filterSelect.selectedChoice = self.selectedFilterName
         
         if not self._recording:
-            self.macro_button = Button("Record a Macro", action=self.start_record_macro)
+            self.macro_button = Button("Record Macro", action=self.start_record_macro)
 
         if self.selectedFilterName.lower() in config.config._sections["Filter Keys"]:
             binding_button_tooltiptext = config.config._sections["Filter Keys"][self.selectedFilterName.lower()]
@@ -450,7 +450,7 @@ class FilterToolPanel(Panel):
         self.macro_diag.add(Column((input_row, button_row)))
         self.macro_diag.shrink_wrap()
         self.macro_diag.present()
-        self.macro_button.text = "Record a Macro"
+        self.macro_button.text = "Record Macro"
         self.macro_button.tooltipText = ""
         self.macro_button.action = self.start_record_macro
         self._recording = False
