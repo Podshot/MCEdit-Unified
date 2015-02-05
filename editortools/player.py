@@ -464,7 +464,7 @@ class PlayerPositionPanel(Panel):
                     self.pages.show_page(self.col)
                 self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=nbtObject, fileName=fName,
                                               dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName,
-                                              height=self.max_height, no_header=True,
+                                              height=self.max_height, no_header=True, close_text="Go Back",
                                               close_action=close)
                 self.nbtpage = Column([self.nbttree,])
                 self.nbtpage.shrink_wrap()

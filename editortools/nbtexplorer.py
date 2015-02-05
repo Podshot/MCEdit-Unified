@@ -472,7 +472,7 @@ class NBTExplorerOperation(Operation):
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
-    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', **kwargs):
+    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', close_text="Close", **kwargs):
         """..."""
         Panel.__init__(self)
         self.editor = editor
@@ -482,13 +482,22 @@ class NBTExplorerToolPanel(Panel):
         self.displayed_item = None
         self.dataKeyName = dataKeyName
         self.init_data()
-        btnRow = Row([
-                           Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
-                           Button("Reset", action=kwargs.get('reset_action', self.reset), tooltipText="Reset ALL your changes in the NBT data."),
-                           Button(kwargs.get('close_text', "Close"), action=kwargs.get('close_action', self.close)),
-                          ],
-                          margin=1, spacing=4,
-                         )
+        btns = [
+                Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
+                Button("Reset", action=kwargs.get('reset_action', self.reset), tooltipText="Reset ALL your changes in the NBT data."),
+                ]
+        if close_text:
+            btns.append(Button(close_text, action=kwargs.get('close_action', self.close)))
+
+        btnRow = Row(btns, margin=1, spacing=4)
+
+#        btnRow = Row([
+#                           Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
+#                           Button("Reset", action=kwargs.get('reset_action', self.reset), tooltipText="Reset ALL your changes in the NBT data."),
+#                           Button(kwargs.get('close_text', "Close"), action=kwargs.get('close_action', self.close)),
+#                          ],
+#                          margin=1, spacing=4,
+#                         )
         btnRow.shrink_wrap()
         self.btnRow = btnRow
 
@@ -551,7 +560,7 @@ class NBTExplorerToolPanel(Panel):
         self.editor.nbtTool.showPanel()
 
     def close(self):
-        self.editor.toolbar.selectTool(self.editor.nbtTool.callingTool or 0)
+        self.editor.toolbar.selectTool(0)
         self.editor.nbtTool.hidePanel()
 
     def update_side_panel(self, item):
@@ -794,7 +803,7 @@ class NBTExplorerTool(EditorTool):
             self.editor.add(self.panel)
 
     def loadFile(self, fName=None):
-        nbtObject, dataKeyName, dontSaveRootTag = loadFile(fName)
+        nbtObject, dataKeyName, dontSaveRootTag, fName = loadFile(fName)
         self.editor.toolbar.removeToolPanels()
         self.editor.currentTool = self
         self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
@@ -823,7 +832,7 @@ def loadFile(fName):
             dataKeyName = 'Data'
             dontSaveRootTag = True
             nbtObject = TAG_Compound([nbtObject,])
-    return nbtObject, dataKeyName, dontSaveRootTag
+    return nbtObject, dataKeyName, dontSaveRootTag, fName
 
 def saveFile(fName, data, dontSaveRootTag):
     if os.path.exists(fName):

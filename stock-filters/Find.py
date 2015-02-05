@@ -46,7 +46,7 @@ inputs = [(("Match by:", ("TileEntity", "Entity", "Block")),
 
 if newLayout:
     inputs.insert(1, (("Results", "title"),
-                      ("", ["NBTTree", {}]),
+                      ("", ["NBTTree", {}, 0]), # [str name_of_widhet_type, dict default_data, int page_to_goback]
                      )
                  )
 

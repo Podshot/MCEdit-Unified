@@ -253,7 +253,13 @@ class FilterModuleOptions(Widget):
 
             #-#
             elif type(optionType) == list and optionType[0].lower() == "nbttree":
-                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True)
+                kw = {'close_text': None}
+                if len(optionType) == 3:
+                    def close():
+                        self.pages.show_page(self.pages.pages[optionType[2]])
+                    kw['close_action'] = close
+                    kw['close_text'] = "Go Back"
+                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True, **kw)
                 self.module.set_tree(self.nbttree.tree)
                 for meth_name in dir(self.module):
                     if meth_name.startswith('nbttree_'):
