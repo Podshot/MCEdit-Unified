@@ -1261,8 +1261,8 @@ o593 Default Resource Pack
 t593 Standard Ressourcen Packet
 o594 Square
 t594 Quadrat
-o595 Record a Macro
-t595 Ein Makro aufnehmen
+o595 Record Macro
+t595 Makro aufnehmen
 o596 Health Boost
 t596 Leben Boost
 o597 Saturation (no mob effect)
@@ -1509,20 +1509,20 @@ o703 Int Array
 t703 Ganzzahl Reihe
 o704 Short Array
 t704 Short Reihe
-o705 Click to bind opening this filter to a hotkey
-t705 Drücken um den Filter mit einem Tastenkürzel zu öffnen
-o706 Press a key to assign to opening the filter "{0}"
+o705 Click to bind this filter to a hotkey
+t705 Drücken Sie um den Filter mit einem Tastenkürzel zu binden
+o706 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
-t706 Drücken Sie eine Taste womit Sie den Filter "{0}" öffnen 
+t706 Drücken Sie eine Taste mit dem Sie den Filter "{0}" belegen 
 
 Drücken Sie ESC für abbrechen.
 o707 Can't bind. {0} is already used by {1}.
-Press a key to assign to opening the filter "{2}"
+Press a key to assign to the filter "{2}"
 
 Press ESC to cancel.
 t707 Konnte Taste nicht belegen. {0} ist schon von {1} benutzt.
-Bitte drücken Sie eine Taste womit Sie den Filter "{0}" öffnen 
+Bitte drücken Sie eine Taste mit dem Sie den Filter "{0}" belegen 
 
 Drücken Sie ESC für abbrechen.
 o708 [No players]
