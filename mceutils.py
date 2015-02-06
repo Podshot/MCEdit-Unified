@@ -583,7 +583,7 @@ def compareMD5Hashes(found_filters):
                 with open(filterBundle[bundled], 'r') as f:
                     data = f.read()
                 if data is not None:
-                    hashJSON[bundled] = hashlib.md5(data).hexdigest()
+                    hashJSON["filter-md5s"][bundled] = hashlib.md5(data).hexdigest()
         with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
             json.dump(hashJSON, done)
     except Exception, e:
