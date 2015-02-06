@@ -2093,7 +2093,9 @@ class LevelEditor(GLViewport):
                 loadWorld()
                 d.dismiss("Cancel")
 
-        def key_down(evt):
+        def dispatch_key(name, evt):
+            if name != "key_down":
+                return
             keyname = self.root.getKey(evt)
             if keyname == "Escape":
                 d.dismiss("Cancel")
@@ -2106,9 +2108,25 @@ class LevelEditor(GLViewport):
             elif keyname == "Return":
                 loadWorld()
                 d.dismiss("Cancel")
+            else:
+                old_dispatch_key(name, evt)
+                text = fld.text
+                for i in range(len(worlds)):
+                    print text, worldTable.row_data(i)[1]
+                    if text.lower() in worldTable.row_data(i)[1].lower():
+                        worldTable.rows.scroll_to_item(i)
+                        worldTable.selectedWorldIndex = i
+                        return
+
 
         def key_up(evt):
             pass
+
+        lbl = Label("Search")
+        fld = TextFieldWrapped(300)
+        old_dispatch_key = fld.dispatch_key
+        fld.dispatch_key = dispatch_key
+        row = Row((lbl, fld))
 
         worldTable = TableView(columns=[
             TableColumn("Last Played", 170, "l"),
@@ -2152,11 +2170,13 @@ class LevelEditor(GLViewport):
         worldTable.row_is_selected = lambda x: x == worldTable.selectedWorldIndex
         worldTable.click_row = click_row
 
+
+        worldTable.top = row.bottom
+        worldPanel.add(row)
         worldPanel.add(worldTable)
         worldPanel.shrink_wrap()
 
         d = Dialog(worldPanel, ["Load", "From FTP Server", "Cancel"])
-        d.key_down = key_down
         d.key_up = key_up
         result = d.present()
         if result == "Load":
