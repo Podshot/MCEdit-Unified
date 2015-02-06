@@ -1018,13 +1018,13 @@ class LevelEditor(GLViewport):
             self.remove(self.topRow)
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
                self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton))
-            self.add(self.topRow)
+            self.add(self.topRow, 0)
 
         else:
             self.remove(self.topRow)
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
                self.viewButton, self.viewportButton, self.recordUndoButton))
-            self.add(self.topRow)
+            self.add(self.topRow, 0)
 
         if len(list(self.level.allChunks)) == 0:
             resp = ask(

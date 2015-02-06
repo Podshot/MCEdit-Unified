@@ -241,10 +241,13 @@ class Widget(object):
 
     visible = overridable_property('visible')
 
-    def add(self, arg):
+    def add(self, arg, index=None):
         if arg:
             if isinstance(arg, Widget):
-                arg.set_parent(self)
+                if index is not None:
+                    arg.set_parent(self, index)
+                else:
+                    arg.set_parent(self)
             else:
                 for item in arg:
                     self.add(item)
@@ -258,13 +261,13 @@ class Widget(object):
         if widget in self.subwidgets:
             widget.set_parent(None)
 
-    def set_parent(self, parent):
+    def set_parent(self, parent, index=None):
         if parent is not self.parent:
             if self.parent:
                 self.parent._remove(self)
             self.parent = parent
             if parent:
-                parent._add(self)
+                parent._add(self, index)
 
     def all_parents(self):
         widget = self
@@ -274,8 +277,11 @@ class Widget(object):
             widget = widget.parent
         return parents
 
-    def _add(self, widget):
-        self.subwidgets.append(widget)
+    def _add(self, widget, index=None):
+        if index is not None:
+            self.subwidgets.insert(index, widget)
+        else:
+            self.subwidgets.append(widget)
         if hasattr(widget, "idleevent"):
             #print "Adding idle handler for ", widget
             self.root.add_idle_handler(widget)
