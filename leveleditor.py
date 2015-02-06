@@ -193,23 +193,10 @@ class LevelEditor(GLViewport):
 
         self.optionsBar = Widget()
 
-        mcEditButton = Button("MCEdit", action=self.showControls)
-        viewDistanceDown = Button("<", action=self.decreaseViewDistance)
-        viewDistanceUp = Button(">", action=self.increaseViewDistance)
-        viewDistanceReadout = ValueDisplay(width=40, ref=AttrRef(self.renderer, "viewDistance"))
-
-        chunksReadout = SmallValueDisplay(width=140,
-                                          get_value=lambda: _("Chunks: %d") % len(self.renderer.chunkRenderers),
-                                          tooltipText="Number of chunks loaded into the renderer.")
-        fpsReadout = SmallValueDisplay(width=80,
-                                       get_value=lambda: _("fps: %0.1f") % self.averageFPS,
-                                       tooltipText="Frames per second.")
-        cpsReadout = SmallValueDisplay(width=100,
-                                       get_value=lambda: _("cps: %0.1f") % self.averageCPS,
-                                       tooltipText="Chunks per second.")
-        mbReadout = SmallValueDisplay(width=60,
-                                      get_value=lambda: _("MBv: %0.1f") % (self.renderer.bufferUsage / 1000000.),
-                                      tooltipText="Memory used for vertexes")
+        self.mcEditButton = Button("MCEdit", action=self.showControls)
+        self.viewDistanceDown = Button("<", action=self.decreaseViewDistance)
+        self.viewDistanceUp = Button(">", action=self.increaseViewDistance)
+        self.viewDistanceReadout = ValueDisplay(width=40, ref=AttrRef(self.renderer, "viewDistance"))
 
         def showViewOptions():
             col = [mceutils.CheckBoxLabel("Entities", fg_color=(0xff, 0x22, 0x22),
@@ -239,24 +226,21 @@ class LevelEditor(GLViewport):
             d = QuickDialog()
             d.add(col)
             d.shrink_wrap()
-            d.topleft = viewButton.bottomleft
+            d.topleft = self.viewButton.bottomleft
             d.present(centered=False)
 
-        viewButton = Button("Show...", action=showViewOptions)
-
-        mbReadoutRow = Row((mbReadout, Label("")))
-        readoutGrid = Grid(((chunksReadout, fpsReadout), (mbReadoutRow, cpsReadout), ), 0, 0)
+        self.viewButton = Button("Show...", action=showViewOptions)
 
         self.viewportButton = Button("Camera View", action=self.swapViewports,
                                      tooltipText="Shortcut: {0}".format(config.keys.toggleView.get()))
 
         self.recordUndoButton = mceutils.CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
 
-        row = (mcEditButton, viewDistanceDown, Label("View Distance:"), viewDistanceReadout, viewDistanceUp,
-               readoutGrid, viewButton, self.viewportButton, self.recordUndoButton)
+        row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
+               self.viewButton, self.viewportButton, self.recordUndoButton)
 
         # row += (Button("CR Info", action=self.showChunkRendererInfo), )
-        row = Row(row)
+        self.topRow = row = Row(row)
         self.add(row)
         self.statusLabel = ValueDisplay(width=self.width, ref=AttrRef(self, "statusText"))
 
@@ -1023,20 +1007,24 @@ class LevelEditor(GLViewport):
             menu = Menu("", dimensionsMenu)
 
             def presentMenu():
-                x, y = self.netherPanel.topleft
+                x, y = self.netherButton.topleft
                 dimIdx = menu.present(self, (x, y - menu.height))
                 if dimIdx == -1:
                     return
                 dimNo = int(dimensionsMenu[dimIdx][1])
                 self.gotoDimension(dimNo)
 
-            self.netherPanel = Panel()
             self.netherButton = Button("Goto Dimension", action=presentMenu)
-            self.netherPanel.add(self.netherButton)
-            self.netherPanel.shrink_wrap()
-            self.netherPanel.bottomright = self.viewportContainer.bottomright
-            self.netherPanel.anchor = "brwh"
-            self.add(self.netherPanel)
+            self.remove(self.topRow)
+            self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
+               self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton))
+            self.add(self.topRow)
+
+        else:
+            self.remove(self.topRow)
+            self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
+               self.viewButton, self.viewportButton, self.recordUndoButton))
+            self.add(self.topRow)
 
         if len(list(self.level.allChunks)) == 0:
             resp = ask(
@@ -2496,13 +2484,14 @@ class LevelEditor(GLViewport):
         self.frameStartTime = frameStartTime
 
         if self.debug > 0:
-            self.debugString = _("FPS: %0.1f/%0.1f, CPS: %0.1f, VD: %d, W: %d, WF: %d, ") % (
+            self.debugString = _("FPS: %0.1f/%0.1f, CPS: %0.1f, VD: %d, W: %d, WF: %d, MBv: %0.1f, ") % (
             1000000. / (float(timeDelta.microseconds) + 0.000001),
             self.averageFPS,
             cps,
             self.renderer.viewDistance,
             len(self.workers),
-            self.renderer.workFactor)
+            self.renderer.workFactor,
+            self.renderer.bufferUsage / 1000000.)
 
             self.debugString += _("DL: {dl} ({dlcount}), Tx: {t}, gc: {g}, ").format(
                 dl=len(glutils.DisplayList.allLists), dlcount=glutils.gl.listCount,
