@@ -2098,7 +2098,7 @@ class LevelEditor(GLViewport):
                 return
             keyname = self.root.getKey(evt)
             if keyname == "Escape":
-                d.dismiss("Cancel")
+                dialog.dismiss("Cancel")
             elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
                 worldTable.selectedWorldIndex -= 1
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
@@ -2107,7 +2107,7 @@ class LevelEditor(GLViewport):
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
             elif keyname == "Return":
                 loadWorld()
-                d.dismiss("Cancel")
+                dialog.dismiss("Cancel")
             else:
                 old_dispatch_key(name, evt)
                 text = fld.text.lower()
@@ -2196,9 +2196,9 @@ class LevelEditor(GLViewport):
         worldPanel.add(worldTable)
         worldPanel.shrink_wrap()
 
-        d = Dialog(worldPanel, ["Load", "From FTP Server", "Cancel"])
-        d.key_up = key_up
-        result = d.present()
+        dialog = Dialog(worldPanel, ["Load", "From FTP Server", "Cancel"])
+        dialog.key_up = key_up
+        result = dialog.present()
         if result == "Load":
             loadWorld()
         if result == "From FTP Server":
