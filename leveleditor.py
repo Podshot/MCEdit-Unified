@@ -2112,7 +2112,6 @@ class LevelEditor(GLViewport):
                 old_dispatch_key(name, evt)
                 text = fld.text
                 for i in range(len(worlds)):
-                    print text, worldTable.row_data(i)[1]
                     if text.lower() in worldTable.row_data(i)[1].lower():
                         worldTable.rows.scroll_to_item(i)
                         worldTable.selectedWorldIndex = i
