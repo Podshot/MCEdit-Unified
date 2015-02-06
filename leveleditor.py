@@ -2136,6 +2136,7 @@ class LevelEditor(GLViewport):
                 worldTable.selectedWorldIndex = 0
                 worldTable.num_rows = lambda: len(worldData)
                 worldTable.row_data = lambda i: worldData[i]
+                worldTable.rows.scroll_to_item(0)
 
 
         def key_up(evt):
