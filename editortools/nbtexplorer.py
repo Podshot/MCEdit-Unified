@@ -804,9 +804,10 @@ class NBTExplorerTool(EditorTool):
 
     def loadFile(self, fName=None):
         nbtObject, dataKeyName, dontSaveRootTag, fName = loadFile(fName)
-        self.editor.toolbar.removeToolPanels()
-        self.editor.currentTool = self
-        self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
+        if nbtObject != None:
+            self.editor.toolbar.removeToolPanels()
+            self.editor.currentTool = self
+            self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
         self.optionsPanel.dismiss()
 
     def saveFile(self, fName, data, dontSaveRootTag):
@@ -832,7 +833,8 @@ def loadFile(fName):
             dataKeyName = 'Data'
             dontSaveRootTag = True
             nbtObject = TAG_Compound([nbtObject,])
-    return nbtObject, dataKeyName, dontSaveRootTag, fName
+        return nbtObject, dataKeyName, dontSaveRootTag, fName
+    return [None,] * 4
 
 def saveFile(fName, data, dontSaveRootTag):
     if os.path.exists(fName):
