@@ -2110,17 +2110,38 @@ class LevelEditor(GLViewport):
                 d.dismiss("Cancel")
             else:
                 old_dispatch_key(name, evt)
-                text = fld.text
-                for i in range(len(worlds)):
-                    if text.lower() in worldTable.row_data(i)[1].lower():
-                        worldTable.rows.scroll_to_item(i)
-                        worldTable.selectedWorldIndex = i
-                        return
+                text = fld.text.lower()
+                worldsToUse = []
+                splitText = text.split(" ")
+                amount = len(splitText)
+                for v in allWorlds:
+                    nameParts = nameFormat(v).lower().split(" ")
+                    i = 0
+                    spiltTextUsed = []
+                    for v2 in nameParts:
+                        Start = True
+                        j = 0
+                        while j < len(splitText) and Start:
+                            if splitText[j] in v2 and j not in spiltTextUsed:
+                                i += 1
+                                spiltTextUsed.append(j)
+                                Start = False
+                            j += 1
+                    if i == amount:
+                        worldsToUse.append(v)
+
+                worldData = [[dateFormat(d), nameFormat(w), w, d]
+                             for w, d in ((w, dateobj(w.LastPlayed)) for w in worldsToUse)]
+                worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
+                worldTable.selectedWorldIndex = 0
+                worldTable.num_rows = lambda: len(worldData)
+                worldTable.row_data = lambda i: worldData[i]
 
 
         def key_up(evt):
             pass
 
+        allWorlds = worlds
         lbl = Label("Search")
         fld = TextFieldWrapped(300)
         old_dispatch_key = fld.dispatch_key
