@@ -1404,13 +1404,13 @@ t673 NBT 파일 불러오기
 o674 NBT Tree Settings
 t674 NBT Tree 설정
 o675 Use Bullet Styles
-t675 
+t675 Bullet 스타일 사용
 o676 Use Bullet Text
-t676 
+t676 Bullet 텍스트 사용
 o677 Use Bullet Images
-t677 
+t677 Bullet 이미지 사용
 o678 Bullet Images File
-t678 
+t678 Bullet 이미지 파일
 o679 Choose an image file...
 t679 이미지 선택...
 o680 Select a NBT (.dat) file...
@@ -1423,102 +1423,108 @@ o682 Choose a NBT file...
 t682 NBT 파일 선택...
 o683 The selected object is not a file.
 Can't load it.
-t683 
+t683 파일이 아닙니다. 불러올 수 없습니다.
 o684 The selected object is not a file.
 Can't save it.
-t684 
+t684 파일이 아닙니다. 저장할 수 없습니다.
 o685 Show all the tags in the tree
-t685 
+t685 모든 태그를 보여줍니다.
 o686 Compound
-t686 
+t686 복합
 o687 Integer
-t687 
+t687 상수
 o688 Floating point
-t688 
+t688 부동 소수점
 o689 Text
-t689 
+t689 텍스트
 o690 Boolean
-t690 
+t690 불린
 o691 Choose default data
-t691 
+t691 기본 데이터 선택
 o692 Item Type: %s
-t692 
+t692 아이템 종류: %s
 o693 Value
-t693 
+t693 값
 o694 This item type is a container. Add chlidren later.
-t694 
+t694 이 아이템 종류는 컨테이너입니다. 나중에 하위 항목을 추가하십시오.
 o695 Choose item type
-t695 
+t695 아이템 종류 선택
 o696 Choose a name
-t696 
+t696 이름 선택
 o697 Byte
-t697 
+t697 바이트
 o698 Long
-t698 
+t698 긴
 o699 Short
-t699 
+t699 짧은
 o700 String
-t700 
+t700 문자열
 o701 List
-t701 
+t701 목록
 o702 Byte Array
-t702 
+t702 바이트 배열
 o703 Int Array
-t703 
+t703 상수 배열
 o704 Short Array
-t704 
+t704 짧은 배열
 o705 Click to bind this filter to a hotkey
-t705 
+t705 클릭하여 필터를 핫키에 지정하세요.
 o706 Press a key to assign to the filter "{0}"
-
 Press ESC to cancel.
-t706 
+t706 "{0}" 필터에 연결할 키를 누르세요.
+ESC로 취소하세요.
 o707 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
 
 Press ESC to cancel.
-t707 
+t707 {0}은 이미 {1}에 의해 사용되고 있습니다.
+"{2}" 필터에 연결할 키를 누르세요.
+
+ESC로 취소하세요.
 o708 [No players]
-t708 
+t708 [플레이어 없음]
 o709 Press to unbind
-t709 
+t709 연결을 취소하려면 누르세요
 o710 Are you sure you want to delete the default player?
-t710 
+t710 정말 기본 플레이어를 삭제하시겠습니까?
 o711 Double-click or use the button below to edit the NBT Data.
-t711 
+t711 더블클릭이나 아래의 버튼으로 NBT 데이터를 수정하세요.
 o712 Go Back
-t712 
+t712 뒤로가기
 o712 Upload to FTP Server
-t712 
+t712 FTP 서버에 올리기
 o713 There are {0} unsaved changes.
-t713 
+t713 {0}개의 저장되지 않은 변경 내용이 있습니다.
 o714 Save and Quit
-t714 
+t714 저장하고 나가기
 o715 Refresh All Player Names
-t715 
+t715 플레이어 이름 새로고침
 o716 Ticks mode accouplement
-t716 
+t716 Ticks mode 연결
 o717 Results
-t717 
+t717 결과
 o718 Smooth - 3D
-t718 
+t718 부드럽게 - 3D
 o719 Smoothing
-t719 
+t719 부드럽게 하기
 o720 Made by Sethbling
-t720 
+t720 제작자 Sethbling
 o721 NBT Data
-t721 
+t721 NBT 값
 o722 Edit NBT Data
-t722 
+t722 NBT 값 수정
 o723 Open the NBT Explorer to edit player's attributes and inventory
-t723 
+t723 NBT 탐색기를 실행하여 플레이어를 수정하세요
 o724 Not yet implemented.
 Use the NBT Explorer to edit this player.
-t724 
+t724 아직 지원하지 않습니다.
+NBT 탐색기로 플레이어를 수정하세요.
 o725 Error while getting player file.
 %s not found.
-t725 
+t725 플레이어 파일을 가져올 수 없습니다.
+%s를 찾을 수 없습니다.
 o726 Spawn point fixed. Changes: 
 
 
-t726 
+t726 스폰 지점 고정. 변경 내용:
+
