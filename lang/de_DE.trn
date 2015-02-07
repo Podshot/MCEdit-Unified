@@ -1,3 +1,26 @@
+ Skip to content
+This repository
+
+    Explore
+    Gist
+    Blog
+    Help
+
+    LaChal LaChal
+
+    2
+    0
+    31
+
+Neui/MCEdit-Unified forked from Khroki/MCEdit-Unified
+
+MCEdit-Unified/lang/de_DE.trn
+Neui Neui 2 days ago
+Updated german localisation to reflect the changes
+
+7 contributors
+LaChal Naor Volkovich MobileCrafter Neui Martin Hanzík Adrian Freund Khroki
+1533 lines (1516 sloc) 43.847 kb
 #-# Deutsch (Deutschland)
 #-# font regular: DEFAULT
 #-# font bold: DEFAULT
@@ -20,17 +43,17 @@ o0 Autobrake
 t0 Auto Bremse
 o1 Swap Axes Looking Down
 t1 Achsen die nach unten schauen invertieren
-o2 Camera Acceleration: 
+o2 Camera Acceleration:
 t2 Kamera Beschleunigung:
-o3 Camera Drag: 
+o3 Camera Drag:
 t3 Kamera ziehen:
-o4 Camera Max Speed: 
+o4 Camera Max Speed:
 t4 Kamera Max Schnelligkeit:
-o5 Camera Braking Speed: 
+o5 Camera Braking Speed:
 t5 Kamera Bremse Schnelligkeit:
-o6 Mouse Speed: 
+o6 Mouse Speed:
 t6 Maus Schnelligkeit:
-o7 Undo Limit: 
+o7 Undo Limit:
 t7 Rückgang Limite:
 o8 Invert Mouse
 t8 Maus invertieren
@@ -62,11 +85,11 @@ o21 Options
 t21 Optionen
 o22 OK
 t22 OK
-o23 Field of View: 
+o23 Field of View:
 t23 Sichtfeld(FOV):
-o24 Target FPS: 
+o24 Target FPS:
 t24 Gewünschte FPS:
-o25 Vertex Buffer Limit (MB): 
+o25 Vertex Buffer Limit (MB):
 t25 Vertex Puffer Limit (MB):
 o26 Fast Leaves
 t26 Schnelles Laub
@@ -94,7 +117,7 @@ o37 Numpad
 t37 Nummernfeld
 o38 WASD Old
 t38 WASD(Alt)
-o39 Presets: 
+o39 Presets:
 t39 Voreinstellungen:
 o40 MCEdit
 t40 MCEdit
@@ -130,7 +153,7 @@ o55 Grey
 t55 Grau
 o56 Black
 t56 Scharz
-o57 Color: 
+o57 Color:
 t57 Farbe:
 o58 Show Previous Selection
 t58 Vorherige Auswahl anzeigen
@@ -146,7 +169,7 @@ o63 Place Immediately
 t63 Sofort platzieren
 o64 Clone Options
 t64 Klon Optionen
-o65 Alpha: 
+o65 Alpha:
 t65 Tanzparenz:
 o66 Choose Block Immediately
 t66 Block schnell auswählen
@@ -213,10 +236,8 @@ t96 Mausrad um Steuerungstoolentfernung zu kontrollieren
 o97 Hold {0} for details
 t97 Halten Sie {0} für Details
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
-
- If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
+If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
 t98 Warnung: Öffnen Sie eine Welt zu einem Zeitpunkt nur in einem Programm. Wenn Sie eine Welt gleichzeitig in MCEdit und Minecraft öffnen, verlieren sie ihre Arbeit und beschädigen vieleicht die Speicherdateien.
-
 Wenn Sie Minecraft 1.3 oder früher verwenden, müssen Sie Minecraft komplett schliessen bevor Sie MCEdit nutzen.
 o99 Don't remind me again.
 t99 Nicht nochmal erinnern.
@@ -350,7 +371,7 @@ o163 Change the direction of the Forward and Backward keys when looking down
 t163 Ändern Sie die Richtung der Vorwärts- und Rückwärtstasten, wenn Sie nach unten schauen
 o164 When you are this far above the top of the world, move fast and use low-detail mode.
 t164 Wenn Sie so hoch über der Welt sind und sich schnell bewegen, benutzen Sie Niedriger-Detail-Modus.
-o165 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
+o165 Amount of memory used for temporary storage. When more than this is needed, the disk is used instead.
 t165 Größe des Arbeitsspeichers für die Zwischenlagerung verwendet. Wenn mehr als dies notwendig ist, wird die Festplatte stattdessen verwendet.
 o166 Change the position of the mobs in spawners while nudging.
 t166 Ändern Sie die Position der Mobs in Spawners während schieben.
@@ -378,10 +399,10 @@ o177 Restart
 t177 Neustart
 o178 Later
 t178 Später
-o179 Loading 
+o179 Loading
 t179 Laden
-o180  - MCEdit 
-t180  - MCEdit
+o180 - MCEdit
+t180 - MCEdit
 o181 Overworld
 t181 Oberwelt
 o182 The End
@@ -416,7 +437,7 @@ o196 Release the mouse button to finish the selection
 t196 Lassen Sie die Maustaste los, um die Auswahl zu beenden
 o197 Nudge
 t197 Verschieben
-o198 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+o198 Click and hold. While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
 t198 Klicken und halten. Währen Sie halten, verwenden Sie die Bewegungstasten ({0} / {1} / {2} / {3} / {4} / {5}) zum verschieben. Linke Maustaste um einen Block zu verschieben.Rechte Maustaste, um einen größeren Abstand zu verschieben.
 o199 {0:n} blocks
 t199 {0:n} Blöcke
@@ -512,7 +533,7 @@ o241 Mode:
 t241 Modus:
 o242 Brush:
 t242 Pinsel:
-o243 Chance: 
+o243 Chance:
 t243 Chance:
 o244 Hollow
 t244 Unterhöhlen
@@ -528,13 +549,13 @@ o249 Shortcut: Alt-1
 t249 Tastenkürzel: Alt-1
 o250 ---
 t250 ---
-o251 Weight 1: 
+o251 Weight 1:
 t251 Gewicht 1:
-o252 Weight 2: 
+o252 Weight 2:
 t252 Gewicht 2:
-o253 Weight 3: 
+o253 Weight 3:
 t253 Gewicht 3:
-o254 Weight 4: 
+o254 Weight 4:
 t254 Gewicht 4:
 o255 Shortcut: Alt-3
 t255 Tastenkürzel: Alt-3
@@ -546,9 +567,9 @@ o258 Click to replace {0} ({1}:{2})
 t258 Klicken um {0} ({1}:{2}) zu ersetzen
 o259 Noise
 t259 Rauschen
-o260 Strength: 
+o260 Strength:
 t260 Stärke:
-o261 Depth: 
+o261 Depth:
 t261 Tiefe:
 o262 Only Change Natural Earth
 t262 Nur natürliche Erde wechseln
@@ -560,7 +581,7 @@ o265 y
 t265 y
 o266 z
 t266 z
-o267 COPYING - 
+o267 COPYING -
 t267 KOPIERE -
 o268 Rotate
 t268 Drehen
@@ -690,8 +711,8 @@ o327 Make Mobs Invincible
 t327 Mache Mobs unsichtbar
 o328 Setbiome
 t328 Setze Biom
-o329 Smooth - 2D
-t329 Glatt - 2D
+o329 Smooth
+t329 Glatt
 o330 Filter:
 t330 Filter:
 o331 Update Filters
@@ -770,9 +791,9 @@ o367 Villager Name
 t367 Bewohner Name
 o368 General Trade
 t368 Allgemeiner Handel
-o369       Rotate the Position of your Trader
+o369 Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t369       Rotiere die Position von deinem Händler
+t369 Rotiere die Position von deinem Händler
 *Kann nur benutzt werden wenn Nicht Bewegen eingeschalten ist*
 o370 Y-Axis
 t370 Y-Achse
@@ -789,13 +810,33 @@ Second put a second buy in the middle slot(optional).
 Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
-
+Advanced, little experience in notepad ++ is recommended.
+To change the amount of trades:
+1) Uncheck 'Unlimited Trades'
+2) Open the createshops filter using Notepad++ (link:http://notepad-plus-plus.org/) or notepad
+*The filter is where you put the MCEdit folder*
+3) Scroll to:
+else:
+offer[uses] = TAG_Int(0)
+offer[maxUses] = TAG_Int(1)
+4) Change the amount you want
+*Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
 t375 Um einen Shop zu erstellen musst du die Kaufsache in die oberste Reihe der Kiste tun.
 Zweitens packe in die Mittlere Reihe eine zweite Kaufsache (optional).
 Drittens packe die Verkaufssachen in die unterste Reihe.
 Klicke eine Kiste und wähle was du willst und drücke Enter
 *Alle Items müssen in der selben Spalte sein*
-
+Fortgeschritten, etwas Erfahrung in Notepad++ ist empfohlen.
+Um die Anzahl der Handel zu ändern:
+1) Wähle 'Unendlicher Handel' ab
+2) Öffne den createshops Filter mit Notepad++ (link:http://notepad-plus-plus.org/) oder den Editor
+*Der Filter ist da wo der MCEdit Ordner ist*
+3) Scrolle zu:
+ansonsten:
+offer[uses] = TAG_Int(0)
+offer[maxUses] = TAG_Int(1)
+4) Ändere die Menge die du willst
+*Notiz: Ändere nur die Nummer wie oben, ändere anderes und der Filter funktioniert nicht mehr richtig*
 o376 Trade Notes
 t376 Handel Notizen
 o377 Include position data
@@ -844,9 +885,9 @@ o398 Dump Found Coordinates
 t398 Dumpe gefundene Koordinaten
 o399 Operation:
 t399 Operation:
-o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o400 This filter is designed to search for NBT in either Entities or TileEntities. It can also be used to search for blocks. "Match by" determines which type of object is prioritized during the search. Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined). All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked. It is faster to match TileEntity searches with a Block Type than vice versa. Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t400 Dieser Filter sucht nach NBT in Entities oder TileEntities. Es kann auch nach Blöcken gesucht werden. "Abgleichen von" entscheidet welcher Typ vom Objekt ist priorisiert während der Suche. Entities und TileEntities wird relativ schnell gesucht während die Schnelligkeit bei der Suche von Block direkt propotzional zu der Auswahlgröße (weil jede Block in der Auswahl gesucht wird). Alle Entitysuche ignoriert die Blöcke Einstellungen; TileEntitysuche versucht zu "Blocktyp abgleichen" wenn angetickt, und Blocksuche versucht zu "Abgleichen von TileEntity" markierung wenn angetickt.  Es ist schneller TileEntitysuche mit einem Blocktyp abzugleichen statt andersherum. Blockabgleiche kann auch optional Block Daten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln die eine bestimmte Richtung zeigen.
+t400 Dieser Filter sucht nach NBT in Entities oder TileEntities. Es kann auch nach Blöcken gesucht werden. "Abgleichen von" entscheidet welcher Typ vom Objekt ist priorisiert während der Suche. Entities und TileEntities wird relativ schnell gesucht während die Schnelligkeit bei der Suche von Block direkt propotzional zu der Auswahlgröße (weil jede Block in der Auswahl gesucht wird). Alle Entitysuche ignoriert die Blöcke Einstellungen; TileEntitysuche versucht zu "Blocktyp abgleichen" wenn angetickt, und Blocksuche versucht zu "Abgleichen von TileEntity" markierung wenn angetickt. Es ist schneller TileEntitysuche mit einem Blocktyp abzugleichen statt andersherum. Blockabgleiche kann auch optional Block Daten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln die eine bestimmte Richtung zeigen.
 "Starte neue Suche" wird in der Auswahl neu suchen, während "Finde Nächste" die Suchresultate von der vorherige Suche durchgeht.
 o401 Documentation
 t401 Dokumentation
@@ -1020,7 +1061,7 @@ o485 Cold Taiga M
 t485 Verschneite Taiga M
 o486 Mega Spruce Taiga
 t486 Riesenfichten-Taiga
-o487 Mega Spruce Taiga 
+o487 Mega Spruce Taiga
 t487 Riesenfichten-Taigahügel
 o488 Extreme Hills+ M
 t488 Extreme Berge+ M
@@ -1048,7 +1089,7 @@ o499 Players
 t499 Spielern
 o500 Player Name
 t500 Spieler Name
-o501 Player: 
+o501 Player:
 t501 Spieler:
 o502 Goto Player
 t502 Gehe zu Spieler
@@ -1084,8 +1125,8 @@ o517 No presets saved
 t517 Keine Voreinstellungen gespeichert
 o518 Select preset to delete
 t518 Wähle Voreinstellung zum löschen
-o519  does not have a value yet.
-t519  hat noch keinen Wert
+o519 does not have a value yet.
+t519 hat noch keinen Wert
 o520 Version {} is available
 t520 Version {} ist verfügbar
 o521 Download
@@ -1119,9 +1160,9 @@ t534 Flaches land
 o535 Generator:
 t535 Generator:
 o536 Will automatically download and use the latest version
-t536 Wird automatisch aktuelle Version herrunterladen
-o537 Height: 
-t537 Höhe: 
+t536 Wird automatisch aktuelle Version herrunterladen und sie benutzen
+o537 Height:
+t537 Höhe:
 o538 Grass
 t538 Grass
 o539 Server version:
@@ -1144,20 +1185,20 @@ o547 Simulate world
 t547 Simuliere Welt
 o548 Use snapshot versions
 t548 Benutze Snapsot Versionen
-o549 X: 
-t549 X: 
-o550 Y: 
-t550 Y: 
-o551 Z: 
-t551 Z: 
-o552 f: 
-t552 f: 
-o553 Seed: 
-t553 Seed: 
-o554 East-West Chunks: 
-t554 Ost-West Chunks: 
-o555 North-South Chunks: 
-t555 Norden-Süden Chunks: 
+o549 X:
+t549 X:
+o550 Y:
+t550 Y:
+o551 Z:
+t551 Z:
+o552 f:
+t552 f:
+o553 Seed:
+t553 Seed:
+o554 East-West Chunks:
+t554 Ost-West Chunks:
+o555 North-South Chunks:
+t555 Norden-Süden Chunks:
 o556 Survival
 t556 Überleben
 o557 Cancel
@@ -1218,8 +1259,8 @@ o584 Shortcut: {0}
 t584 Tastenkürzel: {0}
 o585 View Distance ({0})
 t585 Sichtweite ({0})
-o586 Copy Stack Size: 
-t586 Kopiere Stack große: 
+o586 Copy Stack Size:
+t586 Kopiere Stack große:
 o587 Add Player
 t587 Spieler hinzufügen
 o588 Remove Player
@@ -1237,7 +1278,7 @@ t593 Standard Ressourcen Packet
 o594 Square
 t594 Quadrat
 o595 Record Macro
-t595 Ein Makro aufnehmen
+t595 Makro aufnehmen
 o596 Health Boost
 t596 Leben Boost
 o597 Saturation (no mob effect)
@@ -1264,20 +1305,20 @@ o607 Fast Nudge
 t607 Schnelles Schieben
 o608 Clone Fast Nudge Settings
 t608 Klone schnelles Schieben Einstellungen
-o609 Move by the width of selection 
+o609 Move by the width of selection
 t609 Verschiebe von dieser Breite der Auswahl
 o610 Moves clone by his width
 t610 Bewegt Klon von dieser Breite
-o611 Width of clone movement: 
-t611 Breite von Klonbewegung: 
+o611 Width of clone movement:
+t611 Breite von Klonbewegung:
 o612 Import Fast Nudge Settings:
 t612 Importiere schnelles Schieben Einstellungen:
-o613 Move by the width of schematic 
+o613 Move by the width of schematic
 t613 Bewege von der Breite von der Schematic
 o614 Moves selection by his width
 t614 Bewege Auswahl von dieser Breite
-o615 Width of import movement: 
-t615 Breite von Importbewegeung: 
+o615 Width of import movement:
+t615 Breite von Importbewegeung:
 o616 Import Options
 t616 Importieren Optionen
 o617 Blocks Fast Nudge Settings:
@@ -1288,31 +1329,34 @@ o619 Points Fast Nudge Settings:
 t619 Punktet schnelles Schieben Einstellungen:
 o620 Moves points by the selection's width
 t620 Beweget Punkte von der Auswahlbreite
-o621 Width of points movement: 
+o621 Width of points movement:
 t621 Breite von Punktebewegung:
 o622 Do you want to save your changes?
 t622 Möchten Sie die Änderungen speichern?
 o623 Don't Save
 t623 Nicht Speichern
 o624 Press a key to assign to the action "{0}"
-
 Press ESC to cancel.
-t624 
+t624 Drücken Sie eine Taste womit sie mit der Aktion "{0}" belegt wird
+Drücken Sie ESC für abbrechen.
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
-t625 
+t625 Drücken Sie eine Taste womit sie mit der Aktion "{0}" belegt wird
+Keine Taste ist Rechtsklick für schnelles schieben.
+Drücken Sie ESC für abbrechen.
 o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel.
-t626 
+t626 {0} ist kein Modifizierer. Bitte drücken Sie eine neue Taste.
+Drücken Sie ESC für abbrechen.
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
-
 Press ESC to cancel.
-t627 
+t627 Bewegungstasten können nicht mit Strg oder mit Modifizierer verwendet werden. Drücken sie eine neue Taste.
+Drücken Sie ESC für abbrechen.
 o628 You can't use the key {0}. Press a new key.
-
 Press ESC to cancel.
-t628 
+t628 Du kannst die Taste {0} nicht benutzen. Bitte drücken Sie eine neue Taste.
+Drücken Sie ESC für abbrechen.
 o629 Reset to default
 t629 Tasten zurücksetzen
 o630 Do you want to keep your changes?
@@ -1399,8 +1443,8 @@ o668 Save your change in the NBT data.
 t668 Speichere deine Änderungen in den NBT Daten.
 o669 Save unsaved edits before loading?
 t669 Nicht gespeicherte Änderungen speichern vor dem laden?
-o670 {0} unsaved edits.  {1} to save.  {2}
-t670 {0} nicht gespeicherte Änderungen.  {1} für speichern.  {2}
+o670 {0} unsaved edits. {1} to save. {2}
+t670 {0} nicht gespeicherte Änderungen. {1} für speichern. {2}
 o671 (UNDO DISABLED)
 t671 (RÜCKGÄNGIG AUSGESCHALTET)
 o672 Save unsaved edits before closing?
@@ -1429,67 +1473,70 @@ o682 Choose a NBT file...
 t682 Wähle eine NBT Datei aus..
 o683 The selected object is not a file.
 Can't load it.
-t683 
+t683 Das ausgewählte Objekt ist keine Datei.
+Kann es nicht laden.
 o684 The selected object is not a file.
 Can't save it.
-t684 
+t684 Das ausgewählte Objekt ist keine Datei.
+Kann es nicht speichern.
 o685 Show all the tags in the tree
-t685 
+t685 Zeige alle Tags in diesem Baum
 o686 Compound
-t686 
+t686 Compound
 o687 Integer
-t687 
+t687 Ganzzahl
 o688 Floating point
-t688 
+t688 Floating point
 o689 Text
-t689 
+t689 Text
 o690 Boolean
-t690 
+t690 Boolean
 o691 Choose default data
-t691 
+t691 Wähle Standard Daten
 o692 Item Type: %s
-t692 
+t692 Item Typ: %s
 o693 Value
-t693 
+t693 Wert
 o694 This item type is a container. Add chlidren later.
-t694 
+t694 Dieser Item Typ ist ein Behälter.
 o695 Choose item type
-t695 
+t695 Wähle einen Item Typ
 o696 Choose a name
-t696 
+t696 Wähle einen Namen
 o697 Byte
-t697 
+t697 Byte
 o698 Long
-t698 
+t698 Long
 o699 Short
-t699 
+t699 Short
 o700 String
-t700 
+t700 Zeichenfolge
 o701 List
-t701 
+t701 Liste
 o702 Byte Array
-t702 
+t702 Byte Reihe
 o703 Int Array
-t703 
+t703 Ganzzahl Reihe
 o704 Short Array
-t704 
+t704 Short Reihe
 o705 Click to bind this filter to a hotkey
-t705 
+t705 Drücken Sie um den Filter mit einem Tastenkürzel zu binden
 o706 Press a key to assign to the filter "{0}"
-
 Press ESC to cancel.
-t706 
+t706 Drücken Sie eine Taste mit dem Sie den Filter "{0}" belegen
+Drücken Sie ESC für abbrechen.
 o707 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
-
 Press ESC to cancel.
-t707 
+t707 Konnte Taste nicht belegen. {0} ist schon von {1} benutzt.
+Bitte drücken Sie eine Taste mit dem Sie den Filter "{0}" belegen
+Drücken Sie ESC für abbrechen.
 o708 [No players]
-t708 
+t708 [Keine Spieler]
 o709 Press to unbind
-t709 
+t709 Drücken für entfernen des Tastenkürzels
 o710 Are you sure you want to delete the default player?
-t710 
+t710 Bist du dir sicher dass du den Standard Spieler löschen möchtest?
 o711 Double-click or use the button below to edit the NBT Data.
 t711 
 o712 Go Back
