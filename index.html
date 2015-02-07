@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en-US">
-	<!--[if lte IE 9]>
-		<p class="update">
-			Hello, it looks like you are still using an outdated browser, we recommend upgrading to the latest <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a> (Window XP users are supported),
-			<a href="https://www.mozilla.org/en-US/firefox/new">FireFox</a> (Window XP users are supported) or <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer (IE)</a> 11 for systems using Windows 7,8,8.1. 
-			<br> Check out <a href="http://browsehappy.com/">Browsehappy.com</a> to see the latest version of your browser.
-		</p>
-	<![endif]-->
+	<!--[if lte IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+	<!--[if IE 8]>     <html class="no-js lt-ie9" lang="en"> <![endif]-->
+	<!--[if gt IE 8]>  <html class="no-js" lang="en" id="index"> <![endif]-->
+	<!--[if !IE]><html><![endif]-->
 	<head>
 		<meta charset="utf-8">
 		<title>MCEdit Unified - Home</title>
@@ -91,6 +88,20 @@
 	</style>
 
 	<body>
+	<!-- Warning for older browsers -->
+	<!--[if lte IE 8]>
+		<p class="update">
+			<b>Hey, it looks like you are using an outdated browser</b>, we recommend upgrading to the latest <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a> (Window XP users are supported) or
+			<a href="https://www.mozilla.org/en-US/firefox/new">FireFox</a> (Window XP users are supported).
+			<br> Check out <a href="http://browsehappy.com/">Browsehappy.com</a> to see the latest version of your browser.
+		</p>
+	<![endif]-->
+	<!--[if IE 9]>
+		<p class="ie9"> 
+			Why are you using an old browser, it's time to upgrade to <a href="https://www.google.com/chrome/browser/desktop/index.html">Google Chrome</a> or <a href="https://www.mozilla.org/en-US/firefox/new">FireFox</a> for a modernized look and feel. 
+			<br> Check out <a href="http://browsehappy.com/">Browsehappy.com</a> to see the latest version of your browser.
+		</p>
+	<![endif]-->
 		<article>
 			<div class="container">
 				<div class="row">
