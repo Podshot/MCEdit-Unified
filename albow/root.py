@@ -119,7 +119,7 @@ class RootWidget(Widget):
         self.cameraNum = [0, 0, 1, 1]
         self.notMove = False
         self.nudge = None
-        self.nudgeCount = 0
+        self.testTime = None
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -305,7 +305,6 @@ class RootWidget(Widget):
                                 event.dict['local'] = last_mouse_event.local
                                 last_mouse_event_handler.setup_cursor(event)
                         elif type == KEYUP:
-                            self.nudgeCount = 0
                             key = event.key
                             set_modifier(key, False)
                             add_modifiers(event)
@@ -350,15 +349,15 @@ class RootWidget(Widget):
                         if keys:
                             keyName = self.getKey(movement=True, keyname=pygame.key.name(i))
                             if self.editor.level:
-                                for i, key in enumerate(self.editor.movements):
+                                for j, key in enumerate(self.editor.movements):
                                     if keyName == key:
                                         if not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                            self.changeMovementKeys(i, keyName)
+                                            self.changeMovementKeys(j, keyName)
 
-                                for i, key in enumerate(self.editor.cameraPan):
+                                for k, key in enumerate(self.editor.cameraPan):
                                     if keyName == key:
                                         if not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                            self.changeCameraKeys(i)
+                                            self.changeCameraKeys(k)
 
                 except Cancel:
                     pass
@@ -402,7 +401,8 @@ class RootWidget(Widget):
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
-        elif self.notMove and self.nudge is not None and self.nudgeCount < 1:
+        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds = 0.35)):
+            self.testTime = datetime.now()
             if keyname == self.editor.movements[4]:
                 self.nudge.nudge(Vector(0, 1, 0))
             if keyname == self.editor.movements[5]:
@@ -427,14 +427,6 @@ class RootWidget(Widget):
                 self.nudge.nudge(Vector(*left))
             if keyname == self.editor.movements[1]:
                 self.nudge.nudge(Vector(*right))
-
-            self.nudgeCount += 1
-
-        elif self.notMove and self.nudge is not None:
-            if self.nudgeCount == 250:
-                self.nudgeCount = 0
-            else:
-                self.nudgeCount += 1
 
     def changeCameraKeys(self, keyNum):
         if self.editor.level is not None and not self.notMove:

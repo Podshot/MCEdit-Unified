@@ -33,19 +33,21 @@ class NudgeButton(GLBackground):
     def mouse_down(self, event):
         self.root.notMove = True
         self.root.nudge = self
-        self.count += 1
         self.focus()
         if event.button == 3 and config.keys.fastNudge.get() == "None":
             self.editor.rightClickNudge = True
+            self.count = 1
+        if event.button == 1:
+            self.count = 1
 
     def mouse_up(self, event):
         self.root.notMove = False
-        self.nudgeCount = 0
         self.root.nudge = None
         if event.button == 3 and config.keys.fastNudge.get() == "None":
             self.editor.rightClickNudge = False
-        self.count -= 1
-        if self.count <= 0:
+            self.editor.turn_off_focus()
+            self.count = 0
+        if event.button == 1:
             self.editor.turn_off_focus()
             self.count = 0
 
