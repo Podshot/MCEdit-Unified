@@ -491,13 +491,6 @@ class NBTExplorerToolPanel(Panel):
 
         btnRow = Row(btns, margin=1, spacing=4)
 
-#        btnRow = Row([
-#                           Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
-#                           Button("Reset", action=kwargs.get('reset_action', self.reset), tooltipText="Reset ALL your changes in the NBT data."),
-#                           Button(kwargs.get('close_text', "Close"), action=kwargs.get('close_action', self.close)),
-#                          ],
-#                          margin=1, spacing=4,
-#                         )
         btnRow.shrink_wrap()
         self.btnRow = btnRow
 
@@ -796,6 +789,18 @@ class NBTExplorerTool(EditorTool):
     def showPanel(self, fName=None, nbtObject=None, dontSaveRootTag=False, dataKeyName='Data'):
         """..."""
         if (self.panel is None and self.editor.currentTool in (self, None)): # or nbtObject:
+            #!# BAD HACK
+            try:
+                class fakeStdErr:
+                    def __init__(self, *args, **kwargs): pass
+                    def write(self, *args, **kwargs): pass
+                stderr = os.sys.stderr
+                os.sys.stderr = fakeStdErr()
+                os.sys.stderr = stderr
+            except:
+                alert("Unattended data. File not loaded")
+                return
+            #!#
             self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName,
                                               dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName)
             self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
@@ -824,7 +829,11 @@ def loadFile(fName):
             return
         dontSaveRootTag = False
         nbtObject = load(fName)
-        if nbtObject.get('Data', None):
+        if fName.endswith('.schematic'):
+            nbtObject = TAG_Compound(name='Data', value=nbtObject)
+            dontSaveRootTag = True
+            dataKeyName = 'Data'
+        elif nbtObject.get('Data', None):
             dataKeyName = 'Data'
         elif nbtObject.get('data', None):
             dataKeyName = 'data'
@@ -833,6 +842,7 @@ def loadFile(fName):
             dataKeyName = 'Data'
             dontSaveRootTag = True
             nbtObject = TAG_Compound([nbtObject,])
+#        dontSaveRootTag = not fName.endswith('.schematic')
         return nbtObject, dataKeyName, dontSaveRootTag, fName
     return [None,] * 4
 
