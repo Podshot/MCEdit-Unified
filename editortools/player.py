@@ -390,7 +390,7 @@ class PlayerPositionPanel(Panel):
         max_height = tab_height + self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height - self.pages.margin * 2
         max_height = min(max_height, 500)
 
-        self.editNBTDataButton = Button("Edit NBT data", action=self.editNBTData, tooltipText="Open the NBT Explorer to edit player's attributes and inventory")
+        self.editNBTDataButton = Button("Edit NBT Data", action=self.editNBTData, tooltipText="Open the NBT Explorer to edit player's attributes and inventory")
         addButton = Button("Add Player", action=self.tool.addPlayer)
         removeButton = Button("Remove Player", action=self.tool.removePlayer)
         gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
@@ -439,7 +439,7 @@ class PlayerPositionPanel(Panel):
         self.pages.add_page("Players", col)
         self.nbtpage = Column([self.nbttree,])
         self.nbtpage.shrink_wrap()
-        self.pages.add_page("Data", self.nbtpage)
+        self.pages.add_page("NBT Data", self.nbtpage)
         self.pages.set_rect(self.nbttree._rect)
         self.pages.shrink_wrap()
         self.pages.show_page(col)
@@ -469,7 +469,7 @@ class PlayerPositionPanel(Panel):
                                               close_action=close, load_text=None)
                 self.nbtpage = Column([self.nbttree,])
                 self.nbtpage.shrink_wrap()
-                self.pages.add_page("Data", self.nbtpage)
+                self.pages.add_page("NBT Data", self.nbtpage)
                 self.pages.show_page(self.nbtpage)
             else:
                 alert(_("Error while getting player file.\n%s not found.")%(player + '.dat'), doNotTranslate=True)

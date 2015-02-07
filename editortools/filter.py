@@ -715,16 +715,16 @@ class FilterTool(EditorTool):
             #        m = imp.load_source(name, path)
                 listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
                 if name + ".py" not in listdir or name + ".pyc" not in listdir or name + ".pyo" not in listdir:
-                    if "albow.translate" in sys.modules.keys():
-                        del sys.modules["albow.translate"]
-                    if "trn" in sys.modules.keys():
-                        del sys.modules["trn"]
-                    import albow.translate as trn
                     trn_path = os.path.join(directories.getFiltersDir(), name)
                     if os.path.exists(trn_path):
+                        if "albow.translate" in sys.modules.keys():
+                            del sys.modules["albow.translate"]
+                        if "trn" in sys.modules.keys():
+                            del sys.modules["trn"]
+                        import albow.translate as trn
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
-                    m.trn = trn
+                        m.trn = trn
                 return m
             except Exception, e:
                 print traceback.format_exc()

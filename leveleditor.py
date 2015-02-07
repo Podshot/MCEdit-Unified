@@ -232,7 +232,7 @@ class LevelEditor(GLViewport):
         self.viewButton = Button("Show...", action=showViewOptions)
 
         self.viewportButton = Button("Camera View", action=self.swapViewports,
-                                     tooltipText="Shortcut: {0}".format(config.keys.toggleView.get()))
+                                     tooltipText=_("Shortcut: {0}").format(config.keys.toggleView.get()))
 
         self.recordUndoButton = mceutils.CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
 

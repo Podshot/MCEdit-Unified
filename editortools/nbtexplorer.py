@@ -823,7 +823,7 @@ class NBTExplorerTool(EditorTool):
 #------------------------------------------------------------------------------
 def loadFile(fName):
     if not fName:
-        fName = mcplatform.askOpenFile(title="Select a NBT (.dat) file...", suffixes=['dat',])
+        fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat',])
     if fName:
         if not os.path.isfile(fName):
             alert("The selected object is not a file.\nCan't load it.")

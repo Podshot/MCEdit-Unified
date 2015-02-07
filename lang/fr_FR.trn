@@ -373,7 +373,7 @@ t174 Choisissez votre langue.
 o175 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
 t175 Cliquez pour faire de MCEdit une appilcation portable en déplaçant les fichiers schematic et de configuration dans le dossier du programme
 o176 You must restart MCEdit to see language changes
-t176 Vous devez redémarre MCEdit pour voir les changements.
+t176 Vous devez redémarrer MCEdit pour voir les changements.
 o177 Restart
 t177 Redémarrer
 o178 Later
@@ -661,7 +661,7 @@ t312 Effet
 o313 Level
 t313 Niveau
 o314 Duration (Seconds)
-t314 Durrée (secondes)
+t314 Durée (secondes)
 o315 Add Potion Effect to Mobs
 t315 Ajouter effet de potion aux monstres
 o316 Banslimes
@@ -690,14 +690,14 @@ o327 Make Mobs Invincible
 t327 Monstres invincibles
 o328 Setbiome
 t328 Choix des biomes
-o329 Smooth
-t329 Adoucir
+o329 Smooth - 2D
+t329 Adoucir - 2D
 o330 Filter:
 t330 Filtrer :
 o331 Update Filters
 t331 MàJ des filtres
 o332 Max Seed
-t332 Vitesse max
+t332 Graine max
 o333 Health
 t333 Santé
 o334 VelocityX
@@ -790,19 +790,6 @@ Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
-Advanced, little experience in notepad ++ is recommended.
-To change the amount of trades:
-1) Uncheck 'Unlimited Trades'
-2) Open the createshops filter using Notepad++ (link:http://notepad-plus-plus.org/) or notepad
-*The filter is where you put the MCEdit folder*
-3) Scroll to:
-else:
-offer[uses] = TAG_Int(0)
-offer[maxUses] = TAG_Int(1)
-4) Change the amount you want
-
-*Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
-
 t375 Pour créer un magasin, mettez d'abord votre achat dans le slot suppérieur du coffre.
 Ensuite, mettez un autre achat dans le slot du milieu.
 
@@ -810,30 +797,7 @@ Terminez en mettant un troisième dans celui du bas.
 
 Cliquez sur le coffre que vous voulez et choisissez ce que vous voulez et appuyez 'Entrée'.
 
-
-Avancé. Une petite expérience avec Notepad++ est conseillée.
-
-Pour changer le montant des échanges :
-
-1) Décochez 'Échanges illimités' ;
-
-2) Ouvrez le filtre CreateShops avec Notepad++ (link:http://notepad-plus-plus.org/) ou le bolc-note.
-
-*Le filtre est là où vous avez mis le dossier MCEdit.*
-
-3) Faites défiler jusqu'à:
-
-else:
-
-offer[uses] = TAG_Int(0)
-
-offer[maxUses] = TAG_Int(1)
-
-4) Changez le montant que vous voulez.
-
-
-
-*Note : ne changez que les nombres audessus. Changer autre chose résulterai dans un disfonctionnement du filtre.*
+*Tous les objets doivent être sur la même ligne*
 
 
 o376 Trade Notes
@@ -1336,22 +1300,22 @@ o623 Don't Save
 t623 Ne pas sauver
 o624 Press a key to assign to the action "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t624 
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t625 
 o626 {0} is not a modifier. Press a new key.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t627 
 o628 You can't use the key {0}. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t628 
 o629 Reset to default
 t629 Valeur par défaut
@@ -1432,7 +1396,9 @@ t666 Double-clic pour editer
 o667 NBT Explorer
 Dive into level NBT structure.
 Right-click for options/load files.
-t667 
+t667 Exporateur NBT
+Plongez au cœur de la structure NBT.
+Click-droit pour les options/charger un fichier.
 o668 Save your change in the NBT data.
 t668 Sauve vos changements dans les données NBT.
 o669 Save unsaved edits before loading?
@@ -1467,34 +1433,36 @@ o682 Choose a NBT file...
 t682 Choisir un fichier NBT..
 o683 The selected object is not a file.
 Can't load it.
-t683 
+t683 L'objet sélectionné n'est pas un fichier.
+Impossible de le charger.
 o684 The selected object is not a file.
 Can't save it.
-t684 
+t684 L'objet sélectionné n'est pas un fichier.
+Impossible de le sauver.
 o685 Show all the tags in the tree
-t685 
+t685 Montrer tous les tags
 o686 Compound
-t686 
+t686 Composé
 o687 Integer
-t687 
+t687 Intégral
 o688 Floating point
-t688 
+t688 Virgule flotante
 o689 Text
-t689 
+t689 Texte
 o690 Boolean
-t690 
+t690 Booléen
 o691 Choose default data
-t691 
+t691 Choisir les données par défaut
 o692 Item Type: %s
-t692 
+t692 Type d'élément : %s
 o693 Value
-t693 
+t693 Valeur
 o694 This item type is a container. Add chlidren later.
-t694 
+t694 Ce type d'élément est un conteneur. Ajoutez lui des élément plus tard.
 o695 Choose item type
-t695 
+t695 Choisir le type d'élément
 o696 Choose a name
-t696 
+t696 Choissir un nom
 o697 Byte
 t697 
 o698 Long
@@ -1512,19 +1480,65 @@ t703
 o704 Short Array
 t704 
 o705 Click to bind this filter to a hotkey
-t705 
+t705 Cliquer pour lier ce filtre à un touche
 o706 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
-t706 
+t706 Appuyez sur une touche à affecter au filtre "{0}"
+
+ESC pour annuler.
 o707 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
 
 Press ESC to cancel.
-t707 
+t707 Liaison impossible. {0} est déjà utilisé pour {1}.
+Appuyez sur une touche à affecter au filtre "{2}"
+
+ESC pour annuler.
 o708 [No players]
-t708 
+t708 [Aucun joueur]
 o709 Press to unbind
-t709 
+t709 Cliquer pour délier
 o710 Are you sure you want to delete the default player?
-t710 
+t710 Êtes-vous sûr de vouloir supprimer le joueur par défaut?
+o711 Double-click or use the button below to edit the NBT Data.
+t711 Double-cliquez ou utilisez le bouton ci-dessous pour modifier les données NBT.
+o712 Go Back
+t712 Retour
+o712 Upload to FTP Server
+t712 Envoyer à un serveur FTP
+o713 There are {0} unsaved changes.
+t713 {0} changement non sauvegardés.
+o714 Save and Quit
+t714 Sauver et quiter
+o715 Refresh All Player Names
+t715 Rafraîchir tous les noms de joueurs
+o716 Ticks mode accouplement
+t716 
+o717 Results
+t717 Résultats
+o718 Smooth - 3D
+t718 Adoucir - 3D
+o719 Smoothing
+t719 Adoucissement
+o720 Made by Sethbling
+t720 Créé par Sethbling
+o721 NBT Data
+t721 Données NBT
+o722 Edit NBT Data
+t722 Édit. données NBT
+o723 Open the NBT Explorer to edit player's attributes and inventory
+t723 Ouvre l'explorateur NBT pour changer les attributs et l'inventaire du joueur
+o724 Not yet implemented.
+Use the NBT Explorer to edit this player.
+t724 Pas encore implémenté.
+Utilisez l'Explorateur NBT pour éditer ce joueur.
+o725 Error while getting player file.
+%s not found.
+t725 Erreur lors de l'ouverture du fichier.
+%s introuvable.
+o726 Spawn point fixed. Changes: 
+
+
+t726 Point de spawn fixé. Changements : 
+

@@ -690,8 +690,8 @@ o327 Make Mobs Invincible
 t327 Mache Mobs unsichtbar
 o328 Setbiome
 t328 Setze Biom
-o329 Smooth
-t329 Glatt
+o329 Smooth - 2D
+t329 Glatt - 2D
 o330 Filter:
 t330 Filter:
 o331 Update Filters
@@ -790,37 +790,12 @@ Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
-Advanced, little experience in notepad ++ is recommended.
-To change the amount of trades:
-1) Uncheck 'Unlimited Trades'
-2) Open the createshops filter using Notepad++ (link:http://notepad-plus-plus.org/) or notepad
-*The filter is where you put the MCEdit folder*
-3) Scroll to:
-else:
-offer[uses] = TAG_Int(0)
-offer[maxUses] = TAG_Int(1)
-4) Change the amount you want
-
-*Note: Only change the numbers as above, changing anything else will result in the filter to not work correctly*
-
 t375 Um einen Shop zu erstellen musst du die Kaufsache in die oberste Reihe der Kiste tun.
 Zweitens packe in die Mittlere Reihe eine zweite Kaufsache (optional).
 Drittens packe die Verkaufssachen in die unterste Reihe.
 Klicke eine Kiste und wähle was du willst und drücke Enter
 *Alle Items müssen in der selben Spalte sein*
 
-Fortgeschritten, etwas Erfahrung in Notepad++ ist empfohlen.
-Um die Anzahl der Handel zu ändern:
-1) Wähle 'Unendlicher Handel' ab
-2) Öffne den createshops Filter mit Notepad++ (link:http://notepad-plus-plus.org/) oder den Editor
-*Der Filter ist da wo der MCEdit Ordner ist*
-3) Scrolle zu:
-ansonsten:
-offer[uses] = TAG_Int(0)
-offer[maxUses] = TAG_Int(1)
-4) Ändere die Menge die du willst
-
-*Notiz: Ändere nur die Nummer wie oben, ändere anderes und der Filter funktioniert nicht mehr richtig*
 o376 Trade Notes
 t376 Handel Notizen
 o377 Include position data
@@ -1321,22 +1296,22 @@ o623 Don't Save
 t623 Nicht Speichern
 o624 Press a key to assign to the action "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t624 
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t625 
 o626 {0} is not a modifier. Press a new key.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t627 
 o628 You can't use the key {0}. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t628 
 o629 Reset to default
 t629 Tasten zurücksetzen
@@ -1515,3 +1490,41 @@ o709 Press to unbind
 t709 
 o710 Are you sure you want to delete the default player?
 t710 
+o711 Double-click or use the button below to edit the NBT Data.
+t711 
+o712 Go Back
+t712 
+o712 Upload to FTP Server
+t712 
+o713 There are {0} unsaved changes.
+t713 
+o714 Save and Quit
+t714 
+o715 Refresh All Player Names
+t715 
+o716 Ticks mode accouplement
+t716 
+o717 Results
+t717 
+o718 Smooth - 3D
+t718 
+o719 Smoothing
+t719 
+o720 Made by Sethbling
+t720 
+o721 NBT Data
+t721 
+o722 Edit NBT Data
+t722 
+o723 Open the NBT Explorer to edit player's attributes and inventory
+t723 
+o724 Not yet implemented.
+Use the NBT Explorer to edit this player.
+t724 
+o725 Error while getting player file.
+%s not found.
+t725 
+o726 Spawn point fixed. Changes: 
+
+
+t726 
