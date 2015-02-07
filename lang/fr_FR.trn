@@ -1301,22 +1301,31 @@ t623 Ne pas sauver
 o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel.
-t624 
+t624 Appuyer sur la touche à lier à l'action "{0}"
+
+ESC pour annuler.
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
-t625 
+t625  Appuyer sur la touche à lier à l'action "{0}"
+Acune touche pour utiliser le clic-droit.
+ESC pour annuler.
 o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel.
-t626 
+t626 {0} n'est pas un modificateur. Appuyez sur une autre touche.
+ESC pour annuler.
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel.
-t627 
+t627 Le touches de déplacement ne peuvent utiliser des modificateurs. Appuyez sur une autre touche.
+
+ESC pour annuler.
 o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t628 
+t628 Vous ne pouvez utiliser {0}. appuyez sur une autre touche.
+
+ESC pour annuler.
 o629 Reset to default
 t629 Valeur par défaut
 o630 Do you want to keep your changes?

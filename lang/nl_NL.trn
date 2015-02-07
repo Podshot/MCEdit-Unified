@@ -1289,22 +1289,22 @@ o623 Don't Save
 t623 
 o624 Press a key to assign to the action "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t624 
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t625 
 o626 {0} is not a modifier. Press a new key.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t627 
 o628 You can't use the key {0}. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t628 
 o629 Reset to default
 t629 
