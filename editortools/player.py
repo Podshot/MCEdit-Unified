@@ -417,7 +417,7 @@ class PlayerPositionPanel(Panel):
         tableview.click_row = selectTableRow
 
         def mouse_down(e):
-            if e.num_clicks > 1:
+            if e.button == 1 and e.num_clicks > 1:
                 self.editNBTData()
             TableRowView.mouse_down(tableview.rows, e)
 
