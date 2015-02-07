@@ -472,7 +472,7 @@ class NBTExplorerOperation(Operation):
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
-    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', close_text="Close", **kwargs):
+    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', close_text="Close", load_text="Load", **kwargs):
         """..."""
         Panel.__init__(self)
         self.editor = editor
@@ -482,7 +482,10 @@ class NBTExplorerToolPanel(Panel):
         self.displayed_item = None
         self.dataKeyName = dataKeyName
         self.init_data()
-        btns = [
+        btns = []
+        if load_text:
+            btns.append(Button(load_text, action=self.editor.nbtTool.loadFile))
+        btns += [
                 Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
                 Button("Reset", action=kwargs.get('reset_action', self.reset), tooltipText="Reset ALL your changes in the NBT data."),
                 ]
@@ -505,14 +508,12 @@ class NBTExplorerToolPanel(Panel):
         self.setCompounds()
         self.tree = NBTTree(height=max_height - btnRow.height -2, inner_width=250, data=self.data, compound_types=self.compounds,
                             copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
-        col = Column([self.tree, btnRow], margin=0, spacing=2)
-        col.shrink_wrap()
-        row = [col, Column([Label("", width=300), ], height=max_height, margin=0)]
+        row = [self.tree, Column([Label("", width=300), ], margin=0)]
         self.displayRow = Row(row, height=max_height, margin=0, spacing=0)
         if kwargs.get('no_header', False):
-            self.add(Column([self.displayRow,], margin=0)) #, height=max_height + btnRow.height + 2))
+            self.add(Column([self.displayRow, btnRow], margin=0))
         else:
-            self.add(Column([header, self.displayRow], margin=0))
+            self.add(Column([header, self.displayRow, btnRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
 
@@ -589,7 +590,7 @@ class NBTExplorerToolPanel(Panel):
             if col:
                 col = Column(rows, align='l', spacing=0, height=self.displayRow.height)
             else:
-                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=300)
+                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=300 - scroll_button_size)
             col.set_parent(self.displayRow)
             col.top = self.displayRow.top
             col.left = self.displayRow.subwidgets[0].right

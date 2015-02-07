@@ -431,7 +431,8 @@ class PlayerPositionPanel(Panel):
         def close():
             self.pages.show_page(col)
         self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject={}, height=max_height, \
-                                            close_text="Go Back", no_header=True, close_action=close)
+                                            close_text="Go Back", no_header=True, close_action=close,
+                                            load_text=None)
         self.nbttree.shrink_wrap()
         
         
@@ -458,14 +459,14 @@ class PlayerPositionPanel(Panel):
                 path = os.path.join(os.path.split(self.level.filename)[0], 'players')
             if player + '.dat' in os.listdir(path):
                 fName = os.path.join(path, player + '.dat')
-                nbtObject, dataKeyName, dontSaveRootTag = loadFile(fName)
+                nbtObject, dataKeyName, dontSaveRootTag, fn = loadFile(fName)
                 self.pages.remove_page(self.nbtpage)
                 def close():
                     self.pages.show_page(self.col)
                 self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=nbtObject, fileName=fName,
                                               dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName,
                                               height=self.max_height, no_header=True, close_text="Go Back",
-                                              close_action=close)
+                                              close_action=close, load_text=None)
                 self.nbtpage = Column([self.nbttree,])
                 self.nbtpage.shrink_wrap()
                 self.pages.add_page("Data", self.nbtpage)

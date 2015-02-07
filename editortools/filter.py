@@ -253,12 +253,15 @@ class FilterModuleOptions(Widget):
 
             #-#
             elif type(optionType) == list and optionType[0].lower() == "nbttree":
-                kw = {'close_text': None}
-                if len(optionType) == 3:
+                kw = {'close_text': None, 'load_text': None}
+                if len(optionType) >= 3:
                     def close():
                         self.pages.show_page(self.pages.pages[optionType[2]])
                     kw['close_action'] = close
                     kw['close_text'] = "Go Back"
+                if len(optionType) >= 4:
+                    if optionType[3]:
+                        kw['load_text'] = optionType[3]
                 self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True, **kw)
                 self.module.set_tree(self.nbttree.tree)
                 for meth_name in dir(self.module):

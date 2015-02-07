@@ -1294,22 +1294,22 @@ o623 Don't Save
 t623 
 o624 Press a key to assign to the action "{0}"
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t624 
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t625 
 o626 {0} is not a modifier. Press a new key.
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t627 
 o628 You can't use the key {0}. Press a new key.
 
-Press ESC to cancel. Press Shift-ESC to unbind.
+Press ESC to cancel.
 t628 
 o629 Reset to default
 t629 
@@ -1485,3 +1485,15 @@ o709 Press to unbind
 t709 
 o710 Are you sure you want to delete the default player?
 t710 
+o711 Double-click or use the button below to edit the NBT Data.
+t711 
+o712 Go Back
+t712 
+o712 Upload to FTP Server
+t712 
+o713 There are {0} unsaved changes.
+t713 
+o714 Save and Quit
+t714 
+o715 Refresh All Player Names
+t715 
