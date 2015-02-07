@@ -764,7 +764,6 @@ class NBTExplorerToolPanel(Panel):
 class NBTExplorerTool(EditorTool):
     """..."""
     tooltipText = "NBT Explorer\nDive into level NBT structure.\nRight-click for options"
-    
     _alreadyHidden = False
 
     @property
