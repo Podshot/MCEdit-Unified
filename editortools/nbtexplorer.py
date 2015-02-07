@@ -354,7 +354,7 @@ class NBTExplorerOptions(ToolOptions):
                       Row((useStyleBox, useTextBox, useImagesBox)),
                       bulletFilePath,
                       showAllTags,
-                      Button("Load NBT file...", action=tool.loadFile),
+#                      Button("Load NBT file...", action=tool.loadFile),
                       Button("OK", action=self.dismiss),
                     ))
         self.add(col)
