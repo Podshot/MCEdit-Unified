@@ -403,7 +403,7 @@ class CloneToolOptions(ToolOptions):
         self.autoPlaceLabel.tooltipText = self.autoPlaceCheckBox.tooltipText = tooltipText
 
         spaceLabel = Label("")
-        cloneNudgeLabel = Label("Clone Fast Nudge Settings:")
+        cloneNudgeLabel = Label("Clone Fast Nudge Settings")
         cloneNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
                                                 ref=config.fastNudgeSettings.cloneWidth,
                                                 tooltipText="Moves clone by his width")

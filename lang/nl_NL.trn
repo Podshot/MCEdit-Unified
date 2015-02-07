@@ -246,7 +246,7 @@ o112 Pan Right
 t112 Draai Rechts
 o113 Toggle View
 t113 <Gereedschapstoetsen>
-o114 Goto Panel
+o114 Goto Position
 t114 Ga naar Configuratiescherm
 o115 View Distance
 t115 Distance vue
@@ -266,9 +266,9 @@ o122 Reset Reach
 t122 Reset Bereik
 o123 Export Selection
 t123 Exporteer selectie
-o124 Brush Line Tool
+o124 Line Tool (Hold)
 t124 Brush Line Tool
-o125 <Clone>
+o125 <Clone Tool>
 t125 <Kloon>
 o126 Rotate (Clone)
 t126 Draai (Kloon)
@@ -278,21 +278,21 @@ o128 Flip
 t128 Flip
 o129 Mirror
 t129 Spiegel
-o130 <Brush>
+o130 <Brush Tool>
 t130 <Kwast>
 o131 Rotate (Brush)
 t131 Draai (Kwast)
 o132 Roll (Brush)
 t132 Draai (Kwast)
-o133 Increase Brush
+o133 Increase Size
 t133 Vergroot Kwast
-o134 Decrease Brush
+o134 Decrease Size
 t134 Verklein Kwast
-o135 <Fill and Replace>
+o135 <Fill and Replace Tool>
 t135 <Vul en Vervang>
 o136 Replace Shortcut
 t136 Vervang Shortcut
-o137 <Functions>
+o137 <Function>
 t137 <Functies>
 o138 Cut
 t138 Knip
@@ -318,17 +318,17 @@ o148 <Advanced>
 t148 <Geavanceerd>
 o149 Debug Overlay
 t149 Debug Overlay
-o150 Show Block Info
+o150 Show Block Info (Hold)
 t150 Laat blokinfo zien
-o151 Pick Block
+o151 Pick Block (Hold + Click)
 t151 Kies blok
-o152 Select Chunks
+o152 Select Chunks (Hold)
 t152 Selecteer chunks
-o153 Deselect Chunks
+o153 Deselect Chunks (hold)
 t153 Deselecteer Chunks
-o154 Snap Clone to Axis
+o154 Snap Clone to Axis (Hold)
 t154 Plak kloon aan as
-o155 Blocks-Only Modifier
+o155 Blocks-Only Modifier (Hold)
 t155 Enkel-blokken toets
 o156 Fast Increment Modifier
 t156 Snel scrollen toets
@@ -1518,3 +1518,9 @@ o726 Spawn point fixed. Changes:
 
 
 t726 
+o727 <Selection>
+t727 
+o728 <Miscellaneous>
+t728 
+o729 Take Screenshot
+t729 

@@ -246,7 +246,7 @@ o112 Pan Right
 t112 오른쪽으로 회전
 o113 Toggle View
 t113 카메라 변경
-o114 Goto Panel
+o114 Goto Position
 t114 이동
 o115 View Distance
 t115 시야
@@ -266,9 +266,9 @@ o122 Reset Reach
 t122 거리 초기화
 o123 Export Selection
 t123 선택 영역 내보내기
-o124 Brush Line Tool
+o124 Line Tool (Hold)
 t124 브러쉬 선 도구
-o125 <Clone>
+o125 <Clone Tool>
 t125 <복제>
 o126 Rotate (Clone)
 t126 회전 (복제)
@@ -278,21 +278,21 @@ o128 Flip
 t128 뒤집기
 o129 Mirror
 t129 대칭
-o130 <Brush>
+o130 <Brush Tool>
 t130 <브러쉬>
 o131 Rotate (Brush)
 t131 회전 (브러쉬)
 o132 Roll (Brush)
 t132 굴리기 (브러쉬)
-o133 Increase Brush
+o133 Increase Size
 t133 브러쉬 늘리기
-o134 Decrease Brush
+o134 Decrease Size
 t134 브러쉬 줄이기
-o135 <Fill and Replace>
+o135 <Fill and Replace Tool>
 t135 <채우기, 바꾸기>
 o136 Replace Shortcut
 t136 바꾸기 단축키
-o137 <Functions>
+o137 <Function>
 t137 <기능>
 o138 Cut
 t138 잘라내기
@@ -318,17 +318,17 @@ o148 <Advanced>
 t148 <고급 기능>
 o149 Debug Overlay
 t149 디버그 덮어쓰기
-o150 Show Block Info
+o150 Show Block Info (Hold)
 t150 블럭 정보 보이기
-o151 Pick Block
+o151 Pick Block (Hold + Click)
 t151 블럭 고르기
-o152 Select Chunks
+o152 Select Chunks (Hold)
 t152 청크 선택
-o153 Deselect Chunks
+o153 Deselect Chunks (Hold)
 t153 청크 선택 취소
-o154 Snap Clone to Axis
+o154 Snap Clone to Axis (Hold)
 t154 Snap Clone to Axis
-o155 Blocks-Only Modifier
+o155 Blocks-Only Modifier (Hold)
 t155 Blocks-Only Modifier
 o156 Fast Increment Modifier
 t156 Fast Increment Modifier
@@ -1528,3 +1528,10 @@ o726 Spawn point fixed. Changes:
 
 t726 스폰 지점 고정. 변경 내용:
 
+
+o727 <Selection>
+t727 
+o728 <Miscellaneous>
+t728 
+o729 Take Screenshot
+t729 

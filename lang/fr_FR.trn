@@ -155,7 +155,7 @@ t67 RÀZ distance quand la taille de brosse change
 o68 Brush Options
 t68 Option de brosse
 o69 Fill Options
-t69 Otption de ramplissage
+t69 Otption de remplissage
 o70 Spawn Position Safety
 t70 Sécurité position de spawn
 o71 Spawn Point Options
@@ -248,8 +248,8 @@ o112 Pan Right
 t112 Pano droite
 o113 Toggle View
 t113 Activer vue
-o114 Goto Panel
-t114 Aller au panneau
+o114 Goto Position
+t114 Aller à la position
 o115 View Distance
 t115 Distance de vue
 o116 Toggle Renderer
@@ -268,10 +268,10 @@ o122 Reset Reach
 t122 RÀZ portée
 o123 Export Selection
 t123 Exporter sélection
-o124 Brush Line Tool
-t124 Outil ligne
-o125 <Clone>
-t125 <Cloner>
+o124 Line Tool (Hold)
+t124 Outil ligne (Maintenir)
+o125 <Clone Tool>
+t125 <Outil Cloner>
 o126 Rotate (Clone)
 t126 Rotation (Clone)
 o127 Roll (Clone)
@@ -280,22 +280,22 @@ o128 Flip
 t128 Retourner
 o129 Mirror
 t129 Mirroir
-o130 <Brush>
-t130 <Brosse>
-o131 Rotate (Brush)
+o130 <Brush Tool>
+t130 <Outil Brosse>
+o131 Rotate (Brush) ## TO BE DELETED
 t131 Rotation (Brosse)
-o132 Roll (Brush)
+o132 Roll (Brush) ## TO BE DELETED
 t132 Tourner (Brosse)
-o133 Increase Brush
-t133 Augmanter brosse
-o134 Decrease Brush
-t134 Diminuer brosse
-o135 <Fill and Replace>
-t135 Remplir et remplacer
+o133 Increase Size
+t133 Augmenter taille
+o134 Decrease Size
+t134 Diminuer taille
+o135 <Fill and Replace Tool>
+t135 <Outil Remplir et remplacer>
 o136 Replace Shortcut
-t136 Raacourci remplacer
-o137 <Functions>
-t137 <Fonctions>
+t136 Racourci remplacer
+o137 <Function>
+t137 <Fonction>
 o138 Cut
 t138 Couper
 o139 Copy
@@ -320,18 +320,18 @@ o148 <Advanced>
 t148 <Avancé>
 o149 Debug Overlay
 t149 Superpos. débug
-o150 Show Block Info
-t150 Voir infos bloc
-o151 Pick Block
-t151 Choisir bloc
-o152 Select Chunks
-t152 Sélect. chunks
-o153 Deselect Chunks
-t153 Déselect. chunks
-o154 Snap Clone to Axis
-t154 Pos. clone sur axe
-o155 Blocks-Only Modifier
-t155 Modif. blocs seuls
+o150 Show Block Info (Hold)
+t150 Voir infos bloc (Maintenir)
+o151 Pick Block (Hold + Click)
+t151 Choisir bloc (Maintenir et cliquer)
+o152 Select Chunks (Hold)
+t152 Sélect. chunks (Maintenir)
+o153 Deselect Chunks (Hold)
+t153 Déselect. chunks (Maintenir)
+o154 Snap Clone to Axis (Hold)
+t154 Pos. clone sur axe (Maintenir)
+o155 Blocks-Only Modifier (Hold)
+t155 Modif. blocs seuls (Maintenir)
 o156 Fast Increment Modifier
 t156 Modif. incrément rapide
 o157 Leaves are solid, like Minecraft's 'Fast' graphics
@@ -1267,7 +1267,7 @@ t606 Bords des chunks
 o607 Fast Nudge
 t607 Pousser rapide
 o608 Clone Fast Nudge Settings
-t608 Régl. posser rapide clonage
+t608 Régl. pousser rapide clonage
 o609 Move by the width of selection 
 t609 Dépl. par largeur de sélection 
 o610 Moves clone by his width
@@ -1551,3 +1551,10 @@ o726 Spawn point fixed. Changes:
 
 t726 Point de spawn fixé. Changements : 
 
+
+o727 <Selection>
+t727 <Sélection>
+o728 <Miscellaneous>
+t728 <Divers>
+o729 Take Screenshot
+t729 Capture d'écran

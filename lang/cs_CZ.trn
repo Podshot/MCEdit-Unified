@@ -248,7 +248,7 @@ o112 Pan Right
 t112 Otočit vpravo
 o113 Toggle View
 t113 Přepnout pohled
-o114 Goto Panel
+o114 Goto Position
 t114 Panel Jít na
 o115 View Distance
 t115 Vzdálenost pohledu
@@ -268,9 +268,9 @@ o122 Reset Reach
 t122 Vynulovat dosah
 o123 Export Selection
 t123 Exportovat výběr
-o124 Brush Line Tool
+o124 Line Tool (Hold)
 t124 Přímočarý štětec
-o125 <Clone>
+o125 <Clone Tool>
 t125 <Klonování>
 o126 Rotate (Clone)
 t126 Otočit (Klonování)
@@ -280,21 +280,21 @@ o128 Flip
 t128 Převrátit
 o129 Mirror
 t129 Zrcadlit
-o130 <Brush>
+o130 <Brush Tool>
 t130 <Štětec>
 o131 Rotate (Brush)
 t131 Otočit (Štětec)
 o132 Roll (Brush)
 t132 Valit (Štětec)
-o133 Increase Brush
+o133 Increase Size
 t133 Zvětšit štětec
-o134 Decrease Brush
+o134 Decrease Size
 t134 Zmenšit štětec
-o135 <Fill and Replace>
+o135 <Fill and Replace Tool>
 t135 <Vyplnit a nahradit>
 o136 Replace Shortcut
 t136 Nahradit zkratku
-o137 <Functions>
+o137 <Function>
 t137 <Funkce>
 o138 Cut
 t138 Vyjmout
@@ -320,17 +320,17 @@ o148 <Advanced>
 t148 <Pokročilé>
 o149 Debug Overlay
 t149 Testovací informace
-o150 Show Block Info
+o150 Show Block Info (Hold)
 t150 Zobrazit informace o bloku
-o151 Pick Block
+o151 Pick Block (Hold + Click)
 t151 Zvolit blok
-o152 Select Chunks
+o152 Select Chunks (Hold)
 t152 Vybrat chunky
-o153 Deselect Chunks
+o153 Deselect Chunks (Hold)
 t153 Zrušit volbu chunků
-o154 Snap Clone to Axis
+o154 Snap Clone to Axis (Hold)
 t154 Přichytávat klonování k osám
-o155 Blocks-Only Modifier
+o155 Blocks-Only Modifier (Hold)
 t155 Modifikátor - pouze bloky
 o156 Fast Increment Modifier
 t156 Modifikátor - rychlé zvětšování
@@ -1520,3 +1520,9 @@ o726 Spawn point fixed. Changes:
 
 
 t726 
+o727 <Selection>
+t727 
+o728 <Miscellaneous>
+t728 
+o729 Take Screenshot
+t729 

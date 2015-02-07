@@ -246,7 +246,7 @@ o112 Pan Right
 t112 
 o113 Toggle View
 t113 
-o114 Goto Panel
+o114 Goto Position
 t114 
 o115 View Distance
 t115 
@@ -266,9 +266,9 @@ o122 Reset Reach
 t122 
 o123 Export Selection
 t123 
-o124 Brush Line Tool
+o124 Line Tool (Hold)
 t124 
-o125 <Clone>
+o125 <Clone Tool>
 t125 
 o126 Rotate (Clone)
 t126 
@@ -278,21 +278,21 @@ o128 Flip
 t128 
 o129 Mirror
 t129 
-o130 <Brush>
+o130 <Brush Tool>
 t130 
 o131 Rotate (Brush)
 t131 
 o132 Roll (Brush)
 t132 
-o133 Increase Brush
+o133 Increase Size
 t133 
-o134 Decrease Brush
+o134 Decrease Size
 t134 
-o135 <Fill and Replace>
+o135 <Fill and Replace Tool>
 t135 
 o136 Replace Shortcut
 t136 
-o137 <Functions>
+o137 <Function>
 t137 
 o138 Cut
 t138 
@@ -318,17 +318,17 @@ o148 <Advanced>
 t148 
 o149 Debug Overlay
 t149 
-o150 Show Block Info
+o150 Show Block Info (Hold)
 t150 
-o151 Pick Block
+o151 Pick Block (Hold + Click)
 t151 
-o152 Select Chunks
+o152 Select Chunks (Hold)
 t152 
-o153 Deselect Chunks
+o153 Deselect Chunks (Hold)
 t153 
-o154 Snap Clone to Axis
+o154 Snap Clone to Axis (Hold)
 t154 
-o155 Blocks-Only Modifier
+o155 Blocks-Only Modifier (Hold)
 t155 
 o156 Fast Increment Modifier
 t156 
@@ -1510,3 +1510,9 @@ o726 Spawn point fixed. Changes:
 
 
 t726 
+o727 <Selection>
+t727 
+o728 <Miscellaneous>
+t728 
+o729 Take Screenshot
+t729 
