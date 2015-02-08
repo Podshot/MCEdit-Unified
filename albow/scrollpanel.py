@@ -134,11 +134,11 @@ class ScrollRow(PaletteView):
 
     def scroll_left(self):
         if self.can_scroll_left():
-            self.hscroll -= self.width / 2
+            self.hscroll -= self.cell_size[1]
 
     def scroll_right(self):
         if self.can_scroll_right():
-            self.hscroll += self.width / 2
+            self.hscroll += self.cell_size[1]
 
     def mouse_down(self, event):
         if event.button == 1:
@@ -150,6 +150,12 @@ class ScrollRow(PaletteView):
                 elif self.scroll_right_rect().collidepoint(p):
                     self.scroll_right()
                     return
+        elif event.button == 6:
+            if self.hscrolling:
+                self.scroll_left()
+        elif event.button == 7:
+            if self.hscrolling:
+                self.scroll_right()
         PaletteView.mouse_down(self, event)
 
     def cell_rect(self, row, col):
