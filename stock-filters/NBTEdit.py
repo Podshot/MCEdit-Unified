@@ -1,5 +1,6 @@
 import ast
 from pymclevel.box import BoundingBox
+
 inputs = [(("Entities", True),
            ("Tile Entities", True),
            ("Tile Ticks", True),
@@ -9,6 +10,10 @@ inputs = [(("Entities", True),
            )]
 
 tree = None
+chunks = None
+boundingBox = None
+
+#displayName = ""
 
 def set_tree(t):
     global tree
@@ -27,8 +32,19 @@ def nbttree_mouse_down(e):
             newBox = BoundingBox(s, (1, 1, 1))
             editor.selectionTool.setSelection(newBox)
     tree.treeRow.__class__.mouse_down(tree.treeRow, e)
+    
+def nbt_ok_action():
+    for chunk in chunks:
+        chunk.dirty = True
+    editor.removeUnsavedEdit()
+    editor.addUnsavedEdit()
+    editor.invalidateBox(boundingBox)
 
 def perform(level, box, options):
+    global chunks
+    global boundingBox
+    chunks = []
+    boundingBox = box
     data = {"Entities": [], "TileEntities": [], "TileTicks": []}
     runOn = (options["Entities"], options["Tile Entities"], options["Tile Ticks"])
     for (chunk, slices, point) in level.getChunkSlices(box):
@@ -39,6 +55,8 @@ def perform(level, box, options):
                 z = e["Pos"][2].value
                 if (x, y, z) in box:
                     data["Entities"].append(e)
+                    if chunk not in chunks:
+                        chunks.append(chunk)
         if runOn[1]:
             for te in chunk.TileEntities:
                 x = te["x"].value
@@ -46,6 +64,8 @@ def perform(level, box, options):
                 z = te["z"].value
                 if (x, y, z) in box:
                     data["TileEntities"].append(te)
+                    if chunk not in chunks:
+                        chunks.append(chunk)
         if runOn[2]:
             for tt in chunk.TileTicks:
                 x = tt["x"].value
@@ -53,6 +73,8 @@ def perform(level, box, options):
                 z = tt["z"].value
                 if (x, y, z) in box:
                     data["TileTicks"].append(tt)
+                    if chunk not in chunks:
+                        chunks.append(chunk)
     treeData = {"Entities": {}, "TileEntities": {}, "TileTicks": {}}
     for i in range(len(data["Entities"])):
         treeData["Entities"][u"%s"%((data["Entities"][i]["Pos"][0].value, data["Entities"][i]["Pos"][1].value, data["Entities"][i]["Pos"][2].value),)] = data["Entities"][i]
