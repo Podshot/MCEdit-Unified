@@ -13,7 +13,7 @@ function getJSON(url){
 				cache: false,
 				async: false
 			}).responseText;
-			ret_val = JSON.parse(response);
+			var ret_val = JSON.parse(response);
 			if (ret_val !== undefined) {
 				requests[url] = ret_val;
 				return requests[url];
@@ -77,7 +77,7 @@ function compareVersionObject(a,b) {
 	return compareVersionString(a.tag_name, b.tag_name) * -1;
 }
 function getLatestRelease() {
-	data = releaseData;
+	var data = releaseData;
 	var prereleases = [];
 	var releases = [];
 	for (var i = 0; i < data.length; i++) {
@@ -111,7 +111,7 @@ function parseURL ( href ) {
 
 function generatePageStructure() {
 	var navjson = getJSON('navbar.json');
-	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container nav-container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="./">MCEdit Unified</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>')
+	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container nav-container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="./">MCEdit Unified</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>');
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
 		var navitem = navbar[i];
@@ -154,7 +154,7 @@ $(document).ready(function(){
 	if (ratelimits.resources.core.remaining < 5) {
 		$('body').children().hide();
 		$('body').append('<div id="ratewarning"><h1>Rate Limit Low</h1><br>You only have ' + ratelimits.resources.core.remaining + ' requests remaining<br><br><button onclick="$(\'#ratewarning\').remove();$(\'body\').css(\'background-color\',\'white\').children().show();" class="btn btn-default"><i class="fa fa-check"></i> Ok</button></div>');
-		$('body').css('background-color','#444444')
+		$('body').css('background-color','#444444');
 		$('#ratewarning').css('text-align','center').css('color','white');
 	}
 	if (ratelimits.resources.core.remaining > 0) {
