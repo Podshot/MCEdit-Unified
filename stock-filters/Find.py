@@ -88,7 +88,7 @@ def nbt_ok_action():
     by = get_by()
     chunks = get_chunks()
     box = get_box()
-    if by not in ('TileEntities', 'Entities'):
+    if by not in ('TileEntity', 'Entity'):
         return
     if chunks:
         for chunk, slices, point in chunks:
@@ -97,7 +97,7 @@ def nbt_ok_action():
                     x = e["x"].value
                     y = e["y"].value
                     z = e["z"].value
-            elif by == 'Entities':
+            elif by == 'Entity':
                 for e in chunk.Entities:
                     x = e["Pos"][0].value
                     y = e["Pos"][1].value
