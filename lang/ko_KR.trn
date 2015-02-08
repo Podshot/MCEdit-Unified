@@ -247,7 +247,7 @@ t112 오른쪽으로 회전
 o113 Toggle View
 t113 카메라 변경
 o114 Goto Position
-t114 이동
+t114 위치 이동
 o115 View Distance
 t115 시야
 o116 Toggle Renderer
@@ -267,9 +267,9 @@ t122 거리 초기화
 o123 Export Selection
 t123 선택 영역 내보내기
 o124 Line Tool (Hold)
-t124 브러쉬 선 도구
+t124 선 도구 (꾹 누르기)
 o125 <Clone Tool>
-t125 <복제>
+t125 <복제 도구>
 o126 Rotate (Clone)
 t126 회전 (복제)
 o127 Roll (Clone)
@@ -279,17 +279,17 @@ t128 뒤집기
 o129 Mirror
 t129 대칭
 o130 <Brush Tool>
-t130 <브러쉬>
+t130 <브러쉬 도구>
 o131 Rotate (Brush)
 t131 회전 (브러쉬)
 o132 Roll (Brush)
 t132 굴리기 (브러쉬)
 o133 Increase Size
-t133 브러쉬 늘리기
+t133 크기 늘이기
 o134 Decrease Size
-t134 브러쉬 줄이기
+t134 크기 줄이기
 o135 <Fill and Replace Tool>
-t135 <채우기, 바꾸기>
+t135 <채우기, 바꾸기 도구>
 o136 Replace Shortcut
 t136 바꾸기 단축키
 o137 <Function>
@@ -319,17 +319,17 @@ t148 <고급 기능>
 o149 Debug Overlay
 t149 디버그 덮어쓰기
 o150 Show Block Info (Hold)
-t150 블럭 정보 보이기
+t150 블럭 정보 보이기 (꾹 누르기)
 o151 Pick Block (Hold + Click)
-t151 블럭 고르기
+t151 블럭 고르기 (꾹 누르고 클릭)
 o152 Select Chunks (Hold)
-t152 청크 선택
+t152 청크 선택 (꾹 누르기)
 o153 Deselect Chunks (Hold)
-t153 청크 선택 취소
+t153 청크 선택 취소 (꾹 누르기)
 o154 Snap Clone to Axis (Hold)
-t154 Snap Clone to Axis
+t154 Snap Clone to Axis (꾹 누르기)
 o155 Blocks-Only Modifier (Hold)
-t155 Blocks-Only Modifier
+t155 Blocks-Only Modifier (꾹 누르기)
 o156 Fast Increment Modifier
 t156 Fast Increment Modifier
 o157 Leaves are solid, like Minecraft's 'Fast' graphics
