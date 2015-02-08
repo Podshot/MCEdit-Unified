@@ -1526,3 +1526,29 @@ o728 <Miscellaneous>
 t728 
 o729 Take Screenshot
 t729 
+o730 Double-click to go to this item.
+t730 
+o731 Save and Restart
+t731 
+o732 From FTP Server
+t732 
+o733 <Chunk Control Tool>
+t733 
+o734 Select Chunks
+t734 
+o735 No matching blocks/tile entities found
+t735 
+o736 Choose a filter, then click Filter or press Enter to apply it.
+t736 
+o737 Click to set this item down.
+t737 
+o738 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
+t738 
+o739 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
+t739 
+o740 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
+t740 
+o741 Copying to clone buffer...
+t741 
+o742 Import a schematic or level...
+t742 
