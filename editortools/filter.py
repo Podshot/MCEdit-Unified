@@ -264,11 +264,15 @@ class FilterModuleOptions(Widget):
                 if len(optionType) >= 4:
                     if optionType[3]:
                         kw['load_text'] = optionType[3]
-                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True, **kw)
+                if hasattr(self.module, 'nbt_ok_action'):
+                    kw['ok_action'] = getattr(self.module, 'nbt_ok_action')
+                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True, copy_data=False, **kw)
                 self.module.set_tree(self.nbttree.tree)
                 for meth_name in dir(self.module):
                     if meth_name.startswith('nbttree_'):
                         setattr(self.nbttree.tree.treeRow, meth_name.split('nbttree_')[-1], getattr(self.module, meth_name))
+#                    elif meth_name.startswith('nbt_'):
+#                        setattr(self.nbttree, meth_name.split('nbt_')[-1], getattr(self.module, meth_name))
                 page.optionDict[optionName] = AttrRef(self, 'rebuildTabPage')
                 rows.append(self.nbttree)
                 self.nbttree.page = len(self.pgs)
@@ -585,6 +589,19 @@ class FilterOperation(Operation):
         
         if not self.panel._recording:
             self.filter.perform(self.level, BoundingBox(self.box), self.options)
+#            result = self.filter.perform(self.level, BoundingBox(self.box), self.options)
+#            print result
+#            if type(result) == dict:
+#                for k, v in result.items():
+##                    setattr(self.module, k, v)
+#                    if k == 'call':
+#                        for command in v:
+#                            if len(command) == 3:
+#                                command[0](*command[1], **command[2])
+#                            elif len(command) == 2:
+#                                command[0](*command[1])
+#                            else:
+#                                command[0]()
         else:
             self.panel.addMacroStep(name=self.panel.filterSelect.selectedChoice, inputs=self.options)
             self.wasMacroOperation = True

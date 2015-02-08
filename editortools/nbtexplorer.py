@@ -481,6 +481,7 @@ class NBTExplorerToolPanel(Panel):
         self.dontSaveRootTag = dontSaveRootTag
         self.displayed_item = None
         self.dataKeyName = dataKeyName
+        self.copy_data = kwargs.get('copy_data', True)
         self.init_data()
         btns = []
         if load_text:
@@ -539,7 +540,10 @@ class NBTExplorerToolPanel(Panel):
         if self.nbtObject == None and hasattr(self.editor.level, 'root_tag'):
             self.nbtObject = self.editor.level.root_tag
         if self.nbtObject:
-            data = copy.deepcopy(self.nbtObject[self.dataKeyName])
+            if self.copy_data:
+                data = copy.deepcopy(self.nbtObject[self.dataKeyName])
+            else:
+                data = self.nbtObject[self.dataKeyName]
         self.data = data
         self.setCompounds()
         if hasattr(self, 'tree'):

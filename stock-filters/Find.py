@@ -50,7 +50,10 @@ if newLayout:
                      )
                  )
 
-tree = None
+tree = None # the tree widget
+chunks = None # the chunks used to perform the search
+bbox = None # the bouding box to search in
+by = None # what is searched: Entities, TileEntities or blocs
 
 def set_tree(t):
     global tree
@@ -58,6 +61,7 @@ def set_tree(t):
     if hasattr(tree, 'treeRow'):
         t.treeRow.tooltipText = "Double-click to go to this item."
 
+# Use this method to overwrite the NBT tree default behaviour on mouse clicks
 def nbttree_mouse_down(e):
     if e.num_clicks > 1:
         if tree.selected_item and tree.selected_item[3].startswith('(') and tree.selected_item[3].endswith(')'):
@@ -69,6 +73,37 @@ def nbttree_mouse_down(e):
             newBox = BoundingBox(s, (1, 1, 1))
             editor.selectionTool.setSelection(newBox)
     tree.treeRow.__class__.mouse_down(tree.treeRow, e)
+
+def get_chunks():
+    return chunks
+
+def get_box():
+    return bbox
+
+def get_by():
+    return by
+
+# Use this method to overwrite the NBT tree 'OK' button default behaviour
+def nbt_ok_action():
+    by = get_by()
+    chunks = get_chunks()
+    box = get_box()
+    if by not in ('TileEntities', 'Entities'):
+        return
+    if chunks:
+        for chunk, slices, point in chunks:
+            if by == 'TileEntities':
+                for e in chunk.TileEntities:
+                    x = e["x"].value
+                    y = e["y"].value
+                    z = e["z"].value
+            elif by == 'Entities':
+                for e in chunk.Entities:
+                    x = e["Pos"][0].value
+                    y = e["Pos"][1].value
+                    z = e["Pos"][2].value
+            if (x, y, z) in box:
+                chunk.dirty = True
 
 try:
     search
@@ -155,6 +190,12 @@ def FindTag(nbtData, name, value, tagtype, caseSensitive):
 def perform(level, box, options):
     global search
 
+    # Don't forget to 'globalize' these...
+    global chunks
+    global bbox
+    global by
+    bbox = box
+
     by = options["Match by:"]
     matchtype = options["Match block type (for TileEntity searches):"]
     matchblock = options["Match block:"]
@@ -203,7 +244,8 @@ def perform(level, box, options):
                         if newLayout:
                             datas.append(data)
         elif by == "TileEntity":
-            for (chunk, _, _) in level.getChunkSlices(box):
+            chunks = []
+            for (chunk, slices, point) in level.getChunkSlices(box):
                 for e in chunk.TileEntities:
                     x = e["x"].value
                     y = e["y"].value
@@ -222,8 +264,10 @@ def perform(level, box, options):
                         search.append((x, y, z))
                         if newLayout:
                             datas.append(e)
+                        chunks.append([chunk, slices, point])
         else:
-            for (chunk, _, _) in level.getChunkSlices(box):
+            chunks = []
+            for (chunk, slices, point) in level.getChunkSlices(box):
                 for e in chunk.Entities:
                     x = e["Pos"][0].value
                     y = e["Pos"][1].value
@@ -233,6 +277,7 @@ def perform(level, box, options):
                             search.append((x, y, z))
                             if newLayout:
                                 datas.append(e)
+                            chunks.append([chunk, slices, point])
     if not search:
         alert("\nNo matching blocks/tile entities found")
     else:
@@ -266,3 +311,5 @@ def perform(level, box, options):
                 else:
                     alert("\nEnd of search.")
             #-#
+#    return {'chunks', chunks}
+#    return {'call': ((set_chunks, (chunks,)),)}
