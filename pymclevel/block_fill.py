@@ -17,11 +17,11 @@ def blockReplaceTable(blocksToReplace):
     return blocktable
 
 
-def fillBlocks(level, box, blockInfo, blocksToReplace=()):
-    return exhaust(level.fillBlocksIter(box, blockInfo, blocksToReplace))
+def fillBlocks(level, box, blockInfo, blocksToReplace=(), noData=False):
+    return exhaust(level.fillBlocksIter(box, blockInfo, blocksToReplace, noData=noData))
 
 
-def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
+def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
     if box is None:
         chunkIterator = level.getAllChunkSlices()
         box = level.bounds
@@ -86,7 +86,8 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
             # don't waste time relighting and copying if the mask is empty
             if blockCount:
                 blocks[:][mask] = blockInfo.ID
-                data[mask] = blockInfo.blockData
+                if not noData:
+                    data[mask] = blockInfo.blockData
             else:
                 skipped += 1
                 needsLighting = False
@@ -100,7 +101,8 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=()):
 
         else:
             blocks[:] = blockInfo.ID
-            data[:] = blockInfo.blockData
+            if not noData:
+                data[:] = blockInfo.blockData
             chunk.removeTileEntitiesInBox(box)
 
         if blocksList:
