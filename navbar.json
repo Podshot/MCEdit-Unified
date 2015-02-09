@@ -1,0 +1,28 @@
+{
+	"navbar": [
+		{
+			"displayname": "Home",
+			"url": "./"
+		},
+		{
+			"displayname": "About",
+			"url": "about.html"
+		},
+		{
+			"displayname": "System Requirements",
+			"url": "requirements.html"
+		},
+		{
+			"displayname": "Contributors",
+			"url": "contributors.html"
+		},
+		{
+			"displayname": "Tutorial(Coming Soon)",
+			"url": ""
+		},
+		{
+			"displayname": "Github",
+			"url": "http://github.com/Khroki/MCEdit-Unified/"
+		},
+	]
+}
