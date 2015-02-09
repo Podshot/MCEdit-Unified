@@ -587,28 +587,33 @@ class PlayerPositionTool(EditorTool):
         EditorTool.__init__(self, *args)
         self.reloadTextures()
 
-        textureVertices = numpy.array(
+        textureVerticesHead = numpy.array(
             (
+                #
                 24, 16,
                 24, 8,
                 32, 8,
                 32, 16,
 
+                #
                 8, 16,
                 8, 8,
                 16, 8,
                 16, 16,
 
+                #
                 24, 0,
                 16, 0,
                 16, 8,
                 24, 8,
 
+                #
                 16, 0,
                 8, 0,
                 8, 8,
                 16, 8,
 
+                #
                 8, 8,
                 0, 8,
                 0, 16,
@@ -620,13 +625,52 @@ class PlayerPositionTool(EditorTool):
                 16, 8,
 
             ), dtype='f4')
+        
+        textureVerticesHat = numpy.array(
+            (
+                56, 16,
+                56, 8,
+                64, 8,
+                64, 16,
+                
+                40, 16,
+                40, 8,
+                48, 8,
+                48, 16,
+                
+                56, 0,
+                48, 0,
+                48, 8,
+                56, 8,
+                
+                48, 0,
+                40, 0,
+                40, 8,
+                48, 8,
+                
+                40, 8,
+                32, 8,
+                32, 16,
+                40, 16,
+                
+                48, 16,
+                56, 16,
+                56, 8,
+                48, 8,
+                
+            ), dtype='f4')
+        
 
-        textureVertices.shape = (24, 2)
+        textureVerticesHead.shape = (24, 2)
+        textureVerticesHat.shape = (24, 2)
 
-        textureVertices *= 4
-        textureVertices[:, 1] *= 2
+        textureVerticesHead *= 4
+        textureVerticesHead[:, 1] *= 2
+        
+        textureVerticesHat *= 4
+        textureVerticesHat[:, 1] *= 2
 
-        self.texVerts = textureVertices
+        self.texVerts = (textureVerticesHead, textureVerticesHat) 
 
         self.playerPos = {}
         self.playerTexture = {}
@@ -726,13 +770,22 @@ class PlayerPositionTool(EditorTool):
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
         box = FloatBox(origin, size)
+        
+        hat_origin = (x, y, z)
+        hat_size = (0.7, 0.7, 0.7)
+        hat_box = FloatBox(hat_origin, hat_size)
 
         if realCoords is not None and self.playerPos[realCoords] != "Player":
             drawCube(box,
-                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts)
+                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts[0])
+            GL.glEnable(GL.GL_BLEND)
+            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+            drawCube(hat_box,
+                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts[1])
+            GL.glDisable(GL.GL_BLEND)
         else:
             drawCube(box,
-                     texture=self.charTex, textureVertices=self.texVerts)
+                     texture=self.charTex, textureVertices=self.texVerts[0])
         GL.glDisable(GL.GL_CULL_FACE)
 
     #@property
