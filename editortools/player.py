@@ -769,7 +769,7 @@ class PlayerPositionTool(EditorTool):
         size = (0.5, 0.5, 0.5)
         box = FloatBox(origin, size)
         
-        hat_origin = (x - 0.27, y - 0.27, z - 0.27)
+        hat_origin = (x - 0.275, y - 0.275, z - 0.275)
         hat_size = (0.55, 0.55, 0.55)
         hat_box = FloatBox(hat_origin, hat_size)
 

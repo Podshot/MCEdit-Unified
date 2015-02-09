@@ -8,6 +8,7 @@ from pymclevel.mclevelbase import PlayerNotFound
 import urllib
 from PIL import Image
 from urllib2 import HTTPError
+import atexit
 
 #def getPlayerSkinURL(uuid):
 #    try:
@@ -196,7 +197,7 @@ class __PlayerCache:
                 if p["Playername"] == playername and p["WasSuccessful"]:
                     return p["UUID (Separator)"]
             result = self.getPlayerFromPlayername(playername, forceNetwork=True)
-            if result == self.FAILED:
+            if result == playername:
                 player = {"Playername":playername,"UUID (Separator)":"<Unknown>","UUID (No Separator)":"<Unknown>","Timestamp":"<Invalid>","WasSuccessful":False}
                 self._playerCacheList.append(player)
                 return playername
@@ -230,6 +231,15 @@ class __PlayerCache:
                   "WasSuccessful":True
                   }
         pass
+    
+    def cleanup(self):
+        remove = []
+        for player in self._playerCacheList:
+            if not player["WasSuccessful"]:
+                remove.append(player)
+        for toRemove in remove:
+            self._playerCacheList.remove(toRemove)
+        self._save()
                 
 playercache = __PlayerCache()
             
@@ -412,3 +422,17 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
         print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
         pass
     return toReturn
+
+def _cleanup():
+    for image_file in os.listdir("player-skins"):
+        fp = None
+        try:
+            fp = open(os.path.join("player-skins", image_file), 'rb')
+            Image.open(fp)
+        except IOError:
+            fp.close()
+            os.remove(os.path.join("player-skins", image_file))
+    playercache.cleanup()
+    
+atexit.register(_cleanup)
+
