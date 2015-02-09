@@ -1669,7 +1669,7 @@ t781 {0:n} Blöcke
 o782 Shortcut: R
 t782 Tastenkürzel: R
 o783 REPLACING - 
-t783 ERSETZEN - 
+t783 ERSETZE - 
 o784 Copying chunk %s...
 t784 Kopiert Chunk %s...
 o785 Shortcut: X
@@ -1681,11 +1681,11 @@ t787 Fortfahren
 o788 Canceled
 t788 Abgebrochen
 o789 DELETING - 
-t789 LÖSCHT - 
+t789 LÖSCHE - 
 o790 Deleting {0} blocks
 t790 Löscht {0} Blöcke
 o791 WORKING - 
-t791 ARBEITET - 
+t791 ARBEITE - 
 o792 Removing Tile Ticks...
 t792 Entfernt Tile Ticks...
 o793 Removing entities...
@@ -1701,7 +1701,7 @@ t797 Wirklich diese Chunks löschen? Das kann nicht rückgängig gemacht werden.
 o798 Save these chunks and remove the rest? This cannot be undone.
 t798 Diese Chunks speichern und die Restlichen entfernen? Das kann nicht rückgängig gemacht werden.
 o799 Lighting {0} chunks...
-t799 Erleuchtet {0} Chunks...
+t799 Erleuchte {0} Chunks...
 o800 Folder
 t800 Ordner
 o801 Create chunks using the settings above? This cannot be undone.
