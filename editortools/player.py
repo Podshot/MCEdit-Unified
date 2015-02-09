@@ -764,8 +764,6 @@ class PlayerPositionTool(EditorTool):
         GL.glDisable(GL.GL_DEPTH_TEST)
 
     def drawCharacterHead(self, x, y, z, realCoords=None):
-        # FIXME: Top head texture is rotated incorrectly
-        # TODO: Possible add hat layer support
         GL.glEnable(GL.GL_CULL_FACE)
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
