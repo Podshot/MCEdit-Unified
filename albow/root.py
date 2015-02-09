@@ -120,6 +120,7 @@ class RootWidget(Widget):
         self.notMove = False
         self.nudge = None
         self.testTime = None
+        self.nudgeDirection = None
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -309,6 +310,12 @@ class RootWidget(Widget):
                             set_modifier(key, False)
                             add_modifiers(event)
                             self.bonus_draw_time = 0
+                            if self.nudgeDirection != None:
+                                keyname = self.getKey(movement=True, keyname=pygame.key.name(key))
+                                for i, key in enumerate(self.editor.movements):
+                                    if keyname == key and i == self.nudgeDirection:
+                                        self.nudgeDirection = None
+                                        self.testTime = None
 
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
@@ -401,7 +408,7 @@ class RootWidget(Widget):
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
-        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds = 0.35)):
+        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds = 0.325)):
             self.testTime = datetime.now()
             if keyname == self.editor.movements[4]:
                 self.nudge.nudge(Vector(0, 1, 0))
@@ -427,6 +434,10 @@ class RootWidget(Widget):
                 self.nudge.nudge(Vector(*left))
             if keyname == self.editor.movements[1]:
                 self.nudge.nudge(Vector(*right))
+
+            for i, key in enumerate(self.editor.movements):
+                if key == keyname:
+                    self.nudgeDirection = i
 
     def changeCameraKeys(self, keyNum):
         if self.editor.level is not None and not self.notMove:

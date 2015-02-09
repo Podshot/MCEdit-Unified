@@ -17,7 +17,6 @@ class NudgeButton(GLBackground):
         nudgeLabel = Label("Nudge", margin=8)
 
         self.editor = editor
-        self.count = 0
         self.add(nudgeLabel)
         self.shrink_wrap()
         self.root = self.get_root()
@@ -36,9 +35,6 @@ class NudgeButton(GLBackground):
         self.focus()
         if event.button == 3 and config.keys.fastNudge.get() == "None":
             self.editor.rightClickNudge = True
-            self.count = 1
-        if event.button == 1:
-            self.count = 1
 
     def mouse_up(self, event):
         self.root.notMove = False
@@ -46,10 +42,8 @@ class NudgeButton(GLBackground):
         if event.button == 3 and config.keys.fastNudge.get() == "None":
             self.editor.rightClickNudge = False
             self.editor.turn_off_focus()
-            self.count = 0
         if event.button == 1:
             self.editor.turn_off_focus()
-            self.count = 0
 
     def key_down(self, evt):
         if not pygame.key.get_focused():
