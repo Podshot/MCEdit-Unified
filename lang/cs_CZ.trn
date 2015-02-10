@@ -1484,137 +1484,139 @@ o710 Are you sure you want to delete the default player?
 t710 
 o711 Double-click or use the button below to edit the NBT Data.
 t711 
-o712 Upload to FTP Server
+o712 Go Back
 t712 
-o713 There are {0} unsaved changes.
+o713 Upload to FTP Server
 t713 
-o714 Save and Quit
+o714 There are {0} unsaved changes.
 t714 
-o715 Refresh All Player Names
+o715 Save and Quit
 t715 
-o716 Ticks mode accouplement
+o716 Refresh All Player Names
 t716 
-o717 Results
+o717 Ticks mode accouplement
 t717 
-o718 Smooth - 3D
+o718 Results
 t718 
-o719 Smoothing
+o719 Smooth - 3D
 t719 
-o720 Made by Sethbling
+o720 Smoothing
 t720 
-o721 NBT Data
+o721 Made by Sethbling
 t721 
-o722 Edit NBT Data
+o722 NBT Data
 t722 
-o723 Open the NBT Explorer to edit player's attributes and inventory
+o723 Edit NBT Data
 t723 
-o724 Not yet implemented.
-Use the NBT Explorer to edit this player.
+o724 Open the NBT Explorer to edit player's attributes and inventory
 t724 
-o725 Error while getting player file.
-%s not found.
+o725 Not yet implemented.
+Use the NBT Explorer to edit this player.
 t725 
-o726 Spawn point fixed. Changes: 
-
-
+o726 Error while getting player file.
+%s not found.
 t726 
-o727 <Selection>
+o727 Spawn point fixed. Changes: 
+
+
 t727 
-o728 <Miscellaneous>
+o728 <Selection>
 t728 
-o729 Take Screenshot
+o729 <Miscellaneous>
 t729 
-o730 Double-click to go to this item.
+o730 Take Screenshot
 t730 
-o731 Save and Restart
+o731 Double-click to go to this item.
 t731 
-o732 From FTP Server
+o732 Save and Restart
 t732 
-o733 <Chunk Control Tool>
+o733 From FTP Server
 t733 
-o734 Select Chunks
+o734 <Chunk Control Tool>
 t734 
-o735 No matching blocks/tile entities found
+o735 Select Chunks
 t735 
-o736 Choose a filter, then click filter or press Enter to apply it.
+o736 No matching blocks/tile entities found
 t736 
-o737 Click to set this item down.
+o737 Choose a filter, then click filter or press Enter to apply it.
 t737 
-o738 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
+o738 Click to set this item down.
 t738 
-o739 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
+o739 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
 t739 
-o740 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
+o740 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
 t740 
-o741 Copying to clone buffer...
+o741 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
 t741 
-o742 Import a schematic or level...
+o742 Copying to clone buffer...
 t742 
-o743 Could not find the Minecraft saves directory!
+o743 Import a schematic or level...
+t743 
+o744 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t743 
-o744 I don't know how to open {0}:
+t744 
+o745 I don't know how to open {0}:
 
 {1!r}
-t744 
-o745 Checking for server updates...
 t745 
-o746 Time left: {0}
+o746 Checking for server updates...
 t746 
-o747 Untitled World
+o747 Time left: {0}
 t747 
-o748 Name this new world.
+o748 Untitled World
 t748 
-o749 Minecraft World *.*  
+o749 Name this new world.
 t749 
-o750 Generating chunks...
+o750 Minecraft World *.*  
 t750 
-o751 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+o751 Generating chunks...
 t751 
-o752 Analyzing {0} blocks...
+o752 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
 t752 
-o753 Save to file...
+o753 Analyzing {0} blocks...
 t753 
-o754 Fill with Air
+o754 Save to file...
 t754 
-o755 Delete Chunks
+o755 Fill with Air
 t755 
-o756 Recording undo...
+o756 Delete Chunks
 t756 
-o757 Replacing blocks...
+o757 Recording undo...
 t757 
-o758 REPLACING - 
+o758 Replacing blocks...
 t758 
-o759 Copying chunk %s...
+o759 REPLACING - 
 t759 
-o760 Continue with undo disabled?
+o760 Copying chunk %s...
 t760 
-o761 Continue
+o761 Continue with undo disabled?
 t761 
-o762 Canceled
+o762 Continue
 t762 
-o763 DELETING - 
+o763 Canceled
 t763 
-o764 Deleting {0} blocks
+o764 DELETING - 
 t764 
-o765 WORKING - 
+o765 Deleting {0} blocks
 t765 
-o766 Removing Tile Ticks...
+o766 WORKING - 
 t766 
-o767 Removing entities...
+o767 Removing Tile Ticks...
 t767 
-o768 Copying {0:n} blocks...
+o768 Removing entities...
 t768 
-o769 Undoing...
+o769 Copying {0:n} blocks...
 t769 
-o770 UNDOING - 
+o770 Undoing...
 t770 
-o771 Really delete these chunks? This cannot be undone.
+o771 UNDOING - 
 t771 
-o772 Save these chunks and remove the rest? This cannot be undone.
+o772 Really delete these chunks? This cannot be undone.
 t772 
-o773 Lighting {0} chunks...
+o773 Save these chunks and remove the rest? This cannot be undone.
 t773 
-o774 Create chunks using the settings above? This cannot be undone.
+o774 Lighting {0} chunks...
 t774 
+o775 Create chunks using the settings above? This cannot be undone.
+t775 
