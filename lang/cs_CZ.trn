@@ -1538,7 +1538,7 @@ o735 Select Chunks
 t735 
 o736 No matching blocks/tile entities found
 t736 
-o737 Choose a filter, then click filter or press Enter to apply it.
+o737 Choose a filter, then click Filter or press Enter to apply it.
 t737 
 o738 Click to set this item down.
 t738 
@@ -1620,3 +1620,11 @@ o774 Lighting {0} chunks...
 t774 
 o775 Create chunks using the settings above? This cannot be undone.
 t775 
+o776 Add
+t776 
+o777 New child
+t777 
+o778 Rename
+t778 
+o779 Paste as child
+t779 

@@ -1570,8 +1570,8 @@ o735 Select Chunks
 t735 Sélect. chunks
 o736 No matching blocks/tile entities found
 t736 Aucune correspondance trouvée
-o737 Choose a filter, then click filter or press Enter to apply it.
-t737 
+o737 Choose a filter, then click Filter or press Enter to apply it.
+t737 Choisissez un filtre, puis cliquez Filtrer ou appuyez sur entrée pour l'appiquer.
 o738 Click to set this item down.
 t738 Cliquez pour placer cet objet.
 o739 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
@@ -1583,72 +1583,84 @@ t741 La sélection excède {0:n} blocs. Augmentez la taille du tampon dans les r
 o742 Copying to clone buffer...
 t742 Copie ver le tampon de clonage...
 o743 Import a schematic or level...
-t743 Importer un schematic ou un niveau..
+t743 Importer un schematic ou un niveau...
 o744 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t744 
+t744 Impossible de trouver le dossier de sauvegardes de Minecraft !
+
+({0} n'as pas été trouvé ou n'est pas un dossier)
 o745 I don't know how to open {0}:
 
 {1!r}
-t745 
+t745 Je ne sais pas comment ouvrir {0} :
+
+{1!r}
 o746 Checking for server updates...
-t746 
+t746 Vérification MàJ serveur...
 o747 Time left: {0}
-t747 
+t747 Temps restant : {0}
 o748 Untitled World
-t748 
+t748 Monde sans nom
 o749 Name this new world.
-t749 
+t749 Nommez ce nouveau monde.
 o750 Minecraft World *.*  
-t750 
+t750 Mondes Minecraft *.*  
 o751 Generating chunks...
-t751 
+t751 Génération des chunks...
 o752 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t752 
+t752 Monde créé. Pour l'étendre, explorez-le dans Minecraft ou utilisez l'Outil de Contrôle de chunk pour ajouter ou supprimer des chunks.
 o753 Analyzing {0} blocks...
-t753 
+t753 Analyse de {0} blocs...
 o754 Save to file...
-t754 
+t754 Sauver vers fichier...
 o755 Fill with Air
-t755 
+t755 Remplir aved de l'air
 o756 Delete Chunks
-t756 
+t756 Supprimer chunks
 o757 Recording undo...
-t757 
+t757 Enreg. annulation...
 o758 Replacing blocks...
-t758 
+t758 Remplacement blocs...
 o759 REPLACING - 
-t759 
+t759 REMPLACEMENT - 
 o760 Copying chunk %s...
-t760 
+t760 Copie du chunks %s...
 o761 Continue with undo disabled?
-t761 
+t761 Continuer avec l'annulation désactivée ?
 o762 Continue
-t762 
+t762 Continuer
 o763 Canceled
-t763 
+t763 Annulé(e)
 o764 DELETING - 
-t764 
+t764 SUPPRESSION - 
 o765 Deleting {0} blocks
-t765 
+t765 Suppression de {0} blocs
 o766 WORKING - 
-t766 
+t766 EN COURS - 
 o767 Removing Tile Ticks...
-t767 
+t767 Suppression des Tile Ticks...
 o768 Removing entities...
-t768 
+t768 Suppression des entités...
 o769 Copying {0:n} blocks...
-t769 
+t769 Copie de {0:n} blocs...
 o770 Undoing...
-t770 
+t770 Annulation...
 o771 UNDOING - 
-t771 
+t771 ANNULATION - 
 o772 Really delete these chunks? This cannot be undone.
-t772 
+t772 Vraiment supprimer ces chunks ? Cela ne peut être annulé.
 o773 Save these chunks and remove the rest? This cannot be undone.
-t773 
+t773 Sauver ces chunks et supprimer les autres ? Cela ne peut être annulé.
 o774 Lighting {0} chunks...
-t774 
+t774 Éclairage de {0} chunks...
 o775 Create chunks using the settings above? This cannot be undone.
-t775 
+t775 Créer les chunks avec le réglages ci-dessus ? Cela ne paut être annulé.
+o776 Add
+t776 Ajouter
+o777 New child
+t777 Nouvel enfant
+o778 Rename
+t778 Renommer
+o779 Paste as child
+t779 Coller enfant
