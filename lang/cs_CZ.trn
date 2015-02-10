@@ -1552,3 +1552,125 @@ o741 Copying to clone buffer...
 t741 
 o742 Import a schematic or level...
 t742 
+o743 Grass
+t743 
+o744 Ctrl-A
+t744 
+o745 Ctrl-C
+t745 
+o746 Ctrl-D
+t746 
+o747 Ctrl-E
+t747 
+o748 Ctrl-F
+t748 
+o749 Ctrl-G
+t749 
+o750 Ctrl-I
+t750 
+o751 Ctrl-L
+t751 
+o752 Ctrl-M
+t752 
+o753 Ctrl-N
+t753 
+o754 Ctrl-O
+t754 
+o755 Ctrl-Q
+t755 
+o756 Ctrl-R
+t756 
+o757 Ctrl-S
+t757 
+o758 Ctrl-V
+t758 
+o759 Ctrl-W
+t759 
+o760 Ctrl-X
+t760 
+o761 Ctrl-Y
+t761 
+o762 Ctrl-Z
+t762 
+o763 Shift
+t763 
+o764 Could not find the Minecraft saves directory!
+
+({0} was not found or is not a directory)
+t764 
+o765 I don't know how to open {0}:
+
+{1!r}
+t765 
+o766 Checking for server updates...
+t766 
+o767 Time left: {0}
+t767 
+o768 Untitled World
+t768 
+o769 Name this new world.
+t769 
+o770 Minecraft World *.*  
+t770 
+o771 Generating chunks...
+t771 
+o772 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+t772 
+o773 Analyzing {0} blocks...
+t773 
+o774 Analysie
+t774 
+o775 Save to file...
+t775 
+o776 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
+t776
+o777 Fill with Air
+t777 
+o778 Delete Chunks
+t778 
+o779 Recording undo...
+t779 
+o780 Replacing blocks...
+t780 
+o781 {0:n} blocks
+t781 
+o782 Shortcut: R
+t782 
+o783 REPLACING - 
+t783 
+o784 Copying chunk %s...
+t784 
+o785 Shortcut: X
+t785 
+o786 Continue with undo disabled?
+t786 
+o787 Continue
+t787 
+o788 Canceled
+t788 
+o789 DELETING - 
+t789 
+o790 Deleting {0} blocks
+t790 
+o791 WORKING - 
+t791 
+o792 Removing Tile Ticks...
+t792 
+o793 Removing entities...
+t793 
+o794 Copying {0:n} blocks...
+t794 
+o795 Undoing...
+t795 
+o796 UNDOING - 
+t796 
+o797 Really delete these chunks? This cannot be undone.
+t797 
+o798 Save these chunks and remove the rest? This cannot be undone.
+t798 
+o799 Lighting {0} chunks...
+t799 
+o800 Folder
+t800 
+o801 Create chunks using the settings above? This cannot be undone.
+t801 
