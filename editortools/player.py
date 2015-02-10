@@ -388,7 +388,8 @@ class PlayerPositionPanel(Panel):
         tab_height = self.pages.tab_height
 
         max_height = tab_height + self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height - self.pages.margin * 2
-        max_height = min(max_height, 500)
+        #-# Uncomment the following line to have a maximum height for this panel.
+        # max_height = min(max_height, 500)
 
         self.editNBTDataButton = Button("Edit NBT Data", action=self.editNBTData, tooltipText="Open the NBT Explorer to edit player's attributes and inventory")
         addButton = Button("Add Player", action=self.tool.addPlayer)
@@ -402,9 +403,11 @@ class PlayerPositionPanel(Panel):
         btns = Column([self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin], margin=0, spacing=2)
         h = max_height - btns.height - self.pages.margin * 2 - 2 - self.font.size(" ")[1] * 2
 
-        tableview = TableView(nrows=6, header_height=self.font.size(" ")[1], columns=[
-            TableColumn("Player Name(s):", 200),
-        ], height=h)
+        tableview = TableView(nrows=(h - (self.font.size(" ")[1] * 2.5)) / self.font.size(" ")[1],
+                              header_height=self.font.size(" ")[1],
+                              columns=[TableColumn("Player Name(s):", 200),],
+                              height=h,
+                             )
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
         tableview.row_data = lambda i: (players[i],)
