@@ -589,13 +589,13 @@ class PlayerPositionTool(EditorTool):
 
         textureVerticesHead = numpy.array(
             (
-                #
-                24, 16,
-                24, 8,
-                32, 8,
-                32, 16,
+                # Backside of Head
+                24, 16, # Bottom Left
+                24, 8, # Top Left
+                32, 8, # Top Right
+                32, 16, # Bottom Right
 
-                #
+                # Front of Head
                 8, 16,
                 8, 8,
                 16, 8,
@@ -633,10 +633,10 @@ class PlayerPositionTool(EditorTool):
                 64, 8,
                 64, 16,
                 
-                40, 16,
-                40, 8,
-                48, 8,
                 48, 16,
+                48, 8,
+                40, 8,
+                40, 16,
                 
                 56, 0,
                 48, 0,
