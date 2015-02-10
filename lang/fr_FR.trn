@@ -1585,68 +1585,72 @@ t742 Importer un schematic ou un niveau..
 o743 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t743 
+t743 Impossible de trouver le dossier de sauvegardes de Minecraft !
+
+({0} n'as pas été trouvé ou n'est pas un dossier)
 o744 I don't know how to open {0}:
 
 {1!r}
-t744 
+t744 Je ne sais pas comment ouvrir {0} :
+
+{1!r}
 o745 Checking for server updates...
-t745 
+t745 Vérification MàJ serveur...
 o746 Time left: {0}
-t746 
+t746 Temps restant : {0}
 o747 Untitled World
-t747 
+t747 Monde sans nom
 o748 Name this new world.
-t748 
+t748 Nommez ce nouveau monde.
 o749 Minecraft World *.*  
-t749 
+t749 Mondes Minecraft *.*  
 o750 Generating chunks...
-t750 
+t750 Génération des chunks...
 o751 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t751 
+t751 Monde créé. Pour l'étendre, explorez-le dans Minecraft ou utilisez l'Outil de Contrôle de chunk pour ajouter ou supprimer des chunks.
 o752 Analyzing {0} blocks...
-t752 
+t752 Analyse de {0} blocs...
 o753 Save to file...
-t753 
+t753 Sauver vers fichier...
 o754 Fill with Air
-t754 
+t754 Remplir aved de l'air
 o755 Delete Chunks
-t755 
+t755 Supprimer chunks
 o756 Recording undo...
-t756 
+t756 Enreg. annulation...
 o757 Replacing blocks...
-t757 
+t757 Remplacement blocs...
 o758 REPLACING - 
-t758 
+t758 REMPLACEMENT - 
 o759 Copying chunk %s...
-t759 
+t759 Copie du chunks %s...
 o760 Continue with undo disabled?
-t760 
+t760 Continuer avec l'annulation désactivée ?
 o761 Continue
-t761 
+t761 Continuer
 o762 Canceled
-t762 
+t762 Annulé(e)
 o763 DELETING - 
-t763 
+t763 SUPPRESSION - 
 o764 Deleting {0} blocks
-t764 
+t764 Suppression de {0} blocs
 o765 WORKING - 
-t765 
+t765 EN COURS - 
 o766 Removing Tile Ticks...
-t766 
+t766 Suppression des Tile Ticks...
 o767 Removing entities...
-t767 
+t767 Suppression des entités...
 o768 Copying {0:n} blocks...
-t768 
+t768 Copie de {0:n} blocs...
 o769 Undoing...
-t769 
+t769 Annulation...
 o770 UNDOING - 
-t770 
+t770 ANNULATION - 
 o771 Really delete these chunks? This cannot be undone.
-t771 
+t771 Vraiment supprimer ces chunks ? Cela ne peut être annulé.
 o772 Save these chunks and remove the rest? This cannot be undone.
-t772 
+t772 Sauver ces chunks et supprimer les autres ? Cela ne peut être annulé.
 o773 Lighting {0} chunks...
-t773 
+t773 Éclairage de {0} chunks...
 o774 Create chunks using the settings above? This cannot be undone.
-t774 
+t774 Créer les chunks avec le réglages ci-dessus ? Cela ne paut être annulé.
