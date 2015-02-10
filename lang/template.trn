@@ -1474,8 +1474,6 @@ o710 Are you sure you want to delete the default player?
 t710 
 o711 Double-click or use the button below to edit the NBT Data.
 t711 
-o712 Go Back
-t712 
 o712 Upload to FTP Server
 t712 
 o713 There are {0} unsaved changes.
@@ -1542,125 +1540,71 @@ o741 Copying to clone buffer...
 t741 
 o742 Import a schematic or level...
 t742 
-o743 Grass
-t743 
-o744 Ctrl-A
-t744 
-o745 Ctrl-C
-t745 
-o746 Ctrl-D
-t746 
-o747 Ctrl-E
-t747 
-o748 Ctrl-F
-t748 
-o749 Ctrl-G
-t749 
-o750 Ctrl-I
-t750 
-o751 Ctrl-L
-t751 
-o752 Ctrl-M
-t752 
-o753 Ctrl-N
-t753 
-o754 Ctrl-O
-t754 
-o755 Ctrl-Q
-t755 
-o756 Ctrl-R
-t756 
-o757 Ctrl-S
-t757 
-o758 Ctrl-V
-t758 
-o759 Ctrl-W
-t759 
-o760 Ctrl-X
-t760 
-o761 Ctrl-Y
-t761 
-o762 Ctrl-Z
-t762 
-o763 Shift
-t763 
-o764 Could not find the Minecraft saves directory!
+o743 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t764 
-o765 I don't know how to open {0}:
+t743 
+o744 I don't know how to open {0}:
 
 {1!r}
+t744 
+o745 Checking for server updates...
+t745 
+o746 Time left: {0}
+t746 
+o747 Untitled World
+t747 
+o748 Name this new world.
+t748 
+o749 Minecraft World *.*  
+t749 
+o750 Generating chunks...
+t750 
+o751 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+t751 
+o752 Analyzing {0} blocks...
+t752 
+o753 Save to file...
+t753 
+o754 Fill with Air
+t754 
+o755 Delete Chunks
+t755 
+o756 Recording undo...
+t756 
+o757 Replacing blocks...
+t757 
+o758 REPLACING - 
+t758 
+o759 Copying chunk %s...
+t759 
+o760 Continue with undo disabled?
+t760 
+o761 Continue
+t761 
+o762 Canceled
+t762 
+o763 DELETING - 
+t763 
+o764 Deleting {0} blocks
+t764 
+o765 WORKING - 
 t765 
-o766 Checking for server updates...
+o766 Removing Tile Ticks...
 t766 
-o767 Time left: {0}
+o767 Removing entities...
 t767 
-o768 Untitled World
+o768 Copying {0:n} blocks...
 t768 
-o769 Name this new world.
+o769 Undoing...
 t769 
-o770 Minecraft World *.*  
+o770 UNDOING - 
 t770 
-o771 Generating chunks...
+o771 Really delete these chunks? This cannot be undone.
 t771 
-o772 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+o772 Save these chunks and remove the rest? This cannot be undone.
 t772 
-o773 Analyzing {0} blocks...
+o773 Lighting {0} chunks...
 t773 
-o774 Analysie
+o774 Create chunks using the settings above? This cannot be undone.
 t774 
-o775 Save to file...
-t775 
-o776 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t776
-o777 Fill with Air
-t777 
-o778 Delete Chunks
-t778 
-o779 Recording undo...
-t779 
-o780 Replacing blocks...
-t780 
-o781 {0:n} blocks
-t781 
-o782 Shortcut: R
-t782 
-o783 REPLACING - 
-t783 
-o784 Copying chunk %s...
-t784 
-o785 Shortcut: X
-t785 
-o786 Continue with undo disabled?
-t786 
-o787 Continue
-t787 
-o788 Canceled
-t788 
-o789 DELETING - 
-t789 
-o790 Deleting {0} blocks
-t790 
-o791 WORKING - 
-t791 
-o792 Removing Tile Ticks...
-t792 
-o793 Removing entities...
-t793 
-o794 Copying {0:n} blocks...
-t794 
-o795 Undoing...
-t795 
-o796 UNDOING - 
-t796 
-o797 Really delete these chunks? This cannot be undone.
-t797 
-o798 Save these chunks and remove the rest? This cannot be undone.
-t798 
-o799 Lighting {0} chunks...
-t799 
-o800 Folder
-t800 
-o801 Create chunks using the settings above? This cannot be undone.
-t801 

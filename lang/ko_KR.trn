@@ -20,18 +20,18 @@ o0 Autobrake
 t0 자동 멈춤
 o1 Swap Axes Looking Down
 t1 아래를 볼 때 방향 반전
-o2 Camera Acceleration:
-t2 카메라 가속:
-o3 Camera Drag:
-t3 카메라 드래그:
-o4 Camera Max Speed:
-t4 카메라 최고 속도:
-o5 Camera Braking Speed:
-t5 카메라 멈추는 속도:
-o6 Mouse Speed:
-t6 마우스 감도:
-o7 Undo Limit:
-t7 실행 취소 제한:
+o2 Camera Acceleration: 
+t2 
+o3 Camera Drag: 
+t3 
+o4 Camera Max Speed: 
+t4 
+o5 Camera Braking Speed: 
+t5 
+o6 Mouse Speed: 
+t6 
+o7 Undo Limit: 
+t7 
 o8 Invert Mouse
 t8 마우스 반전
 o9 Low Detail Height
@@ -62,12 +62,12 @@ o21 Options
 t21 설정
 o22 OK
 t22 확인
-o23 Field of View:
-t23 시야 범위:
-o24 Target FPS:
-t24 최대 프레임:
-o25 Vertex Buffer Limit (MB):
-t25 버텍스 버퍼 제한 (MB):
+o23 Field of View: 
+t23 
+o24 Target FPS: 
+t24 
+o25 Vertex Buffer Limit (MB): 
+t25 
 o26 Fast Leaves
 t26 빠른 나뭇잎
 o27 Rough Graphics
@@ -94,8 +94,8 @@ o37 Numpad
 t37 숫자패드
 o38 WASD Old
 t38 WASD 옛날
-o39 Presets:
-t39 기본 설정:
+o39 Presets: 
+t39 
 o40 MCEdit
 t40 MCEdit
 o41 <
@@ -130,8 +130,8 @@ o55 Grey
 t55 회색
 o56 Black
 t56 검은색
-o57 Color:
-t57 색상:
+o57 Color: 
+t57 
 o58 Show Previous Selection
 t58 최근 선택 영역 보기
 o59 R:
@@ -146,8 +146,8 @@ o63 Place Immediately
 t63 바로 설치하기
 o64 Clone Options
 t64 복제 설정
-o65 Alpha:
-t65 투명도:
+o65 Alpha: 
+t65 
 o66 Choose Block Immediately
 t66 블럭 바로 선택하기
 o67 Reset Distance When Brush Size Changes
@@ -213,9 +213,9 @@ t96 마우스휠로 도구 거리를 변경하세요.
 o97 Hold {0} for details
 t97 자세한 것은 {0}를 꾹 눌러서 보세요.
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
-If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
-t98 경고: 한 번에 하나의 프로그램에서만 월드를 여세요. 마인크래프트와 MCEdit에서 동시에 월드를 열면 변경 사항을 잃고 세이브파일을 손상시킬 수 있습니다.
-마인크래프트 1.3 이하 버전을 쓴다면 마인크래프트를 완전히 닫고 MCEdit을 사용해야 합니다.
+
+ If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
+t98 
 o99 Don't remind me again.
 t99 다시 보지 않기
 o100 <Movement>
@@ -348,8 +348,8 @@ o163 Change the direction of the Forward and Backward keys when looking down
 t163 아래를 볼 때 앞과 뒤 키의 방향을 반전합니다.
 o164 When you are this far above the top of the world, move fast and use low-detail mode.
 t164 이 높이보다 위에 있을 때, 카메라가 빨리 움직이고 디테일이 낮아집니다.
-o165 Amount of memory used for temporary storage. When more than this is needed, the disk is used instead.
-t165 임시저장에 사용되는 메모리의 크기. 이것보다 많은 양이 필요하면 디스크가 사용됩니다.
+o165 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
+t165 
 o166 Change the position of the mobs in spawners while nudging.
 t166 움직일 때 스포너의 몹들도 함께 움직입니다.
 o167 Change static coordinates in command blocks while nudging.
@@ -376,10 +376,10 @@ o177 Restart
 t177 재시작
 o178 Later
 t178 나중에
-o179 Loading
-t179 로딩중
-o180 - MCEdit
-t180 - MCEdit
+o179 Loading 
+t179 
+o180  - MCEdit 
+t180 
 o181 Overworld
 t181 오버월드
 o182 The End
@@ -414,8 +414,8 @@ o196 Release the mouse button to finish the selection
 t196 마우스 버튼을 놓아서 선택을 완료하세요.
 o197 Nudge
 t197 이동
-o198 Click and hold. While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
-t198 클릭하고 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 블럭씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
+o198 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+t198 
 o199 {0:n} blocks
 t199 {0:n} 블럭
 o200 Delete Entities
@@ -510,8 +510,8 @@ o241 Mode:
 t241 모드:
 o242 Brush:
 t242 브러쉬:
-o243 Chance:
-t243 확률:
+o243 Chance: 
+t243 
 o244 Hollow
 t244 빈 내부
 o245 Fill Air
@@ -526,14 +526,14 @@ o249 Shortcut: Alt-1
 t249 단축키: Alt-1
 o250 ---
 t250 ---
-o251 Weight 1:
-t251 Weight 1:
-o252 Weight 2:
-t252 Weight 2:
-o253 Weight 3:
-t253 Weight 3:
-o254 Weight 4:
-t254 Weight 4:
+o251 Weight 1: 
+t251 
+o252 Weight 2: 
+t252 
+o253 Weight 3: 
+t253 
+o254 Weight 4: 
+t254 
 o255 Shortcut: Alt-3
 t255 단축키: Alt-3
 o256 Hold {0} to draw lines
@@ -544,10 +544,10 @@ o258 Click to replace {0} ({1}:{2})
 t258 클릭해서 {0} ({1}:{2})를 바꾸기
 o259 Noise
 t259 노이즈
-o260 Strength:
-t260 강도:
-o261 Depth:
-t261 깊이:
+o260 Strength: 
+t260 
+o261 Depth: 
+t261 
 o262 Only Change Natural Earth
 t262 자연적인 블럭만 변경
 o263 Import
@@ -558,8 +558,8 @@ o265 y
 t265 y
 o266 z
 t266 z
-o267 COPYING -
-t267 복사중 -
+o267 COPYING - 
+t267 
 o268 Rotate
 t268 회전
 o269 Roll
@@ -767,10 +767,9 @@ o367 Villager Name
 t367 Villager Name
 o368 General Trade
 t368 General Trade
-o369 Rotate the Position of your Trader
+o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t369 주민의 방향을 회전시킵니다.
-*Not Move가 체크되어 있어야 사용이 가능합니다.*
+t369 
 o370 Y-Axis
 t370 Y-Axis
 o371 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
@@ -836,10 +835,9 @@ o398 Dump Found Coordinates
 t398 Dump Found Coordinates
 o399 Operation:
 t399 Operation:
-o400 This filter is designed to search for NBT in either Entities or TileEntities. It can also be used to search for blocks. "Match by" determines which type of object is prioritized during the search. Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined). All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked. It is faster to match TileEntity searches with a Block Type than vice versa. Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t400 This filter is designed to search for NBT in either Entities or TileEntities. It can also be used to search for blocks. "Match by" determines which type of object is prioritized during the search. Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined). All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked. It is faster to match TileEntity searches with a Block Type than vice versa. Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
-"Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
+t400 
 o401 Documentation
 t401 문서
 o402 Forester script by dudecon
@@ -1012,8 +1010,8 @@ o485 Cold Taiga M
 t485 Cold Taiga M
 o486 Mega Spruce Taiga
 t486 Mega Spruce Taiga
-o487 Mega Spruce Taiga
-t487 Mega Spruce Taiga
+o487 Mega Spruce Taiga 
+t487 
 o488 Extreme Hills+ M
 t488 Extreme Hills+ M
 o489 Savanna M
@@ -1040,8 +1038,8 @@ o499 Players
 t499 플레이어
 o500 Player Name
 t500 플레이어 이름
-o501 Player:
-t501 플레이어:
+o501 Player: 
+t501 
 o502 Goto Player
 t502 플레이어로 가기
 o503 Goto Player's View
@@ -1076,8 +1074,8 @@ o517 No presets saved
 t517 저장된 설정이 없습니다.
 o518 Select preset to delete
 t518 삭제할 설정을 선택하세요.
-o519 does not have a value yet.
-t519 아직 값이 없습니다.
+o519  does not have a value yet.
+t519 
 o520 Version {} is available
 t520 버전 {}이 사용 가능합니다.
 o521 Download
@@ -1112,8 +1110,8 @@ o535 Generator:
 t535 생성기:
 o536 Will automatically download and use the latest version
 t536 자동으로 최신 버전을 다운로드하고 사용합니다.
-o537 Height:
-t537 높이:
+o537 Height: 
+t537 
 o538 Grass
 t538 잔디
 o539 Server version:
@@ -1136,20 +1134,20 @@ o547 Simulate world
 t547 월드 시뮬레이션
 o548 Use snapshot versions
 t548 스냅샷 버전 사용
-o549 X:
-t549 X:
-o550 Y:
-t550 Y:
-o551 Z:
-t551 Z:
-o552 f:
-t552 f:
-o553 Seed:
-t553 시드:
-o554 East-West Chunks:
-t554 동-서 청크:
-o555 North-South Chunks:
-t555 남-북 청크:
+o549 X: 
+t549 
+o550 Y: 
+t550 
+o551 Z: 
+t551 
+o552 f: 
+t552 
+o553 Seed: 
+t553 
+o554 East-West Chunks: 
+t554 
+o555 North-South Chunks: 
+t555 
 o556 Survival
 t556 서바이벌
 o557 Cancel
@@ -1210,8 +1208,8 @@ o584 Shortcut: {0}
 t584 단축키: {0}
 o585 View Distance ({0})
 t585 시야 ({0})
-o586 Copy Stack Size:
-t586 복사 Stack Size:
+o586 Copy Stack Size: 
+t586 
 o587 Add Player
 t587 플레이어 추가
 o588 Remove Player
@@ -1228,8 +1226,8 @@ o593 Default Resource Pack
 t593 기본 리소스팩
 o594 Square
 t594 사각형
-o595 Record a Macro
-t595 매크로 녹화
+o595 Record Macro
+t595 
 o596 Health Boost
 t596 체력 신장
 o597 Saturation (no mob effect)
@@ -1256,20 +1254,20 @@ o607 Fast Nudge
 t607 빠른 이동
 o608 Clone Fast Nudge Settings
 t608 복제의 빠른 이동 설정
-o609 Move by the width of selection
-t609 선택 영역의 길이만큼 이동
+o609 Move by the width of selection 
+t609 
 o610 Moves clone by his width
 t610 복제할 범위의 길이만큼 이동합니다
-o611 Width of clone movement:
-t611 복제의 빠른 이동 거리:
+o611 Width of clone movement: 
+t611 
 o612 Import Fast Nudge Settings:
 t612 불러오기의 빠른 이동 설정:
-o613 Move by the width of schematic
-t613 schematic의 길이만큼 이동
+o613 Move by the width of schematic 
+t613 
 o614 Moves selection by his width
 t614 선택한 범위의 길이만큼 이동합니다
-o615 Width of import movement:
-t615 불러오기의 이동 거리:
+o615 Width of import movement: 
+t615 
 o616 Import Options
 t616 불러오기의 설정
 o617 Blocks Fast Nudge Settings:
@@ -1280,16 +1278,16 @@ o619 Points Fast Nudge Settings:
 t619 포인트의 빠른 이동 설정:
 o620 Moves points by the selection's width
 t620 포인트의 길이만큼 이동합니다
-o621 Width of points movement:
-t621 포인트의 이동 거리:
+o621 Width of points movement: 
+t621 
 o622 Do you want to save your changes?
 t622 저장하시겠습니까?
 o623 Don't Save
 t623 저장 안함
 o624 Press a key to assign to the action "{0}"
+
 Press ESC to cancel.
-t624 "{0}" 작업을 지정할 키를 누르십시오
-취소하려면 ESC를 누르십시오.
+t624 
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
@@ -1300,13 +1298,13 @@ o626 {0} is not a modifier. Press a new key.
 Press ESC to cancel.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
+
 Press ESC to cancel.
-t627 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
-취소하려면 ESC를 누르십시오.
+t627 
 o628 You can't use the key {0}. Press a new key.
+
 Press ESC to cancel.
-t628 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
-취소하려면 ESC를 누르십시오.
+t628 
 o629 Reset to default
 t629 기본 설정으로 되돌리기
 o630 Do you want to keep your changes?
@@ -1393,8 +1391,8 @@ o668 Save your change in the NBT data.
 t668 NBT 데이터 저장
 o669 Save unsaved edits before loading?
 t669 불러오기 전에 변경사항을 저장할까요?
-o670 {0} unsaved edits. {1} to save. {2}
-t670 {0} 저장되지 않은 에딧. 저장할 {1}. {2}
+o670 {0} unsaved edits.  {1} to save.  {2}
+t670 
 o671 (UNDO DISABLED)
 t671 (뒤로가기 미사용 중)
 o672 Save unsaved edits before closing?
@@ -1470,9 +1468,9 @@ t704 짧은 배열
 o705 Click to bind this filter to a hotkey
 t705 클릭하여 필터를 핫키에 지정하세요.
 o706 Press a key to assign to the filter "{0}"
+
 Press ESC to cancel.
-t706 "{0}" 필터에 연결할 키를 누르세요.
-ESC로 취소하세요.
+t706 
 o707 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
 
@@ -1489,8 +1487,6 @@ o710 Are you sure you want to delete the default player?
 t710 정말 기본 플레이어를 삭제하시겠습니까?
 o711 Double-click or use the button below to edit the NBT Data.
 t711 더블클릭이나 아래의 버튼으로 NBT 데이터를 수정하세요.
-o712 Go Back
-t712 뒤로가기
 o712 Upload to FTP Server
 t712 FTP 서버에 올리기
 o713 There are {0} unsaved changes.
@@ -1547,7 +1543,7 @@ o734 Select Chunks
 t734 
 o735 No matching blocks/tile entities found
 t735 
-o736 Choose a filter, then click Filter or press Enter to apply it.
+o736 Choose a filter, then click filter or press Enter to apply it.
 t736 
 o737 Click to set this item down.
 t737 
@@ -1561,125 +1557,71 @@ o741 Copying to clone buffer...
 t741 
 o742 Import a schematic or level...
 t742 
-o743 Grass
-t743 
-o744 Ctrl-A
-t744 
-o745 Ctrl-C
-t745 
-o746 Ctrl-D
-t746 
-o747 Ctrl-E
-t747 
-o748 Ctrl-F
-t748 
-o749 Ctrl-G
-t749 
-o750 Ctrl-I
-t750 
-o751 Ctrl-L
-t751 
-o752 Ctrl-M
-t752 
-o753 Ctrl-N
-t753 
-o754 Ctrl-O
-t754 
-o755 Ctrl-Q
-t755 
-o756 Ctrl-R
-t756 
-o757 Ctrl-S
-t757 
-o758 Ctrl-V
-t758 
-o759 Ctrl-W
-t759 
-o760 Ctrl-X
-t760 
-o761 Ctrl-Y
-t761 
-o762 Ctrl-Z
-t762 
-o763 Shift
-t763 
-o764 Could not find the Minecraft saves directory!
+o743 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t764 
-o765 I don't know how to open {0}:
+t743 
+o744 I don't know how to open {0}:
 
 {1!r}
+t744 
+o745 Checking for server updates...
+t745 
+o746 Time left: {0}
+t746 
+o747 Untitled World
+t747 
+o748 Name this new world.
+t748 
+o749 Minecraft World *.*  
+t749 
+o750 Generating chunks...
+t750 
+o751 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+t751 
+o752 Analyzing {0} blocks...
+t752 
+o753 Save to file...
+t753 
+o754 Fill with Air
+t754 
+o755 Delete Chunks
+t755 
+o756 Recording undo...
+t756 
+o757 Replacing blocks...
+t757 
+o758 REPLACING - 
+t758 
+o759 Copying chunk %s...
+t759 
+o760 Continue with undo disabled?
+t760 
+o761 Continue
+t761 
+o762 Canceled
+t762 
+o763 DELETING - 
+t763 
+o764 Deleting {0} blocks
+t764 
+o765 WORKING - 
 t765 
-o766 Checking for server updates...
+o766 Removing Tile Ticks...
 t766 
-o767 Time left: {0}
+o767 Removing entities...
 t767 
-o768 Untitled World
+o768 Copying {0:n} blocks...
 t768 
-o769 Name this new world.
+o769 Undoing...
 t769 
-o770 Minecraft World *.*  
+o770 UNDOING - 
 t770 
-o771 Generating chunks...
+o771 Really delete these chunks? This cannot be undone.
 t771 
-o772 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+o772 Save these chunks and remove the rest? This cannot be undone.
 t772 
-o773 Analyzing {0} blocks...
+o773 Lighting {0} chunks...
 t773 
-o774 Analysie
+o774 Create chunks using the settings above? This cannot be undone.
 t774 
-o775 Save to file...
-t775 
-o776 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t776
-o777 Fill with Air
-t777 
-o778 Delete Chunks
-t778 
-o779 Recording undo...
-t779 
-o780 Replacing blocks...
-t780 
-o781 {0:n} blocks
-t781 
-o782 Shortcut: R
-t782 
-o783 REPLACING - 
-t783 
-o784 Copying chunk %s...
-t784 
-o785 Shortcut: X
-t785 
-o786 Continue with undo disabled?
-t786 
-o787 Continue
-t787 
-o788 Canceled
-t788 
-o789 DELETING - 
-t789 
-o790 Deleting {0} blocks
-t790 
-o791 WORKING - 
-t791 
-o792 Removing Tile Ticks...
-t792 
-o793 Removing entities...
-t793 
-o794 Copying {0:n} blocks...
-t794 
-o795 Undoing...
-t795 
-o796 UNDOING - 
-t796 
-o797 Really delete these chunks? This cannot be undone.
-t797 
-o798 Save these chunks and remove the rest? This cannot be undone.
-t798 
-o799 Lighting {0} chunks...
-t799 
-o800 Folder
-t800 
-o801 Create chunks using the settings above? This cannot be undone.
-t801 
