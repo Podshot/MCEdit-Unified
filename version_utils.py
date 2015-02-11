@@ -424,14 +424,15 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     return toReturn
 
 def _cleanup():
-    for image_file in os.listdir("player-skins"):
-        fp = None
-        try:
-            fp = open(os.path.join("player-skins", image_file), 'rb')
-            Image.open(fp)
-        except IOError:
-            fp.close()
-            os.remove(os.path.join("player-skins", image_file))
+    if os.path.exists("player-skins"):
+        for image_file in os.listdir("player-skins"):
+            fp = None
+            try:
+                fp = open(os.path.join("player-skins", image_file), 'rb')
+                Image.open(fp)
+            except IOError:
+                fp.close()
+                os.remove(os.path.join("player-skins", image_file))
     playercache.cleanup()
     
 atexit.register(_cleanup)
