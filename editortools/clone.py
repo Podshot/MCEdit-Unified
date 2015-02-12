@@ -120,7 +120,6 @@ class BlockCopyOperation(Operation):
         if self.level.saving:
             alert(_("Cannot perform action while saving is taking place"))
             return
-        sourceBox = self.sourceBox
 
         if recordUndo:
             self.canUndo = True
@@ -380,7 +379,7 @@ class CloneToolPanel(Panel):
             cols = buildPage(rotaterollRow, flipmirrorRow, alignRow, self.offsetInput, repeatRow, scaleRow, copyAirRow,
                       copyWaterRow, copyBiomesRow, staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow)
         else:
-            cols = buildPage(rotaterollRow, flipmirrorRow, alignRow, self.nudgeButton, copyAirRow, copyWaterRow, copyBiomesRow,
+            cols = buildPage(rotaterollRow, flipmirrorRow, alignRow, self.nudgeButton, scaleRow, copyAirRow, copyWaterRow, copyBiomesRow,
                              staticCommandsRow, moveSpawnerPosRow, regenerateUUIDRow)
 
         row = Row(cols, spacing=0, margin=2)
@@ -517,7 +516,6 @@ class CloneTool(EditorTool):
             self.panel.offsetInput.setCoords(self.destPoint - self.selectionBox().origin)
 
     def offsetChanged(self):
-
         if self.panel:
             if not self.panel.useOffsetInput:
                 return
@@ -532,7 +530,6 @@ class CloneTool(EditorTool):
         return not (self.selectionBox() is None)
 
     def cancel(self):
-
         self.discardPreviewer()
         if self.panel:
             self.panel.parent.remove(self.panel)
@@ -786,7 +783,6 @@ class CloneTool(EditorTool):
     draggingColor = (0.77, 1.0, 0.55, 0.05)
 
     def drawToolReticle(self):
-
         if self.level is None:
             return
 
@@ -1153,10 +1149,11 @@ class ConstructionTool(CloneTool):
         return True
 
     def selectionChanged(self):
-        pass
+        self.updateSchematic()
 
     def updateSchematic(self):
-        pass
+        self.originalLevel = self.level
+        self.scaleFactor = 1
 
     def quickNudge(self, nudge):
         if config.fastNudgeSettings.importWidth.get():
@@ -1231,6 +1228,8 @@ class ConstructionTool(CloneTool):
         # xxx mouthful
         if clipFilename:
             self.loadSchematic(clipFilename)
+            self.updateSchematic()
+            return
 
         print "Canceled"
         if self.level is None:
