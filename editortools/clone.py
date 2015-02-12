@@ -272,7 +272,7 @@ class CloneToolPanel(Panel):
 
         repeatField = IntField(ref=AttrRef(tool, 'repeatCount'))
         repeatField.min = 1
-        repeatField.max = 50
+        repeatField.max = 1000
 
         repeatRow = Row((
             Label("Repeat"), repeatField
@@ -595,15 +595,12 @@ class CloneTool(EditorTool):
         blocks = self.originalLevel.Blocks
         data = self.originalLevel.Data
 
-        if factor < 1.0:
-            roundedShape = map(lambda x: int(int(x * factor) / factor), oldshape)
-            roundedSlices = map(lambda x: slice(0, x), roundedShape)
-            blocks = blocks[roundedSlices]
-            data = data[roundedSlices]
-        else:
-            roundedShape = oldshape
+        roundedShape = oldshape
 
         newshape = map(lambda x: int(x * factor), oldshape)
+        for i, part in enumerate(newshape):
+            if part == 0:
+                newshape[i] = 1
         xyzshape = newshape[0], newshape[2], newshape[1]
         newlevel = pymclevel.MCSchematic(xyzshape, mats=self.editor.level.materials)
 
