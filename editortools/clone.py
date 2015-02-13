@@ -279,25 +279,8 @@ class CloneToolPanel(Panel):
         self.repeatField = repeatField
 
         scaleField = FloatField(ref=AttrRef(tool, 'scaleFactor'))
-        scaleField.min = 0.125
+        scaleField.min = 0.1
         scaleField.max = 8
-        dv = scaleField.decrease_value
-        iv = scaleField.increase_value
-
-        def scaleFieldDecrease():
-            if 1 / 8.0 < scaleField.value <= 1.0:
-                scaleField.value *= 0.5
-            else:
-                dv()
-
-        def scaleFieldIncrease():
-            if scaleField.value < 1.0:
-                scaleField.value *= 2.0
-            else:
-                iv()
-
-        scaleField.decrease_value = scaleFieldDecrease
-        scaleField.increase_value = scaleFieldIncrease
 
         scaleRow = Row((
             Label("Scale Factor"), scaleField
