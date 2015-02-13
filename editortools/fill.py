@@ -31,6 +31,7 @@ from albow import AttrRef
 from config import config
 from albow.root import get_root
 import pymclevel
+from numpy import array
 
 
 class BlockFillOperation(Operation):
@@ -191,7 +192,7 @@ class FillTool(EditorTool):
             self.panel.blockButton.blockInfo = bt
 
     def levelChanged(self):
-        self.initTextures()
+        pass
 
     def showPanel(self):
         if self.panel:
@@ -314,36 +315,20 @@ class FillTool(EditorTool):
         if self.panel and self.replacing:
             self.panel.swapBlockTypes()
 
-    def initTextures(self):
+    def blockTexFunc(self, terrainTexture, tex, data):
+        def _func():
+            s, t = tex
+            if not hasattr(terrainTexture, "data"):
+                return
+            w, h = terrainTexture.data.shape[:2]
+            pixelWidth = 512 if self.editor.level.materials.name in ("Pocket", "Alpha") else 256
+            s = s * w / pixelWidth
+            t = t * h / pixelWidth
+            texData = numpy.array(terrainTexture.data[t:t + h / 32, s:s + w / 32])
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 32, h / 32, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
+                            texData)
 
-        terrainTexture = self.editor.level.materials.terrainTexture
-
-        blockTextures = self.editor.level.materials.blockTextures[:, 0]
-
-        if hasattr(self, 'blockTextures'):
-            for tex in self.blockTextures.itervalues():
-                tex.delete()
-
-        self.blockTextures = {}
-
-        pixelWidth = 512 if self.editor.level.materials.name in ("Pocket", "Alpha") else 256
-
-        def blockTexFunc(type):
-            def _func():
-                s, t = blockTextures[type][0]
-                if not hasattr(terrainTexture, "data"):
-                    return
-                w, h = terrainTexture.data.shape[:2]
-                s = s * w / pixelWidth
-                t = t * h / pixelWidth
-                texData = numpy.array(terrainTexture.data[t:t + h / 32, s:s + w / 32])
-                GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 32, h / 32, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
-                                texData)
-
-            return _func
-
-        for type in range(256):
-            self.blockTextures[type] = Texture(blockTexFunc(type))
+        return _func
 
     def drawToolReticle(self):
         if self.pickBlockKey == 1:
@@ -361,7 +346,9 @@ class FillTool(EditorTool):
 
         color = 1.0, 1.0, 1.0, 0.35
         if blockInfo:
-            tex = self.blockTextures.get(blockInfo.ID, self.blockTextures[255])  # xxx
+            terrainTexture = self.editor.level.materials.terrainTexture
+            tex = self.editor.level.materials.blockTextures[blockInfo.ID, blockInfo.blockData, 0]  # xxx
+            tex = Texture(self.blockTexFunc(terrainTexture, tex, blockInfo.blockData))
 
             # color = (1.5 - alpha, 1.0, 1.5 - alpha, alpha - 0.35)
             GL.glMatrixMode(GL.GL_TEXTURE)
