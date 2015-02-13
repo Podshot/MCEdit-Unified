@@ -1,97 +1,110 @@
-# Pyperclip v1.4
+"""
+Pyperclip
 
-# A cross-platform clipboard module for Python. (only handles plain text for now)
-# By Al Sweigart al@coffeeghost.net
+A cross-platform clipboard module for Python. (only handles plain text for now)
+By Al Sweigart al@inventwithpython.com
+BSD License
 
-# Usage:
-#   import pyperclip
-#   pyperclip.copy('The text to be copied to the clipboard.')
-#   spam = pyperclip.paste()
+Usage:
+  import pyperclip
+  pyperclip.copy('The text to be copied to the clipboard.')
+  spam = pyperclip.paste()
 
-# On Mac, this module makes use of the pbcopy and pbpaste commands, which should come with the os.
-# On Linux, this module makes use of the xclip command, which should come with the os. Otherwise run "sudo apt-get install xclip"
+On Windows, no additional modules are needed.
+On Mac, this module makes use of the pbcopy and pbpaste commands, which should come with the os.
+On Linux, this module makes use of the xclip or xsel commands, which should come with the os. Otherwise run "sudo apt-get install xclip" or "sudo apt-get install xsel"
+  Otherwise on Linux, you will need the gtk or PyQt4 modules installed.
 
-
-# Copyright (c) 2010, Albert Sweigart
-# All rights reserved.
-#
-# BSD-style license:
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * Neither the name of the pyperclip nor the
-#       names of its contributors may be used to endorse or promote products
-#       derived from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY Albert Sweigart "AS IS" AND ANY
-# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL Albert Sweigart BE LIABLE FOR ANY
-# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-# Change Log:
-# 1.2 Use the platform module to help determine OS.
-# 1.3 Changed ctypes.windll.user32.OpenClipboard(None) to ctypes.windll.user32.OpenClipboard(0), after some people ran into some TypeError
+The gtk module is not available for Python 3, and this module does not work with PyGObject yet.
+"""
 
 # Modified by Podshot to work with MCEdit-Unified's python environment
 # * Removed Python 3 compatability
 # * Removed PyQT support
 
-import platform
-import os
+__version__ = '1.5.6'
+
+import platform, os
+from subprocess import call, Popen, PIPE
 
 
-def winGetClipboard():
-    ctypes.windll.user32.OpenClipboard(None)
-    pcontents = ctypes.windll.user32.GetClipboardData(1)  # 1 is CF_TEXT
-    data = ctypes.c_char_p(pcontents).value
-    #ctypes.windll.kernel32.GlobalUnlock(pcontents)
-    ctypes.windll.user32.CloseClipboard()
+def _pasteWindows():
+    CF_UNICODETEXT = 13
+    d = ctypes.windll
+    d.user32.OpenClipboard(None)
+    handle = d.user32.GetClipboardData(CF_UNICODETEXT)
+    data = ctypes.c_wchar_p(handle).value
+    d.user32.CloseClipboard()
     return data
 
 
-def winSetClipboard(text):
-    text = str(text)
+def _copyWindows(text):
     GMEM_DDESHARE = 0x2000
-    ctypes.windll.user32.OpenClipboard(None)
-    ctypes.windll.user32.EmptyClipboard()
-    hCd = ctypes.windll.kernel32.GlobalAlloc(GMEM_DDESHARE, len(bytes(text))+1)
-    pchData = ctypes.windll.kernel32.GlobalLock(hCd)
-    ctypes.cdll.msvcrt.strcpy(ctypes.c_char_p(pchData), bytes(text))
-    ctypes.windll.kernel32.GlobalUnlock(hCd)
-    ctypes.windll.user32.SetClipboardData(1, hCd)
-    ctypes.windll.user32.CloseClipboard()
+    CF_UNICODETEXT = 13
+    d = ctypes.windll # cdll expects 4 more bytes in user32.OpenClipboard(None)
+    try:  # Python 2
+        if not isinstance(text, unicode):
+            text = text.decode('mbcs')
+    except NameError:
+        if not isinstance(text, str):
+            text = text.decode('mbcs')
+    d.user32.OpenClipboard(None)
+    d.user32.EmptyClipboard()
+    hCd = d.kernel32.GlobalAlloc(GMEM_DDESHARE, len(text.encode('utf-16-le')) + 2)
+    pchData = d.kernel32.GlobalLock(hCd)
+    ctypes.cdll.msvcrt.wcscpy(ctypes.c_wchar_p(pchData), text)
+    d.kernel32.GlobalUnlock(hCd)
+    d.user32.SetClipboardData(CF_UNICODETEXT, hCd)
+    d.user32.CloseClipboard()
 
 
-def macSetClipboard(text):
+def _pasteCygwin():
+    CF_UNICODETEXT = 13
+    d = ctypes.cdll
+    d.user32.OpenClipboard(None)
+    handle = d.user32.GetClipboardData(CF_UNICODETEXT)
+    data = ctypes.c_wchar_p(handle).value
+    d.user32.CloseClipboard()
+    return data
+
+
+def _copyCygwin(text):
+    GMEM_DDESHARE = 0x2000
+    CF_UNICODETEXT = 13
+    d = ctypes.cdll
+    try:  # Python 2
+        if not isinstance(text, unicode):
+            text = text.decode('mbcs')
+    except NameError:
+        if not isinstance(text, str):
+            text = text.decode('mbcs')
+    d.user32.OpenClipboard(None)
+    d.user32.EmptyClipboard()
+    hCd = d.kernel32.GlobalAlloc(GMEM_DDESHARE, len(text.encode('utf-16-le')) + 2)
+    pchData = d.kernel32.GlobalLock(hCd)
+    ctypes.cdll.msvcrt.wcscpy(ctypes.c_wchar_p(pchData), text)
+    d.kernel32.GlobalUnlock(hCd)
+    d.user32.SetClipboardData(CF_UNICODETEXT, hCd)
+    d.user32.CloseClipboard()
+
+
+def _copyOSX(text):
     text = str(text)
-    outf = os.popen('pbcopy', 'w')
-    outf.write(text)
-    outf.close()
+    p = Popen(['pbcopy', 'w'], stdin=PIPE)
+    p.communicate(input=bytes(text))
 
 
-def macGetClipboard():
-    outf = os.popen('pbpaste', 'r')
-    content = outf.read()
-    outf.close()
-    return content
+def _pasteOSX():
+    p = Popen(['pbpaste', 'r'], stdout=PIPE)
+    stdout, stderr = p.communicate()
+    return bytes.decode(stdout)
 
 
-def gtkGetClipboard():
+def _pasteGtk():
     return gtk.Clipboard().wait_for_text()
 
 
-def gtkSetClipboard(text):
+def _copyGtk(text):
     global cb
     text = str(text)
     cb = gtk.Clipboard()
@@ -99,65 +112,88 @@ def gtkSetClipboard(text):
     cb.store()
 
 
-def qtGetClipboard():
+def _pasteQt():
     return str(cb.text())
 
 
-def qtSetClipboard(text):
+def _copyQt(text):
     text = str(text)
     cb.setText(text)
 
 
-def xclipSetClipboard(text):
-    text = str(text)
-    outf = os.popen('xclip -selection c', 'w')
-    outf.write(text)
-    outf.close()
+def _copyXclip(text):
+    p = Popen(['xclip', '-selection', 'c'], stdin=PIPE)
+    p.communicate(input=bytes(text))
 
 
-def xclipGetClipboard():
-    outf = os.popen('xclip -selection c -o', 'r')
-    content = outf.read()
-    outf.close()
-    return content
+def _pasteXclip():
+    p = Popen(['xclip', '-selection', 'c', '-o'], stdout=PIPE)
+    stdout, stderr = p.communicate()
+    return bytes.decode(stdout)
 
 
-def xselSetClipboard(text):
-    text = str(text)
-    outf = os.popen('xsel -i', 'w')
-    outf.write(text)
-    outf.close()
+def _copyXsel(text):
+    p = Popen(['xsel', '-i'], stdin=PIPE)
+    p.communicate(input=bytes(text))
 
 
-def xselGetClipboard():
-    outf = os.popen('xsel -o', 'r')
-    content = outf.read()
-    outf.close()
-    return content
+def _pasteXsel():
+    p = Popen(['xsel', '-o'], stdout=PIPE)
+    stdout, stderr = p.communicate()
+    return bytes.decode(stdout)
 
 
-if os.name == 'nt' or platform.system() == 'Windows':
+
+# Determine the OS/platform and set the copy() and paste() functions accordingly.
+if 'cygwin' in platform.system().lower():
+    _functions = 'Cygwin' # for debugging
     import ctypes
-    getcb = winGetClipboard
-    setcb = winSetClipboard
+    paste = _pasteCygwin
+    copy = _copyCygwin
+elif os.name == 'nt' or platform.system() == 'Windows':
+    _functions = 'Windows' # for debugging
+    import ctypes  # @Reimport
+    paste = _pasteWindows
+    copy = _copyWindows
 elif os.name == 'mac' or platform.system() == 'Darwin':
-    getcb = macGetClipboard
-    setcb = macSetClipboard
+    _functions = 'OS X pbcopy/pbpaste' # for debugging
+    paste = _pasteOSX
+    copy = _copyOSX
 elif os.name == 'posix' or platform.system() == 'Linux':
-    xclipExists = os.system('which xclip') == 0
+    # Determine which command/module is installed, if any.
+    xclipExists = call(['which', 'xclip'],
+                stdout=PIPE, stderr=PIPE) == 0
+
+    xselExists = call(['which', 'xsel'],
+            stdout=PIPE, stderr=PIPE) == 0
+
+    gtkInstalled = False
+    try:
+        # Check it gtk is installed.
+        import gtk
+        gtkInstalled = True
+    except ImportError:
+        pass
+
+    if not gtkInstalled and not xclipExists:
+        raise Exception('Pyperclip requires the gtk module installed or the xclip command.')
+
+    # Set one of the copy & paste functions.
     if xclipExists:
-        getcb = xclipGetClipboard
-        setcb = xclipSetClipboard
+        _functions = 'xclip command' # for debugging
+        paste = _pasteXclip
+        copy = _copyXclip
+    elif gtkInstalled:
+        _functions = 'gtk module' # for debugging
+        paste = _pasteGtk
+        copy = _copyGtk
+
+    elif xselExists:
+        # TODO: xsel doesn't seem to work on Raspberry Pi (my test Linux environment). Putting this as the last method tried.
+        _functions = 'xsel command' # for debugging
+        paste = _pasteXsel
+        copy = _copyXsel
     else:
-        xselExists = os.system('which xsel') == 0
-        if xselExists:
-            getcb = xselGetClipboard
-            setcb = xselSetClipboard
-        try:
-            import gtk  # @UnresolvedImport
-            getcb = gtkGetClipboard
-            setcb = gtkSetClipboard
-        except Exception:
-            raise Exception('Pyperclip requires the gtk module installed or the xclip command.')
-copy = setcb
-paste = getcb
+        raise Exception('Pyperclip requires the xclip or xsel application, or the gtk module.')
+else:
+    raise RuntimeError('pyperclip does not support your system.')
