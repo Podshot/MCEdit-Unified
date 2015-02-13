@@ -315,7 +315,7 @@ class FillTool(EditorTool):
         if self.panel and self.replacing:
             self.panel.swapBlockTypes()
 
-    def blockTexFunc(self, terrainTexture, tex, data):
+    def blockTexFunc(self, terrainTexture, tex):
         def _func():
             s, t = tex
             if not hasattr(terrainTexture, "data"):
@@ -348,7 +348,7 @@ class FillTool(EditorTool):
         if blockInfo:
             terrainTexture = self.editor.level.materials.terrainTexture
             tex = self.editor.level.materials.blockTextures[blockInfo.ID, blockInfo.blockData, 0]  # xxx
-            tex = Texture(self.blockTexFunc(terrainTexture, tex, blockInfo.blockData))
+            tex = Texture(self.blockTexFunc(terrainTexture, tex))
 
             # color = (1.5 - alpha, 1.0, 1.5 - alpha, alpha - 0.35)
             GL.glMatrixMode(GL.GL_TEXTURE)
