@@ -1149,7 +1149,7 @@ class ConstructionTool(CloneTool):
         return True
 
     def selectionChanged(self):
-        self.updateSchematic()
+        pass
 
     def updateSchematic(self):
         self.originalLevel = self.level
@@ -1177,6 +1177,7 @@ class ConstructionTool(CloneTool):
     def showPanel(self):
         CloneTool.showPanel(self)
         self.panel.performButton.text = "Import"
+        self.updateSchematic()
 
     def toolReselected(self):
         self.toolSelected()
@@ -1228,7 +1229,6 @@ class ConstructionTool(CloneTool):
         # xxx mouthful
         if clipFilename:
             self.loadSchematic(clipFilename)
-            self.updateSchematic()
             return
 
         print "Canceled"
