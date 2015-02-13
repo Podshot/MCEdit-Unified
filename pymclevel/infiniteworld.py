@@ -902,8 +902,8 @@ class AnvilWorldFolder(object):
         path = path.replace("/", os.path.sep)
         return os.path.join(self.filename, path)
 
-    def getFolderPath(self, path):
-        if not os.path.exists(self.filename):
+    def getFolderPath(self, path, checksExists=True):
+        if checksExists and not os.path.exists(self.filename):
             raise IOError("The file does not exist")
         path = self.getFilePath(path)
         if not os.path.exists(path) and "players" not in path:
@@ -914,7 +914,7 @@ class AnvilWorldFolder(object):
     # --- Region files ---
 
     def getRegionFilename(self, rx, rz):
-        return os.path.join(self.getFolderPath("region"), "r.%s.%s.%s" % (rx, rz, "mca"))
+        return os.path.join(self.getFolderPath("region", False), "r.%s.%s.%s" % (rx, rz, "mca"))
 
     def getRegionFile(self, rx, rz):
         regionFile = self.regionFiles.get((rx, rz))
