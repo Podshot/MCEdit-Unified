@@ -349,22 +349,25 @@ class RootWidget(Widget):
                             add_modifiers(event)
                             self.call_idle_handlers(event)
 
-                    allKeys = pygame.key.get_pressed()
-                    self.editor.cameraInputs = [0., 0., 0., 0., 0., 0.]
-                    self.editor.cameraPanKeys = [0., 0., 0., 0.]
-                    for i, keys in enumerate(allKeys):
-                        if keys:
+                    if self.editor.level is not None:
+                        self.editor.cameraInputs = [0., 0., 0., 0., 0., 0.]
+                        self.editor.cameraPanKeys = [0., 0., 0., 0.]
+                        allKeys = pygame.key.get_pressed()
+                        allKeysWithData = enumerate(allKeys)
+
+                        def useKeys((i, keys)):
+                            if not keys:
+                                return
                             keyName = self.getKey(movement=True, keyname=pygame.key.name(i))
                             if self.editor.level:
                                 for j, key in enumerate(self.editor.movements):
-                                    if keyName == key:
-                                        if not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                            self.changeMovementKeys(j, keyName)
+                                    if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
+                                        self.changeMovementKeys(j, keyName)
 
                                 for k, key in enumerate(self.editor.cameraPan):
-                                    if keyName == key:
-                                        if not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
-                                            self.changeCameraKeys(k)
+                                    if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
+                                        self.changeCameraKeys(k)
+                        map(useKeys, allKeysWithData)
 
                 except Cancel:
                     pass
@@ -408,7 +411,7 @@ class RootWidget(Widget):
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
-        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds = 0.325)):
+        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds=0.325)):
             self.testTime = datetime.now()
             if keyname == self.editor.movements[4]:
                 self.nudge.nudge(Vector(0, 1, 0))
