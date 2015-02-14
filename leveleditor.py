@@ -24,7 +24,7 @@ import pygame
 from albow.fields import FloatField
 from mceutils import ChoiceButton, TextInputRow
 from editortools.blockview import BlockButton
-from ftp_client import FTPClient
+import ftp_client
 
 """
 leveleditor.py
@@ -903,7 +903,7 @@ class LevelEditor(GLViewport):
         GL.glDisable(GL.GL_BLEND)
         GL.glDisable(GL.GL_DEPTH_TEST)
 
-    def loadFile(self, filename):
+    def loadFile(self, filename, addToRecent=True):
         """
         Called when the user picks a level using Load World or Open File.
         """
@@ -930,8 +930,9 @@ class LevelEditor(GLViewport):
             return
 
         assert level
-
-        self.mcedit.addRecentWorld(filename)
+        
+        if addToRecent:
+            self.mcedit.addRecentWorld(filename)
 
         try:
             self.currentViewport.cameraPosition = level.getPlayerPosition()
@@ -1766,15 +1767,16 @@ class LevelEditor(GLViewport):
         widget.shrink_wrap()
         d = Dialog(widget, ["Connect", "Cancel"])
         if d.present() == "Connect":
-            print "IP: "+str(ftp_ip_field.get_text())
-            print "Username: "+str(ftp_user_field.get_text())
-            print "Password: "+str(ftp_pass_field.get_text())
             if ftp_user_field.get_text() == "" and ftp_pass_field.get_text() == "":
-                self._ftp_client = FTPClient(ftp_ip_field.get_text())
+                self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text())
             else:
-                self._ftp_client = FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+                try:
+                    self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+                except ftp_client.InvalidCreditdentialsException as e:
+                    alert(e.message)
+                    return
             self._ftp_client.safe_download()
-            self.mcedit.loadFile(os.path.join(self._ftp_client.get_level_path(), 'level.dat'))
+            self.mcedit.loadFile(os.path.join(self._ftp_client.get_level_path(), 'level.dat'), addToRecent=False)
             self.world_from_ftp = True
             
     def uploadChanges(self):
@@ -1787,9 +1789,6 @@ class LevelEditor(GLViewport):
                 if answer == "Cancel":
                     return
             self._ftp_client.upload()
-            world_list = self.mcedit.recentWorlds()
-            del world_list[0]
-            self.mcedit.setRecentWorlds(world_list)
             self.clearUnsavedEdits()
             self.unsavedEdits = 0
             self.root.fix_sticky_ctrl()
@@ -1806,6 +1805,46 @@ class LevelEditor(GLViewport):
             self._ftp_client.cleanup()
         else:
             alert("This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible")
+        '''
+        else:
+            if self.unsavedEdits:
+                answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
+                self.root.fix_sticky_ctrl()
+                if answer == "Save":
+                    self.saveFile()
+                if answer == "Cancel":
+                    return
+            widget = Widget()
+        
+            ftp_ip_lbl = Label("FTP Server IP:")
+            ftp_ip_field = TextFieldWrapped(width=400)
+            ip_row = Row((ftp_ip_lbl, ftp_ip_field))
+        
+            ftp_user_lbl = Label("FTP Username:")
+            ftp_user_field = TextFieldWrapped(width=400)
+            user_row = Row((ftp_user_lbl, ftp_user_field))
+        
+            ftp_pass_lbl = Label("FTP Password:")
+            ftp_pass_field = TextFieldWrapped(width=400)
+            pass_row = Row((ftp_pass_lbl, ftp_pass_field))
+        
+            note_creds = Label("NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server")
+            note_wait = Label("Please wait while MCEdit-Unified upload the world. The world will be closed once completed")
+            col = Column((ip_row, user_row, pass_row, note_creds, note_wait))
+            widget.add(col)
+            widget.shrink_wrap()
+            d = Dialog(widget, ["Upload", "Cancel"])
+            if d.present() == "Upload":
+                if ftp_user_field.get_text() == "" and ftp_pass_field.get_text() == "":
+                    self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text())
+                else:
+                    try:
+                        self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+                    except ftp_client.InvalidCreditdentialsException as e:
+                        alert(e.message)
+                        return
+                    self._ftp_client.upload_new_world(self.level)
+        '''
 
     def repairRegions(self):
         worldFolder = self.level.worldFolder
