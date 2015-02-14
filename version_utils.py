@@ -9,6 +9,7 @@ import urllib
 from PIL import Image
 from urllib2 import HTTPError
 import atexit
+import threading
 
 #def getPlayerSkinURL(uuid):
 #    try:
@@ -72,7 +73,10 @@ class __PlayerCache:
         except:
             print "usercache.json is corrupted"
         self.fixAllOfPodshotsBugs()
-        self._refreshAll()
+        self.refresh_lock = threading.Lock()
+        player_refreshing = threading.Thread(target=self._refreshAll)
+        player_refreshing.start()
+        #self._refreshAll()
         
 
     def _save(self):
@@ -120,17 +124,18 @@ class __PlayerCache:
         return isInCache
     
     def _refreshAll(self):
-        playersNeededToBeRefreshed = []
-        try:
-            t = time.time()
-        except:
-            t = 0
-        for player in self._playerCacheList:
-            if player["Timestamp"] != "<Invalid>":
-                if t - player["Timestamp"] > 21600:
-                    playersNeededToBeRefreshed.append(player)
-        for player in playersNeededToBeRefreshed:
-            self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
+        with self.refresh_lock:
+            playersNeededToBeRefreshed = []
+            try:
+                t = time.time()
+            except:
+                t = 0
+            for player in self._playerCacheList:
+                if player["Timestamp"] != "<Invalid>":
+                    if t - player["Timestamp"] > 21600:
+                        playersNeededToBeRefreshed.append(player)
+            for player in playersNeededToBeRefreshed:
+                self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
     
     def force_refresh(self):
         players = self._playerCacheList

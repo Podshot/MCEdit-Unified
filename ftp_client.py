@@ -12,7 +12,6 @@ class CouldNotFindWorldFolderException(Exception):
 class InvalidCreditdentialsException(Exception):
     pass
 
-
 class FTPClient:
     
     def download(self):
@@ -96,6 +95,7 @@ class FTPClient:
         except PermanentError:
             raise InvalidCreditdentialsException("Incorrect username or password")
             return
+            
         self._worldname = None
         if 'server.properties' in self._host.listdir(self._host.curdir):
             self._host.download('server.properties', os.path.join('ftp', 'server.properties'))
