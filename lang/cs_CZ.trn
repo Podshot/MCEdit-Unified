@@ -1298,6 +1298,7 @@ No key means right click to fast nudge.
 Press ESC to cancel.
 t625 
 o626 {0} is not a modifier. Press a new key.
+
 Press ESC to cancel.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
@@ -1628,3 +1629,5 @@ o778 Rename
 t778 
 o779 Paste as child
 t779 
+o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
+t780 

@@ -1311,8 +1311,10 @@ t625  Appuyer sur la touche à lier à l'action "{0}"
 Acune touche pour utiliser le clic-droit.
 ESC pour annuler.
 o626 {0} is not a modifier. Press a new key.
+
 Press ESC to cancel.
 t626 {0} n'est pas un modificateur. Appuyez sur une autre touche.
+
 ESC pour annuler.
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
@@ -1664,3 +1666,5 @@ o778 Rename
 t778 Renommer
 o779 Paste as child
 t779 Coller enfant
+o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
+t780 Vous allez supprimer une sélection de chunks. Remplir avec de l'air, ou supprimer les chunks eux-même ?

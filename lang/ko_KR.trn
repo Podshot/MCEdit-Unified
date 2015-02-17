@@ -21,17 +21,17 @@ t0 자동 멈춤
 o1 Swap Axes Looking Down
 t1 아래를 볼 때 방향 반전
 o2 Camera Acceleration: 
-t2 
+t2 카메라 가속: 
 o3 Camera Drag: 
-t3 
+t3 카메라 드래그: 
 o4 Camera Max Speed: 
-t4 
+t4 카메라 최고 속도: 
 o5 Camera Braking Speed: 
-t5 
+t5 카메라 멈추는 속도: 
 o6 Mouse Speed: 
-t6 
+t6 마우스 감도: 
 o7 Undo Limit: 
-t7 
+t7 실행 취소 제한: 
 o8 Invert Mouse
 t8 마우스 반전
 o9 Low Detail Height
@@ -63,11 +63,11 @@ t21 설정
 o22 OK
 t22 확인
 o23 Field of View: 
-t23 
+t23 시야 범위: 
 o24 Target FPS: 
-t24 
+t24 최대 프레임: 
 o25 Vertex Buffer Limit (MB): 
-t25 
+t25 버텍스 버퍼 제한 (MB): 
 o26 Fast Leaves
 t26 빠른 나뭇잎
 o27 Rough Graphics
@@ -95,7 +95,7 @@ t37 숫자패드
 o38 WASD Old
 t38 WASD 옛날
 o39 Presets: 
-t39 
+t39 기본 설정: 
 o40 MCEdit
 t40 MCEdit
 o41 <
@@ -131,7 +131,7 @@ t55 회색
 o56 Black
 t56 검은색
 o57 Color: 
-t57 
+t57 색상: 
 o58 Show Previous Selection
 t58 최근 선택 영역 보기
 o59 R:
@@ -147,7 +147,7 @@ t63 바로 설치하기
 o64 Clone Options
 t64 복제 설정
 o65 Alpha: 
-t65 
+t65 투명도: 
 o66 Choose Block Immediately
 t66 블럭 바로 선택하기
 o67 Reset Distance When Brush Size Changes
@@ -215,7 +215,8 @@ t97 자세한 것은 {0}를 꾹 눌러서 보세요.
 o98 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
-t98 
+t98 경고: 한 번에 하나의 프로그램에서만 월드를 여세요. 마인크래프트와 MCEdit에서 동시에 월드를 열면 변경 사항을 잃고 세이브파일을 손상시킬 수 있습니다.
+마인크래프트 1.3 이하 버전을 쓴다면 마인크래프트를 완전히 닫고 MCEdit을 사용해야 합니다.
 o99 Don't remind me again.
 t99 다시 보지 않기
 o100 <Movement>
@@ -349,7 +350,7 @@ t163 아래를 볼 때 앞과 뒤 키의 방향을 반전합니다.
 o164 When you are this far above the top of the world, move fast and use low-detail mode.
 t164 이 높이보다 위에 있을 때, 카메라가 빨리 움직이고 디테일이 낮아집니다.
 o165 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
-t165 
+t165 임시저장에 사용되는 메모리의 크기. 이것보다 많은 양이 필요하면 디스크가 사용됩니다.
 o166 Change the position of the mobs in spawners while nudging.
 t166 움직일 때 스포너의 몹들도 함께 움직입니다.
 o167 Change static coordinates in command blocks while nudging.
@@ -377,7 +378,7 @@ t177 재시작
 o178 Later
 t178 나중에
 o179 Loading 
-t179 
+t179 로딩중 
 o180  - MCEdit 
 t180 
 o181 Overworld
@@ -415,7 +416,7 @@ t196 마우스 버튼을 놓아서 선택을 완료하세요.
 o197 Nudge
 t197 이동
 o198 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
-t198 
+t198 클릭하고 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 블럭씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
 o199 {0:n} blocks
 t199 {0:n} 블럭
 o200 Delete Entities
@@ -511,7 +512,7 @@ t241 모드:
 o242 Brush:
 t242 브러쉬:
 o243 Chance: 
-t243 
+t243 확률: 
 o244 Hollow
 t244 빈 내부
 o245 Fill Air
@@ -545,9 +546,9 @@ t258 클릭해서 {0} ({1}:{2})를 바꾸기
 o259 Noise
 t259 노이즈
 o260 Strength: 
-t260 
+t260 강도: 
 o261 Depth: 
-t261 
+t261 깊이: 
 o262 Only Change Natural Earth
 t262 자연적인 블럭만 변경
 o263 Import
@@ -559,7 +560,7 @@ t265 y
 o266 z
 t266 z
 o267 COPYING - 
-t267 
+t267 복사중 - 
 o268 Rotate
 t268 회전
 o269 Roll
@@ -769,7 +770,8 @@ o368 General Trade
 t368 General Trade
 o369       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t369 
+t369 주민의 방향을 회전시킵니다.
+*Not Move가 체크되어 있어야 사용이 가능합니다.*
 o370 Y-Axis
 t370 Y-Axis
 o371 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
@@ -1039,7 +1041,7 @@ t499 플레이어
 o500 Player Name
 t500 플레이어 이름
 o501 Player: 
-t501 
+t501 플레이어: 
 o502 Goto Player
 t502 플레이어로 가기
 o503 Goto Player's View
@@ -1075,7 +1077,7 @@ t517 저장된 설정이 없습니다.
 o518 Select preset to delete
 t518 삭제할 설정을 선택하세요.
 o519  does not have a value yet.
-t519 
+t519  아직 값이 없습니다.
 o520 Version {} is available
 t520 버전 {}이 사용 가능합니다.
 o521 Download
@@ -1111,7 +1113,7 @@ t535 생성기:
 o536 Will automatically download and use the latest version
 t536 자동으로 최신 버전을 다운로드하고 사용합니다.
 o537 Height: 
-t537 
+t537 높이: 
 o538 Grass
 t538 잔디
 o539 Server version:
@@ -1143,11 +1145,11 @@ t551
 o552 f: 
 t552 
 o553 Seed: 
-t553 
+t553 시드: 
 o554 East-West Chunks: 
-t554 
+t554 동-서 청크: 
 o555 North-South Chunks: 
-t555 
+t555 남-북 청크: 
 o556 Survival
 t556 서바이벌
 o557 Cancel
@@ -1227,7 +1229,7 @@ t593 기본 리소스팩
 o594 Square
 t594 사각형
 o595 Record Macro
-t595 
+t595 매크로 녹화
 o596 Health Boost
 t596 체력 신장
 o597 Saturation (no mob effect)
@@ -1255,19 +1257,19 @@ t607 빠른 이동
 o608 Clone Fast Nudge Settings
 t608 복제의 빠른 이동 설정
 o609 Move by the width of selection 
-t609 
+t609 선택 영역의 길이만큼 이동 
 o610 Moves clone by his width
 t610 복제할 범위의 길이만큼 이동합니다
 o611 Width of clone movement: 
-t611 
+t611 복제의 빠른 이동 거리: 
 o612 Import Fast Nudge Settings:
 t612 불러오기의 빠른 이동 설정:
-o613 Move by the width of schematic 
-t613 
+o613 Move by the width of schematic
+t613 schematic의 길이만큼 이동 
 o614 Moves selection by his width
 t614 선택한 범위의 길이만큼 이동합니다
 o615 Width of import movement: 
-t615 
+t615 불러오기의 이동 거리: 
 o616 Import Options
 t616 불러오기의 설정
 o617 Blocks Fast Nudge Settings:
@@ -1279,7 +1281,7 @@ t619 포인트의 빠른 이동 설정:
 o620 Moves points by the selection's width
 t620 포인트의 길이만큼 이동합니다
 o621 Width of points movement: 
-t621 
+t621 포인트의 이동 거리: 
 o622 Do you want to save your changes?
 t622 저장하시겠습니까?
 o623 Don't Save
@@ -1287,7 +1289,8 @@ t623 저장 안함
 o624 Press a key to assign to the action "{0}"
 
 Press ESC to cancel.
-t624 
+t624 "{0}" 작업을 지정할 키를 누르십시오
+취소하려면 ESC를 누르십시오.
 o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
@@ -1295,16 +1298,19 @@ t625 "{0}" 작업을 지정할 키를 누르십시오
 키가 없다면 우클릭으로 빠른 이동을 합니다.
 취소하려면 ESC를 누르십시오.
 o626 {0} is not a modifier. Press a new key.
+
 Press ESC to cancel.
 t626 
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel.
-t627 
+t627 이동 키는 Ctrl이나 modifier과 함께 사용할 수 없습니다. 다른 키를 누르십시오.
+취소하려면 ESC를 누르십시오.
 o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t628 
+t628 {0}는 사용할 수 없는 키입니다. 다른 키를 누르십시오.
+취소하려면 ESC를 누르십시오.
 o629 Reset to default
 t629 기본 설정으로 되돌리기
 o630 Do you want to keep your changes?
@@ -1392,7 +1398,7 @@ t668 NBT 데이터 저장
 o669 Save unsaved edits before loading?
 t669 불러오기 전에 변경사항을 저장할까요?
 o670 {0} unsaved edits.  {1} to save.  {2}
-t670 
+t670 {0} 저장되지 않은 에딧. 저장할  {1}.  {2}
 o671 (UNDO DISABLED)
 t671 (뒤로가기 미사용 중)
 o672 Save unsaved edits before closing?
@@ -1470,7 +1476,8 @@ t705 클릭하여 필터를 핫키에 지정하세요.
 o706 Press a key to assign to the filter "{0}"
 
 Press ESC to cancel.
-t706 
+t706 "{0}" 필터에 연결할 키를 누르세요.
+ESC로 취소하세요.
 o707 Can't bind. {0} is already used by {1}.
 Press a key to assign to the filter "{2}"
 
@@ -1635,3 +1642,5 @@ o778 Rename
 t778 
 o779 Paste as child
 t779 
+o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
+t780 
