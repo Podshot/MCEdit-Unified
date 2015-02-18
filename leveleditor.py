@@ -2118,7 +2118,7 @@ class LevelEditor(GLViewport):
             worldTable.selectedWorldIndex = i
             if evt.num_clicks == 2:
                 loadWorld()
-                d.dismiss("Cancel")
+                dialog.dismiss("Cancel")
 
         def dispatch_key(name, evt):
             if name != "key_down":

@@ -229,7 +229,7 @@ class RootWidget(Widget):
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
-                    
+
                     for event in events:
                         #if event.type:
                         #log.debug("%s", event)
