@@ -628,8 +628,6 @@ class SelectionTool(EditorTool):
 
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
-        if keyname == config.keys.showBlockInfo.get():
-            self.infoKey = 0
         if keyname == config.keys.selectChunks.get():
             self.selectKey = 0
         if keyname == config.keys.deselectChunks.get():
