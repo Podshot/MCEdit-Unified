@@ -678,7 +678,7 @@ class TextEditorWrapped(Widget):
             elif event.key == K_v:
                 try:
                     #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
-                    t = pyperclip.paste() 
+                    t = pyperclip.paste().replace("\n", " ")
                     if t is not None:
                         if self.insertion_point is not None:
                             self.text = self.text[:self.insertion_point] + t + self.text[self.insertion_point:]

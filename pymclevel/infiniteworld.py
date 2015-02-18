@@ -1700,7 +1700,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     def getTileTicksInBox(self, box):
         tileticks = []
         for chunk, slices, point in self.getChunkSlices(box):
-            tileticks += chunk.getEntitiesInBox(box)
+            tileticks += chunk.getTileTicksInBox(box)
 
         return tileticks
 
