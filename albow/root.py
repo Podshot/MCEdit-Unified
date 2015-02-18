@@ -551,15 +551,20 @@ class RootWidget(Widget):
         add_modifiers(event)
         return event
 
+    cleared = False
     def gl_clear(self):
         from OpenGL import GL
 
+        if not GL.glCheckFramebufferStatus(GL.GL_FRAMEBUFFER) == GL.GL_FRAMEBUFFER_COMPLETE:
+            return
+        
         bg = self.bg_color
-        if bg:
+        if bg and not self.cleared:
             r = bg[0] / 255.0
             g = bg[1] / 255.0
             b = bg[2] / 255.0
-            GL.glClearColor(r, g, b, 0.0)
+            GL.glClearColor(r, g, b, 1.0)
+            self.cleared = True
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
 
     @staticmethod
