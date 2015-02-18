@@ -2985,40 +2985,39 @@ class MCRenderer(object):
             GL.glMatrixMode(GL.GL_TEXTURE)
             GL.glScalef(1 / 2., 1 / 2., 1 / 2.)
 
-        with gl.glPushMatrix(GL.GL_MODELVIEW):
-            dx, dy, dz = self.origin
-            GL.glTranslate(dx, dy, dz)
+        dx, dy, dz = self.origin
+        GL.glTranslate(dx, dy, dz)
 
-            GL.glEnable(GL.GL_CULL_FACE)
-            GL.glEnable(GL.GL_DEPTH_TEST)
+        GL.glEnable(GL.GL_CULL_FACE)
+        GL.glEnable(GL.GL_DEPTH_TEST)
+        GL.glEnable(GL.GL_TEXTURE_2D)
+        GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
+            
+        self.level.materials.terrainTexture.bind()
 
-            self.level.materials.terrainTexture.bind()
-            GL.glEnable(GL.GL_TEXTURE_2D)
-            GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
+        offset = DepthOffset.PreviewRenderer if self.isPreviewer else DepthOffset.Renderer
+        GL.glPolygonOffset(offset, offset)
+        GL.glEnable(GL.GL_POLYGON_OFFSET_FILL)
 
-            offset = DepthOffset.PreviewRenderer if self.isPreviewer else DepthOffset.Renderer
-            GL.glPolygonOffset(offset, offset)
-            GL.glEnable(GL.GL_POLYGON_OFFSET_FILL)
+        self.createMasterLists()
+        try:
+            self.callMasterLists()
 
-            self.createMasterLists()
-            try:
-                self.callMasterLists()
+        except GL.GLError, e:
+            if self.errorLimit:
+                self.errorLimit -= 1
+                traceback.print_exc()
+                print e
 
-            except GL.GLError, e:
-                if self.errorLimit:
-                    self.errorLimit -= 1
-                    traceback.print_exc()
-                    print e
+        GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
 
-            GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
+        GL.glDisable(GL.GL_CULL_FACE)
+        GL.glDisable(GL.GL_DEPTH_TEST)
 
-            GL.glDisable(GL.GL_CULL_FACE)
-            GL.glDisable(GL.GL_DEPTH_TEST)
-
-            GL.glDisable(GL.GL_TEXTURE_2D)
-            GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
-            # if self.drawLighting:
-            self.drawLoadableChunkMarkers()
+        GL.glDisable(GL.GL_TEXTURE_2D)
+        GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
+            
+        self.drawLoadableChunkMarkers()
 
         if self.level.materials.name in ("Pocket", "Alpha"):
             GL.glMatrixMode(GL.GL_TEXTURE)
