@@ -68,6 +68,8 @@ class TileEntity(object):
         "Chest": 27,
         "Trap": 9,
         "Cauldron": 4,
+        "Dropper": 9,
+        "Hopper": 5,
     }
     slotNames = {
         "Furnace": {
