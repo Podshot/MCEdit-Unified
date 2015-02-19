@@ -348,6 +348,8 @@ class FilterToolPanel(Panel):
         for name in tool.filterNames:
             if name.startswith("[Macro]"):
                 name = name.replace("[Macro]", "")
+            if name.startswith("<") and name.endswith(">"):
+                name = name.replace("<").replace(">")
             tool.names_list.append(name)
         if os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
             self.macro_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
@@ -749,9 +751,24 @@ class FilterTool(EditorTool):
                 print traceback.format_exc()
                 alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
-
+        
+        category_dict = {}    
+        for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
+            for possible_filter in files:
+                if possible_filter.endswith(".py"):
+                    if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in category_dict:
+                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [possible_filter]
+                    elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
+                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append(possible_filter)
+                      
+        if "demo" in category_dict:
+            del category_dict["demo"]
+        print category_dict
+        
         filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
+        print "Type #1: "+str(type(filterModules))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
+        print "Type #2: "+str(type(filterModules))
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
         for n, m in self.filterModules.iteritems():
             try:
