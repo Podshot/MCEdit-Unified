@@ -1535,7 +1535,7 @@ o723 Edit NBT Data
 t723 Bearbeite NBT Daten
 o724 Open the NBT Explorer to edit player's attributes and inventory
 t724 Öffne den NBT Explorer um Spielers Attribute und Inventar zu editieren
-o724 Not yet implemented.
+o725 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t725  Noch nicht implementiert.
 Nutze den NBT Explorer um den Spieler zu editieren.
@@ -1654,7 +1654,6 @@ o774 Lighting {0} chunks...
 t774 Erleuchte {0} Chunks...
 o775 Create chunks using the settings above? This cannot be undone.
 t775 Chunks erstellen mit den obigen Einstellungen? Das kann nicht rückgängig gemacht werden.
-t775 
 o776 Add
 t776 
 o777 New child
