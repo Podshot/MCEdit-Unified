@@ -74,8 +74,9 @@ class __PlayerCache:
             print "usercache.json is corrupted"
         self.fixAllOfPodshotsBugs()
         self.refresh_lock = threading.Lock()
-        player_refreshing = threading.Thread(target=self._refreshAll)
-        player_refreshing.start()
+        self.player_refreshing = threading.Thread(target=self._refreshAll)
+        self.player_refreshing.daemon = True
+        self.player_refreshing.start()
         #self._refreshAll()
         
 
