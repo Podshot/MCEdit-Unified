@@ -709,8 +709,9 @@ class FilterTool(EditorTool):
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
 
         def tryImport(name):
-            name = os.path.join(directories.getFiltersDir(), name+".py")
-            module_file_object = open(name)
+            print name
+            print directories.getFiltersDir()
+            module_file_object = open(os.path.join(directories.getFiltersDir(), name))
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
                 m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
@@ -764,17 +765,18 @@ class FilterTool(EditorTool):
             for possible_filter in files:
                 if possible_filter.endswith(".py"):
                     if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in category_dict:
-                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [possible_filter]
+                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
                     elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
-                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append(possible_filter)
+                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
                       
         if "demo" in category_dict:
             del category_dict["demo"]
         print category_dict
-        
-        filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
+        # TODO: Remove from here
+        filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         print "Type #1: "+str(type(filterModules))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
+        #filterModules.append(os.path.join(directories.getFiltersDir(), "CMD", "test.py")[:-3])
         print "Type #2: "+str(type(filterModules))
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
         for n, m in self.filterModules.iteritems():
@@ -785,6 +787,18 @@ class FilterTool(EditorTool):
                 alert(
                     _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
+        # TODO: To here
+        '''
+        for cat in category_dict.keys():
+            remove = []
+            print category_dict[cat]
+            for m in category_dict[cat]:
+                category_dict[cat].append(tryImport(m))
+                remove.append(m)
+            for r in remove:
+                category_dict[cat].remove(r)
+            print collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in category_dict[cat]))
+        '''
 
     @property
     def filterNames(self):
