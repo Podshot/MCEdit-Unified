@@ -37,6 +37,7 @@ import directories
 import sys
 import mceutils
 import keys
+import imp
 #-#
 from nbtexplorer import NBTExplorerToolPanel
 #-#
@@ -708,8 +709,12 @@ class FilterTool(EditorTool):
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
 
         def tryImport(name):
+            name = os.path.join(directories.getFiltersDir(), name+".py")
+            module_file_object = open(name)
+            module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
-                m = __import__(name)
+                m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
+            #    m = __import__(name)
             # [D.C.-G.]
             # In my experiments in a NBTTree display issue, I went to think
             # there was somthing wrong with the filters loading/importing. I was
@@ -751,6 +756,8 @@ class FilterTool(EditorTool):
                 print traceback.format_exc()
                 alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
+            finally:
+                module_file_object.close()
         
         category_dict = {}    
         for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
