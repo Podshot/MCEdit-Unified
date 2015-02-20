@@ -94,14 +94,7 @@ if sys.platform == "win32":
     except:
         pass
 
-AppKit = None
-
 if sys.platform == 'darwin':
-    try:
-        import AppKit
-    except ImportError:
-        pass
-
     cmd_name = "Cmd"
     option_name = "Opt"
 else:
@@ -208,20 +201,6 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
 
         if sys.platform == "win32":
             return askOpenFileWin32(title, schematics, initialDir)
-        elif sys.platform == "darwin" and AppKit is not None:
-            print "Open File"
-            op = AppKit.NSOpenPanel.openPanel()
-            op.setTitle_(title)
-            op.setAllowedFileTypes_(_suffixes)
-            op.setAllowsOtherFileTypes_(True)
-
-            op.setDirectory_(initialDir)
-            if op.runModal() == 0:
-                return  # pressed cancel
-
-            AppKit.NSApp.mainWindow().makeKeyWindow()
-
-            return op.filename()
 
         elif hasGtk: #Linux (When GTK 2.4 or newer is installed)
             return askOpenFileGtk(title, _suffixes, initialDir)
@@ -348,19 +327,6 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
             filename = filename.decode(sys.getfilesystemencoding())
         except:
             pass
-
-    elif sys.platform == "darwin" and AppKit is not None:
-        sp = AppKit.NSSavePanel.savePanel()
-        sp.setDirectory_(initialDir)
-        sp.setTitle_(title)
-        sp.setNameFieldStringValue_(defaultName)
-        sp.setAllowedFileTypes_([suffix])
-
-        if sp.runModal() == 0:
-            return # pressed cancel
-
-        filename = sp.filename()
-        AppKit.NSApp.mainWindow().makeKeyWindow()
 
     elif hasGtk: #Linux (When GTK 2.4 or newer is installed)
         chooser = gtk.FileChooserDialog(title,
