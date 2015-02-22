@@ -211,7 +211,10 @@ class MCLevel(object):
         return []
 
     def getTileEntitiesInBox(self, box):
-        return []
+    	tileEntities = []
+    	for chunk, slices, point in self.getChunkSlices(box):
+    		tileEntities.extend(chunk.TileEntities)
+    	return tileEntities
 
     def getTileTicksInBox(self, box):
         return []
