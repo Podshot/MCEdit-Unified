@@ -1535,112 +1535,114 @@ t727 스폰 지점 고정. 변경 내용:
 
 
 o728 <Selection>
-t728 
+t728 <선택 영역>
 o729 <Miscellaneous>
-t729 
+t729 <기타>
 o730 Take Screenshot
-t730 
+t730 스크린샷 찍기
 o731 Double-click to go to this item.
-t731 
+t731 이 아이템으로 가려면 더블클릭하세요.
 o732 Save and Restart
-t732 
+t732 저장하고 다시 시작
 o733 From FTP Server
-t733 
+t733 FTP 서버에서
 o734 <Chunk Control Tool>
-t734 
+t734 <청크 조절 도구>
 o735 Select Chunks
-t735 
+t735 청크 선택
 o736 No matching blocks/tile entities found
-t736 
+t736 맞는 블럭/타일 엔티티가 없습니다.
 o737 Choose a filter, then click Filter or press Enter to apply it.
-t737 
+t737 필터를 선택하고 필터를 클릭하거나 엔터를 눌러서 적용하세요.
 o738 Click to set this item down.
-t738 
+t738 이 아이템을 아래로 두려면 클릭하세요.
 o739 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
-t739 
+t739 마우스 휠로 3번째 좌표축을 따라 이동하세요. {0}을 꾹 눌러서 한 쪽 좌표축만 따라 이동하세요.
 o740 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t740 
+t740 클릭 드래그해서 아이템을 다시 놓으세요. 잡으려면 더블클릭하세요. 복제나 엔터를 눌러서 확인하세요.
 o741 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
-t741 
+t741 선택 영역이 {0:n} 블럭만큼 넘습니다. 블럭 버퍼를 늘리고 다시 시도하세요.
 o742 Copying to clone buffer...
-t742 
+t742 복제 버퍼에 복사중...
 o743 Import a schematic or level...
-t743 
+t743 스키메틱이나 레벨을 불러옵니다...
 o744 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t744 
-o745 I don't know how to open {0}:
+t744 마인크래프트 세이브 파일 경로를 찾을 수 없습니다!
 
+({0}을 찾을 수 없거나 올바른 경로가 아닙니다)
+o745 I don't know how to open {0}:
 {1!r}
-t745 
+t745 {0}는 알 수 없는 파일 형식입니다:
+{1!r}
 o746 Checking for server updates...
-t746 
+t746 서버 업데이트 확인중...
 o747 Time left: {0}
-t747 
+t747 남은 시간: {0}
 o748 Untitled World
-t748 
+t748 제목 없음
 o749 Name this new world.
-t749 
+t749 이 월드에 이름을 지어주세요.
 o750 Minecraft World *.*  
-t750 
+t750 마인크래프트 월드 *.*
 o751 Generating chunks...
-t751 
+t751 청크 생성중...
 o752 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t752 
+t752 월드가 생성되었습니다. 이 맵을 늘리려면 마인크래프트에서 돌아다니거나 청크 컨트롤로 추가, 삭제를 하세요.
 o753 Analyzing {0} blocks...
-t753 
+t753 {0}개의 블럭을 분석중...
 o754 Save to file...
-t754 
+t754 파일로 저장...
 o755 Fill with Air
-t755 
+t755 공기로 채우기
 o756 Delete Chunks
-t756 
+t756 청크 삭제
 o757 Recording undo...
-t757 
+t757 작업 내역 녹화중...
 o758 Replacing blocks...
-t758 
+t758 블럭 바꾸는 중...
 o759 REPLACING - 
-t759 
+t759 바꾸는중 - 
 o760 Copying chunk %s...
-t760 
+t760 청크 복사중 %s...
 o761 Continue with undo disabled?
-t761 
+t761 실행 취소 없이 계속하시겠습니까?
 o762 Continue
-t762 
+t762 계속하기
 o763 Canceled
-t763 
+t763 취소
 o764 DELETING - 
-t764 
+t764 삭제중 - 
 o765 Deleting {0} blocks
-t765 
+t765 {0}개의 블럭 삭제중
 o766 WORKING - 
-t766 
+t766 작업중 - 
 o767 Removing Tile Ticks...
-t767 
+t767 타일 틱 제거중...
 o768 Removing entities...
-t768 
+t768 엔티티 제거중...
 o769 Copying {0:n} blocks...
-t769 
+t769 {0:n}개의 블럭 복사중
 o770 Undoing...
-t770 
+t770 실행 취소...
 o771 UNDOING - 
-t771 
+t771 실행 취소 - 
 o772 Really delete these chunks? This cannot be undone.
-t772 
+t772 청크를 정말로 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
 o773 Save these chunks and remove the rest? This cannot be undone.
-t773 
+t773 이 청크만 저장하고 나머지를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
 o774 Lighting {0} chunks...
-t774 
+t774 {0}개의 청크 조명 작업중...
 o775 Create chunks using the settings above? This cannot be undone.
-t775 
+t775 위의 설정으로 청크를 생성하시겠습니까? 이 작업은 취소할 수 없습니다.
 o776 Add
-t776 
+t776 추가
 o777 New child
-t777 
+t777 새로운 하위 목록
 o778 Rename
-t778 
+t778 이름 바꾸기
 o779 Paste as child
-t779 
+t779 하위 목록으로 붙여넣기
 o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t780 
+t780 청크 모양의 선택 영역을 삭제하고 있습니다. 공기로 채우거나, 혹은 청크 자체를 삭제하시겠습니까?
