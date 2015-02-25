@@ -481,6 +481,10 @@ class CameraViewport(GLViewport):
         def selectedMob():
             return mobs[mobTable.selectedIndex]
 
+        def cancel():
+            mobs[mobTable.selectedIndex] = id
+            panel.dismiss()
+
         id = tileEntity["EntityId"].value
         addMob(id)
 
@@ -488,8 +492,8 @@ class CameraViewport(GLViewport):
 
         choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedMob() + " spawner"), mobTable))
 
-        okButton = Button("OK", action=panel.dismiss)
-        panel.add(Column((choiceCol, okButton)))
+        lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
+        panel.add(Column((choiceCol, lastRow)))
         panel.shrink_wrap()
         panel.present()
 
@@ -612,7 +616,9 @@ class CameraViewport(GLViewport):
 
         colorMenu = mceutils.MenuButton("Add Color Code...", colors, menu_picked=menu_picked)
 
-        column = [Label("Edit Sign")] + lineFields + [colorMenu, Button("OK", action=changeSign)]
+        row = Row((Button("OK", action=changeSign), Button("Cancel", action=panel.dismiss)))
+
+        column = [Label("Edit Sign")] + lineFields + [colorMenu, row]
 
         panel.add(Column(column))
         panel.shrink_wrap()
