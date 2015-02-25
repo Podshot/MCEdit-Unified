@@ -382,10 +382,16 @@ class SelectionTool(EditorTool):
         self.setSelectionPoint(p, self.getSelectionPoint(p) + n)
 
     def nudgeBottomLeft(self, n):
-        return self.nudgePoint(0, n)
+        if self._oldCurrentCorner == 0:
+            return self.nudgePoint(1, n)
+        else:
+            return self.nudgePoint(0, n)
 
     def nudgeTopRight(self, n):
-        return self.nudgePoint(1, n)
+        if self._oldCurrentCorner == 0:
+            return self.nudgePoint(0, n)
+        else:
+            return self.nudgePoint(1, n)
 
     # --- Panel functions ---
     def sizeLabelText(self):
@@ -405,16 +411,21 @@ class SelectionTool(EditorTool):
             self.nudgePanel.bg_color = map(lambda x: x * 0.5, self.selectionColor) + [0.5, ]
 
             self.bottomLeftNudge = bottomLeftNudge = NudgeButton(self.editor)
-            bottomLeftNudge.nudge = self.nudgeBottomLeft
             bottomLeftNudge.anchor = "brwh"
 
-            bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
-
             self.topRightNudge = topRightNudge = NudgeButton(self.editor)
-            topRightNudge.nudge = self.nudgeTopRight
             topRightNudge.anchor = "blwh"
 
-            topRightNudge.bg_color = self.topRightColor + (0.33,)
+            if self.currentCorner == 0:
+                bottomLeftNudge.nudge = self.nudgeTopRight
+                topRightNudge.nudge = self.nudgeBottomLeft
+                bottomLeftNudge.bg_color = self.topRightColor + (0.33,)
+                topRightNudge.bg_color = self.bottomLeftColor + (0.33,)
+            else:
+                bottomLeftNudge.nudge = self.nudgeBottomLeft
+                topRightNudge.nudge = self.nudgeTopRight
+                bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
+                topRightNudge.bg_color = self.topRightColor + (0.33,)
 
             self.nudgeRow = Row((bottomLeftNudge, topRightNudge))
             self.nudgeRow.anchor = "blrh"
@@ -584,7 +595,6 @@ class SelectionTool(EditorTool):
             op = SelectionOperation(self, (self.dragStartPoint, pos))
             self.editor.addOperation(op)
             self.selectionInProgress = False
-            self.currentCorner = 1
             self.clickSelectionInProgress = False
             self.dragStartPoint = None
 
@@ -594,6 +604,18 @@ class SelectionTool(EditorTool):
                 points = (pos, pos)  # set both points on the first click
             else:
                 points[self.currentCorner] = pos
+            self._oldCurrentCorner = self.currentCorner
+            if self.panel is not None:
+                if self.currentCorner == 0:
+                    self.bottomLeftNudge.nudge = self.nudgeTopRight
+                    self.topRightNudge.nudge = self.nudgeBottomLeft
+                    self.bottomLeftNudge.bg_color = self.topRightColor + (0.33,)
+                    self.topRightNudge.bg_color = self.bottomLeftColor + (0.33,)
+                else:
+                    self.bottomLeftNudge.nudge = self.nudgeBottomLeft
+                    self.topRightNudge.nudge = self.nudgeTopRight
+                    self.bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
+                    self.topRightNudge.bg_color = self.topRightColor + (0.33,)
             if not self.clickSelectionInProgress:
                 self.clickSelectionInProgress = True
             else:
@@ -695,6 +717,7 @@ class SelectionTool(EditorTool):
         self.selectOtherCorner()
 
     _currentCorner = 1
+    _oldCurrentCorner = 1
 
     @property
     def currentCorner(self):
@@ -721,8 +744,14 @@ class SelectionTool(EditorTool):
             # these corners stay even while using the chunk tool.
             GL.glPolygonOffset(DepthOffset.SelectionCorners, DepthOffset.SelectionCorners)
             lineWidth = 3
-            for t, c, n in ((self.bottomLeftPoint, self.bottomLeftColor, self.bottomLeftNudge),
-                            (self.topRightPoint, self.topRightColor, self.topRightNudge)):
+            if self._oldCurrentCorner == 1:
+                bottomLeftColor = self.bottomLeftColor
+                topRightColor = self.topRightColor
+            else:
+                bottomLeftColor = self.topRightColor
+                topRightColor = self.bottomLeftColor
+            for t, c, n in ((self.bottomLeftPoint, bottomLeftColor, self.bottomLeftNudge),
+                            (self.topRightPoint, topRightColor, self.topRightNudge)):
                 if t is not None:
                     (sx, sy, sz) = t
                     if self.selectionInProgress:
