@@ -382,16 +382,10 @@ class SelectionTool(EditorTool):
         self.setSelectionPoint(p, self.getSelectionPoint(p) + n)
 
     def nudgeBottomLeft(self, n):
-        if self._oldCurrentCorner == 0:
-            return self.nudgePoint(1, n)
-        else:
-            return self.nudgePoint(0, n)
+        return self.nudgePoint(1 - self._oldCurrentCorner, n)
 
     def nudgeTopRight(self, n):
-        if self._oldCurrentCorner == 0:
-            return self.nudgePoint(0, n)
-        else:
-            return self.nudgePoint(1, n)
+        return self.nudgePoint(self._oldCurrentCorner, n)
 
     # --- Panel functions ---
     def sizeLabelText(self):
