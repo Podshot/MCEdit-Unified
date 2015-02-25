@@ -1008,8 +1008,9 @@ class LevelEditor(GLViewport):
             menu = Menu("", dimensionsMenu)
 
             def presentMenu():
-                x, y = self.netherButton.topleft
-                dimIdx = menu.present(self, (x, y - menu.height))
+                x, y = self.netherButton.bottomleft
+                x += (self.netherButton.width - menu.width) / 2
+                dimIdx = menu.present(self, (x, y))
                 if dimIdx == -1:
                     return
                 dimNo = int(dimensionsMenu[dimIdx][1])
