@@ -5,8 +5,9 @@
 import locale
 from pygame import draw
 import pygame
+from pygame import key
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, K_x, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT, \
-    K_BACKSPACE, K_DELETE
+    K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META
 from widget import Widget, overridable_property
 from controls import Control
 from config import config
@@ -446,10 +447,6 @@ class TimeField(Field):
         super(TimeField, self).set_value((h % 24, m % 60))
 
 
-from pygame import key
-from pygame.locals import KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META
-
-
 class FloatField(Field):
     type = float
     _increment = 0.1
@@ -646,10 +643,34 @@ class TextEditorWrapped(Widget):
         if not (event.cmd or event.alt):
             k = event.key
             if k == K_LEFT:
-                self.move_insertion_point(-1)
+                if not (key.get_mods() & KMOD_SHIFT):
+                    self.move_insertion_point(-1)
+                else:
+                    if self.selection_end is None and self.insertion_point != 0:
+                        self.selection_start = self.insertion_point
+                        self.selection_end = self.insertion_point - 1
+                        self.insertion_point = None
+                    elif self.selection_end is not None and self.selection_end != 0:
+                        self.selection_end -= 1
+                        if self.selection_end == self.selection_start:
+                            self.insertion_point = self.selection_end
+                            self.selection_end = None
+                            self.selection_start = None
                 return
             if k == K_RIGHT:
-                self.move_insertion_point(1)
+                if not (key.get_mods() & KMOD_SHIFT):
+                    self.move_insertion_point(1)
+                else:
+                    if self.selection_start is None and self.insertion_point < len(self.text):
+                        self.selection_start = self.insertion_point
+                        self.selection_end = self.insertion_point + 1
+                        self.insertion_point = None
+                    elif self.selection_start is not None and self.selection_end < len(self.text):
+                        self.selection_end += 1
+                        if self.selection_end == self.selection_start:
+                            self.insertion_point = self.selection_end
+                            self.selection_end = None
+                            self.selection_start = None
                 return
             if k == K_TAB:
                 self.attention_lost()
@@ -675,7 +696,7 @@ class TextEditorWrapped(Widget):
                     if i is None and (self.selection_start is None or self.selection_end is None):
                         text = self.text
                     elif i is None and self.selection_start is not None and self.selection_end is not None:
-                        text = text[(min(self.selection_start, self.selection_end)):]
+                        text = text[(min(self.selection_start, self.selection_end)):max(self.selection_start, self.selection_end)]
                     else:
                         return
                     pyperclip.copy(text)
@@ -734,6 +755,8 @@ class TextEditorWrapped(Widget):
         return text, i, il
 
     def move_insertion_point(self, d):
+        self.selection_end = None
+        self.selection_start = None
         text, i = self.get_text_and_insertion_point()
         if i is None:
             if d > 0:
