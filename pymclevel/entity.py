@@ -507,8 +507,8 @@ class Entity(object):
     tiles = ["PrimedTnt", "FallingSand"]
 
     maxItems = {
-        "MinecraftChest": 27,
-        "MinecraftHopper": 5,
+        "MinecartChest": 27,
+        "MinecartHopper": 5,
         "EntityHorse": 15
     }
 
