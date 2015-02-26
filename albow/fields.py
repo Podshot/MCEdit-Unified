@@ -5,7 +5,7 @@
 import locale
 from pygame import draw
 import pygame
-from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT, \
+from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, K_x, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT, \
     K_BACKSPACE, K_DELETE
 from widget import Widget, overridable_property
 from controls import Control
@@ -668,12 +668,22 @@ class TextEditorWrapped(Widget):
             if self.insert_char(c, k) != 'pass':
                 return
         if event.cmd and event.unicode:
-            if event.key == K_c:
+            if event.key == K_c or event.key == K_x:
                 try:
                     #pygame.scrap.put(SCRAP_TEXT, self.text)
-                    pyperclip.copy(self.text)
+                    text, i = self.get_text_and_insertion_point()
+                    if i is None and (self.selection_start is None or self.selection_end is None):
+                        text = self.text
+                    elif i is None and self.selection_start is not None and self.selection_end is not None:
+                        text = text[(min(self.selection_start, self.selection_end)):]
+                    else:
+                        return
+                    pyperclip.copy(text)
                 except:
                     print "scrap not available"
+                finally:
+                    if event.key == K_x:
+                        self.insert_char(event.unicode, K_BACKSPACE)
 
             elif event.key == K_v:
                 try:
