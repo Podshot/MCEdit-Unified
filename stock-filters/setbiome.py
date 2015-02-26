@@ -23,7 +23,7 @@ inputs = (
                 "Swamppland",
                 "River",
                 "Hell (Nether)",
-                "End",
+                "The End",
                 "Frozen Ocean",
                 "Frozen River",
                 "Ice Plains",
