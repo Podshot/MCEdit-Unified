@@ -693,22 +693,20 @@ class TextEditorWrapped(Widget):
                         if self.insertion_point is not None:
                             self.text = self.text[:self.insertion_point] + t + self.text[self.insertion_point:]
                             self.insertion_point += len(t)
-                            self.textChanged = True
-                            self.sync_line_and_step()
                         elif self.insertion_point is None and (
                                 self.selection_start is None or self.selection_end is None):
                             self.text = t
                             self.insertion_point = len(t)
-                            self.textChanged = True
-                            self.sync_line_and_step()
                         elif self.insertion_point is None and self.selection_start is not None and self.selection_end is not None:
                             self.selection_point = min(self.selection_start, self.selection_end) + len(t)
                             self.text = self.text[:(min(self.selection_start, self.selection_end))] + t + self.text[(
                             max(self.selection_start, self.selection_end)):]
                             self.selection_start = None
                             self.selection_end = None
-                            self.textChanged = True
-                            self.sync_line_and_step()
+                        else:
+                            return
+                        self.change_text(self.text)
+                        self.sync_line_and_step()
                 except:
                     print "scrap not available"
                     #print repr(t)
