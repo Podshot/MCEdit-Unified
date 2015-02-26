@@ -506,6 +506,12 @@ class Entity(object):
                 ]
     tiles = ["PrimedTnt", "FallingSand"]
 
+    maxItems = {
+        "MinecraftChest": 27,
+        "MinecraftHopper": 5,
+        "EntityHorse": 15
+    }
+
     @classmethod
     def Create(cls, entityID, **kw):
         entityTag = nbt.TAG_Compound()
