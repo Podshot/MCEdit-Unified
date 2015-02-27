@@ -1124,7 +1124,7 @@ class ConstructionToolOptions(ToolOptions):
 class ConstructionTool(CloneTool):
     surfaceBuild = True
     toolIconName = "crane"
-    tooltipText = "Import"
+    tooltipText = "Import\nRight-click for options"
 
     panelClass = ConstructionToolPanel
 
