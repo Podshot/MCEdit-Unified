@@ -758,8 +758,9 @@ class SelectionTool(EditorTool):
                             sx, sy, sz = self.dragStartPoint
 
                     # draw a blue or yellow wireframe box at the selection corner
-                    r, g, b = c
-                    alpha = 0.4
+                    else:
+                        r, g, b = c
+                        alpha = 0.4
                     try:
                         bt = self.editor.level.blockAt(sx, sy, sz)
                         if bt:
@@ -803,7 +804,8 @@ class SelectionTool(EditorTool):
 
                         GL.glDisable(GL.GL_BLEND)
 
-                    GL.glColor(r, g, b, alpha)
+                    if not self.selectionInProgress:
+                        GL.glColor(r, g, b, alpha)
                     drawCube(BoundingBox((sx, sy, sz), (1, 1, 1)), GL.GL_LINE_STRIP)
 
             if not (not self.showPreviousSelection and self.selectionInProgress):

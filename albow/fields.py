@@ -684,11 +684,10 @@ class TextEditorWrapped(Widget):
                 return
             if k == K_HOME:
                 if not (key.get_mods() & KMOD_SHIFT):
-                    if self.insertion_point is None:
-                        self.insertion_point = self.selection_start
-                        self.selection_start = None
-                        self.selection_end = None
-                    self.move_insertion_point(-self.insertion_point)
+                    self.selection_start = None
+                    self.selection_end = None
+                    self.insertion_point = 0
+                    self.sync_line_and_step()
                 elif self.insertion_point != 0:
                     if self.insertion_point is not None:
                         self.selection_start = self.insertion_point
@@ -697,17 +696,16 @@ class TextEditorWrapped(Widget):
                 return
             if k == K_END:
                 if not (key.get_mods() & KMOD_SHIFT):
-                    if self.insertion_point is None:
-                        self.insertion_point = self.selection_start
-                        self.selection_start = None
-                        self.selection_end = None
-                    self.move_insertion_point(len(self.text) - self.insertion_point)
+                    self.selection_start = None
+                    self.selection_end = None
+                    self.insertion_point = len(self.text)
+                    self.sync_line_and_step()
                 elif self.insertion_point != len(self.text):
                     if self.insertion_point is not None:
                         self.selection_start = self.insertion_point
                         self.insertion_point = None
                     self.selection_end = len(self.text)
-
+                return
             try:
                 c = event.unicode
             except ValueError:
