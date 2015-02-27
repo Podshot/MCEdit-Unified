@@ -741,7 +741,7 @@ class TextEditorWrapped(Widget):
                 except:
                     print "scrap not available"
                 finally:
-                    if event.key == K_x:
+                    if event.key == K_x and i is None:
                         self.insert_char(event.unicode, K_BACKSPACE)
 
             elif event.key == K_v:

@@ -1136,7 +1136,7 @@ class ConstructionTool(CloneTool):
 
     def updateSchematic(self):
         self.originalLevel = self.level
-        self.scaleFactor = 1
+        self.scaleFactor = 1.0
 
     def quickNudge(self, nudge):
         if config.fastNudgeSettings.importWidth.get():
