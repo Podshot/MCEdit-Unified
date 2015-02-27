@@ -83,7 +83,7 @@ class OptionsPanel(Dialog):
                                             tooltipText="Maximum number of copied objects.")
 
         compassSizeRow = mceutils.IntInputRow("Compass Size (%): ",
-                                            ref=config.settings.compassSize, width=100, min=10, max=100)
+                                            ref=config.settings.compassSize, width=100, min=0, max=100)
 
         # FONT SIZE
 #        fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
