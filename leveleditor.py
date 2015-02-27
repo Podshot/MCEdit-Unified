@@ -13,12 +13,8 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
-import sys
-from compass import CompassOverlay
 from editortools.thumbview import ThumbView
 from pymclevel.infiniteworld import SessionLockLost
-from raycaster import TooFarException
-import raycaster
 import keys
 import pygame
 from albow.fields import FloatField
@@ -62,13 +58,11 @@ import directories
 import panels
 import viewports
 
-from math import isnan
 from os.path import dirname, isdir
 from datetime import datetime, timedelta
 from collections import defaultdict, deque
 
 from OpenGL import GL
-from OpenGL import GLU
 
 from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_text, IntField, Menu, root, Row, \
     TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox

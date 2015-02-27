@@ -79,6 +79,7 @@ class CameraViewport(GLViewport):
         config.controls.invertMousePitch.addObserver(self)
         config.controls.autobrake.addObserver(self)
         config.controls.swapAxes.addObserver(self)
+        config.settings.compassToggle.addObserver(self)
 
         config.settings.fov.addObserver(self, "fovSetting", callback=self.updateFov)
 
@@ -1392,16 +1393,19 @@ class CameraViewport(GLViewport):
         if self.drawFog:
             self.disableFog()
 
-        if self._compass is None:
-            self._compass = CompassOverlay()
+        if self.compassToggle:
+            if self._compass is None:
+                self._compass = CompassOverlay()
 
-        self._compass.yawPitch = self.yaw, 0
+            self._compass.yawPitch = self.yaw, 0
 
-        with gl.glPushMatrix(GL.GL_PROJECTION):
-            GL.glLoadIdentity()
-            GL.glOrtho(0., 1., float(self.height) / self.width, 0, -200, 200)
+            with gl.glPushMatrix(GL.GL_PROJECTION):
+                GL.glLoadIdentity()
+                GL.glOrtho(0., 1., float(self.height) / self.width, 0, -200, 200)
 
-            self._compass.draw()
+                self._compass.draw()
+        else:
+            self._compass = None
 
     _compass = None
 

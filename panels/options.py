@@ -43,7 +43,8 @@ class OptionsPanel(Dialog):
             config.settings.superSecretSettings:       config.settings.superSecretSettings.get(),
             config.settings.longDistanceMode:          config.settings.longDistanceMode.get(),
             config.settings.flyMode:                   config.settings.flyMode.get(),
-            config.settings.langCode:                  config.settings.langCode.get()
+            config.settings.langCode:                  config.settings.langCode.get(),
+            config.settings.compassToggle:             config.settings.compassToggle.get()
         }
 
     def initComponents(self):
@@ -105,6 +106,9 @@ class OptionsPanel(Dialog):
         rotateBlockBrushRow = mceutils.CheckBoxLabel("Rotate block with brush",
                                                         ref=config.settings.rotateBlockBrush,
                                                         tooltipText="When rotating your brush, also rotate the orientation of the block your brushing with")
+
+        compassToggleRow =mceutils.CheckBoxLabel("Toggle compass",
+                                                        ref=config.settings.compassToggle)
 
         windowSizeRow = mceutils.CheckBoxLabel("Window Resize Alert",
                                                ref=config.settings.shouldResizeAlert,
@@ -176,6 +180,7 @@ class OptionsPanel(Dialog):
                     staticCommandsNudgeRow,
                     moveSpawnerPosNudgeRow,
                     rotateBlockBrushRow,
+                    compassToggleRow,
                     langButtonRow,
                     ) + (
                         ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
