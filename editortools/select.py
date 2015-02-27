@@ -572,7 +572,26 @@ class SelectionTool(EditorTool):
             box = self.selectionBox()
             if box is not None:
                 o, m = self.selectionPointsFromDragResize()
+                x, y, z = self.bottomLeftPoint
+                if (x == o[0] or x == m[0]) and (y == o[1] or y == m[1]) and (z == o[2] or z == m[2]):
+                    first = self.bottomLeftPoint
+                    isFirst = True
+                else:
+                    first = self.topRightPoint
+                    isFirst = False
+                second = []
+                for i in range(3):
+                    if o[i] == first[i]:
+                        second.append(m[i])
+                    else:
+                        second.append(o[i])
 
+                if isFirst:
+                    o = first
+                    m = second
+                else:
+                    o = second
+                    m = first
                 op = SelectionOperation(self, (o, m))
                 self.editor.addOperation(op)
 
