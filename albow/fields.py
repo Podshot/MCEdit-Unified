@@ -7,7 +7,7 @@ from pygame import draw
 import pygame
 from pygame import key
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, K_x, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT, \
-    K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META
+    K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META, K_HOME, K_END
 from widget import Widget, overridable_property
 from controls import Control
 from config import config
@@ -682,6 +682,32 @@ class TextEditorWrapped(Widget):
             if k == K_UP:
                 self.move_insertion_line(-1)
                 return
+            if k == K_HOME:
+                if not (key.get_mods() & KMOD_SHIFT):
+                    if self.insertion_point is None:
+                        self.insertion_point = self.selection_start
+                        self.selection_start = None
+                        self.selection_end = None
+                    self.move_insertion_point(-self.insertion_point)
+                elif self.insertion_point != 0:
+                    if self.insertion_point is not None:
+                        self.selection_start = self.insertion_point
+                        self.insertion_point = None
+                    self.selection_end = 0
+                return
+            if k == K_END:
+                if not (key.get_mods() & KMOD_SHIFT):
+                    if self.insertion_point is None:
+                        self.insertion_point = self.selection_start
+                        self.selection_start = None
+                        self.selection_end = None
+                    self.move_insertion_point(len(self.text) - self.insertion_point)
+                elif self.insertion_point != len(self.text):
+                    if self.insertion_point is not None:
+                        self.selection_start = self.insertion_point
+                        self.insertion_point = None
+                    self.selection_end = len(self.text)
+
             try:
                 c = event.unicode
             except ValueError:
