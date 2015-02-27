@@ -746,21 +746,12 @@ class SelectionTool(EditorTool):
                 topRightColor = self.bottomLeftColor
             for t, c, n in ((self.bottomLeftPoint, bottomLeftColor, self.bottomLeftNudge),
                             (self.topRightPoint, topRightColor, self.topRightNudge)):
-                if t is not None:
+                if t is not None and not self.selectionInProgress:
                     (sx, sy, sz) = t
-                    if self.selectionInProgress:
-                        if t == self.getSelectionPoint(self.currentCorner):
-                            blockFace = self.editor.blockFaceUnderCursor
-                            if blockFace:
-                                p, d = blockFace
-                                (sx, sy, sz) = p
-                        else:
-                            sx, sy, sz = self.dragStartPoint
 
                     # draw a blue or yellow wireframe box at the selection corner
-                    else:
-                        r, g, b = c
-                        alpha = 0.4
+                    r, g, b = c
+                    alpha = 0.4
                     try:
                         bt = self.editor.level.blockAt(sx, sy, sz)
                         if bt:
@@ -804,8 +795,7 @@ class SelectionTool(EditorTool):
 
                         GL.glDisable(GL.GL_BLEND)
 
-                    if not self.selectionInProgress:
-                        GL.glColor(r, g, b, alpha)
+                    GL.glColor(r, g, b, alpha)
                     drawCube(BoundingBox((sx, sy, sz), (1, 1, 1)), GL.GL_LINE_STRIP)
 
             if not (not self.showPreviousSelection and self.selectionInProgress):
