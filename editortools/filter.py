@@ -776,14 +776,8 @@ class FilterTool(EditorTool):
                       
         if "demo" in self.category_dict:
             del self.category_dict["demo"]
-        print self.category_dict
-        # TODO: Remove from here
         filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
-        print "Type #1: "+str(type(filterModules))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
-        #filterModules.append(os.path.join(directories.getFiltersDir(), "CMD", "test.py")[:-3])
-        print "Type #2: "+str(type(filterModules))
-        print filterModules
         for key in self.category_dict.keys():
             if key != "":
                 filterModules += check(self.category_dict[key])
@@ -796,18 +790,6 @@ class FilterTool(EditorTool):
                 alert(
                     _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
-        # TODO: To here
-        '''
-        for cat in category_dict.keys():
-            remove = []
-            print category_dict[cat]
-            for m in category_dict[cat]:
-                category_dict[cat].append(tryImport(m))
-                remove.append(m)
-            for r in remove:
-                category_dict[cat].remove(r)
-            print collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in category_dict[cat]))
-        '''
 
     @property
     def filterNames(self):
@@ -815,7 +797,6 @@ class FilterTool(EditorTool):
 
     def moduleDisplayName(self, module):
         cat = ""
-        #print self.category_dict.items()
         for bundle in self.category_dict.items():
             for name, mod in bundle[1]:
                 if mod == module:
