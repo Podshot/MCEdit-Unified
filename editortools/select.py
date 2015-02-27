@@ -605,18 +605,6 @@ class SelectionTool(EditorTool):
             return
 
         if self.dragStartPoint != pos or self.clickSelectionInProgress:
-            op = SelectionOperation(self, (self.dragStartPoint, pos))
-            self.editor.addOperation(op)
-            self.selectionInProgress = False
-            self.clickSelectionInProgress = False
-            self.dragStartPoint = None
-
-        else:
-            points = self.getSelectionPoints()
-            if not all(points):
-                points = (pos, pos)  # set both points on the first click
-            else:
-                points[self.currentCorner] = pos
             self._oldCurrentCorner = self.currentCorner
             if self.panel is not None:
                 if self.currentCorner == 0:
@@ -629,6 +617,18 @@ class SelectionTool(EditorTool):
                     self.topRightNudge.nudge = self.nudgeTopRight
                     self.bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
                     self.topRightNudge.bg_color = self.topRightColor + (0.33,)
+            op = SelectionOperation(self, (self.dragStartPoint, pos))
+            self.editor.addOperation(op)
+            self.selectionInProgress = False
+            self.clickSelectionInProgress = False
+            self.dragStartPoint = None
+
+        else:
+            points = self.getSelectionPoints()
+            if not all(points):
+                points = (pos, pos)  # set both points on the first click
+            else:
+                points[self.currentCorner] = pos
             if not self.clickSelectionInProgress:
                 self.clickSelectionInProgress = True
             else:
