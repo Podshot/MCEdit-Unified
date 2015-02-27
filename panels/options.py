@@ -44,7 +44,8 @@ class OptionsPanel(Dialog):
             config.settings.longDistanceMode:          config.settings.longDistanceMode.get(),
             config.settings.flyMode:                   config.settings.flyMode.get(),
             config.settings.langCode:                  config.settings.langCode.get(),
-            config.settings.compassToggle:             config.settings.compassToggle.get()
+            config.settings.compassToggle:             config.settings.compassToggle.get(),
+            config.settings.compassSize:               config.settings.compassSize.get()
         }
 
     def initComponents(self):
@@ -80,6 +81,9 @@ class OptionsPanel(Dialog):
         maxCopiesRow = mceutils.IntInputRow("Copy Stack Size: ",
                                             ref=config.settings.maxCopies, width=100, min=0,
                                             tooltipText="Maximum number of copied objects.")
+
+        compassSizeRow = mceutils.IntInputRow("Compass Size (%): ",
+                                            ref=config.settings.compassSize, width=100, min=10, max=100)
 
         # FONT SIZE
 #        fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
@@ -167,6 +171,7 @@ class OptionsPanel(Dialog):
             mouseSpeedRow,
             undoLimitRow,
             maxCopiesRow,
+            compassSizeRow
 #            fontProportion, # FONT SIZE
         )
 

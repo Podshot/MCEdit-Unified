@@ -42,7 +42,7 @@ class CompassOverlay(Drawable):
             self._tex = loadPNGTexture("toolicons/" + filename)  # , minFilter=GL.GL_LINEAR, magFilter=GL.GL_LINEAR)
 
         self._tex.bind()
-        size = 0.075
+        size = 0.001 * config.settings.compassSize.get()
 
         with gl.glPushMatrix(GL.GL_MODELVIEW):
             GL.glLoadIdentity()

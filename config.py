@@ -503,7 +503,8 @@ definitions = {
         ("resourcePack", "Resource Pack", u"Default"),
         ("maxCopies", "Copy stack size", 32),
         ("superSecretSettings", "Super Secret Settings", False),
-        ("compassToggle", "Compass Toggle", True)
+        ("compassToggle", "Compass Toggle", True),
+        ("compassSize", "Compass Size", 75)
 #        ("fontProportion", "Fonts Proportion", 100),
     ],
     ("controls", "Controls"): [
