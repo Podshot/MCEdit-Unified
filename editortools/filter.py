@@ -707,10 +707,15 @@ class FilterTool(EditorTool):
             for k, m in self.filterModules.iteritems():
                 del m
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+            
+        def check(list_thing):
+            toReturn = []
+            for name, module in list_thing:
+                if hasattr(module, "perform"):
+                    toReturn.append(module)
+            return toReturn
 
         def tryImport(name):
-            print name
-            print directories.getFiltersDir()
             module_file_object = open(os.path.join(directories.getFiltersDir(), name))
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
@@ -760,24 +765,28 @@ class FilterTool(EditorTool):
             finally:
                 module_file_object.close()
         
-        category_dict = {}    
+        self.category_dict = {}    
         for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
             for possible_filter in files:
                 if possible_filter.endswith(".py"):
-                    if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in category_dict:
-                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
+                    if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in self.category_dict:
+                        self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
                     elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
-                        category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
+                        self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
                       
-        if "demo" in category_dict:
-            del category_dict["demo"]
-        print category_dict
+        if "demo" in self.category_dict:
+            del self.category_dict["demo"]
+        print self.category_dict
         # TODO: Remove from here
         filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         print "Type #1: "+str(type(filterModules))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
         #filterModules.append(os.path.join(directories.getFiltersDir(), "CMD", "test.py")[:-3])
         print "Type #2: "+str(type(filterModules))
+        print filterModules
+        for key in self.category_dict.keys():
+            if key != "":
+                filterModules += check(self.category_dict[key])
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
         for n, m in self.filterModules.iteritems():
             try:
@@ -804,17 +813,27 @@ class FilterTool(EditorTool):
     def filterNames(self):
         return [self.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
-    @staticmethod
-    def moduleDisplayName(module):
+    def moduleDisplayName(self, module):
+        cat = ""
+        #print self.category_dict.items()
+        for bundle in self.category_dict.items():
+            for name, mod in bundle[1]:
+                if mod == module:
+                    cat = bundle[0]
         if hasattr(module, "displayName"):
             n = module.displayName
             if hasattr(module, "trn"):
                 n = module.trn._(module.displayName)
             if n == module.displayName:
                 n = _(module.displayName)
+            if cat != "":
+                n = "{"+str(cat.replace(os.path.sep, "-"))+"} "+n
             return n
         else:
-            return _(module.__name__.capitalize())
+            if cat != "":
+                return "{"+str(cat.replace(os.path.sep, "-"))+"} "+_(module.__name__.capitalize())
+            else:
+                return _(module.__name__.capitalize())
 
     @alertFilterException
     def confirm(self):
