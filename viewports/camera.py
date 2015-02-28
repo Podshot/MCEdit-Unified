@@ -529,6 +529,127 @@ class CameraViewport(GLViewport):
                 self.editor.addUnsavedEdit()
 
     @mceutils.alertException
+    def editJukebox(self, point):
+        discs = {
+            "[No Record]": None,
+            "13": 2256,
+            "cat": 2257,
+            "blocks": 2258,
+            "chirp": 2259,
+            "far": 2260,
+            "mall": 2261,
+            "mellohi": 2262,
+            "stal": 2263,
+            "strad": 2264,
+            "ward": 2265,
+            "11": 2266,
+            "wait": 2267
+        }
+
+        tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
+
+        if not tileEntity:
+            tileEntity = pymclevel.TAG_Compound()
+            tileEntity["id"] = pymclevel.TAG_String("RecordPlayer")
+            tileEntity["x"] = pymclevel.TAG_Int(point[0])
+            tileEntity["y"] = pymclevel.TAG_Int(point[1])
+            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+
+        self.editor.level.addTileEntity(tileEntity)
+        self.editor.level.addTileEntity(tileEntity)
+
+        panel = Dialog()
+
+        def selectTableRow(i, evt):
+            discTable.selectedIndex = i
+
+            if evt.num_clicks == 2:
+                panel.dismiss()
+
+        discTable = TableView(columns=(
+            TableColumn("", 200),
+        )
+        )
+        discTable.num_rows = lambda: len(discs)
+        discTable.row_data = lambda i: (selectedDisc(i),)
+        discTable.row_is_selected = lambda x: x == discTable.selectedIndex
+        discTable.click_row = selectTableRow
+        discTable.selectedIndex = 0
+
+        def selectedDisc(id):
+            if id == 0:
+                return "[No Record]"
+            return discs.keys()[discs.values().index(id + 2255)]
+
+        def cancel():
+            if id == "[No Record]":
+                discTable.selectedIndex = 0
+            else:
+                discTable.selectedIndex = discs[id] - 2255
+            panel.dismiss()
+
+        if "RecordItem" in tileEntity:
+            if tileEntity["RecordItem"]["id"].value == "minecraft:air":
+                id = "[No Record]"
+            else:
+                id = tileEntity["RecordItem"]["id"].value[17:]
+        elif "Record" in tileEntity:
+            if tileEntity["Record"].value == 0:
+                id = "[No Record]"
+            else:
+                id = selectedDisc(tileEntity["Record"].value - 2255)
+        else:
+            id = "[No Record]"
+
+        if id == "[No Record]":
+            discTable.selectedIndex = 0
+        else:
+            discTable.selectedIndex = discs[id] - 2255
+
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedDisc(discTable.selectedIndex) + " disc"), discTable))
+
+        lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
+        panel.add(Column((choiceCol, lastRow)))
+        panel.shrink_wrap()
+        panel.present()
+
+        class JukeboxEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+        if id != selectedDisc(discTable.selectedIndex):
+            if "RecordItem" in tileEntity:
+                del tileEntity["RecordItem"]
+            if discTable.selectedIndex == "[No Record]":
+                tileEntity["Record"] = pymclevel.TAG_Int(0)
+            else:
+                tileEntity["Record"] = pymclevel.TAG_Int(discTable.selectedIndex + 2255)
+            op = JukeboxEditOperation(self.editor, self.editor.level)
+            self.editor.addOperation(op)
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
+
+    @mceutils.alertException
     def editSign(self, point):
 
         tileEntity = self.editor.level.tileEntityAt(*point)
@@ -1057,7 +1178,8 @@ class CameraViewport(GLViewport):
                                 pymclevel.alphaMaterials.Sign.ID: self.editSign,
                                 pymclevel.alphaMaterials.WallSign.ID: self.editSign,
                                 pymclevel.alphaMaterials.MobHead.ID: self.editSkull,
-                                pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock
+                                pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock,
+                                pymclevel.alphaMaterials.Jukebox.ID: self.editJukebox
                             }
                             edit = blockEditors.get(block)
                             if edit:
