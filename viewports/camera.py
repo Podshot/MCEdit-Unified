@@ -607,7 +607,7 @@ class CameraViewport(GLViewport):
         else:
             discTable.selectedIndex = discs[id] - 2255
 
-        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedDisc(discTable.selectedIndex) + " disc"), discTable))
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedDisc(discTable.selectedIndex) + (" disc" if selectedDisc(discTable.selectedIndex) != "[No Record]" else "")), discTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
         panel.add(Column((choiceCol, lastRow)))
@@ -645,6 +645,99 @@ class CameraViewport(GLViewport):
             else:
                 tileEntity["Record"] = pymclevel.TAG_Int(discTable.selectedIndex + 2255)
             op = JukeboxEditOperation(self.editor, self.editor.level)
+            self.editor.addOperation(op)
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
+
+    @mceutils.alertException
+    def editNoteBlock(self, point):
+        notes = [
+            "F# (0.5)", "G (0.53)", "G# (0.56)",
+            "A (0.6)", "A# (0.63)", "B (0.67)",
+            "C (0.7)", "C# (0.75)", "D (0.8)",
+            "D# (0.85)", "E (0.9)", "F (0.95)",
+            "F# (1.0)", "G (1.05)", "G# (1.1)",
+            "A (1.2)", "A# (1.25)", "B (1.32)",
+            "C (1.4)", "C# (1.5", "D (1.6)",
+            "D# (1.7)", "E (1.8)", "F (1.9)",
+            "F# (2.0)"
+        ]
+
+        tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
+
+        if not tileEntity:
+            tileEntity = pymclevel.TAG_Compound()
+            tileEntity["id"] = pymclevel.TAG_String("MobSpawner")
+            tileEntity["x"] = pymclevel.TAG_Int(point[0])
+            tileEntity["y"] = pymclevel.TAG_Int(point[1])
+            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+            tileEntity["note"] = pymclevel.TAG_Byte(0)
+
+        self.editor.level.addTileEntity(tileEntity)
+
+        panel = Dialog()
+
+        def selectTableRow(i, evt):
+            noteTable.selectedIndex = i
+
+            if evt.num_clicks == 2:
+                panel.dismiss()
+
+        noteTable = TableView(columns=(
+            TableColumn("", 200),
+        )
+        )
+        noteTable.num_rows = lambda: len(notes)
+        noteTable.row_data = lambda i: (notes[i],)
+        noteTable.row_is_selected = lambda x: x == noteTable.selectedIndex
+        noteTable.click_row = selectTableRow
+        noteTable.selectedIndex = 0
+
+        def selectedNote():
+            return notes[noteTable.selectedIndex]
+
+        def cancel():
+            noteTable.selectedIndex = id
+            panel.dismiss()
+
+        id = tileEntity["note"].value
+
+        noteTable.selectedIndex = id
+
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedNote() + " note"), noteTable))
+
+        lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
+        panel.add(Column((choiceCol, lastRow)))
+        panel.shrink_wrap()
+        panel.present()
+
+        class NoteBlockEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+        if id != noteTable.selectedIndex:
+            tileEntity["note"] = pymclevel.TAG_Byte(noteTable.selectedIndex)
+            op = NoteBlockEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
@@ -1179,7 +1272,8 @@ class CameraViewport(GLViewport):
                                 pymclevel.alphaMaterials.WallSign.ID: self.editSign,
                                 pymclevel.alphaMaterials.MobHead.ID: self.editSkull,
                                 pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock,
-                                pymclevel.alphaMaterials.Jukebox.ID: self.editJukebox
+                                pymclevel.alphaMaterials.Jukebox.ID: self.editJukebox,
+                                pymclevel.alphaMaterials.NoteBlock.ID: self.editNoteBlock
                             }
                             edit = blockEditors.get(block)
                             if edit:
