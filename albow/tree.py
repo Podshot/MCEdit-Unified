@@ -6,12 +6,15 @@
 #
 # Tree widget for albow
 #
-from albow import Widget, Menu, IntField, FloatField, TextFieldWrapped, \
-    CheckBox, AttrRef, Label, Row, Button, ask, alert, input_text_buttons
+from albow.widget import Widget
+from albow.menu import Menu
+from albow.fields import IntField, FloatField, TextFieldWrapped
+from albow.controls import CheckBox, AttrRef, Label, Button
+from albow.dialogs import ask, alert, input_text_buttons
 from albow.translate import _
-from mceutils import ChoiceButton
+from extended_widgets import ChoiceButton
 from theme import ThemeProperty
-from layout import Column
+from layout import Column, Row
 from dialogs import Dialog
 from palette_view import PaletteView
 from scrollpanel import ScrollRow
@@ -152,6 +155,7 @@ class Tree(Column):
             self.map_types_item = setup_map_types_item()
         self.selected_item_index = None
         self.selected_item = None
+        self.clicked_item = None
         self.copyBuffer = kwargs.pop('copyBuffer', None)
         self._parent = kwargs.pop('_parent', None)
         self.styles = kwargs.pop('styles', {})
@@ -392,6 +396,7 @@ class Tree(Column):
             meth(head, bg, fg, shape, text, k, lvl)
             rows.append([head, fields, [w] * len(fields), k, p, c, id, type(v), lvl, v])
         self.rows = rows
+        return rows
 
     def deploy(self, id):
             if id in self.deployed:
@@ -402,7 +407,7 @@ class Tree(Column):
 
     def click_item(self, n, pos):
         """..."""
-        row = self.rows[n]
+        self.clicked_item = row = self.rows[n]
         r = self.get_bullet_rect(row[0], row[8])
         x = pos[0]
         if self.margin + r.left - self.treeRow.hscroll <= x <= self.margin + self.treeRow.margin + r.right - self.treeRow.hscroll:
