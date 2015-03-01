@@ -18,11 +18,12 @@ TODO:
 """
 
 import os, sys
-from pygame import event
+from pygame import event, image
+from pygame.transform import scale
 from pygame.locals import *
 from albow.widget import Widget
 from albow.dialogs import Dialog, ask, alert
-from albow.controls import Label, Button
+from albow.controls import Label, Button, Image
 from albow.fields import TextFieldWrapped
 from albow.layout import Row, Column
 from albow.palette_view import PaletteView
@@ -30,8 +31,9 @@ from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
 from tree import Tree
-from time import time
 
+file_image = image.load('file.png')
+folder_image = image.load('folder.png')
 
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
@@ -58,7 +60,7 @@ class FileListView(ScrollPanel):
         h = font.get_linesize()
         d = 2 * self.predict(kwds, 'margin')
         ScrollPanel.__init__(self, inner_width=width, **kwds)
-        self.scrollRow.tooltipText = self.tooltipText
+        self.icons = {True: scale(folder_image, (self.row_height, self.row_height)), False: scale(file_image, (self.row_height, self.row_height))}
         self.client = client
         self.names = []
 
@@ -83,7 +85,7 @@ class FileListView(ScrollPanel):
         except EnvironmentError, e:
             alert(u"%s: %s" % (dir, e))
             self.names = []
-        self.rows = [Row([Label({True: '(D)', False: '(F)'}[os.path.isdir(os.path.join(dir, a))], margin=0, tooltipText={True: 'Directory', False: 'File'}[os.path.isdir(os.path.join(dir, a))]),
+        self.rows = [Row([Image(self.icons[os.path.isdir(os.path.join(dir, a))]),
                           Label(a, margin=0)], margin=0, spacing=2) for a in self.names]
         self.selected_item_index = None
         self.scroll_to_item(0)
@@ -177,14 +179,12 @@ class FSTree(Tree):
             d = {}
             for folder in folders:
                 if type(folder) == str:
-                    print 'folder is str'
                     folder = unicode(folder, 'utf-8')
                 d[folder] = {}
                 cont = os.walk(os.path.join(a, folder))
                 for _a, fs, _b in cont:
                     for f in fs:
                         if type(f) == str:
-                            print 'f is str'
                             d[folder][unicode(f, 'utf-8')] = {}
                         else:
                             d[folder][f] = {}
