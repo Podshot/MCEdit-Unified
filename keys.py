@@ -190,6 +190,75 @@ class KeyConfigPanel(Dialog):
                     ("Fast Nudge", "None"),
                     ("Fast Increment Modifier", "Ctrl")
                 ],
+                "ESDF": [
+                    ("Forward", "E"),
+                    ("Back", "D"),
+                    ("Left", "S"),
+                    ("Right", "F"),
+                    ("Up", "Space"),
+                    ("Down", "Shift"),
+                    ("Brake", "C"),
+
+                    ("Pan Up", "I"),
+                    ("Pan Down", "K"),
+                    ("Pan Left", "J"),
+                    ("Pan Right", "L"),
+                    ("Toggle View", "Tab"),
+                    ("Goto Panel", "Ctrl-G"),
+                    ("View Distance", "Ctrl-F"),
+                    ("Toggle Renderer", "Ctrl-M"),
+                    ("Fly Mode", "None"),
+
+                    ("Increase Reach", "Scroll Up"),
+                    ("Decrease Reach", "Scroll Down"),
+                    ("Reset Reach", "Button 3"),
+                    ("Show Block Info", "Alt"),
+                    ("Pick Block", "Alt"),
+                    ("Snap Clone to Axis", "Ctrl"),
+                    ("Long-Distance Mode", "Alt-Z"),
+                    ("Blocks-Only Modifier", "Alt"),
+
+                    ("Rotate (Brush)", "R"),
+                    ("Roll (Brush)", "H"),
+                    ("Increase Brush", "T"),
+                    ("Decrease Brush", "G"),
+                    ("Brush Line Tool", "Z"),
+
+                    ("Rotate (Clone)", "R"),
+                    ("Roll (Clone)", "T"),
+                    ("Flip", "G"),
+                    ("Mirror", "H"),
+
+                    ("Replace Shortcut", "R"),
+                    ("Swap", "X"),
+
+                    ("Select Chunks", "Z"),
+                    ("Deselect Chunks", "Alt"),
+
+                    ("Delete Blocks", "Delete"),
+                    ("Select All", "Ctrl-A"),
+                    ("Deselect", "Ctrl-D"),
+                    ("Undo", "Ctrl-Z"),
+                    ("Redo", "Ctrl-Y"),
+                    ("Cut", "Ctrl-X"),
+                    ("Copy", "Ctrl-C"),
+                    ("Paste", "Ctrl-V"),
+                    ("Export Selection", "Ctrl-E"),
+
+                    ("New World", "Ctrl-N"),
+                    ("Quick Load", "Ctrl-L"),
+                    ("Open", "Ctrl-O"),
+                    ("Save", "Ctrl-S"),
+                    ("Reload World", "Ctrl-R"),
+                    ("Close World", "Ctrl-W"),
+                    ("World Info", "Ctrl-I"),
+                    ("Quit", "Ctrl-Q"),
+
+                    ("Take a Screenshot", "F6"),
+                    ("Debug Overlay", "0"),
+                    ("Fast Nudge", "None"),
+                    ("Fast Increment Modifier", "Ctrl")
+                ],
                 "Arrows": [
                     ("Forward", "Up"),
                     ("Back", "Down"),
@@ -431,8 +500,10 @@ class KeyConfigPanel(Dialog):
 
         resetToDefaultRow = albow.Row((albow.Button("Reset to default", action=self.resetDefault),))
 
-        choiceButton = mceutils.ChoiceButton(["WASD", "Arrows", "Numpad", "WASD Old"], choose=self.choosePreset)
-        if config.keys.forward.get() == "Up":
+        choiceButton = mceutils.ChoiceButton(["WASD", "ESDF", "Arrows", "Numpad", "WASD Old"], choose=self.choosePreset)
+        if config.keys.forward.get() == "E":
+            choiceButton.selectedChoice = "ESDF"
+        elif config.keys.forward.get() == "Up":
             choiceButton.selectedChoice = "Arrows"
         elif config.keys.forward.get() == "[8]":
             choiceButton.selectedChoice = "Numpad"
