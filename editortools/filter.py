@@ -716,6 +716,9 @@ class FilterTool(EditorTool):
             return toReturn
 
         def tryImport(name):
+            # [D.C.-G.]
+            # Using a file object to import the module is not needed.
+            # A more simple way is to use imp.load_source() as seen in the commented block below.
             module_file_object = open(os.path.join(directories.getFiltersDir(), name))
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
@@ -734,25 +737,29 @@ class FilterTool(EditorTool):
             # tested...
             #
             #import imp
-            #try:
-            #    try:
-            #        path = os.path.join(directories.filtersDir, (name + ".py"))
-            ##        if type(path) == unicode and DEF_ENC != "UTF-8":
-            ##            path = path.encode(DEF_ENC)
-            #        m = imp.load_source(name, path)
-            #    except:
-            #        path = os.path.join(directories.getDataDir(), "stock-filters", (name + ".py"))
-            ##        if type(path) == unicode and DEF_ENC != "UTF-8":
-            ##            path = path.encode(DEF_ENC)
-            #        m = imp.load_source(name, path)
+#            try:
+#                try:
+##                    path = os.path.join(directories.filtersDir, (name + ".py"))
+#                    path = os.path.join(directories.filtersDir, name)
+#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
+#            #            path = path.encode(DEF_ENC)
+##                    m = imp.load_source(name, path)
+#                    m = imp.load_source(module_name, path)
+#                except:
+##                    path = os.path.join(directories.getDataDir(), "stock-filters", (name + ".py"))
+#                    path = os.path.join(directories.getDataDir(), "stock-filters", name)
+#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
+#            #            path = path.encode(DEF_ENC)
+##                    m = imp.load_source(name, path)
+#                    m = imp.load_source(module_name, path)
                 listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
-                if name + ".py" not in listdir or name + ".pyc" not in listdir or name + ".pyo" not in listdir:
+                if name not in listdir:
                     if "albow.translate" in sys.modules.keys():
                         del sys.modules["albow.translate"]
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
                     import albow.translate as trn
-                    trn_path = os.path.join(directories.getFiltersDir(), name)
+                    trn_path = os.path.join(directories.getFiltersDir(), module_name)
                     if os.path.exists(trn_path):
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
@@ -764,8 +771,8 @@ class FilterTool(EditorTool):
                 return object()
             finally:
                 module_file_object.close()
-        
-        self.category_dict = {}    
+
+        self.category_dict = {}
         for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
             for possible_filter in files:
                 if possible_filter.endswith(".py"):
@@ -773,7 +780,7 @@ class FilterTool(EditorTool):
                         self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
                     elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
                         self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
-                      
+
         if "demo" in self.category_dict:
             del self.category_dict["demo"]
         filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
