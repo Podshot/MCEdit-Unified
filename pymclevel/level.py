@@ -16,6 +16,7 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent, exhaust
 import nbt
 from numpy import argmax, swapaxes, zeros, zeros_like
 import os.path
+import time
 
 log = getLogger(__name__)
 
@@ -628,14 +629,18 @@ class FakeChunk(ChunkBase):
 
 
 class LightedChunk(ChunkBase):
+    def __init__(self):
+        self._timeLastChanged = time.time()
+        super(ChunkBase, self).__init__()
+        
     def generateHeightMap(self):
         computeChunkHeightMap(self.materials, self.Blocks, self.HeightMap)
-
+        
     def chunkChanged(self, calcLighting=True):
         """ You are required to call this function after you are done modifying
         the chunk. Pass False for calcLighting if you know your changes will
         not change any lights."""
-
+        self._timeLastChanged = time.time()
         self.dirty = True
         self.needsLighting = calcLighting or self.needsLighting
         self.generateHeightMap()
