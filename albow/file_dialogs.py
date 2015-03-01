@@ -71,12 +71,18 @@ class FileListView(ScrollPanel):
             return os.path.isdir(path) or self.client.filter(path)
 
         try:
-            names = [unicode(name) for name in os.listdir(dir) if filter(name)]
-            #if not name.startswith(".") and filter(name)]
+            content = os.walk(dir)
+            for a, dirnames, filenames in content:
+                dirnames.sort()
+                filenames.sort()
+                break
+            try:
+                self.names = [unicode(name, 'utf-8') for name in dirnames + filenames if filter(name)]
+            except:
+                self.names = [name for name in dirnames + filenames if filter(name)]
         except EnvironmentError, e:
             alert(u"%s: %s" % (dir, e))
-            names = []
-        self.names = sorted(names)
+            self.names = []
         self.rows = [Row([Label({True: '(D)', False: '(F)'}[os.path.isdir(os.path.join(dir, a))], margin=0, tooltipText={True: 'Directory', False: 'File'}[os.path.isdir(os.path.join(dir, a))]),
                           Label(a, margin=0)], margin=0, spacing=2) for a in self.names]
         self.selected_item_index = None
@@ -170,12 +176,18 @@ class FSTree(Tree):
         for a, folders, b in content:
             d = {}
             for folder in folders:
-                folder = unicode(folder)
+                if type(folder) == str:
+                    print 'folder is str'
+                    folder = unicode(folder, 'utf-8')
                 d[folder] = {}
                 cont = os.walk(os.path.join(a, folder))
                 for _a, fs, _b in cont:
                     for f in fs:
-                        d[folder][unicode(f)] = {}
+                        if type(f) == str:
+                            print 'f is str'
+                            d[folder][unicode(f, 'utf-8')] = {}
+                        else:
+                            d[folder][f] = {}
                     break
             break
         return d
