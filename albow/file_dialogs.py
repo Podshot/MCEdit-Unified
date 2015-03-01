@@ -181,6 +181,8 @@ class FSTree(Tree):
                 if type(folder) == str:
                     folder = unicode(folder, 'utf-8')
                 d[folder] = {}
+                if type(a) == str:
+                    a = unicode(a,'utf-8')
                 cont = os.walk(os.path.join(a, folder))
                 for _a, fs, _b in cont:
                     for f in fs:
