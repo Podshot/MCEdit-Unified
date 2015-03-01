@@ -68,6 +68,8 @@ class TileEntity(object):
         "Chest": 27,
         "Trap": 9,
         "Cauldron": 4,
+        "Dropper": 9,
+        "Hopper": 5,
     }
     slotNames = {
         "Furnace": {
@@ -503,6 +505,12 @@ class Entity(object):
                 "Boat",
                 ]
     tiles = ["PrimedTnt", "FallingSand"]
+
+    maxItems = {
+        "MinecartChest": 27,
+        "MinecartHopper": 5,
+        "EntityHorse": 15
+    }
 
     @classmethod
     def Create(cls, entityID, **kw):

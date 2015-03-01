@@ -118,12 +118,13 @@ class FileOpener(albow.Widget):
         self.root.fix_sticky_ctrl()
 
     def promptOpenAndLoad(self):
-        try:
+#!# Bad! But used to test the file chooser.
+#        try:
             filename = mcplatform.askOpenFile()
             if filename:
                 self.mcedit.loadFile(filename)
-        except Exception, e:
-            logging.error('Error during proptOpenAndLoad: {0!r}'.format(e))
+#        except Exception, e:
+#            logging.error('Error during proptOpenAndLoad: {0!r}'.format(e))
 
     def createNewWorld(self):
         self.parent.createNewWorld()

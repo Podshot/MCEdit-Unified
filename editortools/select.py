@@ -382,10 +382,10 @@ class SelectionTool(EditorTool):
         self.setSelectionPoint(p, self.getSelectionPoint(p) + n)
 
     def nudgeBottomLeft(self, n):
-        return self.nudgePoint(0, n)
+        return self.nudgePoint(1 - self._oldCurrentCorner, n)
 
     def nudgeTopRight(self, n):
-        return self.nudgePoint(1, n)
+        return self.nudgePoint(self._oldCurrentCorner, n)
 
     # --- Panel functions ---
     def sizeLabelText(self):
@@ -405,16 +405,21 @@ class SelectionTool(EditorTool):
             self.nudgePanel.bg_color = map(lambda x: x * 0.5, self.selectionColor) + [0.5, ]
 
             self.bottomLeftNudge = bottomLeftNudge = NudgeButton(self.editor)
-            bottomLeftNudge.nudge = self.nudgeBottomLeft
             bottomLeftNudge.anchor = "brwh"
 
-            bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
-
             self.topRightNudge = topRightNudge = NudgeButton(self.editor)
-            topRightNudge.nudge = self.nudgeTopRight
             topRightNudge.anchor = "blwh"
 
-            topRightNudge.bg_color = self.topRightColor + (0.33,)
+            if self.currentCorner == 0:
+                bottomLeftNudge.nudge = self.nudgeTopRight
+                topRightNudge.nudge = self.nudgeBottomLeft
+                bottomLeftNudge.bg_color = self.topRightColor + (0.33,)
+                topRightNudge.bg_color = self.bottomLeftColor + (0.33,)
+            else:
+                bottomLeftNudge.nudge = self.nudgeBottomLeft
+                topRightNudge.nudge = self.nudgeTopRight
+                bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
+                topRightNudge.bg_color = self.topRightColor + (0.33,)
 
             self.nudgeRow = Row((bottomLeftNudge, topRightNudge))
             self.nudgeRow.anchor = "blrh"
@@ -567,7 +572,26 @@ class SelectionTool(EditorTool):
             box = self.selectionBox()
             if box is not None:
                 o, m = self.selectionPointsFromDragResize()
+                x, y, z = self.bottomLeftPoint
+                if (x == o[0] or x == m[0]) and (y == o[1] or y == m[1]) and (z == o[2] or z == m[2]):
+                    first = self.bottomLeftPoint
+                    isFirst = True
+                else:
+                    first = self.topRightPoint
+                    isFirst = False
+                second = []
+                for i in range(3):
+                    if o[i] == first[i]:
+                        second.append(m[i])
+                    else:
+                        second.append(o[i])
 
+                if isFirst:
+                    o = first
+                    m = second
+                else:
+                    o = second
+                    m = first
                 op = SelectionOperation(self, (o, m))
                 self.editor.addOperation(op)
 
@@ -581,10 +605,21 @@ class SelectionTool(EditorTool):
             return
 
         if self.dragStartPoint != pos or self.clickSelectionInProgress:
+            self._oldCurrentCorner = self.currentCorner
+            if self.panel is not None:
+                if self.currentCorner == 0:
+                    self.bottomLeftNudge.nudge = self.nudgeTopRight
+                    self.topRightNudge.nudge = self.nudgeBottomLeft
+                    self.bottomLeftNudge.bg_color = self.topRightColor + (0.33,)
+                    self.topRightNudge.bg_color = self.bottomLeftColor + (0.33,)
+                else:
+                    self.bottomLeftNudge.nudge = self.nudgeBottomLeft
+                    self.topRightNudge.nudge = self.nudgeTopRight
+                    self.bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
+                    self.topRightNudge.bg_color = self.topRightColor + (0.33,)
             op = SelectionOperation(self, (self.dragStartPoint, pos))
             self.editor.addOperation(op)
             self.selectionInProgress = False
-            self.currentCorner = 1
             self.clickSelectionInProgress = False
             self.dragStartPoint = None
 
@@ -628,8 +663,6 @@ class SelectionTool(EditorTool):
 
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
-        if keyname == config.keys.showBlockInfo.get():
-            self.infoKey = 0
         if keyname == config.keys.selectChunks.get():
             self.selectKey = 0
         if keyname == config.keys.deselectChunks.get():
@@ -697,6 +730,7 @@ class SelectionTool(EditorTool):
         self.selectOtherCorner()
 
     _currentCorner = 1
+    _oldCurrentCorner = 1
 
     @property
     def currentCorner(self):
@@ -723,18 +757,16 @@ class SelectionTool(EditorTool):
             # these corners stay even while using the chunk tool.
             GL.glPolygonOffset(DepthOffset.SelectionCorners, DepthOffset.SelectionCorners)
             lineWidth = 3
-            for t, c, n in ((self.bottomLeftPoint, self.bottomLeftColor, self.bottomLeftNudge),
-                            (self.topRightPoint, self.topRightColor, self.topRightNudge)):
-                if t is not None:
+            if self._oldCurrentCorner == 1:
+                bottomLeftColor = self.bottomLeftColor
+                topRightColor = self.topRightColor
+            else:
+                bottomLeftColor = self.topRightColor
+                topRightColor = self.bottomLeftColor
+            for t, c, n in ((self.bottomLeftPoint, bottomLeftColor, self.bottomLeftNudge),
+                            (self.topRightPoint, topRightColor, self.topRightNudge)):
+                if t is not None and not self.selectionInProgress:
                     (sx, sy, sz) = t
-                    if self.selectionInProgress:
-                        if t == self.getSelectionPoint(self.currentCorner):
-                            blockFace = self.editor.blockFaceUnderCursor
-                            if blockFace:
-                                p, d = blockFace
-                                (sx, sy, sz) = p
-                        else:
-                            sx, sy, sz = self.dragStartPoint
 
                     # draw a blue or yellow wireframe box at the selection corner
                     r, g, b = c

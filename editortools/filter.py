@@ -37,6 +37,7 @@ import directories
 import sys
 import mceutils
 import keys
+import imp
 #-#
 from nbtexplorer import NBTExplorerToolPanel
 #-#
@@ -348,6 +349,8 @@ class FilterToolPanel(Panel):
         for name in tool.filterNames:
             if name.startswith("[Macro]"):
                 name = name.replace("[Macro]", "")
+            if name.startswith("<") and name.endswith(">"):
+                name = name.replace("<").replace(">")
             tool.names_list.append(name)
         if os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
             self.macro_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
@@ -704,10 +707,20 @@ class FilterTool(EditorTool):
             for k, m in self.filterModules.iteritems():
                 del m
             mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+            
+        def check(list_thing):
+            toReturn = []
+            for name, module in list_thing:
+                if hasattr(module, "perform"):
+                    toReturn.append(module)
+            return toReturn
 
         def tryImport(name):
+            module_file_object = open(os.path.join(directories.getFiltersDir(), name))
+            module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
-                m = __import__(name)
+                m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
+            #    m = __import__(name)
             # [D.C.-G.]
             # In my experiments in a NBTTree display issue, I went to think
             # there was somthing wrong with the filters loading/importing. I was
@@ -749,9 +762,25 @@ class FilterTool(EditorTool):
                 print traceback.format_exc()
                 alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
-
-        filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
+            finally:
+                module_file_object.close()
+        
+        self.category_dict = {}    
+        for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
+            for possible_filter in files:
+                if possible_filter.endswith(".py"):
+                    if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in self.category_dict:
+                        self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
+                    elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
+                        self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
+                      
+        if "demo" in self.category_dict:
+            del self.category_dict["demo"]
+        filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
+        for key in self.category_dict.keys():
+            if key != "":
+                filterModules += check(self.category_dict[key])
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
         for n, m in self.filterModules.iteritems():
             try:
@@ -766,17 +795,26 @@ class FilterTool(EditorTool):
     def filterNames(self):
         return [self.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
-    @staticmethod
-    def moduleDisplayName(module):
+    def moduleDisplayName(self, module):
+        cat = ""
+        for bundle in self.category_dict.items():
+            for name, mod in bundle[1]:
+                if mod == module:
+                    cat = bundle[0]
         if hasattr(module, "displayName"):
             n = module.displayName
             if hasattr(module, "trn"):
                 n = module.trn._(module.displayName)
             if n == module.displayName:
                 n = _(module.displayName)
+            if cat != "":
+                n = "{"+str(cat.replace(os.path.sep, "-"))+"} "+n
             return n
         else:
-            return _(module.__name__.capitalize())
+            if cat != "":
+                return "{"+str(cat.replace(os.path.sep, "-"))+"} "+_(module.__name__.capitalize())
+            else:
+                return _(module.__name__.capitalize())
 
     @alertFilterException
     def confirm(self):

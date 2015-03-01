@@ -32,6 +32,7 @@ from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
 import version_utils
 import player
+import logging
 
 log = getLogger(__name__)
 
@@ -1134,6 +1135,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             f.write(struct.pack(">q", self.initTime))
             f.flush()
             os.fsync(f.fileno())
+        logging.getLogger().warning("Re-acquired session lock")
 
     def checkSessionLock(self):
         if self.readonly:
@@ -1698,10 +1700,17 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         return entities
 
+    def getTileEntitiesInBox(self, box):
+        tileEntites = []
+        for chunk, slices, point in self.getChunkSlices(box):
+            tileEntites += chunk.getTileEntitiesInBox(box)
+
+        return tileEntites
+
     def getTileTicksInBox(self, box):
         tileticks = []
         for chunk, slices, point in self.getChunkSlices(box):
-            tileticks += chunk.getEntitiesInBox(box)
+            tileticks += chunk.getTileTicksInBox(box)
 
         return tileticks
 

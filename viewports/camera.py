@@ -79,6 +79,7 @@ class CameraViewport(GLViewport):
         config.controls.invertMousePitch.addObserver(self)
         config.controls.autobrake.addObserver(self)
         config.controls.swapAxes.addObserver(self)
+        config.settings.compassToggle.addObserver(self)
 
         config.settings.fov.addObserver(self, "fovSetting", callback=self.updateFov)
 
@@ -481,6 +482,10 @@ class CameraViewport(GLViewport):
         def selectedMob():
             return mobs[mobTable.selectedIndex]
 
+        def cancel():
+            mobs[mobTable.selectedIndex] = id
+            panel.dismiss()
+
         id = tileEntity["EntityId"].value
         addMob(id)
 
@@ -488,8 +493,8 @@ class CameraViewport(GLViewport):
 
         choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedMob() + " spawner"), mobTable))
 
-        okButton = Button("OK", action=panel.dismiss)
-        panel.add(Column((choiceCol, okButton)))
+        lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
+        panel.add(Column((choiceCol, lastRow)))
         panel.shrink_wrap()
         panel.present()
 
@@ -519,6 +524,220 @@ class CameraViewport(GLViewport):
         if id != selectedMob():
             tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
             op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
+            self.editor.addOperation(op)
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
+
+    @mceutils.alertException
+    def editJukebox(self, point):
+        discs = {
+            "[No Record]": None,
+            "13": 2256,
+            "cat": 2257,
+            "blocks": 2258,
+            "chirp": 2259,
+            "far": 2260,
+            "mall": 2261,
+            "mellohi": 2262,
+            "stal": 2263,
+            "strad": 2264,
+            "ward": 2265,
+            "11": 2266,
+            "wait": 2267
+        }
+
+        tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
+
+        if not tileEntity:
+            tileEntity = pymclevel.TAG_Compound()
+            tileEntity["id"] = pymclevel.TAG_String("RecordPlayer")
+            tileEntity["x"] = pymclevel.TAG_Int(point[0])
+            tileEntity["y"] = pymclevel.TAG_Int(point[1])
+            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+
+        self.editor.level.addTileEntity(tileEntity)
+        self.editor.level.addTileEntity(tileEntity)
+
+        panel = Dialog()
+
+        def selectTableRow(i, evt):
+            discTable.selectedIndex = i
+
+            if evt.num_clicks == 2:
+                panel.dismiss()
+
+        discTable = TableView(columns=(
+            TableColumn("", 200),
+        )
+        )
+        discTable.num_rows = lambda: len(discs)
+        discTable.row_data = lambda i: (selectedDisc(i),)
+        discTable.row_is_selected = lambda x: x == discTable.selectedIndex
+        discTable.click_row = selectTableRow
+        discTable.selectedIndex = 0
+
+        def selectedDisc(id):
+            if id == 0:
+                return "[No Record]"
+            return discs.keys()[discs.values().index(id + 2255)]
+
+        def cancel():
+            if id == "[No Record]":
+                discTable.selectedIndex = 0
+            else:
+                discTable.selectedIndex = discs[id] - 2255
+            panel.dismiss()
+
+        if "RecordItem" in tileEntity:
+            if tileEntity["RecordItem"]["id"].value == "minecraft:air":
+                id = "[No Record]"
+            else:
+                id = tileEntity["RecordItem"]["id"].value[17:]
+        elif "Record" in tileEntity:
+            if tileEntity["Record"].value == 0:
+                id = "[No Record]"
+            else:
+                id = selectedDisc(tileEntity["Record"].value - 2255)
+        else:
+            id = "[No Record]"
+
+        if id == "[No Record]":
+            discTable.selectedIndex = 0
+        else:
+            discTable.selectedIndex = discs[id] - 2255
+
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedDisc(discTable.selectedIndex) + (" disc" if selectedDisc(discTable.selectedIndex) != "[No Record]" else "")), discTable))
+
+        lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
+        panel.add(Column((choiceCol, lastRow)))
+        panel.shrink_wrap()
+        panel.present()
+
+        class JukeboxEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+        if id != selectedDisc(discTable.selectedIndex):
+            if "RecordItem" in tileEntity:
+                del tileEntity["RecordItem"]
+            if discTable.selectedIndex == "[No Record]":
+                tileEntity["Record"] = pymclevel.TAG_Int(0)
+            else:
+                tileEntity["Record"] = pymclevel.TAG_Int(discTable.selectedIndex + 2255)
+            op = JukeboxEditOperation(self.editor, self.editor.level)
+            self.editor.addOperation(op)
+            if op.canUndo:
+                self.editor.addUnsavedEdit()
+
+    @mceutils.alertException
+    def editNoteBlock(self, point):
+        notes = [
+            "F# (0.5)", "G (0.53)", "G# (0.56)",
+            "A (0.6)", "A# (0.63)", "B (0.67)",
+            "C (0.7)", "C# (0.75)", "D (0.8)",
+            "D# (0.85)", "E (0.9)", "F (0.95)",
+            "F# (1.0)", "G (1.05)", "G# (1.1)",
+            "A (1.2)", "A# (1.25)", "B (1.32)",
+            "C (1.4)", "C# (1.5", "D (1.6)",
+            "D# (1.7)", "E (1.8)", "F (1.9)",
+            "F# (2.0)"
+        ]
+
+        tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
+
+        if not tileEntity:
+            tileEntity = pymclevel.TAG_Compound()
+            tileEntity["id"] = pymclevel.TAG_String("MobSpawner")
+            tileEntity["x"] = pymclevel.TAG_Int(point[0])
+            tileEntity["y"] = pymclevel.TAG_Int(point[1])
+            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+            tileEntity["note"] = pymclevel.TAG_Byte(0)
+
+        self.editor.level.addTileEntity(tileEntity)
+
+        panel = Dialog()
+
+        def selectTableRow(i, evt):
+            noteTable.selectedIndex = i
+
+            if evt.num_clicks == 2:
+                panel.dismiss()
+
+        noteTable = TableView(columns=(
+            TableColumn("", 200),
+        )
+        )
+        noteTable.num_rows = lambda: len(notes)
+        noteTable.row_data = lambda i: (notes[i],)
+        noteTable.row_is_selected = lambda x: x == noteTable.selectedIndex
+        noteTable.click_row = selectTableRow
+        noteTable.selectedIndex = 0
+
+        def selectedNote():
+            return notes[noteTable.selectedIndex]
+
+        def cancel():
+            noteTable.selectedIndex = id
+            panel.dismiss()
+
+        id = tileEntity["note"].value
+
+        noteTable.selectedIndex = id
+
+        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedNote() + " note"), noteTable))
+
+        lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
+        panel.add(Column((choiceCol, lastRow)))
+        panel.shrink_wrap()
+        panel.present()
+
+        class NoteBlockEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+        if id != noteTable.selectedIndex:
+            tileEntity["note"] = pymclevel.TAG_Byte(noteTable.selectedIndex)
+            op = NoteBlockEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
@@ -612,7 +831,9 @@ class CameraViewport(GLViewport):
 
         colorMenu = mceutils.MenuButton("Add Color Code...", colors, menu_picked=menu_picked)
 
-        column = [Label("Edit Sign")] + lineFields + [colorMenu, Button("OK", action=changeSign)]
+        row = Row((Button("OK", action=changeSign), Button("Cancel", action=panel.dismiss)))
+
+        column = [Label("Edit Sign")] + lineFields + [colorMenu, row]
 
         panel.add(Column(column))
         panel.shrink_wrap()
@@ -859,8 +1080,9 @@ class CameraViewport(GLViewport):
         chestItemTable.row_is_selected = lambda x: x == chestWidget.selectedItemIndex
         chestItemTable.click_row = selectTableRow
 
+        maxSlot = pymclevel.TileEntity.maxItems[tileEntityTag["id"].value] - 1
         fieldRow = (
-            mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=26),
+            mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
             mceutils.TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
             # Text to allow the input of internal item names
             mceutils.IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
@@ -1049,7 +1271,9 @@ class CameraViewport(GLViewport):
                                 pymclevel.alphaMaterials.Sign.ID: self.editSign,
                                 pymclevel.alphaMaterials.WallSign.ID: self.editSign,
                                 pymclevel.alphaMaterials.MobHead.ID: self.editSkull,
-                                pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock
+                                pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock,
+                                pymclevel.alphaMaterials.Jukebox.ID: self.editJukebox,
+                                pymclevel.alphaMaterials.NoteBlock.ID: self.editNoteBlock
                             }
                             edit = blockEditors.get(block)
                             if edit:
@@ -1385,16 +1609,19 @@ class CameraViewport(GLViewport):
         if self.drawFog:
             self.disableFog()
 
-        if self._compass is None:
-            self._compass = CompassOverlay()
+        if self.compassToggle:
+            if self._compass is None:
+                self._compass = CompassOverlay()
 
-        self._compass.yawPitch = self.yaw, 0
+            self._compass.yawPitch = self.yaw, 0
 
-        with gl.glPushMatrix(GL.GL_PROJECTION):
-            GL.glLoadIdentity()
-            GL.glOrtho(0., 1., float(self.height) / self.width, 0, -200, 200)
+            with gl.glPushMatrix(GL.GL_PROJECTION):
+                GL.glLoadIdentity()
+                GL.glOrtho(0., 1., float(self.height) / self.width, 0, -200, 200)
 
-            self._compass.draw()
+                self._compass.draw()
+        else:
+            self._compass = None
 
     _compass = None
 

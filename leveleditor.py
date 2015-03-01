@@ -13,18 +13,15 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
-import sys
-from compass import CompassOverlay
 from editortools.thumbview import ThumbView
 from pymclevel.infiniteworld import SessionLockLost
-from raycaster import TooFarException
-import raycaster
 import keys
 import pygame
 from albow.fields import FloatField
 from mceutils import ChoiceButton, TextInputRow
 from editortools.blockview import BlockButton
 import ftp_client
+import sys
 
 """
 leveleditor.py
@@ -62,17 +59,15 @@ import directories
 import panels
 import viewports
 
-from math import isnan
 from os.path import dirname, isdir
 from datetime import datetime, timedelta
 from collections import defaultdict, deque
 
 from OpenGL import GL
-from OpenGL import GLU
 
 from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_text, IntField, Menu, root, Row, \
     TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
-from albow.controls import Label, SmallValueDisplay, ValueDisplay
+from albow.controls import Label, SmallValueDisplay, ValueDisplay, Image
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
 from albow.translate import _
@@ -235,9 +230,14 @@ class LevelEditor(GLViewport):
                                      tooltipText=_("Shortcut: {0}").format(config.keys.toggleView.get()))
 
         self.recordUndoButton = mceutils.CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
+        
+        # TODO: Mark
+        self.sessionLockLock = Image(os.path.join("toolicons", "session_good.png"))
+        self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
+        self.sessionLockLabel = Label("Session Lock Status:", margin=0)
 
         row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
-               self.viewButton, self.viewportButton, self.recordUndoButton)
+               self.viewButton, self.viewportButton, self.recordUndoButton, Label("Session Lock Status:"), self.sessionLockLock)
 
         # row += (Button("CR Info", action=self.showChunkRendererInfo), )
         self.topRow = row = Row(row)
@@ -269,6 +269,12 @@ class LevelEditor(GLViewport):
         self.toolbar.selectTool(0)
 
         self.controlPanel = panels.ControlPanel(self)
+        
+        logger = logging.getLogger()
+
+        adapter = logging.StreamHandler(sys.stdout)
+        adapter.addFilter(LogFilter(self))
+        logger.addHandler(adapter)
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
@@ -1008,8 +1014,9 @@ class LevelEditor(GLViewport):
             menu = Menu("", dimensionsMenu)
 
             def presentMenu():
-                x, y = self.netherButton.topleft
-                dimIdx = menu.present(self, (x, y - menu.height))
+                x, y = self.netherButton.bottomleft
+                x += (self.netherButton.width - menu.width) / 2
+                dimIdx = menu.present(self, (x, y))
                 if dimIdx == -1:
                     return
                 dimNo = int(dimensionsMenu[dimIdx][1])
@@ -1018,7 +1025,7 @@ class LevelEditor(GLViewport):
             self.netherButton = Button("Goto Dimension", action=presentMenu)
             self.remove(self.topRow)
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
-               self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton))
+               self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton, Row((self.sessionLockLabel, self.sessionLockLock))))
             self.add(self.topRow, 0)
 
         else:
@@ -1026,6 +1033,7 @@ class LevelEditor(GLViewport):
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
                self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
+            self.level.sessionLockLock = self.sessionLockLock
 
         if len(list(self.level.allChunks)) == 0:
             resp = ask(
@@ -2118,7 +2126,7 @@ class LevelEditor(GLViewport):
             worldTable.selectedWorldIndex = i
             if evt.num_clicks == 2:
                 loadWorld()
-                d.dismiss("Cancel")
+                dialog.dismiss("Cancel")
 
         def dispatch_key(name, evt):
             if name != "key_down":
@@ -2471,6 +2479,7 @@ class LevelEditor(GLViewport):
     averageCPS = 0.0
     shouldLoadAndRender = True
     showWorkInfo = False
+    
 
     def gl_draw(self):
         self.debugString = ""
@@ -2481,7 +2490,7 @@ class LevelEditor(GLViewport):
 
         if not self.shouldLoadAndRender:
             return
-
+        
         self.renderer.loadVisibleChunks()
         self.addWorker(self.renderer)
 
@@ -3113,3 +3122,20 @@ class EditorToolbar(GLOrtho):
             GL.glDrawArrays(GL.GL_QUADS, 0, cursor / 2)
 
         GL.glDisable(GL.GL_BLEND)
+        
+from albow.resource import get_image
+        
+class LogFilter(logging.Filter):
+    
+    def __init__(self, editor):
+        self.level = logging.WARNING
+        self.editor = editor
+        
+    def filter(self, record):
+        message = record.getMessage()
+        if "Session lock lost. This world is being accessed from another location." in message:
+            self.editor.sessionLockLock.set_image(get_image(os.path.join("toolicons", "session_bad.png"), prefix=""))
+            self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
+        if "Re-acquired session lock" in message:
+            self.editor.sessionLockLock.set_image(get_image(os.path.join("toolicons", "session_good.png"), prefix=""))
+            self.editor.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"

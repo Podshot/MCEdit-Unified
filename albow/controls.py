@@ -234,11 +234,11 @@ class Image(Widget):
 
     highlighted = False
 
-    def __init__(self, image=None, rect=None, **kwds):
+    def __init__(self, image=None, rect=None, prefix="", **kwds):
         Widget.__init__(self, rect, **kwds)
         if image:
             if isinstance(image, basestring):
-                image = resource.get_image(image)
+                image = resource.get_image(image, prefix=prefix)
             w, h = image.get_size()
             d = 2 * self.margin
             self.size = w + d, h + d

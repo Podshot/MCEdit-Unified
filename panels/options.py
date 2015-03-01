@@ -43,7 +43,9 @@ class OptionsPanel(Dialog):
             config.settings.superSecretSettings:       config.settings.superSecretSettings.get(),
             config.settings.longDistanceMode:          config.settings.longDistanceMode.get(),
             config.settings.flyMode:                   config.settings.flyMode.get(),
-            config.settings.langCode:                  config.settings.langCode.get()
+            config.settings.langCode:                  config.settings.langCode.get(),
+            config.settings.compassToggle:             config.settings.compassToggle.get(),
+            config.settings.compassSize:               config.settings.compassSize.get()
         }
 
     def initComponents(self):
@@ -80,6 +82,9 @@ class OptionsPanel(Dialog):
                                             ref=config.settings.maxCopies, width=100, min=0,
                                             tooltipText="Maximum number of copied objects.")
 
+        compassSizeRow = mceutils.IntInputRow("Compass Size (%): ",
+                                            ref=config.settings.compassSize, width=100, min=0, max=100)
+
         # FONT SIZE
 #        fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
 #                                            ref=config.settings.fontProportion, width=100, min=0,
@@ -105,6 +110,9 @@ class OptionsPanel(Dialog):
         rotateBlockBrushRow = mceutils.CheckBoxLabel("Rotate block with brush",
                                                         ref=config.settings.rotateBlockBrush,
                                                         tooltipText="When rotating your brush, also rotate the orientation of the block your brushing with")
+
+        compassToggleRow =mceutils.CheckBoxLabel("Toggle compass",
+                                                        ref=config.settings.compassToggle)
 
         windowSizeRow = mceutils.CheckBoxLabel("Window Resize Alert",
                                                ref=config.settings.shouldResizeAlert,
@@ -163,6 +171,7 @@ class OptionsPanel(Dialog):
             mouseSpeedRow,
             undoLimitRow,
             maxCopiesRow,
+            compassSizeRow
 #            fontProportion, # FONT SIZE
         )
 
@@ -176,6 +185,7 @@ class OptionsPanel(Dialog):
                     staticCommandsNudgeRow,
                     moveSpawnerPosNudgeRow,
                     rotateBlockBrushRow,
+                    compassToggleRow,
                     langButtonRow,
                     ) + (
                         ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
@@ -361,6 +371,7 @@ class OptionsPanel(Dialog):
         config.save()
 
     def dispatch_key(self, name, evt):
+        super(OptionsPanel, self).dispatch_key(name, evt)
         if name == "key_down":
             keyname = self.get_root().getKey(evt)
             if keyname == 'Escape':

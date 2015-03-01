@@ -229,7 +229,7 @@ class RootWidget(Widget):
                     #events = [pygame.event.wait()]
                     events = [pygame.event.poll()]
                     events.extend(pygame.event.get())
-                    
+
                     for event in events:
                         #if event.type:
                         #log.debug("%s", event)
@@ -310,7 +310,10 @@ class RootWidget(Widget):
                             set_modifier(key, False)
                             add_modifiers(event)
                             self.bonus_draw_time = 0
-                            if self.nudgeDirection != None:
+                            keyname = self.getKey(event)
+                            if keyname == config.keys.showBlockInfo.get() and self.editor.toolbar.tools[0].infoKey == 1:
+                                self.editor.toolbar.tools[0].infoKey = 0
+                            if self.nudgeDirection is not None:
                                 keyname = self.getKey(movement=True, keyname=pygame.key.name(key))
                                 for i, key in enumerate(self.editor.movements):
                                     if keyname == key and i == self.nudgeDirection:
@@ -550,7 +553,7 @@ class RootWidget(Widget):
 
     def gl_clear(self):
         from OpenGL import GL
-
+        
         bg = self.bg_color
         if bg:
             r = bg[0] / 255.0

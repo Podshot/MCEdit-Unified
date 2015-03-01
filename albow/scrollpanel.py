@@ -55,6 +55,9 @@ class ScrollRow(PaletteView):
     def num_items(self):
         return self.parent.num_rows()
 
+    def num_rows(self):
+        return max(0, PaletteView.num_rows(self) - 1)
+
     def row_data(self, row):
         return self.parent.row_data(row)
 

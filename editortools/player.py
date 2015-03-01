@@ -857,7 +857,7 @@ class PlayerSpawnPositionOptions(ToolOptions):
 class PlayerSpawnPositionTool(PlayerPositionTool):
     surfaceBuild = True
     toolIconName = "playerspawn"
-    tooltipText = "Move Spawn Point"
+    tooltipText = "Move Spawn Point\nRight-click for options"
 
     def __init__(self, *args):
         PlayerPositionTool.__init__(self, *args)
