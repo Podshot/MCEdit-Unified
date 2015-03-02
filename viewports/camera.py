@@ -445,8 +445,7 @@ class CameraViewport(GLViewport):
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["Delay"] = pymclevel.TAG_Short(120)
             tileEntity["EntityId"] = pymclevel.TAG_String(mobs[0])
-
-        self.editor.level.addTileEntity(tileEntity)
+            self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
 
@@ -555,9 +554,7 @@ class CameraViewport(GLViewport):
             tileEntity["x"] = pymclevel.TAG_Int(point[0])
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
-
-        self.editor.level.addTileEntity(tileEntity)
-        self.editor.level.addTileEntity(tileEntity)
+            self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
 
@@ -640,10 +637,12 @@ class CameraViewport(GLViewport):
         if id != selectedDisc(discTable.selectedIndex):
             if "RecordItem" in tileEntity:
                 del tileEntity["RecordItem"]
-            if discTable.selectedIndex == "[No Record]":
+            if discTable.selectedIndex == 0:
                 tileEntity["Record"] = pymclevel.TAG_Int(0)
+                self.editor.level.setBlockDataAt(tileEntity["x"].value, tileEntity["y"].value, tileEntity["z"].value, 0)
             else:
                 tileEntity["Record"] = pymclevel.TAG_Int(discTable.selectedIndex + 2255)
+                self.editor.level.setBlockDataAt(tileEntity["x"].value, tileEntity["y"].value, tileEntity["z"].value, 1)
             op = JukeboxEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
@@ -673,8 +672,7 @@ class CameraViewport(GLViewport):
             tileEntity["y"] = pymclevel.TAG_Int(point[1])
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             tileEntity["note"] = pymclevel.TAG_Byte(0)
-
-        self.editor.level.addTileEntity(tileEntity)
+            self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
 
@@ -758,8 +756,7 @@ class CameraViewport(GLViewport):
             tileEntity["z"] = pymclevel.TAG_Int(point[2])
             for l in linekeys:
                 tileEntity[l] = pymclevel.TAG_String("")
-
-        self.editor.level.addTileEntity(tileEntity)
+            self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
 
