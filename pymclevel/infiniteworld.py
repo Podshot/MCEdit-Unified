@@ -1593,11 +1593,14 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         chunk = self._loadedChunks.get((cx, cz))
         if time.time() - self.lastCleanUp > 1.0:
+            print "Removing cached chunks. {0} chunks cached".format(len(self._loadedChunks))
             for k in self._loadedChunks.keys():
                 ch = self._loadedChunks[k]
                 if time.time() - ch._timeLastChanged > 2.0:
                     del self._loadedChunks[k]
             self.lastCleanUp = time.time()
+            print "Removed unused cached chunks. {0} remaining in cache.".format(len(self._loadedChunks))
+
             
         if chunk is not None:
             return chunk
