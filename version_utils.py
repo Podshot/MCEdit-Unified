@@ -34,9 +34,12 @@ class __PlayerCache:
 
     def __convert(self):
         jsonFile = None
+        fp = open(userCachePath)
         try:
-            jsonFile = json.load(open(userCachePath))
+            jsonFile = json.load(fp)
+            fp.close()
         except ValueError:
+            fp.close()
             # Assuming JSON file is corrupted, deletes file and creates new one
             os.remove(userCachePath)
             with open(userCachePath, 'w') as json_out:
@@ -61,17 +64,23 @@ class __PlayerCache:
     def __init__(self):
         self._playerCacheList = []
         if not os.path.exists(userCachePath):
-            with open(userCachePath, "w") as out:
-                json.dump(self._playerCacheList, out)
-        with open(userCachePath) as f:
-            line = f.readline()
-            if line.startswith("{"):
-                self.__convert()
+            out = open(userCachePath, 'w') 
+            json.dump(self._playerCacheList, out)
+            out.close()
+        f = open(userCachePath, 'r')
+        line = f.readline()
+        if line.startswith("{"):
+            f.close()
+            self.__convert()
+        f.close()
         try:
-            with open(userCachePath) as json_in:
-                self._playerCacheList = json.load(json_in)
+            json_in = open(userCachePath)
+            self._playerCacheList = json.load(json_in)
         except:
             print "usercache.json is corrupted"
+            self._playerCacheList = []
+        finally:
+            json_in.close()
         self.fixAllOfPodshotsBugs()
         self.refresh_lock = threading.Lock()
         self.player_refreshing = threading.Thread(target=self._refreshAll)
@@ -136,7 +145,8 @@ class __PlayerCache:
                     if t - player["Timestamp"] > 21600:
                         playersNeededToBeRefreshed.append(player)
             for player in playersNeededToBeRefreshed:
-                self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
+                self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True, dontSave=True)
+                self._save()
     
     def force_refresh(self):
         players = self._playerCacheList
@@ -144,7 +154,7 @@ class __PlayerCache:
             self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
             
     
-    def getPlayerFromUUID(self, uuid, forceNetwork=False):
+    def getPlayerFromUUID(self, uuid, forceNetwork=False, dontSave=False):
         player = {}
         if forceNetwork:
             if self.uuidInCache(uuid):
@@ -161,7 +171,8 @@ class __PlayerCache:
                 player["WasSuccessful"] = True
                 player["Timestamp"] = time.time()
                 self._playerCacheList.append(player)
-                self._save()
+                if not dontSave:
+                    self._save()
                 return playerJSON["name"]
             else:
                 return uuid
