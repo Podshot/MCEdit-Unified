@@ -7,14 +7,7 @@
 """
 TODO:
 
-* Correct bug when selecting a folder which does not contains folders:
-  The deploy arrow appears on initialisation, but when clicking on, it transforms in a deadend bullet (grey square).
-  When closing and redeploying the parent, the arrow is shown deployed and the element has a sole deadend child whithout text.
-  When closing the element, it shows the deadend bullet.
-
-* Update the right panel with the selected element contents. Folders first.
-
-* Find a way to differenciate the files and the folders.
+* Implement Windows support.
 """
 
 import os, sys
@@ -31,6 +24,9 @@ from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
 from tree import Tree
+
+import logging
+log = logging.getLogger(__name__)
 
 file_image = image.load('file.png')
 folder_image = image.load('folder.png')
@@ -172,12 +168,30 @@ class FSTree(Tree):
             d = d[name]
 
     def parse_path(self, name, path):
+        #!# The log.debug() and print stuff in there are intended to fix some OSX issues.
+        #!# Please do not strip them out. -- D.C.-G.
+#        log.debug('FSTree.parse_path')
+#        log.debug('    path: %s\n      length: %d'%(repr(path), len(path)))
+#        print '    path: %s\n      length: %d'%(repr(path), len(path))
+#        log.debug('    path: %s\n      length: %d'%(repr(path), len(path)))
+#        if len(path) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#        if len(path) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
         content = os.walk(path)
         data = {}
         d = data
         for a, folders, b in content:
+#            log.debug('    a: %s\n      length: %d'%(repr(a), len(a)))
+#            print '    a: %s\n      length: %d'%(repr(a), len(a))
+#            log.debug('    a: %s\n      length: %d'%(repr(a), len(a)))
+#            if len(a) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#            if len(a) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
             d = {}
             for folder in folders:
+#                log.debug('    folder: %s\n      length: %d'%(repr(folder), len(folder)))
+#                print '    folder: %s\n      length: %d'%(repr(folder), len(folder))
+#                log.debug('    folder: %s\n      length: %d'%(repr(folder), len(folder)))
+#                if len(folder) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#                if len(folder) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
                 if type(folder) == str:
                     folder = unicode(folder, 'utf-8')
                 d[folder] = {}
@@ -186,6 +200,11 @@ class FSTree(Tree):
                 cont = os.walk(os.path.join(a, folder))
                 for _a, fs, _b in cont:
                     for f in fs:
+#                        log.debug('    f: %s\n      length: %d'%(repr(f), len(f)))
+#                        print '    f: %s\n      length: %d'%(repr(f), len(f))
+#                        log.debug('    f: %s\n      length: %d'%(repr(f), len(f)))
+#                        if len(f) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#                        if len(f) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
                         if type(f) == str:
                             d[folder][unicode(f, 'utf-8')] = {}
                         else:

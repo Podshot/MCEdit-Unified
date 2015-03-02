@@ -66,7 +66,9 @@ filtersDir = directories.filtersDir
 schematicsDir = directories.schematicsDir
 
 #!# Disabling platform specific file chooser:
-platChooser = sys.platform in ('linux', 'darwin')
+#!# Please, don't touch these two lines and the 'platChooser' stuff. -- D.C.-G.
+#platChooser = sys.platform in ('linux', 'darwin')
+platChooser = sys.platform == 'darwin'
 
 def getTexturePacks():
     try:
@@ -202,10 +204,10 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
 
             _suffixes.append("inv")
 
-        if sys.platform == "win32" and platChooser: #!#
+        if sys.platform == "win32": #!#
             return askOpenFileWin32(title, schematics, initialDir)
 
-        elif hasGtk and platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
+        elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
             return askOpenFileGtk(title, _suffixes, initialDir)
 
         else:
