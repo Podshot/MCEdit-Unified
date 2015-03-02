@@ -490,10 +490,11 @@ class CameraViewport(GLViewport):
 
         mobTable.selectedIndex = mobs.index(id)
 
-        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedMob() + " spawner"), mobTable))
+        oldChoiceCol = Column((Label("Current: " + id, align='l', width=200), ))
+        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: "Change to: " + selectedMob()), mobTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
-        panel.add(Column((choiceCol, lastRow)))
+        panel.add(Column((oldChoiceCol, newChoiceCol, lastRow)))
         panel.shrink_wrap()
         panel.present()
 
@@ -604,10 +605,11 @@ class CameraViewport(GLViewport):
         else:
             discTable.selectedIndex = discs[id] - 2255
 
-        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedDisc(discTable.selectedIndex) + (" disc" if selectedDisc(discTable.selectedIndex) != "[No Record]" else "")), discTable))
+        oldChoiceCol = Column((Label("Current: " + id, align='l', width=200), ))
+        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: "Change to: " + selectedDisc(discTable.selectedIndex)), discTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
-        panel.add(Column((choiceCol, lastRow)))
+        panel.add(Column((oldChoiceCol, newChoiceCol, lastRow)))
         panel.shrink_wrap()
         panel.present()
 
@@ -703,10 +705,11 @@ class CameraViewport(GLViewport):
 
         noteTable.selectedIndex = id
 
-        choiceCol = Column((ValueDisplay(width=200, get_value=lambda: selectedNote() + " note"), noteTable))
+        oldChoiceCol = Column((Label("Current: " + notes[id], align='l', width=200), ))
+        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: "Change to: " + selectedNote()), noteTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
-        panel.add(Column((choiceCol, lastRow)))
+        panel.add(Column((oldChoiceCol, newChoiceCol, lastRow)))
         panel.shrink_wrap()
         panel.present()
 
