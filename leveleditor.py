@@ -234,7 +234,7 @@ class LevelEditor(GLViewport):
         # TODO: Mark
         self.sessionLockLock = Image(os.path.join("toolicons", "session_good.png"))
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
-        self.sessionLockLabel = Label("Session Lock Status:", margin=0)
+        self.sessionLockLabel = Label("Session:", margin=0)
 
         row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
                self.viewButton, self.viewportButton, self.recordUndoButton, Label("Session Lock Status:"), self.sessionLockLock)

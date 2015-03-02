@@ -393,7 +393,10 @@ class Tree(Column):
                                                   ({True: self.bullet_color_active, False: self.bullet_color_inactive}[_c],
                                                    self.fg_color, 'square', ''),
                                                  )
-            meth(head, bg, fg, shape, text, k, lvl)
+            try:
+                meth(head, bg, fg, shape, text, k, lvl)
+            except:
+                pass
             rows.append([head, fields, [w] * len(fields), k, p, c, id, type(v), lvl, v])
         self.rows = rows
         return rows
