@@ -1595,8 +1595,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         if time.time() - self.lastCleanUp > 1.0:
             for k in self._loadedChunks.keys():
                 ch = self._loadedChunks[k]
-                if ch._timeLastChanged - time.time() > 2.0:
-                    self.loadedChunks[k] = None
+                if time.time() - ch._timeLastChanged > 2.0:
+                    del self._loadedChunks[k]
             self.lastCleanUp = time.time()
             
         if chunk is not None:
