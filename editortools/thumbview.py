@@ -10,12 +10,23 @@ from renderer import PreviewRenderer
 class ThumbView(GLPerspective):
     def __init__(self, sch, **kw):
         GLPerspective.__init__(self, **kw)  # self, xmin= -32, xmax=32, ymin= -32, ymax=32, near= -1000, far=1000)
+        self.p_margin = 0
+        self.p_spacing = 0
+        self.widget_index = 0
+        self.set_position_modifiers()
         self.far = 16000
         self.schematic = sch
         self.renderer = PreviewRenderer(sch)
         self.fboSize = (128, 128)
         self.root = self.get_root()
         # self.renderer.position = (sch.Length / 2, 0, sch.Height / 2)
+
+    def set_position_modifiers(self):
+        if getattr(self, 'parent', None) is not None:
+            self.p_margin = getattr(self.parent, 'margin', 0)
+            self.p_margin = getattr(self.parent, 'spacing', 0)
+            if hasattr(self.parent, 'subwidgets') and self in self.parent.subwidgets:
+                self.widget_index = self.parent.subwidgets.index(self)
 
     def setup_modelview(self):
         GLU.gluLookAt(-self.schematic.Width * 2.8, self.schematic.Height * 2.5 + 1, -self.schematic.Length * 1.5,
@@ -66,7 +77,20 @@ class ThumbView(GLPerspective):
     def gl_draw_thumb(self):
         GL.glPushAttrib(GL.GL_SCISSOR_BIT)
         r = self.rect
-        r = r.move(*self.local_to_global_offset())
+        x, y = self.local_to_global_offset()
+        self.set_position_modifiers()
+        if hasattr(self.parent, 'axis'):
+            s_sz = 0
+            if self.widget_index > 0:
+                s_sz = getattr(self.parent.subwidgets[self.widget_index - 1], self.parent.longways, 0)
+            #-# Do we have a bad hack or the real solution with `(self.parent.height - self.height) / 2 - 1` stuff?
+            #-# Need extensive tests to confirm...
+            if self.parent.axis == 'h':
+                r = r.move(x + (self.parent.height - self.height) / 2 - 1 - self.p_spacing - s_sz, y - (self.parent.height - self.height) / 2)
+            else:
+                r = r.move(x - (self.parent.width - self.height) / 2, y - (self.parent.width - self.height) / 2 - 1 - self.p_spacing - s_sz)
+        else:
+            r = r.move(*self.local_to_global_offset())
         GL.glScissor(r.x, self.root.height - r.y - r.height, r.width, r.height)
         with gl.glEnable(GL.GL_SCISSOR_TEST):
             self.clear()

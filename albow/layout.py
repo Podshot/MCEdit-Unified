@@ -11,7 +11,7 @@ class RowOrColumn(Widget):
 
     def __init__(self, size, items, kwds):
         align = kwds.pop('align', 'c')
-        spacing = kwds.pop('spacing', 10)
+        self.spacing = spacing = kwds.pop('spacing', 10)
         expand = kwds.pop('expand', None)
         if isinstance(expand, int):
             expand = items[expand]
