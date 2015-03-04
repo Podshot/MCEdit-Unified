@@ -504,8 +504,8 @@ definitions = {
         ("maxCopies", "Copy stack size", 32),
         ("superSecretSettings", "Super Secret Settings", False),
         ("compassToggle", "Compass Toggle", True),
-        ("compassSize", "Compass Size", 75)
-#        ("fontProportion", "Fonts Proportion", 100),
+        ("compassSize", "Compass Size", 75),
+        ("fontProportion", "Fonts Proportion", 100),
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

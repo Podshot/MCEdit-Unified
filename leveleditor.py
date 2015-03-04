@@ -65,8 +65,11 @@ from collections import defaultdict, deque
 
 from OpenGL import GL
 
-from albow import alert, ask, AttrRef, Button, Column, get_font, Grid, input_text, IntField, Menu, root, Row, \
+from albow import alert, ask, AttrRef, Button, Column, Grid, input_text, IntField, Menu, root, Row, \
     TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
+import albow.resource
+albow.resource.font_proportion = config.settings.fontProportion.get()
+get_font = albow.resource.get_font
 from albow.controls import Label, SmallValueDisplay, ValueDisplay, Image
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport

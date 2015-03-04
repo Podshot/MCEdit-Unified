@@ -3,7 +3,8 @@ import release
 import mceutils
 import platform
 
-from albow import AttrRef, get_font, Row
+from albow import AttrRef, Row
+from albow.resource import get_font
 from albow.controls import Label
 from pygame import key
 
