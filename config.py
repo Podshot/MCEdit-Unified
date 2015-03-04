@@ -506,6 +506,7 @@ definitions = {
         ("compassToggle", "Compass Toggle", True),
         ("compassSize", "Compass Size", 75),
         ("fontProportion", "Fonts Proportion", 100),
+        ("downloadPlayerSkins", "Download Player Skins", True),
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

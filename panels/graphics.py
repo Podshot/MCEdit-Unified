@@ -45,6 +45,10 @@ class GraphicsPanel(Dialog):
         enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
                                                 ref=config.settings.enableMouseLag,
                                                 tooltipText="Enable choppy mouse movement for faster loading.")
+        
+        playerSkins = mceutils.CheckBoxLabel("Show Player Skins",
+                                             ref=config.settings.downloadPlayerSkins,
+                                             tooltipText="Show player skins while editing the world")
 
         packs = resource_packs.packs.get_available_resource_packs()
         packs.remove('Default Resource Pack')
@@ -60,6 +64,7 @@ class GraphicsPanel(Dialog):
                                        fieldOfViewRow,
                                        targetFPSRow,
                                        bufferLimitRow,
+                                       playerSkins,
                                        self.resourcePackButton,
                                       ), align='r')
 

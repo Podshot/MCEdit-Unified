@@ -742,8 +742,10 @@ class PlayerPositionTool(EditorTool):
 
                 self.playerPos[pos] = player
                 self.revPlayerPos[player] = pos
-                if player != "Player":
+                if player != "Player" and config.settings.downloadPlayerSkins.get():
                     self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=False))
+                else:
+                    self.playerTexture[player] = self.charTex
                 x, y, z = pos
                 GL.glPushMatrix()
                 GL.glTranslate(x, y, z)
@@ -776,7 +778,7 @@ class PlayerPositionTool(EditorTool):
         hat_size = (0.55, 0.55, 0.55)
         hat_box = FloatBox(hat_origin, hat_size)
 
-        if realCoords is not None and self.playerPos[realCoords] != "Player":
+        if realCoords is not None and self.playerPos[realCoords] != "Player" and config.settings.downloadPlayerSkins.get():
             drawCube(box,
                      texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts[0])
             GL.glEnable(GL.GL_BLEND)
