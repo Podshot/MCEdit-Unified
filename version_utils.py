@@ -91,7 +91,7 @@ class __PlayerCache:
 
     def _save(self):
         with open(userCachePath, "w") as out:
-            json.dump(self._playerCacheList, out)
+            json.dump(self._playerCacheList, out, indent=4, separators=(',', ':'))
             
     def _removePlayerWithName(self, name):
         toRemove = None
