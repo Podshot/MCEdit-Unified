@@ -278,6 +278,7 @@ class LevelEditor(GLViewport):
         adapter = logging.StreamHandler(sys.stdout)
         adapter.addFilter(LogFilter(self))
         logger.addHandler(adapter)
+        self.revertPlayerSkins = False
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
@@ -942,6 +943,12 @@ class LevelEditor(GLViewport):
         
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
+            
+        if len(level.players) >= 50 and config.settings.downloadPlayerSkins.get():
+            result = ask("MCEdit has detected that there are a large amount of players in this world, would you like to still download skins (This can take a decent amount of time)", responses=["Download Skins", "Don't Download"])
+            if result == "Don't Download":
+                config.settings.downloadPlayerSkins.set(False)
+                self.revertPlayerSkins = True
 
         try:
             self.currentViewport.cameraPosition = level.getPlayerPosition()
@@ -1754,6 +1761,9 @@ class LevelEditor(GLViewport):
         self.mcedit.removeEditor()
         self.controlPanel.dismiss()
         display.set_caption("MCEdit ~ " + release.get_version())
+        if self.revertPlayerSkins:
+            config.settings.downloadPlayerSkins.set(True)
+            self.revertPlayerSkins = False
         
     # TODO: Load marker
     def loadWorldFromFTP(self):
