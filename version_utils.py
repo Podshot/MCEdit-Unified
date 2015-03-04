@@ -156,6 +156,7 @@ class __PlayerCache:
     
     def getPlayerFromUUID(self, uuid, forceNetwork=False, dontSave=False):
         player = {}
+        response = None
         if forceNetwork:
             if self.uuidInCache(uuid):
                 self._removePlayerWithUUID(uuid)
@@ -177,16 +178,22 @@ class __PlayerCache:
             else:
                 return uuid
         else:
+            couldNotFind = False
             for p in self._playerCacheList:
                 if p["UUID (Separator)"] == uuid and p["WasSuccessful"]:
+                    couldNotFind = False
                     return p["Playername"]
-            result = self.getPlayerFromUUID(uuid, forceNetwork=True)
-            if result == uuid:
-                player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
-                self._playerCacheList.append(player)
-                return uuid
+                else:
+                    couldNotFind = True
+            if couldNotFind:
+                result = self.getPlayerFromUUID(uuid, forceNetwork=True)
+                if result == uuid:
+                    player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
+                    self._playerCacheList.append(player)
+                    return uuid
     
     def getPlayerFromPlayername(self, playername, forceNetwork=False, separator=True):
+        response = None
         if forceNetwork:
             if self.nameInCache(playername):
                 self._removePlayerWithName(playername)
@@ -197,7 +204,7 @@ class __PlayerCache:
             if response is not None and response != "":
                 playerJSON = json.loads(response)
                 player = {"Playername": playername, "UUID (No Separator)": playerJSON["id"]}
-                uuid = playerJSON["id"][:4]+"-"+playerJSON["id"][4:8]+"-"+playerJSON["id"][8:12]+"-"+playerJSON["id"][12:16]+"-"+playerJSON["id"][16:]
+                uuid = playerJSON["id"][:8]+"-"+playerJSON["id"][8:12]+"-"+playerJSON["id"][12:16]+"-"+playerJSON["id"][16:20]+"-"+playerJSON["id"][20:]
                 player["UUID (Separator)"] = uuid
                 player["WasSuccessful"] = True
                 player["Timestamp"] = time.time()
@@ -210,14 +217,19 @@ class __PlayerCache:
             else:
                 return playername
         else:
+            couldNotFind = False
             for p in self._playerCacheList:
                 if p["Playername"] == playername and p["WasSuccessful"]:
+                    couldNotFind = False
                     return p["UUID (Separator)"]
-            result = self.getPlayerFromPlayername(playername, forceNetwork=True)
-            if result == playername:
-                player = {"Playername":playername,"UUID (Separator)":"<Unknown>","UUID (No Separator)":"<Unknown>","Timestamp":"<Invalid>","WasSuccessful":False}
-                self._playerCacheList.append(player)
-                return playername
+                else:
+                    couldNotFind = True
+            if couldNotFind:
+                result = self.getPlayerFromPlayername(playername, forceNetwork=True)
+                if result == playername:
+                    player = {"Playername":playername,"UUID (Separator)":"<Unknown>","UUID (No Separator)":"<Unknown>","Timestamp":"<Invalid>","WasSuccessful":False}
+                    self._playerCacheList.append(player)
+                    return playername
     
     # 0 if for a list of the playernames, 1 is for a dictionary of all player data
     def getAllPlayersKnown(self, returnType=0, include_failed_lookups=False):
@@ -236,8 +248,31 @@ class __PlayerCache:
                     toReturn[p["Playername"]] = p
                 elif include_failed_lookups:
                     toReturn[p["Playername"]] = p
-        return toReturn        
-
+        return toReturn
+    
+    def getPlayerInfo(self, playername):
+        response_name = None
+        response_uuid = None
+        player = {}
+        if self.nameInCache(playername):
+            self._removePlayerWithName(playername)
+        try:
+            response_name = json.loads(urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(playername)).read())
+            response_uuid = json.loads(urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(response_name["id"])).read())
+        except urllib2.URLError:
+            return playername
+        if response_name is not None and response_name != "" and response_uuid is not None and response_uuid != "":
+            player["Playername"] = response_name["name"]
+            player["UUID (Separator)"] = response_name["id"][:8]+"-"+response_name["id"][8:12]+"-"+response_name["id"][12:16]+"-"+response_name["id"][16:20]+"-"+response_name["id"][20:]
+            player["UUID (No Separator)"] = response_name["id"]
+            player["WasSuccessful"] = True
+            player["Timestamp"] = time.time()
+            self._playerCacheList.append(player)
+            self._save()
+            return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
+        else:
+            raise Exception("Couldn't find player")
+    
     @staticmethod
     def __formats():
         player = {

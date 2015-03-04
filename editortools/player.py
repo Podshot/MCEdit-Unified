@@ -128,8 +128,13 @@ class PlayerAddOperation(Operation):
             alert("Name to short. Minimum name length is 4.")
             return
         try:
+            '''
+            print "Player: \""+str(self.player)+"\""
             self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)
+            print "UUID: \""+str(self.uuid)+"\""
             self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)  #Case Corrected
+            '''
+            self.uuid, self.player, other_uuid = version_utils.playercache.getPlayerInfo(self.player)
         except:
             action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":
