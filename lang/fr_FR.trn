@@ -1351,7 +1351,7 @@ t638 Nombre maximum de copies.
 o639 Try to save and restore the window position.
 t639 Essayer de sauver et restaurer la position de la fenêtre.
 o640 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t640 Votre MCEdit sera "portable" en déplaçant vos réglages et schematics vers le même dossier que {0]. Continuer ?
+t640 Votre MCEdit sera "portable" en déplaçant vos réglages et schematics vers le même dossier que {0}. Continuer ?
 o641 MCEditData
 t641 
 o642 This will move your settings and schematics to your Documents folder. Continue?
