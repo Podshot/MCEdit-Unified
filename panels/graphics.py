@@ -131,6 +131,7 @@ class GraphicsPanel(Dialog):
         config.save()
 
     def dispatch_key(self, name, evt):
+        super(GraphicsPanel, self).dispatch_key(name, evt)
         if name == "key_down":
             keyname = self.get_root().getKey(evt)
             if keyname == 'Escape':

@@ -2043,11 +2043,13 @@ class LevelEditor(GLViewport):
         worldInfoPanel.shrink_wrap()
 
         def dispatchKey(name, evt):
+            dispatch_key_saved(name, evt)
             if name == "key_down":
                 keyname = self.get_root().getKey(evt)
                 if keyname == 'Escape':
                     cancel()
 
+        dispatch_key_saved = worldInfoPanel.dispatch_key
         worldInfoPanel.dispatch_key = dispatchKey
 
         worldInfoPanel.present()
