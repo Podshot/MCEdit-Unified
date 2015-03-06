@@ -34,6 +34,7 @@ class ControlPanel(Panel):
                     (config.keys.quickLoad.get(), "Quick Load", editor.askLoadWorld),
                     (config.keys.open.get(), "Open...", editor.askOpenFile),
                     (config.keys.save.get(), "Save", editor.saveFile),
+                    (config.keys.saveAs.get(), "Save As", editor.saveAs),
                     (config.keys.reloadWorld.get(), "Reload", editor.reload),
                     (config.keys.closeWorld.get(), "Close", editor.closeEditor),
                     (config.keys.uploadWorld.get(), "Upload to FTP Server", editor.uploadChanges),

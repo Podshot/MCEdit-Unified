@@ -1165,9 +1165,10 @@ class LevelEditor(GLViewport):
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)
-        self.saveFile()
         self.level.worldFolder = AnvilWorldFolder(filename)
         self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
+        self.level.acquireSessionLock()
+        self.saveFile()
         self.initWindowCaption()
 
     def addUnsavedEdit(self):
