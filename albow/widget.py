@@ -9,7 +9,7 @@ from vectors import add, subtract
 from utils import frame_rect
 import theme
 from theme import ThemeProperty, FontProperty
-
+import resource
 from numpy import fromstring
 
 debug_rect = False
@@ -100,6 +100,17 @@ class Widget(object):
         self.is_modal = False
         self.set(**kwds)
         self.root = self.get_root()
+        self.setup_spacings()
+
+    def setup_spacings(self):
+        def new_size(size):
+            size = float(size * 1000)
+            size = size / float(100)
+            size = int(size * resource.font_proportion / 1000)
+            return size
+        self.margin = new_size(self.margin)
+        if hasattr(self, 'spacing'):
+            self.spacing = new_size(self.spacing)
 
     def set(self, **kwds):
         for name, value in kwds.iteritems():
