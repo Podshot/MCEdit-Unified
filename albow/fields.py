@@ -38,7 +38,6 @@ class TextEditor(Widget):
         self._text = _(text)
 
     text = overridable_property('text')
-    value = property(get_text, set_text)
 
     def draw(self, surface):
         frame = self.get_margin_rect()

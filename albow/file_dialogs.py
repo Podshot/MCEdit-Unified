@@ -365,18 +365,18 @@ class FileSaveDialog(FileDialog):
     ok_label = "Save"
 
     def get_filename(self):
-        return self.filename_box.value
+        return self.filename_box.text
 
     def set_filename(self, x):
         dsuf = self.suffixes[0]
-        if x.endswith(dsuf):
+        if dsuf and x.endswith(dsuf):
             x = x[:-len(dsuf)]
-        self.filename_box.value = x
+        self.filename_box.text = x
 
     filename = property(get_filename, set_filename)
 
     def get_pathname(self):
-        path = os.path.join(self.directory, self.filename_box.value)
+        path = os.path.join(self.directory, self.filename_box.text)
         suffixes = self.suffixes
         if suffixes and not path.endswith(suffixes[0]):
             path = path + suffixes[0]
@@ -385,7 +385,7 @@ class FileSaveDialog(FileDialog):
     pathname = property(get_pathname)
 
     def double_click_file(self, name):
-        self.filename_box.value = name
+        self.filename_box.text = name
 
     def ok(self):
         path = self.pathname
@@ -459,7 +459,6 @@ def request_new_filename(prompt=None, suffix=None, extra_suffixes=None,
     if directory:
         dlog.directory = directory
     if filename:
-        print 'filename', filename
         dlog.filename = filename
     if dlog.present():
         return dlog.pathname
