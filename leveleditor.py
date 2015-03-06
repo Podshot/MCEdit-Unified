@@ -58,6 +58,7 @@ import renderer
 import directories
 import panels
 import viewports
+import shutil
 
 from os.path import dirname, isdir
 from datetime import datetime, timedelta
@@ -85,6 +86,7 @@ from mcplatform import askSaveFile, platform_open
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
 from pymclevel.entity import Entity
+from pymclevel.infiniteworld import AnvilWorldFolder
 
 try:
     import resource  # @UnresolvedImport
@@ -1155,6 +1157,18 @@ class LevelEditor(GLViewport):
         self.recordUndo = True
         self.clearUnsavedEdits(True)
 
+    @mceutils.alertException
+    def saveAs(self):
+        filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, "Name the new copy.",
+                                          "Copy of " + self.level.worldFolder.filename, _('Minecraft World\0*.*\0\0'), "")
+        if filename is None:
+            return
+        shutil.copytree(self.level.worldFolder.filename, filename)
+        self.saveFile()
+        self.level.worldFolder = AnvilWorldFolder(filename)
+        self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
+        self.initWindowCaption()
+
     def addUnsavedEdit(self):
         if self.unsavedEdits:
             self.remove(self.saveInfoBackground)
@@ -1617,6 +1631,8 @@ class LevelEditor(GLViewport):
             self.showWorldInfo()
         if keyname == config.keys.gotoPanel.get():
             self.showGotoPanel()
+        if keyname == config.keys.saveAs.get():
+            self.saveAs()
 
         if keyname == config.keys.exportSelection.get():
             self.selectionTool.exportSelection()

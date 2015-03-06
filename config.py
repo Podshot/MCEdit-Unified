@@ -442,6 +442,7 @@ definitions = {
         ("undo", "undo", "Ctrl-Z"),
         ("redo", "redo", "Ctrl-Y"),
         ("save", "save", "Ctrl-S"),
+        ("saveAs", "save as", "Ctrl-Alt-S"),
         ("newWorld", "new world", "Ctrl-N"),
         ("closeWorld", "close world", "Ctrl-W"),
         ("worldInfo", "world info", "Ctrl-I"),
