@@ -312,7 +312,7 @@ def askCreateWorld(initialDir):
 
 
 def askSaveFile(initialDir, title, defaultName, filetype, suffix):
-    if sys.platform == "win32" and platChooser: #!#
+    if sys.platform == "win32": #!#
         try:
             (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
                 hwndOwner=display.get_wm_info()['window'],
@@ -333,7 +333,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         except:
             pass
 
-    elif hasGtk: #!# #Linux (When GTK 2.4 or newer is installed)
+    elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
         chooser = gtk.FileChooserDialog(title,
                                         None, gtk.FILE_CHOOSER_ACTION_SAVE,
                                         (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
