@@ -265,7 +265,7 @@ class FileDialog(Dialog):
             label = Label(prompt)
         if self.saving:
             filename_box = TextFieldWrapped(self.box_width)
-            filename_box.change_action = self.update
+            filename_box.change_action = self.update_filename
             filename_box._enter_action = filename_box.enter_action
             filename_box.enter_action = self.enter_action
             self.filename_box = filename_box
@@ -320,6 +320,10 @@ class FileDialog(Dialog):
 
     def update(self):
         self.tree.set_directory(self.directory)
+
+    def update_filename(self):
+        if self.filename_box.text in self.list_box.names:
+            self.directory = os.path.join(self.directory, self.filename_box.text)
 
     def go_up(self):
         self.directory = os.path.dirname(self.directory)
@@ -455,6 +459,7 @@ def request_new_filename(prompt=None, suffix=None, extra_suffixes=None,
     if directory:
         dlog.directory = directory
     if filename:
+        print 'filename', filename
         dlog.filename = filename
     if dlog.present():
         return dlog.pathname
