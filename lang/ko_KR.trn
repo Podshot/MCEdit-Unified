@@ -1663,33 +1663,34 @@ t779 하위 목록으로 붙여넣기
 o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t780 청크 모양의 선택 영역을 삭제하고 있습니다. 공기로 채우거나, 혹은 청크 자체를 삭제하시겠습니까?
 o781 Screenshot taken and saved as 
-t781 
+t781 스크린샷이 저장되었습니다
 o782 Fonts Proportion (%): 
-t782 
+t782 글자 크기 (%):
 o783 Fonts sizing proportion. The number is a percentage.
 Resart needed!
-t783 
+t783 글자 크기 조절입니다. 숫자가 퍼센트입니다.
+재시작 필요!
 o784 Save As
-t784 
+t784 다른 이름으로 저장
 o785 Name the new copy:
-t785 
+t785 새로운 이름:
 o786 Copying %0.1f million blocks
-t786 
+t786 %0.1f
 o787 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t787 
+t787 Y=63과 Y=64에 블럭이 없으면 마인크래프트는 스폰 지점을 랜덤하게 이동할 것입니다. 마인크래프트가 변경되었을 경우에만 체크를 해제하세요.
 o788 Keep Data Intact
-t788 
+t788 자료 온전히 보관
 o789 This pulls skins from the online server, so this may take a while
-t789 
+t789 스킨을 서버에서 불러오므로 오래 걸릴 수 있습니다.
 o790 Session:
-t790 
+t790 세션:
 o791 Session Lock is being used by Minecraft
-t791 
+t791 마인크래프트가 세션 락을 사용하고 있습니다.
 o792 Session Lock is being used by MCEdit
-t792 
+t792 MCEdit이 세션 락을 사용하고 있습니다.
 o793 Show Player Skins
-t793 
+t793 플레이어 스킨 보이기
 o794 Show player skins while editing the world
-t794 
+t794 월드 수정중에 플레이어 스킨 보이기
 o795 Compass Size (%): 
-t795 
+t795 컴퍼스 크기 (%):
