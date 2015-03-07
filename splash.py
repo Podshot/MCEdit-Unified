@@ -32,7 +32,7 @@ if not no_splash:
     splashes_folder = 'splashes'
     if not os.path.exists(splashes_folder):
         splashes_folder = os.path.join('.', splashes_folder)
-    if os.path.exists(splashes_folder):
+    if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
         new_splash = choice(os.listdir(splashes_folder))
         copyfile(os.path.join(splashes_folder, new_splash), os.path.join('.', 'splash.png'))
 
