@@ -379,6 +379,9 @@ class PlayerPositionPanel(Panel):
             if not self.level.oldPlayerFolderFormat:
                 for player in players:
                     if player != "Player" and player != "[No players]":
+                        if player[4] == "-":
+                            os.rename(os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player+".dat"), os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player.replace("-", "", 1)+".dat"))
+                            player = player.replace("-", "", 1)
                         self.player_UUID[version_utils.playercache.getPlayerFromUUID(player)] = player
                 if "Player" in players:
                     self.player_UUID["Player"] = "Player"
