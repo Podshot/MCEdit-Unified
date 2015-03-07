@@ -791,7 +791,7 @@ t371 Tourner son corps. 0 pour face à l'ouest. Doit être entre -180 et 180 deg
 o372 X-Axis
 t372 Axe X
 o373 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t373 Tourner horizontalement sa tête. 0 pour l'horizontale. Doit être entre -90 (haut) et 180 (bas) degrés.
+t373 Tourner horizontalement sa tête. 0 pour l'horizontale. Doit être entre -90 (haut) et 90 (bas) degrés.
 o374 Rotation
 t374 Rotation
 o375 To create a shop first put your buy in the top slot(s) of the chest.
@@ -839,7 +839,7 @@ t388 Corresp. aux données bloc :
 o389 Match tile entities (for Block searches):
 t389 Corresp. "TileEntities" (rech. de blocs) :
 o390 "None" for Name or Value will match any tag's Name or Value respectively.
-t390 "None" pour le nom ou la valeur cherchera tous nom ou valeur de tag.
+t390 "None" pour le nom ou la valeur cherchera tout nom ou valeur de tag.
 o391 Match Tag Name:
 t391 Corresp. nom de tag :
 o392 Match Tag Value:
@@ -860,7 +860,7 @@ o399 Operation:
 t399 Opération :
 o400 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t400 Ce filtre est conçu pour rechercher les données NBT dans les entités et les TileEntities. Il peut aussi être utilisé pour chercher des blocs.  "Corresp. par" détermine le type d'objet à chercher en priorité.  La recherche des entités et les TileEntities est relativement rapide. Celle des blocs est proportionnelle à la taille de la sélection, car chaque bloc sélectionné est examiné). Toute recherche d'entité ignore les réglages pour les blocs. Les recherches de TileEntities tenterons de correspondre au type de bloc (si "Corresp. au type de bloc" est coché) ; celles de blocs aux TileEntities (si Corresp. "TileEntities" est coché).  Les recherches de TileEntities avec un type de bloc sont plus rapides.  La recherche de bloc peut égalelement trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
+t400 Ce filtre est conçu pour rechercher les données NBT dans les entités et les TileEntities. Il peut aussi être utilisé pour chercher des blocs.  "Corresp. par" détermine le type d'objet à chercher en priorité.  La recherche des entités et des TileEntities est relativement rapide. Celle des blocs est proportionnelle à la taille de la sélection, car chaque bloc sélectionné est examiné). Toute recherche d'entité ignore les réglages pour les blocs. Les recherches de TileEntities tenterons de correspondre au type de bloc (si "Corresp. au type de bloc" est coché) ; celles de blocs aux TileEntities (si Corresp. "TileEntities" est coché).  Les recherches de TileEntities avec un type de bloc sont plus rapides.  La recherche de bloc peut égalelement trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
 Utiliser "Nouvelle recherche" pour chercher à nouveau dans la sélection. "Suivant" parcours les résultats.
 o401 Documentation
 t401 Documentation
@@ -871,7 +871,7 @@ t403 Procédurier
 o404 Normal
 t404 Normal
 o405 Bamboo
-t405 BamBou
+t405 Bambou
 o406 Palm
 t406 Palmier
 o407 Stickly
@@ -1088,7 +1088,7 @@ t510 Capture d'écran
 o511 Load Preset
 t511 Charg. préréglages
 o512 Remove Presets
-t512 Enlever préréglafes
+t512 Enlever préréglages
 o513 Save as Preset
 t513 Sauver préréglages
 o514 Preset Name:
@@ -1246,7 +1246,7 @@ t589 Recharger skins
 o590 Previous Page
 t590 Page préc.
 o591 Next Page
-t591 Page suiv
+t591 Page suiv.
 o592 Super Secret Settings
 t592 Super Secret Settings
 o593 Default Resource Pack
@@ -1332,13 +1332,13 @@ ESC pour annuler.
 o627 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel.
-t627 Le touches de déplacement ne peuvent utiliser des modificateurs. Appuyez sur une autre touche.
+t627 Les touches de déplacement ne peuvent utiliser des modificateurs. Appuyez sur une autre touche.
 
 ESC pour annuler.
 o628 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t628 Vous ne pouvez utiliser {0}. appuyez sur une autre touche.
+t628 Vous ne pouvez utiliser {0}. Appuyez sur une autre touche.
 
 ESC pour annuler.
 o629 Reset to default
@@ -1350,7 +1350,7 @@ t631 Dossier captures d'écran
 o632 Uses the Latest Snapshot Terrain Generation
 t632 Utiliser la génération de terrain de la dernière snapshot
 o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t633 Simuler le monde pendant quelques secondes après sa génération. Rédis la taille de la sauvegarde en exécutant les TileTicks.
+t633 Simuler le monde pendant quelques secondes après sa génération. Réduis la taille de la sauvegarde en exécutant les TileTicks.
 o634 Last Played
 t634 Joué pour la dernière fois
 o635 Level Name (filename)
@@ -1370,7 +1370,7 @@ t641
 o642 This will move your settings and schematics to your Documents folder. Continue?
 t642 Vos réglages et schematics vont être déplacés vers votre dossier Documents. Continuer ?
 o643 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t643 Cliquez pour rendre MCEdit persistant an déplaçant ses réglages et schematics vers votre dossier Documents
+t643 Cliquez pour rendre MCEdit persistant en déplaçant ses réglages et schematics vers votre dossier Documents
 o644 GoTo Position:
 t644 Aller à la position :
 o645 (click anywhere to teleport)
@@ -1416,7 +1416,7 @@ t664 Type de donnée :
 o665 -> Name
 t665 -> Nom
 o666 Double-click to edit
-t666 Double-clic pour editer
+t666 Double-clic pour éditer
 o667 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
@@ -1455,7 +1455,7 @@ Click 'OK' to choose one.
 t681 Le fichier existe déjà.
 Cliquez 'OK' pour en choisir un.
 o682 Choose a NBT file...
-t682 Choisir un fichier NBT..
+t682 Choisir un fichier NBT...
 o683 The selected object is not a file.
 Can't load it.
 t683 L'objet sélectionné n'est pas un fichier.
@@ -1483,11 +1483,11 @@ t692 Type d'élément : %s
 o693 Value
 t693 Valeur
 o694 This item type is a container. Add chlidren later.
-t694 Ce type d'élément est un conteneur. Ajoutez lui des élément plus tard.
+t694 Ce type d'élément est un conteneur. Ajoutez lui des éléments plus tard.
 o695 Choose item type
 t695 Choisir le type d'élément
 o696 Choose a name
-t696 Choissir un nom
+t696 Choisir un nom
 o697 Byte
 t697 
 o698 Long
@@ -1633,7 +1633,7 @@ t753 Analyse de {0} blocs...
 o754 Save to file...
 t754 Sauver vers fichier...
 o755 Fill with Air
-t755 Remplir aved de l'air
+t755 Remplir avec de l'air
 o756 Delete Chunks
 t756 Supprimer chunks
 o757 Recording undo...
@@ -1673,7 +1673,7 @@ t773 Sauver ces chunks et supprimer les autres ? Cela ne peut être annulé.
 o774 Lighting {0} chunks...
 t774 Éclairage de {0} chunks...
 o775 Create chunks using the settings above? This cannot be undone.
-t775 Créer les chunks avec le réglages ci-dessus ? Cela ne paut être annulé.
+t775 Créer les chunks avec les réglages ci-dessus ? Cela ne paut être annulé.
 o776 Add
 t776 Ajouter
 o777 New child
@@ -1687,12 +1687,12 @@ t780 Vous allez supprimer une sélection de chunks. Remplir avec de l'air, ou su
 o781 Screenshot taken and saved as 
 t781 Capture faite et sauvée sous 
 o782 Fonts Proportion (%): 
-t782 Proportion ploices (%) : 
+t782 Proportion polices (%) : 
 o783 Fonts sizing proportion. The number is a percentage.
 Restart needed!
 t783 Proportion des tailles de polices. En pourcents.
 
-Redémarrage nécassaire !
+Redémarrage nécessaire !
 o784 Save As
 t784 Sauver sous
 o785 Name the new copy:
@@ -1700,7 +1700,7 @@ t785 Nom de la copie :
 o786 Copying %0.1f million blocks
 t786 Copie de %0.1f millions de blocs
 o787 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t787 Minecraft déplce votre point de spawn s'il est dans une colone où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
+t787 Minecraft déplace votre point de spawn s'il est dans une colone où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
 o788 Keep Data Intact
 t788 Conserver les données
 o789 This pulls skins from the online server, so this may take a while
