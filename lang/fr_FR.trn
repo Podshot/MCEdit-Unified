@@ -1684,3 +1684,36 @@ o779 Paste as child
 t779 Coller enfant
 o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t780 Vous allez supprimer une sélection de chunks. Remplir avec de l'air, ou supprimer les chunks eux-même ?
+o781 Screenshot taken and saved as 
+t781 Capture faite et sauvée sous 
+o782 Fonts Proportion (%): 
+t782 Proportion ploices (%) : 
+o783 Fonts sizing proportion. The number is a percentage.
+Restart needed!
+t783 Proportion des tailles de polices. En pourcents.
+
+Redémarrage nécassaire !
+o784 Save As
+t784 Sauver sous
+o785 Name the new copy:
+t785 Nom de la copie :
+o786 Copying %0.1f million blocks
+t786 Copie de %0.1f millions de blocs
+o787 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t787 Minecraft déplce votre point de spawn s'il est dans une colone où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
+o788 Keep Data Intact
+t788 Conserver les données
+o789 This pulls skins from the online server, so this may take a while
+t789 Télécharge les données du serveur. Cela paut prendre du temps
+o790 Session:
+t790 Session :
+o791 Session Lock is being used by Minecraft
+t791 La session est verrouillée par Minecraft
+o792 Session Lock is being used by MCEdit
+t792 La session est verrouillée par MCEdit
+o793 Show Player Skins
+t793 Voir skins joueurs
+o794 Show player skins while editing the world
+t794 Voir les skins joueur pendant l'édition du monde
+o795 Compass Size (%): 
+t795 Taille boussole (%) : 
