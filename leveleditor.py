@@ -1160,7 +1160,7 @@ class LevelEditor(GLViewport):
     @mceutils.alertException
     def saveAs(self):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
-        filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
+        filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy:"),
                                           shortName, _('Minecraft World\0*.*\0\0'), "")
         if filename is None:
             return
