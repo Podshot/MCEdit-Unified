@@ -309,7 +309,6 @@ faceVertexTemplates = makeVertexTemplates()
 class ChunkCalculator(object):
     cachedTemplate = None
     cachedTemplateHeight = 0
-    sessionStolen = False
 
     whiteLight = numpy.array([[[15] * 16] * 16] * 16, numpy.uint8)
     precomputedVertices = createPrecomputedVertices()
@@ -516,10 +515,8 @@ class ChunkCalculator(object):
             chunk = level.getChunk(cx, cz)
         except Exception, e:
             if "Session lock lost" in e.message:
-                if self.sessionStolen:
-                    yield
-                    return
-                self.sessionStolen = True
+                yield
+                return
             logging.warn(u"Error reading chunk: %s", e)
             yield
             return

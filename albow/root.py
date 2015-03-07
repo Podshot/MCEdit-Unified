@@ -121,6 +121,7 @@ class RootWidget(Widget):
         self.nudge = None
         self.testTime = None
         self.nudgeDirection = None
+        self.sessionStolen = False
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -351,6 +352,13 @@ class RootWidget(Widget):
                         elif type == NOEVENT:
                             add_modifiers(event)
                             self.call_idle_handlers(event)
+
+                    if not self.sessionStolen:
+                        try:
+                            self.editor.level.checkSessionLock()
+                        except Exception, e:
+                            log.warn(u"Error reading chunk: %s", e)
+                            self.sessionStolen = True
 
                     if self.editor.level is not None:
                         self.editor.cameraInputs = [0., 0., 0., 0., 0., 0.]
