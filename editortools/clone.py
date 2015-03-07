@@ -282,9 +282,14 @@ class CloneToolPanel(Panel):
         scaleField.min = 0.1
         scaleField.max = 8
 
-        scaleRow = Row((
-            Label("Scale Factor"), scaleField
-        ))
+        if self.transformEnable():
+            scaleRow = Row((
+                Label("Scale Factor"), scaleField
+            ))
+        else:
+            scaleRow = Row((
+                Label("Scale Factor: 1.0"),
+            ))
 
         self.scaleField = scaleField
 
