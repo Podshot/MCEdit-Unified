@@ -89,7 +89,7 @@ class OptionsPanel(Dialog):
         # FONT SIZE
         fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
                                             ref=config.settings.fontProportion, width=100, min=0,
-                                            tooltipText="Fonts sizing proportion. The number is a percentage.\nResart needed!")
+                                            tooltipText="Fonts sizing proportion. The number is a percentage.\nRestart needed!")
         albow.resource.font_proportion = config.settings.fontProportion.get()
 
         invertRow = mceutils.CheckBoxLabel("Invert Mouse",
