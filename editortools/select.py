@@ -1158,7 +1158,7 @@ class SelectionTool(EditorTool):
             filename = tempfile.mkdtemp(".zip", "mceditcopy")
             os.rmdir(filename)
 
-            status = "Copying {0:n} blocks...".format(box.volume)
+            status = _("Copying {0:n} blocks...").format(box.volume)
             if fileFormat == "schematic":
                 schematic = showProgress(status,
                                          self.editor.level.extractSchematicIter(box), cancel=True)
