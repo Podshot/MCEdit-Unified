@@ -472,6 +472,7 @@ t224 ...
 o225 Select
 Right-click for options
 t225 Auswählen
+
 Rechtsklick für Optionen
 o226 Remove the selection. Shortcut: {0}
 t226 Entfernen der Auswahl. Tastenkürzel: {0}
@@ -492,6 +493,7 @@ Rechtsklick für Optionen
 o233 Brush
 Right-click for options
 t233 Pinsel
+
 Rechtsklick für Optionen
 o234 Fill
 t234 Füllen
@@ -552,7 +554,10 @@ t261 Tiefe:
 o262 Only Change Natural Earth
 t262 Nur natürliche Erde wechseln
 o263 Import
+Right-click for options
 t263 Importiere
+
+Rechtsklick für Optionen
 o264 x
 t264 x
 o265 y
@@ -600,6 +605,7 @@ t283 Tastenkürzel: Enter
 o284 Fill and Replace
 Right-click for options
 t284 Füllen und Ersetzen
+
 Rechtsklick für Optionen
 o285 Fill with:
 t285 Füllen mit:
@@ -770,8 +776,13 @@ t367 Bewohner Name
 o368 General Trade
 t368 Allgemeiner Handel
 o369 Rotate the Position of your Trader
+
 *Can only be used if Not Move is checked*
 t369     Rotiere die Position von deinem Händler
+
+
+
+
 *Kann nur benutzt werden wenn Nicht Bewegen eingeschalten ist*
 o370 Y-Axis
 t370 Y-Achse
@@ -1062,7 +1073,10 @@ t506 Spieler
 o507 Chunk Control
 t507 Chunk Verwaltungstool
 o508 Move Spawn Point
+Right-click for options
 t508 Bewege Spawnpunkt
+
+Rechtsklick für Optionen
 o509 Goto Spawn
 t509 Gehe zu Spawn
 o510 Take a Screenshot
@@ -1566,8 +1580,10 @@ o734 <Chunk Control Tool>
 t734 <Chunk Verwaltungstool>
 o735 Select Chunks
 t735 Wähle Chunks aus
-o736 No matching blocks/tile entities found
-t736 Keine passenden Blöcke/Tile Entities gefunden
+o736 
+No matching blocks/tile entities found
+t736 
+Keine passenden Blöcke/Tile Entities gefunden
 o737 Choose a filter, then click Filter or press Enter to apply it.
 t737 Wähle einen Filter aus, dann klicke Filter oder drücke Enter um es zu bestätigen.
 o738 Click to set this item down.
@@ -1664,3 +1680,34 @@ o779 Paste as child
 t779 
 o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t780 Sie löschen eine chunk-förmige Auswahl. Die Chunks mit Luft füllen oder die Chunks selber löschen?
+o781 Screenshot taken and saved as 
+t781 
+o782 Fonts Proportion (%): 
+t782 
+o783 Fonts sizing proportion. The number is a percentage.
+Resart needed!
+t783 
+o784 Save As
+t784 
+o785 Name the new copy:
+t785 
+o786 Copying %0.1f million blocks
+t786 
+o787 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t787 
+o788 Keep Data Intact
+t788 
+o789 This pulls skins from the online server, so this may take a while
+t789 
+o790 Session:
+t790 
+o791 Session Lock is being used by Minecraft
+t791 
+o792 Session Lock is being used by MCEdit
+t792 
+o793 Show Player Skins
+t793 
+o794 Show player skins while editing the world
+t794 
+o795 Compass Size (%): 
+t795 

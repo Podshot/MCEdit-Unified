@@ -473,6 +473,7 @@ t224 ...
 o225 Select
 Right-click for options
 t225 Sélectionner
+
 Clic-droit pour les options
 o226 Remove the selection. Shortcut: {0}
 t226 Suppr. sélection. Raccourci : {0}
@@ -489,6 +490,7 @@ t231 Exporte la sélection vers un fichier .schematic. Raccourci : {0}
 o232 Clone
 Right-click for options
 t232 Cloner
+
 Clic-droit pour les options
 o233 Brush
 Right-click for options
@@ -553,7 +555,8 @@ t261 Profondeur :
 o262 Only Change Natural Earth
 t262 Changer seulement la terre naturelle
 o263 Import
-t263 Importer
+Right-click for options
+t263 
 o264 x
 t264 x
 o265 y
@@ -601,6 +604,7 @@ t283 Raccourci : Entrée
 o284 Fill and Replace
 Right-click for options
 t284 Remplir et remplacer
+
 Clic-droit pour les options
 o285 Fill with:
 t285 Remplir avec :
@@ -771,8 +775,13 @@ t367 Nom du villageois
 o368 General Trade
 t368 Commerce
 o369       Rotate the Position of your Trader
+
 *Can only be used if Not Move is checked*
 t369       Rotation du marchand
+
+
+
+
 *N'utiliser que si le villageois est immobile*
 o370 Y-Axis
 t370 Axe Y
@@ -1058,6 +1067,7 @@ t506 Joueur
 o507 Chunk Control
 t507 Contrôle de chunk
 o508 Move Spawn Point
+Right-click for options
 t508 Déplacer point de spawn
 o509 Goto Spawn
 t509 Aller au spawn
@@ -1537,7 +1547,8 @@ o734 <Chunk Control Tool>
 t734 
 o735 Select Chunks
 t735 
-o736 No matching blocks/tile entities found
+o736 
+No matching blocks/tile entities found
 t736 
 o737 Choose a filter, then click Filter or press Enter to apply it.
 t737 
@@ -1631,3 +1642,34 @@ o779 Paste as child
 t779 
 o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t780 
+o781 Screenshot taken and saved as 
+t781 
+o782 Fonts Proportion (%): 
+t782 
+o783 Fonts sizing proportion. The number is a percentage.
+Resart needed!
+t783 
+o784 Save As
+t784 
+o785 Name the new copy:
+t785 
+o786 Copying %0.1f million blocks
+t786 
+o787 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t787 
+o788 Keep Data Intact
+t788 
+o789 This pulls skins from the online server, so this may take a while
+t789 
+o790 Session:
+t790 
+o791 Session Lock is being used by Minecraft
+t791 
+o792 Session Lock is being used by MCEdit
+t792 
+o793 Show Player Skins
+t793 
+o794 Show player skins while editing the world
+t794 
+o795 Compass Size (%): 
+t795 

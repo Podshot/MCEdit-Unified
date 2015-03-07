@@ -472,6 +472,7 @@ t224 ...
 o225 Select
 Right-click for options
 t225 선택
+
 우클릭으로 설정
 o226 Remove the selection. Shortcut: {0}
 t226 선택 영역을 제거합니다. 단축키: {0}
@@ -552,7 +553,10 @@ t261 깊이:
 o262 Only Change Natural Earth
 t262 자연적인 블럭만 변경
 o263 Import
+Right-click for options
 t263 불러오기
+
+우클릭으로 설정
 o264 x
 t264 x
 o265 y
@@ -599,6 +603,7 @@ t283 단축키: 엔터
 o284 Fill and Replace
 Right-click for options
 t284 채우기, 바꾸기
+
 우클릭으로 설정
 o285 Fill with:
 t285 이것으로 채우기:
@@ -769,8 +774,13 @@ t367 Villager Name
 o368 General Trade
 t368 General Trade
 o369       Rotate the Position of your Trader
+
 *Can only be used if Not Move is checked*
 t369 주민의 방향을 회전시킵니다.
+
+
+
+
 *Not Move가 체크되어 있어야 사용이 가능합니다.*
 o370 Y-Axis
 t370 Y-Axis
@@ -1055,7 +1065,10 @@ t506 플레이어
 o507 Chunk Control
 t507 청크 컨트롤
 o508 Move Spawn Point
+Right-click for options
 t508 스폰 지점 이동
+
+우클릭으로 설정
 o509 Goto Spawn
 t509 스폰으로 이동
 o510 Take a Screenshot
@@ -1392,6 +1405,7 @@ Dive into level NBT structure.
 Right-click for options
 t667 NBT 탐색기
 NBT를 수정하세요
+
 우클릭으로 설정.
 o668 Save your change in the NBT data.
 t668 NBT 데이터 저장
@@ -1550,8 +1564,10 @@ o734 <Chunk Control Tool>
 t734 <청크 조절 도구>
 o735 Select Chunks
 t735 청크 선택
-o736 No matching blocks/tile entities found
-t736 맞는 블럭/타일 엔티티가 없습니다.
+o736 
+No matching blocks/tile entities found
+t736 
+맞는 블럭/타일 엔티티가 없습니다.
 o737 Choose a filter, then click Filter or press Enter to apply it.
 t737 필터를 선택하고 필터를 클릭하거나 엔터를 눌러서 적용하세요.
 o738 Click to set this item down.
@@ -1646,3 +1662,34 @@ o779 Paste as child
 t779 하위 목록으로 붙여넣기
 o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t780 청크 모양의 선택 영역을 삭제하고 있습니다. 공기로 채우거나, 혹은 청크 자체를 삭제하시겠습니까?
+o781 Screenshot taken and saved as 
+t781 
+o782 Fonts Proportion (%): 
+t782 
+o783 Fonts sizing proportion. The number is a percentage.
+Resart needed!
+t783 
+o784 Save As
+t784 
+o785 Name the new copy:
+t785 
+o786 Copying %0.1f million blocks
+t786 
+o787 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t787 
+o788 Keep Data Intact
+t788 
+o789 This pulls skins from the online server, so this may take a while
+t789 
+o790 Session:
+t790 
+o791 Session Lock is being used by Minecraft
+t791 
+o792 Session Lock is being used by MCEdit
+t792 
+o793 Show Player Skins
+t793 
+o794 Show player skins while editing the world
+t794 
+o795 Compass Size (%): 
+t795 

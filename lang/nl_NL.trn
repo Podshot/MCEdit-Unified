@@ -548,7 +548,10 @@ t261 Diepte:
 o262 Only Change Natural Earth
 t262 Verandeer alleen natuurlijke grond
 o263 Import
+Right-click for options
 t263 Importeer
+
+Right-click for options (?)
 o264 x
 t264 x
 o265 y
@@ -765,8 +768,13 @@ t367 Naam van Dorpeling
 o368 General Trade
 t368 Gewone Handelsoptie
 o369       Rotate the Position of your Trader
+
 *Can only be used if Not Move is checked*
-t369        Draai de Positie van je Handelaar 
+t369        Draai de Positie van je Handelaar
+
+
+
+
 *Kan alleen gebruikt worden als Niet Bewegen is aangevinkt*
 o370 Y-Axis
 t370 Y-As
@@ -1056,7 +1064,10 @@ t506 Speler
 o507 Chunk Control
 t507 Chunk Menu
 o508 Move Spawn Point
+Right-click for options
 t508 Beweeg Spawnpunt
+
+Right-click for options (?)
 o509 Goto Spawn
 t509 Ga naar Spawn
 o510 Take a Screenshot
@@ -1535,7 +1546,8 @@ o734 <Chunk Control Tool>
 t734 
 o735 Select Chunks
 t735 
-o736 No matching blocks/tile entities found
+o736 
+No matching blocks/tile entities found
 t736 
 o737 Choose a filter, then click Filter or press Enter to apply it.
 t737 

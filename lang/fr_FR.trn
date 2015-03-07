@@ -473,6 +473,7 @@ t224 ...
 o225 Select
 Right-click for options
 t225 Sélectionner
+
 Clic-droit pour les options
 o226 Remove the selection. Shortcut: {0}
 t226 Suppr. sélection. Raccourci : {0}
@@ -481,7 +482,7 @@ t227 Remplir la sélection avec de l'air. Raccourci : {0}
 o228 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
 t228 Fait une copie des blocks et entités de la sélection, puis supprime le contenu de cette sélection. Raccourci : {0}
 o229 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t229 Fait une copie des blocks et entités de la sélection. Raccourci : {0}
+t229 Fait une copie des blocs et entités de la sélection. Raccourci : {0}
 o230 Import the last item taken by Cut or Copy. Shortcut: {0}
 t230 Importe la sélection de Couper ou Coller. Raccourci :{0}
 o231 Export the selection to a .schematic file. Shortcut: {0}
@@ -489,6 +490,7 @@ t231 Exporte la sélection vers un fichier .schematic. Raccourci : {0}
 o232 Clone
 Right-click for options
 t232 Cloner
+
 Clic-droit pour les options
 o233 Brush
 Right-click for options
@@ -553,7 +555,10 @@ t261 Profondeur :
 o262 Only Change Natural Earth
 t262 Changer seulement la terre naturelle
 o263 Import
+Right-click for options
 t263 Importer
+
+Clic-droit pour les options
 o264 x
 t264 x
 o265 y
@@ -567,7 +572,7 @@ t268 Rotation
 o269 Roll
 t269 Tourner
 o270 Chunk Align
-t270 Alignement chunk(?)
+t270 Alignement aux chunk
 o271 Repeat
 t271 Répéter
 o272 Scale Factor
@@ -601,6 +606,7 @@ t283 Raccourci : Entrée
 o284 Fill and Replace
 Right-click for options
 t284 Remplir et remplacer
+
 Clic-droit pour les options
 o285 Fill with:
 t285 Remplir avec :
@@ -771,8 +777,12 @@ t367 Nom du villageois
 o368 General Trade
 t368 Commerce
 o369       Rotate the Position of your Trader
+
 *Can only be used if Not Move is checked*
-t369       Rotation du marchand
+t369                 Rotation du marchand
+
+
+
 *N'utiliser que si le villageois est immobile*
 o370 Y-Axis
 t370 Axe Y
@@ -1067,7 +1077,10 @@ t506 Joueur
 o507 Chunk Control
 t507 Contrôle de chunk 
 o508 Move Spawn Point
+Right-click for options
 t508 Déplacer point de spawn
+
+Clic-droit pour les options
 o509 Goto Spawn
 t509 Aller au spawn
 o510 Take a Screenshot
@@ -1308,7 +1321,7 @@ o625 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
 t625  Appuyer sur la touche à lier à l'action "{0}"
-Acune touche pour utiliser le clic-droit.
+Aucune touche pour utiliser le clic-droit.
 ESC pour annuler.
 o626 {0} is not a modifier. Press a new key.
 
@@ -1409,7 +1422,8 @@ Dive into level NBT structure.
 Right-click for options
 t667 Exporateur NBT
 Plongez au cœur de la structure NBT.
-Click-droit pour les options
+
+Clic-droit pour les options
 o668 Save your change in the NBT data.
 t668 Sauve vos changements dans les données NBT.
 o669 Save unsaved edits before loading?
@@ -1570,8 +1584,10 @@ o734 <Chunk Control Tool>
 t734 <Outil de Contrôle de chunk>
 o735 Select Chunks
 t735 Sélect. chunks
-o736 No matching blocks/tile entities found
-t736 Aucune correspondance trouvée
+o736 
+No matching blocks/tile entities found
+t736 
+Aucune correspondance trouvée
 o737 Choose a filter, then click Filter or press Enter to apply it.
 t737 Choisissez un filtre, puis cliquez Filtrer ou appuyez sur entrée pour l'appiquer.
 o738 Click to set this item down.
