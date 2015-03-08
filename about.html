@@ -22,46 +22,92 @@
 </head>
 <body>
 	<div class="container">
+		<p>
+			The MCEdit unified project was born out of the community wanting to revive the aging program after Codewarrior had 
+			moved on to MCEdit 2, and since has gained a small, but dedicated team, even so anyone wanting to contribute is welcome.
+			<br><br>Note: We are not directly affiliated with Codewarrior, and due to the nature of a community driven open source project
+			we don't accept donations. Any money sent to Codewarrior won't be received here.
+		</p>
 		<div align="center">
+            <p>----------------------------------------------------<p>
 			<img src="doc/images/favicon.png">
 		</div>
 		<p>
-			MCEdit is a versatile map utility, designed for editing Minecraft maps. With it, you can open a level of nearly any type and fly around in glorious 3D with multiple levels of detail! Select millions of blocks and clone them anywhere else in the level. Fill a boxy selection with the block of your choice, or replace one kind of block with another. Export blocks to a &quot;schematic&quot; file for later use. Import a schematic or an entire level into any world using the crane. Move the player or his spawn point. Create and and remove chunks from the world. Fill blackened areas with light. Find bugs!
+			MCEdit is a versatile map utility, designed for editing Minecraft maps. With it, you can open a level 
+			and fly around in glorious 3D with multiple levels of detail! Select millions of blocks 
+			and clone them anywhere else in the level. Fill a boxy selection with the block of your choice, or 
+			replace one kind of block with another. Export blocks to a <i>schematic</i> file for later use. 
+			Import a schematic or an entire level into any world using import. Move players, spawn points, or even add and delete players. 
+			Create and and remove chunks from the world. Fill blackened areas with light. And much more with modular
+			<i>Filters</i>!
 		</p>
 		<pre>
-			Controls:
-			WASD                    - Move
-			Q / Z                   - Altitude
-			SPACE                   - Stop
-
+			Default Controls:
+			[Camera]
+			WASD                    - Move Camera
+			IJKL                    - Pan Camera
+			Shift / Space           - Altitude
+			C                       - Stop/Slow Movement
+			Tab                     - Toggle Chunk View
 			Right-Click             - Toggle Look-Mode
-
 			Right-Click and Drag    - Quick Look
 
+			[Basic UI]
 			Left-Click              - Use Tool
 			1-9                     - Select Tool
 			Mousewheel              - Change Tool Distance
+			ESCAPE                  - Cancel Action/Return to Select/Menu
 
-			E                       - Rotate Blocks
-			R                       - Roll Blocks
-			F                       - Flip Blocks
-
-			ESCAPE                  - Holster Tools
+			[General Tools]
+			Control-Z               - Undo
+			Control-Y               - Redo
+			ALT			- Show block info
+			
+			[Select]
 			DELETE                  - Remove Selected Blocks
+			Scroll Up		- Increase Reach
+			Scroll Down		- Decrease Reach
+			Middle Mouse		- Reset Reach
+			Alt-Z			- Long-Distance Mode
+			Alt(Hold)		- Blocks-Only Modifier
+			
+			[Brush]
+			E                       - Rotate Brush
+			G                       - Roll Brush
+			R                       - Increase Brush Size
+			F                       - Decrease Brush Size
+			Z			- Line Tool
+			Alt-E			- Rotate Block
+			Alt-G			- Roll Block
+			Alt-Click		- Pick Block
+			
+			[Clone]
+			E			- Rotate Selection
+			R			- Roll Selection
+			F			- Flip Selection
+			G			- Mirror Selection
+			Control			- Snap Clone to Axis
+			
+			[Fill and Replace]
+			R			- Replace
+			X			- Swap
+			
+			[Chunk Control]
+			Z(Hold)			- Select Chunks
+			ALT(Hold)		- Deselect Chunks
 
+			[Function]
 			F1-F5                   - Open World1-World5
-			O                       - Open Level...
-			N                       - Create World...
+			O                       - Open from File
+			N                       - Create New World
 			Control-S               - Save World
 			Control-W               - Close World
 			Control-A               - Select All
 			Control-D               - Deselect
-			Control-G               - Teleport
+			Control-G               - Teleport to Coordinates
 			Control-F               - Change view distance
-
+			Control-M               - Disable Renderer (Debug)
 			Alt-F4                  - Close MCEdit
-
-			Control-Z               - Undo
 		</pre>
 		<p>
 			Here's a quick overview of a few of the different tools we have:
@@ -85,11 +131,7 @@
 				</span> to swap materials.
 			</li>
 			<li>
-				<a href="#Pencil">Pencil</a>: Export the selection as a Schematic file for later use.
-			</li>
-			<li>
-				<a href="#Crane">Crane</a>: Import a Schematic file or an entire level. Use this to convert older levels by
-				importing them into an Alpha world.
+				<a href="#Crane">Import</a>: Import a Schematic file or an entire level into the current world.
 			</li>
 			<li>
 				<a href="#Player">Player</a>: Click to move the player. Press twice to teleport.
@@ -104,7 +146,7 @@
 		</ul>
 		<p>
 			There are a few <span style="font-weight: bold">Nudge</span> buttons scattered around. To use them, click and hold down on one. While holding the mouse button, use the
-			movement keys (defaults: <span style="font-weight: bold">WASDQZ</span>) to move the related item around. Hold Shift to nudge further.
+			movement keys (defaults: <span style="font-weight: bold">WASDShiftSpace</span>) to move the related item around. Hold Right Click to nudge further.
 		</p>
 		<p>
 			If you have a powerful computer, press
@@ -114,59 +156,42 @@
 		<p>
 			Mark a selection using blue and yellow cubes. Here is a selection in progress.
 			<br>
-			<a href="doc/images/selection0.jpg">
-				<img src="doc/images/selection0.jpg" class="simg" alt="Image">
-			</a>
+			<img src="doc/images/selection0.png" class="simg" alt="Image">
 		</p>
 		<p>
-			A selection.
+			A completed selection.
 			<br>
-			<a href="doc/images/selection1.jpg">
-				<img src="doc/images/selection1.jpg" class="simg" alt="Image">
-			</a>
+			<img src="doc/images/selection1.png" class="simg" alt="Image">
+			The selection tool can also be used to export schematics and do some other basic tasks.
+		</p>
+		<h2 id="Brush">Brush Tool:</h2>
+		<p>
+			The brush tool allows you to "Paint" the world using preset shapes, you can use RFEG to Increase size, Decrease size, rotate and roll this tool. 
+			<img src="doc/images/brush0.png" class="simg" alt="Image">
+			<br>
+		</p>
+		<p>
+			Hold Z after placing a brush and click a second point to create a solid line of that brush. Line spacing adjusts how close together brushes are.
+			<img src="doc/images/brush0.png" class="simg" alt="Image">
+			<br>
 		</p>
 		<h2 id="Clone">Clone Tool:</h2>
 		<p>
 			Quickly copy blocks within the same level. The selected blocks are cloned into the green box and will
-			follow your cursor around until you click.
+			follow your cursor around until you click. Click the green selection again to pick it back up.
 			<br>
-			<a href="doc/images/clone0.jpg">
-				<img src="doc/images/clone0.jpg" class="simg" alt="Image">
-			</a>
+			<img src="doc/images/clone0.png" class="simg" alt="Image">
 		</p>
 		<p>
-			Click once, and your duplicate blocks
-			are set down and will begin pulsating. Click again to pick them back up.
+			Use the keys <span style="font-weight: bold">E R F G</span> to rotate, roll, flip, and mirror a cloned structure.
 			<br>
-			<a href="doc/images/clone1.jpg">
-				<img src="doc/images/clone1.jpg" class="simg" alt="Image">
-			</a>
-		</p>
-		<p>
-			Use the keys <span style="font-weight: bold">E R F</span> to rotate, roll, and flip the blocks.
-			<br>
-			<a href="doc/images/clone2.jpg">
-				<img src="doc/images/clone2.jpg" class="simg" alt="Image">
-			</a>
-		</p>
-		<p>
-			Press ENTER or click <span style="font-weight: bold">Clone</span> to expand public housing. The clone is finished when the selection is moved to the newly cloned object.
-			<br>
-			<a href="doc/images/clone3.jpg">
-				<img src="doc/images/clone3.jpg" class="simg" alt="Image">
-			</a>
+			<img src="doc/images/clone2.png" class="simg" alt="Image">
 		</p>
 		<h2 id="Fill">Fill Tool:</h2>
 		<p>
-			You'll have to play around with this one on your own.
+			Pretty self-explanatory, fills the selected area with the chosen block. Can also replace certain blocks.
 			<br>
-			<a href="doc/images/replace.jpg">
-				<img src="doc/images/replace.jpg" class="simg" alt="Image">
-			</a>
-		</p>
-		<h2 id="Pencil">Pencil Tool:</h2>
-		<p>
-			Save the current selection as a &quot;schematic&quot; file. This file can be loaded into another level using the Crane. Nothing interesting to see here, unless you want a pic of a &quot;Save file...&quot; window.
+			<img src="doc/images/replace.png" class="simg" alt="Image">
 		</p>
 		<h2 id="Crane">Crane tool:</h2>
 		<p>
