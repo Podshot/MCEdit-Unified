@@ -57,7 +57,7 @@ class TextEditor(Widget):
 
     def key_down(self, event):
         self.root.notMove = True
-        if not (event.cmd or event.alt):
+        if not event.cmd or (event.alt and event.unicode):
             k = event.key
             if k == K_LEFT:
                 self.move_insertion_point(-1)
@@ -640,7 +640,7 @@ class TextEditorWrapped(Widget):
 
     def key_down(self, event):
         self.get_root().notMove = True
-        if not (event.cmd or event.alt):
+        if not event.cmd or (event.alt and event.unicode):
             k = event.key
             if k == K_LEFT:
                 if not (key.get_mods() & KMOD_SHIFT):
@@ -723,6 +723,7 @@ class TextEditorWrapped(Widget):
             try:
                 c = event.unicode
             except ValueError:
+                print 'value error'
                 c = ""
             if self.insert_char(c, k) != 'pass':
                 return
@@ -893,53 +894,52 @@ class TextEditorWrapped(Widget):
     def insert_char(self, c, k=None):
         if self.upper:
             c = c.upper()
-        if c <= u"\xff":
-            if k == K_BACKSPACE or k == K_DELETE:
+        if k == K_BACKSPACE or k == K_DELETE:
+            text, i = self.get_text_and_insertion_point()
+            if i is None and (self.selection_start is None or self.selection_end is None):
+                text = ""
+                i = 0
+                self.insertion_line = i
+                self.insertion_step = i
+            elif i is None and self.selection_start is not None and self.selection_end is not None:
+                i = min(self.selection_start, self.selection_end)
+                text = text[:(min(self.selection_start, self.selection_end))] + text[(
+                max(self.selection_start, self.selection_end)):]
+                self.selection_start = None
+                self.selection_end = None
+            elif i > 0:
+                if k == K_BACKSPACE:
+                    text = text[:i - 1] + text[i:]
+                    i -= 1
+                else:
+                    text = text[:i] + text[i + 1:]
+            self.change_text(text)
+            self.insertion_point = i
+            self.sync_line_and_step()
+            return
+        elif c == "\r" or c == "\x03":
+            return self.call_handler('enter_action')
+        elif c == "\x1b":
+            return self.call_handler('escape_action')
+        elif c >= "\x20":
+            if self.allow_char(c):
                 text, i = self.get_text_and_insertion_point()
                 if i is None and (self.selection_start is None or self.selection_end is None):
-                    text = ""
-                    i = 0
-                    self.insertion_line = i
-                    self.insertion_step = i
+                    text = c
+                    i = 1
                 elif i is None and self.selection_start is not None and self.selection_end is not None:
-                    i = min(self.selection_start, self.selection_end)
-                    text = text[:(min(self.selection_start, self.selection_end))] + text[(
+                    i = min(self.selection_start, self.selection_end) + 1
+                    text = text[:(min(self.selection_start, self.selection_end))] + c + text[(
                     max(self.selection_start, self.selection_end)):]
                     self.selection_start = None
                     self.selection_end = None
-                elif i > 0:
-                    if k == K_BACKSPACE:
-                        text = text[:i - 1] + text[i:]
-                        i -= 1
-                    else:
-                        text = text[:i] + text[i + 1:]
+                else:
+                    text = text[:i] + c + text[i:]
+                    i += 1
                 self.change_text(text)
                 self.insertion_point = i
                 self.sync_line_and_step()
                 return
-            elif c == "\r" or c == "\x03":
-                return self.call_handler('enter_action')
-            elif c == "\x1b":
-                return self.call_handler('escape_action')
-            elif c >= "\x20":
-                if self.allow_char(c):
-                    text, i = self.get_text_and_insertion_point()
-                    if i is None and (self.selection_start is None or self.selection_end is None):
-                        text = c
-                        i = 1
-                    elif i is None and self.selection_start is not None and self.selection_end is not None:
-                        i = min(self.selection_start, self.selection_end) + 1
-                        text = text[:(min(self.selection_start, self.selection_end))] + c + text[(
-                        max(self.selection_start, self.selection_end)):]
-                        self.selection_start = None
-                        self.selection_end = None
-                    else:
-                        text = text[:i] + c + text[i:]
-                        i += 1
-                    self.change_text(text)
-                    self.insertion_point = i
-                    self.sync_line_and_step()
-                    return
         return 'pass'
 
     @staticmethod
