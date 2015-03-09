@@ -293,15 +293,15 @@ class MCEdit(GLViewport):
                      showLicense,
                      os.path.join(directories.getDataDir(), "LICENSE.txt")),
                     ("",
-                     "Config Files Folder",
+                     "Config Files",
                      showCacheDir,
                      directories.getCacheDir()),
                     ("",
-                     "Screenshots Folder",
+                     "Screenshots",
                      showScreenshotsDir,
                      os.path.join(directories.parentDir, "screenshots")),
                     ("",
-                     "Refresh All Player Names",
+                     "Refresh Player Names",
                      refresh)
                    ])
 
