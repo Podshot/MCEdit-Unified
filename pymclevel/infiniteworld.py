@@ -911,6 +911,9 @@ class AnvilWorldFolder(object):
             os.makedirs(path)
 
         return path
+    
+    def setPath(self, path):
+        self.filename = path
 
     # --- Region files ---
 
