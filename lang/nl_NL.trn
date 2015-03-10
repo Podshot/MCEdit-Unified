@@ -198,8 +198,8 @@ o90 Recent Changes
 t90 Recente wijzigingen
 o91 License
 t91 Licentie
-o92 Config Files Folder
-t92 Config Files Folder
+o92 Config Files
+t92 Config Files
 o93 {0}/{1}/{2}/{3}/{4}/{5} to move
 t93 {0}/{1}/{2}/{3}/{4}/{5} om te bewegen
 o94 {0} to slow down
@@ -1322,7 +1322,7 @@ o629 Reset to default
 t629 
 o630 Do you want to keep your changes?
 t630 
-o631 Screenshots Folder
+o631 Screenshots
 t631 
 o632 Uses the Latest Snapshot Terrain Generation
 t632 
@@ -1502,7 +1502,7 @@ o714 There are {0} unsaved changes.
 t714 
 o715 Save and Quit
 t715 
-o716 Refresh All Player Names
+o716 Refresh Player Names
 t716 
 o717 Ticks mode accouplement
 t717 

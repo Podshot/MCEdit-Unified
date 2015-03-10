@@ -200,7 +200,7 @@ o90 Recent Changes
 t90 Vergangene Änderungen
 o91 License
 t91 Lizenz
-o92 Config Files Folder
+o92 Config Folder
 t92 Konfigurations Ordner
 o93 {0}/{1}/{2}/{3}/{4}/{5} to move
 t93 {0}/{1}/{2}/{3}/{4}/{5} um sich zu bewegen
@@ -1341,8 +1341,8 @@ o629 Reset to default
 t629 Tasten zurücksetzen
 o630 Do you want to keep your changes?
 t630 Möchtest du deine Änderungen behalten?
-o631 Screenshots Folder
-t631 Bildschirmfotos Ordner
+o631 Screenshots
+t631 Bildschirmfotos
 o632 Uses the Latest Snapshot Terrain Generation
 t632 Verwendet die neueste Snapshot Terrain-Generation
 o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
@@ -1531,8 +1531,8 @@ o714 There are {0} unsaved changes.
 t714 Es gibt {0} ungespeicherte Änderungen.
 o715 Save and Quit
 t715 Speichern und Schliessen
-o716 Refresh All Player Names
-t716 Alle Spieler Namen aktualisieren
+o716 Refresh Player Names
+t716 Spieler Namen aktualisieren
 o717 Ticks mode accouplement
 t717 Tick Modus blablabla
 o718 Results

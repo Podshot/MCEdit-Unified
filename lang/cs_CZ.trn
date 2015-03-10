@@ -1323,7 +1323,7 @@ o629 Reset to default
 t629 
 o630 Do you want to keep your changes?
 t630 
-o631 Screenshots Folder
+o631 Screenshots
 t631 
 o632 Uses the Latest Snapshot Terrain Generation
 t632 
@@ -1503,7 +1503,7 @@ o714 There are {0} unsaved changes.
 t714 
 o715 Save and Quit
 t715 
-o716 Refresh All Player Names
+o716 Refresh Player Names
 t716 
 o717 Ticks mode accouplement
 t717 
