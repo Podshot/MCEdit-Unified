@@ -118,9 +118,12 @@
 				corners.<br>
 			</li>
 			<li>
+				<a href="#Brush">Brush</a>: "Paints" the landscape using a selection of brushes. Use Alt to pick block.<br>
+			</li>
+			<li>
 				<a href="#Clone">Clone</a>: Copies the selected blocks. Click to set the copy down, then press &quot;Clone&quot;
 				to clone.
-				<span style="font-weight: bold">E R F
+				<span style="font-weight: bold">E R F G
 				</span> to transform blocks.<br>
 			</li>
 			<li>
@@ -131,7 +134,7 @@
 				</span> to swap materials.
 			</li>
 			<li>
-				<a href="#Crane">Import</a>: Import a Schematic file or an entire level into the current world.
+				<a href="#Crane">Import</a>: Import a <i>Schematic</i> file or an entire level into the current world.
 			</li>
 			<li>
 				<a href="#Player">Player</a>: Click to move the player. Press twice to teleport.
@@ -142,6 +145,9 @@
 			<li>
 				<a href="#Chunk">Chunk</a>: Create, delete, and light chunks. Prune away all of the chunks outside the
 				selection.
+			</li>
+			<li>
+				<a href="#NBT">NBT Edit</a>: Edit the raw NBT data for the loaded world. Use with caution.
 			</li>
 		</ul>
 		<p>
@@ -162,7 +168,7 @@
 			A completed selection.
 			<br>
 			<img src="doc/images/selection1.png" class="simg" alt="Image">
-			The selection tool can also be used to export schematics and do some other basic tasks.
+			<br>The selection tool can also be used to export schematics and do some other basic tasks.
 		</p>
 		<h2 id="Brush">Brush Tool:</h2>
 		<p>
@@ -187,16 +193,23 @@
 			<br>
 			<img src="doc/images/clone2.png" class="simg" alt="Image">
 		</p>
+		<p>
+			Once you are happy with the clone's location, click <strong>Clone</strong> or press <strong>Enter</strong> to apply, a selection will appear over the cloned area when complete.
+			<br>
+			<img src="doc/images/clone1.png" class="simg" alt="Image">
+		</p>
 		<h2 id="Fill">Fill Tool:</h2>
 		<p>
 			Pretty self-explanatory, fills the selected area with the chosen block. Can also replace certain blocks.
 			<br>
 			<img src="doc/images/replace.png" class="simg" alt="Image">
 		</p>
-		<h2 id="Crane">Crane tool:</h2>
+		<h2 id="Crane">Import tool:</h2>
 		<p>
-			The crane tool lets you import blocks from different sources: It can place blocks previously saved by the pencil to a schematic. It can import <span style="font-style: italic">.inv </span> files created by <a href="http://www.minecraftforum.net/viewtopic.php?t=15921" class="postlink">INVEdit</a> as chests. It can import an entire level into another level. It will ask you to choose a level or schematic. After you've chosen, the level or schematic will appear in the green box. The blocks are fully loaded and ready to use, even though they appear
-			slowly. Click to set it down.
+			The import tool lets you import blocks from different sources: It can place blocks previously saved using the select tool to a schematic.
+			It can also import an entire level into another level. It will ask you to choose a level or schematic. After you've chosen, 
+			the level or schematic will appear in the green box. Although it may take a few seconds to display the 
+			contents of the import, it is fully loaded and can be placed without waiting for everything to render.
 			<br>
 			<a href="doc/images/crane0.jpg">
 				<img src="doc/images/crane0.jpg" class="simg" alt="Image">
