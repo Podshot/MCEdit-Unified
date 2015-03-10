@@ -320,8 +320,7 @@ class FilterModuleOptions(Widget):
 class FilterToolPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
-
-        self.savedOptions = {}
+        
         self._recording = False
         self._save_macro = False
 
@@ -401,9 +400,9 @@ class FilterToolPanel(Panel):
         self.shrink_wrap()
         if self.parent:
             self.centery = (self.parent.mainViewport.height - self.parent.toolbar.height) / 2 + self.parent.subwidgets[0].height
-
-        if self.selectedFilterName in self.savedOptions:
-            self.filterOptionsPanel.options = self.savedOptions[self.selectedFilterName]
+            
+        if self.selectedFilterName in self.tool.savedOptions:
+            self.filterOptionsPanel.options = self.tool.savedOptions[self.selectedFilterName]
 
     def run_macro(self):
         self.tool.run_macro(self.macro_data)
@@ -570,7 +569,7 @@ class FilterToolPanel(Panel):
 
     def saveOptions(self):
         if self.filterOptionsPanel and not self.usingMacro:
-            self.savedOptions[self.selectedFilterName] = self.filterOptionsPanel.options
+            self.tool.savedOptions[self.selectedFilterName] = self.filterOptionsPanel.options
 
 
 class FilterOperation(Operation):
@@ -624,7 +623,8 @@ class FilterTool(EditorTool):
         EditorTool.__init__(self, editor)
 
         self.filterModules = {}
-
+        self.savedOptions = {}
+        
         self.updatePanel = Panel()
         updateButton = Button("Update Filters", action=self.updateFilters)
         self.updatePanel.add(updateButton)
