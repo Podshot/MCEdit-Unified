@@ -92,7 +92,7 @@ def nbt_ok_action():
         return
     if chunks:
         for chunk, slices, point in chunks:
-            if by == 'TileEntities':
+            if by == 'TileEntity':
                 for e in chunk.TileEntities:
                     x = e["x"].value
                     y = e["y"].value
