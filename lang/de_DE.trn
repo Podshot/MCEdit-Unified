@@ -1671,43 +1671,44 @@ t774 Erleuchte {0} Chunks...
 o775 Create chunks using the settings above? This cannot be undone.
 t775 Chunks erstellen mit den obigen Einstellungen? Das kann nicht rückgängig gemacht werden.
 o776 Add
-t776 
+t776 Hinzufügen
 o777 New child
-t777 
+t777 Neues Kind
 o778 Rename
-t778 
+t778 Umbenenne
 o779 Paste as child
-t779 
+t779 Füge als Kind hinzu
 o780 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t780 Sie löschen eine chunk-förmige Auswahl. Die Chunks mit Luft füllen oder die Chunks selber löschen?
 o781 Screenshot taken and saved as 
-t781 
+t781 Bildschirmfoto geschossen und gespeichert als 
 o782 Fonts Proportion (%): 
-t782 
+t782 Schriftarten Anteil (%): 
 o783 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t783 
+t783 Schriftarten größe Anteil. Die Nummer ist in Prozent.
+Neustart benötigt!
 o784 Save As
-t784 
+t784 Speichere als
 o785 Name the new copy:
-t785 
+t785 Benenne die neue Kopie:
 o786 Copying %0.1f million blocks
-t786 
+t786 Kopiere %0.1f Millionen Blöcke
 o787 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t787 
+t787 Minecraft wird Ihr Spawnpunkt zufällig verschieben wenn Sie versuchen zu respawnen wenn es keine Blöcke bei Y=63 und Y=64 gibt. Nur abwhählen wenn Minecraft verändert ist.
 o788 Keep Data Intact
-t788 
+t788 Behalte Daten intakt
 o789 This pulls skins from the online server, so this may take a while
-t789 
+t789 Das nimmt die Skins vom online Server, das kann etwas dauern
 o790 Session:
-t790 
+t790 Session:
 o791 Session Lock is being used by Minecraft
-t791 
+t791 Session Lock wird von Minecraft benutzt
 o792 Session Lock is being used by MCEdit
-t792 
+t792 Session Lock wird von MCEdit benutzt
 o793 Show Player Skins
-t793 
+t793 Zeige Spieler Skins
 o794 Show player skins while editing the world
-t794 
+t794 Zeige Spieler Skins beim bearbeiten der Welt
 o795 Compass Size (%): 
-t795 
+t795 Kompassgroße (%): 
