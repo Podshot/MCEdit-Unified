@@ -1,7 +1,7 @@
 from OpenGL import GL
 from config import config
 import pygame
-from pygame import display, image
+from pygame import display, image, Surface
 import logging
 import release
 import sys
@@ -51,12 +51,17 @@ class GLDisplayContext(object):
         GL.glScale(1 / 256., 1 / 256., 1 / 256.)
 
         if splash:
+            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+            GL.glWindowPos2d(0, 0)
+            back = Surface(wwh)
+            back.fill((0, 0, 0))
+            GL.glDrawPixels(wwh[0], wwh[1], GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
+                            numpy.fromstring(image.tostring(back, 'RGBA'), dtype='uint8'))
             swh = splash.get_size()
             x, y = (wwh[0] / 2 - swh[0] / 2, wwh[1] / 2 - swh[1] / 2)
             w, h = swh
             data = image.tostring(splash, 'RGBA', 1)
             GL.glWindowPos2d(x, y)
-            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
             GL.glDrawPixels(w, h,
                             GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, numpy.fromstring(data, dtype='uint8'))
             display.flip()
