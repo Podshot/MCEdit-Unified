@@ -624,6 +624,7 @@ class FilterTool(EditorTool):
 
         self.filterModules = {}
         self.savedOptions = {}
+        self.lastUsed = ""
         
         self.updatePanel = Panel()
         updateButton = Button("Update Filters", action=self.updateFilters)
@@ -650,6 +651,9 @@ class FilterTool(EditorTool):
 #            self.editor.remove(self.panel)
 
         self.panel = FilterToolPanel(self)
+        self.panel.selectedFilterName = self.lastUsed
+        self.lastUsed = ""
+        
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
         self.editor.add(self.updatePanel)
         self.reloadFilters()
@@ -665,6 +669,7 @@ class FilterTool(EditorTool):
         if self.panel:
             if not self.panel.usingMacro:
                 self.panel.saveOptions()
+                self.lastUsed = self.panel.selectedFilterName
             if self.panel.parent:
                 self.panel.parent.remove(self.panel)
                 self.updatePanel.parent.remove(self.updatePanel)
@@ -766,8 +771,10 @@ class FilterTool(EditorTool):
                     m.trn = trn
                 return m
             except Exception, e:
-                print traceback.format_exc()
-                alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
+                # Only prints when the filter filename is presented, not the entire file path
+                if not os.path.sep in name:
+                    traceback.print_exc()
+                    alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
             finally:
                 module_file_object.close()

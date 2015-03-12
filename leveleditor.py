@@ -2313,23 +2313,29 @@ class LevelEditor(GLViewport):
         # blockInput = BlockButton(pymclevel.alphaMaterials, pymclevel.alphaMaterials.Grass)
         # blockInputRow = Row( (Label("Surface: "), blockInput) )
 
-        types = ["Survival", "Creative"]
+        gametypes = ["Survival", "Creative"]
+        worldtypes = {"Default": ("DEFAULT", "default"), "Superflat": ("FLAT", "flat"), "Large Biomes": ("LARGEBIOMES", "largeBiomes"), "Amplified": ("AMPLIFIED", "amplified")}
 
         def gametype(t):
-            if t < len(types):
-                return types[t]
+            if t < len(gametypes):
+                return gametypes[t]
             return "Unknown"
 
-        def action():
+        def gametypeAction():
             if gametypeButton.gametype < 2:
                 gametypeButton.gametype = 1 - gametypeButton.gametype
                 gametypeButton.text = gametype(gametypeButton.gametype)
+                
 
-        gametypeButton = Button(gametype(0), action=action)
+        gametypeButton = Button(gametype(0), action=gametypeAction)
         gametypeButton.gametype = 0
         gametypeRow = Row((Label("Game Type:"), gametypeButton))
+        
+        worldtypeButton = ChoiceButton(worldtypes.keys())
+        worldtypeRow = Row((Label("World Type:"), worldtypeButton))      
+        
         newWorldPanel.add(
-            Column((label, Row([winput, hinput]), xyzrow, seedinput, gametypeRow, generatorPanel), align="l"))
+            Column((label, Row([winput, hinput]), xyzrow, seedinput, gametypeRow, worldtypeRow, generatorPanel), align="l"))
         newWorldPanel.shrink_wrap()
 
         result = Dialog(client=newWorldPanel, responses=["Create", "Cancel"]).present()
@@ -2347,6 +2353,7 @@ class LevelEditor(GLViewport):
         z = newWorldPanel.z
         f = newWorldPanel.f
         seed = newWorldPanel.seed or None
+        generationtype = worldtypes[worldtypeButton.get_value()][0]
 
         self.freezeStatus("Creating world...")
         try:
@@ -2361,9 +2368,11 @@ class LevelEditor(GLViewport):
 
             newlevel.setPlayerSpawnPosition((x, y + 1, z))
             newlevel.GameType = gametypeButton.gametype
+            newlevel.GeneratorName = worldtypes[worldtypeButton.get_value()][1]
             newlevel.saveInPlace()
             worker = generatorPanel.generate(newlevel, pymclevel.BoundingBox((x - w * 8, 0, z - h * 8),
-                                                                             (w * 16, newlevel.Height, h * 16)))
+                                                                             (w * 16, newlevel.Height, h * 16)),
+                                             useWorldType=generationtype)
 
             if "Canceled" == mceutils.showProgress("Generating chunks...", worker, cancel=True):
                 raise RuntimeError("Canceled.")

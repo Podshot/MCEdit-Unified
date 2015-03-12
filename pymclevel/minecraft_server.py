@@ -449,7 +449,7 @@ class MCServerChunkGenerator(object):
     def createLevel(self, level, box, simulate=False, **kw):
         return exhaust(self.createLevelIter(level, box, simulate, **kw))
 
-    def createLevelIter(self, level, box, simulate=False, **kw):
+    def createLevelIter(self, level, box, simulate=False, worldType="DEFAULT", **kw):
         if isinstance(level, basestring):
             filename = level
             level = infiniteworld.MCInfdevOldLevel(filename, create=True, **kw)
@@ -468,6 +468,7 @@ class MCServerChunkGenerator(object):
             props = readProperties(join(dirname(self.serverJarFile), "server.properties"))
             props["level-name"] = basename(level.worldFolder.filename)
             props["server-port"] = int(32767 + random.random() * 32700)
+            props["level-type"] = worldType
             saveProperties(propsFile, props)
 
             for p in self.generateAtPositionIter(level, parentDir, cx, cz, simulate):

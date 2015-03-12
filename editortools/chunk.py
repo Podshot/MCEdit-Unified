@@ -461,7 +461,7 @@ def GeneratorPanel():
 
     panel.shrink_wrap()
 
-    def generate(level, arg):
+    def generate(level, arg, useWorldType="DEFAULT"):
         useServer = generatorChoice.selectedChoice == "Minecraft Server"
 
         if useServer:
@@ -473,7 +473,7 @@ def GeneratorPanel():
                 gen = MCServerChunkGenerator(version=version)
 
                 if isinstance(arg, pymclevel.BoundingBox):
-                    for i in gen.createLevelIter(level, arg, simulate=panel.simulate):
+                    for i in gen.createLevelIter(level, arg, simulate=panel.simulate, worldType=useWorldType):
                         yield i
                 else:
                     for i in gen.generateChunksInLevelIter(level, arg, simulate=panel.simulate):

@@ -903,8 +903,8 @@ class AnvilWorldFolder(object):
         path = path.replace("/", os.path.sep)
         return os.path.join(self.filename, path)
 
-    def getFolderPath(self, path, checksExists=True):
-        if checksExists and not os.path.exists(self.filename):
+    def getFolderPath(self, path, checksExists=True, generation=False):
+        if checksExists and not os.path.exists(self.filename) and "##MCEDIT.TEMP##" in path and not generation:
             raise IOError("The file does not exist")
         path = self.getFilePath(path)
         if not os.path.exists(path) and "players" not in path:
@@ -956,7 +956,7 @@ class AnvilWorldFolder(object):
         return MCRegionFile(filepath, (rx, rz))
 
     def findRegionFiles(self):
-        regionDir = self.getFolderPath("region")
+        regionDir = self.getFolderPath("region", generation=True)
 
         regionFiles = os.listdir(regionDir)
         for filename in regionFiles:
@@ -1275,6 +1275,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
     LastPlayed = TagProperty('LastPlayed', nbt.TAG_Long, lambda self: long(time.time() * 1000))
 
     LevelName = TagProperty('LevelName', nbt.TAG_String, lambda self: self.displayName)
+    GeneratorName = TagProperty('generatorName', nbt.TAG_String, 'default')
 
     MapFeatures = TagProperty('MapFeatures', nbt.TAG_Byte, 1)
 

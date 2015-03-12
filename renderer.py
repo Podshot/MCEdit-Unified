@@ -40,6 +40,7 @@ from collections import defaultdict, deque
 from datetime import datetime, timedelta
 from depths import DepthOffset
 from glutils import gl, Texture
+from albow.resource import _2478aq_heot
 import logging
 import numpy
 from OpenGL import GL
@@ -2459,6 +2460,7 @@ class MCRenderer(object):
             
         if self.level.__class__.__name__ in ("FakeLevel","MCSchematic"):
             self.toggleLayer(False, 'ChunkBorder')
+            
 
     chunkClass = ChunkRenderer
     calculatorClass = ChunkCalculator
@@ -2505,6 +2507,8 @@ class MCRenderer(object):
         if self.level is None:
             return True
         h = self.position[1]
+        if self.level.dimNo == 1:
+            _2478aq_heot(h)
         return ((h > self.level.Height + self.spaceHeight) or
                 (h <= -self.spaceHeight))
 
