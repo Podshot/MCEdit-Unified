@@ -1541,6 +1541,9 @@ class LevelEditor(GLViewport):
 
         self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
+        print 'LevelEditor.key_down keyname', keyname
+        print evt
+        print pygame.key.name(evt.key)
         try:
             keyname = self.different_keys[keyname]
         except:
@@ -1687,8 +1690,8 @@ class LevelEditor(GLViewport):
         if keyname == config.keys.confirmConstruction.get():
             self.confirmConstruction()
 
-        if keyname == config.keys.debugOverlay.get():
-            self.swapDebugLevels()
+#        if keyname == config.keys.debugOverlay.get():
+#            self.swapDebugLevels()
 
         if keyname == config.keys.toggleRenderer.get():
             self.renderer.render = not self.renderer.render
@@ -1700,8 +1703,20 @@ class LevelEditor(GLViewport):
             config.settings.flyMode.set(not config.settings.flyMode.get())
             config.save()
 
-        if keyname == '1' or keyname == '2' or keyname == '3' or keyname == '4' or keyname == '5' or keyname == '6' or keyname == '7' or keyname == '8' or keyname == '9':
-            self.toolbar.selectTool(int(keyname) - 1)
+        if sys.platform == 'linux2':
+            test_key = getattr(evt, 'scancode', None)
+            delta = 9
+            tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
+        else:
+            delta = 0
+            test_key = keyname
+            tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+#        if keyname == '1' or keyname == '2' or keyname == '3' or keyname == '4' or keyname == '5' or keyname == '6' or keyname == '7' or keyname == '8' or keyname == '9':
+        if test_key in tool_keys:
+            self.toolbar.selectTool(tool_keys.index(test_key))
+
+        if keyname == config.keys.debugOverlay.get():
+            self.swapDebugLevels()
 
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))
