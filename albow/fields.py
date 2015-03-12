@@ -453,7 +453,7 @@ class FloatField(Field):
     _shift_increment = 16.0
     tooltipText = _("Point here and use mousewheel to adjust")
 
-    allowed_chars = '-+.0123456789f'
+    allowed_chars = '-+.0123456789'
 
     def allow_char(self, c):
         return c in self.allowed_chars
