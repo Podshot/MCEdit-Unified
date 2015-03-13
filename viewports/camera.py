@@ -1539,7 +1539,7 @@ class CameraViewport(GLViewport):
         else:
             GL.glFogfv(GL.GL_FOG_COLOR, self.fogColorBlack)
 
-        GL.glFogf(GL.GL_FOG_DENSITY, 0.002)
+        GL.glFogf(GL.GL_FOG_DENSITY, 0.0001 * config.settings.fogIntensity.get())
 
     @staticmethod
     def disableFog():

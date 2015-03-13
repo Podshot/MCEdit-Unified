@@ -47,6 +47,7 @@ class OptionsPanel(Dialog):
             config.settings.compassToggle:             config.settings.compassToggle.get(),
             config.settings.compassSize:               config.settings.compassSize.get(),
             config.settings.fontProportion:            config.settings.fontProportion.get(),
+            config.settings.fogIntensity:              config.settings.fogIntensity.get(),
         }
 
     def initComponents(self):
@@ -91,6 +92,9 @@ class OptionsPanel(Dialog):
                                             ref=config.settings.fontProportion, width=100, min=0,
                                             tooltipText="Fonts sizing proportion. The number is a percentage.\nRestart needed!")
         albow.resource.font_proportion = config.settings.fontProportion.get()
+
+        fogIntensityRow = mceutils.IntInputRow("Fog Intensity (%): ",
+                                            ref=config.settings.fogIntensity, width=100, min=0, max=100)
 
         invertRow = mceutils.CheckBoxLabel("Invert Mouse",
                                            ref=config.controls.invertMousePitch,
@@ -174,6 +178,7 @@ class OptionsPanel(Dialog):
             maxCopiesRow,
             compassSizeRow,
             fontProportion, # FONT SIZE
+            fogIntensityRow,
         )
 
         options = (

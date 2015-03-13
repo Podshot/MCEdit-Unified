@@ -506,6 +506,7 @@ definitions = {
         ("superSecretSettings", "Super Secret Settings", False),
         ("compassToggle", "Compass Toggle", True),
         ("compassSize", "Compass Size", 75),
+        ("fogIntensity", "Fog Intensity", 20),
         ("fontProportion", "Fonts Proportion", 100),
         ("downloadPlayerSkins", "Download Player Skins", True),
     ],
