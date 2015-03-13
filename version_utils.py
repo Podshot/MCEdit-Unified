@@ -17,7 +17,7 @@ logger = logging.getLogger()
 
 def deprecated(func):
     def new_func(*args, **kwargs):
-        logger.warn(str(func.__name__)+" is deprecated and should not be used")
+        logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
         return func(*args, **kwargs)   
     new_func.__name__ = func.__name__
     new_func.__doc__ = func.__doc__
@@ -169,8 +169,6 @@ class __PlayerCache:
             
     @deprecated
     def getPlayerFromUUID(self, uuid, forceNetwork=False, dontSave=False):
-        print "getPlayerFromUUID called at "+str(time.ctime())
-        traceback.print_stack()
         player = {}
         response = None
         if forceNetwork:
@@ -209,7 +207,6 @@ class __PlayerCache:
                     return uuid
     @deprecated
     def getPlayerFromPlayername(self, playername, forceNetwork=False, separator=True):
-        print "getPlayerFromPlayername called at "+str(time.ctime())
         response = None
         if forceNetwork:
             if self.nameInCache(playername):
@@ -292,7 +289,6 @@ class __PlayerCache:
                 return self._getPlayerInfoName(arg)
         
     def _getPlayerInfoUUID(self, uuid):
-        print "getPlayerInfoName called at "+str(time.ctime())
         response_name = None
         response_uuid = None
         player = {}
