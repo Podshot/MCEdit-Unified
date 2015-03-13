@@ -303,6 +303,9 @@ class __PlayerCache:
             response_name = json.loads(urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(response_uuid["name"])).read())
         except urllib2.URLError:
             return uuid
+        except ValueError:
+            print "Caught value error while getting player info for "+uuid
+            return uuid
         if response_name is not None and response_name != "" and response_uuid is not None and response_uuid != "":
             player["Playername"] = response_name["name"]
             player["UUID (Separator)"] = response_name["id"][:8]+"-"+response_name["id"][8:12]+"-"+response_name["id"][12:16]+"-"+response_name["id"][16:20]+"-"+response_name["id"][20:]
@@ -317,7 +320,6 @@ class __PlayerCache:
             #raise Exception("Couldn't find player")
     
     def _getPlayerInfoName(self, playername):
-        print "getPlayerInfoName called at "+str(time.ctime())
         response_name = None
         response_uuid = None
         player = {}
@@ -327,6 +329,9 @@ class __PlayerCache:
             response_name = json.loads(urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(playername)).read())
             response_uuid = json.loads(urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(response_name["id"])).read())
         except urllib2.URLError:
+            return playername
+        except ValueError:
+            print "Caught value error while getting player info for "+playername
             return playername
         if response_name is not None and response_name != "" and response_uuid is not None and response_uuid != "":
             player["Playername"] = response_name["name"]
