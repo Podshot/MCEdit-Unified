@@ -26,13 +26,14 @@ pygame.display.update()
 os.environ['SDL_VIDEO_CENTERED'] = '0'
 
 # Random splash
-if not no_splash:
-    from random import choice
-    from shutil import copyfile
-    splashes_folder = 'splashes'
-    if not os.path.exists(splashes_folder):
-        splashes_folder = os.path.join('.', splashes_folder)
-    if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
-        new_splash = choice(os.listdir(splashes_folder))
-        copyfile(os.path.join(splashes_folder, new_splash), os.path.join('.', 'splash.png'))
+# Not activated for now, need more work...
+#if not no_splash:
+#    from random import choice
+#    from shutil import copyfile
+#    splashes_folder = 'splashes'
+#    if not os.path.exists(splashes_folder):
+#        splashes_folder = os.path.join('.', splashes_folder)
+#    if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
+#        new_splash = choice(os.listdir(splashes_folder))
+#        copyfile(os.path.join(splashes_folder, new_splash), os.path.join('.', 'splash.png'))
 
