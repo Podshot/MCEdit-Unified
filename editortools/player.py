@@ -134,7 +134,7 @@ class PlayerAddOperation(Operation):
             print "UUID: \""+str(self.uuid)+"\""
             self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)  #Case Corrected
             '''
-            self.uuid, self.player, other_uuid = version_utils.playercache.getPlayerInfo(self.player)
+            self.uuid, self.player, other_uuid = version_utils.playercache.getPlayerInfo(self.player, force=True)
         except:
             action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":
@@ -382,7 +382,9 @@ class PlayerPositionPanel(Panel):
                         if len(player) > 4 and player[4] == "-":
                             os.rename(os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player+".dat"), os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player.replace("-", "", 1)+".dat"))
                             player = player.replace("-", "", 1)
-                        self.player_UUID[version_utils.playercache.getPlayerFromUUID(player)] = player
+                        #self.player_UUID[version_utils.playercache.getPlayerFromUUID(player)] = player
+                        uuid, player, other_data = version_utils.playercache.getPlayerInfo(player)
+                        self.player_UUID[player] = uuid
                 if "Player" in players:
                     self.player_UUID["Player"] = "Player"
                 if "[No players]" not in players:

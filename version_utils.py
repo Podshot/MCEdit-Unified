@@ -10,6 +10,19 @@ from PIL import Image
 from urllib2 import HTTPError
 import atexit
 import threading
+import traceback
+import logging
+
+logger = logging.getLogger()
+
+def deprecated(func):
+    def new_func(*args, **kwargs):
+        logger.warn(str(func.__name__)+" is deprecated and should not be used")
+        return func(*args, **kwargs)   
+    new_func.__name__ = func.__name__
+    new_func.__doc__ = func.__doc__
+    new_func.__dict__.update(func.__dict__)
+    return new_func
 
 #def getPlayerSkinURL(uuid):
 #    try:
@@ -90,7 +103,7 @@ class __PlayerCache:
         
 
     def _save(self):
-        out = open(userCachePath, "wb")
+        out = open(userCachePath, "w")
         json.dump(self._playerCacheList, out, indent=4, separators=(',', ':'))
         out.close()
             
@@ -154,8 +167,10 @@ class __PlayerCache:
         for player in players:
             self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
             
-    
+    @deprecated
     def getPlayerFromUUID(self, uuid, forceNetwork=False, dontSave=False):
+        print "getPlayerFromUUID called at "+str(time.ctime())
+        traceback.print_stack()
         player = {}
         response = None
         if forceNetwork:
@@ -192,8 +207,9 @@ class __PlayerCache:
                     player = {"Playername":"<Unknown>","UUID (Separator)":uuid,"UUID (No Separator)":uuid.replace("-",""),"Timestamp":"<Invalid>","WasSuccessful":False}
                     self._playerCacheList.append(player)
                     return uuid
-    
+    @deprecated
     def getPlayerFromPlayername(self, playername, forceNetwork=False, separator=True):
+        print "getPlayerFromPlayername called at "+str(time.ctime())
         response = None
         if forceNetwork:
             if self.nameInCache(playername):
@@ -251,7 +267,57 @@ class __PlayerCache:
                     toReturn[p["Playername"]] = p
         return toReturn
     
-    def getPlayerInfo(self, playername):
+    def getFromCacheUUID(self, uuid, seperator=True):
+        for player in self._playerCacheList:
+            if seperator and player["UUID (Separator)"] == uuid:
+                return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
+            elif player["UUID (No Separator)"] == uuid:
+                return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
+            
+    def getFromCacheName(self, name):
+        for player in self._playerCacheList:
+            if name == player["Playername"]:
+                return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
+    
+    def getPlayerInfo(self, arg, force=False):
+        if arg.count('-') == 4:
+            if self.uuidInCache(arg) and not force:
+                return self.getFromCacheUUID(arg)
+            else:
+                return self._getPlayerInfoUUID(arg)
+        else:
+            if self.nameInCache(arg) and not force:
+                return self.getFromCacheName(arg)
+            else:
+                return self._getPlayerInfoName(arg)
+        
+    def _getPlayerInfoUUID(self, uuid):
+        print "getPlayerInfoName called at "+str(time.ctime())
+        response_name = None
+        response_uuid = None
+        player = {}
+        if self.uuidInCache(uuid):
+            self._removePlayerWithUUID(uuid)
+        try:
+            response_uuid = json.loads(urllib2.urlopen("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid.replace("-", ""))).read())
+            response_name = json.loads(urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(response_uuid["name"])).read())
+        except urllib2.URLError:
+            return uuid
+        if response_name is not None and response_name != "" and response_uuid is not None and response_uuid != "":
+            player["Playername"] = response_name["name"]
+            player["UUID (Separator)"] = response_name["id"][:8]+"-"+response_name["id"][8:12]+"-"+response_name["id"][12:16]+"-"+response_name["id"][16:20]+"-"+response_name["id"][20:]
+            player["UUID (No Separator)"] = response_name["id"]
+            player["WasSuccessful"] = True
+            player["Timestamp"] = time.time()
+            self._playerCacheList.append(player)
+            self._save()
+            return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
+        else:
+            return uuid
+            #raise Exception("Couldn't find player")
+    
+    def _getPlayerInfoName(self, playername):
+        print "getPlayerInfoName called at "+str(time.ctime())
         response_name = None
         response_uuid = None
         player = {}
@@ -272,7 +338,8 @@ class __PlayerCache:
             self._save()
             return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
         else:
-            raise Exception("Couldn't find player")
+            return playername
+            #raise Exception("Couldn't find player")
     
     @staticmethod
     def __formats():
