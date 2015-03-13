@@ -1033,6 +1033,8 @@ class LevelEditor(GLViewport):
                     return
                 dimNo = int(dimensionsMenu[dimIdx][1])
                 self.gotoDimension(dimNo)
+                self.mainViewport.skyList = None
+                self.mainViewport.drawSkyBackground()
 
             self.netherButton = Button("Goto Dimension", action=presentMenu)
             self.remove(self.topRow)

@@ -1479,8 +1479,7 @@ class CameraViewport(GLViewport):
             self.skyList = glutils.DisplayList()
         self.skyList.call(self._drawSkyBackground)
 
-    @staticmethod
-    def _drawSkyBackground():
+    def _drawSkyBackground(self):
         GL.glMatrixMode(GL.GL_MODELVIEW)
         GL.glPushMatrix()
         GL.glLoadIdentity()
@@ -1490,10 +1489,16 @@ class CameraViewport(GLViewport):
         GL.glEnableClientState(GL.GL_COLOR_ARRAY)
 
         quad = numpy.array([-1, -1, -1, 1, 1, 1, 1, -1], dtype='float32')
-        colors = numpy.array([0x48, 0x49, 0xBA, 0xff,
-                              0x8a, 0xaf, 0xff, 0xff,
-                              0x8a, 0xaf, 0xff, 0xff,
-                              0x48, 0x49, 0xBA, 0xff, ], dtype='uint8')
+        if self.editor.level.dimNo == 1:
+            colors = numpy.array([0x22, 0x27, 0x28, 0xff,
+                                  0x22, 0x27, 0x28, 0xff,
+                                  0x22, 0x27, 0x28, 0xff,
+                                  0x22, 0x27, 0x28, 0xff, ], dtype='uint8')
+        else:
+            colors = numpy.array([0x48, 0x49, 0xBA, 0xff,
+                                  0x8a, 0xaf, 0xff, 0xff,
+                                  0x8a, 0xaf, 0xff, 0xff,
+                                  0x48, 0x49, 0xBA, 0xff, ], dtype='uint8')
 
         alpha = 1.0
 
