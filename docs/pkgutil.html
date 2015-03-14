@@ -61,7 +61,7 @@
 <p>Utilities to support packages.</p>
 <dl class="function">
 <dt id="pkgutil.get_importer">
-<code class="descclassname">pkgutil.</code><code class="descname">get_importer</code><span class="sig-paren">(</span><em>path_item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#get_importer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.get_importer" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">get_importer</code><span class="sig-paren">(</span><em>path_item</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#get_importer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.get_importer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve a PEP 302 importer for the given path item</p>
 <p>The returned importer is cached in sys.path_importer_cache
 if it was newly created by a path hook.</p>
@@ -74,7 +74,7 @@ rescan of sys.path_hooks is necessary.</p>
 
 <dl class="function">
 <dt id="pkgutil.iter_importers">
-<code class="descclassname">pkgutil.</code><code class="descname">iter_importers</code><span class="sig-paren">(</span><em>fullname=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#iter_importers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.iter_importers" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">iter_importers</code><span class="sig-paren">(</span><em>fullname=''</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#iter_importers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.iter_importers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yield PEP 302 importers for the given module name</p>
 <p>If fullname contains a &#8216;.&#8217;, the importers will be for the package
 containing fullname, otherwise they will be importers for sys.meta_path,
@@ -99,7 +99,7 @@ import mechanism will find the latter.</p>
 
 <dl class="function">
 <dt id="pkgutil.get_loader">
-<code class="descclassname">pkgutil.</code><code class="descname">get_loader</code><span class="sig-paren">(</span><em>module_or_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#get_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.get_loader" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">get_loader</code><span class="sig-paren">(</span><em>module_or_name</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#get_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.get_loader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a PEP 302 &#8220;loader&#8221; object for module_or_name</p>
 <p>If the module or package is accessible via the normal import
 mechanism, a wrapper around the relevant part of that machinery
@@ -113,7 +113,7 @@ as the Windows registry.</p>
 
 <dl class="function">
 <dt id="pkgutil.find_loader">
-<code class="descclassname">pkgutil.</code><code class="descname">find_loader</code><span class="sig-paren">(</span><em>fullname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#find_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.find_loader" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">find_loader</code><span class="sig-paren">(</span><em>fullname</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#find_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.find_loader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a PEP 302 &#8220;loader&#8221; object for fullname</p>
 <p>If fullname contains dots, path must be the containing package&#8217;s __path__.
 Returns None if the module cannot be found or imported. This function uses
@@ -123,7 +123,7 @@ platform-specific special import locations such as the Windows registry.</p>
 
 <dl class="function">
 <dt id="pkgutil.walk_packages">
-<code class="descclassname">pkgutil.</code><code class="descname">walk_packages</code><span class="sig-paren">(</span><em>path=None</em>, <em>prefix=''</em>, <em>onerror=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#walk_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.walk_packages" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">walk_packages</code><span class="sig-paren">(</span><em>path=None</em>, <em>prefix=''</em>, <em>onerror=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#walk_packages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.walk_packages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yields (module_loader, name, ispkg) for all modules recursively
 on path, or, if path is None, all accessible modules.</p>
 <p>&#8216;path&#8217; should be either None or a list of paths to look for
@@ -146,8 +146,8 @@ walk_packages(ctypes.__path__, ctypes.__name__+&#8217;.&#8217;)</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pkgutil.iter_modules">
-<code class="descclassname">pkgutil.</code><code class="descname">iter_modules</code><span class="sig-paren">(</span><em>path=None</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#iter_modules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.iter_modules" title="Permalink to this definition">¶</a></dt>
+<dt id="pkgutil.itermodules">
+<code class="descclassname">pkgutil.</code><code class="descname">itermodules</code><span class="sig-paren">(</span><em>path=None</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#itermodules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.itermodules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yields (module_loader, name, ispkg) for all submodules on path,
 or, if path is None, all top-level modules on sys.path.</p>
 <p>&#8216;path&#8217; should be either None or a list of paths to look for
@@ -158,7 +158,7 @@ on output.</p>
 
 <dl class="function">
 <dt id="pkgutil.get_data">
-<code class="descclassname">pkgutil.</code><code class="descname">get_data</code><span class="sig-paren">(</span><em>package</em>, <em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.get_data" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">get_data</code><span class="sig-paren">(</span><em>package</em>, <em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a resource from a package.</p>
 <p>This is a wrapper round the PEP 302 loader get_data API. The package
 argument should be the name of a package, in standard module format
@@ -178,7 +178,7 @@ which does not support get_data(), then None is returned.</p>
 
 <dl class="class">
 <dt id="pkgutil.ImpImporter">
-<em class="property">class </em><code class="descclassname">pkgutil.</code><code class="descname">ImpImporter</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpImporter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pkgutil.</code><code class="descname">ImpImporter</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpImporter" title="Permalink to this definition">¶</a></dt>
 <dd><p>PEP 302 Importer that wraps Python&#8217;s &#8220;classic&#8221; import algorithm</p>
 <p>ImpImporter(dirname) produces a PEP 302 importer that searches that
 directory.  ImpImporter(None) produces a PEP 302 importer that searches
@@ -187,19 +187,19 @@ the current sys.path, plus any modules that are frozen or built-in.</p>
 on sys.meta_path.</p>
 <dl class="method">
 <dt id="pkgutil.ImpImporter.find_module">
-<code class="descname">find_module</code><span class="sig-paren">(</span><em>fullname</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpImporter.find_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpImporter.find_module" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_module</code><span class="sig-paren">(</span><em>fullname</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpImporter.find_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpImporter.find_module" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pkgutil.ImpImporter.iter_modules">
-<code class="descname">iter_modules</code><span class="sig-paren">(</span><em>prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpImporter.iter_modules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpImporter.iter_modules" title="Permalink to this definition">¶</a></dt>
+<dt id="pkgutil.ImpImporter.itermodules">
+<code class="descname">itermodules</code><span class="sig-paren">(</span><em>prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpImporter.itermodules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpImporter.itermodules" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pkgutil.ImpLoader">
-<em class="property">class </em><code class="descclassname">pkgutil.</code><code class="descname">ImpLoader</code><span class="sig-paren">(</span><em>fullname</em>, <em>file</em>, <em>filename</em>, <em>etc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pkgutil.</code><code class="descname">ImpLoader</code><span class="sig-paren">(</span><em>fullname</em>, <em>file</em>, <em>filename</em>, <em>etc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>PEP 302 Loader that wraps Python&#8217;s &#8220;classic&#8221; import algorithm</p>
 <dl class="attribute">
 <dt id="pkgutil.ImpLoader.code">
@@ -208,32 +208,32 @@ on sys.meta_path.</p>
 
 <dl class="method">
 <dt id="pkgutil.ImpLoader.get_code">
-<code class="descname">get_code</code><span class="sig-paren">(</span><em>fullname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpLoader.get_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_code" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_code</code><span class="sig-paren">(</span><em>fullname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpLoader.get_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_code" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pkgutil.ImpLoader.get_data">
-<code class="descname">get_data</code><span class="sig-paren">(</span><em>pathname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpLoader.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_data</code><span class="sig-paren">(</span><em>pathname</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpLoader.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pkgutil.ImpLoader.get_filename">
-<code class="descname">get_filename</code><span class="sig-paren">(</span><em>fullname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpLoader.get_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_filename" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_filename</code><span class="sig-paren">(</span><em>fullname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpLoader.get_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_filename" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pkgutil.ImpLoader.get_source">
-<code class="descname">get_source</code><span class="sig-paren">(</span><em>fullname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpLoader.get_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_source" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_source</code><span class="sig-paren">(</span><em>fullname=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpLoader.get_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.get_source" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pkgutil.ImpLoader.is_package">
-<code class="descname">is_package</code><span class="sig-paren">(</span><em>fullname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpLoader.is_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.is_package" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_package</code><span class="sig-paren">(</span><em>fullname</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpLoader.is_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.is_package" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pkgutil.ImpLoader.load_module">
-<code class="descname">load_module</code><span class="sig-paren">(</span><em>fullname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#ImpLoader.load_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.load_module" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_module</code><span class="sig-paren">(</span><em>fullname</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#ImpLoader.load_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.ImpLoader.load_module" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -245,12 +245,12 @@ on sys.meta_path.</p>
 
 <dl class="function">
 <dt id="pkgutil.read_code">
-<code class="descclassname">pkgutil.</code><code class="descname">read_code</code><span class="sig-paren">(</span><em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#read_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.read_code" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">read_code</code><span class="sig-paren">(</span><em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#read_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.read_code" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="pkgutil.extend_path">
-<code class="descclassname">pkgutil.</code><code class="descname">extend_path</code><span class="sig-paren">(</span><em>path</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pkgutil.html#extend_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.extend_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pkgutil.</code><code class="descname">extend_path</code><span class="sig-paren">(</span><em>path</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pkgutil.html#extend_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pkgutil.extend_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extend a package&#8217;s path.</p>
 <p>Intended use is to place the following code in a package&#8217;s __init__.py:</p>
 <blockquote>

@@ -70,7 +70,7 @@ OpenGLContext.scenegraph.boundingvolume module.</p>
 </dl>
 <dl class="class">
 <dt id="frustum.Frustum">
-<em class="property">class </em><code class="descclassname">frustum.</code><code class="descname">Frustum</code><a class="reference internal" href="_modules/frustum.html#Frustum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">frustum.</code><code class="descname">Frustum</code><a class="reference internal" href="modules/frustum.html#Frustum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Holder for frustum specification for intersection tests</p>
 <dl class="docutils">
@@ -82,7 +82,7 @@ model-view matrices.</dd>
 </dl>
 <dl class="classmethod">
 <dt id="frustum.Frustum.fromViewingMatrix">
-<em class="property">classmethod </em><code class="descname">fromViewingMatrix</code><span class="sig-paren">(</span><em>matrix=None</em>, <em>normalize=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.fromViewingMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.fromViewingMatrix" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">fromViewingMatrix</code><span class="sig-paren">(</span><em>matrix=None</em>, <em>normalize=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/frustum.html#Frustum.fromViewingMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.fromViewingMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract and calculate frustum clipping planes from OpenGL</p>
 <p>The default initializer allows you to create
 Frustum objects with arbitrary clipping planes,
@@ -98,13 +98,13 @@ distance equations for LOD-style operations.</div></blockquote>
 
 <dl class="classmethod">
 <dt id="frustum.Frustum.normalize">
-<em class="property">classmethod </em><code class="descname">normalize</code><span class="sig-paren">(</span><em>frustum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.normalize" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">normalize</code><span class="sig-paren">(</span><em>frustum</em><span class="sig-paren">)</span><a class="reference internal" href="modules/frustum.html#Frustum.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize clipping plane equations</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="frustum.Frustum.visible">
-<code class="descname">visible</code><span class="sig-paren">(</span><em>points</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.visible" title="Permalink to this definition">¶</a></dt>
+<code class="descname">visible</code><span class="sig-paren">(</span><em>points</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="modules/frustum.html#Frustum.visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine whether this sphere is visible in frustum</p>
 <dl class="docutils">
 <dt>frustum &#8211; Frustum object holding the clipping planes</dt>
@@ -121,14 +121,14 @@ frustcullaccel C extension module)</p>
 
 <dl class="method">
 <dt id="frustum.Frustum.visible1">
-<code class="descname">visible1</code><span class="sig-paren">(</span><em>point</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.visible1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.visible1" title="Permalink to this definition">¶</a></dt>
+<code class="descname">visible1</code><span class="sig-paren">(</span><em>point</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="modules/frustum.html#Frustum.visible1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.visible1" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="frustum.viewingMatrix">
-<code class="descclassname">frustum.</code><code class="descname">viewingMatrix</code><span class="sig-paren">(</span><em>projection=None</em>, <em>model=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#viewingMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.viewingMatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">frustum.</code><code class="descname">viewingMatrix</code><span class="sig-paren">(</span><em>projection=None</em>, <em>model=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/frustum.html#viewingMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.viewingMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the total viewing matrix from given data</p>
 <dl class="docutils">
 <dt>projection &#8211; the projection matrix, if not provided</dt>

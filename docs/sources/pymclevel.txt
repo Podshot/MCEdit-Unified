@@ -21,7 +21,7 @@ pymclevel.block_copy module
     :show-inheritance:
 
 pymclevel.block_fill module
----------------------------pysin
+---------------------------
 
 .. automodule:: pymclevel.block_fill
     :members:
