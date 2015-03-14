@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.palette_view &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.palette_view</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">Rect</span><span class="p">,</span> <span class="n">draw</span>
+<span class="kn">from</span> <span class="nn">grid_view</span> <span class="kn">import</span> <span class="n">GridView</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">frame_rect</span>
+<span class="kn">from</span> <span class="nn">theme</span> <span class="kn">import</span> <span class="n">ThemeProperty</span>
+
+
+<div class="viewcode-block" id="PaletteView"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView">[docs]</a><span class="k">class</span> <span class="nc">PaletteView</span><span class="p">(</span><span class="n">GridView</span><span class="p">):</span>
+    <span class="c"># nrows   int   No. of displayed rows</span>
+    <span class="c">#  ncols   int   No. of displayed columns</span>
+    <span class="c">#</span>
+    <span class="c">#  Abstract methods:</span>
+    <span class="c">#</span>
+    <span class="c">#    num_items()  --&gt;  no. of items</span>
+    <span class="c">#    draw_item(surface, item_no, rect)</span>
+    <span class="c">#    click_item(item_no, event)</span>
+    <span class="c">#    item_is_selected(item_no)  --&gt;  bool</span>
+
+    <span class="n">sel_width</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;sel_width&#39;</span><span class="p">)</span>
+    <span class="n">zebra_color</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;zebra_color&#39;</span><span class="p">)</span>
+    <span class="n">scroll_button_size</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;scroll_button_size&#39;</span><span class="p">)</span>
+    <span class="n">scroll_button_color</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;scroll_button_color&#39;</span><span class="p">)</span>
+    <span class="n">highlight_style</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;highlight_style&#39;</span><span class="p">)</span>
+    <span class="c"># &#39;frame&#39; or &#39;fill&#39; or &#39;reverse&#39; or None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_size</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">scrolling</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">GridView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_size</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span> <span class="o">=</span> <span class="n">scrolling</span>
+        <span class="k">if</span> <span class="n">scrolling</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_size</span>
+            <span class="c">#l = self.width</span>
+            <span class="c">#b = self.height</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+=</span> <span class="n">d</span>
+            <span class="c">#self.scroll_up_rect = Rect(l, 0, d, d).inflate(-4, -4)</span>
+            <span class="c">#self.scroll_down_rect = Rect(l, b - d, d, d).inflate(-4, -4)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="PaletteView.scroll_up_rect"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.scroll_up_rect">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_up_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_size</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">m</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">inflate_ip</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span>
+</div>
+<div class="viewcode-block" id="PaletteView.scroll_down_rect"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.scroll_down_rect">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_down_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_size</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">m</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">m</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">inflate_ip</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
+
+        <span class="n">GridView</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_up</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_scroll_up_button</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_down</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_scroll_down_button</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_scroll_up_button"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_scroll_up_button">[docs]</a>    <span class="k">def</span> <span class="nf">draw_scroll_up_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_up_rect</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_color</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">bottomleft</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">midtop</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">bottomright</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_scroll_down_button"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_scroll_down_button">[docs]</a>    <span class="k">def</span> <span class="nf">draw_scroll_down_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_down_rect</span><span class="p">()</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_color</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">topleft</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">midbottom</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">topright</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_cell"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_cell">[docs]</a>    <span class="k">def</span> <span class="nf">draw_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">rect</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_item_no</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">highlight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_is_selected</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_item_and_highlight</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">highlight</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_item_and_highlight"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_item_and_highlight">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item_and_highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">highlight</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zebra_color</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">highlight</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_prehighlight</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">highlight</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_style</span> <span class="o">==</span> <span class="s">&#39;reverse&#39;</span><span class="p">:</span>
+            <span class="n">fg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inherited</span><span class="p">(</span><span class="s">&#39;bg_color&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">sel_color</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_item_with</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">fg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">highlight</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_posthighlight</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_item_with"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_item_with">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">fg</span><span class="p">):</span>
+        <span class="n">old_fg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="n">fg</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_item</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="n">old_fg</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_prehighlight"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_prehighlight">[docs]</a>    <span class="k">def</span> <span class="nf">draw_prehighlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_style</span> <span class="o">==</span> <span class="s">&#39;reverse&#39;</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sel_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_prehighlight_with</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_prehighlight_with"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_prehighlight_with">[docs]</a>    <span class="k">def</span> <span class="nf">draw_prehighlight_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_style</span>
+        <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s">&#39;frame&#39;</span><span class="p">:</span>
+            <span class="n">frame_rect</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sel_width</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">style</span> <span class="o">==</span> <span class="s">&#39;fill&#39;</span> <span class="ow">or</span> <span class="n">style</span> <span class="o">==</span> <span class="s">&#39;reverse&#39;</span><span class="p">:</span>
+            <span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.draw_posthighlight"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.draw_posthighlight">[docs]</a>    <span class="k">def</span> <span class="nf">draw_posthighlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">rect</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="PaletteView.mouse_down"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.mouse_down">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">local</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_up_rect</span><span class="p">()</span><span class="o">.</span><span class="n">collidepoint</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scroll_up</span><span class="p">()</span>
+                    <span class="k">return</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_down_rect</span><span class="p">()</span><span class="o">.</span><span class="n">collidepoint</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">()</span>
+                    <span class="k">return</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll_up</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll_down</span><span class="p">()</span>
+
+        <span class="n">GridView</span><span class="o">.</span><span class="n">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.scroll_up"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.scroll_up">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_up</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span> <span class="o">-=</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="PaletteView.scroll_down"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.scroll_down">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_scroll_down</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span> <span class="o">+=</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="PaletteView.scroll_to_item"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.scroll_to_item">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_to_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_items</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items_per_page</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">//</span> <span class="n">p</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.can_scroll_up"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.can_scroll_up">[docs]</a>    <span class="k">def</span> <span class="nf">can_scroll_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="PaletteView.can_scroll_down"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.can_scroll_down">[docs]</a>    <span class="k">def</span> <span class="nf">can_scroll_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">items_per_page</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_items</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PaletteView.items_per_page"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.items_per_page">[docs]</a>    <span class="k">def</span> <span class="nf">items_per_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_rows</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_cols</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PaletteView.click_cell"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.click_cell">[docs]</a>    <span class="k">def</span> <span class="nf">click_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_item_no</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">click_item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PaletteView.cell_to_item_no"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.cell_to_item_no">[docs]</a>    <span class="k">def</span> <span class="nf">cell_to_item_no</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span> <span class="o">+</span> <span class="n">row</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_cols</span><span class="p">()</span> <span class="o">+</span> <span class="n">col</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_items</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">i</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="PaletteView.num_rows"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.num_rows">[docs]</a>    <span class="k">def</span> <span class="nf">num_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ch</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">//</span> <span class="n">ch</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="PaletteView.num_cols"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.num_cols">[docs]</a>    <span class="k">def</span> <span class="nf">num_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span><span class="p">:</span>
+            <span class="n">width</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_button_size</span>
+        <span class="n">cw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">cw</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">width</span> <span class="o">//</span> <span class="n">cw</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="PaletteView.item_is_selected"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.item_is_selected">[docs]</a>    <span class="k">def</span> <span class="nf">item_is_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="PaletteView.click_item"><a class="viewcode-back" href="../../albow.html#albow.palette_view.PaletteView.click_item">[docs]</a>    <span class="k">def</span> <span class="nf">click_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

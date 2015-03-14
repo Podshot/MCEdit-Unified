@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.extended_widgets &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.extended_widgets</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: UTF-8 -*-</span>
+<span class="c"># extended_widgets.py</span>
+<span class="c"># Moved albow related stuff from mceutils.</span>
+<span class="kn">import</span> <span class="nn">resource_packs</span>
+<span class="kn">from</span> <span class="nn">controls</span> <span class="kn">import</span> <span class="n">ValueDisplay</span>
+<span class="kn">from</span> <span class="nn">dialogs</span> <span class="kn">import</span> <span class="n">alert</span><span class="p">,</span> <span class="n">ask</span><span class="p">,</span> <span class="n">Dialog</span>
+<span class="kn">from</span> <span class="nn">controls</span> <span class="kn">import</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">ValueButton</span><span class="p">,</span> <span class="n">CheckBox</span><span class="p">,</span> <span class="n">AttrRef</span>
+<span class="kn">from</span> <span class="nn">widget</span> <span class="kn">import</span> <span class="n">Widget</span>
+<span class="kn">import</span> <span class="nn">root</span>
+<span class="kn">from</span> <span class="nn">layout</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Row</span>
+<span class="kn">from</span> <span class="nn">translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">menu</span> <span class="kn">import</span> <span class="n">Menu</span>
+<span class="kn">from</span> <span class="nn">fields</span> <span class="kn">import</span> <span class="n">FloatField</span><span class="p">,</span> <span class="n">IntField</span><span class="p">,</span> <span class="n">TextFieldWrapped</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+
+<div class="viewcode-block" id="HotkeyColumn"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.HotkeyColumn">[docs]</a><span class="k">class</span> <span class="nc">HotkeyColumn</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">is_gl_container</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">keysColumn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">buttonsColumn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">item_spacing</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">keysColumn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">keysColumn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">buttonsColumn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">hotkey</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">=</span> <span class="n">t</span>
+                <span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">hotkey</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">tooltipText</span><span class="p">)</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">)):</span>
+                <span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">button</span> <span class="o">=</span> <span class="n">ValueButton</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span>
+
+            <span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">hotkey</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="n">button</span><span class="o">.</span><span class="n">margin</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;wh&quot;</span>
+
+            <span class="n">label</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">button</span><span class="o">.</span><span class="n">height</span>
+
+            <span class="k">if</span> <span class="n">tooltipText</span><span class="p">:</span>
+                <span class="n">button</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">tooltipText</span>
+
+            <span class="n">keysColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">buttonsColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">buttonsColumn</span><span class="p">)</span>
+
+        <span class="c">#.#</span>
+        <span class="k">if</span> <span class="n">item_spacing</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">buttonsColumn</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">buttonsColumn</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">item_spacing</span><span class="p">)</span>
+        <span class="c">#.#</span>
+        <span class="n">buttonsColumn</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span>
+        <span class="c">#.#</span>
+        <span class="k">if</span> <span class="n">item_spacing</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">keysColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">keysColumn</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">keysColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">keysColumn</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">item_spacing</span><span class="p">)</span>
+
+        <span class="n">commandRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">keysColumn</span><span class="p">,</span> <span class="n">buttonsColumn</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">commandRow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="MenuButton"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.MenuButton">[docs]</a><span class="k">class</span> <span class="nc">MenuButton</span><span class="p">(</span><span class="n">Button</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Button</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">choices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="p">((</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">))</span>
+
+<div class="viewcode-block" id="MenuButton.action"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.MenuButton.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">present</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_picked</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuButton.menu_picked"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.MenuButton.menu_picked">[docs]</a>    <span class="k">def</span> <span class="nf">menu_picked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="ChoiceButton"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.ChoiceButton">[docs]</a><span class="k">class</span> <span class="nc">ChoiceButton</span><span class="p">(</span><span class="n">ValueButton</span><span class="p">):</span>
+    <span class="n">align</span> <span class="o">=</span> <span class="s">&quot;c&quot;</span>
+    <span class="n">choose</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">scrolling</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scroll_items</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="c"># passing an empty list of choices is ill-advised</span>
+
+        <span class="k">if</span> <span class="s">&#39;choose&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choose</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;choose&#39;</span><span class="p">)</span>
+
+        <span class="n">ValueButton</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">showMenu</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span> <span class="o">=</span> <span class="n">scrolling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_items</span> <span class="o">=</span> <span class="n">scroll_items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">choices</span> <span class="ow">or</span> <span class="p">[</span><span class="s">&quot;[UNDEFINED]&quot;</span><span class="p">]</span>
+
+        <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">c</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">widths</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="ChoiceButton.showMenu"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.ChoiceButton.showMenu">[docs]</a>    <span class="k">def</span> <span class="nf">showMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">choiceIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">present</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">choiceIndex</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="n">choiceIndex</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">choose</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ChoiceButton.get_value"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.ChoiceButton.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedChoice</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">selectedChoice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span><span class="p">]</span>
+
+    <span class="nd">@selectedChoice.setter</span>
+    <span class="k">def</span> <span class="nf">selectedChoice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="n">idx</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choices</span>
+
+    <span class="nd">@choices.setter</span>
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_choices</span> <span class="o">=</span> <span class="n">ch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;pickMenu&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choices</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_items</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="CheckBoxLabel"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.CheckBoxLabel">[docs]</a><span class="k">def</span> <span class="nf">CheckBoxLabel</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">tooltipText</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;tooltipText&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="n">cb</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="n">lab</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="n">cb</span><span class="o">.</span><span class="n">fg_color</span><span class="p">)</span>
+    <span class="n">lab</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="n">cb</span><span class="o">.</span><span class="n">mouse_down</span>
+
+    <span class="k">if</span> <span class="n">tooltipText</span><span class="p">:</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">tooltipText</span>
+        <span class="n">lab</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">tooltipText</span>
+
+    <span class="k">class</span> <span class="nc">CBRow</span><span class="p">(</span><span class="n">Row</span><span class="p">):</span>
+        <span class="n">margin</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkbox</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="nd">@value.setter</span>
+        <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkbox</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="n">row</span> <span class="o">=</span> <span class="n">CBRow</span><span class="p">((</span><span class="n">lab</span><span class="p">,</span> <span class="n">cb</span><span class="p">))</span>
+    <span class="n">row</span><span class="o">.</span><span class="n">checkbox</span> <span class="o">=</span> <span class="n">cb</span>
+    <span class="k">return</span> <span class="n">row</span>
+
+</div>
+<div class="viewcode-block" id="FloatInputRow"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.FloatInputRow">[docs]</a><span class="k">def</span> <span class="nf">FloatInputRow</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tooltipText&#39;</span><span class="p">)),</span> <span class="n">FloatField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)))</span>
+
+</div>
+<div class="viewcode-block" id="IntInputRow"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.IntInputRow">[docs]</a><span class="k">def</span> <span class="nf">IntInputRow</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tooltipText&#39;</span><span class="p">)),</span> <span class="n">IntField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)))</span>
+
+</div>
+<div class="viewcode-block" id="showProgress"><a class="viewcode-back" href="../../albow.html#albow.extended_widgets.showProgress">[docs]</a><span class="k">def</span> <span class="nf">showProgress</span><span class="p">(</span><span class="n">progressText</span><span class="p">,</span> <span class="n">progressIterator</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Show the progress for a long-running synchronous operation.</span>
+<span class="sd">    progressIterator should be a generator-like object that can return</span>
+<span class="sd">    either None, for an indeterminate indicator,</span>
+<span class="sd">    A float value between 0.0 and 1.0 for a determinate indicator,</span>
+<span class="sd">    A string, to update the progress info label</span>
+<span class="sd">    or a tuple of (float value, string) to set the progress and update the label&quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">ProgressWidget</span><span class="p">(</span><span class="n">Dialog</span><span class="p">):</span>
+        <span class="n">progressFraction</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">firstDraw</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+            <span class="n">Widget</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+            <span class="n">frameStart</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">frameInterval</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">amount</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">frameStart</span> <span class="o">+</span> <span class="n">frameInterval</span><span class="p">:</span>
+                    <span class="n">amount</span> <span class="o">=</span> <span class="n">progressIterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">firstDraw</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">firstDraw</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="k">break</span>
+
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+
+            <span class="n">infoText</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">amount</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">infoText</span> <span class="o">=</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="n">amount</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                    <span class="n">amount</span><span class="p">,</span> <span class="nb">max</span> <span class="o">=</span> <span class="n">amount</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">max</span> <span class="o">=</span> <span class="n">amount</span>
+                <span class="n">maxwidth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">amount</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">maxwidth</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="n">amount</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progressAmount</span> <span class="o">=</span> <span class="n">amount</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">progressFraction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">maxwidth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">progressFraction</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s">&quot;{0} / {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="nb">max</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">infoText</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">+=</span> <span class="n">infoText</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">estimateText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startTime</span><span class="p">)</span>
+            <span class="n">progressPercent</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressFraction</span> <span class="o">*</span> <span class="mi">10000</span><span class="p">))</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10000</span> <span class="o">-</span> <span class="n">progressPercent</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">progressPercent</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Time left: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">cancel</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">idleevent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+        <span class="k">def</span> <span class="nf">key_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+        <span class="k">def</span> <span class="nf">mouse_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s">&quot;SelectionTool&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentTool</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_nudge_block</span><span class="p">()</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_nudge_block</span><span class="p">()</span><span class="o">.</span><span class="n">mouse_up</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+    <span class="n">widget</span> <span class="o">=</span> <span class="n">ProgressWidget</span><span class="p">()</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">progressText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">progressText</span><span class="p">)</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">progressAmount</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">progressLabel</span> <span class="o">=</span> <span class="n">ValueDisplay</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s">&#39;progressText&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+    <span class="n">statusLabel</span> <span class="o">=</span> <span class="n">ValueDisplay</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s">&#39;statusText&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+    <span class="n">estimateLabel</span> <span class="o">=</span> <span class="n">ValueDisplay</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s">&#39;estimateText&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+
+    <span class="n">progressBar</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">bg_color</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">progressBar</span> <span class="o">=</span> <span class="n">progressBar</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">progressLabel</span><span class="p">,</span> <span class="n">statusLabel</span><span class="p">,</span> <span class="n">estimateLabel</span><span class="p">,</span> <span class="n">progressBar</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cancel</span><span class="p">:</span>
+        <span class="n">cancelButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">widget</span><span class="o">.</span><span class="n">cancel</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+        <span class="n">col</span> <span class="o">+=</span> <span class="p">(</span><span class="n">Column</span><span class="p">((</span><span class="n">cancelButton</span><span class="p">,),</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;r&quot;</span><span class="p">),)</span>
+
+    <span class="n">widget</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Column</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">startTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">widget</span><span class="o">.</span><span class="n">progressAmount</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;Canceled&quot;</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

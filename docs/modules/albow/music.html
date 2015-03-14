@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.music &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.music</h1><div class="highlight"><pre>
+<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c">#</span>
+<span class="c">#   Albow - Music</span>
+<span class="c">#</span>
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randrange</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pygame.mixer</span> <span class="kn">import</span> <span class="n">music</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">music</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">print</span> <span class="s">&quot;Music not available&quot;</span>
+
+<span class="k">if</span> <span class="n">music</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">root</span>
+
+    <span class="n">music</span><span class="o">.</span><span class="n">set_endevent</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">MUSIC_END_EVENT</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">resource</span> <span class="kn">import</span> <span class="n">resource_path</span>
+<span class="kn">from</span> <span class="nn">root</span> <span class="kn">import</span> <span class="n">schedule</span>
+
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="n">fadeout_time</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># Time over which to fade out music (sec)</span>
+<span class="n">change_delay</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c"># Delay between end of one item and starting the next (sec)</span>
+
+<span class="c">#---------------------------------------------------------------------------</span>
+
+<span class="n">music_enabled</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">current_music</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">current_playlist</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">next_change_delay</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c">#---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="PlayList"><a class="viewcode-back" href="../../albow.html#albow.music.PlayList">[docs]</a><span class="k">class</span> <span class="nc">PlayList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A collection of music filenames to be played sequentially or</span>
+<span class="sd">    randomly. If random is true, items will be played in a random order.</span>
+<span class="sd">    If repeat is true, the list will be repeated indefinitely, otherwise</span>
+<span class="sd">    each item will only be played once.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">random</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">random</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repeat</span> <span class="o">=</span> <span class="n">repeat</span>
+
+<div class="viewcode-block" id="PlayList.next"><a class="viewcode-back" href="../../albow.html#albow.music.PlayList.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the next item to be played.&quot;&quot;&quot;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">repeat</span><span class="p">:</span>
+                    <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">randrange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">repeat</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">item</span>
+
+
+<span class="c">#---------------------------------------------------------------------------</span>
+
+</div></div>
+<div class="viewcode-block" id="get_music"><a class="viewcode-back" href="../../albow.html#albow.music.get_music">[docs]</a><span class="k">def</span> <span class="nf">get_music</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the full pathname of a music file from the &quot;music&quot; resource</span>
+<span class="sd">    subdirectory.&quot;&quot;&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;prefix&#39;</span><span class="p">,</span> <span class="s">&quot;music&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">resource_path</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_playlist"><a class="viewcode-back" href="../../albow.html#albow.music.get_playlist">[docs]</a><span class="k">def</span> <span class="nf">get_playlist</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;prefix&#39;</span><span class="p">,</span> <span class="s">&quot;music&quot;</span><span class="p">)</span>
+    <span class="n">dirpath</span> <span class="o">=</span> <span class="n">get_music</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s">&#39;prefix&#39;</span><span class="p">:</span> <span class="n">prefix</span><span class="p">})</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
+             <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)]</span>
+    <span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">PlayList</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="change_playlist"><a class="viewcode-back" href="../../albow.html#albow.music.change_playlist">[docs]</a><span class="k">def</span> <span class="nf">change_playlist</span><span class="p">(</span><span class="n">new_playlist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fade out any currently playing music and start playing from the given</span>
+<span class="sd">    playlist.&quot;&quot;&quot;</span>
+    <span class="c">#print &quot;albow.music: change_playlist&quot; ###</span>
+    <span class="k">global</span> <span class="n">current_music</span><span class="p">,</span> <span class="n">current_playlist</span><span class="p">,</span> <span class="n">next_change_delay</span>
+    <span class="k">if</span> <span class="n">music</span> <span class="ow">and</span> <span class="n">new_playlist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">current_playlist</span><span class="p">:</span>
+        <span class="n">current_playlist</span> <span class="o">=</span> <span class="n">new_playlist</span>
+        <span class="k">if</span> <span class="n">music_enabled</span><span class="p">:</span>
+            <span class="n">music</span><span class="o">.</span><span class="n">fadeout</span><span class="p">(</span><span class="n">fadeout_time</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="n">next_change_delay</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">change_delay</span> <span class="o">-</span> <span class="n">fadeout_time</span><span class="p">)</span>
+            <span class="n">jog_music</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">current_music</span> <span class="o">=</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="change_music"><a class="viewcode-back" href="../../albow.html#albow.music.change_music">[docs]</a><span class="k">def</span> <span class="nf">change_music</span><span class="p">(</span><span class="n">new_music</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fade out any currently playing music and start playing the given</span>
+<span class="sd">    music file.&quot;&quot;&quot;</span>
+    <span class="c">#print &quot;albow.music: change_music&quot; ###</span>
+    <span class="k">if</span> <span class="n">music</span> <span class="ow">and</span> <span class="n">new_music</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">current_music</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">new_music</span><span class="p">:</span>
+            <span class="n">new_playlist</span> <span class="o">=</span> <span class="n">PlayList</span><span class="p">([</span><span class="n">new_music</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="n">repeat</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_playlist</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">change_playlist</span><span class="p">(</span><span class="n">new_playlist</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="music_end"><a class="viewcode-back" href="../../albow.html#albow.music.music_end">[docs]</a><span class="k">def</span> <span class="nf">music_end</span><span class="p">():</span>
+    <span class="c">#print &quot;albow.music: music_end&quot; ###</span>
+    <span class="n">schedule</span><span class="p">(</span><span class="n">next_change_delay</span><span class="p">,</span> <span class="n">jog_music</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="jog_music"><a class="viewcode-back" href="../../albow.html#albow.music.jog_music">[docs]</a><span class="k">def</span> <span class="nf">jog_music</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;If no music is currently playing, start playing the next item</span>
+<span class="sd">    from the current playlist.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">music_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">music</span><span class="o">.</span><span class="n">get_busy</span><span class="p">():</span>
+        <span class="n">start_next_music</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="start_next_music"><a class="viewcode-back" href="../../albow.html#albow.music.start_next_music">[docs]</a><span class="k">def</span> <span class="nf">start_next_music</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Start playing the next item from the current playlist immediately.&quot;&quot;&quot;</span>
+    <span class="c">#print &quot;albow.music: start_next_music&quot; ###</span>
+    <span class="k">global</span> <span class="n">current_music</span><span class="p">,</span> <span class="n">next_change_delay</span>
+    <span class="k">if</span> <span class="n">music_enabled</span> <span class="ow">and</span> <span class="n">current_playlist</span><span class="p">:</span>
+        <span class="n">next_music</span> <span class="o">=</span> <span class="n">current_playlist</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">next_music</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;albow.music: loading&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">next_music</span><span class="p">)</span>  <span class="c">###</span>
+            <span class="n">music</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">next_music</span><span class="p">)</span>
+            <span class="n">music</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+            <span class="n">next_change_delay</span> <span class="o">=</span> <span class="n">change_delay</span>
+        <span class="n">current_music</span> <span class="o">=</span> <span class="n">next_music</span>
+
+</div>
+<div class="viewcode-block" id="get_music_enabled"><a class="viewcode-back" href="../../albow.html#albow.music.get_music_enabled">[docs]</a><span class="k">def</span> <span class="nf">get_music_enabled</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">music_enabled</span>
+
+</div>
+<div class="viewcode-block" id="set_music_enabled"><a class="viewcode-back" href="../../albow.html#albow.music.set_music_enabled">[docs]</a><span class="k">def</span> <span class="nf">set_music_enabled</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">music_enabled</span>
+    <span class="k">if</span> <span class="n">music_enabled</span> <span class="o">!=</span> <span class="n">state</span><span class="p">:</span>
+        <span class="n">music_enabled</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
+            <span class="c"># Music pausing doesn&#39;t always seem to work.</span>
+            <span class="c">#music.unpause()</span>
+            <span class="k">if</span> <span class="n">current_music</span><span class="p">:</span>
+                <span class="c"># After stopping and restarting currently loaded music,</span>
+                <span class="c"># fadeout no longer works.</span>
+                <span class="c">#print &quot;albow.music: reloading&quot;, repr(current_music) ###</span>
+                <span class="n">music</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">current_music</span><span class="p">)</span>
+                <span class="n">music</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">jog_music</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#music.pause()</span>
+            <span class="n">music</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+<span class="c">#---------------------------------------------------------------------------</span>
+</div>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">Rect</span>
+<span class="kn">from</span> <span class="nn">albow.widget</span> <span class="kn">import</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">albow.controls</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">CheckBox</span>
+<span class="kn">from</span> <span class="nn">albow.layout</span> <span class="kn">import</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Grid</span>
+<span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
+
+
+<div class="viewcode-block" id="EnableMusicControl"><a class="viewcode-back" href="../../albow.html#albow.music.EnableMusicControl">[docs]</a><span class="k">class</span> <span class="nc">EnableMusicControl</span><span class="p">(</span><span class="n">CheckBox</span><span class="p">):</span>
+<div class="viewcode-block" id="EnableMusicControl.get_value"><a class="viewcode-back" href="../../albow.html#albow.music.EnableMusicControl.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_music_enabled</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="EnableMusicControl.set_value"><a class="viewcode-back" href="../../albow.html#albow.music.EnableMusicControl.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">set_music_enabled</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="MusicVolumeControl"><a class="viewcode-back" href="../../albow.html#albow.music.MusicVolumeControl">[docs]</a><span class="k">class</span> <span class="nc">MusicVolumeControl</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Rect</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">)),</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MusicVolumeControl.draw"><a class="viewcode-back" href="../../albow.html#albow.music.MusicVolumeControl.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_margin_rect</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">music</span><span class="o">.</span><span class="n">get_volume</span><span class="p">()</span> <span class="o">*</span> <span class="n">r</span><span class="o">.</span><span class="n">width</span><span class="p">))</span>
+        <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MusicVolumeControl.mouse_down"><a class="viewcode-back" href="../../albow.html#albow.music.MusicVolumeControl.mouse_down">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouse_drag</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MusicVolumeControl.mouse_drag"><a class="viewcode-back" href="../../albow.html#albow.music.MusicVolumeControl.mouse_drag">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_drag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">local</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">/</span> <span class="n">w</span><span class="p">))</span>
+        <span class="n">music</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="MusicOptionsDialog"><a class="viewcode-back" href="../../albow.html#albow.music.MusicOptionsDialog">[docs]</a><span class="k">class</span> <span class="nc">MusicOptionsDialog</span><span class="p">(</span><span class="n">Dialog</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Dialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">emc</span> <span class="o">=</span> <span class="n">EnableMusicControl</span><span class="p">()</span>
+        <span class="n">mvc</span> <span class="o">=</span> <span class="n">MusicVolumeControl</span><span class="p">()</span>
+        <span class="n">controls</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">([</span>
+            <span class="p">[</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Enable Music&quot;</span><span class="p">),</span> <span class="n">emc</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Music Volume&quot;</span><span class="p">),</span> <span class="n">mvc</span><span class="p">],</span>
+        <span class="p">])</span>
+        <span class="n">buttons</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="n">controls</span><span class="p">,</span> <span class="n">buttons</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">contents</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="show_music_options_dialog"><a class="viewcode-back" href="../../albow.html#albow.music.show_music_options_dialog">[docs]</a><span class="k">def</span> <span class="nf">show_music_options_dialog</span><span class="p">():</span>
+    <span class="n">dlog</span> <span class="o">=</span> <span class="n">MusicOptionsDialog</span><span class="p">()</span>
+    <span class="n">dlog</span><span class="o">.</span><span class="n">present</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.tab_panel &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.tab_panel</h1><div class="highlight"><pre>
+<span class="c"># ###############################################################</span>
+<span class="c">#</span>
+<span class="c">#   Albow - Tab Panel</span>
+<span class="c">#</span>
+<span class="c">################################################################</span>
+<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
+
+<span class="kn">from</span> <span class="nn">OpenGL.GL</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">OpenGL.GLU</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">OpenGL.GLUT</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">Rect</span><span class="p">,</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">image</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="n">SRCALPHA</span>
+<span class="kn">from</span> <span class="nn">widget</span> <span class="kn">import</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">theme</span> <span class="kn">import</span> <span class="n">ThemeProperty</span><span class="p">,</span> <span class="n">FontProperty</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">brighten</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">fromstring</span>
+<span class="kn">from</span> <span class="nn">translate</span> <span class="kn">import</span> <span class="n">_</span> <span class="c"># useless?</span>
+
+
+<div class="viewcode-block" id="TabPanel"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel">[docs]</a><span class="k">class</span> <span class="nc">TabPanel</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="c">#  pages         [Widget]</span>
+    <span class="c">#  current_page  Widget</span>
+
+    <span class="n">tab_font</span> <span class="o">=</span> <span class="n">FontProperty</span><span class="p">(</span><span class="s">&#39;tab_font&#39;</span><span class="p">)</span>
+    <span class="n">tab_height</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;tab_height&#39;</span><span class="p">)</span>
+    <span class="n">tab_border_width</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;tab_border_width&#39;</span><span class="p">)</span>
+    <span class="n">tab_spacing</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;tab_spacing&#39;</span><span class="p">)</span>
+    <span class="n">tab_margin</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;tab_margin&#39;</span><span class="p">)</span>
+    <span class="n">tab_fg_color</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;tab_fg_color&#39;</span><span class="p">)</span>
+    <span class="n">default_tab_bg_color</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;default_tab_bg_color&#39;</span><span class="p">)</span>
+    <span class="n">tab_area_bg_color</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;tab_area_bg_color&#39;</span><span class="p">)</span>
+    <span class="n">tab_dimming</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&#39;tab_dimming&#39;</span><span class="p">)</span>
+    <span class="n">tab_titles</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="c">#use_page_bg_color_for_tabs = ThemeProperty(&#39;use_page_bg_color_for_tabs&#39;)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pages</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">pages</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pages</span><span class="p">:</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_page</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">page</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="n">pages</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+<div class="viewcode-block" id="TabPanel.content_size"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.content_size">[docs]</a>    <span class="k">def</span> <span class="nf">content_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span>
+</div>
+<div class="viewcode-block" id="TabPanel.content_rect"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.content_rect">[docs]</a>    <span class="k">def</span> <span class="nf">content_rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Rect</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_size</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="TabPanel.page_height"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.page_height">[docs]</a>    <span class="k">def</span> <span class="nf">page_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span>
+</div>
+<div class="viewcode-block" id="TabPanel.add_page"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.add_page">[docs]</a>    <span class="k">def</span> <span class="nf">add_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_page</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_add_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">tab_title</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;ltrb&#39;</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">page</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TabPanel.remove_page"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.remove_page">[docs]</a>    <span class="k">def</span> <span class="nf">remove_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TabPanel.show_page"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.show_page">[docs]</a>    <span class="k">def</span> <span class="nf">show_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="n">page</span>
+        <span class="k">if</span> <span class="n">page</span><span class="p">:</span>
+            <span class="n">th</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span>
+            <span class="n">page</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">th</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">th</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+            <span class="n">page</span><span class="o">.</span><span class="n">focus</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="TabPanel.draw"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_tab_area_bg</span><span class="p">(</span><span class="n">surf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_tabs</span><span class="p">(</span><span class="n">surf</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TabPanel.draw_tab_area_bg"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.draw_tab_area_bg">[docs]</a>    <span class="k">def</span> <span class="nf">draw_tab_area_bg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">):</span>
+        <span class="n">bg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_area_bg_color</span>
+        <span class="k">if</span> <span class="n">bg</span><span class="p">:</span>
+            <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="TabPanel.draw_tabs"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.draw_tabs">[docs]</a>    <span class="k">def</span> <span class="nf">draw_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">):</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_font</span>
+        <span class="n">fg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_fg_color</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_border_width</span>
+        <span class="k">if</span> <span class="n">b</span><span class="p">:</span>
+            <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span> <span class="o">-</span> <span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">rect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_tabs</span><span class="p">():</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">left</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">width</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">height</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">rect</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">selected</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">bottom</span> <span class="o">-=</span> <span class="n">b</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_tab_bg</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">b</span><span class="p">:</span>
+                <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+                <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+                <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">fg</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="n">w</span> <span class="o">-</span> <span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">fg_color</span> <span class="ow">or</span> <span class="n">fg</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TabPanel.iter_tabs"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.iter_tabs">[docs]</a>    <span class="k">def</span> <span class="nf">iter_tabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span>
+        <span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_border_width</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_spacing</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_margin</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="n">s</span> <span class="o">-</span> <span class="n">b</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pages</span><span class="p">):</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span> <span class="o">//</span> <span class="n">n</span>  <span class="c"># self.tab_boundary(i + 1)</span>
+            <span class="n">selected</span> <span class="o">=</span> <span class="n">page</span> <span class="ow">is</span> <span class="n">current_page</span>
+            <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">tab_title</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">Rect</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">s</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">x1</span>
+</div>
+<div class="viewcode-block" id="TabPanel.draw_tab_bg"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.draw_tab_bg">[docs]</a>    <span class="k">def</span> <span class="nf">draw_tab_bg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">rect</span><span class="p">):</span>
+        <span class="n">bg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_bg_color_for_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">selected</span><span class="p">:</span>
+            <span class="n">bg</span> <span class="o">=</span> <span class="n">brighten</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_dimming</span><span class="p">)</span>
+        <span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">bg</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TabPanel.tab_bg_color_for_page"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.tab_bg_color_for_page">[docs]</a>    <span class="k">def</span> <span class="nf">tab_bg_color_for_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="s">&#39;tab_bg_color&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> \
+               <span class="ow">or</span> <span class="n">page</span><span class="o">.</span><span class="n">bg_color</span> \
+               <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_tab_bg_color</span>
+</div>
+<div class="viewcode-block" id="TabPanel.mouse_down"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.mouse_down">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">local</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_number_containing_x</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="TabPanel.tab_number_containing_x"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.tab_number_containing_x">[docs]</a>    <span class="k">def</span> <span class="nf">tab_number_containing_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_margin</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_spacing</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_border_width</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span> <span class="o">//</span> <span class="n">width</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span>
+</div>
+<div class="viewcode-block" id="TabPanel.gl_draw_self"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.gl_draw_self">[docs]</a>    <span class="k">def</span> <span class="nf">gl_draw_self</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gl_draw</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TabPanel.gl_draw"><a class="viewcode-back" href="../../albow.html#albow.tab_panel.TabPanel.gl_draw">[docs]</a>    <span class="k">def</span> <span class="nf">gl_draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="n">pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">tlcorner</span> <span class="o">=</span> <span class="p">(</span><span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottomleft</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottomleft</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_border_width</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_spacing</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_height</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_margin</span>
+            <span class="n">tabWidth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">m</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">tlcorner</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_font</span>
+            <span class="n">fg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_fg_color</span>
+            <span class="n">surface</span> <span class="o">=</span> <span class="n">Surface</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">SRCALPHA</span><span class="p">)</span>
+
+            <span class="n">glEnable</span><span class="p">(</span><span class="n">GL_BLEND</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pages</span><span class="p">):</span>
+                <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">tabWidth</span>
+                <span class="n">selected</span> <span class="o">=</span> <span class="n">page</span> <span class="ow">is</span> <span class="n">current_page</span>
+                <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
+                    <span class="n">glColor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">glColor</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">glRectf</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">tlcorner</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">b</span><span class="p">),</span> <span class="n">x1</span><span class="p">,</span> <span class="n">tlcorner</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>
+                <span class="n">buf</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tab_title</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span> <span class="ow">or</span> <span class="n">fg</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+
+                <span class="n">offs</span> <span class="o">=</span> <span class="p">((</span><span class="n">tabWidth</span> <span class="o">-</span> <span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="p">((</span><span class="n">s</span> <span class="o">+</span> <span class="n">tabWidth</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span>
+
+                <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">s</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="s">&#39;RGBA&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">glViewport</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_PROJECTION</span><span class="p">)</span>
+            <span class="n">glLoadIdentity</span><span class="p">()</span>
+            <span class="n">gluOrtho2D</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_MODELVIEW</span><span class="p">)</span>
+            <span class="n">glLoadIdentity</span><span class="p">()</span>
+            <span class="n">glRasterPos2i</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">rect</span><span class="o">.</span><span class="n">bottom</span><span class="p">)</span>
+            <span class="n">glPushAttrib</span><span class="p">(</span><span class="n">GL_COLOR_BUFFER_BIT</span><span class="p">)</span>
+            <span class="n">glBlendFunc</span><span class="p">(</span><span class="n">GL_SRC_ALPHA</span><span class="p">,</span> <span class="n">GL_ONE_MINUS_SRC_ALPHA</span><span class="p">)</span>
+            <span class="n">glDrawPixels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
+                         <span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">GL_UNSIGNED_BYTE</span><span class="p">,</span> <span class="n">fromstring</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;uint8&#39;</span><span class="p">))</span>
+            <span class="n">glPopAttrib</span><span class="p">()</span>
+            <span class="n">glFlush</span><span class="p">()</span>
+
+            <span class="n">glDisable</span><span class="p">(</span><span class="n">GL_BLEND</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

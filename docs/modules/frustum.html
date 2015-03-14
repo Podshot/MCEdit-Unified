@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>frustum &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for frustum</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;View frustum modeling as series of clipping planes</span>
+
+<span class="sd">The Frustum object itself is only responsible for</span>
+<span class="sd">extracting the clipping planes from an OpenGL model-view</span>
+<span class="sd">matrix.  The bulk of the frustum-culling algorithm is</span>
+<span class="sd">implemented in the bounding volume objects found in the</span>
+<span class="sd">OpenGLContext.scenegraph.boundingvolume module.</span>
+
+<span class="sd">Based on code from:</span>
+<span class="sd">    http://www.markmorley.com/opengl/frustumculling.html</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
+
+<span class="n">context_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="viewingMatrix"><a class="viewcode-back" href="../frustum.html#frustum.viewingMatrix">[docs]</a><span class="k">def</span> <span class="nf">viewingMatrix</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the total viewing matrix from given data</span>
+
+<span class="sd">    projection -- the projection matrix, if not provided</span>
+<span class="sd">        than the result of glGetDoublev( GL_PROJECTION_MATRIX)</span>
+<span class="sd">        will be used.</span>
+<span class="sd">    model -- the model-view matrix, if not provided</span>
+<span class="sd">        than the result of glGetDoublev( GL_MODELVIEW_MATRIX )</span>
+<span class="sd">        will be used.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Unless there is a valid projection and model-view</span>
+<span class="sd">        matrix, the function will raise a RuntimeError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">projection</span> <span class="o">=</span> <span class="n">GL</span><span class="o">.</span><span class="n">glGetDoublev</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_PROJECTION_MATRIX</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">GL</span><span class="o">.</span><span class="n">glGetDoublev</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_MODELVIEW_MATRIX</span><span class="p">)</span>
+    <span class="c"># hmm, this will likely fail on 64-bit platforms :(</span>
+    <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">model</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">context_log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;A NULL matrix was returned from glGetDoublev: proj=%s modelView=%s&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">projection</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">projection</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">projection</span>
+        <span class="k">if</span> <span class="n">model</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">model</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.79769313e+308</span><span class="p">):</span>
+        <span class="n">context_log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;Attempt to retrieve projection matrix when uninitialised %s, model=%s&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">projection</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.79769313e+308</span><span class="p">):</span>
+        <span class="n">context_log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;Attempt to retrieve model-view matrix when uninitialised %s, projection=%s&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">projection</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Frustum"><a class="viewcode-back" href="../frustum.html#frustum.Frustum">[docs]</a><span class="k">class</span> <span class="nc">Frustum</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Holder for frustum specification for intersection tests</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        the Frustum can include an arbitrary number of</span>
+<span class="sd">        clipping planes, though the most common usage</span>
+<span class="sd">        is to define 6 clipping planes from the OpenGL</span>
+<span class="sd">        model-view matrices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Frustum.visible"><a class="viewcode-back" href="../frustum.html#frustum.Frustum.visible">[docs]</a>    <span class="k">def</span> <span class="nf">visible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine whether this sphere is visible in frustum</span>
+
+<span class="sd">        frustum -- Frustum object holding the clipping planes</span>
+<span class="sd">            for the view</span>
+<span class="sd">        matrix -- a matrix which transforms the local</span>
+<span class="sd">            coordinates to the (world-space) coordinate</span>
+<span class="sd">            system in which the frustum is defined.</span>
+
+<span class="sd">        This version of the method uses a pure-python loop</span>
+<span class="sd">        to do the actual culling once the points are</span>
+<span class="sd">        multiplied by the matrix. (i.e. it does not use the</span>
+<span class="sd">        frustcullaccel C extension module)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">planes</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">points</span><span class="p">[:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">distances</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">radius</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Frustum.visible1"><a class="viewcode-back" href="../frustum.html#frustum.Frustum.visible1">[docs]</a>    <span class="k">def</span> <span class="nf">visible1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="c"># return self.visible(array(point[numpy.newaxis, :]), radius)</span>
+
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">planes</span> <span class="o">*</span> <span class="n">point</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">vis</span> <span class="o">=</span> <span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">distance</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">radius</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c">#assert vis == self.visible(array(point)[numpy.newaxis, :], radius)</span>
+
+        <span class="k">return</span> <span class="n">vis</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frustum.fromViewingMatrix"><a class="viewcode-back" href="../frustum.html#frustum.Frustum.fromViewingMatrix">[docs]</a>    <span class="k">def</span> <span class="nf">fromViewingMatrix</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract and calculate frustum clipping planes from OpenGL</span>
+
+<span class="sd">        The default initializer allows you to create</span>
+<span class="sd">        Frustum objects with arbitrary clipping planes,</span>
+<span class="sd">        while this alternate initializer provides</span>
+<span class="sd">        automatic clipping-plane extraction from the</span>
+<span class="sd">        model-view matrix.</span>
+
+<span class="sd">        matrix -- the combined model-view matrix</span>
+<span class="sd">        normalize -- whether to normalize the plane equations</span>
+<span class="sd">            to allow for sphere bounding-volumes and use of</span>
+<span class="sd">            distance equations for LOD-style operations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">viewingMatrix</span><span class="p">()</span>
+        <span class="n">clip</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="n">frustum</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
+        <span class="c"># right</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+        <span class="c"># left</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+        <span class="c"># bottoming</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
+        <span class="c"># top</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
+        <span class="c"># far</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">-</span> <span class="n">clip</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span>
+        <span class="c"># near</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+        <span class="n">frustum</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">clip</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip</span><span class="p">[</span><span class="mi">14</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+            <span class="n">frustum</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">frustum</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">planes</span> <span class="o">=</span> <span class="n">frustum</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Frustum.normalize"><a class="viewcode-back" href="../frustum.html#frustum.Frustum.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">frustum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalize clipping plane equations&quot;&quot;&quot;</span>
+        <span class="n">magnitude</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="n">frustum</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">frustum</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">frustum</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">frustum</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">frustum</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">frustum</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="c"># eliminate any planes which have 0-length vectors,</span>
+        <span class="c"># those planes can&#39;t be used for excluding anything anyway...</span>
+        <span class="n">frustum</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">frustum</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">magnitude</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">magnitude</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">magnitude</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">magnitude</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">),</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frustum</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">frustum</span> <span class="o">/</span> <span class="n">magnitude</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
