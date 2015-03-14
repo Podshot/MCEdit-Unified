@@ -1683,10 +1683,10 @@ t780 Sie löschen eine chunk-förmige Auswahl. Die Chunks mit Luft füllen oder 
 o781 Screenshot taken and saved as 
 t781 Bildschirmfoto geschossen und gespeichert als 
 o782 Fonts Proportion (%): 
-t782 Schriftarten Anteil (%): 
+t782 Schriftgrösse (%): 
 o783 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t783 Schriftarten größe Anteil. Die Nummer ist in Prozent.
+t783 Schriftgrössen Einteilung. Die Nummer ist in Prozent.
 Neustart benötigt!
 o784 Save As
 t784 Speichere als
@@ -1713,4 +1713,4 @@ t794 Zeige Spieler Skins beim bearbeiten der Welt
 o795 Compass Size (%): 
 t795 Kompassgroße (%): 
 o796 Fog Intensity (%): 
-t796 
+t796 Nebelstärke (%): 
