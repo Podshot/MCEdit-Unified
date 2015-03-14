@@ -200,8 +200,8 @@ o90 Recent Changes
 t90 업데이트 내용
 o91 License
 t91 라이선스
-o92 Config Files Folder
-t92 설정 파일 폴더
+o92 Config Files
+t92 설정 파일
 o93 {0}/{1}/{2}/{3}/{4}/{5} to move
 t93 {0}/{1}/{2}/{3}/{4}/{5}로 움직이세요.
 o94 {0} to slow down
@@ -1328,8 +1328,8 @@ o629 Reset to default
 t629 기본 설정으로 되돌리기
 o630 Do you want to keep your changes?
 t630 변경 내용을 저장하시겠습니까?
-o631 Screenshots Folder
-t631 스크린샷 폴더
+o631 Screenshots
+t631 스크린샷
 o632 Uses the Latest Snapshot Terrain Generation
 t632 최신 스냅샷의 지형 생성 사용
 o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
@@ -1516,7 +1516,7 @@ o714 There are {0} unsaved changes.
 t714 {0}개의 저장되지 않은 변경 내용이 있습니다.
 o715 Save and Quit
 t715 저장하고 나가기
-o716 Refresh All Player Names
+o716 Refresh Player Names
 t716 플레이어 이름 새로고침
 o717 Ticks mode accouplement
 t717 Ticks mode 연결
@@ -1695,3 +1695,5 @@ o794 Show player skins while editing the world
 t794 월드 수정중에 플레이어 스킨 보이기
 o795 Compass Size (%): 
 t795 컴퍼스 크기 (%):
+o796 Fog Intensity (%): 
+t796 
