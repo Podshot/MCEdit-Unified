@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.dialogs &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.dialogs</h1><div class="highlight"><pre>
+<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">event</span><span class="p">,</span> <span class="n">key</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">widget</span> <span class="kn">import</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">controls</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">layout</span> <span class="kn">import</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">fields</span> <span class="kn">import</span> <span class="n">TextFieldWrapped</span>
+<span class="kn">from</span> <span class="nn">translate</span> <span class="kn">import</span> <span class="n">_</span>
+
+<div class="viewcode-block" id="Modal"><a class="viewcode-back" href="../../albow.html#albow.dialogs.Modal">[docs]</a><span class="k">class</span> <span class="nc">Modal</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">enter_response</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">cancel_response</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="Modal.ok"><a class="viewcode-back" href="../../albow.html#albow.dialogs.Modal.ok">[docs]</a>    <span class="k">def</span> <span class="nf">ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Modal.cancel"><a class="viewcode-back" href="../../albow.html#albow.dialogs.Modal.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Dialog"><a class="viewcode-back" href="../../albow.html#albow.dialogs.Dialog">[docs]</a><span class="k">class</span> <span class="nc">Dialog</span><span class="p">(</span><span class="n">Modal</span><span class="p">,</span> <span class="n">Widget</span><span class="p">):</span>
+    <span class="n">click_outside_response</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">responses</span><span class="p">:</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">w1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">w2</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+                <span class="n">w1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">width</span>
+            <span class="k">if</span> <span class="n">responses</span><span class="p">:</span>
+                <span class="n">buttons</span> <span class="o">=</span> <span class="n">Row</span><span class="p">([</span>
+                    <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="o">=</span><span class="n">text</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">])</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buttons</span><span class="p">)</span>
+                <span class="n">w2</span> <span class="o">=</span> <span class="n">buttons</span><span class="o">.</span><span class="n">width</span>
+            <span class="k">if</span> <span class="n">w1</span> <span class="o">&lt;</span> <span class="n">w2</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="s">&#39;l&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span>
+            <span class="n">contents</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span>
+            <span class="n">contents</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">responses</span> <span class="ow">and</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enter_response</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">default</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">responses</span> <span class="ow">and</span> <span class="n">cancel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cancel_response</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">cancel</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Dialog.mouse_down"><a class="viewcode-back" href="../../albow.html#albow.dialogs.Dialog.mouse_down">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">click_outside_response</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Dialog.key_down"><a class="viewcode-back" href="../../albow.html#albow.dialogs.Dialog.key_down">[docs]</a>    <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Dialog.key_up"><a class="viewcode-back" href="../../albow.html#albow.dialogs.Dialog.key_up">[docs]</a>    <span class="k">def</span> <span class="nf">key_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="QuickDialog"><a class="viewcode-back" href="../../albow.html#albow.dialogs.QuickDialog">[docs]</a><span class="k">class</span> <span class="nc">QuickDialog</span><span class="p">(</span><span class="n">Dialog</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Dialog that closes as soon as you click outside or press a key&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="QuickDialog.mouse_down"><a class="viewcode-back" href="../../albow.html#albow.dialogs.QuickDialog.mouse_down">[docs]</a>    <span class="k">def</span> <span class="nf">mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">evt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">button</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="QuickDialog.key_down"><a class="viewcode-back" href="../../albow.html#albow.dialogs.QuickDialog.key_down">[docs]</a>    <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="wrapped_label"><a class="viewcode-back" href="../../albow.html#albow.dialogs.wrapped_label">[docs]</a><span class="k">def</span> <span class="nf">wrapped_label</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">wrap_width</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="c"># paras = text.split(&quot;\n&quot;)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">kwds</span><span class="p">[</span><span class="s">&#39;doNotTranslate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">paras</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">para</span><span class="p">,</span> <span class="n">wrap_width</span><span class="p">)</span> <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">paras</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">Label</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+
+<span class="c"># def alert(mess, wrap_width = 60, **kwds):</span>
+<span class="c">#    box = Dialog(**kwds)</span>
+<span class="c">#    d = box.margin</span>
+<span class="c">#    lb = wrapped_label(mess, wrap_width)</span>
+<span class="c">#    lb.topleft = (d, d)</span>
+<span class="c">#    box.add(lb)</span>
+<span class="c">#    box.shrink_wrap()</span>
+<span class="c">#    return box.present()</span>
+
+</div>
+<div class="viewcode-block" id="alert"><a class="viewcode-back" href="../../albow.html#albow.dialogs.alert">[docs]</a><span class="k">def</span> <span class="nf">alert</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">ask</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;OK&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ask"><a class="viewcode-back" href="../../albow.html#albow.dialogs.ask">[docs]</a><span class="k">def</span> <span class="nf">ask</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">wrap_width</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">margin</span>
+    <span class="n">lb</span> <span class="o">=</span> <span class="n">wrapped_label</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="n">wrap_width</span><span class="p">)</span>
+    <span class="n">lb</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">buts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">caption</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+        <span class="n">but</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">caption</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="o">=</span><span class="n">caption</span><span class="p">:</span> <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">buts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">but</span><span class="p">)</span>
+    <span class="n">brow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">(</span><span class="n">buts</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">lb</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lb</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">brow</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="n">lb</span><span class="p">,</span> <span class="n">brow</span><span class="p">],</span> <span class="n">spacing</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">col</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">enter_response</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">default</span><span class="p">]</span>
+        <span class="n">buts</span><span class="p">[</span><span class="n">default</span><span class="p">]</span><span class="o">.</span><span class="n">is_default</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">enter_response</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">cancel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">cancel_response</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">cancel</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">cancel_response</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">box</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">box</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">dispatchKeyForAsk</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;key_down&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Return&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">default</span><span class="p">])</span>
+
+    <span class="n">box</span><span class="o">.</span><span class="n">dispatch_key</span> <span class="o">=</span> <span class="n">dispatchKeyForAsk</span>
+    <span class="k">return</span> <span class="n">box</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="input_text"><a class="viewcode-back" href="../../albow.html#albow.dialogs.input_text">[docs]</a><span class="k">def</span> <span class="nf">input_text</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">margin</span>
+
+    <span class="k">def</span> <span class="nf">ok</span><span class="p">():</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cancel</span><span class="p">():</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">lb</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+    <span class="n">lb</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">TextFieldWrapped</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">initial</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">enter_action</span> <span class="o">=</span> <span class="n">ok</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">escape_action</span> <span class="o">=</span> <span class="n">cancel</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">top</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">right</span> <span class="o">+</span> <span class="mi">5</span>
+    <span class="n">box</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">lb</span><span class="p">)</span>
+    <span class="n">box</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">focus</span><span class="p">()</span>
+    <span class="n">box</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="input_text_buttons"><a class="viewcode-back" href="../../albow.html#albow.dialogs.input_text_buttons">[docs]</a><span class="k">def</span> <span class="nf">input_text_buttons</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">margin</span>
+
+    <span class="k">def</span> <span class="nf">ok</span><span class="p">():</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cancel</span><span class="p">():</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">buts</span> <span class="o">=</span> <span class="p">[</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">ok</span><span class="p">),</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">cancel</span><span class="p">)]</span>
+
+    <span class="n">brow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">(</span><span class="n">buts</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="n">lb</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+    <span class="n">lb</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">TextFieldWrapped</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">initial</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">enter_action</span> <span class="o">=</span> <span class="n">ok</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">escape_action</span> <span class="o">=</span> <span class="n">cancel</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">top</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">right</span> <span class="o">+</span> <span class="mi">5</span>
+
+    <span class="n">trow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">([</span><span class="n">lb</span><span class="p">,</span> <span class="n">tf</span><span class="p">],</span> <span class="n">spacing</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="n">trow</span><span class="p">,</span> <span class="n">brow</span><span class="p">],</span> <span class="n">spacing</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+
+    <span class="n">col</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="n">box</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">focus</span><span class="p">()</span>
+    <span class="n">box</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

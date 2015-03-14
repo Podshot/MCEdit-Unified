@@ -1,0 +1,678 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>config &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for config</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
+
+<span class="sd">Permission to use, copy, modify, and/or distribute this software for any</span>
+<span class="sd">purpose with or without fee is hereby granted, provided that the above</span>
+<span class="sd">copyright notice and this permission notice appear in all copies.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES</span>
+<span class="sd">WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF</span>
+<span class="sd">MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR</span>
+<span class="sd">ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES</span>
+<span class="sd">WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
+<span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
+<span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">config.py</span>
+<span class="sd">Configuration settings and storage.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">ConfigParser</span>
+
+<span class="kn">from</span> <span class="nn">locale</span> <span class="kn">import</span> <span class="n">getdefaultlocale</span>
+<span class="n">DEF_ENC</span> <span class="o">=</span> <span class="n">getdefaultlocale</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">DEF_ENC</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">DEF_ENC</span> <span class="o">=</span> <span class="s">&quot;UTF-8&quot;</span>
+
+<span class="kn">import</span> <span class="nn">directories</span>
+<span class="kn">import</span> <span class="nn">weakref</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../config.html#config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definitions</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">sectionKey</span><span class="p">,</span> <span class="n">sectionName</span><span class="p">),</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">definitions</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="n">sectionKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConfigSection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">sectionName</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sectionKey</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="n">sectionKey</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Config.getPath"><a class="viewcode-back" href="../config.html#config.Config.getPath">[docs]</a>    <span class="k">def</span> <span class="nf">getPath</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">directories</span><span class="o">.</span><span class="n">configFilePath</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Config.transformKey"><a class="viewcode-back" href="../config.html#config.Config.transformKey">[docs]</a>    <span class="k">def</span> <span class="nf">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&#39;left&#39;</span> <span class="ow">in</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+        <span class="k">elif</span> <span class="s">&#39;right&#39;</span> <span class="ow">in</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="s">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="s">&#39;z&#39;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">36</span> <span class="ow">and</span> <span class="s">&quot;Ctrl-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Ctrl-&quot;</span> <span class="o">+</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Mouse3&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Button 3&quot;</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Mouse4&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Scroll Up&quot;</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Mouse5&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Scroll Down&quot;</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Mouse6&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Button 4&quot;</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Mouse7&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Button 5&quot;</span>
+        <span class="k">return</span> <span class="n">value</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Config.convert"><a class="viewcode-back" href="../config.html#config.Config.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</div>
+<div class="viewcode-block" id="Config.reset"><a class="viewcode-back" href="../config.html#config.Config.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">remove_section</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Config.transformConfig"><a class="viewcode-back" href="../config.html#config.Config.transformConfig">[docs]</a>    <span class="k">def</span> <span class="nf">transformConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="s">&quot;Version&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s">&quot;Version&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">):</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Version&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="s">&quot;1.1.1.1&quot;</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s">&quot;Swap View&quot;</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="s">&quot;Toggle Fps Counter&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;Swap View&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Swap View&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;Toggle Fps Counter&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Toggle Fps Counter&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Brake&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Space&quot;</span><span class="p">:</span>
+                <span class="n">version</span> <span class="o">=</span> <span class="s">&quot;1.1.2.0-update&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">version</span> <span class="o">=</span> <span class="s">&quot;1.1.2.0-new&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Version&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Config.load"><a class="viewcode-back" href="../config.html#config.Config.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Loading config...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">([],</span> <span class="n">ConfigDict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getPath</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Error while reading configuration file mcedit.ini: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformConfig</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Config.save"><a class="viewcode-back" href="../config.html#config.Config.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cf</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getPath</span><span class="p">(),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
+            <span class="n">cf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Error saving configuration settings to mcedit.ini: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="ConfigSection"><a class="viewcode-back" href="../config.html#config.ConfigSection">[docs]</a><span class="k">class</span> <span class="nc">ConfigSection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ConfigValue</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">ListValue</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">ConfigValue</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">value</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ConfigSection.items"><a class="viewcode-back" href="../config.html#config.ConfigSection.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">get</span><span class="p">())</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()]</span>
+
+</div></div>
+<div class="viewcode-block" id="ConfigValue"><a class="viewcode-back" href="../config.html#config.ConfigValue">[docs]</a><span class="k">class</span> <span class="nc">ConfigValue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">allowedTypes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">default</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowedTypes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Invalid config type </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+
+<div class="viewcode-block" id="ConfigValue.get"><a class="viewcode-back" href="../config.html#config.ConfigValue.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="nb">bool</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="nb">unicode</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">DEF_ENC</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span>
+</div>
+<div class="viewcode-block" id="ConfigValue.getRaw"><a class="viewcode-back" href="../config.html#config.ConfigValue.getRaw">[docs]</a>    <span class="k">def</span> <span class="nf">getRaw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setter</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_s</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">setter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">setter</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_s</span>
+
+<div class="viewcode-block" id="ConfigValue.set"><a class="viewcode-back" href="../config.html#config.ConfigValue.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Property Change: </span><span class="si">%15s</span><span class="s"> </span><span class="si">%30s</span><span class="s"> = </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="nb">unicode</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">unicode</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">DEF_ENC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notifyObservers</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ConfigValue.addObserver"><a class="viewcode-back" href="../config.html#config.ConfigValue.addObserver">[docs]</a>    <span class="k">def</span> <span class="nf">addObserver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Register &#39;target&#39; for changes in the config var named by section and name.</span>
+<span class="sd">        When the config is changed, calls setattr with target and attr.</span>
+<span class="sd">        attr may be None; it will be created from the name by lowercasing the first</span>
+<span class="sd">        word, uppercasing the rest, and removing spaces.</span>
+<span class="sd">        e.g. &quot;block buffer&quot; becomes &quot;blockBuffer&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">observers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observers</span><span class="o">.</span><span class="n">setdefault</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="p">:</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Subscribing </span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+        <span class="n">attr</span> <span class="o">=</span> <span class="nb">intern</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">targetref</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">observers</span><span class="o">.</span><span class="n">setdefault</span><span class="p">((</span><span class="n">targetref</span><span class="p">,</span> <span class="n">attr</span><span class="p">),</span> <span class="n">callback</span><span class="p">)</span>
+
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+            <span class="n">callback</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_notifyObservers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">observers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observers</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">{})</span>
+        <span class="n">newObservers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">targetref</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">observers</span><span class="p">:</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">targetref</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">target</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Notifying </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="n">callback</span> <span class="o">=</span> <span class="n">observers</span><span class="p">[</span><span class="n">targetref</span><span class="p">,</span> <span class="n">attr</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+                <span class="n">newObservers</span><span class="p">[</span><span class="n">targetref</span><span class="p">,</span> <span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">callback</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observers</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">newObservers</span>
+
+<div class="viewcode-block" id="ConfigValue.property"><a class="viewcode-back" href="../config.html#config.ConfigValue.property">[docs]</a>    <span class="k">def</span> <span class="nf">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+
+        <span class="n">this</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="k">def</span> <span class="nf">_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">this</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">_getter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setter</span><span class="p">(</span><span class="n">setter</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span>
+            <span class="s">&quot;section=</span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span>
+            <span class="s">&quot;key=</span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+            <span class="s">&quot;name=</span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s">&quot;default=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+            <span class="s">&quot;type=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+        <span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="ListValue"><a class="viewcode-back" href="../config.html#config.ListValue">[docs]</a><span class="k">class</span> <span class="nc">ListValue</span><span class="p">(</span><span class="n">ConfigValue</span><span class="p">):</span>
+
+    <span class="n">allowedTypes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">default</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Default value </span><span class="si">%s</span><span class="s"> is empty.&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">default</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">default</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ListValue</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ListValue.get"><a class="viewcode-back" href="../config.html#config.ListValue.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;[]()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span>
+</div>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span>
+            <span class="s">&quot;section=</span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">section</span><span class="p">,</span>
+            <span class="s">&quot;key=</span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+            <span class="s">&quot;name=</span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s">&quot;default=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+            <span class="s">&quot;type=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+            <span class="s">&quot;subtype=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtype</span>
+        <span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="ColorValue"><a class="viewcode-back" href="../config.html#config.ColorValue">[docs]</a><span class="k">class</span> <span class="nc">ColorValue</span><span class="p">(</span><span class="n">ListValue</span><span class="p">):</span>
+    <span class="n">allowedTypes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">]</span>
+    <span class="n">defaultColors</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ColorValue</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+        <span class="n">ColorValue</span><span class="o">.</span><span class="n">defaultColors</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="ColorValue.get"><a class="viewcode-back" href="../config.html#config.ColorValue.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ColorValue</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ConfigDict"><a class="viewcode-back" href="../config.html#config.ConfigDict">[docs]</a><span class="k">class</span> <span class="nc">ConfigDict</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyorder</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="ConfigDict.keys"><a class="viewcode-back" href="../config.html#config.ConfigDict.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyorder</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ConfigDict.items"><a class="viewcode-back" href="../config.html#config.ConfigDict.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__iteritems__</span><span class="p">())</span>
+</div>
+    <span class="k">def</span> <span class="nf">__iteritems__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="o">.</span><span class="n">__iter__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyorder</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">keyorder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyorder</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">keyorder</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="o">.</span><span class="n">__contains__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="o">.</span><span class="n">__len__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ConfigDict.copy"><a class="viewcode-back" href="../config.html#config.ConfigDict.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">()</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">keyorder</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyorder</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">k</span>
+
+<span class="c"># Quick Reference:</span>
+<span class="c"># 7 Bedrock</span>
+<span class="c"># 9 Still_Water</span>
+<span class="c"># 11 Still_Lava</span>
+<span class="c"># 14 Gold_Ore</span>
+<span class="c"># 15 Iron_Ore</span>
+<span class="c"># 16 Coal_Ore</span>
+<span class="c"># 21 Lapis_Lazuli_Ore</span>
+<span class="c"># 24 Sandstone</span>
+<span class="c"># 49 Obsidian</span>
+<span class="c"># 56 Diamond_Ore</span>
+<span class="c"># 73 Redstone_Ore</span>
+<span class="c"># 129 Emerald_Ore</span>
+<span class="c"># 153 Nether_Quartz_Ore</span></div></div>
+<span class="n">hiddableOres</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">153</span><span class="p">]</span>
+
+<span class="n">definitions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s">&quot;keys&quot;</span><span class="p">,</span> <span class="s">&quot;Keys&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;forward&quot;</span><span class="p">,</span> <span class="s">&quot;forward&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;back&quot;</span><span class="p">,</span> <span class="s">&quot;back&quot;</span><span class="p">,</span> <span class="s">&quot;S&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;left&quot;</span><span class="p">,</span> <span class="s">&quot;left&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;right&quot;</span><span class="p">,</span> <span class="s">&quot;right&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;up&quot;</span><span class="p">,</span> <span class="s">&quot;up&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;down&quot;</span><span class="p">,</span> <span class="s">&quot;down&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;brake&quot;</span><span class="p">,</span> <span class="s">&quot;brake&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;rotateClone&quot;</span><span class="p">,</span> <span class="s">&quot;rotate (clone)&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;rollClone&quot;</span><span class="p">,</span> <span class="s">&quot;roll (clone)&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;flip&quot;</span><span class="p">,</span> <span class="s">&quot;flip&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;mirror&quot;</span><span class="p">,</span> <span class="s">&quot;mirror&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;rotateBrush&quot;</span><span class="p">,</span> <span class="s">&quot;rotate (brush)&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;rollBrush&quot;</span><span class="p">,</span> <span class="s">&quot;roll (brush)&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;increaseBrush&quot;</span><span class="p">,</span> <span class="s">&quot;increase brush&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;decreaseBrush&quot;</span><span class="p">,</span> <span class="s">&quot;decrease brush&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;replaceShortcut&quot;</span><span class="p">,</span> <span class="s">&quot;replace shortcut&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;swap&quot;</span><span class="p">,</span> <span class="s">&quot;swap&quot;</span><span class="p">,</span> <span class="s">&quot;X&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;panLeft&quot;</span><span class="p">,</span> <span class="s">&quot;pan left&quot;</span><span class="p">,</span> <span class="s">&quot;J&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;panRight&quot;</span><span class="p">,</span> <span class="s">&quot;pan right&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;panUp&quot;</span><span class="p">,</span> <span class="s">&quot;pan up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;panDown&quot;</span><span class="p">,</span> <span class="s">&quot;pan down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;toggleView&quot;</span><span class="p">,</span> <span class="s">&quot;toggle view&quot;</span><span class="p">,</span> <span class="s">&quot;Tab&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;resetReach&quot;</span><span class="p">,</span> <span class="s">&quot;reset reach&quot;</span><span class="p">,</span> <span class="s">&quot;Button 3&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;increaseReach&quot;</span><span class="p">,</span> <span class="s">&quot;increase reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Up&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;decreaseReach&quot;</span><span class="p">,</span> <span class="s">&quot;decrease reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Down&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;confirmConstruction&quot;</span><span class="p">,</span> <span class="s">&quot;confirm construction&quot;</span><span class="p">,</span> <span class="s">&quot;Return&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;openLevel&quot;</span><span class="p">,</span> <span class="s">&quot;open level&quot;</span><span class="p">,</span> <span class="s">&quot;O&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;newLevel&quot;</span><span class="p">,</span> <span class="s">&quot;new level&quot;</span><span class="p">,</span> <span class="s">&quot;N&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;deleteBlocks&quot;</span><span class="p">,</span> <span class="s">&quot;delete blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;lineTool&quot;</span><span class="p">,</span> <span class="s">&quot;line tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;longDistanceMode&quot;</span><span class="p">,</span> <span class="s">&quot;long-distance mode&quot;</span><span class="p">,</span> <span class="s">&quot;Alt-Z&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;flyMode&quot;</span><span class="p">,</span> <span class="s">&quot;fly mode&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;debugOverlay&quot;</span><span class="p">,</span> <span class="s">&quot;debug overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;showBlockInfo&quot;</span><span class="p">,</span> <span class="s">&quot;show block info&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;pickBlock&quot;</span><span class="p">,</span> <span class="s">&quot;pick block&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;selectChunks&quot;</span><span class="p">,</span> <span class="s">&quot;select chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;deselectChunks&quot;</span><span class="p">,</span> <span class="s">&quot;deselect chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;brushLineTool&quot;</span><span class="p">,</span> <span class="s">&quot;brush line tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;snapCloneToAxis&quot;</span><span class="p">,</span> <span class="s">&quot;snap clone to axis&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;blocksOnlyModifier&quot;</span><span class="p">,</span> <span class="s">&quot;blocks-only modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fastIncrementModifier&quot;</span><span class="p">,</span> <span class="s">&quot;fast increment modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fastNudge&quot;</span><span class="p">,</span> <span class="s">&quot;fast nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;takeAScreenshot&quot;</span><span class="p">,</span> <span class="s">&quot;take a screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;quit&quot;</span><span class="p">,</span> <span class="s">&quot;quit&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Q&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;viewDistance&quot;</span><span class="p">,</span> <span class="s">&quot;view distance&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-F&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;selectAll&quot;</span><span class="p">,</span> <span class="s">&quot;select all&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-A&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;deselect&quot;</span><span class="p">,</span> <span class="s">&quot;deselect&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-D&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;cut&quot;</span><span class="p">,</span> <span class="s">&quot;cut&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-X&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;copy&quot;</span><span class="p">,</span> <span class="s">&quot;copy&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-C&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;paste&quot;</span><span class="p">,</span> <span class="s">&quot;paste&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-V&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;reloadWorld&quot;</span><span class="p">,</span> <span class="s">&quot;reload world&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-R&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">,</span> <span class="s">&quot;open&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-O&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;quickLoad&quot;</span><span class="p">,</span> <span class="s">&quot;quick load&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-L&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;undo&quot;</span><span class="p">,</span> <span class="s">&quot;undo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Z&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;redo&quot;</span><span class="p">,</span> <span class="s">&quot;redo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Y&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;save&quot;</span><span class="p">,</span> <span class="s">&quot;save&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-S&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;saveAs&quot;</span><span class="p">,</span> <span class="s">&quot;save as&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Alt-S&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;newWorld&quot;</span><span class="p">,</span> <span class="s">&quot;new world&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-N&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;closeWorld&quot;</span><span class="p">,</span> <span class="s">&quot;close world&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-W&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;worldInfo&quot;</span><span class="p">,</span> <span class="s">&quot;world info&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-I&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;gotoPanel&quot;</span><span class="p">,</span> <span class="s">&quot;goto panel&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-G&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;exportSelection&quot;</span><span class="p">,</span> <span class="s">&quot;export selection&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-E&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;toggleRenderer&quot;</span><span class="p">,</span> <span class="s">&quot;toggle renderer&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-M&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;uploadWorld&quot;</span><span class="p">,</span> <span class="s">&quot;upload world&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-U&quot;</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;Version&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;1.1.2.0&quot;</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;settings&quot;</span><span class="p">,</span> <span class="s">&quot;Settings&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;flyMode&quot;</span><span class="p">,</span> <span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;enableMouseLag&quot;</span><span class="p">,</span> <span class="s">&quot;Enable Mouse Lag&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;longDistanceMode&quot;</span><span class="p">,</span> <span class="s">&quot;Long Distance Mode&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;shouldResizeAlert&quot;</span><span class="p">,</span> <span class="s">&quot;Window Size Alert&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;closeMinecraftWarning&quot;</span><span class="p">,</span> <span class="s">&quot;Close Minecraft Warning&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;skin&quot;</span><span class="p">,</span> <span class="s">&quot;MCEdit Skin&quot;</span><span class="p">,</span> <span class="s">&quot;[Current]&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fov&quot;</span><span class="p">,</span> <span class="s">&quot;Field of View&quot;</span><span class="p">,</span> <span class="mf">70.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;spaceHeight&quot;</span><span class="p">,</span> <span class="s">&quot;Space Height&quot;</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;blockBuffer&quot;</span><span class="p">,</span> <span class="s">&quot;Block Buffer&quot;</span><span class="p">,</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">1048576</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;reportCrashes&quot;</span><span class="p">,</span> <span class="s">&quot;report crashes new&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;reportCrashesAsked&quot;</span><span class="p">,</span> <span class="s">&quot;report crashes asked&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;staticCommandsNudge&quot;</span><span class="p">,</span> <span class="s">&quot;Static Coords While Nudging&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;moveSpawnerPosNudge&quot;</span><span class="p">,</span> <span class="s">&quot;Change Spawners While Nudging&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;rotateBlockBrush&quot;</span><span class="p">,</span> <span class="s">&quot;rotateBlockBrushRow&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;langCode&quot;</span><span class="p">,</span> <span class="s">&quot;Language String&quot;</span><span class="p">,</span> <span class="s">&quot;English (US)&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;viewDistance&quot;</span><span class="p">,</span> <span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;targetFPS&quot;</span><span class="p">,</span> <span class="s">&quot;Target FPS&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowWidth&quot;</span><span class="p">,</span> <span class="s">&quot;window width&quot;</span><span class="p">,</span> <span class="mi">1152</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowHeight&quot;</span><span class="p">,</span> <span class="s">&quot;window height&quot;</span><span class="p">,</span> <span class="mi">864</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowX&quot;</span><span class="p">,</span> <span class="s">&quot;window x&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowY&quot;</span><span class="p">,</span> <span class="s">&quot;window y&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;windowShowCmd&quot;</span><span class="p">,</span> <span class="s">&quot;window showcmd&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;setWindowPlacement&quot;</span><span class="p">,</span> <span class="s">&quot;SetWindowPlacement&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;showHiddenOres&quot;</span><span class="p">,</span> <span class="s">&quot;show hidden ores&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;hiddableOres&quot;</span><span class="p">,</span> <span class="s">&quot;hiddable ores&quot;</span><span class="p">,</span> <span class="n">hiddableOres</span><span class="p">),</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&quot;showOre</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="s">&quot;show ore </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">hiddableOres</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;fastLeaves&quot;</span><span class="p">,</span> <span class="s">&quot;fast leaves&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;roughGraphics&quot;</span><span class="p">,</span> <span class="s">&quot;rough graphics&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;showChunkRedraw&quot;</span><span class="p">,</span> <span class="s">&quot;show chunk redraw&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawSky&quot;</span><span class="p">,</span> <span class="s">&quot;draw sky&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawFog&quot;</span><span class="p">,</span> <span class="s">&quot;draw fog&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;showCeiling&quot;</span><span class="p">,</span> <span class="s">&quot;show ceiling&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawEntities&quot;</span><span class="p">,</span> <span class="s">&quot;draw entities&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawMonsters&quot;</span><span class="p">,</span> <span class="s">&quot;draw monsters&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawItems&quot;</span><span class="p">,</span> <span class="s">&quot;draw items&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawTileEntities&quot;</span><span class="p">,</span> <span class="s">&quot;draw tile entities&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawTileTicks&quot;</span><span class="p">,</span> <span class="s">&quot;draw tile ticks&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawUnpopulatedChunks&quot;</span><span class="p">,</span> <span class="s">&quot;draw unpopulated chunks&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawChunkBorders&quot;</span><span class="p">,</span> <span class="s">&quot;draw chunk borders&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;vertexBufferLimit&quot;</span><span class="p">,</span> <span class="s">&quot;vertex buffer limit&quot;</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;vsync&quot;</span><span class="p">,</span> <span class="s">&quot;vertical sync&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;viewMode&quot;</span><span class="p">,</span> <span class="s">&quot;View Mode&quot;</span><span class="p">,</span> <span class="s">&quot;Camera&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;undoLimit&quot;</span><span class="p">,</span> <span class="s">&quot;Undo Limit&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;recentWorlds&quot;</span><span class="p">,</span> <span class="s">&quot;Recent Worlds&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s">&quot;resourcePack&quot;</span><span class="p">,</span> <span class="s">&quot;Resource Pack&quot;</span><span class="p">,</span> <span class="s">u&quot;Default&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;maxCopies&quot;</span><span class="p">,</span> <span class="s">&quot;Copy stack size&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;superSecretSettings&quot;</span><span class="p">,</span> <span class="s">&quot;Super Secret Settings&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;compassToggle&quot;</span><span class="p">,</span> <span class="s">&quot;Compass Toggle&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;compassSize&quot;</span><span class="p">,</span> <span class="s">&quot;Compass Size&quot;</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fogIntensity&quot;</span><span class="p">,</span> <span class="s">&quot;Fog Intensity&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fontProportion&quot;</span><span class="p">,</span> <span class="s">&quot;Fonts Proportion&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;downloadPlayerSkins&quot;</span><span class="p">,</span> <span class="s">&quot;Download Player Skins&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;controls&quot;</span><span class="p">,</span> <span class="s">&quot;Controls&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;mouseSpeed&quot;</span><span class="p">,</span> <span class="s">&quot;mouse speed&quot;</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;cameraAccel&quot;</span><span class="p">,</span> <span class="s">&quot;camera acceleration&quot;</span><span class="p">,</span> <span class="mf">125.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;cameraDrag&quot;</span><span class="p">,</span> <span class="s">&quot;camera drag&quot;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;cameraMaxSpeed&quot;</span><span class="p">,</span> <span class="s">&quot;camera maximum speed&quot;</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;cameraBrakingSpeed&quot;</span><span class="p">,</span> <span class="s">&quot;camera braking speed&quot;</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;invertMousePitch&quot;</span><span class="p">,</span> <span class="s">&quot;invert mouse pitch&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;autobrake&quot;</span><span class="p">,</span> <span class="s">&quot;autobrake&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;swapAxes&quot;</span><span class="p">,</span> <span class="s">&quot;swap axes looking down&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;brush&quot;</span><span class="p">,</span> <span class="s">&quot;Brush&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;brushSizeL&quot;</span><span class="p">,</span> <span class="s">&quot;Brush Shape L&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;brushSizeH&quot;</span><span class="p">,</span> <span class="s">&quot;Brush Shape H&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;brushSizeW&quot;</span><span class="p">,</span> <span class="s">&quot;Brush Shape W&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;updateBrushOffset&quot;</span><span class="p">,</span> <span class="s">&quot;Update Brush Offset&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;chooseBlockImmediately&quot;</span><span class="p">,</span> <span class="s">&quot;Choose Block Immediately&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;alpha&quot;</span><span class="p">,</span> <span class="s">&quot;Alpha&quot;</span><span class="p">,</span> <span class="mf">0.66</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;clone&quot;</span><span class="p">,</span> <span class="s">&quot;Clone&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;copyAir&quot;</span><span class="p">,</span> <span class="s">&quot;Copy Air&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;copyWater&quot;</span><span class="p">,</span> <span class="s">&quot;Copy Water&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;copyBiomes&quot;</span><span class="p">,</span> <span class="s">&quot;Copy Biomes&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;staticCommands&quot;</span><span class="p">,</span> <span class="s">&quot;Change Coordinates&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;moveSpawnerPos&quot;</span><span class="p">,</span> <span class="s">&quot;Change Spawners Pos&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;regenerateUUID&quot;</span><span class="p">,</span> <span class="s">&quot;Regenerate UUIDs&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;placeImmediately&quot;</span><span class="p">,</span> <span class="s">&quot;Place Immediately&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;fill&quot;</span><span class="p">,</span> <span class="s">&quot;Fill&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;chooseBlockImmediately&quot;</span><span class="p">,</span> <span class="s">&quot;Choose Block Immediately&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;spawn&quot;</span><span class="p">,</span> <span class="s">&quot;Spawn&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;spawnProtection&quot;</span><span class="p">,</span> <span class="s">&quot;Spawn Protection&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;selection&quot;</span><span class="p">,</span> <span class="s">&quot;Selection&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;showPreviousSelection&quot;</span><span class="p">,</span> <span class="s">&quot;Show Previous Selection&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;color&quot;</span><span class="p">,</span> <span class="s">&quot;Color&quot;</span><span class="p">,</span> <span class="s">&quot;white&quot;</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;selectionColors&quot;</span><span class="p">,</span> <span class="s">&quot;Selection Colors&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;white&quot;</span><span class="p">,</span> <span class="s">&quot;white&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;teal&quot;</span><span class="p">,</span> <span class="s">&quot;teal&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;pink&quot;</span><span class="p">,</span> <span class="s">&quot;pink&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;yellow&quot;</span><span class="p">,</span> <span class="s">&quot;yellow&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;grey&quot;</span><span class="p">,</span> <span class="s">&quot;grey&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)),</span>
+        <span class="n">ColorValue</span><span class="p">(</span><span class="s">&quot;black&quot;</span><span class="p">,</span> <span class="s">&quot;black&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;fastNudgeSettings&quot;</span><span class="p">,</span> <span class="s">&quot;Fast Nudge Settings&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;blocksWidth&quot;</span><span class="p">,</span> <span class="s">&quot;Blocks Width&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;blocksWidthNumber&quot;</span><span class="p">,</span> <span class="s">&quot;Blocks Width Number&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;selectionWidth&quot;</span><span class="p">,</span> <span class="s">&quot;Selection Width&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;selectionWidthNumber&quot;</span><span class="p">,</span> <span class="s">&quot;Selection Width Number&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;pointsWidth&quot;</span><span class="p">,</span> <span class="s">&quot;Points Width&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;pointsWidthNumber&quot;</span><span class="p">,</span> <span class="s">&quot;Points Width Number&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;cloneWidth&quot;</span><span class="p">,</span> <span class="s">&quot;clone Width&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;cloneWidthNumber&quot;</span><span class="p">,</span> <span class="s">&quot;Clone Width Number&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;importWidth&quot;</span><span class="p">,</span> <span class="s">&quot;Import Width&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;importWidthNumber&quot;</span><span class="p">,</span> <span class="s">&quot;Import Width Number&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;nbtTreeSettings&quot;</span><span class="p">,</span> <span class="s">&quot;NBT Tree Settings&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;useBulletStyles&quot;</span><span class="p">,</span> <span class="s">&quot;Use Bullet Styles&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;useBulletText&quot;</span><span class="p">,</span> <span class="s">&quot;Use Bullet Text&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;useBulletImages&quot;</span><span class="p">,</span> <span class="s">&quot;Use Bullet Images&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;bulletFileName&quot;</span><span class="p">,</span> <span class="s">&quot;Bullet Images File&quot;</span><span class="p">,</span> <span class="n">directories</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&#39;Nbtsheet.png&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&quot;showAllTags&quot;</span><span class="p">,</span> <span class="s">&quot;Show all the tags in the tree&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;Filter Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Filter Keys&quot;</span><span class="p">):</span> <span class="p">[],</span>
+<span class="p">}</span>
+
+
+<span class="n">config</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">definitions</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,53 @@
+.. pymclevel documentation master file, created by
+   sphinx-quickstart on Fri Mar 13 18:03:39 2015.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to pymclevel's documentation!
+=====================================
+
+Contents:
+
+.. toctree::
+   :maxdepth: 4
+
+   albow
+   bresenham
+   compass
+   config
+   depths
+   directories
+   drawable
+   editortools
+   frustum
+   ftp_client
+   glbackground
+   glutils
+   keys
+   leveleditor
+   mce
+   mcedit
+   mceutils
+   mcplatform
+   panels
+   pkgutil
+   png
+   pymclevel
+   pyperclip
+   raycaster
+   release
+   renderer
+   resource_packs
+   setup
+   splash
+   version_utils
+   viewports
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

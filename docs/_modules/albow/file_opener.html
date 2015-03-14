@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.file_opener &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.file_opener</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">panels</span>
+<span class="kn">import</span> <span class="nn">pymclevel</span>
+<span class="kn">import</span> <span class="nn">albow</span>
+<span class="kn">import</span> <span class="nn">mceutils</span>
+<span class="kn">import</span> <span class="nn">mcplatform</span>
+<span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
+
+
+<div class="viewcode-block" id="FileOpener"><a class="viewcode-back" href="../../albow.html#albow.file_opener.FileOpener">[docs]</a><span class="k">class</span> <span class="nc">FileOpener</span><span class="p">(</span><span class="n">albow</span><span class="o">.</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">is_gl_container</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mcedit</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;rect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mcedit</span><span class="o">.</span><span class="n">rect</span>
+        <span class="n">albow</span><span class="o">.</span><span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;tlbr&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span> <span class="o">=</span> <span class="n">mcedit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+
+        <span class="n">helpColumn</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">label</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;{0}/{1}/{2}/{3}/{4}/{5} to move&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">back</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">up</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">down</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+        <span class="p">))</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;whrt&#39;</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">align</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span>
+        <span class="n">helpColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">addHelp</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;whrt&#39;</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">align</span> <span class="o">=</span> <span class="s">&quot;r&quot;</span>
+            <span class="n">helpColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="n">addHelp</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;{0} to slow down&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+        <span class="n">addHelp</span><span class="p">(</span><span class="s">&quot;Right-click to toggle camera control&quot;</span><span class="p">)</span>
+        <span class="n">addHelp</span><span class="p">(</span><span class="s">&quot;Mousewheel to control tool distance&quot;</span><span class="p">)</span>
+        <span class="n">addHelp</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Hold {0} for details&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">showBlockInfo</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+
+        <span class="n">helpColumn</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">helpColumn</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+        <span class="n">helpColumn</span><span class="o">.</span><span class="n">topright</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topright</span>
+        <span class="n">helpColumn</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;whrt&quot;</span>
+        <span class="c"># helpColumn.is_gl_container = True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">helpColumn</span><span class="p">)</span>
+
+        <span class="n">keysColumn</span> <span class="o">=</span> <span class="p">[</span><span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)]</span>
+        <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="p">[</span><span class="n">panels</span><span class="o">.</span><span class="n">ControlPanel</span><span class="o">.</span><span class="n">getHeader</span><span class="p">()]</span>
+
+        <span class="n">shortnames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">world</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">recentWorlds</span><span class="p">():</span>
+            <span class="n">shortname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">world</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">MCInfdevOldLevel</span><span class="o">.</span><span class="n">isLevel</span><span class="p">(</span><span class="n">world</span><span class="p">):</span>
+                    <span class="n">lev</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">MCInfdevOldLevel</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                    <span class="n">shortname</span> <span class="o">=</span> <span class="n">lev</span><span class="o">.</span><span class="n">LevelName</span>
+                    <span class="k">if</span> <span class="n">lev</span><span class="o">.</span><span class="n">LevelName</span> <span class="o">!=</span> <span class="n">lev</span><span class="o">.</span><span class="n">displayName</span><span class="p">:</span>
+                        <span class="n">shortname</span> <span class="o">=</span> <span class="s">u&quot;{0} ({1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lev</span><span class="o">.</span><span class="n">LevelName</span><span class="p">,</span> <span class="n">lev</span><span class="o">.</span><span class="n">displayName</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s">&#39;Couldn</span><span class="se">\&#39;</span><span class="s">t get name from recent world: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">shortname</span> <span class="o">==</span> <span class="s">&quot;level.dat&quot;</span><span class="p">:</span>
+                <span class="n">shortname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">world</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shortname</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="p">:</span>
+                <span class="n">shortname</span> <span class="o">=</span> <span class="n">shortname</span><span class="p">[:</span><span class="mi">37</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;...&quot;</span>
+            <span class="n">shortnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shortname</span><span class="p">)</span>
+
+        <span class="n">hotkeys</span> <span class="o">=</span> <span class="p">([(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">newWorld</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="s">&#39;Create New World&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">createNewWorld</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">quickLoad</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="s">&#39;Quick Load&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">askLoadWorld</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="s">&#39;Open...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">promptOpenAndLoad</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span>
+                       <span class="p">(</span><span class="s">&#39;F{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">shortnames</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">createLoadButtonHandler</span><span class="p">(</span><span class="n">world</span><span class="p">))</span>
+                       <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">world</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">recentWorlds</span><span class="p">())])</span>
+
+        <span class="n">commandRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">HotkeyColumn</span><span class="p">(</span><span class="n">hotkeys</span><span class="p">,</span> <span class="n">keysColumn</span><span class="p">,</span> <span class="n">buttonsColumn</span><span class="p">)</span>
+        <span class="n">commandRow</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;lrh&#39;</span>
+
+        <span class="n">sideColumn</span> <span class="o">=</span> <span class="n">mcedit</span><span class="o">.</span><span class="n">makeSideColumn</span><span class="p">()</span>
+        <span class="n">sideColumn</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;wh&#39;</span>
+
+        <span class="n">contentRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">commandRow</span><span class="p">,</span> <span class="n">sideColumn</span><span class="p">))</span>
+        <span class="n">contentRow</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span>
+        <span class="n">contentRow</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;rh&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">contentRow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sideColumn</span> <span class="o">=</span> <span class="n">sideColumn</span>
+
+<div class="viewcode-block" id="FileOpener.gl_draw_self"><a class="viewcode-back" href="../../albow.html#albow.file_opener.FileOpener.gl_draw_self">[docs]</a>    <span class="k">def</span> <span class="nf">gl_draw_self</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="c"># self.mcedit.editor.mainViewport.setPerspective();</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">drawStars</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FileOpener.idleevent"><a class="viewcode-back" href="../../albow.html#albow.file_opener.FileOpener.idleevent">[docs]</a>    <span class="k">def</span> <span class="nf">idleevent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">doWorkUnit</span><span class="p">(</span><span class="n">onMenu</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c"># self.invalidate()</span>
+</div>
+<div class="viewcode-block" id="FileOpener.key_down"><a class="viewcode-back" href="../../albow.html#albow.file_opener.FileOpener.key_down">[docs]</a>    <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Alt-F4&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SystemExit</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;F1&#39;</span><span class="p">,</span> <span class="s">&#39;F2&#39;</span><span class="p">,</span> <span class="s">&#39;F3&#39;</span><span class="p">,</span> <span class="s">&#39;F4&#39;</span><span class="p">,</span> <span class="s">&#39;F5&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">loadRecentWorldNumber</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">keyname</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">quickLoad</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">askLoadWorld</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">newWorld</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">createNewWorld</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">promptOpenAndLoad</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">quit</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">confirm_quit</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">fix_sticky_ctrl</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FileOpener.promptOpenAndLoad"><a class="viewcode-back" href="../../albow.html#albow.file_opener.FileOpener.promptOpenAndLoad">[docs]</a>    <span class="k">def</span> <span class="nf">promptOpenAndLoad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c">#!# Bad! But used to test the file chooser.</span>
+<span class="c">#        try:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askOpenFile</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">loadFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="c">#        except Exception, e:</span>
+<span class="c">#            logging.error(&#39;Error during proptOpenAndLoad: {0!r}&#39;.format(e))</span>
+</div>
+<div class="viewcode-block" id="FileOpener.createNewWorld"><a class="viewcode-back" href="../../albow.html#albow.file_opener.FileOpener.createNewWorld">[docs]</a>    <span class="k">def</span> <span class="nf">createNewWorld</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">createNewWorld</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FileOpener.createLoadButtonHandler"><a class="viewcode-back" href="../../albow.html#albow.file_opener.FileOpener.createLoadButtonHandler">[docs]</a>    <span class="k">def</span> <span class="nf">createLoadButtonHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">loadFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

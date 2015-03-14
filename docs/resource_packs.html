@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>resource_packs module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="next" title="setup module" href="setup.html" />
+    <link rel="prev" title="renderer module" href="renderer.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="setup module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="renderer.html" title="renderer module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-resource_packs">
+<span id="resource-packs-module"></span><h1>resource_packs module<a class="headerlink" href="#module-resource_packs" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="resource_packs.DefaultResourcePack">
+<em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">DefaultResourcePack</code><a class="reference internal" href="_modules/resource_packs.html#DefaultResourcePack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.DefaultResourcePack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resource_packs.IResourcePack" title="resource_packs.IResourcePack"><code class="xref py py-class docutils literal"><span class="pre">resource_packs.IResourcePack</span></code></a></p>
+<dl class="attribute">
+<dt id="resource_packs.DefaultResourcePack.isEmpty">
+<code class="descname">isEmpty</code><a class="headerlink" href="#resource_packs.DefaultResourcePack.isEmpty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="resource_packs.DefaultResourcePack.terrain_path">
+<code class="descname">terrain_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#DefaultResourcePack.terrain_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.DefaultResourcePack.terrain_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="resource_packs.DefaultResourcePack.tooBig">
+<code class="descname">tooBig</code><a class="headerlink" href="#resource_packs.DefaultResourcePack.tooBig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resource_packs.FolderResourcePack">
+<em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">FolderResourcePack</code><span class="sig-paren">(</span><em>folder</em>, <em>noEncConvert=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#FolderResourcePack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.FolderResourcePack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resource_packs.IResourcePack" title="resource_packs.IResourcePack"><code class="xref py py-class docutils literal"><span class="pre">resource_packs.IResourcePack</span></code></a></p>
+<dl class="method">
+<dt id="resource_packs.FolderResourcePack.add_textures">
+<code class="descname">add_textures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#FolderResourcePack.add_textures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.FolderResourcePack.add_textures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resource_packs.IResourcePack">
+<em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">IResourcePack</code><a class="reference internal" href="_modules/resource_packs.html#IResourcePack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="resource_packs.IResourcePack.handle_too_big_packs">
+<code class="descname">handle_too_big_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#IResourcePack.handle_too_big_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack.handle_too_big_packs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="resource_packs.IResourcePack.isEmpty">
+<code class="descname">isEmpty</code><a class="headerlink" href="#resource_packs.IResourcePack.isEmpty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="resource_packs.IResourcePack.pack_name">
+<code class="descname">pack_name</code><a class="headerlink" href="#resource_packs.IResourcePack.pack_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="resource_packs.IResourcePack.parse_terrain_png">
+<code class="descname">parse_terrain_png</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#IResourcePack.parse_terrain_png"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack.parse_terrain_png" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="resource_packs.IResourcePack.terrain_name">
+<code class="descname">terrain_name</code><a class="headerlink" href="#resource_packs.IResourcePack.terrain_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="resource_packs.IResourcePack.terrain_path">
+<code class="descname">terrain_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#IResourcePack.terrain_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack.terrain_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="resource_packs.IResourcePack.tooBig">
+<code class="descname">tooBig</code><a class="headerlink" href="#resource_packs.IResourcePack.tooBig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resource_packs.ResourcePackHandler">
+<em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">ResourcePackHandler</code><a class="reference internal" href="_modules/resource_packs.html#ResourcePackHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="resource_packs.ResourcePackHandler.get_available_resource_packs">
+<code class="descname">get_available_resource_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#ResourcePackHandler.get_available_resource_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.get_available_resource_packs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="resource_packs.ResourcePackHandler.get_selected_resource_pack">
+<code class="descname">get_selected_resource_pack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#ResourcePackHandler.get_selected_resource_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.get_selected_resource_pack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="resource_packs.ResourcePackHandler.get_selected_resource_pack_name">
+<code class="descname">get_selected_resource_pack_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#ResourcePackHandler.get_selected_resource_pack_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.get_selected_resource_pack_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="resource_packs.ResourcePackHandler.reload_resource_packs">
+<code class="descname">reload_resource_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#ResourcePackHandler.reload_resource_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.reload_resource_packs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="resource_packs.ResourcePackHandler.resource_packs">
+<code class="descname">resource_packs</code><a class="headerlink" href="#resource_packs.ResourcePackHandler.resource_packs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="resource_packs.ResourcePackHandler.set_selected_resource_pack_name">
+<code class="descname">set_selected_resource_pack_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#ResourcePackHandler.set_selected_resource_pack_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.set_selected_resource_pack_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="resource_packs.ZipResourcePack">
+<em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">ZipResourcePack</code><span class="sig-paren">(</span><em>zipfileFile</em>, <em>noEncConvert=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#ZipResourcePack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ZipResourcePack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#resource_packs.IResourcePack" title="resource_packs.IResourcePack"><code class="xref py py-class docutils literal"><span class="pre">resource_packs.IResourcePack</span></code></a></p>
+<p>Represents a single Resource Pack</p>
+<dl class="method">
+<dt id="resource_packs.ZipResourcePack.open_pack">
+<code class="descname">open_pack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#ZipResourcePack.open_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ZipResourcePack.open_pack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="resource_packs.setup_resource_packs">
+<code class="descclassname">resource_packs.</code><code class="descname">setup_resource_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#setup_resource_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.setup_resource_packs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="resource_packs.step">
+<code class="descclassname">resource_packs.</code><code class="descname">step</code><span class="sig-paren">(</span><em>slot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/resource_packs.html#step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="renderer.html"
+                        title="previous chapter">renderer module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="setup.html"
+                        title="next chapter">setup module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/resource_packs.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+      |
+      <a href="_sources/resource_packs.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

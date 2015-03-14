@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.file_dialogs &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.file_dialogs</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#</span>
+<span class="c"># Albow - File Dialogs</span>
+<span class="c">#</span>
+<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">TODO:</span>
+
+<span class="sd">* Implement Windows support.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">event</span><span class="p">,</span> <span class="n">image</span>
+<span class="kn">from</span> <span class="nn">pygame.transform</span> <span class="kn">import</span> <span class="n">scale</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">albow.widget</span> <span class="kn">import</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span><span class="p">,</span> <span class="n">ask</span><span class="p">,</span> <span class="n">alert</span>
+<span class="kn">from</span> <span class="nn">albow.controls</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">albow.fields</span> <span class="kn">import</span> <span class="n">TextFieldWrapped</span>
+<span class="kn">from</span> <span class="nn">albow.layout</span> <span class="kn">import</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">albow.palette_view</span> <span class="kn">import</span> <span class="n">PaletteView</span>
+<span class="kn">from</span> <span class="nn">albow.scrollpanel</span> <span class="kn">import</span> <span class="n">ScrollPanel</span>
+<span class="kn">from</span> <span class="nn">albow.theme</span> <span class="kn">import</span> <span class="n">ThemeProperty</span>
+<span class="kn">from</span> <span class="nn">translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">tree</span> <span class="kn">import</span> <span class="n">Tree</span>
+<span class="kn">import</span> <span class="nn">directories</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="n">file_image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;albow&quot;</span><span class="p">,</span> <span class="s">&#39;file.png&#39;</span><span class="p">))</span>
+<span class="n">folder_image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;albow&quot;</span><span class="p">,</span> <span class="s">&#39;folder.png&#39;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="DirPathView"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.DirPathView">[docs]</a><span class="k">class</span> <span class="nc">DirPathView</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_size_for_text</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+
+<div class="viewcode-block" id="DirPathView.draw"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.DirPathView.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">):</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_margin_rect</span><span class="p">()</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span><span class="p">)</span>
+        <span class="n">tw</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span>
+        <span class="n">mw</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">width</span>
+        <span class="k">if</span> <span class="n">tw</span> <span class="o">&lt;=</span> <span class="n">mw</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">mw</span> <span class="o">-</span> <span class="n">tw</span>
+        <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">top</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="FileListView"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileListView">[docs]</a><span class="k">class</span> <span class="nc">FileListView</span><span class="p">(</span><span class="n">ScrollPanel</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_font</span><span class="p">(</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">()</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">kwds</span><span class="p">,</span> <span class="s">&#39;margin&#39;</span><span class="p">)</span>
+        <span class="n">ScrollPanel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inner_width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">icons</span> <span class="o">=</span> <span class="p">{</span><span class="bp">True</span><span class="p">:</span> <span class="n">scale</span><span class="p">(</span><span class="n">folder_image</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_height</span><span class="p">)),</span> <span class="bp">False</span><span class="p">:</span> <span class="n">scale</span><span class="p">(</span><span class="n">file_image</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_height</span><span class="p">))}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="FileListView.update"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileListView.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
+        <span class="nb">dir</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">directory</span>
+
+        <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+                <span class="n">dirnames</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+                <span class="n">filenames</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+                <span class="k">break</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="nb">unicode</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dirnames</span> <span class="o">+</span> <span class="n">filenames</span> <span class="k">if</span> <span class="nb">filter</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dirnames</span> <span class="o">+</span> <span class="n">filenames</span> <span class="k">if</span> <span class="nb">filter</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">EnvironmentError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">alert</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">Row</span><span class="p">([</span><span class="n">Image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icons</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">a</span><span class="p">))]),</span>
+                          <span class="n">Label</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">)],</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_item_index</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileListView.scroll_to_item"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileListView.scroll_to_item">[docs]</a>    <span class="k">def</span> <span class="nf">scroll_to_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollRow</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileListView.num_items"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileListView.num_items">[docs]</a>    <span class="k">def</span> <span class="nf">num_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileListView.click_item"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileListView.click_item">[docs]</a>    <span class="k">def</span> <span class="nf">click_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_no</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_item_index</span> <span class="o">=</span> <span class="n">item_no</span>
+        <span class="n">ScrollPanel</span><span class="o">.</span><span class="n">click_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_no</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">num_clicks</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">dir_box_click</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileListView.item_is_selected"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileListView.item_is_selected">[docs]</a>    <span class="k">def</span> <span class="nf">item_is_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_no</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item_no</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_item_index</span>
+</div>
+<div class="viewcode-block" id="FileListView.get_selected_name"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileListView.get_selected_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_selected_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selected_item_index</span>
+        <span class="k">if</span> <span class="n">sel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+</div></div>
+<div class="viewcode-block" id="get_platform_root_dir"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.get_platform_root_dir">[docs]</a><span class="k">def</span> <span class="nf">get_platform_root_dir</span><span class="p">():</span>
+    <span class="c">#-# Rework this in order to mimic the OSs file chooser behaviour.</span>
+    <span class="c">#-# Need platform/version specific code...</span>
+    <span class="k">return</span> <span class="s">&#39;/&#39;</span>
+
+</div>
+<div class="viewcode-block" id="FSTree"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FSTree">[docs]</a><span class="k">class</span> <span class="nc">FSTree</span><span class="p">(</span><span class="n">Tree</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;draw_zebra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">get_platform_root_dir</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="s">&#39;directory&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;directory&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">dirnames</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_path</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">dirpath</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
+            <span class="k">break</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">Tree</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_directory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FSTree.show_menu"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FSTree.show_menu">[docs]</a>    <span class="k">def</span> <span class="nf">show_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="FSTree.set_directory"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FSTree.set_directory">[docs]</a>    <span class="k">def</span> <span class="nf">set_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diretory</span> <span class="o">=</span> <span class="n">directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deployed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">splitted_path</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)</span>
+        <span class="k">while</span> <span class="s">&#39;&#39;</span> <span class="ow">in</span> <span class="n">splitted_path</span><span class="p">:</span>
+            <span class="n">splitted_path</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">splitted_path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">while</span> <span class="n">splitted_path</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">splitted_path</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_path</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_layout</span><span class="p">()</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_item_path</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="ow">in</span> <span class="n">directory</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">deployed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">clicked_item</span> <span class="o">=</span> <span class="n">row</span>
+                    <span class="n">rows</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_layout</span><span class="p">()[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+                    <span class="k">if</span> <span class="n">directory</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_item_path</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">treeRow</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">selected_item_index</span> <span class="o">=</span> <span class="n">rows</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">selected_item</span> <span class="o">=</span> <span class="n">row</span>
+                        <span class="k">break</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="FSTree.parse_path"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FSTree.parse_path">[docs]</a>    <span class="k">def</span> <span class="nf">parse_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="c">#!# The log.debug() and print stuff in there are intended to fix some OSX issues.</span>
+        <span class="c">#!# Please do not strip them out. -- D.C.-G.</span>
+<span class="c">#        log.debug(&#39;FSTree.parse_path&#39;)</span>
+<span class="c">#        log.debug(&#39;    path: %s\n      length: %d&#39;%(repr(path), len(path)))</span>
+<span class="c">#        print &#39;    path: %s\n      length: %d&#39;%(repr(path), len(path))</span>
+<span class="c">#        log.debug(&#39;    path: %s\n      length: %d&#39;%(repr(path), len(path)))</span>
+<span class="c">#        if len(path) &lt; 1: print &#39;    ! ! ! ^ ^ ^ ! ! !&#39;</span>
+<span class="c">#        if len(path) &lt; 1: log.debug(&#39;    ! ! ! ^ ^ ^ ! ! !&#39;)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">folders</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+<span class="c">#            log.debug(&#39;    a: %s\n      length: %d&#39;%(repr(a), len(a)))</span>
+<span class="c">#            print &#39;    a: %s\n      length: %d&#39;%(repr(a), len(a))</span>
+<span class="c">#            log.debug(&#39;    a: %s\n      length: %d&#39;%(repr(a), len(a)))</span>
+<span class="c">#            if len(a) &lt; 1: print &#39;    ! ! ! ^ ^ ^ ! ! !&#39;</span>
+<span class="c">#            if len(a) &lt; 1: log.debug(&#39;    ! ! ! ^ ^ ^ ! ! !&#39;)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
+<span class="c">#                log.debug(&#39;    folder: %s\n      length: %d&#39;%(repr(folder), len(folder)))</span>
+<span class="c">#                print &#39;    folder: %s\n      length: %d&#39;%(repr(folder), len(folder))</span>
+<span class="c">#                log.debug(&#39;    folder: %s\n      length: %d&#39;%(repr(folder), len(folder)))</span>
+<span class="c">#                if len(folder) &lt; 1: print &#39;    ! ! ! ^ ^ ^ ! ! !&#39;</span>
+<span class="c">#                if len(folder) &lt; 1: log.debug(&#39;    ! ! ! ^ ^ ^ ! ! !&#39;)</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+                    <span class="n">folder</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">folder</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+                    <span class="n">a</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+                <span class="n">cont</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">folder</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">_a</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">_b</span> <span class="ow">in</span> <span class="n">cont</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">:</span>
+<span class="c">#                        log.debug(&#39;    f: %s\n      length: %d&#39;%(repr(f), len(f)))</span>
+<span class="c">#                        print &#39;    f: %s\n      length: %d&#39;%(repr(f), len(f))</span>
+<span class="c">#                        log.debug(&#39;    f: %s\n      length: %d&#39;%(repr(f), len(f)))</span>
+<span class="c">#                        if len(f) &lt; 1: print &#39;    ! ! ! ^ ^ ^ ! ! !&#39;</span>
+<span class="c">#                        if len(f) &lt; 1: log.debug(&#39;    ! ! ! ^ ^ ^ ! ! !&#39;)</span>
+                        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+                            <span class="n">d</span><span class="p">[</span><span class="n">folder</span><span class="p">][</span><span class="nb">unicode</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">d</span><span class="p">[</span><span class="n">folder</span><span class="p">][</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">break</span>
+            <span class="k">break</span>
+        <span class="k">return</span> <span class="n">d</span>
+</div>
+<div class="viewcode-block" id="FSTree.get_item_path"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FSTree.get_item_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_item_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">path_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">]</span>
+            <span class="k">while</span> <span class="nb">id</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_item_parent</span><span class="p">(</span><span class="n">parents</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+                <span class="n">parents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">parents</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+            <span class="n">path_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">]</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">path_list</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">path</span>
+</div>
+<div class="viewcode-block" id="FSTree.deploy"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FSTree.deploy">[docs]</a>    <span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_item_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clicked_item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clicked_item</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clicked_item</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">Tree</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FSTree.select_item"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FSTree.select_item">[docs]</a>    <span class="k">def</span> <span class="nf">select_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">Tree</span><span class="o">.</span><span class="n">select_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_item_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selected_item</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="FileDialog"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog">[docs]</a><span class="k">class</span> <span class="nc">FileDialog</span><span class="p">(</span><span class="n">Dialog</span><span class="p">):</span>
+    <span class="n">box_width</span> <span class="o">=</span> <span class="mi">450</span>
+    <span class="n">default_prompt</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">up_button_text</span> <span class="o">=</span> <span class="n">ThemeProperty</span><span class="p">(</span><span class="s">&quot;up_button_text&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">Dialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span> <span class="o">=</span> <span class="n">suffixes</span> <span class="ow">or</span> <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,)</span>
+        <span class="n">up_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up_button_text</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">go_up</span><span class="p">)</span>
+        <span class="n">dir_box</span> <span class="o">=</span> <span class="n">DirPathView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_width</span> <span class="o">+</span> <span class="mi">250</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_box</span> <span class="o">=</span> <span class="n">dir_box</span>
+        <span class="n">top_row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">([</span><span class="n">dir_box</span><span class="p">,</span> <span class="n">up_button</span><span class="p">])</span>
+        <span class="n">list_box</span> <span class="o">=</span> <span class="n">FileListView</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_width</span> <span class="o">-</span> <span class="mi">16</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_box</span> <span class="o">=</span> <span class="n">list_box</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">FSTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inner_width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">tree</span><span class="p">,</span> <span class="n">list_box</span><span class="p">),</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ctrls</span> <span class="o">=</span> <span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">row</span><span class="p">]</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_prompt</span>
+        <span class="k">if</span> <span class="n">prompt</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saving</span><span class="p">:</span>
+            <span class="n">filename_box</span> <span class="o">=</span> <span class="n">TextFieldWrapped</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_width</span><span class="p">)</span>
+            <span class="n">filename_box</span><span class="o">.</span><span class="n">change_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_filename</span>
+            <span class="n">filename_box</span><span class="o">.</span><span class="n">_enter_action</span> <span class="o">=</span> <span class="n">filename_box</span><span class="o">.</span><span class="n">enter_action</span>
+            <span class="n">filename_box</span><span class="o">.</span><span class="n">enter_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter_action</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span> <span class="o">=</span> <span class="n">filename_box</span>
+            <span class="n">ctrls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Column</span><span class="p">([</span><span class="n">label</span><span class="p">,</span> <span class="n">filename_box</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;l&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+                <span class="n">ctrls</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="n">ok_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ok_label</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ok</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ok_enable</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ok_button</span> <span class="o">=</span> <span class="n">ok_button</span>
+        <span class="n">cancel_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cancel</span><span class="p">)</span>
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">ctrls</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;l&#39;</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">vbox</span><span class="o">.</span><span class="n">bottom</span> <span class="o">+</span> <span class="n">d</span>
+        <span class="n">ok_button</span><span class="o">.</span><span class="n">topleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">vbox</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">cancel_button</span><span class="o">.</span><span class="n">topright</span> <span class="o">=</span> <span class="p">(</span><span class="n">vbox</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vbox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ok_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cancel_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwdu</span><span class="p">()</span>
+        <span class="c">#print &quot;FileDialog: cwd =&quot;, repr(self.directory) ###</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saving</span><span class="p">:</span>
+            <span class="n">filename_box</span><span class="o">.</span><span class="n">focus</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FileDialog.get_directory"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.get_directory">[docs]</a>    <span class="k">def</span> <span class="nf">get_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span>
+</div>
+<div class="viewcode-block" id="FileDialog.set_directory"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.set_directory">[docs]</a>    <span class="k">def</span> <span class="nf">set_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwdu</span><span class="p">()</span>
+                <span class="k">break</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span> <span class="o">!=</span> <span class="n">x</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_box</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</div>
+    <span class="n">directory</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_directory</span><span class="p">,</span> <span class="n">set_directory</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileDialog.filter"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">suffixes</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="c">#return os.path.isfile(path)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">suffixes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="FileDialog.update"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">set_directory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileDialog.update_filename"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.update_filename">[docs]</a>    <span class="k">def</span> <span class="nf">update_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">text</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_box</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileDialog.go_up"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.go_up">[docs]</a>    <span class="k">def</span> <span class="nf">go_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_box</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileDialog.dir_box_click"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.dir_box_click">[docs]</a>    <span class="k">def</span> <span class="nf">dir_box_click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">double</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">double</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_box</span><span class="o">.</span><span class="n">get_selected_name</span><span class="p">()</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">name</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">suffix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">path</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">double_click_file</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FileDialog.enter_action"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.enter_action">[docs]</a>    <span class="k">def</span> <span class="nf">enter_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">_enter_action</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ok</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FileDialog.ok"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.ok">[docs]</a>    <span class="k">def</span> <span class="nf">ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_box_click</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c">#self.dismiss(True)</span>
+</div>
+<div class="viewcode-block" id="FileDialog.cancel"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileDialog.key_down"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileDialog.key_down">[docs]</a>    <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">key</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_RETURN</span> <span class="ow">or</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_KP_ENTER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dir_box_click</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">K_ESCAPE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="FileSaveDialog"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog">[docs]</a><span class="k">class</span> <span class="nc">FileSaveDialog</span><span class="p">(</span><span class="n">FileDialog</span><span class="p">):</span>
+    <span class="n">saving</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">default_prompt</span> <span class="o">=</span> <span class="s">&quot;Save as:&quot;</span>
+    <span class="n">ok_label</span> <span class="o">=</span> <span class="s">&quot;Save&quot;</span>
+
+<div class="viewcode-block" id="FileSaveDialog.get_filename"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">text</span>
+</div>
+<div class="viewcode-block" id="FileSaveDialog.set_filename"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog.set_filename">[docs]</a>    <span class="k">def</span> <span class="nf">set_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">dsuf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">dsuf</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">dsuf</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">dsuf</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">x</span>
+</div>
+    <span class="n">filename</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_filename</span><span class="p">,</span> <span class="n">set_filename</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileSaveDialog.get_pathname"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog.get_pathname">[docs]</a>    <span class="k">def</span> <span class="nf">get_pathname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span>
+        <span class="k">if</span> <span class="n">suffixes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffixes</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="n">suffixes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">path</span>
+</div>
+    <span class="n">pathname</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_pathname</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileSaveDialog.double_click_file"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog.double_click_file">[docs]</a>    <span class="k">def</span> <span class="nf">double_click_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">name</span>
+</div>
+<div class="viewcode-block" id="FileSaveDialog.ok"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog.ok">[docs]</a>    <span class="k">def</span> <span class="nf">ok</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathname</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Replace existing &#39;</span><span class="si">%s</span><span class="s">&#39;?&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">answer</span> <span class="o">!=</span> <span class="s">&quot;OK&quot;</span><span class="p">:</span>
+                <span class="k">return</span>
+        <span class="c">#FileDialog.ok(self)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileSaveDialog.update"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">FileDialog</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileSaveDialog.ok_enable"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileSaveDialog.ok_enable">[docs]</a>    <span class="k">def</span> <span class="nf">ok_enable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename_box</span><span class="o">.</span><span class="n">text</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span>
+
+</div></div>
+<div class="viewcode-block" id="FileOpenDialog"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileOpenDialog">[docs]</a><span class="k">class</span> <span class="nc">FileOpenDialog</span><span class="p">(</span><span class="n">FileDialog</span><span class="p">):</span>
+    <span class="n">saving</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">ok_label</span> <span class="o">=</span> <span class="s">&quot;Open&quot;</span>
+
+<div class="viewcode-block" id="FileOpenDialog.get_pathname"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileOpenDialog.get_pathname">[docs]</a>    <span class="k">def</span> <span class="nf">get_pathname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_box</span><span class="o">.</span><span class="n">get_selected_name</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+</div>
+    <span class="n">pathname</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_pathname</span><span class="p">)</span>
+
+    <span class="c">#def update(self):</span>
+    <span class="c">#    FileDialog.update(self)</span>
+
+<div class="viewcode-block" id="FileOpenDialog.ok_enable"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileOpenDialog.ok_enable">[docs]</a>    <span class="k">def</span> <span class="nf">ok_enable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathname</span>
+        <span class="n">enabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_is_choosable</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">enabled</span>
+</div>
+<div class="viewcode-block" id="FileOpenDialog.item_is_choosable"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileOpenDialog.item_is_choosable">[docs]</a>    <span class="k">def</span> <span class="nf">item_is_choosable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FileOpenDialog.double_click_file"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.FileOpenDialog.double_click_file">[docs]</a>    <span class="k">def</span> <span class="nf">double_click_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="LookForFileDialog"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.LookForFileDialog">[docs]</a><span class="k">class</span> <span class="nc">LookForFileDialog</span><span class="p">(</span><span class="n">FileOpenDialog</span><span class="p">):</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">FileOpenDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span>
+
+<div class="viewcode-block" id="LookForFileDialog.item_is_choosable"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.LookForFileDialog.item_is_choosable">[docs]</a>    <span class="k">def</span> <span class="nf">item_is_choosable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span>
+</div>
+<div class="viewcode-block" id="LookForFileDialog.filter"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.LookForFileDialog.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span>
+
+</div></div>
+<div class="viewcode-block" id="request_new_filename"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.request_new_filename">[docs]</a><span class="k">def</span> <span class="nf">request_new_filename</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">extra_suffixes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">directory</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pathname</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">pathname</span><span class="p">:</span>
+        <span class="n">directory</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pathname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">extra_suffixes</span><span class="p">:</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="n">extra_suffixes</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">suffix</span><span class="p">:</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">suffix</span><span class="p">]</span> <span class="o">+</span> <span class="n">suffixes</span>
+    <span class="n">dlog</span> <span class="o">=</span> <span class="n">FileSaveDialog</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="n">suffixes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">directory</span><span class="p">:</span>
+        <span class="n">dlog</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+        <span class="n">dlog</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+    <span class="k">if</span> <span class="n">dlog</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">dlog</span><span class="o">.</span><span class="n">pathname</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="request_old_filename"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.request_old_filename">[docs]</a><span class="k">def</span> <span class="nf">request_old_filename</span><span class="p">(</span><span class="n">suffixes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">dlog</span> <span class="o">=</span> <span class="n">FileOpenDialog</span><span class="p">(</span><span class="n">suffixes</span><span class="o">=</span><span class="n">suffixes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">directory</span><span class="p">:</span>
+        <span class="n">dlog</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+    <span class="k">if</span> <span class="n">dlog</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">dlog</span><span class="o">.</span><span class="n">pathname</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="look_for_file_or_directory"><a class="viewcode-back" href="../../albow.html#albow.file_dialogs.look_for_file_or_directory">[docs]</a><span class="k">def</span> <span class="nf">look_for_file_or_directory</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">dlog</span> <span class="o">=</span> <span class="n">LookForFileDialog</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">directory</span><span class="p">:</span>
+        <span class="n">dlog</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+    <span class="k">if</span> <span class="n">dlog</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">dlog</span><span class="o">.</span><span class="n">pathname</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

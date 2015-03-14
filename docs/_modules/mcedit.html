@@ -1,0 +1,869 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mcedit &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mcedit</h1><div class="highlight"><pre>
+<span class="c"># !/usr/bin/env python2.7</span>
+<span class="c"># -*- coding: utf_8 -*-</span>
+<span class="c"># import resource_packs # not the right place, moving it a bit further</span>
+
+<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
+<span class="c">#.# Marks the layout modifications. -- D.C.-G.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">mcedit.py</span>
+
+<span class="sd">Startup, main menu, keyboard configuration, automatic updating.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">splash</span>
+
+<span class="kn">import</span> <span class="nn">resource_packs</span>
+<span class="kn">import</span> <span class="nn">version_utils</span>
+<span class="kn">import</span> <span class="nn">OpenGL</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">directories</span>
+<span class="kn">import</span> <span class="nn">keys</span>
+
+<span class="k">if</span> <span class="s">&quot;-debug&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">OpenGL</span><span class="o">.</span><span class="n">ERROR_CHECKING</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c"># Setup file and stderr logging.</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+
+<span class="c"># Set the log level up while importing OpenGL.GL to hide some obnoxious warnings about old array handlers</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="n">logfile</span> <span class="o">=</span> <span class="s">&#39;mcedit.log&#39;</span>
+
+<span class="c"># if hasattr(sys, &#39;frozen&#39;):</span>
+<span class="c">#     if sys.platform == &quot;win32&quot;:</span>
+<span class="c">#         import esky</span>
+<span class="c">#         app = esky.Esky(sys.executable)</span>
+
+<span class="c">#         logfile = os.path.join(app.appdir, logfile)</span>
+<span class="c">#</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+    <span class="n">logfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/Library/Logs/mcedit.log&quot;</span><span class="p">)</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">logfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">fh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="n">ch</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="s">&quot;-v&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="k">if</span> <span class="s">&quot;-vv&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">ch</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FileLineFormatter"><a class="viewcode-back" href="../mcedit.html#mcedit.FileLineFormatter">[docs]</a><span class="k">class</span> <span class="nc">FileLineFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+<div class="viewcode-block" id="FileLineFormatter.format"><a class="viewcode-back" href="../mcedit.html#mcedit.FileLineFormatter.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;fileline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%(module)s</span><span class="s">.py:</span><span class="si">%(lineno)d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">__dict__</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;nameline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%(name)s</span><span class="s">.py:</span><span class="si">%(lineno)d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">__dict__</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">FileLineFormatter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+
+</div></div>
+<span class="n">fmt</span> <span class="o">=</span> <span class="n">FileLineFormatter</span><span class="p">(</span>
+    <span class="s">&#39;[</span><span class="si">%(levelname)8s</span><span class="s">][</span><span class="si">%(nameline)30s</span><span class="s">]:</span><span class="si">%(message)s</span><span class="s">&#39;</span>
+<span class="p">)</span>
+<span class="n">fh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+<span class="n">ch</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">albow</span>
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="n">DEF_ENC</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">getdefaultlocale</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">DEF_ENC</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">DEF_ENC</span> <span class="o">=</span> <span class="s">&quot;UTF-8&quot;</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span><span class="p">,</span> <span class="n">getPlatInfo</span>
+
+<span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
+<span class="kn">from</span> <span class="nn">albow.openglwidgets</span> <span class="kn">import</span> <span class="n">GLViewport</span>
+<span class="kn">from</span> <span class="nn">albow.root</span> <span class="kn">import</span> <span class="n">RootWidget</span>
+
+<span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
+
+<span class="n">albow</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">resource_dir</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">panels</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">glutils</span>
+<span class="kn">import</span> <span class="nn">leveleditor</span>
+
+<span class="c"># Building translation template</span>
+<span class="k">if</span> <span class="s">&quot;-tt&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">buildTemplate</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">loadTemplate</span><span class="p">()</span>
+
+
+<span class="kn">import</span> <span class="nn">mceutils</span>
+<span class="kn">import</span> <span class="nn">mcplatform</span>
+<span class="kn">from</span> <span class="nn">mcplatform</span> <span class="kn">import</span> <span class="n">platform_open</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">pymclevel.minecraft_server</span> <span class="kn">import</span> <span class="n">ServerJarStorage</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">rect</span>
+<span class="kn">import</span> <span class="nn">pymclevel</span>
+<span class="kn">import</span> <span class="nn">release</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">utilities.gl_display_context</span> <span class="kn">import</span> <span class="n">GLDisplayContext</span>
+
+<span class="n">getPlatInfo</span><span class="p">(</span><span class="n">OpenGL</span><span class="o">=</span><span class="n">OpenGL</span><span class="p">,</span> <span class="n">numpy</span><span class="o">=</span><span class="n">numpy</span><span class="p">,</span> <span class="n">pygame</span><span class="o">=</span><span class="n">pygame</span><span class="p">)</span>
+
+<span class="n">ESCAPE</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\033</span><span class="s">&#39;</span>
+
+
+<div class="viewcode-block" id="MCEdit"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit">[docs]</a><span class="k">class</span> <span class="nc">MCEdit</span><span class="p">(</span><span class="n">GLViewport</span><span class="p">):</span>
+    <span class="c">#debug_resize = True</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">displayContext</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">displayContext</span><span class="o">.</span><span class="n">getWindowSize</span><span class="p">()</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ws</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ws</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">GLViewport</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayContext</span> <span class="o">=</span> <span class="n">displayContext</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;tlbr&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="s">&quot;Recent Worlds&quot;</span><span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="s">&quot;Recent Worlds&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRecentWorlds</span><span class="p">([</span><span class="s">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span> <span class="o">=</span> <span class="n">panels</span><span class="o">.</span><span class="n">OptionsPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">buildTemplate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span><span class="o">.</span><span class="n">getLanguageChoices</span><span class="p">()</span>
+            <span class="n">lng</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">lng</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span><span class="o">.</span><span class="n">sgnal</span><span class="p">:</span>
+                <span class="n">lng</span> <span class="o">=</span> <span class="s">&quot;en_US&quot;</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">lng</span><span class="p">)</span>
+            <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">setLang</span><span class="p">(</span><span class="n">lng</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span><span class="o">.</span><span class="n">initComponents</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graphicsPanel</span> <span class="o">=</span> <span class="n">panels</span><span class="o">.</span><span class="n">GraphicsPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c">#.#</span>
+<span class="c">#        self.keyConfigPanel = keys.KeyConfigPanel()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigPanel</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">KeyConfigPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c">#.#</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">droppedLevel</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbtCopyBuffer</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reloadEditor</span><span class="p">()</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        check command line for files dropped from explorer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">minecraftSaveFileDir</span><span class="p">,</span> <span class="n">f</span><span class="p">)):</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">minecraftSaveFileDir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">droppedLevel</span> <span class="o">=</span> <span class="n">f</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">droppedLevel</span> <span class="o">=</span> <span class="n">f</span>
+                    <span class="k">break</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FileOpener</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span><span class="o">.</span><span class="n">focus</span><span class="p">()</span>
+
+    <span class="n">editor</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="MCEdit.reloadEditor"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.reloadEditor">[docs]</a>    <span class="k">def</span> <span class="nf">reloadEditor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">reload</span><span class="p">(</span><span class="n">leveleditor</span><span class="p">)</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">:</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span>
+            <span class="n">pos</span><span class="p">,</span> <span class="n">yaw</span><span class="p">,</span> <span class="n">pitch</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">yaw</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">pitch</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">leveleditor</span><span class="o">.</span><span class="n">LevelEditor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;tlbr&#39;</span>
+        <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">gotoLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">focus_switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span>
+
+            <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span>
+
+                <span class="n">c</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">yaw</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">pitch</span> <span class="o">=</span> <span class="n">pos</span><span class="p">,</span> <span class="n">yaw</span><span class="p">,</span> <span class="n">pitch</span>
+</div>
+<div class="viewcode-block" id="MCEdit.add_right"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.add_right">[docs]</a>    <span class="k">def</span> <span class="nf">add_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="n">h</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MCEdit.showOptions"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.showOptions">[docs]</a>    <span class="k">def</span> <span class="nf">showOptions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MCEdit.showGraphicOptions"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.showGraphicOptions">[docs]</a>    <span class="k">def</span> <span class="nf">showGraphicOptions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graphicsPanel</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MCEdit.showKeyConfig"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.showKeyConfig">[docs]</a>    <span class="k">def</span> <span class="nf">showKeyConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigPanel</span><span class="o">.</span><span class="n">presentControls</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MCEdit.loadRecentWorldNumber"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.loadRecentWorldNumber">[docs]</a>    <span class="k">def</span> <span class="nf">loadRecentWorldNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">worlds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recentWorlds</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">worlds</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loadFile</span><span class="p">(</span><span class="n">worlds</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+</div>
+    <span class="n">numRecentWorlds</span> <span class="o">=</span> <span class="mi">5</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="MCEdit.removeLevelDat"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.removeLevelDat">[docs]</a>    <span class="k">def</span> <span class="nf">removeLevelDat</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;level.dat&quot;</span><span class="p">):</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">filename</span>
+</div>
+<div class="viewcode-block" id="MCEdit.recentWorlds"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.recentWorlds">[docs]</a>    <span class="k">def</span> <span class="nf">recentWorlds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">worlds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numRecentWorlds</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="s">&quot;Recent Worlds&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">filename</span> <span class="o">=</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Recent Worlds&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">))</span>
+                    <span class="n">worlds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">removeLevelDat</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">((</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">worlds</span> <span class="k">if</span> <span class="n">f</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+</div>
+<div class="viewcode-block" id="MCEdit.addRecentWorld"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.addRecentWorld">[docs]</a>    <span class="k">def</span> <span class="nf">addRecentWorld</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">removeLevelDat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">rw</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recentWorlds</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">rw</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">rw</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">+</span> <span class="n">rw</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">numRecentWorlds</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRecentWorlds</span><span class="p">(</span><span class="n">rw</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="MCEdit.setRecentWorlds"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.setRecentWorlds">[docs]</a>    <span class="k">def</span> <span class="nf">setRecentWorlds</span><span class="p">(</span><span class="n">worlds</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">worlds</span><span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Recent Worlds&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">filename</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="MCEdit.makeSideColumn"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.makeSideColumn">[docs]</a>    <span class="k">def</span> <span class="nf">makeSideColumn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">showLicense</span><span class="p">():</span>
+            <span class="n">platform_open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;LICENSE.txt&quot;</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">showCacheDir</span><span class="p">():</span>
+            <span class="n">platform_open</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">())</span>
+
+        <span class="k">def</span> <span class="nf">showScreenshotsDir</span><span class="p">():</span>
+            <span class="n">platform_open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;screenshots&quot;</span><span class="p">))</span>
+            
+        <span class="k">def</span> <span class="nf">refresh</span><span class="p">():</span>
+            <span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">force_refresh</span><span class="p">()</span>
+
+        <span class="n">hotkeys</span> <span class="o">=</span> <span class="p">([(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;Controls&quot;</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">showKeyConfig</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;Graphics&quot;</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">showGraphicOptions</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;Options&quot;</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">showOptions</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;Homepage&quot;</span><span class="p">,</span>
+                     <span class="k">lambda</span><span class="p">:</span> <span class="n">platform_open</span><span class="p">(</span><span class="s">&quot;http://www.mcedit-unified.net&quot;</span><span class="p">),</span>
+                     <span class="s">&quot;http://www.mcedit-unified.net&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;About MCEdit&quot;</span><span class="p">,</span>
+                     <span class="k">lambda</span><span class="p">:</span> <span class="n">platform_open</span><span class="p">(</span><span class="s">&quot;http://www.mcedit-unified.net/about.html&quot;</span><span class="p">),</span>
+                     <span class="s">&quot;http://www.mcedit-unified.net/about.html&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;License&quot;</span><span class="p">,</span>
+                     <span class="n">showLicense</span><span class="p">,</span>
+                     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;LICENSE.txt&quot;</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;Config Files&quot;</span><span class="p">,</span>
+                     <span class="n">showCacheDir</span><span class="p">,</span>
+                     <span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">()),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;Screenshots&quot;</span><span class="p">,</span>
+                     <span class="n">showScreenshotsDir</span><span class="p">,</span>
+                     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;screenshots&quot;</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                     <span class="s">&quot;Refresh Player Names&quot;</span><span class="p">,</span>
+                     <span class="n">refresh</span><span class="p">)</span>
+                   <span class="p">])</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">HotkeyColumn</span><span class="p">(</span><span class="n">hotkeys</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">c</span>
+</div>
+<div class="viewcode-block" id="MCEdit.resized"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.resized">[docs]</a>    <span class="k">def</span> <span class="nf">resized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">dh</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle window resizing events.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">GLViewport</span><span class="o">.</span><span class="n">resized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">dh</span><span class="p">)</span>
+
+        <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># The window has been minimized, no need to draw anything.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">render</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">render</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">render</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="n">dis</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span> <span class="ow">and</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span><span class="p">:</span>
+            <span class="n">dis</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Display</span><span class="p">()</span>
+            <span class="n">win</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
+            <span class="n">geom</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">1000</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">&gt;=</span> <span class="mi">700</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowWidth</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowHeight</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dis</span><span class="p">:</span>
+                <span class="n">win</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="n">geom</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">geom</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">w</span> <span class="o">!=</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowWidth</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowHeight</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">700</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">dis</span><span class="p">:</span>
+                <span class="n">win</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dw</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">or</span> <span class="n">dh</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;resizeAlert&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shouldResizeAlert</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span><span class="p">:</span>
+                <span class="n">albow</span><span class="o">.</span><span class="n">alert</span><span class="p">(</span>
+                    <span class="s">&quot;Window size increased. You may have problems using the cursor until MCEdit is restarted.&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">resizeAlert</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">dis</span><span class="p">:</span>
+            <span class="n">dis</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+</div>
+    <span class="n">shouldResizeAlert</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">shouldResizeAlert</span><span class="o">.</span><span class="n">property</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MCEdit.loadFile"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.loadFile">[docs]</a>    <span class="k">def</span> <span class="nf">loadFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">addToRecent</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">loadFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">addToRecent</span><span class="o">=</span><span class="n">addToRecent</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">u&#39;Failed to load file {0}: {1!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">filename</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">None</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focus_switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span>
+</div>
+<div class="viewcode-block" id="MCEdit.createNewWorld"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.createNewWorld">[docs]</a>    <span class="k">def</span> <span class="nf">createNewWorld</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">createNewLevel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">focus_switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span>
+            <span class="n">albow</span><span class="o">.</span><span class="n">alert</span><span class="p">(</span>
+                <span class="s">&quot;World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MCEdit.removeEditor"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.removeEditor">[docs]</a>    <span class="k">def</span> <span class="nf">removeEditor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FileOpener</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focus_switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileOpener</span>
+</div>
+<div class="viewcode-block" id="MCEdit.confirm_quit"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.confirm_quit">[docs]</a>    <span class="k">def</span> <span class="nf">confirm_quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#-# saving language template</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="p">,</span> <span class="s">&quot;saveTemplate&quot;</span><span class="p">):</span>
+            <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">saveTemplate</span><span class="p">()</span>
+        <span class="c">#-#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveWindowPosition</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">unsavedEdits</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;There are {0} unsaved changes.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">unsavedEdits</span><span class="p">),</span>
+                               <span class="n">responses</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;Save and Quit&quot;</span><span class="p">,</span> <span class="s">&quot;Quit&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Save and Quit&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">saveAndQuit</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Quit&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">justQuit</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Cancel&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SystemExit</span>
+</div>
+<div class="viewcode-block" id="MCEdit.saveAndQuit"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.saveAndQuit">[docs]</a>    <span class="k">def</span> <span class="nf">saveAndQuit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">saveFile</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="MCEdit.justQuit"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.justQuit">[docs]</a>    <span class="k">def</span> <span class="nf">justQuit</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="MCEdit.fetch_version"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.fetch_version">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_version</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">cls</span><span class="o">.</span><span class="n">version_lock</span><span class="p">:</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">version_info</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">fetch_new_version_info</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MCEdit.check_for_version"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.check_for_version">[docs]</a>    <span class="k">def</span> <span class="nf">check_for_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">new_version</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="n">check_for_new_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="n">_</span><span class="p">(</span><span class="s">&#39;Version {} is available&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_version</span><span class="p">[</span><span class="s">&quot;tag_name&quot;</span><span class="p">]),</span>
+                <span class="p">[</span>
+                    <span class="s">&#39;Download&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;View&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;Ignore&#39;</span>
+                <span class="p">],</span>
+                <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">cancel</span><span class="o">=</span><span class="mi">2</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;View&quot;</span><span class="p">:</span>
+                <span class="n">platform_open</span><span class="p">(</span><span class="n">new_version</span><span class="p">[</span><span class="s">&quot;html_url&quot;</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;Download&quot;</span><span class="p">:</span>
+                <span class="n">platform_open</span><span class="p">(</span><span class="n">new_version</span><span class="p">[</span><span class="s">&quot;asset&quot;</span><span class="p">][</span><span class="s">&quot;browser_download_url&quot;</span><span class="p">])</span>
+                <span class="n">albow</span><span class="o">.</span><span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&#39; {} should now be downloading via your browser. You will still need to extract the downloaded file to use the updated version.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_version</span><span class="p">[</span><span class="s">&quot;asset&quot;</span><span class="p">][</span><span class="s">&quot;name&quot;</span><span class="p">]))</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="MCEdit.main"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">displayContext</span> <span class="o">=</span> <span class="n">GLDisplayContext</span><span class="p">(</span><span class="n">splash</span><span class="o">.</span><span class="n">splash</span><span class="p">)</span>
+
+        <span class="n">rootwidget</span> <span class="o">=</span> <span class="n">RootWidget</span><span class="p">(</span><span class="n">displayContext</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+        <span class="n">mcedit</span> <span class="o">=</span> <span class="n">MCEdit</span><span class="p">(</span><span class="n">displayContext</span><span class="p">)</span>
+        <span class="n">rootwidget</span><span class="o">.</span><span class="n">displayContext</span> <span class="o">=</span> <span class="n">displayContext</span>
+        <span class="n">rootwidget</span><span class="o">.</span><span class="n">confirm_quit</span> <span class="o">=</span> <span class="n">mcedit</span><span class="o">.</span><span class="n">confirm_quit</span>
+        <span class="n">rootwidget</span><span class="o">.</span><span class="n">mcedit</span> <span class="o">=</span> <span class="n">mcedit</span>
+
+        <span class="n">rootwidget</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mcedit</span><span class="p">)</span>
+        <span class="n">rootwidget</span><span class="o">.</span><span class="n">focus_switch</span> <span class="o">=</span> <span class="n">mcedit</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">pymclevel</span><span class="o">.</span><span class="n">alphaMaterials</span><span class="o">.</span><span class="n">yamlDatas</span><span class="p">):</span>
+            <span class="n">albow</span><span class="o">.</span><span class="n">alert</span><span class="p">(</span><span class="s">&quot;Failed to load minecraft.yaml. Check the console window for details.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mcedit</span><span class="o">.</span><span class="n">droppedLevel</span><span class="p">:</span>
+            <span class="n">mcedit</span><span class="o">.</span><span class="n">loadFile</span><span class="p">(</span><span class="n">mcedit</span><span class="o">.</span><span class="n">droppedLevel</span><span class="p">)</span>
+
+        <span class="n">cls</span><span class="o">.</span><span class="n">version_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">version_info</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">version_checked</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="n">fetch_version_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">cls</span><span class="o">.</span><span class="n">fetch_version</span><span class="p">)</span>
+        <span class="n">fetch_version_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+
+<span class="c"># Disabled old update code</span>
+<span class="c">#       if hasattr(sys, &#39;frozen&#39;):</span>
+<span class="c">#           # We&#39;re being run from a bundle, check for updates.</span>
+<span class="c">#           import esky</span>
+<span class="c">#</span>
+<span class="c">#           app = esky.Esky(</span>
+<span class="c">#               sys.executable.decode(sys.getfilesystemencoding()),</span>
+<span class="c">#               &#39;https://bitbucket.org/codewarrior0/mcedit/downloads&#39;</span>
+<span class="c">#           )</span>
+<span class="c">#           try:</span>
+<span class="c">#               update_version = app.find_update()</span>
+<span class="c">#           except:</span>
+<span class="c">#               # FIXME: Horrible, hacky kludge.</span>
+<span class="c">#               update_version = None</span>
+<span class="c">#               logging.exception(&#39;Error while checking for updates&#39;)</span>
+<span class="c">#</span>
+<span class="c">#           if update_version:</span>
+<span class="c">#               answer = albow.ask(</span>
+<span class="c">#                   &#39;Version &quot;%s&quot; is available, would you like to &#39;</span>
+<span class="c">#                   &#39;download it?&#39; % update_version,</span>
+<span class="c">#                   [</span>
+<span class="c">#                       &#39;Yes&#39;,</span>
+<span class="c">#                       &#39;No&#39;,</span>
+<span class="c">#                   ],</span>
+<span class="c">#                   default=0,</span>
+<span class="c">#                   cancel=1</span>
+<span class="c">#               )</span>
+<span class="c">#               if answer == &#39;Yes&#39;:</span>
+<span class="c">#                   def callback(args):</span>
+<span class="c">#                       status = args[&#39;status&#39;]</span>
+<span class="c">#                       status_texts = {</span>
+<span class="c">#                           &#39;searching&#39;: u&quot;Finding updates...&quot;,</span>
+<span class="c">#                           &#39;found&#39;:  u&quot;Found version {new_version}&quot;,</span>
+<span class="c">#                           &#39;downloading&#39;: u&quot;Downloading: {received} / {size}&quot;,</span>
+<span class="c">#                           &#39;ready&#39;: u&quot;Downloaded {path}&quot;,</span>
+<span class="c">#                           &#39;installing&#39;: u&quot;Installing {new_version}&quot;,</span>
+<span class="c">#                           &#39;cleaning up&#39;: u&quot;Cleaning up...&quot;,</span>
+<span class="c">#                           &#39;done&#39;: u&quot;Done.&quot;</span>
+<span class="c">#                       }</span>
+<span class="c">#                       text = status_texts.get(status, &#39;Unknown&#39;).format(**args)</span>
+<span class="c">#</span>
+<span class="c">#                       panel = Dialog()</span>
+<span class="c">#                       panel.idleevent = lambda event: panel.dismiss()</span>
+<span class="c">#                       label = albow.Label(text, width=600)</span>
+<span class="c">#                       panel.add(label)</span>
+<span class="c">#                       panel.size = (500, 250)</span>
+<span class="c">#                       panel.present()</span>
+<span class="c">#</span>
+<span class="c">#                   try:</span>
+<span class="c">#                       app.auto_update(callback)</span>
+<span class="c">#                   except (esky.EskyVersionError, EnvironmentError):</span>
+<span class="c">#                       albow.alert(_(&quot;Failed to install update %s&quot;) % update_version)</span>
+<span class="c">#                   else:</span>
+<span class="c">#                       albow.alert(_(&quot;Version %s installed. Restart MCEdit to begin using it.&quot;) % update_version)</span>
+<span class="c">#                       raise SystemExit()</span>
+
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">closeMinecraftWarning</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s">&quot;Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.</span><span class="se">\n\n</span><span class="s"> If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s">&quot;Don&#39;t remind me again.&quot;</span><span class="p">,</span> <span class="s">&quot;OK&quot;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;Don&#39;t remind me again.&quot;</span><span class="p">:</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">closeMinecraftWarning</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c"># Disabled Crash Reporting Option</span>
+<span class="c">#       if not config.settings.reportCrashesAsked.get():</span>
+<span class="c">#           answer = albow.ask(</span>
+<span class="c">#               &quot;When an error occurs, MCEdit can report the details of the error to its developers. &quot;</span>
+<span class="c">#               &quot;The error report will include your operating system version, MCEdit version, &quot;</span>
+<span class="c">#               &quot;OpenGL version, plus the make and model of your CPU and graphics processor. No personal &quot;</span>
+<span class="c">#               &quot;information will be collected.\n\n&quot;</span>
+<span class="c">#               &quot;Error reporting can be enabled or disabled in the Options dialog.\n\n&quot;</span>
+<span class="c">#               &quot;Enable error reporting?&quot;,</span>
+<span class="c">#               [&quot;Yes&quot;, &quot;No&quot;],</span>
+<span class="c">#               default=0)</span>
+<span class="c">#           config.settings.reportCrashes.set(answer == &quot;Yes&quot;)</span>
+<span class="c">#           config.settings.reportCrashesAsked.set(True)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">reportCrashes</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">reportCrashesAsked</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s">&quot;update&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s">&quot;There are new default controls. Do you want to replace your current controls with the new ones?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Yes&quot;</span><span class="p">,</span> <span class="s">&quot;No&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;Yes&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">configKey</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="o">.</span><span class="n">KeyConfigPanel</span><span class="o">.</span><span class="n">presets</span><span class="p">[</span><span class="s">&quot;WASD&quot;</span><span class="p">]:</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;1.1.2.0&quot;</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s">&quot;-causeError&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Error requested via -causeError&quot;</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">rootwidget</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">SystemExit</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                    <span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span>
+                        <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
+                    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rect</span>
+                    <span class="c">#w = r-X</span>
+                    <span class="c">#h = b-Y</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">showCmd</span> <span class="o">==</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32con</span><span class="o">.</span><span class="n">SW_MINIMIZE</span> <span class="ow">or</span>
+                                <span class="n">showCmd</span> <span class="o">==</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32con</span><span class="o">.</span><span class="n">SW_SHOWMINIMIZED</span><span class="p">):</span>
+                        <span class="n">showCmd</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32con</span><span class="o">.</span><span class="n">SW_SHOWNORMAL</span>
+
+                    <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowShowCmd</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">showCmd</span><span class="p">)</span>
+
+                <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">discardAllChunks</span><span class="p">()</span>
+                <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">deleteAllCopiedSchematics</span><span class="p">()</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="ne">MemoryError</span><span class="p">:</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">handleMemoryError</span><span class="p">()</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="MCEdit.saveWindowPosition"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.saveWindowPosition">[docs]</a>    <span class="k">def</span> <span class="nf">saveWindowPosition</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Save the window position in the configuration handler.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">showCmd</span><span class="p">,</span> <span class="n">ptMin</span><span class="p">,</span> <span class="n">ptMax</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32gui</span><span class="o">.</span><span class="n">GetWindowPlacement</span><span class="p">(</span>
+                <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">])</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rect</span>
+            <span class="c">#w = r-X</span>
+            <span class="c">#h = b-Y</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">showCmd</span> <span class="o">==</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32con</span><span class="o">.</span><span class="n">SW_MINIMIZE</span> <span class="ow">or</span>
+                        <span class="n">showCmd</span> <span class="o">==</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32con</span><span class="o">.</span><span class="n">SW_SHOWMINIMIZED</span><span class="p">):</span>
+                <span class="n">showCmd</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">win32con</span><span class="o">.</span><span class="n">SW_SHOWNORMAL</span>
+
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowShowCmd</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">showCmd</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span> <span class="ow">and</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">hasXlibDisplay</span><span class="p">:</span>
+            <span class="n">win</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">get_wm_info</span><span class="p">()[</span><span class="s">&#39;window&#39;</span><span class="p">]</span>
+            <span class="n">dis</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">Xlib</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Display</span><span class="p">()</span>
+            <span class="n">win</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">create_resource_object</span><span class="p">(</span><span class="s">&#39;window&#39;</span><span class="p">,</span> <span class="n">win</span><span class="p">)</span>
+            <span class="n">curDesk</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;XDG_CURRENT_DESKTOP&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">curDesk</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;GNOME&#39;</span><span class="p">,</span> <span class="s">&#39;X-Cinnamon&#39;</span><span class="p">):</span>
+                <span class="n">wParent</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+            <span class="k">elif</span> <span class="n">curDesk</span> <span class="o">==</span> <span class="s">&#39;KDE&#39;</span><span class="p">:</span>
+                <span class="n">wParent</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">query_tree</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+            <span class="k">if</span> <span class="n">wParent</span><span class="p">:</span>
+                <span class="n">geom</span> <span class="o">=</span> <span class="n">wParent</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowX</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">windowY</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MCEdit.restart"><a class="viewcode-back" href="../mcedit.html#mcedit.MCEdit.restart">[docs]</a>    <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveWindowPosition</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">discardAllChunks</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">deleteAllCopiedSchematics</span><span class="p">()</span>
+        <span class="n">python</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.exe&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s">&#39;frozen&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">execl</span><span class="p">(</span><span class="n">python</span><span class="p">,</span> <span class="n">python</span><span class="p">,</span> <span class="o">*</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">execl</span><span class="p">(</span><span class="n">python</span><span class="p">,</span> <span class="n">python</span><span class="p">,</span> <span class="o">*</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../mcedit.html#mcedit.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup display, bundled schematics. Handle unclean</span>
+<span class="sd">    shutdowns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="c"># This should eventually be revived, what is &quot;squash_python&quot;?</span>
+<span class="c">#    try:</span>
+<span class="c">#        import squash_python</span>
+<span class="c">#</span>
+<span class="c">#        squash_python.uploader.SquashUploader.headers.pop(&quot;Content-encoding&quot;, None)</span>
+<span class="c">#        squash_python.uploader.SquashUploader.headers.pop(&quot;Accept-encoding&quot;, None)</span>
+<span class="c">#</span>
+<span class="c">#        version = release.get_version()</span>
+<span class="c">#        client = squash_python.get_client()</span>
+<span class="c">#        client.APIKey = &quot;6ea52b17-ac76-4fd8-8db4-2d7303473ca2&quot;</span>
+<span class="c">#        client.environment = &quot;unknown&quot;</span>
+<span class="c">#        client.host = &quot;http://pixelhost.ezekielelin.com&quot;</span>
+<span class="c">#        client.notifyPath = &quot;/mcedit_bugs.php&quot;</span>
+<span class="c">#        client.build = version</span>
+<span class="c">#        client.timeout = 5</span>
+<span class="c">#</span>
+<span class="c"># Disabled Crash Reporting Option</span>
+<span class="c">#       client.disabled = not config.settings.reportCrashesNew.get()</span>
+<span class="c">#       client.disabled = True</span>
+<span class="c">#</span>
+<span class="c">#       def _reportingChanged(val):</span>
+<span class="c">#           client.disabled = not val</span>
+<span class="c">#</span>
+<span class="c">#       config.settings.reportCrashes.addObserver(client, &#39;_enabled&#39;, _reportingChanged)</span>
+<span class="c">#       client.reportErrors()</span>
+<span class="c">#       client.hook()</span>
+<span class="c">#   except (ImportError, UnicodeError) as e:</span>
+<span class="c">#       pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">pygame</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;SDL_VIDEODRIVER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;directx&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">pygame</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;SDL_VIDEODRIVER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;windib&#39;</span>
+            <span class="n">display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">schematicsDir</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">u&#39;stock-schematics&#39;</span><span class="p">),</span>
+                <span class="n">directories</span><span class="o">.</span><span class="n">schematicsDir</span>
+            <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Error copying bundled schematics: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">schematicsDir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Error creating schematics folder: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">brushesDir</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">u&#39;Brushes&#39;</span><span class="p">),</span>
+                <span class="n">directories</span><span class="o">.</span><span class="n">brushesDir</span>
+            <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Error copying bundled Brushes: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">brushesDir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Error creating Brushes folder: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">u&#39;stock-filters&#39;</span><span class="p">),</span>
+                <span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Start hashing the filter dir</span>
+            <span class="n">mceutils</span><span class="o">.</span><span class="n">compareMD5Hashes</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getAllOfAFile</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span><span class="p">,</span> <span class="s">&quot;.py&quot;</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Error copying bundled filters: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Error creating filters folder: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">())</span>
+                          <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                          <span class="k">else</span> <span class="n">s</span>
+                          <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">]:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">()))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ServerJarStorage</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Error creating server jar storage folder: {0!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">MCEdit</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;MCEdit version </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">release</span><span class="o">.</span><span class="n">get_version</span><span class="p">())</span>
+        <span class="n">display</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s">&#39;frozen&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;win32&#39;</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+            <span class="k">print</span> <span class="s">&quot;Press RETURN or close this window to dismiss.&quot;</span>
+            <span class="nb">raw_input</span><span class="p">()</span>
+
+        <span class="k">raise</span>
+
+    <span class="k">return</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="getSelectedMinecraftVersion"><a class="viewcode-back" href="../mcedit.html#mcedit.getSelectedMinecraftVersion">[docs]</a><span class="k">def</span> <span class="nf">getSelectedMinecraftVersion</span><span class="p">():</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">getMinecraftProfileJSON</span><span class="p">()[</span><span class="n">directories</span><span class="o">.</span><span class="n">getSelectedProfile</span><span class="p">()]</span>
+    <span class="k">if</span> <span class="s">&#39;lastVersionId&#39;</span> <span class="ow">in</span> <span class="n">profile</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">profile</span><span class="p">[</span><span class="s">&#39;lastVersionId&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;1.8&#39;</span>
+
+</div>
+<div class="viewcode-block" id="getLatestMinecraftVersion"><a class="viewcode-back" href="../mcedit.html#mcedit.getLatestMinecraftVersion">[docs]</a><span class="k">def</span> <span class="nf">getLatestMinecraftVersion</span><span class="p">(</span><span class="n">snapshots</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">urllib2</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+    <span class="n">versioninfo</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">&quot;http://s3.amazonaws.com/Minecraft.Download/versions/versions.json &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">snapshots</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">versioninfo</span><span class="p">[</span><span class="s">&#39;latest&#39;</span><span class="p">][</span><span class="s">&#39;snapshot&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">versioninfo</span><span class="p">[</span><span class="s">&#39;latest&#39;</span><span class="p">][</span><span class="s">&#39;release&#39;</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="weird_fix"><a class="viewcode-back" href="../mcedit.html#mcedit.weird_fix">[docs]</a><span class="k">def</span> <span class="nf">weird_fix</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">OpenGL.platform</span> <span class="kn">import</span> <span class="n">win32</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">SystemExit</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+        <span class="k">print</span> <span class="s">&quot;&quot;</span>
+        <span class="k">print</span> <span class="s">&quot;==================================&quot;</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="se">\t\t\t</span><span class="s">  MCEdit has crashed&quot;</span>
+        <span class="k">print</span> <span class="s">&quot;==================================&quot;</span>
+        <span class="nb">raw_input</span><span class="p">(</span><span class="s">&quot;Press the Enter key to close this window&quot;</span><span class="p">)</span>
+        <span class="k">pass</span>
+    <span class="c">#sys.exit(main(sys.argv))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

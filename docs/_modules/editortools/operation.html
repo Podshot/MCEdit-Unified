@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>editortools.operation &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for editortools.operation</h1><div class="highlight"><pre>
+<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">albow</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">BoundingBox</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">albow.root</span> <span class="kn">import</span> <span class="n">Cancel</span>
+<span class="kn">import</span> <span class="nn">pymclevel</span>
+<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">showProgress</span>
+<span class="kn">from</span> <span class="nn">pymclevel.mclevelbase</span> <span class="kn">import</span> <span class="n">exhaust</span>
+
+<span class="n">undo_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s">&quot;mcedit_undo&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()))</span>
+
+
+<div class="viewcode-block" id="mkundotemp"><a class="viewcode-back" href="../../editortools.html#editortools.operation.mkundotemp">[docs]</a><span class="k">def</span> <span class="nf">mkundotemp</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">undo_folder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">undo_folder</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="s">&quot;mceditundo&quot;</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">undo_folder</span><span class="p">)</span>
+
+</div>
+<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">,</span> <span class="n">undo_folder</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation">[docs]</a><span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">changedLevel</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">undoLevel</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">redoLevel</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">editor</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">editor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+
+<div class="viewcode-block" id="Operation.extractUndo"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation.extractUndo">[docs]</a>    <span class="k">def</span> <span class="nf">extractUndo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">MCInfdevOldLevel</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractUndoChunks</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">chunkPositions</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">chunkCount</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractUndoSchematic</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Operation.extractUndoChunks"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation.extractUndoChunks">[docs]</a>    <span class="k">def</span> <span class="nf">extractUndoChunks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">chunkCount</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">MCInfdevOldLevel</span><span class="p">):</span>
+            <span class="n">chunks</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="p">))</span>
+            <span class="n">mincx</span><span class="p">,</span> <span class="n">mincz</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">chunks</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">maxcx</span><span class="p">,</span> <span class="n">maxcz</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">chunks</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">box</span> <span class="o">=</span> <span class="n">BoundingBox</span><span class="p">((</span><span class="n">mincx</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mincz</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="n">maxcx</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">,</span> <span class="n">level</span><span class="o">.</span><span class="n">Height</span><span class="p">,</span> <span class="n">maxcz</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractUndoSchematic</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
+
+        <span class="n">undoLevel</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">MCInfdevOldLevel</span><span class="p">(</span><span class="n">mkundotemp</span><span class="p">(),</span> <span class="n">create</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">chunkCount</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">chunkCount</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="n">chunkCount</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">_extractUndo</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;Recording undo...&quot;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+                <span class="n">undoLevel</span><span class="o">.</span><span class="n">copyChunkFrom</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunkCount</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Copying chunk </span><span class="si">%s</span><span class="s">...&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">((</span><span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">),)</span>
+            <span class="n">undoLevel</span><span class="o">.</span><span class="n">saveInPlace</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">chunkCount</span> <span class="o">&gt;</span> <span class="mi">25</span> <span class="ow">or</span> <span class="n">chunkCount</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&quot;Canceled&quot;</span> <span class="o">==</span> <span class="n">showProgress</span><span class="p">(</span><span class="s">&quot;Recording undo...&quot;</span><span class="p">,</span> <span class="n">_extractUndo</span><span class="p">(),</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s">&quot;Continue with undo disabled?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Continue&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="s">&quot;Cancel&quot;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">Cancel</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exhaust</span><span class="p">(</span><span class="n">_extractUndo</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">undoLevel</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Operation.extractUndoSchematic"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation.extractUndoSchematic">[docs]</a>    <span class="k">def</span> <span class="nf">extractUndoSchematic</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">volume</span> <span class="o">&gt;</span> <span class="mi">131072</span><span class="p">:</span>
+            <span class="n">sch</span> <span class="o">=</span> <span class="n">showProgress</span><span class="p">(</span><span class="s">&quot;Recording undo...&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">.</span><span class="n">extractZipSchematicIter</span><span class="p">(</span><span class="n">box</span><span class="p">),</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sch</span> <span class="o">=</span> <span class="n">level</span><span class="o">.</span><span class="n">extractZipSchematic</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sch</span> <span class="o">==</span> <span class="s">&quot;Cancel&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Cancel</span>
+        <span class="k">if</span> <span class="n">sch</span><span class="p">:</span>
+            <span class="n">sch</span><span class="o">.</span><span class="n">sourcePoint</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">origin</span>
+
+        <span class="k">return</span> <span class="n">sch</span>
+
+    <span class="c"># represents a single undoable operation</span></div>
+<div class="viewcode-block" id="Operation.perform"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation.perform">[docs]</a>    <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recordUndo</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="s">&quot; Perform the operation. Record undo information if recordUndo&quot;</span>
+</div>
+<div class="viewcode-block" id="Operation.undo"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation.undo">[docs]</a>    <span class="k">def</span> <span class="nf">undo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Undo the operation. Ought to leave the Operation in a state where it can be performed again.</span>
+<span class="sd">            Default implementation copies all chunks in undoLevel back into level. Non-chunk-based operations</span>
+<span class="sd">            should override this.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractUndo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dirtyBox</span><span class="p">())</span>
+
+            <span class="k">def</span> <span class="nf">_undo</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;Undoing...&quot;</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;copyChunkFrom&#39;</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">allChunks</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">copyChunkFrom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">)</span>
+                        <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">chunkCount</span><span class="p">,</span> <span class="s">&quot;Copying chunk </span><span class="si">%s</span><span class="s">...&quot;</span> <span class="o">%</span> <span class="p">((</span><span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">),)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">copyBlocksFromIter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">sourcePoint</span><span class="p">,</span> <span class="n">biomes</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">chunkCount</span><span class="p">,</span> <span class="s">&quot;Copying...&quot;</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">chunkCount</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">:</span>
+                <span class="n">showProgress</span><span class="p">(</span><span class="s">&quot;Undoing...&quot;</span><span class="p">,</span> <span class="n">_undo</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exhaust</span><span class="p">(</span><span class="n">_undo</span><span class="p">())</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">invalidateChunks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">allChunks</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Operation.redo"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation.redo">[docs]</a>    <span class="k">def</span> <span class="nf">redo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">_redo</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;Redoing...&quot;</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&#39;copyChunkFrom&#39;</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="o">.</span><span class="n">allChunks</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">copyChunkFrom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">)</span>
+                        <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="o">.</span><span class="n">chunkCount</span><span class="p">,</span> <span class="s">&quot;Copying chunk </span><span class="si">%s</span><span class="s">...&quot;</span> <span class="o">%</span> <span class="p">((</span><span class="n">cx</span><span class="p">,</span> <span class="n">cz</span><span class="p">),)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">copyBlocksFromIter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="o">.</span><span class="n">sourcePoint</span><span class="p">,</span> <span class="n">biomes</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span><span class="o">.</span><span class="n">chunkCount</span><span class="p">,</span> <span class="s">&quot;Copying...&quot;</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redoLevel</span><span class="o">.</span><span class="n">chunkCount</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">:</span>
+                <span class="n">showProgress</span><span class="p">(</span><span class="s">&quot;Redoing...&quot;</span><span class="p">,</span> <span class="n">_redo</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exhaust</span><span class="p">(</span><span class="n">_redo</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Operation.dirtyBox"><a class="viewcode-back" href="../../editortools.html#editortools.operation.Operation.dirtyBox">[docs]</a>    <span class="k">def</span> <span class="nf">dirtyBox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; The region modified by the operation.</span>
+<span class="sd">        Return None to indicate no blocks were changed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">None</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

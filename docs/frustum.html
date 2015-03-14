@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>frustum module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="next" title="ftp_client module" href="ftp_client.html" />
+    <link rel="prev" title="editortools package" href="editortools.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ftp_client.html" title="ftp_client module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="editortools.html" title="editortools package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-frustum">
+<span id="frustum-module"></span><h1>frustum module<a class="headerlink" href="#module-frustum" title="Permalink to this headline">¶</a></h1>
+<p>View frustum modeling as series of clipping planes</p>
+<p>The Frustum object itself is only responsible for
+extracting the clipping planes from an OpenGL model-view
+matrix.  The bulk of the frustum-culling algorithm is
+implemented in the bounding volume objects found in the
+OpenGLContext.scenegraph.boundingvolume module.</p>
+<dl class="docutils">
+<dt>Based on code from:</dt>
+<dd><a class="reference external" href="http://www.markmorley.com/opengl/frustumculling.html">http://www.markmorley.com/opengl/frustumculling.html</a></dd>
+</dl>
+<dl class="class">
+<dt id="frustum.Frustum">
+<em class="property">class </em><code class="descclassname">frustum.</code><code class="descname">Frustum</code><a class="reference internal" href="_modules/frustum.html#Frustum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Holder for frustum specification for intersection tests</p>
+<dl class="docutils">
+<dt>Note:</dt>
+<dd>the Frustum can include an arbitrary number of
+clipping planes, though the most common usage
+is to define 6 clipping planes from the OpenGL
+model-view matrices.</dd>
+</dl>
+<dl class="classmethod">
+<dt id="frustum.Frustum.fromViewingMatrix">
+<em class="property">classmethod </em><code class="descname">fromViewingMatrix</code><span class="sig-paren">(</span><em>matrix=None</em>, <em>normalize=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.fromViewingMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.fromViewingMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract and calculate frustum clipping planes from OpenGL</p>
+<p>The default initializer allows you to create
+Frustum objects with arbitrary clipping planes,
+while this alternate initializer provides
+automatic clipping-plane extraction from the
+model-view matrix.</p>
+<p>matrix &#8211; the combined model-view matrix
+normalize &#8211; whether to normalize the plane equations</p>
+<blockquote>
+<div>to allow for sphere bounding-volumes and use of
+distance equations for LOD-style operations.</div></blockquote>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="frustum.Frustum.normalize">
+<em class="property">classmethod </em><code class="descname">normalize</code><span class="sig-paren">(</span><em>frustum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize clipping plane equations</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="frustum.Frustum.visible">
+<code class="descname">visible</code><span class="sig-paren">(</span><em>points</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether this sphere is visible in frustum</p>
+<dl class="docutils">
+<dt>frustum &#8211; Frustum object holding the clipping planes</dt>
+<dd>for the view</dd>
+<dt>matrix &#8211; a matrix which transforms the local</dt>
+<dd>coordinates to the (world-space) coordinate
+system in which the frustum is defined.</dd>
+</dl>
+<p>This version of the method uses a pure-python loop
+to do the actual culling once the points are
+multiplied by the matrix. (i.e. it does not use the
+frustcullaccel C extension module)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="frustum.Frustum.visible1">
+<code class="descname">visible1</code><span class="sig-paren">(</span><em>point</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#Frustum.visible1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.Frustum.visible1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="frustum.viewingMatrix">
+<code class="descclassname">frustum.</code><code class="descname">viewingMatrix</code><span class="sig-paren">(</span><em>projection=None</em>, <em>model=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/frustum.html#viewingMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#frustum.viewingMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the total viewing matrix from given data</p>
+<dl class="docutils">
+<dt>projection &#8211; the projection matrix, if not provided</dt>
+<dd>than the result of glGetDoublev( GL_PROJECTION_MATRIX)
+will be used.</dd>
+<dt>model &#8211; the model-view matrix, if not provided</dt>
+<dd>than the result of glGetDoublev( GL_MODELVIEW_MATRIX )
+will be used.</dd>
+<dt>Note:</dt>
+<dd>Unless there is a valid projection and model-view
+matrix, the function will raise a RuntimeError</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="editortools.html"
+                        title="previous chapter">editortools package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ftp_client.html"
+                        title="next chapter">ftp_client module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/frustum.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+      |
+      <a href="_sources/frustum.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

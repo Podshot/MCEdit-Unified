@@ -1,0 +1,799 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mceutils &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mceutils</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
+
+<span class="sd">Permission to use, copy, modify, and/or distribute this software for any</span>
+<span class="sd">purpose with or without fee is hereby granted, provided that the above</span>
+<span class="sd">copyright notice and this permission notice appear in all copies.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES</span>
+<span class="sd">WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF</span>
+<span class="sd">MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR</span>
+<span class="sd">ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES</span>
+<span class="sd">WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
+<span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
+<span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
+<span class="c"># import resource_packs # not the right place, moving it a bit furtehr</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">mceutils.py</span>
+
+<span class="sd">Exception catching, some basic box drawing, texture pack loading, oddball UI elements</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c"># Modified by D.C.-G. for translation purpose</span>
+<span class="c">#.# Marks the layout modifications. -- D.C.-G.</span>
+<span class="c">#!#</span>
+<span class="c">#!# The stuff in there related to albow should be in albow module.</span>
+<span class="c">#!# This stuff will then be available for components base classes in this GUI module.</span>
+<span class="c">#!# And make albow/widgets more coherent to use.</span>
+<span class="c">#!#</span>
+<span class="kn">import</span> <span class="nn">resource_packs</span>
+<span class="kn">from</span> <span class="nn">albow.controls</span> <span class="kn">import</span> <span class="n">ValueDisplay</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">alert</span><span class="p">,</span> <span class="n">ask</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">Row</span><span class="p">,</span> <span class="n">ValueButton</span><span class="p">,</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">directories</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">png</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span> <span class="nn">pymclevel</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="alertException"><a class="viewcode-back" href="../mceutils.html#editortools.brush.alertException">[docs]</a><span class="k">def</span> <span class="nf">alertException</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_alertException</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">root</span><span class="o">.</span><span class="n">Cancel</span><span class="p">:</span>
+            <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Canceled.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">infiniteworld</span><span class="o">.</span><span class="n">SessionLockLost</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">alert</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">Your changes cannot be saved.&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;Exception:&quot;</span><span class="p">)</span>
+            <span class="n">ask</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Error during {0}: {1!r}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">e</span><span class="p">)[:</span><span class="mi">1000</span><span class="p">],</span> <span class="p">[</span><span class="s">&quot;OK&quot;</span><span class="p">],</span> <span class="n">cancel</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_alertException</span>
+
+</div>
+<div class="viewcode-block" id="drawFace"><a class="viewcode-back" href="../mceutils.html#editortools.brush.drawFace">[docs]</a><span class="k">def</span> <span class="nf">drawFace</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_QUADS</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">origin</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">maximum</span>
+
+    <span class="k">if</span> <span class="n">face</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">FaceXDecreasing</span><span class="p">:</span>
+
+        <span class="n">faceVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">face</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">FaceXIncreasing</span><span class="p">:</span>
+
+        <span class="n">faceVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">face</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">FaceYDecreasing</span><span class="p">:</span>
+        <span class="n">faceVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">face</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">FaceYIncreasing</span><span class="p">:</span>
+        <span class="n">faceVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">face</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">FaceZDecreasing</span><span class="p">:</span>
+        <span class="n">faceVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">face</span> <span class="o">==</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">FaceZIncreasing</span><span class="p">:</span>
+        <span class="n">faceVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+             <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+
+    <span class="n">faceVertices</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">face</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">dims</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+
+    <span class="n">texVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">faceVertices</span><span class="p">[:,</span> <span class="n">dims</span><span class="p">],</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">faceVertices</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,)</span>
+
+    <span class="n">texVertices</span> <span class="o">*=</span> <span class="mi">16</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glEnableClientState</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_COORD_ARRAY</span><span class="p">)</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glVertexPointer</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_FLOAT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">faceVertices</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glTexCoordPointer</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_FLOAT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">texVertices</span><span class="p">)</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_FILL</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_LINE</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_LINE_STRIP</span><span class="p">:</span>
+        <span class="n">indexes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;uint32&#39;</span><span class="p">)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glDrawElements</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_UNSIGNED_INT</span><span class="p">,</span> <span class="n">indexes</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glDrawArrays</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_FILL</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_LINE</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDisableClientState</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_COORD_ARRAY</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="drawCube"><a class="viewcode-back" href="../mceutils.html#editortools.brush.drawCube">[docs]</a><span class="k">def</span> <span class="nf">drawCube</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">cubeType</span><span class="o">=</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_QUADS</span><span class="p">,</span> <span class="n">blockType</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">texture</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">textureVertices</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; pass a different cubeType e.g. GL_LINE_STRIP for wireframes &quot;&quot;&quot;</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">origin</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">maximum</span>
+    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span> <span class="o">-</span> <span class="n">z</span>
+    <span class="n">cubeVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+
+            <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span>
+        <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">textureVertices</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">textureVertices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="n">dx</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+
+                <span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+
+                <span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">dz</span> <span class="o">*</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+
+            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f4&#39;</span><span class="p">)</span>
+
+        <span class="n">textureVertices</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">selectionBox</span><span class="p">:</span>
+            <span class="n">textureVertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">),</span> <span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">y2</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">))</span>
+            <span class="n">textureVertices</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">),</span> <span class="o">-</span><span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">))</span>
+            <span class="n">textureVertices</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">),</span> <span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">y2</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">))</span>
+            <span class="n">textureVertices</span><span class="p">[:]</span> <span class="o">+=</span> <span class="mf">0.5</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glVertexPointer</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_FLOAT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cubeVertices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">texture</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_2D</span><span class="p">)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glEnableClientState</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_COORD_ARRAY</span><span class="p">)</span>
+
+        <span class="n">texture</span><span class="o">.</span><span class="n">bind</span><span class="p">()</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glTexCoordPointer</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_FLOAT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">textureVertices</span><span class="p">),</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_FILL</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_LINE</span><span class="p">)</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDrawArrays</span><span class="p">(</span><span class="n">cubeType</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_FILL</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_POLYGON_OFFSET_LINE</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">texture</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glDisableClientState</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_COORD_ARRAY</span><span class="p">)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_2D</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="drawTerrainCuttingWire"><a class="viewcode-back" href="../mceutils.html#editortools.brush.drawTerrainCuttingWire">[docs]</a><span class="k">def</span> <span class="nf">drawTerrainCuttingWire</span><span class="p">(</span><span class="n">box</span><span class="p">,</span>
+                           <span class="n">c0</span><span class="o">=</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
+                           <span class="n">c1</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)):</span>
+    <span class="c"># glDepthMask(False)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_DEPTH_TEST</span><span class="p">)</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDepthFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_LEQUAL</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glColor</span><span class="p">(</span><span class="o">*</span><span class="n">c1</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glLineWidth</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="n">drawCube</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">cubeType</span><span class="o">=</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_LINE_STRIP</span><span class="p">)</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDepthFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_GREATER</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glColor</span><span class="p">(</span><span class="o">*</span><span class="n">c0</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glLineWidth</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">drawCube</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">cubeType</span><span class="o">=</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_LINE_STRIP</span><span class="p">)</span>
+
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDepthFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_LEQUAL</span><span class="p">)</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_DEPTH_TEST</span><span class="p">)</span>
+    <span class="c"># glDepthMask(True)</span>
+
+</div>
+<div class="viewcode-block" id="loadAlphaTerrainTexture"><a class="viewcode-back" href="../mceutils.html#editortools.brush.loadAlphaTerrainTexture">[docs]</a><span class="k">def</span> <span class="nf">loadAlphaTerrainTexture</span><span class="p">():</span>
+    <span class="n">pngFile</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">texW</span><span class="p">,</span> <span class="n">texH</span><span class="p">,</span> <span class="n">terraindata</span> <span class="o">=</span> <span class="n">loadPNGFile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="n">resource_packs</span><span class="o">.</span><span class="n">packs</span><span class="o">.</span><span class="n">get_selected_resource_pack</span><span class="p">()</span><span class="o">.</span><span class="n">terrain_path</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="nf">_loadFunc</span><span class="p">():</span>
+        <span class="n">loadTextureFunc</span><span class="p">(</span><span class="n">texW</span><span class="p">,</span> <span class="n">texH</span><span class="p">,</span> <span class="n">terraindata</span><span class="p">)</span>
+
+    <span class="n">tex</span> <span class="o">=</span> <span class="n">glutils</span><span class="o">.</span><span class="n">Texture</span><span class="p">(</span><span class="n">_loadFunc</span><span class="p">)</span>
+    <span class="n">tex</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">terraindata</span>
+    <span class="k">return</span> <span class="n">tex</span>
+
+</div>
+<div class="viewcode-block" id="loadPNGData"><a class="viewcode-back" href="../mceutils.html#editortools.brush.loadPNGData">[docs]</a><span class="k">def</span> <span class="nf">loadPNGData</span><span class="p">(</span><span class="n">filename_or_data</span><span class="p">):</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">png</span><span class="o">.</span><span class="n">Reader</span><span class="p">(</span><span class="n">filename_or_data</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read_flat</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">metadata</span><span class="p">[</span><span class="s">&#39;planes&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c"># indexed color. remarkably straightforward.</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">palette</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;uint8&#39;</span><span class="p">)[</span><span class="n">data</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">data</span>
+
+</div>
+<div class="viewcode-block" id="loadPNGFile"><a class="viewcode-back" href="../mceutils.html#editortools.brush.loadPNGFile">[docs]</a><span class="k">def</span> <span class="nf">loadPNGFile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">=</span> <span class="n">loadPNGData</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">powers</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">2048</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">w</span> <span class="ow">in</span> <span class="n">powers</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">h</span> <span class="ow">in</span> <span class="n">powers</span><span class="p">)</span>  <span class="c"># how crude</span>
+
+    <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">data</span>
+
+</div>
+<div class="viewcode-block" id="loadTextureFunc"><a class="viewcode-back" href="../mceutils.html#editortools.brush.loadTextureFunc">[docs]</a><span class="k">def</span> <span class="nf">loadTextureFunc</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">ndata</span><span class="p">):</span>
+    <span class="n">GL</span><span class="o">.</span><span class="n">glTexImage2D</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_2D</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_UNSIGNED_BYTE</span><span class="p">,</span> <span class="n">ndata</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span>
+
+</div>
+<div class="viewcode-block" id="loadPNGTexture"><a class="viewcode-back" href="../mceutils.html#editortools.brush.loadPNGTexture">[docs]</a><span class="k">def</span> <span class="nf">loadPNGTexture</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">ndata</span> <span class="o">=</span> <span class="n">loadPNGFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="n">tex</span> <span class="o">=</span> <span class="n">glutils</span><span class="o">.</span><span class="n">Texture</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">loadTextureFunc</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">ndata</span><span class="p">),</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">tex</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ndata</span>
+        <span class="k">return</span> <span class="n">tex</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Exception loading &quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="s">&quot;: &quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">glutils</span><span class="o">.</span><span class="n">Texture</span><span class="p">()</span>
+
+</div>
+<span class="kn">import</span> <span class="nn">glutils</span>
+
+
+<div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../mceutils.html#editortools.brush.normalize">[docs]</a><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">a</span> <span class="o">/</span> <span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="normalize_size"><a class="viewcode-back" href="../mceutils.html#editortools.brush.normalize_size">[docs]</a><span class="k">def</span> <span class="nf">normalize_size</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="mf">0.</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">size</span><span class="p">),</span> <span class="n">size</span>
+
+
+<span class="c"># Label = GLLabel</span>
+</div>
+<div class="viewcode-block" id="HotkeyColumn"><a class="viewcode-back" href="../mceutils.html#editortools.brush.HotkeyColumn">[docs]</a><span class="k">class</span> <span class="nc">HotkeyColumn</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">is_gl_container</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">keysColumn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">buttonsColumn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">item_spacing</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">keysColumn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">keysColumn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">buttonsColumn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">hotkey</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="o">=</span> <span class="n">t</span>
+                <span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">hotkey</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">tooltipText</span><span class="p">)</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">)):</span>
+                <span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">button</span> <span class="o">=</span> <span class="n">ValueButton</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span>
+
+            <span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">hotkey</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="n">button</span><span class="o">.</span><span class="n">margin</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;wh&quot;</span>
+
+            <span class="n">label</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">button</span><span class="o">.</span><span class="n">height</span>
+
+            <span class="k">if</span> <span class="n">tooltipText</span><span class="p">:</span>
+                <span class="n">button</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">tooltipText</span>
+
+            <span class="n">keysColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">buttonsColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">buttonsColumn</span><span class="p">)</span>
+
+        <span class="c">#.#</span>
+        <span class="k">if</span> <span class="n">item_spacing</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">buttonsColumn</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">buttonsColumn</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">item_spacing</span><span class="p">)</span>
+        <span class="c">#.#</span>
+        <span class="n">buttonsColumn</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span>
+        <span class="c">#.#</span>
+        <span class="k">if</span> <span class="n">item_spacing</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">keysColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">keysColumn</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">keysColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">keysColumn</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">item_spacing</span><span class="p">)</span>
+
+        <span class="n">commandRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">keysColumn</span><span class="p">,</span> <span class="n">buttonsColumn</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">commandRow</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+</div>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">CheckBox</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">Menu</span>
+
+
+<div class="viewcode-block" id="MenuButton"><a class="viewcode-back" href="../mceutils.html#editortools.brush.MenuButton">[docs]</a><span class="k">class</span> <span class="nc">MenuButton</span><span class="p">(</span><span class="n">Button</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Button</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">choices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="p">((</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">))</span>
+
+<div class="viewcode-block" id="MenuButton.action"><a class="viewcode-back" href="../mceutils.html#editortools.brush.MenuButton.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">present</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_picked</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MenuButton.menu_picked"><a class="viewcode-back" href="../mceutils.html#editortools.brush.MenuButton.menu_picked">[docs]</a>    <span class="k">def</span> <span class="nf">menu_picked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div></div>
+<div class="viewcode-block" id="ChoiceButton"><a class="viewcode-back" href="../mceutils.html#editortools.brush.ChoiceButton">[docs]</a><span class="k">class</span> <span class="nc">ChoiceButton</span><span class="p">(</span><span class="n">ValueButton</span><span class="p">):</span>
+    <span class="n">align</span> <span class="o">=</span> <span class="s">&quot;c&quot;</span>
+    <span class="n">choose</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">scrolling</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scroll_items</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="c"># passing an empty list of choices is ill-advised</span>
+
+        <span class="k">if</span> <span class="s">&#39;choose&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choose</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;choose&#39;</span><span class="p">)</span>
+
+        <span class="n">ValueButton</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">showMenu</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span> <span class="o">=</span> <span class="n">scrolling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_items</span> <span class="o">=</span> <span class="n">scroll_items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">choices</span> <span class="ow">or</span> <span class="p">[</span><span class="s">&quot;[UNDEFINED]&quot;</span><span class="p">]</span>
+
+        <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">c</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">widths</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="ChoiceButton.showMenu"><a class="viewcode-back" href="../mceutils.html#editortools.brush.ChoiceButton.showMenu">[docs]</a>    <span class="k">def</span> <span class="nf">showMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">choiceIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">present</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">choiceIndex</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="n">choiceIndex</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">choose</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ChoiceButton.get_value"><a class="viewcode-back" href="../mceutils.html#editortools.brush.ChoiceButton.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedChoice</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">selectedChoice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span><span class="p">]</span>
+
+    <span class="nd">@selectedChoice.setter</span>
+    <span class="k">def</span> <span class="nf">selectedChoice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="n">idx</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choices</span>
+
+    <span class="nd">@choices.setter</span>
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ch</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_choices</span> <span class="o">=</span> <span class="n">ch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;pickMenu&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choices</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_items</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="CheckBoxLabel"><a class="viewcode-back" href="../mceutils.html#editortools.brush.CheckBoxLabel">[docs]</a><span class="k">def</span> <span class="nf">CheckBoxLabel</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">tooltipText</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;tooltipText&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="n">cb</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="n">lab</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="n">cb</span><span class="o">.</span><span class="n">fg_color</span><span class="p">)</span>
+    <span class="n">lab</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="n">cb</span><span class="o">.</span><span class="n">mouse_down</span>
+
+    <span class="k">if</span> <span class="n">tooltipText</span><span class="p">:</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">tooltipText</span>
+        <span class="n">lab</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">tooltipText</span>
+
+    <span class="k">class</span> <span class="nc">CBRow</span><span class="p">(</span><span class="n">Row</span><span class="p">):</span>
+        <span class="n">margin</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkbox</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="nd">@value.setter</span>
+        <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkbox</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="n">row</span> <span class="o">=</span> <span class="n">CBRow</span><span class="p">((</span><span class="n">lab</span><span class="p">,</span> <span class="n">cb</span><span class="p">))</span>
+    <span class="n">row</span><span class="o">.</span><span class="n">checkbox</span> <span class="o">=</span> <span class="n">cb</span>
+    <span class="k">return</span> <span class="n">row</span>
+
+</div>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">FloatField</span><span class="p">,</span> <span class="n">IntField</span><span class="p">,</span> <span class="n">TextFieldWrapped</span>
+
+
+<div class="viewcode-block" id="FloatInputRow"><a class="viewcode-back" href="../mceutils.html#editortools.brush.FloatInputRow">[docs]</a><span class="k">def</span> <span class="nf">FloatInputRow</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tooltipText&#39;</span><span class="p">)),</span> <span class="n">FloatField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)))</span>
+
+</div>
+<div class="viewcode-block" id="IntInputRow"><a class="viewcode-back" href="../mceutils.html#editortools.brush.IntInputRow">[docs]</a><span class="k">def</span> <span class="nf">IntInputRow</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tooltipText&#39;</span><span class="p">)),</span> <span class="n">IntField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)))</span>
+
+</div>
+<span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+
+<div class="viewcode-block" id="TextInputRow"><a class="viewcode-back" href="../mceutils.html#editortools.brush.TextInputRow">[docs]</a><span class="k">def</span> <span class="nf">TextInputRow</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tooltipText&#39;</span><span class="p">)),</span> <span class="n">TextFieldWrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)))</span>
+
+</div>
+<div class="viewcode-block" id="setWindowCaption"><a class="viewcode-back" href="../mceutils.html#editortools.brush.setWindowCaption">[docs]</a><span class="k">def</span> <span class="nf">setWindowCaption</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+    <span class="n">caption</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">get_caption</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">==</span> <span class="nb">unicode</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf8&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">ctx</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">caption</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="n">caption</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ctx</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="compareMD5Hashes"><a class="viewcode-back" href="../mceutils.html#editortools.brush.compareMD5Hashes">[docs]</a><span class="k">def</span> <span class="nf">compareMD5Hashes</span><span class="p">(</span><span class="n">found_filters</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Compares the MD5 Hashes of filters</span>
+<span class="sd">    :param found_filters: A list of filter paths</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="nb">filter</span> <span class="ow">in</span> <span class="n">found_filters</span><span class="p">:</span>
+        <span class="n">ff</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="nb">filter</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">filter</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;filters.json&quot;</span><span class="p">)):</span>
+            <span class="n">filterDict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;filters.json&quot;</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">filterDict</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">convert</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;filters.json&quot;</span><span class="p">),</span> <span class="s">&#39;rb&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s">&quot;filters&quot;</span> <span class="ow">in</span> <span class="n">convert</span><span class="p">:</span>
+                <span class="n">convert</span><span class="p">[</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert</span><span class="p">[</span><span class="s">&quot;filters&quot;</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">convert</span><span class="p">[</span><span class="s">&quot;filters&quot;</span><span class="p">]</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;filters.json&quot;</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">done</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">convert</span><span class="p">,</span> <span class="n">done</span><span class="p">)</span>
+        <span class="n">filterInBundledFolder</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">getAllOfAFile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;stock-filters&quot;</span><span class="p">),</span> <span class="s">&quot;.py&quot;</span><span class="p">)</span>
+        <span class="n">filterBundle</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">bundled</span> <span class="ow">in</span> <span class="n">filterInBundledFolder</span><span class="p">:</span>
+            <span class="n">filterBundle</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">bundled</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">bundled</span>
+        <span class="n">hashJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;filters.json&quot;</span><span class="p">),</span> <span class="s">&#39;rb&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">filt</span> <span class="ow">in</span> <span class="n">ff</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">realName</span> <span class="o">=</span> <span class="n">filt</span>
+            <span class="k">if</span> <span class="n">realName</span> <span class="ow">in</span> <span class="n">filterBundle</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ff</span><span class="p">[</span><span class="n">filt</span><span class="p">],</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filtr</span><span class="p">:</span>
+                    <span class="n">filterData</span> <span class="o">=</span> <span class="n">filtr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">realName</span> <span class="ow">in</span> <span class="n">hashJSON</span><span class="p">[</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">]:</span>
+                        <span class="n">old_hash</span> <span class="o">=</span> <span class="n">hashJSON</span><span class="p">[</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">][</span><span class="n">realName</span><span class="p">]</span>
+                        <span class="n">bundledData</span> <span class="o">=</span> <span class="bp">None</span>
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filterBundle</span><span class="p">[</span><span class="n">realName</span><span class="p">])</span> <span class="k">as</span> <span class="n">bundledFilter</span><span class="p">:</span>
+                            <span class="n">bundledData</span> <span class="o">=</span> <span class="n">bundledFilter</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">old_hash</span> <span class="o">!=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">bundledData</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="ow">and</span> <span class="n">bundledData</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">filterBundle</span><span class="p">[</span><span class="n">realName</span><span class="p">],</span> <span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span><span class="p">)</span>
+                            <span class="n">hashJSON</span><span class="p">[</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">][</span><span class="n">realName</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">bundledData</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">old_hash</span> <span class="o">!=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">filterData</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="ow">and</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">filterData</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">bundledData</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">():</span>
+                            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">filterBundle</span><span class="p">[</span><span class="n">realName</span><span class="p">],</span> <span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span><span class="p">)</span>
+                            <span class="n">hashJSON</span><span class="p">[</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">][</span><span class="n">realName</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">bundledData</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">hashJSON</span><span class="p">[</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">][</span><span class="n">realName</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">filterData</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">bundled</span> <span class="ow">in</span> <span class="n">filterBundle</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">bundled</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ff</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">filterBundle</span><span class="p">[</span><span class="n">bundled</span><span class="p">],</span> <span class="n">directories</span><span class="o">.</span><span class="n">filtersDir</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filterBundle</span><span class="p">[</span><span class="n">bundled</span><span class="p">],</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">hashJSON</span><span class="p">[</span><span class="s">&quot;filter-md5s&quot;</span><span class="p">][</span><span class="n">bundled</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;filters.json&quot;</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">done</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">hashJSON</span><span class="p">,</span> <span class="n">done</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s">&#39;Error: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="showProgress"><a class="viewcode-back" href="../mceutils.html#editortools.brush.showProgress">[docs]</a><span class="k">def</span> <span class="nf">showProgress</span><span class="p">(</span><span class="n">progressText</span><span class="p">,</span> <span class="n">progressIterator</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Show the progress for a long-running synchronous operation.</span>
+<span class="sd">    progressIterator should be a generator-like object that can return</span>
+<span class="sd">    either None, for an indeterminate indicator,</span>
+<span class="sd">    A float value between 0.0 and 1.0 for a determinate indicator,</span>
+<span class="sd">    A string, to update the progress info label</span>
+<span class="sd">    or a tuple of (float value, string) to set the progress and update the label&quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">ProgressWidget</span><span class="p">(</span><span class="n">Dialog</span><span class="p">):</span>
+        <span class="n">progressFraction</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">firstDraw</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+            <span class="n">Widget</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+            <span class="n">frameStart</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">frameInterval</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">amount</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">frameStart</span> <span class="o">+</span> <span class="n">frameInterval</span><span class="p">:</span>
+                    <span class="n">amount</span> <span class="o">=</span> <span class="n">progressIterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">firstDraw</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">firstDraw</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="k">break</span>
+
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+
+            <span class="n">infoText</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">amount</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">infoText</span> <span class="o">=</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="n">amount</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                    <span class="n">amount</span><span class="p">,</span> <span class="nb">max</span> <span class="o">=</span> <span class="n">amount</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">max</span> <span class="o">=</span> <span class="n">amount</span>
+                <span class="n">maxwidth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">amount</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">maxwidth</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="n">amount</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progressAmount</span> <span class="o">=</span> <span class="n">amount</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">progressFraction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">progressBar</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">maxwidth</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">progressFraction</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s">&quot;{0} / {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="nb">max</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">infoText</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">statusText</span> <span class="o">+=</span> <span class="n">infoText</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">estimateText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startTime</span><span class="p">)</span>
+            <span class="n">progressPercent</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressFraction</span> <span class="o">*</span> <span class="mi">10000</span><span class="p">))</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10000</span> <span class="o">-</span> <span class="n">progressPercent</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">progressPercent</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Time left: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">cancel</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">idleevent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+        <span class="k">def</span> <span class="nf">key_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+        <span class="k">def</span> <span class="nf">mouse_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s">&quot;SelectionTool&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentTool</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_nudge_block</span><span class="p">()</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">get_nudge_block</span><span class="p">()</span><span class="o">.</span><span class="n">mouse_up</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+    <span class="n">widget</span> <span class="o">=</span> <span class="n">ProgressWidget</span><span class="p">()</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">progressText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">progressText</span><span class="p">)</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">statusText</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">progressAmount</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">progressLabel</span> <span class="o">=</span> <span class="n">ValueDisplay</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s">&#39;progressText&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+    <span class="n">statusLabel</span> <span class="o">=</span> <span class="n">ValueDisplay</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s">&#39;statusText&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+    <span class="n">estimateLabel</span> <span class="o">=</span> <span class="n">ValueDisplay</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s">&#39;estimateText&#39;</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="mi">550</span><span class="p">)</span>
+
+    <span class="n">progressBar</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">bg_color</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">progressBar</span> <span class="o">=</span> <span class="n">progressBar</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">progressLabel</span><span class="p">,</span> <span class="n">statusLabel</span><span class="p">,</span> <span class="n">estimateLabel</span><span class="p">,</span> <span class="n">progressBar</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cancel</span><span class="p">:</span>
+        <span class="n">cancelButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">widget</span><span class="o">.</span><span class="n">cancel</span><span class="p">,</span> <span class="n">fg_color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+        <span class="n">col</span> <span class="o">+=</span> <span class="p">(</span><span class="n">Column</span><span class="p">((</span><span class="n">cancelButton</span><span class="p">,),</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;r&quot;</span><span class="p">),)</span>
+
+    <span class="n">widget</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Column</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">startTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">widget</span><span class="o">.</span><span class="n">progressAmount</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;Canceled&quot;</span>
+
+</div>
+<span class="kn">from</span> <span class="nn">glutils</span> <span class="kn">import</span> <span class="n">DisplayList</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

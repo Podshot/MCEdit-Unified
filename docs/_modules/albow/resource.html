@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.resource &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.resource</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pygame</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="n">RLEACCEL</span>
+<span class="kn">from</span> <span class="nn">translate</span> <span class="kn">import</span> <span class="n">langPath</span>
+<span class="n">optimize_images</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">run_length_encode</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+<span class="n">__curLang</span> <span class="o">=</span> <span class="s">&quot;default&quot;</span>
+
+
+<div class="viewcode-block" id="getCurLang"><a class="viewcode-back" href="../../albow.html#albow.resource.getCurLang">[docs]</a><span class="k">def</span> <span class="nf">getCurLang</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">__curLang</span>
+
+</div>
+<div class="viewcode-block" id="setCurLang"><a class="viewcode-back" href="../../albow.html#albow.resource.setCurLang">[docs]</a><span class="k">def</span> <span class="nf">setCurLang</span><span class="p">(</span><span class="n">lang</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">__curLang</span>
+    <span class="n">__curLang</span> <span class="o">=</span> <span class="n">lang</span>
+</div>
+<span class="n">font_lang_cache</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">resource_dir</span> <span class="o">=</span> <span class="s">&quot;Resources&quot;</span>
+
+<span class="n">image_cache</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">font_cache</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">sound_cache</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">text_cache</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">cursor_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">font_proportion</span> <span class="o">=</span> <span class="mi">100</span> <span class="c"># %</span>
+<span class="n">gtbdr</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">_resource_path</span><span class="p">(</span><span class="n">default_prefix</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resource_dir</span><span class="p">,</span> <span class="n">prefix</span> <span class="ow">or</span> <span class="n">default_prefix</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="nb">unicode</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">path</span>
+
+
+<div class="viewcode-block" id="resource_path"><a class="viewcode-back" href="../../albow.html#albow.resource.resource_path">[docs]</a><span class="k">def</span> <span class="nf">resource_path</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_resource_path</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="resource_exists"><a class="viewcode-back" href="../../albow.html#albow.resource.resource_exists">[docs]</a><span class="k">def</span> <span class="nf">resource_exists</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">_resource_path</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">))</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_get_image</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize_images</span><span class="p">,</span> <span class="n">noalpha</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+               <span class="n">rle</span><span class="o">=</span><span class="n">run_length_encode</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;images&quot;</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_resource_path</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">image</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">noalpha</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">optimize</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convert_alpha</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">rle</span><span class="p">:</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">RLEACCEL</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">border</span><span class="p">:</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">border</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">border</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">subsurface</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">d</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">image_cache</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span>
+    <span class="k">return</span> <span class="n">image</span>
+
+
+<div class="viewcode-block" id="get_image"><a class="viewcode-back" href="../../albow.html#albow.resource.get_image">[docs]</a><span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_get_image</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_i_eegecx</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">pygame.mixer</span> <span class="kn">import</span> <span class="n">music</span> <span class="k">as</span> <span class="n">ghfkd</span>
+        <span class="k">return</span> <span class="n">ghfkd</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Music not available&quot;</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">def</span> <span class="nf">_2478aq_heot</span><span class="p">(</span><span class="n">aqz</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">gtbdr</span>
+    <span class="k">if</span> <span class="n">aqz</span> <span class="o">&gt;=</span> <span class="mf">2500.0</span> <span class="ow">and</span> <span class="n">gtbdr</span><span class="p">:</span>
+        <span class="n">agtw</span> <span class="o">=</span> <span class="n">_i_eegecx</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">agtw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">agtw</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;albow&quot;</span><span class="p">,</span> <span class="s">&quot;albow alert.png&quot;</span><span class="p">))</span>
+            <span class="n">agtw</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">agtw</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+            <span class="n">gtbdr</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
+            <span class="kn">from</span> <span class="nn">albow.layout</span> <span class="kn">import</span> <span class="n">Column</span>
+            <span class="kn">from</span> <span class="nn">albow.controls</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span>
+            <span class="kn">import</span> <span class="nn">base64</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
+            
+            <span class="k">def</span> <span class="nf">close</span><span class="p">():</span>
+                <span class="n">d</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+                <span class="n">agtw</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                
+            <span class="n">d</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Column</span><span class="p">((</span><span class="n">Image</span><span class="p">(</span><span class="n">get_image</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;albow&quot;</span><span class="p">,</span> <span class="s">&quot;albow alert.mp3&quot;</span><span class="p">),</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)),</span>
+                          <span class="n">Label</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s">&#39;SSdtIGdvaW5nIHRvIHNwYWNlLg==&#39;</span><span class="p">)),</span>
+                          <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Close&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">close</span><span class="p">)</span>
+                          <span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+                  <span class="p">)</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+
+<div class="viewcode-block" id="get_font"><a class="viewcode-back" href="../../albow.html#albow.resource.get_font">[docs]</a><span class="k">def</span> <span class="nf">get_font</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">font_cache</span>
+    <span class="n">lngs_fontNm</span> <span class="o">=</span> <span class="n">font_lang_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">{})</span>
+    <span class="n">fontNm</span> <span class="o">=</span> <span class="n">lngs_fontNm</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">getCurLang</span><span class="p">(),</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fontNm</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">names</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fontNm</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_resource_path</span><span class="p">(</span><span class="s">&quot;fonts&quot;</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">font_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">font</span><span class="p">:</span>
+        <span class="n">oSize</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">size</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">font_proportion</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Font </span><span class="si">%s</span><span class="s"> loaded.&quot;</span><span class="o">%</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    Original size: </span><span class="si">%s</span><span class="s">. Proportion: </span><span class="si">%s</span><span class="s">. Final size: </span><span class="si">%s</span><span class="s">.&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">oSize</span><span class="p">,</span> <span class="n">font_proportion</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;PyGame could not load font.&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Exception: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Trying with sys.getfilesystemencoding()&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">())</span>
+                <span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Font </span><span class="si">%s</span><span class="s"> loaded.&quot;</span><span class="o">%</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;PyGame could not load font.&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Exception: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Loading sysfont&quot;</span><span class="p">)</span>
+                <span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s">&quot;Courier New&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="n">font_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">font</span>
+    <span class="k">return</span> <span class="n">font</span>
+
+</div>
+<div class="viewcode-block" id="DummySound"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound">[docs]</a><span class="k">class</span> <span class="nc">DummySound</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DummySound.fadeout"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound.fadeout">[docs]</a>    <span class="k">def</span> <span class="nf">fadeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DummySound.get_length"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound.get_length">[docs]</a>    <span class="k">def</span> <span class="nf">get_length</span><span class="p">():</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DummySound.get_num_channels"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound.get_num_channels">[docs]</a>    <span class="k">def</span> <span class="nf">get_num_channels</span><span class="p">():</span>
+        <span class="k">return</span> <span class="mi">0</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="DummySound.get_volume"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound.get_volume">[docs]</a>    <span class="k">def</span> <span class="nf">get_volume</span><span class="p">():</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+</div>
+<div class="viewcode-block" id="DummySound.play"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound.play">[docs]</a>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="DummySound.set_volume"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound.set_volume">[docs]</a>    <span class="k">def</span> <span class="nf">set_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="DummySound.stop"><a class="viewcode-back" href="../../albow.html#albow.resource.DummySound.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+</div></div>
+<span class="n">dummy_sound</span> <span class="o">=</span> <span class="n">DummySound</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_sound"><a class="viewcode-back" href="../../albow.html#albow.resource.get_sound">[docs]</a><span class="k">def</span> <span class="nf">get_sound</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">sound_cache</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dummy_sound</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_resource_path</span><span class="p">(</span><span class="s">&quot;sounds&quot;</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">sound</span> <span class="o">=</span> <span class="n">sound_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sound</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">pygame.mixer</span> <span class="kn">import</span> <span class="n">Sound</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">no_sound</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dummy_sound</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sound</span> <span class="o">=</span> <span class="n">Sound</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">pygame</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">missing_sound</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dummy_sound</span>
+        <span class="n">sound_cache</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">sound</span>
+    <span class="k">return</span> <span class="n">sound</span>
+
+</div>
+<div class="viewcode-block" id="no_sound"><a class="viewcode-back" href="../../albow.html#albow.resource.no_sound">[docs]</a><span class="k">def</span> <span class="nf">no_sound</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">sound_cache</span>
+    <span class="k">print</span> <span class="s">&quot;albow.resource.get_sound: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">e</span>
+    <span class="k">print</span> <span class="s">&quot;albow.resource.get_sound: Sound not available, continuing without it&quot;</span>
+    <span class="n">sound_cache</span> <span class="o">=</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="missing_sound"><a class="viewcode-back" href="../../albow.html#albow.resource.missing_sound">[docs]</a><span class="k">def</span> <span class="nf">missing_sound</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&quot;albow.resource.get_sound: </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_text"><a class="viewcode-back" href="../../albow.html#albow.resource.get_text">[docs]</a><span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="c">#-# Try at first the &#39;lang/text&#39; folder</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_resource_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">langPath</span><span class="p">,</span> <span class="s">&quot;text&quot;</span><span class="p">),</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">_resource_path</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;rU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">text_cache</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+    <span class="k">return</span> <span class="n">text</span>
+
+</div>
+<div class="viewcode-block" id="load_cursor"><a class="viewcode-back" href="../../albow.html#albow.resource.load_cursor">[docs]</a><span class="k">def</span> <span class="nf">load_cursor</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">get_image</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+    <span class="n">hot</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rowbytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">+</span> <span class="mi">7</span><span class="p">)</span> <span class="o">//</span> <span class="mi">8</span>
+    <span class="n">xr</span> <span class="o">=</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+    <span class="n">yr</span> <span class="o">=</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">yr</span><span class="p">:</span>
+        <span class="n">bit</span> <span class="o">=</span> <span class="mh">0x80</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">mb</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xr</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">get_at</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;=</span> <span class="mi">128</span><span class="p">:</span>
+                <span class="n">mb</span> <span class="o">|=</span> <span class="n">bit</span>
+                <span class="k">if</span> <span class="n">r</span> <span class="o">+</span> <span class="n">g</span> <span class="o">+</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="mi">383</span><span class="p">:</span>
+                    <span class="n">db</span> <span class="o">|=</span> <span class="n">bit</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">255</span><span class="p">:</span>
+                <span class="n">hot</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">bit</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">bit</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+                <span class="n">mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mb</span><span class="p">)</span>
+                <span class="n">db</span> <span class="o">=</span> <span class="n">mb</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">bit</span> <span class="o">=</span> <span class="mh">0x80</span>
+        <span class="k">if</span> <span class="n">bit</span> <span class="o">!=</span> <span class="mh">0x80</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+            <span class="n">mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mb</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">rowbytes</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="n">hot</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mask</span>
+
+</div>
+<div class="viewcode-block" id="get_cursor"><a class="viewcode-back" href="../../albow.html#albow.resource.get_cursor">[docs]</a><span class="k">def</span> <span class="nf">get_cursor</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_resource_path</span><span class="p">(</span><span class="s">&quot;cursors&quot;</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">cursor_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cursor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">load_cursor</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">cursor_cache</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">cursor</span>
+    <span class="k">return</span> <span class="n">cursor</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

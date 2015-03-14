@@ -1,0 +1,809 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>keys &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for keys</h1><div class="highlight"><pre>
+<span class="c">#.# Marks the layout modifications. -- D.C.-G.</span>
+<span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span> <span class="nn">albow</span>
+<span class="kn">import</span> <span class="nn">mceutils</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">key</span>
+<span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">glbackground</span> <span class="kn">import</span> <span class="n">Panel</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Column</span>
+
+<span class="n">ESCAPE</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\033</span><span class="s">&#39;</span>
+
+
+<div class="viewcode-block" id="remapMouseButton"><a class="viewcode-back" href="../keys.html#keys.remapMouseButton">[docs]</a><span class="k">def</span> <span class="nf">remapMouseButton</span><span class="p">(</span><span class="n">button</span><span class="p">):</span>
+    <span class="n">buttons</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>  <span class="c"># mouse2 is right button, mouse3 is middle</span>
+    <span class="k">if</span> <span class="n">button</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">buttons</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">buttons</span><span class="p">[</span><span class="n">button</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">button</span>
+
+</div>
+<div class="viewcode-block" id="KeyConfigPanel"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel">[docs]</a><span class="k">class</span> <span class="nc">KeyConfigPanel</span><span class="p">(</span><span class="n">Dialog</span><span class="p">):</span>
+    <span class="n">keyConfigKeys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">&quot;&lt;Movement&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Forward&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Back&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Left&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Right&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Up&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Down&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Brake&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Camera&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Pan Up&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Pan Down&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Pan Left&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Pan Right&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Toggle View&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Goto Panel&quot;</span><span class="p">,</span>
+        <span class="s">&quot;View Distance&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Toggle Renderer&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Selection&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Increase Reach&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Decrease Reach&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Reset Reach&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Show Block Info&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Pick Block&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Snap Clone to Axis&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Blocks-Only Modifier&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Brush Tool&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Rotate (Brush)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Roll (Brush)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Increase Brush&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Decrease Brush&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Brush Line Tool&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Clone Tool&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Rotate (Clone)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Roll (Clone)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Flip&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Mirror&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Fill and Replace Tool&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Replace Shortcut&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Swap&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Chunk Control Tool&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Select Chunks&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Deselect Chunks&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Function&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Delete Blocks&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Select All&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Deselect&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Undo&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Redo&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Cut&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Copy&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Paste&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Export Selection&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Menu&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;New World&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Quick Load&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Open&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Save&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Save As&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Reload World&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Close World&quot;</span><span class="p">,</span>
+        <span class="s">&quot;World Info&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Quit&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Miscellaneous&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Fast Increment Modifier&quot;</span>
+    <span class="p">]</span>
+
+    <span class="n">otherNames</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&quot;Goto Panel&quot;</span><span class="p">:</span> <span class="s">&quot;Goto Position&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Show Block Info&quot;</span><span class="p">:</span> <span class="s">&quot;Show Block Info (Hold)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Pick Block&quot;</span><span class="p">:</span> <span class="s">&quot;Pick Block (Hold + Click)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Snap Clone to Axis&quot;</span><span class="p">:</span> <span class="s">&quot;Snap Clone to Axis (Hold)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Blocks-Only Modifier&quot;</span><span class="p">:</span> <span class="s">&quot;Blocks-Only Modifier (Hold)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Rotate (Brush)&quot;</span><span class="p">:</span> <span class="s">&quot;Rotate&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Roll (Brush)&quot;</span><span class="p">:</span> <span class="s">&quot;Roll&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Increase Brush&quot;</span><span class="p">:</span> <span class="s">&quot;Increase Size&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Decrease Brush&quot;</span><span class="p">:</span> <span class="s">&quot;Decrease Size&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Brush Line Tool&quot;</span><span class="p">:</span> <span class="s">&quot;Line Tool (Hold)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Rotate (Clone)&quot;</span><span class="p">:</span> <span class="s">&quot;Rotate&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Roll (Clone)&quot;</span><span class="p">:</span> <span class="s">&quot;Roll&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Replace Shortcut&quot;</span><span class="p">:</span> <span class="s">&quot;Replace&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Select Chunks&quot;</span><span class="p">:</span> <span class="s">&quot;Select Chunks (Hold)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Deselect Chunks&quot;</span><span class="p">:</span> <span class="s">&quot;Deselect Chunks (Hold)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Delete Blocks&quot;</span><span class="p">:</span> <span class="s">&quot;Delete&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Export Selection&quot;</span><span class="p">:</span> <span class="s">&quot;Export&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Take a Screenshot&quot;</span><span class="p">:</span> <span class="s">&quot;Take Screenshot&quot;</span>
+    <span class="p">}</span>
+
+    <span class="n">presets</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;WASD&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Back&quot;</span><span class="p">,</span> <span class="s">&quot;S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Left&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Right&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Left&quot;</span><span class="p">,</span> <span class="s">&quot;J&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Right&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle View&quot;</span><span class="p">,</span> <span class="s">&quot;Tab&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Goto Panel&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle Renderer&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-M&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Increase Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Up&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Down&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reset Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Button 3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Show Block Info&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pick Block&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Snap Clone to Axis&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span> <span class="s">&quot;Alt-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Blocks-Only Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Increase Brush&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Brush&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush Line Tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Flip&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Mirror&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Replace Shortcut&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Swap&quot;</span><span class="p">,</span> <span class="s">&quot;X&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Delete Blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Select All&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-A&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Undo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Redo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Y&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Cut&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-X&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Copy&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-C&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Paste&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-V&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Export Selection&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-E&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;New World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-N&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quick Load&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Open&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-O&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save As&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Alt-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reload World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Close World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-W&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Info&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quit&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Q&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                <span class="p">],</span>
+                <span class="s">&quot;ESDF&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Back&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Left&quot;</span><span class="p">,</span> <span class="s">&quot;S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Right&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Left&quot;</span><span class="p">,</span> <span class="s">&quot;J&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Right&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle View&quot;</span><span class="p">,</span> <span class="s">&quot;Tab&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Goto Panel&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle Renderer&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-M&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Increase Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Up&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Down&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reset Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Button 3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Show Block Info&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pick Block&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Snap Clone to Axis&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span> <span class="s">&quot;Alt-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Blocks-Only Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;H&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Increase Brush&quot;</span><span class="p">,</span> <span class="s">&quot;T&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Brush&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush Line Tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;T&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Flip&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Mirror&quot;</span><span class="p">,</span> <span class="s">&quot;H&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Replace Shortcut&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Swap&quot;</span><span class="p">,</span> <span class="s">&quot;X&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Delete Blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Select All&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-A&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Undo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Redo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Y&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Cut&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-X&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Copy&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-C&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Paste&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-V&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Export Selection&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-E&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;New World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-N&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quick Load&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Open&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-O&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save As&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Alt-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reload World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Close World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-W&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Info&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quit&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Q&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                <span class="p">],</span>
+                <span class="s">&quot;Arrows&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;Up&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Back&quot;</span><span class="p">,</span> <span class="s">&quot;Down&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Left&quot;</span><span class="p">,</span> <span class="s">&quot;Left&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Right&quot;</span><span class="p">,</span> <span class="s">&quot;Right&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Page Up&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Page Down&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Left&quot;</span><span class="p">,</span> <span class="s">&quot;J&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Right&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle View&quot;</span><span class="p">,</span> <span class="s">&quot;Tab&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Goto Panel&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle Renderer&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-M&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Increase Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Up&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Down&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reset Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Button 3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Show Block Info&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pick Block&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Snap Clone to Axis&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span> <span class="s">&quot;Alt-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Blocks-Only Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;Home&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Increase Brush&quot;</span><span class="p">,</span> <span class="s">&quot;End&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Brush&quot;</span><span class="p">,</span> <span class="s">&quot;Insert&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush Line Tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;Home&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;End&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Flip&quot;</span><span class="p">,</span> <span class="s">&quot;Insert&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Mirror&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Replace Shortcut&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Swap&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Delete Blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Backspace&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Select All&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-A&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Undo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Redo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Y&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Cut&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-X&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Copy&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-C&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Paste&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-V&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Export Selection&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-E&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;New World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-N&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quick Load&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Open&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-O&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save As&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Alt-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reload World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Close World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-W&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Info&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quit&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Q&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                <span class="p">],</span>
+                <span class="s">&quot;Numpad&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;[8]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Back&quot;</span><span class="p">,</span> <span class="s">&quot;[5]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Left&quot;</span><span class="p">,</span> <span class="s">&quot;[4]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Right&quot;</span><span class="p">,</span> <span class="s">&quot;[6]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;[7]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;[1]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;[0]&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Left&quot;</span><span class="p">,</span> <span class="s">&quot;J&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Right&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle View&quot;</span><span class="p">,</span> <span class="s">&quot;Tab&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Goto Panel&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle Renderer&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-M&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Increase Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Up&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Down&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reset Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Button 3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Show Block Info&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pick Block&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Snap Clone to Axis&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span> <span class="s">&quot;Alt-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Blocks-Only Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;[-]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;[*]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Increase Brush&quot;</span><span class="p">,</span> <span class="s">&quot;[+]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Brush&quot;</span><span class="p">,</span> <span class="s">&quot;[/]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush Line Tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;[-]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;[+]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Flip&quot;</span><span class="p">,</span> <span class="s">&quot;[/]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Mirror&quot;</span><span class="p">,</span> <span class="s">&quot;[*]&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Replace Shortcut&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Swap&quot;</span><span class="p">,</span> <span class="s">&quot;[.]&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Delete Blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Select All&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-A&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Undo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Redo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Y&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Cut&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-X&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Copy&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-C&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Paste&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-V&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Export Selection&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-E&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;New World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-N&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quick Load&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Open&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-O&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save As&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Alt-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reload World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Close World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-W&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Info&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quit&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Q&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                <span class="p">],</span>
+                <span class="s">&quot;WASD Old&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Back&quot;</span><span class="p">,</span> <span class="s">&quot;S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Left&quot;</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Right&quot;</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Q&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Left&quot;</span><span class="p">,</span> <span class="s">&quot;J&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pan Right&quot;</span><span class="p">,</span> <span class="s">&quot;L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle View&quot;</span><span class="p">,</span> <span class="s">&quot;Tab&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Goto Panel&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Toggle Renderer&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-M&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Increase Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Up&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Scroll Down&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reset Reach&quot;</span><span class="p">,</span> <span class="s">&quot;Button 3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Show Block Info&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Pick Block&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Snap Clone to Axis&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span> <span class="s">&quot;Alt-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Blocks-Only Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Brush)&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Increase Brush&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Decrease Brush&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush Line Tool&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Rotate (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Roll (Clone)&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Flip&quot;</span><span class="p">,</span> <span class="s">&quot;F&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Mirror&quot;</span><span class="p">,</span> <span class="s">&quot;G&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Replace Shortcut&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Swap&quot;</span><span class="p">,</span> <span class="s">&quot;X&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect Chunks&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Delete Blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Select All&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-A&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Deselect&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-D&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Undo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Z&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Redo&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Y&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Cut&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-X&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Copy&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-C&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Paste&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-V&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Export Selection&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-E&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;New World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-N&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quick Load&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-L&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Open&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-O&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Save As&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Alt-S&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Reload World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-R&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Close World&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-W&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Info&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-I&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Quit&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-Q&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">)</span>
+                <span class="p">]}</span>
+
+    <span class="n">selectedKeyIndex</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mcedit</span><span class="p">):</span>
+        <span class="n">Dialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c">#.#</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">keyConfigTable</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">TableView</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">albow</span><span class="o">.</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Command&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;l&quot;</span><span class="p">),</span> <span class="n">albow</span><span class="o">.</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Assigned Key&quot;</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)])</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">)</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">row_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRowData</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">row_is_selected</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">click_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectTableRow</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">key_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_down</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">key_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_up</span>
+        <span class="c">#.#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">tableWidget</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Widget</span><span class="p">()</span>
+        <span class="n">tableWidget</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">keyConfigTable</span><span class="p">)</span>
+        <span class="n">tableWidget</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span> <span class="o">=</span> <span class="n">keyConfigTable</span>
+
+        <span class="n">buttonRow</span> <span class="o">=</span> <span class="p">(</span><span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Assign Key...&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">askAssignSelectedKey</span><span class="p">),</span>
+                    <span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Done&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">),</span> <span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cancel</span><span class="p">))</span>
+
+        <span class="n">buttonRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">buttonRow</span><span class="p">)</span>
+
+        <span class="n">resetToDefaultRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Reset to default&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resetDefault</span><span class="p">),))</span>
+
+        <span class="n">choiceButton</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">ChoiceButton</span><span class="p">([</span><span class="s">&quot;WASD&quot;</span><span class="p">,</span> <span class="s">&quot;ESDF&quot;</span><span class="p">,</span> <span class="s">&quot;Arrows&quot;</span><span class="p">,</span> <span class="s">&quot;Numpad&quot;</span><span class="p">,</span> <span class="s">&quot;WASD Old&quot;</span><span class="p">],</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">choosePreset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;E&quot;</span><span class="p">:</span>
+            <span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&quot;ESDF&quot;</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;Up&quot;</span><span class="p">:</span>
+            <span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&quot;Arrows&quot;</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;[8]&quot;</span><span class="p">:</span>
+            <span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&quot;Numpad&quot;</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;Space&quot;</span><span class="p">:</span>
+            <span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&quot;WASD Old&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldChoice</span> <span class="o">=</span> <span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span>
+
+        <span class="n">choiceRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Presets: &quot;</span><span class="p">),</span> <span class="n">choiceButton</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choiceButton</span> <span class="o">=</span> <span class="n">choiceButton</span>
+
+        <span class="n">col</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Column</span><span class="p">((</span><span class="n">tableWidget</span><span class="p">,</span> <span class="n">choiceRow</span><span class="p">,</span> <span class="n">buttonRow</span><span class="p">,</span> <span class="n">resetToDefaultRow</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+<div class="viewcode-block" id="KeyConfigPanel.presentControls"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.presentControls">[docs]</a>    <span class="k">def</span> <span class="nf">presentControls</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldChoice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.done"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">movements</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">back</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">up</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">down</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">cameraPan</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panLeft</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panRight</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panUp</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panDown</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.choosePreset"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.choosePreset">[docs]</a>    <span class="k">def</span> <span class="nf">choosePreset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">preset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span>
+        <span class="n">keypairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">presets</span><span class="p">[</span><span class="n">preset</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">configKey</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keypairs</span><span class="p">:</span>
+            <span class="n">oldOne</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">oldOne</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">if</span> <span class="n">configKey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">[</span><span class="n">configKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">oldOne</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.getRowData"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.getRowData">[docs]</a>    <span class="k">def</span> <span class="nf">getRowData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">editor</span>
+        <span class="n">configKey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isConfigKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">different_keys</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="n">configKey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">otherNames</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">configKey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">otherNames</span><span class="p">[</span><span class="n">configKey</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">configKey</span><span class="p">,</span> <span class="n">key</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="KeyConfigPanel.isConfigKey"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.isConfigKey">[docs]</a>    <span class="k">def</span> <span class="nf">isConfigKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">configKey</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">configKey</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;&lt;&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.selectTableRow"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.selectTableRow">[docs]</a>    <span class="k">def</span> <span class="nf">selectTableRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">num_clicks</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">askAssignSelectedKey</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.resetDefault"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.resetDefault">[docs]</a>    <span class="k">def</span> <span class="nf">resetDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&quot;WASD&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choosePreset</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.cancel"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s">&quot;Do you want to save your changes?&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Save&quot;</span><span class="p">,</span> <span class="s">&quot;Don&#39;t Save&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Save&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Don&#39;t Save&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oldChoice</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.unbind"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.unbind">[docs]</a>    <span class="k">def</span> <span class="nf">unbind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">configKey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&quot;None&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;None&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.key_down"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.key_down">[docs]</a>    <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Escape&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Up&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Down&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Return&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">askAssignSelectedKey</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.key_up"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.key_up">[docs]</a>    <span class="k">def</span> <span class="nf">key_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.askAssignSelectedKey"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.askAssignSelectedKey">[docs]</a>    <span class="k">def</span> <span class="nf">askAssignSelectedKey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="KeyConfigPanel.askAssignKey"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.askAssignKey">[docs]</a>    <span class="k">def</span> <span class="nf">askAssignKey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configKey</span><span class="p">,</span> <span class="n">labelString</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isConfigKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">return</span>
+
+        <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">()</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">labelString</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">configKey</span> <span class="o">!=</span> <span class="s">&quot;Fast Nudge&quot;</span><span class="p">:</span>
+            <span class="n">labelString</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press a key to assign to the action </span><span class="se">\&quot;</span><span class="s">{0}</span><span class="se">\&quot;\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">configKey</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">labelString</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">labelString</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press a key to assign to the action </span><span class="se">\&quot;</span><span class="s">{0}</span><span class="se">\&quot;\n</span><span class="s">No key means right click to fast nudge.</span><span class="se">\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">configKey</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">labelString</span><span class="p">)</span>
+        <span class="n">unbind_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Press to unbind&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unbind</span><span class="p">)</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="n">unbind_button</span><span class="p">))</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">panelKeyUp</span><span class="p">(</span><span class="n">evt</span><span class="p">):</span>
+            <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+            <span class="n">panel</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">keyname</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">panelMouseUp</span><span class="p">(</span><span class="n">evt</span><span class="p">):</span>
+            <span class="n">button</span> <span class="o">=</span> <span class="n">remapMouseButton</span><span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">button</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">button</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">keyname</span> <span class="o">=</span> <span class="s">&quot;Button 3&quot;</span>
+            <span class="k">elif</span> <span class="n">button</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">keyname</span> <span class="o">=</span> <span class="s">&quot;Scroll Up&quot;</span>
+            <span class="k">elif</span> <span class="n">button</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">keyname</span> <span class="o">=</span> <span class="s">&quot;Scroll Down&quot;</span>
+            <span class="k">elif</span> <span class="n">button</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">keyname</span> <span class="o">=</span> <span class="s">&quot;Button 4&quot;</span>
+            <span class="k">elif</span> <span class="n">button</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                <span class="n">keyname</span> <span class="o">=</span> <span class="s">&quot;Button 5&quot;</span>
+            <span class="k">if</span> <span class="n">button</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">panel</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="n">keyname</span><span class="p">)</span>
+
+        <span class="n">panel</span><span class="o">.</span><span class="n">key_up</span> <span class="o">=</span> <span class="n">panelKeyUp</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">mouse_up</span> <span class="o">=</span> <span class="n">panelMouseUp</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="o">=</span> <span class="n">panel</span>
+        <span class="n">keyname</span> <span class="o">=</span> <span class="n">panel</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">keyname</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&quot;Return&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Escape&quot;</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;Alt-F4&quot;</span><span class="p">,</span><span class="s">&quot;F1&quot;</span><span class="p">,</span><span class="s">&quot;F2&quot;</span><span class="p">,</span><span class="s">&quot;F3&quot;</span><span class="p">,</span><span class="s">&quot;F4&quot;</span><span class="p">,</span><span class="s">&quot;F5&quot;</span><span class="p">,</span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="s">&quot;3&quot;</span><span class="p">,</span><span class="s">&quot;4&quot;</span><span class="p">,</span><span class="s">&quot;5&quot;</span><span class="p">,</span><span class="s">&quot;6&quot;</span><span class="p">,</span><span class="s">&quot;7&quot;</span><span class="p">,</span><span class="s">&quot;8&quot;</span><span class="p">,</span><span class="s">&quot;9&quot;</span><span class="p">,</span><span class="s">&quot;Ctrl-Alt-F9&quot;</span><span class="p">,</span><span class="s">&quot;Ctrl-Alt-F10&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s">&quot;Modifier&quot;</span> <span class="ow">in</span> <span class="n">configKey</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Ctrl&quot;</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Alt&quot;</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Shift&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
+                                    <span class="n">_</span><span class="p">(</span><span class="s">&quot;{0} is not a modifier. Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span>
+                                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyname</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="n">configKey</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;Down&#39;</span><span class="p">,</span><span class="s">&#39;Up&#39;</span><span class="p">,</span><span class="s">&#39;Back&#39;</span><span class="p">,</span><span class="s">&#39;Forward&#39;</span><span class="p">,</span><span class="s">&#39;Left&#39;</span><span class="p">,</span><span class="s">&#39;Right&#39;</span><span class="p">,</span><span class="s">&#39;Pan Down&#39;</span><span class="p">,</span><span class="s">&#39;Pan Up&#39;</span><span class="p">,</span><span class="s">&#39;Pan Left&#39;</span><span class="p">,</span><span class="s">&#39;Pan Right&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s">&#39;Ctrl&#39;</span> <span class="ow">in</span> <span class="n">keyname</span> <span class="ow">or</span> <span class="s">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">keyname</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
+                                    <span class="s">&quot;Movement keys can&#39;t use Ctrl or be with modifiers. Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+            <span class="n">filter_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="s">&quot;Filter Keys&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">keyname</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">filter_keys</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
+                                    <span class="n">_</span><span class="p">(</span><span class="s">&quot;Can&#39;t bind. {0} is already used by the </span><span class="se">\&quot;</span><span class="s">{1}</span><span class="se">\&quot;</span><span class="s"> filter.</span><span class="se">\n</span><span class="s"> Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyname</span><span class="p">,</span> <span class="n">filter_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="n">oldkey</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">keyname</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">configKey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">[</span><span class="n">configKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">oldkey</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Escape&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
+                                    <span class="n">_</span><span class="p">(</span><span class="s">&quot;You can&#39;t use the key {0}. Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span>
+                                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyname</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

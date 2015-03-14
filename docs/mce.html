@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mce module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="next" title="mcedit module" href="mcedit.html" />
+    <link rel="prev" title="leveleditor module" href="leveleditor.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mcedit.html" title="mcedit module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="leveleditor.html" title="leveleditor module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mce">
+<span id="mce-module"></span><h1>mce module<a class="headerlink" href="#module-mce" title="Permalink to this headline">¶</a></h1>
+<dl class="exception">
+<dt id="mce.BlockMatchError">
+<em class="property">exception </em><code class="descclassname">mce.</code><code class="descname">BlockMatchError</code><a class="reference internal" href="_modules/mce.html#BlockMatchError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.BlockMatchError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="mce.PlayerNotFound">
+<em class="property">exception </em><code class="descclassname">mce.</code><code class="descname">PlayerNotFound</code><a class="reference internal" href="_modules/mce.html#PlayerNotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.PlayerNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="mce.UsageError">
+<em class="property">exception </em><code class="descclassname">mce.</code><code class="descname">UsageError</code><a class="reference internal" href="_modules/mce.html#UsageError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.UsageError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mce.main">
+<code class="descclassname">mce.</code><code class="descname">main</code><span class="sig-paren">(</span><em>argv</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="mce.mce">
+<em class="property">class </em><code class="descclassname">mce.</code><code class="descname">mce</code><a class="reference internal" href="_modules/mce.html#mce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="docutils">
+<dt>Block commands:</dt>
+<dd><p class="first">{commandPrefix}clone &lt;sourceBox&gt; &lt;destPoint&gt; [noair] [nowater]
+{commandPrefix}fill &lt;blockType&gt; [ &lt;box&gt; ]
+{commandPrefix}replace &lt;blockType&gt; [with] &lt;newBlockType&gt; [ &lt;box&gt; ]</p>
+<p>{commandPrefix}export &lt;filename&gt; &lt;sourceBox&gt;
+{commandPrefix}import &lt;filename&gt; &lt;destPoint&gt; [noair] [nowater]</p>
+<p class="last">{commandPrefix}createChest &lt;point&gt; &lt;item&gt; [ &lt;count&gt; ]
+{commandPrefix}analyze</p>
+</dd>
+<dt>Player commands:</dt>
+<dd>{commandPrefix}player [ &lt;player&gt; [ &lt;point&gt; ] ]
+{commandPrefix}spawn [ &lt;point&gt; ]</dd>
+<dt>Entity commands:</dt>
+<dd>{commandPrefix}removeEntities [ &lt;EntityID&gt; ]
+{commandPrefix}dumpSigns [ &lt;filename&gt; ]
+{commandPrefix}dumpChests [ &lt;filename&gt; ]</dd>
+<dt>Chunk commands:</dt>
+<dd>{commandPrefix}createChunks &lt;box&gt;
+{commandPrefix}deleteChunks &lt;box&gt;
+{commandPrefix}prune &lt;box&gt;
+{commandPrefix}relight [ &lt;box&gt; ]</dd>
+<dt>World commands:</dt>
+<dd>{commandPrefix}create &lt;filename&gt;
+{commandPrefix}dimension [ &lt;dim&gt; ]
+{commandPrefix}degrief
+{commandPrefix}time [ &lt;time&gt; ]
+{commandPrefix}worldsize
+{commandPrefix}heightmap &lt;filename&gt;
+{commandPrefix}randomseed [ &lt;seed&gt; ]
+{commandPrefix}gametype [ &lt;player&gt; [ &lt;gametype&gt; ] ]</dd>
+<dt>Editor commands:</dt>
+<dd>{commandPrefix}save
+{commandPrefix}reload
+{commandPrefix}load &lt;filename&gt; | &lt;world number&gt;
+{commandPrefix}execute &lt;filename&gt;
+{commandPrefix}quit</dd>
+<dt>Informational:</dt>
+<dd>{commandPrefix}blocks [ &lt;block name&gt; | &lt;block ID&gt; ]
+{commandPrefix}help [ &lt;command&gt; ]</dd>
+<dt><strong>IMPORTANT</strong></dt>
+<dd><p class="first">{commandPrefix}box</p>
+<p class="last">Type &#8216;box&#8217; to learn how to specify points and areas.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="mce.mce.batchMode">
+<code class="descname">batchMode</code><em class="property"> = False</em><a class="headerlink" href="#mce.mce.batchMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.commandUsage">
+<code class="descname">commandUsage</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.commandUsage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.commandUsage" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns usage info for the named command - just give the docstring for the handler func</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mce.mce.commands">
+<code class="descname">commands</code><em class="property"> = ['clone', 'fill', 'replace', 'export', 'execute', 'import', 'createchest', 'player', 'spawn', 'removeentities', 'dumpsigns', 'dumpchests', 'createchunks', 'deletechunks', 'prune', 'relight', 'create', 'degrief', 'time', 'worldsize', 'heightmap', 'randomseed', 'gametype', 'save', 'load', 'reload', 'dimension', 'repair', 'quit', 'exit', 'help', 'blocks', 'analyze', 'region', 'debug', 'log', 'box']</em><a class="headerlink" href="#mce.mce.commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mce.mce.debug">
+<code class="descname">debug</code><em class="property"> = False</em><a class="headerlink" href="#mce.mce.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mce.mce.last_played">
+<code class="descname">last_played</code><em class="property"> = None</em><a class="headerlink" href="#mce.mce.last_played" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mce.mce.level">
+<code class="descname">level</code><em class="property"> = None</em><a class="headerlink" href="#mce.mce.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.loadWorld">
+<code class="descname">loadWorld</code><span class="sig-paren">(</span><em>world</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.loadWorld"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.loadWorld" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mce.mce.needsSave">
+<code class="descname">needsSave</code><em class="property"> = False</em><a class="headerlink" href="#mce.mce.needsSave" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="mce.mce.prettySplit">
+<em class="property">static </em><code class="descname">prettySplit</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.prettySplit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.prettySplit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.printUsage">
+<code class="descname">printUsage</code><span class="sig-paren">(</span><em>command=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.printUsage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.printUsage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.printUsageAndQuit">
+<code class="descname">printUsageAndQuit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.printUsageAndQuit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.printUsageAndQuit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.processCommand">
+<code class="descname">processCommand</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.processCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.processCommand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mce.mce.random_seed">
+<code class="descname">random_seed</code><em class="property"> = None</em><a class="headerlink" href="#mce.mce.random_seed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.readBlockInfo">
+<code class="descname">readBlockInfo</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.readBlockInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.readBlockInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="mce.mce.readBlocksToCopy">
+<em class="property">static </em><code class="descname">readBlocksToCopy</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.readBlocksToCopy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.readBlocksToCopy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.readBox">
+<code class="descname">readBox</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.readBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.readBox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="mce.mce.readInt">
+<em class="property">static </em><code class="descname">readInt</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.readInt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.readInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.readIntPoint">
+<code class="descname">readIntPoint</code><span class="sig-paren">(</span><em>command</em>, <em>isPoint=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.readIntPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.readIntPoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.readPoint">
+<code class="descname">readPoint</code><span class="sig-paren">(</span><em>command</em>, <em>isPoint=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.readPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.readPoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mce.mce.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mce.html#mce.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mce.mce.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="leveleditor.html"
+                        title="previous chapter">leveleditor module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mcedit.html"
+                        title="next chapter">mcedit module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mce.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+      |
+      <a href="_sources/mce.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

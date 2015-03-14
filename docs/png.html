@@ -1,0 +1,569 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>png module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="next" title="pymclevel package" href="pymclevel.html" />
+    <link rel="prev" title="pkgutil module" href="pkgutil.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pymclevel.html" title="pymclevel package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pkgutil.html" title="pkgutil module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-png">
+<span id="png-module"></span><h1>png module<a class="headerlink" href="#module-png" title="Permalink to this headline">¶</a></h1>
+<p>Pure Python PNG Reader/Writer</p>
+<p>This Python module implements support for PNG images (see PNG
+specification at <a class="reference external" href="http://www.w3.org/TR/2003/REC-PNG-20031110/">http://www.w3.org/TR/2003/REC-PNG-20031110/</a> ). It reads
+and writes PNG files with all allowable bit depths (1/2/4/8/16/24/32/48/64
+bits per pixel) and colour combinations: greyscale (1/2/4/8/16 bit); RGB,
+RGBA, LA (greyscale with alpha) with 8/16 bits per channel; colour mapped
+images (1/2/4/8 bit).  Adam7 interlacing is supported for reading and
+writing.  A number of optional chunks can be specified (when writing)
+and understood (when reading): <code class="docutils literal"><span class="pre">tRNS</span></code>, <code class="docutils literal"><span class="pre">bKGD</span></code>, <code class="docutils literal"><span class="pre">gAMA</span></code>.</p>
+<p>For help, type <code class="docutils literal"><span class="pre">import</span> <span class="pre">png;</span> <span class="pre">help(png)</span></code> in your python interpreter.</p>
+<p>A good place to start is the <a class="reference internal" href="#png.Reader" title="png.Reader"><code class="xref py py-class docutils literal"><span class="pre">Reader</span></code></a> and <a class="reference internal" href="#png.Writer" title="png.Writer"><code class="xref py py-class docutils literal"><span class="pre">Writer</span></code></a> classes.</p>
+<p>Requires Python 2.3.  Limited support is available for Python 2.2, but
+not everything works.  Best with Python 2.4 and higher.  Installation is
+trivial, but see the <code class="docutils literal"><span class="pre">README.txt</span></code> file (with the source distribution)
+for details.</p>
+<p>This file can also be used as a command-line utility to convert
+<a class="reference external" href="http://netpbm.sourceforge.net/">Netpbm</a> PNM files to PNG, and the reverse conversion from PNG to
+PNM. The interface is similar to that of the <code class="docutils literal"><span class="pre">pnmtopng</span></code> program from
+Netpbm.  Type <code class="docutils literal"><span class="pre">python</span> <span class="pre">png.py</span> <span class="pre">--help</span></code> at the shell prompt
+for usage and a list of options.</p>
+<div class="section" id="a-note-on-spelling-and-terminology">
+<h2>A note on spelling and terminology<a class="headerlink" href="#a-note-on-spelling-and-terminology" title="Permalink to this headline">¶</a></h2>
+<p>Generally British English spelling is used in the documentation.  So
+that&#8217;s &#8220;greyscale&#8221; and &#8220;colour&#8221;.  This not only matches the author&#8217;s
+native language, it&#8217;s also used by the PNG specification.</p>
+<p>The major colour models supported by PNG (and hence by PyPNG) are:
+greyscale, RGB, greyscale&#8211;alpha, RGB&#8211;alpha.  These are sometimes
+referred to using the abbreviations: L, RGB, LA, RGBA.  In this case
+each letter abbreviates a single channel: <em>L</em> is for Luminance or Luma or
+Lightness which is the channel used in greyscale images; <em>R</em>, <em>G</em>, <em>B</em> stand
+for Red, Green, Blue, the components of a colour image; <em>A</em> stands for
+Alpha, the opacity channel (used for transparency effects, but higher
+values are more opaque, so it makes sense to call it opacity).</p>
+</div>
+<div class="section" id="a-note-on-formats">
+<h2>A note on formats<a class="headerlink" href="#a-note-on-formats" title="Permalink to this headline">¶</a></h2>
+<p>When getting pixel data out of this module (reading) and presenting
+data to this module (writing) there are a number of ways the data could
+be represented as a Python value.  Generally this module uses one of
+three formats called &#8220;flat row flat pixel&#8221;, &#8220;boxed row flat pixel&#8221;, and
+&#8220;boxed row boxed pixel&#8221;.  Basically the concern is whether each pixel
+and each row comes in its own little tuple (box), or not.</p>
+<p>Consider an image that is 3 pixels wide by 2 pixels high, and each pixel
+has RGB components:</p>
+<p>Boxed row flat pixel:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">list</span><span class="p">([</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Each row appears as its own list, but the pixels are flattened so that
+three values for one pixel simply follow the three values for the previous
+pixel.  This is the most common format used, because it provides a good
+compromise between space and convenience.  PyPNG regards itself as
+at liberty to replace any sequence type with any sufficiently compatible
+other sequence type; in practice each row is an array (from the array
+module), and the outer list is sometimes an iterator rather than an
+explicit list (so that streaming is possible).</p>
+<p>Flat row flat pixel:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span>
+<span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The entire image is one single giant sequence of colour values.
+Generally an array will be used (to save space), not a list.</p>
+<p>Boxed row boxed pixel:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">list</span><span class="p">([</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">),</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">),</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">)</span> <span class="p">],</span>
+    <span class="p">[</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">),</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">),</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">)</span> <span class="p">])</span>
+</pre></div>
+</div>
+<p>Each row appears in its own list, but each pixel also appears in its own
+tuple.  A serious memory burn in Python.</p>
+<p>In all cases the top row comes first, and for each row the pixels are
+ordered from left-to-right.  Within a pixel the values appear in the
+order, R-G-B-A (or L-A for greyscale&#8211;alpha).</p>
+<p>There is a fourth format, mentioned because it is used internally,
+is close to what lies inside a PNG file itself, and has some support
+from the public API.  This format is called packed.  When packed,
+each row is a sequence of bytes (integers from 0 to 255), just as
+it is before PNG scanline filtering is applied.  When the bit depth
+is 8 this is essentially the same as boxed row flat pixel; when the
+bit depth is less than 8, several pixels are packed into each byte;
+when the bit depth is 16 (the only value more than 8 that is supported
+by the PNG image format) each pixel value is decomposed into 2 bytes
+(and <cite>packed</cite> is a misnomer).  This format is used by the
+<a class="reference internal" href="#png.Writer.write_packed" title="png.Writer.write_packed"><code class="xref py py-meth docutils literal"><span class="pre">Writer.write_packed()</span></code></a> method.  It isn&#8217;t usually a convenient
+format, but may be just right if the source data for the PNG image
+comes from something that uses a similar format (for example, 1-bit
+BMPs, or another PNG file).</p>
+</div>
+<div class="section" id="and-now-my-famous-members">
+<h2>And now, my famous members<a class="headerlink" href="#and-now-my-famous-members" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="png.Reader">
+<em class="property">class </em><code class="descclassname">png.</code><code class="descname">Reader</code><span class="sig-paren">(</span><em>_guess=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>PNG decoder in pure Python.</p>
+<dl class="method">
+<dt id="png.Reader.asDirect">
+<code class="descname">asDirect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asDirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asDirect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the image data as a direct representation of an
+<code class="docutils literal"><span class="pre">x</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">*</span> <span class="pre">planes</span></code> array.  This method is intended to remove the
+need for callers to deal with palettes and transparency
+themselves.  Images with a palette (colour type 3)
+are converted to RGB or RGBA; images with transparency (a
+<code class="docutils literal"><span class="pre">tRNS</span></code> chunk) are converted to LA or RGBA as appropriate.
+When returned in this format the pixel values represent the
+colour value directly without needing to refer to palettes or
+transparency information.</p>
+<p>Like the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method this method returns a 4-tuple:</p>
+<p>(<em>width</em>, <em>height</em>, <em>pixels</em>, <em>meta</em>)</p>
+<p>This method normally returns pixel values with the bit depth
+they have in the source image, but when the source PNG has an
+<code class="docutils literal"><span class="pre">sBIT</span></code> chunk it is inspected and can reduce the bit depth of
+the result pixels; pixel values will be reduced according to
+the bit depth specified in the <code class="docutils literal"><span class="pre">sBIT</span></code> chunk (PNG nerds should
+note a single result bit depth is used for all channels; the
+maximum of the ones specified in the <code class="docutils literal"><span class="pre">sBIT</span></code> chunk.  An RGB565
+image will be rescaled to 6-bit RGB666).</p>
+<p>The <em>meta</em> dictionary that is returned reflects the <cite>direct</cite>
+format and not the original source image.  For example, an RGB
+source image with a <code class="docutils literal"><span class="pre">tRNS</span></code> chunk to represent a transparent
+colour, will have <code class="docutils literal"><span class="pre">planes=3</span></code> and <code class="docutils literal"><span class="pre">alpha=False</span></code> for the
+source image, but the <em>meta</em> dictionary returned by this method
+will have <code class="docutils literal"><span class="pre">planes=4</span></code> and <code class="docutils literal"><span class="pre">alpha=True</span></code> because an alpha
+channel is synthesized and added.</p>
+<p><em>pixels</em> is the pixel data in boxed row flat pixel format (just
+like the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method).</p>
+<p>All the other aspects of the image data are not changed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.asFloat">
+<code class="descname">asFloat</code><span class="sig-paren">(</span><em>maxval=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asFloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asFloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return image pixels as per <a class="reference internal" href="#png.Reader.asDirect" title="png.Reader.asDirect"><code class="xref py py-meth docutils literal"><span class="pre">asDirect()</span></code></a> method, but scale
+all pixel values to be floating point values between 0.0 and
+<em>maxval</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.asRGB">
+<code class="descname">asRGB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return image as RGB pixels.  Greyscales are expanded into RGB
+triplets.  An alpha channel in the source image will raise an
+exception.  The return values are as for the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method
+except that the <em>metadata</em> reflect the returned pixels, not the
+source image.  In particular, for this method
+<code class="docutils literal"><span class="pre">metadata['greyscale']</span></code> will be <code class="docutils literal"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.asRGB8">
+<code class="descname">asRGB8</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGB8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGB8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the image data as an RGB pixels with 8-bits per
+sample.  This is like the <a class="reference internal" href="#png.Reader.asRGB" title="png.Reader.asRGB"><code class="xref py py-meth docutils literal"><span class="pre">asRGB()</span></code></a> method except that
+this method additionally rescales the values so that they
+are all between 0 and 255 (8-bit).  In the case where the
+source image has a bit depth &lt; 8 the transformation preserves
+all the information; where the source image has bit depth
+&gt; 8, then rescaling to 8-bit values loses precision.  No
+dithering is performed.  Like <a class="reference internal" href="#png.Reader.asRGB" title="png.Reader.asRGB"><code class="xref py py-meth docutils literal"><span class="pre">asRGB()</span></code></a>, an alpha channel
+in the source image will raise an exception.</p>
+<blockquote>
+<div><p>This function returns a 4-tuple:
+(<em>width</em>, <em>height</em>, <em>pixels</em>, <em>metadata</em>).
+<em>width</em>, <em>height</em>, <em>metadata</em> are as per the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method.</p>
+<p><em>pixels</em> is the pixel data in boxed row flat pixel format.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.asRGBA">
+<code class="descname">asRGBA</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGBA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return image as RGBA pixels.  Greyscales are expanded into
+RGB triplets; an alpha channel is synthesized if necessary.
+The return values are as for the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method
+except that the <em>metadata</em> reflect the returned pixels, not the
+source image.  In particular, for this method
+<code class="docutils literal"><span class="pre">metadata['greyscale']</span></code> will be <code class="docutils literal"><span class="pre">False</span></code>, and
+<code class="docutils literal"><span class="pre">metadata['alpha']</span></code> will be <code class="docutils literal"><span class="pre">True</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.asRGBA8">
+<code class="descname">asRGBA8</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGBA8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGBA8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the image data as RGBA pixels with 8-bits per
+sample.  This method is similar to <a class="reference internal" href="#png.Reader.asRGB8" title="png.Reader.asRGB8"><code class="xref py py-meth docutils literal"><span class="pre">asRGB8()</span></code></a> and
+<a class="reference internal" href="#png.Reader.asRGBA" title="png.Reader.asRGBA"><code class="xref py py-meth docutils literal"><span class="pre">asRGBA()</span></code></a>:  The result pixels have an alpha channel, _and_
+values are rescale to the range 0 to 255.  The alpha channel is
+synthesized if necessary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.chunk">
+<code class="descname">chunk</code><span class="sig-paren">(</span><em>seek=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the next PNG chunk from the input file; returns type (as a 4
+character string) and data.  If the optional <cite>seek</cite> argument is
+specified then it will keep reading chunks until it either runs
+out of file or finds the type specified by the argument.  Note
+that in general the order of chunks in PNGs is unspecified, so
+using <cite>seek</cite> can cause you to miss chunks.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.chunklentype">
+<code class="descname">chunklentype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.chunklentype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunklentype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads just enough of the input to determine the next
+chunk&#8217;s length and type, returned as a (<em>length</em>, <em>type</em>) pair
+where <em>type</em> is a string.  If there are no more chunks, <code class="docutils literal"><span class="pre">None</span></code>
+is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.chunks">
+<code class="descname">chunks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator that will yield each chunk as a
+(<em>chunktype</em>, <em>content</em>) pair.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.deinterlace">
+<code class="descname">deinterlace</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.deinterlace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.deinterlace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read raw pixel data, undo filters, deinterlace, and flatten.
+Return in flat row flat pixel format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.iterboxed">
+<code class="descname">iterboxed</code><span class="sig-paren">(</span><em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.iterboxed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.iterboxed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator that yields each scanline in boxed row flat pixel
+format.  <cite>rows</cite> should be an iterator that yields the bytes of
+each row in turn.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.iterstraight">
+<code class="descname">iterstraight</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.iterstraight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.iterstraight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator that undoes the effect of filtering, and yields each
+row in serialised format (as a sequence of bytes).  Assumes input
+is straightlaced.  <cite>raw</cite> should be an iterable that yields the
+raw bytes in chunks of arbitrary size.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.palette">
+<code class="descname">palette</code><span class="sig-paren">(</span><em>alpha='natural'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a palette that is a sequence of 3-tuples or 4-tuples,
+synthesizing it from the <code class="docutils literal"><span class="pre">PLTE</span></code> and <code class="docutils literal"><span class="pre">tRNS</span></code> chunks.  These
+chunks should have already been processed (for example, by
+calling the <a class="reference internal" href="#png.Reader.preamble" title="png.Reader.preamble"><code class="xref py py-meth docutils literal"><span class="pre">preamble()</span></code></a> method).  All the tuples are the
+same size, 3-tuples if there is no <code class="docutils literal"><span class="pre">tRNS</span></code> chunk, 4-tuples when
+there is a <code class="docutils literal"><span class="pre">tRNS</span></code> chunk.  Assumes that the image is colour type
+3 and therefore a <code class="docutils literal"><span class="pre">PLTE</span></code> chunk is required.</p>
+<p>If the <cite>alpha</cite> argument is <code class="docutils literal"><span class="pre">'force'</span></code> then an alpha channel is
+always added, forcing the result to be a sequence of 4-tuples.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.preamble">
+<code class="descname">preamble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.preamble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.preamble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the image metadata by reading the initial part of the PNG
+file up to the start of the <code class="docutils literal"><span class="pre">IDAT</span></code> chunk.  All the chunks that
+precede the <code class="docutils literal"><span class="pre">IDAT</span></code> chunk are read and either processed for
+metadata or discarded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.process_chunk">
+<code class="descname">process_chunk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.process_chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.process_chunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the next chunk and its data.  This only processes the
+following chunk types, all others are ignored: <code class="docutils literal"><span class="pre">IHDR</span></code>,
+<code class="docutils literal"><span class="pre">PLTE</span></code>, <code class="docutils literal"><span class="pre">bKGD</span></code>, <code class="docutils literal"><span class="pre">tRNS</span></code>, <code class="docutils literal"><span class="pre">gAMA</span></code>, <code class="docutils literal"><span class="pre">sBIT</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the PNG file and decode it.  Returns (<cite>width</cite>, <cite>height</cite>,
+<cite>pixels</cite>, <cite>metadata</cite>).</p>
+<p>May use excessive memory.</p>
+<p><cite>pixels</cite> are returned in boxed row flat pixel format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.read_flat">
+<code class="descname">read_flat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.read_flat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.read_flat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a PNG file and decode it into flat row flat pixel format.
+Returns (<em>width</em>, <em>height</em>, <em>pixels</em>, <em>metadata</em>).</p>
+<p>May use excessive memory.</p>
+<p><cite>pixels</cite> are returned in flat row flat pixel format.</p>
+<p>See also the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method which returns pixels in the
+more stream-friendly boxed row flat pixel format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.serialtoflat">
+<code class="descname">serialtoflat</code><span class="sig-paren">(</span><em>bytes</em>, <em>width=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.serialtoflat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.serialtoflat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert serial format (byte stream) pixel data to flat row
+flat pixel.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.undo_filter">
+<code class="descname">undo_filter</code><span class="sig-paren">(</span><em>filter_type</em>, <em>scanline</em>, <em>previous</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.undo_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.undo_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo the filter for a scanline.  <cite>scanline</cite> is a sequence of
+bytes that does not include the initial filter type byte.
+<cite>previous</cite> is decoded previous scanline (for straightlaced
+images this is the previous pixel row, but for interlaced
+images, it is the previous scanline in the reduced image, which
+in general is not the previous pixel row in the final image).
+When there is no previous scanline (the first row of a
+straightlaced image, or the first row in one of the passes in an
+interlaced image), then this argument should be <code class="docutils literal"><span class="pre">None</span></code>.</p>
+<p>The scanline will have the effects of filtering removed, and the
+result will be returned as a fresh sequence of bytes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Reader.validate_signature">
+<code class="descname">validate_signature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.validate_signature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.validate_signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>If signature (header) has not been read then read and
+validate it; otherwise do nothing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="png.Writer">
+<em class="property">class </em><code class="descclassname">png.</code><code class="descname">Writer</code><span class="sig-paren">(</span><em>width=None</em>, <em>height=None</em>, <em>size=None</em>, <em>greyscale=False</em>, <em>alpha=False</em>, <em>bitdepth=8</em>, <em>palette=None</em>, <em>transparent=None</em>, <em>background=None</em>, <em>gamma=None</em>, <em>compression=None</em>, <em>interlace=False</em>, <em>bytes_per_sample=None</em>, <em>planes=None</em>, <em>colormap=None</em>, <em>maxval=None</em>, <em>chunk_limit=1048576</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>PNG encoder in pure Python.</p>
+<dl class="method">
+<dt id="png.Writer.array_scanlines">
+<code class="descname">array_scanlines</code><span class="sig-paren">(</span><em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.array_scanlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.array_scanlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates boxed rows (flat pixels) from flat rows (flat pixels)
+in an array.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.array_scanlines_interlace">
+<code class="descname">array_scanlines_interlace</code><span class="sig-paren">(</span><em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.array_scanlines_interlace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.array_scanlines_interlace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator for interlaced scanlines from an array.  <cite>pixels</cite> is
+the full source image in flat row flat pixel format.  The
+generator yields each scanline of the reduced passes in turn, in
+boxed row flat pixel format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.convert_pnm">
+<code class="descname">convert_pnm</code><span class="sig-paren">(</span><em>infile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.convert_pnm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.convert_pnm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a PNM file containing raw pixel data into a PNG file
+with the parameters set in the writer object.  Works for
+(binary) PGM, PPM, and PAM formats.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.convert_ppm_and_pgm">
+<code class="descname">convert_ppm_and_pgm</code><span class="sig-paren">(</span><em>ppmfile</em>, <em>pgmfile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.convert_ppm_and_pgm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.convert_ppm_and_pgm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a PPM and PGM file containing raw pixel data into a
+PNG outfile with the parameters set in the writer object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.file_scanlines">
+<code class="descname">file_scanlines</code><span class="sig-paren">(</span><em>infile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.file_scanlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.file_scanlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates boxed rows in flat pixel format, from the input file
+<cite>infile</cite>.  It assumes that the input file is in a &#8220;Netpbm-like&#8221;
+binary format, and is positioned at the beginning of the first
+pixel.  The number of pixels to read is taken from the image
+dimensions (<cite>width</cite>, <cite>height</cite>, <cite>planes</cite>) and the number of bytes
+per value is implied by the image <cite>bitdepth</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.make_palette">
+<code class="descname">make_palette</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.make_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.make_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the byte sequences for a <code class="docutils literal"><span class="pre">PLTE</span></code> and if necessary a
+<code class="docutils literal"><span class="pre">tRNS</span></code> chunk.  Returned as a pair (<em>p</em>, <em>t</em>).  <em>t</em> will be
+<code class="docutils literal"><span class="pre">None</span></code> if no <code class="docutils literal"><span class="pre">tRNS</span></code> chunk is necessary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a PNG image to the output file.  <cite>rows</cite> should be
+an iterable that yields each row in boxed row flat pixel format.
+The rows should be the rows of the original image, so there
+should be <code class="docutils literal"><span class="pre">self.height</span></code> rows of <code class="docutils literal"><span class="pre">self.width</span> <span class="pre">*</span> <span class="pre">self.planes</span></code> values.
+If <cite>interlace</cite> is specified (when creating the instance), then
+an interlaced PNG file will be written.  Supply the rows in the
+normal image order; the interlacing is carried out internally.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Interlacing will require the entire image to be in working memory.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.write_array">
+<code class="descname">write_array</code><span class="sig-paren">(</span><em>outfile</em>, <em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an array in flat row flat pixel format as a PNG file on
+the output file.  See also <a class="reference internal" href="#png.Writer.write" title="png.Writer.write"><code class="xref py py-meth docutils literal"><span class="pre">write()</span></code></a> method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.write_packed">
+<code class="descname">write_packed</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write_packed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_packed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write PNG file to <cite>outfile</cite>.  The pixel data comes from <cite>rows</cite>
+which should be in boxed row packed format.  Each row should be
+a sequence of packed bytes.</p>
+<p>Technically, this method does work for interlaced images but it
+is best avoided.  For interlaced images, the rows should be
+presented in the order that they appear in the file.</p>
+<p>This method should not be used when the source image bit depth
+is not one naturally supported by PNG; the bit depth should be
+1, 2, 4, 8, or 16.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="png.Writer.write_passes">
+<code class="descname">write_passes</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em>, <em>packed=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write_passes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_passes" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Write a PNG image to the output file.</div></blockquote>
+<p>Most users are expected to find the <a class="reference internal" href="#png.Writer.write" title="png.Writer.write"><code class="xref py py-meth docutils literal"><span class="pre">write()</span></code></a> or
+<a class="reference internal" href="#png.Writer.write_array" title="png.Writer.write_array"><code class="xref py py-meth docutils literal"><span class="pre">write_array()</span></code></a> method more convenient.</p>
+<p>The rows should be given to this method in the order that
+they appear in the output file.  For straightlaced images,
+this is the usual top to bottom ordering, but for interlaced
+images the rows should have already been interlaced before
+passing them to this function.</p>
+<dl class="docutils">
+<dt><cite>rows</cite> should be an iterable that yields each row.  When</dt>
+<dd><cite>packed</cite> is <code class="docutils literal"><span class="pre">False</span></code> the rows should be in boxed row flat pixel
+format; when <cite>packed</cite> is <code class="docutils literal"><span class="pre">True</span></code> each row should be a packed
+sequence of bytes.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="png.write_chunks">
+<code class="descclassname">png.</code><code class="descname">write_chunks</code><span class="sig-paren">(</span><em>out</em>, <em>chunks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#write_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.write_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a PNG file by writing out the chunks.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">png module</a><ul>
+<li><a class="reference internal" href="#a-note-on-spelling-and-terminology">A note on spelling and terminology</a></li>
+<li><a class="reference internal" href="#a-note-on-formats">A note on formats</a></li>
+<li><a class="reference internal" href="#and-now-my-famous-members">And now, my famous members</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pkgutil.html"
+                        title="previous chapter">pkgutil module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pymclevel.html"
+                        title="next chapter">pymclevel package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/png.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+      |
+      <a href="_sources/png.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

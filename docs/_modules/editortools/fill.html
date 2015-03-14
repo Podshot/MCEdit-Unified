@@ -1,0 +1,503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>editortools.fill &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for editortools.fill</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
+
+<span class="sd">Permission to use, copy, modify, and/or distribute this software for any</span>
+<span class="sd">purpose with or without fee is hereby granted, provided that the above</span>
+<span class="sd">copyright notice and this permission notice appear in all copies.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES</span>
+<span class="sd">WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF</span>
+<span class="sd">MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR</span>
+<span class="sd">ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES</span>
+<span class="sd">WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
+<span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
+<span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
+<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
+<span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">alert</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">depths</span> <span class="kn">import</span> <span class="n">DepthOffset</span>
+<span class="kn">from</span> <span class="nn">editortools.blockpicker</span> <span class="kn">import</span> <span class="n">BlockPicker</span>
+<span class="kn">from</span> <span class="nn">editortools.blockview</span> <span class="kn">import</span> <span class="n">BlockButton</span>
+<span class="kn">from</span> <span class="nn">editortools.editortool</span> <span class="kn">import</span> <span class="n">EditorTool</span>
+<span class="kn">from</span> <span class="nn">editortools.tooloptions</span> <span class="kn">import</span> <span class="n">ToolOptions</span>
+<span class="kn">from</span> <span class="nn">glbackground</span> <span class="kn">import</span> <span class="n">Panel</span>
+<span class="kn">from</span> <span class="nn">glutils</span> <span class="kn">import</span> <span class="n">Texture</span>
+<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">showProgress</span><span class="p">,</span> <span class="n">CheckBoxLabel</span><span class="p">,</span> <span class="n">alertException</span><span class="p">,</span> <span class="n">setWindowCaption</span>
+<span class="kn">from</span> <span class="nn">operation</span> <span class="kn">import</span> <span class="n">Operation</span>
+<span class="kn">from</span> <span class="nn">pymclevel.blockrotation</span> <span class="kn">import</span> <span class="n">Roll</span><span class="p">,</span> <span class="n">RotateLeft</span><span class="p">,</span> <span class="n">FlipVertical</span><span class="p">,</span> <span class="n">FlipEastWest</span><span class="p">,</span> <span class="n">FlipNorthSouth</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">AttrRef</span>
+
+<span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">albow.root</span> <span class="kn">import</span> <span class="n">get_root</span>
+<span class="kn">import</span> <span class="nn">pymclevel</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+
+
+<div class="viewcode-block" id="BlockFillOperation"><a class="viewcode-back" href="../../editortools.html#editortools.fill.BlockFillOperation">[docs]</a><span class="k">class</span> <span class="nc">BlockFillOperation</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">editor</span><span class="p">,</span> <span class="n">destLevel</span><span class="p">,</span> <span class="n">destBox</span><span class="p">,</span> <span class="n">blockInfo</span><span class="p">,</span> <span class="n">blocksToReplace</span><span class="p">,</span> <span class="n">noData</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BlockFillOperation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">editor</span><span class="p">,</span> <span class="n">destLevel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noData</span> <span class="o">=</span> <span class="n">noData</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span> <span class="o">=</span> <span class="n">destBox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">blockInfo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocksToReplace</span> <span class="o">=</span> <span class="n">blocksToReplace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canUndo</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="BlockFillOperation.name"><a class="viewcode-back" href="../../editortools.html#editortools.fill.BlockFillOperation.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Fill with &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span><span class="o">.</span><span class="n">name</span>
+</div>
+<div class="viewcode-block" id="BlockFillOperation.perform"><a class="viewcode-back" href="../../editortools.html#editortools.fill.BlockFillOperation.perform">[docs]</a>    <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recordUndo</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">saving</span><span class="p">:</span>
+            <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Cannot perform action while saving is taking place&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">recordUndo</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">undoLevel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extractUndo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span><span class="p">)</span>
+
+        <span class="n">destBox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">bounds</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span><span class="p">:</span>
+            <span class="n">destBox</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">fill</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">fillBlocksIter</span><span class="p">(</span><span class="n">destBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span><span class="p">,</span> <span class="n">blocksToReplace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blocksToReplace</span><span class="p">,</span> <span class="n">noData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">noData</span><span class="p">)</span>
+        <span class="n">showProgress</span><span class="p">(</span><span class="s">&quot;Replacing blocks...&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">cancel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canUndo</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="BlockFillOperation.bufferSize"><a class="viewcode-back" href="../../editortools.html#editortools.fill.BlockFillOperation.bufferSize">[docs]</a>    <span class="k">def</span> <span class="nf">bufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="mi">2</span>
+</div>
+<div class="viewcode-block" id="BlockFillOperation.dirtyBox"><a class="viewcode-back" href="../../editortools.html#editortools.fill.BlockFillOperation.dirtyBox">[docs]</a>    <span class="k">def</span> <span class="nf">dirtyBox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span>
+
+</div></div>
+<div class="viewcode-block" id="FillToolPanel"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillToolPanel">[docs]</a><span class="k">class</span> <span class="nc">FillToolPanel</span><span class="p">(</span><span class="n">Panel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
+        <span class="n">replacing</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">replacing</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span> <span class="o">=</span> <span class="n">BlockButton</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">blockInfo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickFillBlock</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fillWithLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Fill with:&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Fill&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">confirm</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Shortcut: Enter&quot;</span>
+
+        <span class="n">rollkey</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">replaceShortcut</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">replaceLabel</span> <span class="o">=</span> <span class="n">replaceLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Replace&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="n">replaceLabel</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">toggleReplacing</span><span class="p">()</span>
+        <span class="n">replaceLabel</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">177</span><span class="p">,</span> <span class="mi">177</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="c"># replaceLabelRow = Row( (Label(rollkey), replaceLabel) )</span>
+        <span class="n">replaceLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rollkey</span><span class="p">)</span>
+        <span class="n">replaceLabel</span><span class="o">.</span><span class="n">align</span> <span class="o">=</span> <span class="s">&quot;c&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noDataCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Keep Data Intact&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span> <span class="s">&quot;noData&quot;</span><span class="p">))</span>
+        
+        <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fillWithLabel</span><span class="p">,</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="p">,</span>
+               <span class="c"># swapRow,</span>
+               <span class="n">replaceLabel</span><span class="p">,</span>
+               <span class="c"># self.replaceBlockButton,</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">noDataCheckBox</span><span class="p">,</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">replacing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fillWithLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Find:&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span> <span class="o">=</span> <span class="n">BlockButton</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">replaceBlockInfo</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickReplaceBlock</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replaceLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;Replace with:&quot;</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Swap&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swapBlockTypes</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="n">swapkey</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">swap</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">swapkey</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Replace&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">confirm</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Shortcut: Enter&quot;</span>
+
+            <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fillWithLabel</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="p">,</span>
+                   <span class="n">replaceLabel</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">noDataCheckBox</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span><span class="p">)</span>
+
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FillToolPanel.swapBlockTypes"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillToolPanel.swapBlockTypes">[docs]</a>    <span class="k">def</span> <span class="nf">swapBlockTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">replaceBlockInfo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">replaceBlockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">blockInfo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">t</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">replaceBlockInfo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">blockInfo</span>  <span class="c"># xxx put this in a property</span>
+</div>
+<div class="viewcode-block" id="FillToolPanel.pickReplaceBlock"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillToolPanel.pickReplaceBlock">[docs]</a>    <span class="k">def</span> <span class="nf">pickReplaceBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">blockPicker</span> <span class="o">=</span> <span class="n">BlockPicker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">replaceBlockInfo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">blockPicker</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">replaceBlockInfo</span> <span class="o">=</span> <span class="n">blockPicker</span><span class="o">.</span><span class="n">blockInfo</span>
+</div>
+<div class="viewcode-block" id="FillToolPanel.pickFillBlock"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillToolPanel.pickFillBlock">[docs]</a>    <span class="k">def</span> <span class="nf">pickFillBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">blockPicker</span> <span class="o">=</span> <span class="n">BlockPicker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">blockInfo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">,</span> <span class="n">allowWildcards</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">blockPicker</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">blockPicker</span><span class="o">.</span><span class="n">blockInfo</span>
+
+</div></div>
+<div class="viewcode-block" id="FillToolOptions"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillToolOptions">[docs]</a><span class="k">class</span> <span class="nc">FillToolOptions</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Choose Block Immediately&quot;</span><span class="p">,</span>
+                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">chooseBlockImmediately</span><span class="p">,</span>
+                                                <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;When the fill tool is chosen, prompt for a block type.&quot;</span><span class="p">)</span>
+
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Fill Options&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBox</span><span class="p">,</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="FillTool"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool">[docs]</a><span class="k">class</span> <span class="nc">FillTool</span><span class="p">(</span><span class="n">EditorTool</span><span class="p">):</span>
+    <span class="n">toolIconName</span> <span class="o">=</span> <span class="s">&quot;fill&quot;</span>
+    <span class="n">_blockInfo</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">alphaMaterials</span><span class="o">.</span><span class="n">Stone</span>
+    <span class="n">replaceBlockInfo</span> <span class="o">=</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">alphaMaterials</span><span class="o">.</span><span class="n">Air</span>
+    <span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Fill and Replace</span><span class="se">\n</span><span class="s">Right-click for options&quot;</span>
+    <span class="n">replacing</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">EditorTool</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optionsPanel</span> <span class="o">=</span> <span class="n">FillToolOptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickBlockKey</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">get_root</span><span class="p">()</span>
+        
+    <span class="n">noData</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blockInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span>
+
+    <span class="nd">@blockInfo.setter</span>
+    <span class="k">def</span> <span class="nf">blockInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span> <span class="o">=</span> <span class="n">bt</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">bt</span>
+
+<div class="viewcode-block" id="FillTool.levelChanged"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.levelChanged">[docs]</a>    <span class="k">def</span> <span class="nf">levelChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="FillTool.showPanel"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.showPanel">[docs]</a>    <span class="k">def</span> <span class="nf">showPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">)</span>
+
+        <span class="n">panel</span> <span class="o">=</span> <span class="n">FillToolPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">centery</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">left</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;lwh&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="o">=</span> <span class="n">panel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FillTool.toolEnabled"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.toolEnabled">[docs]</a>    <span class="k">def</span> <span class="nf">toolEnabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FillTool.toolSelected"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.toolSelected">[docs]</a>    <span class="k">def</span> <span class="nf">toolSelected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">None</span> <span class="ow">is</span> <span class="n">box</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chooseBlockImmediately</span><span class="p">:</span>
+            <span class="n">blockPicker</span> <span class="o">=</span> <span class="n">BlockPicker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">,</span> <span class="n">allowWildcards</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">blockPicker</span><span class="o">.</span><span class="n">present</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">blockPicker</span><span class="o">.</span><span class="n">blockInfo</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
+</div>
+    <span class="n">chooseBlockImmediately</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">chooseBlockImmediately</span><span class="o">.</span><span class="n">property</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FillTool.toolReselected"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.toolReselected">[docs]</a>    <span class="k">def</span> <span class="nf">toolReselected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">pickFillBlock</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FillTool.cancel"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidePanel</span><span class="p">()</span>
+</div>
+    <span class="nd">@alertException</span>
+    <span class="k">def</span> <span class="nf">confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">None</span> <span class="ow">is</span> <span class="n">box</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">with</span> <span class="n">setWindowCaption</span><span class="p">(</span><span class="s">&quot;REPLACING - &quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">freezeStatus</span><span class="p">(</span><span class="s">&quot;Replacing </span><span class="si">%0.1f</span><span class="s"> million blocks&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1048576.</span><span class="p">,))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">blockInfo</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="o">.</span><span class="n">blockInfo</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span><span class="o">.</span><span class="n">wildcard</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;Wildcard replace&quot;</span>
+                    <span class="n">blocksToReplace</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+                        <span class="n">blocksToReplace</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">blockWithID</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">blocksToReplace</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span><span class="p">]</span>
+
+                <span class="n">op</span> <span class="o">=</span> <span class="n">BlockFillOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockInfo</span><span class="p">,</span>
+                                        <span class="n">blocksToReplace</span><span class="p">,</span> <span class="n">noData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">noData</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">blocksToReplace</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="n">BlockFillOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span><span class="p">,</span>
+                                        <span class="n">blocksToReplace</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addOperation</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addUnsavedEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">invalidateBox</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">selectTool</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FillTool.roll"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.roll">[docs]</a>    <span class="k">def</span> <span class="nf">roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">blocksOnly</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">blocksOnly</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">ID</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">blockData</span><span class="p">]</span>
+            <span class="n">Roll</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[(</span><span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">toggleReplacing</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FillTool.mirror"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.mirror">[docs]</a>    <span class="k">def</span> <span class="nf">mirror</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">blocksOnly</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">blocksOnly</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">ID</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">blockData</span><span class="p">]</span>
+            <span class="n">yaw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span><span class="o">.</span><span class="n">yaw</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+            <span class="k">if</span> <span class="p">(</span><span class="mi">45</span> <span class="o">&lt;=</span> <span class="n">yaw</span> <span class="o">&lt;</span> <span class="mi">135</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">225</span> <span class="o">&lt;</span> <span class="n">yaw</span> <span class="o">&lt;=</span> <span class="mi">315</span><span class="p">):</span>
+                <span class="n">FlipEastWest</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">FlipNorthSouth</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[(</span><span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+</div>
+<div class="viewcode-block" id="FillTool.flip"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.flip">[docs]</a>    <span class="k">def</span> <span class="nf">flip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">blocksOnly</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">blocksOnly</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">ID</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">blockData</span><span class="p">]</span>
+            <span class="n">FlipVertical</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[(</span><span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+</div>
+<div class="viewcode-block" id="FillTool.rotate"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">blocksOnly</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">blocksOnly</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">ID</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_blockInfo</span><span class="o">.</span><span class="n">blockData</span><span class="p">]</span>
+            <span class="n">RotateLeft</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="p">[(</span><span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+</div>
+<div class="viewcode-block" id="FillTool.toggleReplacing"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.toggleReplacing">[docs]</a>    <span class="k">def</span> <span class="nf">toggleReplacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidePanel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">pickReplaceBlock</span><span class="p">()</span>
+</div>
+    <span class="nd">@alertException</span>
+    <span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">swapBlockTypes</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FillTool.blockTexFunc"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.blockTexFunc">[docs]</a>    <span class="k">def</span> <span class="nf">blockTexFunc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">terrainTexture</span><span class="p">,</span> <span class="n">tex</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_func</span><span class="p">():</span>
+            <span class="n">s</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">tex</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">terrainTexture</span><span class="p">,</span> <span class="s">&quot;data&quot;</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">terrainTexture</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">pixelWidth</span> <span class="o">=</span> <span class="mi">512</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;Pocket&quot;</span><span class="p">,</span> <span class="s">&quot;Alpha&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">256</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">*</span> <span class="n">w</span> <span class="o">/</span> <span class="n">pixelWidth</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">h</span> <span class="o">/</span> <span class="n">pixelWidth</span>
+            <span class="n">texData</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">terrainTexture</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">t</span><span class="p">:</span><span class="n">t</span> <span class="o">+</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">32</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span><span class="n">s</span> <span class="o">+</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">32</span><span class="p">])</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glTexImage2D</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE_2D</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">32</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_RGBA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_UNSIGNED_BYTE</span><span class="p">,</span>
+                            <span class="n">texData</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_func</span>
+</div>
+<div class="viewcode-block" id="FillTool.drawToolReticle"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.drawToolReticle">[docs]</a>    <span class="k">def</span> <span class="nf">drawToolReticle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickBlockKey</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c"># eyedropper mode</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">drawWireCubeReticle</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="FillTool.drawToolMarkers"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.drawToolMarkers">[docs]</a>    <span class="k">def</span> <span class="nf">drawToolMarkers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentTool</span> <span class="o">!=</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span><span class="p">:</span>
+            <span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockInfo</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span>
+
+        <span class="n">color</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.35</span>
+        <span class="k">if</span> <span class="n">blockInfo</span><span class="p">:</span>
+            <span class="n">terrainTexture</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">terrainTexture</span>
+            <span class="n">tex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">blockTextures</span><span class="p">[</span><span class="n">blockInfo</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">blockInfo</span><span class="o">.</span><span class="n">blockData</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c"># xxx</span>
+            <span class="n">tex</span> <span class="o">=</span> <span class="n">Texture</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blockTexFunc</span><span class="p">(</span><span class="n">terrainTexture</span><span class="p">,</span> <span class="n">tex</span><span class="p">))</span>
+
+            <span class="c"># color = (1.5 - alpha, 1.0, 1.5 - alpha, alpha - 0.35)</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE</span><span class="p">)</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glPushMatrix</span><span class="p">()</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glScale</span><span class="p">(</span><span class="mf">16.</span><span class="p">,</span> <span class="mf">16.</span><span class="p">,</span> <span class="mf">16.</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tex</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="c"># color = (1.0, 0.3, 0.3, alpha - 0.35)</span>
+
+        <span class="n">GL</span><span class="o">.</span><span class="n">glPolygonOffset</span><span class="p">(</span><span class="n">DepthOffset</span><span class="o">.</span><span class="n">FillMarkers</span><span class="p">,</span> <span class="n">DepthOffset</span><span class="o">.</span><span class="n">FillMarkers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">drawConstructionCube</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span>
+                                         <span class="n">color</span><span class="p">,</span>
+                                         <span class="n">texture</span><span class="o">=</span><span class="n">tex</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">blockInfo</span><span class="p">:</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_TEXTURE</span><span class="p">)</span>
+            <span class="n">GL</span><span class="o">.</span><span class="n">glPopMatrix</span><span class="p">()</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">statusText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">hotkey</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hotkey</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">replaceShortcut</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">worldTooltipText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickBlockKey</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">blockFaceUnderCursor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">blockFaceUnderCursor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">blockID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+                <span class="n">blockdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockDataAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Click to use {0} ({1}:{2})&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">blockWithID</span><span class="p">(</span><span class="n">blockID</span><span class="p">,</span> <span class="n">blockdata</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">blockID</span><span class="p">,</span> <span class="n">blockdata</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FillTool.mouseUp"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.mouseUp">[docs]</a>    <span class="k">def</span> <span class="nf">mouseUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">mouseUp</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</div>
+    <span class="nd">@alertException</span>
+    <span class="k">def</span> <span class="nf">mouseDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="nb">dir</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickBlockKey</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockDataAt</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">blockWithID</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">mouseDown</span><span class="p">(</span><span class="n">evt</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="nb">dir</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FillTool.keyDown"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.keyDown">[docs]</a>    <span class="k">def</span> <span class="nf">keyDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="n">keyname</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;keyname&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">pickBlock</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pickBlockKey</span> <span class="o">=</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="FillTool.keyUp"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.keyUp">[docs]</a>    <span class="k">def</span> <span class="nf">keyUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="n">keyname</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;keyname&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">pickBlock</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pickBlockKey</span> <span class="o">=</span> <span class="mi">0</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
