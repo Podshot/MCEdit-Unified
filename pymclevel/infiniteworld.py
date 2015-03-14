@@ -240,14 +240,14 @@ class AnvilChunk(LightedChunk):
         self.world = chunkData.world
         self.chunkPosition = chunkData.chunkPosition
         self.chunkData = chunkData
-        self._timeLastChanged = time.time()
 
     def savedTagData(self):
         return self.chunkData.savedTagData()
 
     def __str__(self):
-        return u"AnvilChunk, coords:{0}, world: {1}, D:{2}, L:{3}".format(self.chunkPosition, self.world.displayName, self.dirty, self.needsLighting)
-    
+        return u"AnvilChunk, coords:{0}, world: {1}, D:{2}, L:{3}".format(self.chunkPosition, self.world.displayName,
+                                                                          self.dirty, self.needsLighting)
+
     @property
     def needsLighting(self):
         return self.chunkPosition in self.world.chunksNeedingLighting
@@ -1045,7 +1045,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.playerTagCache = {}
         self.players = []
         assert not (create and readonly)
-        self.lastCleanUp = time.time()
 
         if os.path.basename(filename) in ("level.dat", "level.dat_old"):
             filename = os.path.dirname(filename)
@@ -1075,7 +1074,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.unsavedWorkFolder = AnvilWorldFolder(workFolderPath)
 
         # maps (cx, cz) pairs to AnvilChunk
-        self._loadedChunks = {}
+        self._loadedChunks = weakref.WeakValueDictionary()
 
         # maps (cx, cz) pairs to AnvilChunkData
         self._loadedChunkData = {}
@@ -1596,13 +1595,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         """ read the chunk from disk, load it, and return it."""
 
         chunk = self._loadedChunks.get((cx, cz))
-        if time.time() - self.lastCleanUp > 1.0:
-            for k in self._loadedChunks.keys():
-                ch = self._loadedChunks[k]
-                if ch._timeLastChanged - time.time() > 2.0:
-                    self.loadedChunks[k] = None
-            self.lastCleanUp = time.time()
-            
         if chunk is not None:
             return chunk
 
