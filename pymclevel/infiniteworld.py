@@ -3,6 +3,7 @@ Created on Jul 22, 2011
 
 @author: Rio
 '''
+import collections
 
 import copy
 from datetime import datetime
@@ -911,7 +912,7 @@ class AnvilWorldFolder(object):
             os.makedirs(path)
 
         return path
-    
+
     def setPath(self, path):
         self.filename = path
 
@@ -1078,6 +1079,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
         # maps (cx, cz) pairs to AnvilChunkData
         self._loadedChunkData = {}
+        self.recentChunks = collections.deque(maxlen=20)
 
         self.chunksNeedingLighting = set()
         self._allChunks = None
@@ -1231,6 +1233,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.unsavedWorkFolder.closeRegions()
 
         self._allChunks = None
+        self.recentChunks.clear()
         self._loadedChunks.clear()
         self._loadedChunkData.clear()
 
@@ -1602,6 +1605,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         chunk = AnvilChunk(chunkData)
 
         self._loadedChunks[cx, cz] = chunk
+        self.recentChunks.append(chunk)
         return chunk
 
     def markDirtyChunk(self, cx, cz):
