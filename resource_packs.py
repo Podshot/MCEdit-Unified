@@ -619,7 +619,7 @@ class ZipResourcePack(IResourcePack):
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
         for name in zfile.infolist():
-            if name.filename.endswith(".png"):
+            if name.filename.endswith(".png") and not name.filename.split("/")[-1].startswith("._"):
                 if name.filename.startswith("assets/minecraft/textures/blocks"):
                     block_name = os.path.normpath(name.filename).split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
@@ -684,7 +684,7 @@ class FolderResourcePack(IResourcePack):
         if os.path.exists(base_path):
             files = os.listdir(base_path)
             for tex_file in files:
-                if tex_file.endswith(".png"):
+                if tex_file.endswith(".png") and not tex_file.startswith("._"):
                     possible_texture = Image.open(os.path.join(base_path, tex_file))
                     block_name = tex_file[:-4]
                     if possible_texture.size == (16, 16):
