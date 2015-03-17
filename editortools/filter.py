@@ -569,7 +569,10 @@ class FilterToolPanel(Panel):
 
     def saveOptions(self):
         if self.filterOptionsPanel and not self.usingMacro:
-            self.tool.savedOptions[self.selectedFilterName] = self.filterOptionsPanel.options
+            options = {}
+            options.update(self.filterOptionsPanel.options)
+            options.pop("", "")
+            self.tool.savedOptions[self.selectedFilterName] = options
 
 
 class FilterOperation(Operation):
