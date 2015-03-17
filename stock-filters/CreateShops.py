@@ -33,15 +33,16 @@ ProfessionKeys = ()
 for key in Professions.keys():
     ProfessionKeys = ProfessionKeys + (key,)
 
-inputs = [( ("General Trade", "title"),
-            ("This is a modified version of SethBling's Create Shops filter at DragonQuiz's request", "label"),
-            ("Profession", ProfessionKeys),
-            ("Add Stopping Trade", True),
-            ("Invulnerable Villager", True),
-            ("Make Unlimited Trades", True),
-            ("Give Experience per a Trade", True),
-            ("Make Villager not Move", False),
-            ("Villager Name", ("string", "width=250")),),
+inputs = [(("General Trade", "title"),
+           ("This is a modified version of SethBling's Create Shops filter at DragonQuiz's request", "label"),
+           ("Profession", ProfessionKeys),
+           ("Add Stopping Trade", True),
+           ("Invulnerable Villager", True),
+           ("Make Unlimited Trades", True),
+           ("Give Experience per a Trade", True),
+           ("Make Villager not Move", False),
+           ("Make Villager Silent", False),
+           ("Villager Name", ("string", "width=250")),),
 
           (("Rotation", "title"),
            ("      Rotate the Position of your Trader\n"
@@ -52,7 +53,7 @@ inputs = [( ("General Trade", "title"),
            (
                "Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees",
                "label"),
-          ),
+           ),
 
           (("Trade Notes", "title"),
            ("To create a shop first put your buy in the top slot(s) of the chest.\n"
@@ -61,7 +62,7 @@ inputs = [( ("General Trade", "title"),
             "Click the chest you want and choose what you want and click hit enter\n"
             "*All items must be in the same row*\n"
             , "label")),
-]
+          ]
 
 
 def perform(level, box, options):
@@ -70,6 +71,7 @@ def perform(level, box, options):
     unlimited = options["Make Unlimited Trades"]
     xp = options["Give Experience per a Trade"]
     nomove = options["Make Villager not Move"]
+    silent = options["Make Villager Silent"]
     name = options["Villager Name"]
     yaxis = options["Y-Axis"]
     xaxis = options["X-Axis"]
@@ -82,10 +84,10 @@ def perform(level, box, options):
             if (x, y, z) in box:
                 if e["id"].value == "Chest":
                     createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited,
-                               xp, nomove, name, yaxis, xaxis)
+                               xp, nomove, silent, name, yaxis, xaxis)
 
 
-def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, name, yaxis, xaxis):
+def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, silent, name, yaxis, xaxis):
     chest = level.tileEntityAt(x, y, z)
     if chest is None:
         return
@@ -130,6 +132,12 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
     villager["Willing"] = TAG_Byte(0)
     villager["Offers"] = TAG_Compound()
     villager["Offers"]["Recipes"] = TAG_List()
+
+    if silent:
+        villager["Silent"] = TAG_Byte(1)
+    else:
+        villager["Silent"] = TAG_Byte(0)
+
     for i in range(9):
         if (i in priceList or i in priceListB) and i in saleList:
             offer = TAG_Compound()
