@@ -7,7 +7,7 @@ MCEdit-Unified is an updated fork of the original MCEdit by Codewarrior. The pre
 This version implements localisation functions.
 The resource files are located in the 'lang' folder for MCEdit UI.
 
-Custom brushes and filters can be also translated, provided a folder named like the base name of the brush/filter file (ithout the '.py' extension) can be found alongside the file and contains the resources.
+Custom brushes and filters can be also translated, provided a folder named like the base name of the brush/filter file (without the '.py' extension) can be found alongside the file and contains the resources.
 These resources have to be built with the same rules than MCEdit ones.
 
 The UI fixed character strings can appear in users native language by simply editing translation files.
@@ -15,8 +15,8 @@ It is also possible to (re)build the language template and files and to use cust
 
 See TRANSLATION.txt for further details.
 
-Devolopers don't have to tweak their code so much.
-The only modifications concern strings which need text formating or concatenation.
+Developers don't have to tweak their code so much.
+The only modifications concern strings which need text formatting or concatenation.
 See README.txt in albow subfolder for further information.
 
 
