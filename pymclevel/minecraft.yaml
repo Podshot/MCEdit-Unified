@@ -5183,6 +5183,7 @@ blocks:
     name: Slime Block
     type: SEMISOLID
     tex: [17, 15]
+    opacity: 0
     
   - id: 166
     idStr: barrier
