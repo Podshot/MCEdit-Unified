@@ -1,61 +1,151 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
     <title>config module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.3.0.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
     <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
     <link rel="next" title="depths module" href="depths.html" />
-    <link rel="prev" title="compass module" href="compass.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <link rel="prev" title="compass module" href="compass.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="depths.html" title="depths module"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="compass.html" title="compass module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="compass.html" title="compass module" accesskey="P">previous </a></li>
+              <li><a href="depths.html" title="depths module" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="sources/config.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="compass.html"
+                        title="previous chapter">compass module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="depths.html"
+                        title="next chapter">depths module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/config.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <div class="section" id="module-config">
 <span id="config-module"></span><h1>config module<a class="headerlink" href="#module-config" title="Permalink to this headline">¶</a></h1>
 <p>Copyright (c) 2010-2012 David Rio Vierra</p>
@@ -71,7 +161,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dl class="class">
 <dt id="config.ColorValue">
-<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ColorValue</code><span class="sig-paren">(</span><em>key</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ColorValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ColorValue" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ColorValue</code><span class="sig-paren">(</span><em>key</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ColorValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ColorValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#config.ListValue" title="config.ListValue"><code class="xref py py-class docutils literal"><span class="pre">config.ListValue</span></code></a></p>
 <dl class="attribute">
 <dt id="config.ColorValue.allowedTypes">
@@ -85,91 +175,91 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="method">
 <dt id="config.ColorValue.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ColorValue.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ColorValue.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ColorValue.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ColorValue.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="config.Config">
-<em class="property">class </em><code class="descclassname">config.</code><code class="descname">Config</code><span class="sig-paren">(</span><em>definitions</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">config.</code><code class="descname">Config</code><span class="sig-paren">(</span><em>definitions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="staticmethod">
 <dt id="config.Config.convert">
-<em class="property">static </em><code class="descname">convert</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.convert" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">convert</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.convert" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
 <dt id="config.Config.getPath">
-<em class="property">static </em><code class="descname">getPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config.getPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.getPath" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">getPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config.getPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.getPath" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.Config.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.load" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.Config.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.reset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.reset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.Config.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.save" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.save" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.Config.transformConfig">
-<code class="descname">transformConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config.transformConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.transformConfig" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transformConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config.transformConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.transformConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
 <dt id="config.Config.transformKey">
-<em class="property">static </em><code class="descname">transformKey</code><span class="sig-paren">(</span><em>value</em>, <em>i=0</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#Config.transformKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.transformKey" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">transformKey</code><span class="sig-paren">(</span><em>value</em>, <em>i=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#Config.transformKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.Config.transformKey" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="config.ConfigDict">
-<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ConfigDict</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ConfigDict</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">_abcoll.MutableMapping</span></code></p>
 <dl class="method">
 <dt id="config.ConfigDict.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigDict.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict.copy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigDict.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict.copy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.ConfigDict.items">
-<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigDict.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict.items" title="Permalink to this definition">¶</a></dt>
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigDict.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict.items" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.ConfigDict.keys">
-<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigDict.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict.keys" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigDict.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigDict.keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="config.ConfigSection">
-<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ConfigSection</code><span class="sig-paren">(</span><em>config</em>, <em>section</em>, <em>items</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigSection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigSection" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ConfigSection</code><span class="sig-paren">(</span><em>config</em>, <em>section</em>, <em>items</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigSection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigSection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="config.ConfigSection.items">
-<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigSection.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigSection.items" title="Permalink to this definition">¶</a></dt>
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigSection.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigSection.items" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="config.ConfigValue">
-<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ConfigValue</code><span class="sig-paren">(</span><em>key</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ConfigValue</code><span class="sig-paren">(</span><em>key</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="config.ConfigValue.addObserver">
-<code class="descname">addObserver</code><span class="sig-paren">(</span><em>target</em>, <em>attr=None</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigValue.addObserver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.addObserver" title="Permalink to this definition">¶</a></dt>
+<code class="descname">addObserver</code><span class="sig-paren">(</span><em>target</em>, <em>attr=None</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigValue.addObserver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.addObserver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register &#8216;target&#8217; for changes in the config var named by section and name.
 When the config is changed, calls setattr with target and attr.
 attr may be None; it will be created from the name by lowercasing the first
@@ -184,29 +274,29 @@ e.g. &#8220;block buffer&#8221; becomes &#8220;blockBuffer&#8221;</p>
 
 <dl class="method">
 <dt id="config.ConfigValue.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigValue.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigValue.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.ConfigValue.getRaw">
-<code class="descname">getRaw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigValue.getRaw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.getRaw" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getRaw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigValue.getRaw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.getRaw" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.ConfigValue.property">
-<code class="descname">property</code><span class="sig-paren">(</span><em>setter=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigValue.property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.property" title="Permalink to this definition">¶</a></dt>
+<code class="descname">property</code><span class="sig-paren">(</span><em>setter=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigValue.property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.property" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="config.ConfigValue.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ConfigValue.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ConfigValue.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ConfigValue.set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="config.ListValue">
-<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ListValue</code><span class="sig-paren">(</span><em>key</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ListValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ListValue" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">config.</code><code class="descname">ListValue</code><span class="sig-paren">(</span><em>key</em>, <em>name</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ListValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ListValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#config.ConfigValue" title="config.ConfigValue"><code class="xref py py-class docutils literal"><span class="pre">config.ConfigValue</span></code></a></p>
 <dl class="attribute">
 <dt id="config.ListValue.allowedTypes">
@@ -215,7 +305,7 @@ e.g. &#8220;block buffer&#8221; becomes &#8220;blockBuffer&#8221;</p>
 
 <dl class="method">
 <dt id="config.ListValue.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/config.html#ListValue.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ListValue.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config.html#ListValue.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#config.ListValue.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -223,55 +313,44 @@ e.g. &#8220;block buffer&#8221; becomes &#8220;blockBuffer&#8221;</p>
 </div>
 
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="compass.html"
-                        title="previous chapter">compass module</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="depths.html"
-                        title="next chapter">depths module</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="sources/config.txt"
-            rel="nofollow">Show Source</a></li>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="compass.html" title="compass module" >previous</a></li>
+        <li><a href="depths.html" title="depths module" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-      |
-      <a href="sources/config.txt"
-          rel="nofollow">Page source</a></li>
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, MCEdit-Unified Team.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

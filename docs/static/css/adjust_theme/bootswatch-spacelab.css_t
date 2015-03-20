@@ -1,0 +1,72 @@
+{% set table_border_color = "#dddddd" %}
+
+{% set danger_color = "#ffffff" %}
+{% set danger_background_color = "#cd0200" %}
+{% set danger_border_color  = "#be001e" %}
+
+{% set warning_color = "#ffffff" %}
+{% set warning_background_color = "#d47500" %}
+{% set warning_border_color  = "#c54c00" %}
+
+{% set note_color = "#ffffff" %}
+{% set note_background_color = "#3cb521" %}
+{% set note_border_color  = "#4b9f1d" %}
+
+{% set hint_color = "#ffffff" %}
+{% set hint_background_color = "#3399f3" %}
+{% set hint_border_color  = "#11adf1" %}
+
+
+{% include "static/css/adjust_theme/_common_adjust.css" %}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #eeeeee !important;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #eeeeee;
+ border-top: 1px solid #eeeeee;
+ border-bottom: 1px solid #eeeeee;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #eeeeee;
+  border: none;
+  box-shadow: none;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #777777;
+}
+ul.sp-localtoc ul a:hover{
+   color: #3399f3;
+   -webkit-transition: color ease-in-out .2s;
+   transition: color ease-in-out .2s;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #c8c8c8;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #ffffff;
+   -webkit-transition: color ease-in-out .2s;
+   transition: color ease-in-out .2s;
+}
+
+/* Etc
+   ---------------------------------------------------------*/
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 12px;
+}

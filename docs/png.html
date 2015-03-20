@@ -1,61 +1,175 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
     <title>png module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.3.0.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
     <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
     <link rel="next" title="pymclevel package" href="pymclevel.html" />
-    <link rel="prev" title="pkgutil module" href="pkgutil.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <link rel="prev" title="pkgutil module" href="pkgutil.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="pymclevel.html" title="pymclevel package"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="pkgutil.html" title="pkgutil module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">png module</a><ul>
+<li><a class="reference internal" href="#a-note-on-spelling-and-terminology">A note on spelling and terminology</a></li>
+<li><a class="reference internal" href="#a-note-on-formats">A note on formats</a></li>
+<li><a class="reference internal" href="#and-now-my-famous-members">And now, my famous members</a></li>
+</ul>
+</li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+                </ul>
+              </li>
+
             
+              <li><a href="pkgutil.html" title="pkgutil module" accesskey="P">previous </a></li>
+              <li><a href="pymclevel.html" title="pymclevel package" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="sources/png.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">png module</a><ul>
+<li><a class="reference internal" href="#a-note-on-spelling-and-terminology">A note on spelling and terminology</a></li>
+<li><a class="reference internal" href="#a-note-on-formats">A note on formats</a></li>
+<li><a class="reference internal" href="#and-now-my-famous-members">And now, my famous members</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pkgutil.html"
+                        title="previous chapter">pkgutil module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pymclevel.html"
+                        title="next chapter">pymclevel package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/png.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <div class="section" id="module-png">
 <span id="png-module"></span><h1>png module<a class="headerlink" href="#module-png" title="Permalink to this headline">¶</a></h1>
 <p>Pure Python PNG Reader/Writer</p>
@@ -151,11 +265,11 @@ BMPs, or another PNG file).</p>
 <h2>And now, my famous members<a class="headerlink" href="#and-now-my-famous-members" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="png.Reader">
-<em class="property">class </em><code class="descclassname">png.</code><code class="descname">Reader</code><span class="sig-paren">(</span><em>_guess=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">png.</code><code class="descname">Reader</code><span class="sig-paren">(</span><em>_guess=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>PNG decoder in pure Python.</p>
 <dl class="method">
 <dt id="png.Reader.asDirect">
-<code class="descname">asDirect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.asDirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asDirect" title="Permalink to this definition">¶</a></dt>
+<code class="descname">asDirect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asDirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asDirect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the image data as a direct representation of an
 <code class="docutils literal"><span class="pre">x</span> <span class="pre">*</span> <span class="pre">y</span> <span class="pre">*</span> <span class="pre">planes</span></code> array.  This method is intended to remove the
 need for callers to deal with palettes and transparency
@@ -189,7 +303,7 @@ like the <a class="reference internal" href="#png.Reader.read" title="png.Reader
 
 <dl class="method">
 <dt id="png.Reader.asFloat">
-<code class="descname">asFloat</code><span class="sig-paren">(</span><em>maxval=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.asFloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asFloat" title="Permalink to this definition">¶</a></dt>
+<code class="descname">asFloat</code><span class="sig-paren">(</span><em>maxval=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asFloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asFloat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return image pixels as per <a class="reference internal" href="#png.Reader.asDirect" title="png.Reader.asDirect"><code class="xref py py-meth docutils literal"><span class="pre">asDirect()</span></code></a> method, but scale
 all pixel values to be floating point values between 0.0 and
 <em>maxval</em>.</p>
@@ -197,7 +311,7 @@ all pixel values to be floating point values between 0.0 and
 
 <dl class="method">
 <dt id="png.Reader.asRGB">
-<code class="descname">asRGB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.asRGB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGB" title="Permalink to this definition">¶</a></dt>
+<code class="descname">asRGB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return image as RGB pixels.  Greyscales are expanded into RGB
 triplets.  An alpha channel in the source image will raise an
 exception.  The return values are as for the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method
@@ -208,7 +322,7 @@ source image.  In particular, for this method
 
 <dl class="method">
 <dt id="png.Reader.asRGB8">
-<code class="descname">asRGB8</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.asRGB8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGB8" title="Permalink to this definition">¶</a></dt>
+<code class="descname">asRGB8</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGB8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGB8" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the image data as an RGB pixels with 8-bits per
 sample.  This is like the <a class="reference internal" href="#png.Reader.asRGB" title="png.Reader.asRGB"><code class="xref py py-meth docutils literal"><span class="pre">asRGB()</span></code></a> method except that
 this method additionally rescales the values so that they
@@ -228,7 +342,7 @@ in the source image will raise an exception.</p>
 
 <dl class="method">
 <dt id="png.Reader.asRGBA">
-<code class="descname">asRGBA</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.asRGBA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGBA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">asRGBA</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGBA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGBA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return image as RGBA pixels.  Greyscales are expanded into
 RGB triplets; an alpha channel is synthesized if necessary.
 The return values are as for the <a class="reference internal" href="#png.Reader.read" title="png.Reader.read"><code class="xref py py-meth docutils literal"><span class="pre">read()</span></code></a> method
@@ -240,7 +354,7 @@ source image.  In particular, for this method
 
 <dl class="method">
 <dt id="png.Reader.asRGBA8">
-<code class="descname">asRGBA8</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.asRGBA8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGBA8" title="Permalink to this definition">¶</a></dt>
+<code class="descname">asRGBA8</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.asRGBA8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.asRGBA8" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the image data as RGBA pixels with 8-bits per
 sample.  This method is similar to <a class="reference internal" href="#png.Reader.asRGB8" title="png.Reader.asRGB8"><code class="xref py py-meth docutils literal"><span class="pre">asRGB8()</span></code></a> and
 <a class="reference internal" href="#png.Reader.asRGBA" title="png.Reader.asRGBA"><code class="xref py py-meth docutils literal"><span class="pre">asRGBA()</span></code></a>:  The result pixels have an alpha channel, _and_
@@ -250,7 +364,7 @@ synthesized if necessary.</p>
 
 <dl class="method">
 <dt id="png.Reader.chunk">
-<code class="descname">chunk</code><span class="sig-paren">(</span><em>seek=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunk" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chunk</code><span class="sig-paren">(</span><em>seek=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the next PNG chunk from the input file; returns type (as a 4
 character string) and data.  If the optional <cite>seek</cite> argument is
 specified then it will keep reading chunks until it either runs
@@ -261,7 +375,7 @@ using <cite>seek</cite> can cause you to miss chunks.</p>
 
 <dl class="method">
 <dt id="png.Reader.chunklentype">
-<code class="descname">chunklentype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.chunklentype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunklentype" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chunklentype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.chunklentype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunklentype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads just enough of the input to determine the next
 chunk&#8217;s length and type, returned as a (<em>length</em>, <em>type</em>) pair
 where <em>type</em> is a string.  If there are no more chunks, <code class="docutils literal"><span class="pre">None</span></code>
@@ -270,21 +384,21 @@ is returned.</p>
 
 <dl class="method">
 <dt id="png.Reader.chunks">
-<code class="descname">chunks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunks" title="Permalink to this definition">¶</a></dt>
+<code class="descname">chunks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.chunks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an iterator that will yield each chunk as a
 (<em>chunktype</em>, <em>content</em>) pair.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="png.Reader.deinterlace">
-<code class="descname">deinterlace</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.deinterlace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.deinterlace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">deinterlace</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.deinterlace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.deinterlace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read raw pixel data, undo filters, deinterlace, and flatten.
 Return in flat row flat pixel format.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="png.Reader.iterboxed">
-<code class="descname">iterboxed</code><span class="sig-paren">(</span><em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.iterboxed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.iterboxed" title="Permalink to this definition">¶</a></dt>
+<code class="descname">iterboxed</code><span class="sig-paren">(</span><em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.iterboxed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.iterboxed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterator that yields each scanline in boxed row flat pixel
 format.  <cite>rows</cite> should be an iterator that yields the bytes of
 each row in turn.</p>
@@ -292,7 +406,7 @@ each row in turn.</p>
 
 <dl class="method">
 <dt id="png.Reader.iterstraight">
-<code class="descname">iterstraight</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.iterstraight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.iterstraight" title="Permalink to this definition">¶</a></dt>
+<code class="descname">iterstraight</code><span class="sig-paren">(</span><em>raw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.iterstraight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.iterstraight" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterator that undoes the effect of filtering, and yields each
 row in serialised format (as a sequence of bytes).  Assumes input
 is straightlaced.  <cite>raw</cite> should be an iterable that yields the
@@ -301,7 +415,7 @@ raw bytes in chunks of arbitrary size.</p>
 
 <dl class="method">
 <dt id="png.Reader.palette">
-<code class="descname">palette</code><span class="sig-paren">(</span><em>alpha='natural'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.palette" title="Permalink to this definition">¶</a></dt>
+<code class="descname">palette</code><span class="sig-paren">(</span><em>alpha='natural'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.palette" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a palette that is a sequence of 3-tuples or 4-tuples,
 synthesizing it from the <code class="docutils literal"><span class="pre">PLTE</span></code> and <code class="docutils literal"><span class="pre">tRNS</span></code> chunks.  These
 chunks should have already been processed (for example, by
@@ -315,7 +429,7 @@ always added, forcing the result to be a sequence of 4-tuples.</p>
 
 <dl class="method">
 <dt id="png.Reader.preamble">
-<code class="descname">preamble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.preamble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.preamble" title="Permalink to this definition">¶</a></dt>
+<code class="descname">preamble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.preamble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.preamble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the image metadata by reading the initial part of the PNG
 file up to the start of the <code class="docutils literal"><span class="pre">IDAT</span></code> chunk.  All the chunks that
 precede the <code class="docutils literal"><span class="pre">IDAT</span></code> chunk are read and either processed for
@@ -324,7 +438,7 @@ metadata or discarded.</p>
 
 <dl class="method">
 <dt id="png.Reader.process_chunk">
-<code class="descname">process_chunk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.process_chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.process_chunk" title="Permalink to this definition">¶</a></dt>
+<code class="descname">process_chunk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.process_chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.process_chunk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process the next chunk and its data.  This only processes the
 following chunk types, all others are ignored: <code class="docutils literal"><span class="pre">IHDR</span></code>,
 <code class="docutils literal"><span class="pre">PLTE</span></code>, <code class="docutils literal"><span class="pre">bKGD</span></code>, <code class="docutils literal"><span class="pre">tRNS</span></code>, <code class="docutils literal"><span class="pre">gAMA</span></code>, <code class="docutils literal"><span class="pre">sBIT</span></code>.</p>
@@ -332,7 +446,7 @@ following chunk types, all others are ignored: <code class="docutils literal"><s
 
 <dl class="method">
 <dt id="png.Reader.read">
-<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.read" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the PNG file and decode it.  Returns (<cite>width</cite>, <cite>height</cite>,
 <cite>pixels</cite>, <cite>metadata</cite>).</p>
 <p>May use excessive memory.</p>
@@ -341,7 +455,7 @@ following chunk types, all others are ignored: <code class="docutils literal"><s
 
 <dl class="method">
 <dt id="png.Reader.read_flat">
-<code class="descname">read_flat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.read_flat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.read_flat" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_flat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.read_flat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.read_flat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a PNG file and decode it into flat row flat pixel format.
 Returns (<em>width</em>, <em>height</em>, <em>pixels</em>, <em>metadata</em>).</p>
 <p>May use excessive memory.</p>
@@ -352,14 +466,14 @@ more stream-friendly boxed row flat pixel format.</p>
 
 <dl class="method">
 <dt id="png.Reader.serialtoflat">
-<code class="descname">serialtoflat</code><span class="sig-paren">(</span><em>bytes</em>, <em>width=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.serialtoflat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.serialtoflat" title="Permalink to this definition">¶</a></dt>
+<code class="descname">serialtoflat</code><span class="sig-paren">(</span><em>bytes</em>, <em>width=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.serialtoflat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.serialtoflat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert serial format (byte stream) pixel data to flat row
 flat pixel.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="png.Reader.undo_filter">
-<code class="descname">undo_filter</code><span class="sig-paren">(</span><em>filter_type</em>, <em>scanline</em>, <em>previous</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.undo_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.undo_filter" title="Permalink to this definition">¶</a></dt>
+<code class="descname">undo_filter</code><span class="sig-paren">(</span><em>filter_type</em>, <em>scanline</em>, <em>previous</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.undo_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.undo_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Undo the filter for a scanline.  <cite>scanline</cite> is a sequence of
 bytes that does not include the initial filter type byte.
 <cite>previous</cite> is decoded previous scanline (for straightlaced
@@ -375,7 +489,7 @@ result will be returned as a fresh sequence of bytes.</p>
 
 <dl class="method">
 <dt id="png.Reader.validate_signature">
-<code class="descname">validate_signature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Reader.validate_signature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.validate_signature" title="Permalink to this definition">¶</a></dt>
+<code class="descname">validate_signature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Reader.validate_signature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Reader.validate_signature" title="Permalink to this definition">¶</a></dt>
 <dd><p>If signature (header) has not been read then read and
 validate it; otherwise do nothing.</p>
 </dd></dl>
@@ -384,18 +498,18 @@ validate it; otherwise do nothing.</p>
 
 <dl class="class">
 <dt id="png.Writer">
-<em class="property">class </em><code class="descclassname">png.</code><code class="descname">Writer</code><span class="sig-paren">(</span><em>width=None</em>, <em>height=None</em>, <em>size=None</em>, <em>greyscale=False</em>, <em>alpha=False</em>, <em>bitdepth=8</em>, <em>palette=None</em>, <em>transparent=None</em>, <em>background=None</em>, <em>gamma=None</em>, <em>compression=None</em>, <em>interlace=False</em>, <em>bytes_per_sample=None</em>, <em>planes=None</em>, <em>colormap=None</em>, <em>maxval=None</em>, <em>chunk_limit=1048576</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">png.</code><code class="descname">Writer</code><span class="sig-paren">(</span><em>width=None</em>, <em>height=None</em>, <em>size=None</em>, <em>greyscale=False</em>, <em>alpha=False</em>, <em>bitdepth=8</em>, <em>palette=None</em>, <em>transparent=None</em>, <em>background=None</em>, <em>gamma=None</em>, <em>compression=None</em>, <em>interlace=False</em>, <em>bytes_per_sample=None</em>, <em>planes=None</em>, <em>colormap=None</em>, <em>maxval=None</em>, <em>chunk_limit=1048576</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer" title="Permalink to this definition">¶</a></dt>
 <dd><p>PNG encoder in pure Python.</p>
 <dl class="method">
 <dt id="png.Writer.array_scanlines">
-<code class="descname">array_scanlines</code><span class="sig-paren">(</span><em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.array_scanlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.array_scanlines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">array_scanlines</code><span class="sig-paren">(</span><em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.array_scanlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.array_scanlines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates boxed rows (flat pixels) from flat rows (flat pixels)
 in an array.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="png.Writer.array_scanlines_interlace">
-<code class="descname">array_scanlines_interlace</code><span class="sig-paren">(</span><em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.array_scanlines_interlace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.array_scanlines_interlace" title="Permalink to this definition">¶</a></dt>
+<code class="descname">array_scanlines_interlace</code><span class="sig-paren">(</span><em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.array_scanlines_interlace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.array_scanlines_interlace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generator for interlaced scanlines from an array.  <cite>pixels</cite> is
 the full source image in flat row flat pixel format.  The
 generator yields each scanline of the reduced passes in turn, in
@@ -404,7 +518,7 @@ boxed row flat pixel format.</p>
 
 <dl class="method">
 <dt id="png.Writer.convert_pnm">
-<code class="descname">convert_pnm</code><span class="sig-paren">(</span><em>infile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.convert_pnm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.convert_pnm" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert_pnm</code><span class="sig-paren">(</span><em>infile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.convert_pnm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.convert_pnm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a PNM file containing raw pixel data into a PNG file
 with the parameters set in the writer object.  Works for
 (binary) PGM, PPM, and PAM formats.</p>
@@ -412,14 +526,14 @@ with the parameters set in the writer object.  Works for
 
 <dl class="method">
 <dt id="png.Writer.convert_ppm_and_pgm">
-<code class="descname">convert_ppm_and_pgm</code><span class="sig-paren">(</span><em>ppmfile</em>, <em>pgmfile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.convert_ppm_and_pgm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.convert_ppm_and_pgm" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert_ppm_and_pgm</code><span class="sig-paren">(</span><em>ppmfile</em>, <em>pgmfile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.convert_ppm_and_pgm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.convert_ppm_and_pgm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a PPM and PGM file containing raw pixel data into a
 PNG outfile with the parameters set in the writer object.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="png.Writer.file_scanlines">
-<code class="descname">file_scanlines</code><span class="sig-paren">(</span><em>infile</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.file_scanlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.file_scanlines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">file_scanlines</code><span class="sig-paren">(</span><em>infile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.file_scanlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.file_scanlines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates boxed rows in flat pixel format, from the input file
 <cite>infile</cite>.  It assumes that the input file is in a &#8220;Netpbm-like&#8221;
 binary format, and is positioned at the beginning of the first
@@ -430,7 +544,7 @@ per value is implied by the image <cite>bitdepth</cite>.</p>
 
 <dl class="method">
 <dt id="png.Writer.make_palette">
-<code class="descname">make_palette</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.make_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.make_palette" title="Permalink to this definition">¶</a></dt>
+<code class="descname">make_palette</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.make_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.make_palette" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the byte sequences for a <code class="docutils literal"><span class="pre">PLTE</span></code> and if necessary a
 <code class="docutils literal"><span class="pre">tRNS</span></code> chunk.  Returned as a pair (<em>p</em>, <em>t</em>).  <em>t</em> will be
 <code class="docutils literal"><span class="pre">None</span></code> if no <code class="docutils literal"><span class="pre">tRNS</span></code> chunk is necessary.</p>
@@ -438,7 +552,7 @@ per value is implied by the image <cite>bitdepth</cite>.</p>
 
 <dl class="method">
 <dt id="png.Writer.write">
-<code class="descname">write</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a PNG image to the output file.  <cite>rows</cite> should be
 an iterable that yields each row in boxed row flat pixel format.
 The rows should be the rows of the original image, so there
@@ -454,14 +568,14 @@ normal image order; the interlacing is carried out internally.</p>
 
 <dl class="method">
 <dt id="png.Writer.write_array">
-<code class="descname">write_array</code><span class="sig-paren">(</span><em>outfile</em>, <em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.write_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_array" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_array</code><span class="sig-paren">(</span><em>outfile</em>, <em>pixels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write an array in flat row flat pixel format as a PNG file on
 the output file.  See also <a class="reference internal" href="#png.Writer.write" title="png.Writer.write"><code class="xref py py-meth docutils literal"><span class="pre">write()</span></code></a> method.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="png.Writer.write_packed">
-<code class="descname">write_packed</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.write_packed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_packed" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_packed</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write_packed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_packed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write PNG file to <cite>outfile</cite>.  The pixel data comes from <cite>rows</cite>
 which should be in boxed row packed format.  Each row should be
 a sequence of packed bytes.</p>
@@ -475,7 +589,7 @@ is not one naturally supported by PNG; the bit depth should be
 
 <dl class="method">
 <dt id="png.Writer.write_passes">
-<code class="descname">write_passes</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em>, <em>packed=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#Writer.write_passes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_passes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_passes</code><span class="sig-paren">(</span><em>outfile</em>, <em>rows</em>, <em>packed=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#Writer.write_passes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.Writer.write_passes" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div>Write a PNG image to the output file.</div></blockquote>
 <p>Most users are expected to find the <a class="reference internal" href="#png.Writer.write" title="png.Writer.write"><code class="xref py py-meth docutils literal"><span class="pre">write()</span></code></a> or
@@ -497,7 +611,7 @@ sequence of bytes.</dd>
 
 <dl class="function">
 <dt id="png.write_chunks">
-<code class="descclassname">png.</code><code class="descname">write_chunks</code><span class="sig-paren">(</span><em>out</em>, <em>chunks</em><span class="sig-paren">)</span><a class="reference internal" href="modules/png.html#write_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.write_chunks" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">png.</code><code class="descname">write_chunks</code><span class="sig-paren">(</span><em>out</em>, <em>chunks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/png.html#write_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#png.write_chunks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a PNG file by writing out the chunks.</p>
 </dd></dl>
 
@@ -505,65 +619,44 @@ sequence of bytes.</dd>
 </div>
 
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">png module</a><ul>
-<li><a class="reference internal" href="#a-note-on-spelling-and-terminology">A note on spelling and terminology</a></li>
-<li><a class="reference internal" href="#a-note-on-formats">A note on formats</a></li>
-<li><a class="reference internal" href="#and-now-my-famous-members">And now, my famous members</a></li>
-</ul>
-</li>
-</ul>
+        
+        
+      </div><!-- /row -->
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="pkgutil.html"
-                        title="previous chapter">pkgutil module</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="pymclevel.html"
-                        title="next chapter">pymclevel package</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="sources/png.txt"
-            rel="nofollow">Show Source</a></li>
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="pkgutil.html" title="pkgutil module" >previous</a></li>
+        <li><a href="pymclevel.html" title="pymclevel package" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-      |
-      <a href="sources/png.txt"
-          rel="nofollow">Page source</a></li>
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, MCEdit-Unified Team.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

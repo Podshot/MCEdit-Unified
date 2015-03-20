@@ -1,61 +1,151 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
     <title>directories module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.3.0.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
     <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
     <link rel="next" title="drawable module" href="drawable.html" />
-    <link rel="prev" title="depths module" href="depths.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <link rel="prev" title="depths module" href="depths.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="drawable.html" title="drawable module"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="depths.html" title="depths module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="depths.html" title="depths module" accesskey="P">previous </a></li>
+              <li><a href="drawable.html" title="drawable module" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="sources/directories.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="depths.html"
+                        title="previous chapter">depths module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="drawable.html"
+                        title="next chapter">drawable module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/directories.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <div class="section" id="module-directories">
 <span id="directories-module"></span><h1>directories module<a class="headerlink" href="#module-directories" title="Permalink to this headline">¶</a></h1>
 <p>Copyright (c) 2010-2012 David Rio Vierra</p>
@@ -71,12 +161,12 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dl class="function">
 <dt id="directories.fixedConfigExists">
-<code class="descclassname">directories.</code><code class="descname">fixedConfigExists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#fixedConfigExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.fixedConfigExists" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">fixedConfigExists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#fixedConfigExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.fixedConfigExists" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="directories.getAllOfAFile">
-<code class="descclassname">directories.</code><code class="descname">getAllOfAFile</code><span class="sig-paren">(</span><em>file_dir</em>, <em>ext</em><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getAllOfAFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getAllOfAFile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getAllOfAFile</code><span class="sig-paren">(</span><em>file_dir</em>, <em>ext</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getAllOfAFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getAllOfAFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of all the files the direcotry with the specified file extenstion
 :param file_dir: Directory to search
 :param ext: The file extension (IE: &#8221;.py&#8221;)</p>
@@ -84,73 +174,73 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="function">
 <dt id="directories.getCacheDir">
-<code class="descclassname">directories.</code><code class="descname">getCacheDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getCacheDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getCacheDir" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getCacheDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getCacheDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getCacheDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the path to the cache folder. This folder is the Application Support folder on OS X, and the Documents Folder on Windows.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="directories.getDataDir">
-<code class="descclassname">directories.</code><code class="descname">getDataDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getDataDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getDataDir" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getDataDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getDataDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getDataDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the folder where the executable is located.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="directories.getDocumentsFolder">
-<code class="descclassname">directories.</code><code class="descname">getDocumentsFolder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getDocumentsFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getDocumentsFolder" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getDocumentsFolder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getDocumentsFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getDocumentsFolder" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="directories.getFiltersDir">
-<code class="descclassname">directories.</code><code class="descname">getFiltersDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getFiltersDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getFiltersDir" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getFiltersDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getFiltersDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getFiltersDir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="directories.getMinecraftLauncherDirectory">
-<code class="descclassname">directories.</code><code class="descname">getMinecraftLauncherDirectory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getMinecraftLauncherDirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getMinecraftLauncherDirectory" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getMinecraftLauncherDirectory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getMinecraftLauncherDirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getMinecraftLauncherDirectory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the /minecraft directory, note: may not contain the /saves folder!</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="directories.getMinecraftProfileDirectory">
-<code class="descclassname">directories.</code><code class="descname">getMinecraftProfileDirectory</code><span class="sig-paren">(</span><em>profileName</em><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getMinecraftProfileDirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getMinecraftProfileDirectory" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getMinecraftProfileDirectory</code><span class="sig-paren">(</span><em>profileName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getMinecraftProfileDirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getMinecraftProfileDirectory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the path to the sent minecraft profile directory</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="directories.getMinecraftProfileJSON">
-<code class="descclassname">directories.</code><code class="descname">getMinecraftProfileJSON</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getMinecraftProfileJSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getMinecraftProfileJSON" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getMinecraftProfileJSON</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getMinecraftProfileJSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getMinecraftProfileJSON" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary object with the minecraft profile information</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="directories.getSelectedProfile">
-<code class="descclassname">directories.</code><code class="descname">getSelectedProfile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#getSelectedProfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getSelectedProfile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">getSelectedProfile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#getSelectedProfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.getSelectedProfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the selected profile from the Minecraft Launcher</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="directories.goFixed">
-<code class="descclassname">directories.</code><code class="descname">goFixed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#goFixed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.goFixed" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">goFixed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#goFixed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.goFixed" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="directories.goPortable">
-<code class="descclassname">directories.</code><code class="descname">goPortable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#goPortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.goPortable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">goPortable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#goPortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.goPortable" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="directories.move_displace">
-<code class="descclassname">directories.</code><code class="descname">move_displace</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#move_displace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.move_displace" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">move_displace</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#move_displace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.move_displace" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="directories.win32_appdata">
-<code class="descclassname">directories.</code><code class="descname">win32_appdata</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#win32_appdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.win32_appdata" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">win32_appdata</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#win32_appdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.win32_appdata" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="directories.win32_utf8_argv">
-<code class="descclassname">directories.</code><code class="descname">win32_utf8_argv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/directories.html#win32_utf8_argv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.win32_utf8_argv" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">directories.</code><code class="descname">win32_utf8_argv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/directories.html#win32_utf8_argv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#directories.win32_utf8_argv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses shell32.GetCommandLineArgvW to get sys.argv as a list of UTF-8
 strings.</p>
 <p>Versions 2.5 and older of Python don&#8217;t support Unicode in sys.argv on
@@ -169,55 +259,44 @@ characters with &#8216;?&#8217;.</p>
 </div>
 
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="depths.html"
-                        title="previous chapter">depths module</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="drawable.html"
-                        title="next chapter">drawable module</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="sources/directories.txt"
-            rel="nofollow">Show Source</a></li>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="depths.html" title="depths module" >previous</a></li>
+        <li><a href="drawable.html" title="drawable module" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-      |
-      <a href="sources/directories.txt"
-          rel="nofollow">Page source</a></li>
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, MCEdit-Unified Team.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

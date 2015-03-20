@@ -1,0 +1,36 @@
+{% set table_border_color = "#228000" %}
+
+{% set danger_color = "#ffffff" %}
+{% set danger_background_color = "#f40000" %}
+{% set danger_border_color  = "#a20000" %}
+
+{% set warning_color = "#000000" %}
+{% set warning_background_color = "#fcfe00" %}
+{% set warning_border_color  = "#f40000" %}
+
+{% set note_color = "#ffffff" %}
+{% set note_background_color = "#228000" %}
+{% set note_border_color  = "#2faa00" %}
+
+{% set hint_color = "#000000" %}
+{% set hint_background_color = "#57ffff" %}
+{% set hint_border_color  = "#a8a900" %}
+
+{% include "static/css/adjust_theme/_common_adjust.css" %}
+
+table.docutils {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+div.admonition {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+div.topic {
+  background: url("../../img/stars.gif") !important;
+}
+

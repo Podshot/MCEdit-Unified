@@ -1,0 +1,69 @@
+{% set table_border_color = "#dddddd" %}
+
+{% set danger_color = "#ffffff" %}
+{% set danger_background_color = "#ed6761" %}
+{% set danger_border_color  = "#ed6761" %}
+
+{% set warning_color = "#ffffff" %}
+{% set warning_background_color = "#f77400" %}
+{% set warning_border_color  = "#f77400" %}
+
+{% set note_color = "#ffffff" %}
+{% set note_background_color = "#11b446" %}
+{% set note_border_color  = "#11b446" %}
+
+{% set hint_color = "#ffffff" %}
+{% set hint_background_color = "#306598" %}
+{% set hint_border_color  = "#306598" %}
+
+{% include "static/css/adjust_theme/_common_adjust.css" %}
+
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #eeeeee !important;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+ background-color: #eeeeee;
+ border-color: #eeeeee;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #eeeeee;
+ border-top: 1px solid #eeeeee;
+ border-bottom: 1px solid #eeeeee;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #000000;
+}
+ul.sp-localtoc ul a:hover{
+   background-color: #eeeeee;
+   color: #000000;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   background-color: #e74b47;
+   color: #ffffff;
+}
+
+/* Etc
+   ---------------------------------------------------------*/
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 15px;
+}
