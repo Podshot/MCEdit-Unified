@@ -139,9 +139,8 @@ class TextEditor(Widget):
                     i -= 1
                 else:
                     text = text[:i] + text[i + 1:]
-            if text != "":
-                self.change_text(text)
-                self.insertion_point = i
+            self.change_text(text)
+            self.insertion_point = i
             return
         elif c == "\r" or c == "\x03":
             return self.call_handler('enter_action')

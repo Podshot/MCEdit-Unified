@@ -166,7 +166,7 @@ class OptionsPanel(Dialog):
 #                                          ref=config.settings.reportCrashes,
 #                                          tooltipText="Automatically report errors to the developer.")
 
-        inputs = (
+        self.inputs = (
             spaceHeightRow,
             cameraAccelRow,
             cameraDragRow,
@@ -202,7 +202,7 @@ class OptionsPanel(Dialog):
                     )
 
         rightcol = albow.Column(options, align='r')
-        leftcol = albow.Column(inputs, align='r')
+        leftcol = albow.Column(self.inputs, align='r')
 
         optionsColumn = albow.Column((albow.Label("Options"),
                                       albow.Row((leftcol, rightcol), align="t")))
@@ -317,6 +317,7 @@ class OptionsPanel(Dialog):
 
     def cancel(self, *args, **kwargs):
         Changes = False
+        self.reshowNumberFields()
         for key in self.saveOldConfig.keys():
             if key.get() != self.saveOldConfig[key]:
                 Changes = True
@@ -352,6 +353,7 @@ class OptionsPanel(Dialog):
         Dialog.dismiss(self, *args, **kwargs)
 
     def resetDefault(self):
+        self.reshowNumberFields()
         for key in self.saveOldConfig.keys():
             if "AttrRef" in str(key):
                 key.set(config.settings.blockBuffer.default / 1048576)
@@ -366,6 +368,10 @@ class OptionsPanel(Dialog):
             self.togglePortable()
 
         config.save()
+
+    def reshowNumberFields(self):
+        for key in self.inputs:
+            key.subwidgets[1].editing = False
 
     def dispatch_key(self, name, evt):
         super(OptionsPanel, self).dispatch_key(name, evt)

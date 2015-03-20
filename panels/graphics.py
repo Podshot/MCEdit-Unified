@@ -25,13 +25,13 @@ class GraphicsPanel(Dialog):
 
         self.saveOldResourcePack = resource_packs.packs.get_selected_resource_pack_name()
 
-        fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
+        self.fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
                                                 ref=config.settings.fov, width=100, min=25, max=120)
 
-        targetFPSRow = mceutils.IntInputRow("Target FPS: ",
+        self.targetFPSRow = mceutils.IntInputRow("Target FPS: ",
                                                 ref=config.settings.targetFPS, width=100, min=1, max=60)
 
-        bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
+        self.bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
                                                 ref=config.settings.vertexBufferLimit, width=100, min=0)
 
         fastLeavesRow = mceutils.CheckBoxLabel("Fast Leaves",
@@ -61,9 +61,9 @@ class GraphicsPanel(Dialog):
                                        roughGraphicsRow,
                                        enableMouseLagRow,
                                        #                                  texturePackRow,
-                                       fieldOfViewRow,
-                                       targetFPSRow,
-                                       bufferLimitRow,
+                                       self.fieldOfViewRow,
+                                       self.targetFPSRow,
+                                       self.bufferLimitRow,
                                        playerSkins,
                                        self.resourcePackButton,
                                       ), align='r')
@@ -101,6 +101,9 @@ class GraphicsPanel(Dialog):
 
     def cancel(self, *args, **kwargs):
         Changes = False
+
+        self.reshowNumberFields()
+
         for key in self.saveOldConfig.keys():
             if key.get() != self.saveOldConfig[key]:
                 Changes = True
@@ -129,11 +132,17 @@ class GraphicsPanel(Dialog):
     def resetDefault(self):
         for key in self.saveOldConfig.keys():
             key.set(key.default)
+        self.reshowNumberFields()
         if self.resourcePackButton.selectedChoice != "Default Resource Pack":
             self.resourcePackButton.selectedChoice = "Default Resource Pack"
             self.change_texture()
 
         config.save()
+
+    def reshowNumberFields(self):
+        self.fieldOfViewRow.subwidgets[1].editing = False
+        self.targetFPSRow.subwidgets[1].editing = False
+        self.bufferLimitRow.subwidgets[1].editing = False
 
     def dispatch_key(self, name, evt):
         super(GraphicsPanel, self).dispatch_key(name, evt)
