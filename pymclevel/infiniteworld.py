@@ -1139,7 +1139,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             f.write(struct.pack(">q", self.initTime))
             f.flush()
             os.fsync(f.fileno())
-        logging.getLogger().warning("Re-acquired session lock")
+        logging.getLogger().info("Re-acquired session lock")
 
     def checkSessionLock(self):
         if self.readonly:
