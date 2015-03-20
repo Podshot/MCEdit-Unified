@@ -31,6 +31,7 @@ from pymclevel import nbt
 import logging
 import version_utils
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
+import pygame
 
 
 log = logging.getLogger(__name__)
@@ -830,13 +831,22 @@ class PlayerPositionTool(EditorTool):
 
         if self.recordMove:
             self.editor.addOperation(op)
+            addingMoving = False
         else:
             self.editor.performWithRetry(op)  #Prevent recording of Undo when adding player
             self.recordMove = True
-        self.editor.addUnsavedEdit()
+            addingMoving = True
+        if op.canUndo and not addingMoving:
+            self.editor.addUnsavedEdit()
 
     def keyDown(self, evt):
-        pass
+        if not self.recordMove:
+            if not pygame.key.get_focused():
+                return
+
+            keyname = evt.dict.get('keyname', None) or self.panel.get_root().getKey(evt)
+            if keyname == "Escape":
+                self.recordMove = True
 
     def keyUp(self, evt):
         pass
