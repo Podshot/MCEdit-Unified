@@ -409,13 +409,13 @@ class PlayerPositionPanel(Panel):
         #-# Uncomment the following line to have a maximum height for this panel.
         # max_height = min(max_height, 500)
 
-        self.editNBTDataButton = Button("Edit NBT Data", action=self.editNBTData, tooltipText="Open the NBT Explorer to edit player's attributes and inventory")
-        addButton = Button("Add Player", action=self.tool.addPlayer)
-        removeButton = Button("Remove Player", action=self.tool.removePlayer)
-        gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
-        gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
-        moveButton = Button("Move Player", action=self.tool.movePlayer)
-        moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
+        self.editNBTDataButton = Button("Edit NBT", action=self.editNBTData, tooltipText="Open the NBT Explorer to edit player's attributes and inventory")
+        addButton = Button("Add", action=self.tool.addPlayer)
+        removeButton = Button("Remove", action=self.tool.removePlayer)
+        gotoButton = Button("Goto", action=self.tool.gotoPlayer)
+        gotoCameraButton = Button("Goto View", action=self.tool.gotoPlayerCamera)
+        moveButton = Button("Move", action=self.tool.movePlayer)
+        moveToCameraButton = Button("Align to Camera", action=self.tool.movePlayerToCamera)
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
         btns = Column([self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin], margin=0, spacing=2)
