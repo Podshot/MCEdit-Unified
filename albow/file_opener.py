@@ -83,14 +83,17 @@ class FileOpener(albow.Widget):
         commandRow = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
         commandRow.anchor = 'lrh'
 
-        sideColumn = mcedit.makeSideColumn()
-        sideColumn.anchor = 'wh'
+        sideColumn1 = mcedit.makeSideColumn1()
+        sideColumn1.anchor = 'wh'
+        spaceLabel = albow.Label("")
+        spaceLabel.anchor = 'wh'
+        sideColumn2 = mcedit.makeSideColumn2()
+        sideColumn2.anchor = 'wh'
 
-        contentRow = albow.Row((commandRow, sideColumn))
+        contentRow = albow.Row((commandRow, albow.Column((sideColumn1, spaceLabel, sideColumn2))))
         contentRow.center = self.center
         contentRow.anchor = "rh"
         self.add(contentRow)
-        self.sideColumn = sideColumn
 
     def gl_draw_self(self, root, offset):
         # self.mcedit.editor.mainViewport.setPerspective();

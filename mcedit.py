@@ -258,23 +258,9 @@ class MCEdit(GLViewport):
         for i, filename in enumerate(worlds):
             config.config.set("Recent Worlds", str(i), filename.encode('utf-8'))
 
-    def makeSideColumn(self):
+    def makeSideColumn1(self):
         def showLicense():
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
-
-        def showCacheDir():
-            try:
-                os.mkdir(directories.getCacheDir())
-            except OSError:
-                pass
-            platform_open(directories.getCacheDir())
-
-        def showScreenshotsDir():
-            try:
-                os.mkdir(os.path.join(directories.parentDir, "screenshots"))
-            except OSError:
-                pass
-            platform_open(os.path.join(directories.parentDir, "screenshots"))
             
         def refresh():
             version_utils.playercache.force_refresh()
@@ -301,16 +287,37 @@ class MCEdit(GLViewport):
                      showLicense,
                      os.path.join(directories.getDataDir(), "LICENSE.txt")),
                     ("",
+                     "Refresh Player Names",
+                     refresh)
+                   ])
+
+        c = mceutils.HotkeyColumn(hotkeys)
+
+        return c
+
+    def makeSideColumn2(self):
+        def showCacheDir():
+            try:
+                os.mkdir(directories.getCacheDir())
+            except OSError:
+                pass
+            platform_open(directories.getCacheDir())
+
+        def showScreenshotsDir():
+            try:
+                os.mkdir(os.path.join(directories.parentDir, "screenshots"))
+            except OSError:
+                pass
+            platform_open(os.path.join(directories.parentDir, "screenshots"))
+
+        hotkeys = ([("",
                      "Config Files",
                      showCacheDir,
                      directories.getCacheDir()),
                     ("",
                      "Screenshots",
                      showScreenshotsDir,
-                     os.path.join(directories.parentDir, "screenshots")),
-                    ("",
-                     "Refresh Player Names",
-                     refresh)
+                     os.path.join(directories.parentDir, "screenshots"))
                    ])
 
         c = mceutils.HotkeyColumn(hotkeys)

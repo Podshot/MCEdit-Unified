@@ -3,7 +3,7 @@ import release
 import mceutils
 import platform
 
-from albow import AttrRef, Row
+from albow import AttrRef, Row, Column
 from albow.resource import get_font
 from albow.controls import Label
 from pygame import key
@@ -51,7 +51,10 @@ class ControlPanel(Panel):
 
         buttons = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn, item_spacing=2)
 
-        sideColumn = editor.mcedit.makeSideColumn()
+        sideColumn1 = editor.mcedit.makeSideColumn1()
+        sideColumn2 = editor.mcedit.makeSideColumn2()
+        spaceLabel = Label("")
+        sideColumn = Column((sideColumn1, spaceLabel, sideColumn2))
 
         self.add(Row([buttons, sideColumn]))
         self.shrink_wrap()
