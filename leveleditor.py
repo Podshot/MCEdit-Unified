@@ -240,6 +240,7 @@ class LevelEditor(GLViewport):
         self.sessionLockLock = Image(os.path.join("toolicons", "session_good.png"))
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel = Label("Session:", margin=0)
+        self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
 
         row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
                self.viewButton, self.viewportButton, self.recordUndoButton, Label("Session Lock Status:"), self.sessionLockLock)
@@ -3192,8 +3193,10 @@ class LogFilter(logging.Filter):
         if "Session lock lost. This world is being accessed from another location." in message:
             self.editor.sessionLockLock.set_image(get_image(os.path.join("toolicons", "session_bad.png"), prefix=""))
             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
+            self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
         if "Re-acquired session lock" in message:
             print "Acquired session lock"
             self.editor.sessionLockLock.set_image(get_image(os.path.join("toolicons", "session_good.png"), prefix=""))
             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
+            self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
             self.editor.root.sessionStolen = False
