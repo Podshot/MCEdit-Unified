@@ -1359,7 +1359,7 @@ o647 Name:
 t647 
 o648 Minecraft Infinite World (Anvil Format)
 t648 
-o649 Day:
+o649 Day: 
 t649 
 o650 Time of day:
 t650 
@@ -1675,3 +1675,15 @@ o795 Compass Size (%):
 t795 
 o796 Fog Intensity (%): 
 t796 
+o797 Toggle compass
+t797 
+o798 Width of blocks movement: 
+t798 
+o799 Width of selection movement: 
+t799 
+o800 Import
+t800 
+o801 Old (Messy)
+t801 
+o802 Click to open filters folder
+t802 

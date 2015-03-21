@@ -2000,7 +2000,7 @@ class LevelEditor(GLViewport):
             b = Button(gametype(t), action=action)
             b.gametype = t
 
-            gametypeRow = Row((Label("Game Type: "), b))
+            gametypeRow = Row((Label("Game Type:"), b))
             items.append(gametypeRow)
         if isinstance(self.level, pymclevel.MCInfdevOldLevel):
 

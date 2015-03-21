@@ -1345,14 +1345,14 @@ o629 Reset to default
 t629 Valeur par défaut
 o630 Do you want to keep your changes?
 t630 Voulez-vous garder les changements ?
-o631 Screenshots Folder
+o631 Screenshots
 t631 Captures d'écran
 o632 Uses the Latest Snapshot Terrain Generation
 t632 Utiliser la génération de terrain de la dernière snapshot
 o633 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
 t633 Simuler le monde pendant quelques secondes après sa génération. Réduis la taille de la sauvegarde en exécutant les TileTicks.
 o634 Last Played
-t634 Joué pour la dernière fois
+t634 Joué le...
 o635 Level Name (filename)
 t635 Nom du niveau (nom du fichier)
 o636 Dims
@@ -1381,7 +1381,7 @@ o647 Name:
 t647 Nom :
 o648 Minecraft Infinite World (Anvil Format)
 t648 Monde infini de Minecraft (format Anvil)
-o649 Day:
+o649 Day: 
 t649 Jour :
 o650 Time of day:
 t650 Heure :
@@ -1719,3 +1719,15 @@ o795 Compass Size (%):
 t795 Taille boussole (%) : 
 o796 Fog Intensity (%): 
 t796 Densité de la brume (%) : 
+o797 Toggle compass
+t797 Activer boussole
+o798 Width of blocks movement: 
+t798 Taille des dépl. des blcos : 
+o799 Width of selection movement: 
+t799 Taille des dépl. de la sélection : 
+o800 Import
+t800 Importer
+o801 Old (Messy)
+t801 Ancien comportement
+o802 Click to open filters folder
+t802 Cliquer pour ouvrir le dossier des filtres
