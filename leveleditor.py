@@ -243,9 +243,8 @@ class LevelEditor(GLViewport):
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
 
         row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
-               self.viewButton, self.viewportButton, self.recordUndoButton, Label("Session Lock Status:"), self.sessionLockLock)
+               self.viewButton, self.viewportButton, self.recordUndoButton, Row((self.sessionLockLabel, self.sessionLockLock), spacing=2))
 
-        # row += (Button("CR Info", action=self.showChunkRendererInfo), )
         self.topRow = row = Row(row)
         self.add(row)
         self.statusLabel = ValueDisplay(width=self.width, ref=AttrRef(self, "statusText"))
@@ -1038,7 +1037,7 @@ class LevelEditor(GLViewport):
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
             self.remove(self.topRow)
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
-               self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton, Row((self.sessionLockLabel, self.sessionLockLock))))
+               self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton, Row((self.sessionLockLabel, self.sessionLockLock), spacing=2)))
             self.add(self.topRow, 0)
 
         else:
