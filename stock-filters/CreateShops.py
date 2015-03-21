@@ -31,9 +31,21 @@ Professions = {
 
 ProfessionKeys = ()
 for key in Professions.keys():
-    ProfessionKeys = ProfessionKeys + (key,)
+    ProfessionKeys += (key,)
 
-inputs = [(("General Trade", "title"),
+CustomHeads = {
+    "Skeleton Skull": 0,
+    "Wither Skeleton Skull": 1,
+    "Zombie Skull": 2,
+    "Player Skull": 3,
+    "Creeper Skull": 4
+}
+
+HeadsKeys = ()
+for key in CustomHeads.keys():
+    HeadsKeys += (key,)
+
+inputs = [(("Trade", "title"),
            ("This is a modified version of SethBling's Create Shops filter at DragonQuiz's request", "label"),
            ("Profession", ProfessionKeys),
            ("Add Stopping Trade", True),
@@ -54,14 +66,21 @@ inputs = [(("General Trade", "title"),
                "Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees",
                "label"),
            ),
+          (("Head", "title"),
+           ("Choose a custom head for the villagers you make", "label"),
+           ("Custom Head", False),
+           ("Skull Type", HeadsKeys),
+           ("", "label"),
+           ("If Player Skull", "label"),
+           ("Player's Name", ("string", "width=250"))),
 
-          (("Trade Notes", "title"),
+          (("Notes", "title"),
            ("To create a shop first put your buy in the top slot(s) of the chest.\n"
             "Second put a second buy in the middle slot(optional).\n"
             "Third put a sell in the bottom slot.\n"
             "Click the chest you want and choose what you want and click hit enter\n"
             "*All items must be in the same row*\n"
-            , "label")),
+            , "label"))
           ]
 
 
@@ -75,6 +94,9 @@ def perform(level, box, options):
     name = options["Villager Name"]
     yaxis = options["Y-Axis"]
     xaxis = options["X-Axis"]
+    IsCustomHead = options["Custom Head"]
+    SkullType = options["Skull Type"]
+    PlayerName = options["Player's Name"]
     for (chunk, slices, point) in level.getChunkSlices(box):
         for e in chunk.TileEntities:
             x = e["x"].value
@@ -84,10 +106,10 @@ def perform(level, box, options):
             if (x, y, z) in box:
                 if e["id"].value == "Chest":
                     createShop(level, x, y, z, emptyTrade, invincible, Professions[options["Profession"]], unlimited,
-                               xp, nomove, silent, name, yaxis, xaxis)
+                               xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, CustomHeads[SkullType], PlayerName)
 
 
-def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, silent, name, yaxis, xaxis):
+def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp, nomove, silent, name, yaxis, xaxis, IsCustomHead, SkullType, PlayerName):
     chest = level.tileEntityAt(x, y, z)
     if chest is None:
         return
@@ -175,6 +197,15 @@ def createShop(level, x, y, z, emptyTrade, invincible, profession, unlimited, xp
         offer["sell"]["Damage"] = TAG_Short(0)
         offer["sell"]["id"] = TAG_String("minecraft:barrier")
         villager["Offers"]["Recipes"].append(offer)
+
+    if IsCustomHead:
+        Head = TAG_Compound()
+        Head["id"] = TAG_Short(397)
+        Head["Damage"] = TAG_Short(SkullType)
+        if SkullType == 3 and PlayerName:
+            Head["tag"] = TAG_Compound()
+            Head["tag"]["SkullOwner"] = TAG_String(PlayerName)
+        villager["Equipment"] = TAG_List([TAG_Compound(), TAG_Compound(), TAG_Compound(), TAG_Compound(), Head])
 
     level.setBlockAt(x, y, z, 0)
 
