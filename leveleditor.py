@@ -406,7 +406,7 @@ class LevelEditor(GLViewport):
         def createOneCopyPanel(sch, i):
             p = GLBackground()
             p.bg_color = (0.0, 0.0, 0.0, 0.4)
-            itemNo = Label("#%s%s"%(" " * (len("%s"%self.maxCopies) - len("%s"%(i + 1))), (i + 1)), doNotTranslate=True)
+            itemNo = Label("#%s%s"%("  " * (len("%s"%self.maxCopies) - len("%s"%(i + 1))), (i + 1)), doNotTranslate=True)
             thumb = thumbCache.get(sch)
             if thumb is None:
                 thumb = ThumbView(sch)
@@ -437,16 +437,16 @@ class LevelEditor(GLViewport):
                 page.append(p)
             else:
                 inner_height = p.height
-                panel.pages.append(Column(page, spacing=2, align="l"))
+                panel.pages.append(Column(page, spacing=2, align="l", margin=0))
                 panel.pages[-1].shrink_wrap()
                 page = [p]
         if page:
-            panel.pages.append(Column(page, spacing=2, align="l"))
+            panel.pages.append(Column(page, spacing=2, align="l", margin=0))
             panel.pages[-1].shrink_wrap()
 
         prevButton.shrink_wrap()
         self.currentCopyPage = min(self.currentCopyPage, len(panel.pages) - 1)
-        col = Column([panel.pages[self.currentCopyPage]], spacing=2, align="l")
+        col = Column([panel.pages[self.currentCopyPage]], spacing=2, align="l", margin=0)
         col.shrink_wrap()
 
         def changeCopyPage(this, delta):
