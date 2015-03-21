@@ -1064,14 +1064,14 @@ o500 Player Name
 t500 Nom du joueur
 o501 Player: 
 t501 Joueur : 
-o502 Goto Player
-t502 Aller au joueur
-o503 Goto Player's View
-t503 Aller à la vue joueur
-o504 Move Player
-t504 Déplacer joueur
-o505 Align Player to Camera
-t505 Aligner le joueur à la caméra
+o502 Goto
+t502 Aller au
+o503 Goto View
+t503 Aller à la vue
+o504 Move
+t504 Déplacer
+o505 Align to Camera
+t505 
 o506 Player
 t506 Joueur
 o507 Chunk Control
@@ -1237,10 +1237,10 @@ o585 View Distance ({0})
 t585 Distance de vue ({0})
 o586 Copy Stack Size: 
 t586 Taille tampon de copie : 
-o587 Add Player
-t587 Ajout. joueur
-o588 Remove Player
-t588 Suppr. joueur
+o587 Add
+t587 Ajout.
+o588 Remove
+t588 Suppr.
 o589 Reload Skins
 t589 Recharger skins
 o590 Previous Page

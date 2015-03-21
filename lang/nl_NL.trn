@@ -1051,14 +1051,14 @@ o500 Player Name
 t500 Spelernaam
 o501 Player: 
 t501 Speler:
-o502 Goto Player
-t502 Ga naar Speler
-o503 Goto Player's View
-t503 Ga naar Zicht van Speler
-o504 Move Player
-t504 Beweeg Speler
-o505 Align Player to Camera
-t505 Plaats Speler op Camera
+o502 Goto
+t502 
+o503 Goto View
+t503 
+o504 Move
+t504 
+o505 Align to Camera
+t505 
 o506 Player
 t506 Speler
 o507 Chunk Control
@@ -1224,9 +1224,9 @@ o585 View Distance ({0})
 t585 
 o586 Copy Stack Size: 
 t586 
-o587 Add Player
+o587 Add
 t587 
-o588 Remove Player
+o588 Remove
 t588 
 o589 Reload Skins
 t589 
