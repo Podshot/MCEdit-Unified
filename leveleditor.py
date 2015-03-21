@@ -1024,20 +1024,18 @@ class LevelEditor(GLViewport):
                 if dim not in dimensions:
                     dimensionsMenu.append((name, str(dim)))
 
-            menu = Menu("", dimensionsMenu)
-
             def presentMenu():
-                x, y = self.netherButton.bottomleft
-                x += (self.netherButton.width - menu.width) / 2
-                dimIdx = menu.present(self, (x, y))
-                if dimIdx == -1:
+                try:
+                    dimNo = int([d[1] for d in dimensionsMenu if d[0] == self.netherButton.selectedChoice][0])
+                except:
                     return
-                dimNo = int(dimensionsMenu[dimIdx][1])
                 self.gotoDimension(dimNo)
                 self.mainViewport.skyList = None
                 self.mainViewport.drawSkyBackground()
 
-            self.netherButton = Button("Goto Dimension", action=presentMenu)
+            dimensionsList = [d[0] for d in dimensionsMenu]
+            self.netherButton = mceutils.ChoiceButton(dimensionsList, choose=presentMenu)
+            self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
             self.remove(self.topRow)
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
                self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton, Row((self.sessionLockLabel, self.sessionLockLock))))
