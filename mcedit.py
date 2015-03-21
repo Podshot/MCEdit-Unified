@@ -263,9 +263,17 @@ class MCEdit(GLViewport):
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
 
         def showCacheDir():
+            try:
+                os.mkdir(directories.getCacheDir())
+            except OSError:
+                pass
             platform_open(directories.getCacheDir())
 
         def showScreenshotsDir():
+            try:
+                os.mkdir(os.path.join(directories.parentDir, "screenshots"))
+            except OSError:
+                pass
             platform_open(os.path.join(directories.parentDir, "screenshots"))
             
         def refresh():
