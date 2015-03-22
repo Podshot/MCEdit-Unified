@@ -299,7 +299,6 @@ class SelectionTool(EditorTool):
         if pos is None:
             return
         try:
-
             size = None
             box = self.selectionBoxInProgress()
             if box:

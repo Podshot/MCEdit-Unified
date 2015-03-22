@@ -1702,10 +1702,8 @@ class LevelEditor(GLViewport):
 
         if sys.platform == 'linux2':
             test_key = getattr(evt, 'scancode', None)
-            delta = 9
             tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
         else:
-            delta = 0
             test_key = keyname
             tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
         if test_key in tool_keys:
@@ -1720,11 +1718,15 @@ class LevelEditor(GLViewport):
         if self.selectionSize():
             filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
             if filter_keys:
-                self.toolbar.selectTool(4)
+                if not self.toolbar.tools[4].filterModules:
+                    self.toolbar.tools[4].reloadFilters()
                 filters = [i for i in self.toolbar.tools[4].filterModules if i.lower() == filter_keys[0]]
                 if filters:
-                    self.toolbar.tools[4].panel.selectedFilterName = filters[0]
-                    self.toolbar.tools[4].panel.reload()
+                    if self.currentTool != 4:
+                        self.toolbar.selectTool(4)
+                    if self.toolbar.tools[4].panel.selectedFilterName != filters[0]:
+                        self.toolbar.tools[4].panel.selectedFilterName = filters[0]
+                        self.toolbar.tools[4].panel.reload()
 
 
         self.root.fix_sticky_ctrl()

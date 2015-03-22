@@ -327,8 +327,6 @@ class FilterToolPanel(Panel):
         self.tool = tool
         self.selectedFilterName = None
         self.usingMacro = False
-        if len(self.tool.filterModules):
-            self.reload()
 
     def reload(self, filterOptionsPanel=None):
         for i in list(self.subwidgets):
@@ -554,6 +552,11 @@ class FilterToolPanel(Panel):
             keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
             if keysUsed:
                 self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to the filter \"{2}\"\n\nPress ESC to cancel.").format(keyname, keysUsed[0][0], self.selectedFilterName))
+                return True
+
+            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
+            if filter_keys:
+                self.bind_key(_("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(keyname, filter_keys[0]))
                 return True
         elif keyname != "Escape":
             self.bind_key(_("You can't use the key {0}.\nPress a key to assign to the filter \"{1}\"\n\nPress ESC to cancel.").format(keyname, self.selectedFilterName))
