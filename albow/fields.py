@@ -1046,11 +1046,11 @@ class TextEditorWrapped(Widget):
 
     def scroll_up(self):
         if self.topLine - 1 >= 0:
-            self.topLine += -1
+            self.topLine -= 1
 
     def scroll_down(self):
         if self.topLine + 1 < len(self.textL) - self.dispLines + 1:
-            self.topLine += 1
+            self.topLine = len(self.textL) - self.dispLines
 
     def updateTextWrap(self):
         # Update text wrapping for box
