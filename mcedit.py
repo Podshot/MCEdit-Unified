@@ -617,10 +617,12 @@ class MCEdit(GLViewport):
             dis = mcplatform.Xlib.display.Display()
             win = dis.create_resource_object('window', win)
             curDesk = os.environ.get('XDG_CURRENT_DESKTOP')
-            if curDesk in ('GNOME', 'X-Cinnamon'):
+            if curDesk in ('GNOME', 'X-Cinnamon', 'Unity'):
                 wParent = win.query_tree().parent.query_tree().parent
             elif curDesk == 'KDE':
                 wParent = win.query_tree().parent.query_tree().parent.query_tree().parent
+            else:
+                wParent = None
             if wParent:
                 geom = wParent.get_geometry()
                 config.settings.windowX.set(geom.x)
