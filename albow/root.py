@@ -128,10 +128,10 @@ class RootWidget(Widget):
 
     def take_screenshot(self):
         try:
-            os.mkdir(os.path.join(directories.parentDir, "screenshots"))
+            os.mkdir(os.path.join(directories.getCacheDir(), "screenshots"))
         except OSError:
             pass
-        screenshot_name = os.path.join(directories.parentDir, "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
+        screenshot_name = os.path.join(directories.getCacheDir(), "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
         pygame.image.save(pygame.display.get_surface(), screenshot_name)
         self.diag = Dialog()
         lbl = Label("Screenshot taken and saved as '"+screenshot_name+"'")
@@ -146,7 +146,7 @@ class RootWidget(Widget):
     @staticmethod
     def open_screenshots_folder():
         from mcplatform import platform_open
-        platform_open(os.path.join(directories.parentDir, "screenshots"))
+        platform_open(os.path.join(directories.getCacheDir(), "screenshots"))
 
     def screenshot_notify(self):
         self.diag.dismiss()
