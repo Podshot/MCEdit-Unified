@@ -431,6 +431,11 @@ class SelectionTool(EditorTool):
             self.nudgeSelectionButton.bg_color = self.selectionColor + (0.7,)
             self.nudgeSelectionButton.anchor = "twh"
 
+            self.spaceLabel = Label("")
+            self.spaceLabel.anchor = "twh"
+            self.spaceLabel.height = 3
+            self.nudgePanel.add(self.spaceLabel)
+
         if hasattr(self, 'sizeLabel'):
             self.nudgePanel.remove(self.sizeLabel)
         self.sizeLabel = Label(self.sizeLabelText())
@@ -442,9 +447,9 @@ class SelectionTool(EditorTool):
         self.nudgePanel.add(self.sizeLabel)
 
         self.nudgePanel.add(self.nudgeSelectionButton)
-        self.nudgePanel.height += (self.nudgeSelectionButton.height + self.sizeLabel.height)
-        self.nudgeRow.top = self.sizeLabel.bottom
+        self.nudgeSelectionButton.top = self.spaceLabel.bottom
         self.sizeLabel.top = self.nudgeSelectionButton.bottom
+        self.nudgeRow.top = self.sizeLabel.bottom
 
         self.nudgePanel.shrink_wrap()
         self.sizeLabel.centerx = self.nudgePanel.centerx
