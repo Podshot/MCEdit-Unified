@@ -305,10 +305,10 @@ class MCEdit(GLViewport):
 
         def showScreenshotsDir():
             try:
-                os.mkdir(os.path.join(directories.parentDir, "screenshots"))
+                os.mkdir(os.path.join(directories.getCacheDir(), "screenshots"))
             except OSError:
                 pass
-            platform_open(os.path.join(directories.parentDir, "screenshots"))
+            platform_open(os.path.join(directories.getCacheDir(), "screenshots"))
 
         hotkeys = ([("",
                      "Config Files",
@@ -317,7 +317,7 @@ class MCEdit(GLViewport):
                     ("",
                      "Screenshots",
                      showScreenshotsDir,
-                     os.path.join(directories.parentDir, "screenshots"))
+                     os.path.join(directories.getCacheDir(), "screenshots"))
                    ])
 
         c = mceutils.HotkeyColumn(hotkeys)
