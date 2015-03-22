@@ -1700,14 +1700,8 @@ class LevelEditor(GLViewport):
             config.settings.flyMode.set(not config.settings.flyMode.get())
             config.save()
 
-        if sys.platform == 'linux2':
-            test_key = getattr(evt, 'scancode', None)
-            tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
-        else:
-            test_key = keyname
-            tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-        if test_key in tool_keys:
-            self.toolbar.selectTool(tool_keys.index(test_key))
+        if keyname in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
+            self.toolbar.selectTool(int(keyname) - 1)
 
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))

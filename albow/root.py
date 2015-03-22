@@ -404,8 +404,8 @@ class RootWidget(Widget):
         finally:
             if keyname == 'Meta':
                 keyname = 'Ctrl'
-            newKeyname = ""
             if not movement:
+                newKeyname = ""
                 if evt.shift and keyname != "Shift":
                     newKeyname += "Shift-"
                 if (evt.ctrl or evt.cmd) and keyname != "Ctrl":
@@ -413,7 +413,19 @@ class RootWidget(Widget):
                 if evt.alt and keyname != "Alt":
                     newKeyname += "Alt-"
 
-            keyname = newKeyname + keyname
+                keyname = newKeyname + keyname
+
+                if not newKeyname:
+                    if sys.platform == 'linux2':
+                        test_key = getattr(evt, 'scancode', None)
+                        tool_keys = [10, 11, 12, 13, 14, 15, 16, 17, 18]
+                    else:
+                        test_key = keyname
+                        tool_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+                    if test_key in tool_keys:
+                        keyname = str(tool_keys.index(test_key) + 1)
+                    elif test_key == 19:
+                        keyname = '0'
 
             if keyname == 'Enter':
                 keyname = 'Return'
