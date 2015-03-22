@@ -220,6 +220,7 @@ class PlayerAddOperation(Operation):
 
     def undo(self):
         self.level.players.remove(self.uuid)
+        self.tool.movingPlayer = None
         if self.tool.panel:
             self.tool.panel.players.remove(self.player)
             self.tool.panel.player_UUID.pop(self.player)
