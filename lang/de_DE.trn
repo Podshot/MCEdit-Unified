@@ -1717,3 +1717,7 @@ o799 Click to open filters folder
 t799 
 o800 Head
 t800 
+o801 Exception during filter operation. See console for details.
+
+{0}
+t801 
