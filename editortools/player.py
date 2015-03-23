@@ -238,6 +238,9 @@ class PlayerAddOperation(Operation):
             if self.tool.panel:
                 self.tool.panel.players.append(self.player)
                 self.tool.panel.player_UUID[self.player] = self.uuid
+            self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid))
+            self.tool.playerPos[(0,0,0)] = self.uuid
+            self.tool.revPlayerPos[self.uuid] = (0,0,0)
 
         self.tool.markerList.invalidate()
 

@@ -17,7 +17,7 @@ logger = logging.getLogger()
 
 def deprecated(func):
     def new_func(*args, **kwargs):
-        logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
+        #logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
         return func(*args, **kwargs)   
     new_func.__name__ = func.__name__
     new_func.__doc__ = func.__doc__
