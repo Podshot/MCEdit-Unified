@@ -435,10 +435,14 @@ class FilterToolPanel(Panel):
 
     def filterChanged(self):
         if not self.filterSelect.selectedChoice.startswith("[Macro]"):
+            if self.filterSelect.selectedChoice not in self.tool.filterModules:
+                return
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
             self.reload()
         else:
+            if self.filterSelect.selectedChoice.replace("[Marco] ", "") not in self.marco_json["Marcos"] :
+                return
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
             self.reload_macro()
