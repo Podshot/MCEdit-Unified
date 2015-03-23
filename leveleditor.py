@@ -3188,7 +3188,6 @@ class LogFilter(logging.Filter):
             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
         if "Re-acquired session lock" in message:
-            print "Acquired session lock"
             self.editor.sessionLockLock.set_image(get_image(os.path.join("toolicons", "session_good.png"), prefix=""))
             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"

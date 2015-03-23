@@ -706,9 +706,6 @@ class BrushTool(CloneTool):
         """
         if getattr(self.brushMode, 'draggableBrush', True):
             if self.lineToolKey:
-                for move in self.editor.movements:
-                    if move in config.keys.brushLineTool.get():
-                        self.editor.save = 1
                 if len(self.draggedPositions):
                     points = bresenham.bresenham(self.draggedPositions[0], point)
                     self.draggedPositions = [self.draggedPositions[0]]
