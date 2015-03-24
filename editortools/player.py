@@ -185,6 +185,7 @@ class PlayerAddOperation(Operation):
             self.tool.hidePanel()
             self.tool.showPanel()
         self.canUndo = True
+        self.playerTag.save(self.level.getPlayerPath(self.uuid))
 
     def newPlayer(self):
         playerTag = nbt.TAG_Compound()
@@ -227,6 +228,7 @@ class PlayerAddOperation(Operation):
         del self.tool.playerPos[(0,0,0)]
         del self.tool.revPlayerPos[self.uuid]
         del self.tool.playerTexture[self.uuid]
+        os.remove(self.level.getPlayerPath(self.uuid))
 
         self.tool.markerList.invalidate()
 
@@ -241,6 +243,7 @@ class PlayerAddOperation(Operation):
             self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid))
             self.tool.playerPos[(0,0,0)] = self.uuid
             self.tool.revPlayerPos[self.uuid] = (0,0,0)
+            self.playerTag.save(self.level.getPlayerPath(self.uuid))
 
         self.tool.markerList.invalidate()
 
@@ -496,6 +499,7 @@ class PlayerPositionPanel(Panel):
                 self.nbtpage.shrink_wrap()
                 self.pages.add_page("NBT Data", self.nbtpage)
                 self.pages.show_page(self.nbtpage)
+            #elif self.selectedPlayer.isNew:
             else:
                 alert(_("Error while getting player file.\n%s not found.")%(player + '.dat'), doNotTranslate=True)
 
