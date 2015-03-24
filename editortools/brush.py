@@ -388,6 +388,7 @@ class BrushTool(CloneTool):
         self.draggedPositions = []
         self.pickBlockKey = False
         self.lineToolKey = False
+        self.lastPosition = None
         self.root = get_root()
 
     """
@@ -682,7 +683,7 @@ class BrushTool(CloneTool):
         else:
             self.draggedDirection = direction
             point = [p + d * self.reticleOffset for p, d in zip(pos, direction)]
-            self.draggedPositions = [point]
+            self.dragLineToPoint(point)
 
     @alertException
     def mouseDrag(self, evt, pos, _dir):
@@ -693,10 +694,11 @@ class BrushTool(CloneTool):
 
         if getattr(self.brushMode, 'draggableBrush', True):
             if len(self.draggedPositions):  #If we're dragging the mouse
+                self.lastPosition = lastPoint = self.draggedPositions[-1]
                 direction = self.draggedDirection
                 point = [p + d * self.reticleOffset for p, d in zip(pos, direction)]
                 if any([abs(a - b) >= self.options['Minimum Spacing']
-                        for a, b in zip(point, self.draggedPositions[-1])]):
+                        for a, b in zip(point, lastPoint)]):
                     self.dragLineToPoint(point)
 
     def dragLineToPoint(self, point):
@@ -709,6 +711,9 @@ class BrushTool(CloneTool):
                 if len(self.draggedPositions):
                     points = bresenham.bresenham(self.draggedPositions[0], point)
                     self.draggedPositions = [self.draggedPositions[0]]
+                    self.draggedPositions.extend(points[::self.options['Minimum Spacing']][1:])
+                elif self.lastPosition is not None:
+                    points = bresenham.bresenham(self.lastPosition, point)
                     self.draggedPositions.extend(points[::self.options['Minimum Spacing']][1:])
             else:
                 self.draggedPositions.append(point)
@@ -728,6 +733,7 @@ class BrushTool(CloneTool):
         if op.canUndo:
             self.editor.addUnsavedEdit()
         self.editor.invalidateBox(op.dirtyBox())
+        self.lastPosition = self.draggedPositions[-1]
         self.draggedPositions = []
 
     def swapBrushStyles(self):
@@ -941,10 +947,10 @@ class BrushTool(CloneTool):
                     GL.glVertex3f(*map(lambda a, b: a + 0.5 + b * 0.5, pos, direction))  #Top side of surface block
             dirtyBox = self.getDirtyBox(reticlePoint, self)
             self.drawTerrainPreview(dirtyBox.origin)
-            if self.lineToolKey and len(self.draggedPositions) and getattr(self.brushMode, 'draggableBrush', True):  #If dragging mouse with Linetool pressed.
+            if self.lineToolKey and self.lastPosition and getattr(self.brushMode, 'draggableBrush', True):  #If dragging mouse with Linetool pressed.
                 GL.glColor4f(1.0, 1.0, 1.0, 0.7)
                 with gl.glBegin(GL.GL_LINES):
-                    GL.glVertex3f(*map(lambda a: a + 0.5, self.draggedPositions[0]))
+                    GL.glVertex3f(*map(lambda a: a + 0.5, self.lastPosition))
                     GL.glVertex3f(*map(lambda a: a + 0.5, reticlePoint))
 
     def decreaseBrushSize(self):
