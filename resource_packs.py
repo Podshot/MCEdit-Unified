@@ -521,7 +521,7 @@ class IResourcePack:
         self.block_image = {}
         self.propogated_textures = []
         self.all_texture_slots = []
-        self.old_terrain = Image.open(os.path.join(directories.getDataDir(), 'terrain.png'))
+        self.old_terrain = Image.open(os.path.join('.', 'terrain.png'))
         for texx in xrange(0,33):
             for texy in xrange(0,33):
                 self.all_texture_slots.append((step(texx),step(texy)))
