@@ -199,7 +199,7 @@ t89 Vergangene Änderungen
 o90 License
 t90 Lizenz
 o91 Config Files Folder
-t91 
+t91 Konfigurations Dateien Ordner
 o92 {0}/{1}/{2}/{3}/{4}/{5} to move
 t92 {0}/{1}/{2}/{3}/{4}/{5} um sich zu bewegen
 o93 {0} to slow down
@@ -214,7 +214,8 @@ o97 Warning: Only open a world in one program at a time. If you open a world at 
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
 t97 Warnung: Öffnen Sie eine Welt nur zu einem Zeitpunkt in einem Programm. Wenn Sie eine Welt gleichzeitig in MCEdit und Minecraft öffnen, verlieren Sie Ihre Arbeit und beschädigen vielleicht die Speicherdateien.
-Wenn Sie Minecraft 1.3 oder früher verwenden, müssen Sie Minecraft komplett schliessen bevor Sie MCEdit nutzen.
+
+ Wenn Sie Minecraft 1.3 oder früher verwenden, müssen Sie Minecraft komplett schliessen bevor Sie MCEdit nutzen.
 o98 Don't remind me again.
 t98 Nicht nochmal erinnern.
 o99 <Movement>
@@ -468,7 +469,6 @@ t222 ...
 o223 Select
 Right-click for options
 t223 Auswählen
-
 Rechtsklick für Optionen
 o224 Remove the selection. Shortcut: {0}
 t224 Entfernen der Auswahl. Tastenkürzel: {0}
@@ -489,7 +489,6 @@ Rechtsklick für Optionen
 o231 Brush
 Right-click for options
 t231 Pinsel
-
 Rechtsklick für Optionen
 o232 Fill
 t232 Füllen
@@ -552,7 +551,6 @@ t260 Nur natürliche Erde wechseln
 o261 Import
 Right-click for options
 t261 Importiere
-
 Rechtsklick für Optionen
 o262 x
 t262 x
@@ -601,7 +599,6 @@ t281 Tastenkürzel: Enter
 o282 Fill and Replace
 Right-click for options
 t282 Füllen und Ersetzen
-
 Rechtsklick für Optionen
 o283 Fill with:
 t283 Füllen mit:
@@ -770,11 +767,13 @@ t364 Macht dass die Bewohner sich nicht bewegen
 o365 Villager Name
 t365 Bewohner Name
 o366 Trade
-t366 
+t366 Handel
 o367       Rotate the Position of your Trader
 
 *Can only be used if Not Move is checked*
-t367 
+t367       Rotiere die Position von deinem Händler
+
+*Kann nur benutzt werden wenn Nicht Bewegen ist angewählt*
 o368 Y-Axis
 t368 Y-Achse
 o369 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
@@ -798,7 +797,7 @@ Klicke Sie eine Kiste und wählen Sie was Sie wollen und drücken Sie Enter
 *Alle Gegenstände müssen in der selben Spalte sein*
 
 o374 Notes
-t374 
+t374 Notizen
 o375 Include position data
 t375 Schliesse Positionsdaten ein
 o376 Both
@@ -1054,11 +1053,11 @@ t499 Spieler:
 o500 Goto
 t500 Gehe zu
 o501 Goto View
-t501 
+t501 Gehe zu Sicht
 o502 Move
 t502 Bewege
 o503 Align to Camera
-t503 
+t503 Der Kamera anpassen
 o504 Player
 t504 Spieler
 o505 Chunk Control
@@ -1066,7 +1065,6 @@ t505 Chunk Verwaltungstool
 o506 Move Spawn Point
 Right-click for options
 t506 Bewege Spawnpunkt
-
 Rechtsklick für Optionen
 o507 Goto Spawn
 t507 Gehe zu Spawn
@@ -1542,7 +1540,6 @@ o722 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t722  Noch nicht implementiert.
 Nutze den NBT Explorer um den Spieler zu editieren.
-
 o723 Error while getting player file.
 %s not found.
 t723 Fehler während dem bekommen von Spieler Dateien.
@@ -1590,7 +1587,7 @@ t740 Importiere Schematic oder Level...
 o741 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t741 
+t741 Konnte den Minecraft saves Order nicht finden!
 
 ({0} wurde nicht gefunden oder ist kein Verzeichnis)
 o742 I don't know how to open {0}:
@@ -1704,20 +1701,22 @@ t792 Kompassgroße (%):
 o793 Fog Intensity (%): 
 t793 Nebelstärke (%): 
 o794 Toggle compass
-t794 
+t794 Kompass umschalten
 o795 Width of blocks movement: 
 t795 
 o796 Width of selection movement: 
 t796 
 o797 Import
-t797 
+t797 Importiere
 o798 Old (Messy)
-t798 
+t798 Alt (chaotisch)
 o799 Click to open filters folder
-t799 
+t799 Klicke um den Filter Ordner zu öffnen
 o800 Head
-t800 
+t800 Kopf
 o801 Exception during filter operation. See console for details.
 
 {0}
-t801 
+t801 Eine Ausnahme wurde ausgelöst während ein Filter lief. Siehe Konsole für Details.
+
+{0}
