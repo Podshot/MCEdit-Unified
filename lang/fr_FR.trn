@@ -1061,7 +1061,7 @@ t498 Nom du joueur
 o499 Player: 
 t499 Joueur : 
 o500 Goto
-t500 Aller au
+t500 Aller à
 o501 Goto View
 t501 Aller à la vue
 o502 Move
@@ -1532,206 +1532,204 @@ o712 Save and Quit
 t712 Sauver et quiter
 o713 Refresh Player Names
 t713 Rafraîchir les noms de joueurs
-o714 Ticks mode accouplement
-t714 
-o715 Results
-t715 Résultats
-o716 Smooth - 3D
-t716 Adoucir - 3D
-o717 Smoothing
-t717 Adoucissement
-o718 Made by Sethbling
-t718 Créé par Sethbling
-o719 NBT Data
-t719 Données NBT
-o720 Edit NBT Data
-t720 Édit. données NBT
-o721 Open the NBT Explorer to edit player's attributes and inventory
-t721 Ouvre l'explorateur NBT pour changer les attributs et l'inventaire du joueur
-o722 Not yet implemented.
+o714 Results
+t714 Résultats
+o715 Smooth - 3D
+t715 Adoucir - 3D
+o716 Smoothing
+t716 Adoucissement
+o717 Made by Sethbling
+t717 Créé par Sethbling
+o718 NBT Data
+t718 Données NBT
+o719 Edit NBT Data
+t719 Édit. données NBT
+o720 Open the NBT Explorer to edit player's attributes and inventory
+t720 Ouvre l'explorateur NBT pour changer les attributs et l'inventaire du joueur
+o721 Not yet implemented.
 Use the NBT Explorer to edit this player.
-t722 Pas encore implémenté.
+t721 Pas encore implémenté.
 Utilisez l'Explorateur NBT pour éditer ce joueur.
-o723 Error while getting player file.
+o722 Error while getting player file.
 %s not found.
-t723 Erreur lors de l'ouverture du fichier.
+t722 Erreur lors de l'ouverture du fichier.
 %s introuvable.
-o724 Spawn point fixed. Changes: 
+o723 Spawn point fixed. Changes: 
 
 
-t724 Point de spawn fixé. Changements : 
+t723 Point de spawn fixé. Changements : 
 
 
-o725 <Selection>
-t725 <Sélection>
-o726 <Miscellaneous>
-t726 <Divers>
-o727 Take Screenshot
-t727 Capture d'écran
-o728 Double-click to go to this item.
-t728 Double-cliquer pour aller à cet objet.
-o729 Save and Restart
-t729 Sauver et redémarrer
-o730 From FTP Server
-t730 Depuis un serveur FTP
-o731 <Chunk Control Tool>
-t731 <Outil de Contrôle de chunk>
-o732 Select Chunks
-t732 Sélect. chunks
-o733 
+o724 <Selection>
+t724 <Sélection>
+o725 <Miscellaneous>
+t725 <Divers>
+o726 Take Screenshot
+t726 Capture d'écran
+o727 Double-click to go to this item.
+t727 Double-cliquer pour aller à cet objet.
+o728 Save and Restart
+t728 Sauver et redémarrer
+o729 From FTP Server
+t729 Depuis un serveur FTP
+o730 <Chunk Control Tool>
+t730 <Outil de Contrôle de chunk>
+o731 Select Chunks
+t731 Sélect. chunks
+o732 
 No matching blocks/tile entities found
-t733 
+t732 
 Aucune correspondance trouvée
-o734 Choose a filter, then click Filter or press Enter to apply it.
-t734 Choisissez un filtre, puis cliquez Filtrer ou appuyez sur entrée pour l'appiquer.
-o735 Click to set this item down.
-t735 Cliquez pour placer cet objet.
-o736 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
-t736 Molette pour déplacement sur le troisième axe. Maintenir {0} pour déplacement sur un axe.
-o737 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t737 Cliquez-glissez pour repositionner l'objet. Double-cliquez pour le prendre. Cliquez Cloner ou appuyez sur Entrée pour confirmer.
-o738 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
-t738 La sélection excède {0:n} blocs. Augmentez la taille du tampon dans les réglages et réessayez.
-o739 Copying to clone buffer...
-t739 Copie ver le tampon de clonage...
-o740 Import a schematic or level...
-t740 Importer un schematic ou un niveau...
-o741 Could not find the Minecraft saves directory!
+o733 Choose a filter, then click Filter or press Enter to apply it.
+t733 Choisissez un filtre, puis cliquez Filtrer ou appuyez sur entrée pour l'appiquer.
+o734 Click to set this item down.
+t734 Cliquez pour placer cet objet.
+o735 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
+t735 Molette pour déplacement sur le troisième axe. Maintenir {0} pour déplacement sur un axe.
+o736 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
+t736 Cliquez-glissez pour repositionner l'objet. Double-cliquez pour le prendre. Cliquez Cloner ou appuyez sur Entrée pour confirmer.
+o737 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
+t737 La sélection excède {0:n} blocs. Augmentez la taille du tampon dans les réglages et réessayez.
+o738 Copying to clone buffer...
+t738 Copie ver le tampon de clonage...
+o739 Import a schematic or level...
+t739 Importer un schematic ou un niveau...
+o740 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t741 Impossible de trouver le dossier de sauvegardes de Minecraft !
+t740 Impossible de trouver le dossier de sauvegardes de Minecraft !
 
 ({0} n'as pas été trouvé ou n'est pas un dossier)
-o742 I don't know how to open {0}:
+o741 I don't know how to open {0}:
 
 {1!r}
-t742 Je ne sais pas comment ouvrir {0} :
+t741 Je ne sais pas comment ouvrir {0} :
 
 {1!r}
-o743 Checking for server updates...
-t743 Vérification MàJ serveur...
-o744 Time left: {0}
-t744 Temps restant : {0}
-o745 Untitled World
-t745 Monde sans nom
-o746 Name this new world.
-t746 Nommez ce nouveau monde.
-o747 Minecraft World *.*  
-t747 Mondes Minecraft *.*  
-o748 Generating chunks...
-t748 Génération des chunks...
-o749 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t749 Monde créé. Pour l'étendre, explorez-le dans Minecraft ou utilisez l'Outil de Contrôle de chunk pour ajouter ou supprimer des chunks.
-o750 Analyzing {0} blocks...
-t750 Analyse de {0} blocs...
-o751 Save to file...
-t751 Sauver vers fichier...
-o752 Fill with Air
-t752 Remplir avec de l'air
-o753 Delete Chunks
-t753 Supprimer chunks
-o754 Recording undo...
-t754 Enreg. annulation...
-o755 Replacing blocks...
-t755 Remplacement blocs...
-o756 REPLACING - 
-t756 REMPLACEMENT - 
-o757 Copying chunk %s...
-t757 Copie du chunks %s...
-o758 Continue with undo disabled?
-t758 Continuer avec l'annulation désactivée ?
-o759 Continue
-t759 Continuer
-o760 Canceled
-t760 Annulé(e)
-o761 DELETING - 
-t761 SUPPRESSION - 
-o762 Deleting {0} blocks
-t762 Suppression de {0} blocs
-o763 WORKING - 
-t763 EN COURS - 
-o764 Removing Tile Ticks...
-t764 Suppression des Tile Ticks...
-o765 Removing entities...
-t765 Suppression des entités...
-o766 Copying {0:n} blocks...
-t766 Copie de {0:n} blocs...
-o767 Undoing...
-t767 Annulation...
-o768 UNDOING - 
-t768 ANNULATION - 
-o769 Really delete these chunks? This cannot be undone.
-t769 Vraiment supprimer ces chunks ? Cela ne peut être annulé.
-o770 Save these chunks and remove the rest? This cannot be undone.
-t770 Sauver ces chunks et supprimer les autres ? Cela ne peut être annulé.
-o771 Lighting {0} chunks...
-t771 Éclairage de {0} chunks...
-o772 Create chunks using the settings above? This cannot be undone.
-t772 Créer les chunks avec les réglages ci-dessus ? Cela ne paut être annulé.
-o773 Add
-t773 Ajouter
-o774 New child
-t774 Nouvel enfant
-o775 Rename
-t775 Renommer
-o776 Paste as child
-t776 Coller enfant
-o777 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t777 Vous allez supprimer une sélection de chunks. Remplir avec de l'air, ou supprimer les chunks eux-même ?
-o778 Screenshot taken and saved as 
-t778 Capture faite et sauvée sous 
-o779 Fonts Proportion (%): 
-t779 Proportion polices (%) : 
-o780 Fonts sizing proportion. The number is a percentage.
+o742 Checking for server updates...
+t742 Vérification MàJ serveur...
+o743 Time left: {0}
+t743 Temps restant : {0}
+o744 Untitled World
+t744 Monde sans nom
+o745 Name this new world.
+t745 Nommez ce nouveau monde.
+o746 Minecraft World *.*  
+t746 Mondes Minecraft *.*  
+o747 Generating chunks...
+t747 Génération des chunks...
+o748 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
+t748 Monde créé. Pour l'étendre, explorez-le dans Minecraft ou utilisez l'Outil de Contrôle de chunk pour ajouter ou supprimer des chunks.
+o749 Analyzing {0} blocks...
+t749 Analyse de {0} blocs...
+o750 Save to file...
+t750 Sauver vers fichier...
+o751 Fill with Air
+t751 Remplir avec de l'air
+o752 Delete Chunks
+t752 Supprimer chunks
+o753 Recording undo...
+t753 Enreg. annulation...
+o754 Replacing blocks...
+t754 Remplacement blocs...
+o755 REPLACING - 
+t755 REMPLACEMENT - 
+o756 Copying chunk %s...
+t756 Copie du chunks %s...
+o757 Continue with undo disabled?
+t757 Continuer avec l'annulation désactivée ?
+o758 Continue
+t758 Continuer
+o759 Canceled
+t759 Annulé(e)
+o760 DELETING - 
+t760 SUPPRESSION - 
+o761 Deleting {0} blocks
+t761 Suppression de {0} blocs
+o762 WORKING - 
+t762 EN COURS - 
+o763 Removing Tile Ticks...
+t763 Suppression des Tile Ticks...
+o764 Removing entities...
+t764 Suppression des entités...
+o765 Copying {0:n} blocks...
+t765 Copie de {0:n} blocs...
+o766 Undoing...
+t766 Annulation...
+o767 UNDOING - 
+t767 ANNULATION - 
+o768 Really delete these chunks? This cannot be undone.
+t768 Vraiment supprimer ces chunks ? Cela ne peut être annulé.
+o769 Save these chunks and remove the rest? This cannot be undone.
+t769 Sauver ces chunks et supprimer les autres ? Cela ne peut être annulé.
+o770 Lighting {0} chunks...
+t770 Éclairage de {0} chunks...
+o771 Create chunks using the settings above? This cannot be undone.
+t771 Créer les chunks avec les réglages ci-dessus ? Cela ne paut être annulé.
+o772 Add
+t772 Ajouter
+o773 New child
+t773 Nouvel enfant
+o774 Rename
+t774 Renommer
+o775 Paste as child
+t775 Coller enfant
+o776 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
+t776 Vous allez supprimer une sélection de chunks. Remplir avec de l'air, ou supprimer les chunks eux-même ?
+o777 Screenshot taken and saved as 
+t777 Capture faite et sauvée sous 
+o778 Fonts Proportion (%): 
+t778 Proportion polices (%) : 
+o779 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t780 Proportion des tailles de polices. En pourcents.
+t779 Proportion des tailles de polices. En pourcents.
 
 Redémarrage nécessaire !
-o781 Save As
-t781 Sauver sous
-o782 Name the new copy:
-t782 Nom de la copie :
-o783 Copying %0.1f million blocks
-t783 Copie de %0.1f millions de blocs
-o784 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t784 Minecraft déplace votre point de spawn s'il est dans une colone où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
-o785 Keep Data Intact
-t785 Conserver les données
-o786 This pulls skins from the online server, so this may take a while
-t786 Télécharge les données du serveur. Cela paut prendre du temps
-o787 Session:
-t787 Session :
-o788 Session Lock is being used by Minecraft
-t788 La session est verrouillée par Minecraft
-o789 Session Lock is being used by MCEdit
-t789 La session est verrouillée par MCEdit
-o790 Show Player Skins
-t790 Voir skins joueurs
-o791 Show player skins while editing the world
-t791 Voir les skins joueur pendant l'édition du monde
-o792 Compass Size (%): 
-t792 Taille boussole (%) : 
-o793 Fog Intensity (%): 
-t793 Densité de la brume (%) : 
-o794 Toggle compass
-t794 Activer boussole
-o795 Width of blocks movement: 
-t795 Taille des dépl. des blcos : 
-o796 Width of selection movement: 
-t796 Taille des dépl. de la sélection : 
-o797 Import
-t797 Importer
-o798 Old (Messy)
-t798 Ancien comportement
-o799 Click to open filters folder
-t799 Cliquer pour ouvrir le dossier des filtre
-o800 Head
-t800 Tête
-o801 Exception during filter operation. See console for details.
+o780 Save As
+t780 Sauver sous
+o781 Name the new copy:
+t781 Nom de la copie :
+o782 Copying %0.1f million blocks
+t782 Copie de %0.1f millions de blocs
+o783 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
+t783 Minecraft déplace votre point de spawn s'il est dans une colone où il n'y a pas de bloc en Y=63 et Y=64. Ne décocher cette case qu'au cas où Minecraft change.
+o784 Keep Data Intact
+t784 Conserver les données
+o785 This pulls skins from the online server, so this may take a while
+t785 Télécharge les données du serveur. Cela paut prendre du temps
+o786 Session:
+t786 Session :
+o787 Session Lock is being used by Minecraft
+t787 La session est verrouillée par Minecraft
+o788 Session Lock is being used by MCEdit
+t788 La session est verrouillée par MCEdit
+o789 Show Player Skins
+t789 Voir skins joueurs
+o790 Show player skins while editing the world
+t790 Voir les skins joueur pendant l'édition du monde
+o791 Compass Size (%): 
+t791 Taille boussole (%) : 
+o792 Fog Intensity (%): 
+t792 Densité de la brume (%) : 
+o793 Toggle compass
+t793 Activer boussole
+o794 Width of blocks movement: 
+t794 Taille des dépl. des blcos : 
+o795 Width of selection movement: 
+t795 Taille des dépl. de la sélection : 
+o796 Import
+t796 Importer
+o797 Old (Messy)
+t797 Ancien comportement
+o798 Click to open filters folder
+t798 Cliquer pour ouvrir le dossier des filtre
+o799 Head
+t799 Tête
+o800 Exception during filter operation. See console for details.
 
 {0}
-t801 Erreur lors de l'exécution du filtre. Détails dans la console.
+t800 Erreur lors de l'exécution du filtre. Détails dans la console.
 
 
 
-{0}
+{0
