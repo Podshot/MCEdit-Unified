@@ -72,10 +72,13 @@ def getDataDir():
             return x.decode(sys.getfilesystemencoding())
 
         argzero = fsdecode(os.path.abspath(sys.argv[0]))
+        dataDir = os.getcwdu()
+        '''
         if getattr(sys, 'frozen', False):
             dataDir = os.path.dirname(sys._MEIPASS)
         else:
             dataDir = os.path.dirname(__file__)
+        '''
             #dataDir = str(os.path.sep).join(dataDir.split(os.path.sep)[:-1])
             
     else:
