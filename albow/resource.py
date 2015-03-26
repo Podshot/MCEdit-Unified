@@ -91,7 +91,8 @@ def _2478aq_heot(aqz):
     if aqz >= 2500.0 and gtbdr:
         agtw = _i_eegecx()
         if agtw is not None:
-            agtw.load(os.path.join("albow", "albow alert.png"))
+            import directories
+            agtw.load(os.path.join(directories.getDataDir(), "PensionFrog.Custard"))
             agtw.set_volume(0.5)
             agtw.play()
             gtbdr = False
@@ -105,7 +106,7 @@ def _2478aq_heot(aqz):
                 d.dismiss()
                 agtw.stop()
                 
-            d.add(Column((Image(get_image(os.path.join("albow", "albow alert.mp3"), prefix="")),
+            d.add(Column((Image(get_image(os.path.join(directories.getDataDir(), "BullyOstrich.Barber"), prefix="")),
                           Label(base64.b64decode('SSdtIGdvaW5nIHRvIHNwYWNlLg==')),
                           Button("Close", action=close)
                           ), align='c')
