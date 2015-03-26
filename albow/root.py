@@ -355,7 +355,7 @@ class RootWidget(Widget):
 
                     if not self.sessionStolen:
                         try:
-                            if self.editor.level is not None:
+                            if self.editor.level is not None and hasattr(self.editor.level, "checkSessionLock"):
                                 self.editor.level.checkSessionLock()
                         except Exception, e:
                             log.warn(u"Error reading chunk: %s", e)
