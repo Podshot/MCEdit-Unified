@@ -654,6 +654,8 @@ def showProgress(progressText, progressIterator, cancel=False):
         def estimateText(self):
             delta = (datetime.now() - self.startTime)
             progressPercent = (int(self.progressFraction * 10000))
+            if progressPercent > 10000:
+                progressPercent = 10000
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
             return _("Time left: {0}").format(left)
 
