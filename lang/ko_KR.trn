@@ -1690,22 +1690,24 @@ t791 월드 수정중에 플레이어 스킨 보이기
 o792 Compass Size (%): 
 t792 컴퍼스 크기 (%):
 o793 Fog Intensity (%): 
-t793 
+t793 안개 강도 (%):
 o794 Toggle compass
-t794 
+t794 컴퍼스 표시
 o795 Width of blocks movement: 
-t795 
+t795 블럭 이동 거리:
 o796 Width of selection movement: 
-t796 
+t796 선택 영역 이동 거리:
 o797 Import
-t797 
+t797 불러오기
 o798 Old (Messy)
-t798 
+t798 낡은 (지저분함)
 o799 Click to open filters folder
-t799 
+t799 필터 폴더를 열려면 클릭하세요
 o800 Head
-t800 
+t800 머리
 o801 Exception during filter operation. See console for details.
 
 {0}
-t801 
+t801 필터 작동중 오류 발생. 자세한 정보는 콘솔 확인.
+
+{0}
