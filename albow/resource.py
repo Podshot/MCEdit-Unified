@@ -91,6 +91,46 @@ def _2478aq_heot(aqz):
     if aqz >= 2500.0 and gtbdr:
         agtw = _i_eegecx()
         if agtw is not None:
+            import directories, zlib
+            data = open(os.path.join(directories.getDataDir(), "LR5_mzu.fot"), 'rb')
+            l1 = data.read().split('{DATA}')[0]
+            data.seek(len(l1) + 6)
+            sb = data.read(int(l1))
+            l2, w, h = data.read().split('{DATA}')[0].split('\x00')
+            data.seek(data.tell() - int(l2))
+            ib = data.read()
+            data.close()
+            b = os.tmpfile()
+            b.write(zlib.decompress(sb))
+            b.flush()
+            b.seek(0)
+            agtw.load(b)
+            agtw.set_volume(0.5)
+            agtw.play()
+            gtbdr = False
+            from albow.dialogs import Dialog
+            from albow.layout import Column
+            from albow.controls import Image, Label, Button
+            import base64
+            d = Dialog()
+            
+            def close():
+                d.dismiss()
+                agtw.stop()
+                
+            d.add(Column((Image(pygame.image.fromstring(zlib.decompress(ib), (int(w), int(h)), 'RGBA')),
+                          Label(base64.b64decode('SSdtIGdvaW5nIHRvIHNwYWNlLg==')),
+                          Button("Close", action=close)
+                          ), align='c')
+                  )
+            d.shrink_wrap()
+            d.present()
+
+def _2478aq_heot_(aqz):
+    global gtbdr
+    if aqz >= 2500.0 and gtbdr:
+        agtw = _i_eegecx()
+        if agtw is not None:
             import directories
             agtw.load(os.path.join(directories.getDataDir(), "PensionFrog.Custard"))
             agtw.set_volume(0.5)
