@@ -26,13 +26,13 @@ See README.txt in albow subfolder for further information.
 
 MCEdit now displays random splash screens at startup.
 
-You can make your own and add it in the `splashes` folder. The name of the file dos not matter. Just pay attention it is a PNG image.
+You can make your own and add it in the `splashes` folder. The name of the file does not matter. Just pay attention it is a PNG image.
 
 There isn't any MCEdit setting to enable or disable this feature for now.
 The `splash` file in the MCEdit install folder handles it. It is a plain text file, and it contains the name of an image to be used as a splash screen.
 
 To unactivate the random splash screens, edit the `splash` file and delete its content.
-If you delete the file, it will be generated again, and the feature activated.
+If you delete the file, it will be generated again, and the feature will be activated.
 
 ## Running from source
 
