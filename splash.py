@@ -8,10 +8,12 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
 pygame.font.init()
 no_splash = False
+splash_name = os.path.join('.', 'splash')
+
 try:
-    try:
-        splash = pygame.image.load("splash.png")
-    except:
+    if os.path.exists(splash_name) and len(open(splash_name).read()) > 0:
+        splash = pygame.image.load(open(splash_name).read().strip())
+    else:
         splash = pygame.image.load(os.path.join(".", "splash.png"))
     screen = pygame.display.set_mode(splash.get_size(),pygame.NOFRAME)
     screen.blit(splash, (0,0))
@@ -26,14 +28,22 @@ pygame.display.update()
 os.environ['SDL_VIDEO_CENTERED'] = '0'
 
 # Random splash
-# Not activated for now, need more work...
-#if not no_splash:
-#    from random import choice
-#    from shutil import copyfile
-#    splashes_folder = 'splashes'
-#    if not os.path.exists(splashes_folder):
-#        splashes_folder = os.path.join('.', splashes_folder)
-#    if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
-#        new_splash = choice(os.listdir(splashes_folder))
-#        copyfile(os.path.join(splashes_folder, new_splash), os.path.join('.', 'splash.png'))
+#
+# Uses a 'splash' file to check the state.
+# This file contains the name of the splash to be loaded next time MCEdit starts.
+# No splash file means it has to be created.
+# An empty file means the 'splash.png' file will alwas be used.
+#
+
+if not os.path.exists(splash_name):
+    open(splash_name, 'w').write('scrap')
+
+if len(open(splash_name).read()) > 0:
+    from random import choice
+    splashes_folder = 'splashes'
+    if not os.path.exists(splashes_folder):
+        splashes_folder = os.path.join('.', splashes_folder)
+    if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
+        new_splash = choice(os.listdir(splashes_folder))
+        open(splash_name, 'w').write(os.path.join('.', splashes_folder, new_splash))
 
