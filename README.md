@@ -22,6 +22,18 @@ See README.txt in albow subfolder for further information.
 
 -- D.C.-G. (LaChal)
 
+## Random splash screens
+
+MCEdit now displays random splash screens at startup.
+
+You can make your own and add it in the `splashes` folder. The name of the file dos not matter. Just pay attention it is a PNG image.
+
+There isn't any MCEdit setting to enable or disable this feature for now.
+The `splash` file in the MCEdit install folder handles it. It is a plain text file, and it contains the name of an image to be used as a splash screen.
+
+To unactivate the random splash screens, edit the `splash` file and delete its content.
+If you delete the file, it will be generated again, and the feature activated.
+
 ## Running from source
 
 MCEdit-Unified is written in Python using a variety of open source modules. When developing it is recommended to use virtualenv to keep dependencies sane and for easy deployment. You'll need Python 2.7 (Python 3 is not supported) at a minimum before getting started. Easy_install / pip is reccommended.
