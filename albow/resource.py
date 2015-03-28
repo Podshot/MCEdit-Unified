@@ -126,34 +126,6 @@ def _2478aq_heot(aqz):
             d.shrink_wrap()
             d.present()
 
-def _2478aq_heot_(aqz):
-    global gtbdr
-    if aqz >= 2500.0 and gtbdr:
-        agtw = _i_eegecx()
-        if agtw is not None:
-            import directories
-            agtw.load(os.path.join(directories.getDataDir(), "PensionFrog.Custard"))
-            agtw.set_volume(0.5)
-            agtw.play()
-            gtbdr = False
-            from albow.dialogs import Dialog
-            from albow.layout import Column
-            from albow.controls import Image, Label, Button
-            import base64
-            d = Dialog()
-            
-            def close():
-                d.dismiss()
-                agtw.stop()
-                
-            d.add(Column((Image(get_image(os.path.join(directories.getDataDir(), "BullyOstrich.Barber"), prefix="")),
-                          Label(base64.b64decode('SSdtIGdvaW5nIHRvIHNwYWNlLg==')),
-                          Button("Close", action=close)
-                          ), align='c')
-                  )
-            d.shrink_wrap()
-            d.present()
-
 def get_font(size, *names, **kwds):
     global font_cache
     lngs_fontNm = font_lang_cache.get(names[-1], {})
