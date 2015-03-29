@@ -198,8 +198,8 @@ o89 Recent Changes
 t89 Letzte Änderungen
 o90 License
 t90 Lizenz
-o91 Config Files Folder
-t91 Konfigurations Dateien Ordner
+o91 Config Files
+t91 Konfigurations Dateien
 o92 {0}/{1}/{2}/{3}/{4}/{5} to move
 t92 {0}/{1}/{2}/{3}/{4}/{5} um sich zu bewegen
 o93 {0} to slow down
@@ -675,7 +675,7 @@ t318 Farbige Drähte
 o319 Create Busses
 t319 Erstelle Bus
 o320 Create Shops
-t320 Erstelle Shops
+t320 Erstelle Handel
 o321 Create Spawners
 t321 Erstelle Spawner
 o322 Decliff
@@ -727,13 +727,13 @@ t344 Dorfbewohner (grün)
 o345 Farmer (brown)
 t345 Bauer (braun)
 o346 Butcher (white apron)
-t346 Metzger (weiße Schürze)
+t346 Fleischer (weiße Schürze)
 o347 Librarian (white)
 t347 Bibliothekar (weiß)
 o348 Blacksmith (black apron)
 t348 Schmied (schwarze Schürze)
 o349 Priest (purple)
-t349 Priester (violett)
+t349 Geistlicher (violett)
 o350 Villager Profession
 t350 Dorfbewohner Beruf
 o351 Slime Size
@@ -755,15 +755,15 @@ t358 Das ist eine modifizierte Version von SethBling's Create Shops Filter auf D
 o359 Profession
 t359 Beruf
 o360 Add Stopping Trade
-t360 Füge Stoppenden Handel hinzu
+t360 Stoppender Handel
 o361 Invulnerable Villager
 t361 Unverwundbarer Dorfbewohner
 o362 Make Unlimited Trades
-t362 Erstelle unendlichen Handel
+t362 Unendlicher Handel
 o363 Give Experience per a Trade
-t363 Gebe Erfahrung je Handel
+t363 Erfahrung pro Handel geben
 o364 Make Villager not Move
-t364 Macht, dass die Dorfbewohner sich nicht bewegen
+t364 Unbeweglicher Dorfbewohner 
 o365 Villager Name
 t365 Dorfbewohner Name
 o366 Trade
@@ -771,9 +771,9 @@ t366 Handel
 o367       Rotate the Position of your Trader
 
 *Can only be used if Not Move is checked*
-t367       Rotiere die Position von deinem Händler
+t367       Rotiere die Position von deinem Dorfbewohner
 
-*Kann nur benutzt werden wenn Nicht Bewegen ausgewählt ist*
+*Kann nur benutzt werden wenn "Unbeweglicher Dorfbewohner" angewählt ist*
 o368 Y-Axis
 t368 Y-Achse
 o369 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
@@ -791,9 +791,9 @@ Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
 t373 Um einen Shop zu erstellen muss die Kaufsache in die oberste Reihe der Kiste getan werden.
-Zweitens packen Sie in die mittlere Reihe eine zweite Kaufsache (optional).
-Drittens packen Sie das Angebot in die unterste Reihe.
-Bitte wählen Sie eine Kiste aus, stellen die Filter Einstellungen ein und drücken Enter
++Zweitens packen Sie in die mittlere Reihe eine zweite Kaufsache (optional).
++Drittens packen Sie das Angebot in die unterste Reihe.
++Bitte wählen Sie eine Kiste aus, stellen die Filter Einstellungen ein und drücken Enter
 *Alle Gegenstände müssen in der selben Spalte sein*
 
 o374 Notes
@@ -1047,7 +1047,7 @@ t496 Suche einen Block aus:
 o497 Players
 t497 Spieler
 o498 Player Name
-t498 Spieler Name
+t498 Spielername
 o499 Player: 
 t499 Spieler: 
 o500 Goto
@@ -1257,13 +1257,13 @@ t600 Schnelligkeit
 o601 Mining Fatigue (no mob effect)
 t601 Abbaulähmung (kein Mob Effekt)
 o602 Player Name(s):
-t602 Spieler Name(n):
+t602 Spielername(n):
 o603 Chunks Borders
 t603 Chunkgrenzen
 o604 Fast Nudge
 t604 Schnelles Schieben
 o605 Clone Fast Nudge Settings
-t605 Kopieren schnelles Schieben Einstellungen
+t605 Kopiere schnelles Schieben Einstellungen
 o606 Move by the width of selection 
 t606 Verschiebe um die Breite der Auswahl 
 o607 Moves clone by his width
@@ -1354,7 +1354,7 @@ o639 This will move your settings and schematics to your Documents folder. Conti
 t639 Das wird Ihre Einstellungen und Schematics in Ihren Dokumente Ordner verschieben. Fortsetzen?
 o640 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t640 Klicken damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in den Dokumente Ordner verschoben werden
-o641 GoTo Position:
+o641 Goto Position:
 t641 Gehe zu Position:
 o642 (click anywhere to teleport)
 t642 (Klicken Sie irgendwohin um zu teleportieren)
@@ -1513,13 +1513,13 @@ t708 Doppel-Klick oder nutzen Sie den Knopf darunter um die NBT Daten zu editier
 o709 Go Back
 t709 Gehe zurück
 o710 Upload to FTP Server
-t710 Hochladen auf den FTP Server
+t710 Hochladen auf FTP Server
 o711 There are {0} unsaved changes.
 t711 Es gibt {0} ungespeicherte Änderungen.
 o712 Save and Quit
 t712 Speichern und Schließen
 o713 Refresh Player Names
-t713 Spieler Namen aktualisieren
+t713 Spielernamen aktualisieren
 o714 Results
 t714 Resutate
 o715 Smooth - 3D
@@ -1540,7 +1540,7 @@ t721  Noch nicht implementiert.
 Nutze den NBT Explorer um den Spieler zu editieren.
 o722 Error while getting player file.
 %s not found.
-t722 Fehler deim Laden der Spieler Datei.
+t722 Fehler beim Laden der Spieler Datei.
 %s nicht gefunden.
 o723 Spawn point fixed. Changes: 
 
@@ -1631,11 +1631,11 @@ t758 Fortfahren
 o759 Canceled
 t759 Abgebrochen
 o760 DELETING - 
-t760 LÖSCHE - 
+t760 LÖSCHT - 
 o761 Deleting {0} blocks
 t761 Löscht {0} Blöcke
 o762 WORKING - 
-t762 ARBEITE - 
+t762 ARBEITET - 
 o763 Removing Tile Ticks...
 t763 Entfernt Tile Ticks...
 o764 Removing entities...
@@ -1673,7 +1673,7 @@ Restart needed!
 t779 Schriftgrössen Einteilung. Die Nummer ist in Prozent.
 Neustart benötigt!
 o780 Save As
-t780 Speichere als
+t780 Speichern als
 o781 Name the new copy:
 t781 Benennen Sie die neue Kopie:
 o782 Copying %0.1f million blocks
@@ -1718,3 +1718,55 @@ o800 Exception during filter operation. See console for details.
 t800 Eine Ausnahme wurde ausgelöst während ein Filter lief. Siehe Konsole für Details.
 
 {0}
+o801 SAVING - 
+t801 SPEICHERT - 
+o802 World Type:
+t802 Welttyp:
+o803 Amplified
+t803 Zerklüftet
+o804 Large Biomes
+t804 Grosse Biome
+o805 Superflat
+t805 Flachland
+o806 Copying chunks
+t806 Kopiert Chunks
+o807 Lighting chunks
+t807 Erleuchtet Chunks
+o808 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t808 Diese Welt wurde nicht von einem FTP Server heruntergeladen. Hochladen von Welten die nicht von einem FTP Server heruntergeladen wurden ist momentan noch nicht möglich.
+o809 Weight 1
+t809 Masse 1
+o810 Weight 2
+t810 Masse 2
+o811 Weight 3
+t811 Masse 3
+o812 Weight 4
+t812 Masse 4
+o813 Check to automatically generate new UUIDs for entities.
+Shortcut: Alt-6
+t813 Automatisch neue UUIDs für Entities generieren.
+Tastenkürzel: Alt-6
+o814 Make Villager Silent
+t814 Stummer Dorfbewohner
+o815 Choose a custom head for the villagers you make
+t815 Wähle einen eigenen Kopf für deinen Dorfbewohner
+o816 Custom Head
+t816 Eigener Kopf
+o817 Skull Type
+t817 Kopftyp
+o818 Skeleton Skull
+t818 Skelettschädel
+o819 Wither Skeleton Skull
+t819 Witherskelettschädel
+o820 Creeper Skull
+t820 Creeperkopf
+o821 Player Skull
+t821 Spieler Kopf
+o822 Zombie Skull
+t822 Zombiekopf
+o823 If Player Skull
+t823 Wenn Spieler Kopf ausgewählt ist:
+o824 Player's Name
+t824 Spielername
+o825 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t825 Fenster wurde vergrössert. Sie haben vielleicht Probleme beim benutzen des Mauszeiger bis sie MCEdit neugestartet haben.
