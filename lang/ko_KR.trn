@@ -567,6 +567,7 @@ Right-click for options
 t265 채우기, 바꾸기
 
 우클릭으로 설정
+<<<<<<< HEAD
 o266 Fill with:
 t266 이것으로 채우기:
 o267 Search
@@ -726,6 +727,177 @@ t343 Villager Name
 o344 Trade
 t344 거래
 o345       Rotate the Position of your Trader
+=======
+o283 Fill with:
+t283 이것으로 채우기:
+o284 Search
+t284 검색
+o285 Name
+t285 이름
+o286 ID
+t286 ID
+o287 Any Subtype
+t287 메타데이터 무시
+o288 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
+t288 {hotkey}를 눌러서 블럭을 선택하세요. {R}을 눌러서 바꾸기 모드에 진입하세요. 채우기나 엔터를 눌러 확인하세요.
+o289 Find:
+t289 찾기:
+o290 Replace with:
+t290 이것으로 바꾸기:
+o291 When the fill tool is chosen, prompt for a block type.
+t291 채우기 도구가 선택되면 블럭을 상기시킵니다.
+o292 Filter
+t292 필터
+o293 Invisibility (no effect)
+t293 Invisibility (no effect)
+o294 Strength
+t294 Strength
+o295 Nausea (no mob effect)
+t295 Nausea (no mob effect)
+o296 Weakness
+t296 Weakness
+o297 Speed (no mob effect)
+t297 Speed (no mob effect)
+o298 Water Breathing
+t298 Water Breathing
+o299 Regeneration
+t299 Regeneration
+o300 Poison
+t300 Poison
+o301 Resistance
+t301 Resistance
+o302 Hunger (no mob effect)
+t302 Hunger (no mob effect)
+o303 Haste (no mob effect)
+t303 Haste (no mob effect)
+o304 Fire Resistance
+t304 Fire Resistance
+o305 Slowness (no mob effect)
+t305 Slowness (no mob effect)
+o306 Blindness (no mob effect)
+t306 Blindness (no mob effect)
+o307 Night Vision (no effect)
+t307 Night Vision (no effect)
+o308 Mining Fatigue (no mob effectg)
+t308 Mining Fatigue (no mob effectg
+o309 Jump Boost
+t309 Jump Boost
+o310 Effect
+t310 Effect
+o311 Level
+t311 Level
+o312 Duration (Seconds)
+t312 Duration (Seconds)
+o313 Add Potion Effect to Mobs
+t313 Add Potion Effect to Mobs
+o314 Banslimes
+t314 Banslimes
+o315 Change Mob Properties
+t315 Change Mob Properties
+o316 Chunk Surface Repair
+t316 Chunk Surface Repair
+o317 Classic Water Flood
+t317 Classic Water Flood
+o318 Colorwires
+t318 Colorwires
+o319 Create Busses
+t319 Create Busses
+o320 Create Shops
+t320 Create Shops
+o321 Create Spawners
+t321 Create Spawners
+o322 Decliff
+t322 Decliff
+o323 Find
+t323 Find
+o324 Forester
+t324 Forester
+o325 Make Mobs Invincible
+t325 Make Mobs Invincible
+o326 Setbiome
+t326 Setbiome
+o327 Smooth - 2D
+t327 Smooth - 2D
+o328 Filter:
+t328 Filter:
+o329 Update Filters
+t329 Update Filters
+o330 Max Seed
+t330 Max Seed
+o331 Health
+t331 Health
+o332 VelocityX
+t332 VelocityX
+o333 VelocityY
+t333 VelocityY
+o334 VelocityZ
+t334 VelocityZ
+o335 Fire
+t335 Fire
+o336 FallDistance
+t336 FallDistance
+o337 AttackTime
+t337 AttackTime
+o338 HurtTime
+t338 HurtTime
+o339 Lightning
+t339 Lightning
+o340 No Lightning
+t340 No Lightning
+o341 Lightning Creeper
+t341 Lightning Creeper
+o342 Enderman Block Id
+t342 Enderman Block Id
+o343 Enderman Block Data
+t343 Enderman Block Data
+o344 Villager (green)
+t344 Villager (green)
+o345 Farmer (brown)
+t345 Farmer (brown)
+o346 Butcher (white apron)
+t346 Butcher (white apron)
+o347 Librarian (white)
+t347 Librarian (white)
+o348 Blacksmith (black apron)
+t348 Blacksmith (black apron)
+o349 Priest (purple)
+t349 Priest (purple)
+o350 Villager Profession
+t350 Villager Profession
+o351 Slime Size
+t351 Slime Size
+o352 Breeding Mode Ticks
+t352 Breeding Mode Ticks
+o353 Child/Adult Age
+t353 Child/Adult Age
+o354 Repairs the backwards surfaces made by old versions of Minecraft.
+t354 오래된 버전의 마인크래프트가 만든 거꾸로 된 표면을 수정합니다.
+o355 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
+t355 선택 영역 내의 물을 옆과 아래로 퍼지게 합니다. 클래식 버전의 물이랑 유사합니다.
+o356 Flood Water
+t356 물
+o357 Flood Lava
+t357 용암
+o358 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
+t358 SethBling의 Create Shop 필터를 수정한 버전입니다.
+o359 Profession
+t359 Profession
+o360 Add Stopping Trade
+t360 Add Stopping Trade
+o361 Invulnerable Villager
+t361 Invulnerable Villager
+o362 Make Unlimited Trades
+t362 Make Unlimited Trades
+o363 Give Experience per a Trade
+t363 Give Experience per a Trade
+o364 Make Villager not Move
+t364 Make Villager not Move
+o365 Villager Name
+t365 Villager Name
+o366 Trade
+t366 거래
+o367       Rotate the Position of your Trader
+>>>>>>> 4e929d8c32a5059bc6054135088e8ce46f24e4e9
 
 *Can only be used if Not Move is checked*
 t345 주민의 방향을 회전시킵니다.
@@ -1390,6 +1562,7 @@ Can't load it.
 t656 파일이 아닙니다. 불러올 수 없습니다.
 o657 The selected object is not a file.
 Can't save it.
+<<<<<<< HEAD
 t657 파일이 아닙니다. 저장할 수 없습니다.
 o658 Show all the tags in the tree
 t658 모든 태그를 보여줍니다.
@@ -1434,6 +1607,52 @@ t677 작은 정수 배열
 o678 Click to bind this filter to a hotkey
 t678 클릭하여 필터를 핫키에 지정하세요.
 o679 Press a key to assign to the filter "{0}"
+=======
+t681 파일이 아닙니다. 저장할 수 없습니다.
+o682 Show all the tags in the tree
+t682 모든 태그를 보여줍니다.
+o683 Compound
+t683 복합
+o684 Integer
+t684 정수
+o685 Floating point
+t685 부동 소수점
+o686 Text
+t686 텍스트
+o687 Boolean
+t687 불린
+o688 Choose default data
+t688 기본 데이터 선택
+o689 Item Type: %s
+t689 아이템 종류: %s
+o690 Value
+t690 값
+o691 This item type is a container. Add chlidren later.
+t691 이 아이템 종류는 컨테이너입니다. 나중에 하위 항목을 추가하십시오.
+o692 Choose item type
+t692 아이템 종류 선택
+o693 Choose a name
+t693 이름 선택
+o694 Byte
+t694 바이트
+o695 Long
+t695 큰 정수
+o696 Short
+t696 작은 정수
+o697 String
+t697 문자열
+o698 List
+t698 목록
+o699 Byte Array
+t699 바이트 배열
+o700 Int Array
+t700 정수 배열
+o701 Short Array
+t701 작은 정수 배열
+o702 Click to bind this filter to a hotkey
+t702 클릭하여 필터를 핫키에 지정하세요.
+o703 Press a key to assign to the filter "{0}"
+>>>>>>> 4e929d8c32a5059bc6054135088e8ce46f24e4e9
 
 Press ESC to cancel.
 t679 "{0}" 필터에 연결할 키를 누르세요.
