@@ -198,7 +198,7 @@ o89 Recent Changes
 t89 
 o90 License
 t90 
-o91 Config Files Folder
+o91 Config Files
 t91 
 o92 {0}/{1}/{2}/{3}/{4}/{5} to move
 t92 
@@ -1326,7 +1326,7 @@ o639 This will move your settings and schematics to your Documents folder. Conti
 t639 
 o640 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t640 
-o641 GoTo Position:
+o641 Goto Position:
 t641 
 o642 (click anywhere to teleport)
 t642 
@@ -1668,3 +1668,54 @@ o800 Exception during filter operation. See console for details.
 
 {0}
 t800 
+o801 SAVING - 
+t801 
+o802 World Type:
+t802 
+o803 Amplified
+t803 
+o804 Large Biomes
+t804 
+o805 Superflat
+t805 
+o806 Copying chunks
+t806 
+o807 Lighting chunks
+t807 
+o808 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t808 
+o809 Weight 1
+t809 
+o810 Weight 2
+t810 
+o811 Weight 3
+t811 
+o812 Weight 4
+t812 
+o813 Check to automatically generate new UUIDs for entities.
+Shortcut: Alt-6
+t813 
+o814 Make Villager Silent
+t814 
+o815 Choose a custom head for the villagers you make
+t815 
+o816 Custom Head
+t816 
+o817 Skull Type
+t817 
+o818 Skeleton Skull
+t818 
+o819 Wither Skeleton Skull
+t819 
+o820 Creeper Skull
+t820 
+o821 Player Skull
+t821 
+o822 Zombie Skull
+t822 
+o823 If Player Skull
+t823 
+o824 Player's Name
+t824 
+o825 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t825 

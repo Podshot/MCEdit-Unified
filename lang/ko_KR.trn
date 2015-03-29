@@ -198,7 +198,7 @@ o89 Recent Changes
 t89 업데이트 내용
 o90 License
 t90 라이선스
-o91 Config Files Folder
+o91 Config Files
 t91 
 o92 {0}/{1}/{2}/{3}/{4}/{5} to move
 t92 {0}/{1}/{2}/{3}/{4}/{5}로 움직이세요.
@@ -1348,7 +1348,7 @@ o639 This will move your settings and schematics to your Documents folder. Conti
 t639 MCEdit의 설정과 스키메틱을 내 문서에 넣습니다. 계속하시겠습니까?
 o640 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t640 MCEdit의 설정과 스키메틱을 내 문서에 넣으려면 클릭하세요.
-o641 GoTo Position:
+o641 Goto Position:
 t641 위치로 가기
 o642 (click anywhere to teleport)
 t642 (아무 곳이나 클릭해서 텔레포트)
@@ -1711,3 +1711,54 @@ o801 Exception during filter operation. See console for details.
 t801 필터 작동중 오류 발생. 자세한 정보는 콘솔 확인.
 
 {0}
+o801 SAVING - 
+t801 
+o802 World Type:
+t802 
+o803 Amplified
+t803 
+o804 Large Biomes
+t804 
+o805 Superflat
+t805 
+o806 Copying chunks
+t806 
+o807 Lighting chunks
+t807 
+o808 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t808 
+o809 Weight 1
+t809 
+o810 Weight 2
+t810 
+o811 Weight 3
+t811 
+o812 Weight 4
+t812 
+o813 Check to automatically generate new UUIDs for entities.
+Shortcut: Alt-6
+t813 
+o814 Make Villager Silent
+t814 
+o815 Choose a custom head for the villagers you make
+t815 
+o816 Custom Head
+t816 
+o817 Skull Type
+t817 
+o818 Skeleton Skull
+t818 
+o819 Wither Skeleton Skull
+t819 
+o820 Creeper Skull
+t820 
+o821 Player Skull
+t821 
+o822 Zombie Skull
+t822 
+o823 If Player Skull
+t823 
+o824 Player's Name
+t824 
+o825 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t825 
