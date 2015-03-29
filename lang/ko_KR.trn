@@ -768,7 +768,7 @@ t364 Make Villager not Move
 o365 Villager Name
 t365 Villager Name
 o366 Trade
-t366 
+t366 거래
 o367       Rotate the Position of your Trader
 
 *Can only be used if Not Move is checked*
@@ -1444,7 +1444,7 @@ t682 모든 태그를 보여줍니다.
 o683 Compound
 t683 복합
 o684 Integer
-t684 상수
+t684 정수
 o685 Floating point
 t685 부동 소수점
 o686 Text
@@ -1466,9 +1466,9 @@ t693 이름 선택
 o694 Byte
 t694 바이트
 o695 Long
-t695 긴
+t695 큰 정수
 o696 Short
-t696 짧은
+t696 작은 정수
 o697 String
 t697 문자열
 o698 List
@@ -1476,9 +1476,9 @@ t698 목록
 o699 Byte Array
 t699 바이트 배열
 o700 Int Array
-t700 상수 배열
+t700 정수 배열
 o701 Short Array
-t701 짧은 배열
+t701 작은 정수 배열
 o702 Click to bind this filter to a hotkey
 t702 클릭하여 필터를 핫키에 지정하세요.
 o703 Press a key to assign to the filter "{0}"
