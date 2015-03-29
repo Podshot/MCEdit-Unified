@@ -18,6 +18,7 @@ from widget import Widget
 
 from datetime import datetime, timedelta
 from albow.dialogs import wrapped_label
+from albow.translate import _
 
 from pymclevel.box import Vector
 
@@ -134,7 +135,7 @@ class RootWidget(Widget):
         screenshot_name = os.path.join(directories.getCacheDir(), "screenshots", time.strftime("%Y-%m-%d (%I-%M-%S-%p)")+".png")
         pygame.image.save(pygame.display.get_surface(), screenshot_name)
         self.diag = Dialog()
-        lbl = Label("Screenshot taken and saved as '"+screenshot_name+"'")
+        lbl = Label(_("Screenshot taken and saved as '%s'")%screenshot_name, doNotTranslate=True)
         folderBtn = Button("Open Folder", action=self.open_screenshots_folder)
         btn = Button("Ok", action=self.screenshot_notify)
         buttonsRow = Row((btn,folderBtn))
