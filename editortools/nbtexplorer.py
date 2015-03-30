@@ -678,6 +678,10 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
     def build_inventory(self, items):
+        print "build_inventory"
+        print "Inventory" in self.data.keys()
+#        print type(self.data['Inventory'])
+        inventory = self.data.get('Player', {}).get('Inventory', TAG_List()) or self.data.get('Inventory', TAG_List())
         rows = []
         items = items[0]
         slots = [["%s"%i,"","0","0"] for i in range(36)]
@@ -731,10 +735,11 @@ class NBTExplorerToolPanel(Panel):
             s = int(s)
             s_idx = 0
             if s in slots_set:
-                for slot in self.data['Player']['Inventory']:
+#                for slot in self.data['Player']['Inventory']:
+                for slot in inventory:
                     if slot['Slot'].value == s:
                         if not i or int(c) < 1:
-                            del self.data['Player']['Inventory'][s_idx]
+                            del inventory[s_idx]
                             i = ""
                             c = u'0'
                             d = u'0'
@@ -751,11 +756,11 @@ class NBTExplorerToolPanel(Panel):
                 new_slot['Count'] = TAG_Byte(int(c))
                 new_slot['Damage'] = TAG_Short(int(d))
                 idx = s
-                for slot in self.data['Player']['Inventory']:
+                for slot in inventory:
                     if slot['Slot'].value >= s:
                         idx = slot['Slot'].value
                         break
-                self.data['Player']['Inventory'].insert(s, new_slot)
+                inventory.insert(s, new_slot)
                 slots_set.append(s)
             table.slots[s] = slots[s] = s, i, c, d
 
