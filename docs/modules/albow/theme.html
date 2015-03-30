@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.theme &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.theme</h1><div class="highlight"><pre>
+<span class="c">#</span>
+<span class="c"># Albow - Themes</span>
+<span class="c">#</span>
+
+<span class="kn">import</span> <span class="nn">resource</span>
+
+<span class="n">debug_theme</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+<div class="viewcode-block" id="ThemeProperty"><a class="viewcode-back" href="../../albow.html#albow.theme.ThemeProperty">[docs]</a><span class="k">class</span> <span class="nc">ThemeProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span> <span class="o">=</span> <span class="nb">intern</span><span class="p">(</span><span class="s">&quot;_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">debug_theme</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">(</span><span class="si">%r</span><span class="s">).__get__(</span><span class="si">%r</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c">###</span>
+            <span class="n">cache_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">cache_name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">debug_theme</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="n">e</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_theme</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">cache_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">return</span> <span class="n">value</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c">###</span>
+            <span class="k">if</span> <span class="n">debug_theme</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">traceback</span>
+
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;-------------------------------------------------------&quot;</span>
+            <span class="k">raise</span>  <span class="c">###</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">debug_theme</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Setting </span><span class="si">%r</span><span class="s">.</span><span class="si">%s</span><span class="s"> = </span><span class="si">%r</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>  <span class="c">###</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="ThemeProperty.get_from_theme"><a class="viewcode-back" href="../../albow.html#albow.theme.ThemeProperty.get_from_theme">[docs]</a>    <span class="k">def</span> <span class="nf">get_from_theme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">root</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="FontProperty"><a class="viewcode-back" href="../../albow.html#albow.theme.FontProperty">[docs]</a><span class="k">class</span> <span class="nc">FontProperty</span><span class="p">(</span><span class="n">ThemeProperty</span><span class="p">):</span>
+<div class="viewcode-block" id="FontProperty.get_from_theme"><a class="viewcode-back" href="../../albow.html#albow.theme.FontProperty.get_from_theme">[docs]</a>    <span class="k">def</span> <span class="nf">get_from_theme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">root</span><span class="o">.</span><span class="n">get_font</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ThemeError"><a class="viewcode-back" href="../../albow.html#albow.theme.ThemeError">[docs]</a><span class="k">class</span> <span class="nc">ThemeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="Theme"><a class="viewcode-back" href="../../albow.html#albow.theme.Theme">[docs]</a><span class="k">class</span> <span class="nc">Theme</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="c">#  name   string          Name of theme, for debugging</span>
+    <span class="c">#  base   Theme or None   Theme on which this theme is based</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">base</span>
+
+<div class="viewcode-block" id="Theme.get"><a class="viewcode-back" href="../../albow.html#albow.theme.Theme.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ThemeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s">&quot;No value found in theme </span><span class="si">%s</span><span class="s"> for &#39;</span><span class="si">%s</span><span class="s">&#39; of </span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+                                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">__module__</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Theme.lookup"><a class="viewcode-back" href="../../albow.html#albow.theme.Theme.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">debug_theme</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Theme(</span><span class="si">%r</span><span class="s">).lookup(</span><span class="si">%r</span><span class="s">, </span><span class="si">%r</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">base_class</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">__mro__</span><span class="p">:</span>
+            <span class="n">class_theme</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_class</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">class_theme</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">class_theme</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">ThemeError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">base_theme</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span>
+                <span class="k">if</span> <span class="n">base_theme</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">base_theme</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ThemeError</span>
+</div>
+<div class="viewcode-block" id="Theme.get_font"><a class="viewcode-back" href="../../albow.html#albow.theme.Theme.get_font">[docs]</a>    <span class="k">def</span> <span class="nf">get_font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">debug_theme</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Theme.get_font(</span><span class="si">%r</span><span class="s">, </span><span class="si">%r</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">debug_theme</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;font spec =&quot;</span><span class="p">,</span> <span class="n">spec</span>
+            <span class="k">return</span> <span class="n">resource</span><span class="o">.</span><span class="n">get_font</span><span class="p">(</span><span class="o">*</span><span class="n">spec</span><span class="p">)</span>
+
+</div></div>
+<span class="n">root</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;root&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">root</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s">&quot;DejaVuSans-Regular.ttf&quot;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">bg_image</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">scale_bg</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">root</span><span class="o">.</span><span class="n">border_width</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">root</span><span class="o">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">tab_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">sel_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">112</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">112</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">hover_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">disabled_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">highlight_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">hover_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">enabled_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">disabled_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">RootWidget</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;RootWidget&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">RootWidget</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;Button&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s">&quot;DejaVuSans-Bold.ttf&quot;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">disabled_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">hover_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">225</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">default_choice_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">144</span><span class="p">,</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">default_choice_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">highlight_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">enabled_bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">disabled_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">border_width</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">ValueButton</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;ValueButton&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">root</span><span class="o">.</span><span class="n">Button</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">Label</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;Label&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="c">#-#</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">disabled_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+<span class="c">#-#</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">SmallLabel</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;SmallLabel&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">SmallLabel</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#39;DejaVuSans-Regular.ttf&#39;</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">ValueDisplay</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;ValueDisplay&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">ValueDisplay</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">SmallValueDisplay</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;SmallValueDisplay&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">SmallValueDisplay</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#39;DejaVuSans-Regular.ttf&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">ValueDisplay</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">ImageButton</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;ImageButton&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">ImageButton</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+<span class="n">framed</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;framed&#39;</span><span class="p">)</span>
+<span class="n">framed</span><span class="o">.</span><span class="n">border_width</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">framed</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">Field</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;Field&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">framed</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Field</span><span class="o">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">CheckWidget</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;CheckWidget&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">CheckWidget</span><span class="o">.</span><span class="n">smooth</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">root</span><span class="o">.</span><span class="n">CheckWidget</span><span class="o">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">Field</span><span class="o">.</span><span class="n">border_color</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">Dialog</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;Dialog&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Dialog</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Dialog</span><span class="o">.</span><span class="n">border_width</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Dialog</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">DirPathView</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;DirPathView&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">framed</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">FileListView</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;FileListView&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">framed</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">FileListView</span><span class="o">.</span><span class="n">scroll_button_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">FileDialog</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&quot;FileDialog&quot;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">FileDialog</span><span class="o">.</span><span class="n">up_button_text</span> <span class="o">=</span> <span class="s">&quot;&lt;-&quot;</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">PaletteView</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;PaletteView&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">PaletteView</span><span class="o">.</span><span class="n">sel_width</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">root</span><span class="o">.</span><span class="n">PaletteView</span><span class="o">.</span><span class="n">scroll_button_size</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">root</span><span class="o">.</span><span class="n">PaletteView</span><span class="o">.</span><span class="n">scroll_button_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">PaletteView</span><span class="o">.</span><span class="n">highlight_style</span> <span class="o">=</span> <span class="s">&#39;frame&#39;</span>
+<span class="n">root</span><span class="o">.</span><span class="n">PaletteView</span><span class="o">.</span><span class="n">zebra_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">TextScreen</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;TextScreen&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TextScreen</span><span class="o">.</span><span class="n">heading_font</span> <span class="o">=</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s">&quot;DejaVuSans-Bold.ttf&quot;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TextScreen</span><span class="o">.</span><span class="n">button_font</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s">&quot;DejaVuSans-Bold.ttf&quot;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TextScreen</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;TabPanel&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_font</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s">&quot;DejaVuSans-Regular.ttf&quot;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_height</span> <span class="o">=</span> <span class="mi">24</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_border_width</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_spacing</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_margin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_fg_color</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">fg_color</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">default_tab_bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_area_bg_color</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">root</span><span class="o">.</span><span class="n">TabPanel</span><span class="o">.</span><span class="n">tab_dimming</span> <span class="o">=</span> <span class="mf">0.75</span>
+<span class="c">#root.TabPanel.use_page_bg_color_for_tabs = True</span>
+
+<span class="n">menu</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;menu&#39;</span><span class="p">)</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">disabled_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">margin</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">192</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">192</span><span class="p">)</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">scroll_button_size</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">scroll_button_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">MenuBar</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;MenuBar&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">menu</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">MenuBar</span><span class="o">.</span><span class="n">border_width</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">Menu</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;Menu&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">menu</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Menu</span><span class="o">.</span><span class="n">border_width</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">MusicVolumeControl</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;MusicVolumeControl&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">framed</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">MusicVolumeControl</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x40</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">)</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">Tree</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span><span class="s">&#39;Tree&#39;</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">bullet_size</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">bullet_color_active</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">root</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">bullet_color_inactive</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

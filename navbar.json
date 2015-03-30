@@ -17,11 +17,19 @@
 			"url": "contributors.html"
 		},
 		{
+<<<<<<< HEAD
 			"displayname": "Tutorial(Coming Soon)",
 			"url": ""
 		},
 		{
 			"displayname": "Github",
+=======
+			"displayname": "Documentation",
+			"url": "docs/"
+		},
+		{
+			"displayname": "GitHub",
+>>>>>>> origin/pr/13
 			"url": "http://github.com/Khroki/MCEdit-Unified/"
 		},
 	]

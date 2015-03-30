@@ -61,6 +61,7 @@
 				$('#changelog').show();
 
 
+<<<<<<< HEAD
 				var latestRelease = releaseData[0];
 				for (var i = 0; i < platforms.length; i++) {
 					var asset32 = getDownload(platforms[i],latestRelease.tag_name,32);
@@ -72,6 +73,23 @@
 						$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
 					}
 				}
+=======
+			var latestRelease = releaseData[0];
+			for (var i = 0; i < platforms.length; i++) {
+                var asset3264 = getDownload(platforms[i], latestRelease.tag_name, '32.64');
+				var asset32 = getDownload(platforms[i],latestRelease.tag_name, 32);
+				var asset64 = getDownload(platforms[i],latestRelease.tag_name, 64);
+                if(asset3264) {
+                    $('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset3264.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32/64 bit</a><br><br>');
+                } else {
+    				if (asset32) {
+    					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
+    				}
+    				if (asset64) {
+    					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset64.browser_download_url + '"><i class="fa fa-cloud-download"></i> Version ' + latestRelease.tag_name + ' 64bit</a>');
+    				}
+                }
+>>>>>>> origin/pr/13
 			}
 		</script>
 		<style>
@@ -120,6 +138,7 @@
 								</span>
 								<span id="OSX-downloads">
 
+<<<<<<< HEAD
 								</span>
 							</div>
 							<div class="col-md-4">
@@ -160,7 +179,26 @@
 							<div class="col-md-12">
 								<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
 							</div>
+=======
+                            </span>
+                        </div>
+					</div>
+					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:30px;">
+						<div class="col-md-6">
+							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
 						</div>
+                        <div class="col-md-8">
+                            Pre-Anvil versions can be found at the bottom of <a href="https://github.com/Khroki/mcedit-old/releases">this page.</a>
+                        </div>
+					</div>
+					<div class="row hidden-md hidden-lg" style="position:absolute;bottom:0px;">
+						<div class="col-md-6">
+							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
+>>>>>>> origin/pr/13
+						</div>
+                        <div class="col-md-6">
+                            Pre-Anvil versions can be found at the bottom of <a href="https://github.com/Khroki/mcedit-old/releases">this page.</a>
+                        </div>
 					</div>
 				</div>
 				<div id="changelog" style="display:none;">

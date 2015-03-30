@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>albow.utils &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'v1.3.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for albow.utils</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">Surface</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="n">SRCALPHA</span>
+
+
+<div class="viewcode-block" id="frame_rect"><a class="viewcode-back" href="../../albow.html#albow.utils.frame_rect">[docs]</a><span class="k">def</span> <span class="nf">frame_rect</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">thick</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">o</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">o</span> <span class="o">-</span> <span class="n">o</span><span class="p">,</span> <span class="n">thick</span><span class="p">))</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">o</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">thick</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">o</span> <span class="o">-</span> <span class="n">o</span><span class="p">,</span> <span class="n">thick</span><span class="p">))</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">o</span><span class="p">,</span> <span class="n">thick</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">o</span> <span class="o">-</span> <span class="n">o</span><span class="p">))</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">thick</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">o</span><span class="p">,</span> <span class="n">thick</span><span class="p">,</span> <span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">o</span> <span class="o">-</span> <span class="n">o</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="blit_tinted"><a class="viewcode-back" href="../../albow.html#albow.utils.blit_tinted">[docs]</a><span class="k">def</span> <span class="nf">blit_tinted</span><span class="p">(</span><span class="n">surface</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">tint</span><span class="p">,</span> <span class="n">src_rect</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">Numeric</span> <span class="kn">import</span> <span class="n">add</span><span class="p">,</span> <span class="n">minimum</span>
+    <span class="kn">from</span> <span class="nn">pygame.surfarray</span> <span class="kn">import</span> <span class="n">array3d</span><span class="p">,</span> <span class="n">pixels3d</span>
+
+    <span class="k">if</span> <span class="n">src_rect</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">subsurface</span><span class="p">(</span><span class="n">src_rect</span><span class="p">)</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">Surface</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">get_size</span><span class="p">(),</span> <span class="n">SRCALPHA</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="n">buf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">src_rgb</span> <span class="o">=</span> <span class="n">array3d</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">buf_rgb</span> <span class="o">=</span> <span class="n">pixels3d</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+    <span class="n">buf_rgb</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="n">add</span><span class="p">(</span><span class="n">tint</span><span class="p">,</span> <span class="n">src_rgb</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="blit_in_rect"><a class="viewcode-back" href="../../albow.html#albow.utils.blit_in_rect">[docs]</a><span class="k">def</span> <span class="nf">blit_in_rect</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;tl&#39;</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">get_rect</span><span class="p">()</span>
+    <span class="n">align_rect</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">margin</span><span class="p">)</span>
+    <span class="n">dst</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="align_rect"><a class="viewcode-back" href="../../albow.html#albow.utils.align_rect">[docs]</a><span class="k">def</span> <span class="nf">align_rect</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;tl&#39;</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">&#39;l&#39;</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">margin</span>
+    <span class="k">elif</span> <span class="s">&#39;r&#39;</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">margin</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">centerx</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">centerx</span>
+    <span class="k">if</span> <span class="s">&#39;t&#39;</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">margin</span>
+    <span class="k">elif</span> <span class="s">&#39;b&#39;</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">margin</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">centery</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">centery</span>
+
+</div>
+<div class="viewcode-block" id="brighten"><a class="viewcode-back" href="../../albow.html#albow.utils.brighten">[docs]</a><span class="k">def</span> <span class="nf">brighten</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">factor</span> <span class="o">*</span> <span class="n">c</span><span class="p">)))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">rgb</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MCEdit-Unified Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

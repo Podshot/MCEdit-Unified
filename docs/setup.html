@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>setup module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.3.0.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="next" title="splash module" href="splash.html" />
+    <link rel="prev" title="resource_packs module" href="resource_packs.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="resource_packs.html" title="resource_packs module" accesskey="P">previous </a></li>
+              <li><a href="splash.html" title="splash module" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="sources/setup.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="resource_packs.html"
+                        title="previous chapter">resource_packs module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="splash.html"
+                        title="next chapter">splash module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/setup.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="module-setup">
+<span id="setup-module"></span><h1>setup module<a class="headerlink" href="#module-setup" title="Permalink to this headline">¶</a></h1>
+<dl class="data">
+<dt id="setup.LONG_DESC">
+<code class="descclassname">setup.</code><code class="descname">LONG_DESC</code><em class="property"> = &quot;\nWorld / Saved Game Editor for the popular game Minecraft\n\nImport and export creations from saved games. Brush tools allow modifying\nterrain on a larger scale. Create, remove, and regenerate chunks in modern\n'infinite' Minecraft levels.\n\nWorks with saved games from Minecraft Classic, Indev, Infdev, Alpha, Beta,\nRelease, and Pocket Edition.\n&quot;</em><a class="headerlink" href="#setup.LONG_DESC" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>if &#8220;&#8211;stable&#8221; in sys.argv:</dt>
+<dd>DEVELOP = False
+sys.argv.remove(&#8216;&#8211;stable&#8217;)</dd>
+<dt>else:</dt>
+<dd>DEVELOP = True</dd>
+<dt>def get_git_version():</dt>
+<dd><p class="first">&#8220;&#8221;&#8221;
+Get the version from git.
+&#8220;&#8221;&#8221;
+if DEVELOP:</p>
+<blockquote>
+<div>match = &#8216;&#8211;match=*.*.*build*&#8217;</div></blockquote>
+<dl class="docutils">
+<dt>else:</dt>
+<dd>match = &#8216;&#8211;match=*.*.*&#8217;</dd>
+<dt>try:</dt>
+<dd>version = subprocess.check_output(&#8216;git describe &#8211;abbrev=4 &#8211;tags&#8217;.split() + [match]).strip()</dd>
+<dt>except:</dt>
+<dd>version = &#8216;unknown&#8217;</dd>
+</dl>
+<p class="last">fout = open(&#8216;RELEASE-VERSION&#8217;, &#8216;wb&#8217;)
+fout.write(version)
+fout.write(&#8216;</p>
+</dd>
+<dt>&#8216;)</dt>
+<dd><p class="first">fout.close()
+fout = open(&#8216;GIT-COMMIT&#8217;, &#8216;wb&#8217;)</p>
+<dl class="docutils">
+<dt>try:</dt>
+<dd>commit = subprocess.check_output(&#8216;git rev-parse HEAD&#8217;.split()).strip()</dd>
+<dt>except:</dt>
+<dd>commit = &#8216;unknown&#8217;</dd>
+</dl>
+<p class="last">fout.write(commit)
+fout.write(&#8216;</p>
+</dd>
+<dt>&#8216;)</dt>
+<dd><p class="first">fout.close()</p>
+<p class="last">return version</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="setup.build_nbt">
+<code class="descclassname">setup.</code><code class="descname">build_nbt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/setup.html#build_nbt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#setup.build_nbt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds _nbt.py.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="setup.get_data_files">
+<code class="descclassname">setup.</code><code class="descname">get_data_files</code><span class="sig-paren">(</span><em>dirs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/setup.html#get_data_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#setup.get_data_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively include data directories.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="setup.main">
+<code class="descclassname">setup.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/setup.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#setup.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="setup.setup_win32">
+<code class="descclassname">setup.</code><code class="descname">setup_win32</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/setup.html#setup_win32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#setup.setup_win32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Packing setup for Windows 32/64.</p>
+</dd></dl>
+
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="resource_packs.html" title="resource_packs module" >previous</a></li>
+        <li><a href="splash.html" title="splash module" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, MCEdit-Unified Team.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

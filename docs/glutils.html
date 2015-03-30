@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>glutils module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.3.0.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="next" title="keys module" href="keys.html" />
+    <link rel="prev" title="glbackground module" href="glbackground.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="glbackground.html" title="glbackground module" accesskey="P">previous </a></li>
+              <li><a href="keys.html" title="keys module" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="sources/glutils.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="glbackground.html"
+                        title="previous chapter">glbackground module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="keys.html"
+                        title="next chapter">keys module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/glutils.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="module-glutils">
+<span id="glutils-module"></span><h1>glutils module<a class="headerlink" href="#module-glutils" title="Permalink to this headline">¶</a></h1>
+<p>Copyright (c) 2010-2012 David Rio Vierra</p>
+<p>Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.</p>
+<p>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221; AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<dl class="class">
+<dt id="glutils.DisplayList">
+<em class="property">class </em><code class="descclassname">glutils.</code><code class="descname">DisplayList</code><span class="sig-paren">(</span><em>drawFunc=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#DisplayList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.DisplayList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="glutils.DisplayList.allLists">
+<code class="descname">allLists</code><em class="property"> = []</em><a class="headerlink" href="#glutils.DisplayList.allLists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="glutils.DisplayList.call">
+<code class="descname">call</code><span class="sig-paren">(</span><em>drawFunc=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#DisplayList.call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.DisplayList.call" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="glutils.DisplayList.getList">
+<code class="descname">getList</code><span class="sig-paren">(</span><em>drawFunc=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#DisplayList.getList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.DisplayList.getList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="glutils.DisplayList.invalidate">
+<code class="descname">invalidate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#DisplayList.invalidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.DisplayList.invalidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.DisplayList.invalidateAllLists">
+<em class="property">classmethod </em><code class="descname">invalidateAllLists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#DisplayList.invalidateAllLists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.DisplayList.invalidateAllLists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="glutils.DisplayList.makeList">
+<code class="descname">makeList</code><span class="sig-paren">(</span><em>drawFunc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#DisplayList.makeList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.DisplayList.makeList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glutils.FramebufferTexture">
+<em class="property">class </em><code class="descclassname">glutils.</code><code class="descname">FramebufferTexture</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>drawFunc</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#FramebufferTexture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.FramebufferTexture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glutils.Texture" title="glutils.Texture"><code class="xref py py-class docutils literal"><span class="pre">glutils.Texture</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="glutils.Texture">
+<em class="property">class </em><code class="descclassname">glutils.</code><code class="descname">Texture</code><span class="sig-paren">(</span><em>textureFunc=None</em>, <em>minFilter=None</em>, <em>magFilter=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#Texture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.Texture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="glutils.Texture.allTextures">
+<code class="descname">allTextures</code><em class="property"> = []</em><a class="headerlink" href="#glutils.Texture.allTextures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="glutils.Texture.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#Texture.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.Texture.bind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glutils.Texture.defaultFilter">
+<code class="descname">defaultFilter</code><em class="property"> = GL_NEAREST</em><a class="headerlink" href="#glutils.Texture.defaultFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="glutils.Texture.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#Texture.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.Texture.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="glutils.Texture.invalidate">
+<code class="descname">invalidate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#Texture.invalidate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.Texture.invalidate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="glutils.debugDrawPoint">
+<code class="descclassname">glutils.</code><code class="descname">debugDrawPoint</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#debugDrawPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.debugDrawPoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="glutils.gl">
+<em class="property">class </em><code class="descclassname">glutils.</code><code class="descname">gl</code><a class="reference internal" href="modules/glutils.html#gl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="glutils.gl.ResetGL">
+<em class="property">classmethod </em><code class="descname">ResetGL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.ResetGL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.ResetGL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.gl.glBegin">
+<em class="property">classmethod </em><code class="descname">glBegin</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.glBegin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.glBegin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.gl.glDeleteLists">
+<em class="property">classmethod </em><code class="descname">glDeleteLists</code><span class="sig-paren">(</span><em>base</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.glDeleteLists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.glDeleteLists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.gl.glEnable">
+<em class="property">classmethod </em><code class="descname">glEnable</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.glEnable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.glEnable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.gl.glEnableClientState">
+<em class="property">classmethod </em><code class="descname">glEnableClientState</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.glEnableClientState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.glEnableClientState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.gl.glGenLists">
+<em class="property">classmethod </em><code class="descname">glGenLists</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.glGenLists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.glGenLists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.gl.glPushAttrib">
+<em class="property">classmethod </em><code class="descname">glPushAttrib</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.glPushAttrib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.glPushAttrib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="glutils.gl.glPushMatrix">
+<em class="property">classmethod </em><code class="descname">glPushMatrix</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/glutils.html#gl.glPushMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glutils.gl.glPushMatrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glutils.gl.listCount">
+<code class="descname">listCount</code><em class="property"> = 0</em><a class="headerlink" href="#glutils.gl.listCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="glbackground.html" title="glbackground module" >previous</a></li>
+        <li><a href="keys.html" title="keys module" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, MCEdit-Unified Team.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

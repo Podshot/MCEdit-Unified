@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>panels package &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.3.0.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="next" title="pkgutil module" href="pkgutil.html" />
+    <link rel="prev" title="mcplatform module" href="mcplatform.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">panels package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-panels.control">panels.control module</a></li>
+<li><a class="reference internal" href="#module-panels.graphics">panels.graphics module</a></li>
+<li><a class="reference internal" href="#module-panels.options">panels.options module</a></li>
+<li><a class="reference internal" href="#module-panels">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="mcplatform.html" title="mcplatform module" accesskey="P">previous </a></li>
+              <li><a href="pkgutil.html" title="pkgutil module" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="sources/panels.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">panels package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-panels.control">panels.control module</a></li>
+<li><a class="reference internal" href="#module-panels.graphics">panels.graphics module</a></li>
+<li><a class="reference internal" href="#module-panels.options">panels.options module</a></li>
+<li><a class="reference internal" href="#module-panels">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mcplatform.html"
+                        title="previous chapter">mcplatform module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pkgutil.html"
+                        title="next chapter">pkgutil module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/panels.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="panels-package">
+<h1>panels package<a class="headerlink" href="#panels-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-panels.control">
+<span id="panels-control-module"></span><h2>panels.control module<a class="headerlink" href="#module-panels.control" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="panels.control.ControlPanel">
+<em class="property">class </em><code class="descclassname">panels.control.</code><code class="descname">ControlPanel</code><span class="sig-paren">(</span><em>editor</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/control.html#ControlPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.control.ControlPanel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="glbackground.html#glbackground.Panel" title="glbackground.Panel"><code class="xref py py-class docutils literal"><span class="pre">glbackground.Panel</span></code></a></p>
+<dl class="classmethod">
+<dt id="panels.control.ControlPanel.getHeader">
+<em class="property">classmethod </em><code class="descname">getHeader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/control.html#ControlPanel.getHeader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.control.ControlPanel.getHeader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.control.ControlPanel.key_down">
+<code class="descname">key_down</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/control.html#ControlPanel.key_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.control.ControlPanel.key_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.control.ControlPanel.key_up">
+<code class="descname">key_up</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/control.html#ControlPanel.key_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.control.ControlPanel.key_up" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.control.ControlPanel.mouse_down">
+<code class="descname">mouse_down</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/control.html#ControlPanel.mouse_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.control.ControlPanel.mouse_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-panels.graphics">
+<span id="panels-graphics-module"></span><h2>panels.graphics module<a class="headerlink" href="#module-panels.graphics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="panels.graphics.GraphicsPanel">
+<em class="property">class </em><code class="descclassname">panels.graphics.</code><code class="descname">GraphicsPanel</code><span class="sig-paren">(</span><em>mcedit</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/graphics.html#GraphicsPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.graphics.GraphicsPanel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="albow.html#albow.dialogs.Dialog" title="albow.dialogs.Dialog"><code class="xref py py-class docutils literal"><span class="pre">albow.dialogs.Dialog</span></code></a></p>
+<dl class="attribute">
+<dt id="panels.graphics.GraphicsPanel.anchor">
+<code class="descname">anchor</code><em class="property"> = 'wh'</em><a class="headerlink" href="#panels.graphics.GraphicsPanel.anchor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.graphics.GraphicsPanel.cancel">
+<code class="descname">cancel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/graphics.html#GraphicsPanel.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.graphics.GraphicsPanel.cancel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.graphics.GraphicsPanel.change_texture">
+<code class="descname">change_texture</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/graphics.html#GraphicsPanel.change_texture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.graphics.GraphicsPanel.change_texture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.graphics.GraphicsPanel.dismiss">
+<code class="descname">dismiss</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/graphics.html#GraphicsPanel.dismiss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.graphics.GraphicsPanel.dismiss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.graphics.GraphicsPanel.dispatch_key">
+<code class="descname">dispatch_key</code><span class="sig-paren">(</span><em>name</em>, <em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/graphics.html#GraphicsPanel.dispatch_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.graphics.GraphicsPanel.dispatch_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.graphics.GraphicsPanel.resetDefault">
+<code class="descname">resetDefault</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/graphics.html#GraphicsPanel.resetDefault"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.graphics.GraphicsPanel.resetDefault" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.graphics.GraphicsPanel.reshowNumberFields">
+<code class="descname">reshowNumberFields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/graphics.html#GraphicsPanel.reshowNumberFields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.graphics.GraphicsPanel.reshowNumberFields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="panels.graphics.GraphicsPanel.texturePack">
+<code class="descname">texturePack</code><a class="headerlink" href="#panels.graphics.GraphicsPanel.texturePack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-panels.options">
+<span id="panels-options-module"></span><h2>panels.options module<a class="headerlink" href="#module-panels.options" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="panels.options.OptionsPanel">
+<em class="property">class </em><code class="descclassname">panels.options.</code><code class="descname">OptionsPanel</code><span class="sig-paren">(</span><em>mcedit</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="albow.html#albow.dialogs.Dialog" title="albow.dialogs.Dialog"><code class="xref py py-class docutils literal"><span class="pre">albow.dialogs.Dialog</span></code></a></p>
+<dl class="attribute">
+<dt id="panels.options.OptionsPanel.anchor">
+<code class="descname">anchor</code><em class="property"> = 'wh'</em><a class="headerlink" href="#panels.options.OptionsPanel.anchor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="panels.options.OptionsPanel.blockBuffer">
+<code class="descname">blockBuffer</code><a class="headerlink" href="#panels.options.OptionsPanel.blockBuffer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.cancel">
+<code class="descname">cancel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.cancel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.changeLanguage">
+<code class="descname">changeLanguage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.changeLanguage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.changeLanguage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.dismiss">
+<code class="descname">dismiss</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.dismiss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.dismiss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to change the language and the font proportion</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.dispatch_key">
+<code class="descname">dispatch_key</code><span class="sig-paren">(</span><em>name</em>, <em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.dispatch_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.dispatch_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.getLanguageChoices">
+<code class="descname">getLanguageChoices</code><span class="sig-paren">(</span><em>current=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.getLanguageChoices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.getLanguageChoices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.initComponents">
+<code class="descname">initComponents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.initComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.initComponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initilize the window components. Call this after translation hs been loaded.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="panels.options.OptionsPanel.portableButtonTooltip">
+<em class="property">static </em><code class="descname">portableButtonTooltip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.portableButtonTooltip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.portableButtonTooltip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="panels.options.OptionsPanel.portableLabelText">
+<code class="descname">portableLabelText</code><a class="headerlink" href="#panels.options.OptionsPanel.portableLabelText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.resetDefault">
+<code class="descname">resetDefault</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.resetDefault"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.resetDefault" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.reshowNumberFields">
+<code class="descname">reshowNumberFields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.reshowNumberFields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.reshowNumberFields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="panels.options.OptionsPanel.togglePortable">
+<code class="descname">togglePortable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/panels/options.html#OptionsPanel.togglePortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#panels.options.OptionsPanel.togglePortable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-panels">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-panels" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="mcplatform.html" title="mcplatform module" >previous</a></li>
+        <li><a href="pkgutil.html" title="pkgutil module" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, MCEdit-Unified Team.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

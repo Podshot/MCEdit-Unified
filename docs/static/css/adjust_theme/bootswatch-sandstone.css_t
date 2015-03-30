@@ -1,0 +1,19 @@
+{% set table_border_color = "#dddddd" %}
+
+{% set danger_color = "#ffffff" %}
+{% set danger_background_color = "#c9605a" %}
+{% set danger_border_color  = "#c9605a" %}
+
+{% set warning_color = "#ffffff" %}
+{% set warning_background_color = "#e48353" %}
+{% set warning_border_color  = "#e48353" %}
+
+{% set note_color = "#ffffff" %}
+{% set note_background_color = "#9fbe5b" %}
+{% set note_border_color  = "#9fbe5b" %}
+
+{% set hint_color = "#ffffff" %}
+{% set hint_background_color = "#55abda" %}
+{% set hint_border_color  = "#55abda" %}
+
+{% include "static/css/adjust_theme/_common_adjust.css" %}
