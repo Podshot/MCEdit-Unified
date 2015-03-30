@@ -578,7 +578,7 @@ class Widget(object):
 
     def invalidate(self):
         if self.root:
-            self.root.bonus_draw_time = 0
+            self.root.bonus_draw_time = False
 
     @staticmethod
     def get_cursor(event):

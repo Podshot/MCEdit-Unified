@@ -1272,7 +1272,7 @@ class LevelEditor(GLViewport):
         if self.renderer.needsImmediateRedraw:
             self.invalidate()
 
-        if self.root.bonus_draw_time < 1:
+        if not self.root.bonus_draw_time:
             frameDuration = self.getFrameDuration()
 
             while frameDuration > (datetime.now() - self.frameStartTime):
@@ -1534,6 +1534,9 @@ class LevelEditor(GLViewport):
 
         if keyname == 'F7':
             self.testBoardKey = 0
+
+        if keyname == config.keys.fastNudge.get():
+            self.editor.rightClickNudge = False
 
     def key_down(self, evt):
         if not pygame.key.get_focused():

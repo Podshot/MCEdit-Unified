@@ -101,7 +101,7 @@ class RootWidget(Widget):
     #  is_gl     True if OpenGL surface
 
     redraw_every_frame = False
-    bonus_draw_time = 0
+    bonus_draw_time = False
     _is_gl_container = True
 
     def __init__(self, surface):
@@ -120,6 +120,7 @@ class RootWidget(Widget):
         self.cameraNum = [0, 0, 1, 1]
         self.notMove = False
         self.nudge = None
+        self.canNudge = True
         self.testTime = None
         self.nudgeDirection = None
         self.sessionStolen = False
@@ -207,8 +208,8 @@ class RootWidget(Widget):
                 clicked_widget = modal_widget
             num_clicks = 0
             last_click_time = start_time
-            last_click_button = 0
-            self.bonus_draw_time = 0
+            last_click_button = False
+            self.bonus_draw_time = False
 
             while modal_widget.modal_result is None:
                 try:
@@ -218,14 +219,15 @@ class RootWidget(Widget):
                             self.mcedit.check_for_version()
 
                     self.hover_widget = self.find_widget(pygame.mouse.get_pos())
-                    if self.bonus_draw_time < 1:
-                        self.bonus_draw_time += 1
+                    if not self.bonus_draw_time:
+                        self.bonus_draw_time = True
                         if self.is_gl:
                             self.gl_clear()
                             self.gl_draw_all(self, (0, 0))
                             GL.glFlush()
                         else:
                             self.draw_all(self.surface)
+                        self.canNudge = True
                         pygame.display.flip()
                         self.frames += 1
                     #events = [pygame.event.wait()]
@@ -239,7 +241,7 @@ class RootWidget(Widget):
                         if type == QUIT:
                             self.quit()
                         elif type == MOUSEBUTTONDOWN:
-                            self.bonus_draw_time = 0
+                            self.bonus_draw_time = False
                             t = datetime.now()
                             if t - last_click_time <= double_click_time and event.button == last_click_button:
                                 num_clicks += 1
@@ -262,7 +264,7 @@ class RootWidget(Widget):
                             mouse_widget.notify_attention_loss()
                             mouse_widget.handle_mouse('mouse_down', event)
                         elif type == MOUSEMOTION:
-                            self.bonus_draw_time = 0
+                            self.bonus_draw_time = False
                             add_modifiers(event)
                             modal_widget.dispatch_key('mouse_delta', event)
                             last_mouse_event = event
@@ -279,7 +281,7 @@ class RootWidget(Widget):
                                 mouse_widget.handle_mouse('mouse_move', event)
                         elif type == MOUSEBUTTONUP:
                             add_modifiers(event)
-                            self.bonus_draw_time = 0
+                            self.bonus_draw_time = False
                             mouse_widget = self.find_widget(event.pos)
                             if self.captured_widget:
                                 mouse_widget = self.captured_widget
@@ -297,7 +299,7 @@ class RootWidget(Widget):
                             key = event.key
                             set_modifier(key, True)
                             add_modifiers(event)
-                            self.bonus_draw_time = 0
+                            self.bonus_draw_time = False
                             keyname = self.getKey(event)
                             if keyname == config.keys.takeAScreenshot.get():
                                 self.take_screenshot()
@@ -311,7 +313,7 @@ class RootWidget(Widget):
                             key = event.key
                             set_modifier(key, False)
                             add_modifiers(event)
-                            self.bonus_draw_time = 0
+                            self.bonus_draw_time = False
                             keyname = self.getKey(event)
                             if keyname == config.keys.showBlockInfo.get() and self.editor.toolbar.tools[0].infoKey == 1:
                                 self.editor.toolbar.tools[0].infoKey = 0
@@ -333,9 +335,9 @@ class RootWidget(Widget):
                             make_scheduled_calls()
                             if not is_modal:
                                 if self.redraw_every_frame:
-                                    self.bonus_draw_time = 0
+                                    self.bonus_draw_time = False
                                 else:
-                                    self.bonus_draw_time += 1
+                                    self.bonus_draw_time = True
                                 if last_mouse_event_handler:
                                     event.dict['pos'] = last_mouse_event.pos
                                     event.dict['local'] = last_mouse_event.local
@@ -344,7 +346,7 @@ class RootWidget(Widget):
                                 self.begin_frame()
                         elif type == VIDEORESIZE:
                             #add_modifiers(event)
-                            self.bonus_draw_time = 0
+                            self.bonus_draw_time = False
                             self.size = (event.w, event.h)
                             #self.dispatch_key('reshape', event)
                         elif type == ACTIVEEVENT:
@@ -436,7 +438,9 @@ class RootWidget(Widget):
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
-        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds=0.325)):
+        elif self.notMove and self.nudge is not None and self.canNudge and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds=0.1)):
+            self.canNudge = False
+            self.bonus_draw_time = False
             self.testTime = datetime.now()
             if keyname == self.editor.movements[4]:
                 self.nudge.nudge(Vector(0, 1, 0))
