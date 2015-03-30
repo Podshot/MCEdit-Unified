@@ -42,7 +42,6 @@ import imp
 from nbtexplorer import NBTExplorerToolPanel
 #-#
 
-
 def alertFilterException(func):
     def _func(*args, **kw):
         try:
@@ -579,6 +578,7 @@ class FilterToolPanel(Panel):
             options.update(self.filterOptionsPanel.options)
             options.pop("", "")
             self.tool.savedOptions[self.selectedFilterName] = options
+            #self.tool.savedOptions[self.selectedFilterName] = self.filterOptionsPanel.options
 
 
 class FilterOperation(Operation):
@@ -716,6 +716,52 @@ class FilterTool(EditorTool):
     def closeFinishedUpdatingWidget(self):
         self.finishedUpdatingWidget.dismiss()
 
+    def importLibraries(self):
+        def trim(arg):
+            arg = arg.replace("['", "")
+            return arg.replace("']", "")
+        
+        could_not_find_dependencies = []
+        names = []
+        all_unfound_dependencies = {}
+        lines = []
+        
+        for filt in self.filterModules.values():
+            if hasattr(filt, 'libraries') and isinstance(filt.libraries, list):
+                for lib in filt.libraries:
+                    lib_path = os.path.join(directories.getFiltersDir(), 'lib', lib["path"].replace("<sep>", os.path.sep))
+                    if os.path.exists(lib_path):
+                        sys.path.append(lib_path)
+                    else:
+                        try:
+                            os.makedirs(os.path.join(directories.getFiltersDir(), 'lib', trim(str(str(lib["path"].replace("<sep>", os.path.sep)).split(os.path.sep)[:-1]))))
+                        except OSError:
+                            pass
+                        try:
+                            urllib.urlretrieve(lib["URL"], lib_path)
+                        except:
+                            if not lib.get("optional"):
+                                could_not_find_dependencies.append(filt)
+                                if filt.__name__ not in all_unfound_dependencies:
+                                    all_unfound_dependencies[filt.__name__] = []
+                                all_unfound_dependencies[filt.__name__].append(lib["name"])
+                                
+        for not_found in could_not_find_dependencies:
+            print "Not found: "+str(not_found)
+            filters = self.filterModules.items()
+            for filt, module in filters:
+                if module == not_found:
+                    del self.filterModules[filt]
+                    names.append(filt)
+        if len(could_not_find_dependencies) != 0:
+            for filt in all_unfound_dependencies.keys():
+                lines.append(filt+"\n")
+                for dep in all_unfound_dependencies[filt]:
+                    lines.append("    "+dep+"\n")
+            with open(os.path.join(directories.getCacheDir(), 'dependencies_not_found.txt'), 'wb') as f:
+                f.writelines(lines)
+            alert("Could not find dependencies for the following filters:\n"+"\n".join(names)+"\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")
+    
     def reloadFilters(self):
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
@@ -728,6 +774,8 @@ class FilterTool(EditorTool):
                 if hasattr(module, "perform"):
                     toReturn.append(module)
             return toReturn
+        
+        #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py'))
 
         def tryImport(name):
             # [D.C.-G.]
@@ -799,6 +847,8 @@ class FilterTool(EditorTool):
 
         if "demo" in self.category_dict:
             del self.category_dict["demo"]
+        if 'lib' in self.category_dict:
+            del self.category_dict['lib']
         filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
         for key in self.category_dict.keys():
@@ -813,6 +863,7 @@ class FilterTool(EditorTool):
                 alert(
                     _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
+        self.importLibraries()
 
     @property
     def filterNames(self):
