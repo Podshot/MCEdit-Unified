@@ -181,7 +181,10 @@ class ScrollPanel(Column):
         self.draw_zebra = kwargs.pop('draw_zebra', True)
         self.row_height = kwargs.pop('row_height', max([a.height for a in self.rows] + [self.font.size(' ')[1],]))
         self.inner_width = kwargs.pop('inner_width', 500)
-        self.scrollRow = scrollRow = ScrollRow((self.inner_width, self.row_height), 10, draw_zebra=self.draw_zebra, spacing=0)
+        self.scrolling = kwargs.get('scrolling', True)
+        self.hscrolling = kwargs.get('hscrolling', True)
+        self.scrollRow = scrollRow = ScrollRow((self.inner_width, self.row_height), 10, draw_zebra=self.draw_zebra, spacing=0,
+                                               scrolling=self.scrolling, hscrolling=self.hscrolling)
         self.selected = None
         Column.__init__(self, [scrollRow,], **kwargs)
         self.shrink_wrap()
