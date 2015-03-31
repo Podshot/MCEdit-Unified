@@ -130,7 +130,11 @@ def _(string, doNotTranslate=False):
         return string
     if type(string) not in (str, unicode):
         return string
-    trn = string_cache.get(string, string.replace("\n", "\n\n"))
+    if '-' in string:
+        # Support for hotkeys
+        trn = '-'.join([_(a) for a in string.split('-')])
+    else:
+        trn = string_cache.get(string, string.replace("\n", "\n\n"))
     if buildTemplate:
         global template
         global strNum
