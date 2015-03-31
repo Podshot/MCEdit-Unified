@@ -1,3 +1,5 @@
+#-# This is not an albow component.
+#-# It should be moved back to MCEdit root folder, since it does not defines GUI base widgets.
 import os
 import logging
 

@@ -22,7 +22,12 @@ from albow.translate import _
 
 from pymclevel.box import Vector
 
+#-# This need to be changed. We need albow.translate in the config module.
+#-# he solution can be a set of functions wich let us define the needed MCEdit 'config' data
+#-# without importing it.
+#-# It can be a 'config' module built only for albow.
 from config import config
+#-#
 import os
 import directories
 import time

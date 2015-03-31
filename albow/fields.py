@@ -10,7 +10,13 @@ from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, K_x, SCRAP_TEXT, K_U
     K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META, K_HOME, K_END
 from widget import Widget, overridable_property
 from controls import Control
+#-# This need to be changed. We need albow.translate in the config module.
+#-# he solution can be a set of functions wich let us define the needed MCEdit 'config' data
+#-# without importing it.
+#-# It can be a 'config' module built only for albow.
 from config import config
+#-#
+
 #-#
 from translate import _
 import pyperclip
