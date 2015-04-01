@@ -3546,7 +3546,7 @@ blocks:
         name: Nether Wart (Age 3)
 
   - id: 116
-    idStr: enchanting_Table
+    idStr: enchanting_table
     name: Enchantment Table
     search: enchanting
     mapcolor: [88, 23, 22]

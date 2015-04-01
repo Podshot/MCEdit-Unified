@@ -34,10 +34,11 @@ class Block(object):
         key = lambda a: a and (a.ID, a.blockData)
         return cmp(key(self), key(other))
 
-    def __init__(self, materials, blockID, blockData=0):
+    def __init__(self, materials, blockID, blockData=0, blockString=''):
         self.materials = materials
         self.ID = blockID
         self.blockData = blockData
+        self.stringID = blockString
 
     def __getattr__(self, attr):
         if attr in self.__dict__:
@@ -281,6 +282,7 @@ class MCMaterials(object):
 
     def addBlock(self, blockID, blockData=0, **kw):
         name = kw.pop('name', self.names[blockID][blockData])
+        stringName = kw.pop('idStr', '')
 
         self.lightEmission[blockID] = kw.pop('brightness', self.defaultBrightness)
         self.lightAbsorption[blockID] = kw.pop('opacity', self.defaultOpacity)
@@ -302,7 +304,7 @@ class MCMaterials(object):
         else:
             self.type[blockID][blockData] = type
 
-        block = Block(self, blockID, blockData)
+        block = Block(self, blockID, blockData, stringName)
 
         self.allBlocks.append(block)
         self.blocksByType[type].append(block)
@@ -948,7 +950,14 @@ def convertBlocks(destMats, sourceMats, blocks, blockData):
 
 namedMaterials = dict((i.name, i) for i in allMaterials)
 
-block_map = {
+block_map = {}
+for b in alphaMaterials:
+    if b.ID == 0:
+        b.stringID = "air"
+    block_map[b.ID] = "minecraft:"+b.stringID
+
+'''
+block_map_old = {
     0: "minecraft:air", 1: "minecraft:stone", 2: "minecraft:grass", 3: "minecraft:dirt", 4: "minecraft:cobblestone",
     5: "minecraft:planks", 6: "minecraft:sapling",
     7: "minecraft:bedrock", 8: "minecraft:flowing_water", 9: "minecraft:water", 10: "minecraft:flowing_lava",
@@ -1021,5 +1030,6 @@ block_map = {
     194: "minecraft:birch_door", 195: "minecraft:jungle_door", 196: "minecraft:acacia_door",
     197: "minecraft:dark_oak_door"
 }
+'''
 
 __all__ = "indevMaterials, pocketMaterials, alphaMaterials, classicMaterials, namedMaterials, MCMaterials".split(", ")
