@@ -518,7 +518,7 @@ class KeyConfigPanel(Dialog):
 
         self.oldChoice = choiceButton.selectedChoice
 
-        choiceRow = albow.Row((albow.Label("Presets: "), choiceButton))
+        choiceRow = albow.Row((albow.Label("Keybind Presets:"), choiceButton))
         self.choiceButton = choiceButton
 
         col = albow.Column((tableWidget, choiceRow, buttonRow, resetToDefaultRow), spacing=spacing, margin=0)
