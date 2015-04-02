@@ -24,13 +24,14 @@ class FileOpener(albow.Widget):
 
         helpColumn = []
 
+        #-# Make this widget updatable when changing the the movement keys.
         label = albow.Label(_("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
-            config.keys.forward.get(),
-            config.keys.left.get(),
-            config.keys.back.get(),
-            config.keys.right.get(),
-            config.keys.up.get(),
-            config.keys.down.get(),
+            _(config.keys.forward.get()),
+            _(config.keys.left.get()),
+            _(config.keys.back.get()),
+            _(config.keys.right.get()),
+            _(config.keys.up.get()),
+            _(config.keys.down.get()),
         ))
         label.anchor = 'whrt'
         label.align = 'r'
@@ -42,10 +43,10 @@ class FileOpener(albow.Widget):
             label.align = "r"
             helpColumn.append(label)
 
-        addHelp(_("{0} to slow down").format(config.keys.brake.get()))
+        addHelp(_("{0} to slow down").format(_(config.keys.brake.get())))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp(_("Hold {0} for details").format(config.keys.showBlockInfo.get()))
+        addHelp(_("Hold {0} for details").format(_(config.keys.showBlockInfo.get())))
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright

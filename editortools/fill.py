@@ -88,7 +88,7 @@ class FillToolPanel(Panel):
         replaceLabel.mouse_down = lambda a: self.tool.toggleReplacing()
         replaceLabel.fg_color = (177, 177, 255, 255)
         # replaceLabelRow = Row( (Label(rollkey), replaceLabel) )
-        replaceLabel.tooltipText = _("Shortcut: {0}").format(rollkey)
+        replaceLabel.tooltipText = _("Shortcut: {0}").format(_(rollkey))
         replaceLabel.align = "c"
         self.noDataCheckBox = CheckBoxLabel("Keep Data Intact", ref=AttrRef(self.tool, "noData"))
         
@@ -113,7 +113,7 @@ class FillToolPanel(Panel):
             self.swapButton.highlight_color = (60, 255, 60, 255)
             swapkey = config.keys.swap.get()
 
-            self.swapButton.tooltipText = _("Shortcut: {0}").format(swapkey)
+            self.swapButton.tooltipText = _("Shortcut: {0}").format(_(swapkey))
 
             self.fillButton = Button("Replace", action=tool.confirm, width=self.blockButton.width)
             self.fillButton.tooltipText = "Shortcut: Enter"

@@ -646,9 +646,9 @@ class KeyConfigPanel(Dialog):
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
         if labelString is None and configKey != "Fast Nudge":
-            labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(configKey)
+            labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(_(configKey))
         elif labelString is None:
-            labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel.").format(configKey)
+            labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel.").format(_(configKey))
         label = albow.Label(labelString)
         unbind_button = Button("Press to unbind", action=self.unbind)
         column = Column((label, unbind_button))
@@ -687,21 +687,22 @@ class KeyConfigPanel(Dialog):
             return True
 
         self.enter = 0
+        _keyname = _(keyname)
         if keyname != "Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             if "Modifier" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
                 self.askAssignKey(configKey,
                                     _("{0} is not a modifier. Press a new key.\n\nPress ESC to cancel.")
-                                    .format(keyname))
+                                    .format(_keyname))
                 return True
             if configKey in ['Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right']:
                 if 'Ctrl' in keyname or '-' in keyname:
                     self.askAssignKey(configKey,
                                     "Movement keys can't use Ctrl or be with modifiers. Press a new key.\n\nPress ESC to cancel.")
                     return True
-            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
+            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == _keyname]
             if filter_keys:
                 self.askAssignKey(configKey,
-                                    _("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(keyname, filter_keys[0]))
+                                    _("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(_keyname, filter_keys[0]))
                 return True
             oldkey = config.keys[config.convert(configKey)].get()
             config.keys[config.convert(configKey)].set(keyname)
@@ -711,7 +712,7 @@ class KeyConfigPanel(Dialog):
         elif keyname != "Escape":
             self.askAssignKey(configKey,
                                     _("You can't use the key {0}. Press a new key.\n\nPress ESC to cancel.")
-                                    .format(keyname))
+                                    .format(_keyname))
             return True
 
         else:

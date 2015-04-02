@@ -134,7 +134,7 @@ def _(string, doNotTranslate=False):
         # Support for hotkeys
         trn = '-'.join([_(a) for a in string.split('-')])
     else:
-        trn = string_cache.get(string, string.replace("\n", "\n\n"))
+        trn = string_cache.get(string, string).replace("\n", "\n\n")
     if buildTemplate:
         global template
         global strNum

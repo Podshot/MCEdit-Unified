@@ -82,7 +82,7 @@ class BrushOperation(Operation):
             self.undoLevel = self.extractUndo(self.level, self._dirtyBox)
 
         def _perform():
-            yield 0, len(self.points), _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
+            yield 0, len(self.points), _("Applying {0} brush...").format(_(self.brushMode.displayName))
             if hasattr(self.brushMode, 'apply'):
                 for i, point in enumerate(self.points):
                     f = self.brushMode.apply(self.brushMode, self, point)
@@ -90,7 +90,7 @@ class BrushOperation(Operation):
                         for progress in f:
                             yield progress
                     else:
-                        yield i, len(self.points), _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
+                        yield i, len(self.points), _("Applying {0} brush...").format(_(self.brushMode.displayName))
             if hasattr(self.brushMode, 'applyToChunkSlices'):
                 for j, cPos in enumerate(self._dirtyBox.chunkPositions):
                     if not self.level.containsChunk(*cPos):
@@ -106,7 +106,7 @@ class BrushOperation(Operation):
                             for progress in f:
                                 yield progress
                         else:
-                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(self.brushMode.__class__.__name__)
+                            yield j * len(self.points) + i, len(self.points) * self._dirtyBox.chunkCount, _("Applying {0} brush...").format(_(self.brushMode.displayName))
                     chunk.chunkChanged()
         if len(self.points) > 10:
             showProgress("Performing brush...", _perform(), cancel=True)

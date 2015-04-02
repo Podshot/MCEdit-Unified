@@ -548,20 +548,21 @@ class FilterToolPanel(Panel):
 
         self.keys_panel = panel
         keyname = panel.present()
+        _keyname = _(keyname)
         if type(keyname) is bool:
             return True
         if keyname != "Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
             if keysUsed:
-                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to the filter \"{2}\"\n\nPress ESC to cancel.").format(keyname, keysUsed[0][0], self.selectedFilterName))
+                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to the filter \"{2}\"\n\nPress ESC to cancel.").format(_keyname, keysUsed[0][0], self.selectedFilterName))
                 return True
 
             filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
             if filter_keys:
-                self.bind_key(_("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(keyname, filter_keys[0]))
+                self.bind_key(_("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(_keyname, filter_keys[0]))
                 return True
         elif keyname != "Escape":
-            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to the filter \"{1}\"\n\nPress ESC to cancel.").format(keyname, self.selectedFilterName))
+            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to the filter \"{1}\"\n\nPress ESC to cancel.").format(_keyname, self.selectedFilterName))
             return True
         if keyname != "Escape":
             self.binding_button.text = keyname

@@ -139,7 +139,7 @@ class SelectionToolPanel(Panel):
 
         deleteBlocksButton = Button("Delete Blocks", action=self.tool.deleteBlocks)
         deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: {0}").format(
-            config.keys.deleteBlocks.get())
+            _(config.keys.deleteBlocks.get()))
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
         deleteEntitiesButton.tooltipText = "Remove all entities within the selection"
         deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
@@ -152,13 +152,13 @@ class SelectionToolPanel(Panel):
             config.keys.cut.get())
         copyButton = Button("Copy", action=self.tool.copySelection)
         copyButton.tooltipText = _("Take a copy of all blocks and entities within the selection. Shortcut: {0}").format(
-            config.keys.copy.get())
+            _(config.keys.copy.get()))
         pasteButton = Button("Paste", action=self.tool.editor.pasteSelection)
         pasteButton.tooltipText = _("Import the last item taken by Cut or Copy. Shortcut: {0}").format(
-            config.keys.paste.get())
+            _(config.keys.paste.get()))
         exportButton = Button("Export", action=self.tool.exportSelection)
         exportButton.tooltipText = _("Export the selection to a .schematic file. Shortcut: {0}").format(
-            config.keys.exportSelection.get())
+            _(config.keys.exportSelection.get()))
 
         selectButton = Button("Select Chunks")
         selectButton.tooltipText = "Expand the selection to the edges of the chunks within"
@@ -166,7 +166,7 @@ class SelectionToolPanel(Panel):
         selectButton.highlight_color = (0, 255, 0)
 
         deselectButton = Button("Deselect")
-        deselectButton.tooltipText = _("Remove the selection. Shortcut: {0}").format(config.keys.deselect.get())
+        deselectButton.tooltipText = _("Remove the selection. Shortcut: {0}").format(_(config.keys.deselect.get()))
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
@@ -283,7 +283,7 @@ class SelectionTool(EditorTool):
             except Exception, e:
                 text += repr(e)
             if "Items" in t and self.infoKey == 0:
-                text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(config.keys.showBlockInfoModifier.get())
+                text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(_(config.keys.showBlockInfoModifier.get()))
                 t = nbt.TAG_Compound(list(t.value))
                 del t["Items"]
 

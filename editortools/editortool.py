@@ -32,6 +32,15 @@ class EditorTool(object):
 
     def __init__(self, editor):
         self.editor = editor
+        self.__hotkey = None
+
+    @property
+    def hotkey(self):
+        return _(self.__hotkey)
+
+    @hotkey.setter
+    def hotkey(self, k):
+        self.__hotkey = k
 
     def toolReselected(self):
         pass
