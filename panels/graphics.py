@@ -68,7 +68,7 @@ class GraphicsPanel(Dialog):
                                        self.resourcePackButton,
                                       ), align='r')
 
-        settingsColumn = albow.Column((albow.Label("Settings"),
+        settingsColumn = albow.Column((albow.Label("Graphics Settings"),
                                        settingsColumn))
 
         settingsRow = albow.Row((settingsColumn,))
