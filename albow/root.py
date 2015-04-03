@@ -520,7 +520,7 @@ class RootWidget(Widget):
 
         def TextTooltip(text):
             tooltipBacking = Panel()
-            tooltipBacking.bg_color = (0.0, 0.0, 0.0, 0.6)
+            tooltipBacking.bg_color = (0.0, 0.0, 0.0, 0.8)
             tooltipBacking.add(self.labelClass(text))
             tooltipBacking.shrink_wrap()
             return tooltipBacking
