@@ -2452,6 +2452,7 @@ class MCRenderer(object):
         config.settings.showChunkRedraw.addObserver(self, "showRedraw")
         config.settings.spaceHeight.addObserver(self)
         config.settings.targetFPS.addObserver(self, "targetFPS")
+        config.settings.maxViewDistance.addObserver(self, "maxViewDistance")
 
         for ore in config.settings.hiddableOres.get():
             config.settings["showOre{}".format(ore)].addObserver(self, callback=lambda x, id=ore: self.showOre(id, x))
@@ -2466,8 +2467,8 @@ class MCRenderer(object):
     calculatorClass = ChunkCalculator
 
     minViewDistance = 2
-    maxViewDistance = 24
-
+    maxViewDistance = 32
+    
     _viewDistance = 8
 
     needsRedraw = True

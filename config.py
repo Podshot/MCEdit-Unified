@@ -509,6 +509,7 @@ definitions = {
         ("fogIntensity", "Fog Intensity", 20),
         ("fontProportion", "Fonts Proportion", 100),
         ("downloadPlayerSkins", "Download Player Skins", True),
+        ("maxViewDistance", "Max View Distance", 32),
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

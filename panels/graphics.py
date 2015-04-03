@@ -49,6 +49,10 @@ class GraphicsPanel(Dialog):
         playerSkins = mceutils.CheckBoxLabel("Show Player Skins",
                                              ref=config.settings.downloadPlayerSkins,
                                              tooltipText="Show player skins while editing the world")
+        
+        maxView = mceutils.IntInputRow("Max View Distance",
+                                       ref=config.settings.maxViewDistance,
+                                       tooltipText="Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk")
 
         packs = resource_packs.packs.get_available_resource_packs()
         packs.remove('Default Resource Pack')
@@ -64,6 +68,7 @@ class GraphicsPanel(Dialog):
                                        self.fieldOfViewRow,
                                        self.targetFPSRow,
                                        self.bufferLimitRow,
+                                       maxView,
                                        playerSkins,
                                        self.resourcePackButton,
                                       ), align='r')
