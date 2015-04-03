@@ -776,6 +776,11 @@ class FilterTool(EditorTool):
                     toReturn.append(module)
             return toReturn
         
+        def clean():
+            pycs = directories.getAllOfAFile(directories.getDataDir(), "*.pyc")
+            for pyc in pycs:
+                os.remove(pyc)
+        
         #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py'))
 
         def tryImport(name):
@@ -865,6 +870,7 @@ class FilterTool(EditorTool):
                     _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
         self.importLibraries()
+        clean()
 
     @property
     def filterNames(self):
