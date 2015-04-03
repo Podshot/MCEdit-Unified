@@ -550,6 +550,20 @@ class KeyConfigPanel(Dialog):
             config.keys.panDown.get()
         ]
 
+        self.root.movementLabel.text = _("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
+            _(config.keys.forward.get()),
+            _(config.keys.left.get()),
+            _(config.keys.back.get()),
+            _(config.keys.right.get()),
+            _(config.keys.up.get()),
+            _(config.keys.down.get()),
+        )
+        self.root.slowDownLabel.text = _("{0} to slow down").format(_(config.keys.brake.get()))
+        self.root.detailsLabel.text = _("Hold {0} for details").format(_(config.keys.showBlockInfo.get()))
+        self.root.commandRow.labels[0].text = config.keys.newWorld.get()
+        self.root.commandRow.labels[1].text = config.keys.quickLoad.get()
+        self.root.commandRow.labels[2].text = config.keys.open.get()
+
         self.dismiss()
 
     def choosePreset(self):

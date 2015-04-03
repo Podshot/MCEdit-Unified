@@ -24,29 +24,29 @@ class FileOpener(albow.Widget):
 
         helpColumn = []
 
-        #-# Make this widget updatable when changing the the movement keys.
-        label = albow.Label(_("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
+        self.root.movementLabel = label = albow.Label(_("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
             _(config.keys.forward.get()),
             _(config.keys.left.get()),
             _(config.keys.back.get()),
             _(config.keys.right.get()),
             _(config.keys.up.get()),
             _(config.keys.down.get()),
-        ))
+        ), self.root.surface.get_width())
         label.anchor = 'whrt'
         label.align = 'r'
         helpColumn.append(label)
 
         def addHelp(text):
-            label = albow.Label(text)
+            label = albow.Label(text, self.root.surface.get_width())
             label.anchor = 'whrt'
             label.align = "r"
             helpColumn.append(label)
+            return label
 
-        addHelp(_("{0} to slow down").format(_(config.keys.brake.get())))
+        self.root.slowDownLabel = addHelp(_("{0} to slow down").format(_(config.keys.brake.get())))
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        addHelp(_("Hold {0} for details").format(_(config.keys.showBlockInfo.get())))
+        self.root.detailsLabel = addHelp(_("Hold {0} for details").format(_(config.keys.showBlockInfo.get())))
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
@@ -83,7 +83,7 @@ class FileOpener(albow.Widget):
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
-        commandRow = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
+        self.root.commandRow = commandRow = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
         commandRow.anchor = 'lrh'
 
         sideColumn1 = mcedit.makeSideColumn1()

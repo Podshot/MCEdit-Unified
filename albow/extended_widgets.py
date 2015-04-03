@@ -22,6 +22,7 @@ class HotkeyColumn(Widget):
             keysColumn = []
         if buttonsColumn is None:
             buttonsColumn = []
+        labels = []
 
         Widget.__init__(self)
         for t in items:
@@ -36,10 +37,12 @@ class HotkeyColumn(Widget):
                 button = ValueButton(ref=title, action=action, width=200)
             button.anchor = self.anchor
 
-            label = Label(hotkey, width=75, margin=button.margin)
+            label = Label(hotkey, width=100, margin=button.margin)
             label.anchor = "wh"
 
             label.height = button.height
+
+            labels.append(label)
 
             if tooltipText:
                 button.tooltipText = tooltipText
@@ -63,6 +66,7 @@ class HotkeyColumn(Widget):
             keysColumn = Column(keysColumn, spacing=item_spacing)
 
         commandRow = Row((keysColumn, buttonsColumn))
+        self.labels = labels
         self.add(commandRow)
         self.shrink_wrap()
 
