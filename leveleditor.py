@@ -1110,11 +1110,9 @@ class LevelEditor(GLViewport):
     @mceutils.alertException
     def reload(self):
         filename = self.level.filename
-        for tool in self.toolbar.tools:
-            if isinstance(tool, editortools.PlayerPositionTool):
-                for p in tool.nonSavedPlayers:
-                    if os.path.exists(p):
-                        os.remove(p)
+        for p in self.toolbar.tools[6].nonSavedPlayers:
+            if os.path.exists(p):
+                os.remove(p)
         # self.discardAllChunks()
         self.loadFile(filename)
 
@@ -1161,9 +1159,7 @@ class LevelEditor(GLViewport):
 
         self.recordUndo = True
         self.clearUnsavedEdits(True)
-        for tool in self.toolbar.tools:
-            if isinstance(tool, editortools.PlayerPositionTool):
-                tool.nonSavedPlayers = []
+        self.toolbar.tools[6].nonSavedPlayers = []
 
     @mceutils.alertException
     def saveAs(self):
@@ -1787,11 +1783,9 @@ class LevelEditor(GLViewport):
             if answer == "Cancel":
                 return
             
-        for tool in self.toolbar.tools:
-            if isinstance(tool, editortools.PlayerPositionTool):
-                for p in tool.nonSavedPlayers:
-                    if os.path.exists(p):
-                        os.remove(p)
+        for p in self.toolbar.tools[6].nonSavedPlayers:
+            if os.path.exists(p):
+                os.remove(p)
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.fix_sticky_ctrl()
