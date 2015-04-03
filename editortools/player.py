@@ -74,6 +74,7 @@ class PlayerRemoveOperation(Operation):
                 self.tool.hidePanel()
                 self.tool.showPanel()
         self.tool.markerList.invalidate()
+        self.tool.movingPlayer = None
 
         pos = self.tool.revPlayerPos[self.player]
         del self.tool.playerPos[pos]
@@ -186,6 +187,7 @@ class PlayerAddOperation(Operation):
             self.tool.showPanel()
         self.canUndo = True
         self.playerTag.save(self.level.getPlayerPath(self.uuid))
+        self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
 
     def newPlayer(self):
         playerTag = nbt.TAG_Compound()
@@ -229,6 +231,7 @@ class PlayerAddOperation(Operation):
         del self.tool.revPlayerPos[self.uuid]
         del self.tool.playerTexture[self.uuid]
         os.remove(self.level.getPlayerPath(self.uuid))
+        self.tool.nonSavedPlayers.remove(self.level.getPlayerPath(self.uuid))
 
         self.tool.markerList.invalidate()
 
@@ -244,6 +247,7 @@ class PlayerAddOperation(Operation):
             self.tool.playerPos[(0,0,0)] = self.uuid
             self.tool.revPlayerPos[self.uuid] = (0,0,0)
             self.playerTag.save(self.level.getPlayerPath(self.uuid))
+            self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
 
         self.tool.markerList.invalidate()
 
@@ -615,6 +619,7 @@ class PlayerPositionTool(EditorTool):
     def __init__(self, *args):
         EditorTool.__init__(self, *args)
         self.reloadTextures()
+        self.nonSavedPlayers = []
 
         textureVerticesHead = numpy.array(
             (
