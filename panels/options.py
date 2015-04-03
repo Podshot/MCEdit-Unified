@@ -147,14 +147,6 @@ class OptionsPanel(Dialog):
 
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
-        staticCommandsNudgeRow = mceutils.CheckBoxLabel("Static Coords While Nudging",
-                                            ref=config.settings.staticCommandsNudge,
-                                            tooltipText="Change static coordinates in command blocks while nudging.")
-
-        moveSpawnerPosNudgeRow = mceutils.CheckBoxLabel("Change Spawners While Nudging",
-                                            ref=config.settings.moveSpawnerPosNudge,
-                                            tooltipText="Change the position of the mobs in spawners while nudging.")
-
         self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
 
         goPortableButton.tooltipText = self.portableButtonTooltip()
@@ -188,8 +180,6 @@ class OptionsPanel(Dialog):
                     swapAxesRow,
                     invertRow,
                     superSecretSettingsRow,
-                    staticCommandsNudgeRow,
-                    moveSpawnerPosNudgeRow,
                     rotateBlockBrushRow,
                     compassToggleRow,
                     langButtonRow,

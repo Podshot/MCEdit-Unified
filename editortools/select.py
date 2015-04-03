@@ -86,6 +86,13 @@ class SelectionToolOptions(ToolOptions):
                                                 tooltipText="Moves points by the selection's width")
         pointsNudgeNumber = IntInputRow("Width of points movement: ",
                                                 ref=config.fastNudgeSettings.pointsWidthNumber, width=100, min=2, max=50)
+        staticCommandsNudgeRow = CheckBoxLabel("Static Coords While Nudging",
+                                            ref=config.settings.staticCommandsNudge,
+                                            tooltipText="Change static coordinates in command blocks while nudging.")
+
+        moveSpawnerPosNudgeRow = CheckBoxLabel("Change Spawners While Nudging",
+                                            ref=config.settings.moveSpawnerPosNudge,
+                                            tooltipText="Change the position of the mobs in spawners while nudging.")
 
         def set_colorvalue(ch):
             i = "RGB".index(ch)
@@ -115,7 +122,7 @@ class SelectionToolOptions(ToolOptions):
         colorValuesRow = Row(colorValuesInputs)
         #.#
 #        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))
-        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton), spacing=2)
+        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, spaceLabel, staticCommandsNudgeRow, moveSpawnerPosNudgeRow, okButton), spacing=2)
         #.#
 
         self.add(col)
