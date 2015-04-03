@@ -386,6 +386,9 @@ class IntField(Field):
         return c in self.allowed_chars
 
     def should_commit_immediately(self, text):
+        while len(text) > 1 and text[0] == '0':
+            text = text[1:]
+        self._text = text
         try:
             return str(eval(text)) == text
         except:
