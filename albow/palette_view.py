@@ -77,7 +77,7 @@ class PaletteView(GridView):
             self.draw_item_and_highlight(surface, i, rect, highlight)
 
     def draw_item_and_highlight(self, surface, i, rect, highlight):
-        if i % 2:
+        if not i % 2 and "Header" not in str(type(self)):
             surface.fill(self.zebra_color, rect)
         if highlight:
             self.draw_prehighlight(surface, i, rect)
