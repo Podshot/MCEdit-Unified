@@ -310,7 +310,7 @@ class CloneToolPanel(Panel):
         copyWaterRow = Row((self.copyWaterCheckBox, self.copyWaterLabel))
 
         self.copyBiomesCheckBox = CheckBox(ref=AttrRef(self.tool, "copyBiomes"))
-        self.copyBiomesLabel = Label("Copy Biomes")
+        self.copyBiomesLabel = Label("Copy Biome(s)")
         self.copyBiomesLabel.mouse_down = self.copyBiomesCheckBox.mouse_down
         self.copyBiomesLabel.tooltipText = "Shortcut: Alt-3"
         self.copyBiomesCheckBox.tooltipText = self.copyBiomesLabel.tooltipText
@@ -318,25 +318,25 @@ class CloneToolPanel(Panel):
         copyBiomesRow = Row((self.copyBiomesCheckBox, self.copyBiomesLabel))
 
         self.staticCommandsCheckBox = CheckBox(ref=AttrRef(self.tool, "staticCommands"))
-        self.staticCommandsLabel = Label("Change Coordinates")
+        self.staticCommandsLabel = Label("Update Command Block Coords")
         self.staticCommandsLabel.mouse_down = self.staticCommandsCheckBox.mouse_down
-        self.staticCommandsLabel.tooltipText = "Check to automatically change command block static coordinates when moved.\nShortcut: Alt-4"
+        self.staticCommandsLabel.tooltipText = "When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.\nShortcut: Alt-4"
         self.staticCommandsCheckBox.tooltipText = self.staticCommandsLabel.tooltipText
 
         staticCommandsRow = Row((self.staticCommandsCheckBox, self.staticCommandsLabel))
 
         self.moveSpawnerPosCheckBox = CheckBox(ref=AttrRef(self.tool, "moveSpawnerPos"))
-        self.moveSpawnerPosLabel = Label("Change Spawners")
+        self.moveSpawnerPosLabel = Label("Update Spawner Coords")
         self.moveSpawnerPosLabel.mouse_down = self.moveSpawnerPosCheckBox.mouse_down
-        self.moveSpawnerPosLabel.tooltipText = "Check to automatically change the position of the mobs in spawners when moved.\nShortcut: Alt-5"
+        self.moveSpawnerPosLabel.tooltipText = "When a spawner is moved, automatically update its spawning coordinates.\nShortcut: Alt-5"
         self.moveSpawnerPosCheckBox.tooltipText = self.moveSpawnerPosLabel.tooltipText
 
         moveSpawnerPosRow = Row((self.moveSpawnerPosCheckBox, self.moveSpawnerPosLabel))
 
         self.regenerateUUIDCheckBox = CheckBox(ref=AttrRef(self.tool, "regenerateUUID"))
-        self.regenerateUUIDLabel = Label("Regenerate UUID")
+        self.regenerateUUIDLabel = Label("Regenerate Entity UUID")
         self.regenerateUUIDLabel.mouse_down = self.regenerateUUIDCheckBox.mouse_down
-        self.regenerateUUIDLabel.tooltipText = "Check to automatically generate new UUIDs for entities.\nShortcut: Alt-6"
+        self.regenerateUUIDLabel.tooltipText = "Automatically generate new UUIDs for every entity copied. [RECOMMENDED]\nShortcut: Alt-6"
         self.regenerateUUIDCheckBox.tooltipText = self.regenerateUUIDLabel.tooltipText
 
         regenerateUUIDRow = Row((self.regenerateUUIDCheckBox, self.regenerateUUIDLabel))
