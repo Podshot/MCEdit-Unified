@@ -1110,7 +1110,6 @@ class LevelEditor(GLViewport):
     @mceutils.alertException
     def reload(self):
         filename = self.level.filename
-        print self.toolbar.tools
         for tool in self.toolbar.tools:
             if isinstance(tool, editortools.PlayerPositionTool):
                 for p in tool.nonSavedPlayers:
