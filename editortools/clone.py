@@ -1063,7 +1063,6 @@ class CloneTool(EditorTool):
         sourceBox = sourceLevel.bounds
 
         destLevel = self.editor.level
-        destVolume = BoundingBox(destPoint, sourceBox.size).volume
         op = CloneOperation(editor=self.editor,
                             sourceLevel=sourceLevel,
                             sourceBox=sourceBox,

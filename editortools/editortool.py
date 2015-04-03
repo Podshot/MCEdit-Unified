@@ -3,6 +3,7 @@ import numpy
 from depths import DepthOffset
 from pymclevel import BoundingBox
 from config import config
+from albow.translate import _
 
 
 class EditorTool(object):
