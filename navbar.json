@@ -18,12 +18,19 @@
 		},
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			"displayname": "Tutorial(Coming Soon)",
 			"url": ""
 		},
 		{
 			"displayname": "Github",
 =======
+=======
+			"displayname": "MCEdit Subreddit",
+			"url": "http://www.reddit.com/r/MCEdit/"
+		},
+		{
+>>>>>>> 0fc28aa64aff28242f156281ba3cf10100d9779e
 			"displayname": "Documentation",
 			"url": "docs/"
 		},
