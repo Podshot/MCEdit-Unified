@@ -295,8 +295,8 @@ class OptionsPanel(Dialog):
         #-# the restart boxes suppressed.
         # lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
         # font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
-        lang = config.settings.langCode.get() == old_lang
-        font = config.settings.fontProportion.get() == old_fprop
+        lang = config.settings.langCode.get() == old_lang or config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
+        font = config.settings.fontProportion.get() == old_fprop or config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
         if not font or not lang:
             editor = self.mcedit.editor
             if editor and editor.unsavedEdits:
