@@ -31,14 +31,14 @@ inputs = [(("Match by:", ("TileEntity", "Entity", "Block")),
            ("Options", "title")),
 
           (("Documentation", "title"),
-           ("This filter is designed to search for NBT in either Entities or TileEntities.  "
-            "It can also be used to search for blocks.  \"Match by\" determines which type of object "
-            "is prioritized during the search.  Entites and TileEntities will search relatively quickly, "
+           ("This filter is designed to search for NBT in either Entities or TileEntities.\n"
+            "It can also be used to search for blocks.\n\"Match by\" determines which type of object "
+            "is prioritized during the search.\nEntites and TileEntities will search relatively quickly, "
             "while the speed of searching by Block will be directly proportional to the selection size (since every "
-            "single block within the selection will be examined).  "
+            "single block within the selection will be examined).\n"
             "All Entity searches will ignore the block settings; TileEntity searches will try to "
             "\"Match block type\" if checked, and Block searches will try to \"Match tile entity\" tags if "
-            "checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block "
+            "checked.\nIt is faster to match TileEntity searches with a Block Type than vice versa.\nBlock "
             "matching can also optionally match block data, e.g. matching all torches, or only torches facing "
             "a specific direction.\n\"Start New Search\" will re-search through the selected volume, while \"Find Next\" "
             "will iterate through the search results of the previous search.", "label"))

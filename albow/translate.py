@@ -130,10 +130,12 @@ def _(string, doNotTranslate=False):
         return string
     if type(string) not in (str, unicode):
         return string
+    trn = u"" + string
     if '-' in string:
         # Support for hotkeys
         trn = '-'.join([_(a) for a in string.split('-')])
-    trn = string_cache.get(string, string).replace("\n", "\n\n")
+    if trn == string:
+        trn = string_cache.get(string, string)
     if buildTemplate:
         global template
         global strNum
@@ -204,8 +206,6 @@ def saveTemplate():
         keys.sort()
         for key in keys:
             org, trn = template[key]
-#            f.write(u"\no%s %s\nt%s "%(key, value, key))
-#            f.write(u"\no%s %s"%(key, value.replace(u"\nt%s", u"\nt%s"%key)))
             f.write(u"\no%s %s\nt%s %s"%(key, org, key, trn))
         f.close()
 
