@@ -10,6 +10,8 @@ import logging
 import traceback
 import directories
 
+old_lang = None
+old_fprop = None
 
 class OptionsPanel(Dialog):
     anchor = 'wh'
@@ -49,6 +51,12 @@ class OptionsPanel(Dialog):
             config.settings.fontProportion:            config.settings.fontProportion.get(),
             config.settings.fogIntensity:              config.settings.fogIntensity.get(),
         }
+        global old_lang
+        if old_lang == None:
+            old_lang = config.settings.langCode.get()
+        global old_fprop
+        if old_fprop == None:
+            old_fprop = config.settings.fontProportion.get()
 
     def initComponents(self):
         """Initilize the window components. Call this after translation hs been loaded."""
@@ -283,8 +291,12 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language and the font proportion"""
-        lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
-        font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
+        #-# The two following lines will be used for the language and font dynamic changes
+        #-# the restart boxes suppressed.
+        # lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
+        # font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
+        lang = config.settings.langCode.get() == old_lang
+        font = config.settings.fontProportion.get() == old_fprop
         if not font or not lang:
             editor = self.mcedit.editor
             if editor and editor.unsavedEdits:
