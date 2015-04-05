@@ -120,15 +120,19 @@ class PlayerAddOperation(Operation):
         self.canUndo = False
 
     def perform(self, recordUndo=True):
-        self.player = input_text_buttons("Enter a Player Name: ", 160)
-        if not self.player:
-            return
-        if len(self.player) > 16:
-            alert("Name to long. Maximum name length is 16.")
-            return
-        elif len(self.player) < 4:
-            alert("Name to short. Minimum name length is 4.")
-            return
+        initial = ""
+        while True:
+            self.player = input_text_buttons("Enter a Player Name: ", 160, initial=initial)
+            if self.player is None:
+                return
+            elif len(self.player) > 16:
+                alert("Name too long. Maximum name length is 16.")
+                initial = self.player
+            elif len(self.player) < 4:
+                alert("Name too short. Minimum name length is 4.")
+                initial = self.player
+            else:
+                break
         try:
             '''
             print "Player: \""+str(self.player)+"\""
