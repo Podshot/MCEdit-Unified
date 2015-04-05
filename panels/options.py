@@ -155,11 +155,12 @@ class OptionsPanel(Dialog):
 
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
-        self.goPortableButton = goPortableButton = albow.Button("Change", action=self.togglePortable)
+        portableList = [_("Portable"), _("Fixed")]
+        self.goPortableButton = goPortableButton = mceutils.ChoiceButton(portableList, choose=self.togglePortable)
+        goPortableButton.selectedChoice = self.saveOldPortable
 
         goPortableButton.tooltipText = self.portableButtonTooltip()
-        goPortableRow = albow.Row(
-            (albow.ValueDisplay(ref=self.portableVar, width=250, align='r'), goPortableButton))
+        goPortableRow = albow.Row((albow.Label("Install Mode"), goPortableButton))
 
 # Disabled Crash Reporting Option
 #       reportRow = mceutils.CheckBoxLabel("Report Errors",
@@ -260,23 +261,20 @@ class OptionsPanel(Dialog):
 
     @property
     def portableLabelText(self):
-        return (_("Install Mode: Portable"), _("Install Mode: Fixed"))[1 - directories.portable]
+        return (_("Portable"), _("Fixed"))[1 - directories.portable]
 
     @portableLabelText.setter
     def portableLabelText(self, *args, **kwargs):
         pass
 
     def togglePortable(self):
-        if sys.platform == "darwin":
+        if sys.platform == "darwin" or self.goPortableButton.selectedChoice == self.saveOldPortable:
             return False
         textChoices = [
             _("This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?").format(
                 (sys.platform == "darwin" and _("the MCEdit application") or _("MCEditData"))),
             _("This will move your settings and schematics to your Documents folder. Continue?"),
         ]
-        if sys.platform == "darwin":
-            textChoices[
-                1] = _("This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?")
 
         alertText = textChoices[directories.portable]
         if albow.ask(alertText) == "OK":
@@ -365,8 +363,8 @@ class OptionsPanel(Dialog):
         if config.settings.langCode.get() != "en_US":
             config.settings.langCode.set("en_US")
             self.changeLanguage()
-        if "Fixed" not in self.portableVar.get():
-            self.portableVar.set("Install Mode: Fixed")
+        if _("Fixed") != self.portableVar.get():
+            self.portableVar.set(_("Fixed"))
             self.togglePortable()
 
         config.save()
