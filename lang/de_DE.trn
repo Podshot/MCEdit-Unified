@@ -93,7 +93,7 @@ t36 Nummernfeld
 o37 WASD Old
 t37 WASD (Alt)
 o38 Keybind Presets: 
-t38 
+t38 Tastenzuweisungs Voreinstellungen:
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -201,7 +201,7 @@ t90 {0}/{1}/{2}/{3}/{4}/{5} um sich zu bewegen
 o91 {0} to slow down
 t91 {0} um zu verlangsamen
 o92 Right-click to toggle camera control
-t92 Rechts-Klick um Kamera Kontrolle umzuschalten
+t92 Rechtsklick um Kamera Kontrolle umzuschalten
 o93 Mousewheel to control tool distance
 t93 Mausrad um Steuerungstoolentfernung zu kontrollieren
 o94 Hold {0} for details
@@ -287,7 +287,7 @@ t131 Verkleinern
 o132 <Fill and Replace Tool>
 t132 <Füll und Ersetz Tool>
 o133 Replace Shortcut
-t133 Ersetzen
+t133 Tastenkürzen ersetzen
 o134 <Function>
 t134 <Funktion>
 o135 Cut
@@ -539,11 +539,11 @@ t253 Kopiere Luft
 o254 Copy Water
 t254 Kopiere Wasser
 o255 Copy Biome(s)
-t255 Kopiere Biome
+t255 Kopiere Biom(e)
 o256 Update Command Block Coords
-t256 Ändere Koordinaten
+t256 Befehlsblock Koordinaten aktualisieren
 o257 Update Spawner Coords
-t257 Ändere Spawner
+t257 Spawner Koordinaten aktualisieren
 o258 Clone
 t258 Kopieren
 o259 When the clone tool is chosen, place the clone at the selection right away.
@@ -552,11 +552,11 @@ o260 Shortcut: Alt-2
 t260 Tastenkürzel: Alt-2
 o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
-t261 Überprüft um automatisch statische Koordinaten in Befehlsblöcken zu ändern wenn sie bewegt wurden.
+t261 Absolute Koordinaten (x y z) in Befehlen automatisch aktualisieren wenn Befehlblöcke bewegt werden
 Tastenkürzel: Alt-4
 o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
-t262 Überprüft um automatisch die Position von den Mobs in Spawnern zu ändern wenn sie bewegt wurden.
+t262 Spawn Koordinaten von Spawnern automatisch aktualisieren wenn sie bewegt werden
 Tastenkürzel: Alt-5
 o263 Shortcut: Enter
 t263 Tastenkürzel: Enter
@@ -741,10 +741,10 @@ Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
-t350 Um einen Shop zu erstellen muss die Kaufsache in die oberste Reihe der Kiste getan werden.
-+Zweitens packen Sie in die mittlere Reihe eine zweite Kaufsache (optional).
-+Drittens packen Sie das Angebot in die unterste Reihe.
-+Bitte wählen Sie eine Kiste aus, stellen die Filter Einstellungen ein und drücken Enter
+t350 Um einen Shop zu erstellen muss der Gegenstand mit dem gekauft wird in die oberste Reihe der Kiste getan werden.
+In die mittlere Reihe kann optional ein weiterer Gegenstand mit dem gekauft wird.
+Das Angebot kommt in die dritte Reihe.
+Bitte wählen Sie eine Kiste aus, stellen die Filter Einstellungen ein und drücken Sie Enter
 *Alle Gegenstände müssen in der selben Spalte sein*
 
 o351 Notes
@@ -803,8 +803,13 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 Dieser Filter sucht nach NBT in Entities oder TileEntities. Es kann auch nach Blöcken gesucht werden. "Abgleichen von" entscheidet welcher Objekttyp während der Suche priorisiert ist. Entities und TileEntities werden relativ schnell gesucht während die Schnelligkeit bei der Suche von Block direkt propotzional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). Alle Entity-Suche ignoriert die Blöcke Einstellungen; TileEntity-Suche versucht zu "Blocktyp abgleichen" wenn ausgewählt, und Blocksuche versucht zu "Abgleichen von TileEntity" Markierung wenn ausgewählt. Es ist schneller TileEntity-Suchen mit einem Blocktyp abzugleichen statt andersherum. Blockabgleich kann auch optional Block Daten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln die eine bestimmte Richtung zeigen.
-"Starte neue Suche" wird in der Auswahl neu suchen, während "Finde Nächste" die Suchresultate von der vorherige Suche durchgeht.
+t375 Dieser Filter sucht nach NBT in Entities oder TileEntities. 
+Es kann auch nach Blöcken gesucht werden. 
+"Abgleichen von" entscheidet welcher Objekttyp während der Suche priorisiert ist. Entities und TileEntities werden relativ schnell gesucht wohingegen die Schnelligkeit bei der Suche von Blöcken direkt propotzional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). 
+Alle Entity Suchen ignorieren die Blöcke Einstellungen; TileEntity Suchen versuchen die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; Block Suchen versuchen mit den Tags von der Option "Abgleichen von TileEntity" übereinzustimmen. 
+Es ist schneller TileEntity Suchen mit einem Blocktyp abzugleichen statt andersherum. 
+Blockabgleich kann auch optional Block Daten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln die in eine bestimmte Richtung zeigen.
+"Starte neue Suche" wird in der Auswahl neu suchen, wohingegen "Finde Nächste" die Suchresultate von der vorherige Suche durchgeht.
 o376 Documentation
 t376 Dokumentation
 o377 Forester script by dudecon
@@ -1056,7 +1061,7 @@ t498 Leertaste
 o499 Tab
 t499 Tab
 o500 Delete
-t500 Löschen
+t500 Entfernen
 o501 Scroll Up
 t501 Scroll nach oben
 o502 Scroll Down
@@ -1132,7 +1137,7 @@ t536 W
 o537 Minimum Spacing
 t537 Minimum Abstand
 o538 Regenerate Entity UUID
-t538 Regeneriere UUID
+t538 Entity UUID neu erzeugen
 o539 Replace blocks with any data value. Only useful for Replace operations.
 t539 Ersetze Blöcke mit jede Datenwert. Nur sinnvoll für Ersetzen Operationen.
 o540 Entities
@@ -1352,13 +1357,13 @@ t636 Daten-Typ:
 o637 -> Name
 t637 -> Name
 o638 Double-click to edit
-t638 Doppel-Klick um zu editieren
+t638 Doppelklick um zu editieren
 o639 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
 t639 NBT Explorer
 Tauchen Sie in die Level NBT Struktur ein.
-Rechts-Klick für Optionen
+Rechtsklick für Optionen
 o640 Save your change in the NBT data.
 t640 Speichern Sie ihre Änderungen in den NBT Daten.
 o641 Save unsaved edits before loading?
@@ -1462,7 +1467,7 @@ t681 Drücken um Tastenkürzel zu entfernen
 o682 Are you sure you want to delete the default player?
 t682 Sind Sie sicher, dass Sie den standard Spieler löschen wollen?
 o683 Double-click or use the button below to edit the NBT Data.
-t683 Doppel-Klick oder nutzen Sie den Knopf darunter um die NBT Daten zu editieren.
+t683 Doppelklick oder nutzen Sie den Knopf darunter um die NBT Daten zu editieren.
 o684 Go Back
 t684 Gehe zurück
 o685 Upload to FTP Server
@@ -1508,7 +1513,7 @@ t700 <Verschiedenes>
 o701 Take Screenshot
 t701 Bildschirmfoto machen
 o702 Double-click to go to this item.
-t702 Doppel-Klick um zu diesem Item zu gelangen.
+t702 Doppelklick um zu diesem Item zu gelangen.
 o703 Save and Restart
 t703 Speichern und Neustarten
 o704 From FTP Server
@@ -1528,7 +1533,7 @@ t709 Klicken Sie um dieses Item abzusetzen.
 o710 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
 t710 Bewegen Sie das Mausrad um an der dritten Achse zu verschieben. Halten Sie {0} um nur eine Achse zu verschieben.
 o711 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t711 Klicken und ziehen Sie um das Item neu zu positionieren. Doppel-Klick um es aufzunehmen. Klicken Sie Kopieren oder drücken Sie Enter um zu bestätigen.
+t711 Klicken und ziehen Sie um das Item neu zu positionieren. Doppelklick um es aufzunehmen. Klicken Sie Kopieren oder drücken Sie Enter um zu bestätigen.
 o712 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
 t712 Auswahl übersteigt {0:n} Blöcke. Erhöhen Sie die Blockpuffer Einstellung und versuchen Sie es erneut .
 o713 Copying to clone buffer...
@@ -1672,62 +1677,64 @@ t775 Eine Ausnahme wurde ausgelöst während ein Filter lief. Siehe Konsole für
 
 {0}
 o776 Shift
-t776 
+t776 Umschalttaste (Shift)
 o777 Option
 t777 
 o778 Meta
 t778 
 o779 Applying {0} brush...
-t779 
+t779 Verwende {0} Pinsel...
 o780 Graphics Settings
-t780 
+t780 Grafik Einstellungen
 o781 Run Macro
-t781 
+t781 Makro ausführen 
 o782 Delete Macro
-t782 
+t782 Makro löschen
 o783 Macro Name: 
-t783 
+t783 Makro Name:
 o784 Enter a Player Name: 
-t784 
+t784 Spieler Name:
 o785 Click the mouse button again to place the other selection corner.
-t785 
+t785 Drücken Sie erneut die linke Maustaste um die andere Ecke der Auswahl zu setzen.
 o786 Stop recording
-t786 
+t786 Aufnehmen abbrechen 
 o787 Currently recording a macro
-t787 
+t787 Makro wird aufgenommen
 o788 Choose a custom head for the villagers you make
-t788 
+t788 Wählen Sie einen benutzerdefinierten Kopf für den Dorfbewohner den Sie erstellen
 o789 Custom Head
-t789 
+t789 Benutzerdefinierter Kopf
 o790 Skull Type
-t790 
+t790 Kopf Typ
 o791 Skeleton Skull
-t791 
+t791 Skelettschädel
 o792 Wither Skeleton Skull
-t792 
+t792 Witherskelettschädel
 o793 Zombie Skull
-t793 
+t793 Zombiekopf
 o794 Player Skull
-t794 
+t794 Spieler Kopf
 o795 Creeper Skull
-t795 
+t795 Creeperkopf
 o796 If Player Skull
 t796 
 o797 Player's Name
-t797 
+t797 Spieler Name
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t798 
+t798 Automatisch neue UUIDs für jedes kopiertes Entity erstellen. [EMPFOHLEN]
+Tastenkürzel: Alt-6
 o799 When the brush tool is chosen, prompt for a block type.
-t799 
+t799 Wenn das Pinsel Tool ausgewählt ist, zur Block Typ Auswahl auffordern 
 o800 Max View Distance
-t800 
+t800 Maximale Sichtweite
 o801 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
-t801 
+t801 Anscheinend ist dieses Level komplett leer!
+Sie müssen einige Chunks erstellen, bevor Sie anfangen.
 o802 Create Chunks
-t802 
+t802 Chunks erstellen
 o803 Replace Only:
 t803 
 o804 Make Villager Silent
-t804 
+t804 Dorfbewohner lautlos machen
