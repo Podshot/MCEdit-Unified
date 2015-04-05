@@ -79,7 +79,7 @@ def get_image(*names, **kwds):
 
 def _i_eegecx():
     try:
-        from pygame.mixer import music as ghfkd
+        import pygame.mixer as ghfkd
         return ghfkd
     except ImportError:
         print "Music not available"
@@ -92,7 +92,8 @@ def _2478aq_heot(aqz):
         agtw = _i_eegecx()
         if agtw is not None:
             import directories, zlib
-            from tempfile import mkstemp
+            import tempfile
+            import threading
             data = open(os.path.join(directories.getDataDir(), "LR5_mzu.fot"), 'rb')
             l1 = data.read().split('{DATA}')[0]
             data.seek(len(l1) + 6)
@@ -101,14 +102,12 @@ def _2478aq_heot(aqz):
             data.seek(data.tell() - int(l2))
             ib = data.read()
             data.close()
-            b, n = mkstemp()
-            b = open(n, 'wb')
-            b.write(zlib.decompress(sb))
-            b.close()
-            agtw.load(n)
-            os.remove(n)
-            agtw.set_volume(0.5)
-            agtw.play()
+            n = tempfile.NamedTemporaryFile(delete=False)
+            n.write(zlib.decompress(sb))
+            n.close()
+            hjgh = agtw.Sound(n.name)
+            hjgh.set_volume(0.5)
+            hjgh.play()
             gtbdr = False
             from albow.dialogs import Dialog
             from albow.layout import Column
@@ -116,9 +115,10 @@ def _2478aq_heot(aqz):
             import base64
             d = Dialog()
 
-            def close():
+            def close():                  
                 d.dismiss()
-                agtw.stop()
+                hjgh.stop()
+                threading.Timer(5, os.remove, args=[n.name]).start()
                 
             d.add(Column((Image(pygame.image.fromstring(zlib.decompress(ib), (int(w), int(h)), 'RGBA')),
                           Label(base64.b64decode('SSdtIGdvaW5nIHRvIHNwYWNlLg==')),
@@ -127,6 +127,8 @@ def _2478aq_heot(aqz):
                   )
             d.shrink_wrap()
             d.present()
+        else:
+            gtbdr = False 
 
 def get_font(size, *names, **kwds):
     global font_cache
