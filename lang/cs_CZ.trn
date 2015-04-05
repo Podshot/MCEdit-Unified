@@ -92,7 +92,7 @@ o36 Numpad
 t36 Numerické klávesy
 o37 WASD Old
 t37 WASD - staré
-o38 Presets: 
+o38 Keybind Presets: 
 t38 
 o39 MCEdit
 t39 MCEdit
@@ -1688,3 +1688,5 @@ t797
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
 t798 
+o799 When the brush tool is chosen, prompt for a block type.
+t799 

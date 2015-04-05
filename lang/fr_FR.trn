@@ -92,8 +92,8 @@ o36 Numpad
 t36 Pavé num
 o37 WASD Old
 t37 Ancien WASD
-o38 Presets: 
-t38 
+o38 Keybind Presets: 
+t38 Préréglages : 
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -547,7 +547,7 @@ t257 MàJ coords. spawners
 o258 Clone
 t258 Cloner
 o259 When the clone tool is chosen, place the clone at the selection right away.
-t259 When the clone tool is chosen, place the clone at the selection right away.(310)
+t259 Quand l'outil Clone est sélectionné, superposer le clone à la sélection.
 o260 Shortcut: Alt-2
 t260 Raccourci : Alt-2
 o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
@@ -581,7 +581,7 @@ t271 Checher :
 o272 Replace with:
 t272 Remplacer avec :
 o273 When the fill tool is chosen, prompt for a block type.
-t273 Demander un type de bloc quand l'outil Remplir est choisie
+t273 Demander un type de bloc quand l'outil Remplir est choisi.
 o274 Filter
 t274 Filtrer
 o275 Strength
@@ -1645,7 +1645,7 @@ t758 Minecraft déplace votre point de spawn s'il est dans une colone où il n'y
 o759 Keep Data Intact
 t759 Conserver les données
 o760 This pulls skins from the online server, so this may take a while
-t760 Télécharge les données du serveur. Cela paut prendre du temps
+t760 Télécharge les données du serveur. Cela peut prendre du temps
 o761 Session:
 t761 Session :
 o762 Session Lock is being used by Minecraft
@@ -1728,3 +1728,5 @@ o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
 t798 Génère automatiquement de nouvelles UUID pour toutes les entités copiées. [RECOMMANDÉ]
 Raccourci : Alt-6
+o799 When the brush tool is chosen, prompt for a block type.
+t799 Demander un type de bloc quand l'outil Brosse est choisi.
