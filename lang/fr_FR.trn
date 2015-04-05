@@ -332,10 +332,10 @@ o154 Enable choppy mouse movement for faster loading.
 t154 Active des mouvement de souris saccadés pour des chargements plus rapides.
 o155 Point here and use mousewheel to adjust
 t155 Utilisez la molette pour changer
-o156 Install Mode: Portable
-t156 Type d'installation : Portable
-o157 Install Mode: Fixed
-t157 Type d'installation : Résidente
+o156 Portable
+t156 Portable
+o157 Fixed
+t157 Résidente
 o158 Change the direction of the Forward and Backward keys when looking down
 t158 Inverser les direction Avant et Arrière quand la vue pointe vers le bas
 o159 When you are this far above the top of the world, move fast and use low-detail mode.
@@ -1740,3 +1740,5 @@ o803 Replace Only:
 t803 Remplacer seulement
 o804 Make Villager Silent
 t804 Villageois silencieux
+o805 Install Mode
+t805 Installation

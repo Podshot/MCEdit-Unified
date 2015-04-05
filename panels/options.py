@@ -155,7 +155,7 @@ class OptionsPanel(Dialog):
 
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
-        portableList = [_("Portable"), _("Fixed")]
+        portableList = ["Portable", "Fixed"]
         self.goPortableButton = goPortableButton = mceutils.ChoiceButton(portableList, choose=self.togglePortable)
         goPortableButton.selectedChoice = self.saveOldPortable
 
@@ -261,14 +261,14 @@ class OptionsPanel(Dialog):
 
     @property
     def portableLabelText(self):
-        return (_("Portable"), _("Fixed"))[1 - directories.portable]
+        return ("Portable", "Fixed")[1 - directories.portable]
 
     @portableLabelText.setter
     def portableLabelText(self, *args, **kwargs):
         pass
 
     def togglePortable(self):
-        if sys.platform == "darwin" or self.goPortableButton.selectedChoice == self.saveOldPortable:
+        if sys.platform == "darwin":
             return False
         textChoices = [
             _("This will make your MCEdit \"portable\" by moving your settings and schematics into the same folder as {0}. Continue?").format(
@@ -283,6 +283,8 @@ class OptionsPanel(Dialog):
             except Exception, e:
                 traceback.print_exc()
                 albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
+        else:
+            self.goPortableButton.selectedChoice = self.saveOldPortable
 
         self.goPortableButton.tooltipText = self.portableButtonTooltip()
         return True
@@ -363,8 +365,8 @@ class OptionsPanel(Dialog):
         if config.settings.langCode.get() != "en_US":
             config.settings.langCode.set("en_US")
             self.changeLanguage()
-        if _("Fixed") != self.portableVar.get():
-            self.portableVar.set(_("Fixed"))
+        if "Fixed" != self.portableVar.get():
+            self.portableVar.set("Fixed")
             self.togglePortable()
 
         config.save()
