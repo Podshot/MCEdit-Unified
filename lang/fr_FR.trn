@@ -1687,43 +1687,44 @@ t777
 o778 Meta
 t778 
 o779 Applying {0} brush...
-t779 
+t779 Application de la brosse {0}...
 o780 Graphics Settings
-t780 
+t780 Options graphiques
 o781 Run Macro
-t781 
+t781 Exéc. macro
 o782 Delete Macro
-t782 
+t782 Suppr. macro
 o783 Macro Name: 
-t783 
+t783 Nom de la macro : 
 o784 Enter a Player Name: 
-t784 
+t784 Entrer un nom de joueur
 o785 Click the mouse button again to place the other selection corner.
-t785 
+t785 Cliquez encore pour palcer l'autre coin de la sélection.
 o786 Stop recording
-t786 
+t786 Arrêter enregistrement
 o787 Currently recording a macro
-t787 
+t787 En cours d'enregistrement de macro
 o788 Choose a custom head for the villagers you make
-t788 
+t788 Choisissez une tête pour les villagois que vous créez
 o789 Custom Head
-t789 
+t789 Tête personnalisée
 o790 Skull Type
-t790 
+t790 Type de crâne
 o791 Skeleton Skull
-t791 
+t791 Crâne squelette
 o792 Wither Skeleton Skull
-t792 
+t792 Crâne squelette Wither
 o793 Zombie Skull
-t793 
+t793 Crâne zombie
 o794 Player Skull
-t794 
+t794 Crâne joueur
 o795 Creeper Skull
-t795 
+t795 Crâne creeper
 o796 If Player Skull
-t796 
+t796 Si crâne joueur
 o797 Player's Name
-t797 
+t797 Nom du joueur
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t798 
+t798 Génère automatiquement de nouvelles UUID pour toutes les entités copiées. [RECOMMANDÉ]
+Raccourci : Alt-6
