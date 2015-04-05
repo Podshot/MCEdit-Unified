@@ -723,10 +723,8 @@ t342 Nom du villageois
 o343 Trade
 t343 Commerce
 o344       Rotate the Position of your Trader
-
 *Can only be used if Not Move is checked*
 t344       Rotation du marchand
-
 *N'utiliser que si le villageois est immobile*
 o345 Y-Axis
 t345 Axe Y
@@ -1394,7 +1392,7 @@ o651 Choose an image file...
 t651 Choisir une image...
 o652 Select a NBT (.dat) file...
 t652 Choisir un fichier NBT (.dat)...
-o653 File allready exists.
+o653 File already exists.
 Click 'OK' to choose one.
 t653 Le fichier existe déjà.
 Cliquez 'OK' pour en choisir un.
@@ -1730,3 +1728,15 @@ t798 Génère automatiquement de nouvelles UUID pour toutes les entités copiée
 Raccourci : Alt-6
 o799 When the brush tool is chosen, prompt for a block type.
 t799 Demander un type de bloc quand l'outil Brosse est choisi.
+o800 Max View Distance
+t800 Dist. vue maximum
+o801 It looks like this level is completely empty!
+You'll have to create some chunks before you can get started.
+t801 Ce niveau semble être complètement vide !
+Vous devez créer des chunks avant de faire quoi que ce soit.
+o802 Create Chunks
+t802 Créer le chunks
+o803 Replace Only:
+t803 Remplacer seulement
+o804 Make Villager Silent
+t804 Villageois silencieux

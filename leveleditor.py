@@ -1049,7 +1049,7 @@ class LevelEditor(GLViewport):
 
         if len(list(self.level.allChunks)) == 0:
             resp = ask(
-                "It looks like this level is completely empty!  You'll have to create some chunks before you can get started.",
+                "It looks like this level is completely empty!\nYou'll have to create some chunks before you can get started.",
                 responses=["Create Chunks", "Cancel"])
             if resp == "Create Chunks":
                 x, y, z = self.mainViewport.cameraPosition

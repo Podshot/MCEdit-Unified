@@ -714,7 +714,6 @@ t342
 o343 Trade
 t343 
 o344       Rotate the Position of your Trader
-
 *Can only be used if Not Move is checked*
 t344 
 o345 Y-Axis
@@ -1358,7 +1357,7 @@ o651 Choose an image file...
 t651 
 o652 Select a NBT (.dat) file...
 t652 
-o653 File allready exists.
+o653 File already exists.
 Click 'OK' to choose one.
 t653 
 o654 Choose a NBT file...
@@ -1671,3 +1670,16 @@ t797
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
 t798 
+o799 When the brush tool is chosen, prompt for a block type.
+t799 
+o800 Max View Distance
+t800 
+o801 It looks like this level is completely empty!
+You'll have to create some chunks before you can get started.
+t801 
+o802 Create Chunks
+t802 
+o803 Replace Only:
+t803 
+o804 Make Villager Silent
+t804 
