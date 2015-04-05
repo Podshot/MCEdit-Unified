@@ -92,8 +92,8 @@ o36 Numpad
 t36 Nummernfeld
 o37 WASD Old
 t37 WASD (Alt)
-o38 Presets:
-t38 Voreinstellungen:
+o38 Presets: 
+t38 
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -538,11 +538,11 @@ o253 Copy Air
 t253 Kopiere Luft
 o254 Copy Water
 t254 Kopiere Wasser
-o255 Copy Biomes
+o255 Copy Biome(s)
 t255 Kopiere Biome
-o256 Change Coordinates
+o256 Update Command Block Coords
 t256 Ändere Koordinaten
-o257 Change Spawners
+o257 Update Spawner Coords
 t257 Ändere Spawner
 o258 Clone
 t258 Kopieren
@@ -550,11 +550,11 @@ o259 When the clone tool is chosen, place the clone at the selection right away.
 t259 Wenn das Kopier Werkzeug ausgewählt ist, platzieren Sie die Kopie an der Auswahl sofort.
 o260 Shortcut: Alt-2
 t260 Tastenkürzel: Alt-2
-o261 Check to automatically change command block static coordinates when moved.
+o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
 t261 Überprüft um automatisch statische Koordinaten in Befehlsblöcken zu ändern wenn sie bewegt wurden.
 Tastenkürzel: Alt-4
-o262 Check to automatically change the position of the mobs in spawners when moved.
+o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
 t262 Überprüft um automatisch die Position von den Mobs in Spawnern zu ändern wenn sie bewegt wurden.
 Tastenkürzel: Alt-5
@@ -798,7 +798,13 @@ o373 Dump Found Coordinates
 t373 Dumpe gefundene Koordinaten
 o374 Operation:
 t374 Operation:
-o375 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o375 This filter is designed to search for NBT in either Entities or TileEntities.
+It can also be used to search for blocks.
+"Match by" determines which type of object is prioritized during the search.
+Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).
+All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.
+It is faster to match TileEntity searches with a Block Type than vice versa.
+Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
 t375 Dieser Filter sucht nach NBT in Entities oder TileEntities. Es kann auch nach Blöcken gesucht werden. "Abgleichen von" entscheidet welcher Objekttyp während der Suche priorisiert ist. Entities und TileEntities werden relativ schnell gesucht während die Schnelligkeit bei der Suche von Block direkt propotzional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). Alle Entity-Suche ignoriert die Blöcke Einstellungen; TileEntity-Suche versucht zu "Blocktyp abgleichen" wenn ausgewählt, und Blocksuche versucht zu "Abgleichen von TileEntity" Markierung wenn ausgewählt. Es ist schneller TileEntity-Suchen mit einem Blocktyp abzugleichen statt andersherum. Blockabgleich kann auch optional Block Daten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln die eine bestimmte Richtung zeigen.
 "Starte neue Suche" wird in der Auswahl neu suchen, während "Finde Nächste" die Suchresultate von der vorherige Suche durchgeht.
@@ -1128,7 +1134,7 @@ o536 W
 t536 W
 o537 Minimum Spacing
 t537 Minimum Abstand
-o538 Regenerate UUID
+o538 Regenerate Entity UUID
 t538 Regeneriere UUID
 o539 Replace blocks with any data value. Only useful for Replace operations.
 t539 Ersetze Blöcke mit jede Datenwert. Nur sinnvoll für Ersetzen Operationen.
@@ -1674,3 +1680,44 @@ o777 Option
 t777 
 o778 Meta
 t778 
+o779 Applying {0} brush...
+t779 
+o780 Graphics Settings
+t780 
+o781 Run Macro
+t781 
+o782 Delete Macro
+t782 
+o783 Macro Name: 
+t783 
+o784 Enter a Player Name: 
+t784 
+o785 Click the mouse button again to place the other selection corner.
+t785 
+o786 Stop recording
+t786 
+o787 Currently recording a macro
+t787 
+o788 Choose a custom head for the villagers you make
+t788 
+o789 Custom Head
+t789 
+o790 Skull Type
+t790 
+o791 Skeleton Skull
+t791 
+o792 Wither Skeleton Skull
+t792 
+o793 Zombie Skull
+t793 
+o794 Player Skull
+t794 
+o795 Creeper Skull
+t795 
+o796 If Player Skull
+t796 
+o797 Player's Name
+t797 
+o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+Shortcut: Alt-6
+t798 

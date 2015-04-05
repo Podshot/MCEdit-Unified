@@ -92,8 +92,8 @@ o36 Numpad
 t36 Pavé num
 o37 WASD Old
 t37 Ancien WASD
-o38 Presets:
-t38 Presets:
+o38 Presets: 
+t38 
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -443,7 +443,6 @@ t209 ...
 o210 Select
 Right-click for options
 t210 Sélectionner
-
 Clic-droit pour les options
 o211 Remove the selection. Shortcut: {0}
 t211 Suppr. sélection. Raccourci : {0}
@@ -460,7 +459,6 @@ t216 Exporte la sélection vers un fichier .schematic. Raccourci : {0}
 o217 Clone
 Right-click for options
 t217 Cloner
-
 Clic-droit pour les options
 o218 Brush
 Right-click for options
@@ -497,13 +495,13 @@ t232 Raccourci : Alt-1
 o233 ---
 t233 ---
 o234 Weight 1
-t234 
+t234 Poids 1
 o235 Weight 2
-t235 
+t235 Poids 2
 o236 Weight 3
-t236 
+t236 Poids 3
 o237 Weight 4
-t237 
+t237 Poids 4
 o238 Shortcut: Alt-3
 t238 Raccourci : Alt-3
 o239 Indiscriminate
@@ -517,7 +515,6 @@ t242 Changer seulement la terre naturelle
 o243 Import
 Right-click for options
 t243 Importer
-
 Clic-droit pour les options
 o244 x
 t244 x
@@ -541,32 +538,31 @@ o253 Copy Air
 t253 Copier l'air
 o254 Copy Water
 t254 Copier l'eau
-o255 Copy Biomes
+o255 Copy Biome(s)
 t255 Copier les biomes
-o256 Change Coordinates
-t256 Changer coords.
-o257 Change Spawners
-t257 Changer spawners
+o256 Update Command Block Coords
+t256 MàJ coords. bolcs de commandes
+o257 Update Spawner Coords
+t257 MàJ coords. spawners
 o258 Clone
 t258 Cloner
 o259 When the clone tool is chosen, place the clone at the selection right away.
 t259 When the clone tool is chosen, place the clone at the selection right away.(310)
 o260 Shortcut: Alt-2
 t260 Raccourci : Alt-2
-o261 Check to automatically change command block static coordinates when moved.
+o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
-t261 Cocher pour changer automatiquement les coord. statiques des blocs de commande en mouvement.
+t261 Mettre à jour automatiquement les coordonées (x, y, z) de la commande d'un bloc de commandes lorsqu'il est déplacé.
 Raccourci : Alt-4
-o262 Check to automatically change the position of the mobs in spawners when moved.
+o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
-t262 Cocher pour changer automatiquement la position des monstres des spawners en mouvement.
+t262 Mettre à jour automatiquement les coordonées de spawn lorsque qu'un spawner est déplacé.
 Raccourci : Alt-5
 o263 Shortcut: Enter
 t263 Raccourci : Entrée
 o264 Fill and Replace
 Right-click for options
 t264 Remplir et remplacer
-
 Clic-droit pour les options
 o265 Fill with:
 t265 Remplir avec :
@@ -725,13 +721,11 @@ t341 Villageois immobile
 o342 Villager Name
 t342 Nom du villageois
 o343 Trade
-t343 
+t343 Commerce
 o344       Rotate the Position of your Trader
 
 *Can only be used if Not Move is checked*
-t344                 Rotation du marchand
-
-
+t344       Rotation du marchand
 
 *N'utiliser que si le villageois est immobile*
 o345 Y-Axis
@@ -752,13 +746,9 @@ Click the chest you want and choose what you want and click hit enter
 
 t350 Pour créer un magasin, mettez d'abord votre achat dans le slot suppérieur du coffre.
 Ensuite, mettez un autre achat dans le slot du milieu.
-
 Terminez en mettant un troisième dans celui du bas.
-
 Cliquez sur le coffre que vous voulez et choisissez ce que vous voulez et appuyez 'Entrée'.
-
 *Tous les objets doivent être sur la même ligne*
-
 
 o351 Notes
 t351 
@@ -808,9 +798,21 @@ o373 Dump Found Coordinates
 t373 Récup. coord. trouvées
 o374 Operation:
 t374 Opération :
-o375 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o375 This filter is designed to search for NBT in either Entities or TileEntities.
+It can also be used to search for blocks.
+"Match by" determines which type of object is prioritized during the search.
+Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).
+All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.
+It is faster to match TileEntity searches with a Block Type than vice versa.
+Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 Ce filtre est conçu pour rechercher les données NBT dans les entités et les TileEntities. Il peut aussi être utilisé pour chercher des blocs.  "Corresp. par" détermine le type d'objet à chercher en priorité.  La recherche des entités et des TileEntities est relativement rapide. Celle des blocs est proportionnelle à la taille de la sélection, car chaque bloc sélectionné est examiné). Toute recherche d'entité ignore les réglages pour les blocs. Les recherches de TileEntities tenterons de correspondre au type de bloc (si "Corresp. au type de bloc" est coché) ; celles de blocs aux TileEntities (si Corresp. "TileEntities" est coché).  Les recherches de TileEntities avec un type de bloc sont plus rapides.  La recherche de bloc peut égalelement trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
+t375 Ce filtre est conçu pour rechercher les données NBT dans les entités et les TileEntities.
+Il peut aussi être utilisé pour chercher des blocs.
+"Corresp. par" détermine le type d'objet à chercher en priorité.
+La recherche des entités et des TileEntities est relativement rapide. Celle des blocs est proportionnelle à la taille de la sélection, car chaque bloc sélectionné est examiné).
+Toute recherche d'entité ignore les réglages pour les blocs. Les recherches de TileEntities tenterons de correspondre au type de bloc (si "Corresp. au type de bloc" est coché) ; celles de blocs aux TileEntities (si Corresp. "TileEntities" est coché).
+Les recherches de TileEntities avec un type de bloc sont plus rapides.
+La recherche de bloc peut égalelement trouver des données de bloc, par exemple, trouver toutes les torches, ou seulement celles orientées au Nord.
 Utiliser "Nouvelle recherche" pour chercher à nouveau dans la sélection. "Suivant" parcours les résultats.
 o376 Documentation
 t376 Documentation
@@ -1021,7 +1023,7 @@ t478 Aller à la vue
 o479 Move
 t479 Déplacer
 o480 Align to Camera
-t480 
+t480 Alinger à la caméra
 o481 Player
 t481 Joueur
 o482 Chunk Control
@@ -1029,7 +1031,6 @@ t482 Contrôle de chunk
 o483 Move Spawn Point
 Right-click for options
 t483 Déplacer point de spawn
-
 Clic-droit pour les options
 o484 Goto Spawn
 t484 Aller au spawn
@@ -1139,8 +1140,8 @@ o536 W
 t536 L
 o537 Minimum Spacing
 t537 Espacement min.
-o538 Regenerate UUID
-t538 Regénrérer UUID
+o538 Regenerate Entity UUID
+t538 Regénrérer UUID des entités
 o539 Replace blocks with any data value. Only useful for Replace operations.
 t539 Remplacer les blocs avec toute valeur. Utile seulement pour le remplacement.
 o540 Entities
@@ -1266,7 +1267,7 @@ ESC pour annuler.
 o598 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
-t598  Appuyer sur la touche à lier à l'action "{0}"
+t598 Appuyer sur la touche à lier à l'action "{0}"
 Aucune touche pour utiliser le clic-droit.
 ESC pour annuler.
 o599 {0} is not a modifier. Press a new key.
@@ -1316,7 +1317,7 @@ t614 Vos réglages et schematics vont être déplacés vers votre dossier Docume
 o615 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
 t615 Cliquez pour rendre MCEdit persistant en déplaçant ses réglages et schematics vers votre dossier Documents
 o616 Goto Position:
-t616 
+t616 Aller à la position :
 o617 (click anywhere to teleport)
 t617 (cliquer n'importe-où pour téléporter)
 o618 Format:
@@ -1366,7 +1367,6 @@ Dive into level NBT structure.
 Right-click for options
 t639 Exporateur NBT
 Plongez au cœur de la structure NBT.
-
 Clic-droit pour les options
 o640 Save your change in the NBT data.
 t640 Sauve vos changements dans les données NBT.
@@ -1493,7 +1493,7 @@ t692 Créé par Sethbling
 o693 NBT Data
 t693 Données NBT
 o694 Edit NBT
-t694 
+t694 Éditer NBT
 o695 Open the NBT Explorer to edit player's attributes and inventory
 t695 Ouvre l'explorateur NBT pour changer les attributs et l'inventaire du joueur
 o696 Not yet implemented.
@@ -1633,7 +1633,6 @@ t753 Proportion polices (%) :
 o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
 t754 Proportion des tailles de polices. En pourcents.
-
 Redémarrage nécessaire !
 o755 Save As
 t755 Sauver sous
@@ -1680,8 +1679,6 @@ o775 Exception during filter operation. See console for details.
 {0}
 t775 Erreur lors de l'exécution du filtre. Détails dans la console.
 
-
-
 {0}
 o776 Shift
 t776 
@@ -1689,3 +1686,44 @@ o777 Option
 t777 
 o778 Meta
 t778 
+o779 Applying {0} brush...
+t779 
+o780 Graphics Settings
+t780 
+o781 Run Macro
+t781 
+o782 Delete Macro
+t782 
+o783 Macro Name: 
+t783 
+o784 Enter a Player Name: 
+t784 
+o785 Click the mouse button again to place the other selection corner.
+t785 
+o786 Stop recording
+t786 
+o787 Currently recording a macro
+t787 
+o788 Choose a custom head for the villagers you make
+t788 
+o789 Custom Head
+t789 
+o790 Skull Type
+t790 
+o791 Skeleton Skull
+t791 
+o792 Wither Skeleton Skull
+t792 
+o793 Zombie Skull
+t793 
+o794 Player Skull
+t794 
+o795 Creeper Skull
+t795 
+o796 If Player Skull
+t796 
+o797 Player's Name
+t797 
+o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+Shortcut: Alt-6
+t798 

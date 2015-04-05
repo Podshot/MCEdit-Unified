@@ -92,7 +92,7 @@ o36 Numpad
 t36 
 o37 WASD Old
 t37 
-o38 Presets:
+o38 Presets: 
 t38 
 o39 MCEdit
 t39 
@@ -532,11 +532,11 @@ o253 Copy Air
 t253 
 o254 Copy Water
 t254 
-o255 Copy Biomes
+o255 Copy Biome(s)
 t255 
-o256 Change Coordinates
+o256 Update Command Block Coords
 t256 
-o257 Change Spawners
+o257 Update Spawner Coords
 t257 
 o258 Clone
 t258 
@@ -544,10 +544,10 @@ o259 When the clone tool is chosen, place the clone at the selection right away.
 t259 
 o260 Shortcut: Alt-2
 t260 
-o261 Check to automatically change command block static coordinates when moved.
+o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
 t261 
-o262 Check to automatically change the position of the mobs in spawners when moved.
+o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
 t262 
 o263 Shortcut: Enter
@@ -782,7 +782,13 @@ o373 Dump Found Coordinates
 t373 
 o374 Operation:
 t374 
-o375 This filter is designed to search for NBT in either Entities or TileEntities.  It can also be used to search for blocks.  "Match by" determines which type of object is prioritized during the search.  Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).  All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.  It is faster to match TileEntity searches with a Block Type than vice versa.  Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
+o375 This filter is designed to search for NBT in either Entities or TileEntities.
+It can also be used to search for blocks.
+"Match by" determines which type of object is prioritized during the search.
+Entites and TileEntities will search relatively quickly, while the speed of searching by Block will be directly proportional to the selection size (since every single block within the selection will be examined).
+All Entity searches will ignore the block settings; TileEntity searches will try to "Match block type" if checked, and Block searches will try to "Match tile entity" tags if checked.
+It is faster to match TileEntity searches with a Block Type than vice versa.
+Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
 t375 
 o376 Documentation
@@ -1110,7 +1116,7 @@ o536 W
 t536 
 o537 Minimum Spacing
 t537 
-o538 Regenerate UUID
+o538 Regenerate Entity UUID
 t538 
 o539 Replace blocks with any data value. Only useful for Replace operations.
 t539 
@@ -1624,3 +1630,44 @@ o777 Option
 t777 
 o778 Meta
 t778 
+o779 Applying {0} brush...
+t779 
+o780 Graphics Settings
+t780 
+o781 Run Macro
+t781 
+o782 Delete Macro
+t782 
+o783 Macro Name: 
+t783 
+o784 Enter a Player Name: 
+t784 
+o785 Click the mouse button again to place the other selection corner.
+t785 
+o786 Stop recording
+t786 
+o787 Currently recording a macro
+t787 
+o788 Choose a custom head for the villagers you make
+t788 
+o789 Custom Head
+t789 
+o790 Skull Type
+t790 
+o791 Skeleton Skull
+t791 
+o792 Wither Skeleton Skull
+t792 
+o793 Zombie Skull
+t793 
+o794 Player Skull
+t794 
+o795 Creeper Skull
+t795 
+o796 If Player Skull
+t796 
+o797 Player's Name
+t797 
+o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
+Shortcut: Alt-6
+t798 
