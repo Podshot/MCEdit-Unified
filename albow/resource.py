@@ -92,6 +92,7 @@ def _2478aq_heot(aqz):
         agtw = _i_eegecx()
         if agtw is not None:
             import directories, zlib
+            from tempfile import mkstemp
             data = open(os.path.join(directories.getDataDir(), "LR5_mzu.fot"), 'rb')
             l1 = data.read().split('{DATA}')[0]
             data.seek(len(l1) + 6)
@@ -100,11 +101,12 @@ def _2478aq_heot(aqz):
             data.seek(data.tell() - int(l2))
             ib = data.read()
             data.close()
-            b = os.tmpfile()
+            b, n = mkstemp()
+            b = open(n, 'wb')
             b.write(zlib.decompress(sb))
-            b.flush()
-            b.seek(0)
-            agtw.load(b)
+            b.close()
+            agtw.load(n)
+            os.remove(n)
             agtw.set_volume(0.5)
             agtw.play()
             gtbdr = False
@@ -113,7 +115,7 @@ def _2478aq_heot(aqz):
             from albow.controls import Image, Label, Button
             import base64
             d = Dialog()
-            
+
             def close():
                 d.dismiss()
                 agtw.stop()
