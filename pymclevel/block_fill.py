@@ -7,6 +7,7 @@ import numpy
 
 from mclevelbase import exhaust
 import blockrotation
+from box import BoundingBox
 from entity import TileEntity
 
 
@@ -52,14 +53,17 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
     for tileEntityName in TileEntity.otherNames.keys():
         if tileEntityName in blockInfo.name:
             tileEntity = TileEntity.otherNames[tileEntityName]
+            break
 
     blocksIdToReplace = [block.ID for block in blocksToReplace]
 
     blocksList = []
     if tileEntity and box is not None:
-            for (boxX, boxY, boxZ) in box.positions:
-                if blocktable is None or level.blockAt(boxX, boxY, boxZ) in blocksIdToReplace:
-                    blocksList.append((boxX, boxY, boxZ))
+        for (boxX, boxY, boxZ) in box.positions:
+            if blocktable is None or level.blockAt(boxX, boxY, boxZ) in blocksIdToReplace:
+                tileEntityObject = TileEntity.Create(tileEntity)
+                TileEntity.setpos(tileEntityObject, (boxX, boxY, boxZ))
+                blocksList.append(tileEntityObject)
 
     i = 0
     skipped = 0
@@ -105,11 +109,14 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
                 data[:] = blockInfo.blockData
             chunk.removeTileEntitiesInBox(box)
 
-        if blocksList:
-            for position in blocksList:
-                tileEntityObject = TileEntity.Create(tileEntity)
-                TileEntity.setpos(tileEntityObject, position)
-                chunk.addTileEntity(tileEntityObject)
+        chunkBounds = chunk.bounds
+        smallBoxSize = (1, 1, 1)
+        tileEntitiesToEdit = [t for t in blocksList if chunkBounds.intersect(BoundingBox(TileEntity.pos(t), smallBoxSize)).volume > 0]
+
+        for tileEntityObject in tileEntitiesToEdit:
+            chunk.addTileEntity(tileEntityObject)
+            blocksList.remove(tileEntityObject)
+        
         chunk.chunkChanged(needsLighting)
 
     if len(blocksToReplace):
