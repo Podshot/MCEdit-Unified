@@ -84,7 +84,7 @@ def wrapped_label(text, wrap_width, **kwds):
     # paras = text.split("\n")
     text = _(text)
     kwds['doNotTranslate'] = True
-    paras = text.split("\n\n")
+    paras = text.split("\n")
     text = "\n".join([textwrap.fill(para, wrap_width) for para in paras])
     return Label(text, **kwds)
 
