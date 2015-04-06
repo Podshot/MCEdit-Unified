@@ -128,8 +128,8 @@ class PlayerAddOperation(Operation):
             elif len(self.player) > 16:
                 alert("Name too long. Maximum name length is 16.")
                 initial = self.player
-            elif len(self.player) < 4:
-                alert("Name too short. Minimum name length is 4.")
+            elif len(self.player) < 1:
+                alert("Name too short. Minimum name length is 1.")
                 initial = self.player
             else:
                 break
