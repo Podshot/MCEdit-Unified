@@ -28,6 +28,7 @@
 	<script>
 		function pageTrigger() {
 			var releaseList = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+			var commentJSON = getJSON('comments.json');
 			releaseData.sort(compareVersionObject);
 			for (var i = 0; i < releaseData.length; i++) {
 				var note = marked(releaseData[i].body).replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a>');
@@ -54,10 +55,17 @@
 				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
 					totalDownloads += releaseData[i].assets[x].download_count;
 				}
+				
+				var commentlink = '';
+				if (commentJSON.hasOwnProperty(version)) {
+					commentlink = 'Comment <a href="' + commentJSON[version] + '">Here</a>';
+				} else {
+					commentlink = 'Comments unavailable';
+				}
 
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 			}
 			$('#changelog').show();
