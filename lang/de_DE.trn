@@ -93,7 +93,7 @@ t36 Nummernfeld
 o37 WASD Old
 t37 WASD (Alt)
 o38 Keybind Presets: 
-t38 Tastenzuweisungs Voreinstellungen:
+t38 Tastenbindung Voreinstellungen:
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -287,7 +287,7 @@ t131 Verkleinern
 o132 <Fill and Replace Tool>
 t132 <Füll und Ersetz Tool>
 o133 Replace Shortcut
-t133 Tastenkürzen ersetzen
+t133 Tastenkürzel: Ersetzen 
 o134 <Function>
 t134 <Funktion>
 o135 Cut
@@ -1693,7 +1693,7 @@ t782 Makro löschen
 o783 Macro Name: 
 t783 Makro Name:
 o784 Enter a Player Name: 
-t784 Spieler Name:
+t784 Spielername:
 o785 Click the mouse button again to place the other selection corner.
 t785 Drücken Sie erneut die linke Maustaste um die andere Ecke der Auswahl zu setzen.
 o786 Stop recording
@@ -1717,9 +1717,9 @@ t794 Spieler Kopf
 o795 Creeper Skull
 t795 Creeperkopf
 o796 If Player Skull
-t796 
+t796 Wenn Spieler Kopf ausgewählt ist:
 o797 Player's Name
-t797 Spieler Name
+t797 Spielername
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
 t798 Automatisch neue UUIDs für jedes kopiertes Entity erstellen. [EMPFOHLEN]
@@ -1733,10 +1733,68 @@ You'll have to create some chunks before you can get started.
 t801 Anscheinend ist dieses Level komplett leer!
 Sie müssen einige Chunks erstellen, bevor Sie anfangen.
 o802 Create Chunks
-t802 Chunks erstellen
+t802 Erstelle Chunks
 o803 Replace Only:
-t803 
+t803 Nur Ersetzen:
 o804 Make Villager Silent
-t804 Dorfbewohner lautlos machen
+t804 Lautloser Dorfbewohner
 o805 Install Mode
 t805 Installationsmodus
+o806 SAVING - 
+t806 SPEICHERT - 
+o807 World Type:
+t807 Welttyp:
+o808 Amplified
+t808 Zerklüftet
+o809 Large Biomes
+t809 Grosse Biome
+o810 Superflat
+t810 Flachland
+o811 Copying chunks
+t811 Kopiert Chunks
+o812 Lighting chunks
+t812 Erleuchtet Chunks
+o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t813 Diese Welt wurde nicht von einem FTP Server heruntergeladen. Hochladen von Welten die nicht von einem FTP Server heruntergeladen wurden ist momentan noch nicht möglich.
+o814 Weight 1
+t814 Masse 1
+o815 Weight 2
+t815 Masse 2
+o816 Weight 3
+t816 Masse 3
+o817 Weight 4
+t817 Masse 4
+o818 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t818 Fenster wurde vergrössert. Sie haben vielleicht Probleme beim Benutzen des Mauszeigers, bis sie MCEdit neugestartet haben.
+o819 FTP Server IP:
+t819 FTP Server IP:
+o820 FTP Username:
+t820 FTP Benutzername:
+o821 FTP Password:
+t821 FTP Passwort:
+o822 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t822 NOTIZ: MCEdit-Unified wird keine anderen FTP Server Daten benutzen als die für den Login
+o823 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t823 Bitte warten Sie während MCEdit-Unified die Welt herunterlädt. Sie wird geöffnet nachdem es fertig ist
+o824 Connect
+t824 Verbinden
+o825 Root: 
+t825 Root: 
+o826 Directory: 
+t826 Verzeichnis: 
+o827 Files: 
+t827 Dateien: 
+o828 Host: 
+t828 Anbieter: 
+o829 Client: 
+t829 Client: 
+o830 Target: 
+t830 Ziel: 
+o831 Error: {0}
+t831 Fehler: {0}
+o832 Incorrect username or password
+t832 Falscher Benutzername oder Passwort
+o833 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t833 Konnte die server.properties Datei nicht finden! Der FTP Client wird die Welt nicht herunterladen können bis die server.properties Datei im standard FTP Verzeichnis ist
+o834 Could not find the world folder from the server.properties file
+t834 Konnte den Welten Ordner von der server.properties Datei nicht finden
