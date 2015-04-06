@@ -90,9 +90,14 @@ class Label(Widget):
     highlighted = False
     _align = 'l'
 
-    def __init__(self, text, width=None, **kwds):
+    def __init__(self, text, width=None, base_text=None, **kwds):
+        #-# Translation live update preparation
+        # base_text: to be used each time a widget takes a formated string
+        #            defaults to 'text'.
         Widget.__init__(self, **kwds)
         font = self.font
+        self.base_text = base_text or text
+        self.previous_translation = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
         text = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
         lines = text.split("\n")
         tw, th = 0, 0
@@ -107,6 +112,17 @@ class Label(Widget):
         d = 2 * self.margin
         self.size = (tw + d, th + d)
         self._text = text
+
+    #-# Translation live update preparation
+#    def get_update_translation(self):
+#        return Widget.update_translation(self)
+
+#    def set_update_translation(self, v):
+#        # get the translation of the base_text
+##        trn = _(self.base_text)
+#        self.text = self.base_text
+        Widget.set_update_translation(self, v)
+    #-#
 
     def __repr__(self):
         return "Label {0}, child of {1}".format(self.text, self.parent)

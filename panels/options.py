@@ -251,6 +251,9 @@ class OptionsPanel(Dialog):
         else:
             lng = self.langs[langName]
         config.settings.langCode.set(lng)
+        #-# Translation live update preparation
+#        update = albow.translate.setLang(lng)[2]
+#        self.mcedit.root.set_update_translation(update or lng == 'en_US')
 
     @staticmethod
     def portableButtonTooltip():

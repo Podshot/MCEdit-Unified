@@ -1,5 +1,6 @@
 from __future__ import division
 import sys
+import albow # used for translation update
 from pygame import Rect, Surface, image
 from pygame.locals import K_RETURN, K_KP_ENTER, K_ESCAPE, K_TAB, KEYDOWN, SRCALPHA
 from pygame.mouse import set_cursor
@@ -94,6 +95,7 @@ class Widget(object):
         if rect and not isinstance(rect, Rect):
             raise TypeError("Widget rect not a pygame.Rect")
         self._rect = Rect(rect or (0, 0, 100, 100))
+        self.__update_translation = False
         self.parent = None
         self.subwidgets = []
         self.focus_switch = None
@@ -101,6 +103,20 @@ class Widget(object):
         self.set(**kwds)
         self.root = self.get_root()
         self.setup_spacings()
+
+    #-# Translation live update preparation
+#    def get_update_translation(self):
+#        return self.__update_translation
+
+#    def set_update_translation(self, v):
+#        if v:
+#            for widget in self.subwidgets:
+#                widget.set_update_translation(v)
+#            self.invalidate()
+#        self.__update_translation = v
+    #-#
+
+    update_translation = property(get_update_translation, set_update_translation)
 
     def setup_spacings(self):
         def new_size(size):
@@ -308,6 +324,11 @@ class Widget(object):
 
     def draw_all(self, surface):
         if self.visible:
+            #-# Translation live update preparation
+#            if self.update_translation:
+#                self.set_update_translation(True)
+#            self.__update_translation = False
+            #-#
             surf_rect = surface.get_rect()
             bg_image = self.bg_image
             if bg_image:
@@ -748,6 +769,11 @@ class Widget(object):
     def gl_draw_all(self, root, offset):
         if not self.visible:
             return
+        #-# Translation live update preparation
+#        if self.update_translation:
+#            self.set_update_translation(True)
+#        self.__update_translation = False
+        #-#
         from OpenGL import GL, GLU
 
         rect = self.rect.move(offset)
