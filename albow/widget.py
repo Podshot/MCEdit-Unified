@@ -114,9 +114,9 @@ class Widget(object):
 #                widget.set_update_translation(v)
 #            self.invalidate()
 #        self.__update_translation = v
-    #-#
 
-    update_translation = property(get_update_translation, set_update_translation)
+#    update_translation = property(get_update_translation, set_update_translation)
+    #-#
 
     def setup_spacings(self):
         def new_size(size):

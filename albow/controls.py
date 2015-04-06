@@ -121,7 +121,7 @@ class Label(Widget):
 #        # get the translation of the base_text
 ##        trn = _(self.base_text)
 #        self.text = self.base_text
-        Widget.set_update_translation(self, v)
+#        Widget.set_update_translation(self, v)
     #-#
 
     def __repr__(self):
