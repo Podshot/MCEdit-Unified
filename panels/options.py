@@ -149,7 +149,11 @@ class OptionsPanel(Dialog):
 
         langNames = [k for k, v in langs]
 
+        #-# Translation live update preparation
+#        from albow import ChoiceButton
         self.languageButton = mceutils.ChoiceButton(langNames, choose=self.changeLanguage)
+#        self.languageButton = ChoiceButton(langNames, choose=self.changeLanguage)
+        #-#
         if self.sgnal[lng] in self.languageButton.choices:
             self.languageButton.selectedChoice = self.sgnal[lng]
 
@@ -254,6 +258,7 @@ class OptionsPanel(Dialog):
         #-# Translation live update preparation
 #        update = albow.translate.setLang(lng)[2]
 #        self.mcedit.root.set_update_translation(update or lng == 'en_US')
+        #-#
 
     @staticmethod
     def portableButtonTooltip():

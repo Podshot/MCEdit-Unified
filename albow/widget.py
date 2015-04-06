@@ -95,7 +95,10 @@ class Widget(object):
         if rect and not isinstance(rect, Rect):
             raise TypeError("Widget rect not a pygame.Rect")
         self._rect = Rect(rect or (0, 0, 100, 100))
-        self.__update_translation = False
+        #-# Translation live update preparation
+#        self.__update_translation = False
+#        self.shrink_wrapped = False
+        #-#
         self.parent = None
         self.subwidgets = []
         self.focus_switch = None
@@ -112,6 +115,10 @@ class Widget(object):
 #        if v:
 #            for widget in self.subwidgets:
 #                widget.set_update_translation(v)
+#            if self.shrink_wrapped:
+#                self.shrink_wrap()
+#            if hasattr(self, 'calc_size'):
+#                self.calc_size()
 #            self.invalidate()
 #        self.__update_translation = v
 
@@ -596,6 +603,9 @@ class Widget(object):
             for r in rects:
                 rmax = rmax.union(r)
             self._rect.size = add(rmax.topleft, rmax.bottomright)
+        #-# Translation live update preparation
+#        self.shrink_wrapped = True
+        #-#
 
     def invalidate(self):
         if self.root:

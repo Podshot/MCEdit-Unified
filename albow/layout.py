@@ -15,11 +15,32 @@ class RowOrColumn(Widget):
         expand = kwds.pop('expand', None)
         if isinstance(expand, int):
             expand = items[expand]
+
+        #-# Translation live update preparation
+        self.expand = expand
+        self.align = align
+        self._size = size
+        #-#
+
         #if kwds:
         #    raise TypeError("Unexpected keyword arguments to Row or Column: %s"
         #        % kwds.keys())
         Widget.__init__(self, **kwds)
         #print "albow.controls: RowOrColumn: size =", size, "expand =", expand ###
+        #-# Translation live update preparation
+        self.calc_size(items)
+
+    def calc_size(self, _items=None):
+#        print "RowOrColumn.calc_size"
+        if _items:
+            items = _items
+        else:
+            items = self.subwidgets
+        expand = self.expand
+        align = self.align
+        size = self._size
+        spacing = self.spacing
+    #-#
         d = self.d
         longways = self.longways
         crossways = self.crossways
@@ -55,7 +76,11 @@ class RowOrColumn(Widget):
         sy = spacing * d[1]
         for item in items:
             setattr(item.rect, attr2, (px, py))
-            self.add(item)
+            #-# Translation live update preparation
+#            self.add(item)
+            if _items:
+                self.add(item)
+            #-#
             p = getattr(item.rect, attr3)
             px = p[0] + sx
             py = p[1] + sy
