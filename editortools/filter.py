@@ -776,11 +776,6 @@ class FilterTool(EditorTool):
                     toReturn.append(module)
             return toReturn
         
-        def clean():
-            pycs = directories.getAllOfAFile(directories.getDataDir(), "*.pyc")
-            for pyc in pycs:
-                os.remove(pyc)
-        
         #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py'))
 
         def tryImport(name):
@@ -827,7 +822,11 @@ class FilterTool(EditorTool):
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
                     import albow.translate as trn
-                    trn_path = os.path.join(directories.getFiltersDir(), module_name)
+                    if directories.getFiltersDir() in name:
+                        trn_path = os.path.split(name)[0]
+                    else:
+                        trn_path = directories.getFiltersDir()
+                    trn_path = os.path.join(trn_path, module_name)
                     if os.path.exists(trn_path):
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
@@ -843,13 +842,18 @@ class FilterTool(EditorTool):
                 module_file_object.close()
 
         self.category_dict = {}
+        temp_paths = []
         for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
-            for possible_filter in files:
-                if possible_filter.endswith(".py"):
-                    if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in self.category_dict:
-                        self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
-                    elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
-                        self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
+            if root.replace(directories.getFiltersDir(), '').replace(os.sep, '') not in ('demo', 'lib'):
+                for possible_filter in files:
+                    if possible_filter.endswith(".py"):
+                        if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in self.category_dict:
+                            self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
+                            #-# Add the category folder to sys.path
+                            temp_paths.append(os.path.dirname(os.path.abspath(os.path.join(root, possible_filter))))
+                            sys.path.append(os.path.dirname(os.path.abspath(os.path.join(root, possible_filter))))
+                        elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
+                            self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
 
         if "demo" in self.category_dict:
             del self.category_dict["demo"]
@@ -869,8 +873,9 @@ class FilterTool(EditorTool):
                 alert(
                     _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
+        #-# Remove the filter categories paths from sys.path to avoid confusion.
+        map(lambda x:sys.path.remove(x), temp_paths)
         self.importLibraries()
-        clean()
 
     @property
     def filterNames(self):
