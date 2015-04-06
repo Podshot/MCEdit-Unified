@@ -844,21 +844,18 @@ class FilterTool(EditorTool):
         self.category_dict = {}
         temp_paths = []
         for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
-            if root.replace(directories.getFiltersDir(), '').replace(os.sep, '') not in ('demo', 'lib'):
+            filter_dir = root.replace(directories.getFiltersDir(), '').strip(os.sep)
+            if not True in map(lambda x:filter_dir.startswith(x), ('demo', 'lib')):
                 for possible_filter in files:
                     if possible_filter.endswith(".py"):
-                        if not root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") in self.category_dict:
-                            self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
+                        if not filter_dir.replace(os.sep, ':') in self.category_dict:
+                            self.category_dict[filter_dir.replace(os.sep, ':')] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
                             #-# Add the category folder to sys.path
                             temp_paths.append(os.path.dirname(os.path.abspath(os.path.join(root, possible_filter))))
                             sys.path.append(os.path.dirname(os.path.abspath(os.path.join(root, possible_filter))))
-                        elif root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"") != "demo":
-                            self.category_dict[root.replace(directories.getFiltersDir(), "").replace(os.path.sep,"")].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
+                        else:
+                            self.category_dict[filter_dir.replace(os.sep, ':')].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
 
-        if "demo" in self.category_dict:
-            del self.category_dict["demo"]
-        if 'lib' in self.category_dict:
-            del self.category_dict['lib']
         filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
         for key in self.category_dict.keys():
