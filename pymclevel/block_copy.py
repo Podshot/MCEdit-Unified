@@ -122,19 +122,21 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
             if convertedSourceData is not None:
                 destChunk.Data[destSlices][mask] = convertedSourceData[mask]
 
-            if entities:
-                ents = sourceChunk.getEntitiesInBox(destChunkBoxInSourceLevel)
-                e += len(ents)
-                for entityTag in ents:
-                    eTag = Entity.copyWithOffset(entityTag, copyOffset, regenerateUUID)
-                    destLevel.addEntity(eTag)
-
             def copy(p):
                 return p in sourceChunkBoxInDestLevel and (blocksToCopy is None or mask[
                     p[0] - sourceChunkBoxInDestLevel.minx,
                     p[2] - sourceChunkBoxInDestLevel.minz,
                     p[1] - sourceChunkBoxInDestLevel.miny,
                 ])
+
+            if entities:
+                destChunk.removeEntities(copy)
+
+                ents = sourceChunk.getEntitiesInBox(destChunkBoxInSourceLevel)
+                e += len(ents)
+                for entityTag in ents:
+                    eTag = Entity.copyWithOffset(entityTag, copyOffset, regenerateUUID)
+                    destLevel.addEntity(eTag)
 
             destChunk.removeTileEntities(copy)
 
