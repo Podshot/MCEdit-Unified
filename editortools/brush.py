@@ -40,7 +40,8 @@ import itertools
 from albow.root import get_root
 import leveleditor
 import logging
-from mceutils import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, FloatInputRow, alertException, drawTerrainCuttingWire
+from mceutils import alertException, drawTerrainCuttingWire
+from albow import ChoiceButton, CheckBoxLabel, showProgress, IntInputRow, FloatInputRow
 import mcplatform
 from numpy import newaxis
 import numpy

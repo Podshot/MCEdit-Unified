@@ -2,7 +2,7 @@ from pymclevel.materials import Block
 from editortools.brush import createBrushMask
 import numpy
 from editortools.operation import mkundotemp
-from mceutils import showProgress
+from albow import showProgress
 import pymclevel
 import datetime
 import collections

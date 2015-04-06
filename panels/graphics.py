@@ -1,6 +1,5 @@
 import albow
 from albow.dialogs import Dialog
-import mceutils
 import resource_packs
 import pymclevel
 from config import config
@@ -25,32 +24,32 @@ class GraphicsPanel(Dialog):
 
         self.saveOldResourcePack = resource_packs.packs.get_selected_resource_pack_name()
 
-        self.fieldOfViewRow = mceutils.FloatInputRow("Field of View: ",
+        self.fieldOfViewRow = albow.FloatInputRow("Field of View: ",
                                                 ref=config.settings.fov, width=100, min=25, max=120)
 
-        self.targetFPSRow = mceutils.IntInputRow("Target FPS: ",
+        self.targetFPSRow = albow.IntInputRow("Target FPS: ",
                                                 ref=config.settings.targetFPS, width=100, min=1, max=60)
 
-        self.bufferLimitRow = mceutils.IntInputRow("Vertex Buffer Limit (MB): ",
+        self.bufferLimitRow = albow.IntInputRow("Vertex Buffer Limit (MB): ",
                                                 ref=config.settings.vertexBufferLimit, width=100, min=0)
 
-        fastLeavesRow = mceutils.CheckBoxLabel("Fast Leaves",
+        fastLeavesRow = albow.CheckBoxLabel("Fast Leaves",
                                                 ref=config.settings.fastLeaves,
                                                 tooltipText="Leaves are solid, like Minecraft's 'Fast' graphics")
 
-        roughGraphicsRow = mceutils.CheckBoxLabel("Rough Graphics",
+        roughGraphicsRow = albow.CheckBoxLabel("Rough Graphics",
                                                 ref=config.settings.roughGraphics,
                                                 tooltipText="All blocks are drawn the same way (overrides 'Fast Leaves')")
 
-        enableMouseLagRow = mceutils.CheckBoxLabel("Enable Mouse Lag",
+        enableMouseLagRow = albow.CheckBoxLabel("Enable Mouse Lag",
                                                 ref=config.settings.enableMouseLag,
                                                 tooltipText="Enable choppy mouse movement for faster loading.")
         
-        playerSkins = mceutils.CheckBoxLabel("Show Player Skins",
+        playerSkins = albow.CheckBoxLabel("Show Player Skins",
                                              ref=config.settings.downloadPlayerSkins,
                                              tooltipText="Show player skins while editing the world")
         
-        maxView = mceutils.IntInputRow("Max View Distance",
+        maxView = albow.IntInputRow("Max View Distance",
                                        ref=config.settings.maxViewDistance,
                                        tooltipText="Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk")
 
@@ -58,7 +57,7 @@ class GraphicsPanel(Dialog):
         packs.remove('Default Resource Pack')
         packs.sort()
         packs.insert(0, 'Default Resource Pack')
-        self.resourcePackButton = mceutils.ChoiceButton(packs, choose=self.change_texture)
+        self.resourcePackButton = albow.ChoiceButton(packs, choose=self.change_texture)
         self.resourcePackButton.selectedChoice = self.saveOldResourcePack
 
         settingsColumn = albow.Column((fastLeavesRow,

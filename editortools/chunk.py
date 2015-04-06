@@ -17,12 +17,13 @@ from OpenGL import GL
 import numpy
 from numpy import newaxis
 
-from albow import Label, ValueDisplay, AttrRef, Button, Column, ask, Row, alert, Widget, Menu
+from albow import Label, ValueDisplay, AttrRef, Button, Column, ask, Row, alert, Widget, Menu, showProgress, \
+    ChoiceButton, IntInputRow, CheckBoxLabel
 from albow.translate import _
 from editortools.editortool import EditorTool
 from glbackground import Panel
 from glutils import DisplayList, gl
-from mceutils import alertException, setWindowCaption, showProgress, ChoiceButton, IntInputRow, CheckBoxLabel
+from mceutils import alertException, setWindowCaption
 import mcplatform
 import directories
 import pymclevel

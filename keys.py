@@ -1,7 +1,6 @@
 #.# Marks the layout modifications. -- D.C.-G.
 from config import config
 import albow
-import mceutils
 from pygame import key
 from albow.dialogs import Dialog
 from albow.translate import _
@@ -506,7 +505,7 @@ class KeyConfigPanel(Dialog):
 
         resetToDefaultRow = albow.Row((albow.Button("Reset to default", action=self.resetDefault),))
 
-        choiceButton = mceutils.ChoiceButton(["WASD", "ESDF", "Arrows", "Numpad", "WASD Old"], choose=self.choosePreset)
+        choiceButton = albow.ChoiceButton(["WASD", "ESDF", "Arrows", "Numpad", "WASD Old"], choose=self.choosePreset)
         if config.keys.forward.get() == "E":
             choiceButton.selectedChoice = "ESDF"
         elif config.keys.forward.get() == "Up":

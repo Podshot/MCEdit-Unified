@@ -11,7 +11,7 @@ from layout import Column, Row
 from translate import _
 from menu import Menu
 from fields import FloatField, IntField, TextFieldWrapped
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class HotkeyColumn(Widget):
@@ -189,6 +189,10 @@ def FloatInputRow(title, *args, **kw):
 
 def IntInputRow(title, *args, **kw):
     return Row((Label(title, tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
+
+
+def TextInputRow(title, *args, **kw):
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextFieldWrapped(*args, **kw)))
 
 
 def showProgress(progressText, progressIterator, cancel=False):

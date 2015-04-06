@@ -14,7 +14,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 from OpenGL import GL
 import numpy
-from albow import Label, Button, Column, alert
+from albow import Label, Button, Column, alert, AttrRef, showProgress, CheckBoxLabel
 from albow.translate import _
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
@@ -23,10 +23,9 @@ from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
 from glutils import Texture
-from mceutils import showProgress, CheckBoxLabel, alertException, setWindowCaption
+from mceutils import alertException, setWindowCaption
 from operation import Operation
 from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
-from albow import AttrRef
 
 from config import config
 from albow.root import get_root

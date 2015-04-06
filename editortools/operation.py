@@ -9,7 +9,7 @@ from pymclevel import BoundingBox
 import numpy
 from albow.root import Cancel
 import pymclevel
-from mceutils import showProgress
+from albow import showProgress
 from pymclevel.mclevelbase import exhaust
 
 undo_folder = os.path.join(tempfile.gettempdir(), "mcedit_undo", str(os.getpid()))

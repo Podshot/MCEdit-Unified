@@ -14,7 +14,7 @@
 from pygame import key, draw, image, Rect, event, MOUSEBUTTONDOWN
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
-    ScrollPanel, ask, alert, input_text_buttons
+    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton
 from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _
@@ -37,7 +37,6 @@ import copy
 from directories import getDataDir
 import os
 import mcplatform
-from mceutils import CheckBoxLabel, ChoiceButton
 from config import config
 
 #-----------------------------------------------------------------------------

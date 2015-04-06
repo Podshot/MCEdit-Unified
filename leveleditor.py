@@ -18,7 +18,7 @@ from pymclevel.infiniteworld import SessionLockLost
 import keys
 import pygame
 from albow.fields import FloatField
-from mceutils import ChoiceButton, TextInputRow
+from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow
 from editortools.blockview import BlockButton
 import ftp_client
 import sys
@@ -199,26 +199,26 @@ class LevelEditor(GLViewport):
         self.viewDistanceReadout = ValueDisplay(width=40, ref=AttrRef(self.renderer, "viewDistance"))
 
         def showViewOptions():
-            col = [mceutils.CheckBoxLabel("Entities", fg_color=(0xff, 0x22, 0x22),
+            col = [CheckBoxLabel("Entities", fg_color=(0xff, 0x22, 0x22),
                                           ref=config.settings.drawEntities),
-                   mceutils.CheckBoxLabel("Items", fg_color=(0x22, 0xff, 0x22), ref=config.settings.drawItems),
-                   mceutils.CheckBoxLabel("TileEntities", fg_color=(0xff, 0xff, 0x22),
+                   CheckBoxLabel("Items", fg_color=(0x22, 0xff, 0x22), ref=config.settings.drawItems),
+                   CheckBoxLabel("TileEntities", fg_color=(0xff, 0xff, 0x22),
                                           ref=config.settings.drawTileEntities),
-                   mceutils.CheckBoxLabel("TileTicks", ref=config.settings.drawTileTicks),
-                   mceutils.CheckBoxLabel("Unpopulated Chunks", fg_color=renderer.TerrainPopulatedRenderer.color,
+                   CheckBoxLabel("TileTicks", ref=config.settings.drawTileTicks),
+                   CheckBoxLabel("Unpopulated Chunks", fg_color=renderer.TerrainPopulatedRenderer.color,
                                           ref=config.settings.drawUnpopulatedChunks),
-                   mceutils.CheckBoxLabel("Chunks Borders", fg_color=renderer.ChunkBorderRenderer.color,
+                   CheckBoxLabel("Chunks Borders", fg_color=renderer.ChunkBorderRenderer.color,
                                           ref=config.settings.drawChunkBorders),
-                   mceutils.CheckBoxLabel("Sky", ref=config.settings.drawSky),
-                   mceutils.CheckBoxLabel("Fog", ref=config.settings.drawFog), mceutils.CheckBoxLabel("Ceiling",
+                   CheckBoxLabel("Sky", ref=config.settings.drawSky),
+                   CheckBoxLabel("Fog", ref=config.settings.drawFog), CheckBoxLabel("Ceiling",
                                                                                                       ref=config.settings.showCeiling),
-                   mceutils.CheckBoxLabel("Chunk Redraw", fg_color=(0xff, 0x99, 0x99),
-                                          ref=config.settings.showChunkRedraw), mceutils.CheckBoxLabel("Hidden Ores",
+                   CheckBoxLabel("Chunk Redraw", fg_color=(0xff, 0x99, 0x99),
+                                          ref=config.settings.showChunkRedraw), CheckBoxLabel("Hidden Ores",
                                                                                                        ref=config.settings.showHiddenOres,
                                                                                                        tooltipText="Check to show/hide specific ores using the settings below.")]
 
             for ore in config.settings.hiddableOres.get():
-                col.append(mceutils.CheckBoxLabel(self.level.materials[ore].name.replace(" Ore", ""),
+                col.append(CheckBoxLabel(self.level.materials[ore].name.replace(" Ore", ""),
                                                   ref=config.settings["showOre{}".format(ore)]))
 
             col = Column(col, align="r")
@@ -234,7 +234,7 @@ class LevelEditor(GLViewport):
         self.viewportButton = Button("Camera View", action=self.swapViewports,
                                      tooltipText=_("Shortcut: {0}").format(_(config.keys.toggleView.get())))
 
-        self.recordUndoButton = mceutils.CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
+        self.recordUndoButton = CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
         
         # TODO: Mark
         self.sessionLockLock = Image(os.path.join("toolicons", "session_good.png"))
@@ -539,7 +539,7 @@ class LevelEditor(GLViewport):
                     tileEntityCounts[ent["id"].value] += 1
 
         with mceutils.setWindowCaption("ANALYZING - "):
-            mceutils.showProgress(_("Analyzing {0} blocks...").format(box.volume), _analyzeBox(), cancel=True)
+            showProgress(_("Analyzing {0} blocks...").format(box.volume), _analyzeBox(), cancel=True)
 
         entitySum = numpy.sum(entityCounts.values())
         tileEntitySum = numpy.sum(tileEntityCounts.values())
@@ -880,7 +880,7 @@ class LevelEditor(GLViewport):
 
     @staticmethod
     def showProgress(*a, **kw):
-        return mceutils.showProgress(*a, **kw)
+        return showProgress(*a, **kw)
 
     def drawConstructionCube(self, box, color, texture=None):
         if texture is None:
@@ -1033,7 +1033,7 @@ class LevelEditor(GLViewport):
                 self.mainViewport.drawSkyBackground()
 
             dimensionsList = [d[0] for d in dimensionsMenu]
-            self.netherButton = mceutils.ChoiceButton(dimensionsList, choose=presentMenu)
+            self.netherButton = ChoiceButton(dimensionsList, choose=presentMenu)
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
             self.remove(self.topRow)
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
@@ -1133,7 +1133,7 @@ class LevelEditor(GLViewport):
 
                 for level in itertools.chain(level.dimensions.itervalues(), [level]):
 
-                    if "Canceled" == mceutils.showProgress("Lighting chunks", level.generateLightsIter(), cancel=True):
+                    if "Canceled" == showProgress("Lighting chunks", level.generateLightsIter(), cancel=True):
                         return
 
                     if self.level == level:
@@ -1154,7 +1154,7 @@ class LevelEditor(GLViewport):
                     count[0] += 1
                     yield count[0],chunks
 
-            if "Canceled" == mceutils.showProgress("Copying chunks", copyChunks(), cancel=True):
+            if "Canceled" == showProgress("Copying chunks", copyChunks(), cancel=True):
                 return
 
         self.recordUndo = True
@@ -2314,15 +2314,15 @@ class LevelEditor(GLViewport):
         label = Label("Creating a new world.")
         generatorPanel = GeneratorPanel()
 
-        xinput = mceutils.IntInputRow("X: ", ref=AttrRef(newWorldPanel, "x"))
-        yinput = mceutils.IntInputRow("Y: ", ref=AttrRef(newWorldPanel, "y"))
-        zinput = mceutils.IntInputRow("Z: ", ref=AttrRef(newWorldPanel, "z"))
-        finput = mceutils.IntInputRow("f: ", ref=AttrRef(newWorldPanel, "f"), min=0, max=3)
+        xinput = IntInputRow("X: ", ref=AttrRef(newWorldPanel, "x"))
+        yinput = IntInputRow("Y: ", ref=AttrRef(newWorldPanel, "y"))
+        zinput = IntInputRow("Z: ", ref=AttrRef(newWorldPanel, "z"))
+        finput = IntInputRow("f: ", ref=AttrRef(newWorldPanel, "f"), min=0, max=3)
         xyzrow = Row([xinput, yinput, zinput, finput])
-        seedinput = mceutils.IntInputRow("Seed: ", width=250, ref=AttrRef(newWorldPanel, "seed"))
+        seedinput = IntInputRow("Seed: ", width=250, ref=AttrRef(newWorldPanel, "seed"))
 
-        winput = mceutils.IntInputRow("East-West Chunks: ", ref=AttrRef(newWorldPanel, "w"), min=0)
-        hinput = mceutils.IntInputRow("North-South Chunks: ", ref=AttrRef(newWorldPanel, "h"), min=0)
+        winput = IntInputRow("East-West Chunks: ", ref=AttrRef(newWorldPanel, "w"), min=0)
+        hinput = IntInputRow("North-South Chunks: ", ref=AttrRef(newWorldPanel, "h"), min=0)
         # grassinputrow = Row( (Label("Grass: ")
         # from editortools import BlockButton
         # blockInput = BlockButton(pymclevel.alphaMaterials, pymclevel.alphaMaterials.Grass)
@@ -2389,7 +2389,7 @@ class LevelEditor(GLViewport):
                                                                              (w * 16, newlevel.Height, h * 16)),
                                              useWorldType=generationtype)
 
-            if "Canceled" == mceutils.showProgress("Generating chunks...", worker, cancel=True):
+            if "Canceled" == showProgress("Generating chunks...", worker, cancel=True):
                 raise RuntimeError("Canceled.")
 
             if y < 64:

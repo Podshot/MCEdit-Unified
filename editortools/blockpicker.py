@@ -1,9 +1,8 @@
-from albow import Label, TextFieldWrapped, Row, TableView, TableColumn, Column, Widget, Button, AttrRef
+from albow import Label, TextFieldWrapped, Row, TableView, TableColumn, Column, Widget, Button, AttrRef, CheckBoxLabel
 from albow.dialogs import Dialog
 from editortools import thumbview
 from editortools import blockview
 from glbackground import GLBackground
-from mceutils import CheckBoxLabel
 from pymclevel import materials
 from albow.root import get_root
 from pymclevel.materials import Block
