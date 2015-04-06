@@ -514,10 +514,12 @@ class IResourcePack:
         self._too_big = False
         self.big_textures_counted = 0
         self.big_textures_max = 10
+        '''
         try:
             os.makedirs(self.texture_path)
         except OSError:
             pass
+        '''
         self.block_image = {}
         self.propogated_textures = []
         self.all_texture_slots = []
@@ -614,18 +616,21 @@ class ZipResourcePack(IResourcePack):
             try:
                 self.open_pack()
             except Exception, e:
-                print "Error while trying to load one of the resource packs: {}".format(e)
+                if 'seek' not in e:
+                    print "Error while trying to load one of the resource packs: {}".format(e)
 
     def open_pack(self):
         zfile = zipfile.ZipFile(self.zipfile)
         for name in zfile.infolist():
             if name.filename.endswith(".png") and not name.filename.split("/")[-1].startswith("._"):
-                if name.filename.startswith("assets/minecraft/textures/blocks"):
+                if name.filename.startswith("assets/minecraft/textures/blocks") and not name.filename.split("/")[-1].startswith("._"):
                     block_name = os.path.normpath(name.filename).split(os.path.sep)[-1]
                     block_name = block_name.split(".")[0]
-                    zfile.extract(name.filename, self.texture_path)
-                    name.filename = name.filename.replace("._", "")
-                    possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
+                    #zfile.extract(name.filename, self.texture_path)
+                    fp = zfile.open(name)
+                    #name.filename = name.filename.replace("._", "")
+                    #possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
+                    possible_texture = Image.open(fp)
                     if possible_texture.size == (16, 16):
                         self.block_image[block_name] = possible_texture
                         if block_name.startswith("repeater_") or block_name.startswith("comparator_"):
