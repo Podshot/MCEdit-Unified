@@ -1756,45 +1756,37 @@ o812 Lighting chunks
 t812 Erleuchtet Chunks
 o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
 t813 Diese Welt wurde nicht von einem FTP Server heruntergeladen. Hochladen von Welten die nicht von einem FTP Server heruntergeladen wurden ist momentan noch nicht möglich.
-o814 Weight 1
-t814 Masse 1
-o815 Weight 2
-t815 Masse 2
-o816 Weight 3
-t816 Masse 3
-o817 Weight 4
-t817 Masse 4
-o818 Window size increased. You may have problems using the cursor until MCEdit is restarted.
-t818 Fenster wurde vergrössert. Sie haben vielleicht Probleme beim Benutzen des Mauszeigers, bis sie MCEdit neugestartet haben.
-o819 FTP Server IP:
-t819 FTP Server IP:
-o820 FTP Username:
-t820 FTP Benutzername:
-o821 FTP Password:
-t821 FTP Passwort:
-o822 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t822 NOTIZ: MCEdit-Unified wird keine anderen FTP Server Daten benutzen als die für den Login
-o823 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t823 Bitte warten Sie während MCEdit-Unified die Welt herunterlädt. Sie wird geöffnet nachdem es fertig ist
-o824 Connect
-t824 Verbinden
-o825 Root: 
-t825 Root: 
-o826 Directory: 
-t826 Verzeichnis: 
-o827 Files: 
-t827 Dateien: 
-o828 Host: 
-t828 Anbieter: 
-o829 Client: 
-t829 Client: 
-o830 Target: 
-t830 Ziel: 
-o831 Error: {0}
-t831 Fehler: {0}
-o832 Incorrect username or password
-t832 Falscher Benutzername oder Passwort
-o833 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t833 Konnte die server.properties Datei nicht finden! Der FTP Client wird die Welt nicht herunterladen können bis die server.properties Datei im standard FTP Verzeichnis ist
-o834 Could not find the world folder from the server.properties file
-t834 Konnte den Welten Ordner von der server.properties Datei nicht finden
+o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t814 Fenster wurde vergrössert. Sie haben vielleicht Probleme beim Benutzen des Mauszeigers, bis sie MCEdit neugestartet haben.
+o815 FTP Server IP:
+t815 FTP Server IP:
+o816 FTP Username:
+t816 FTP Benutzername:
+o817 FTP Password:
+t817 FTP Passwort:
+o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t818 NOTIZ: MCEdit-Unified wird keine anderen FTP Server Daten benutzen als die für den Login
+o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t819 Bitte warten Sie während MCEdit-Unified die Welt herunterlädt. Sie wird geöffnet nachdem es fertig ist
+o820 Connect
+t820 Verbinden
+o821 Root: 
+t821 Root: 
+o822 Directory: 
+t822 Verzeichnis: 
+o823 Files: 
+t823 Dateien: 
+o824 Host: 
+t824 Anbieter: 
+o825 Client: 
+t825 Client: 
+o826 Target: 
+t826 Ziel: 
+o827 Error: {0}
+t827 Fehler: {0}
+o828 Incorrect username or password
+t828 Falscher Benutzername oder Passwort
+o829 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t829 Konnte die server.properties Datei nicht finden! Der FTP Client wird die Welt nicht herunterladen können bis die server.properties Datei im standard FTP Verzeichnis ist
+o830 Could not find the world folder from the server.properties file
+t830 Konnte den Welten Ordner von der server.properties Datei nicht finden
