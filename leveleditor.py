@@ -1540,7 +1540,7 @@ class LevelEditor(GLViewport):
             self.testBoardKey = 0
 
         if keyname == config.keys.fastNudge.get():
-            self.editor.rightClickNudge = False
+            self.rightClickNudge = False
 
     def key_down(self, evt):
         if not pygame.key.get_focused():
