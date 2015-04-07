@@ -37,7 +37,8 @@ import copy
 from directories import getDataDir
 import os
 import mcplatform
-from config import config
+from config import config, DEF_ENC
+from albow.resource import resource_path
 
 #-----------------------------------------------------------------------------
 bullet_image = None
@@ -45,7 +46,7 @@ bullet_image = None
 def get_bullet_image(index, w=16, h=16):
     global bullet_image
     if not bullet_image:
-        bullet_image = image.load(config.nbtTreeSettings.bulletFileName.get())
+        bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
     r =  Rect(0, 0, w, h)
     line_length = int(bullet_image.get_width() / w)
     line = int(index / line_length)
