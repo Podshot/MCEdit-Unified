@@ -16,7 +16,8 @@ import os
 import traceback
 from OpenGL import GL
 import numpy
-from albow import Widget, IntField, Column, Row, Label, Button, CheckBox, AttrRef, FloatField, alert
+from albow import Widget, IntField, Column, Row, Label, Button, CheckBox, AttrRef, FloatField, alert, CheckBoxLabel, IntInputRow, \
+    showProgress
 from albow.translate import _
 from depths import DepthOffset
 from editortools.editortool import EditorTool
@@ -24,7 +25,7 @@ from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
 from glutils import gl
-from mceutils import setWindowCaption, showProgress, alertException, drawFace, CheckBoxLabel, IntInputRow
+from mceutils import setWindowCaption, alertException, drawFace
 import mcplatform
 from operation import Operation
 import pymclevel

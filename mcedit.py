@@ -291,7 +291,7 @@ class MCEdit(GLViewport):
                      refresh)
                    ])
 
-        c = mceutils.HotkeyColumn(hotkeys)
+        c = albow.HotkeyColumn(hotkeys)
 
         return c
 
@@ -320,7 +320,7 @@ class MCEdit(GLViewport):
                      os.path.join(directories.getCacheDir(), "screenshots"))
                    ])
 
-        c = mceutils.HotkeyColumn(hotkeys)
+        c = albow.HotkeyColumn(hotkeys)
 
         return c
 

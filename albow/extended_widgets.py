@@ -11,7 +11,7 @@ from layout import Column, Row
 from translate import _
 from menu import Menu
 from fields import FloatField, IntField, TextFieldWrapped
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class HotkeyColumn(Widget):
@@ -97,17 +97,31 @@ class ChoiceButton(ValueButton):
         if 'choose' in kw:
             self.choose = kw.pop('choose')
 
-        ValueButton.__init__(self, action=self.showMenu, **kw)
 
+        #-# Translation live update preparation
         self.scrolling = scrolling
         self.scroll_items = scroll_items
         self.choices = choices or ["[UNDEFINED]"]
 
-        widths = [self.font.size(_(c))[0] for c in choices] + [self.width]
+        ValueButton.__init__(self, action=self.showMenu, **kw)
+#        widths = [self.font.size(_(c))[0] for c in choices] + [self.width]
+#        if len(widths):
+#            self.width = max(widths) + self.margin * 2
+        self.calc_width()
+        #-#
+
+        self.choiceIndex = 0
+
+    #-# Translation live update preparation
+    def calc_width(self):
+        widths = [self.font.size(_(c))[0] for c in self.choices] + [self.width]
         if len(widths):
             self.width = max(widths) + self.margin * 2
 
-        self.choiceIndex = 0
+    def calc_size(self):
+        ValueButton.calc_size(self)
+        self.calc_width()
+    #-#
 
     def showMenu(self):
         choiceIndex = self.menu.present(self, (0, 0))
@@ -175,6 +189,10 @@ def FloatInputRow(title, *args, **kw):
 
 def IntInputRow(title, *args, **kw):
     return Row((Label(title, tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
+
+
+def TextInputRow(title, *args, **kw):
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextFieldWrapped(*args, **kw)))
 
 
 def showProgress(progressText, progressIterator, cancel=False):

@@ -10,6 +10,10 @@ from theme import ThemeProperty
 import resource
 from translate import _
 
+#-# Translation live update preparation
+#from translate import new_translation
+#-#
+
 
 class Control(object):
     highlighted = overridable_property('highlighted')
@@ -95,25 +99,33 @@ class Label(Widget):
         # base_text: to be used each time a widget takes a formated string
         #            defaults to 'text'.
         Widget.__init__(self, **kwds)
-        font = self.font
+        #-# Translation live update preparation
+#        font = self.font
+        self.fixed_width = width
         self.base_text = base_text or text
         self.previous_translation = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
-        text = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
-        lines = text.split("\n")
+        #-#
+        self._text = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
+        #-#
+        self.calc_size()
+        #-#
+
+    #-# Translation live update preparation
+    def calc_size(self):
+        lines = self._text.split("\n")
         tw, th = 0, 0
         for line in lines:
-            w, h = font.size(line)
+            w, h = self.font.size(line)
             tw = max(tw, w)
             th += h
-        if width is not None:
-            tw = width
+        if self.fixed_width is not None:
+            tw = self.fixed_width
         else:
             tw = max(1, tw)
         d = 2 * self.margin
         self.size = (tw + d, th + d)
-        self._text = text
+#        self._text = text
 
-    #-# Translation live update preparation
 #    def get_update_translation(self):
 #        return Widget.update_translation(self)
 
@@ -121,6 +133,7 @@ class Label(Widget):
 #        # get the translation of the base_text
 ##        trn = _(self.base_text)
 #        self.text = self.base_text
+#        self.calc_size()
 #        Widget.set_update_translation(self, v)
     #-#
 

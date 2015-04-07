@@ -23,7 +23,7 @@ from OpenGL import GL
 from OpenGL import GLU
 
 from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, TableView, Widget, CheckBox, \
-    TextFieldWrapped
+    TextFieldWrapped, MenuButton, ChoiceButton, IntInputRow, TextInputRow, showProgress
 from albow.controls import Label, ValueDisplay
 from albow.dialogs import Dialog, wrapped_label
 from albow.openglwidgets import GLViewport
@@ -829,7 +829,7 @@ class CameraViewport(GLViewport):
                     self.editor.addUnsavedEdit()
             panel.dismiss()
 
-        colorMenu = mceutils.MenuButton("Add Color Code...", colors, menu_picked=menu_picked)
+        colorMenu = MenuButton("Add Color Code...", colors, menu_picked=menu_picked)
 
         row = Row((Button("OK", action=changeSign), Button("Cancel", action=panel.dismiss)))
 
@@ -871,7 +871,7 @@ class CameraViewport(GLViewport):
         titleLabel = Label("Edit Skull Data")
         usernameField = TextFieldWrapped(width=150)
         panel = Dialog()
-        skullMenu = mceutils.ChoiceButton(map(str, skullTypes))
+        skullMenu = ChoiceButton(map(str, skullTypes))
 
         if "Owner" in tileEntity:
             usernameField.value = str(tileEntity["Owner"]["Name"].value)
@@ -1082,11 +1082,11 @@ class CameraViewport(GLViewport):
 
         maxSlot = pymclevel.TileEntity.maxItems[tileEntityTag["id"].value] - 1
         fieldRow = (
-            mceutils.IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
-            mceutils.TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
+            IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
+            TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
             # Text to allow the input of internal item names
-            mceutils.IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
-            mceutils.IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),
+            IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
+            IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),
         )
 
         def deleteFromWorld():
@@ -1095,8 +1095,8 @@ class CameraViewport(GLViewport):
             id = item["id"].value
             Damage = item["Damage"].value
 
-            deleteSameDamage = mceutils.CheckBoxLabel("Only delete items with the same damage value")
-            deleteBlocksToo = mceutils.CheckBoxLabel("Also delete blocks placed in the world")
+            deleteSameDamage = CheckBoxLabel("Only delete items with the same damage value")
+            deleteBlocksToo = CheckBoxLabel("Also delete blocks placed in the world")
             if id not in (8, 9, 10, 11):  # fluid blocks
                 deleteBlocksToo.value = True
 
@@ -1160,7 +1160,7 @@ class CameraViewport(GLViewport):
                 progressInfo = _("Deleting the item {0} from the entire world ({1} chunks)").format(
                     itemName(chestWidget.id, 0), self.editor.level.chunkCount)
 
-                mceutils.showProgress(progressInfo, deleteItemsIter(), cancel=True)
+                showProgress(progressInfo, deleteItemsIter(), cancel=True)
 
                 self.editor.addUnsavedEdit()
                 chestWidget.selectedItemIndex = min(chestWidget.selectedItemIndex, len(tileEntityTag["Items"]) - 1)

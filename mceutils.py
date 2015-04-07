@@ -43,6 +43,12 @@ import shutil
 
 import logging
 
+#!# Used to track the ALBOW stuff imported from here
+def warn(obj):
+    name = getattr(obj, '__name__', getattr(getattr(obj, '__class__', obj), '__name__', obj))
+    logging.getLogger().warn('%s.%s is deprecated and will be removed. Use albow.%s instead.'%(obj.__module__, name, name))
+#!#
+
 
 def alertException(func):
     def _alertException(*args, **kw):
@@ -348,6 +354,7 @@ class HotkeyColumn(Widget):
     is_gl_container = True
 
     def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
+        warn(self)
         if keysColumn is None:
             keysColumn = []
         if buttonsColumn is None:
@@ -406,6 +413,7 @@ from albow import CheckBox, AttrRef, Menu
 
 class MenuButton(Button):
     def __init__(self, title, choices, **kw):
+        warn(self)
         Button.__init__(self, title, **kw)
         self.choices = choices
         self.menu = Menu(title, ((c, c) for c in choices))
@@ -426,6 +434,7 @@ class ChoiceButton(ValueButton):
 
     def __init__(self, choices, scrolling=True, scroll_items=30, **kw):
         # passing an empty list of choices is ill-advised
+        warn(self)
 
         if 'choose' in kw:
             self.choose = kw.pop('choose')
@@ -476,6 +485,7 @@ class ChoiceButton(ValueButton):
 
 
 def CheckBoxLabel(title, *args, **kw):
+    warn(CheckBoxLabel)
     tooltipText = kw.pop('tooltipText', None)
 
     cb = CheckBox(*args, **kw)
@@ -506,10 +516,12 @@ from albow import FloatField, IntField, TextFieldWrapped
 
 
 def FloatInputRow(title, *args, **kw):
+    warn(FloatInputRow)
     return Row((Label(title, tooltipText=kw.get('tooltipText')), FloatField(*args, **kw)))
 
 
 def IntInputRow(title, *args, **kw):
+    warn(IntInputRow)
     return Row((Label(title, tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
 
 
@@ -518,6 +530,7 @@ from datetime import timedelta
 
 
 def TextInputRow(title, *args, **kw):
+    warn(TextInputRow)
     return Row((Label(title, tooltipText=kw.get('tooltipText')), TextFieldWrapped(*args, **kw)))
 
 
@@ -601,6 +614,8 @@ def showProgress(progressText, progressIterator, cancel=False):
     A float value between 0.0 and 1.0 for a determinate indicator,
     A string, to update the progress info label
     or a tuple of (float value, string) to set the progress and update the label"""
+
+    warn(ShowProgress)
 
     class ProgressWidget(Dialog):
         progressFraction = 0.0

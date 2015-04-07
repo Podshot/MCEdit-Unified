@@ -1,11 +1,11 @@
 from config import config
 import release
-import mceutils
 import platform
 
 from albow import AttrRef, Row, Column
 from albow.resource import get_font
 from albow.controls import Label
+from albow.extended_widgets import HotkeyColumn
 from pygame import key
 
 from glbackground import Panel
@@ -49,7 +49,7 @@ class ControlPanel(Panel):
                     (config.keys.quit.get(), "Quit", editor.quit),
                    ])
 
-        buttons = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn, item_spacing=2)
+        buttons = HotkeyColumn(hotkeys, keysColumn, buttonsColumn, item_spacing=2)
 
         sideColumn1 = editor.mcedit.makeSideColumn1()
         sideColumn2 = editor.mcedit.makeSideColumn2()

@@ -23,7 +23,8 @@ from config import config
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel
-from mceutils import ChoiceButton, alertException, setWindowCaption, showProgress, TextInputRow
+from mceutils import setWindowCaption, alertException, compareMD5Hashes
+from albow import ChoiceButton, showProgress, TextInputRow
 import mcplatform
 from operation import Operation
 from albow.dialogs import wrapped_label, alert, Dialog
@@ -35,7 +36,6 @@ import json
 import shutil
 import directories
 import sys
-import mceutils
 import keys
 import imp
 #-#
@@ -770,7 +770,7 @@ class FilterTool(EditorTool):
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
                 del m
-            mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+            compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
             
         def check(list_thing):
             toReturn = []

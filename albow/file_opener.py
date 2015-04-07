@@ -6,7 +6,6 @@ import logging
 import panels
 import pymclevel
 import albow
-import mceutils
 import mcplatform
 from config import config
 from albow.translate import _
@@ -83,7 +82,7 @@ class FileOpener(albow.Widget):
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
-        self.root.commandRow = commandRow = mceutils.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
+        self.root.commandRow = commandRow = albow.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
         commandRow.anchor = 'lrh'
 
         sideColumn1 = mcedit.makeSideColumn1()

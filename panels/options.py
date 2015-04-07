@@ -1,6 +1,6 @@
 import albow
 from albow.dialogs import Dialog
-import mceutils
+#import mceutils
 from config import config
 import pygame
 from albow.translate import _
@@ -60,86 +60,86 @@ class OptionsPanel(Dialog):
 
     def initComponents(self):
         """Initilize the window components. Call this after translation hs been loaded."""
-        autoBrakeRow = mceutils.CheckBoxLabel("Autobrake",
+        autoBrakeRow = albow.CheckBoxLabel("Autobrake",
                                               ref=config.controls.autobrake,
                                               tooltipText="Apply brake when not pressing movement keys")
 
-        swapAxesRow = mceutils.CheckBoxLabel("Swap Axes Looking Down",
+        swapAxesRow = albow.CheckBoxLabel("Swap Axes Looking Down",
                                              ref=config.controls.swapAxes,
                                              tooltipText="Change the direction of the Forward and Backward keys when looking down")
 
-        cameraAccelRow = mceutils.FloatInputRow("Camera Acceleration: ",
+        cameraAccelRow = albow.FloatInputRow("Camera Acceleration: ",
                                                 ref=config.controls.cameraAccel, width=100, min=5.0)
 
-        cameraDragRow = mceutils.FloatInputRow("Camera Drag: ",
+        cameraDragRow = albow.FloatInputRow("Camera Drag: ",
                                                ref=config.controls.cameraDrag, width=100, min=1.0)
 
-        cameraMaxSpeedRow = mceutils.FloatInputRow("Camera Max Speed: ",
+        cameraMaxSpeedRow = albow.FloatInputRow("Camera Max Speed: ",
                                                    ref=config.controls.cameraMaxSpeed, width=100, min=1.0)
 
-        cameraBrakeSpeedRow = mceutils.FloatInputRow("Camera Braking Speed: ",
+        cameraBrakeSpeedRow = albow.FloatInputRow("Camera Braking Speed: ",
                                                      ref=config.controls.cameraBrakingSpeed, width=100,
                                                      min=1.0)
 
-        mouseSpeedRow = mceutils.FloatInputRow("Mouse Speed: ",
+        mouseSpeedRow = albow.FloatInputRow("Mouse Speed: ",
                                                ref=config.controls.mouseSpeed, width=100, min=0.1,
                                                max=20.0)
 
-        undoLimitRow = mceutils.IntInputRow("Undo Limit: ",
+        undoLimitRow = albow.IntInputRow("Undo Limit: ",
                                             ref=config.settings.undoLimit, width=100, min=0)
 
-        maxCopiesRow = mceutils.IntInputRow("Copy Stack Size: ",
+        maxCopiesRow = albow.IntInputRow("Copy Stack Size: ",
                                             ref=config.settings.maxCopies, width=100, min=0,
                                             tooltipText="Maximum number of copied objects.")
 
-        compassSizeRow = mceutils.IntInputRow("Compass Size (%): ",
+        compassSizeRow = albow.IntInputRow("Compass Size (%): ",
                                             ref=config.settings.compassSize, width=100, min=0, max=100)
 
         # FONT SIZE
-        fontProportion = mceutils.IntInputRow("Fonts Proportion (%): ",
+        fontProportion = albow.IntInputRow("Fonts Proportion (%): ",
                                             ref=config.settings.fontProportion, width=100, min=0,
                                             tooltipText="Fonts sizing proportion. The number is a percentage.\nRestart needed!")
         albow.resource.font_proportion = config.settings.fontProportion.get()
 
-        fogIntensityRow = mceutils.IntInputRow("Fog Intensity (%): ",
+        fogIntensityRow = albow.IntInputRow("Fog Intensity (%): ",
                                             ref=config.settings.fogIntensity, width=100, min=0, max=100)
 
-        invertRow = mceutils.CheckBoxLabel("Invert Mouse",
+        invertRow = albow.CheckBoxLabel("Invert Mouse",
                                            ref=config.controls.invertMousePitch,
                                            tooltipText="Reverse the up and down motion of the mouse.")
 
-        spaceHeightRow = mceutils.IntInputRow(_("Low Detail Height"),
+        spaceHeightRow = albow.IntInputRow(_("Low Detail Height"),
                                               ref=config.settings.spaceHeight,
                                               tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
 
-        blockBufferRow = mceutils.IntInputRow("Block Buffer (MB):",
+        blockBufferRow = albow.IntInputRow("Block Buffer (MB):",
                                               ref=albow.AttrRef(self, 'blockBuffer'), min=1,
                                               tooltipText="Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.")
 
-        setWindowPlacementRow = mceutils.CheckBoxLabel("Set Window Placement",
+        setWindowPlacementRow = albow.CheckBoxLabel("Set Window Placement",
                                                        ref=config.settings.setWindowPlacement,
                                                        tooltipText="Try to save and restore the window position.")
 
-        rotateBlockBrushRow = mceutils.CheckBoxLabel("Rotate block with brush",
+        rotateBlockBrushRow = albow.CheckBoxLabel("Rotate block with brush",
                                                         ref=config.settings.rotateBlockBrush,
                                                         tooltipText="When rotating your brush, also rotate the orientation of the block your brushing with")
 
-        compassToggleRow =mceutils.CheckBoxLabel("Toggle compass",
+        compassToggleRow =albow.CheckBoxLabel("Toggle compass",
                                                         ref=config.settings.compassToggle)
 
-        windowSizeRow = mceutils.CheckBoxLabel("Window Resize Alert",
+        windowSizeRow = albow.CheckBoxLabel("Window Resize Alert",
                                                ref=config.settings.shouldResizeAlert,
                                                tooltipText="Reminds you that the cursor won't work correctly after resizing the window.")
 
-        superSecretSettingsRow = mceutils.CheckBoxLabel("Super Secret Settings",
+        superSecretSettingsRow = albow.CheckBoxLabel("Super Secret Settings",
                                                 ref=config.settings.superSecretSettings,
                                                 tooltipText="Weird stuff happen!")
 
-        longDistanceRow = mceutils.CheckBoxLabel("Long-Distance Mode",
+        longDistanceRow = albow.CheckBoxLabel("Long-Distance Mode",
                                                  ref=config.settings.longDistanceMode,
                                                  tooltipText="Always target the farthest block under the cursor, even in mouselook mode.")
 
-        flyModeRow = mceutils.CheckBoxLabel("Fly Mode",
+        flyModeRow = albow.CheckBoxLabel("Fly Mode",
                                             ref=config.settings.flyMode,
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
 
@@ -149,21 +149,21 @@ class OptionsPanel(Dialog):
 
         langNames = [k for k, v in langs]
 
-        self.languageButton = mceutils.ChoiceButton(langNames, choose=self.changeLanguage)
+        self.languageButton = albow.ChoiceButton(langNames, choose=self.changeLanguage)
         if self.sgnal[lng] in self.languageButton.choices:
             self.languageButton.selectedChoice = self.sgnal[lng]
 
         langButtonRow = albow.Row((albow.Label("Language", tooltipText="Choose your language."), self.languageButton))
 
         portableList = ["Portable", "Fixed"]
-        self.goPortableButton = goPortableButton = mceutils.ChoiceButton(portableList, choose=self.togglePortable)
+        self.goPortableButton = goPortableButton = albow.ChoiceButton(portableList, choose=self.togglePortable)
         goPortableButton.selectedChoice = self.saveOldPortable
 
         goPortableButton.tooltipText = self.portableButtonTooltip()
         goPortableRow = albow.Row((albow.Label("Install Mode"), goPortableButton))
 
 # Disabled Crash Reporting Option
-#       reportRow = mceutils.CheckBoxLabel("Report Errors",
+#       reportRow = albow.CheckBoxLabel("Report Errors",
 #                                          ref=config.settings.reportCrashes,
 #                                          tooltipText="Automatically report errors to the developer.")
 
@@ -254,6 +254,7 @@ class OptionsPanel(Dialog):
         #-# Translation live update preparation
 #        update = albow.translate.setLang(lng)[2]
 #        self.mcedit.root.set_update_translation(update or lng == 'en_US')
+        #-#
 
     @staticmethod
     def portableButtonTooltip():

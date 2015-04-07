@@ -20,7 +20,7 @@ from OpenGL import GL
 from collections import defaultdict
 import numpy
 import pygame
-from albow import Row, Label, Button, AttrRef, Column, ask, alert
+from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress
 from albow.translate import _
 from config import config, ColorValue
 from depths import DepthOffset
@@ -28,7 +28,7 @@ from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
-from mceutils import ChoiceButton, CheckBoxLabel, IntInputRow, alertException, drawCube, drawFace, drawTerrainCuttingWire, setWindowCaption, showProgress
+from mceutils import alertException, drawCube, drawFace, drawTerrainCuttingWire, setWindowCaption
 from operation import Operation
 import pymclevel
 from pymclevel.box import Vector, BoundingBox, FloatBox

@@ -14,7 +14,7 @@
 from pygame import key, draw, image, Rect, event, MOUSEBUTTONDOWN
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
-    ScrollPanel, ask, alert, input_text_buttons
+    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton
 from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _
@@ -37,8 +37,8 @@ import copy
 from directories import getDataDir
 import os
 import mcplatform
-from mceutils import CheckBoxLabel, ChoiceButton
-from config import config
+from config import config, DEF_ENC
+from albow.resource import resource_path
 
 #-----------------------------------------------------------------------------
 bullet_image = None
@@ -46,7 +46,7 @@ bullet_image = None
 def get_bullet_image(index, w=16, h=16):
     global bullet_image
     if not bullet_image:
-        bullet_image = image.load(config.nbtTreeSettings.bulletFileName.get())
+        bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
     r =  Rect(0, 0, w, h)
     line_length = int(bullet_image.get_width() / w)
     line = int(index / line_length)
