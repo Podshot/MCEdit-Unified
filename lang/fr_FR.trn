@@ -1743,52 +1743,52 @@ t804 Villageois silencieux
 o805 Install Mode
 t805 Installation
 o806 SAVING - 
-t806 
+t806 SAUVEGARDE - 
 o807 World Type:
-t807 
+t807 Type de monde :
 o808 Amplified
-t808 
+t808 Amplifié
 o809 Large Biomes
-t809 
+t809 Grands biomes
 o810 Superflat
-t810 
+t810 Superplat
 o811 Copying chunks
-t811 
+t811 Copie des chunks
 o812 Lighting chunks
-t812 
+t812 Éclairage des chunks
 o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t813 
+t813 Ce mobde n'a pas été téléchargé depuis un serveur FTP. Il n'est pas encore possible d'envoyer des mondes vers un serveur FTP s'ils n'en viennent pas
 o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
-t814 
+t814 La fenêtre a été agrandie. Vous pouvez avoir du mal à utiliser la souris tant que MCEdit n'est pas redémarré.
 o815 FTP Server IP:
-t815 
+t815 IP du serveur FTP :
 o816 FTP Username:
-t816 
+t816 Nom utilisateur FTP :
 o817 FTP Password:
-t817 
+t817 Mot de passe FTP :
 o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t818 
+t818 NOTE : MCEdit n'utilisera pas d'autres informations que celles nécessaires pour la connexion au serveur FTP
 o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t819 
+t819 Veuillez patienter pendant que MCEdit télécharge le monde. Il sera ouvert quand ce sera fini
 o820 Connect
-t820 
+t820 Connecter
 o821 Root: 
-t821 
+t821 Racine : 
 o822 Directory: 
-t822 
+t822 Répertoire : 
 o823 Files: 
-t823 
+t823 Fichiers : 
 o824 Host: 
-t824 
+t824 Hôte : 
 o825 Client: 
-t825 
+t825 Client : 
 o826 Target: 
-t826 
+t826 Cible : 
 o827 Error: {0}
-t827 
+t827 Erreur : {0}
 o828 Incorrect username or password
-t828 
+t828 Utilisateur ou mot de passe incorrect
 o829 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t829 
+t829 Impossible de trouver le fichier server.properties ! Le client FTP ne pourra télécharger le monde tant que ce fichier n'est pas dans le répertoire FTP par défaut
 o830 Could not find the world folder from the server.properties file
-t830 
+t830 Impossible de trouver le dossier du monde dans le fichier server.properties
