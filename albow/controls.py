@@ -100,7 +100,7 @@ class Label(Widget):
         #            defaults to 'text'.
         Widget.__init__(self, **kwds)
         #-# Translation live update preparation
-#        font = self.font
+        #font = self.font
         self.fixed_width = width
         self.base_text = base_text or text
         self.previous_translation = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
@@ -124,7 +124,7 @@ class Label(Widget):
             tw = max(1, tw)
         d = 2 * self.margin
         self.size = (tw + d, th + d)
-#        self._text = text
+        #self._text = text
 
 #    def get_update_translation(self):
 #        return Widget.update_translation(self)

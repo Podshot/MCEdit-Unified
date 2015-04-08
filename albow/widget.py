@@ -96,6 +96,7 @@ class Widget(object):
             raise TypeError("Widget rect not a pygame.Rect")
         self._rect = Rect(rect or (0, 0, 100, 100))
         #-# Translation live update preparation
+#        self.__lang = albow.translate.getLang()
 #        self.__update_translation = False
 #        self.shrink_wrapped = False
         #-#
@@ -332,7 +333,8 @@ class Widget(object):
     def draw_all(self, surface):
         if self.visible:
             #-# Translation live update preparation
-#            if self.update_translation:
+##            if self.update_translation:
+#            if self.__lang != albow.translate.getLang():
 #                self.set_update_translation(True)
 #            self.__update_translation = False
             #-#
@@ -780,7 +782,8 @@ class Widget(object):
         if not self.visible:
             return
         #-# Translation live update preparation
-#        if self.update_translation:
+##        if self.update_translation:
+#        if self.__lang != albow.translate.getLang():
 #            self.set_update_translation(True)
 #        self.__update_translation = False
         #-#

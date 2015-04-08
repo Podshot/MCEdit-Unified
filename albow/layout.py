@@ -27,7 +27,7 @@ class RowOrColumn(Widget):
         #        % kwds.keys())
         Widget.__init__(self, **kwds)
         #print "albow.controls: RowOrColumn: size =", size, "expand =", expand ###
-        #-# Translation live update preparation
+    #-# Translation live update preparation
         self.calc_size(items)
 
     def calc_size(self, _items=None):
@@ -77,7 +77,7 @@ class RowOrColumn(Widget):
         for item in items:
             setattr(item.rect, attr2, (px, py))
             #-# Translation live update preparation
-#            self.add(item)
+            #self.add(item)
             if _items:
                 self.add(item)
             #-#
