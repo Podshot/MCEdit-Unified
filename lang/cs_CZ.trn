@@ -1697,3 +1697,53 @@ o804 Make Villager Silent
 t804 
 o805 Install Mode
 t805 Mód instalace
+o806 SAVING - 
+t806 
+o807 World Type:
+t807 
+o808 Amplified
+t808 
+o809 Large Biomes
+t809 
+o810 Superflat
+t810 
+o811 Copying chunks
+t811 
+o812 Lighting chunks
+t812 
+o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
+t813 
+o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
+t814 
+o815 FTP Server IP:
+t815 
+o816 FTP Username:
+t816 
+o817 FTP Password:
+t817 
+o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
+t818 
+o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
+t819 
+o820 Connect
+t820 
+o821 Root: 
+t821 
+o822 Directory: 
+t822 
+o823 Files: 
+t823 
+o824 Host: 
+t824 
+o825 Client: 
+t825 
+o826 Target: 
+t826 
+o827 Error: {0}
+t827 
+o828 Incorrect username or password
+t828 
+o829 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
+t829 
+o830 Could not find the world folder from the server.properties file
+t830 
