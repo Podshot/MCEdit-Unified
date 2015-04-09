@@ -121,7 +121,7 @@ class PlayerAddOperation(Operation):
 
     def perform(self, recordUndo=True):
         initial = ""
-        allowed_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQESTUVWXYZ0123456789_"
+        allowed_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
         while True:
             self.player = input_text_buttons("Enter a Player Name: ", 160, initial=initial, allowed_chars=allowed_chars)
             if self.player is None:
