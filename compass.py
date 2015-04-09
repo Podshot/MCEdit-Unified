@@ -7,6 +7,7 @@ from drawable import Drawable
 from glutils import gl
 from mceutils import loadPNGTexture
 from config import config
+import os
 
 log = logging.getLogger(__name__)
 
@@ -19,9 +20,8 @@ class CompassOverlay(Drawable):
     _tex = None
     _yawPitch = (0., 0.)
 
-    def __init__(self, small=False):
+    def __init__(self):
         super(CompassOverlay, self).__init__()
-        self.small = small
 
     @property
     def yawPitch(self):
@@ -34,12 +34,9 @@ class CompassOverlay(Drawable):
 
     def drawSelf(self):
         if self._tex is None:
-            if self.small:
-                filename = "compass_small.png"
-            else:
-                filename = "compass.png"
+            filename = os.path.join("toolicons", "compass.png")
 
-            self._tex = loadPNGTexture("toolicons/" + filename)  # , minFilter=GL.GL_LINEAR, magFilter=GL.GL_LINEAR)
+            self._tex = loadPNGTexture(filename)
 
         self._tex.bind()
         size = 0.001 * config.settings.compassSize.get()

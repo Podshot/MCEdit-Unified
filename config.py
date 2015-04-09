@@ -505,7 +505,7 @@ definitions = {
         ("maxCopies", "Copy stack size", 32),
         ("superSecretSettings", "Super Secret Settings", False),
         ("compassToggle", "Compass Toggle", True),
-        ("compassSize", "Compass Size", 75),
+        ("compassSize", "Compass Size", 60),
         ("fogIntensity", "Fog Intensity", 20),
         ("fontProportion", "Fonts Proportion", 100),
         ("downloadPlayerSkins", "Download Player Skins", True),
