@@ -613,6 +613,7 @@ class MCEdit(GLViewport):
             config.settings.windowY.set(Y)
             config.settings.windowShowCmd.set(showCmd)
         elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            print 'mcplatform.Xlib.__file__', mcplatform.Xlib.__file__
             win = display.get_wm_info()['window']
             dis = mcplatform.Xlib.display.Display()
             win = dis.create_resource_object('window', win)

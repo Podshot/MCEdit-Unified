@@ -1,8 +1,11 @@
 #! /usr/bin/env python
 # Taken from http://www.pygame.org/project-Splash+screen-1186-.html by Rock Achu (rockhachu2)
 # and tweaked ;)
-import pygame
 import os
+if os.sys.platform == 'linux2':
+    os.sys.path.insert(1, os.path.expanduser('~/.local/lib/python2.7/site-packages'))
+    os.sys.path.insert(1, os.path.abspath('./lib'))
+import pygame
 print 'Splash load...'
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
