@@ -164,6 +164,18 @@ class LevelEditor(GLViewport):
             config.keys.up.get(),
             config.keys.down.get()
         ]
+        self.toolbarKeys = [
+            config.keys.select.get(),
+            config.keys.brush.get(),
+            config.keys.clone.get(),
+            config.keys.fillAndReplace.get(),
+            config.keys.filter.get(),
+            config.keys.importKey.get(),
+            config.keys.players.get(),
+            config.keys.worldSpawnpoint.get(),
+            config.keys.chunkControl.get(),
+            config.keys.nbtExplorer.get()
+        ]
         self.cameraPan = [
             config.keys.panLeft.get(),
             config.keys.panRight.get(),
@@ -1707,8 +1719,9 @@ class LevelEditor(GLViewport):
             config.settings.flyMode.set(not config.settings.flyMode.get())
             config.save()
 
-        if keyname in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
-            self.toolbar.selectTool(int(keyname) - 1)
+        for i, keyName in enumerate(self.toolbarKeys):
+            if keyname == keyName:
+                self.toolbar.selectTool(i)
 
         if keyname in ('F1', 'F2', 'F3', 'F4', 'F5'):
             self.mcedit.loadRecentWorldNumber(int(keyname[1]))

@@ -450,6 +450,17 @@ definitions = {
         ("exportSelection", "export selection", "Ctrl-E"),
         ("toggleRenderer", "toggle renderer", "Ctrl-M"),
         ("uploadWorld", "upload world", "Ctrl-U"),
+
+        ("select", "select", "1"),
+        ("brush", "brush", "2"),
+        ("clone", "clone", "3"),
+        ("fillAndReplace", "fill and replace", "4"),
+        ("filter", "filter", "5"),
+        ("importKey", "import", "6"),
+        ("players", "players", "7"),
+        ("worldSpawnpoint", "world spawnpoint", "8"),
+        ("chunkControl", "chunk control", "9"),
+        ("nbtExplorer", "nbt explorer", "None"),
     ],
     ("version", "Version"): [
         ("version", "version", "1.1.2.0")

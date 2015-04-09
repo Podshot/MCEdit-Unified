@@ -96,7 +96,19 @@ class KeyConfigPanel(Dialog):
         "Take a Screenshot",
         "Debug Overlay",
         "Fast Nudge",
-        "Fast Increment Modifier"
+        "Fast Increment Modifier",
+        "",
+        "<Toolbar>",
+        "Select",
+        "Brush",
+        "Clone",
+        "Fill and Replace",
+        "Filter",
+        "Import Key",
+        "Players",
+        "World Spawnpoint",
+        "Chunk Control",
+        "NBT Explorer"
     ]
 
     otherNames = {
@@ -117,7 +129,8 @@ class KeyConfigPanel(Dialog):
         "Deselect Chunks": "Deselect Chunks (Hold)",
         "Delete Blocks": "Delete",
         "Export Selection": "Export",
-        "Take a Screenshot": "Take Screenshot"
+        "Take a Screenshot": "Take Screenshot",
+        "Import Key": "Import"
     }
 
     presets = {
@@ -189,7 +202,18 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl")
+                    ("Fast Increment Modifier", "Ctrl"),
+
+                    ("Select", "1"),
+                    ("Brush", "2"),
+                    ("Clone", "3"),
+                    ("Fill and Replace", "4"),
+                    ("Filter", "5"),
+                    ("Import Key", "6"),
+                    ("Players", "7"),
+                    ("World Spawnpoint", "8"),
+                    ("Chunk Control", "9"),
+                    ("NBT Explorer", "None")
                 ],
                 "ESDF": [
                     ("Forward", "E"),
@@ -259,7 +283,18 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl")
+                    ("Fast Increment Modifier", "Ctrl"),
+
+                    ("Select", "1"),
+                    ("Brush", "2"),
+                    ("Clone", "3"),
+                    ("Fill and Replace", "4"),
+                    ("Filter", "5"),
+                    ("Import Key", "6"),
+                    ("Players", "7"),
+                    ("World Spawnpoint", "8"),
+                    ("Chunk Control", "9"),
+                    ("NBT Explorer", "None")
                 ],
                 "Arrows": [
                     ("Forward", "Up"),
@@ -329,7 +364,18 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl")
+                    ("Fast Increment Modifier", "Ctrl"),
+
+                    ("Select", "1"),
+                    ("Brush", "2"),
+                    ("Clone", "3"),
+                    ("Fill and Replace", "4"),
+                    ("Filter", "5"),
+                    ("Import Key", "6"),
+                    ("Players", "7"),
+                    ("World Spawnpoint", "8"),
+                    ("Chunk Control", "9"),
+                    ("NBT Explorer", "None")
                 ],
                 "Numpad": [
                     ("Forward", "[8]"),
@@ -399,7 +445,18 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl")
+                    ("Fast Increment Modifier", "Ctrl"),
+
+                    ("Select", "1"),
+                    ("Brush", "2"),
+                    ("Clone", "3"),
+                    ("Fill and Replace", "4"),
+                    ("Filter", "5"),
+                    ("Import Key", "6"),
+                    ("Players", "7"),
+                    ("World Spawnpoint", "8"),
+                    ("Chunk Control", "9"),
+                    ("NBT Explorer", "None")
                 ],
                 "WASD Old": [
                     ("Forward", "W"),
@@ -469,7 +526,18 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "Shift"),
-                    ("Fast Increment Modifier", "Shift")
+                    ("Fast Increment Modifier", "Shift"),
+
+                    ("Select", "1"),
+                    ("Brush", "2"),
+                    ("Clone", "3"),
+                    ("Fill and Replace", "4"),
+                    ("Filter", "5"),
+                    ("Import Key", "6"),
+                    ("Players", "7"),
+                    ("World Spawnpoint", "8"),
+                    ("Chunk Control", "9"),
+                    ("NBT Explorer", "None")
                 ]}
 
     selectedKeyIndex = 0
@@ -540,6 +608,19 @@ class KeyConfigPanel(Dialog):
             config.keys.back.get(),
             config.keys.up.get(),
             config.keys.down.get()
+        ]
+
+        self.editor.toolbarKeys = [
+            config.keys.select.get(),
+            config.keys.brush.get(),
+            config.keys.clone.get(),
+            config.keys.fillAndReplace.get(),
+            config.keys.filter.get(),
+            config.keys.importKey.get(),
+            config.keys.players.get(),
+            config.keys.worldSpawnpoint.get(),
+            config.keys.chunkControl.get(),
+            config.keys.nbtExplorer.get()
         ]
 
         self.editor.cameraPan = [
