@@ -199,7 +199,7 @@ class Widget(object):
             widget.parent_resized(dw, dh)
 
     def parent_resized(self, dw, dh):
-        debug_resize = self.debug_resize or self.parent.debug_resize
+        debug_resize = self.debug_resize or getattr(self.parent, 'debug_resize', False)
         if debug_resize:
             print "Widget.parent_resized:", self, "by", (dw, dh)
         left, top, width, height = self._rect

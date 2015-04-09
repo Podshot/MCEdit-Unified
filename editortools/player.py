@@ -437,9 +437,22 @@ class PlayerPositionPanel(Panel):
         btns = Column([self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin], margin=0, spacing=2)
         h = max_height - btns.height - self.pages.margin * 2 - 2 - self.font.size(" ")[1] * 2
 
+        col = Label('')
+        def close():
+            self.pages.show_page(col)
+        self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject={}, height=max_height, \
+                                            close_text="Go Back", no_header=True, close_action=close,
+                                            load_text=None)
+        self.nbttree.shrink_wrap()
+
+        self.nbtpage = Column([self.nbttree,])
+        self.nbtpage.shrink_wrap()
+        self.pages.add_page("NBT Data", self.nbtpage)
+        self.pages.set_rect(map(lambda x:x+self.margin, self.nbttree._rect))
+
         tableview = TableView(nrows=(h - (self.font.size(" ")[1] * 2.5)) / self.font.size(" ")[1],
                               header_height=self.font.size(" ")[1],
-                              columns=[TableColumn("Player Name(s):", 200),],
+                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 2)),],
                               height=h,
                              )
         tableview.index = 0
@@ -463,21 +476,12 @@ class PlayerPositionPanel(Panel):
         tableview.rows.tooltipText = "Double-click or use the button below to edit the NBT Data."
 
         self.table = tableview
-        col = Column([tableview, btns], spacing=2)
-        self.col = col
-        def close():
-            self.pages.show_page(col)
-        self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject={}, height=max_height, \
-                                            close_text="Go Back", no_header=True, close_action=close,
-                                            load_text=None)
-        self.nbttree.shrink_wrap()
-        
-        
-        self.pages.add_page("Players", col)
-        self.nbtpage = Column([self.nbttree,])
-        self.nbtpage.shrink_wrap()
-        self.pages.add_page("NBT Data", self.nbtpage)
-        self.pages.set_rect(self.nbttree._rect)
+
+        col.set_parent(None)
+        self.col = col = Column([tableview, btns], spacing=2)
+
+        self.pages.add_page("Players", col, 0)
+
         self.pages.shrink_wrap()
         self.pages.show_page(col)
         self.add(self.pages)
