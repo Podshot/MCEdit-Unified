@@ -2103,28 +2103,103 @@ class LevelEditor(GLViewport):
         if not self.change:
             return
 
+        class LevelNameChangedOperation(Operation):
+            def __init__(self, editor, level):
+                self.editor = editor
+                self.level = level
+                self.canUndo = True
+
+            def perform(self, recordUndo=True):
+                if recordUndo:
+                    self.UndoText = self.level.LevelName
+                    self.RedoText = nameField.value
+                self.level.LevelName = nameField.value
+
+            def undo(self):
+                self.level.LevelName = self.UndoText
+
+            def redo(self):
+                self.level.LevelName = self.RedoText
+
+        class TimeChangedOperation(Operation):
+            def __init__(self, editor, level):
+                self.editor = editor
+                self.level = level
+                self.canUndo = True
+
+            def perform(self, recordUndo=True):
+                if recordUndo:
+                    self.UndoTime = self.level.Time
+                    self.RedoTime = time
+                self.level.Time = time
+
+            def undo(self):
+                self.level.Time = self.UndoTime
+
+            def redo(self):
+                self.level.Time = self.RedoTime
+
+        class RandomSeedChangedOperation(Operation):
+            def __init__(self, editor, level):
+                self.editor = editor
+                self.level = level
+                self.canUndo = True
+
+            def perform(self, recordUndo=True):
+                if recordUndo:
+                    self.UndoSeed = self.level.RandomSeed
+                    self.RedoSeed = seedField.value
+                self.level.RandomSeed = seedField.value
+
+            def undo(self):
+                self.level.RandomSeed = self.UndoSeed
+
+            def redo(self):
+                self.level.RandomSeed = self.RedoSeed
+
+        class GameTypeChangedOperation(Operation):
+            def __init__(self, editor, level):
+                self.editor = editor
+                self.level = level
+                self.canUndo = True
+
+            def perform(self, recordUndo=True):
+                if recordUndo:
+                    self.UndoGameType = self.level.GameType
+                    self.RedoGameType = b.gametype
+                self.level.GameType = b.gametype
+
+            def undo(self):
+                self.level.GameType = self.UndoGameType
+
+            def redo(self):
+                self.level.GameType = self.RedoGameType
+
         if hasattr(self.level, 'Time'):
             h, m = timeInput.value
             time = composeMCTime(dayInput.value, h, m, tick)
             time -= timezoneAdjust
             if self.level.Time != time:
-                self.level.Time = time
-                # xxx TimeChangeOperation
+                op = TimeChangedOperation(self, self.level)
+                self.addOperation(op)
                 self.addUnsavedEdit()
 
         if hasattr(self.level, 'RandomSeed'):
             if seedField.value != self.level.RandomSeed:
-                self.level.RandomSeed = seedField.value
+                op = RandomSeedChangedOperation(self, self.level)
+                self.addOperation(op)
                 self.addUnsavedEdit()
 
         if hasattr(self.level, 'LevelName'):
             if nameField.value != self.level.LevelName:
-                self.level.LevelName = nameField.value
+                op = LevelNameChangedOperation(self, self.level)
+                self.addOperation(op)
                 self.addUnsavedEdit()
 
         if hasattr(self.level, 'GameType'):
             if b.gametype != self.level.GameType:
-                self.level.GameType = b.gametype
+                op = GameTypeChangedOperation(self, self.level)
+                self.addOperation(op)
                 self.addUnsavedEdit()
 
     def swapViewDistance(self):
