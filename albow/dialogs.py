@@ -168,7 +168,7 @@ def input_text(prompt, width, initial=None, **kwds):
         return None
 
 
-def input_text_buttons(prompt, width, initial=None, **kwds):
+def input_text_buttons(prompt, width, initial=None, allowed_chars=None, **kwds):
     box = Dialog(**kwds)
     d = box.margin
 
@@ -184,7 +184,7 @@ def input_text_buttons(prompt, width, initial=None, **kwds):
 
     lb = Label(prompt)
     lb.topleft = (d, d)
-    tf = TextFieldWrapped(width)
+    tf = TextFieldWrapped(width,allowed_chars=allowed_chars)
     if initial:
         tf.set_text(initial)
     tf.enter_action = ok

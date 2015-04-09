@@ -507,7 +507,7 @@ class TextEditorWrapped(Widget):
 
     _text = u""
 
-    def __init__(self, width, lines, upper=None, **kwds):
+    def __init__(self, width, lines, upper=None, allowed_chars=None, **kwds):
         Widget.__init__(self, **kwds)
         self.set_size_for_text(width, lines)
         if upper is not None:
@@ -520,6 +520,7 @@ class TextEditorWrapped(Widget):
         self.topLine = 0
         self.dispLines = lines
         self.textChanged = True
+        self.allowed_chars = allowed_chars
 
     def get_text(self):
         return self._text
@@ -759,6 +760,12 @@ class TextEditorWrapped(Widget):
                     #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
                     t = pyperclip.paste().replace("\n", " ")
                     if t is not None:
+                        allow = True
+                        for char in t:
+                            if not self.allow_char(char):
+                                allow = False
+                        if not allow:
+                            return
                         if self.insertion_point is not None:
                             self.text = self.text[:self.insertion_point] + t + self.text[self.insertion_point:]
                             self.insertion_point += len(t)
@@ -951,9 +958,10 @@ class TextEditorWrapped(Widget):
                 return
         return 'pass'
 
-    @staticmethod
-    def allow_char(c):
-        return True
+    def allow_char(self, c):
+        if not self.allowed_chars:
+            return True
+        return c in self.allowed_chars
 
     def mouse_down(self, e):
         self.get_root().notMove = True
@@ -1125,7 +1133,7 @@ class FieldWrapped(Control, TextEditorWrapped):
     max = None
     enter_passes = False
 
-    def __init__(self, width=None, lines=1, **kwds):
+    def __init__(self, width=None, lines=1, allowed_chars=None, **kwds):
         min = self.predict_attr(kwds, 'min')
         max = self.predict_attr(kwds, 'max')
         if 'format' in kwds:
@@ -1148,7 +1156,7 @@ class FieldWrapped(Control, TextEditorWrapped):
             width = 100
         if lines is None:
             lines = 1
-        TextEditorWrapped.__init__(self, width, lines, **kwds)
+        TextEditorWrapped.__init__(self, width, lines, allowed_chars=allowed_chars, **kwds)
 
     def format_value(self, x):
         if x == self.empty:
