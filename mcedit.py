@@ -101,6 +101,15 @@ if "-tt" in sys.argv:
 
 import mceutils
 import mcplatform
+#-# DEBUG
+if mcplatform.hasXlibDisplay:
+    print '*** Xlib version', str(mcplatform.Xlib.__version__).replace(' ', '').replace(',', '.')[1:-1], 'found in',
+    if os.path.expanduser('~/.local/lib/python2.7/site-packages') in mcplatform.Xlib.__file__:
+        print 'user\'s',
+    else:
+        print 'system\'s',
+    print 'libraries.'
+#-#
 from mcplatform import platform_open
 import numpy
 from pymclevel.minecraft_server import ServerJarStorage
