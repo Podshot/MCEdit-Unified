@@ -51,7 +51,9 @@ class GraphicsPanel(Dialog):
         
         maxView = albow.IntInputRow("Max View Distance",
                                        ref=config.settings.maxViewDistance,
-                                       tooltipText="Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk")
+                                       tooltipText="Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk"
+                                       )
+        maxView.subwidgets[1]._increment = 2
 
         packs = resource_packs.packs.get_available_resource_packs()
         packs.remove('Default Resource Pack')
@@ -94,8 +96,13 @@ class GraphicsPanel(Dialog):
         resource_packs.packs.set_selected_resource_pack_name(self.resourcePackButton.selectedChoice)
         self.mcedit.displayContext.loadTextures()
     texturePack = config.settings.skin.property(_reloadTextures)
+    
+    def checkMaxView(self):
+        if (config.settings.maxViewDistance.get() % 2) != 0:
+            config.settings.maxViewDistance.set(config.settings.maxViewDistance.get()-1)
 
     def dismiss(self, *args, **kwargs):
+        self.checkMaxView()
         for key in self.saveOldConfig.keys():
             self.saveOldConfig[key] = key.get()
         self.saveOldResourcePack = self.resourcePackButton.selectedChoice

@@ -944,7 +944,7 @@ class BaseEntityRenderer(EntityRendererGeneric):
 
 class MonsterRenderer(BaseEntityRenderer):
     layer = Layer.Entities  # xxx Monsters
-    notMonsters = {"Item", "XPOrb", "Painting"}
+    notMonsters = {"Item", "XPOrb", "Painting", "ItemFrame"}
 
     def makeChunkVertices(self, chunk):
         monsterPositions = []

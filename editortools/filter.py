@@ -326,6 +326,8 @@ class FilterToolPanel(Panel):
         self.tool = tool
         self.selectedFilterName = None
         self.usingMacro = False
+                
+            
 
     def reload(self, filterOptionsPanel=None):
         for i in list(self.subwidgets):
@@ -440,7 +442,7 @@ class FilterToolPanel(Panel):
             self.selectedFilterName = self.filterSelect.selectedChoice
             self.reload()
         else:
-            if self.filterSelect.selectedChoice.replace("[Marco] ", "") not in self.marco_json["Marcos"] :
+            if self.filterSelect.selectedChoice.replace("[Macro] ", "") not in self.macro_json["Macros"]:
                 return
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
