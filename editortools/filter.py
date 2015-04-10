@@ -191,7 +191,7 @@ class FilterModuleOptions(Widget):
                                         wid = v
                                 else:
                                     if key == "value":
-                                        val = splitWord[1]
+                                        val = splitWord[1:]
 
                         if val is None:
                             val = ""
