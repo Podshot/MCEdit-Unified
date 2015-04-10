@@ -399,7 +399,7 @@ class TimeField(Field):
     allowed_chars = ':0123456789 APMapm'
 
     def format_value(self, hm):
-        format = "%d:%02d"
+        format = "%02d:%02d"
         h, m = hm
         if h >= 12:
             h -= 12
@@ -442,9 +442,9 @@ class TimeField(Field):
 
         (h, m) = self.value
         pos = self.pos_to_index(evt.local[0])
-        if pos < 2:
+        if pos < 3:
             h += delta
-        elif pos < 5:
+        elif pos < 6:
             m += delta
         else:
             h = (h + 12) % 24
