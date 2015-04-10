@@ -265,6 +265,7 @@ class FillTool(EditorTool):
 
         self.editor.addUnsavedEdit()
         self.editor.invalidateBox(box)
+        self.editor.toolbar.selectTool(-1)
 
     def roll(self, amount=1, blocksOnly=False):
         if blocksOnly:
