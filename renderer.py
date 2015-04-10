@@ -1000,9 +1000,9 @@ class ItemRenderer(BaseEntityRenderer):
             color = colorMap.get(ent["id"].value)
             if color is None:
                 continue
-            
             pos = pymclevel.Entity.pos(ent)
-            pos[1] += 0.5
+            if ent["id"].value not in ("Painting", "ItemFrame"):
+                pos[1] += 0.5
             entityPositions.append(pos)
             entityColors.append(color)
 
