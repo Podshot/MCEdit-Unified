@@ -954,8 +954,9 @@ class MonsterRenderer(BaseEntityRenderer):
             id = ent["id"].value
             if id in self.notMonsters:
                 continue
-
-            monsterPositions.append(pymclevel.Entity.pos(ent))
+            pos = pymclevel.Entity.pos(ent)
+            pos[1] += 0.5
+            monsterPositions.append(pos)
 
         monsters = self._computeVertices(monsterPositions,
                                          (0xff, 0x22, 0x22, 0x44),
@@ -999,8 +1000,10 @@ class ItemRenderer(BaseEntityRenderer):
             color = colorMap.get(ent["id"].value)
             if color is None:
                 continue
-
-            entityPositions.append(pymclevel.Entity.pos(ent))
+            
+            pos = pymclevel.Entity.pos(ent)
+            pos[1] += 0.5
+            entityPositions.append(pos)
             entityColors.append(color)
 
         entities = self._computeVertices(entityPositions,

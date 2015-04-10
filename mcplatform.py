@@ -34,6 +34,7 @@ if sys.platform == "win32":
     if platform.architecture()[0] == "64bit":
         plat = "win-amd64"
     sys.path.append(join(directories.getDataDir(), "pymclevel", "build", "lib." + plat + "-2.6").encode(enc))
+    hasXlibDisplay = False
 elif sys.platform == 'linux2':
     try:
         import Xlib.display
