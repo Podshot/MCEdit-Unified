@@ -40,7 +40,7 @@ log = logging.getLogger(__name__)
 class PlayerRemoveOperation(Operation):
     undoTag = None
 
-    def __init__(self, tool, player="Player"):
+    def __init__(self, tool, player="Player (Single Player)"):
         super(PlayerRemoveOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
         self.player = player
@@ -52,10 +52,11 @@ class PlayerRemoveOperation(Operation):
             alert(_("Cannot perform action while saving is taking place"))
             return
 
-        if self.player == "Player":
+        if self.player == "Player (Single Player)":
             answer = ask(_("Are you sure you want to delete the default player?"), ["Yes", "Cancel"])
             if answer == "Cancel":
                 return
+            self.player = "Player"
 
         if recordUndo:
             self.undoTag = self.level.getPlayerTag(self.player)
@@ -66,7 +67,7 @@ class PlayerRemoveOperation(Operation):
                 #self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
                 self.tool.panel.players.remove(version_utils.playercache.getPlayerFromUUID(self.player))
             else:
-                self.tool.panel.players.remove("Player")
+                self.tool.panel.players.remove("Player (Single Player)")
 
             while self.tool.panel.table.index >= len(self.tool.panel.players):
                 self.tool.panel.table.index -= 1
@@ -97,7 +98,7 @@ class PlayerRemoveOperation(Operation):
                 if self.player != "Player":
                     self.tool.panel.players.append(version_utils.playercache.getPlayerFromUUID(self.player))
                 else:
-                    self.tool.panel.players.append("Player")
+                    self.tool.panel.players.append("Player (Single Player)")
 
                 if "[No players]" in self.tool.panel.players:
                     self.tool.panel.players.remove("[No players]")
@@ -410,12 +411,12 @@ class PlayerPositionPanel(Panel):
                         else:
                             self.player_UUID[player] = data
                 if "Player" in players:
-                    self.player_UUID["Player"] = "Player"
+                    self.player_UUID["Player (Single Player)"] = "Player"
                 if "[No players]" not in players:
-                    players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player" else x)
+                    players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player (Single Player)" else x)
 
         else:
-            players = ["Player"]
+            players = ["Player (Single Player)"]
         self.players = players
 
         self.pages = TabPanel()
@@ -490,7 +491,7 @@ class PlayerPositionPanel(Panel):
 
     def editNBTData(self):
         player = self.selectedPlayer
-        if player == 'Player':
+        if player == 'Player (Single Player)':
             alert("Not yet implemented.\nUse the NBT Explorer to edit this player.")
         elif player == '[No players]':
             return
@@ -520,7 +521,7 @@ class PlayerPositionPanel(Panel):
     def selectedPlayer(self):
         if not self.level.oldPlayerFolderFormat:
             player = self.players[self.table.index]
-            if player != "Player" and player != "[No players]":
+            if player != "Player (Single Player)" and player != "[No players]":
                 return self.player_UUID[player]
             else:
                 return player
@@ -561,10 +562,14 @@ class PlayerPositionTool(EditorTool):
     def movePlayer(self):
         if self.panel.selectedPlayer != "[No players]":
             self.movingPlayer = self.panel.selectedPlayer
+            if self.movingPlayer == "Player (Single Player)":
+                self.movingPlayer = "Player"
 
     @alertException
     def movePlayerToCamera(self):
         player = self.panel.selectedPlayer
+        if player == "Player (Single Player)":
+            player = "Player"
         if player != "[No players]":
             pos = self.editor.mainViewport.cameraPosition
             y = self.editor.mainViewport.yaw
@@ -586,7 +591,7 @@ class PlayerPositionTool(EditorTool):
         #if result == "Ok":
         try:
             for player in self.editor.level.players:
-                if player != "Player" and player != "[No players]" and player in self.playerTexture.keys():
+                if player != "Player" and player in self.playerTexture.keys():
                     del self.playerTexture[player]
                     self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True, instance=self))
         except:
@@ -594,6 +599,9 @@ class PlayerPositionTool(EditorTool):
 
     def gotoPlayerCamera(self):
         player = self.panel.selectedPlayer
+        if player == "Player (Single Player)":
+            player = "Player"
+
         try:
             pos = self.editor.level.getPlayerPosition(player)
             y, p = self.editor.level.getPlayerOrientation(player)
@@ -609,6 +617,8 @@ class PlayerPositionTool(EditorTool):
 
     def gotoPlayer(self):
         player = self.panel.selectedPlayer
+        if player == "Player (Single Player)":
+            player = "Player"
 
         try:
             if self.editor.mainViewport.pitch < 0:
