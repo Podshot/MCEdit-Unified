@@ -133,7 +133,10 @@ def _(string, doNotTranslate=False):
         return string
     if type(string) not in (str, unicode):
         return string
-    trn = u"" + string
+    try:
+        trn = u"" + string
+    except UnicodeDecodeError:
+        trn = string_cache.get(string, string)
     if '-' in string:
         # Support for hotkeys
         trn = '-'.join([_(a) for a in string.split('-')])
