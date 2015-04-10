@@ -19,7 +19,8 @@ class GraphicsPanel(Dialog):
             config.settings.vertexBufferLimit: config.settings.vertexBufferLimit.get(),
             config.settings.fastLeaves: config.settings.fastLeaves.get(),
             config.settings.roughGraphics: config.settings.roughGraphics.get(),
-            config.settings.enableMouseLag: config.settings.enableMouseLag.get()
+            config.settings.enableMouseLag: config.settings.enableMouseLag.get(),
+            config.settings.maxViewDistance: config.settings.maxViewDistance.get()
         }
 
         self.saveOldResourcePack = resource_packs.packs.get_selected_resource_pack_name()
@@ -49,11 +50,11 @@ class GraphicsPanel(Dialog):
                                              ref=config.settings.downloadPlayerSkins,
                                              tooltipText="Show player skins while editing the world")
         
-        maxView = albow.IntInputRow("Max View Distance",
+        self.maxView = albow.IntInputRow("Max View Distance",
                                        ref=config.settings.maxViewDistance,
                                        tooltipText="Sets the maximum view distance for the renderer. Values over 32 can possibly be unstable, so use it at your own risk"
                                        )
-        maxView.subwidgets[1]._increment = 2
+        self.maxView.subwidgets[1]._increment = 2
 
         packs = resource_packs.packs.get_available_resource_packs()
         packs.remove('Default Resource Pack')
@@ -69,7 +70,7 @@ class GraphicsPanel(Dialog):
                                        self.fieldOfViewRow,
                                        self.targetFPSRow,
                                        self.bufferLimitRow,
-                                       maxView,
+                                       self.maxView,
                                        playerSkins,
                                        self.resourcePackButton,
                                       ), align='r')
@@ -154,6 +155,7 @@ class GraphicsPanel(Dialog):
         self.fieldOfViewRow.subwidgets[1].editing = False
         self.targetFPSRow.subwidgets[1].editing = False
         self.bufferLimitRow.subwidgets[1].editing = False
+        self.maxView.subwidgets[1].editing = False
 
     def dispatch_key(self, name, evt):
         super(GraphicsPanel, self).dispatch_key(name, evt)
