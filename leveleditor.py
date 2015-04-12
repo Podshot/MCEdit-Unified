@@ -251,8 +251,10 @@ class LevelEditor(GLViewport):
         # TODO: Mark
         self.sessionLockLock = Image(os.path.join("toolicons", "session_good.png"))
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
+        self.sessionLockLock.mouse_down = self.mouse_down_session
         self.sessionLockLabel = Label("Session:", margin=0)
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
+        self.sessionLockLabel.mouse_down = self.mouse_down_session
 
         row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
                self.viewButton, self.viewportButton, self.recordUndoButton, Row((self.sessionLockLabel, self.sessionLockLock), spacing=2))
@@ -296,6 +298,23 @@ class LevelEditor(GLViewport):
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
+
+    def mouse_down_session(self, evt):
+        class SessionLockOptions(Panel):
+            def __init__(self):
+                Panel.__init__(self)
+                self.autoChooseCheckBox = CheckBoxLabel("Override Minecraft Changes (Not Recommended)",
+                                                        ref=config.session.override,
+                                                        tooltipText="Always override Minecraft changes when map is open in MCEdit. (Not recommended)")
+
+                col = Column((Label("Session Lock Options"), self.autoChooseCheckBox, Button("OK", action=self.dismiss)))
+
+                self.add(col)
+                self.shrink_wrap()
+
+        if evt.button == 3:
+            sessionLockPanel = SessionLockOptions()
+            sessionLockPanel.present()
 
     _viewMode = None
 

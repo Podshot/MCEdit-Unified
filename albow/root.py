@@ -365,7 +365,10 @@ class RootWidget(Widget):
                                 self.editor.level.checkSessionLock()
                         except Exception, e:
                             log.warn(u"Error reading chunk: %s", e)
-                            self.sessionStolen = True
+                            if not config.session.override.get():
+                                self.sessionStolen = True
+                            else:
+                                self.editor.level.acquireSessionLock()
 
                     if self.editor.level is not None:
                         self.editor.cameraInputs = [0., 0., 0., 0., 0., 0.]

@@ -590,6 +590,9 @@ definitions = {
         ("showAllTags", "Show all the tags in the tree", False),
     ],
     ("Filter Keys", "Filter Keys"): [],
+    ("session", "Session",): [
+        ("override", "Override", False)
+    ]
 }
 
 
