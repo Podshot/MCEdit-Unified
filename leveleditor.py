@@ -2266,7 +2266,7 @@ class LevelEditor(GLViewport):
             return
 
         def loadWorld():
-            self.mcedit.loadFile(worldData[worldTable.selectedWorldIndex][2].filename)
+            self.mcedit.loadFile(self.worldData[worldTable.selectedWorldIndex][2].filename)
             self.root.fix_sticky_ctrl()
 
         def click_row(i, evt):
@@ -2312,12 +2312,12 @@ class LevelEditor(GLViewport):
                     if i == amount:
                         worldsToUse.append(v)
 
-                worldData = [[dateFormat(d), nameFormat(w), w, d]
+                self.worldData = [[dateFormat(d), nameFormat(w), w, d]
                              for w, d in ((w, dateobj(w.LastPlayed)) for w in worldsToUse)]
-                worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
+                self.worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
                 worldTable.selectedWorldIndex = 0
-                worldTable.num_rows = lambda: len(worldData)
-                worldTable.row_data = lambda i: worldData[i]
+                worldTable.num_rows = lambda: len(self.worldData)
+                worldTable.row_data = lambda i: self.worldData[i]
                 worldTable.rows.scroll_to_item(0)
 
 
@@ -2362,14 +2362,14 @@ class LevelEditor(GLViewport):
                     except:
                         return "[UNABLE TO READ]"
 
-        worldData = [[dateFormat(d), nameFormat(w), w, d]
+        self.worldData = [[dateFormat(d), nameFormat(w), w, d]
                      for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
-        worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
-        # worlds = [w[2] for w in worldData]
+        self.worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
+        # worlds = [w[2] for w in self.worldData]
 
         worldTable.selectedWorldIndex = 0
-        worldTable.num_rows = lambda: len(worldData)
-        worldTable.row_data = lambda i: worldData[i]
+        worldTable.num_rows = lambda: len(self.worldData)
+        worldTable.row_data = lambda i: self.worldData[i]
         worldTable.row_is_selected = lambda x: x == worldTable.selectedWorldIndex
         worldTable.click_row = click_row
 
