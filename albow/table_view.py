@@ -25,7 +25,7 @@ class TableView(Column):
             font = self.predict_font(kwds)
             row_height = font.get_linesize()
         if header_height is None:
-            header_height = row_height
+            self.header_height = header_height = row_height
         row_width = 0
         if columns:
             for column in columns:

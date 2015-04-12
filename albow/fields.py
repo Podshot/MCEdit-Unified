@@ -640,7 +640,7 @@ class TextEditorWrapped(Widget):
                 x, h = font.size(self.textL[il][:i])[0], linesize
             else:
 #                x, h = (0, font.size("X")[1])
-                x, h = (0, line_size)
+                x, h = (0, linesize)
             if ip != i:
                 if self.doFix:
                     self.move_insertion_point(-1)
