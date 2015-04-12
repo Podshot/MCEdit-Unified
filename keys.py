@@ -544,27 +544,11 @@ class KeyConfigPanel(Dialog):
 
     def __init__(self, mcedit):
         Dialog.__init__(self)
-        #.#
-        spacing = 0
-        keyConfigTable = albow.TableView(nrows=30,
-            columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
-        keyConfigTable.num_rows = lambda: len(self.keyConfigKeys)
-        keyConfigTable.row_data = self.getRowData
-        keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
-        keyConfigTable.click_row = self.selectTableRow
-        keyConfigTable.key_down = self.key_down
-        keyConfigTable.key_up = self.key_up
-        #.#
         self.changes = {}
         self.changesNum = False
         self.enter = 0
         self.root = None
         self.editor = None
-        tableWidget = albow.Widget()
-        tableWidget.add(keyConfigTable)
-        tableWidget.shrink_wrap()
-
-        self.keyConfigTable = keyConfigTable
 
         buttonRow = (albow.Button("Assign Key...", action=self.askAssignSelectedKey),
                     albow.Button("Done", action=self.done), albow.Button("Cancel", action=self.cancel))
@@ -587,6 +571,25 @@ class KeyConfigPanel(Dialog):
 
         choiceRow = albow.Row((albow.Label("Keybind Presets:"), choiceButton))
         self.choiceButton = choiceButton
+
+        #.#
+        spacing = 0
+        tb = albow.TableView()
+        keyConfigTable = albow.TableView(nrows=581 / tb.font.get_linesize(),
+            columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
+        del tb
+        keyConfigTable.num_rows = lambda: len(self.keyConfigKeys)
+        keyConfigTable.row_data = self.getRowData
+        keyConfigTable.row_is_selected = lambda x: x == self.selectedKeyIndex
+        keyConfigTable.click_row = self.selectTableRow
+        keyConfigTable.key_down = self.key_down
+        keyConfigTable.key_up = self.key_up
+        tableWidget = albow.Widget()
+        tableWidget.add(keyConfigTable)
+        tableWidget.shrink_wrap()
+
+        self.keyConfigTable = keyConfigTable
+        #.#
 
         col = albow.Column((tableWidget, choiceRow, buttonRow, resetToDefaultRow), spacing=spacing, margin=0)
         self.add(col)
