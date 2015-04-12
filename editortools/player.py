@@ -451,12 +451,9 @@ class PlayerPositionPanel(Panel):
         self.pages.add_page("NBT Data", self.nbtpage)
         self.pages.set_rect(map(lambda x:x+self.margin, self.nbttree._rect))
 
-#        tableview = TableView(nrows=(h - (self.font.size(" ")[1] * 2.5)) / self.font.size(" ")[1],
-#                              header_height=self.font.size(" ")[1],
-        tableview = TableView(nrows=(h - (self.font.get_linesize() * 2.5)) / self.font.size(" ")[1],
+        tableview = TableView(nrows=(h - (self.font.get_linesize() * 2.5)) / self.font.get_linesize(),
                               header_height=self.font.get_linesize(),
-                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 2)),],
-                              height=h,
+                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 3)),],
                              )
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
