@@ -461,7 +461,7 @@ class CloneTool(EditorTool):
         if self.destPoint is None:
             return "Click to set this item down."
         if self.draggingFace is not None:
-            return _("Mousewheel to move along the third axis. Hold {0} to only move along one axis.").format_((config.keys.snapCloneToAxis.get()))
+            return _("Mousewheel to move along the third axis. Hold {0} to only move along one axis.").format(_(config.keys.snapCloneToAxis.get()))
 
         return "Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm."
 

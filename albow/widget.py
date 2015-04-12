@@ -649,10 +649,11 @@ class Widget(object):
             font = self.font
             d = 2 * self.margin
             if isinstance(width, basestring):
-                width, height = font.size(width)
+                width, height = font.size(width) #[0], font.get_linesize()
                 width += d + 2
             else:
                 height = font.size("X")[1]
+#                height = font.get_linesize()
             self.size = (width, height * nlines + d)
 
     def tab_to_first(self):

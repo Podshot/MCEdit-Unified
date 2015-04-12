@@ -56,7 +56,7 @@ class TextEditor(Widget):
         image = font.render(text, True, fg)
         surface.blit(image, frame)
         if focused and i is not None:
-            x, h = font.size(text[:i])
+            x, h = font.size(text[:i]) #[0], font.get_linesize()
             x += frame.left
             y = frame.top
             draw.line(surface, fg, (x, y), (x, y + h - 1))
@@ -538,6 +538,7 @@ class TextEditorWrapped(Widget):
         frame = self.get_margin_rect()
         fg = self.fg_color
         font = self.font
+        linesize = font.get_linesize()
         focused = self.has_focus()
         text, i, il = self.get_text_and_insertion_data()
         ip = self.insertion_point
@@ -565,8 +566,8 @@ class TextEditorWrapped(Widget):
 
                 if startLine == endLine:
                     if startStep > endStep:
-                        x1, h = font.size(self.textL[startLine][0:endStep])
-                        x2, h = font.size(self.textL[startLine][0:startStep])
+                        x1, h = font.size(self.textL[startLine][0:endStep])[0], font.get_linesize()
+                        x2, h = font.size(self.textL[startLine][0:startStep])[0], font.get_linesize()
                         x1 += frame.left
                         x2 += frame.left
                         lineOffset = startLine - self.topLine
@@ -574,8 +575,8 @@ class TextEditorWrapped(Widget):
                         if lineOffset >= 0:
                             selRect = pygame.Rect(x1, y, (x2 - x1), h)
                     else:
-                        x1, h = font.size(self.textL[startLine][0:startStep])
-                        x2, h = font.size(self.textL[startLine][0:endStep])
+                        x1, h = font.size(self.textL[startLine][0:startStep])[0], font.get_linesize()
+                        x2, h = font.size(self.textL[startLine][0:endStep])[0], font.get_linesize()
                         x1 += frame.left
                         x2 += frame.left
                         lineOffset = startLine - self.topLine
@@ -584,8 +585,8 @@ class TextEditorWrapped(Widget):
                             selRect = pygame.Rect(x1, y, (x2 - x1), h)
                     draw.rect(surface, self.sel_color, selRect)
                 elif startLine < endLine:
-                    x1, h = font.size(self.textL[startLine][0:startStep])
-                    x2, h = font.size(self.textL[endLine][0:endStep])
+                    x1, h = font.size(self.textL[startLine][0:startStep])[0], font.get_linesize()
+                    x2, h = font.size(self.textL[endLine][0:endStep])[0], font.get_linesize()
                     x1 += frame.left
                     x2 += frame.left
                     lineOffsetS = startLine - self.topLine
@@ -604,8 +605,8 @@ class TextEditorWrapped(Widget):
                     for selRect in rects:
                         draw.rect(surface, self.sel_color, selRect)
                 elif startLine > endLine:
-                    x2, h = font.size(self.textL[startLine][0:startStep])
-                    x1, h = font.size(self.textL[endLine][0:endStep])
+                    x2, h = font.size(self.textL[startLine][0:startStep])[0], font.get_linesize()
+                    x1, h = font.size(self.textL[endLine][0:endStep])[0], font.get_linesize()
                     x1 += frame.left
                     x2 += frame.left
                     lineOffsetE = startLine - self.topLine
@@ -629,14 +630,17 @@ class TextEditorWrapped(Widget):
         for textLine in self.textL[self.topLine:self.topLine + self.dispLines]:
             image = font.render(textLine, True, fg)
             surface.blit(image, frame.move(0, h))
-            h += font.size(textLine)[1]
+#            h += font.size(textLine)[1]
+            h += linesize
 
         # Draw Cursor if Applicable
         if focused and ip is not None and i is not None and il is not None:
             if self.textL:
-                x, h = font.size(self.textL[il][:i])
+#                x, h = font.size(self.textL[il][:i])
+                x, h = font.size(self.textL[il][:i])[0], linesize
             else:
-                x, h = (0, font.size("X")[1])
+#                x, h = (0, font.size("X")[1])
+                x, h = (0, line_size)
             if ip != i:
                 if self.doFix:
                     self.move_insertion_point(-1)
@@ -1017,7 +1021,8 @@ class TextEditorWrapped(Widget):
         font = self.font
 
         if textL:
-            h = font.size("X")[1]
+#            h = font.size("X")[1]
+            h = font.get_linesize()
             line = y // h
 
             if line >= dispLines:

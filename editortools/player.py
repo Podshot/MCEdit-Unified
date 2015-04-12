@@ -436,7 +436,7 @@ class PlayerPositionPanel(Panel):
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
         btns = Column([self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin], margin=0, spacing=2)
-        h = max_height - btns.height - self.pages.margin * 2 - 2 - self.font.size(" ")[1] * 2
+        h = max_height - btns.height - self.pages.margin * 2 - 2 - self.font.get_linesize() * 2
 
         col = Label('')
         def close():
@@ -451,8 +451,10 @@ class PlayerPositionPanel(Panel):
         self.pages.add_page("NBT Data", self.nbtpage)
         self.pages.set_rect(map(lambda x:x+self.margin, self.nbttree._rect))
 
-        tableview = TableView(nrows=(h - (self.font.size(" ")[1] * 2.5)) / self.font.size(" ")[1],
-                              header_height=self.font.size(" ")[1],
+#        tableview = TableView(nrows=(h - (self.font.size(" ")[1] * 2.5)) / self.font.size(" ")[1],
+#                              header_height=self.font.size(" ")[1],
+        tableview = TableView(nrows=(h - (self.font.get_linesize() * 2.5)) / self.font.size(" ")[1],
+                              header_height=self.font.get_linesize(),
                               columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 2)),],
                               height=h,
                              )

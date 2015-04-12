@@ -114,8 +114,12 @@ class Label(Widget):
     def calc_size(self):
         lines = self._text.split("\n")
         tw, th = 0, 0
-        for line in lines:
-            w, h = self.font.size(line)
+        for i in range(len(lines)):
+            line = lines[i]
+            if i == len(lines) -1:
+                w, h = self.font.size(line)
+            else:
+                w, h = self.font.size(line)[0], self.font.get_linesize()
             tw = max(tw, w)
             th += h
         if self.fixed_width is not None:
@@ -314,7 +318,7 @@ class ValueDisplay(Control, Label):
     #        blit_in_rect(surf, buf, frame, self.align, self.margin)
 
     def get_text(self):
-        return self.format_value(self.value)
+        return self.format_value(_(self.value))
 
     def format_value(self, value):
         if value is not None:

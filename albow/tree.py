@@ -172,7 +172,8 @@ class Tree(Column):
         self.inner_width = kwargs.pop('inner_width', 500)
         self.__num_rows = len(data.keys())
         self.build_layout()
-        row_height = self.font.size(' ')[1]
+#        row_height = self.font.size(' ')[1]
+        row_height = self.font.get_linesize()
         self.treeRow = treeRow = TreeRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
         Column.__init__(self, [treeRow,], **kwargs)
 
