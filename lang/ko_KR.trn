@@ -442,7 +442,6 @@ t209 ...
 o210 Select
 Right-click for options
 t210 선택
-
 우클릭으로 설정
 o211 Remove the selection. Shortcut: {0}
 t211 선택 영역을 제거합니다. 단축키: {0}
@@ -515,7 +514,6 @@ t242 자연적인 블럭만 변경
 o243 Import
 Right-click for options
 t243 불러오기
-
 우클릭으로 설정
 o244 x
 t244 x
@@ -563,7 +561,6 @@ t263 단축키: 엔터
 o264 Fill and Replace
 Right-click for options
 t264 채우기, 바꾸기
-
 우클릭으로 설정
 o265 Fill with:
 t265 이것으로 채우기:
@@ -1017,7 +1014,6 @@ t482 청크 컨트롤
 o483 Move Spawn Point
 Right-click for options
 t483 스폰 지점 이동
-
 우클릭으로 설정
 o484 Goto Spawn
 t484 스폰으로 이동
@@ -1349,7 +1345,6 @@ Dive into level NBT structure.
 Right-click for options
 t639 NBT 탐색기
 NBT를 수정하세요
-
 우클릭으로 설정.
 o640 Save your change in the NBT data.
 t640 NBT 데이터 저장
@@ -1611,7 +1606,6 @@ t753 글자 크기 (%):
 o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
 t754 글자 크기 조절입니다. 숫자가 퍼센트입니다.
-
 재시작 필요!
 o755 Save As
 t755 다른 이름으로 저장
@@ -1659,7 +1653,6 @@ o775 Exception during filter operation. See console for details.
 t775 필터 작동중 오류 발생. 자세한 정보는 콘솔 확인.
 
 {0}
-
 o776 Shift
 t776 
 o777 Option

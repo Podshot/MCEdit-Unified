@@ -443,7 +443,6 @@ t209 ...
 o210 Select
 Right-click for options
 t210 Sélectionner
-
 Clic-droit pour les options
 o211 Remove the selection. Shortcut: {0}
 t211 Suppr. sélection. Raccourci : {0}
@@ -460,7 +459,6 @@ t216 Exporte la sélection vers un fichier .schematic. Raccourci : {0}
 o217 Clone
 Right-click for options
 t217 Cloner
-
 Clic-droit pour les options
 o218 Brush
 Right-click for options
@@ -564,7 +562,6 @@ t263 Raccourci : Entrée
 o264 Fill and Replace
 Right-click for options
 t264 Remplir et remplacer
-
 Clic-droit pour les options
 o265 Fill with:
 t265 Remplir avec :
