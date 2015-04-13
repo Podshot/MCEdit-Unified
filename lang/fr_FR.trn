@@ -1022,8 +1022,8 @@ o479 Move
 t479 Déplacer
 o480 Align to Camera
 t480 Alinger à la caméra
-o481 Player
-t481 Joueur
+o481 Player (Single Player)
+t481 Joueur (jeu solo)
 o482 Chunk Control
 t482 Contrôle de chunk 
 o483 Move Spawn Point
