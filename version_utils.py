@@ -90,7 +90,7 @@ class __PlayerCache:
             json_in = open(userCachePath)
             self._playerCacheList = json.load(json_in)
         except:
-            print "usercache.json is corrupted"
+            logger.warning("Usercache.json may be corrupted")
             self._playerCacheList = []
         finally:
             json_in.close()
