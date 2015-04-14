@@ -500,9 +500,9 @@ class FilterToolPanel(Panel):
         self.macro_button.text = "Stop recording"
         self.macro_button.tooltipText = "Currently recording a macro"
         self.macro_button.action = self.stop_record_macro
-        #self.confirmButton = Button("Add macro", action=self.tool.confirm)
         self.confirmButton.text = "Add macro"
-        #self.confirmButton.resized(dw, dh)
+        self.confirmButton.width += 75
+        self.confirmButton.centerx = self.centerx
         self._recording = True
     
     def addMacroStep(self, name=None, inputs=None):
