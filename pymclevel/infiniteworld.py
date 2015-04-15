@@ -34,6 +34,7 @@ from regionfile import MCRegionFile
 import version_utils
 import player
 import logging
+from uuid import UUID
 
 log = getLogger(__name__)
 
@@ -1098,8 +1099,15 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                 self.playersFolder = self.worldFolder.getFolderPath("playerdata")
                 self.oldPlayerFolderFormat = False
             self.players = [x[:-4] for x in os.listdir(self.playersFolder) if x.endswith(".dat")]
+            for player in self.players:
+                try:
+                    UUID(player, version=4)
+                except ValueError:
+                    print "{0} does not seem to be in a valid UUID format".format(player)
+                    self.players.remove(player)
             if "Player" in self.root_tag["Data"]:
                 self.players.append("Player")
+                
 
             self.preloadDimensions()
 

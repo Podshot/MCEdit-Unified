@@ -993,6 +993,7 @@ class ItemRenderer(BaseEntityRenderer):
             "Item": (0x22, 0xff, 0x22, 0x5f),
             "XPOrb": (0x88, 0xff, 0x88, 0x5f),
             "Painting": (134, 96, 67, 0x5f),
+            "ItemFrame": (134, 96, 67, 0x5f),
         }
         for i, ent in enumerate(chunk.Entities):
             if i % 10 == 0:
