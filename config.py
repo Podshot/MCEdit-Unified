@@ -550,7 +550,8 @@ definitions = {
         ("placeImmediately", "Place Immediately", True)
     ],
     ("fill", "Fill"): [
-        ("chooseBlockImmediately", "Choose Block Immediately", True)
+        ("chooseBlockImmediately", "Choose Block Immediately", True),
+        ("chooseBlockImmediatelyReplace", "Choose Block Immediately for Replace", True)
     ],
     ("spawn", "Spawn"): [
         ("spawnProtection", "Spawn Protection", True)
