@@ -561,8 +561,12 @@ class LevelEditor(GLViewport):
                 for ent in chunk.getEntitiesInBox(box):
                     entID = Entity.getId(ent["id"].value)
                     if ent["id"].value == "Item":
-                        v = pymclevel.items.items.findItem(ent["Item"]["id"].value,
+                        try:
+                            v = pymclevel.items.items.findItem(ent["Item"]["id"].value,
                                                            ent["Item"]["Damage"].value).name
+                            v += " (Item)"
+                        except pymclevel.items.ItemNotFound:
+                            v = "Unknown Item"
                     else:
                         v = ent["id"].value
                     entityCounts[(entID, v)] += 1
