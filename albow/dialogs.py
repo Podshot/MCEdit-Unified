@@ -125,7 +125,7 @@ def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
     if height and lb.height > height - (2 * brow.height) - ScrollPanel.column_margin - box.margin:
         lines = mess.split('\n')
         # ScrolledPanel refuses to render properly for now, so Tableview is used instead.
-        w = TableView().font.size(colLbl)[0]
+        w = TableView().font.size(_(colLbl))[0]
         lb = TableView(columns=[TableColumn(colLbl, max(lb.width, w)),], nrows=(height - (2 * brow.height) - box.margin - box.font.get_linesize()) / box.font.get_linesize(), height=height - (2 * brow.height) - (box.font.get_linesize() * 2) - box.margin) #, width=w)
 
         def num_rows():
