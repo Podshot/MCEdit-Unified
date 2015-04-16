@@ -6,6 +6,8 @@ from widget import Widget
 from controls import Label, Button
 from layout import Row, Column
 from fields import TextFieldWrapped
+from scrollpanel import ScrollPanel
+from table_view import TableView, TableColumn
 from translate import _
 
 class Modal(object):
@@ -105,15 +107,35 @@ def alert(mess, **kwds):
 
 def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
         wrap_width=60, **kwds):
+    # If height is specified as a keyword, the Dialog object will have this haight, and the inner massage will
+    # be displayed in a scrolling widget
+    colLbl = kwds.pop('colLabel', "")
+
+
     box = Dialog(**kwds)
     d = box.margin
     lb = wrapped_label(mess, wrap_width)
-    lb.topleft = (d, d)
     buts = []
     for caption in responses:
         but = Button(caption, action=lambda x=caption: box.dismiss(x))
         buts.append(but)
     brow = Row(buts, spacing=d)
+    lb.width = max(lb.width, brow.width)
+    height = kwds.get('height', None)
+    if height and lb.height > height - (2 * brow.height) - ScrollPanel.column_margin - box.margin:
+        lines = mess.split('\n')
+        # ScrolledPanel refuses to render properly for now, so Tableview is used instead.
+        w = TableView().font.size(colLbl)[0]
+        lb = TableView(columns=[TableColumn(colLbl, max(lb.width, w)),], nrows=(height - (2 * brow.height) - box.margin - box.font.get_linesize()) / box.font.get_linesize(), height=height - (2 * brow.height) - (box.font.get_linesize() * 2) - box.margin) #, width=w)
+
+        def num_rows():
+            return len(lines)
+
+        lb.num_rows = num_rows
+
+        lb.row_data = lambda x: (lines[x],)
+
+    lb.topleft = (d, d)
     lb.width = max(lb.width, brow.width)
     col = Column([lb, brow], spacing=d, align='r')
     col.topleft = (d, d)
