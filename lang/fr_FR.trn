@@ -152,8 +152,8 @@ o66 Reset Distance When Brush Size Changes
 t66 RÀZ distance quand la taille de brosse change
 o67 Brush Options
 t67 Option de brosse
-o68 Fill Options
-t68 Otption de remplissage
+o68 Fill and Replace Options
+t68 Otption de remplissage et remplacement
 o69 Spawn Position Safety
 t69 Sécurité position de spawn
 o70 Spawn Point Options
@@ -1792,3 +1792,13 @@ o829 Could not find the server.properties file! The FTP client will not be able 
 t829 Impossible de trouver le fichier server.properties ! Le client FTP ne pourra télécharger le monde tant que ce fichier n'est pas dans le répertoire FTP par défaut
 o830 Could not find the world folder from the server.properties file
 t830 Impossible de trouver le dossier du monde dans le fichier server.properties
+o831 Choose Block Immediately for Replace
+t831 Choisir imédiateme un block pour le remplacement
+o832 Open Block Picker for Fill
+t832 Ouvrir le sélecteur de bloc pour le remplissage
+o833 Open Block Picker for Replace
+t833 Ouvrir le sélecteur de bloc pour le remplacement
+o834 When the replace tool is chosen, prompt for a block type.
+t834 Demande un type de bloc quand l'outil de remplissage est choisi.
+o835 Matching Coordinates
+t835 Coordonnées corespondantes
