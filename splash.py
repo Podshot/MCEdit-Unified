@@ -21,7 +21,7 @@ try:
     screen = pygame.display.set_mode(splash.get_size(),pygame.NOFRAME)
     screen.blit(splash, (0,0))
 except:
-    try;
+    try:
         font = pygame.font.Font(os.path.join('.', 'fonts', 'DejaVuSans-Bold.ttf'), 48)
         buf = font.render("MCEDit is loading...", True, (128, 128, 128))
         screen = pygame.display.set_mode((buf.get_width() + 20, buf.get_height() + 20), pygame.NOFRAME)
