@@ -1,6 +1,13 @@
 var platforms = ["OSX","Win", "Lin"];
 var requests = {};
+var HAVE_I_BEEN_API_LIMITED_YET = false;
 function getJSON(url){
+	if (url.indexOf('api.github') != -1 && HAVE_I_BEEN_API_LIMITED_YET) {
+		$('title').html('MCEdit Unified - Rate Limit Exceeded');
+		$('body').html('<h1>Rate Limit Exceeded</h1><br>Click <a href="https://github.com/Khroki/MCEdit-Unified">here</a> to go to the repository page instead.');
+		$('body').css('background-color','#444444').css('text-align','center').css('color','white');
+		return {};
+	}
 	if (requests[url]) {
 		console.log('Found cached version');
 		return requests[url];
@@ -175,8 +182,6 @@ $(document).ready(function(){
 			alert('An error occured loading the webpage. Please try again later.');
 		}
 	} else {
-		$('title').html('MCEdit Unified - Rate Limit Exceeded');
-		$('body').html('<h1>Rate Limit Exceeded</h1><br>Click <a href="https://github.com/Khroki/MCEdit-Unified">here</a> to go to the repository page instead.');
-		$('body').css('background-color','#444444').css('text-align','center').css('color','white');
+		var HAVE_I_BEEN_API_LIMITED_YET = true;
 	}
 });
