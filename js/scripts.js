@@ -124,11 +124,15 @@ function generatePageStructure() {
 	return true;
 }
 function getDownload(platform,version,bittage) {
+	var bitbit = 'bit';
+	if (bittage !== 32 && bittage !== 64) {
+		bitbit = '';
+	}
 	for (var i = 0; i < releaseData.length; i++) {
 		var release = releaseData[i];
 		for (var x = 0; x < release.assets.length; x++) {
 			var asset = release.assets[x];
-            var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit';
+            var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + bitbit;
 			if (asset.name == name + '.zip' || asset.name == name + '.exe' || asset.name == name + '.msi' || asset.name == name + '.run') {
 				return asset;
 			}

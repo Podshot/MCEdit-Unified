@@ -73,7 +73,7 @@
 
 			var latestRelease = releaseData[0];
 			for (var i = 0; i < platforms.length; i++) {
-                var asset3264 = getDownload(platforms[i], latestRelease.tag_name, '32.64');
+                var asset3264 = getDownload(platforms[i], latestRelease.tag_name, 'Universal');
 				var asset32 = getDownload(platforms[i],latestRelease.tag_name, 32);
 				var asset64 = getDownload(platforms[i],latestRelease.tag_name, 64);
                 if(asset3264) {
