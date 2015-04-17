@@ -73,11 +73,11 @@
 
 			var latestRelease = releaseData[0];
 			for (var i = 0; i < platforms.length; i++) {
-                var asset3264 = getDownload(platforms[i], latestRelease.tag_name, 'Universal');
+                var assetUniversal = getDownload(platforms[i], latestRelease.tag_name, 'Universal');
 				var asset32 = getDownload(platforms[i],latestRelease.tag_name, 32);
 				var asset64 = getDownload(platforms[i],latestRelease.tag_name, 64);
-                if(asset3264) {
-                    $('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset3264.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32/64 bit</a><br><br>');
+                if(assetUniversal) {
+                    $('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + assetUniversal.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32/64bit</a><br><br>');
                 } else {
     				if (asset32) {
     					$('#' + platforms[i] + '-downloads').append('<a class="dl btn btn-default" href="' + asset32.browser_download_url + '"><i class="fa fa-cloud-download" ></i> Version ' + latestRelease.tag_name + ' 32bit</a><br><br>');
