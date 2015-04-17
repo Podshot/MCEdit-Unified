@@ -27,9 +27,8 @@
 
 	<script>
 		function pageTrigger() {
-			var releaseList = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+			var releaseData = getReleaseData();
 			var commentJSON = getJSON('comments.json');
-			releaseData.sort(compareVersionObject);
 			for (var i = 0; i < releaseData.length; i++) {
 				var note = marked(releaseData[i].body).replace(/@([a-zA-Z0-9]+)/g,' <a href="http://github.com/$1">@$1</a>');
 				var version = releaseData[i].tag_name;
@@ -70,8 +69,7 @@
 			}
 			$('#changelog').show();
 
-
-			var latestRelease = releaseData[0];
+			var latestRelease = getReleaseData()[0];
 			for (var i = 0; i < platforms.length; i++) {
                 var assetUniversal = getDownload(platforms[i], latestRelease.tag_name, 'Universal');
 				var asset32 = getDownload(platforms[i],latestRelease.tag_name, 32);

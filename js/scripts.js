@@ -1,4 +1,3 @@
-var releaseData = {};
 var platforms = ["OSX","Win", "Lin"];
 var requests = {};
 function getJSON(url){
@@ -77,7 +76,7 @@ function compareVersionObject(a,b) {
 	return compareVersionString(a.tag_name, b.tag_name) * -1;
 }
 function getLatestRelease() {
-	var data = releaseData;
+	var data = getReleaseData();
 	var prereleases = [];
 	var releases = [];
 	for (var i = 0; i < data.length; i++) {
@@ -128,8 +127,8 @@ function getDownload(platform,version,bittage) {
 	if (bittage !== 32 && bittage !== 64) {
 		bitbit = '';
 	}
-	for (var i = 0; i < releaseData.length; i++) {
-		var release = releaseData[i];
+	for (var i = 0; i < getReleaseData().length; i++) {
+		var release = getReleaseData()[i];
 		for (var x = 0; x < release.assets.length; x++) {
 			var asset = release.assets[x];
             var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + bitbit;
@@ -153,6 +152,10 @@ function loadFailError() {
 	}
 	$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 }
+function getReleaseData() {
+	var releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+	return releaseData.sort(compareVersionObject);
+}
 $(document).ready(function(){
 	var ratelimits = getJSON('https://api.github.com/rate_limit');
 	if (ratelimits.resources.core.remaining < 5) {
@@ -162,8 +165,6 @@ $(document).ready(function(){
 		$('#ratewarning').css('text-align','center').css('color','white');
 	}
 	if (ratelimits.resources.core.remaining > 0) {
-		releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
-		releaseData.sort(compareVersionObject);
 		if (generatePageStructure()) {
 			try {
 				pageTrigger();
