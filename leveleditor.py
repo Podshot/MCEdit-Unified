@@ -69,6 +69,7 @@ from OpenGL import GL
 from albow import alert, ask, AttrRef, Button, Column, Grid, input_text, IntField, Menu, root, Row, \
     TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
 import albow.resource
+
 albow.resource.font_proportion = config.settings.fontProportion.get()
 get_font = albow.resource.get_font
 from albow.controls import Label, SmallValueDisplay, ValueDisplay, Image
@@ -90,6 +91,7 @@ from pymclevel.infiniteworld import AnvilWorldFolder
 
 try:
     import resource  # @UnresolvedImport
+
     resource.setrlimit(resource.RLIMIT_NOFILE, (500, -1))
 except:
     pass
@@ -212,26 +214,27 @@ class LevelEditor(GLViewport):
 
         def showViewOptions():
             col = [CheckBoxLabel("Entities", fg_color=(0xff, 0x22, 0x22),
-                                          ref=config.settings.drawEntities),
+                                 ref=config.settings.drawEntities),
                    CheckBoxLabel("Items", fg_color=(0x22, 0xff, 0x22), ref=config.settings.drawItems),
                    CheckBoxLabel("TileEntities", fg_color=(0xff, 0xff, 0x22),
-                                          ref=config.settings.drawTileEntities),
+                                 ref=config.settings.drawTileEntities),
                    CheckBoxLabel("TileTicks", ref=config.settings.drawTileTicks),
+                   CheckBoxLabel("Player Heads", ref=config.settings.drawPlayerHeads),
                    CheckBoxLabel("Unpopulated Chunks", fg_color=renderer.TerrainPopulatedRenderer.color,
-                                          ref=config.settings.drawUnpopulatedChunks),
+                                 ref=config.settings.drawUnpopulatedChunks),
                    CheckBoxLabel("Chunks Borders", fg_color=renderer.ChunkBorderRenderer.color,
-                                          ref=config.settings.drawChunkBorders),
+                                 ref=config.settings.drawChunkBorders),
                    CheckBoxLabel("Sky", ref=config.settings.drawSky),
-                   CheckBoxLabel("Fog", ref=config.settings.drawFog), CheckBoxLabel("Ceiling",
-                                                                                                      ref=config.settings.showCeiling),
+                   CheckBoxLabel("Fog", ref=config.settings.drawFog),
+                   CheckBoxLabel("Ceiling", ref=config.settings.showCeiling),
                    CheckBoxLabel("Chunk Redraw", fg_color=(0xff, 0x99, 0x99),
-                                          ref=config.settings.showChunkRedraw), CheckBoxLabel("Hidden Ores",
-                                                                                                       ref=config.settings.showHiddenOres,
-                                                                                                       tooltipText="Check to show/hide specific ores using the settings below.")]
+                                 ref=config.settings.showChunkRedraw),
+                   CheckBoxLabel("Hidden Ores", ref=config.settings.showHiddenOres,
+                                 tooltipText="Check to show/hide specific ores using the settings below.")]
 
             for ore in config.settings.hiddableOres.get():
                 col.append(CheckBoxLabel(self.level.materials[ore].name.replace(" Ore", ""),
-                                                  ref=config.settings["showOre{}".format(ore)]))
+                                         ref=config.settings["showOre{}".format(ore)]))
 
             col = Column(col, align="r")
 
@@ -247,7 +250,7 @@ class LevelEditor(GLViewport):
                                      tooltipText=_("Shortcut: {0}").format(_(config.keys.toggleView.get())))
 
         self.recordUndoButton = CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
-        
+
         # TODO: Mark
         self.sessionLockLock = Image(os.path.join("toolicons", "session_good.png"))
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
@@ -256,8 +259,9 @@ class LevelEditor(GLViewport):
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel.mouse_down = self.mouse_down_session
 
-        row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
-               self.viewButton, self.viewportButton, self.recordUndoButton, Row((self.sessionLockLabel, self.sessionLockLock), spacing=2))
+        row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout,
+               self.viewDistanceUp, self.viewButton, self.viewportButton, self.recordUndoButton,
+               Row((self.sessionLockLabel, self.sessionLockLock), spacing=2))
 
         self.topRow = row = Row(row)
         self.add(row)
@@ -288,7 +292,7 @@ class LevelEditor(GLViewport):
         self.toolbar.selectTool(0)
 
         self.controlPanel = panels.ControlPanel(self)
-        
+
         logger = logging.getLogger()
 
         adapter = logging.StreamHandler(sys.stdout)
@@ -430,14 +434,15 @@ class LevelEditor(GLViewport):
                 del self.thumbCache[k]
 
         inner_height = 0
-        itemNo = Label("#%s"%("W" * len("%s"%self.maxCopies)), doNotTranslate=True)
+        itemNo = Label("#%s" % ("W" * len("%s" % self.maxCopies)), doNotTranslate=True)
         fixedwidth = 0 + itemNo.width
         del itemNo
 
         def createOneCopyPanel(sch, i):
             p = GLBackground()
             p.bg_color = (0.0, 0.0, 0.0, 0.4)
-            itemNo = Label("#%s%s"%("  " * (len("%s"%self.maxCopies) - len("%s"%(i + 1))), (i + 1)), doNotTranslate=True)
+            itemNo = Label("#%s%s" % ("  " * (len("%s" % self.maxCopies) - len("%s" % (i + 1))), (i + 1)),
+                           doNotTranslate=True)
             thumb = thumbCache.get(sch)
             if thumb is None:
                 thumb = ThumbView(sch)
@@ -483,7 +488,7 @@ class LevelEditor(GLViewport):
         def changeCopyPage(this, delta):
             if delta > 0:
                 m = min
-                a = self.currentCopyPage + delta, len(this.pages) -1
+                a = self.currentCopyPage + delta, len(this.pages) - 1
             elif delta < 0:
                 m = max
                 a = self.currentCopyPage - 1, 0
@@ -503,10 +508,10 @@ class LevelEditor(GLViewport):
             if self.currentCopyPage == 0:
                 pb.enabled = False
                 nb.enabled = True
-            elif 0 < self.currentCopyPage < len(this.pages) -1:
+            elif 0 < self.currentCopyPage < len(this.pages) - 1:
                 pb.enabled = True
                 nb.enabled = True
-            elif self.currentCopyPage == len(this.pages) -1:
+            elif self.currentCopyPage == len(this.pages) - 1:
                 pb.enabled = True
                 nb.enabled = False
             this.subwidgets[0].subwidgets[1].shrink_wrap()
@@ -514,18 +519,19 @@ class LevelEditor(GLViewport):
             this.shrink_wrap()
             this.width = 0 + this.orgwidth
 
-        nextButton = Button("Next Page", action=lambda: changeCopyPage(panel, 1), width=prevButton.width, height=prevButton.height)
-        prevButton.action=lambda: changeCopyPage(panel, -1)
+        nextButton = Button("Next Page", action=lambda: changeCopyPage(panel, 1), width=prevButton.width,
+                            height=prevButton.height)
+        prevButton.action = lambda: changeCopyPage(panel, -1)
         if len(panel.pages) < 2:
             prevButton.enabled = False
             nextButton.enabled = False
         elif self.currentCopyPage == 0:
             prevButton.enabled = False
             nextButton.enabled = True
-        elif 0 < self.currentCopyPage < len(panel.pages) -1:
+        elif 0 < self.currentCopyPage < len(panel.pages) - 1:
             prevButton.enabled = True
             nextButton.enabled = True
-        elif self.currentCopyPage == len(panel.pages) -1:
+        elif self.currentCopyPage == len(panel.pages) - 1:
             prevButton.enabled = True
             nextButton.enabled = False
         btns = Row((prevButton, nextButton), spacing=2, align='c')
@@ -563,7 +569,7 @@ class LevelEditor(GLViewport):
                     if ent["id"].value == "Item":
                         try:
                             v = pymclevel.items.items.findItem(ent["Item"]["id"].value,
-                                                           ent["Item"]["Damage"].value).name
+                                                               ent["Item"]["Damage"].value).name
                             v += " (Item)"
                         except pymclevel.items.ItemNotFound:
                             v = "Unknown Item"
@@ -584,7 +590,7 @@ class LevelEditor(GLViewport):
 
         blockRows = [("", "", ""), (box.volume, "<Blocks>", "")]
         rows = list(blockRows)
-        rows.extend([[count ,block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
+        rows.extend([[count, block.name, ("({0}:{1})".format(block.ID, block.blockData))] for block, count in blockCounts])
         #rows.sort(key=lambda x: alphanum_key(x[2]), reverse=True)
 
         def extendEntities():
@@ -641,7 +647,7 @@ class LevelEditor(GLViewport):
                                    defaultName=self.level.displayName + "_analysis_" + dt + ".txt",
                                    filetype='Comma Separated Values\0*.txt\0\0',
                                    suffix="txt",
-            )
+                                   )
 
             if filename:
                 try:
@@ -767,7 +773,7 @@ class LevelEditor(GLViewport):
                         if width is None:
                             width = 200
 
-                        field = TextFieldWrapped(value=value,width=width)
+                        field = TextFieldWrapped(value=value, width=width)
                         widget.inputDict[inputName] = AttrRef(field, 'value')
                         row = Row((Label(inputName), field))
                         rows.append(row)
@@ -781,7 +787,7 @@ class LevelEditor(GLViewport):
             elif isinstance(inputType, bool):
                 chkbox = CheckBox(value=inputType)
                 widget.inputDict[inputName] = AttrRef(chkbox, 'value')
-                row = Row((Label(inputName),chkbox))
+                row = Row((Label(inputName), chkbox))
                 rows.append(row)
 
             elif isinstance(inputType, (int, float)):
@@ -848,7 +854,7 @@ class LevelEditor(GLViewport):
                                                   editortools.PlayerSpawnPositionTool(self),
                                                   editortools.ChunkTool(self),
                                                   editortools.NBTExplorerTool(self),
-        ])
+                                                  ])
 
         self.toolbar.anchor = 'bwh'
         self.add(self.toolbar)
@@ -977,12 +983,13 @@ class LevelEditor(GLViewport):
             return
 
         assert level
-        
+
         if addToRecent:
             self.mcedit.addRecentWorld(filename)
-            
+
         if len(level.players) >= 50 and config.settings.downloadPlayerSkins.get():
-            result = ask("MCEdit has detected that there are a large amount of players in this world, would you like to still download skins (This can take a decent amount of time)", responses=["Download Skins", "Don't Download"])
+            result = ask("MCEdit has detected that there are a large amount of players in this world, would you like to still download skins (This can take a decent amount of time)",
+                         responses=["Download Skins", "Don't Download"])
             if result == "Don't Download":
                 config.settings.downloadPlayerSkins.set(False)
                 self.revertPlayerSkins = True
@@ -1071,14 +1078,18 @@ class LevelEditor(GLViewport):
             self.netherButton = ChoiceButton(dimensionsList, choose=presentMenu)
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
             self.remove(self.topRow)
-            self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
-               self.viewButton, self.viewportButton, self.recordUndoButton, self.netherButton, Row((self.sessionLockLabel, self.sessionLockLock), spacing=2)))
+            self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"),
+                               self.viewDistanceReadout, self.viewDistanceUp, self.viewButton,
+                               self.viewportButton, self.recordUndoButton, self.netherButton,
+                               Row((self.sessionLockLabel, self.sessionLockLock), spacing=2)))
             self.add(self.topRow, 0)
 
         else:
             self.remove(self.topRow)
-            self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout, self.viewDistanceUp,
-               self.viewButton, self.viewportButton, self.recordUndoButton))
+            self.topRow = Row((
+                self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout,
+                self.viewDistanceUp,
+                self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
 
@@ -1187,7 +1198,7 @@ class LevelEditor(GLViewport):
             def copyChunks():
                 for _ in self.level.saveInPlaceGen():
                     count[0] += 1
-                    yield count[0],chunks
+                    yield count[0], chunks
 
             if "Canceled" == showProgress("Copying chunks", copyChunks(), cancel=True):
                 return
@@ -1207,10 +1218,10 @@ class LevelEditor(GLViewport):
         shutil.copytree(self.level.worldFolder.filename, filename)
         self.level.worldFolder.setPath(filename)
         self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
-        
+
         self.saveFile()
         self.initWindowCaption()
-        
+
         self.level.worldFolder.setPath(old_data[1])
         self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
 
@@ -1268,8 +1279,8 @@ class LevelEditor(GLViewport):
         if self.unsavedEdits == 0:
             return ""
         return _("{0} unsaved edits.  {1} to save.  {2}").format(self.unsavedEdits,
-                                                                   config.keys.save.get(),
-                                                                   "" if self.recordUndo else "(UNDO DISABLED)")
+                                                                 config.keys.save.get(),
+                                                                 "" if self.recordUndo else "(UNDO DISABLED)")
 
     @property
     def viewDistanceLabelText(self):
@@ -1605,7 +1616,7 @@ class LevelEditor(GLViewport):
         if "clone" in str(self.currentTool):
             blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
             if keyname.startswith(blocksOnlyModifier):
-                tempKeyname = keyname[len(blocksOnlyModifier)+1:]
+                tempKeyname = keyname[len(blocksOnlyModifier) + 1:]
                 blocksOnly = True
             else:
                 tempKeyname = keyname
@@ -1628,7 +1639,7 @@ class LevelEditor(GLViewport):
 
             blocksOnlyModifier = config.keys.blocksOnlyModifier.get()
             if keyname.startswith(blocksOnlyModifier):
-                tempKeyname = keyname[len(blocksOnlyModifier)+1:]
+                tempKeyname = keyname[len(blocksOnlyModifier) + 1:]
                 blocksOnly = True
             else:
                 tempKeyname = keyname
@@ -1768,7 +1779,6 @@ class LevelEditor(GLViewport):
                         self.toolbar.tools[4].panel.selectedFilterName = filters[0]
                         self.toolbar.tools[4].panel.reload()
 
-
         self.root.fix_sticky_ctrl()
 
     def showGotoPanel(self):
@@ -1821,7 +1831,7 @@ class LevelEditor(GLViewport):
                 self.saveFile()
             if answer == "Cancel":
                 return
-            
+
         for p in self.toolbar.tools[6].nonSavedPlayers:
             if os.path.exists(p):
                 os.remove(p)
@@ -1840,23 +1850,23 @@ class LevelEditor(GLViewport):
         if self.revertPlayerSkins:
             config.settings.downloadPlayerSkins.set(True)
             self.revertPlayerSkins = False
-        
+
     # TODO: Load marker
     def loadWorldFromFTP(self):
         widget = Widget()
-        
+
         ftp_ip_lbl = Label("FTP Server IP:")
         ftp_ip_field = TextFieldWrapped(width=400)
         ip_row = Row((ftp_ip_lbl, ftp_ip_field))
-        
+
         ftp_user_lbl = Label("FTP Username:")
         ftp_user_field = TextFieldWrapped(width=400)
         user_row = Row((ftp_user_lbl, ftp_user_field))
-        
+
         ftp_pass_lbl = Label("FTP Password:")
         ftp_pass_field = TextFieldWrapped(width=400)
         pass_row = Row((ftp_pass_lbl, ftp_pass_field))
-        
+
         note_creds = Label("NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server")
         note_wait = Label("Please wait while MCEdit-Unified downloads the world. It will be opened once completed")
         col = Column((ip_row, user_row, pass_row, note_creds, note_wait))
@@ -1868,18 +1878,20 @@ class LevelEditor(GLViewport):
                 self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text())
             else:
                 try:
-                    self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(), password=ftp_pass_field.get_text())
+                    self._ftp_client = ftp_client.FTPClient(ftp_ip_field.get_text(), username=ftp_user_field.get_text(),
+                        password=ftp_pass_field.get_text())
                 except ftp_client.InvalidCreditdentialsException as e:
                     alert(e.message)
                     return
             self._ftp_client.safe_download()
             self.mcedit.loadFile(os.path.join(self._ftp_client.get_level_path(), 'level.dat'), addToRecent=False)
             self.world_from_ftp = True
-            
+
     def uploadChanges(self):
         if self.world_from_ftp:
             if self.unsavedEdits:
-                answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1, cancel=0)
+                answer = ask("Save unsaved edits before closing?", ["Cancel", "Don't Save", "Save"], default=-1,
+                             cancel=0)
                 self.root.fix_sticky_ctrl()
                 if answer == "Save":
                     self.saveFile()
@@ -1898,7 +1910,7 @@ class LevelEditor(GLViewport):
             self.mcedit.removeEditor()
             self.controlPanel.dismiss()
             display.set_caption("MCEdit ~ " + release.get_version())
-    
+
             self._ftp_client.cleanup()
         else:
             alert("This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible")
@@ -1994,13 +2006,14 @@ class LevelEditor(GLViewport):
         else:
             levelFormat = "Unknown"
         formatLabel = Label(levelFormat)
-        items.append(Row([Label("Format:"),formatLabel]))
+        items.append(Row([Label("Format:"), formatLabel]))
 
         nameField = TextFieldWrapped(width=300, value=self.level.LevelName)
 
         def alt21():
             nameField.insertion_point = len(nameField.text)
             nameField.insert_char(u'\xa7')
+
         alt21button = Button(u"\xa7", action=alt21)
         label = Label("Name:")
         items.append(Row((label, nameField, alt21button)))
@@ -2060,7 +2073,6 @@ class LevelEditor(GLViewport):
         items.append(revealButton)
 
         if isinstance(self.level, pymclevel.MCInfdevOldLevel):
-
             chunkCount = self.level.chunkCount
             chunkCountLabel = Label(_("Number of chunks: {0}").format(chunkCount))
 
@@ -2291,7 +2303,7 @@ class LevelEditor(GLViewport):
             elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
                 worldTable.selectedWorldIndex -= 1
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
-            elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds)-1:
+            elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds) - 1:
                 worldTable.selectedWorldIndex += 1
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
             elif keyname == "Return":
@@ -2320,7 +2332,7 @@ class LevelEditor(GLViewport):
                         worldsToUse.append(v)
 
                 self.worldData = [[dateFormat(d), nameFormat(w), w, d]
-                             for w, d in ((w, dateobj(w.LastPlayed)) for w in worldsToUse)]
+                                  for w, d in ((w, dateobj(w.LastPlayed)) for w in worldsToUse)]
                 self.worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
                 worldTable.selectedWorldIndex = 0
                 worldTable.num_rows = lambda: len(self.worldData)
@@ -2370,7 +2382,7 @@ class LevelEditor(GLViewport):
                         return "[UNABLE TO READ]"
 
         self.worldData = [[dateFormat(d), nameFormat(w), w, d]
-                     for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
+                          for w, d in ((w, dateobj(w.LastPlayed)) for w in worlds)]
         self.worldData.sort(key=lambda (a, b, w, d): d, reverse=True)
         # worlds = [w[2] for w in self.worldData]
 
@@ -2379,7 +2391,6 @@ class LevelEditor(GLViewport):
         worldTable.row_data = lambda i: self.worldData[i]
         worldTable.row_is_selected = lambda x: x == worldTable.selectedWorldIndex
         worldTable.click_row = click_row
-
 
         worldTable.top = row.bottom
         worldPanel.add(row)
@@ -2431,7 +2442,8 @@ class LevelEditor(GLViewport):
         # blockInputRow = Row( (Label("Surface: "), blockInput) )
 
         gametypes = ["Survival", "Creative"]
-        worldtypes = {"Default": ("DEFAULT", "default"), "Superflat": ("FLAT", "flat"), "Large Biomes": ("LARGEBIOMES", "largeBiomes"), "Amplified": ("AMPLIFIED", "amplified")}
+        worldtypes = {"Default": ("DEFAULT", "default"), "Superflat": ("FLAT", "flat"),
+                      "Large Biomes": ("LARGEBIOMES", "largeBiomes"), "Amplified": ("AMPLIFIED", "amplified")}
 
         def gametype(t):
             if t < len(gametypes):
@@ -2442,17 +2454,18 @@ class LevelEditor(GLViewport):
             if gametypeButton.gametype < 2:
                 gametypeButton.gametype = 1 - gametypeButton.gametype
                 gametypeButton.text = gametype(gametypeButton.gametype)
-                
+
 
         gametypeButton = Button(gametype(0), action=gametypeAction)
         gametypeButton.gametype = 0
         gametypeRow = Row((Label("Game Type:"), gametypeButton))
-        
+
         worldtypeButton = ChoiceButton(worldtypes.keys())
-        worldtypeRow = Row((Label("World Type:"), worldtypeButton))      
-        
+        worldtypeRow = Row((Label("World Type:"), worldtypeButton))
+
         newWorldPanel.add(
-            Column((label, Row([winput, hinput]), xyzrow, seedinput, gametypeRow, worldtypeRow, generatorPanel), align="l"))
+            Column((label, Row([winput, hinput]), xyzrow, seedinput, gametypeRow, worldtypeRow, generatorPanel),
+                   align="l"))
         newWorldPanel.shrink_wrap()
 
         result = Dialog(client=newWorldPanel, responses=["Create", "Cancel"]).present()
@@ -2642,7 +2655,7 @@ class LevelEditor(GLViewport):
     averageCPS = 0.0
     shouldLoadAndRender = True
     showWorkInfo = False
-    
+
 
     def gl_draw(self):
         self.debugString = ""
@@ -2653,7 +2666,7 @@ class LevelEditor(GLViewport):
 
         if not self.shouldLoadAndRender:
             return
-        
+
         self.renderer.loadVisibleChunks()
         self.addWorker(self.renderer)
 
@@ -2664,7 +2677,7 @@ class LevelEditor(GLViewport):
         self.frames += 1
         frameDuration = self.getFrameDuration()
         while frameDuration > (
-            datetime.now() - self.frameStartTime):  # if it's less than 0ms until the next frame, go draw.  otherwise, go work.
+                    datetime.now() - self.frameStartTime):  # if it's less than 0ms until the next frame, go draw.  otherwise, go work.
             self.doWorkUnit()
         if self.showWorkInfo:
             self.updateWorkInfoPanel()
@@ -2682,13 +2695,13 @@ class LevelEditor(GLViewport):
         frameTotal = numpy.sum(self.frameSamples)
 
         self.averageFPS = 1000000. / (
-        (frameTotal.microseconds + 1000000 * frameTotal.seconds) / float(len(self.frameSamples)) + 0.00001)
+            (frameTotal.microseconds + 1000000 * frameTotal.seconds) / float(len(self.frameSamples)) + 0.00001)
 
         r = self.renderer
 
         chunkTotal = numpy.sum(r.chunkSamples)
         cps = 1000000. / (
-        (chunkTotal.microseconds + 1000000 * chunkTotal.seconds) / float(len(r.chunkSamples)) + 0.00001)
+            (chunkTotal.microseconds + 1000000 * chunkTotal.seconds) / float(len(r.chunkSamples)) + 0.00001)
         self.averageCPS = cps
 
         self.oldFrameStartTime = self.frameStartTime
@@ -2696,13 +2709,13 @@ class LevelEditor(GLViewport):
 
         if self.debug > 0:
             self.debugString = _("FPS: %0.1f/%0.1f, CPS: %0.1f, VD: %d, W: %d, WF: %d, MBv: %0.1f, ") % (
-            1000000. / (float(timeDelta.microseconds) + 0.000001),
-            self.averageFPS,
-            cps,
-            self.renderer.viewDistance,
-            len(self.workers),
-            self.renderer.workFactor,
-            self.renderer.bufferUsage / 1000000.)
+                1000000. / (float(timeDelta.microseconds) + 0.000001),
+                self.averageFPS,
+                cps,
+                self.renderer.viewDistance,
+                len(self.workers),
+                self.renderer.workFactor,
+                self.renderer.bufferUsage / 1000000.)
 
             self.debugString += _("DL: {dl} ({dlcount}), Tx: {t}, gc: {g}, ").format(
                 dl=len(glutils.DisplayList.allLists), dlcount=glutils.gl.listCount,
@@ -3162,17 +3175,17 @@ class EditorToolbar(GLOrtho):
         self.guiTexture.bind()
 
         GL.glVertexPointer(3, GL.GL_FLOAT, 0, numpy.array((
-                                                              1, h + 1, 0.5,
-                                                              w + 1, h + 1, 0.5,
-                                                              w + 1, 1, 0.5,
-                                                              1, 1, 0.5,
-                                                          ), dtype="f4"))
+            1, h + 1, 0.5,
+            w + 1, h + 1, 0.5,
+            w + 1, 1, 0.5,
+            1, 1, 0.5,
+        ), dtype="f4"))
         GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, numpy.array((
-                                                                0, 0,
-                                                                w, 0,
-                                                                w, h,
-                                                                0, h,
-                                                            ), dtype="f4"))
+            0, 0,
+            w, 0,
+            w, h,
+            0, h,
+        ), dtype="f4"))
 
         GL.glDrawArrays(GL.GL_QUADS, 0, 4)
 
@@ -3191,17 +3204,17 @@ class EditorToolbar(GLOrtho):
 
                 self.toolTextures[tool.toolIconName].bind()
                 GL.glVertexPointer(3, GL.GL_FLOAT, 0, numpy.array((
-                                                                      x, y + h, 1,
-                                                                      x + w, y + h, 1,
-                                                                      x + w, y, 1,
-                                                                      x, y, 1,
-                                                                  ), dtype="f4"))
+                    x, y + h, 1,
+                    x + w, y + h, 1,
+                    x + w, y, 1,
+                    x, y, 1,
+                ), dtype="f4"))
                 GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, numpy.array((
-                                                                        0, 0,
-                                                                        w * 16, 0,
-                                                                        w * 16, h * 16,
-                                                                        0, h * 16,
-                                                                    ), dtype="f4"))
+                    0, 0,
+                    w * 16, 0,
+                    w * 16, h * 16,
+                    0, h * 16,
+                ), dtype="f4"))
 
                 GL.glDrawArrays(GL.GL_QUADS, 0, 4)
             except Exception:
@@ -3247,18 +3260,18 @@ class EditorToolbar(GLOrtho):
 
             self.guiTexture.bind()
             GL.glVertexPointer(3, GL.GL_FLOAT, 0, numpy.array((
-                                                                  tx, ty, 2,
-                                                                  tx + tw, ty, 2,
-                                                                  tx + tw, ty + th, 2,
-                                                                  tx, ty + th, 2,
-                                                              ), dtype="f4"))
+                tx, ty, 2,
+                tx + tw, ty, 2,
+                tx + tw, ty + th, 2,
+                tx, ty + th, 2,
+            ), dtype="f4"))
 
             GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, numpy.array((
-                                                                    texx, texy + texh,
-                                                                    texx + texw, texy + texh,
-                                                                    texx + texw, texy,
-                                                                    texx, texy,
-                                                                ), dtype="f4"))
+                texx, texy + texh,
+                texx + texw, texy + texh,
+                texx + texw, texy,
+                texx, texy,
+            ), dtype="f4"))
 
             GL.glDrawArrays(GL.GL_QUADS, 0, 4)
 
@@ -3285,15 +3298,16 @@ class EditorToolbar(GLOrtho):
             GL.glDrawArrays(GL.GL_QUADS, 0, cursor / 2)
 
         GL.glDisable(GL.GL_BLEND)
-        
+
+
 from albow.resource import get_image
-        
+
+
 class LogFilter(logging.Filter):
-    
     def __init__(self, editor):
         self.level = logging.WARNING
         self.editor = editor
-        
+
     def filter(self, record):
         message = record.getMessage()
         if "Session lock lost. This world is being accessed from another location." in message:

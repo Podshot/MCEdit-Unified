@@ -771,6 +771,8 @@ class PlayerPositionTool(EditorTool):
     markerLevel = None
 
     def drawToolMarkers(self):
+        if not config.settings.drawPlayerHeads.get():
+            return
         if self.markerLevel != self.editor.level:
             self.markerList.invalidate()
             self.markerLevel = self.editor.level
