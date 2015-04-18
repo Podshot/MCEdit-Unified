@@ -771,6 +771,7 @@ class FilterTool(EditorTool):
             alert("Could not find dependencies for the following filters:\n"+"\n".join(names)+"\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")
     
     def reloadFilters(self):
+        sys.dont_write_bytecode = True
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
                 del m
