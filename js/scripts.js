@@ -175,6 +175,13 @@ $(document).ready(function(){
 	}
 	if (generatePageStructure()) {
 		try {
+			var redirectors = getJSON('navbar.json')['redirectors'];
+			for (var i = 0; i < redirectors.length; i++) {
+				var redir = redirectors[i];
+				if (location.href == parseURL( redir.currentURL ).href) {
+					location.href = redir.distinationURL;
+				}
+			};
 			pageTrigger();
 		} catch(err) {
 			console.log(err.message);

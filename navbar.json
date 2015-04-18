@@ -1,4 +1,10 @@
 {
+	"redirectors": [
+		{
+			"currentURL": "/",
+			"destinationURL": "index.html"
+		}
+	],
 	"navbar": [
 		{
 			"displayname": "Home",
