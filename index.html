@@ -27,6 +27,32 @@
 
 	<script>
 		function pageTrigger() {
+			var is_OSX = navigator.platform.match(/(Mac|iPhone|iPod|iPad)/i) ? true : false;
+			var is_Win = (navigator.platform.match(/(Win)/i) && !is_OSX)? true : false;
+
+			if (is_OSX) {
+				$('#Win-downloads-toplevel').hide();
+				$('#Lin-downloads-toplevel').hide();
+				$('#OSX-downloads-toplevel').addClass('col-md-offset-4');
+				$('.override-platform-specific-downloads-container').show();
+			} else if (is_Win) {
+				$('#OSX-downloads-toplevel').hide();
+				$('#Lin-downloads-toplevel').hide();
+				$('#Win-downloads-toplevel').addClass('col-md-offset-4');
+				$('.override-platform-specific-downloads-container').show();
+			}
+			$('.override-platform-specific-downloads').click(function(){
+				$('#Win-downloads-toplevel').show();
+				$('#Lin-downloads-toplevel').show();
+				$('#OSX-downloads-toplevel').show();
+				if (is_OSX) {
+					$('#OSX-downloads-toplevel').removeClass('col-md-offset-4');
+				} else if (is_Win) {
+					$('#Win-downloads-toplevel').removeClass('col-md-offset-4');
+				}
+				$('.override-platform-specific-downloads-container').hide();
+			});
+
 			var releaseData = getReleaseData();
 			var commentJSON = getJSON('comments.json');
 			for (var i = 0; i < releaseData.length; i++) {
@@ -54,7 +80,7 @@
 				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
 					totalDownloads += releaseData[i].assets[x].download_count;
 				}
-				
+
 				var commentlink = '';
 				if (commentJSON.hasOwnProperty(version)) {
 					commentlink = 'Comment <a href="' + commentJSON[version] + '">Here</a>';
@@ -64,7 +90,7 @@
 
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br>' + totalDownloads + ' downloads<br>' + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br><span class="badge">' + totalDownloads + ' downloads</span><br>' + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
 			}
 			$('#changelog').show();
@@ -111,7 +137,7 @@
 			<div class="col-md-12" style="padding:0xp;">
 				<div class="jumbotron" style="text-align:center;" id="downloads">
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-4" id="OSX-downloads-toplevel">
 							<span class="hidden-xs hidden-sm">
 								<i class="fa fa-apple fa-5x"></i>
 								<br><br><span style="font-size:16pt">Mac OS X</span><br><br>
@@ -124,7 +150,7 @@
 
 							</span>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-4" id="Win-downloads-toplevel">
 							<span class="hidden-xs hidden-sm">
 								<i class="fa fa-windows fa-5x"></i>
 								<br><br><span style="font-size:16pt">Windows</span><br><br>
@@ -138,7 +164,7 @@
 
 							</span>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-4" id="Lin-downloads-toplevel">
 							<span class="hidden-xs hidden-sm">
 								<i class="fa fa-linux fa-5x"></i>
 								<br><br><span style="font-size:16pt">Linux <span class="label label-warning">Beta</span></span><br><br>
@@ -153,6 +179,11 @@
 							</span>
 						</div>
 					</div>
+					<div class="row hidden-xs hidden-sm override-platform-specific-downloads-container" style="position:absolute;bottom:30px;right:70px;display:none;">
+						<div class="col-md-12">
+							<i class="fa fa-star"></i> Click <a href="#" class="override-platform-specific-downloads">here</a> to view other platforms
+						</div>
+					</div>
 					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:50px;">
 						<div class="col-md-12">
 							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
@@ -161,6 +192,14 @@
 					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:30px;">
 						<div class="col-md-12">
 							<i class="fa fa-history"></i> Pre-Anvil versions can be found at <a href="https://github.com/Khroki/mcedit-old/releases?after=0.1.6build315">this page.</a>
+						</div>
+					</div>
+					<div class="row hidden-md hidden-lg">
+						<br><br>
+					</div>
+					<div class="row hidden-md hidden-lg override-platform-specific-downloads-container" style="position:absolute;bottom:40px;display:none;">
+						<div class="col-md-12">
+							<i class="fa fa-star"></i> Click <a href="#" class="override-platform-specific-downloads">here</a> to view other platforms
 						</div>
 					</div>
 					<div class="row hidden-md hidden-lg" style="position:absolute;bottom:20px;">
