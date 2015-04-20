@@ -797,8 +797,8 @@ class PlayerPositionTool(EditorTool):
                 pos = self.editor.level.getPlayerPosition(player)
                 yaw, pitch = self.editor.level.getPlayerOrientation(player)
                 dim = self.editor.level.getPlayerDimension(player)
+                self.inOtherDimension[dim].append(player)
                 if dim != self.editor.level.dimNo:
-                    self.inOtherDimension[dim].append(player)
                     continue
 
                 self.playerPos[pos] = player
