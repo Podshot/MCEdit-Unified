@@ -192,8 +192,13 @@ class PlayerAddOperation(Operation):
             self.tool.hidePanel()
             self.tool.showPanel()
         self.canUndo = True
-        self.playerTag.save(self.level.getPlayerPath(self.uuid))
-        self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
+        if self.editor.level.dimNo in (-1, 1):
+            self.playerTag.save(os.path.join(os.path.dirname(self.level.filename), "DIM"+str(self.editor.level.dimNo), "playerdata", str(self.uuid)+".dat"))
+            self.tool.nonSavedPlayers.append(os.path.join(os.path.dirname(self.level.filename), "DIM"+str(self.editor.level.dimNo), "playerdata", str(self.uuid)+".dat"))
+        else:
+            self.playerTag.save(self.level.getPlayerPath(self.uuid))
+            self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
+        self.tool.inOtherDimension[self.editor.level.dimNo].append(self.uuid)
 
     def newPlayer(self):
         playerTag = nbt.TAG_Compound()
@@ -273,6 +278,9 @@ class PlayerMoveOperation(Operation):
     def perform(self, recordUndo=True):
         if self.level.saving:
             alert(_("Cannot perform action while saving is taking place"))
+            return
+        if self.player not in self.tool.inOtherDimension[self.tool.editor.level.dimNo]:
+            alert("You cannot move players that are in another Dimension")
             return
         try:
             level = self.tool.editor.level
@@ -727,6 +735,7 @@ class PlayerPositionTool(EditorTool):
         self.playerPos = {}
         self.playerTexture = {}
         self.revPlayerPos = {}
+        self.inOtherDimension = {0: [], 1: [], -1: []}
 
         self.markerList = DisplayList()
 
@@ -789,6 +798,7 @@ class PlayerPositionTool(EditorTool):
                 yaw, pitch = self.editor.level.getPlayerOrientation(player)
                 dim = self.editor.level.getPlayerDimension(player)
                 if dim != self.editor.level.dimNo:
+                    self.inOtherDimension[dim].append(player)
                     continue
 
                 self.playerPos[pos] = player
