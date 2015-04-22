@@ -1,10 +1,10 @@
-var releaseData = {};
 var platforms = ["OSX","Win", "Lin"];
 var requests = {};
 function getJSON(url){
+	var ret_val = {};
 	if (requests[url]) {
 		console.log('Found cached version');
-		return requests[url];
+		ret_val = requests[url];
 	} else {
 		try {
 			var response = $.ajax({
@@ -16,7 +16,7 @@ function getJSON(url){
 			var ret_val = JSON.parse(response);
 			if (ret_val !== undefined) {
 				requests[url] = ret_val;
-				return requests[url];
+				ret_val = requests[url];
 			} else {
 				loadFailError();
 			}
@@ -25,6 +25,14 @@ function getJSON(url){
 			loadFailError();
 		}
 	}
+	if (ret_val && ret_val.message && ret_val.message.indexOf('API rate limit exceeded') != -1) {
+		$('title').html('MCEdit Unified - Rate Limit Exceeded');
+		$('body').children().not('nav').hide();
+		$('body').append('<div id="exceededwarning"><h1>Rate Limit Exceeded</h1><br>This page requires calls to GitHub, which is a rate limited resource.</div>');
+		$('body').css('background-color','#444444');
+		$('#exceededwarning').css('text-align','center').css('color','white');
+	}
+	return ret_val;
 }
 /*versionCompare from http://stackoverflow.com/a/6832721*/
 function compareVersionString(v1, v2, options) {
@@ -77,7 +85,7 @@ function compareVersionObject(a,b) {
 	return compareVersionString(a.tag_name, b.tag_name) * -1;
 }
 function getLatestRelease() {
-	var data = releaseData;
+	var data = getReleaseData();
 	var prereleases = [];
 	var releases = [];
 	for (var i = 0; i < data.length; i++) {
@@ -124,11 +132,15 @@ function generatePageStructure() {
 	return true;
 }
 function getDownload(platform,version,bittage) {
-	for (var i = 0; i < releaseData.length; i++) {
-		var release = releaseData[i];
+	var bitbit = 'bit';
+	if (bittage !== 32 && bittage !== 64) {
+		bitbit = '';
+	}
+	for (var i = 0; i < getReleaseData().length; i++) {
+		var release = getReleaseData()[i];
 		for (var x = 0; x < release.assets.length; x++) {
 			var asset = release.assets[x];
-            var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + 'bit';
+			var name = 'MCEdit.v' + version + '.' + platform + '.' + bittage + bitbit;
 			if (asset.name == name + '.zip' || asset.name == name + '.exe' || asset.name == name + '.msi' || asset.name == name + '.run') {
 				return asset;
 			}
@@ -149,29 +161,25 @@ function loadFailError() {
 	}
 	$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 }
+function getReleaseData() {
+	var releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+	return releaseData.sort(compareVersionObject);
+}
 $(document).ready(function(){
 	var ratelimits = getJSON('https://api.github.com/rate_limit');
-	if (ratelimits.resources.core.remaining < 5) {
+	if (ratelimits.resources.core.remaining < 5 && ratelimits.resources.core.remaining > 0) {
 		$('body').children().hide();
 		$('body').append('<div id="ratewarning"><h1>Rate Limit Low</h1><br>You only have ' + ratelimits.resources.core.remaining + ' requests remaining<br><br><button onclick="$(\'#ratewarning\').remove();$(\'body\').css(\'background-color\',\'white\').children().show();" class="btn btn-default"><i class="fa fa-check"></i> Ok</button></div>');
 		$('body').css('background-color','#444444');
 		$('#ratewarning').css('text-align','center').css('color','white');
 	}
-	if (ratelimits.resources.core.remaining > 0) {
-		releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
-		releaseData.sort(compareVersionObject);
-		if (generatePageStructure()) {
-			try {
-				pageTrigger();
-			} catch(err) {
-				console.log(err.message);
-			}
-		} else {
-			alert('An error occured loading the webpage. Please try again later.');
+	if (generatePageStructure()) {
+		try {
+			pageTrigger();
+		} catch(err) {
+			console.log(err.message);
 		}
 	} else {
-		$('title').html('MCEdit Unified - Rate Limit Exceeded');
-		$('body').html('<h1>Rate Limit Exceeded</h1><br>Click <a href="https://github.com/Khroki/MCEdit-Unified">here</a> to go to the repository page instead.');
-		$('body').css('background-color','#444444').css('text-align','center').css('color','white');
+		alert('An error occured loading the webpage. Please try again later.');
 	}
 });

@@ -2,7 +2,7 @@
 	"navbar": [
 		{
 			"displayname": "Home",
-			"url": "./"
+			"url": "index.html"
 		},
 		{
 			"displayname": "About",
@@ -22,7 +22,7 @@
 		},
 		{
 			"displayname": "Documentation",
-			"url": "docs/"
+			"url": "docs/index.html"
 		},
 		{
 			"displayname": "GitHub",

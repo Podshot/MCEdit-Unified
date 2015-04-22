@@ -1,21 +1,8 @@
-h2.tool {
-	width: 150px;
-	height: 90px;
-	text-align: center;
-}
-hr {
+.hr {
 	display: block;
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0.5em 0 0.5em 0;
 	border-style: ridge;
-	border-width: 1px;
-}
-.note {
-	text-align: center;
-	font-family: arial, sans-serif;
-	font-size: 15px;
+	border-width: 2px;
 }
 .footer {
 	text-align: center;
@@ -23,42 +10,48 @@ hr {
 	font-size: 12px;
 	margin: 1em;
 }
+/* Outdated browser warning look */
 .update {
 	text-align: center;
 	font-size: 14px;
+	font-weight: bold;
 	background: #FFFF75;
 	color: #000000;
 	padding: 0.5em 0;
 }
-.ie9 {
-	text-align: center;
-	font-size: 14px;
-	background: #FFD700;
-	color: #000000;
-	padding: 0.5em 0;
-}
-.underinterface {
-	text-align: center;
-	font-family: arial, sans-serif;
-	font-size: 10px;
-}
-.title {
-	margin: 5px;
-	margin-left: 50px;
-}
-.interface {
-	margin: 5px;
-	margin-left: 50px;
-}
+/* Used for requirements table */
 .min-requirements{
-	padding-right:15px;
-	padding-left:15px;
-	margin-right:auto;
-	margin-left:auto;
 }
 .rec-requirements{
-	padding-right:15px;
-	padding-left:15px;
-	margin-right:auto;
-	margin-left:auto;
 }
+p, tr, td{
+	text-align: center;
+}
+.note-req {
+	background-color: #DFE5E9;
+	padding: 0.5em 0;
+}
+/* Contributor */
+.contributor {
+	display: -moz-inline-stack;
+	display: inline-block;
+	vertical-align: top;
+	zoom: 1;
+	*display: inline;
+	float: none;
+}
+.contributor .thumbnail {
+	min-height: 320px;
+	display: block;
+}
+.contributor .thumbnail h3 {
+	text-align: center;
+}
+.contributor .thumbnail p {
+	text-align: center;
+	height: 20px;
+}
+.contributor .thumbnail img {
+	width: 100%;
+}
+/* Mobile Site */
