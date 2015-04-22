@@ -1841,9 +1841,12 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         for name, val in zip(("SpawnX", "SpawnY", "SpawnZ"), pos):
             playerSpawnTag[name] = nbt.TAG_Int(val)
 
-    def getPlayerPath(self, player):
+    def getPlayerPath(self, player, dim=0):
         assert player != "Player"
-        return os.path.join(self.playersFolder, "%s.dat" % player)
+        if dim != 0:
+            return os.path.join(os.path.dirname(self.level.filename), "DIM%s" % dim, "playerdata", "%s.dat" % player)
+        else:
+            return os.path.join(self.playersFolder, "%s.dat" % player)
 
     def getPlayerTag(self, player="Player"):
         if player == "Player":

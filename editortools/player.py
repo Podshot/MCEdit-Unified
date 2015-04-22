@@ -192,12 +192,8 @@ class PlayerAddOperation(Operation):
             self.tool.hidePanel()
             self.tool.showPanel()
         self.canUndo = True
-        if self.editor.level.dimNo in (-1, 1):
-            self.playerTag.save(os.path.join(os.path.dirname(self.level.filename), "DIM"+str(self.editor.level.dimNo), "playerdata", str(self.uuid)+".dat"))
-            self.tool.nonSavedPlayers.append(os.path.join(os.path.dirname(self.level.filename), "DIM"+str(self.editor.level.dimNo), "playerdata", str(self.uuid)+".dat"))
-        else:
-            self.playerTag.save(self.level.getPlayerPath(self.uuid))
-            self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
+        self.playerTag.save(self.level.getPlayerPath(self.uuid))
+        self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
         self.tool.inOtherDimension[self.editor.level.dimNo].append(self.uuid)
 
     def newPlayer(self):
@@ -212,6 +208,7 @@ class PlayerAddOperation(Operation):
         playerTag['Score'] = nbt.TAG_Int(0)
         playerTag['FallDistance'] = nbt.TAG_Float(0)
         playerTag['OnGround'] = nbt.TAG_Byte(0)
+        playerTag['Dimension'] = nbt.TAG_Int(self.editor.level.dimNo)
 
         playerTag["Inventory"] = nbt.TAG_List()
 
@@ -278,9 +275,6 @@ class PlayerMoveOperation(Operation):
     def perform(self, recordUndo=True):
         if self.level.saving:
             alert(_("Cannot perform action while saving is taking place"))
-            return
-        if self.player not in self.tool.inOtherDimension[self.tool.editor.level.dimNo]:
-            alert("You cannot move players that are in another Dimension")
             return
         try:
             level = self.tool.editor.level
@@ -732,9 +726,9 @@ class PlayerPositionTool(EditorTool):
 
         self.texVerts = (textureVerticesHead, textureVerticesHat) 
 
-        self.playerPos = {}
+        self.playerPos = {0:{}, -1:{}, 1:{}}
         self.playerTexture = {}
-        self.revPlayerPos = {}
+        self.revPlayerPos = {0:{}, -1:{}, 1:{}}
         self.inOtherDimension = {0: [], 1: [], -1: []}
 
         self.markerList = DisplayList()
@@ -760,6 +754,7 @@ class PlayerPositionTool(EditorTool):
             return
 
         pos, direction = self.editor.blockFaceUnderCursor
+        dim = self.editor.level.getPlayerDimension(self.movingPlayer)
         pos = (pos[0], pos[1] + 2, pos[2])
 
         x, y, z = pos
@@ -767,11 +762,11 @@ class PlayerPositionTool(EditorTool):
         # x,y,z=map(lambda p,d: p+d, pos, direction)
         GL.glEnable(GL.GL_BLEND)
         GL.glColor(1.0, 1.0, 1.0, 0.5)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[dim][self.movingPlayer], dim)
         GL.glDisable(GL.GL_BLEND)
 
         GL.glEnable(GL.GL_DEPTH_TEST)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[dim][self.movingPlayer], dim)
         drawTerrainCuttingWire(BoundingBox((x, y, z), (1, 1, 1)))
         drawTerrainCuttingWire(BoundingBox((x, y - 1, z), (1, 1, 1)))
         #drawTerrainCuttingWire( BoundingBox((x,y-2,z), (1,1,1)) )
@@ -797,23 +792,26 @@ class PlayerPositionTool(EditorTool):
                 pos = self.editor.level.getPlayerPosition(player)
                 yaw, pitch = self.editor.level.getPlayerOrientation(player)
                 dim = self.editor.level.getPlayerDimension(player)
+                
                 self.inOtherDimension[dim].append(player)
-                if dim != self.editor.level.dimNo:
-                    continue
-
-                self.playerPos[pos] = player
-                self.revPlayerPos[player] = pos
+                self.playerPos[dim][pos] = player
+                self.revPlayerPos[dim][player] = pos
+                
                 if player != "Player" and config.settings.downloadPlayerSkins.get():
                     self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=False))
                 else:
                     self.playerTexture[player] = self.charTex
+                    
+                if dim != self.editor.level.dimNo:
+                    continue
+
                 x, y, z = pos
                 GL.glPushMatrix()
                 GL.glTranslate(x, y, z)
                 GL.glRotate(-yaw, 0, 1, 0)
                 GL.glRotate(pitch, 1, 0, 0)
                 GL.glColor(1, 1, 1, 1)
-                self.drawCharacterHead(0, 0, 0, (x,y,z))
+                self.drawCharacterHead(0, 0, 0, (x,y,z), self.editor.level.dimNo)
                 GL.glPopMatrix()
                 # GL.glEnable(GL.GL_BLEND)
                 drawTerrainCuttingWire(FloatBox((x - .5, y - .5, z - .5), (1, 1, 1)),
@@ -829,7 +827,7 @@ class PlayerPositionTool(EditorTool):
 
         GL.glDisable(GL.GL_DEPTH_TEST)
 
-    def drawCharacterHead(self, x, y, z, realCoords=None):
+    def drawCharacterHead(self, x, y, z, realCoords=None, dim=0):
         GL.glEnable(GL.GL_CULL_FACE)
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
@@ -839,13 +837,13 @@ class PlayerPositionTool(EditorTool):
         hat_size = (0.55, 0.55, 0.55)
         hat_box = FloatBox(hat_origin, hat_size)
 
-        if realCoords is not None and self.playerPos[realCoords] != "Player" and config.settings.downloadPlayerSkins.get():
+        if realCoords is not None and self.playerPos[dim][realCoords] != "Player" and config.settings.downloadPlayerSkins.get():
             drawCube(box,
-                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts[0])
+                     texture=self.playerTexture[self.playerPos[dim][realCoords]], textureVertices=self.texVerts[0])
             GL.glEnable(GL.GL_BLEND)
             GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
             drawCube(hat_box,
-                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts[1])
+                     texture=self.playerTexture[self.playerPos[dim][realCoords]], textureVertices=self.texVerts[1])
             GL.glDisable(GL.GL_BLEND)
         else:
             drawCube(box,
