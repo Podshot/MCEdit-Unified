@@ -3,108 +3,194 @@
 <head>
 	<title>MCEdit Unified</title>
 	<meta charset="utf-8">
-	<script src="js/jquery.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/jquery-2.1.3.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/scripts.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/stylesheet.css">
-	<link rel="shortcut icon" href="favicon.ico">
+	<script src="js/marked.js"></script>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/stylesheet.css" rel="stylesheet">
+	<link href="css/text.css" rel="stylesheet">
+	<link href="favicon.ico" rel="shortcut icon">
+	<!-- Looks for outdated IE browsers -->
+	<!--[if lte IE 9]>
+		<p class="update">Hey, it looks like you are using an old browser, you can go to <a href="http://browsehappy.com/">Browsehappy.com</a> to get the latest version of your browser and others.</p>
+	<[endif]-->
+	<!-- Google Analytics -->
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
 	  ga('create', 'UA-57749723-1', 'auto');
 	  ga('send', 'pageview');
-
 	</script>
 
-	<script>
-		function pageTrigger() {
-
-		}
-	</script>
 </head>
 <body>
 	<div class="container">
 		<div class="row">
-			<div class=" col-md-6 col-md-offset-3">
-                <p style="text-align:center;">The below are the supported system requirements, lower specs may work but we can't promise functionality. This is partially due to lack of equipment to test with.</p>
-				<table class="table table-bordered" style="font-size:12px;">
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <b>Windows</b>
-                        </td>
-                        <td>
-                            <b>Mac</b>
-                        </td>
-                        <td>
-                            <b>Linux</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Operating System</b>
-                        </td>
-                        <td>
-                            XP SP3<br>
-                            or newer<br>
-                        </td>
-                        <td>
-                            OSX 10.6.8 Snow Leopard*<br>
-                            or newer
-
-                        </td>
-                        <td>
-                            Any Linux variant<br>
-                            with python 2.7
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Processor</b>
-                        </td>
-                        <td>
-                            2.5ghz Pentium 4 or Better
-                        </td>
-                        <td>
-                            Any Intel Processor
-                        </td>
-                        <td>
-                            2.5ghz Pentium 4 or Better
-                        </td>
-                    <tr>
-                        <td>
-                            <b>Ram</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            2GB
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Video Card</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            Any fully OpenGL 1.1 compatible graphics card
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Free Disk Space</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-							1GB
-                        </td>
-                    </tr>
+			<p>Below are the system requirements, please check your computer to see if it can handle the program.</p>
+			<div class="min-requirements">
+                <p style="font-weight:bold;">Minimum: </p>
+				<table class="table table-bordered table table-striped">
+					<tr style="text-align:center;">
+						<td>
+						</td>
+						<td>
+							<b>Windows</b>
+						</td>
+						<td>
+							<b>Mac</b>
+						</td>
+						<td>
+							<b>Linux</b>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Operating System</b>
+						</td>
+						<td>
+							XP SP3 or newer
+						</td>
+						<td>
+							OSX 10.6.8 (Snow Leopard)* or newer
+						</td>
+						<td>
+							Any variant with python 2.7
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Processor</b>
+						</td>
+						<td>
+							Intel: Core 2 Duo or better**<br>
+							AMD: K10 or better
+						</td>
+						<td>
+							Intel: Core 2 Duo or better**
+						</td>
+						<td>
+							Intel: Core 2 Duo or better**<br>
+							AMD: K10 or better
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Ram</b>
+						</td>
+						<td colspan="3">
+								2GB or higher
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<b>Video Card</b>
+						</td>
+						<td colspan="3">
+							Any OpenGL 3.3 compatible graphics card
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Free Disk Space</b>
+						</td>
+						<td colspan="3">
+							1 - 1.5GB
+						</td>
+					</tr>
 				</table>
-                *Not thoroughly tested with versions below 10.9 Mavericks.
+			</div>
+			<div class="rec-requirements">
+                <p style="font-weight:bold;">Recommended: </p>
+				<table class="table table-bordered table table-striped">
+					<tr>
+						<td>
+						</td>
+						<td>
+							<b>Windows</b>
+						</td>
+						<td>
+							<b>Mac</b>
+						</td>
+						<td>
+							<b>Linux</b>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Operating System</b>
+						</td>
+						<td>
+							7, 8, 8.1, (10 Technical Preview)***
+						</td>
+						<td>
+							OSX 10.9.5 (Mavericks) or OSX 10.10.3 (Yosemite)
+						</td>
+						<td>
+							Any distros with python 2.7
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Processor</b>
+						</td>
+						<td>
+							Intel: Core i3 or better<br>
+							AMD: K10 or better
+						</td>
+						<td>
+							Intel: Core i3 or better
+						</td>
+						<td>
+							Intel: Core i3 or better<br>
+							AMD: K10 or better
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Ram</b>
+						</td>
+						<td colspan="3">
+								4GB or higher
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Video Card</b>
+						</td>
+						<td colspan="3">
+							Any OpenGL 4.5 compatible graphics card
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Free Disk Space</b>
+						</td>
+						<td colspan="3">
+							3 - 6GB
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="note-req">
+				<p>*Not thoroughly tested with versions below 10.9 Mavericks.</p>
+				<p>**Processor may not work as smoothly if choosing a large area to edit.</p>
+				<p>***Untested, will work as intended, you are more than welcome to do so. Will be officially supported once its released.</p>
 			</div>
 		</div>
 	</div>
+
+	<hr class="hr">
+	<div class="footer">
+		&copy; 2010-2014 David Rio Vierra (<a href="https://twitter.com/codewarrior0">Codewarrior0</a>). 
+		&copy; 2014-2015 <a href="http://khroki.github.io/MCEdit-Unified/contributors.html">Khroki and all of the contributers</a>.
+		All Rights Reserved to their respective ownership.
+	</div>
+
 </body>
 </html>

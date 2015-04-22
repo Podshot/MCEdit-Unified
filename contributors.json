@@ -47,7 +47,12 @@
 	"OniOniOn-": {
 		"role": "Korean Translation"
 	},
+	"DragonQuiz": {
+		"role": "Website Tech"
+	},
 	"codewarrior0": {
-		"role": "Original Creator"
-		}
+		"role": "Original Creator",
+		"twitter": "codewarrior0",
+		"reddit": "codewarrior0"
+	}
 }
