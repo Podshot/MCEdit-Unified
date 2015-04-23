@@ -1204,7 +1204,8 @@ class ConstructionTool(CloneTool):
             elif str(clipFilename).split(".")[-1].lower() == "bo2":
                 self.loadLevel(BOParser.BO2(clipFilename).getSchematic())
             elif str(clipFilename).split(".")[-1].lower() == "bo3":
-                self.loadLevel(BOParser.BO3(clipFilename).getSchematic())
+                #self.loadLevel(BOParser.BO3(clipFilename).getSchematic())
+                alert("BO3 support is currently not available")
             else:
                 self.loadSchematic(clipFilename)
 

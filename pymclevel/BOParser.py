@@ -1,6 +1,7 @@
 import ConfigParser
 from pymclevel import schematic, materials
 
+'''
 class BO3:
     
     def __init__(self,filename=''):
@@ -77,7 +78,7 @@ class BO3:
             print "Highest: "+str(self._Z_tracker[1])
             print "Shift: "+str(self._Z_tracker[2])
             
-            self.__schem = schematic.MCSchematic(shape=(self._X_tracker[1]+1, self._Z_tracker[1]+1, self._Y_tracker[1]+1))
+            self.__schem = schematic.MCSchematic(shape=(self._X_tracker[1]+1, self._Y_tracker[1]+1, self._Z_tracker[1]+1))
             print self.__schem.size
             for x, y, z, block, data in self.block_data:
                 x += self._X_tracker[2]
@@ -86,8 +87,9 @@ class BO3:
                 self.__schem.Blocks[x,y,z] = int(block)
                 self.__schem.Data[x,y,z] = int(data)
             
-        def getSchematic(self):
-            return self.__schem
+    def getSchematic(self):
+        return self.__schem
+'''
 
 class BO2:
     _parser = ConfigParser.RawConfigParser()
