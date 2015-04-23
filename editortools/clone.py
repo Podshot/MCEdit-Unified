@@ -34,7 +34,7 @@ import pygame
 
 from select import SelectionOperation
 from pymclevel.pocket import PocketWorld
-from pymclevel import block_copy, BoundingBox
+from pymclevel import block_copy, BoundingBox, BOParser
 
 import logging
 
@@ -1199,7 +1199,14 @@ class ConstructionTool(CloneTool):
         clipFilename = mcplatform.askOpenFile(title='Import a schematic or level...', schematics=True)
         # xxx mouthful
         if clipFilename:
-            self.loadSchematic(clipFilename)
+            if str(clipFilename).split(".")[-1] in ("schematic", "schematic.gz", "zip", "inv"):
+                self.loadSchematic(clipFilename)
+            elif str(clipFilename).split(".")[-1].lower() == "bo2":
+                self.loadLevel(BOParser.BO2(clipFilename).getSchematic())
+            elif str(clipFilename).split(".")[-1].lower() == "bo3":
+                self.loadLevel(BOParser.BO3(clipFilename).getSchematic())
+            else:
+                self.loadSchematic(clipFilename)
 
         print "Canceled"
         if self.level is None:
