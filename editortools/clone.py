@@ -1213,7 +1213,7 @@ class ConstructionTool(CloneTool):
 
         self.editor.mouseLookOff()
 
-        clipFilename = mcplatform.askOpenFile(title='Import a schematic or level...', schematics=True)
+        clipFilename = mcplatform.askOpenFile(title='Import a schematic or level...', schematics=True, suffixes=["bo2"])
         # xxx mouthful
         if clipFilename:
             if str(clipFilename).split(".")[-1] in ("schematic", "schematic.gz", "zip", "inv"):

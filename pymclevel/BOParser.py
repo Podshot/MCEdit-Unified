@@ -156,6 +156,3 @@ class BO2:
     @property
     def blocks(self):
         return self.__blocks
-
-#BO2(filename="pymclevel"+os.path.sep+"test"+os.path.sep+'Test.BO2')
-#BO3(filename="C:\\Users\\Jonathan\\Python\\MCEdit\\Schematics\\chest.bo3")
