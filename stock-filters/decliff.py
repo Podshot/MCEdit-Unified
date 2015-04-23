@@ -117,7 +117,7 @@ def adjheight(orig, new, slice_no, cliff_pos, dir, adj, can_adj, maxstep, slice_
             new[slice_no, cur_pos] = max([0, orig[slice_no, cur_pos] + cur_adj])
             if cur_adj != 0 and \
                             abs(prev) < abs(int(adj * done_adj / can_adj)):
-                cur_adj = cur_adj + (prev - int(adj * done_adj / can_adj))
+                cur_adj += prev - int(adj * done_adj / can_adj)
                 prev = int(adj * done_adj / can_adj)
 
     new[slice_no, end] = orig[slice_no, end]
@@ -189,7 +189,7 @@ def perform(level, box, options):
             if can_left > 0 and RLOption == "Lower Only":
                 can_left = 0
 
-            if cliff_height < 0 and can_right - can_left < cliff_height:
+            if 0 > cliff_height > can_right - can_left:
                 if abs(can_left) > abs(can_right):
                     adj_left = -1 * (cliff_height - max([int(cliff_height / 2), can_right]))
                     adj_right = cliff_height + adj_left
@@ -197,7 +197,7 @@ def perform(level, box, options):
                     adj_right = cliff_height - max([int(cliff_height / 2), -can_left])
                     adj_left = -1 * (cliff_height - adj_right + 1)
             else:
-                if cliff_height > 0 and can_right - can_left > cliff_height:
+                if 0 < cliff_height < can_right - can_left:
                     if abs(can_left) > abs(can_right):
                         adj_left = -1 * (cliff_height - min([int(cliff_height / 2), can_right]))
                         adj_right = cliff_height + adj_left
@@ -238,7 +238,7 @@ def perform(level, box, options):
                 if column[cur_pos:cur_pos + 1] != am.Water.ID and \
                                 column[cur_pos:cur_pos + 1] != am.Ice.ID:
                     break
-                Waterdepth = Waterdepth + 1
+                Waterdepth += 1
 
         if delta == 0:
             column[oh:] = schema.Blocks[x, z, oh:]

@@ -38,8 +38,6 @@ def perform(level, box, options):
                 h = heightmap[x, z]
                 h2 = heightmap[z, x]
 
-                b2 = blocks[z, x, h2]
-
                 if blocks[x, z, h] == 1:
                     h += 2  # rock surface - top 4 layers become 2 air and 2 rock
                 if blocks[z, x, h2] == 1:

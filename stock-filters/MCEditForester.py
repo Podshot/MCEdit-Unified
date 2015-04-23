@@ -7,9 +7,17 @@
 
 from pymclevel.materials import alphaMaterials
 import Forester
-import mcInterface
 
 displayName = "Forester"
+
+libraries = [
+             {
+              "name": "mcInterface",
+              "path": "Bundled Libraries<sep>mcInterface.py",
+              "URL": "None",
+              "optional": False,
+             }
+            ]
 
 inputs = (
     ("Forester script by dudecon", "label"),
@@ -48,6 +56,7 @@ inputs = (
 
 
 def perform(level, box, options):
+    import mcInterface
     '''Load the file, create the trees, and save the new file.
     '''
     # set up the non 1 to 1 mappings of options to Forester global names

@@ -21,6 +21,8 @@
 # a blocktype picker, a floating-point input with no limits and default 15.0,
 # a checkbox initially checked, and a menu of choices
 
+displayName = "Test Filter"
+
 inputs = (
     ("Depth", (4, -128, 128)),
     ("Pick a block:", "blocktype"),
@@ -39,8 +41,6 @@ inputs = (
 
 
 def perform(level, box, options):
-    blockType = options["Pick a block:"].ID
-    complexity = options["Fractal complexity"]
     if options["Enable thrusters"]:
         # Errors will alert the user and print a traceback to the console.
         raise NotImplementedError("Thrusters not attached!")
@@ -58,7 +58,6 @@ def perform(level, box, options):
                     # replaces gold with TNT. straightforward.
                     if level.blockAt(x, y, z) == 14:
                         level.setBlockAt(x, y, z, 46)
-
 
     # The second is to extract the segment of interest into a contiguous array
     # using level.extractSchematic. this simplifies using numpy but at the cost
@@ -107,6 +106,6 @@ def perform(level, box, options):
     # Beware though, you only get to undo the area within the specified box
 
     pos = level.getPlayerPosition()
-    cpos = pos[0] >> 4, pos[2] >> 4
+    cpos = int(pos[0]) >> 4, int(pos[2]) >> 4
     chunk = level.getChunk(*cpos)
     chunk.Blocks[::4, ::4, :64] = 46  # replace every 4x4th column of land with TNT

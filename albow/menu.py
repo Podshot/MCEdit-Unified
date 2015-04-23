@@ -58,7 +58,8 @@ class Menu(Dialog):
     scroll = 0
 
     def __init__(self, title, items, scrolling=False, scroll_items=30,
-                 scroll_page=5, **kwds):
+                 scroll_page=5, handler=None, **kwds):
+        self.handler = handler
         self.title = _(title)
         self.items = items
         self._items = [MenuItem(*item) for item in items]
@@ -78,7 +79,7 @@ class Menu(Dialog):
     def present(self, client, pos):
         client = client or self.root
         self.topleft = client.local_to_global(pos)
-        focus = get_focus()
+        focus = self.handler or get_focus()
         font = self.font
         h = font.get_linesize()
         items = self._items
@@ -105,7 +106,8 @@ class Menu(Dialog):
 
         return Dialog.present(self, centered=False)
 
-    def command_is_enabled(self, item, focus):
+    @staticmethod
+    def command_is_enabled(item, focus):
         cmd = item.command
         if cmd:
             enabler_name = cmd + '_enabled'

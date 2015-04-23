@@ -56,15 +56,18 @@ class TabPanel(Widget):
     def page_height(self):
         return self.height - self.tab_height
 
-    def add_page(self, title, page):
-        self._add_page(title, page)
+    def add_page(self, title, page, idx=None):
+        self._add_page(title, page, idx)
         if not self.current_page:
             self.show_page(page)
 
-    def _add_page(self, title, page):
+    def _add_page(self, title, page, idx=None):
         page.tab_title = _(title)
         page.anchor = 'ltrb'
-        self.pages.append(page)
+        if idx is not None:
+            self.pages.insert(idx, page)
+        else:
+            self.pages.append(page)
 
     def remove_page(self, page):
         try:
@@ -168,7 +171,6 @@ class TabPanel(Widget):
 
         if len(pages) > 1:
             tlcorner = (offset[0] + self.bottomleft[0], offset[1] + self.bottomleft[1])
-            pageTabContents = []
             current_page = self.current_page
             n = len(pages)
             b = self.tab_border_width
@@ -176,7 +178,6 @@ class TabPanel(Widget):
             h = self.tab_height
             m = self.tab_margin
             tabWidth = (self.size[0] - (s * n) - (2 * m)) / n
-            width = self.width - 2 * m + s - b
             x0 = m + tlcorner[0]
 
             font = self.tab_font
@@ -192,7 +193,7 @@ class TabPanel(Widget):
                     glColor(1.0, 1.0, 1.0, 0.5)
                 else:
                     glColor(0.5, 0.5, 0.5, 0.5)
-                glRectf(x0, tlcorner[1] - (m + b), x1, tlcorner[1] - (h))
+                glRectf(x0, tlcorner[1] - (m + b), x1, tlcorner[1] - h)
                 buf = font.render(self.pages[i].tab_title, True, self.fg_color or fg)
                 r = buf.get_rect()
 

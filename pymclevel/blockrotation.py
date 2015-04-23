@@ -12,6 +12,7 @@ def genericRoll(cls):
         rotation[cls.North] = cls.Down
     return rotation
 
+
 def genericVerticalFlip(cls):
     rotation = arange(16, dtype='uint8')
     if hasattr(cls, "Up") and hasattr(cls, "Down"):
@@ -103,6 +104,7 @@ Torch.roll = arange(16, dtype='uint8')
 Torch.roll[Torch.Up] = Torch.North
 Torch.roll[Torch.South] = Torch.Up
 
+
 class Ladder:
     blocktypes = [alphaMaterials.Ladder.ID]
 
@@ -142,6 +144,8 @@ Stair.roll[Stair.TopSouth] = Stair.TopNorth
 Stair.roll[Stair.TopNorth] = Stair.North
 
 # data value 0-8 bottom and 9-15 Top
+
+
 class HalfSlab:
     blocktypes = [b.ID for b in alphaMaterials.AllSlabs]
 
@@ -239,6 +243,7 @@ Rail.rotateLeft[Rail.EastWest] = Rail.NorthSouth
 Rail.roll = arange(16, dtype='uint8')
 Rail.roll[Rail.North] = Rail.South
 
+
 def applyBit(apply):
     def _applyBit(class_or_array):
         if hasattr(class_or_array, "rotateLeft"):
@@ -329,6 +334,7 @@ Lever.roll[Lever.UpWest] = Lever.North
 applyThrownBit(Lever)
 rotationClasses.append(Lever)
 
+
 @genericFlipRotation
 class Button:
     blocktypes = [alphaMaterials.Button.ID, alphaMaterials.WoodenButton.ID]
@@ -416,6 +422,7 @@ genericFlipRotation(Bed)
 applyBit8(Bed)
 applyBit4(Bed)
 
+
 class EndPortal:
     blocktypes = [alphaMaterials.PortalFrame.ID]
     West = 0
@@ -426,6 +433,7 @@ class EndPortal:
 
 genericFlipRotation(EndPortal)
 applyBit4(EndPortal)
+
 
 class Door:
     blocktypes = [
@@ -479,6 +487,7 @@ Door.flipNorthSouth[Door.NorthOpen] = Door.SouthOpen
 Door.flipNorthSouth[Door.SouthOpen] = Door.NorthOpen
 
 rotationClasses.append(Door)
+
 
 class Log:
     blocktypes = [
@@ -558,6 +567,7 @@ genericFlipRotation(Trapdoor)
 applyOpenedBit = applyBit8
 applyOpenedBit(Trapdoor)
 
+
 class PistonBody:
     blocktypes = [alphaMaterials.StickyPiston.ID, alphaMaterials.Piston.ID]
 
@@ -613,6 +623,7 @@ HugeMushroom.roll = arange(16, dtype='uint8')
 HugeMushroom.roll[HugeMushroom.Southeast] = HugeMushroom.Northeast
 HugeMushroom.roll[HugeMushroom.South] = HugeMushroom.North
 HugeMushroom.roll[HugeMushroom.Southwest] = HugeMushroom.Northwest
+
 
 class Vines:
     blocktypes = [alphaMaterials.Vines.ID]
@@ -675,6 +686,7 @@ class QuartzPillar:
     North = 3
     South = 3
 
+
 @genericFlipRotation
 class NetherPortal:
     blocktypes = [alphaMaterials.NetherPortal.ID]
@@ -683,6 +695,7 @@ class NetherPortal:
     West = 1
     North = 2
     South = 2
+
 
 class Wood:
     blocktypes = [alphaMaterials.Wood.ID, alphaMaterials.Wood2.ID]
@@ -766,7 +779,8 @@ Hopper.roll = arange(16, dtype='uint8')
 Hopper.roll[Hopper.Down] = Hopper.South
 Hopper.roll[Hopper.North] = Hopper.Down
 
-@genericFlipRotation 
+
+@genericFlipRotation
 class Dropper:
     blocktypes = [alphaMaterials.Dropper.ID, alphaMaterials.Dispenser.ID]
     Down = 0
@@ -843,6 +857,7 @@ def FlipEastWest(blocks, data):
 
 def RotateLeft(blocks, data):
     data[:] = BlockRotation.rotateLeft[blocks, data]
+
 
 def Roll(blocks, data):
     data[:] = BlockRotation.roll[blocks, data]

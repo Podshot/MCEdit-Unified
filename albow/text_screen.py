@@ -18,9 +18,11 @@ class Page(object):
         self.text_screen = text_screen
         self.heading = heading
         self.lines = lines
-        width, height = text_screen.heading_font.size(heading)
+#        width, height = text_screen.heading_font.size(heading)
+        width, height = text_screen.heading_font.size(heading), text_screen.heading_font.get_linesize()
         for line in lines:
-            w, h = text_screen.font.size(line)
+#            w, h = text_screen.font.size(line)
+            w, h = text_screen.font.size(line)[0], text_screen.font.get_linesize()
             width = max(width, w)
             height += h
         self.size = (width, height)
@@ -31,11 +33,13 @@ class Page(object):
         x, y = pos
         buf = heading_font.render(self.heading, True, color)
         surface.blit(buf, (x, y))
-        y += buf.get_rect().height
+#        y += buf.get_rect().height
+        y += heading_font.get_linesize()
         for line in self.lines:
             buf = text_font.render(line, True, color)
             surface.blit(buf, (x, y))
-            y += buf.get_rect().height
+#            y += buf.get_rect().height
+            y += text_font.get_linesize()
 
 
 #------------------------------------------------------------------------------

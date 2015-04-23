@@ -16,15 +16,18 @@ import collections
 import os
 import traceback
 import uuid
-from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextField
-from albow.translate import _
+from albow import FloatField, IntField, AttrRef, ItemRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped
+import albow.translate
+_ = albow.translate._
+from config import config
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
 from glbackground import Panel
-from mceutils import ChoiceButton, alertException, setWindowCaption, showProgress, TextInputRow
+from mceutils import setWindowCaption, alertException, compareMD5Hashes
+from albow import ChoiceButton, showProgress, TextInputRow
 import mcplatform
 from operation import Operation
-from albow.dialogs import wrapped_label, alert
+from albow.dialogs import wrapped_label, alert, Dialog
 import pymclevel
 from pymclevel import BoundingBox
 import urllib2
@@ -33,8 +36,11 @@ import json
 import shutil
 import directories
 import sys
-import mceutils
-
+import keys
+import imp
+#-#
+from nbtexplorer import NBTExplorerToolPanel
+#-#
 
 def alertFilterException(func):
     def _func(*args, **kw):
@@ -47,7 +53,7 @@ def alertFilterException(func):
     return _func
 
 
-def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
+def addNumField(page, optionName, oName, val, min=None, max=None, increment=0.1):
     if isinstance(val, float):
         ftype = FloatField
         if isinstance(increment, int):
@@ -67,7 +73,7 @@ def addNumField(page, optionName, val, min=None, max=None, increment=0.1):
     field._increment = increment
     page.optionDict[optionName] = AttrRef(field, 'value')
 
-    row = Row([Label(optionName), field])
+    row = Row([Label(oName, doNotTranslate=True), field])
     return row
 
 
@@ -76,27 +82,30 @@ class FilterModuleOptions(Widget):
 
     def __init__(self, tool, module, *args, **kw):
         self._parent = None
+        self.module = module
         if '_parent' in kw.keys():
             self._parent = kw.pop('_parent')
         Widget.__init__(self, *args, **kw)
         self.spacing = 2
         self.tool = tool
-        pages = TabPanel()
+        self.pages = pages = TabPanel()
         pages.is_gl_container = True
-        self.pages = pages
         self.optionDict = {}
-        pageTabContents = []
 
         self.giveEditorObject(module)
         print "Creating options for ", module
         if hasattr(module, "inputs"):
+            trn = getattr(module, "trn", None)
+            self.trn = trn
             if isinstance(module.inputs, list):
+                self.pgs = []
                 for tabData in module.inputs:
-                    title, page, pageRect = self.makeTabPage(self.tool, tabData)
-                    pages.add_page(title, page)
-                    pages.set_rect(pageRect.union(pages._rect))
+                    title, page, pageRect = self.makeTabPage(self.tool, tabData, trn=trn)
+                    self.pgs.append((title, page))
+                pages.set_parent(None)
+                self.pages = pages = TabPanel(self.pgs)
             elif isinstance(module.inputs, tuple):
-                title, page, pageRect = self.makeTabPage(self.tool, module.inputs)
+                title, page, pageRect = self.makeTabPage(self.tool, module.inputs, trn=trn)
                 pages.add_page(title, page)
                 pages.set_rect(pageRect)
         else:
@@ -106,7 +115,7 @@ class FilterModuleOptions(Widget):
         self.add(pages)
         self.shrink_wrap()
         if len(pages.pages):
-            if (pages.current_page != None):
+            if pages.current_page is not None:
                 pages.show_page(pages.current_page)
             else:
                 pages.show_page(pages.pages[0])
@@ -114,19 +123,34 @@ class FilterModuleOptions(Widget):
         for eachPage in pages.pages:
             self.optionDict = dict(self.optionDict.items() + eachPage.optionDict.items())
 
-    def makeTabPage(self, tool, inputs):
+    def rebuildTabPage(self, inputs, **kwargs):
+        title, page, rect = self.makeTabPage(self.tool, inputs, self.trn)
+        for i, t, p, s, r in self.pages.iter_tabs():
+            if t == title:
+                self.pages.remove_page(p)
+                break
+        self.pages.add_page(title, page, idx=i)
+        self.pages.show_page(page)
+
+    def makeTabPage(self, tool, inputs, trn=None):
         page = Widget()
         page.is_gl_container = True
         rows = []
         cols = []
-        height = 0
-        max_height = self.tool.editor.mainViewport.height - self.tool.updatePanel.height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
-        print max_height
+        max_height = tool.editor.mainViewport.height - tool.editor.toolbar.height - tool.editor.subwidgets[0].height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
 
-        for optionName, optionType in inputs:
+        for optionSpec in inputs:
+            optionName = optionSpec[0]
+            optionType = optionSpec[1]
+            if trn is not None:
+                n = trn._(optionName)
+            if n == optionName:
+                oName = _(optionName)
+            else:
+                oName = n
             if isinstance(optionType, tuple):
                 if isinstance(optionType[0], (int, long, float)):
                     if len(optionType) == 3:
@@ -139,7 +163,7 @@ class FilterModuleOptions(Widget):
                     elif len(optionType) == 4:
                         val, min, max, increment = optionType
 
-                    rows.append(addNumField(page, optionName, val, min, max, increment))
+                    rows.append(addNumField(page, optionName, oName, val, min, max, increment))
 
                 if isinstance(optionType[0], (str, unicode)):
                     isChoiceButton = False
@@ -155,7 +179,6 @@ class FilterModuleOptions(Widget):
                             splitWord = keyword.split('=')
                             if len(splitWord) > 1:
                                 v = None
-                                key = None
 
                                 try:
                                     v = int(splitWord[1])
@@ -164,74 +187,101 @@ class FilterModuleOptions(Widget):
 
                                 key = splitWord[0]
                                 if v is not None:
-                                    if key == "lines":
-                                        lin = v
-                                    elif key == "width":
+                                    if key == "width":
                                         wid = v
                                 else:
                                     if key == "value":
-                                        val = splitWord[1]
+                                        val = "=".join(splitWord[1:])
 
                         if val is None:
                             val = ""
                         if wid is None:
                             wid = 200
 
-                        field = TextField(value=val, width=wid)
+                        field = TextFieldWrapped(value=val, width=wid)
                         page.optionDict[optionName] = AttrRef(field, 'value')
 
-                        row = Row((Label(optionName), field))
+                        row = Row((Label(oName, doNotTranslate=True), field))
                         rows.append(row)
                     else:
                         isChoiceButton = True
 
                     if isChoiceButton:
-                        choiceButton = ChoiceButton(map(str, optionType))
+                        if trn is not None:
+                            __ = trn._
+                        else:
+                            __ = _
+                        choices = [__("%s"%a) for a in optionType]
+                        choiceButton = ChoiceButton(choices, doNotTranslate=True)
                         page.optionDict[optionName] = AttrRef(choiceButton, 'selectedChoice')
 
-                        rows.append(Row((Label(optionName), choiceButton)))
+                        rows.append(Row((Label(oName, doNotTranslate=True), choiceButton)))
 
             elif isinstance(optionType, bool):
                 cbox = CheckBox(value=optionType)
                 page.optionDict[optionName] = AttrRef(cbox, 'value')
 
-                row = Row((Label(optionName), cbox))
+                row = Row((Label(oName, doNotTranslate=True), cbox))
                 rows.append(row)
 
             elif isinstance(optionType, (int, float)):
-                rows.append(addNumField(self, optionName, optionType))
+                rows.append(addNumField(self, optionName, oName, optionType))
 
             elif optionType == "blocktype" or isinstance(optionType, pymclevel.materials.Block):
                 blockButton = BlockButton(tool.editor.level.materials)
                 if isinstance(optionType, pymclevel.materials.Block):
                     blockButton.blockInfo = optionType
 
-                row = Column((Label(optionName), blockButton))
+                row = Column((Label(oName, doNotTranslate=True), blockButton))
                 page.optionDict[optionName] = AttrRef(blockButton, 'blockInfo')
 
                 rows.append(row)
             elif optionType == "label":
-                rows.append(wrapped_label(optionName, 50))
+                rows.append(wrapped_label(oName, 50, doNotTranslate=True))
 
             elif optionType == "string":
                 input = None  # not sure how to pull values from filters, but leaves it open for the future. Use this variable to set field width.
-                if input != None:
+                if input is not None:
                     size = input
                 else:
                     size = 200
-                field = TextField(value="")
-                row = TextInputRow(optionName, ref=AttrRef(field, 'value'), width=size)
+                field = TextFieldWrapped(value="")
+                row = TextInputRow(oName, ref=AttrRef(field, 'value'), width=size, doNotTranslate=True)
                 page.optionDict[optionName] = AttrRef(field, 'value')
                 rows.append(row)
 
             elif optionType == "title":
-                title = optionName
+                title = oName
+
+            #-#
+            elif type(optionType) == list and optionType[0].lower() == "nbttree":
+                kw = {'close_text': None, 'load_text': None}
+                if len(optionType) >= 3:
+                    def close():
+                        self.pages.show_page(self.pages.pages[optionType[2]])
+                    kw['close_action'] = close
+                    kw['close_text'] = "Go Back"
+                if len(optionType) >= 4:
+                    if optionType[3]:
+                        kw['load_text'] = optionType[3]
+                if hasattr(self.module, 'nbt_ok_action'):
+                    kw['ok_action'] = getattr(self.module, 'nbt_ok_action')
+                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=optionType[1], height=max_height, no_header=True, copy_data=False, **kw)
+                self.module.set_tree(self.nbttree.tree)
+                for meth_name in dir(self.module):
+                    if meth_name.startswith('nbttree_'):
+                        setattr(self.nbttree.tree.treeRow, meth_name.split('nbttree_')[-1], getattr(self.module, meth_name))
+#                    elif meth_name.startswith('nbt_'):
+#                        setattr(self.nbttree, meth_name.split('nbt_')[-1], getattr(self.module, meth_name))
+                page.optionDict[optionName] = AttrRef(self, 'rebuildTabPage')
+                rows.append(self.nbttree)
+                self.nbttree.page = len(self.pgs)
+            #-#
 
             else:
                 raise ValueError(("Unknown option type", optionType))
 
         height = sum(r.height for r in rows) + (len(rows) -1) * self.spacing
-        print height
 
         if height > max_height:
             h = 0
@@ -239,18 +289,18 @@ class FilterModuleOptions(Widget):
                 h += r.height
                 if h > height / 2:
                     break
-            cols.append(Column(rows[:i]))
+            if rows[:i]:
+                cols.append(Column(rows[:i], spacing=0))
             rows = rows[i:]
-        # cols.append(Column(rows))
 
         if len(rows):
-            cols.append(Column(rows))
+            cols.append(Column(rows, spacing=0))
 
         if len(cols):
-            page.add(Row(cols))
+            page.add(Row(cols, spacing=0))
         page.shrink_wrap()
 
-        return (title, page, page._rect)
+        return title, page, page._rect
 
     @property
     def options(self):
@@ -269,15 +319,17 @@ class FilterModuleOptions(Widget):
 class FilterToolPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
-
-        self.savedOptions = {}
+        
+        self._recording = False
+        self._save_macro = False
 
         self.tool = tool
         self.selectedFilterName = None
-        if len(self.tool.filterModules):
-            self.reload()
+        self.usingMacro = False
+                
+            
 
-    def reload(self):
+    def reload(self, filterOptionsPanel=None):
         for i in list(self.subwidgets):
             self.remove(i)
 
@@ -290,16 +342,42 @@ class FilterToolPanel(Panel):
 
         if self.selectedFilterName is None or self.selectedFilterName not in tool.filterNames:
             self.selectedFilterName = tool.filterNames[0]
-
-        self.filterSelect = ChoiceButton(tool.filterNames, choose=self.filterChanged)
+        
+        tool.names_list = []
+        for name in tool.filterNames:
+            if name.startswith("[Macro]"):
+                name = name.replace("[Macro]", "")
+            if name.startswith("<") and name.endswith(">"):
+                name = name.replace("<").replace(">")
+            tool.names_list.append(name)
+        if os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
+            self.macro_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+            if "Macros" not in self.macro_json:
+                self.macro_json["Macros"] = {}
+                with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
+                    json.dump(self.macro_json, f)
+            for saved_macro in self.macro_json["Macros"].keys():
+                name = "[Macro] "+saved_macro
+                tool.names_list.append(name)
+        self.filterSelect = ChoiceButton(tool.names_list, choose=self.filterChanged, doNotTranslate=True)
         self.filterSelect.selectedChoice = self.selectedFilterName
+        
+        if not self._recording:
+            self.macro_button = Button("Record Macro", action=self.start_record_macro)
+
+        if self.selectedFilterName.lower() in config.config._sections["Filter Keys"]:
+            binding_button_name = config.config._sections["Filter Keys"][self.selectedFilterName.lower()]
+        else:
+            binding_button_name = "*"
+        self.binding_button = Button(binding_button_name, action=self.bind_key, tooltipText="Click to bind this filter to a hotkey")
 
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
         filterLabel.tooltipText = "Click to open filters folder"
-        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect))
-
-        self.confirmButton = Button("Filter", action=self.tool.confirm)
+        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button, self.binding_button))
+        
+        if not self._recording:
+            self.confirmButton = Button("Filter", action=self.tool.confirm)
 
         self.filterOptionsPanel = None
         while self.filterOptionsPanel is None:
@@ -316,33 +394,207 @@ class FilterToolPanel(Panel):
                 raise ValueError("No filters loaded!")
 
         self.add(Column((filterSelectRow, self.filterOptionsPanel, self.confirmButton)))
+#        self.filterOptionsPanel.top = (filterSelectRow.bottom - self.filterOptionsPanel.top) / 2 + filterSelectRow.height
+
+        self.shrink_wrap()
+        if self.parent:
+            self.centery = (self.parent.mainViewport.height - self.parent.toolbar.height) / 2 + self.parent.subwidgets[0].height
+            
+        if self.selectedFilterName in self.tool.savedOptions:
+            self.filterOptionsPanel.options = self.tool.savedOptions[self.selectedFilterName]
+
+    def run_macro(self):
+        self.tool.run_macro(self.macro_data)
+
+    def reload_macro(self):
+        self.usingMacro = True
+        for i in list(self.subwidgets):
+            self.remove(i)
+        self.macro_data = self.macro_json["Macros"][self.selectedFilterName.replace("[Macro] ", "")]
+        self.filterOptionsPanel = None
+        filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
+        filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
+        filterLabel.tooltipText = "Click to open filters folder"
+        self.filterSelectRow = filterSelectRow = Row((filterLabel, self.filterSelect, self.macro_button))
+        self.confirmButton = Button("Run Macro", action=self.run_macro)
+        
+        self.filterOptionsPanel = Widget()
+        infoColList = []
+        stepsLabel = wrapped_label("Number of steps: "+str(self.macro_data["Number of steps"]), 300)
+        infoColList.append(stepsLabel)
+        for step in sorted(self.macro_data.keys()):
+            if step != "Number of steps":
+                infoColList.append(wrapped_label("Step "+str(int(step)+1)+": "+str(self.macro_data[step]["Name"]),300))
+        self.filterOptionsPanel.add(Column(infoColList))
+        self.filterOptionsPanel.shrink_wrap()
+        
+        self.add(Column((filterSelectRow, self.filterOptionsPanel, self.confirmButton)))
 
         self.shrink_wrap()
         if self.parent:
             self.centery = self.parent.centery
 
-        if self.selectedFilterName in self.savedOptions:
-            self.filterOptionsPanel.options = self.savedOptions[self.selectedFilterName]
-
     def filterChanged(self):
+        if not self.filterSelect.selectedChoice.startswith("[Macro]"):
+            if self.filterSelect.selectedChoice not in self.tool.filterModules:
+                return
+            self.saveOptions()
+            self.selectedFilterName = self.filterSelect.selectedChoice
+            self.reload()
+        else:
+            if self.filterSelect.selectedChoice.replace("[Macro] ", "") not in self.macro_json["Macros"]:
+                return
+            self.saveOptions()
+            self.selectedFilterName = self.filterSelect.selectedChoice
+            self.reload_macro()
+            self.macro_button.set_text("Delete Macro")
+            self.macro_button.action = self.delete_macro
+            
+    def delete_macro(self):
+        macro_name = self.selectedFilterName.replace("[Macro] ", "")
+        if macro_name in self.macro_json["Macros"]:
+            del self.macro_json["Macros"][macro_name]
+            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
+                json.dump(self.macro_json, f)
+            self.reload()
+
+    def set_save(self):
+        self._save_macro = True
+        self.macro_diag.dismiss()
+
+    def stop_record_macro(self):
+        self.macro_diag = Dialog()
+        macroNameLabel = Label("Macro Name: ")
+        macroNameField = TextFieldWrapped()
+        input_row = Row((macroNameLabel, macroNameField))
+        saveButton = Button("Save", action=self.set_save)
+        closeButton = Button("Close", action=self.macro_diag.dismiss)
+        button_row = Row((saveButton, closeButton))
+        self.macro_diag.add(Column((input_row, button_row)))
+        self.macro_diag.shrink_wrap()
+        self.macro_diag.present()
+        self.macro_button.text = "Record Macro"
+        self.macro_button.tooltipText = ""
+        self.macro_button.action = self.start_record_macro
+        self._recording = False
+        if self._save_macro:
+            if os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
+                try:
+                    macro_dict = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+                except ValueError:
+                    macro_dict = {"Macros": {}}
+            macro_dict["Macros"][macroNameField.get_text()] = {}
+            macro_dict["Macros"][macroNameField.get_text()]["Number of steps"] = len(self.macro_steps)
+            for entry in self.macro_steps:
+                for inp in entry["Inputs"].keys():
+                    if isinstance(entry["Inputs"][inp], pymclevel.materials.Block) or entry["Inputs"][inp] == "blocktype":
+                        entry["Inputs"][inp] = "block-"+str(entry["Inputs"][inp].ID)+":"+str(entry["Inputs"][inp].blockData)
+                macro_dict["Macros"][macroNameField.get_text()][entry["Step"]] = {"Name":entry["Name"],"Inputs":entry["Inputs"]}
+            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
+                json.dump(macro_dict, f)
+        self.reload()
+
+    def start_record_macro(self):
+        self.macro_steps = []
+        self.current_step = 0
+        self.macro_button.text = "Stop recording"
+        self.macro_button.tooltipText = "Currently recording a macro"
+        self.macro_button.action = self.stop_record_macro
+        self.confirmButton.text = "Add macro"
+        self.confirmButton.width += 75
+        self.confirmButton.centerx = self.centerx
+        self._recording = True
+    
+    def addMacroStep(self, name=None, inputs=None):
+        data = {"Name": name, "Step": self.current_step, "Inputs": inputs}
+        self.current_step += 1
+        self.macro_steps.append(data)
+
+    def unbind(self):
+        config.config.remove_option("Filter Keys", self.selectedFilterName)
+        self.binding_button.text = "*"
+        self.keys_panel.dismiss()
         self.saveOptions()
-        self.selectedFilterName = self.filterSelect.selectedChoice
+        self.reload()
+
+    def bind_key(self, message=None):
+        panel = Panel()
+        panel.bg_color = (0.5, 0.5, 0.6, 1.0)
+        if not message:
+            message = _("Press a key to assign to the filter \"{0}\"\n\nPress ESC to cancel.").format(self.selectedFilterName)
+        label = albow.Label(message)
+        unbind_button = Button("Press to unbind", action=self.unbind)
+        column = Column((label, unbind_button))
+        panel.add(column)
+        panel.shrink_wrap()
+
+        def panelKeyUp(evt):
+            keyname = self.root.getKey(evt)
+            panel.dismiss(keyname)
+
+        def panelMouseUp(evt):
+            button = keys.remapMouseButton(evt.button)
+            if button == 3:
+                keyname = "Button 3"
+            elif button == 4:
+                keyname = "Scroll Up"
+            elif button == 5:
+                keyname = "Scroll Down"
+            elif button == 6:
+                keyname = "Button 4"
+            elif button == 7:
+                keyname = "Button 5"
+            if button > 2:
+                panel.dismiss(keyname)
+
+        panel.key_up = panelKeyUp
+        panel.mouse_up = panelMouseUp
+
+        self.keys_panel = panel
+        keyname = panel.present()
+        _keyname = _(keyname)
+        if type(keyname) is bool:
+            return True
+        if keyname != "Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
+            keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
+            if keysUsed:
+                self.bind_key(_("Can't bind. {0} is already used by {1}.\nPress a key to assign to the filter \"{2}\"\n\nPress ESC to cancel.").format(_keyname, keysUsed[0][0], self.selectedFilterName))
+                return True
+
+            filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == keyname]
+            if filter_keys:
+                self.bind_key(_("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(_keyname, filter_keys[0]))
+                return True
+        elif keyname != "Escape":
+            self.bind_key(_("You can't use the key {0}.\nPress a key to assign to the filter \"{1}\"\n\nPress ESC to cancel.").format(_keyname, self.selectedFilterName))
+            return True
+        if keyname != "Escape":
+            self.binding_button.text = keyname
+            config.config.set("Filter Keys", self.selectedFilterName, keyname)
+        config.save()
+        self.saveOptions()
         self.reload()
 
     filterOptionsPanel = None
 
     def saveOptions(self):
-        if self.filterOptionsPanel:
-            self.savedOptions[self.selectedFilterName] = self.filterOptionsPanel.options
+        if self.filterOptionsPanel and not self.usingMacro:
+            options = {}
+            options.update(self.filterOptionsPanel.options)
+            options.pop("", "")
+            self.tool.savedOptions[self.selectedFilterName] = options
+            #self.tool.savedOptions[self.selectedFilterName] = self.filterOptionsPanel.options
 
 
 class FilterOperation(Operation):
-    def __init__(self, editor, level, box, filter, options):
+    def __init__(self, editor, level, box, filter, options, panel):
         super(FilterOperation, self).__init__(editor, level)
         self.box = box
         self.filter = filter
         self.options = options
         self.canUndo = False
+        self.panel = panel
+        self.wasMacroOperation = False
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -350,8 +602,25 @@ class FilterOperation(Operation):
             return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
-
-        self.filter.perform(self.level, BoundingBox(self.box), self.options)
+        
+        if not self.panel._recording:
+            self.filter.perform(self.level, BoundingBox(self.box), self.options)
+#            result = self.filter.perform(self.level, BoundingBox(self.box), self.options)
+#            print result
+#            if type(result) == dict:
+#                for k, v in result.items():
+##                    setattr(self.module, k, v)
+#                    if k == 'call':
+#                        for command in v:
+#                            if len(command) == 3:
+#                                command[0](*command[1], **command[2])
+#                            elif len(command) == 2:
+#                                command[0](*command[1])
+#                            else:
+#                                command[0]()
+        else:
+            self.panel.addMacroStep(name=self.panel.filterSelect.selectedChoice, inputs=self.options)
+            self.wasMacroOperation = True
 
         self.canUndo = True
         pass
@@ -368,18 +637,17 @@ class FilterTool(EditorTool):
         EditorTool.__init__(self, editor)
 
         self.filterModules = {}
-
+        self.savedOptions = {}
+        self.lastUsed = ""
+        
         self.updatePanel = Panel()
         updateButton = Button("Update Filters", action=self.updateFilters)
         self.updatePanel.add(updateButton)
         self.updatePanel.shrink_wrap()
 
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
-#        self.editor.add(self.updatePanel)
 
-        self.panel = FilterToolPanel(self)
-#        if self.panel.parent:
-#            self.updatePanel.parent.remove(self.updatePanel)
+#        self.panel = FilterToolPanel(self)
 
     @property
     def statusText(self):
@@ -393,24 +661,33 @@ class FilterTool(EditorTool):
 
     @alertException
     def showPanel(self):
-        if self.panel.parent:
-            self.editor.remove(self.panel)
+#        if self.panel.parent:
+#            self.editor.remove(self.panel)
 
+        self.panel = FilterToolPanel(self)
+        self.panel.selectedFilterName = self.lastUsed
+        self.lastUsed = ""
+        
+        self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
         self.editor.add(self.updatePanel)
         self.reloadFilters()
 
-        # self.panel = FilterToolPanel(self)
         self.panel.reload()
 
-        self.panel.midleft = self.editor.midleft
+        self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
+        self.panel.left = self.editor.left
 
         self.editor.add(self.panel)
 
     def hidePanel(self):
-        self.panel.saveOptions()
-        if self.panel.parent:
-            self.panel.parent.remove(self.panel)
-            self.updatePanel.parent.remove(self.updatePanel)
+        if self.panel:
+            if not self.panel.usingMacro:
+                self.panel.saveOptions()
+                self.lastUsed = self.panel.selectedFilterName
+            if self.panel.parent:
+                self.panel.parent.remove(self.panel)
+                self.updatePanel.parent.remove(self.updatePanel)
+                del self.panel
 
     def updateFilters(self):
         totalFilters = 0
@@ -421,19 +698,19 @@ class FilterTool(EditorTool):
         except OSError:
             pass
         for module in self.filterModules.values():
-            totalFilters = totalFilters + 1
+            totalFilters += 1
             if hasattr(module, "UPDATE_URL") and hasattr(module, "VERSION"):
                 if isinstance(module.UPDATE_URL, (str, unicode)) and isinstance(module.VERSION, (str, unicode)):
                     versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
                     if module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"],
                                            os.path.join(filtersDir, "updates", versionJSON["Name"]))
-                        updatedFilters = updatedFilters + 1
-        for f in os.listdir(os.path.join(filtersDir ,"updates")):
+                        updatedFilters += 1
+        for f in os.listdir(os.path.join(filtersDir, "updates")):
             shutil.copy(os.path.join(filtersDir, "updates", f), filtersDir)
         shutil.rmtree(os.path.join(filtersDir, "updates"))
         self.finishedUpdatingWidget = Widget()
-        lbl = Label("Updated " + str(updatedFilters) + " filter(s) out of " + str(totalFilters))
+        lbl = Label("Updated %s filter(s) out of %s"%(updatedFilters, totalFilters))
         closeBTN = Button("Close this message", action=self.closeFinishedUpdatingWidget)
         col = Column((lbl, closeBTN))
         self.finishedUpdatingWidget.bg_color = (0.0, 0.0, 0.6)
@@ -444,25 +721,156 @@ class FilterTool(EditorTool):
     def closeFinishedUpdatingWidget(self):
         self.finishedUpdatingWidget.dismiss()
 
+    def importLibraries(self):
+        def trim(arg):
+            arg = arg.replace("['", "")
+            return arg.replace("']", "")
+        
+        could_not_find_dependencies = []
+        names = []
+        all_unfound_dependencies = {}
+        lines = []
+        
+        for filt in self.filterModules.values():
+            if hasattr(filt, 'libraries') and isinstance(filt.libraries, list):
+                for lib in filt.libraries:
+                    lib_path = os.path.join(directories.getFiltersDir(), 'lib', lib["path"].replace("<sep>", os.path.sep))
+                    if os.path.exists(lib_path):
+                        sys.path.append(lib_path)
+                    
+                    elif os.path.exists(os.path.join(directories.getDataDir(), 'stock-filters', 'lib', lib["path"].replace("<sep>", os.path.sep))):
+                        sys.path.append(lib_path)
+                    else:
+                        try:
+                            os.makedirs(os.path.join(directories.getFiltersDir(), 'lib', trim(str(str(lib["path"].replace("<sep>", os.path.sep)).split(os.path.sep)[:-1]))))
+                        except OSError:
+                            pass
+                        try:
+                            urllib.urlretrieve(lib["URL"], lib_path)
+                        except:
+                            if not lib.get("optional"):
+                                could_not_find_dependencies.append(filt)
+                                if filt.__name__ not in all_unfound_dependencies:
+                                    all_unfound_dependencies[filt.__name__] = []
+                                all_unfound_dependencies[filt.__name__].append(lib["name"])
+                                
+        for not_found in could_not_find_dependencies:
+            print "Not found: "+str(not_found)
+            filters = self.filterModules.items()
+            for filt, module in filters:
+                if module == not_found:
+                    del self.filterModules[filt]
+                    names.append(filt)
+        if len(could_not_find_dependencies) != 0:
+            for filt in all_unfound_dependencies.keys():
+                lines.append(filt+"\n")
+                for dep in all_unfound_dependencies[filt]:
+                    lines.append("    "+dep+"\n")
+            with open(os.path.join(directories.getCacheDir(), 'dependencies_not_found.txt'), 'wb') as f:
+                f.writelines(lines)
+            alert("Could not find dependencies for the following filters:\n"+"\n".join(names)+"\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")
+    
     def reloadFilters(self):
+        sys.dont_write_bytecode = True
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
-                name = m.__name__
                 del m
-            mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+            compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+            
+        def check(list_thing):
+            toReturn = []
+            for name, module in list_thing:
+                if hasattr(module, "perform"):
+                    toReturn.append(module)
+            return toReturn
+        
+        #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py'))
 
         def tryImport(name):
+            # [D.C.-G.]
+            # Using a file object to import the module is not needed.
+            # A more simple way is to use imp.load_source() as seen in the commented block below.
+            module_file_object = open(os.path.join(directories.getFiltersDir(), name))
+            module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
-                return __import__(name)
+                m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
+            #    m = __import__(name)
+            # [D.C.-G.]
+            # In my experiments in a NBTTree display issue, I went to think
+            # there was somthing wrong with the filters loading/importing. I was
+            # partially right. So I tweaked tihs part, replacing __import__()
+            # with imp.load_source().
+            # This method imports a module accordingly to its path, and can be a
+            # safer way to do the job here, since only the deisred folders are
+            # used to find the files. No missplaced filters in sys.path (e.g.
+            # for backup) can be loaded.
+            # But i don't know if this behaviour is wanted here. I didn't realy
+            # tested...
+            #
+            #import imp
+#            try:
+#                try:
+##                    path = os.path.join(directories.filtersDir, (name + ".py"))
+#                    path = os.path.join(directories.filtersDir, name)
+#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
+#            #            path = path.encode(DEF_ENC)
+##                    m = imp.load_source(name, path)
+#                    m = imp.load_source(module_name, path)
+#                except:
+##                    path = os.path.join(directories.getDataDir(), "stock-filters", (name + ".py"))
+#                    path = os.path.join(directories.getDataDir(), "stock-filters", name)
+#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
+#            #            path = path.encode(DEF_ENC)
+##                    m = imp.load_source(name, path)
+#                    m = imp.load_source(module_name, path)
+                listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
+                if name not in listdir:
+                    if "albow.translate" in sys.modules.keys():
+                        del sys.modules["albow.translate"]
+                    if "trn" in sys.modules.keys():
+                        del sys.modules["trn"]
+                    import albow.translate as trn
+                    if directories.getFiltersDir() in name:
+                        trn_path = os.path.split(name)[0]
+                    else:
+                        trn_path = directories.getFiltersDir()
+                    trn_path = os.path.join(trn_path, module_name)
+                    if os.path.exists(trn_path):
+                        trn.setLangPath(trn_path)
+                        trn.buildTranslation(config.settings.langCode.get())
+                    m.trn = trn
+                return m
             except Exception, e:
-                print traceback.format_exc()
-                alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
+                # Only prints when the filter filename is presented, not the entire file path
+                if not os.path.sep in name:
+                    traceback.print_exc()
+                    alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
                 return object()
+            finally:
+                module_file_object.close()
 
-        filterModules = (tryImport(x[:-3]) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
+        self.category_dict = {}
+        temp_paths = []
+        for root, folders, files in os.walk(directories.getFiltersDir()):  # @UnusedVariable
+            filter_dir = root.replace(directories.getFiltersDir(), '').strip(os.sep)
+            if not True in map(lambda x:filter_dir.startswith(x), ('demo', 'lib')):
+                for possible_filter in files:
+                    if possible_filter.endswith(".py"):
+                        if not filter_dir.replace(os.sep, ':') in self.category_dict:
+                            self.category_dict[filter_dir.replace(os.sep, ':')] = [(possible_filter[:-3], tryImport(os.path.join(root, possible_filter)))]
+                            #-# Add the category folder to sys.path
+                            temp_paths.append(os.path.dirname(os.path.abspath(os.path.join(root, possible_filter))))
+                            sys.path.append(os.path.dirname(os.path.abspath(os.path.join(root, possible_filter))))
+                        else:
+                            self.category_dict[filter_dir.replace(os.sep, ':')].append((possible_filter[:-3], tryImport(os.path.join(root, possible_filter))))
+
+        filterModules = (tryImport(x) for x in filter(lambda x: x.endswith(".py"), os.listdir(directories.getFiltersDir())))
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
+        for key in self.category_dict.keys():
+            if key != "":
+                filterModules += check(self.category_dict[key])
         self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
-        for m in self.filterModules.itervalues():
+        for n, m in self.filterModules.iteritems():
             try:
                 reload(m)
             except Exception, e:
@@ -470,13 +878,34 @@ class FilterTool(EditorTool):
                 alert(
                     _(u"Exception while reloading filter module {}. Using previously loaded module. See console for details.\n\n{}").format(
                         m.__file__, e))
+        #-# Remove the filter categories paths from sys.path to avoid confusion.
+        map(lambda x:sys.path.remove(x), temp_paths)
+        self.importLibraries()
 
     @property
     def filterNames(self):
         return [self.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
     def moduleDisplayName(self, module):
-        return module.displayName if hasattr(module, 'displayName') else module.__name__.capitalize()
+        cat = ""
+        for bundle in self.category_dict.items():
+            for name, mod in bundle[1]:
+                if mod == module:
+                    cat = bundle[0]
+        if hasattr(module, "displayName"):
+            n = module.displayName
+            if hasattr(module, "trn"):
+                n = module.trn._(module.displayName)
+            if n == module.displayName:
+                n = _(module.displayName)
+            if cat != "":
+                n = "{"+str(cat.replace(os.path.sep, "-"))+"} "+n
+            return n
+        else:
+            if cat != "":
+                return "{"+str(cat.replace(os.path.sep, "-"))+"} "+_(module.__name__.capitalize())
+            else:
+                return _(module.__name__.capitalize())
 
     @alertFilterException
     def confirm(self):
@@ -485,13 +914,36 @@ class FilterTool(EditorTool):
             filterModule = self.filterModules[self.panel.filterSelect.selectedChoice]
 
             op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), filterModule,
-                                 self.panel.filterOptionsPanel.options)
+                                 self.panel.filterOptionsPanel.options, self.panel)
 
             self.editor.level.showProgress = showProgress
-
+            
             self.editor.addOperation(op)
-            if op.canUndo:
-                self.editor.addUnsavedEdit()
-            self.editor.addUnsavedEdit()
+            if not op.wasMacroOperation:
+                if op.canUndo:
+                    self.editor.addUnsavedEdit()
 
-            self.editor.invalidateBox(self.selectionBox())
+                self.editor.invalidateBox(self.selectionBox())
+            
+    @alertFilterException
+    def run_macro(self, macro_steps):
+        
+        with setWindowCaption("APPYLING FILTER MACRO - "):
+            for step in sorted(macro_steps.keys()):
+                if step != "Number of steps":
+                    modul = self.filterModules[macro_steps[step]["Name"]]
+                    for minput in macro_steps[step]["Inputs"].keys():
+                        if isinstance(macro_steps[step]["Inputs"][minput], (str, unicode)):
+                            if macro_steps[step]["Inputs"][minput].startswith("block-"):
+                                toFind = macro_steps[step]["Inputs"][minput].replace("block-","").split(":")
+                                for possible in pymclevel.alphaMaterials.allBlocks:
+                                    if possible.ID == int(toFind[0]) and possible.blockData == int(toFind[1]):
+                                        macro_steps[step]["Inputs"][minput] = possible
+                    op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), modul,
+                                         macro_steps[step]["Inputs"], self.panel)
+                    
+                    self.editor.level.showProgress = showProgress
+                    
+                    self.editor.addOperation(op)
+                    self.editor.addUnsavedEdit()
+                    self.editor.invalidateBox(self.selectionBox())

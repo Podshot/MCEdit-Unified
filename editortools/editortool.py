@@ -3,6 +3,7 @@ import numpy
 from depths import DepthOffset
 from pymclevel import BoundingBox
 from config import config
+from albow.translate import _
 
 
 class EditorTool(object):
@@ -32,6 +33,15 @@ class EditorTool(object):
 
     def __init__(self, editor):
         self.editor = editor
+        self.__hotkey = None
+
+    @property
+    def hotkey(self):
+        return _(self.__hotkey)
+
+    @hotkey.setter
+    def hotkey(self, k):
+        self.__hotkey = k
 
     def toolReselected(self):
         pass
@@ -204,7 +214,6 @@ class EditorTool(object):
         # return the away-facing face
 
         dim = face // 2
-        side = face & 1
 
         dim1, dim2 = dim + 1, dim + 2
         dim1, dim2 = dim1 % 3, dim2 % 3

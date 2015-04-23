@@ -122,7 +122,6 @@ class MCSchematic(EntityLevel):
 
         self.root_tag["Data"].value &= 0xF  # discard high bits
 
-
     def saveToFile(self, filename=None):
         """ save to file named filename, or use self.filename.  XXX NOT THREAD SAFE AT ALL. """
         if filename is None:
@@ -158,7 +157,6 @@ class MCSchematic(EntityLevel):
 
         del self.root_tag["Blocks"]
         self.root_tag.pop("AddBlocks", None)
-
 
     def __str__(self):
         return u"MCSchematic(shape={0}, materials={2}, filename=\"{1}\")".format(self.size, self.filename or u"",
@@ -277,7 +275,7 @@ class MCSchematic(EntityLevel):
                 facing.value = (facing.value - 1) % 4
 
         for tileEntity in self.TileEntities:
-            if not 'x' in tileEntity:
+            if 'x' not in tileEntity:
                 continue
 
             newX = tileEntity["z"].value
@@ -346,6 +344,7 @@ class MCSchematic(EntityLevel):
                 newY = tileTick["x"].value
                 tileTick["x"].value = newX
                 tileTick["y"].value = newY
+
     def flipVerticalBlocks(self):
         blockrotation.FlipVertical(self.Blocks, self.Data)
 
@@ -396,6 +395,7 @@ class MCSchematic(EntityLevel):
                    'Pointer': 4,
                    'Pigscene': 4,
                    'BurningSkull': 4}
+
     def flipNorthSouthBlocks(self):
         blockrotation.FlipNorthSouth(self.Blocks, self.Data)
 
@@ -450,7 +450,7 @@ class MCSchematic(EntityLevel):
                 entity["TileX"].value = self.Width - entity["TileX"].value - 1
                 facing.value = northSouthPaintingMap[facing.value]
         for tileEntity in self.TileEntities:
-            if not 'x' in tileEntity:
+            if 'x' not in tileEntity:
                 continue
 
             tileEntity["x"].value = self.Width - tileEntity["x"].value - 1
@@ -554,7 +554,6 @@ class MCSchematic(EntityLevel):
 
         return chest
 
-
     def getChunk(self, cx, cz):
         chunk = super(MCSchematic, self).getChunk(cx, cz)
         if "Biomes" in self.root_tag:
@@ -648,7 +647,6 @@ class ZipSchematic(infiniteworld.MCInfdevOldLevel):
         yield
 
     def saveToFile(self, filename):
-        super(ZipSchematic, self).saveInPlace()
         schematicDat = nbt.TAG_Compound()
         schematicDat.name = "Mega Schematic"
 

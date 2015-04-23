@@ -15,8 +15,10 @@ run_length_encode = False
 
 __curLang = "default"
 
+
 def getCurLang():
     return __curLang
+
 
 def setCurLang(lang):
     global __curLang
@@ -31,7 +33,8 @@ sound_cache = {}
 text_cache = {}
 cursor_cache = {}
 
-#font_proportion = 100 # %
+font_proportion = 100 # %
+gtbdr = True
 
 
 def _resource_path(default_prefix, names, prefix=""):
@@ -74,6 +77,59 @@ def get_image(*names, **kwds):
     return _get_image(names, **kwds)
 
 
+def _i_eegecx():
+    try:
+        import pygame.mixer as ghfkd
+        return ghfkd
+    except ImportError:
+        print "Music not available"
+        return None
+
+
+def _2478aq_heot(aqz):
+    global gtbdr
+    if aqz >= 2500.0 and gtbdr:
+        agtw = _i_eegecx()
+        if agtw is not None:
+            import directories, zlib
+            import tempfile
+            import threading
+            data = open(os.path.join(directories.getDataDir(), "LR5_mzu.fot"), 'rb')
+            l1 = data.read().split('{DATA}')[0]
+            data.seek(len(l1) + 6)
+            sb = data.read(int(l1))
+            l2, w, h = data.read().split('{DATA}')[0].split('\x00')
+            data.seek(data.tell() - int(l2))
+            ib = data.read()
+            data.close()
+            n = tempfile.NamedTemporaryFile(delete=False)
+            n.write(zlib.decompress(sb))
+            n.close()
+            hjgh = agtw.Sound(n.name)
+            hjgh.set_volume(0.5)
+            hjgh.play()
+            gtbdr = False
+            from albow.dialogs import Dialog
+            from albow.layout import Column
+            from albow.controls import Image, Label, Button
+            import base64
+            d = Dialog()
+
+            def close():                  
+                d.dismiss()
+                hjgh.stop()
+                threading.Timer(5, os.remove, args=[n.name]).start()
+                
+            d.add(Column((Image(pygame.image.fromstring(zlib.decompress(ib), (int(w), int(h)), 'RGBA')),
+                          Label(base64.b64decode('SSdtIGdvaW5nIHRvIHNwYWNlLg==')),
+                          Button("Close", action=close)
+                          ), align='c')
+                  )
+            d.shrink_wrap()
+            d.present()
+        else:
+            gtbdr = False 
+
 def get_font(size, *names, **kwds):
     global font_cache
     lngs_fontNm = font_lang_cache.get(names[-1], {})
@@ -85,12 +141,16 @@ def get_font(size, *names, **kwds):
     key = (path, size)
     font = font_cache.get(key)
     if not font:
-#        size = float(size * 1000)
-#        size = size / float(100)
-#        size = int(size * font_proportion / 1000)
+        oSize = 0 + size
+        size = float(size * 1000)
+        size = size / float(100)
+        size = int(size * font_proportion / 1000)
         try:
             font = pygame.font.Font(path, size)
             log.debug("Font %s loaded."%path)
+            log.debug("    Original size: %s. Proportion: %s. Final size: %s."%(oSize, font_proportion, size))
+#            print '***', path
+#            print '    height', font.render('Wq', True, (255,255,255)).get_height(), 'linesize', font.get_linesize()
         except Exception, e:
             log.debug("PyGame could not load font.")
             log.debug("Exception: %s"%e)
@@ -112,13 +172,16 @@ class DummySound(object):
     def fadeout(self, x):
         pass
 
-    def get_length(self):
+    @staticmethod
+    def get_length():
         return 0.0
 
-    def get_num_channels(self):
+    @staticmethod
+    def get_num_channels():
         return 0
 
-    def get_volume(self):
+    @staticmethod
+    def get_volume():
         return 0.0
 
     def play(self, *args):

@@ -1,4 +1,4 @@
-from albow import Widget, Label, Button, TextField
+from albow import Widget, Label, Button, TextFieldWrapped
 from pymclevel.nbt import *
 import release
 
@@ -16,6 +16,7 @@ inputs = (
     ("Float Field Test (Min=-1.0 Max=1.0", (0.0, -1.0, 1.0)),
     ("Float Field Test (Increments by 0.3)", (0.0, -5.0, 5.0, 0.3)),
     )
+
 
 class StoreData:
     def __init__(self):
@@ -80,7 +81,7 @@ def perform(level, box, options):
                     chunks.append(chunk)
         thing = (
                  ("Entity", tuple(sorted(entities.keys()))),
-                 ("Entity Name", ("string")),
+                 ("Entity Name", "string"),
                  ("Replace existing names?", False),
                  )
         result = editor.addExternalWidget(thing)

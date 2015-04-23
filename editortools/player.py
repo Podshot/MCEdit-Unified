@@ -15,7 +15,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 from OpenGL import GL
 import numpy
 import os
-from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert, input_text_buttons
+from albow import TableView, TableColumn, Label, Button, Column, CheckBox, AttrRef, Row, ask, alert, input_text_buttons, TabPanel
+from albow.table_view import TableRowView
 from albow.translate import _
 from config import config
 from editortools.editortool import EditorTool
@@ -29,14 +30,17 @@ from pymclevel.box import BoundingBox, FloatBox
 from pymclevel import nbt
 import logging
 import version_utils
+from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
+import pygame
 
 
 log = logging.getLogger(__name__)
 
+
 class PlayerRemoveOperation(Operation):
     undoTag = None
 
-    def __init__(self, tool, player="Player"):
+    def __init__(self, tool, player="Player (Single Player)"):
         super(PlayerRemoveOperation, self).__init__(tool.editor, tool.editor.level)
         self.tool = tool
         self.player = player
@@ -48,10 +52,11 @@ class PlayerRemoveOperation(Operation):
             alert(_("Cannot perform action while saving is taking place"))
             return
 
-        if self.player == "Player":
+        if self.player == "Player (Single Player)":
             answer = ask(_("Are you sure you want to delete the default player?"), ["Yes", "Cancel"])
             if answer == "Cancel":
                 return
+            self.player = "Player"
 
         if recordUndo:
             self.undoTag = self.level.getPlayerTag(self.player)
@@ -59,9 +64,10 @@ class PlayerRemoveOperation(Operation):
         self.level.players.remove(self.player)
         if self.tool.panel:
             if self.player != "Player":
-                self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
+                #self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
+                self.tool.panel.players.remove(version_utils.playercache.getPlayerFromUUID(self.player))
             else:
-                self.tool.panel.players.remove("Player")
+                self.tool.panel.players.remove("Player (Single Player)")
 
             while self.tool.panel.table.index >= len(self.tool.panel.players):
                 self.tool.panel.table.index -= 1
@@ -69,6 +75,7 @@ class PlayerRemoveOperation(Operation):
                 self.tool.hidePanel()
                 self.tool.showPanel()
         self.tool.markerList.invalidate()
+        self.tool.movingPlayer = None
 
         pos = self.tool.revPlayerPos[self.player]
         del self.tool.playerPos[pos]
@@ -89,10 +96,10 @@ class PlayerRemoveOperation(Operation):
             self.level.players.append(self.player)
             if self.tool.panel:
                 if self.player != "Player":
-                    self.tool.panel.players.append(version_utils.getPlayerNameFromUUID(self.player))
+                    self.tool.panel.players.append(version_utils.playercache.getPlayerFromUUID(self.player))
                 else:
-                	self.tool.panel.players.append("Player")
-                
+                    self.tool.panel.players.append("Player (Single Player)")
+
                 if "[No players]" in self.tool.panel.players:
                     self.tool.panel.players.remove("[No players]")
                 self.tool.hidePanel()
@@ -102,6 +109,7 @@ class PlayerRemoveOperation(Operation):
 
     def redo(self):
         self.perform()
+
 
 class PlayerAddOperation(Operation):
     playerTag = None
@@ -113,26 +121,41 @@ class PlayerAddOperation(Operation):
         self.canUndo = False
 
     def perform(self, recordUndo=True):
-        self.player = input_text_buttons("Enter a Player Name: ", 160)
-        if not self.player:
-            return
-        if len(self.player) > 16:
-            alert("Name to long. Maximum name length is 16.")
-            return
-        elif len(self.player) < 4:
-            alert("Name to short. Minimum name length is 4.")
-            return
+        initial = ""
+        allowed_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+        while True:
+            self.player = input_text_buttons("Enter a Player Name: ", 160, initial=initial, allowed_chars=allowed_chars)
+            if self.player is None:
+                return
+            elif len(self.player) > 16:
+                alert("Name too long. Maximum name length is 16.")
+                initial = self.player
+            elif len(self.player) < 1:
+                alert("Name too short. Minimum name length is 1.")
+                initial = self.player
+            else:
+                break
         try:
-            self.uuid = version_utils.getUUIDFromPlayerName(self.player)
-            self.player = version_utils.getPlayerNameFromUUID(self.uuid) #Case Corrected
+            '''
+            print "Player: \""+str(self.player)+"\""
+            self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)
+            print "UUID: \""+str(self.uuid)+"\""
+            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)  #Case Corrected
+            '''
+            data = version_utils.playercache.getPlayerInfo(self.player, force=True)
+            if isinstance(data, tuple):
+                self.uuid = data[0]
+                self.player = data[1]
+            else:
+                self.uuid = data
         except:
             action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":
-            	return
+                return
             self.uuid = input_text_buttons("Enter a Player UUID: ", 160)
             if not self.uuid:
                 return
-            self.player = version_utils.getPlayerNameFromUUID(self.uuid)
+            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)
             if self.player == self.uuid.replace("-", ""):
                 if ask("UUID was not found. Continue anyways?") == "Cancel":
                     return
@@ -149,7 +172,7 @@ class PlayerAddOperation(Operation):
             self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.playerTag
 
             self.level.players.append(self.player)
-            if self.tool.panel: 
+            if self.tool.panel:
                 self.tool.panel.player_UUID[self.player] = self.player
 
         else:
@@ -169,6 +192,9 @@ class PlayerAddOperation(Operation):
             self.tool.hidePanel()
             self.tool.showPanel()
         self.canUndo = True
+        self.playerTag.save(self.level.getPlayerPath(self.uuid))
+        self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
+        self.tool.inOtherDimension[self.editor.level.dimNo].append(self.uuid)
 
     def newPlayer(self):
         playerTag = nbt.TAG_Compound()
@@ -182,6 +208,7 @@ class PlayerAddOperation(Operation):
         playerTag['Score'] = nbt.TAG_Int(0)
         playerTag['FallDistance'] = nbt.TAG_Float(0)
         playerTag['OnGround'] = nbt.TAG_Byte(0)
+        playerTag['Dimension'] = nbt.TAG_Int(self.editor.level.dimNo)
 
         playerTag["Inventory"] = nbt.TAG_List()
 
@@ -196,7 +223,7 @@ class PlayerAddOperation(Operation):
             if b != 0 and not done:
                 i = index
                 done = True
-        spawnY = self.level.Height - i        
+        spawnY = self.level.Height - i
         playerTag['Pos'] = nbt.TAG_List([nbt.TAG_Double([spawnX, spawnY, spawnZ][i]) for i in range(3)])
         playerTag['Rotation'] = nbt.TAG_List([nbt.TAG_Float(0), nbt.TAG_Float(0)])
 
@@ -204,12 +231,15 @@ class PlayerAddOperation(Operation):
 
     def undo(self):
         self.level.players.remove(self.uuid)
+        self.tool.movingPlayer = None
         if self.tool.panel:
             self.tool.panel.players.remove(self.player)
             self.tool.panel.player_UUID.pop(self.player)
         del self.tool.playerPos[(0,0,0)]
         del self.tool.revPlayerPos[self.uuid]
         del self.tool.playerTexture[self.uuid]
+        os.remove(self.level.getPlayerPath(self.uuid))
+        self.tool.nonSavedPlayers.remove(self.level.getPlayerPath(self.uuid))
 
         self.tool.markerList.invalidate()
 
@@ -221,6 +251,11 @@ class PlayerAddOperation(Operation):
             if self.tool.panel:
                 self.tool.panel.players.append(self.player)
                 self.tool.panel.player_UUID[self.player] = self.uuid
+            self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid))
+            self.tool.playerPos[(0,0,0)] = self.uuid
+            self.tool.revPlayerPos[self.uuid] = (0,0,0)
+            self.playerTag.save(self.level.getPlayerPath(self.uuid))
+            self.tool.nonSavedPlayers.append(self.level.getPlayerPath(self.uuid))
 
         self.tool.markerList.invalidate()
 
@@ -289,7 +324,8 @@ class PlayerMoveOperation(Operation):
             level.setPlayerOrientation(self.redoYP, self.player)
             self.tool.markerList.invalidate()
 
-    def bufferSize(self):
+    @staticmethod
+    def bufferSize():
         return 20
 
 
@@ -329,11 +365,13 @@ class PlayerSpawnMoveOperation(Operation):
             alert(_("Cannot perform action while saving is taking place"))
             return
         level = self.tool.editor.level
+        '''
         if isinstance(level, pymclevel.MCInfdevOldLevel):
             if not positionValid(level, self.pos):
                 if config.spawn.spawnProtection.get():
                     raise SpawnPositionInvalid(
                         "You cannot have two air blocks at Y=63 and Y=64 in your spawn point's column. Additionally, you cannot have a solid block in the three blocks above your spawn point. It's weird, I know.")
+        '''
 
         self.undoPos = level.playerSpawnPosition()
         level.setPlayerSpawnPosition(self.pos)
@@ -366,33 +404,59 @@ class PlayerPositionPanel(Panel):
             if not self.level.oldPlayerFolderFormat:
                 for player in players:
                     if player != "Player" and player != "[No players]":
-                        self.player_UUID[version_utils.getPlayerNameFromUUID(player)] = player
+                        if len(player) > 4 and player[4] == "-":
+                            os.rename(os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player+".dat"), os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player.replace("-", "", 1)+".dat"))
+                            player = player.replace("-", "", 1)
+                        data = version_utils.playercache.getPlayerInfo(player)
+                        if isinstance(data, tuple):
+                            self.player_UUID[data[1]] = data[0]
+                        else:
+                            self.player_UUID[player] = data
                 if "Player" in players:
-                    self.player_UUID["Player"] = "Player"
+                    self.player_UUID["Player (Single Player)"] = "Player"
                 if "[No players]" not in players:
-                    players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player" else x.lower())
+                    players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player (Single Player)" else x)
 
         else:
-            players = ["Player"]
+            players = ["Player (Single Player)"]
         self.players = players
 
-        max_height = self.tool.editor.mainViewport.height - self.tool.editor.netherPanel.height - self.tool.editor.subwidgets[0].height - self.margin - 2
+        self.pages = TabPanel()
+        tab_height = self.pages.tab_height
 
-        addButton = Button("Add Player", action=self.tool.addPlayer)
-        removeButton = Button("Remove Player", action=self.tool.removePlayer)
-        gotoButton = Button("Goto Player", action=self.tool.gotoPlayer)
-        gotoCameraButton = Button("Goto Player's View", action=self.tool.gotoPlayerCamera)
-        moveButton = Button("Move Player", action=self.tool.movePlayer)
-        moveToCameraButton = Button("Align Player to Camera", action=self.tool.movePlayerToCamera)
+        max_height = tab_height + self.tool.editor.mainViewport.height - self.tool.editor.toolbar.height - self.tool.editor.subwidgets[0].height - self.pages.margin * 2
+        #-# Uncomment the following line to have a maximum height for this panel.
+        # max_height = min(max_height, 500)
+
+        self.editNBTDataButton = Button("Edit NBT", action=self.editNBTData, tooltipText="Open the NBT Explorer to edit player's attributes and inventory")
+        addButton = Button("Add", action=self.tool.addPlayer)
+        removeButton = Button("Remove", action=self.tool.removePlayer)
+        gotoButton = Button("Goto", action=self.tool.gotoPlayer)
+        gotoCameraButton = Button("Goto View", action=self.tool.gotoPlayerCamera)
+        moveButton = Button("Move", action=self.tool.movePlayer)
+        moveToCameraButton = Button("Align to Camera", action=self.tool.movePlayerToCamera)
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
-        print max_height
-        max_height -= sum((a.height for a in (addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin)))
-        print max_height
+        btns = Column([self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin], margin=0, spacing=2)
+        h = max_height - btns.height - self.pages.margin * 2 - 2 - self.font.get_linesize() * 2
 
-        tableview = TableView(columns=[
-            TableColumn("Player Name(s):", 200),
-        ], height=max_height)
+        col = Label('')
+        def close():
+            self.pages.show_page(col)
+        self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject={}, height=max_height, \
+                                            close_text="Go Back", no_header=True, close_action=close,
+                                            load_text=None)
+        self.nbttree.shrink_wrap()
+
+        self.nbtpage = Column([self.nbttree,])
+        self.nbtpage.shrink_wrap()
+        self.pages.add_page("NBT Data", self.nbtpage)
+        self.pages.set_rect(map(lambda x:x+self.margin, self.nbttree._rect))
+
+        tableview = TableView(nrows=(h - (self.font.get_linesize() * 2.5)) / self.font.get_linesize(),
+                              header_height=self.font.get_linesize(),
+                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 3)),],
+                             )
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
         tableview.row_data = lambda i: (players[i],)
@@ -403,21 +467,62 @@ class PlayerPositionPanel(Panel):
             tableview.index = i
 
         tableview.click_row = selectTableRow
+
+        def mouse_down(e):
+            if e.button == 1 and e.num_clicks > 1:
+                self.editNBTData()
+            TableRowView.mouse_down(tableview.rows, e)
+
+        tableview.rows.mouse_down = mouse_down
+
+        tableview.rows.tooltipText = "Double-click or use the button below to edit the NBT Data."
+
         self.table = tableview
-        col = [self.table]
 
-        col.extend([addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
+        col.set_parent(None)
+        self.col = col = Column([tableview, btns], spacing=2)
 
-        col = Column(col, margin=0, spacing=2)
-        col.shrink_wrap()
-        self.add(col)
+        self.pages.add_page("Players", col, 0)
+
+        self.pages.shrink_wrap()
+        self.pages.show_page(col)
+        self.add(self.pages)
         self.shrink_wrap()
+        self.max_height = max_height
+
+    def editNBTData(self):
+        player = self.selectedPlayer
+        if player == 'Player (Single Player)':
+            alert("Not yet implemented.\nUse the NBT Explorer to edit this player.")
+        elif player == '[No players]':
+            return
+        else:
+            path = os.path.join(os.path.split(self.level.filename)[0], 'playerdata')
+            if not os.path.exists(path):
+                path = os.path.join(os.path.split(self.level.filename)[0], 'players')
+            if player + '.dat' in os.listdir(path):
+                fName = os.path.join(path, player + '.dat')
+                nbtObject, dataKeyName, dontSaveRootTag, fn = loadFile(fName)
+                self.pages.remove_page(self.nbtpage)
+                def close():
+                    self.pages.show_page(self.col)
+                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=nbtObject, fileName=fName,
+                                              dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName,
+                                              height=self.max_height, no_header=True, close_text="Go Back",
+                                              close_action=close, load_text=None)
+                self.nbtpage = Column([self.nbttree,])
+                self.nbtpage.shrink_wrap()
+                self.pages.add_page("NBT Data", self.nbtpage)
+                self.pages.show_page(self.nbtpage)
+            #elif self.selectedPlayer.isNew:
+            else:
+                alert(_("Error while getting player file.\n%s not found.")%(player + '.dat'), doNotTranslate=True)
 
     @property
     def selectedPlayer(self):
         if not self.level.oldPlayerFolderFormat:
             player = self.players[self.table.index]
-            if player != "Player" and player != "[No players]":
+            if player != "Player (Single Player)" and player != "[No players]":
                 return self.player_UUID[player]
             else:
                 return player
@@ -458,22 +563,25 @@ class PlayerPositionTool(EditorTool):
     def movePlayer(self):
         if self.panel.selectedPlayer != "[No players]":
             self.movingPlayer = self.panel.selectedPlayer
+            if self.movingPlayer == "Player (Single Player)":
+                self.movingPlayer = "Player"
 
     @alertException
     def movePlayerToCamera(self):
         player = self.panel.selectedPlayer
+        if player == "Player (Single Player)":
+            player = "Player"
         if player != "[No players]":
             pos = self.editor.mainViewport.cameraPosition
             y = self.editor.mainViewport.yaw
             p = self.editor.mainViewport.pitch
-            d = self.editor.level.dimNo
 
             op = PlayerMoveOperation(self, pos, player, (y, p))
             self.movingPlayer = None
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
-                
+
     def delete_skin(self, uuid):
         del self.playerTexture[uuid]
         self.playerTexture[uuid] = loadPNGTexture('char.png')
@@ -484,7 +592,7 @@ class PlayerPositionTool(EditorTool):
         #if result == "Ok":
         try:
             for player in self.editor.level.players:
-                if player != "Player" and player != "[No players]" and player in self.playerTexture.keys():
+                if player != "Player" and player in self.playerTexture.keys():
                     del self.playerTexture[player]
                     self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True, instance=self))
         except:
@@ -492,6 +600,9 @@ class PlayerPositionTool(EditorTool):
 
     def gotoPlayerCamera(self):
         player = self.panel.selectedPlayer
+        if player == "Player (Single Player)":
+            player = "Player"
+
         try:
             pos = self.editor.level.getPlayerPosition(player)
             y, p = self.editor.level.getPlayerOrientation(player)
@@ -507,6 +618,8 @@ class PlayerPositionTool(EditorTool):
 
     def gotoPlayer(self):
         player = self.panel.selectedPlayer
+        if player == "Player (Single Player)":
+            player = "Player"
 
         try:
             if self.editor.mainViewport.pitch < 0:
@@ -526,29 +639,35 @@ class PlayerPositionTool(EditorTool):
     def __init__(self, *args):
         EditorTool.__init__(self, *args)
         self.reloadTextures()
+        self.nonSavedPlayers = []
 
-        textureVertices = numpy.array(
+        textureVerticesHead = numpy.array(
             (
-                24, 16,
-                24, 8,
-                32, 8,
-                32, 16,
+                # Backside of Head
+                24, 16, # Bottom Left
+                24, 8, # Top Left
+                32, 8, # Top Right
+                32, 16, # Bottom Right
 
+                # Front of Head
                 8, 16,
                 8, 8,
                 16, 8,
                 16, 16,
 
+                #
                 24, 0,
                 16, 0,
                 16, 8,
                 24, 8,
 
+                #
                 16, 0,
                 8, 0,
                 8, 8,
                 16, 8,
 
+                #
                 8, 8,
                 0, 8,
                 0, 16,
@@ -560,17 +679,57 @@ class PlayerPositionTool(EditorTool):
                 16, 8,
 
             ), dtype='f4')
+        
+        textureVerticesHat = numpy.array(
+            (
+                56, 16,
+                56, 8,
+                64, 8,
+                64, 16,
+                
+                48, 16,
+                48, 8,
+                40, 8,
+                40, 16,
+                
+                56, 0,
+                48, 0,
+                48, 8,
+                56, 8,
+                
+                48, 0,
+                40, 0,
+                40, 8,
+                48, 8,
+                
+                40, 8,
+                32, 8,
+                32, 16,
+                40, 16,
+                
+                48, 16,
+                56, 16,
+                56, 8,
+                48, 8,
+                
+            ), dtype='f4')
+        
 
-        textureVertices.shape = (24, 2)
+        textureVerticesHead.shape = (24, 2)
+        textureVerticesHat.shape = (24, 2)
 
-        textureVertices *= 4
-        textureVertices[:, 1] *= 2
+        textureVerticesHead *= 4
+        textureVerticesHead[:, 1] *= 2
+        
+        textureVerticesHat *= 4
+        textureVerticesHat[:, 1] *= 2
 
-        self.texVerts = textureVertices
+        self.texVerts = (textureVerticesHead, textureVerticesHat) 
 
-        self.playerPos = {}
+        self.playerPos = {0:{}, -1:{}, 1:{}}
         self.playerTexture = {}
-        self.revPlayerPos = {}
+        self.revPlayerPos = {0:{}, -1:{}, 1:{}}
+        self.inOtherDimension = {0: [], 1: [], -1: []}
 
         self.markerList = DisplayList()
 
@@ -580,8 +739,8 @@ class PlayerPositionTool(EditorTool):
         if not self.panel:
             self.panel = PlayerPositionPanel(self)
 
+        self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
         self.panel.left = self.editor.left
-        self.panel.centery = self.editor.centery
 
         self.editor.add(self.panel)
 
@@ -595,6 +754,7 @@ class PlayerPositionTool(EditorTool):
             return
 
         pos, direction = self.editor.blockFaceUnderCursor
+        dim = self.editor.level.getPlayerDimension(self.movingPlayer)
         pos = (pos[0], pos[1] + 2, pos[2])
 
         x, y, z = pos
@@ -602,11 +762,11 @@ class PlayerPositionTool(EditorTool):
         # x,y,z=map(lambda p,d: p+d, pos, direction)
         GL.glEnable(GL.GL_BLEND)
         GL.glColor(1.0, 1.0, 1.0, 0.5)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[dim][self.movingPlayer], dim)
         GL.glDisable(GL.GL_BLEND)
 
         GL.glEnable(GL.GL_DEPTH_TEST)
-        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[self.movingPlayer])
+        self.drawCharacterHead(x + 0.5, y + 0.75, z + 0.5, self.revPlayerPos[dim][self.movingPlayer], dim)
         drawTerrainCuttingWire(BoundingBox((x, y, z), (1, 1, 1)))
         drawTerrainCuttingWire(BoundingBox((x, y - 1, z), (1, 1, 1)))
         #drawTerrainCuttingWire( BoundingBox((x,y-2,z), (1,1,1)) )
@@ -615,6 +775,8 @@ class PlayerPositionTool(EditorTool):
     markerLevel = None
 
     def drawToolMarkers(self):
+        if not config.settings.drawPlayerHeads.get():
+            return
         if self.markerLevel != self.editor.level:
             self.markerList.invalidate()
             self.markerLevel = self.editor.level
@@ -630,20 +792,26 @@ class PlayerPositionTool(EditorTool):
                 pos = self.editor.level.getPlayerPosition(player)
                 yaw, pitch = self.editor.level.getPlayerOrientation(player)
                 dim = self.editor.level.getPlayerDimension(player)
+                
+                self.inOtherDimension[dim].append(player)
+                self.playerPos[dim][pos] = player
+                self.revPlayerPos[dim][player] = pos
+                
+                if player != "Player" and config.settings.downloadPlayerSkins.get():
+                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=False))
+                else:
+                    self.playerTexture[player] = self.charTex
+                    
                 if dim != self.editor.level.dimNo:
                     continue
 
-                self.playerPos[pos] = player
-                self.revPlayerPos[player] = pos
-                if player != "Player":
-                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=False))
                 x, y, z = pos
                 GL.glPushMatrix()
                 GL.glTranslate(x, y, z)
                 GL.glRotate(-yaw, 0, 1, 0)
                 GL.glRotate(pitch, 1, 0, 0)
                 GL.glColor(1, 1, 1, 1)
-                self.drawCharacterHead(0, 0, 0, (x,y,z))
+                self.drawCharacterHead(0, 0, 0, (x,y,z), self.editor.level.dimNo)
                 GL.glPopMatrix()
                 # GL.glEnable(GL.GL_BLEND)
                 drawTerrainCuttingWire(FloatBox((x - .5, y - .5, z - .5), (1, 1, 1)),
@@ -659,22 +827,28 @@ class PlayerPositionTool(EditorTool):
 
         GL.glDisable(GL.GL_DEPTH_TEST)
 
-    def drawCharacterHead(self, x, y, z, realCoords=None):
-        # FIXME: Top head texture is rotated incorrectly
-        # TODO: Possible add hat layer support
+    def drawCharacterHead(self, x, y, z, realCoords=None, dim=0):
         GL.glEnable(GL.GL_CULL_FACE)
         origin = (x - 0.25, y - 0.25, z - 0.25)
         size = (0.5, 0.5, 0.5)
         box = FloatBox(origin, size)
+        
+        hat_origin = (x - 0.275, y - 0.275, z - 0.275)
+        hat_size = (0.55, 0.55, 0.55)
+        hat_box = FloatBox(hat_origin, hat_size)
 
-        if realCoords != None and self.playerPos[realCoords] != "Player":
+        if realCoords is not None and self.playerPos[dim][realCoords] != "Player" and config.settings.downloadPlayerSkins.get():
             drawCube(box,
-                     texture=self.playerTexture[self.playerPos[realCoords]], textureVertices=self.texVerts)
+                     texture=self.playerTexture[self.playerPos[dim][realCoords]], textureVertices=self.texVerts[0])
+            GL.glEnable(GL.GL_BLEND)
+            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+            drawCube(hat_box,
+                     texture=self.playerTexture[self.playerPos[dim][realCoords]], textureVertices=self.texVerts[1])
+            GL.glDisable(GL.GL_BLEND)
         else:
             drawCube(box,
-                     texture=self.charTex, textureVertices=self.texVerts)
+                     texture=self.charTex, textureVertices=self.texVerts[0])
         GL.glDisable(GL.GL_CULL_FACE)
-
 
     #@property
     #def statusText(self):
@@ -698,13 +872,22 @@ class PlayerPositionTool(EditorTool):
 
         if self.recordMove:
             self.editor.addOperation(op)
+            addingMoving = False
         else:
-            self.editor.performWithRetry(op) #Prevent recording of Undo when adding player
+            self.editor.performWithRetry(op)  #Prevent recording of Undo when adding player
             self.recordMove = True
-        self.editor.addUnsavedEdit()
+            addingMoving = True
+        if op.canUndo and not addingMoving:
+            self.editor.addUnsavedEdit()
 
     def keyDown(self, evt):
-        pass
+        if not self.recordMove:
+            if not pygame.key.get_focused():
+                return
+
+            keyname = evt.dict.get('keyname', None) or self.panel.get_root().getKey(evt)
+            if keyname == "Escape":
+                self.recordMove = True
 
     def keyUp(self, evt):
         pass
@@ -744,7 +927,7 @@ class PlayerSpawnPositionOptions(ToolOptions):
 class PlayerSpawnPositionTool(PlayerPositionTool):
     surfaceBuild = True
     toolIconName = "playerspawn"
-    tooltipText = "Move Spawn Point"
+    tooltipText = "Move Spawn Point\nRight-click for options"
 
     def __init__(self, *args):
         PlayerPositionTool.__init__(self, *args)

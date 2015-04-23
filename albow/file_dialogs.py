@@ -3,16 +3,34 @@
 # Albow - File Dialogs
 #
 #-# Modified by D.C.-G. for translation purpose
-import os
+
+"""
+TODO:
+
+* Implement Windows support.
+"""
+
+import os, sys
+from pygame import event, image
+from pygame.transform import scale
 from pygame.locals import *
 from albow.widget import Widget
 from albow.dialogs import Dialog, ask, alert
-from albow.controls import Label, Button
-from albow.fields import TextField
+from albow.controls import Label, Button, Image
+from albow.fields import TextFieldWrapped
 from albow.layout import Row, Column
 from albow.palette_view import PaletteView
+from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
+from tree import Tree
+
+import logging
+log = logging.getLogger(__name__)
+
+file_image = image.load('file.png')
+folder_image = image.load('folder.png')
+
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
         Widget.__init__(self, **kwds)
@@ -31,66 +49,199 @@ class DirPathView(Widget):
         surf.blit(image, (frame.left + x, frame.top))
 
 
-class FileListView(PaletteView):
-    #scroll_button_color = (255, 255, 0)
+class FileListView(ScrollPanel):
 
     def __init__(self, width, client, **kwds):
         font = self.predict_font(kwds)
         h = font.get_linesize()
         d = 2 * self.predict(kwds, 'margin')
-        PaletteView.__init__(self, (width - d, h), 10, 1, scrolling=True, **kwds)
+        ScrollPanel.__init__(self, inner_width=width, **kwds)
+        self.icons = {True: scale(folder_image, (self.row_height, self.row_height)), False: scale(file_image, (self.row_height, self.row_height))}
         self.client = client
-        self.selection = None
         self.names = []
 
     def update(self):
         client = self.client
         dir = client.directory
-        suffixes = client.suffixes
 
         def filter(name):
             path = os.path.join(dir, name)
             return os.path.isdir(path) or self.client.filter(path)
 
         try:
-            names = [name for name in os.listdir(dir) if filter(name)]
-            #if not name.startswith(".") and filter(name)]
+            content = os.walk(dir)
+            for a, dirnames, filenames in content:
+                dirnames.sort()
+                filenames.sort()
+                break
+            try:
+                self.names = [unicode(name, 'utf-8') for name in dirnames + filenames if filter(name)]
+            except:
+                self.names = [name for name in dirnames + filenames if filter(name)]
         except EnvironmentError, e:
             alert(u"%s: %s" % (dir, e))
-            names = []
-        self.names = sorted(names)
-        self.selection = None
-        self.scroll = 0
+            self.names = []
+        self.rows = [Row([Image(self.icons[os.path.isdir(os.path.join(dir, a))]),
+                          Label(a, margin=0)], margin=0, spacing=2) for a in self.names]
+        self.selected_item_index = None
+        self.scroll_to_item(0)
+
+    def scroll_to_item(self, *args, **kwargs):
+        self.scrollRow.scroll_to_item(*args, **kwargs)
 
     def num_items(self):
         return len(self.names)
 
-    #def draw_prehighlight(self, surf, item_no, rect):
-    #    draw.rect(surf, self.sel_color, rect)
-
-    def draw_item(self, surf, item_no, rect):
-        font = self.font
-        color = self.fg_color
-        buf = self.font.render(self.names[item_no], True, color)
-        surf.blit(buf, rect)
-
     def click_item(self, item_no, e):
-        self.selection = item_no
-        self.client.dir_box_click(e.num_clicks == 2)
+        self.selected_item_index = item_no
+        ScrollPanel.click_item(self, item_no, e)
+        if e.num_clicks == 2:
+            self.client.dir_box_click(True)
 
     def item_is_selected(self, item_no):
-        return item_no == self.selection
+        return item_no == self.selected_item_index
 
     def get_selected_name(self):
-        sel = self.selection
+        sel = self.selected_item_index
         if sel is not None:
             return self.names[sel]
         else:
             return ""
 
 
+def get_platform_root_dir():
+    #-# Rework this in order to mimic the OSs file chooser behaviour.
+    #-# Need platform/version specific code...
+    return '/'
+
+
+class FSTree(Tree):
+    def __init__(self, client, *args, **kwargs):
+        kwargs['draw_zebra'] = False
+        self.client = client
+        self.directory = get_platform_root_dir()
+        self.content = content = os.walk(self.directory)
+        if client is not None and hasattr(client, 'directory'):
+            self.directory = client.directory
+        self.directory = kwargs.pop('directory', self.directory)
+        self.data = data = {}
+        d = {}
+        for dirpath, dirnames, filenames in content:
+            for name in dirnames:
+                d[name] = self.parse_path(name, os.path.join(dirpath, name))
+            data[dirpath] = d
+            break
+        kwargs['data'] = data
+        Tree.__init__(self, *args, **kwargs)
+        del self.menu
+        self.set_directory(self.directory)
+
+    def show_menu(self, *args, **kwargs):
+        return
+
+    def set_directory(self, directory):
+        self.diretory = directory
+        self.deployed = []
+        splitted_path = directory.split(os.sep)
+        while '' in splitted_path:
+            splitted_path.remove('')
+        splitted_path.insert(0, '/')
+        d = self.data
+        path = ""
+        while splitted_path:
+            name = splitted_path.pop(0)
+            path = os.path.join(path, name)
+            d[name] = self.parse_path(name, path)
+            rows = self.build_layout()
+            i = 0
+            for row in rows:
+                if row[3] == name and self.get_item_path(row) in directory:
+                    self.deployed.append(row[6])
+                    self.clicked_item = row
+                    rows[i + 1:] = self.build_layout()[i + 1:]
+                    if directory == self.get_item_path(row):
+                        self.treeRow.scroll_to_item(rows.index(row))
+                        self.selected_item_index = rows.index(row)
+                        self.selected_item = row
+                        break
+                i += 1
+            d = d[name]
+
+    def parse_path(self, name, path):
+        #!# The log.debug() and print stuff in there are intended to fix some OSX issues.
+        #!# Please do not strip them out. -- D.C.-G.
+#        log.debug('FSTree.parse_path')
+#        log.debug('    path: %s\n      length: %d'%(repr(path), len(path)))
+#        print '    path: %s\n      length: %d'%(repr(path), len(path))
+#        log.debug('    path: %s\n      length: %d'%(repr(path), len(path)))
+#        if len(path) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#        if len(path) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
+        content = os.walk(path)
+        data = {}
+        d = data
+        for a, folders, b in content:
+#            log.debug('    a: %s\n      length: %d'%(repr(a), len(a)))
+#            print '    a: %s\n      length: %d'%(repr(a), len(a))
+#            log.debug('    a: %s\n      length: %d'%(repr(a), len(a)))
+#            if len(a) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#            if len(a) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
+            d = {}
+            for folder in folders:
+#                log.debug('    folder: %s\n      length: %d'%(repr(folder), len(folder)))
+#                print '    folder: %s\n      length: %d'%(repr(folder), len(folder))
+#                log.debug('    folder: %s\n      length: %d'%(repr(folder), len(folder)))
+#                if len(folder) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#                if len(folder) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
+                if type(folder) == str:
+                    folder = unicode(folder, 'utf-8')
+                d[folder] = {}
+                if type(a) == str:
+                    a = unicode(a,'utf-8')
+                cont = os.walk(os.path.join(a, folder))
+                for _a, fs, _b in cont:
+                    for f in fs:
+#                        log.debug('    f: %s\n      length: %d'%(repr(f), len(f)))
+#                        print '    f: %s\n      length: %d'%(repr(f), len(f))
+#                        log.debug('    f: %s\n      length: %d'%(repr(f), len(f)))
+#                        if len(f) < 1: print '    ! ! ! ^ ^ ^ ! ! !'
+#                        if len(f) < 1: log.debug('    ! ! ! ^ ^ ^ ! ! !')
+                        if type(f) == str:
+                            d[folder][unicode(f, 'utf-8')] = {}
+                        else:
+                            d[folder][f] = {}
+                    break
+            break
+        return d
+
+    def get_item_path(self, item):
+        path_list = []
+        if item is not None:
+            id = item[6]
+            parents = [item]
+            while id != 1:
+                item = self.get_item_parent(parents[-1])
+                if item is None:
+                    break
+                id = item[6]
+                parents.append(item)
+            parents.reverse()
+            path_list = [a[3] for a in parents]
+        path = '/'
+        for name in path_list:
+            path = os.path.join(path, name)
+        return path
+
+    def deploy(self, id):
+        path = self.get_item_path(self.clicked_item)
+        self.clicked_item[9] = self.parse_path(self.clicked_item[3], path)
+        Tree.deploy(self, id)
+
+    def select_item(self, n):
+        Tree.select_item(self, n)
+        self.client.directory = self.get_item_path(self.selected_item)
+
 class FileDialog(Dialog):
-    box_width = 250
+    box_width = 450
     default_prompt = None
     up_button_text = ThemeProperty("up_button_text")
 
@@ -100,18 +251,21 @@ class FileDialog(Dialog):
         d = self.margin
         self.suffixes = suffixes or ("",)
         up_button = Button(self.up_button_text, action=self.go_up)
-        dir_box = DirPathView(self.box_width - up_button.width - 10, self)
+        dir_box = DirPathView(self.box_width + 250, self)
         self.dir_box = dir_box
         top_row = Row([dir_box, up_button])
         list_box = FileListView(self.box_width - 16, self)
         self.list_box = list_box
-        ctrls = [top_row, list_box]
+        tree = FSTree(self, inner_width=250, directory='/')
+        self.tree = tree
+        row = Row((tree, list_box), margin=0)
+        ctrls = [top_row, row]
         prompt = prompt or self.default_prompt
         if prompt:
             label = Label(prompt)
         if self.saving:
-            filename_box = TextField(self.box_width)
-            filename_box.change_action = self.update
+            filename_box = TextFieldWrapped(self.box_width)
+            filename_box.change_action = self.update_filename
             filename_box._enter_action = filename_box.enter_action
             filename_box.enter_action = self.enter_action
             self.filename_box = filename_box
@@ -165,7 +319,11 @@ class FileDialog(Dialog):
                 return True
 
     def update(self):
-        pass
+        self.tree.set_directory(self.directory)
+
+    def update_filename(self):
+        if self.filename_box.text in self.list_box.names:
+            self.directory = os.path.join(self.directory, self.filename_box.text)
 
     def go_up(self):
         self.directory = os.path.dirname(self.directory)
@@ -207,18 +365,18 @@ class FileSaveDialog(FileDialog):
     ok_label = "Save"
 
     def get_filename(self):
-        return self.filename_box.value
+        return self.filename_box.text
 
     def set_filename(self, x):
         dsuf = self.suffixes[0]
-        if x.endswith(dsuf):
+        if dsuf and x.endswith(dsuf):
             x = x[:-len(dsuf)]
-        self.filename_box.value = x
+        self.filename_box.text = x
 
     filename = property(get_filename, set_filename)
 
     def get_pathname(self):
-        path = os.path.join(self.directory, self.filename_box.value)
+        path = os.path.join(self.directory, self.filename_box.text)
         suffixes = self.suffixes
         if suffixes and not path.endswith(suffixes[0]):
             path = path + suffixes[0]
@@ -227,7 +385,7 @@ class FileSaveDialog(FileDialog):
     pathname = property(get_pathname)
 
     def double_click_file(self, name):
-        self.filename_box.value = name
+        self.filename_box.text = name
 
     def ok(self):
         path = self.pathname

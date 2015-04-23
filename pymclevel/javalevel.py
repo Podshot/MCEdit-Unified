@@ -36,7 +36,8 @@ class MCJavaLevel(MCLevel):
     def Width(self):
         return self.Blocks.shape[0]
 
-    def guessSize(self, data):
+    @staticmethod
+    def guessSize(data):
         Width = 64
         Length = 64
         Height = 64
@@ -122,7 +123,7 @@ class MCJavaLevel(MCLevel):
 
         try:
             os.rename(self.filename, self.filename + ".old")
-        except Exception, e:
+        except Exception:
             pass
 
         try:
@@ -138,7 +139,7 @@ class MCJavaLevel(MCLevel):
 
         try:
             os.remove(self.filename + ".old")
-        except Exception, e:
+        except Exception:
             pass
         yield
 

@@ -14,7 +14,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 from OpenGL import GL
 import numpy
-from albow import Label, Button, Column, alert
+from albow import Label, Button, Column, alert, AttrRef, showProgress, CheckBoxLabel
 from albow.translate import _
 from depths import DepthOffset
 from editortools.blockpicker import BlockPicker
@@ -23,18 +23,20 @@ from editortools.editortool import EditorTool
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
 from glutils import Texture
-from mceutils import showProgress, CheckBoxLabel, alertException, setWindowCaption
+from mceutils import alertException, setWindowCaption
 from operation import Operation
 from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
 from config import config
 from albow.root import get_root
 import pymclevel
+from numpy import array
 
 
 class BlockFillOperation(Operation):
-    def __init__(self, editor, destLevel, destBox, blockInfo, blocksToReplace):
+    def __init__(self, editor, destLevel, destBox, blockInfo, blocksToReplace, noData=False):
         super(BlockFillOperation, self).__init__(editor, destLevel)
+        self.noData = noData
         self.destBox = destBox
         self.blockInfo = blockInfo
         self.blocksToReplace = blocksToReplace
@@ -54,7 +56,7 @@ class BlockFillOperation(Operation):
         if self.level.bounds == self.destBox:
             destBox = None
 
-        fill = self.level.fillBlocksIter(destBox, self.blockInfo, blocksToReplace=self.blocksToReplace)
+        fill = self.level.fillBlocksIter(destBox, self.blockInfo, blocksToReplace=self.blocksToReplace, noData=self.noData)
         showProgress("Replacing blocks...", fill, cancel=True)
         self.canUndo = True
 
@@ -85,14 +87,16 @@ class FillToolPanel(Panel):
         replaceLabel.mouse_down = lambda a: self.tool.toggleReplacing()
         replaceLabel.fg_color = (177, 177, 255, 255)
         # replaceLabelRow = Row( (Label(rollkey), replaceLabel) )
-        replaceLabel.tooltipText = "Shortcut: {0}".format(rollkey)
+        replaceLabel.tooltipText = _("Shortcut: {0}").format(_(rollkey))
         replaceLabel.align = "c"
-
+        self.noDataCheckBox = CheckBoxLabel("Keep Data Intact", ref=AttrRef(self.tool, "noData"))
+        
         col = (self.fillWithLabel,
                self.blockButton,
                # swapRow,
                replaceLabel,
                # self.replaceBlockButton,
+               self.noDataCheckBox,
                self.fillButton)
 
         if replacing:
@@ -102,13 +106,13 @@ class FillToolPanel(Panel):
             self.replaceBlockButton.blockInfo = tool.replaceBlockInfo
             self.replaceBlockButton.action = self.pickReplaceBlock
             self.replaceLabel.text = "Replace with:"
-
+            
             self.swapButton = Button("Swap", action=self.swapBlockTypes, width=self.blockButton.width)
             self.swapButton.fg_color = (255, 255, 255, 255)
             self.swapButton.highlight_color = (60, 255, 60, 255)
             swapkey = config.keys.swap.get()
 
-            self.swapButton.tooltipText = "Shortcut: {0}".format(swapkey)
+            self.swapButton.tooltipText = _("Shortcut: {0}").format(_(swapkey))
 
             self.fillButton = Button("Replace", action=tool.confirm, width=self.blockButton.width)
             self.fillButton.tooltipText = "Shortcut: Enter"
@@ -117,6 +121,7 @@ class FillToolPanel(Panel):
                    self.blockButton,
                    replaceLabel,
                    self.replaceBlockButton,
+                   self.noDataCheckBox,
                    self.swapButton,
                    self.fillButton)
 
@@ -148,11 +153,13 @@ class FillToolOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
-        self.autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
+        self.autoChooseCheckBoxFill = CheckBoxLabel("Open Block Picker for Fill",
                                                 ref=config.fill.chooseBlockImmediately,
                                                 tooltipText="When the fill tool is chosen, prompt for a block type.")
-
-        col = Column((Label("Fill Options"), self.autoChooseCheckBox, Button("OK", action=self.dismiss)))
+        self.autoChooseCheckBoxReplace = CheckBoxLabel("Open Block Picker for Replace",
+                                                       ref=config.fill.chooseBlockImmediatelyReplace,
+                                                       tooltipText="When the replace tool is chosen, prompt for a block type.")
+        col = Column((Label("Fill and Replace Options"), self.autoChooseCheckBoxFill, self.autoChooseCheckBoxReplace, Button("OK", action=self.dismiss)))
 
         self.add(col)
         self.shrink_wrap()
@@ -171,6 +178,9 @@ class FillTool(EditorTool):
         self.optionsPanel = FillToolOptions(self)
         self.pickBlockKey = 0
         self.root = get_root()
+        
+    noData = False
+
 
     @property
     def blockInfo(self):
@@ -183,7 +193,7 @@ class FillTool(EditorTool):
             self.panel.blockButton.blockInfo = bt
 
     def levelChanged(self):
-        self.initTextures()
+        pass
 
     def showPanel(self):
         if self.panel:
@@ -216,6 +226,7 @@ class FillTool(EditorTool):
                 self.showPanel()
 
     chooseBlockImmediately = config.fill.chooseBlockImmediately.property()
+    chooseBlockImmediatelyReplace = config.fill.chooseBlockImmediatelyReplace.property()
 
     def toolReselected(self):
         self.showPanel()
@@ -246,7 +257,7 @@ class FillTool(EditorTool):
                     blocksToReplace = [self.blockInfo]
 
                 op = BlockFillOperation(self.editor, self.editor.level, self.selectionBox(), self.replaceBlockInfo,
-                                        blocksToReplace)
+                                        blocksToReplace, noData=self.noData)
 
             else:
                 blocksToReplace = []
@@ -273,7 +284,7 @@ class FillTool(EditorTool):
             id = [self._blockInfo.ID]
             data = [self._blockInfo.blockData]
             yaw = int(self.editor.mainViewport.yaw) % 360
-            if (yaw >= 45 and yaw < 135) or (yaw > 225 and yaw <= 315):
+            if (45 <= yaw < 135) or (225 < yaw <= 315):
                 FlipEastWest(id,data)
             else:
                 FlipNorthSouth(id,data)
@@ -298,7 +309,7 @@ class FillTool(EditorTool):
 
         self.hidePanel()
         self.showPanel()
-        if self.replacing:
+        if self.replacing and self.chooseBlockImmediatelyReplace:
             self.panel.pickReplaceBlock()
 
     @alertException
@@ -306,36 +317,20 @@ class FillTool(EditorTool):
         if self.panel and self.replacing:
             self.panel.swapBlockTypes()
 
-    def initTextures(self):
+    def blockTexFunc(self, terrainTexture, tex):
+        def _func():
+            s, t = tex
+            if not hasattr(terrainTexture, "data"):
+                return
+            w, h = terrainTexture.data.shape[:2]
+            pixelWidth = 512 if self.editor.level.materials.name in ("Pocket", "Alpha") else 256
+            s = s * w / pixelWidth
+            t = t * h / pixelWidth
+            texData = numpy.array(terrainTexture.data[t:t + h / 32, s:s + w / 32])
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 32, h / 32, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
+                            texData)
 
-        terrainTexture = self.editor.level.materials.terrainTexture
-
-        blockTextures = self.editor.level.materials.blockTextures[:, 0]
-
-        if hasattr(self, 'blockTextures'):
-            for tex in self.blockTextures.itervalues():
-                tex.delete()
-
-        self.blockTextures = {}
-
-        pixelWidth = 512 if self.editor.level.materials.name in ("Pocket", "Alpha") else 256
-
-        def blockTexFunc(type):
-            def _func():
-                s, t = blockTextures[type][0]
-                if not hasattr(terrainTexture, "data"):
-                    return
-                w, h = terrainTexture.data.shape[:2]
-                s = s * w / pixelWidth
-                t = t * h / pixelWidth
-                texData = numpy.array(terrainTexture.data[t:t + h / 32, s:s + w / 32])
-                GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, w / 32, h / 32, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
-                                texData)
-
-            return _func
-
-        for type in range(256):
-            self.blockTextures[type] = Texture(blockTexFunc(type))
+        return _func
 
     def drawToolReticle(self):
         if self.pickBlockKey == 1:
@@ -353,7 +348,9 @@ class FillTool(EditorTool):
 
         color = 1.0, 1.0, 1.0, 0.35
         if blockInfo:
-            tex = self.blockTextures.get(blockInfo.ID, self.blockTextures[255])  # xxx
+            terrainTexture = self.editor.level.materials.terrainTexture
+            tex = self.editor.level.materials.blockTextures[blockInfo.ID, blockInfo.blockData, 0]  # xxx
+            tex = Texture(self.blockTexFunc(terrainTexture, tex))
 
             # color = (1.5 - alpha, 1.0, 1.5 - alpha, alpha - 0.35)
             GL.glMatrixMode(GL.GL_TEXTURE)

@@ -37,12 +37,17 @@ def naturalBlockmask():
 inputs = (
     ("Depth", (4, -128, 128)),
     ("Pick a block:", alphaMaterials.Grass),
+    ("Replace Only:", True),
+    ("", alphaMaterials.Stone)
 )
 
 
 def perform(level, box, options):
     depth = options["Depth"]
     blocktype = options["Pick a block:"]
+    replace = options["Replace Only:"]
+    replaceType = options[""]
+    
 
     #compute a truth table that we can index to find out whether a block
     # is naturally occuring and should be considered in a heightmap
@@ -68,10 +73,23 @@ def perform(level, box, options):
         for x, z in itertools.product(*map(xrange, heightmap.shape)):
             h = heightmap[x, z]
             if depth > 0:
+                if replace:
+                    for y in range(max(0, h-depth), h):
+                        b, d = blocks[x, z, y], data[x, z, y]
+                        if (b == replaceType.ID and d == replaceType.blockData):
+                            blocks[x, z, y] = blocktype.ID
+                            data[x, z, y] = blocktype.blockData
+                    continue
                 blocks[x, z, max(0, h - depth):h] = blocktype.ID
                 data[x, z, max(0, h - depth):h] = blocktype.blockData
             else:
                 #negative depth values mean to put a layer above the surface
+                if replace:
+                    for y in range(h, min(blocks.shape[2], h-depth)):
+                        b, d = blocks[x, z, y], data[x, z, y]
+                        if (b == replaceType.ID and d == replaceType.blockData):
+                            blocks[x, z, y] = blocktype.ID
+                            data[x, z, y] = blocktype.blockData
                 blocks[x, z, h:min(blocks.shape[2], h - depth)] = blocktype.ID
                 data[x, z, h:min(blocks.shape[2], h - depth)] = blocktype.blockData
 

@@ -10,6 +10,7 @@ import materials
 from entity import Entity, TileEntity
 from copy import deepcopy
 
+
 def convertBlocks(destLevel, sourceLevel, blocks, blockData):
     return materials.convertBlocks(destLevel.materials, sourceLevel.materials, blocks, blockData)
 
@@ -31,9 +32,6 @@ def sourceMaskFunc(blocksToCopy):
 
 
 def adjustCopyParameters(destLevel, sourceLevel, sourceBox, destinationPoint):
-    # if the destination box is outside the level, it and the source corners are moved inward to fit.
-    (dx, dy, dz) = map(int, destinationPoint)
-
     log.debug(u"Asked to copy {} blocks \n\tfrom {} in {}\n\tto {} in {}".format(
         sourceBox.volume, sourceBox, sourceLevel, destinationPoint, destLevel))
     if destLevel.Width == 0:
@@ -124,13 +122,6 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
             if convertedSourceData is not None:
                 destChunk.Data[destSlices][mask] = convertedSourceData[mask]
 
-            if entities:
-                ents = sourceChunk.getEntitiesInBox(destChunkBoxInSourceLevel)
-                e += len(ents)
-                for entityTag in ents:
-                    eTag = Entity.copyWithOffset(entityTag, copyOffset, regenerateUUID)
-                    destLevel.addEntity(eTag)
-
             def copy(p):
                 return p in sourceChunkBoxInDestLevel and (blocksToCopy is None or mask[
                     p[0] - sourceChunkBoxInDestLevel.minx,
@@ -138,12 +129,21 @@ def copyBlocksFromIter(destLevel, sourceLevel, sourceBox, destinationPoint, bloc
                     p[1] - sourceChunkBoxInDestLevel.miny,
                 ])
 
+            if entities:
+                destChunk.removeEntities(copy)
+
+                ents = sourceChunk.getEntitiesInBox(destChunkBoxInSourceLevel)
+                e += len(ents)
+                for entityTag in ents:
+                    eTag = Entity.copyWithOffset(entityTag, copyOffset, regenerateUUID)
+                    destLevel.addEntity(eTag)
+
             destChunk.removeTileEntities(copy)
 
             tileEntities = sourceChunk.getTileEntitiesInBox(destChunkBoxInSourceLevel)
             t += len(tileEntities)
             for tileEntityTag in tileEntities:
-                eTag = TileEntity.copyWithOffset(tileEntityTag, copyOffset, staticCommands, moveSpawnerPos, regenerateUUID, first)
+                eTag = TileEntity.copyWithOffset(tileEntityTag, copyOffset, staticCommands, moveSpawnerPos, first)
                 destLevel.addTileEntity(eTag)
 
             destChunk.removeTileTicks(copy)

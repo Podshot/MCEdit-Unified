@@ -4,13 +4,14 @@ import itertools
 
 displayName = "Topsoil"
 
+
 def createInputs(self):
     self.inputs = (
     {'Hollow': False},
     {'Noise': 100},
     {'W': (3, 1, 4096), 'H': (3, 1, 4096), 'L': (3, 1, 4096)},
     {'Block': materials.blockWithID(1, 0)},
-    {'Depth': (1)},
+    {'Depth': 1},
     {'Only Change Natural Earth': False},
     {'Minimum Spacing': 1},
     )
@@ -25,7 +26,6 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     data = chunk.Data[slices]
 
     brushMask = createBrushMask(op.tool.getBrushSize(), op.options['Style'], brushBox.origin, brushBoxThisChunk, op.options['Noise'], op.options['Hollow'])
-
 
     if op.options['Only Change Natural Earth']:
         try:
@@ -45,7 +45,9 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
 
     if depth < 0:
         blocktypeMask &= (blocks != blocktype.ID)
-
+    
+    if len(blocktypeMask) == 0:
+        return
     heightmap = extractHeights(blocktypeMask)
 
     for x, z in itertools.product(*map(xrange, heightmap.shape)):

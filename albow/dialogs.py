@@ -1,11 +1,13 @@
 #-# Modified by D.C.-G. for translation purpose
 import textwrap
-from pygame import event
+from pygame import event, key
 from pygame.locals import *
 from widget import Widget
 from controls import Label, Button
 from layout import Row, Column
-from fields import TextField
+from fields import TextFieldWrapped
+from scrollpanel import ScrollPanel
+from table_view import TableView, TableColumn
 from translate import _
 
 class Modal(object):
@@ -60,11 +62,10 @@ class Dialog(Modal, Widget):
                 self.dismiss(response)
 
     def key_down(self, e):
-        self.root.handling_ctrl(e)
+        pass
 
     def key_up(self, e):
         pass
-
 
 
 class QuickDialog(Dialog):
@@ -85,7 +86,7 @@ def wrapped_label(text, wrap_width, **kwds):
     # paras = text.split("\n")
     text = _(text)
     kwds['doNotTranslate'] = True
-    paras = text.split("\n\n")
+    paras = text.split("\n")
     text = "\n".join([textwrap.fill(para, wrap_width) for para in paras])
     return Label(text, **kwds)
 
@@ -106,15 +107,35 @@ def alert(mess, **kwds):
 
 def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
         wrap_width=60, **kwds):
+    # If height is specified as a keyword, the Dialog object will have this haight, and the inner massage will
+    # be displayed in a scrolling widget
+    colLbl = kwds.pop('colLabel', "")
+
+
     box = Dialog(**kwds)
     d = box.margin
     lb = wrapped_label(mess, wrap_width)
-    lb.topleft = (d, d)
     buts = []
     for caption in responses:
         but = Button(caption, action=lambda x=caption: box.dismiss(x))
         buts.append(but)
     brow = Row(buts, spacing=d)
+    lb.width = max(lb.width, brow.width)
+    height = kwds.get('height', None)
+    if height and lb.height > height - (2 * brow.height) - ScrollPanel.column_margin - box.margin:
+        lines = mess.split('\n')
+        # ScrolledPanel refuses to render properly for now, so Tableview is used instead.
+        w = TableView().font.size(_(colLbl))[0]
+        lb = TableView(columns=[TableColumn(colLbl, max(lb.width, w)),], nrows=(height - (2 * brow.height) - box.margin - box.font.get_linesize()) / box.font.get_linesize(), height=height - (2 * brow.height) - (box.font.get_linesize() * 2) - box.margin) #, width=w)
+
+        def num_rows():
+            return len(lines)
+
+        lb.num_rows = num_rows
+
+        lb.row_data = lambda x: (lines[x],)
+
+    lb.topleft = (d, d)
     lb.width = max(lb.width, brow.width)
     col = Column([lb, brow], spacing=d, align='r')
     col.topleft = (d, d)
@@ -129,6 +150,14 @@ def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
         box.cancel_response = None
     box.add(col)
     box.shrink_wrap()
+
+    def dispatchKeyForAsk(name, evt):
+        if name == "key_down":
+            if box.root.getKey(evt) == "Return":
+                if default is not None:
+                    box.dismiss(responses[default])
+
+    box.dispatch_key = dispatchKeyForAsk
     return box.present()
 
 
@@ -144,7 +173,7 @@ def input_text(prompt, width, initial=None, **kwds):
 
     lb = Label(prompt)
     lb.topleft = (d, d)
-    tf = TextField(width)
+    tf = TextFieldWrapped(width)
     if initial:
         tf.set_text(initial)
     tf.enter_action = ok
@@ -161,7 +190,7 @@ def input_text(prompt, width, initial=None, **kwds):
         return None
 
 
-def input_text_buttons(prompt, width, initial=None, **kwds):
+def input_text_buttons(prompt, width, initial=None, allowed_chars=None, **kwds):
     box = Dialog(**kwds)
     d = box.margin
 
@@ -171,16 +200,13 @@ def input_text_buttons(prompt, width, initial=None, **kwds):
     def cancel():
         box.dismiss(False)
 
-    buts = []
-    buts.append(Button("OK", action=ok))
-    buts.append(Button("Cancel", action=cancel))
+    buts = [Button("OK", action=ok), Button("Cancel", action=cancel)]
 
     brow = Row(buts, spacing=d)
 
-
     lb = Label(prompt)
     lb.topleft = (d, d)
-    tf = TextField(width)
+    tf = TextFieldWrapped(width,allowed_chars=allowed_chars)
     if initial:
         tf.set_text(initial)
     tf.enter_action = ok

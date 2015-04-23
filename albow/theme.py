@@ -137,6 +137,9 @@ root.ValueButton = Theme('ValueButton', base=root.Button)
 
 root.Label = Theme('Label')
 root.Label.margin = 4
+#-#
+root.Label.disabled_color = (64, 64, 64)
+#-#
 
 root.SmallLabel = Theme('SmallLabel')
 root.SmallLabel.font = (10, 'DejaVuSans-Regular.ttf')
@@ -216,3 +219,9 @@ root.Menu.border_width = 1
 
 root.MusicVolumeControl = Theme('MusicVolumeControl', base=framed)
 root.MusicVolumeControl.fg_color = (0x40, 0x40, 0x40)
+
+root.Tree = Theme('Tree')
+root.Tree.bullet_size = 16
+root.Tree.bullet_color_active = (0, 128, 255)
+root.Tree.bullet_color_inactive = (128, 128, 128)
+

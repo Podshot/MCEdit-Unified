@@ -42,6 +42,7 @@ class ChunkAccessDenied(ChunkNotPresent):
     saving is taking place"""
     pass
 
+
 def exhaust(_iter):
     """Functions named ending in "Iter" return an iterable object that does
     long-running work and yields progress information on each call. exhaust()

@@ -565,7 +565,7 @@ class BambooTree(StickTree):
         start = self.pos[1]
         end = self.pos[1] + self.height + 1
         for y in range(start, end):
-            for i in [0, 1]:
+            for _ in [0, 1]:
                 xoff = choice([-1, 1])
                 zoff = choice([-1, 1])
                 x = self.pos[0] + xoff
@@ -598,7 +598,8 @@ class ProceduralTree(Tree):
     Subclass 'prepare' and 'shapefunc' to make different shaped trees.
     '''
 
-    def crossection(self, center, radius, diraxis, matidx, mcmap):
+    @staticmethod
+    def crossection(center, radius, diraxis, matidx, mcmap):
         '''Create a round section of type matidx in mcmap.
 
         Passed values:
@@ -910,7 +911,7 @@ class ProceduralTree(Tree):
             posradius = trunkradius
             # In mangroves, the root buttresses are much more extended.
             if SHAPE == "mangrove":
-                posradius = posradius * 2.618
+                posradius *= 2.618
             num_of_buttresses = int(sqrt(trunkradius) + 3.5)
             for i in range(num_of_buttresses):
                 rndang = random() * 2 * pi
@@ -1055,8 +1056,8 @@ class RoundTree(ProceduralTree):
         self.branchslope = 0.382
         ProceduralTree.prepare(self, mcmap)
         self.foliage_shape = [2, 3, 3, 2.5, 1.6]
-        self.trunkradius = self.trunkradius * 0.8
-        self.trunkheight = TRUNKHEIGHT * self.trunkheight
+        self.trunkradius *= 0.8
+        self.trunkheight *= TRUNKHEIGHT
 
     def shapefunc(self, y):
         twigs = ProceduralTree.shapefunc(self, y)
@@ -1072,7 +1073,7 @@ class RoundTree(ProceduralTree):
             dist = 0
         else:
             dist = sqrt((radius ** 2) - (adj ** 2))
-        dist = dist * .618
+        dist *= .618
         return dist
 
 
@@ -1086,7 +1087,7 @@ class ConeTree(ProceduralTree):
         self.branchslope = 0.15
         ProceduralTree.prepare(self, mcmap)
         self.foliage_shape = [3, 2.6, 2, 1]
-        self.trunkradius = self.trunkradius * 0.5
+        self.trunkradius *= 0.5
 
     def shapefunc(self, y):
         twigs = ProceduralTree.shapefunc(self, y)
@@ -1108,8 +1109,8 @@ class RainforestTree(ProceduralTree):
         self.foliage_shape = [3.4, 2.6]
         self.branchslope = 1.0
         ProceduralTree.prepare(self, mcmap)
-        self.trunkradius = self.trunkradius * 0.382
-        self.trunkheight = self.trunkheight * .9
+        self.trunkradius *= 0.382
+        self.trunkheight *= .9
 
     def shapefunc(self, y):
         if y < self.height * 0.8:
@@ -1132,13 +1133,13 @@ class MangroveTree(RoundTree):
     def prepare(self, mcmap):
         self.branchslope = 1.0
         RoundTree.prepare(self, mcmap)
-        self.trunkradius = self.trunkradius * 0.618
+        self.trunkradius *= 0.618
 
     def shapefunc(self, y):
         val = RoundTree.shapefunc(self, y)
         if val is None:
             return val
-        val = val * 1.618
+        val *= 1.618
         return val
 
 

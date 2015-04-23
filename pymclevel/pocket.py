@@ -159,7 +159,6 @@ class PocketChunksFile(object):
     #        logger.info("Repair complete. Removed {0} chunks, recovered {1} chunks, net {2}".format(deleted, recovered, recovered - deleted))
     #
 
-
     def _readChunk(self, cx, cz):
         cx &= 0x1f
         cz &= 0x1f
@@ -384,7 +383,6 @@ class PocketChunk(LightedChunk):
         self.unpackChunkData()
         self.shapeChunkData()
 
-
     def unpackChunkData(self):
         for key in ('SkyLight', 'BlockLight', 'Data'):
             dataArray = getattr(self, key)
@@ -430,3 +428,17 @@ class PocketChunk(LightedChunk):
                         packData(self.BlockLight).tostring(),
                         self.DirtyColumns.tostring(),
         ])
+
+
+class NewPocketWorld():
+    @classmethod
+    def _isLevel(cls, filename):
+        clp = ("db", "level.dat")
+
+        if not os.path.isdir(filename):
+            f = os.path.basename(filename)
+            if f not in clp:
+                return False
+            filename = os.path.dirname(filename)
+
+        return all([os.path.exists(os.path.join(filename, fl)) for fl in clp])

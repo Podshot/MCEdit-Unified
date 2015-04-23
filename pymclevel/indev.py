@@ -246,12 +246,14 @@ class MCIndevLevel(EntityLevel):
         log.info(u"Rotating torches: {0}".format(len(torchIndexes.nonzero()[0])))
         self.Data[torchIndexes] = torchRotation[self.Data[torchIndexes]]
 
-    def decodePos(self, v):
+    @staticmethod
+    def decodePos(v):
         b = 10
         m = (1 << b) - 1
         return v & m, (v >> b) & m, (v >> (2 * b))
 
-    def encodePos(self, x, y, z):
+    @staticmethod
+    def encodePos(x, y, z):
         b = 10
         return x + (y << b) + (z << (2 * b))
 
@@ -284,6 +286,7 @@ class MCIndevLevel(EntityLevel):
 
         self.Entities.append(self.LocalPlayer)
         # fix up Entities imported from Alpha worlds
+
         def numbersToFloats(ent):
             for attr in "Motion", "Pos":
                 if attr in ent:

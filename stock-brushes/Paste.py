@@ -8,16 +8,19 @@ displayName = 'Paste'
 addPasteButton = True
 disableStyleButton = True
 
+
 def createInputs(self):
     self.inputs= (         
     )
     pass
         
+
 def createDirtyBox(self, point, tool):
     newpoint = []
     for p in point:
         newpoint.append(p-1)
     return BoundingBox(newpoint, tool.level.size)
+
 
 def apply(self, op, point):
     level = op.tool.level

@@ -225,7 +225,6 @@ class TAG_String(TAG_Value):
 
             return decoded
 
-
     @classmethod
     def load_from(cls, ctx):
         value = load_string(ctx)
@@ -278,7 +277,8 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
             self.check_value(i)
         return list(val)
 
-    def check_value(self, val):
+    @staticmethod
+    def check_value(val):
         if not isinstance(val, TAG_Value):
             raise TypeError("Invalid type for TAG_Compound element: %s" % val.__class__.__name__)
         if not val.name:
@@ -412,7 +412,6 @@ class TAG_List(TAG_Value, collections.MutableSequence):
 
     __slots__ = ('_name', '_value')
 
-
     def __repr__(self):
         return "<%s name='%s' list_type=%r length=%d>" % (self.__class__.__name__, self.name,
                                                           tag_classes[self.list_type],
@@ -423,7 +422,6 @@ class TAG_List(TAG_Value, collections.MutableSequence):
             self.list_type = val[0].tagID
         assert all([x.tagID == self.list_type for x in val])
         return list(val)
-
 
     @classmethod
     def load_from(cls, ctx):
@@ -439,7 +437,6 @@ class TAG_List(TAG_Value, collections.MutableSequence):
             self.append(tag)
 
         return self
-
 
     def write_value(self, buf):
         buf.write(chr(self.list_type))

@@ -12,6 +12,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
+#.# Marks the layout modifications. -- D.C.-G.
 
 import os
 from OpenGL import GL
@@ -19,7 +20,7 @@ from OpenGL import GL
 from collections import defaultdict
 import numpy
 import pygame
-from albow import Row, Label, Button, AttrRef, Column, ask, alert
+from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress
 from albow.translate import _
 from config import config, ColorValue
 from depths import DepthOffset
@@ -27,7 +28,7 @@ from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton
 from editortools.tooloptions import ToolOptions
 from glbackground import Panel
-from mceutils import ChoiceButton, CheckBoxLabel, IntInputRow, alertException, drawCube, drawFace, drawTerrainCuttingWire, setWindowCaption, showProgress
+from mceutils import alertException, drawCube, drawFace, drawTerrainCuttingWire, setWindowCaption
 from operation import Operation
 import pymclevel
 from pymclevel.box import Vector, BoundingBox, FloatBox
@@ -41,17 +42,7 @@ log = logging.getLogger(__name__)
 
 
 def GetSelectionColor(colorWord=None):
-    # TODO: this whole function code is now perhaps equivalent to this,
-    # apart from case-sensitiveness handling and previous format fix:
-    # return ColorSettings.defaultColors.get((colorWord or config.selection.color.get()).lower(),
-    # ColorSettings(colorWord.lower(), (1.0, 1.0, 1.0))).get()
-    if colorWord is None:
-        colorWord = config.selection.color.get()
-
-    colorWord = config.convert(colorWord)
-
-    values = config.selectionColors[colorWord].get()
-    return values
+    return config.selectionColors[config.convert(colorWord or config.selection.color.get())].get()
 
 
 class SelectionToolOptions(ToolOptions):
@@ -73,6 +64,35 @@ class SelectionToolOptions(ToolOptions):
         colorRow = Row((Label("Color: ", align="r"), self.colorPopupButton))
         okButton = Button("OK", action=self.dismiss)
         showPreviousRow = CheckBoxLabel("Show Previous Selection", ref=AttrRef(tool, 'showPreviousSelection'))
+        spaceLabel = Label("")
+        #.#
+        spaceLabel.height /= 1.5
+        #.#
+        blocksNudgeLabel = Label("Blocks Fast Nudge Settings:")
+        blocksNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
+                                                ref=config.fastNudgeSettings.blocksWidth,
+                                                tooltipText="Moves selection by his width")
+        blocksNudgeNumber = IntInputRow("Width of blocks movement: ",
+                                                ref=config.fastNudgeSettings.blocksWidthNumber, width=100, min=2, max=50)
+        selectionNudgeLabel = Label("Selection Fast Nudge Settings:")
+        selectionNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
+                                                ref=config.fastNudgeSettings.selectionWidth,
+                                                tooltipText="Moves selection by his width")
+        selectionNudgeNumber = IntInputRow("Width of selection movement: ",
+                                                ref=config.fastNudgeSettings.selectionWidthNumber, width=100, min=2, max=50)
+        pointsNudgeLabel = Label("Points Fast Nudge Settings:")
+        pointsNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
+                                                ref=config.fastNudgeSettings.pointsWidth,
+                                                tooltipText="Moves points by the selection's width")
+        pointsNudgeNumber = IntInputRow("Width of points movement: ",
+                                                ref=config.fastNudgeSettings.pointsWidthNumber, width=100, min=2, max=50)
+        staticCommandsNudgeRow = CheckBoxLabel("Static Coords While Nudging",
+                                            ref=config.settings.staticCommandsNudge,
+                                            tooltipText="Change static coordinates in command blocks while nudging.")
+
+        moveSpawnerPosNudgeRow = CheckBoxLabel("Change Spawners While Nudging",
+                                            ref=config.settings.moveSpawnerPosNudge,
+                                            tooltipText="Change the position of the mobs in spawners while nudging.")
 
         def set_colorvalue(ch):
             i = "RGB".index(ch)
@@ -100,7 +120,10 @@ class SelectionToolOptions(ToolOptions):
                              for ch in "RGB"]
 
         colorValuesRow = Row(colorValuesInputs)
-        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, okButton))
+        #.#
+#        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))
+        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, spaceLabel, staticCommandsNudgeRow, moveSpawnerPosNudgeRow, okButton), spacing=2)
+        #.#
 
         self.add(col)
         self.shrink_wrap()
@@ -123,26 +146,26 @@ class SelectionToolPanel(Panel):
 
         deleteBlocksButton = Button("Delete Blocks", action=self.tool.deleteBlocks)
         deleteBlocksButton.tooltipText = _("Fill the selection with Air. Shortcut: {0}").format(
-            config.keys.deleteBlocks.get())
+            _(config.keys.deleteBlocks.get()))
         deleteEntitiesButton = Button("Delete Entities", action=self.tool.deleteEntities)
         deleteEntitiesButton.tooltipText = "Remove all entities within the selection"
         deleteTileTicksButton = Button("Delete Tile Ticks", action=self.tool.deleteTileTicks)
         deleteTileTicksButton.tooltipText = "Removes all tile ticks within selection. Tile ticks are scheduled block updates"
         # deleteTileEntitiesButton = Button("Delete TileEntities", action=self.tool.deleteTileEntities)
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
-        analyzeButton.tooltipText ="Count the different blocks and entities in the selection and display the totals."
+        analyzeButton.tooltipText = "Count the different blocks and entities in the selection and display the totals."
         cutButton = Button("Cut", action=self.tool.cutSelection)
         cutButton.tooltipText = _("Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}").format(
             config.keys.cut.get())
         copyButton = Button("Copy", action=self.tool.copySelection)
         copyButton.tooltipText = _("Take a copy of all blocks and entities within the selection. Shortcut: {0}").format(
-            config.keys.copy.get())
+            _(config.keys.copy.get()))
         pasteButton = Button("Paste", action=self.tool.editor.pasteSelection)
         pasteButton.tooltipText = _("Import the last item taken by Cut or Copy. Shortcut: {0}").format(
-            config.keys.paste.get())
+            _(config.keys.paste.get()))
         exportButton = Button("Export", action=self.tool.exportSelection)
         exportButton.tooltipText = _("Export the selection to a .schematic file. Shortcut: {0}").format(
-            config.keys.exportSelection.get())
+            _(config.keys.exportSelection.get()))
 
         selectButton = Button("Select Chunks")
         selectButton.tooltipText = "Expand the selection to the edges of the chunks within"
@@ -150,7 +173,7 @@ class SelectionToolPanel(Panel):
         selectButton.highlight_color = (0, 255, 0)
 
         deselectButton = Button("Deselect")
-        deselectButton.tooltipText = _("Remove the selection. Shortcut: {0}").format(config.keys.deselect.get())
+        deselectButton.tooltipText = _("Remove the selection. Shortcut: {0}").format(_(config.keys.deselect.get()))
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
@@ -222,7 +245,6 @@ class NudgeBlocksOperation(Operation):
 
 
 class SelectionTool(EditorTool):
-    # selectionColor = (1.0, .9, .9)
     color = (0.7, 0., 0.7)
     surfaceBuild = False
     toolIconName = "selection2"
@@ -268,7 +290,7 @@ class SelectionTool(EditorTool):
             except Exception, e:
                 text += repr(e)
             if "Items" in t and self.infoKey == 0:
-                text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(config.keys.showBlockInfoModifier.get())
+                text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(_(config.keys.showBlockInfoModifier.get()))
                 t = nbt.TAG_Compound(list(t.value))
                 del t["Items"]
 
@@ -284,12 +306,10 @@ class SelectionTool(EditorTool):
         if pos is None:
             return
         try:
-
             size = None
             box = self.selectionBoxInProgress()
             if box:
                 size = "{s[0]} W x {s[2]} L x {s[1]} H".format(s=box.size)
-                text = size
             if size:
                 return size
             elif self.dragResizeFace is not None:
@@ -297,151 +317,8 @@ class SelectionTool(EditorTool):
             else:
                 return self.describeBlockAt(pos)
 
-            return text.strip()
-
         except Exception, e:
             return repr(e)
-
-    def worldTooltipForBlock(self, pos):
-        blockdata = self.editor.level.blockDataAt(*pos)
-        x, y, z = pos
-        cx, cz = x / 16, z / 16
-        if isinstance(self.editor.level, pymclevel.MCInfdevOldLevel):
-
-            if y == 0:
-                try:
-                    chunk = self.editor.level.getChunk(cx, cz)
-                except pymclevel.ChunkNotPresent:
-                    return _("Chunk not present.")
-                if not chunk.HeightMap.any():
-                    if self.editor.level.blockAt(x, y, z):
-                        return _("Chunk HeightMap is incorrect! Please relight this chunk as soon as possible!")
-                    else:
-                        return _("Chunk is present and filled with air.")
-
-        block = self.editor.level.blockAt(*pos)
-        if block in (pymclevel.alphaMaterials.Chest.ID,
-                     pymclevel.alphaMaterials.Furnace.ID,
-                     pymclevel.alphaMaterials.LitFurnace.ID,
-                     pymclevel.alphaMaterials.Dispenser.ID,
-                     pymclevel.alphaMaterials.Hopper.ID,
-                     pymclevel.alphaMaterials.Dropper.ID):
-            t = self.editor.level.tileEntityAt(*pos)
-            if t:
-                containerID = t["id"].value
-                if "Items" in t:
-                    items = t["Items"]
-                    d = defaultdict(int)
-                    for item in items:
-                        if "id" in item and "Count" in item:
-                            d[item["id"].value] += item["Count"].value
-
-                    if len(d):
-                        items = sorted((v, k) for (k, v) in d.iteritems())
-                        try:
-                            top = pymclevel.items.items.findItem(items[0][1]).name
-                        except Exception, e:
-                            top = repr(e)
-                        return _("{0} contains {len} items. (Mostly {top}) \n\nDouble-click to edit {0}.").format(
-                            containerID, len=len(d), top=top)
-                    else:
-                        if containerID == "Trap":
-                            return _("Empty {0}. \n\nDouble-click to edit {0}.").format("Dispenser")
-                        else:
-                            return _("Empty {0}. \n\nDouble-click to edit {0}.").format(containerID)
-            else:
-                # return _("Double-click to initialize {0}.").format(pymclevel.alphaMaterials.names[block][blockdata])
-                #Will undo when container initialization is fixed.
-                if block == pymclevel.alphaMaterials.Chest.ID:
-                    chest = nbt.TAG_Compound()
-                    chest["id"] = nbt.TAG_String("Chest")
-                    chest["x"] = nbt.TAG_Int(x)
-                    chest["y"] = nbt.TAG_Int(y)
-                    chest["z"] = nbt.TAG_Int(z)
-                    chest["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(chest)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Furnace.ID:
-                    furnace = nbt.TAG_Compound()
-                    furnace["id"] = nbt.TAG_String("Furnace")
-                    furnace["x"] = nbt.TAG_Int(x)
-                    furnace["y"] = nbt.TAG_Int(y)
-                    furnace["z"] = nbt.TAG_Int(z)
-                    furnace["BurnTime"] = nbt.TAG_Short(0)
-                    furnace["CookTime"] = nbt.TAG_Short(0)
-                    furnace["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(furnace)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.LitFurnace.ID:
-                    litfurnace = nbt.TAG_Compound()
-                    litfurnace["id"] = nbt.TAG_String("Furnace")
-                    litfurnace["x"] = nbt.TAG_Int(x)
-                    litfurnace["y"] = nbt.TAG_Int(y)
-                    litfurnace["z"] = nbt.TAG_Int(z)
-                    litfurnace["BurnTime"] = nbt.TAG_Short(0)
-                    litfurnace["CookTime"] = nbt.TAG_Short(0)
-                    litfurnace["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(litfurnace)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Dispenser.ID:
-                    dispenser = nbt.TAG_Compound()
-                    dispenser["id"] = nbt.TAG_String("Trap")
-                    dispenser["x"] = nbt.TAG_Int(x)
-                    dispenser["y"] = nbt.TAG_Int(y)
-                    dispenser["z"] = nbt.TAG_Int(z)
-                    dispenser["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(dispenser)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Dropper.ID:
-                    dropper = nbt.TAG_Compound()
-                    dropper["id"] = nbt.TAG_String("Dropper")
-                    dropper["x"] = nbt.TAG_Int(x)
-                    dropper["y"] = nbt.TAG_Int(y)
-                    dropper["z"] = nbt.TAG_Int(z)
-                    dropper["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(dropper)
-                    chunk.dirty = True
-                if block == pymclevel.alphaMaterials.Hopper.ID:
-                    hopper = nbt.TAG_Compound()
-                    hopper["id"] = nbt.TAG_String("Hopper")
-                    hopper["x"] = nbt.TAG_Int(x)
-                    hopper["y"] = nbt.TAG_Int(y)
-                    hopper["z"] = nbt.TAG_Int(z)
-                    hopper["TransferCooldown"] = nbt.TAG_Int(0)
-                    hopper["Items"] = nbt.TAG_List()
-                    chunk = self.editor.level.getChunk(cx, cz)
-                    chunk.TileEntities.append(hopper)
-                    chunk.dirty = True
-                return "Uninitialized {0}.".format(pymclevel.alphaMaterials.names[block][blockdata])
-        if block == pymclevel.alphaMaterials.MonsterSpawner.ID:
-
-            t = self.editor.level.tileEntityAt(*pos)
-            if t:
-                id = t["EntityId"].value
-            else:
-                id = "[Undefined]"
-
-            return _("{id} spawner. \n\nDouble-click to edit spawner.").format(id=id)
-
-        if block in (pymclevel.alphaMaterials.Sign.ID,
-                     pymclevel.alphaMaterials.WallSign.ID):
-            t = self.editor.level.tileEntityAt(*pos)
-            if t:
-                signtext = u"\n".join(t["Text" + str(x)].value for x in range(1, 5))
-            else:
-                signtext = "Undefined"
-            #return _("Sign text: \n%s\n\n"Double-click to edit sign.") #-# better to use this
-            return _("Sign text: \n") + signtext + "\n\n" + _("Double-click to edit sign.")
-
-        absentTexture = (
-        self.editor.level.materials.blockTextures[block, blockdata, 0] == pymclevel.materials.NOTEX).all()
-        if absentTexture:
-            return self.describeBlockAt(pos)
 
     @alertException
     def selectChunks(self):
@@ -464,8 +341,12 @@ class SelectionTool(EditorTool):
 
     @alertException
     def nudgeBlocks(self, dir):
-        if self.editor.rightClickNudge == 1:
-            dir = dir * (16, 16, 16)
+        if self.editor.rightClickNudge:
+            if config.fastNudgeSettings.blocksWidth.get():
+                dir = map(int.__mul__, dir, self.selectionBox().size)
+            else:
+                nudgeWidth = config.fastNudgeSettings.blocksWidthNumber.get()
+                dir = map(lambda x: x * nudgeWidth, dir)
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
@@ -480,7 +361,11 @@ class SelectionTool(EditorTool):
 
     def nudgeSelection(self, dir):
         if self.editor.rightClickNudge == 1:
-            dir = dir * (16, 16, 16)
+            if config.fastNudgeSettings.selectionWidth.get():
+                dir = map(int.__mul__, dir, self.selectionBox().size)
+            else:
+                nudgeWidth = config.fastNudgeSettings.selectionWidthNumber.get()
+                dir = map(lambda x: x * nudgeWidth, dir)
 
         points = self.getSelectionPoints()
         bounds = self.editor.level.bounds
@@ -495,14 +380,18 @@ class SelectionTool(EditorTool):
         if self.selectionBox() is None:
             return
         if self.editor.rightClickNudge == 1:
-            n = n * (16, 16, 16)
+            if config.fastNudgeSettings.pointsWidth.get():
+                n = map(int.__mul__, n, self.selectionBox().size)
+            else:
+                nudgeWidth = config.fastNudgeSettings.pointsWidthNumber.get()
+                n = map(lambda x: x * nudgeWidth, n)
         self.setSelectionPoint(p, self.getSelectionPoint(p) + n)
 
     def nudgeBottomLeft(self, n):
-        return self.nudgePoint(0, n)
+        return self.nudgePoint(1 - self._oldCurrentCorner, n)
 
     def nudgeTopRight(self, n):
-        return self.nudgePoint(1, n)
+        return self.nudgePoint(self._oldCurrentCorner, n)
 
     # --- Panel functions ---
     def sizeLabelText(self):
@@ -522,16 +411,21 @@ class SelectionTool(EditorTool):
             self.nudgePanel.bg_color = map(lambda x: x * 0.5, self.selectionColor) + [0.5, ]
 
             self.bottomLeftNudge = bottomLeftNudge = NudgeButton(self.editor)
-            bottomLeftNudge.nudge = self.nudgeBottomLeft
             bottomLeftNudge.anchor = "brwh"
 
-            bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
-
             self.topRightNudge = topRightNudge = NudgeButton(self.editor)
-            topRightNudge.nudge = self.nudgeTopRight
             topRightNudge.anchor = "blwh"
 
-            topRightNudge.bg_color = self.topRightColor + (0.33,)
+            if self.currentCorner == 0:
+                bottomLeftNudge.nudge = self.nudgeTopRight
+                topRightNudge.nudge = self.nudgeBottomLeft
+                bottomLeftNudge.bg_color = self.topRightColor + (0.33,)
+                topRightNudge.bg_color = self.bottomLeftColor + (0.33,)
+            else:
+                bottomLeftNudge.nudge = self.nudgeBottomLeft
+                topRightNudge.nudge = self.nudgeTopRight
+                bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
+                topRightNudge.bg_color = self.topRightColor + (0.33,)
 
             self.nudgeRow = Row((bottomLeftNudge, topRightNudge))
             self.nudgeRow.anchor = "blrh"
@@ -544,21 +438,25 @@ class SelectionTool(EditorTool):
             self.nudgeSelectionButton.bg_color = self.selectionColor + (0.7,)
             self.nudgeSelectionButton.anchor = "twh"
 
+            self.spaceLabel = Label("")
+            self.spaceLabel.anchor = "twh"
+            self.spaceLabel.height = 3
+            self.nudgePanel.add(self.spaceLabel)
+
         if hasattr(self, 'sizeLabel'):
             self.nudgePanel.remove(self.sizeLabel)
         self.sizeLabel = Label(self.sizeLabelText())
         self.sizeLabel.anchor = "wh"
         self.sizeLabel.tooltipText = _("{0:n} blocks").format(self.selectionBox().volume)
 
-        # self.nudgePanelColumn = Column( (self.sizeLabel, self.nudgeRow) )
         self.nudgePanel.top = self.nudgePanel.left = 0
 
         self.nudgePanel.add(self.sizeLabel)
 
         self.nudgePanel.add(self.nudgeSelectionButton)
-        self.nudgePanel.height += (self.nudgeSelectionButton.height + self.sizeLabel.height)
-        self.nudgeRow.top = self.sizeLabel.bottom
+        self.nudgeSelectionButton.top = self.spaceLabel.bottom
         self.sizeLabel.top = self.nudgeSelectionButton.bottom
+        self.nudgeRow.top = self.sizeLabel.bottom
 
         self.nudgePanel.shrink_wrap()
         self.sizeLabel.centerx = self.nudgePanel.centerx
@@ -594,8 +492,6 @@ class SelectionTool(EditorTool):
         self.selectOtherCorner()
 
     def toolSelected(self):
-        # if self.clearSelectionImmediately:
-        # self.setSelectionPoints(None)
         self.showPanel()
 
     def clampPos(self, pos):
@@ -627,7 +523,6 @@ class SelectionTool(EditorTool):
 
     @property
     def statusText(self):
-        # return "selectionInProgress {0} clickSelectionInProgress {1}".format(self.selectionInProgress, self.clickSelectionInProgress)
         if self.selectionInProgress:
             pd = self.editor.blockFaceUnderCursor
             if pd:
@@ -666,8 +561,6 @@ class SelectionTool(EditorTool):
     dragResizePosition = None
 
     def mouseDown(self, evt, pos, direction):
-        # self.selectNone()
-
         pos = self.clampPos(pos)
         if self.selectionBox() and not self.selectionInProgress:
             face, point = self.boxFaceUnderCursor(self.selectionBox())
@@ -676,7 +569,6 @@ class SelectionTool(EditorTool):
                 self.dragResizeFace = face
                 self.dragResizeDimension = self.findBestTrackingPlane(face)
 
-                # point = map(int, point)
                 self.dragResizePosition = point[self.dragResizeDimension]
 
                 return
@@ -691,7 +583,26 @@ class SelectionTool(EditorTool):
             box = self.selectionBox()
             if box is not None:
                 o, m = self.selectionPointsFromDragResize()
+                x, y, z = self.bottomLeftPoint
+                if (x == o[0] or x == m[0]) and (y == o[1] or y == m[1]) and (z == o[2] or z == m[2]):
+                    first = self.bottomLeftPoint
+                    isFirst = True
+                else:
+                    first = self.topRightPoint
+                    isFirst = False
+                second = []
+                for i in range(3):
+                    if o[i] == first[i]:
+                        second.append(m[i])
+                    else:
+                        second.append(o[i])
 
+                if isFirst:
+                    o = first
+                    m = second
+                else:
+                    o = second
+                    m = first
                 op = SelectionOperation(self, (o, m))
                 self.editor.addOperation(op)
 
@@ -705,10 +616,21 @@ class SelectionTool(EditorTool):
             return
 
         if self.dragStartPoint != pos or self.clickSelectionInProgress:
+            self._oldCurrentCorner = self.currentCorner
+            if self.panel is not None:
+                if self.currentCorner == 0:
+                    self.bottomLeftNudge.nudge = self.nudgeTopRight
+                    self.topRightNudge.nudge = self.nudgeBottomLeft
+                    self.bottomLeftNudge.bg_color = self.topRightColor + (0.33,)
+                    self.topRightNudge.bg_color = self.bottomLeftColor + (0.33,)
+                else:
+                    self.bottomLeftNudge.nudge = self.nudgeBottomLeft
+                    self.topRightNudge.nudge = self.nudgeTopRight
+                    self.bottomLeftNudge.bg_color = self.bottomLeftColor + (0.33,)
+                    self.topRightNudge.bg_color = self.topRightColor + (0.33,)
             op = SelectionOperation(self, (self.dragStartPoint, pos))
             self.editor.addOperation(op)
             self.selectionInProgress = False
-            self.currentCorner = 1
             self.clickSelectionInProgress = False
             self.dragStartPoint = None
 
@@ -752,8 +674,6 @@ class SelectionTool(EditorTool):
 
     def keyUp(self, evt):
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
-        if keyname == config.keys.showBlockInfo.get():
-            self.infoKey = 0
         if keyname == config.keys.selectChunks.get():
             self.selectKey = 0
         if keyname == config.keys.deselectChunks.get():
@@ -821,6 +741,7 @@ class SelectionTool(EditorTool):
         self.selectOtherCorner()
 
     _currentCorner = 1
+    _oldCurrentCorner = 1
 
     @property
     def currentCorner(self):
@@ -841,31 +762,29 @@ class SelectionTool(EditorTool):
     def drawToolMarkers(self):
 
         selectionBox = self.selectionBox()
-        if (selectionBox):
+        if selectionBox:
             widg = self.editor.find_widget(pygame.mouse.get_pos())
 
             # these corners stay even while using the chunk tool.
             GL.glPolygonOffset(DepthOffset.SelectionCorners, DepthOffset.SelectionCorners)
             lineWidth = 3
-            for t, c, n in ((self.bottomLeftPoint, self.bottomLeftColor, self.bottomLeftNudge),
-                            (self.topRightPoint, self.topRightColor, self.topRightNudge)):
-                if t != None:
+            if self._oldCurrentCorner == 1:
+                bottomLeftColor = self.bottomLeftColor
+                topRightColor = self.topRightColor
+            else:
+                bottomLeftColor = self.topRightColor
+                topRightColor = self.bottomLeftColor
+            for t, c, n in ((self.bottomLeftPoint, bottomLeftColor, self.bottomLeftNudge),
+                            (self.topRightPoint, topRightColor, self.topRightNudge)):
+                if t is not None and not self.selectionInProgress:
                     (sx, sy, sz) = t
-                    if self.selectionInProgress:
-                        if t == self.getSelectionPoint(self.currentCorner):
-                            blockFace = self.editor.blockFaceUnderCursor
-                            if blockFace:
-                                p, d = blockFace
-                                (sx, sy, sz) = p
-                        else:
-                            sx, sy, sz = self.dragStartPoint
 
                     # draw a blue or yellow wireframe box at the selection corner
                     r, g, b = c
                     alpha = 0.4
                     try:
                         bt = self.editor.level.blockAt(sx, sy, sz)
-                        if (bt):
+                        if bt:
                             alpha = 0.2
                     except (EnvironmentError, pymclevel.ChunkNotPresent):
                         pass
@@ -874,9 +793,8 @@ class SelectionTool(EditorTool):
                     lineWidth += 1
 
                     # draw highlighted block faces when nudging
-                    if (widg.parent == n or widg == n):
+                    if widg.parent == n or widg == n:
                         GL.glEnable(GL.GL_BLEND)
-                        # drawCube(BoundingBox((sx, sy, sz), (1,1,1)))
                         nudgefaces = numpy.array([
                                                      selectionBox.minx, selectionBox.miny, selectionBox.minz,
                                                      selectionBox.minx, selectionBox.maxy, selectionBox.minz,
@@ -988,7 +906,7 @@ class SelectionTool(EditorTool):
         if self.dragResizeFace is not None:
             self.showPanel()  # xxx do this every frame while dragging because our UI kit is bad
 
-        if ((self.selectionInProgress or self.clickSelectionInProgress) and otherCorner != None):
+        if (self.selectionInProgress or self.clickSelectionInProgress) and otherCorner is not None:
             GL.glPolygonOffset(DepthOffset.PotentialSelection, DepthOffset.PotentialSelection)
 
             pos, direction = self.editor.blockFaceUnderCursor
@@ -1021,7 +939,7 @@ class SelectionTool(EditorTool):
 
         try:
             bt = self.editor.level.blockAt(*pos)
-            if (bt):
+            if bt:
                 # #                textureCoords = materials[bt][0]
                 alpha = 0.12
         except (EnvironmentError, pymclevel.ChunkNotPresent):
@@ -1049,8 +967,9 @@ class SelectionTool(EditorTool):
         else:
             self.setSelectionPoints(self.selectionPointsFromBox(box))
 
-    def selectionPointsFromBox(self, box):
-        return (box.origin, map(lambda x: x - 1, box.maximum))
+    @staticmethod
+    def selectionPointsFromBox(box):
+        return box.origin, map(lambda x: x - 1, box.maximum)
 
     def selectNone(self):
         self.setSelectionPoints(None)
@@ -1061,22 +980,24 @@ class SelectionTool(EditorTool):
         self.editor.addOperation(op)
 
     def deselect(self):
-        op = SelectionOperation(self, None)
-        self.editor.addOperation(op)
+        if self.selectionBox() is not None:
+            op = SelectionOperation(self, None)
+            self.editor.addOperation(op)
 
     def setSelectionPoint(self, pointNumber, newPoint):
         points = self.getSelectionPoints()
         points[pointNumber] = newPoint
         self.setSelectionPoints(points)
 
-    def setSelectionPoints(self, points):
+    def setSelectionPoints(self, points, changeSelection=True):
         if points:
             self.bottomLeftPoint, self.topRightPoint = [Vector(*p) if p else None for p in points]
         else:
             self.bottomLeftPoint = self.topRightPoint = None
 
-        self._selectionChanged()
-        self.editor.selectionChanged()
+        if changeSelection:
+            self._selectionChanged()
+            self.editor.selectionChanged()
 
     def _selectionChanged(self):
         if self.selectionBox():
@@ -1086,8 +1007,7 @@ class SelectionTool(EditorTool):
             self.hideNudgePanel()
 
     def getSelectionPoint(self, pointNumber):
-        return (self.bottomLeftPoint, self.topRightPoint)[
-            pointNumber]  # lisp programmers think this doesn't evaluate 'self.topRightPoint' - lol!
+        return (self.bottomLeftPoint, self.topRightPoint)[pointNumber]
 
     def getSelectionPoints(self):
         return [self.bottomLeftPoint, self.topRightPoint]
@@ -1105,6 +1025,7 @@ class SelectionTool(EditorTool):
                 self.editor.toolbar.tools[8].destroyChunks(box.chunkPositions)
             elif resp == "Fill with Air":
                 self._deleteBlocks()
+                self.editor.renderer.discardAllChunks()
         else:
             self._deleteBlocks()
 
@@ -1129,6 +1050,7 @@ class SelectionTool(EditorTool):
             self.editor.freezeStatus("Removing Tile Ticks...")
             level = self.editor.level
             editor = self.editor
+
             class DeleteTileTicksOperation(Operation):
                 def __init__(self, editor, level):
                     self.editor = editor
@@ -1153,11 +1075,11 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateTileTicksInBox(box)
 
             op = DeleteTileTicksOperation(self.editor, self.editor.level)
+            op.canUndo = recordUndo
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
-
 
     @alertException
     def deleteEntities(self, recordUndo=True):
@@ -1194,6 +1116,7 @@ class SelectionTool(EditorTool):
                     editor.renderer.invalidateEntitiesInBox(box)
 
             op = DeleteEntitiesOperation(self.editor, self.editor.level)
+            op.canUndo = recordUndo
             self.editor.addOperation(op)
             self.editor.invalidateBox(box)
             if op.canUndo:
@@ -1209,6 +1132,7 @@ class SelectionTool(EditorTool):
         self.copySelection()
         self.deleteBlocks()
         self.deleteEntities(False)
+        self.deleteTileTicks(False)
 
     @alertException
     def copySelection(self):
@@ -1245,7 +1169,7 @@ class SelectionTool(EditorTool):
             filename = tempfile.mkdtemp(".zip", "mceditcopy")
             os.rmdir(filename)
 
-            status = "Copying {0:n} blocks...".format(box.volume)
+            status = _("Copying {0:n} blocks...").format(box.volume)
             if fileFormat == "schematic":
                 schematic = showProgress(status,
                                          self.editor.level.extractSchematicIter(box), cancel=True)
@@ -1281,14 +1205,18 @@ class SelectionOperation(Operation):
         self.redoPoints = self.selectionTool.getSelectionPoints()
         points = self.points
         self.points = self.undoPoints
-        self.perform()
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        changeSelection = "select" in "{}".format(self.editor.currentTool)
+        self.selectionTool.setSelectionPoints(self.points, changeSelection)
         self.points = points
 
     def redo(self):
         self.undoPoints = self.selectionTool.getSelectionPoints()
         points = self.points
         self.points = self.redoPoints
-        self.perform()
+        self.undoPoints = self.selectionTool.getSelectionPoints()
+        changeSelection = "select" in "{}".format(self.editor.currentTool)
+        self.selectionTool.setSelectionPoints(self.points, changeSelection)
         self.points = points
 
 

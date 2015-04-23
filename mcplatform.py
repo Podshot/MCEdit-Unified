@@ -12,6 +12,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
+#!# Tests for file chooser
 
 """
 mcplatform.py
@@ -27,6 +28,7 @@ import platform
 
 enc = sys.getfilesystemencoding()
 
+hasXlibDisplay = False
 if sys.platform == "win32":
     if platform.architecture()[0] == "32bit":
         plat = "win32"
@@ -48,6 +50,7 @@ from pygame import display
 from albow import request_new_filename, request_old_filename
 from albow.translate import _
 from pymclevel import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
+from datetime import datetime
 
 try:
     import gtk
@@ -55,13 +58,18 @@ try:
         raise ImportError
     hasGtk = True
 except ImportError:
-    hasGtk = False #Using old method as fallback
+    hasGtk = False  #Using old method as fallback
 
 
 texturePacksDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "texturepacks")
 #Compatibility layer for filters:
 filtersDir = directories.filtersDir
 schematicsDir = directories.schematicsDir
+
+#!# Disabling platform specific file chooser:
+#!# Please, don't touch these two lines and the 'platChooser' stuff. -- D.C.-G.
+#platChooser = sys.platform in ('linux2', 'darwin')
+platChooser = sys.platform == 'darwin'
 
 def getTexturePacks():
     try:
@@ -92,19 +100,13 @@ if sys.platform == "win32":
     except:
         pass
 
-AppKit = None
-
 if sys.platform == 'darwin':
-    try:
-        import AppKit
-    except ImportError:
-        pass
-
     cmd_name = "Cmd"
     option_name = "Opt"
 else:
     cmd_name = "Ctrl"
     option_name = "Alt"
+
 
 def OSXVersionChecker(name,compare):
     """Rediculously complicated function to compare current System version to inputted version."""
@@ -119,43 +121,42 @@ def OSXVersionChecker(name,compare):
 
             major, minor, patch = 10, 0, 0
 
-            if (name.lower() == 'cheetah'):
+            if name.lower() == 'cheetah':
                 minor = 0
                 patch = 4
-            elif (name.lower() == 'puma'):
+            elif name.lower() == 'puma':
                 minor = 1
                 patch = 5
-            elif (name.lower() == 'jaguar'):
+            elif name.lower() == 'jaguar':
                 minor = 2
                 patch = 8
-            elif (name.lower() == 'panther'):
+            elif name.lower() == 'panther':
                 minor = 3
                 patch = 9
-            elif (name.lower() == 'tiger'):
+            elif name.lower() == 'tiger':
                 minor = 4
                 patch = 11
-            elif (name.lower() == 'snow_leopard'):
+            elif name.lower() == 'snow_leopard':
                 minor = 5
                 patch = 8
-            elif (name.lower() == 'snow_leopard'):
+            elif name.lower() == 'snow_leopard':
                 minor = 6
                 patch = 8
-            elif (name.lower() == 'lion'):
+            elif name.lower() == 'lion':
                 minor = 7
                 patch = 5
-            elif (name.lower() == 'mountain_lion'):
+            elif name.lower() == 'mountain_lion':
                 minor = 8
                 patch = 5
-            elif (name.lower() == 'mavericks'):
+            elif name.lower() == 'mavericks':
                 minor = 9
                 patch = 5
-            elif (name.lower() == 'yosemite'):
+            elif name.lower() == 'yosemite':
                 minor = 10
                 patch = 0
             else:
                 major = 0
 
-            ret_val = 0
             if int(systemVersion[0]) > int(major):
                 ret_val = 1
             elif int(systemVersion[0]) < int(major):
@@ -189,46 +190,31 @@ lastSchematicsDir = None
 lastSaveDir = None
 
 
-def askOpenFile(title='Select a Minecraft level....', schematics=False):
+def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes=["mclevel", "dat", "mine", "mine.gz"]):
     global lastSchematicsDir, lastSaveDir
 
     initialDir = lastSaveDir or minecraftSaveFileDir
     if schematics:
         initialDir = lastSchematicsDir or directories.schematicsDir
 
-    def _askOpen():
-        suffixes = ["mclevel", "dat", "mine", "mine.gz"]
+    def _askOpen(_suffixes):
         if schematics:
-            suffixes.append("schematic")
-            suffixes.append("schematic.gz")
-            suffixes.append("zip")
+            _suffixes.append("schematic")
+            _suffixes.append("schematic.gz")
+            _suffixes.append("zip")
 
-            suffixes.append("inv")
+            _suffixes.append("inv")
 
-        if sys.platform == "win32":
+        if sys.platform == "win32": #!#
             return askOpenFileWin32(title, schematics, initialDir)
-        elif sys.platform == "darwin" and AppKit is not None:
-            print "Open File"
-            op = AppKit.NSOpenPanel.openPanel()
-            op.setTitle_(title)
-            op.setAllowedFileTypes_(suffixes)
-            op.setAllowsOtherFileTypes_(True)
 
-            op.setDirectory_(initialDir)
-            if op.runModal() == 0:
-                return  # pressed cancel
-
-            AppKit.NSApp.mainWindow().makeKeyWindow()
-
-            return op.filename()
-
-        elif hasGtk: #Linux (When GTK 2.4 or newer is installed)
-            return askOpenFileGtk(title, suffixes, initialDir)
+        elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
+            return askOpenFileGtk(title, _suffixes, initialDir)
 
         else:
-            return request_old_filename(suffixes=suffixes, directory=initialDir)
+            return request_old_filename(suffixes=_suffixes, directory=initialDir)
 
-    filename = _askOpen()
+    filename = _askOpen(suffixes)
     if filename:
         if schematics:
             lastSchematicsDir = dirname(filename)
@@ -260,11 +246,12 @@ def askOpenFileWin32(title, schematics, initialDir):
             Title=title,
             Filter=f,
         )
-    except Exception, e:
+    except Exception:
         #print "Open File: ", e
         pass
     else:
         return filename
+
 
 def askOpenFileGtk(title, suffixes, initialDir):
     chooser = gtk.FileChooserDialog(title,
@@ -294,15 +281,17 @@ def askOpenFileGtk(title, suffixes, initialDir):
         filename = chooser.get_filename()
     else:
         chooser.destroy()
-        return # pressed cancel
+        return  # pressed cancel
     chooser.destroy()
 
     return filename
 
+
 def askSaveSchematic(initialDir, displayName, fileFormat):
+    dt = datetime.now().strftime("%Y-%m-%d--%H-%M-%S")
     return askSaveFile(initialDir,
                        title=_('Save this schematic...'),
-                       defaultName=displayName + "." + fileFormat,
+                       defaultName=displayName + "_" + dt + "." + fileFormat,
                        filetype=_('Minecraft Schematics (*.{0})\0*.{0}\0\0').format(fileFormat),
                        suffix=fileFormat,
     )
@@ -324,7 +313,7 @@ def askCreateWorld(initialDir):
 
 
 def askSaveFile(initialDir, title, defaultName, filetype, suffix):
-    if sys.platform == "win32":
+    if sys.platform == "win32": #!#
         try:
             (filename, customfilter, flags) = win32gui.GetSaveFileNameW(
                 hwndOwner=display.get_wm_info()['window'],
@@ -345,19 +334,7 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         except:
             pass
 
-    elif sys.platform == "darwin" and AppKit is not None:
-        sp = AppKit.NSSavePanel.savePanel()
-        sp.setDirectory_(initialDir)
-        sp.setTitle_(title)
-        sp.setAllowedFileTypes_([suffix])
-
-        if sp.runModal() == 0:
-            return # pressed cancel
-
-        filename = sp.filename()
-        AppKit.NSApp.mainWindow().makeKeyWindow()
-
-    elif hasGtk: #Linux (When GTK 2.4 or newer is installed)
+    elif hasGtk and not platChooser: #!# #Linux (When GTK 2.4 or newer is installed)
         chooser = gtk.FileChooserDialog(title,
                                         None, gtk.FILE_CHOOSER_ACTION_SAVE,
                                         (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
@@ -395,9 +372,6 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                                     filename=defaultName,
                                     pathname=None)
     return filename
-
-
-
 #   if sys.platform == "win32":
 #       try:
 #

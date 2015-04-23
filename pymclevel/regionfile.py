@@ -173,7 +173,6 @@ class MCRegionFile(object):
         log.info("Repair complete. Removed {0} chunks, recovered {1} chunks, net {2}".format(deleted, recovered,
                                                                                              recovered - deleted))
 
-
     def _readChunk(self, cx, cz):
         cx &= 0x1f
         cz &= 0x1f

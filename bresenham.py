@@ -1,7 +1,6 @@
 def bresenham(p1, p2):
     """Bresenham line algorithm
     adapted for 3d.  slooooow."""
-    steep = 0
     coords = []
     x, y, z = p1
     x2, y2, z2 = p2
@@ -39,10 +38,10 @@ def bresenham(p1, p2):
         for j in otherAxes:
 
             while d[j] >= 0:
-                p[j] = p[j] + sp[j]
-                d[j] = d[j] - (2 * dl[longestAxis])
+                p[j] += sp[j]
+                d[j] -= 2 * dl[longestAxis]
 
-        p[longestAxis] = p[longestAxis] + sp[longestAxis]
+        p[longestAxis] += sp[longestAxis]
         d = map(lambda a, b: a + 2 * b, d, dl)
 
     return coords  # added by me

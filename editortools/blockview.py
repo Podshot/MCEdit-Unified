@@ -8,6 +8,10 @@ import blockpicker
 from glbackground import Panel, GLBackground
 from glutils import DisplayList
 
+#-# DEBUG
+import pygame
+#-#
+
 
 class BlockView(GLOrtho):
     def __init__(self, materials, blockInfo=None):
@@ -59,7 +63,7 @@ class BlockView(GLOrtho):
 
     @property
     def tooltipText(self):
-        return "{0}".format(self.blockInfo.name)
+        return str(self.blockInfo.name)
 
 
 class BlockButton(ButtonBase, Panel):
@@ -163,9 +167,13 @@ class BlockButton(ButtonBase, Panel):
 
     @property
     def tooltipText(self):
-        return "{0}".format(self.blockInfo.name)
+        return str(self.blockInfo.name)
 
     def action(self):
         blockPicker = blockpicker.BlockPicker(self.blockInfo, self.materials, allowWildcards=self.allowWildcards)
         if blockPicker.present():
             self.blockInfo = blockPicker.blockInfo
+
+    def draw_all(self, s):
+        #-# Looks like a bad stuf... Be aware of the 'spacing' member of the widgets parent.
+        Panel.gl_draw_all(self, self.get_root(), (self.local_to_global_offset()[0], self.local_to_global_offset()[1] - self.height + self.parent.spacing))

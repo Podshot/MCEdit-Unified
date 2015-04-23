@@ -43,15 +43,17 @@ class Config(object):
     def __getitem__(self, section):
         return self._sections[section]
 
-    def getPath(self):
+    @staticmethod
+    def getPath():
         return directories.configFilePath
 
-    def transformKey(self, value, i=0):
+    @staticmethod
+    def transformKey(value, i=0):
         if 'left' in value and len(value) > 5:
             value = value[5:]
         elif 'right' in value and len(value) > 6:
             value = value[6:]
-        if value >= 'a' and value <= 'z':
+        if 'a' <= value <= 'z':
             value = value.replace(value[0], value[0].upper(), 1)
         if i >= 36 and "Ctrl-" not in value:
             value = "Ctrl-" + value
@@ -67,7 +69,8 @@ class Config(object):
             value = "Button 5"
         return value
 
-    def convert(self, key):
+    @staticmethod
+    def convert(key):
         vals = key.replace('-', ' ').translate(None, '()').lower().split(' ')
         return vals[0] + "".join(x.title() for x in vals[1:])
 
@@ -353,8 +356,6 @@ class ConfigDict(collections.MutableMapping):
         k.keyorder = list(self.keyorder)
         return k
 
-
-
 # Quick Reference:
 # 7 Bedrock
 # 9 Still_Water
@@ -424,6 +425,7 @@ definitions = {
         ("snapCloneToAxis", "snap clone to axis", "Ctrl"),
         ("blocksOnlyModifier", "blocks-only modifier", "Alt"),
         ("fastIncrementModifier", "fast increment modifier", "Ctrl"),
+        ("fastNudge", "fast nudge", "None"),
 
         ("takeAScreenshot", "take a screenshot", "F6"),
 
@@ -440,12 +442,25 @@ definitions = {
         ("undo", "undo", "Ctrl-Z"),
         ("redo", "redo", "Ctrl-Y"),
         ("save", "save", "Ctrl-S"),
+        ("saveAs", "save as", "Ctrl-Alt-S"),
         ("newWorld", "new world", "Ctrl-N"),
         ("closeWorld", "close world", "Ctrl-W"),
         ("worldInfo", "world info", "Ctrl-I"),
         ("gotoPanel", "goto panel", "Ctrl-G"),
         ("exportSelection", "export selection", "Ctrl-E"),
         ("toggleRenderer", "toggle renderer", "Ctrl-M"),
+        ("uploadWorld", "upload world", "Ctrl-U"),
+
+        ("select", "select", "1"),
+        ("brush", "brush", "2"),
+        ("clone", "clone", "3"),
+        ("fillAndReplace", "fill and replace", "4"),
+        ("filter", "filter", "5"),
+        ("importKey", "import", "6"),
+        ("players", "players", "7"),
+        ("worldSpawnpoint", "world spawnpoint", "8"),
+        ("chunkControl", "chunk control", "9"),
+        ("nbtExplorer", "nbt explorer", "None"),
     ],
     ("version", "Version"): [
         ("version", "version", "1.1.2.0")
@@ -491,6 +506,7 @@ definitions = {
         ("drawTileEntities", "draw tile entities", True),
         ("drawTileTicks", "draw tile ticks", False),
         ("drawUnpopulatedChunks", "draw unpopulated chunks", True),
+        ("drawChunkBorders", "draw chunk borders", False),
         ("vertexBufferLimit", "vertex buffer limit", 384),
         ("vsync", "vertical sync", 0),
         ("viewMode", "View Mode", "Camera"),
@@ -499,7 +515,13 @@ definitions = {
         ("resourcePack", "Resource Pack", u"Default"),
         ("maxCopies", "Copy stack size", 32),
         ("superSecretSettings", "Super Secret Settings", False),
-#        ("fontProportion", "Fonts Proportion", 100),
+        ("compassToggle", "Compass Toggle", True),
+        ("compassSize", "Compass Size", 60),
+        ("fogIntensity", "Fog Intensity", 20),
+        ("fontProportion", "Fonts Proportion", 100),
+        ("downloadPlayerSkins", "Download Player Skins", True),
+        ("maxViewDistance", "Max View Distance", 32),
+        ("drawPlayerHeads", "Draw Player Heads", True)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),
@@ -522,14 +544,15 @@ definitions = {
     ("clone", "Clone"): [
         ("copyAir", "Copy Air", True),
         ("copyWater", "Copy Water", True),
-        ("copyBiomes", "Copy Biomes", True),
+        ("copyBiomes", "Copy Biomes", False),
         ("staticCommands", "Change Coordinates", False),
         ("moveSpawnerPos", "Change Spawners Pos", False),
         ("regenerateUUID", "Regenerate UUIDs", True),
         ("placeImmediately", "Place Immediately", True)
     ],
     ("fill", "Fill"): [
-        ("chooseBlockImmediately", "Choose Block Immediately", True)
+        ("chooseBlockImmediately", "Choose Block Immediately", True),
+        ("chooseBlockImmediatelyReplace", "Choose Block Immediately for Replace", True)
     ],
     ("spawn", "Spawn"): [
         ("spawnProtection", "Spawn Protection", True)
@@ -548,6 +571,29 @@ definitions = {
         ColorValue("yellow", "yellow", (1.0, 1.0, 0.75)),
         ColorValue("grey", "grey", (0.6, 0.6, 0.6)),
         ColorValue("black", "black", (0.0, 0.0, 0.0))
+    ],
+    ("fastNudgeSettings", "Fast Nudge Settings"): [
+        ("blocksWidth", "Blocks Width", False),
+        ("blocksWidthNumber", "Blocks Width Number", 16),
+        ("selectionWidth", "Selection Width", False),
+        ("selectionWidthNumber", "Selection Width Number", 16),
+        ("pointsWidth", "Points Width", False),
+        ("pointsWidthNumber", "Points Width Number", 16),
+        ("cloneWidth", "clone Width", True),
+        ("cloneWidthNumber", "Clone Width Number", 16),
+        ("importWidth", "Import Width", False),
+        ("importWidthNumber", "Import Width Number", 8),
+    ],
+    ("nbtTreeSettings", "NBT Tree Settings"): [
+        ("useBulletStyles", "Use Bullet Styles", True),
+        ("useBulletText", "Use Bullet Text", False),
+        ("useBulletImages", "Use Bullet Images", True),
+        ("bulletFileName", "Bullet Images File", directories.os.path.join(directories.getDataDir(), 'Nbtsheet.png')),
+        ("showAllTags", "Show all the tags in the tree", False),
+    ],
+    ("Filter Keys", "Filter Keys"): [],
+    ("session", "Session",): [
+        ("override", "Override", False)
     ]
 }
 

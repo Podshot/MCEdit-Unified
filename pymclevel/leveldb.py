@@ -439,7 +439,8 @@ class DBInterface(object):
         if self._allow_close:
             self._impl.close()
 
-    def newBatch(self):
+    @staticmethod
+    def newBatch():
         return _OpaqueWriteBatch()
 
     def put(self, key, val, sync=None):

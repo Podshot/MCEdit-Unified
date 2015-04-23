@@ -5,20 +5,34 @@ MCEdit-Unified is an updated fork of the original MCEdit by Codewarrior. The pre
 ## Localisation
 
 This version implements localisation functions.
+The resource files are located in the 'lang' folder for MCEdit UI.
+
+Custom brushes and filters can be also translated, provided a folder named like the base name of the brush/filter file (without the '.py' extension) can be found alongside the file and contains the resources.
+These resources have to be built with the same rules than MCEdit ones.
 
 The UI fixed character strings can appear in users native language by simply editing translation files.
 It is also possible to (re)build the language template and files and to use custom fonts.
 
 See TRANSLATION.txt for further details.
 
-Devolopers don't have to tweak their code so much.
-The only modifications concern strings which need text formating or concatenation.
-See REAME.txt in albow subfolder for further information.
-
-Localisation file formats are a work in progress and should not be considered a final form.
+Developers don't have to tweak their code so much.
+The only modifications concern strings which need text formatting or concatenation.
+See README.txt in albow subfolder for further information.
 
 
--- D.C.-G.
+-- D.C.-G. (LaChal)
+
+## Random splash screens
+
+MCEdit now displays random splash screens at startup.
+
+You can make your own and add it in the `splashes` folder. The name of the file does not matter. Just pay attention it is a PNG image.
+
+There isn't any MCEdit setting to enable or disable this feature for now.
+The `splash` file in the MCEdit install folder handles it. It is a plain text file, and it contains the name of an image to be used as a splash screen.
+
+To unactivate the random splash screens, edit the `splash` file and delete its content.
+If you delete the file, it will be generated again, and the feature will be activated.
 
 ## Running from source
 
@@ -46,6 +60,7 @@ Install various dependencies. This may take a bit (especially numpy). If install
 `>easy_install pygame`
 `>easy_install pyyaml`
 `>easy_install Pillow`
+`>easy_install ftputil`
 `>easy_install pywin32 (Windows only, needed for compiling)`
 
 For windows users if `easy_install` cannot find a library you need, or you can't get `easy_install` working, all needed libraries can be downloaded as precompiled binaries on the internet in both 32bit and 64bit. pywin32 is available in 64bit despite it's name.

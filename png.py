@@ -1853,7 +1853,8 @@ class Reader:
 
         return x, y, iterfloat(), info
 
-    def _as_rescale(self, get, targetbitdepth):
+    @staticmethod
+    def _as_rescale(get, targetbitdepth):
         """Helper used by :meth:`asRGB8` and :meth:`asRGBA8`."""
 
         width, height, pixels, meta = get()
@@ -2302,7 +2303,6 @@ class Test(unittest.TestCase):
         o = StringIO()
         testWithIO(s, o, do)
         r = Reader(bytes=o.getvalue())
-        x, y, pixels, meta = r.read()
         self.assert_(r.greyscale)
         self.assertEqual(r.bitdepth, 2)
 
@@ -2379,7 +2379,6 @@ class Test(unittest.TestCase):
         """
         r = Reader(bytes=_pngsuite['basn2c16'])
         info = r.read()[3]
-        w = Writer(**info)
 
     def testPackedIter(self):
         """Test iterator for row when using write_packed.
@@ -3404,9 +3403,9 @@ def write_pnm(file, width, height, pixels, meta):
     # struct format
     fmt = '>%d' % vpr
     if maxval > 0xff:
-        fmt = fmt + 'H'
+        fmt += 'H'
     else:
-        fmt = fmt + 'B'
+        fmt += 'B'
     for row in pixels:
         file.write(struct.pack(fmt, *row))
     file.flush()

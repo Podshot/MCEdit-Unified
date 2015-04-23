@@ -4,6 +4,7 @@ import numpy
 
 displayName = 'Erode'
 
+
 def createInputs(self):
     self.inputs = (
     {'Hollow': False},
@@ -13,6 +14,7 @@ def createInputs(self):
     {'Old (Messy)': False},
     {'Minimum Spacing': 1}
     )
+
 
 def apply(self, op, point):
     brushBox = op.tool.getDirtyBox(point, op.tool).expand(1)
@@ -33,17 +35,16 @@ def apply(self, op, point):
     fillBlockID = bins.argmax()
     xcount = -1
 
-    for x in blocks:
+    for _ in blocks:
         xcount += 1
         ycount = -1
-        for y in blocks[xcount]:
+        for _ in blocks[xcount]:
             ycount += 1
             zcount = -1
-            for z in blocks[xcount][ycount]:
+            for _ in blocks[xcount][ycount]:
                 zcount += 1
                 if blocks[xcount][ycount][zcount] == fillBlockID:
                     fillBlockData = data[xcount][ycount][zcount]
-
 
     def getNeighbors(solidBlocks):
         neighbors = numpy.zeros(solidBlocks.shape, dtype='uint8')

@@ -20,7 +20,6 @@ class ImageArray(object):
     def __getitem__(self, index):
         image = self.image
         nrows = self.nrows
-        ncols = self.ncols
         if nrows == 1:
             row = 0
             col = index

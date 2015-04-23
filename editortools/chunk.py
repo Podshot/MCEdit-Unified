@@ -17,12 +17,13 @@ from OpenGL import GL
 import numpy
 from numpy import newaxis
 
-from albow import Label, ValueDisplay, AttrRef, Button, Column, ask, Row, alert, Widget, Menu
+from albow import Label, ValueDisplay, AttrRef, Button, Column, ask, Row, alert, Widget, Menu, showProgress, \
+    ChoiceButton, IntInputRow, CheckBoxLabel
 from albow.translate import _
 from editortools.editortool import EditorTool
 from glbackground import Panel
 from glutils import DisplayList, gl
-from mceutils import alertException, setWindowCaption, showProgress, ChoiceButton, IntInputRow, CheckBoxLabel
+from mceutils import alertException, setWindowCaption
 import mcplatform
 import directories
 import pymclevel
@@ -108,7 +109,7 @@ class ChunkTool(EditorTool):
 
     @property
     def statusText(self):
-        return _("Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.").format(config.keys.deselectChunks.get(), config.keys.selectChunks.get())
+        return _("Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.").format(_(config.keys.deselectChunks.get()), _(config.keys.selectChunks.get()))
 
     def toolEnabled(self):
         return isinstance(self.editor.level, pymclevel.ChunkedLevelMixin)
@@ -260,7 +261,7 @@ class ChunkTool(EditorTool):
             showProgress("Deleting chunks...", _destroyChunks())
 
         self.editor.renderer.invalidateChunkMarkers()
-        self.editor.renderer.discardChunks(chunks)
+        self.editor.renderer.discardAllChunks()
         # self.editor.addUnsavedEdit()
 
     @alertException
@@ -461,7 +462,7 @@ def GeneratorPanel():
 
     panel.shrink_wrap()
 
-    def generate(level, arg):
+    def generate(level, arg, useWorldType="DEFAULT"):
         useServer = generatorChoice.selectedChoice == "Minecraft Server"
 
         if useServer:
@@ -473,7 +474,7 @@ def GeneratorPanel():
                 gen = MCServerChunkGenerator(version=version)
 
                 if isinstance(arg, pymclevel.BoundingBox):
-                    for i in gen.createLevelIter(level, arg, simulate=panel.simulate):
+                    for i in gen.createLevelIter(level, arg, simulate=panel.simulate, worldType=useWorldType):
                         yield i
                 else:
                     for i in gen.generateChunksInLevelIter(level, arg, simulate=panel.simulate):

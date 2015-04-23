@@ -10,6 +10,10 @@ from theme import ThemeProperty
 import resource
 from translate import _
 
+#-# Translation live update preparation
+#from translate import new_translation
+#-#
+
 
 class Control(object):
     highlighted = overridable_property('highlighted')
@@ -50,7 +54,6 @@ class Control(object):
         self._enabled = x
 
 
-
 class AttrRef(object):
     def __init__(self, obj, attr):
         self.obj = obj
@@ -63,7 +66,6 @@ class AttrRef(object):
         setattr(self.obj, self.attr, x)
 
 
-
 class ItemRef(object):
     def __init__(self, obj, item):
         self.obj = obj
@@ -74,7 +76,6 @@ class ItemRef(object):
 
     def set(self, x):
         self.obj[self.item] = x
-
 
 
 class Label(Widget):
@@ -93,23 +94,52 @@ class Label(Widget):
     highlighted = False
     _align = 'l'
 
-    def __init__(self, text, width=None, **kwds):
+    def __init__(self, text, width=None, base_text=None, **kwds):
+        #-# Translation live update preparation
+        # base_text: to be used each time a widget takes a formated string
+        #            defaults to 'text'.
         Widget.__init__(self, **kwds)
-        font = self.font
-        text = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
-        lines = text.split("\n")
+        #-# Translation live update preparation
+        #font = self.font
+        self.fixed_width = width
+        self.base_text = base_text or text
+        self.previous_translation = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
+        #-#
+        self._text = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
+        #-#
+        self.calc_size()
+        #-#
+
+    #-# Translation live update preparation
+    def calc_size(self):
+        lines = self._text.split("\n")
         tw, th = 0, 0
-        for line in lines:
-            w, h = font.size(line)
+        for i in range(len(lines)):
+            line = lines[i]
+            if i == len(lines) -1:
+                w, h = self.font.size(line)
+            else:
+                w, h = self.font.size(line)[0], self.font.get_linesize()
             tw = max(tw, w)
             th += h
-        if width is not None:
-            tw = width
+        if self.fixed_width is not None:
+            tw = self.fixed_width
         else:
             tw = max(1, tw)
         d = 2 * self.margin
         self.size = (tw + d, th + d)
-        self._text = text
+        #self._text = text
+
+#    def get_update_translation(self):
+#        return Widget.update_translation(self)
+
+#    def set_update_translation(self, v):
+#        # get the translation of the base_text
+##        trn = _(self.base_text)
+#        self.text = self.base_text
+#        self.calc_size()
+#        Widget.set_update_translation(self, v)
+    #-#
 
     def __repr__(self):
         return "Label {0}, child of {1}".format(self.text, self.parent)
@@ -189,7 +219,6 @@ class SmallLabel(Label):
     """Small text size. See theme.py"""
 
 
-
 class ButtonBase(Control):
     align = 'c'
     action = None
@@ -229,7 +258,6 @@ class Button(ButtonBase, Label):
         Label.__init__(self, text, **kwds)
 
 
-
 class Image(Widget):
     #  image   Image to display
 
@@ -239,11 +267,11 @@ class Image(Widget):
 
     highlighted = False
 
-    def __init__(self, image=None, rect=None, **kwds):
+    def __init__(self, image=None, rect=None, prefix="", **kwds):
         Widget.__init__(self, rect, **kwds)
         if image:
             if isinstance(image, basestring):
-                image = resource.get_image(image)
+                image = resource.get_image(image, prefix=prefix)
             w, h = image.get_size()
             d = 2 * self.margin
             self.size = w + d, h + d
@@ -274,7 +302,6 @@ class ImageButton(ButtonBase, Image):
     pass
 
 
-
 class ValueDisplay(Control, Label):
     format = "%s"
     align = 'l'
@@ -291,7 +318,7 @@ class ValueDisplay(Control, Label):
     #        blit_in_rect(surf, buf, frame, self.align, self.margin)
 
     def get_text(self):
-        return self.format_value(self.value)
+        return self.format_value(_(self.value))
 
     def format_value(self, value):
         if value is not None:
@@ -311,14 +338,13 @@ class ValueButton(ButtonBase, ValueDisplay):
         return self.format_value(_(self.value))
 
 
-
 class CheckControl(Control):
     def mouse_down(self, e):
-        self.value = not self.value
+        if self.get_enabled():
+            self.value = not self.value
 
     def get_highlighted(self):
         return self.value
-
 
 
 class CheckWidget(Widget):
@@ -346,10 +372,8 @@ class CheckWidget(Widget):
                 draw.lines(surf, fg, False, [p1, p2, p3])
 
 
-
 class CheckBox(CheckControl, CheckWidget):
     pass
-
 
 
 class RadioControl(Control):
@@ -360,7 +384,6 @@ class RadioControl(Control):
 
     def mouse_down(self, e):
         self.value = self.setting
-
 
 
 class RadioButton(RadioControl, CheckWidget):

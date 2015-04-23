@@ -456,11 +456,12 @@ class EntityLevel(MCLevel):
         else:
             return []
 
-    def removeEntitiesInBox(self, box):
-
+    def removeEntities(self, func):
+        if not hasattr(self, "Entities"):
+            return
         newEnts = []
         for ent in self.Entities:
-            if Entity.pos(ent) in box:
+            if func(Entity.pos(ent)):
                 continue
             newEnts.append(ent)
 
@@ -470,6 +471,9 @@ class EntityLevel(MCLevel):
         self.Entities.value[:] = newEnts
 
         return entsRemoved
+
+    def removeEntitiesInBox(self, box):
+        return self.removeEntities(lambda p: p in box)
 
     def removeTileEntities(self, func):
         if not hasattr(self, "TileEntities"):
@@ -488,7 +492,7 @@ class EntityLevel(MCLevel):
         return entsRemoved
 
     def removeTileEntitiesInBox(self, box):
-        return self.removeTileEntities(lambda p:p in box)
+        return self.removeTileEntities(lambda p: p in box)
 
     def removeTileTicks(self, func):
         if not hasattr(self, "TileTicks"):
@@ -592,7 +596,6 @@ class ChunkBase(EntityLevel):
         cx, cz = self.chunkPosition
         return BoundingBox((cx << 4, 0, cz << 4), self.size)
 
-
     def chunkChanged(self, needsLighting=True):
         self.dirty = True
         self.needsLighting = needsLighting or self.needsLighting
@@ -600,7 +603,6 @@ class ChunkBase(EntityLevel):
     @property
     def materials(self):
         return self.world.materials
-
 
     def getChunkSlicesForBox(self, box):
         """

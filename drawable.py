@@ -16,14 +16,16 @@ class Drawable(object):
         self.invalidList = True
         self.children = []
 
-    def setUp(self):
+    @staticmethod
+    def setUp():
         """
         Set up rendering settings and view matrices
         :return:
         :rtype:
         """
 
-    def tearDown(self):
+    @staticmethod
+    def tearDown():
         """
         Return any settings changed in setUp to their previous states
         :return:

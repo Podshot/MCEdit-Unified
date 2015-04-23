@@ -63,10 +63,13 @@
 #   name: The name that will show up in X-Ray if you're using it
 #         as one of your highlights (unimportant otherwise)
 #
-# * aka:  Also known as. Alternate names or keywords to be used when searching
+# * aka:  Also known as. Alternate names for blocks that can also be used when searching
 #         for a block by name. This field is also used as a hint when converting
 #         blocks between level formats: The names of the source level's blocks
 #         are matched against both the name and aka of the destination level's.
+#
+# * search:  Hidden words to be used when searching in the block picker. These
+#            words will be completely hidden to the user.
 #
 # * brightness: Light level produced by the block. Default is 0 (no light)
 #
@@ -269,24 +272,27 @@ blocks:
         name: Granite
         tex: [4, 16]
       2:
-        name: Granite (Polished) [Smooth]
+        name: Polished Granite
+        search: smooth
         tex: [5, 16]
       3:
         name: Diorite
         tex: [6, 16]
       4:
-        name: Diorite (Polished) [Smooth]
+        name: Polished Diorite
+        search: smooth
         tex: [7, 16]
       5:
         name: Andesite
         tex: [8, 16]
       6:
-        name: Andesite (Polished) [Smooth]
+        name: Polished Andesite
+        search: smooth
         tex: [9, 16]
         
   - id: 2
     idStr: grass
-    name: Grass
+    name: Grass Block
     mapcolor: [117, 176, 73]
     tex: [3, 0]
     tex_direction:
@@ -303,10 +309,10 @@ blocks:
         name: Dirt
         tex: [2, 0]
       1:
-        name: Dirt (Coarse)
+        name: Coarse
         tex: [19, 5]
       2:
-        name: Dirt (Podzol)
+        name: Podzol
         tex: [9, 3]
         tex_direction:
           FORWARD: [10, 3]
@@ -327,22 +333,22 @@ blocks:
     tex: [4, 0]
     data:
       0:
-        name: Wood Planks (Oak)
+        name: Oak Wood Planks
         tex: [4, 0]
       1:
-        name: Wood Planks (Spruce)
+        name: Spruce Wood Planks
         tex: [6, 12]
       2:
-        name: Wood Planks (Birch)
+        name: Birch Wood Planks
         tex: [6, 13]
       3:
-        name: Wood Planks (Jungle)
+        name: Jungle Wood Planks
         tex: [7, 12]
       4:
-        name: Wood Planks (Acacia)
+        name: Acacia Wood Planks
         tex: [0, 15]
       5:
-        name: Wood Planks (Dark Oak)
+        name: Dark Oak Wood Planks
         tex: [1, 15]
 
   - id: 6
@@ -354,52 +360,52 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Sapling (Stage 0, Oak)
+        name: Oak Sapling (Stage 0)
         tex: [15, 0]
       1:
-        name: Sapling (Stage 0, Spruce)
+        name: Spruce Sapling (Stage 0)
         tex: [15, 3]
       2:
-        name: Sapling (Stage 0, Birch)
+        name: Birch Sapling (Stage 0)
         tex: [15, 4]
       3:
-        name: Sapling (Stage 0, Jungle)
+        name: Jungle Sapling (Stage 0)
         tex: [14, 1]
       4:
-        name: Sapling (Stage 0, Acacia)
+        name: Acacia Sapling (Stage 0)
         tex: [20, 1]
       5:
-        name: Sapling (Stage 0, Dark Oak)
+        name: Dark Oak Sapling (Stage 0)
         tex: [20, 0]
       8:
-        name: Sapling (Stage 1, Oak)
+        name: Oak Sapling (Stage 1)
         tex: [15, 0]
       9:
-        name: Sapling (Stage 1, Spruce)
+        name: Spruce Sapling (Stage 1)
         tex: [15, 3]
       10:
-        name: Sapling (Stage 1, Birch)
+        name: Birch Sapling (Stage 1)
         tex: [15, 4]
       11:
-        name: Sapling (Stage 1, Jungle)
+        name: Jungle Sapling (Stage 1)
         tex: [14, 1]
       12:
-        name: Sapling (Stage 1, Acacia)
+        name: Acacia Sapling (Stage 1)
         tex: [20, 1]
       13:
-        name: Sapling (Stage 1, Dark Oak)
+        name: Dark Oak Sapling (Stage 1)
         tex: [20, 0]
 
   - id: 7
     idStr: bedrock
     name: Bedrock
-    aka: Adminium
+    search: Adminium
     mapcolor: [84, 84, 84]
     tex: [1, 1]
 
   - id: 8
     idStr: flowing_water
-    name: Water Flowing
+    name: Water (Flowing)
     mapcolor: [38, 92, 255]
     type: WATER
     tex: [13, 12]
@@ -440,7 +446,7 @@ blocks:
 
   - id: 9
     idStr: water
-    name: Water Still
+    name: Water (Still)
     mapcolor: [38, 92, 255]
     type: WATER
     tex: [13, 12]
@@ -481,7 +487,7 @@ blocks:
 
   - id: 10
     idStr: flowing_lava
-    name: Lava Flowing
+    name: Lava (Flowing)
     mapcolor: [255, 90, 0]
     tex: [13, 14]
     type: SEMISOLID
@@ -523,7 +529,7 @@ blocks:
 
   - id: 11
     idStr: lava
-    name: Lava Still
+    name: Lava (Still)
     mapcolor: [255, 90, 0]
     tex: [13, 14]
     type: SEMISOLID
@@ -573,7 +579,7 @@ blocks:
         name: Sand
         tex: [2, 1]
       1:
-        name: Sand (Red)
+        name: Red Sand
         tex: [11, 1]
 
   - id: 13
@@ -603,11 +609,12 @@ blocks:
   - id: 17
     idStr: log
     name: Wood
+    search: log
     mapcolor: [102, 81, 51]
     tex: [4, 1]
     data:
       0:
-        name: Wood Log (Upright, Oak)
+        name: Oak Wood (Upright)
         variant: Oak
         axis: x
         tex: [4, 1]
@@ -615,78 +622,78 @@ blocks:
           TOP: [5, 1]
           BOTTOM: [5, 1]
       1:
-        name: Wood Log (Upright, Spruce)
+        name: Spruce Wood (Upright)
         tex: [4, 7]
         tex_direction:
           TOP: [9, 14]
           BOTTOM: [9, 14]
       2:
-        name: Wood Log (Upright, Birch)
+        name: Birch Wood (Upright)
         tex: [5, 7]
         tex_direction:
           TOP: [10, 14]
           BOTTOM: [10, 14]
       3:
-        name: Wood Log (Upright, Jungle)
+        name: Jungle Wood (Upright)
         tex: [9, 9]
         tex_direction:
           TOP: [11, 14]
           BOTTOM: [11, 14]
       4:
-        name: Wood Log (East/West, Oak)
+        name: Oak Wood (East/West)
         tex: [4, 1]
         tex_direction:
           SIDES: [5, 1]
       5:
-        name: Wood Log (East/West, Spruce)
+        name: Spruce Wood (East/West)
         tex: [4, 7]
         tex_direction:
           SIDES: [9, 14]
       6:
-        name: Wood Log (East/West, Birch)
+        name: Birch Wood (East/West)
         tex: [5, 7]
         tex_direction:
           SIDES: [10, 14]
       7:
-        name: Wood Log (East/West, Jungle)
+        name: Jungle Wood (East/West)
         tex: [9, 9]
         tex_direction:
           SIDES: [11, 14]
       8:
-        name: Wood Log (North/South, Oak)
+        name: Oak Wood (North/South)
         tex: [4, 1]
         tex_direction:
           FORWARD: [11, 14]
           BACKWARD: [11, 14]
       9:
-        name: Wood Log (North/South, Spruce)
+        name: Spruce Wood (North/South)
         tex: [4, 7]
         tex_direction:
           FORWARD: [9, 14]
           BACKWARD: [9, 14]
       10:
-        name: Wood Log (North/South, Birch)
+        name: Birch Wood (North/South)
         tex: [5, 7]
         tex_direction:
           FORWARD: [10, 14]
           BACKWARD: [10, 14]
       11:
-        name: Wood Log (North/South, Jungle)
+        name: Jungle Wood (North/South)
         tex: [9, 9]
         tex_direction:
           FORWARD: [11, 14]
           BACKWARD: [11, 14]
       12:
-        name: Wood Log (Bark Only, Oak)
+        name: Oak Wood (Bark Only)
         tex: [4, 1]
       13:
-        name: Wood Log (Bark Only, Spruce)
+        name: Spruce Wood (Bark Only)
         tex: [4, 7]
       14:
-        name: Wood Log (Bark Only, Birch)
+        name: Birch Wood (Bark Only)
         tex: [5, 7]
       15:
-        name: Wood Log (Bark Only, Jungle)
+        name: Jungle Wood (Bark Only)
         tex: [9, 9]
 
   - id: 18
@@ -699,51 +706,67 @@ blocks:
     opacity: 1
     data:
       0:
-        name: Leaves (Decay by Tree Update, Oak)
+        name: Oak Leaves (Decay after Tree Update)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       1:
-        name: Leaves (Decay by Tree Update, Spruce)
+        name: Spruce Leaves (Decay after Tree Update)
         mapcolor: [74, 131, 66]
         tex: [5, 8]
       2:
-        name: Leaves (Decay by Tree Update, Birch)
+        name: Birch Leaves (Decay after Tree Update)
         mapcolor: [89, 151, 76]
         tex: [5, 3]
       3:
-        name: Leaves (Decay by Tree Update, Jungle)
+        name: Jungle Leaves (Decay after Tree Update)
         mapcolor: [74, 131, 66]
         tex: [5, 12]
       4:
-        name: Leaves (No Decay, Oak)
+        name: Oak Leaves (No Decay)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       5:
-        name: Leaves (No Decay, Spruce)
+        name: Spruce Leaves (No Decay)
         mapcolor: [74, 131, 66]
         tex: [5, 8]
       6:
-        name: Leaves (No Decay, Birch)
+        name: Birch Leaves (No Decay)
         mapcolor: [89, 151, 76]
         tex: [5, 3]
       7:
-        name: Leaves (No Decay, Jungle)
+        name: Jungle Leaves (No Decay)
         mapcolor: [74, 131, 66]
         tex: [5, 12]
       8:
-        name: Leaves (Decaying, Oak)
+        name: Oak Leaves (Decaying)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       9:
-        name: Leaves (Decaying, Spruce)
+        name: Spruce Leaves (Decaying)
         mapcolor: [74, 131, 66]
         tex: [5, 8]
       10:
-        name: Leaves (Decaying, Birch)
+        name: Birch Leaves (Decaying)
         mapcolor: [89, 151, 76]
         tex: [5, 3]
       11:
-        name: Leaves (Decaying, Jungle)
+        name: Jungle Leaves (Decaying)
+        mapcolor: [74, 131, 66]
+        tex: [5, 12]
+      12:
+        name: Oak Leaves (No Decay, Unused)
+        mapcolor: [60, 192, 41]
+        tex: [5, 3]
+      13:
+        name: Spruce Leaves (No Decay, Unused)
+        mapcolor: [74, 131, 66]
+        tex: [5, 8]
+      14:
+        name: Birch Leaves (No Decay, Unused)
+        mapcolor: [89, 151, 76]
+        tex: [5, 3]
+      15:
+        name: Jungle Leaves (No Decay, Unused)
         mapcolor: [74, 131, 66]
         tex: [5, 12]
 
@@ -756,12 +779,13 @@ blocks:
       0:
         name: Sponge
       1:
-        name: Sponge (Wet)
+        name: Wet Sponge
         tex: [16, 18]
 
   - id: 20
     idStr: glass
     name: Glass
+    aka: Block
     mapcolor: [255, 255, 255]
     tex: [1, 3]
     type: GLASS
@@ -868,17 +892,18 @@ blocks:
         mapcolor: [218, 210, 158]
         tex: [0, 12]
       1:
-        name: Sandstone (Chiseled)
+        name: Chiseled Sandstone
         mapcolor: [218, 210, 158]
         tex: [5, 14]
       2:
-        name: Sandstone (Smooth)
+        name: Smooth Sandstone
         mapcolor: [218, 210, 158]
         tex: [6, 14]
 
   - id: 25
     idStr: noteblock
     name: Note Block
+    search: noteblock
     mapcolor: [114, 88, 56]
     tex: [10, 4]
 
@@ -1001,7 +1026,7 @@ blocks:
   - id: 27
     idStr: golden_rail
     name: Powered Rail
-    aka: Golden
+    search: golden
     mapcolor: [120, 53, 28]
     tex: [3, 10]
     type: SIMPLE_RAIL
@@ -1205,19 +1230,22 @@ blocks:
     data:
       0:
         tex: [7, 3]
-        name: Tall Grass (Dead Bush, Drops Seeds) [Shrub]
+        name: Dead Bush (Drops Seeds)
+        search: shrub
       1:
         tex: [7, 2]
-        name: Tall Grass
+        name: Grass
+        search: tall
       2:
         tex: [8, 3]
-        name: Tall Grass (Fern)
+        name: Fern
     type: DECORATION_CROSS
     opacity: 0
 
   - id: 32
     idStr: deadbush
-    name: Dead Bush [Shrub]
+    name: Dead Bush
+    search: shrub
     mapcolor: [148, 100, 40]
     tex: [7, 3]
     type: DECORATION_CROSS
@@ -1384,79 +1412,108 @@ blocks:
     data:
       0:
         tex: [0, 4]
-        name: Wool (White)
+        name: White Wool (White)
         mapcolor: [222, 222, 222]
       1:
         tex: [2, 13]
-        name: Wool (Orange)
+        name: Orange Wool
         mapcolor: [234, 127, 55]
       2:
         tex: [2, 12]
-        name: Wool (Magenta)
+        name: Magenta Wool
         mapcolor: [191, 75, 201]
       3:
         tex: [2, 11]
-        name: Wool (Light Blue)
+        name: Light Blue Wool
         mapcolor: [104, 139, 212]
       4:
         tex: [2, 10]
-        name: Wool (Yellow)
+        name: Yellow Wool
         mapcolor: [104, 139, 212]
       5:
         tex: [2, 9]
-        name: Wool (Lime)
+        name: Lime Wool
         mapcolor: [59, 189, 48]
       6:
         tex: [2, 8]
-        name: Wool (Pink)
+        name: Pink Wool
         mapcolor: [217, 131, 155]
       7:
         tex: [2, 7]
-        name: Wool (Gray)
+        name: Gray Wool
+        search: grey
         mapcolor: [66, 66, 66]
       8:
         tex: [1, 14]
-        name: Wool (Light Gray)
+        name: Light Gray Wool
+        search: grey
         mapcolor: [166, 166, 166]
       9:
         tex: [1, 13]
-        name: Wool (Cyan)
+        name: Cyan Wool
         mapcolor: [39, 117, 149]
       10:
         tex: [1, 12]
-        name: Wool (Purple)
+        name: Purple Wool
         mapcolor: [129, 54, 196]
       11:
         tex: [1, 11]
-        name: Wool (Blue)
+        name: Blue Wool
         mapcolor: [39, 51, 161]
       12:
         tex: [1, 10]
-        name: Wool (Brown)
+        name: Brown Wool
         mapcolor: [86, 51, 28]
       13:
         tex: [1, 9]
-        name: Wool (Green)
+        name: Green Wool
         mapcolor: [56, 77, 24]
       14:
         tex: [1, 8]
-        name: Wool (Red)
+        name: Red Wool
         mapcolor: [164, 45, 41]
       15:
         tex: [1, 7]
-        name: Wool (Black)
+        name: Black Wool
         mapcolor: [0, 0, 0]
 
   - id: 36
     idStr: piston_extension
-    name: Piston Extension [Block 36]
+    name: Piston Extension
+    aka: Block 36
     mapcolor: [0, 0, 0]
     tex: [0, 0]
     opacity: 0
+    data:
+      0:
+        name: Piston Extension (Down)
+      1:
+        name: Piston Extension (Up)
+      2:
+        name: Piston Extension (North)
+      3:
+        name: Piston Extension (South)
+      4:
+        name: Piston Extension (West)
+      5:
+        name: Piston Extension (East)
+      8:
+        name: Piston Extension (Sticky, Down)
+      9:
+        name: Piston Extension (Sticky, Up)
+      10:
+        name: Piston Extension (Sticky, North)
+      11:
+        name: Piston Extension (Sticky, South)
+      12:
+        name: Piston Extension (Sticky, West)
+      13:
+        name: Piston Extension (Sticky, East)
 
   - id: 37
     idStr: yellow_flower
-    name: Flower (Dandelion) [Yellow]
+    name: Dandelion
+    search: flower, yellow
     mapcolor: [255, 255, 0]
     tex: [13, 0]
     type: DECORATION_CROSS
@@ -1464,37 +1521,46 @@ blocks:
 
   - id: 38
     idStr: red_flower
-    name: Red Flower
     mapcolor: [255, 0, 0]
     tex: [12, 0]
     type: DECORATION_CROSS
     opacity: 0
     data:
       0:
-        name: Flower (Poppy) [Red]
+        name: Poppy
+        search: flower, red
       1:
-        name: Flower (Blue Orchid)
+        name: Blue Orchid
+        search: flower
         tex: [16, 0]
       2:
-        name: Flower (Allium)
+        name: Allium
+        search: flower
         tex: [17, 0]
       3:
-        name: Flower (Azure Bluet) [Houstonia]
+        name: Azure Bluet
+        aka: Houstonia
+        search: flower
         tex: [18, 0]
       4:
-        name: Flower (Red Tulip)
+        name: Red Tulip
+        search: flower
         tex: [19, 0]
       5:
-        name: Flower (Orange Tulip)
+        name: Orange Tulip
+        search: flower
         tex: [16, 1]
       6:
-        name: Flower (White Tulip)
+        name: White Tulip
+        search: flower
         tex: [17, 1]
       7:
-        name: Flower (Pink Tulip)
+        name: Pink Tulip
+        search: flower
         tex: [18, 1]
       8:
-        name: Flower (Oxeye Daisy)
+        name: Oxeye Daisy
+        search: flower
         tex: [19, 1]
 
   - id: 39
@@ -1528,135 +1594,138 @@ blocks:
 
   - id: 43
     idStr: double_stone_slab
-    name: Stone Slab (Double)
     mapcolor: [200, 200, 200]
     tex: [6, 0]
     data:
       0:
-        name: Stone Slab (Double, Seamed, Stone)
+        name: Stone Double Slab (Seamed)
         tex: [5, 0]
         tex_direction:
           TOP: [6, 0]
           BOTTOM: [6, 0]
       1:
-        name: Stone Slab (Double, Seamed, Sandstone)
+        name: Sandstone Double Slab (Seamed)
         tex: [0, 12]
         tex_direction:
           TOP: [0, 11]
           BOTTOM: [0, 13]
       2:
-        name: Stone Slab (Double, Seamed, Old Wood)
+        name: Wooden Double Slab (Seamed)
+        aka: Old Wood
         tex: [4, 0]
       3:
-        name: Stone Slab (Double, Seamed, Cobblestone)
+        name: Cobblestone Double Slab (Seamed)
         tex: [0, 1]
       4:
-        name: Stone Slab (Double, Seamed, Brick)
+        name: Brick Double Slab (Seamed)
         tex: [7, 0]
       5:
-        name: Stone Slab (Double, Seamed, Stone Brick)
+        name: Stone Brick Double Slab (Seamed)
         tex: [6, 3]
       6:
-        name: Stone Slab (Double, Seamed, Nether Brick)
+        name: Nether Brick Double Slab (Seamed)
         tex: [0, 14]
       7:
-        name: Stone Slab (Double, Seamed, Quartz)
+        name: Quartz Stone Double Slab (Seamed)
         tex: [9, 13]
       8:
-        name: Stone Slab (Double, Seamless, Stone)
+        name: Stone Double Slab (Seamless)
         tex: [6, 0]
       9:
-        name: Stone Slab (Double, Seamless, Sandstone)
+        name: Sandstone Double Slab (Seamless)
         tex: [0, 11]
       10:
-        name: Stone Slab (Double, Seamless, Old Wood)
+        name: Wooden Double Slab (Seamless)
+        aka: Old Wood
         tex: [4, 0]
       11:
-        name: Stone Slab (Double, Seamless, Cobblestone)
+        name: Cobblestone Double Slab (Seamless)
         tex: [0, 1]
       12:
-        name: Stone Slab (Double, Seamless, Brick)
+        name: Brick Double Slab (Seamless)
         tex: [7, 0]
       13:
-        name: Stone Slab (Double, Seamless, Stone Brick)
+        name: Stone Brick Double Slab (Seamless)
         tex: [6, 3]
       14:
-        name: Stone Slab (Double, Seamless, Nether Brick)
+        name: Nether Brick Double Slab (Seamless)
         tex: [0, 14]
       15:
-        name: Stone Slab (Double, Seamless, Quartz)
+        name: Quartz Double Slab (Seamless)
         tex: [9, 13]
 
   - id: 44
     idStr: stone_slab
-    name: Slab
     mapcolor: [200, 200, 200]
     tex: [6, 0]
     data:
       0:
-        name: Stone Slab (Bottom, Stone)
+        name: Stone Slab (Bottom)
         tex: [5, 0]
         tex_direction:
           TOP: [6, 0]
           BOTTOM: [6, 0]
       1:
-        name: Stone Slab (Bottom, Sandstone)
+        name: Sandstone Slab (Bottom)
         tex: [0, 12]
         tex_direction:
           TOP: [0, 11]
           BOTTOM: [0, 13]
       2:
-        name: Stone Slab (Bottom, Old Wood)
+        name: Wooden Slab (Bottom)
+        aka: Old Wood
         tex: [4, 0]
       3:
-        name: Stone Slab (Bottom, Cobblestone)
+        name: Cobblestone Slab (Bottom)
         tex: [0, 1]
       4:
-        name: Stone Slab (Bottom, Brick)
+        name: Brick Slab (Bottom)
         tex: [7, 0]
       5:
-        name: Stone Slab (Bottom, Stone Brick)
+        name: Stone Brick Slab (Bottom)
         tex: [6, 3]
       6:
-        name: Stone Slab (Bottom, Nether Brick)
+        name: Nether Brick Slab (Bottom)
         tex: [0, 14]
       7:
-        name: Stone Slab (Bottom, Quartz)
+        name: Quartz Slab (Bottom)
         tex: [9, 13]
       8:
-        name: Stone Slab (Top, Stone)
+        name: Stone Slab (Top)
         tex: [5, 0]
         tex_direction:
           TOP: [6, 0]
           BOTTOM: [6, 0]
       9:
-        name: Stone Slab (Top, Sandstone)
+        name: Sandstone Slab (Top)
         tex: [0, 12]
         tex_direction:
           TOP: [0, 11]
           BOTTOM: [0, 13]
       10:
-        name: Stone Slab (Top, Old Wood)
+        name: Wooden Slab (Top)
+        aka: Old Wood
         tex: [4, 0]
       11:
-        name: Stone Slab (Top, Cobblestone)
+        name: Cobblestone Slab (Top)
         tex: [0, 1]
       12:
-        name: Stone Slab (Top, Brick)
+        name: Brick Slab (Top)
         tex: [7, 0]
       13:
-        name: Stone Slab (Top, Stone Brick)
+        name: Stone Brick Slab (Top)
         tex: [6, 3]
       14:
-        name: Stone Slab (Top, Nether Brick)
+        name: Nether Brick Slab (Top)
         tex: [0, 14]
       15:
-        name: Stone Slab (Top, Quartz)
+        name: Quartz Slab (Top)
         tex: [9, 13]
 
   - id: 45
     idStr: brick_block
-    name: Brick
+    name: Bricks
+    aka: Block
     mapcolor: [170, 86, 62]
     tex: [7, 0]
 
@@ -1690,7 +1759,7 @@ blocks:
   - id: 48
     idStr: mossy_cobblestone
     name: Moss Stone
-    aka: Mossy Cobblestone
+    search: mossy, cobblestone
     mapcolor: [115, 169, 115]
     tex: [4, 2]
 
@@ -1702,7 +1771,6 @@ blocks:
 
   - id: 50
     idStr: torch
-    name: Torch
     mapcolor: [245, 220, 50]
     tex: [0, 5]
     type: TORCH
@@ -1723,17 +1791,49 @@ blocks:
 
   - id: 51
     idStr: fire
-    name: Fire
     mapcolor: [255, 170, 30]
     type: SEMISOLID
     tex: [15, 1]
     opacity: 0
     brightness: 15
+    data:
+      0:
+        name: Fire (Age 0)
+      1:
+        name: Fire (Age 1)
+      2:
+        name: Fire (Age 2)
+      3:
+        name: Fire (Age 3)
+      4:
+        name: Fire (Age 4)
+      5:
+        name: Fire (Age 5)
+      6:
+        name: Fire (Age 6)
+      7:
+        name: Fire (Age 7)
+      8:
+        name: Fire (Age 8)
+      9:
+        name: Fire (Age 9)
+      10:
+        name: Fire (Age 10)
+      11:
+        name: Fire (Age 11)
+      12:
+        name: Fire (Age 12)
+      13:
+        name: Fire (Age 13)
+      14:
+        name: Fire (Age 14)
+      15:
+        name: Fire (Age 15)
 
   - id: 52
     idStr: mob_spawner
     name: Monster Spawner
-    aka: Mob Spawner
+    search: mob
     mapcolor: [25, 82, 122]
     tex: [1, 4]
     type: SEMISOLID
@@ -1747,21 +1847,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Oak Wood, Bottom, East)
+        name: Oak Wood Stairs (Bottom, East)
       1:
-        name: Stairs (Oak Wood, Bottom, West)
+        name: Oak Wood Stairs (Bottom, West)
       2:
-        name: Stairs (Oak Wood, Bottom, South)
+        name: Oak Wood Stairs (Bottom, South)
       3:
-        name: Stairs (Oak Wood, Bottom, North)
+        name: Oak Wood Stairs (Bottom, North)
       4:
-        name: Stairs (Oak Wood, Top, East)
+        name: Oak Wood Stairs (Top, East)
       5:
-        name: Stairs (Oak Wood, Top, West)
+        name: Oak Wood Stairs (Top, West)
       6:
-        name: Stairs (Oak Wood, Top, South)
+        name: Oak Wood Stairs (Top, South)
       7:
-        name: Stairs (Oak Wood, Top, North)
+        name: Oak Wood Stairs (Top, North)
 
   - id: 54
     idStr: chest
@@ -1769,8 +1869,6 @@ blocks:
     mapcolor: [125, 91, 38]
     type: CHEST
     tex: [17,3]
-#   tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
-#   Currently not working properly, Will reuse for block rotate button later if possible.
     data:
       2: 
         name: Chest (North)
@@ -1800,11 +1898,45 @@ blocks:
 
   - id: 55
     idStr: redstone_wire
-    name: Redstone Wire
+    name: Redstone Dust
+    search: wire
     mapcolor: [245, 50, 50]
     tex: [4, 10]
     type: FLOOR
     opacity: 0
+    data:
+      0:
+        name: Redstone Dust (Power 0)
+      1:
+        name: Redstone Dust (Power 1)
+      2:
+        name: Redstone Dust (Power 2)
+      3:
+        name: Redstone Dust (Power 3)
+      4:
+        name: Redstone Dust (Power 4)
+      5:
+        name: Redstone Dust (Power 5)
+      6:
+        name: Redstone Dust (Power 6)
+      7:
+        name: Redstone Dust (Power 7)
+      8:
+        name: Redstone Dust (Power 8)
+      9:
+        name: Redstone Dust (Power 9)
+      10:
+        name: Redstone Dust (Power 10)
+      11:
+        name: Redstone Dust (Power 11)
+      12:
+        name: Redstone Dust (Power 12)
+      13:
+        name: Redstone Dust (Power 13)
+      14:
+        name: Redstone Dust (Power 14)
+      15:
+        name: Redstone Dust (Power 15)
 
   - id: 56
     idStr: diamond_ore
@@ -1821,7 +1953,7 @@ blocks:
   - id: 58
     idStr: crafting_table
     name: Crafting Table
-    aka: Workbench
+    search: workbench
     mapcolor: [114, 88, 56]
     tex: [12, 3]
     tex_direction:
@@ -1832,6 +1964,7 @@ blocks:
   - id: 59
     idStr: wheat
     name: Wheat
+    search: crops
     mapcolor: [146, 192, 0]
     tex: [15, 5]
     type: CROPS
@@ -1865,7 +1998,7 @@ blocks:
   - id: 60
     idStr: farmland
     name: Farmland
-    aka: Tilled
+    search: tilled
     mapcolor: [95, 58, 30]
     tex: [2, 0]
     tex_direction:
@@ -1966,45 +2099,70 @@ blocks:
       0:
         name: Standing Sign (South)
       1:
-        name: Standing Sign
+        name: Standing Sign (South-SouthWest)
       2:
-        name: Standing Sign
+        name: Standing Sign (SouthWest)
       3:
-        name: Standing Sign
+        name: Standing Sign (West-SouthWest)
       4:
         name: Standing Sign (West)
       5:
-        name: Standing Sign
+        name: Standing Sign (West-NorthWest)
       6:
-        name: Standing Sign
+        name: Standing Sign (NorthWest)
       7:
-        name: Standing Sign
+        name: Standing Sign (North-NorthWest)
       8:
         name: Standing Sign (North)
       9:
-        name: Standing Sign
+        name: Standing Sign (North-NorthEast)
       10:
-        name: Standing Sign
+        name: Standing Sign (NorthEast)
       11:
-        name: Standing Sign
+        name: Standing Sign (East-NorthEast)
       12:
         name: Standing Sign (East)
       13:
-        name: Standing Sign
+        name: Standing Sign (East-SouthEast)
       14:
-        name: Standing Sign
+        name: Standing Sign (SouthEast)
       15:
-        name: Standing Sign
+        name: Standing Sign (South-SouthEast)
 
   - id: 64
     idStr: wooden_door
-    name: Wooden Door
+    name: Oak Door
     mapcolor: [136, 109, 67]
     tex: [1, 5]
     type: DOOR
     tex_extra:
       bottom: [1, 6]
     opacity: 0
+    data:
+      0:
+        name: Oak Door (Lower, Unopened, East)
+      1:
+        name: Oak Door (Lower, Unopened, South)
+      2:
+        name: Oak Door (Lower, Unopened, West)
+      3:
+        name: Oak Door (Lower, Unopened, North)
+      4:
+        name: Oak Door (Lower, Opened, East)
+      5:
+        name: Oak Door (Lower, Opened, South)
+      6:
+        name: Oak Door (Lower, Opened, West)
+      7:
+        name: Oak Door (Lower, Opened, North)
+      8:
+        name: Oak Door (Upper, Left Hinge, Unpowered)
+      9:
+        name: Oak Door (Upper, Right Hinge, Unpowered)
+      10:
+        name: Oak Door (Upper, Left Hinge, Powered)
+      11:
+        name: Oak Door (Upper, Right Hinge, Powered)
 
   - id: 65
     idStr: ladder
@@ -2026,7 +2184,7 @@ blocks:
   - id: 66
     idStr: rail
     name: Rail
-    aka: Minecart Track
+    search: minecart, track
     mapcolor: [150, 134, 102]
     tex: [0, 8]
     type: MINECART_TRACKS
@@ -2063,21 +2221,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Cobblestone, Bottom, East)
+        name: Cobblestone Stairs (Bottom, East)
       1:
-        name: Stairs (Cobblestone, Bottom, West)
+        name: Cobblestone Stairs (Bottom, West)
       2:
-        name: Stairs (Cobblestone, Bottom, South)
+        name: Cobblestone Stairs (Bottom, South)
       3:
-        name: Stairs (Cobblestone, Bottom, North)
+        name: Cobblestone Stairs (Bottom, North)
       4:
-        name: Stairs (Cobblestone, Top, East)
+        name: Cobblestone Stairs (Top, East)
       5:
-        name: Stairs (Cobblestone, Top, West)
+        name: Cobblestone Stairs (Top, West)
       6:
-        name: Stairs (Cobblestone, Top, South)
+        name: Cobblestone Stairs (Top, South)
       7:
-        name: Stairs (Cobblestone, Top, North)
+        name: Cobblestone Stairs (Top, North)
 
   - id: 68
     idStr: wall_sign
@@ -2161,6 +2319,31 @@ blocks:
     tex_extra:
       bottom: [2, 6]
     opacity: 0
+    data:
+      0:
+        name: Iron Door (Lower, Unopened, East)
+      1:
+        name: Iron Door (Lower, Unopened, South)
+      2:
+        name: Iron Door (Lower, Unopened, West)
+      3:
+        name: Iron Door (Lower, Unopened, North)
+      4:
+        name: Iron Door (Lower, Opened, East)
+      5:
+        name: Iron Door (Lower, Opened, South)
+      6:
+        name: Iron Door (Lower, Opened, West)
+      7:
+        name: Iron Door (Lower, Opened, North)
+      8:
+        name: Iron Door (Upper, Left Hinge, Unpowered)
+      9:
+        name: Iron Door (Upper, Right Hinge, Unpowered)
+      10:
+        name: Iron Door (Upper, Left Hinge, Powered)
+      11:
+        name: Iron Door (Upper, Right Hinge, Powered)
 
   - id: 72
     idStr: wooden_pressure_plate
@@ -2211,6 +2394,7 @@ blocks:
   - id: 76
     idStr: redstone_torch
     name: Redstone Torch (On)
+    search: lit
     mapcolor: [255, 0, 0]
     tex: [3, 6]
     type: TORCH
@@ -2352,45 +2536,44 @@ blocks:
 
   - id: 83
     idStr: reeds
-    name: Sugar Cane
-    aka: Reeds, Papyrus
+    search: reeds, papyrus
     mapcolor: [100, 67, 50]
     tex: [9, 4]
     type: DECORATION_CROSS
     opacity: 0
     data:
       0:
-        name: Reeds (Age 0) [Sugar Cane]
+        name: Sugar Canes (Age 0)
       1:
-        name: Reeds (Age 1) [Sugar Cane]
+        name: Sugar Canes (Age 1)
       2:
-        name: Reeds (Age 2) [Sugar Cane]
+        name: Sugar Canes (Age 2)
       3:
-        name: Reeds (Age 3) [Sugar Cane]
+        name: Sugar Canes (Age 3)
       4:
-        name: Reeds (Age 4) [Sugar Cane]
+        name: Sugar Canes (Age 4)
       5:
-        name: Reeds (Age 5) [Sugar Cane]
+        name: Sugar Canes (Age 5)
       6:
-        name: Reeds (Age 6) [Sugar Cane]
+        name: Sugar Canes (Age 6)
       7:
-        name: Reeds (Age 7) [Sugar Cane]
+        name: Sugar Canes (Age 7)
       8:
-        name: Reeds (Age 8) [Sugar Cane]
+        name: Sugar Canes (Age 8)
       9:
-        name: Reeds (Age 9) [Sugar Cane]
+        name: Sugar Canes (Age 9)
       10:
-        name: Reeds (Age 10) [Sugar Cane]
+        name: Sugar Canes (Age 10)
       11:
-        name: Reeds (Age 11) [Sugar Cane]
+        name: Sugar Canes (Age 11)
       12:
-        name: Reeds (Age 12) [Sugar Cane]
+        name: Sugar Canes (Age 12)
       13:
-        name: Reeds (Age 13) [Sugar Cane]
+        name: Sugar Canes (Age 13)
       14:
-        name: Reeds (Age 14) [Sugar Cane]
+        name: Sugar Canes (Age 14)
       15:
-        name: Reeds (Age 15) [Sugar Cane]
+        name: Sugar Canes (Age 15)
 
   - id: 84
     idStr: jukebox
@@ -2407,7 +2590,7 @@ blocks:
 
   - id: 85
     idStr: fence
-    name: Fence (Oak)
+    name: Oak Fence
     mapcolor: [157, 128, 79]
     tex: [4, 0]
     type: FENCE
@@ -2454,7 +2637,7 @@ blocks:
   - id: 88
     idStr: soul_sand
     name: Soul Sand
-    aka: Slow Sand
+    search: slow
     mapcolor: [106, 82, 68]
     tex: [8, 6]
 
@@ -2483,31 +2666,32 @@ blocks:
   - id: 91
     idStr: lit_pumpkin
     name: Jack o'Lantern
+    search: lit pumpkin
     mapcolor: [249, 255, 58]
     explored: true
     tex: [6, 7]
     brightness: 15
     data:
       0: 
-        name: Jack o'Lantern (South) [Lit Pumpkin]
+        name: Jack o'Lantern (South)
         tex_direction:
           BACKWARD: [8, 7]
           TOP: [6, 6]
           BOTTOM: [6, 6]
       1: 
-        name: Jack o'Lantern (West) [Lit Pumpkin]
+        name: Jack o'Lantern (West)
         tex_direction:
           LEFT: [8, 7]
           TOP: [6, 6]
           BOTTOM: [6, 6]
       2: 
-        name: Jack o'Lantern (North) [Lit Pumpkin]
+        name: Jack o'Lantern (North)
         tex_direction:
           FORWARD: [8, 7]
           TOP: [6, 6]
           BOTTOM: [6, 6]
       3: 
-        name: Jack o'Lantern (East) [Lit Pumpkin]
+        name: Jack o'Lantern (East)
         tex_direction:
           RIGHT: [8, 7]
           TOP: [6, 6]
@@ -2688,107 +2872,142 @@ blocks:
 
   - id: 95
     idStr: stained_glass
-    name: Stained Glass
     tex: [0, 19]
     data:
       0:
-        name: Stained Glass (White)
+        name: White Stained Glass
+        tex: [0, 19]
         mapcolor: [222, 222, 222]
       1:
+        name: Orange Stained Glass
         tex: [1, 19]
-        name: Stained Glass (Orange)
         mapcolor: [234, 127, 55]
       2:
+        name: Magenta Stained Glass
         tex: [2, 19]
-        name: Stained Glass (Magenta)
         mapcolor: [191, 75, 201]
       3:
+        name: Light Blue Stained Glass
         tex: [3, 19]
-        name: Stained Glass (Light Blue)
         mapcolor: [104, 139, 212]
       4:
+        name: Yellow Stained Glass
         tex: [4, 19]
-        name: Stained Glass (Yellow)
         mapcolor: [104, 139, 212]
       5:
+        name: Lime Stained Glass
         tex: [5, 19]
-        name: Stained Glass (Lime)
         mapcolor: [59, 189, 48]
       6:
+        name: Pink Stained Glass
         tex: [6, 19]
-        name: Stained Glass (Pink)
         mapcolor: [217, 131, 155]
       7:
+        name: Gray Stained Glass
+        search: grey
         tex: [7, 19]
-        name: Stained Glass (Gray)
         mapcolor: [66, 66, 66]
       8:
+        name: Light Gray Stained Glass
+        search: grey
         tex: [8, 19]
-        name: Stained Glass (Light Gray)
         mapcolor: [166, 166, 166]
       9:
+        name: Cyan Stained Glass
         tex: [9, 19]
-        name: Stained Glass (Cyan)
         mapcolor: [39, 117, 149]
       10:
+        name: Purple Stained Glass
         tex: [10, 19]
-        name: Stained Glass (Purple)
         mapcolor: [129, 54, 196]
       11:
+        name: Blue Stained Glass
         tex: [11, 19]
-        name: Stained Glass (Blue)
         mapcolor: [39, 51, 161]
       12:
+        name: Brown Stained Glass
         tex: [12, 19]
-        name: Stained Glass (Brown)
         mapcolor: [86, 51, 28]
       13:
+        name: Green Stained Glass
         tex: [13, 19]
-        name: Stained Glass (Green)
         mapcolor: [56, 77, 24]
       14:
+        name: Red Stained Glass
         tex: [14, 19]
-        name: Stained Glass (Red)
         mapcolor: [164, 45, 41]
       15:
+        name: Black Stained Glass
         tex: [15, 19]
-        name: Stained Glass (Black)
         mapcolor: [0, 0, 0]
     type: GLASS
     opacity: 0
 
   - id: 96
     idStr: trapdoor
-    name: Trapdoor
+    name: Wooden Trapdoor
     mapcolor: [143, 107, 53]
     tex: [4, 5]
     type: TRAPDOOR
     opacity: 0
+    data:
+      0:
+        name: Wooden Trapdoor (Bottom, False, North)
+      1:
+        name: Wooden Trapdoor (Bottom, False, South)
+      2:
+        name: Wooden Trapdoor (Bottom, False, West)
+      3:
+        name: Wooden Trapdoor (Bottom, False, East)
+      4:
+        name: Wooden Trapdoor (Bottom, True, North)
+      5:
+        name: Wooden Trapdoor (Bottom, True, South)
+      6:
+        name: Wooden Trapdoor (Bottom, True, West)
+      7:
+        name: Wooden Trapdoor (Bottom, True, East)
+      8:
+        name: Wooden Trapdoor (Top, False, North)
+      9:
+        name: Wooden Trapdoor (Top, False, South)
+      10:
+        name: Wooden Trapdoor (Top, False, West)
+      11:
+        name: Wooden Trapdoor (Top, False, East)
+      12:
+        name: Wooden Trapdoor (Top, True, North)
+      13:
+        name: Wooden Trapdoor (Top, True, South)
+      14:
+        name: Wooden Trapdoor (Top, True, West)
+      15:
+        name: Wooden Trapdoor (Top, True, East)
 
   - id: 97
     idStr: monster_egg
     name: Monster Egg
-    aka: Silverfish Block
+    search: silverfish, block
     mapcolor: [120, 120, 120]
     tex: [1, 0]
     data:
       0:
-        name: Monster Egg (Stone)
+        name: Stone Monster Egg
         tex: [10, 16]
       1:
-        name: Monster Egg (Cobblestone)
+        name: Cobblestone Monster Egg
         tex: [11, 16]
       2:
-        name: Monster Egg (Stone Brick)
+        name: Stone Brick Monster Egg
         tex: [12, 16]
       3:
-        name: Monster Egg (Mossy Stone Brick)
+        name: Mossy Stone Brick Monster Egg
         tex: [13, 16]
       4:
-        name: Monster Egg (Cracked Stone Brick)
+        name: Cracked Stone Brick Monster Egg
         tex: [14, 16]
       5:
-        name: Monster Egg (Chiseled Stone Brick)
+        name: Chiseled Stone Brick Monster Egg
         tex: [15, 16]
 
   - id: 98
@@ -2798,21 +3017,22 @@ blocks:
     tex: [6, 3]
     data:
       0:
-        name: Stone Brick
+        name: Stone Bricks
         tex: [6, 3]
       1:
-        name: Stone Brick (Mossy)
+        name: Mossy Stone Bricks
         tex: [4, 6]
       2:
-        name: Stone Brick (Cracked)
+        name: Cracked Stone Bricks
         tex: [5, 6]
       3:
-        name: Stone Brick (Chiseled)
+        name: Chiseled Stone Bricks
         tex: [5, 13]
 
   - id: 99
     idStr: brown_mushroom_block
     name: Brown Mushroom Block
+    search: huge
     mapcolor: [145, 109, 85]
     tex: [14, 7]
     type: HUGE_MUSHROOM
@@ -2823,8 +3043,99 @@ blocks:
       0:
         name: Brown Mushroom Block (All Inside)
         tex: [14, 8]
+      1:
+        name: Brown Mushroom Block (Northwest)
+        tex_direction:
+          FORWARD: [14, 7]
+          BACKWARD: [14, 8]
+          LEFT: [14, 7]
+          RIGHT: [14, 8]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      2:
+        name: Brown Mushroom Block (North)
+        tex_direction:
+          FORWARD: [14, 7]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [14, 8]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      3:
+        name: Brown Mushroom Block (Northeast)
+        tex_direction:
+          FORWARD: [14, 7]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [14, 7]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      4:
+        name: Brown Mushroom Block (West)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 8]
+          LEFT: [14, 7]
+          RIGHT: [14, 8]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      5:
+        name: Brown Mushroom Block (Center)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [14, 8]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      6:
+        name: Brown Mushroom Block (East)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [14, 7]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      7:
+        name: Brown Mushroom Block (Southwest)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 7]
+          LEFT: [14, 7]
+          RIGHT: [14, 8]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      8:
+        name: Brown Mushroom Block (South)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 7]
+          LEFT: [14, 8]
+          RIGHT: [14, 8]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      9:
+        name: Brown Mushroom Block (Southeast)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 7]
+          LEFT: [14, 8]
+          RIGHT: [14, 7]
+          TOP: [14, 7]
+          BOTTOM: [14, 8]
+      10:
+        name: Brown Mushroom Block (Stem)
+        tex_direction:
+          FORWARD: [13, 8]
+          BACKWARD: [13, 8]
+          LEFT: [13, 8]
+          RIGHT: [13, 8]
+          TOP: [14, 8]
+          BOTTOM: [14, 8]
       14:
         name: Brown Mushroom Block (All Outside)
+        tex: [14, 7]
       15:
         name: Brown Mushroom Block (All Stem)
         tex: [13, 8]
@@ -2832,6 +3143,7 @@ blocks:
   - id: 100
     idStr: red_mushroom_block
     name: Red Mushroom Block
+    search: huge
     mapcolor: [181, 29, 27]
     tex: [13, 7]
     type: HUGE_MUSHROOM
@@ -2842,8 +3154,99 @@ blocks:
       0:
         name: Red Mushroom Block (All Inside)
         tex: [14, 8]
+      1:
+        name: Red Mushroom Block (Northwest)
+        tex_direction:
+          FORWARD: [13, 7]
+          BACKWARD: [14, 8]
+          LEFT: [13, 7]
+          RIGHT: [14, 8]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      2:
+        name: Red Mushroom Block (North)
+        tex_direction:
+          FORWARD: [13, 7]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [14, 8]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      3:
+        name: Red Mushroom Block (Northeast)
+        tex_direction:
+          FORWARD: [13, 7]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [13, 7]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      4:
+        name: Red Mushroom Block (West)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 8]
+          LEFT: [13, 7]
+          RIGHT: [14, 8]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      5:
+        name: Red Mushroom Block (Center)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [14, 8]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      6:
+        name: Red Mushroom Block (East)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [14, 8]
+          LEFT: [14, 8]
+          RIGHT: [13, 7]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      7:
+        name: Red Mushroom Block (Southwest)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [13, 7]
+          LEFT: [13, 7]
+          RIGHT: [14, 8]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      8:
+        name: Red Mushroom Block (South)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [13, 7]
+          LEFT: [14, 8]
+          RIGHT: [14, 8]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      9:
+        name: Red Mushroom Block (Southeast)
+        tex_direction:
+          FORWARD: [14, 8]
+          BACKWARD: [13, 7]
+          LEFT: [14, 8]
+          RIGHT: [13, 7]
+          TOP: [13, 7]
+          BOTTOM: [14, 8]
+      10:
+        name: Red Mushroom Block (Stem)
+        tex_direction:
+          FORWARD: [13, 8]
+          BACKWARD: [13, 8]
+          LEFT: [13, 8]
+          RIGHT: [13, 8]
+          TOP: [14, 8]
+          BOTTOM: [14, 8]
       14:
         name: Red Mushroom Block (All Outside)
+        tex: [13, 7]
       15:
         name: Red Mushroom Block (All Stem)
         tex: [13, 8]
@@ -2873,7 +3276,7 @@ blocks:
   - id: 103
     idStr: melon_block
     name: Melon
-    aka: Watermelon
+    search: watermelon, block
     mapcolor: [190, 184, 41]
     tex: [8, 8]
     tex_direction:
@@ -2910,6 +3313,7 @@ blocks:
   - id: 105
     idStr: melon_stem
     name: Melon Stem
+    search: watermelon
     mapcolor: [190, 184, 41]
     tex: [15, 6]
     type: STEM
@@ -2984,37 +3388,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Fence Gate (Oak, Closed, South)
+        name: Oak Fence Gate (Closed, South)
       1:
-        name: Fence Gate (Oak, Closed, West)
+        name: Oak Fence Gate (Closed, West)
       2:
-        name: Fence Gate (Oak, Closed, North)
+        name: Oak Fence Gate (Closed, North)
       3:
-        name: Fence Gate (Oak, Closed, East)
+        name: Oak Fence Gate (Closed, East)
       4:
-        name: Fence Gate (Oak, Open, South)
+        name: Oak Fence Gate (Open, South)
       5:
-        name: Fence Gate (Oak, Open, West)
+        name: Oak Fence Gate (Open, West)
       6:
-        name: Fence Gate (Oak, Open, North)
+        name: Oak Fence Gate (Open, North)
       7:
-        name: Fence Gate (Oak, Open, East)
+        name: Oak Fence Gate (Open, East)
       8:
-        name: Fence Gate (Oak, Powered, Closed, South)
+        name: Oak Fence Gate (Powered, Closed, South)
       9:
-        name: Fence Gate (Oak, Powered, Closed, West)
+        name: Oak Fence Gate (Powered, Closed, West)
       10:
-        name: Fence Gate (Oak, Powered, Closed, North)
+        name: Oak Fence Gate (Powered, Closed, North)
       11:
-        name: Fence Gate (Oak, Powered, Closed, East)
+        name: Oak Fence Gate (Powered, Closed, East)
       12:
-        name: Fence Gate (Oak, Powered, Open, South)
+        name: Oak Fence Gate (Powered, Open, South)
       13:
-        name: Fence Gate (Oak, Powered, Open, West)
+        name: Oak Fence Gate (Powered, Open, West)
       14:
-        name: Fence Gate (Oak, Powered, Open, North)
+        name: Oak Fence Gate (Powered, Open, North)
       15:
-        name: Fence Gate (Oak, Powered, Open, East)
+        name: Oak Fence Gate (Powered, Open, East)
 
   - id: 108
     idStr: brick_stairs
@@ -3024,21 +3428,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Brick, Bottom, East)
+        name: Brick Stairs (Bottom, East)
       1:
-        name: Stairs (Brick, Bottom, West)
+        name: Brick Stairs (Bottom, West)
       2:
-        name: Stairs (Brick, Bottom, South)
+        name: Brick Stairs (Bottom, South)
       3:
-        name: Stairs (Brick, Bottom, North)
+        name: Brick Stairs (Bottom, North)
       4:
-        name: Stairs (Brick, Top, East)
+        name: Brick Stairs (Top, East)
       5:
-        name: Stairs (Brick, Top, West)
+        name: Brick Stairs (Top, West)
       6:
-        name: Stairs (Brick, Top, South)
+        name: Brick Stairs (Top, South)
       7:
-        name: Stairs (Brick, Top, North)
+        name: Brick Stairs (Top, North)
 
   - id: 109
     idStr: stone_brick_stairs
@@ -3048,21 +3452,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Stone Brick, Bottom, East)
+        name: Stone Brick Stairs (Bottom, East)
       1:
-        name: Stairs (Stone Brick, Bottom, West)
+        name: Stone Brick Stairs (Bottom, West)
       2:
-        name: Stairs (Stone Brick, Bottom, South)
+        name: Stone Brick Stairs (Bottom, South)
       3:
-        name: Stairs (Stone Brick, Bottom, North)
+        name: Stone Brick Stairs (Bottom, North)
       4:
-        name: Stairs (Stone Brick, Top, East)
+        name: Stone Brick Stairs (Top, East)
       5:
-        name: Stairs (Stone Brick, Top, West)
+        name: Stone Brick Stairs (Top, West)
       6:
-        name: Stairs (Stone Brick, Top, South)
+        name: Stone Brick Stairs (Top, South)
       7:
-        name: Stairs (Stone Brick, Top, North)
+        name: Stone Brick Stairs (Top, North)
 
   - id: 110
     idStr: mycelium
@@ -3075,7 +3479,8 @@ blocks:
 
   - id: 111
     idStr: waterlily
-    name: Lily Pad [Waterlily]
+    name: Lily Pad
+    search: waterlily
     mapcolor: [117, 176, 73]
     tex: [12, 4]
     type: FLOOR
@@ -3084,12 +3489,13 @@ blocks:
   - id: 112
     idStr: nether_brick
     name: Nether Brick
+    aka: Block
     mapcolor: [54, 24, 30]
     tex: [0, 14]
 
   - id: 113
     idStr: nether_brick_fence
-    name: Fence (Nether Brick)
+    name: Nether Brick Fence
     mapcolor: [54, 24, 30]
     tex: [0, 14]
     type: FENCE
@@ -3103,21 +3509,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Nether Brick, Bottom, East)
+        name: Nether Brick Stairs (Bottom, East)
       1:
-        name: Stairs (Nether Brick, Bottom, West)
+        name: Nether Brick Stairs (Bottom, West)
       2:
-        name: Stairs (Nether Brick, Bottom, South)
+        name: Nether Brick Stairs (Bottom, South)
       3:
-        name: Stairs (Nether Brick, Bottom, North)
+        name: Nether Brick Stairs (Bottom, North)
       4:
-        name: Stairs (Nether Brick, Top, East)
+        name: Nether Brick Stairs (Top, East)
       5:
-        name: Stairs (Nether Brick, Top, West)
+        name: Nether Brick Stairs (Top, West)
       6:
-        name: Stairs (Nether Brick, Top, South)
+        name: Nether Brick Stairs (Top, South)
       7:
-        name: Stairs (Nether Brick, Top, North)
+        name: Nether Brick Stairs (Top, North)
 
   - id: 115
     idStr: nether_wart
@@ -3140,9 +3546,9 @@ blocks:
         name: Nether Wart (Age 3)
 
   - id: 116
-    idStr: enchanting_Table
+    idStr: enchanting_table
     name: Enchantment Table
-    aka: Enchanting Table
+    search: enchanting
     mapcolor: [88, 23, 22]
     tex: [6, 11]
     type: ENCHANTMENT_TABLE
@@ -3150,7 +3556,6 @@ blocks:
     tex_direction:
       TOP: [6, 10]
       BOTTOM: [7, 11]
-    
 
   - id: 117
     idStr: brewing_stand
@@ -3261,7 +3666,7 @@ blocks:
   - id: 122
     idStr: dragon_egg
     name: Dragon Egg
-    aka: Ender Dragon Egg
+    search: ender
     mapcolor: [45, 1, 51]
     tex: [7, 10]
     brightness: 1
@@ -3275,34 +3680,36 @@ blocks:
 
   - id: 124
     idStr: lit_redstone_lamp
-    name: Redstone Lamp (On) [Lit]
+    name: Redstone Lamp (On)
+    search: lit
     mapcolor: [208, 152, 70]
     tex: [4, 13]
     brightness: 15
 
   - id: 125
     idStr: double_wooden_slab
-    name: Wooden Double Slab
+    name: Double Wooden Slab
     mapcolor: [200, 200, 200]
     tex: [4, 0]
     data:
       0:
-        name: Wooden Slab (Double, Oak)
+        name: Oak Double Slab
+        tex: [4, 0]
       1:
+        name: Spruce Double Slab
         tex: [6, 12]
-        name: Wooden Slab (Double, Spruce)
       2:
+        name: Birch Double Slab
         tex: [6, 13]
-        name: Wooden Slab (Double, Birch)
       3:
+        name: Jungle Double Slab
         tex: [7, 12]
-        name: Wooden Slab (Double, Jungle)
       4:
+        name: Acacia Double Slab
         tex: [0, 15]
-        name: Wooden Slab (Double, Acacia)
       5:
+        name: Dark Oak Double Slab
         tex: [1, 15]
-        name: Wooden Slab (Double, Dark Oak)
 
   - id: 126
     idStr: wooden_slab
@@ -3311,72 +3718,74 @@ blocks:
     tex: [4, 0]
     data:
       0:
-        name: Wooden Slab (Bottom, Oak)
+        name: Oak Wood Slab (Bottom)
+        tex: [4, 0]
       1:
+        name: Spruce Wood Slab (Bottom)
         tex: [6, 12]
-        name: Wooden Slab (Bottom, Spruce)
       2:
+        name: Birch Wood Slab (Bottom)
         tex: [6, 13]
-        name: Wooden Slab (Bottom, Birch)
       3:
+        name: Jungle Wood Slab (Bottom)
         tex: [7, 12]
-        name: Wooden Slab (Bottom, Jungle)
       4:
+        name: Acacia Wood Slab (Bottom)
         tex: [0, 15]
-        name: Wooden Slab (Bottom, Acacia)
       5:
+        name: Dark Oak Wood Slab (Bottom)
         tex: [1, 15]
-        name: Wooden Slab (Bottom, Dark Oak)
       8:
-        name: Wooden Slab (Top, Oak)
+        name: Oak Wood Slab (Top)
+        tex: [4, 0]
       9:
+        name: Spruce Wood Slab (Top)
         tex: [6, 12]
-        name: Wooden Slab (Top, Spruce)
       10:
+        name: Birch Wood Slab (Top)
         tex: [6, 13]
-        name: Wooden Slab (Top, Birch)
       11:
+        name: Jungle Wood Slab (Top)
         tex: [7, 12]
-        name: Wooden Slab (Top, Jungle)
       12:
+        name: Acacia Wood Slab (Top)
         tex: [0, 15]
-        name: Wooden Slab (Top, Acacia)
       13:
+        name: Dark Oak Wood Slab (Top)
         tex: [1, 15]
-        name: Wooden Slab (Top, Dark Oak)
 
   - id: 127
     idStr: cocoa
-    name: Cocoa Plant
+    name: Cocoa
     mapcolor: [181, 140, 64]
     tex: [10, 10]
     type: CROPS
     opacity: 0
     data:
       0:
-        name: Cocoa Plant (Age 0, South)
+        name: Cocoa (Age 0, South)
       1:
-        name: Cocoa Plant (Age 0, West)
+        name: Cocoa (Age 0, West)
       2:
-        name: Cocoa Plant (Age 0, North)
+        name: Cocoa (Age 0, North)
       3:
-        name: Cocoa Plant (Age 0, East)
+        name: Cocoa (Age 0, East)
       4:
-        name: Cocoa Plant (Age 1, South)
+        name: Cocoa (Age 1, South)
       5:
-        name: Cocoa Plant (Age 1, West)
+        name: Cocoa (Age 1, West)
       6:
-        name: Cocoa Plant (Age 1, North)
+        name: Cocoa (Age 1, North)
       7:
-        name: Cocoa Plant (Age 1, East)
+        name: Cocoa (Age 1, East)
       8:
-        name: Cocoa Plant (Age 2, South)
+        name: Cocoa (Age 2, South)
       9:
-        name: Cocoa Plant (Age 2, West)
+        name: Cocoa (Age 2, West)
       10:
-        name: Cocoa Plant (Age 2, North)
+        name: Cocoa (Age 2, North)
       11:
-        name: Cocoa Plant (Age 2, East)
+        name: Cocoa (Age 2, East)
 
   - id: 128
     idStr: sandstone_stairs
@@ -3389,21 +3798,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Sandstone, Bottom, East)
+        name: Sandstone Stairs (Bottom, East)
       1:
-        name: Stairs (Sandstone, Bottom, West)
+        name: Sandstone Stairs (Bottom, West)
       2:
-        name: Stairs (Sandstone, Bottom, South)
+        name: Sandstone Stairs (Bottom, South)
       3:
-        name: Stairs (Sandstone, Bottom, North)
+        name: Sandstone Stairs (Bottom, North)
       4:
-        name: Stairs (Sandstone, Top, East)
+        name: Sandstone Stairs (Top, East)
       5:
-        name: Stairs (Sandstone, Top, West)
+        name: Sandstone Stairs (Top, West)
       6:
-        name: Stairs (Sandstone, Top, South)
+        name: Sandstone Stairs (Top, South)
       7:
-        name: Stairs (Sandstone, Top, North)
+        name: Sandstone Stairs (Top, North)
 
   - id: 129
     idStr: emerald_ore
@@ -3452,6 +3861,39 @@ blocks:
     tex: [12, 10]
     type: DECORATION_CROSS
     opacity: 0
+    data:
+      0:
+        name: Tripwire Hook (Unattached, Unpowered, South)
+      1:
+        name: Tripwire Hook (Unattached, Unpowered, West)
+      2:
+        name: Tripwire Hook (Unattached, Unpowered, North)
+      3:
+        name: Tripwire Hook (Unattached, Unpowered, East)
+      4:
+        name: Tripwire Hook (Attached, Unpowered, South)
+      5:
+        name: Tripwire Hook (Attached, Unpowered, West)
+      6:
+        name: Tripwire Hook (Attached, Unpowered, North)
+      7:
+        name: Tripwire Hook (Attached, Unpowered, East)
+      8:
+        name: Tripwire Hook (Unattached, Powered, South)
+      9:
+        name: Tripwire Hook (Unattached, Powered, West)
+      10:
+        name: Tripwire Hook (Unattached, Powered, North)
+      11:
+        name: Tripwire Hook (Unattached, Powered, East)
+      12:
+        name: Tripwire Hook (Attached, Powered, South)
+      13:
+        name: Tripwire Hook (Attached, Powered, West)
+      14:
+        name: Tripwire Hook (Attached, Powered, North)
+      15:
+        name: Tripwire Hook (Attached, Powered, East)
 
   - id: 132
     idStr: tripwire
@@ -3460,6 +3902,39 @@ blocks:
     tex: [13, 10]
     type: DECORATION_CROSS
     opacity: 0
+    data:
+      0:
+        name: Tripwire (Unattached, Armed, Unpowered, Unsuspended)
+      1:
+        name: Tripwire (Unattached, Armed, Powered, Unsuspended)
+      2:
+        name: Tripwire (Unattached, Armed, Unpowered, Suspended)
+      3:
+        name: Tripwire (Unattached, Armed, Powered, Suspended)
+      4:
+        name: Tripwire (Attached, Armed, Unpowered, Unsuspended)
+      5:
+        name: Tripwire (Attached, Armed, Powered, Unsuspended)
+      6:
+        name: Tripwire (Attached, Armed, Unpowered, Suspended)
+      7:
+        name: Tripwire (Attached, Armed, Powered, Suspended)
+      8:
+        name: Tripwire (Unattached, Disarmed, Unpowered, Unsuspended)
+      9:
+        name: Tripwire (Unattached, Disarmed, Powered, Unsuspended)
+      10:
+        name: Tripwire (Unattached, Disarmed, Unpowered, Suspended)
+      11:
+        name: Tripwire (Unattached, Disarmed, Powered, Suspended)
+      12:
+        name: Tripwire (Attached, Disarmed, Unpowered, Unsuspended)
+      13:
+        name: Tripwire (Attached, Disarmed, Powered, Unsuspended)
+      14:
+        name: Tripwire (Attached, Disarmed, Unpowered, Suspended)
+      15:
+        name: Tripwire (Attached, Disarmed, Powered, Suspended)
 
   - id: 133
     idStr: emerald_block
@@ -3475,21 +3950,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Spruce Wood, Bottom, East)
+        name: Spruce Wood Stairs (Bottom, East)
       1:
-        name: Stairs (Spruce Wood, Bottom, West)
+        name: Spruce Wood Stairs (Bottom, West)
       2:
-        name: Stairs (Spruce Wood, Bottom, South)
+        name: Spruce Wood Stairs (Bottom, South)
       3:
-        name: Stairs (Spruce Wood, Bottom, North)
+        name: Spruce Wood Stairs (Bottom, North)
       4:
-        name: Stairs (Spruce Wood, Top, East)
+        name: Spruce Wood Stairs (Top, East)
       5:
-        name: Stairs (Spruce Wood, Top, West)
+        name: Spruce Wood Stairs (Top, West)
       6:
-        name: Stairs (Spruce Wood, Top, South)
+        name: Spruce Wood Stairs (Top, South)
       7:
-        name: Stairs (Spruce Wood, Top, North)
+        name: Spruce Wood Stairs (Top, North)
 
   - id: 135
     idStr: birch_stairs
@@ -3499,21 +3974,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Birch Wood, Bottom, East)
+        name: Birch Wood Stairs (Bottom, East)
       1:
-        name: Stairs (Birch Wood, Bottom, West)
+        name: Birch Wood Stairs (Bottom, West)
       2:
-        name: Stairs (Birch Wood, Bottom, South)
+        name: Birch Wood Stairs (Bottom, South)
       3:
-        name: Stairs (Birch Wood, Bottom, North)
+        name: Birch Wood Stairs (Bottom, North)
       4:
-        name: Stairs (Birch Wood, Top, East)
+        name: Birch Wood Stairs (Top, East)
       5:
-        name: Stairs (Birch Wood, Top, West)
+        name: Birch Wood Stairs (Top, West)
       6:
-        name: Stairs (Birch Wood, Top, South)
+        name: Birch Wood Stairs (Top, South)
       7:
-        name: Stairs (Birch Wood, Top, North)
+        name: Birch Wood Stairs (Top, North)
 
   - id: 136
     idStr: jungle_stairs
@@ -3523,21 +3998,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Jungle Wood, Bottom, East)
+        name: Jungle Wood Stairs (Bottom, East)
       1:
-        name: Stairs (Jungle Wood, Bottom, West)
+        name: Jungle Wood Stairs (Bottom, West)
       2:
-        name: Stairs (Jungle Wood, Bottom, South)
+        name: Jungle Wood Stairs (Bottom, South)
       3:
-        name: Stairs (Jungle Wood, Bottom, North)
+        name: Jungle Wood Stairs (Bottom, North)
       4:
-        name: Stairs (Jungle Wood, Top, East)
+        name: Jungle Wood Stairs (Top, East)
       5:
-        name: Stairs (Jungle Wood, Top, West)
+        name: Jungle Wood Stairs (Top, West)
       6:
-        name: Stairs (Jungle Wood, Top, South)
+        name: Jungle Wood Stairs (Top, South)
       7:
-        name: Stairs (Jungle Wood, Top, North)
+        name: Jungle Wood Stairs (Top, North)
 
   - id: 137
     idStr: command_block
@@ -3580,6 +4055,39 @@ blocks:
     tex: [10, 11]
     type: DECORATION_CROSS
     opacity: 0
+    data:
+      0:
+        name: Flower Pot (Legacy Data 0)
+      1:
+        name: Flower Pot (Legacy Data 1)
+      2:
+        name: Flower Pot (Legacy Data 2)
+      3:
+        name: Flower Pot (Legacy Data 3)
+      4:
+        name: Flower Pot (Legacy Data 4)
+      5:
+        name: Flower Pot (Legacy Data 5)
+      6:
+        name: Flower Pot (Legacy Data 6)
+      7:
+        name: Flower Pot (Legacy Data 7)
+      8:
+        name: Flower Pot (Legacy Data 8)
+      9:
+        name: Flower Pot (Legacy Data 9)
+      10:
+        name: Flower Pot (Legacy Data 10)
+      11:
+        name: Flower Pot (Legacy Data 11)
+      12:
+        name: Flower Pot (Legacy Data 12)
+      13:
+        name: Flower Pot (Legacy Data 13)
+      14:
+        name: Flower Pot (Legacy Data 14)
+      15:
+        name: Flower Pot (Legacy Data 15)
 
   - id: 141
     idStr: carrots
@@ -3683,10 +4191,35 @@ blocks:
   - id: 144
     idStr: skull
     name: Mob Head
-    aka: Skull
+    search: skull
     mapcolor: [200, 100, 100]
     tex: [2, 15]
     opacity: 0
+    data:
+      0:
+        name: Mob Head (Drop, Down)
+      1:
+        name: Mob Head (Drop, Up)
+      2:
+        name: Mob Head (Drop, North)
+      3:
+        name: Mob Head (Drop, South)
+      4:
+        name: Mob Head (Drop, West)
+      5:
+        name: Mob Head (Drop, East)
+      8:
+        name: Mob Head (No Drop, Down)
+      9:
+        name: Mob Head (No Drop, Up)
+      10:
+        name: Mob Head (No Drop, North)
+      11:
+        name: Mob Head (No Drop, South)
+      12:
+        name: Mob Head (No Drop, West)
+      13:
+        name: Mob Head (No Drop, East)
 
   - id: 145
     idStr: anvil
@@ -3756,14 +4289,11 @@ blocks:
           TOP: [8, 14]
           BOTTOM: [7, 13]
 
-
   - id: 146
     idStr: trapped_chest
     name: Trapped Chest
     mapcolor: [100, 100, 100]
     tex: [17,6]
-#   tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
-#   See chest entry
     type: CHEST
     opacity: 0
     data:
@@ -3794,85 +4324,85 @@ blocks:
 
   - id: 147
     idStr: light_weighted_pressure_plate
-    name: Weighted Pressure Plate (Light)
+    name: Light Weighted Pressure Plate
     mapcolor: [231, 165, 45]
     type: PRESSURE_PLATE
     tex: [7, 1]
     opacity: 0
     data:
       0: 
-        name: Weighted Pressure Plate (Light, Power 0)
+        name: Light Weighted Pressure Plate (Power 0)
       1: 
-        name: Weighted Pressure Plate (Light, Power 1)
+        name: Light Weighted Pressure Plate (Power 1)
       2: 
-        name: Weighted Pressure Plate (Light, Power 2)
+        name: Light Weighted Pressure Plate (Power 2)
       3: 
-        name: Weighted Pressure Plate (Light, Power 3)
+        name: Light Weighted Pressure Plate (Power 3)
       4: 
-        name: Weighted Pressure Plate (Light, Power 4)
+        name: Light Weighted Pressure Plate (Power 4)
       5: 
-        name: Weighted Pressure Plate (Light, Power 5)
+        name: Light Weighted Pressure Plate (Power 5)
       6: 
-        name: Weighted Pressure Plate (Light, Power 6)
+        name: Light Weighted Pressure Plate (Power 6)
       7: 
-        name: Weighted Pressure Plate (Light, Power 7)
+        name: Light Weighted Pressure Plate (Power 7)
       8: 
-        name: Weighted Pressure Plate (Light, Power 8)
+        name: Light Weighted Pressure Plate (Power 8)
       9: 
-        name: Weighted Pressure Plate (Light, Power 9)
+        name: Light Weighted Pressure Plate (Power 9)
       10: 
-        name: Weighted Pressure Plate (Light, Power 10)
+        name: Light Weighted Pressure Plate (Power 10)
       11: 
-        name: Weighted Pressure Plate (Light, Power 11)
+        name: Light Weighted Pressure Plate (Power 11)
       12: 
-        name: Weighted Pressure Plate (Light, Power 12)
+        name: Light Weighted Pressure Plate (Power 12)
       13: 
-        name: Weighted Pressure Plate (Light, Power 13)
+        name: Light Weighted Pressure Plate (Power 13)
       14: 
-        name: Weighted Pressure Plate (Light, Power 14)
+        name: Light Weighted Pressure Plate (Power 14)
       15: 
-        name: Weighted Pressure Plate (Light, Power 15)
+        name: Light Weighted Pressure Plate (Power 15)
 
   - id: 148
     idStr: heavy_weighted_pressure_plate
-    name: Weighted Pressure Plate (Heavy)
+    name: Heavy Weighted Pressure Plate
     mapcolor: [191, 191, 191]
     tex: [6, 1]
     type: PRESSURE_PLATE
     opacity: 0
     data:
       0: 
-        name: Weighted Pressure Plate (Heavy, Power 0)
+        name: Heavy Weighted Pressure Plate (Power 0)
       1: 
-        name: Weighted Pressure Plate (Heavy, Power 1)
+        name: Heavy Weighted Pressure Plate (Power 1)
       2: 
-        name: Weighted Pressure Plate (Heavy, Power 2)
+        name: Heavy Weighted Pressure Plate (Power 2)
       3: 
-        name: Weighted Pressure Plate (Heavy, Power 3)
+        name: Heavy Weighted Pressure Plate (Power 3)
       4: 
-        name: Weighted Pressure Plate (Heavy, Power 4)
+        name: Heavy Weighted Pressure Plate (Power 4)
       5: 
-        name: Weighted Pressure Plate (Heavy, Power 5)
+        name: Heavy Weighted Pressure Plate (Power 5)
       6: 
-        name: Weighted Pressure Plate (Heavy, Power 6)
+        name: Heavy Weighted Pressure Plate (Power 6)
       7: 
-        name: Weighted Pressure Plate (Heavy, Power 7)
+        name: Heavy Weighted Pressure Plate (Power 7)
       8: 
-        name: Weighted Pressure Plate (Heavy, Power 8)
+        name: Heavy Weighted Pressure Plate (Power 8)
       9: 
-        name: Weighted Pressure Plate (Heavy, Power 9)
+        name: Heavy Weighted Pressure Plate (Power 9)
       10: 
-        name: Weighted Pressure Plate (Heavy, Power 10)
+        name: Heavy Weighted Pressure Plate (Power 10)
       11: 
-        name: Weighted Pressure Plate (Heavy, Power 11)
+        name: Heavy Weighted Pressure Plate (Power 11)
       12: 
-        name: Weighted Pressure Plate (Heavy, Power 12)
+        name: Heavy Weighted Pressure Plate (Power 12)
       13: 
-        name: Weighted Pressure Plate (Heavy, Power 13)
+        name: Heavy Weighted Pressure Plate (Power 13)
       14: 
-        name: Weighted Pressure Plate (Heavy, Power 14)
+        name: Heavy Weighted Pressure Plate (Power 14)
       15: 
-        name: Weighted Pressure Plate (Heavy, Power 15)
+        name: Heavy Weighted Pressure Plate (Power 15)
 
   - id: 149
     idStr: unpowered_comparator
@@ -4024,6 +4554,7 @@ blocks:
   - id: 151
     idStr: daylight_detector
     name: Daylight Sensor
+    search: detector
     mapcolor: [255, 100, 255]
     tex: [20,2]
     tex_direction:
@@ -4153,33 +4684,32 @@ blocks:
     tex: [9, 13]
     data:
       0:
-        name: Quartz Block
+        name: Block of Quartz
       1:
-        name: Quartz Block (Chiseled)
+        name: Chiseled Quartz Block
         tex: [8, 15]
         tex_direction:
           TOP: [9, 15]
           BOTTOM: [9, 15]
       2:
-        name: Quartz Block (Pillar, Upright)
+        name: Pillar Quartz Block (Upright)
         tex: [10, 15]
         tex_direction:
           TOP: [11, 15]
           BOTTOM: [11, 15]
       3:
-        name: Quartz Block (Pillar, East/West)
+        name: Pillar Quartz Block (East/West)
         tex: [17, 19]
         tex_direction:
           SIDES: [11, 15]
       4:
-        name: Quartz Block (Pillar, North/South)
+        name: Pillar Quartz Block (North/South)
         tex: [10, 15]
         tex_direction:
           FORWARD: [11, 15]
           BACKWARD: [11, 15]
           SIDES: [17, 19]
 
-          
   - id: 156
     idStr: quartz_stairs
     name: Quartz Stairs
@@ -4187,21 +4717,21 @@ blocks:
     mapcolor: [255, 255, 255]
     data:
       0:
-        name: Stairs (Quartz, Bottom, East)
+        name: Quartz Stairs (Bottom, East)
       1:
-        name: Stairs (Quartz, Bottom, West)
+        name: Quartz Stairs (Bottom, West)
       2:
-        name: Stairs (Quartz, Bottom, South)
+        name: Quartz Stairs (Bottom, South)
       3:
-        name: Stairs (Quartz, Bottom, North)
+        name: Quartz Stairs (Bottom, North)
       4:
-        name: Stairs (Quartz, Top, East)
+        name: Quartz Stairs (Top, East)
       5:
-        name: Stairs (Quartz, Top, West)
+        name: Quartz Stairs (Top, West)
       6:
-        name: Stairs (Quartz, Top, South)
+        name: Quartz Stairs (Top, South)
       7:
-        name: Stairs (Quartz, Top, North)
+        name: Quartz Stairs (Top, North)
 
   - id: 157
     idStr: activator_rail
@@ -4249,7 +4779,6 @@ blocks:
     name: Dropper
     mapcolor: [100, 100, 100]
     tex: [13, 2]
-#    tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
     opacity: 0
     data:
       0:
@@ -4323,72 +4852,73 @@ blocks:
 
   - id: 159
     idStr: stained_hardened_clay
-    name: Stained Clay
     mapcolor: [150, 100, 50]
     data:
       0:
+        name: White Stained Clay
         tex: [0, 18]
-        name: Stained Clay (White)
         mapcolor: [222, 222, 222]
       1:
+        name: Orange Stained Clay
         tex: [1, 18]
-        name: Stained Clay (Orange)
         mapcolor: [234, 127, 55]
       2:
+        name: Magenta Stained Clay
         tex: [2, 18]
-        name: Stained Clay (Magenta)
         mapcolor: [191, 75, 201]
       3:
+        name: Light Blue Stained Clay
         tex: [3, 18]
-        name: Stained Clay (Light Blue)
         mapcolor: [104, 139, 212]
       4:
+        name: Yellow Stained Clay
         tex: [4, 18]
-        name: Stained Clay (Yellow)
         mapcolor: [104, 139, 212]
       5:
+        name: Lime Stained Clay
         tex: [5, 18]
-        name: Stained Clay (Lime)
         mapcolor: [59, 189, 48]
       6:
+        name: Pink Stained Clay
         tex: [6, 18]
-        name: Stained Clay (Pink)
         mapcolor: [217, 131, 155]
       7:
+        name: Gray Stained Clay
+        search: grey
         tex: [7, 18]
-        name: Stained Clay (Gray)
         mapcolor: [66, 66, 66]
       8:
+        name: Light Gray Stained Clay
+        search: grey
         tex: [8, 18]
-        name: Stained Clay (Light Gray)
         mapcolor: [166, 166, 166]
       9:
+        name: Cyan Stained Clay
         tex: [9, 18]
-        name: Stained Clay (Cyan)
         mapcolor: [39, 117, 149]
       10:
+        name: Purple Stained Clay
         tex: [10, 18]
-        name: Stained Clay (Purple)
         mapcolor: [129, 54, 196]
       11:
+        name: Blue Stained Clay
         tex: [11, 18]
-        name: Stained Clay (Blue)
         mapcolor: [39, 51, 161]
       12:
+        name: Brown Stained Clay
         tex: [12, 18]
-        name: Stained Clay (Brown)
         mapcolor: [86, 51, 28]
       13:
+        name: Green Stained Clay
         tex: [13, 18]
-        name: Stained Clay (Green)
         mapcolor: [56, 77, 24]
       14:
+        name: Red Stained Clay
         tex: [14, 18]
-        name: Stained Clay (Red)
         mapcolor: [164, 45, 41]
       15:
+        name: Black Stained Clay
         tex: [15, 18]
-        name: Stained Clay (Black)
         mapcolor: [0, 0, 0]
 
   - id: 160
@@ -4399,111 +4929,113 @@ blocks:
     type: SOLID_PANE
     data:
       0:
-        name: Stained Glass Pane (White)
+        name: White Stained Glass Pane
         tex_direction:
             TOP: [0, 17]
             BOTTOM: [0, 17]
         mapcolor: [222, 222, 222]
       1:
-        name: Stained Glass Pane (Orange)
+        name: Orange Stained Glass Pane
         tex: [1, 19]
         tex_direction:
             TOP: [1, 17]
             BOTTOM: [1, 17]
         mapcolor: [234, 127, 55]
       2:
-        name: Stained Glass Pane (Magenta)
+        name: Magenta Stained Glass Pane
         tex: [2, 19]
         tex_direction:
             TOP: [2, 17]
             BOTTOM: [2, 17]
         mapcolor: [191, 75, 201]
       3:
-        name: Stained Glass Pane (Light Blue)
+        name: Light Blue Stained Glass Pane
         tex: [3, 19]
         tex_direction:
             TOP: [3, 17]
             BOTTOM: [3, 17]
         mapcolor: [104, 139, 212]
       4:
-        name: Stained Glass Pane (Yellow)
+        name: Yellow Stained Glass Pane
         tex: [4, 19]
         tex_direction:
             TOP: [4, 17]
             BOTTOM: [4, 17]
         mapcolor: [104, 139, 212]
       5:
-        name: Stained Glass Pane (Lime)
+        name: Lime Stained Glass Pane
         tex: [5, 19]
         tex_direction:
             TOP: [5, 17]
             BOTTOM: [5, 17]
         mapcolor: [59, 189, 48]
       6:
-        name: Stained Glass Pane (Pink)
+        name: Pink Stained Glass Pane
         tex: [6, 19]
         tex_direction:
             TOP: [6, 17]
             BOTTOM: [6, 17]
         mapcolor: [217, 131, 155]
       7:
-        name: Stained Glass Pane (Gray)
+        name: Gray Stained Glass Pane
+        search: grey
         tex: [7, 19]
         tex_direction:
             TOP: [7, 17]
             BOTTOM: [7, 17]
         mapcolor: [66, 66, 66]
       8:
-        name: Stained Glass Pane (Light Gray)
+        name: Light Gray Stained Glass Pane
+        search: grey
         tex: [8, 19]
         tex_direction:
             TOP: [8, 17]
             BOTTOM: [8, 17]
         mapcolor: [166, 166, 166]
       9:
-        name: Stained Glass Pane (Cyan)
+        name: Cyan Stained Glass Pane
         tex: [9, 19]
         tex_direction:
             TOP: [9, 17]
             BOTTOM: [9, 17]
         mapcolor: [39, 117, 149]
       10:
-        name: Stained Glass Pane (Purple)
+        name: Purple Stained Glass Pane
         tex: [10, 19]
         tex_direction:
             TOP: [10, 17]
             BOTTOM: [10, 17]
         mapcolor: [129, 54, 196]
       11:
-        name: Stained Glass Pane (Blue)
+        name: Blue Stained Glass Pane
         tex: [11, 19]
         tex_direction:
             TOP: [11, 17]
             BOTTOM: [11, 17]
         mapcolor: [39, 51, 161]
       12:
-        name: Stained Glass Pane (Brown)
+        name: Brown Stained Glass Pane
         tex: [12, 19]
         tex_direction:
             TOP: [12, 17]
             BOTTOM: [12, 17]
         mapcolor: [86, 51, 28]
       13:
-        name: Stained Glass Pane (Green)
+        name: Green Stained Glass Pane
         tex: [13, 19]
         tex_direction:
             TOP: [13, 17]
             BOTTOM: [13, 17]
         mapcolor: [56, 77, 24]
       14:
-        name: Stained Glass Pane (Red)
+        name: Red Stained Glass Pane
         tex: [14, 19]
         tex_direction:
             TOP: [14, 17]
             BOTTOM: [14, 17]
         mapcolor: [164, 45, 41]
       15:
-        name: Stained Glass Pane (Black)
+        name: Black Stained Glass Pane
         tex: [15, 19]
         tex_direction:
             TOP: [15, 17]
@@ -4513,81 +5045,89 @@ blocks:
 
   - id: 161
     idStr: leaves2
-    name: Leaves (Acacia/Dark Oak)
     mapcolor: [60, 192, 41]
     tex: [5, 3]
     opacity: 1
     data:
       0:
-        name: Leaves (Decay by Tree Update, Acacia)
+        name: Acacia Leaves (Decay after Tree Update)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       1:
-        name: Leaves (Decay by Tree Update, Dark Oak)
+        name: Dark Oak Leaves (Decay after Tree Update)
         mapcolor: [74, 131, 66]
         tex: [5, 3]
       4:
-        name: Leaves (No Decay, Acacia)
+        name: Acacia Leaves (No Decay)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       5:
-        name: Leaves (No Decay, Dark Oak)
+        name: Dark Oak Leaves (No Decay)
         mapcolor: [74, 131, 66]
         tex: [5, 3]
       8:
-        name: Leaves (Decaying, Acacia)
+        name: Acacia Leaves (Decaying)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
       9:
-        name: Leaves (Decaying, Dark Oak)
+        name: Dark Oak Leaves (Decaying)
         mapcolor: [74, 131, 66]
         tex: [5, 3]
+      12:
+        name: Acacia Leaves (No Decay, Unused)
+        mapcolor: [60, 192, 41]
+        tex: [5, 3]
+      13:
+        name: Dark Oak Leaves (No Decay, Unused)
+        mapcolor: [74, 131, 66]
+        tex: [5, 8]
 
   - id: 162
     idStr: log2
     name: Wood (Acacia/Dark Oak)
+    search: log
     mapcolor: [102, 81, 51]
     tex: [3, 15]
     data:
       0:
-        name: Wood Log (Upright, Acacia)
+        name: Acacia Wood (Upright, Acacia)
         tex: [3, 15]
         tex_direction:
           TOP: [13, 13]
           BOTTOM: [13, 13]
       1:
-        name: Wood Log (Upright, Dark Oak)
+        name: Dark Oak Wood (Upright, Dark Oak)
         tex: [4, 15]
         tex_direction:
           TOP: [12, 14]
           BOTTOM: [12, 14]
       4:
-        name: Wood Log (East/West, Acacia)
+        name: Acacia Wood (East/West, Acacia)
         tex: [3, 15]
         tex_direction:
           SIDES: [13, 13]
       5:
-        name: Wood Log (East/West, Dark Oak)
+        name: Dark Oak Wood (East/West, Dark Oak)
         tex: [4, 15]
         tex_direction:
           SIDES: [12, 14]
       8:
-        name: Wood Log (North/South, Acacia)
+        name: Acacia Wood (North/South, Acacia)
         tex: [3, 15]
         tex_direction:
           FORWARD: [13, 13]
           BACKWARD: [13, 13]
       9:
-        name: Wood Log (North/South, Dark Oak)
+        name: Dark Oak Wood (North/South, Dark Oak)
         tex: [4, 15]
         tex_direction:
           FORWARD: [12, 14]
           BACKWARD: [12, 14]
       12:
-        name: Wood Log (Bark Only, Acacia)
+        name: Acacia Wood (Bark Only, Acacia)
         tex: [3, 15]
       13:
-        name: Wood Log (Bark Only, Dark Oak)
+        name: Dark Oak Wood (Bark Only, Dark Oak)
         tex: [4, 15]
         
   - id: 163
@@ -4598,21 +5138,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Acacia Wood, Bottom, East)
+        name: Acacia Wood Stairs (Bottom, East)
       1:
-        name: Stairs (Acacia Wood, Bottom, West)
+        name: Acacia Wood Stairs (Bottom, West)
       2:
-        name: Stairs (Acacia Wood, Bottom, South)
+        name: Acacia Wood Stairs (Bottom, South)
       3:
-        name: Stairs (Acacia Wood, Bottom, North)
+        name: Acacia Wood Stairs (Bottom, North)
       4:
-        name: Stairs (Acacia Wood, Top, East)
+        name: Acacia Wood Stairs (Top, East)
       5:
-        name: Stairs (Acacia Wood, Top, West)
+        name: Acacia Wood Stairs (Top, West)
       6:
-        name: Stairs (Acacia Wood, Top, South)
+        name: Acacia Wood Stairs (Top, South)
       7:
-        name: Stairs (Acacia Wood, Top, North)
+        name: Acacia Wood Stairs (Top, North)
 
   - id: 164
     idStr: dark_oak_stairs
@@ -4622,31 +5162,33 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Dark Oak Wood, Bottom, East)
+        name: Dark Oak Wood Stairs (Bottom, East)
       1:
-        name: Stairs (Dark Oak Wood, Bottom, West)
+        name: Dark Oak Wood Stairs (Bottom, West)
       2:
-        name: Stairs (Dark Oak Wood, Bottom, South)
+        name: Dark Oak Wood Stairs (Bottom, South)
       3:
-        name: Stairs (Dark Oak Wood, Bottom, North)
+        name: Dark Oak Wood Stairs (Bottom, North)
       4:
-        name: Stairs (Dark Oak Wood, Top, East)
+        name: Dark Oak Wood Stairs (Top, East)
       5:
-        name: Stairs (Dark Oak Wood, Top, West)
+        name: Dark Oak Wood Stairs (Top, West)
       6:
-        name: Stairs (Dark Oak Wood, Top, South)
+        name: Dark Oak Wood Stairs (Top, South)
       7:
-        name: Stairs (Dark Oak Wood, Top, North)
+        name: Dark Oak Wood Stairs (Top, North)
     
   - id: 165
     idStr: slime
     name: Slime Block
     type: SEMISOLID
     tex: [17, 15]
+    opacity: 0
     
   - id: 166
     idStr: barrier
     name: Barrier
+    search: block
     mapcolor: [255, 255, 255]
     tex: [10, 1]
     type: GLASS
@@ -4659,6 +5201,39 @@ blocks:
     tex: [3, 16]
     type: TRAPDOOR
     opacity: 0
+    data:
+      0:
+        name: Iron Trapdoor (Bottom, False, North)
+      1:
+        name: Iron Trapdoor (Bottom, False, South)
+      2:
+        name: Iron Trapdoor (Bottom, False, West)
+      3:
+        name: Iron Trapdoor (Bottom, False, East)
+      4:
+        name: Iron Trapdoor (Bottom, True, North)
+      5:
+        name: Iron Trapdoor (Bottom, True, South)
+      6:
+        name: Iron Trapdoor (Bottom, True, West)
+      7:
+        name: Iron Trapdoor (Bottom, True, East)
+      8:
+        name: Iron Trapdoor (Top, False, North)
+      9:
+        name: Iron Trapdoor (Top, False, South)
+      10:
+        name: Iron Trapdoor (Top, False, West)
+      11:
+        name: Iron Trapdoor (Top, False, East)
+      12:
+        name: Iron Trapdoor (Top, True, North)
+      13:
+        name: Iron Trapdoor (Top, True, South)
+      14:
+        name: Iron Trapdoor (Top, True, West)
+      15:
+        name: Iron Trapdoor (Top, True, East)
 
   - id: 168
     idStr: prismarine
@@ -4714,67 +5289,69 @@ blocks:
     data:
       0:
         tex: [0, 4]
-        name: Carpet (White)
+        name: White Carpet
         mapcolor: [222, 222, 222]
       1:
         tex: [2, 13]
-        name: Carpet (Orange)
+        name: Orange Carpet
         mapcolor: [234, 127, 55]
       2:
         tex: [2, 12]
-        name: Carpet (Magenta)
+        name: Magenta Carpet
         mapcolor: [191, 75, 201]
       3:
         tex: [2, 11]
-        name: Carpet (Light Blue)
+        name: Light Blue Carpet
         mapcolor: [104, 139, 212]
       4:
         tex: [2, 10]
-        name: Carpet (Yellow)
+        name: Yellow Carpet
         mapcolor: [104, 139, 212]
       5:
         tex: [2, 9]
-        name: Carpet (Lime)
+        name: Lime Carpet
         mapcolor: [59, 189, 48]
       6:
         tex: [2, 8]
-        name: Carpet (Pink)
+        name: Pink Carpet
         mapcolor: [217, 131, 155]
       7:
         tex: [2, 7]
-        name: Carpet (Gray)
+        name: Gray Carpet
+        search: grey
         mapcolor: [66, 66, 66]
       8:
         tex: [1, 14]
-        name: Carpet (Light Gray)
+        name: Light Gray Carpet
+        search: grey
         mapcolor: [166, 166, 166]
       9:
         tex: [1, 13]
-        name: Carpet (Cyan)
+        name: Cyan Carpet
         mapcolor: [39, 117, 149]
       10:
         tex: [1, 12]
-        name: Carpet (Purple)
+        name: Purple Carpet
         mapcolor: [129, 54, 196]
       11:
         tex: [1, 11]
-        name: Carpet (Blue)
+        name: Blue Carpet
         mapcolor: [39, 51, 161]
       12:
         tex: [1, 10]
-        name: Carpet (Brown)
+        name: Brown Carpet
         mapcolor: [86, 51, 28]
       13:
         tex: [1, 9]
-        name: Carpet (Green)
+        name: Green Carpet
         mapcolor: [56, 77, 24]
       14:
         tex: [1, 8]
-        name: Carpet (Red)
+        name: Red Carpet
         mapcolor: [164, 45, 41]
       15:
         tex: [1, 7]
-        name: Carpet (Black)
+        name: Black Carpet
         mapcolor: [0, 0, 0] 
     type: THINSLICE
     opacity: 0
@@ -4799,42 +5376,41 @@ blocks:
 
   - id: 175
     idStr: double_plant
-    name: Large Flowers
     type: DECORATION_CROSS
     mapcolor: [56, 77, 24]
     opacity: 0
     tex: [16, 9]
-    data:   #Couldn't find good ID information, update if something is wrong.
+    data:
       0:
-        name: Double Plant (Lower Half, Sunflower)
+        name: Sunflower (Lower Half)
         tex: [16, 9]
       1:
-        name: Double Plant (Lower Half, Lilac)
+        name: Lilac (Lower Half)
         tex: [16, 10]
       2:
-        name: Double Plant (Lower Half, Double Tallgrass)
+        name: Double Tallgrass (Lower Half)
         tex: [16, 11]
       3:
-        name: Double Plant (Lower Half, Large Fern)
+        name: Large Fern (Lower Half)
         tex: [16, 12]
       4:
-        name: Double Plant (Lower Half, Rose Bush)
+        name: Rose Bush (Lower Half)
         tex: [16, 13]
       5:
-        name: Double Plant (Lower Half, Peony)
+        name: Peony (Lower Half)
         tex: [16, 14]
 # Tall plant tops use block states for the top half, and are all on data:8-11
       8:
-        name: Double Plant (Upper Half)
+        name: Double Plant (Upper Half, South)
         tex: [5, 3]
       9:
-        name: Double Plant (Upper Half)
+        name: Double Plant (Upper Half, West)
         tex: [5, 3]
       10:
-        name: Double Plant (Upper Half)
+        name: Double Plant (Upper Half, North)
         tex: [5, 3]
       11:
-        name: Double Plant (Upper Half)
+        name: Double Plant (Upper Half, East)
         tex: [5, 3]
 
   - id: 176
@@ -4845,29 +5421,46 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Standing Banner
-#     1:
-#       null
-      2: 
-        name: Standing Banner (North)
-      3: 
         name: Standing Banner (South)
-      4: 
+      1:
+        name: Standing Banner (South-SouthWest)
+      2:
+        name: Standing Banner (SouthWest)
+      3:
+        name: Standing Banner (West-SouthWest)
+      4:
         name: Standing Banner (West)
-      5: 
+      5:
+        name: Standing Banner (West-NorthWest)
+      6:
+        name: Standing Banner (NorthWest)
+      7:
+        name: Standing Banner (North-NorthWest)
+      8:
+        name: Standing Banner (North)
+      9:
+        name: Standing Banner (North-NorthEast)
+      10:
+        name: Standing Banner (NorthEast)
+      11:
+        name: Standing Banner (East-NorthEast)
+      12:
         name: Standing Banner (East)
+      13:
+        name: Standing Banner (East-SouthEast)
+      14:
+        name: Standing Banner (SouthEast)
+      15:
+        name: Standing Banner (South-SouthEast)
     
   - id: 177
     idStr: wall_banner
-    name: Wall-Mounted Banner
+    name: Wall Banner
+    search: mount, mounted
     mapcolor: [20, 20, 20]
     tex: [19, 3]
     opacity: 0
     data:
-      0:
-        name: Wall Banner
-#     1:
-#       null
       2: 
         name: Wall Banner (North)
       3: 
@@ -4879,7 +5472,8 @@ blocks:
 
   - id: 178
     idStr: daylight_detector_inverted
-    name: Inverted Daylight Sensor
+    name: Daylight Sensor Inverted
+    search: detector
     mapcolor: [255, 100, 255]
     tex: [20,2]
     tex_direction:
@@ -4888,37 +5482,37 @@ blocks:
     opacity: 0
     data:
       0: 
-        name: Inverted Daylight Sensor (Power 0)
+        name: Daylight Sensor Inverted (Power 0)
       1: 
-        name: Inverted Daylight Sensor (Power 1)
+        name: Daylight Sensor Inverted (Power 1)
       2: 
-        name: Inverted Daylight Sensor (Power 2)
+        name: Daylight Sensor Inverted (Power 2)
       3: 
-        name: Inverted Daylight Sensor (Power 3)
+        name: Daylight Sensor Inverted (Power 3)
       4: 
-        name: Inverted Daylight Sensor (Power 4)
+        name: Daylight Sensor Inverted (Power 4)
       5: 
-        name: Inverted Daylight Sensor (Power 5)
+        name: Daylight Sensor Inverted (Power 5)
       6: 
-        name: Inverted Daylight Sensor (Power 6)
+        name: Daylight Sensor Inverted (Power 6)
       7: 
-        name: Inverted Daylight Sensor (Power 7)
+        name: Daylight Sensor Inverted (Power 7)
       8: 
-        name: Inverted Daylight Sensor (Power 8)
+        name: Daylight Sensor Inverted (Power 8)
       9: 
-        name: Inverted Daylight Sensor (Power 9)
+        name: Daylight Sensor Inverted (Power 9)
       10: 
-        name: Inverted Daylight Sensor (Power 10)
+        name: Daylight Sensor Inverted (Power 10)
       11: 
-        name: Inverted Daylight Sensor (Power 11)
+        name: Daylight Sensor Inverted (Power 11)
       12: 
-        name: Inverted Daylight Sensor (Power 12)
+        name: Daylight Sensor Inverted (Power 12)
       13: 
-        name: Inverted Daylight Sensor (Power 13)
+        name: Daylight Sensor Inverted (Power 13)
       14: 
-        name: Inverted Daylight Sensor (Power 14)
+        name: Daylight Sensor Inverted (Power 14)
       15: 
-        name: Inverted Daylight Sensor (Power 15)
+        name: Daylight Sensor Inverted (Power 15)
 
   - id: 179
     idStr: red_sandstone
@@ -4932,10 +5526,10 @@ blocks:
         name: Red Sandstone
         tex: [2, 20]
       1:
-        name: Red Sandstone (Chiseled)
+        name: Chiseled Red Sandstone
         tex: [1, 20]
       2:
-        name: Red Sandstone (Smooth)
+        name: Smooth Red Sandstone
         tex: [3, 20]
     
   - id: 180
@@ -4949,21 +5543,21 @@ blocks:
     type: STAIRS
     data:
       0:
-        name: Stairs (Red Sandstone, Bottom, East)
+        name: Red Sandstone Stairs (Bottom, East)
       1:
-        name: Stairs (Red Sandstone, Bottom, West)
+        name: Red Sandstone Stairs (Bottom, West)
       2:
-        name: Stairs (Red Sandstone, Bottom, South)
+        name: Red Sandstone Stairs (Bottom, South)
       3:
-        name: Stairs (Red Sandstone, Bottom, North)
+        name: Red Sandstone Stairs (Bottom, North)
       4:
-        name: Stairs (Red Sandstone, Top, East)
+        name: Red Sandstone Stairs (Top, East)
       5:
-        name: Stairs (Red Sandstone, Top, West)
+        name: Red Sandstone Stairs (Top, West)
       6:
-        name: Stairs (Red Sandstone, Top, South)
+        name: Red Sandstone Stairs (Top, South)
       7:
-        name: Stairs (Red Sandstone, Top, North)
+        name: Red Sandstone Stairs (Top, North)
 
   - id: 181
     idStr: double_stone_slab2
@@ -4975,9 +5569,9 @@ blocks:
       BOTTOM: [0, 20]
     data:
       0:
-        name: Stone Slab (Double, Seamed, Red Sandstone)
+        name: Red Sandstone Double Slab (Seamed)
       8:
-        name: Stone Slab (Double, Seamless, Red Sandstone)
+        name: Red Sandstone Double Slab (Seamless)
         tex: [4, 20]
 
   - id: 182
@@ -4991,9 +5585,9 @@ blocks:
       BOTTOM: [0, 20]
     data:
       0:
-        name: Stone Slab (Bottom, Red Sandstone)
+        name: Red Sandstone Slab (Bottom)
       8:
-        name: Stone Slab (Top, Red Sandstone)
+        name: Red Sandstone Slab (Top)
     
   - id: 183
     idStr: spruce_fence_gate
@@ -5004,37 +5598,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Fence Gate (Spruce, Closed, South)
+        name: Spruce Fence Gate (Closed, South)
       1:
-        name: Fence Gate (Spruce, Closed, West)
+        name: Spruce Fence Gate (Closed, West)
       2:
-        name: Fence Gate (Spruce, Closed, North)
+        name: Spruce Fence Gate (Closed, North)
       3:
-        name: Fence Gate (Spruce, Closed, East)
+        name: Spruce Fence Gate (Closed, East)
       4:
-        name: Fence Gate (Spruce, Open, South)
+        name: Spruce Fence Gate (Open, South)
       5:
-        name: Fence Gate (Spruce, Open, West)
+        name: Spruce Fence Gate (Open, West)
       6:
-        name: Fence Gate (Spruce, Open, North)
+        name: Spruce Fence Gate (Open, North)
       7:
-        name: Fence Gate (Spruce, Open, East)
+        name: Spruce Fence Gate (Open, East)
       8:
-        name: Fence Gate (Spruce, Powered, Closed, South)
+        name: Spruce Fence Gate (Powered, Closed, South)
       9:
-        name: Fence Gate (Spruce, Powered, Closed, West)
+        name: Spruce Fence Gate (Powered, Closed, West)
       10:
-        name: Fence Gate (Spruce, Powered, Closed, North)
+        name: Spruce Fence Gate (Powered, Closed, North)
       11:
-        name: Fence Gate (Spruce, Powered, Closed, East)
+        name: Spruce Fence Gate (Powered, Closed, East)
       12:
-        name: Fence Gate (Spruce, Powered, Open, South)
+        name: Spruce Fence Gate (Powered, Open, South)
       13:
-        name: Fence Gate (Spruce, Powered, Open, West)
+        name: Spruce Fence Gate (Powered, Open, West)
       14:
-        name: Fence Gate (Spruce, Powered, Open, North)
+        name: Spruce Fence Gate (Powered, Open, North)
       15:
-        name: Fence Gate (Spruce, Powered, Open, East)
+        name: Spruce Fence Gate (Powered, Open, East)
  
   - id: 184
     idStr: birch_fence_gate
@@ -5045,37 +5639,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Fence Gate (Birch, Closed, South)
+        name: Birch Fence Gate (Closed, South)
       1:
-        name: Fence Gate (Birch, Closed, West)
+        name: Birch Fence Gate (Closed, West)
       2:
-        name: Fence Gate (Birch, Closed, North)
+        name: Birch Fence Gate (Closed, North)
       3:
-        name: Fence Gate (Birch, Closed, East)
+        name: Birch Fence Gate (Closed, East)
       4:
-        name: Fence Gate (Birch, Open, South)
+        name: Birch Fence Gate (Open, South)
       5:
-        name: Fence Gate (Birch, Open, West)
+        name: Birch Fence Gate (Open, West)
       6:
-        name: Fence Gate (Birch, Open, North)
+        name: Birch Fence Gate (Open, North)
       7:
-        name: Fence Gate (Birch, Open, East)
+        name: Birch Fence Gate (Open, East)
       8:
-        name: Fence Gate (Birch, Powered, Closed, South)
+        name: Birch Fence Gate (Powered, Closed, South)
       9:
-        name: Fence Gate (Birch, Powered, Closed, West)
+        name: Birch Fence Gate (Powered, Closed, West)
       10:
-        name: Fence Gate (Birch, Powered, Closed, North)
+        name: Birch Fence Gate (Powered, Closed, North)
       11:
-        name: Fence Gate (Birch, Powered, Closed, East)
+        name: Birch Fence Gate (Powered, Closed, East)
       12:
-        name: Fence Gate (Birch, Powered, Open, South)
+        name: Birch Fence Gate (Powered, Open, South)
       13:
-        name: Fence Gate (Birch, Powered, Open, West)
+        name: Birch Fence Gate (Powered, Open, West)
       14:
-        name: Fence Gate (Birch, Powered, Open, North)
+        name: Birch Fence Gate (Powered, Open, North)
       15:
-        name: Fence Gate (Birch, Powered, Open, East)
+        name: Birch Fence Gate (Powered, Open, East)
     
   - id: 185
     idStr: jungle_fence_gate
@@ -5086,37 +5680,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Fence Gate (Jungle, Closed, South)
+        name: Jungle Fence Gate (Closed, South)
       1:
-        name: Fence Gate (Jungle, Closed, West)
+        name: Jungle Fence Gate (Closed, West)
       2:
-        name: Fence Gate (Jungle, Closed, North)
+        name: Jungle Fence Gate (Closed, North)
       3:
-        name: Fence Gate (Jungle, Closed, East)
+        name: Jungle Fence Gate (Closed, East)
       4:
-        name: Fence Gate (Jungle, Open, South)
+        name: Jungle Fence Gate (Open, South)
       5:
-        name: Fence Gate (Jungle, Open, West)
+        name: Jungle Fence Gate (Open, West)
       6:
-        name: Fence Gate (Jungle, Open, North)
+        name: Jungle Fence Gate (Open, North)
       7:
-        name: Fence Gate (Jungle, Open, East)
+        name: Jungle Fence Gate (Open, East)
       8:
-        name: Fence Gate (Jungle, Powered, Closed, South)
+        name: Jungle Fence Gate (Powered, Closed, South)
       9:
-        name: Fence Gate (Jungle, Powered, Closed, West)
+        name: Jungle Fence Gate (Powered, Closed, West)
       10:
-        name: Fence Gate (Jungle, Powered, Closed, North)
+        name: Jungle Fence Gate (Powered, Closed, North)
       11:
-        name: Fence Gate (Jungle, Powered, Closed, East)
+        name: Jungle Fence Gate (Powered, Closed, East)
       12:
-        name: Fence Gate (Jungle, Powered, Open, South)
+        name: Jungle Fence Gate (Powered, Open, South)
       13:
-        name: Fence Gate (Jungle, Powered, Open, West)
+        name: Jungle Fence Gate (Powered, Open, West)
       14:
-        name: Fence Gate (Jungle, Powered, Open, North)
+        name: Jungle Fence Gate (Powered, Open, North)
       15:
-        name: Fence Gate (Jungle, Powered, Open, East)
+        name: Jungle Fence Gate (Powered, Open, East)
 
   - id: 186
     idStr: dark_oak_fence_gate
@@ -5127,37 +5721,37 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Fence Gate (Dark Oak, Closed, South)
+        name: Dark Oak Fence Gate (Closed, South)
       1:
-        name: Fence Gate (Dark Oak, Closed, West)
+        name: Dark Oak Fence Gate (Closed, West)
       2:
-        name: Fence Gate (Dark Oak, Closed, North)
+        name: Dark Oak Fence Gate (Closed, North)
       3:
-        name: Fence Gate (Dark Oak, Closed, East)
+        name: Dark Oak Fence Gate (Closed, East)
       4:
-        name: Fence Gate (Dark Oak, Open, South)
+        name: Dark Oak Fence Gate (Open, South)
       5:
-        name: Fence Gate (Dark Oak, Open, West)
+        name: Dark Oak Fence Gate (Open, West)
       6:
-        name: Fence Gate (Dark Oak, Open, North)
+        name: Dark Oak Fence Gate (Open, North)
       7:
-        name: Fence Gate (Dark Oak, Open, East)
+        name: Dark Oak Fence Gate (Open, East)
       8:
-        name: Fence Gate (Dark Oak, Powered, Closed, South)
+        name: Dark Oak Fence Gate (Powered, Closed, South)
       9:
-        name: Fence Gate (Dark Oak, Powered, Closed, West)
+        name: Dark Oak Fence Gate (Powered, Closed, West)
       10:
-        name: Fence Gate (Dark Oak, Powered, Closed, North)
+        name: Dark Oak Fence Gate (Powered, Closed, North)
       11:
-        name: Fence Gate (Dark Oak, Powered, Closed, East)
+        name: Dark Oak Fence Gate (Powered, Closed, East)
       12:
-        name: Fence Gate (Dark Oak, Powered, Open, South)
+        name: Dark Oak Fence Gate (Powered, Open, South)
       13:
-        name: Fence Gate (Dark Oak, Powered, Open, West)
+        name: Dark Oak Fence Gate (Powered, Open, West)
       14:
-        name: Fence Gate (Dark Oak, Powered, Open, North)
+        name: Dark Oak Fence Gate (Powered, Open, North)
       15:
-        name: Fence Gate (Dark Oak, Powered, Open, East)
+        name: Dark Oak Fence Gate (Powered, Open, East)
     
   - id: 187
     idStr: acacia_fence_gate
@@ -5168,105 +5762,229 @@ blocks:
     opacity: 0
     data:
       0:
-        name: Fence Gate (Acacia, Closed, South)
+        name: Acacia Fence Gate (Closed, South)
       1:
-        name: Fence Gate (Acacia, Closed, West)
+        name: Acacia Fence Gate (Closed, West)
       2:
-        name: Fence Gate (Acacia, Closed, North)
+        name: Acacia Fence Gate (Closed, North)
       3:
-        name: Fence Gate (Acacia, Closed, East)
+        name: Acacia Fence Gate (Closed, East)
       4:
-        name: Fence Gate (Acacia, Open, South)
+        name: Acacia Fence Gate (Open, South)
       5:
-        name: Fence Gate (Acacia, Open, West)
+        name: Acacia Fence Gate (Open, West)
       6:
-        name: Fence Gate (Acacia, Open, North)
+        name: Acacia Fence Gate (Open, North)
       7:
-        name: Fence Gate (Acacia, Open, East)
+        name: Acacia Fence Gate (Open, East)
       8:
-        name: Fence Gate (Acacia, Powered, Closed, South)
+        name: Acacia Fence Gate (Powered, Closed, South)
       9:
-        name: Fence Gate (Acacia, Powered, Closed, West)
+        name: Acacia Fence Gate (Powered, Closed, West)
       10:
-        name: Fence Gate (Acacia, Powered, Closed, North)
+        name: Acacia Fence Gate (Powered, Closed, North)
       11:
-        name: Fence Gate (Acacia, Powered, Closed, East)
+        name: Acacia Fence Gate (Powered, Closed, East)
       12:
-        name: Fence Gate (Acacia, Powered, Open, South)
+        name: Acacia Fence Gate (Powered, Open, South)
       13:
-        name: Fence Gate (Acacia, Powered, Open, West)
+        name: Acacia Fence Gate (Powered, Open, West)
       14:
-        name: Fence Gate (Acacia, Powered, Open, North)
+        name: Acacia Fence Gate (Powered, Open, North)
       15:
-        name: Fence Gate (Acacia, Powered, Open, East)
+        name: Acacia Fence Gate (Powered, Open, East)
 
   - id: 188
     idStr: spruce_fence
-    name: Fence (Spruce)
+    name: Spruce Fence
     mapcolor: [157, 128, 79]
     tex: [6, 12]
     opacity: 0
     
   - id: 189
     idStr: birch_fence
-    name: Fence (Birch)
+    name: Birch Fence
     mapcolor: [157, 128, 79]
     tex: [6, 13]
     opacity: 0
   
   - id: 190
     idStr: jungle_fence
-    name: Fence (Jungle)
+    name: Jungle Fence
     mapcolor: [157, 128, 79]
     tex: [7, 12]
     opacity: 0
     
   - id: 191
     idStr: dark_oak_fence
-    name: Fence (Dark Oak)
+    name: Dark Oak Fence
     mapcolor: [157, 128, 79]
     tex: [1, 15]
     opacity: 0
    
   - id: 192
     idStr: acacia_fence
-    name: Fence (Acacia)
+    name: Acacia Fence
     mapcolor: [157, 128, 79]
     tex: [0, 15]
     opacity: 0
     
   - id: 193
     idStr: spruce_door
-    name: Door (Spruce)
+    name: Spruce Door
     mapcolor: [157, 128, 79]
     tex: [5, 20]
     opacity: 0
+    data:
+      0:
+        name: Spruce Door (Lower, Unopened, East)
+      1:
+        name: Spruce Door (Lower, Unopened, South)
+      2:
+        name: Spruce Door (Lower, Unopened, West)
+      3:
+        name: Spruce Door (Lower, Unopened, North)
+      4:
+        name: Spruce Door (Lower, Opened, East)
+      5:
+        name: Spruce Door (Lower, Opened, South)
+      6:
+        name: Spruce Door (Lower, Opened, West)
+      7:
+        name: Spruce Door (Lower, Opened, North)
+      8:
+        name: Spruce Door (Upper, Left Hinge, Unpowered)
+      9:
+        name: Spruce Door (Upper, Right Hinge, Unpowered)
+      10:
+        name: Spruce Door (Upper, Left Hinge, Powered)
+      11:
+        name: Spruce Door (Upper, Right Hinge, Powered)
     
   - id: 194
     idStr: birch_door
-    name: Door (Birch)
+    name: Birch Door
     mapcolor: [157, 128, 79]
     tex: [6, 20]
     opacity: 0
+    data:
+      0:
+        name: Birch Door (Lower, Unopened, East)
+      1:
+        name: Birch Door (Lower, Unopened, South)
+      2:
+        name: Birch Door (Lower, Unopened, West)
+      3:
+        name: Birch Door (Lower, Unopened, North)
+      4:
+        name: Birch Door (Lower, Opened, East)
+      5:
+        name: Birch Door (Lower, Opened, South)
+      6:
+        name: Birch Door (Lower, Opened, West)
+      7:
+        name: Birch Door (Lower, Opened, North)
+      8:
+        name: Birch Door (Upper, Left Hinge, Unpowered)
+      9:
+        name: Birch Door (Upper, Right Hinge, Unpowered)
+      10:
+        name: Birch Door (Upper, Left Hinge, Powered)
+      11:
+        name: Birch Door (Upper, Right Hinge, Powered)
   
   - id: 195
     idStr: jungle_door
-    name: Door (Jungle)
+    name: Jungle Door
     mapcolor: [157, 128, 79]
     tex: [7, 20]
     opacity: 0
+    data:
+      0:
+        name: Jungle Door (Lower, Unopened, East)
+      1:
+        name: Jungle Door (Lower, Unopened, South)
+      2:
+        name: Jungle Door (Lower, Unopened, West)
+      3:
+        name: Jungle Door (Lower, Unopened, North)
+      4:
+        name: Jungle Door (Lower, Opened, East)
+      5:
+        name: Jungle Door (Lower, Opened, South)
+      6:
+        name: Jungle Door (Lower, Opened, West)
+      7:
+        name: Jungle Door (Lower, Opened, North)
+      8:
+        name: Jungle Door (Upper, Left Hinge, Unpowered)
+      9:
+        name: Jungle Door (Upper, Right Hinge, Unpowered)
+      10:
+        name: Jungle Door (Upper, Left Hinge, Powered)
+      11:
+        name: Jungle Door (Upper, Right Hinge, Powered)
 
   - id: 196
     idStr: acacia_door
-    name: Door (Acacia)
+    name: Acacia Door
     mapcolor: [157, 128, 79]
     tex: [8, 20]
     opacity: 0
+    data:
+      0:
+        name: Acacia Door (Lower, Unopened, East)
+      1:
+        name: Acacia Door (Lower, Unopened, South)
+      2:
+        name: Acacia Door (Lower, Unopened, West)
+      3:
+        name: Acacia Door (Lower, Unopened, North)
+      4:
+        name: Acacia Door (Lower, Opened, East)
+      5:
+        name: Acacia Door (Lower, Opened, South)
+      6:
+        name: Acacia Door (Lower, Opened, West)
+      7:
+        name: Acacia Door (Lower, Opened, North)
+      8:
+        name: Acacia Door (Upper, Left Hinge, Unpowered)
+      9:
+        name: Acacia Door (Upper, Right Hinge, Unpowered)
+      10:
+        name: Acacia Door (Upper, Left Hinge, Powered)
+      11:
+        name: Acacia Door (Upper, Right Hinge, Powered)
     
   - id: 197
     idStr: dark_oak_door
-    name: Door (Dark Oak)
+    name: Dark Oak Door
     mapcolor: [157, 128, 79]
     tex: [9, 20]
     opacity: 0
-   
+    data:
+      0:
+        name: Dark Oak Door (Lower, Unopened, East)
+      1:
+        name: Dark Oak Door (Lower, Unopened, South)
+      2:
+        name: Dark Oak Door (Lower, Unopened, West)
+      3:
+        name: Dark Oak Door (Lower, Unopened, North)
+      4:
+        name: Dark Oak Door (Lower, Opened, East)
+      5:
+        name: Dark Oak Door (Lower, Opened, South)
+      6:
+        name: Dark Oak Door (Lower, Opened, West)
+      7:
+        name: Dark Oak Door (Lower, Opened, North)
+      8:
+        name: Dark Oak Door (Upper, Left Hinge, Unpowered)
+      9:
+        name: Dark Oak Door (Upper, Right Hinge, Unpowered)
+      10:
+        name: Dark Oak Door (Upper, Left Hinge, Powered)
+      11:
+        name: Dark Oak Door (Upper, Right Hinge, Powered)

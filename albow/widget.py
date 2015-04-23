@@ -1,5 +1,6 @@
 from __future__ import division
 import sys
+import albow # used for translation update
 from pygame import Rect, Surface, image
 from pygame.locals import K_RETURN, K_KP_ENTER, K_ESCAPE, K_TAB, KEYDOWN, SRCALPHA
 from pygame.mouse import set_cursor
@@ -9,7 +10,7 @@ from vectors import add, subtract
 from utils import frame_rect
 import theme
 from theme import ThemeProperty, FontProperty
-
+import resource
 from numpy import fromstring
 
 debug_rect = False
@@ -89,16 +90,51 @@ class Widget(object):
     tooltip = None
     tooltipText = None
     doNotTranslate = False
+
     def __init__(self, rect=None, **kwds):
         if rect and not isinstance(rect, Rect):
             raise TypeError("Widget rect not a pygame.Rect")
         self._rect = Rect(rect or (0, 0, 100, 100))
+        #-# Translation live update preparation
+#        self.__lang = albow.translate.getLang()
+#        self.__update_translation = False
+#        self.shrink_wrapped = False
+        #-#
         self.parent = None
         self.subwidgets = []
         self.focus_switch = None
         self.is_modal = False
         self.set(**kwds)
         self.root = self.get_root()
+        self.setup_spacings()
+
+    #-# Translation live update preparation
+#    def get_update_translation(self):
+#        return self.__update_translation
+
+#    def set_update_translation(self, v):
+#        if v:
+#            for widget in self.subwidgets:
+#                widget.set_update_translation(v)
+#            if self.shrink_wrapped:
+#                self.shrink_wrap()
+#            if hasattr(self, 'calc_size'):
+#                self.calc_size()
+#            self.invalidate()
+#        self.__update_translation = v
+
+#    update_translation = property(get_update_translation, set_update_translation)
+    #-#
+
+    def setup_spacings(self):
+        def new_size(size):
+            size = float(size * 1000)
+            size = size / float(100)
+            size = int(size * resource.font_proportion / 1000)
+            return size
+        self.margin = new_size(self.margin)
+        if hasattr(self, 'spacing'):
+            self.spacing = new_size(self.spacing)
 
     def set(self, **kwds):
         for name, value in kwds.iteritems():
@@ -163,7 +199,7 @@ class Widget(object):
             widget.parent_resized(dw, dh)
 
     def parent_resized(self, dw, dh):
-        debug_resize = self.debug_resize or self.parent.debug_resize
+        debug_resize = self.debug_resize or getattr(self.parent, 'debug_resize', False)
         if debug_resize:
             print "Widget.parent_resized:", self, "by", (dw, dh)
         left, top, width, height = self._rect
@@ -240,10 +276,13 @@ class Widget(object):
 
     visible = overridable_property('visible')
 
-    def add(self, arg):
+    def add(self, arg, index=None):
         if arg:
             if isinstance(arg, Widget):
-                arg.set_parent(self)
+                if index is not None:
+                    arg.set_parent(self, index)
+                else:
+                    arg.set_parent(self)
             else:
                 for item in arg:
                     self.add(item)
@@ -257,13 +296,13 @@ class Widget(object):
         if widget in self.subwidgets:
             widget.set_parent(None)
 
-    def set_parent(self, parent):
+    def set_parent(self, parent, index=None):
         if parent is not self.parent:
             if self.parent:
                 self.parent._remove(self)
             self.parent = parent
             if parent:
-                parent._add(self)
+                parent._add(self, index)
 
     def all_parents(self):
         widget = self
@@ -273,8 +312,11 @@ class Widget(object):
             widget = widget.parent
         return parents
 
-    def _add(self, widget):
-        self.subwidgets.append(widget)
+    def _add(self, widget, index=None):
+        if index is not None:
+            self.subwidgets.insert(index, widget)
+        else:
+            self.subwidgets.append(widget)
         if hasattr(widget, "idleevent"):
             #print "Adding idle handler for ", widget
             self.root.add_idle_handler(widget)
@@ -290,6 +332,12 @@ class Widget(object):
 
     def draw_all(self, surface):
         if self.visible:
+            #-# Translation live update preparation
+##            if self.update_translation:
+#            if self.__lang != albow.translate.getLang():
+#                self.set_update_translation(True)
+#            self.__update_translation = False
+            #-#
             surf_rect = surface.get_rect()
             bg_image = self.bg_image
             if bg_image:
@@ -406,6 +454,7 @@ class Widget(object):
                 break
             focus = parent.focus_switch
             if focus and focus is not widget:
+                self.root.notMove = False
                 focus.dispatch_attention_loss()
             widget = parent
 
@@ -492,6 +541,8 @@ class Widget(object):
         #print "Widget: presenting with rect", self.rect
         if self.root is None:
             self.root = self.get_root()
+        if "ControlPanel" not in str(self):
+            self.root.notMove = True
         if centered:
             self.center = self.root.center
         self.root.add(self)
@@ -501,9 +552,12 @@ class Widget(object):
         finally:
             self.root.remove(self)
         #print "Widget.present: returning", self.modal_result
+        if "ControlPanel" not in str(self):
+            self.root.notMove = False
         return self.modal_result
 
     def dismiss(self, value=True):
+        self.root.notMove = False
         self.modal_result = value
 
     def get_root(self):
@@ -551,12 +605,16 @@ class Widget(object):
             for r in rects:
                 rmax = rmax.union(r)
             self._rect.size = add(rmax.topleft, rmax.bottomright)
+        #-# Translation live update preparation
+#        self.shrink_wrapped = True
+        #-#
 
     def invalidate(self):
         if self.root:
-            self.root.bonus_draw_time = 0
+            self.root.bonus_draw_time = False
 
-    def get_cursor(self, event):
+    @staticmethod
+    def get_cursor(event):
         return arrow_cursor
 
     def predict(self, kwds, name):
@@ -591,10 +649,11 @@ class Widget(object):
             font = self.font
             d = 2 * self.margin
             if isinstance(width, basestring):
-                width, height = font.size(width)
+                width, height = font.size(width) #[0], font.get_linesize()
                 width += d + 2
             else:
                 height = font.size("X")[1]
+#                height = font.get_linesize()
             self.size = (width, height * nlines + d)
 
     def tab_to_first(self):
@@ -723,6 +782,12 @@ class Widget(object):
     def gl_draw_all(self, root, offset):
         if not self.visible:
             return
+        #-# Translation live update preparation
+##        if self.update_translation:
+#        if self.__lang != albow.translate.getLang():
+#            self.set_update_translation(True)
+#        self.__update_translation = False
+        #-#
         from OpenGL import GL, GLU
 
         rect = self.rect.move(offset)
@@ -734,7 +799,7 @@ class Widget(object):
         else:
             try:
                 surface = Surface(self.size, SRCALPHA)
-            except Exception, e:
+            except Exception:
                 #size error?
                 return
             self.draw_all(surface)

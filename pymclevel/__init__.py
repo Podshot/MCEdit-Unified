@@ -15,3 +15,4 @@ from nbt import load, gunzip, TAG_Byte, TAG_Byte_Array, TAG_Compound, TAG_Double
     TAG_List, TAG_Long, TAG_Short, TAG_String
 import pocket
 from schematic import INVEditChest, MCSchematic, ZipSchematic
+saveFileDir = minecraftSaveFileDir

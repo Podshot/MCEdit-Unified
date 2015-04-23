@@ -19,6 +19,12 @@ mceutils.py
 Exception catching, some basic box drawing, texture pack loading, oddball UI elements
 """
 # Modified by D.C.-G. for translation purpose
+#.# Marks the layout modifications. -- D.C.-G.
+#!#
+#!# The stuff in there related to albow should be in albow module.
+#!# This stuff will then be available for components base classes in this GUI module.
+#!# And make albow/widgets more coherent to use.
+#!#
 import resource_packs
 from albow.controls import ValueDisplay
 from albow import alert, ask, Button, Column, Label, root, Row, ValueButton, Widget
@@ -36,6 +42,12 @@ import hashlib
 import shutil
 
 import logging
+
+#!# Used to track the ALBOW stuff imported from here
+def warn(obj):
+    name = getattr(obj, '__name__', getattr(getattr(obj, '__class__', obj), '__name__', obj))
+    logging.getLogger().warn('%s.%s is deprecated and will be removed. Use albow.%s instead.'%(obj.__module__, name, name))
+#!#
 
 
 def alertException(func):
@@ -217,7 +229,7 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
             textureVertices[:] += 0.5
 
     GL.glVertexPointer(3, GL.GL_FLOAT, 0, cubeVertices)
-    if texture != None:
+    if texture is not None:
         GL.glEnable(GL.GL_TEXTURE_2D)
         GL.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY)
 
@@ -231,7 +243,7 @@ def drawCube(box, cubeType=GL.GL_QUADS, blockType=0, texture=None, textureVertic
     GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
     GL.glDisable(GL.GL_POLYGON_OFFSET_LINE)
 
-    if texture != None:
+    if texture is not None:
         GL.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY)
         GL.glDisable(GL.GL_TEXTURE_2D)
 
@@ -341,35 +353,57 @@ def normalize_size(x):
 class HotkeyColumn(Widget):
     is_gl_container = True
 
-    def __init__(self, items, keysColumn=None, buttonsColumn=None):
+    def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
+        warn(self)
         if keysColumn is None:
             keysColumn = []
         if buttonsColumn is None:
             buttonsColumn = []
+        labels = []
 
         Widget.__init__(self)
-        for (hotkey, title, action) in items:
+        for t in items:
+            if len(t) == 3:
+                (hotkey, title, action) = t
+                tooltipText = None
+            else:
+                (hotkey, title, action, tooltipText) = t
             if isinstance(title, (str, unicode)):
                 button = Button(title, action=action)
             else:
                 button = ValueButton(ref=title, action=action, width=200)
             button.anchor = self.anchor
 
-            label = Label(hotkey, width=75, margin=button.margin)
+            label = Label(hotkey, width=100, margin=button.margin)
             label.anchor = "wh"
 
             label.height = button.height
+
+            labels.append(label)
+
+            if tooltipText:
+                button.tooltipText = tooltipText
 
             keysColumn.append(label)
             buttonsColumn.append(button)
 
         self.buttons = list(buttonsColumn)
 
-        buttonsColumn = Column(buttonsColumn)
+        #.#
+        if item_spacing == None:
+            buttonsColumn = Column(buttonsColumn)
+        else:
+            buttonsColumn = Column(buttonsColumn, spacing=item_spacing)
+        #.#
         buttonsColumn.anchor = self.anchor
-        keysColumn = Column(keysColumn)
+        #.#
+        if item_spacing == None:
+            keysColumn = Column(keysColumn)
+        else:
+            keysColumn = Column(keysColumn, spacing=item_spacing)
 
         commandRow = Row((keysColumn, buttonsColumn))
+        self.labels = labels
         self.add(commandRow)
         self.shrink_wrap()
 
@@ -379,6 +413,7 @@ from albow import CheckBox, AttrRef, Menu
 
 class MenuButton(Button):
     def __init__(self, title, choices, **kw):
+        warn(self)
         Button.__init__(self, title, **kw)
         self.choices = choices
         self.menu = Menu(title, ((c, c) for c in choices))
@@ -399,6 +434,7 @@ class ChoiceButton(ValueButton):
 
     def __init__(self, choices, scrolling=True, scroll_items=30, **kw):
         # passing an empty list of choices is ill-advised
+        warn(self)
 
         if 'choose' in kw:
             self.choose = kw.pop('choose')
@@ -449,6 +485,7 @@ class ChoiceButton(ValueButton):
 
 
 def CheckBoxLabel(title, *args, **kw):
+    warn(CheckBoxLabel)
     tooltipText = kw.pop('tooltipText', None)
 
     cb = CheckBox(*args, **kw)
@@ -475,14 +512,16 @@ def CheckBoxLabel(title, *args, **kw):
     return row
 
 
-from albow import FloatField, IntField, TextField
+from albow import FloatField, IntField, TextFieldWrapped
 
 
 def FloatInputRow(title, *args, **kw):
+    warn(FloatInputRow)
     return Row((Label(title, tooltipText=kw.get('tooltipText')), FloatField(*args, **kw)))
 
 
 def IntInputRow(title, *args, **kw):
+    warn(IntInputRow)
     return Row((Label(title, tooltipText=kw.get('tooltipText')), IntField(*args, **kw)))
 
 
@@ -491,7 +530,8 @@ from datetime import timedelta
 
 
 def TextInputRow(title, *args, **kw):
-    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextField(*args, **kw)))
+    warn(TextInputRow)
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextFieldWrapped(*args, **kw)))
 
 
 def setWindowCaption(prefix):
@@ -499,6 +539,7 @@ def setWindowCaption(prefix):
     prefix = _(prefix)
     if type(prefix) == unicode:
         prefix = prefix.encode("utf8")
+
     class ctx:
         def __enter__(self):
             display.set_caption(prefix + caption)
@@ -507,6 +548,7 @@ def setWindowCaption(prefix):
             display.set_caption(caption)
 
     return ctx()
+
 
 def compareMD5Hashes(found_filters):
     '''
@@ -518,10 +560,16 @@ def compareMD5Hashes(found_filters):
         ff[os.path.split(filter)[-1]] = filter
     try:
         if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
-            filterDict = {}
-            filterDict["filters"] = {}
+            filterDict = {"filter-md5s": {}}
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
                 json.dump(filterDict, j)
+        else:
+            convert = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+            if "filters" in convert:
+                convert["filter-md5s"] = convert["filters"]
+                del convert["filters"]
+                with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
+                    json.dump(convert, done)
         filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "stock-filters"), ".py")
         filterBundle = {}
         for bundled in filterInBundledFolder:
@@ -532,31 +580,32 @@ def compareMD5Hashes(found_filters):
             if realName in filterBundle.keys():
                 with open(ff[filt], 'r') as filtr:
                     filterData = filtr.read()
-                    if realName in hashJSON["filters"]:
-                        old_hash = hashJSON["filters"][realName]
+                    if realName in hashJSON["filter-md5s"]:
+                        old_hash = hashJSON["filter-md5s"][realName]
                         bundledData = None
                         with open(filterBundle[realName]) as bundledFilter:
                             bundledData = bundledFilter.read()
-                        if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData != None:
+                        if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData is not None:
                             shutil.copy(filterBundle[realName], directories.filtersDir)
-                            hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
+                            hashJSON["filter-md5s"][realName] = hashlib.md5(bundledData).hexdigest()
                         if old_hash != hashlib.md5(filterData).hexdigest() and hashlib.md5(filterData).hexdigest() != hashlib.md5(bundledData).hexdigest():
                             shutil.copy(filterBundle[realName], directories.filtersDir)
-                            hashJSON["filters"][realName] = hashlib.md5(bundledData).hexdigest()
+                            hashJSON["filter-md5s"][realName] = hashlib.md5(bundledData).hexdigest()
                     else:
-                        hashJSON["filters"][realName] = hashlib.md5(filterData).hexdigest()
+                        hashJSON["filter-md5s"][realName] = hashlib.md5(filterData).hexdigest()
         for bundled in filterBundle.keys():
             if bundled not in ff.keys():
                 shutil.copy(filterBundle[bundled], directories.filtersDir)
                 data = None
                 with open(filterBundle[bundled], 'r') as f:
                     data = f.read()
-                if data != None:
-                    hashJSON[bundled] = hashlib.md5(data).hexdigest()
+                if data is not None:
+                    hashJSON["filter-md5s"][bundled] = hashlib.md5(data).hexdigest()
         with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
             json.dump(hashJSON, done)
     except Exception, e:
         print ('Error: {}'.format(e))
+
 
 def showProgress(progressText, progressIterator, cancel=False):
     """Show the progress for a long-running synchronous operation.
@@ -565,6 +614,8 @@ def showProgress(progressText, progressIterator, cancel=False):
     A float value between 0.0 and 1.0 for a determinate indicator,
     A string, to update the progress info label
     or a tuple of (float value, string) to set the progress and update the label"""
+
+    warn(ShowProgress)
 
     class ProgressWidget(Dialog):
         progressFraction = 0.0
@@ -620,8 +671,10 @@ def showProgress(progressText, progressIterator, cancel=False):
 
         @property
         def estimateText(self):
-            delta = ((datetime.now() - self.startTime))
+            delta = (datetime.now() - self.startTime)
             progressPercent = (int(self.progressFraction * 10000))
+            if progressPercent > 10000:
+                progressPercent = 10000
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
             return _("Time left: {0}").format(left)
 
@@ -633,14 +686,14 @@ def showProgress(progressText, progressIterator, cancel=False):
             self.invalidate()
 
         def key_down(self, event):
-            self.root.handling_ctrl(event)
+            pass
 
         def key_up(self, event):
             pass
 
         def mouse_up(self, event):
             try:
-                if "SelectionTool" in "{0}".format(self.root.editor.currentTool):
+                if "SelectionTool" in str(self.root.editor.currentTool):
                     if self.root.get_nudge_block().count > 0:
                         self.root.get_nudge_block().mouse_up(event)
             except:

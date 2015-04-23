@@ -77,7 +77,7 @@ class PaletteView(GridView):
             self.draw_item_and_highlight(surface, i, rect, highlight)
 
     def draw_item_and_highlight(self, surface, i, rect, highlight):
-        if i % 2:
+        if not i % 2 and "Header" not in str(type(self)):
             surface.fill(self.zebra_color, rect)
         if highlight:
             self.draw_prehighlight(surface, i, rect)
@@ -133,11 +133,11 @@ class PaletteView(GridView):
 
     def scroll_up(self):
         if self.can_scroll_up():
-            self.scroll -= self.items_per_page() / 2
+            self.scroll -= 1
 
     def scroll_down(self):
         if self.can_scroll_down():
-            self.scroll += self.items_per_page() / 2
+            self.scroll += 1
 
     def scroll_to_item(self, n):
         i = max(0, min(n, self.num_items() - 1))

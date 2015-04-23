@@ -9,7 +9,7 @@ from pymclevel import BoundingBox
 import numpy
 from albow.root import Cancel
 import pymclevel
-from mceutils import showProgress
+from albow import showProgress
 from pymclevel.mclevelbase import exhaust
 
 undo_folder = os.path.join(tempfile.gettempdir(), "mcedit_undo", str(os.getpid()))
@@ -74,7 +74,8 @@ class Operation(object):
 
         return undoLevel
 
-    def extractUndoSchematic(self, level, box):
+    @staticmethod
+    def extractUndoSchematic(level, box):
         if box.volume > 131072:
             sch = showProgress("Recording undo...", level.extractZipSchematicIter(box), cancel=True)
         else:
@@ -85,7 +86,6 @@ class Operation(object):
             sch.sourcePoint = box.origin
 
         return sch
-
 
     # represents a single undoable operation
     def perform(self, recordUndo=True):
@@ -134,7 +134,6 @@ class Operation(object):
                 showProgress("Redoing...", _redo())
             else:
                 exhaust(_redo())
-
 
     def dirtyBox(self):
         """ The region modified by the operation.
