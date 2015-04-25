@@ -18,7 +18,7 @@ from pymclevel.infiniteworld import SessionLockLost
 import keys
 import pygame
 from albow.fields import FloatField
-from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow
+from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow, ScrollPanel
 from editortools.blockview import BlockButton
 import ftp_client
 import sys
@@ -236,7 +236,7 @@ class LevelEditor(GLViewport):
                 col.append(CheckBoxLabel(self.level.materials[ore].name.replace(" Ore", ""),
                                          ref=config.settings["showOre{}".format(ore)]))
 
-            col = Column(col, align="r")
+            col = Column(col, align="r", spacing=4)
 
             d = QuickDialog()
             d.add(col)
