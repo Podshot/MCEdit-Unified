@@ -22,12 +22,13 @@
 		"reddit": "superezfe"
 	},
 	"Aiybe": {
+		
 	},
 	"Rubisk": {
 		"role": "Brush Code",
 		"twitter": "Rubisks",
-        "youtube": "RubiskMC",
-        "reddit": "Rubisk"
+		"youtube": "RubiskMC",
+		"reddit": "Rubisk"
 	},
 	"naor2013": {
 		"role": "Jack of All Trades"
@@ -49,5 +50,13 @@
 	},
 	"codewarrior0": {
 		"role": "Original Creator"
-		}
+	},
+	"DragonQuiz": {
+		"role": "Website Tech"
+	},
+	"codewarrior0": {
+		"role": "Original Creator",
+		"twitter": "codewarrior0",
+		"reddit": "codewarrior0"
+	}
 }
