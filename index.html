@@ -36,8 +36,8 @@
 
 	<script>
 		function pageTrigger() {
-			var is_OSX = navigator.platform.match(/(Mac|iPhone|iPod|iPad)/i) ? true : false;
-			var is_Win = (navigator.platform.match(/(Win)/i) && !is_OSX)? true : false;
+			var is_OSX = navigator.platform.match(/(Mac)/i);
+			var is_Win = (navigator.platform.match(/(Win)/i) && !is_OSX);
 
 			if (is_OSX) {
 				$('#Win-downloads-toplevel').hide();
