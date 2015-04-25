@@ -500,7 +500,9 @@ class FilterToolPanel(Panel):
         self.macro_button.text = "Stop recording"
         self.macro_button.tooltipText = "Currently recording a macro"
         self.macro_button.action = self.stop_record_macro
-        self.confirmButton = Button("Add macro", action=self.tool.confirm)
+        self.confirmButton.text = "Add macro"
+        self.confirmButton.width += 75
+        self.confirmButton.centerx = self.centerx
         self._recording = True
     
     def addMacroStep(self, name=None, inputs=None):
@@ -769,6 +771,7 @@ class FilterTool(EditorTool):
             alert("Could not find dependencies for the following filters:\n"+"\n".join(names)+"\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")
     
     def reloadFilters(self):
+        sys.dont_write_bytecode = True
         if self.filterModules:
             for k, m in self.filterModules.iteritems():
                 del m

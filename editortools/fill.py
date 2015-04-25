@@ -153,11 +153,13 @@ class FillToolOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
-        self.autoChooseCheckBox = CheckBoxLabel("Choose Block Immediately",
+        self.autoChooseCheckBoxFill = CheckBoxLabel("Open Block Picker for Fill",
                                                 ref=config.fill.chooseBlockImmediately,
                                                 tooltipText="When the fill tool is chosen, prompt for a block type.")
-
-        col = Column((Label("Fill Options"), self.autoChooseCheckBox, Button("OK", action=self.dismiss)))
+        self.autoChooseCheckBoxReplace = CheckBoxLabel("Open Block Picker for Replace",
+                                                       ref=config.fill.chooseBlockImmediatelyReplace,
+                                                       tooltipText="When the replace tool is chosen, prompt for a block type.")
+        col = Column((Label("Fill and Replace Options"), self.autoChooseCheckBoxFill, self.autoChooseCheckBoxReplace, Button("OK", action=self.dismiss)))
 
         self.add(col)
         self.shrink_wrap()
@@ -224,6 +226,7 @@ class FillTool(EditorTool):
                 self.showPanel()
 
     chooseBlockImmediately = config.fill.chooseBlockImmediately.property()
+    chooseBlockImmediatelyReplace = config.fill.chooseBlockImmediatelyReplace.property()
 
     def toolReselected(self):
         self.showPanel()
@@ -306,7 +309,7 @@ class FillTool(EditorTool):
 
         self.hidePanel()
         self.showPanel()
-        if self.replacing:
+        if self.replacing and self.chooseBlockImmediatelyReplace:
             self.panel.pickReplaceBlock()
 
     @alertException

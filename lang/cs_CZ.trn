@@ -152,7 +152,7 @@ o66 Reset Distance When Brush Size Changes
 t66 Vynulovat vzdálenost při změně velikosti štětce
 o67 Brush Options
 t67 Nastavení štětce
-o68 Fill Options
+o68 Fill and Replace Options
 t68 Nastavení výplně
 o69 Spawn Position Safety
 t69 Bezpečná spawn pozice
@@ -1744,3 +1744,13 @@ o829 Could not find the server.properties file! The FTP client will not be able 
 t829 
 o830 Could not find the world folder from the server.properties file
 t830 
+o831 Choose Block Immediately for Replace
+t831 
+o832 Open Block Picker for Fill
+t832 
+o833 Open Block Picker for Replace
+t833 
+o834 When the replace tool is chosen, prompt for a block type.
+t834 
+o835 Matching Coordinates
+t835 

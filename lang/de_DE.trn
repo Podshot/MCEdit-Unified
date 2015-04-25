@@ -152,7 +152,7 @@ o66 Reset Distance When Brush Size Changes
 t66 Entfernung zurücksetzen wenn Pinselgrösse geändert wurde
 o67 Brush Options
 t67 Pinseloptionen
-o68 Fill Options
+o68 Fill and Replace Options
 t68 Fülloptionen
 o69 Spawn Position Safety
 t69 Spawnposition Sicherheit
@@ -581,7 +581,7 @@ t271 Finde:
 o272 Replace with:
 t272 Ersetzen mit:
 o273 When the fill tool is chosen, prompt for a block type.
-t273 Wenn das Füll Werkzeug ausgewählt ist, wählen Sie einen Blocktypen.
+t273 Wenn das Füll Werkzeug ausgewählt ist, nach dem Blocktyp fragen.
 o274 Filter
 t274 Filter
 o275 Strength
@@ -1494,7 +1494,7 @@ o695 Open the NBT Explorer to edit player's attributes and inventory
 t695 Öffne den NBT Explorer um die Attribute des Spielers und dessen Inventar zu editieren
 o696 Not yet implemented.
 Use the NBT Explorer to edit this player.
-t696  Noch nicht implementiert.
+t696 Noch nicht implementiert.
 Nutze den NBT Explorer um den Spieler zu editieren.
 o697 Error while getting player file.
 %s not found.
@@ -1790,3 +1790,13 @@ o829 Could not find the server.properties file! The FTP client will not be able 
 t829 Konnte die server.properties Datei nicht finden! Der FTP Client wird die Welt nicht herunterladen können bis die server.properties Datei im standard FTP Verzeichnis ist
 o830 Could not find the world folder from the server.properties file
 t830 Konnte den Welten Ordner von der server.properties Datei nicht finden
+o831 Choose Block Immediately for Replace
+t831 Block für das Ersetzen sofort auswählen
+o832 Open Block Picker for Fill
+t832 Öffne Blockauswahl für das Füllen
+o833 Open Block Picker for Replace
+t833 Öffne Blockauswahl für das Ersetzen
+o834 When the replace tool is chosen, prompt for a block type.
+t834 Wenn das Ersetz Tool ausgewählt ist, nach dem Blocktyp fragen.
+o835 Matching Coordinates
+t835 

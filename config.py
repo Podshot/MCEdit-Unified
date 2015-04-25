@@ -521,6 +521,7 @@ definitions = {
         ("fontProportion", "Fonts Proportion", 100),
         ("downloadPlayerSkins", "Download Player Skins", True),
         ("maxViewDistance", "Max View Distance", 32),
+        ("drawPlayerHeads", "Draw Player Heads", True)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),
@@ -550,7 +551,8 @@ definitions = {
         ("placeImmediately", "Place Immediately", True)
     ],
     ("fill", "Fill"): [
-        ("chooseBlockImmediately", "Choose Block Immediately", True)
+        ("chooseBlockImmediately", "Choose Block Immediately", True),
+        ("chooseBlockImmediatelyReplace", "Choose Block Immediately for Replace", True)
     ],
     ("spawn", "Spawn"): [
         ("spawnProtection", "Spawn Protection", True)

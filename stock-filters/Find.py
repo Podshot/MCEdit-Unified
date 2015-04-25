@@ -283,7 +283,8 @@ def perform(level, box, options):
     else:
         search.sort()
         if op == "Dump Found Coordinates":
-            alert("\nMatching Coordinates:\n" + "\n".join("%d, %d, %d" % pos for pos in search))
+#            alert("\nMatching Coordinates:\n" + "\n".join("%d, %d, %d" % pos for pos in search), height=editor.height)
+            alert("\n".join("%d, %d, %d" % pos for pos in search), height=editor.height, colLabel="Matching Coordinates")
         else:
             #-#
             if newLayout:
