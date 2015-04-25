@@ -92,8 +92,8 @@ o36 Numpad
 t36 Pavé num
 o37 WASD Old
 t37 Ancien WASD
-o38 Keybind Presets:
-t38 Préréglages :
+o38 Keybind Presets: 
+t38 
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -1802,3 +1802,9 @@ o834 When the replace tool is chosen, prompt for a block type.
 t834 Demande un type de bloc quand l'outil de remplissage est choisi.
 o835 Matching Coordinates
 t835 Coordonnées corespondantes
+o836 Session Lock Options
+t836 Options Verrou de Session
+o837 Override Minecraft Changes (Not Recommended)
+t837 Outrepasser Minecraft (Non recommandé)
+o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t838 Toujours écraser les cahngements faits dans Minecraft quand le monde est ouvert dans MVEdit. (Non recommandé)

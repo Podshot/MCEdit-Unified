@@ -90,7 +90,7 @@ o36 Numpad
 t36 Numpad
 o37 WASD Old
 t37 WASD Oud
-o38 Keybind Presets:
+o38 Keybind Presets: 
 t38 
 o39 MCEdit
 t39 MCEdit
@@ -330,10 +330,10 @@ o154 Enable choppy mouse movement for faster loading.
 t154 Activeer hakkerige muis voor sneller laden.
 o155 Point here and use mousewheel to adjust
 t155 Richt hier en gebruik muiswiel om aan te passen
-o156 Install Mode: Portable
-t156 Installatie: Draagbaar
-o157 Install Mode: Fixed
-t157 Installatie: Vast
+o156 Portable
+t156 
+o157 Fixed
+t157 
 o158 Change the direction of the Forward and Backward keys when looking down
 t158 Verwissel de richting van de Vooruit/Achteruit toets als je naar beneden kijkt
 o159 When you are this far above the top of the world, move fast and use low-detail mode.
@@ -1754,3 +1754,9 @@ o834 When the replace tool is chosen, prompt for a block type.
 t834 
 o835 Matching Coordinates
 t835 
+o836 Session Lock Options
+t836 
+o837 Override Minecraft Changes (Not Recommended)
+t837 
+o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t838 

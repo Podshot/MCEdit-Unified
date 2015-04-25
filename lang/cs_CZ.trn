@@ -92,7 +92,7 @@ o36 Numpad
 t36 Numerické klávesy
 o37 WASD Old
 t37 WASD - staré
-o38 Keybind Presets:
+o38 Keybind Presets: 
 t38 
 o39 MCEdit
 t39 MCEdit
@@ -1754,3 +1754,9 @@ o834 When the replace tool is chosen, prompt for a block type.
 t834 
 o835 Matching Coordinates
 t835 
+o836 Session Lock Options
+t836 
+o837 Override Minecraft Changes (Not Recommended)
+t837 
+o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t838 
