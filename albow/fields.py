@@ -30,6 +30,7 @@ class TextEditor(Widget):
     _text = u""
 
     def __init__(self, width, upper=None, **kwds):
+        kwds['doNotTranslate'] = kwds.get('doNotTranslate', True)
         Widget.__init__(self, **kwds)
         self.set_size_for_text(width)
         if upper is not None:
@@ -41,7 +42,7 @@ class TextEditor(Widget):
         return self._text
 
     def set_text(self, text):
-        self._text = _(text)
+        self._text = _(text, doNotTranslate=self.doNotTranslate)
 
     text = overridable_property('text')
 
@@ -260,7 +261,7 @@ class Field(Control, TextEditor):
 
     def set_text(self, text):
         self.editing = True
-        self._text = _(text)
+        self._text = _(text, doNotTranslate=self.doNotTranslate)
         if self.should_commit_immediately(text):
             self.commit()
 
@@ -508,6 +509,7 @@ class TextEditorWrapped(Widget):
     _text = u""
 
     def __init__(self, width, lines, upper=None, allowed_chars=None, **kwds):
+        kwds['doNotTranslate'] = kwds.get('doNotTranslate', True)
         Widget.__init__(self, **kwds)
         self.set_size_for_text(width, lines)
         if upper is not None:
@@ -526,7 +528,7 @@ class TextEditorWrapped(Widget):
         return self._text
 
     def set_text(self, text):
-        self._text = _(text)
+        self._text = _(text, doNotTranslate=self.doNotTranslate)
         self.textChanged = True
 
     text = overridable_property('text')
@@ -1061,7 +1063,7 @@ class TextEditorWrapped(Widget):
         return i
 
     def change_text(self, text):
-        self.set_text(_(text))
+        self.set_text(_(text, doNotTranslate=self.doNotTranslate))
         self.textChanged = True
         self.updateTextWrap()
         self.call_handler('change_action')
@@ -1167,7 +1169,7 @@ class FieldWrapped(Control, TextEditorWrapped):
         if x == self.empty:
             return ""
         else:
-            return self.format % _(x)
+            return self.format % _(x, doNotTranslate=self.doNotTranslate)
 
     def get_text(self):
         if self.editing:
@@ -1177,7 +1179,7 @@ class FieldWrapped(Control, TextEditorWrapped):
 
     def set_text(self, text):
         self.editing = True
-        self._text = _(text)
+        self._text = _(text, doNotTranslate=self.doNotTranslate)
         if self.should_commit_immediately(text):
             self.commit()
 
