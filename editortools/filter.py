@@ -768,7 +768,7 @@ class FilterTool(EditorTool):
                     lines.append("    "+dep+"\n")
             with open(os.path.join(directories.getCacheDir(), 'dependencies_not_found.txt'), 'wb') as f:
                 f.writelines(lines)
-            alert("Could not find dependencies for the following filters:\n"+"\n".join(names)+"\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")
+            alert(_("Could not find dependencies for the following filters:\n%s\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")%"\n".join(names))
     
     def reloadFilters(self):
         sys.dont_write_bytecode = True
