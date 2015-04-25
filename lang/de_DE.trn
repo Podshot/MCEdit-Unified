@@ -153,7 +153,7 @@ t66 Entfernung zurücksetzen wenn Pinselgrösse geändert wurde
 o67 Brush Options
 t67 Pinseloptionen
 o68 Fill and Replace Options
-t68 Fülloptionen
+t68 Füll- und Ersetzoptionen
 o69 Spawn Position Safety
 t69 Spawnposition Sicherheit
 o70 Spawn Point Options
@@ -203,7 +203,7 @@ t91 {0} um zu verlangsamen
 o92 Right-click to toggle camera control
 t92 Rechtsklick um Kamera Kontrolle umzuschalten
 o93 Mousewheel to control tool distance
-t93 Mausrad um Steuerungstoolentfernung zu kontrollieren
+t93 Mausrad um Werkzeugsentfernung zu steuern
 o94 Hold {0} for details
 t94 Halten Sie {0} für Details
 o95 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
@@ -263,9 +263,9 @@ t119 Reichweite zurücksetzen
 o120 Export Selection
 t120 Auswahl exportieren
 o121 Line Tool (Hold)
-t121 Linien Tool (Halten)
+t121 Linien Werkzeug (Halten)
 o122 <Clone Tool>
-t122 <Kopier Tool>
+t122 <Kopier Werkzeug>
 o123 Rotate (Clone)
 t123 Rotieren (Kopie)
 o124 Roll (Clone)
@@ -275,7 +275,7 @@ t125 Umdrehen
 o126 Mirror
 t126 Spiegeln
 o127 <Brush Tool>
-t127 <Pinsel Tool>
+t127 <Pinsel Werkzeug>
 o128 Rotate (Brush)
 t128 Rotieren (Pinsel)
 o129 Roll (Brush)
@@ -285,7 +285,7 @@ t130 Vergrössern
 o131 Decrease Size
 t131 Verkleinern
 o132 <Fill and Replace Tool>
-t132 <Füll und Ersetz Tool>
+t132 <Füll und Ersetz Werkzeug>
 o133 Replace Shortcut
 t133 Tastenkürzel: Ersetzen 
 o134 <Function>
@@ -1021,9 +1021,9 @@ t479 Bewege
 o480 Align to Camera
 t480 An Kamera anpassen
 o481 Player (Single Player)
-t481 Spieler
+t481 Spieler (Einzelspieler)
 o482 Chunk Control
-t482 Chunk Verwaltungstool
+t482 Chunk Verwaltungswerkzeug
 o483 Move Spawn Point
 Right-click for options
 t483 Bewege Spawnpunkt
@@ -1519,7 +1519,7 @@ t703 Speichern und Neustarten
 o704 From FTP Server
 t704 Vom FTP Server
 o705 <Chunk Control Tool>
-t705 <Chunk Verwaltungstool>
+t705 <Chunk Verwaltungswerkzeug>
 o706 Select Chunks
 t706 Wählen Sie Chunks aus
 o707 
@@ -1565,7 +1565,7 @@ t721 Minecraft Welt *.*
 o722 Generating chunks...
 t722 Generiert Chunks...
 o723 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t723 Welt erstellt. Um diese unendliche Welt zu vergrössen, erforschen Sie die Welt in Minecraft oder benutzen Sie das Chunk Verwaltungstool um Chunks zu erstellen oder zu löschen.
+t723 Welt erstellt. Um diese unendliche Welt zu vergrössen, erforschen Sie die Welt in Minecraft oder benutzen Sie das Chunk Verwaltungswerkzeug um Chunks zu erstellen oder zu löschen.
 o724 Analyzing {0} blocks...
 t724 Analysiert {0} Blöcke...
 o725 Save to file...
@@ -1725,7 +1725,7 @@ Shortcut: Alt-6
 t798 Automatisch neue UUIDs für jedes kopiertes Entity erstellen. [EMPFOHLEN]
 Tastenkürzel: Alt-6
 o799 When the brush tool is chosen, prompt for a block type.
-t799 Wenn das Pinsel Tool ausgewählt ist, zur Block Typ Auswahl auffordern 
+t799 Wenn das Pinsel Werkzeug ausgewählt ist, zur Block Typ Auswahl auffordern 
 o800 Max View Distance
 t800 Maximale Sichtweite
 o801 It looks like this level is completely empty!
@@ -1797,6 +1797,6 @@ t832 Öffne Blockauswahl für das Füllen
 o833 Open Block Picker for Replace
 t833 Öffne Blockauswahl für das Ersetzen
 o834 When the replace tool is chosen, prompt for a block type.
-t834 Wenn das Ersetz Tool ausgewählt ist, nach dem Blocktyp fragen.
+t834 Wenn das Ersetz Werkzeug ausgewählt ist, nach dem Blocktyp fragen.
 o835 Matching Coordinates
-t835 
+t835 Zutreffende Koordinaten
