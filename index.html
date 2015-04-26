@@ -111,6 +111,10 @@
 
 				var totalDownloads = 0
 
+                releaseData[i].assets.sort(function(a, b) {
+                    return a.download_count - b.download_count;
+                });
+
 				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
                     versionDownloads += getDownloadName(releaseData[i].assets[x].name) + ' - ' + releaseData[i].assets[x].download_count;
                     if(x > 0)
