@@ -513,20 +513,19 @@ class BrushTool(CloneTool):
                 path = path.encode(DEF_ENC)
             globals()[name] = m = imp.load_source(name, path)
             if not embeded:
-                if "albow.translate" in sys.modules.keys():
-                    del sys.modules["albow.translate"]
+                old_trn_path = albow.translate.getLangPath()
                 if "trn" in sys.modules.keys():
                     del sys.modules["trn"]
                 import albow.translate as trn
-                old_trn_path = trn.langPath
-                print 'old_trn_path', old_trn_path
                 trn_path = os.path.join(directories.brushesDir, name)
                 if os.path.exists(trn_path):
                     trn.setLangPath(trn_path)
                     trn.buildTranslation(config.settings.langCode.get())
                 m.trn = trn
-                print 'old_trn_path', old_trn_path
-                trn.setLangPath(old_trn_path)
+                albow.translate.setLangPath(old_trn_path)
+                albow.translate.buildTranslation(config.settings.langCode.get())
+                self.editor.mcedit.set_update_translation(True)
+                self.editor.mcedit.set_update_translation(False)
             m.materials = self.editor.level.materials
             m.createInputs(m)
             return m

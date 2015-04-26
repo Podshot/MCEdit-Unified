@@ -825,8 +825,7 @@ class FilterTool(EditorTool):
 #                    m = imp.load_source(module_name, path)
                 listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
                 if name not in listdir:
-                    if "albow.translate" in sys.modules.keys():
-                        del sys.modules["albow.translate"]
+                    old_trn_path = albow.translate.getLangPath()
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
                     import albow.translate as trn
@@ -839,6 +838,10 @@ class FilterTool(EditorTool):
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
                     m.trn = trn
+                    albow.translate.setLangPath(old_trn_path)
+                    albow.translate.buildTranslation(config.settings.langCode.get())
+                    self.editor.mcedit.set_update_translation(True)
+                    self.editor.mcedit.set_update_translation(False)
                 return m
             except Exception, e:
                 # Only prints when the filter filename is presented, not the entire file path

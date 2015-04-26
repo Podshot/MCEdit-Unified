@@ -404,6 +404,8 @@ def buildTranslation(lang,suppressAlert=False):
             log.debug("  * It's not a file.")
         if not os.access(fName, os.R_OK):
             log.debug("  * Is not readable.")
+        log.debug("Default strings will be used.")
+        string_cache = {}
     log.debug("buildTranslation >>>")
     return string_cache, fileFound
 

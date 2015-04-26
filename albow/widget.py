@@ -114,6 +114,7 @@ class Widget(object):
 
     def set_update_translation(self, v):
         if v:
+#            print self.__lang, albow.translate.getLang()
             self.font = self.predict_font({})
             for widget in self.subwidgets:
                 widget.set_update_translation(v)
@@ -335,10 +336,10 @@ class Widget(object):
         if self.visible:
             #-# Translation live update preparation
 #            if self.update_translation:
-            if self.__lang != albow.translate.getLang():
-                self.set_update_translation(True)
-                self.__lang = albow.translate.getLang()
-            self.__update_translation = False
+#            if self.__lang != albow.translate.getLang():
+#                self.set_update_translation(True)
+#                self.__lang = albow.translate.getLang()
+#            self.__update_translation = False
             #-#
             surf_rect = surface.get_rect()
             bg_image = self.bg_image
@@ -786,10 +787,10 @@ class Widget(object):
             return
         #-# Translation live update preparation
 #        if self.update_translation:
-        if self.__lang != albow.translate.getLang():
-            self.set_update_translation(True)
-            self.__lang = albow.translate.getLang()
-        self.__update_translation = False
+#        if self.__lang != albow.translate.getLang():
+#            self.set_update_translation(True)
+#            self.__lang = albow.translate.getLang()
+#        self.__update_translation = False
         #-#
         from OpenGL import GL, GLU
 

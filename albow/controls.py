@@ -8,7 +8,7 @@ from pygame import Rect, draw
 from widget import Widget, overridable_property
 from theme import ThemeProperty
 import resource
-from translate import _
+from translate import _, getLang
 
 #-# Translation live update preparation
 #from translate import new_translation
@@ -134,9 +134,8 @@ class Label(Widget):
         return Widget.update_translation(self)
 
     def set_update_translation(self, v):
-        # get the translation of the base_text
-#        trn = _(self.base_text)
         self.text = self.base_text
+        self.set_text(self.base_text)
         self.calc_size()
         Widget.set_update_translation(self, v)
     #-#
