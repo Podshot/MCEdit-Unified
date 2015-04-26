@@ -1,6 +1,5 @@
 import albow
 from albow.dialogs import Dialog
-#import mceutils
 from config import config
 import pygame
 from albow.translate import _
@@ -95,7 +94,6 @@ class OptionsPanel(Dialog):
         compassSizeRow = albow.IntInputRow("Compass Size (%): ",
                                             ref=config.settings.compassSize, width=100, min=0, max=100)
 
-        # FONT SIZE
         fontProportion = albow.IntInputRow("Fonts Proportion (%): ",
                                             ref=config.settings.fontProportion, width=100, min=0,
                                             tooltipText="Fonts sizing proportion. The number is a percentage.\nRestart needed!")
@@ -178,7 +176,7 @@ class OptionsPanel(Dialog):
             undoLimitRow,
             maxCopiesRow,
             compassSizeRow,
-            fontProportion, # FONT SIZE
+            fontProportion,
             fogIntensityRow,
         )
 
@@ -252,14 +250,16 @@ class OptionsPanel(Dialog):
             lng = self.langs[langName]
         config.settings.langCode.set(lng)
         #-# Translation live update preparation
-#        logging.debug('*** Language change detected.')
-#        logging.debug('    Former language: %s.'%albow.translate.getLang())
-#        logging.debug('    New language: %s.'%lng)
-#        albow.translate.langPath = os.sep.join((".", "lang"))
-#        update = albow.translate.setLang(lng)[2]
-#        logging.debug('    Update done? %s (Magic %s)'%(update, update or lng == 'en_US'))
-#        self.mcedit.root.set_update_translation(update or lng == 'en_US')
-#        self.mcedit.root.set_update_translation(False)
+        logging.debug('*** Language change detected.')
+        logging.debug('    Former language: %s.'%albow.translate.getLang())
+        logging.debug('    New language: %s.'%lng)
+        albow.translate.langPath = os.sep.join((".", "lang"))
+        update = albow.translate.setLang(lng)[2]
+        logging.debug('    Update done? %s (Magic %s)'%(update, update or lng == 'en_US'))
+        self.mcedit.root.set_update_translation(update or lng == 'en_US')
+        self.mcedit.root.set_update_translation(False)
+        self.mcedit.editor.set_update_translation(update or lng == 'en_US')
+        self.mcedit.editor.set_update_translation(False)
         #-#
 
     @staticmethod
@@ -309,20 +309,20 @@ class OptionsPanel(Dialog):
 #        font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
 #        self.changeLanguage()
 
-        if not font or not lang:
-            editor = self.mcedit.editor
-            if editor and editor.unsavedEdits:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
-            else:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
-            if result == "Save and Restart":
-                editor.saveFile()
-                self.mcedit.restart()
-            elif result == "Restart":
-                self.mcedit.restart()
-            elif result == "Later":
-                pass
-        
+#        if not font or not lang:
+#            editor = self.mcedit.editor
+#            if editor and editor.unsavedEdits:
+#                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
+#            else:
+#                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
+#            if result == "Save and Restart":
+#                editor.saveFile()
+#                self.mcedit.restart()
+#            elif result == "Restart":
+#                self.mcedit.restart()
+#            elif result == "Later":
+#                pass
+
         for key in self.saveOldConfig.keys():
             self.saveOldConfig[key] = key.get()
 

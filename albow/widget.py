@@ -114,7 +114,6 @@ class Widget(object):
 
     def set_update_translation(self, v):
         if v:
-#            print self.__lang, albow.translate.getLang()
             self.font = self.predict_font({})
             for widget in self.subwidgets:
                 widget.set_update_translation(v)
@@ -125,7 +124,6 @@ class Widget(object):
             self.invalidate()
         self.__update_translation = v
 
-#    update_translation = property(get_update_translation, set_update_translation)
     #-#
 
     def setup_spacings(self):
@@ -334,13 +332,6 @@ class Widget(object):
 
     def draw_all(self, surface):
         if self.visible:
-            #-# Translation live update preparation
-#            if self.update_translation:
-#            if self.__lang != albow.translate.getLang():
-#                self.set_update_translation(True)
-#                self.__lang = albow.translate.getLang()
-#            self.__update_translation = False
-            #-#
             surf_rect = surface.get_rect()
             bg_image = self.bg_image
             if bg_image:
@@ -652,11 +643,10 @@ class Widget(object):
             font = self.font
             d = 2 * self.margin
             if isinstance(width, basestring):
-                width, height = font.size(width) #[0], font.get_linesize()
+                width, height = font.size(width)
                 width += d + 2
             else:
                 height = font.size("X")[1]
-#                height = font.get_linesize()
             self.size = (width, height * nlines + d)
 
     def tab_to_first(self):
@@ -785,13 +775,6 @@ class Widget(object):
     def gl_draw_all(self, root, offset):
         if not self.visible:
             return
-        #-# Translation live update preparation
-#        if self.update_translation:
-#        if self.__lang != albow.translate.getLang():
-#            self.set_update_translation(True)
-#            self.__lang = albow.translate.getLang()
-#        self.__update_translation = False
-        #-#
         from OpenGL import GL, GLU
 
         rect = self.rect.move(offset)

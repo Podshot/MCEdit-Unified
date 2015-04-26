@@ -201,8 +201,6 @@ class LevelEditor(GLViewport):
 
         self.sixteenBlockTex = self.genSixteenBlockTexture()
 
-        # self.Font = Font("Verdana, Arial", 18)
-
         self.generateStars()
 
         self.optionsBar = Widget()

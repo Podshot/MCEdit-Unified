@@ -18,59 +18,6 @@ class HotkeyColumn(Widget):
     is_gl_container = True
 
 #-# Translation live update preparation
-#    def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
-#        if keysColumn is None:
-#            keysColumn = []
-#        if buttonsColumn is None:
-#            buttonsColumn = []
-#        labels = []
-
-#        Widget.__init__(self)
-#        for t in items:
-#            if len(t) == 3:
-#                (hotkey, title, action) = t
-#                tooltipText = None
-#            else:
-#                (hotkey, title, action, tooltipText) = t
-#            if isinstance(title, (str, unicode)):
-#                button = Button(title, action=action)
-#            else:
-#                button = ValueButton(ref=title, action=action, width=200)
-#            button.anchor = self.anchor
-
-#            label = Label(hotkey, width=100, margin=button.margin)
-#            label.anchor = "wh"
-
-#            label.height = button.height
-
-#            labels.append(label)
-
-#            if tooltipText:
-#                button.tooltipText = tooltipText
-
-#            keysColumn.append(label)
-#            buttonsColumn.append(button)
-
-#        self.buttons = list(buttonsColumn)
-
-#        #.#
-#        if item_spacing == None:
-#            buttonsColumn = Column(buttonsColumn)
-#        else:
-#            buttonsColumn = Column(buttonsColumn, spacing=item_spacing)
-#        #.#
-#        buttonsColumn.anchor = self.anchor
-#        #.#
-#        if item_spacing == None:
-#            keysColumn = Column(keysColumn)
-#        else:
-#            keysColumn = Column(keysColumn, spacing=item_spacing)
-
-#        commandRow = Row((keysColumn, buttonsColumn))
-#        self.labels = labels
-#        self.add(commandRow)
-#        self.shrink_wrap()
-
     def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
         self.items = items
         self.item_spacing = item_spacing
@@ -181,9 +128,6 @@ class ChoiceButton(ValueButton):
         self.choices = choices or ["[UNDEFINED]"]
 
         ValueButton.__init__(self, action=self.showMenu, **kw)
-#        widths = [self.font.size(_(c))[0] for c in choices] + [self.width]
-#        if len(widths):
-#            self.width = max(widths) + self.margin * 2
         self.calc_width()
         #-#
 

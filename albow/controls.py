@@ -10,10 +10,6 @@ from theme import ThemeProperty
 import resource
 from translate import _, getLang
 
-#-# Translation live update preparation
-#from translate import new_translation
-#-#
-
 
 class Control(object):
     highlighted = overridable_property('highlighted')
@@ -100,7 +96,6 @@ class Label(Widget):
         #            defaults to 'text'.
         Widget.__init__(self, **kwds)
         #-# Translation live update preparation
-        #font = self.font
         self.fixed_width = width
         self.base_text = base_text or text
         self.previous_translation = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
@@ -128,7 +123,6 @@ class Label(Widget):
             tw = max(1, tw)
         d = 2 * self.margin
         self.size = (tw + d, th + d)
-        #self._text = text
 
     def get_update_translation(self):
         return Widget.update_translation(self)
@@ -292,11 +286,6 @@ class Image(Widget):
         surf.blit(image, r)
 
 
-#    def draw(self, surf):
-#        frame = self.get_margin_rect()
-#        surf.blit(self.image, frame)
-
-
 class ImageButton(ButtonBase, Image):
     pass
 
@@ -308,13 +297,6 @@ class ValueDisplay(Control, Label):
     def __init__(self, width=100, **kwds):
         Label.__init__(self, "", **kwds)
         self.set_size_for_text(width)
-
-    #    def draw(self, surf):
-    #        value = self.value
-    #        text = self.format_value(value)
-    #        buf = self.font.render(text, True, self.fg_color)
-    #        frame = surf.get_rect()
-    #        blit_in_rect(surf, buf, frame, self.align, self.margin)
 
     def get_text(self):
         return self.format_value(_(self.value))

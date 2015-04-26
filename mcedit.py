@@ -159,7 +159,6 @@ class MCEdit(GLViewport):
         self.graphicsPanel = panels.GraphicsPanel(self)
 
         #.#
-#        self.keyConfigPanel = keys.KeyConfigPanel()
         self.keyConfigPanel = keys.KeyConfigPanel(self)
         #.#
 
@@ -183,19 +182,17 @@ class MCEdit(GLViewport):
                     self.droppedLevel = f
                     break
 
-        #-# Translation live update preparation
-        #self.fileOpener = albow.FileOpener(self)
-        self.createFileOpener()
-        #-#
+        self.fileOpener = albow.FileOpener(self)
         self.add(self.fileOpener)
 
         self.fileOpener.focus()
 
     #-# Translation live updtate preparation
-    def createFileOpener(self):
-        if hasattr(self, 'fileOpener'):
-            del self.fileOpener
-        self.fileOpener = albow.FileOpener(self)
+    def set_update_translation(self, v):
+        GLViewport.set_update_translation(self, v)
+        if v:
+            self.keyConfigPanel = keys.KeyConfigPanel(self)
+            self.graphicsPanel = panels.GraphicsPanel(self)
     #-#
 
     editor = None
