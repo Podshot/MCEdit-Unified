@@ -293,9 +293,15 @@ def getLangName(file, path=None):
         bold = line.split("#-# font bold: ")[1].strip()
     global font_lang_cache
     if regular and regular.lower() != "default":
-        font_lang_cache["DejaVuSans-Regular.ttf"] = {name: regular}
+        if not font_lang_cache.get("DejaVuSans-Regular.ttf", False):
+            font_lang_cache["DejaVuSans-Regular.ttf"] = {name: regular}
+        else:
+            font_lang_cache["DejaVuSans-Regular.ttf"][name] = regular
     if bold and bold.lower() != "default":
-        font_lang_cache["DejaVuSans-Bold.ttf"] = {name: bold}
+        if not font_lang_cache.get("DejaVuSans-Bold.ttf", False):
+            font_lang_cache["DejaVuSans-Bold.ttf"] = {name: bold}
+        else:
+            font_lang_cache["DejaVuSans-Bold.ttf"][name] = bold
     resource.font_lang_cache = font_lang_cache
     return name
 
@@ -312,7 +318,7 @@ def buildTranslation(lang,suppressAlert=False):
     log.debug("buildTranslation <<<")
     tm = time()
     global string_cache
-    #-# Trnaslation live update preparation
+    #-# Translation live update preparation
     global prev_string_cache
     prev_string_cache = {}
     prev_string_cache.update([(v, k) for k, v in string_cache.items()])
