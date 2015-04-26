@@ -305,6 +305,8 @@ class LevelEditor(GLViewport):
         GLViewport.set_update_translation(self, v)
         if v:
             self.statusLabel.width = self.width
+            self.viewDistanceReadout.width = 40
+            self.topRow.calc_size()
     #-#
 
     def __del__(self):

@@ -108,7 +108,7 @@ class OptionsPanel(Dialog):
                                            ref=config.controls.invertMousePitch,
                                            tooltipText="Reverse the up and down motion of the mouse.")
 
-        spaceHeightRow = albow.IntInputRow(_("Low Detail Height"),
+        spaceHeightRow = albow.IntInputRow("Low Detail Height",
                                               ref=config.settings.spaceHeight,
                                               tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
 
