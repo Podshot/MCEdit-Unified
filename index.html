@@ -85,8 +85,36 @@
 					releasetime = Math.round(releasetimesec / 60 / 60 / 24) + ' days ago';
 				}
 
+                var downloadNames = {
+                    ".Win.64bit.exe" : "Windows 64bit",
+                    ".Win.64bit.zip" : "Windows 64bit",
+                    ".Win.32bit.exe" : "Windows 32bit",
+                    ".Win.32bit.zip" : "Windows 32bit",
+                    ".OSX.64bit.zip" : "OS X",
+                    ".Lin.Universal.run" : "Linux",
+                    ".Universal.run" : "Linux",
+                    ".Source.zip" : "Source Code"
+                }
+
+                var getDownloadName = function(key)
+                {
+                    if(key == "translations.zip")
+                        return "Translations";
+                    key = key.split(version)[1];
+                    var res = downloadNames[key];
+                    if(typeof(res) == "undefined")
+                        res = key
+                    return res;
+                }
+
+                var versionDownloads = '';
+
 				var totalDownloads = 0
+                console.log(releaseData[i].assets);
 				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
+                    versionDownloads += getDownloadName(releaseData[i].assets[x].name) + ' - ' + releaseData[i].assets[x].download_count;
+                    if(x > 0)
+                        versionDownloads += '<br/>';
 					totalDownloads += releaseData[i].assets[x].download_count;
 				}
 
@@ -99,8 +127,20 @@
 
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br><span class="badge">' + totalDownloads + ' downloads</span><br>' + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br><div class="hide" id="popover-' + version.replace(/\./g, '-') + '">' + versionDownloads + '</div><a class="badge" rel="popover" data-popover-content="#popover-' + version.replace(/\./g, '-') + '">' + totalDownloads + ' downloads</a><br>' + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
+                $('[rel="popover"]').popover({
+                    container: 'body',
+                    html: true,
+                    trigger: 'hover',
+                    content: function () {
+                        var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+                        console.log(clone);
+                        return clone;
+                    }
+                }).click(function(e) {
+                    e.preventDefault();
+                });
 			}
 			$('#changelog').show();
 
