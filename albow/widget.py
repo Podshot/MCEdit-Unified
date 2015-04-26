@@ -96,9 +96,9 @@ class Widget(object):
             raise TypeError("Widget rect not a pygame.Rect")
         self._rect = Rect(rect or (0, 0, 100, 100))
         #-# Translation live update preparation
-#        self.__lang = albow.translate.getLang()
-#        self.__update_translation = False
-#        self.shrink_wrapped = False
+        self.__lang = albow.translate.getLang()
+        self.__update_translation = False
+        self.shrink_wrapped = False
         #-#
         self.parent = None
         self.subwidgets = []
@@ -109,19 +109,20 @@ class Widget(object):
         self.setup_spacings()
 
     #-# Translation live update preparation
-#    def get_update_translation(self):
-#        return self.__update_translation
+    def get_update_translation(self):
+        return self.__update_translation
 
-#    def set_update_translation(self, v):
-#        if v:
-#            for widget in self.subwidgets:
-#                widget.set_update_translation(v)
-#            if self.shrink_wrapped:
-#                self.shrink_wrap()
-#            if hasattr(self, 'calc_size'):
-#                self.calc_size()
-#            self.invalidate()
-#        self.__update_translation = v
+    def set_update_translation(self, v):
+        if v:
+            self.font = self.predict_font({})
+            for widget in self.subwidgets:
+                widget.set_update_translation(v)
+            if self.shrink_wrapped:
+                self.shrink_wrap()
+            if hasattr(self, 'calc_size'):
+                self.calc_size()
+            self.invalidate()
+        self.__update_translation = v
 
 #    update_translation = property(get_update_translation, set_update_translation)
     #-#
@@ -333,10 +334,11 @@ class Widget(object):
     def draw_all(self, surface):
         if self.visible:
             #-# Translation live update preparation
-##            if self.update_translation:
-#            if self.__lang != albow.translate.getLang():
-#                self.set_update_translation(True)
-#            self.__update_translation = False
+#            if self.update_translation:
+            if self.__lang != albow.translate.getLang():
+                self.set_update_translation(True)
+                self.__lang = albow.translate.getLang()
+            self.__update_translation = False
             #-#
             surf_rect = surface.get_rect()
             bg_image = self.bg_image
@@ -606,7 +608,7 @@ class Widget(object):
                 rmax = rmax.union(r)
             self._rect.size = add(rmax.topleft, rmax.bottomright)
         #-# Translation live update preparation
-#        self.shrink_wrapped = True
+        self.shrink_wrapped = True
         #-#
 
     def invalidate(self):
@@ -783,10 +785,11 @@ class Widget(object):
         if not self.visible:
             return
         #-# Translation live update preparation
-##        if self.update_translation:
-#        if self.__lang != albow.translate.getLang():
-#            self.set_update_translation(True)
-#        self.__update_translation = False
+#        if self.update_translation:
+        if self.__lang != albow.translate.getLang():
+            self.set_update_translation(True)
+            self.__lang = albow.translate.getLang()
+        self.__update_translation = False
         #-#
         from OpenGL import GL, GLU
 

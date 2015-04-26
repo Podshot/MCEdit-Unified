@@ -252,8 +252,13 @@ class OptionsPanel(Dialog):
             lng = self.langs[langName]
         config.settings.langCode.set(lng)
         #-# Translation live update preparation
+#        logging.debug('*** Language change detected.')
+#        logging.debug('    Former language: %s.'%albow.translate.getLang())
+#        logging.debug('    New language: %s.'%lng)
 #        update = albow.translate.setLang(lng)[2]
+#        logging.debug('    Update done? %s (Magic %s)'%(update, update or lng == 'en_US'))
 #        self.mcedit.root.set_update_translation(update or lng == 'en_US')
+#        self.mcedit.root.set_update_translation(False)
         #-#
 
     @staticmethod
@@ -295,12 +300,14 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language and the font proportion"""
-        #-# The two following lines will be used for the language and font dynamic changes
-        #-# the restart boxes suppressed.
-        # lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
-        # font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
         lang = config.settings.langCode.get() == old_lang or config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
         font = config.settings.fontProportion.get() == old_fprop or config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
+        #-# The following lines will be used for the language and font dynamic changes
+        #-# The restart boxes will be suppressed.
+#        lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
+#        font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
+#        self.changeLanguage()
+
         if not font or not lang:
             editor = self.mcedit.editor
             if editor and editor.unsavedEdits:

@@ -48,10 +48,11 @@ class RowOrColumn(Widget):
         k, attr2, attr3 = self.align_map[align]
         w = 0
         length = 0
-        if isinstance(expand, int):
-            expand = items[expand]
-        elif not expand:
-            expand = items[-1]
+        if items:
+            if isinstance(expand, int):
+                expand = items[expand]
+            elif not expand:
+                expand = items[-1]
         move = ''
         for item in items:
             r = item.rect

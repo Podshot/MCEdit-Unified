@@ -300,6 +300,13 @@ class LevelEditor(GLViewport):
         logger.addHandler(adapter)
         self.revertPlayerSkins = False
 
+    #-# Translation live update preparation
+    def set_update_translation(self, v):
+        GLViewport.set_update_translation(self, v)
+        if v:
+            self.statusLabel.width = self.width
+    #-#
+
     def __del__(self):
         self.deleteAllCopiedSchematics()
 

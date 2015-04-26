@@ -17,14 +17,89 @@ from datetime import timedelta, datetime
 class HotkeyColumn(Widget):
     is_gl_container = True
 
+#-# Translation live update preparation
+#    def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
+#        if keysColumn is None:
+#            keysColumn = []
+#        if buttonsColumn is None:
+#            buttonsColumn = []
+#        labels = []
+
+#        Widget.__init__(self)
+#        for t in items:
+#            if len(t) == 3:
+#                (hotkey, title, action) = t
+#                tooltipText = None
+#            else:
+#                (hotkey, title, action, tooltipText) = t
+#            if isinstance(title, (str, unicode)):
+#                button = Button(title, action=action)
+#            else:
+#                button = ValueButton(ref=title, action=action, width=200)
+#            button.anchor = self.anchor
+
+#            label = Label(hotkey, width=100, margin=button.margin)
+#            label.anchor = "wh"
+
+#            label.height = button.height
+
+#            labels.append(label)
+
+#            if tooltipText:
+#                button.tooltipText = tooltipText
+
+#            keysColumn.append(label)
+#            buttonsColumn.append(button)
+
+#        self.buttons = list(buttonsColumn)
+
+#        #.#
+#        if item_spacing == None:
+#            buttonsColumn = Column(buttonsColumn)
+#        else:
+#            buttonsColumn = Column(buttonsColumn, spacing=item_spacing)
+#        #.#
+#        buttonsColumn.anchor = self.anchor
+#        #.#
+#        if item_spacing == None:
+#            keysColumn = Column(keysColumn)
+#        else:
+#            keysColumn = Column(keysColumn, spacing=item_spacing)
+
+#        commandRow = Row((keysColumn, buttonsColumn))
+#        self.labels = labels
+#        self.add(commandRow)
+#        self.shrink_wrap()
+
     def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
-        if keysColumn is None:
+        self.items = items
+        self.item_spacing = item_spacing
+        self.keysColumn = keysColumn
+        self.buttonsColumn = buttonsColumn
+        Widget.__init__(self)
+        self.buildWidgets()
+
+    def set_update_translation(self, v):
+        if v:
+            self.buildWidgets()
+
+    def buildWidgets(self):
+        keysColumn = self.keysColumn
+        buttonsColumn = self.buttonsColumn
+        items = self.items
+        item_spacing = self.item_spacing
+
+        if keysColumn is None or True:
             keysColumn = []
-        if buttonsColumn is None:
+        if buttonsColumn is None or True:
             buttonsColumn = []
         labels = []
 
-        Widget.__init__(self)
+        for w in self.subwidgets:
+            for _w in w.subwidgets:
+                w.remove(_w)
+            self.remove(w)
+
         for t in items:
             if len(t) == 3:
                 (hotkey, title, action) = t
@@ -69,6 +144,8 @@ class HotkeyColumn(Widget):
         self.labels = labels
         self.add(commandRow)
         self.shrink_wrap()
+        self.invalidate()
+#-#
 
 
 class MenuButton(Button):

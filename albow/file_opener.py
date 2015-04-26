@@ -30,22 +30,22 @@ class FileOpener(albow.Widget):
             _(config.keys.right.get()),
             _(config.keys.up.get()),
             _(config.keys.down.get()),
-        ), self.root.surface.get_width())
+        ), self.root.surface.get_width(), doNotTranslate=True)
         label.anchor = 'whrt'
         label.align = 'r'
         helpColumn.append(label)
 
-        def addHelp(text):
-            label = albow.Label(text, self.root.surface.get_width())
+        def addHelp(text, dnt=False):
+            label = albow.Label(text, self.root.surface.get_width(), doNotTranslate=dnt)
             label.anchor = 'whrt'
             label.align = "r"
             helpColumn.append(label)
             return label
 
-        self.root.slowDownLabel = addHelp(_("{0} to slow down").format(_(config.keys.brake.get())))
+        self.root.slowDownLabel = addHelp(_("{0} to slow down").format(_(config.keys.brake.get())), dnt=True)
         addHelp("Right-click to toggle camera control")
         addHelp("Mousewheel to control tool distance")
-        self.root.detailsLabel = addHelp(_("Hold {0} for details").format(_(config.keys.showBlockInfo.get())))
+        self.root.detailsLabel = addHelp(_("Hold {0} for details").format(_(config.keys.showBlockInfo.get())), dnt=True)
 
         helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright

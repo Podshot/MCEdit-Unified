@@ -183,10 +183,20 @@ class MCEdit(GLViewport):
                     self.droppedLevel = f
                     break
 
-        self.fileOpener = albow.FileOpener(self)
+        #-# Translation live update preparation
+        #self.fileOpener = albow.FileOpener(self)
+        self.createFileOpener()
+        #-#
         self.add(self.fileOpener)
 
         self.fileOpener.focus()
+
+    #-# Translation live updtate preparation
+    def createFileOpener(self):
+        if hasattr(self, 'fileOpener'):
+            del self.fileOpener
+        self.fileOpener = albow.FileOpener(self)
+    #-#
 
     editor = None
 

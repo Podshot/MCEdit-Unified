@@ -518,11 +518,15 @@ class BrushTool(CloneTool):
                 if "trn" in sys.modules.keys():
                     del sys.modules["trn"]
                 import albow.translate as trn
+                old_trn_path = trn.langPath
+                print 'old_trn_path', old_trn_path
                 trn_path = os.path.join(directories.brushesDir, name)
                 if os.path.exists(trn_path):
                     trn.setLangPath(trn_path)
                     trn.buildTranslation(config.settings.langCode.get())
                 m.trn = trn
+                print 'old_trn_path', old_trn_path
+                trn.setLangPath(old_trn_path)
             m.materials = self.editor.level.materials
             m.createInputs(m)
             return m

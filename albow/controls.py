@@ -130,15 +130,15 @@ class Label(Widget):
         self.size = (tw + d, th + d)
         #self._text = text
 
-#    def get_update_translation(self):
-#        return Widget.update_translation(self)
+    def get_update_translation(self):
+        return Widget.update_translation(self)
 
-#    def set_update_translation(self, v):
-#        # get the translation of the base_text
-##        trn = _(self.base_text)
-#        self.text = self.base_text
-#        self.calc_size()
-#        Widget.set_update_translation(self, v)
+    def set_update_translation(self, v):
+        # get the translation of the base_text
+#        trn = _(self.base_text)
+        self.text = self.base_text
+        self.calc_size()
+        Widget.set_update_translation(self, v)
     #-#
 
     def __repr__(self):
