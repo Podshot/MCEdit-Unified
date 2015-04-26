@@ -1,4 +1,4 @@
-﻿#-# Simplified Chinese (China)
+#-# Simplified Chinese (China)
 #-# font regular: NotoSansHans-Medium.ttf
 #-# font bold: NotoSansHans-Bold.ttf
 # TRANSLATION BASICS
@@ -69,7 +69,7 @@ t24 缓冲加载最大值(MB)：
 o25 Fast Leaves
 t25 低品质树叶
 o26 Rough Graphics
-t26 低品质图像
+t26 低品质图形
 o27 Enable Mouse Lag
 t27 允许鼠标卡滞
 o28 Default
@@ -92,7 +92,7 @@ o36 Numpad
 t36 小键盘
 o37 WASD Old
 t37 旧版WASD
-o38 Keybind Presets: 
+o38 Keybind Presets:
 t38 键位预设：
 o39 MCEdit
 t39 
@@ -361,7 +361,7 @@ t168 选择你的语言
 o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
 t169 点击来将配置文件和schematics文件移动到程序目录
 o170 You must restart MCEdit to see language changes
-t170 你必须重启MCEdit来应用语言更改
+t170 你必须重启MCEdit来应用语言修改
 o171 Restart
 t171 重启
 o172 Later
@@ -634,7 +634,7 @@ t298 新建刷怪箱
 o299 Decliff
 t299 
 o300 Find
-t300 查找
+t300 
 o301 Forester
 t301 植树工具
 o302 Make Mobs Invincible
@@ -788,7 +788,7 @@ t370
 o371 Start New Search
 t371 开始新查找
 o372 Find Next
-t372 查找下一个
+t372 
 o373 Dump Found Coordinates
 t373 弹出查找到的坐标
 o374 Operation:
@@ -1651,7 +1651,7 @@ t772
 o773 Click to open filters folder
 t773 点击打开过滤器文件夹
 o774 Head
-t774 头颅
+t774 
 o775 Exception during filter operation. See console for details.
 
 {0}
@@ -1667,7 +1667,7 @@ t778
 o779 Applying {0} brush...
 t779 
 o780 Graphics Settings
-t780 图像设置
+t780 画面设置
 o781 Run Macro
 t781 
 o782 Delete Macro
@@ -1726,11 +1726,11 @@ t806 保存中-
 o807 World Type:
 t807 世界类型：
 o808 Amplified
-t808 放大化
+t808 
 o809 Large Biomes
-t809 巨型生物群系
+t809 
 o810 Superflat
-t810 超平坦
+t810 
 o811 Copying chunks
 t811 复制区块中
 o812 Lighting chunks
@@ -1781,11 +1781,3 @@ o834 When the replace tool is chosen, prompt for a block type.
 t834 当替换工具被选中时，自动打开方块选择器来选择方块。
 o835 Matching Coordinates
 t835 
-o836 Session Lock Options
-t836 会话锁设置
-o837 Override Minecraft Changes (Not Recommended)
-t837 覆盖Minecraft的更改（不推荐）
-o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t838 只要地图被MCEdit打开，总是覆盖在Minecraft中的更改。（不推荐）
-o839 Player Heads
-t839 

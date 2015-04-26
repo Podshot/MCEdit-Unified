@@ -92,8 +92,8 @@ o36 Numpad
 t36 Pavé num
 o37 WASD Old
 t37 Ancien WASD
-o38 Keybind Presets: 
-t38 
+o38 Keybind Presets:
+t38 Préréglages :
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -1807,6 +1807,6 @@ t836 Options Verrou de Session
 o837 Override Minecraft Changes (Not Recommended)
 t837 Outrepasser Minecraft (Non recommandé)
 o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t838 Toujours écraser les cahngements faits dans Minecraft quand le monde est ouvert dans MVEdit. (Non recommandé)
+t838 Toujours écraser les changements faits dans Minecraft quand le monde est ouvert dans MCEdit. (Non recommandé)
 o839 Player Heads
 t839 Têtes des joueurs
