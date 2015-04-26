@@ -110,7 +110,7 @@
                 var versionDownloads = '';
 
 				var totalDownloads = 0
-                console.log(releaseData[i].assets);
+
 				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
                     versionDownloads += getDownloadName(releaseData[i].assets[x].name) + ' - ' + releaseData[i].assets[x].download_count;
                     if(x > 0)
@@ -135,7 +135,6 @@
                     trigger: 'hover',
                     content: function () {
                         var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
-                        console.log(clone);
                         return clone;
                     }
                 }).click(function(e) {
