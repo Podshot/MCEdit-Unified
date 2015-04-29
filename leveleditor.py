@@ -305,6 +305,7 @@ class LevelEditor(GLViewport):
             self.statusLabel.width = self.width
             self.viewDistanceReadout.width = 40
             self.topRow.calc_size()
+            self.controlPanel.set_update_translation(v)
     #-#
 
     def __del__(self):
