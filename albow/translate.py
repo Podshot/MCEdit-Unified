@@ -100,9 +100,6 @@ if enc is None:
     enc = "UTF-8"
 
 string_cache = {}
-#-# Translation live update preparation
-prev_string_cache = {}
-#-#
 font_lang_cache = {}
 langPath = os.sep.join((".", "lang"))
 lang = "Default"
@@ -137,11 +134,11 @@ def _(string, doNotTranslate=False):
         trn = u"" + string
     except UnicodeDecodeError:
         trn = string_cache.get(string, string)
-    if '-' in string:
-        # Support for hotkeys
-        trn = '-'.join([_(a) for a in string.split('-')])
     if trn == string:
         trn = string_cache.get(string, string)
+    if trn == string and '-' in string:
+        # Support for hotkeys
+        trn = '-'.join([_(a) for a in string.split('-')])
     if buildTemplate:
         global template
         global strNum
@@ -318,11 +315,6 @@ def buildTranslation(lang,suppressAlert=False):
     log.debug("buildTranslation <<<")
     tm = time()
     global string_cache
-    #-# Translation live update preparation
-    global prev_string_cache
-    prev_string_cache = {}
-    prev_string_cache.update([(v, k) for k, v in string_cache.items()])
-    #-#
     fileFound = False
     lang = "%s"%lang
     fName = os.path.join(langPath, lang + ".trn")
@@ -409,16 +401,6 @@ def buildTranslation(lang,suppressAlert=False):
     log.debug("buildTranslation >>>")
     return string_cache, fileFound
 
-#-------------------------------------------------------------------------------
-#-# Translation live update preparation
-def new_translation(string):
-    """Returns a new translation for the 'string'. The 'string' may be already translated or not."""
-    # first look in the actual string_cache
-    if string in string_cache.keys():
-        return string_cache[string]
-    # if the string is not found, look in prev_string_cache
-    return _(prev_string_cache.get(string, string))
-#-#
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
 

@@ -193,6 +193,14 @@ class MCEdit(GLViewport):
         if v:
             self.keyConfigPanel = keys.KeyConfigPanel(self)
             self.graphicsPanel = panels.GraphicsPanel(self)
+            idx = None
+            if self.fileOpener in self.subwidgets:
+                idx = self.subwidgets.index(self.fileOpener)
+                self.remove(self.fileOpener)
+                self.fileOpener = albow.FileOpener(self)
+                if idx is not None:
+                    self.add(self.fileOpener)
+                self.fileOpener.focus()
     #-#
 
     editor = None

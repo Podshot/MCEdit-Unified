@@ -140,8 +140,8 @@ class Label(Widget):
     def get_text(self):
         return self._text
 
-    def set_text(self, x):
-        self._text = _(x)
+    def set_text(self, x, doNotTranslate=False):
+        self._text = _(x, doNotTranslate=doNotTranslate)
 
     def get_align(self):
         return self._align

@@ -21,6 +21,13 @@ class FileOpener(albow.Widget):
         self.mcedit = mcedit
         self.root = self.get_root()
 
+    #-# Translation live update
+        self.buildWidgets()
+
+    def buildWidgets(self):
+        for w in self.subwidgets:
+            w.set_parent(None)
+
         helpColumn = []
 
         self.root.movementLabel = label = albow.Label(_("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
@@ -30,24 +37,24 @@ class FileOpener(albow.Widget):
             _(config.keys.right.get()),
             _(config.keys.up.get()),
             _(config.keys.down.get()),
-        ), self.root.surface.get_width(), doNotTranslate=True)
+        ), doNotTranslate=True)
         label.anchor = 'whrt'
         label.align = 'r'
         helpColumn.append(label)
 
         def addHelp(text, dnt=False):
-            label = albow.Label(text, self.root.surface.get_width(), doNotTranslate=dnt)
+            label = albow.Label(text, doNotTranslate=dnt)
             label.anchor = 'whrt'
             label.align = "r"
             helpColumn.append(label)
             return label
 
         self.root.slowDownLabel = addHelp(_("{0} to slow down").format(_(config.keys.brake.get())), dnt=True)
-        addHelp("Right-click to toggle camera control")
-        addHelp("Mousewheel to control tool distance")
+        self.camCont = addHelp("Right-click to toggle camera control")
+        self.toolDist = addHelp("Mousewheel to control tool distance")
         self.root.detailsLabel = addHelp(_("Hold {0} for details").format(_(config.keys.showBlockInfo.get())), dnt=True)
 
-        helpColumn = albow.Column(helpColumn, align="r")
+        self.helpColumn = helpColumn = albow.Column(helpColumn, align="r")
         helpColumn.topright = self.topright
         helpColumn.anchor = "whrt"
         # helpColumn.is_gl_container = True
@@ -85,17 +92,26 @@ class FileOpener(albow.Widget):
         self.root.commandRow = commandRow = albow.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
         commandRow.anchor = 'lrh'
 
-        sideColumn1 = mcedit.makeSideColumn1()
+        sideColumn1 = self.mcedit.makeSideColumn1()
         sideColumn1.anchor = 'wh'
         spaceLabel = albow.Label("")
         spaceLabel.anchor = 'wh'
-        sideColumn2 = mcedit.makeSideColumn2()
+        sideColumn2 = self.mcedit.makeSideColumn2()
         sideColumn2.anchor = 'wh'
 
         contentRow = albow.Row((commandRow, albow.Column((sideColumn1, spaceLabel, sideColumn2))))
         contentRow.center = self.center
         contentRow.anchor = "rh"
+        self.contentRow = contentRow
         self.add(contentRow)
+        self.invalidate()
+#        self.shrink_wrap()
+
+    def set_update_translation(self, v):
+        albow.Widget.set_update_translation(self, v)
+        if v:
+            self.buildWidgets()
+    #-#
 
     def gl_draw_self(self, root, offset):
         # self.mcedit.editor.mainViewport.setPerspective();
