@@ -678,9 +678,6 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
     def build_inventory(self, items):
-        print "build_inventory"
-        print "Inventory" in self.data.keys()
-#        print type(self.data['Inventory'])
         inventory = self.data.get('Player', {}).get('Inventory', TAG_List()) or self.data.get('Inventory', TAG_List())
         rows = []
         items = items[0]
