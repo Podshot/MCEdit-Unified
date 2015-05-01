@@ -526,9 +526,9 @@ class NBTExplorerToolPanel(Panel):
             self.add(Column([header, self.displayRow, btnRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
+    #&# Prototype for Blocks/item names
         mclangres.buildResources(lang=getLang())
 
-    #&# Prototype for Blocks/item names
     def set_update_translation(self, v):
         Panel.set_update_translation(self, v)
         if v:

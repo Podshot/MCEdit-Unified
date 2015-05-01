@@ -127,6 +127,10 @@ import threading
 
 from utilities.gl_display_context import GLDisplayContext
 
+#&# Prototype fro blocks/items names
+import mclangres
+#&#
+
 getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
 ESCAPE = '\033'
@@ -157,6 +161,10 @@ class MCEdit(GLViewport):
             albow.translate.setLang(lng)
         self.optionsPanel.initComponents()
         self.graphicsPanel = panels.GraphicsPanel(self)
+
+        #&# Prototype for blocks/items names
+        mclangres.buildResources(lang=albow.translate.getLang())
+        #&#
 
         #.#
         self.keyConfigPanel = keys.KeyConfigPanel(self)
@@ -191,6 +199,9 @@ class MCEdit(GLViewport):
     def set_update_translation(self, v):
         GLViewport.set_update_translation(self, v)
         if v:
+            #&# Prototype for blocks/items names
+            mclangres.buildResources(lang=albow.translate.getLang())
+            #&#
             self.keyConfigPanel = keys.KeyConfigPanel(self)
             self.graphicsPanel = panels.GraphicsPanel(self)
             idx = None

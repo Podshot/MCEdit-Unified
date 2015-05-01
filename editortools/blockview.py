@@ -8,10 +8,9 @@ import blockpicker
 from glbackground import Panel, GLBackground
 from glutils import DisplayList
 
-#-# DEBUG
-import pygame
-#-#
-
+#&# Prototype for blocks/items names
+import mclangres
+#&#
 
 class BlockView(GLOrtho):
     def __init__(self, materials, blockInfo=None):
@@ -63,7 +62,10 @@ class BlockView(GLOrtho):
 
     @property
     def tooltipText(self):
-        return str(self.blockInfo.name)
+        #&# Prototype for blocks/items names
+        #return str(self.blockInfo.name)
+        return mclangres.translate(self.blockInfo.name)
+        #&#
 
 
 class BlockButton(ButtonBase, Panel):
@@ -126,7 +128,10 @@ class BlockButton(ButtonBase, Panel):
 
     @property
     def labelText(self):
-        labelText = self.blockInfo.name
+        #&# Prototype for blocks/items names
+        #labelText = self.blockInfo.name
+        labelText = mclangres.translate(self.blockInfo.name)
+        #&#
         if len(labelText) > 24:
             labelText = labelText[:23] + "..."
         return labelText
@@ -167,7 +172,10 @@ class BlockButton(ButtonBase, Panel):
 
     @property
     def tooltipText(self):
-        return str(self.blockInfo.name)
+        #&# Prototype for blocks/items names
+        #return str(self.blockInfo.name)
+        return mclangres.translate(self.blockInfo.name)
+        #&#
 
     def action(self):
         blockPicker = blockpicker.BlockPicker(self.blockInfo, self.materials, allowWildcards=self.allowWildcards)
