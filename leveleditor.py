@@ -403,6 +403,7 @@ class LevelEditor(GLViewport):
     def updateCopyPanel(self):
         if self.copyPanel:
             self.copyPanel.set_parent(None)
+            self.copyPanel = None
         if 0 == len(self.copyStack):
             return
 

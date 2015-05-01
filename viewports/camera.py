@@ -1618,6 +1618,10 @@ class CameraViewport(GLViewport):
             if self._compass is None:
                 self._compass = CompassOverlay()
 
+            x = getattr(getattr(self.editor, 'copyPanel', None), 'width', 0)
+            if x:
+                x = x /float( self.editor.mainViewport.width)
+            self._compass.x = x
             self._compass.yawPitch = self.yaw, 0
 
             with gl.glPushMatrix(GL.GL_PROJECTION):

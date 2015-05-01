@@ -19,6 +19,7 @@ def makeQuad(minx, miny, width, height):
 class CompassOverlay(Drawable):
     _tex = None
     _yawPitch = (0., 0.)
+    x, y = 0, 0
 
     def __init__(self):
         super(CompassOverlay, self).__init__()
@@ -47,7 +48,7 @@ class CompassOverlay(Drawable):
             yaw, pitch = self.yawPitch
             if config.settings.viewMode.get() == "Chunk":
                 yaw = -180
-            GL.glTranslatef(1. - size, size, 0.0)  # position on upper right corner
+            GL.glTranslatef(1. - (size + self.x), size + self.y, 0.0)  # position on upper right corner
             GL.glRotatef(180 - yaw, 0., 0., 1.)  # adjust to north
             GL.glColor3f(1., 1., 1.)
 
