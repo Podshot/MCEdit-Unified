@@ -109,6 +109,7 @@ class Widget(object):
         self.setup_spacings()
 
     #-# Translation live update preparation
+    @property
     def get_update_translation(self):
         return self.__update_translation
 

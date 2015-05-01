@@ -338,8 +338,8 @@ class OptionsPanel(Dialog):
         oldLanguage = self.saveOldConfig[config.settings.langCode]
         if config.settings.langCode.get() != oldLanguage:
             Changes = True
-        newPortable = _(self.portableVar.get())
-        if newPortable != _(self.saveOldPortable):
+        newPortable = self.portableVar.get()
+        if newPortable != self.saveOldPortable:
             Changes = True
         if not Changes:
             Dialog.dismiss(self, *args, **kwargs)

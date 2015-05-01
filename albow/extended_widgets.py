@@ -134,6 +134,10 @@ class ChoiceButton(ValueButton):
         self.choiceIndex = 0
 
     #-# Translation live update preparation
+    def set_update_translation(self, v):
+        ValueButton.set_update_translation(self, v)
+        self.menu.set_update_translation(v)
+
     def calc_width(self):
         widths = [self.font.size(_(c))[0] for c in self.choices] + [self.width]
         if len(widths):
@@ -173,7 +177,7 @@ class ChoiceButton(ValueButton):
     @choices.setter
     def choices(self, ch):
         self._choices = ch
-        self.menu = Menu("", ((name, "pickMenu") for name in self._choices),
+        self.menu = Menu("", [(name, "pickMenu") for name in self._choices],
                          self.scrolling, self.scroll_items)
 
 
