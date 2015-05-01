@@ -17,7 +17,7 @@ from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton
 from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
-from albow.translate import _
+from albow.translate import _, getLang
 from glbackground import Panel
 from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
      TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
@@ -39,6 +39,13 @@ import os
 import mcplatform
 from config import config, DEF_ENC
 from albow.resource import resource_path
+
+from pymclevel.materials import block_map, alphaMaterials
+map_block = {}
+for k, v in block_map.items():
+    map_block[v] = k
+
+import mclangres
 
 #-----------------------------------------------------------------------------
 bullet_image = None
@@ -517,6 +524,12 @@ class NBTExplorerToolPanel(Panel):
             self.add(Column([header, self.displayRow, btnRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
+        mclangres.buildResources(lang=getLang())
+
+    def set_update_translation(self, v):
+        Panel.set_update_translation(self, v)
+        if v:
+            mclangres.buildResources(lang=getLang())
 
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
@@ -684,9 +697,17 @@ class NBTExplorerToolPanel(Panel):
         slots = [["%s"%i,"","0","0"] for i in range(36)]
         slots_set = []
         for item in items:
+            name = item['id'].value.split(':')[-1]
+            block_id = map_block.get(item['id'].value, None)
+            if block_id is not None:
+                name = mclangres.translate(alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[0].strip())
+            else:
+                name = 'Future Block!'
+            if name == 'Future Block!':
+                name = mclangres.translate(' '.join([a.capitalize() for a in item['id'].value.split(':')[-1].replace('_', ' ').split()]))
             s = int(item['Slot'].value)
             slots_set.append(s)
-            slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
+            slots[s] = item['Slot'].value, name, item['Count'].value, item['Damage'].value
         width = self.width / 2 - self.margin * 4
         c0w = max(15, self.font.size("00")[0]) + 4
         c2w = max(15, self.font.size("00")[0]) + 4
