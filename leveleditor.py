@@ -1033,7 +1033,7 @@ class LevelEditor(GLViewport):
         self.renderer.position = self.currentViewport.cameraPosition
         self.renderer.loadNearbyChunks()
 
-    def loadLevel(self, level):
+    def loadLevel(self, level, saveChanges=False):
         """
         Called to load a level, world, or dimension into the editor and display it in the viewport.
         """
@@ -1047,11 +1047,13 @@ class LevelEditor(GLViewport):
         self.renderer.level = level
         self.addWorker(self.renderer)
 
-        self.undoStack = []
-        self.afterSaveUndoStack = []
-        self.redoStack = []
         self.recordUndo = True
-        self.clearUnsavedEdits()
+
+        if not saveChanges:
+            self.undoStack = []
+            self.afterSaveUndoStack = []
+            self.redoStack = []
+            self.clearUnsavedEdits()
 
         self.initWindowCaption()
         self.selectionTool.selectNone()
@@ -1123,7 +1125,7 @@ class LevelEditor(GLViewport):
     def gotoEarth(self):
         assert self.level.parentWorld
         self.removeNetherPanel()
-        self.loadLevel(self.level.parentWorld)
+        self.loadLevel(self.level.parentWorld, True)
 
         x, y, z = self.mainViewport.cameraPosition
         self.mainViewport.cameraPosition = [x * 8, y, z * 8]
@@ -1133,7 +1135,7 @@ class LevelEditor(GLViewport):
         self.removeNetherPanel()
         x, y, z = self.mainViewport.cameraPosition
         self.mainViewport.cameraPosition = [x / 8, y, z / 8]
-        self.loadLevel(self.level.getDimension(-1))
+        self.loadLevel(self.level.getDimension(-1), True)
 
     def gotoDimension(self, dimNo):
         if dimNo == self.level.dimNo:
@@ -1147,10 +1149,10 @@ class LevelEditor(GLViewport):
             if dimNo:
                 if dimNo == 1:
                     self.mainViewport.cameraPosition = (0, 96, 0)
-                self.loadLevel(self.level.getDimension(dimNo))
+                self.loadLevel(self.level.getDimension(dimNo), True)
 
             else:
-                self.loadLevel(self.level.parentWorld)
+                self.loadLevel(self.level.parentWorld, True)
 
     netherPanel = None
 
