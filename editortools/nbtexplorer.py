@@ -40,12 +40,14 @@ import mcplatform
 from config import config, DEF_ENC
 from albow.resource import resource_path
 
+#&# Protoype for blocks/items names
 from pymclevel.materials import block_map, alphaMaterials
 map_block = {}
 for k, v in block_map.items():
     map_block[v] = k
 
 import mclangres
+#&#
 
 #-----------------------------------------------------------------------------
 bullet_image = None
@@ -526,10 +528,12 @@ class NBTExplorerToolPanel(Panel):
         self.side_panel = None
         mclangres.buildResources(lang=getLang())
 
+    #&# Prototype for Blocks/item names
     def set_update_translation(self, v):
         Panel.set_update_translation(self, v)
         if v:
             mclangres.buildResources(lang=getLang())
+    #&#
 
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
@@ -697,6 +701,7 @@ class NBTExplorerToolPanel(Panel):
         slots = [["%s"%i,"","0","0"] for i in range(36)]
         slots_set = []
         for item in items:
+            #&# Prototype for blocks/items names
             name = item['id'].value.split(':')[-1]
             block_id = map_block.get(item['id'].value, None)
             if block_id is not None:
@@ -708,6 +713,8 @@ class NBTExplorerToolPanel(Panel):
             s = int(item['Slot'].value)
             slots_set.append(s)
             slots[s] = item['Slot'].value, name, item['Count'].value, item['Damage'].value
+            #slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
+            #&#
         width = self.width / 2 - self.margin * 4
         c0w = max(15, self.font.size("00")[0]) + 4
         c2w = max(15, self.font.size("00")[0]) + 4
@@ -752,8 +759,36 @@ class NBTExplorerToolPanel(Panel):
             s, i, c, d = data
             s = int(s)
             s_idx = 0
+            #&# Prototype for blocks/items names
+            name = "_".join([a.lower() for a in mclangres.untranslate(i).split(' ')])
+#            print mclangres.untranslate(i), mclangres.serGnal.get(i, None)
+            for item in alphaMaterials.yamlDatas[0]['blocks']:
+#                print item['name'], type(item['name'])
+#                print item
+                if 'name' not in item.keys() or item['name'] in name:
+                    for k, v in item['data'].items():
+                        if v['name'].rsplit('(', 1)[0].strip() == mclangres.untranslate(i):
+                            name = item['idStr']
+                            d = k
+#                            print 1,item
+                            break
+                elif item['name'] == mclangres.untranslate(i):
+                    name = item['idStr']
+#                    print 2,item
+                    break
+                elif 'data' in item.keys():
+                    for k, v in item['data'].items():
+                        if v['name'].rsplit('(', 1)[0].strip() == mclangres.untranslate(i):
+                            name = item['idStr']
+                            d = k
+#                            print 3,item
+                            break
+
+            if name == 'torch' or name.endswith('_torch'):
+                d = 0
+            #&#
+
             if s in slots_set:
-#                for slot in self.data['Player']['Inventory']:
                 for slot in inventory:
                     if slot['Slot'].value == s:
                         if not i or int(c) < 1:
@@ -762,7 +797,10 @@ class NBTExplorerToolPanel(Panel):
                             c = u'0'
                             d = u'0'
                         else:
-                            slot['id'].value = 'minecraft:%s'%i
+                            #&# Prototype for blocks/items names
+                            #slot['id'].value = 'minecraft:%s'%i
+                            slot['id'].value = 'minecraft:%s'%name
+                            #&#
                             slot['Count'].value = int(c)
                             slot['Damage'].value = int(d)
                         break
@@ -770,7 +808,10 @@ class NBTExplorerToolPanel(Panel):
             else:
                 new_slot = TAG_Compound()
                 new_slot['Slot'] = TAG_Byte(s)
-                new_slot['id'] = TAG_String('minecraft:%s'%i)
+                #&# Prototype for blocka/items names
+                #new_slot['id'] = TAG_String('minecraft:%s'%i)
+                new_slot['id'] = TAG_String('minecraft:%s'%name)
+                #&#
                 new_slot['Count'] = TAG_Byte(int(c))
                 new_slot['Damage'] = TAG_Short(int(d))
                 idx = s
@@ -780,6 +821,10 @@ class NBTExplorerToolPanel(Panel):
                         break
                 inventory.insert(s, new_slot)
                 slots_set.append(s)
+            #&# Prototype for blocks/items names
+            if i == name:
+                i = name
+            #&#
             table.slots[s] = slots[s] = s, i, c, d
 
         table.change_value = change_value
