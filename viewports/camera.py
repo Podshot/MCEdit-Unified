@@ -1489,7 +1489,12 @@ class CameraViewport(GLViewport):
         GL.glEnableClientState(GL.GL_COLOR_ARRAY)
 
         quad = numpy.array([-1, -1, -1, 1, 1, 1, 1, -1], dtype='float32')
-        if self.editor.level.dimNo == 1:
+        if self.editor.level.dimNo == -1:
+            colors = numpy.array([0x90, 0x00, 0x00, 0xff,
+                                  0x90, 0x00, 0x00, 0xff,
+                                  0x90, 0x00, 0x00, 0xff,
+                                  0x90, 0x00, 0x00, 0xff, ], dtype='uint8')
+        elif self.editor.level.dimNo == 1:
             colors = numpy.array([0x22, 0x27, 0x28, 0xff,
                                   0x22, 0x27, 0x28, 0xff,
                                   0x22, 0x27, 0x28, 0xff,
