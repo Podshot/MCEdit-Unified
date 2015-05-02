@@ -7,6 +7,10 @@ from pymclevel import materials
 from albow.root import get_root
 from pymclevel.materials import Block
 
+#&# Prototype for blocks/items names
+import mclangres
+#&#
+
 
 def anySubtype(self):
     bl = Block(self.materials, self.ID, self.blockData)
@@ -163,6 +167,9 @@ class BlockPicker(Dialog):
         self.anySubtype = blockInfo.wildcard
 
         self.matchingBlocks = materials.allBlocks
+        #&#
+        self.searchNames = [mclangres.translate(a.name).lower() for a in self.matchingBlocks]
+        #&#
 
         try:
             self.selectedBlockIndex = self.matchingBlocks.index(blockInfo)
@@ -191,9 +198,15 @@ class BlockPicker(Dialog):
 
         def formatBlockName(x):
             block = self.matchingBlocks[x]
-            r = "{name}".format(name=block.name)
+            #&#
+            #r = "{name}".format(name=block.name)
+            r = "{name}".format(name=mclangres.translate(block.name))
+            #&#
             if block.aka:
-                r += " [{0}]".format(block.aka)
+                #&#
+                #r += " [{0}]".format(block.aka)
+                r += " [{0}]".format(mclangres.translate(block.aka))
+                #&#
 
             return r
 
@@ -331,7 +344,12 @@ class BlockPicker(Dialog):
         blocks = self.materials.allBlocks
 
         if len(text):
-            matches = self.materials.blocksMatching(text)
+            #&# Prototype for blocks/items names
+            matches = []
+            for name in self.searchNames:
+                if text in name:
+                    matches.append(self.materials.allBlocks[self.searchNames.index(name)])
+            #&#
             if blockData:
                 ids = set(b.ID for b in matches)
                 matches = sorted([self.materials.blockWithID(id, blockData) for id in ids])
