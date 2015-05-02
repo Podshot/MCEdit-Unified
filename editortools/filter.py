@@ -787,48 +787,17 @@ class FilterTool(EditorTool):
         #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py'))
 
         def tryImport(name):
-            # [D.C.-G.]
-            # Using a file object to import the module is not needed.
-            # A more simple way is to use imp.load_source() as seen in the commented block below.
             module_file_object = open(os.path.join(directories.getFiltersDir(), name))
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
                 m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
-            #    m = __import__(name)
-            # [D.C.-G.]
-            # In my experiments in a NBTTree display issue, I went to think
-            # there was somthing wrong with the filters loading/importing. I was
-            # partially right. So I tweaked tihs part, replacing __import__()
-            # with imp.load_source().
-            # This method imports a module accordingly to its path, and can be a
-            # safer way to do the job here, since only the deisred folders are
-            # used to find the files. No missplaced filters in sys.path (e.g.
-            # for backup) can be loaded.
-            # But i don't know if this behaviour is wanted here. I didn't realy
-            # tested...
-            #
-            #import imp
-#            try:
-#                try:
-##                    path = os.path.join(directories.filtersDir, (name + ".py"))
-#                    path = os.path.join(directories.filtersDir, name)
-#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
-#            #            path = path.encode(DEF_ENC)
-##                    m = imp.load_source(name, path)
-#                    m = imp.load_source(module_name, path)
-#                except:
-##                    path = os.path.join(directories.getDataDir(), "stock-filters", (name + ".py"))
-#                    path = os.path.join(directories.getDataDir(), "stock-filters", name)
-#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
-#            #            path = path.encode(DEF_ENC)
-##                    m = imp.load_source(name, path)
-#                    m = imp.load_source(module_name, path)
                 listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
                 if name not in listdir:
                     old_trn_path = albow.translate.getLangPath()
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
-                    import albow.translate as trn
+                    f = open(os.path.join(directories.getDataDir(), 'albow', 'translate.pyc'))
+                    trn = imp.load_module('trn', f, 'translate.pyc', ('.pyc', 'rb', imp.PY_COMPILED))
                     if directories.getFiltersDir() in name:
                         trn_path = os.path.split(name)[0]
                     else:
@@ -838,10 +807,7 @@ class FilterTool(EditorTool):
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
                     m.trn = trn
-                    albow.translate.setLangPath(old_trn_path)
-                    albow.translate.buildTranslation(config.settings.langCode.get())
-                    self.editor.mcedit.set_update_translation(True)
-                    self.editor.mcedit.set_update_translation(False)
+                    f.close()
                 return m
             except Exception, e:
                 # Only prints when the filter filename is presented, not the entire file path

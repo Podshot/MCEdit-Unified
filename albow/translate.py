@@ -385,7 +385,10 @@ def buildTranslation(lang,suppressAlert=False):
             lngNm = line.split("#-# ")[1].strip()
         else:
             lngNm = os.path.splitext(os.path.basename(fName))[0]
-        resource.setCurLang(lngNm)
+        try:
+            resource.setCurLang(lngNm)
+        except:
+            resource.__curLang = lngNm
         tm1 = time()
         log.debug("  * End on %s duration %s"%(tm, tm1 - tm))
     else:
