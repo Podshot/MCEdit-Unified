@@ -46,8 +46,33 @@ map_block = {}
 for k, v in block_map.items():
     map_block[v] = k
 
+from pymclevel.items import items as mcitems
+map_items = {}
+for k, v in mcitems.items.items():
+    if type (v) == dict:
+        names = []
+        if type(v['name']) == list:
+            names = v['name']
+        else:
+            names = [v['name']]
+        for name in names:
+            if name != None and name not in map_items.keys():
+                map_items[name] = (k, names.index(name))
+
+# # DEBUG
+# #keys = map_items.keys()
+# #keys.sort()
+# #f = open('map_items.txt', 'w')
+# #for k in keys:
+# #    f.write('%s: %s\n'%(k, map_items[k]))
+# #f.close()
+# #f = open('mcitems.txt', 'w')
+# #keys = mcitems.items.keys()
+# #for k in keys:
+# #    f.write('%s: %s\n'%(k, mcitems.items[k]))
+# #f.close()
+
 import mclangres
-from pygame import Surface, display
 #&#
 
 #-----------------------------------------------------------------------------
@@ -402,6 +427,7 @@ class SlotEditor(Panel):
         Panel.__init__(self)
         self.inventory = inventory
         slot, id, count, damage = data
+        self.former_id_text = id
         self.slot = slot
         self.id = TextFieldWrapped(text=id, doNotTranslate=True, width=300)
         #&# Prototype for blocks/items names
@@ -438,16 +464,27 @@ class SlotEditor(Panel):
 
     #&# Prototype for blocks/items names
     def text_entered(self):
-        text = self.id.text
-        results = mclangres.search(text, filters=[r'item\.', r'tile\.'])
+        text = self.id.get_text()
+        if self.former_id_text == text:
+            return
+        results = []
+        for k in map_items.keys():
+            k = mclangres.translate(k)
+            if text.lower() in k.lower():
+                results.append(k)
+        results.sort()
         self.menu.set_items([[a] for a in results])
         self.menu.scrolling = True
         self.menu.set_scroll_items((self.root.local_to_global(self.parent.bottomleft)[1] - self.root.local_to_global(self.bottomleft)[1] - (self.menu.margin * 2)) / self.menu.font.get_linesize())
-        self.menu.present(self.id, (0, self.id.bottom - self.margin))
+        sel = self.menu.present(self.id, (0, self.id.bottom - self.margin))
+        if sel >= 0:
+            self.former_id_text = self.menu.items[sel][0]
+            self.id.change_text(self.menu.items[sel][0])
+            self.former_id_text = self.menu.items[sel][0]
 
     def close_menu(self):
         if self.menu:
-            self.menu.dismiss()
+            self.menu.dismiss(-1)
     #&#
 
 
@@ -727,17 +764,21 @@ class NBTExplorerToolPanel(Panel):
         slots_set = []
         for item in items:
             #&# Prototype for blocks/items names
-            name = item['id'].value.split(':')[-1]
-            block_id = map_block.get(item['id'].value, None)
-            if block_id is not None:
-                name = mclangres.translate(alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[0].strip())
+            item_dict = mcitems.items.get(item['id'].value, None)
+            if item_dict == None:
+                name = item['id'].value
             else:
-                name = 'Future Block!'
-            if name == 'Future Block!':
-                name = mclangres.translate(' '.join([a.capitalize() for a in item['id'].value.split(':')[-1].replace('_', ' ').split()]))
+                if type(item_dict['name']) == list:
+                    if int(item['Damage'].value) >= len(item_dict['name']):
+                        block_id = map_block.get(item['id'].value, None)
+                        name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[0].strip()
+                    else:
+                        name = item_dict['name'][int(item['Damage'].value)]
+                else:
+                    name = item_dict['name']
             s = int(item['Slot'].value)
             slots_set.append(s)
-            slots[s] = item['Slot'].value, name, item['Count'].value, item['Damage'].value
+            slots[s] = item['Slot'].value, mclangres.translate(name), item['Count'].value, item['Damage'].value
             #slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
             #&#
         width = self.width / 2 - self.margin * 4
@@ -785,32 +826,9 @@ class NBTExplorerToolPanel(Panel):
             s = int(s)
             s_idx = 0
             #&# Prototype for blocks/items names
-            name = "_".join([a.lower() for a in mclangres.untranslate(i).split(' ')])
-#            print mclangres.untranslate(i), mclangres.serGnal.get(i, None)
-            for item in alphaMaterials.yamlDatas[0]['blocks']:
-#                print item['name'], type(item['name'])
-#                print item
-                if 'name' not in item.keys() or item['name'] in name:
-                    for k, v in item['data'].items():
-                        if v['name'].rsplit('(', 1)[0].strip() == mclangres.untranslate(i):
-                            name = item['idStr']
-                            d = k
-#                            print 1,item
-                            break
-                elif item['name'] == mclangres.untranslate(i):
-                    name = item['idStr']
-#                    print 2,item
-                    break
-                elif 'data' in item.keys():
-                    for k, v in item['data'].items():
-                        if v['name'].rsplit('(', 1)[0].strip() == mclangres.untranslate(i):
-                            name = item['idStr']
-                            d = k
-#                            print 3,item
-                            break
-
-            if name == 'torch' or name.endswith('_torch'):
-                d = 0
+            name, state = map_items.get(mclangres.untranslate(i), (i, '0'))
+            if ':' not in name:
+                name = 'minecraft:%s'%name
             #&#
 
             if s in slots_set:
@@ -824,10 +842,10 @@ class NBTExplorerToolPanel(Panel):
                         else:
                             #&# Prototype for blocks/items names
                             #slot['id'].value = 'minecraft:%s'%i
-                            slot['id'].value = 'minecraft:%s'%name
+                            slot['id'].value = name
                             #&#
                             slot['Count'].value = int(c)
-                            slot['Damage'].value = int(d)
+                            slot['Damage'].value = int(state)
                         break
                     s_idx += 1
             else:
@@ -835,10 +853,10 @@ class NBTExplorerToolPanel(Panel):
                 new_slot['Slot'] = TAG_Byte(s)
                 #&# Prototype for blocka/items names
                 #new_slot['id'] = TAG_String('minecraft:%s'%i)
-                new_slot['id'] = TAG_String('minecraft:%s'%name)
+                new_slot['id'] = TAG_String(name)
                 #&#
                 new_slot['Count'] = TAG_Byte(int(c))
-                new_slot['Damage'] = TAG_Short(int(d))
+                new_slot['Damage'] = TAG_Short(int(state))
                 idx = s
                 for slot in inventory:
                     if slot['Slot'].value >= s:
@@ -850,7 +868,7 @@ class NBTExplorerToolPanel(Panel):
             if i == name:
                 i = name
             #&#
-            table.slots[s] = slots[s] = s, i, c, d
+            table.slots[s] = slots[s] = s, i, c, state
 
         table.change_value = change_value
         rows.append(table)

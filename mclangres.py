@@ -5,16 +5,8 @@
 # Collect the Minecraft internal translations.
 #
 '''
-Use `.minecraft/assets/indexes/[version].json`. The version is the highest
+Uses `.minecraft/assets/indexes/[version].json`. The version is the highest
 found by default.
-Find the file name containing the en_GB translation (en_US seem to not be
-present).
-Load the en_GB file and build a dictionnary: {'string': 'element name'}.
-Find the file name corresponding to the current MCEdit language, and build
-a dictionnary: {'element name': 'string'}.
-Retrieve the current MCEdit language translation with getting the 'element
-name' in the English dictionnary and getting the 'string' in the current
-language dictionnary using this 'element name'.
 '''
 
 import re
@@ -39,6 +31,11 @@ csimGnal = {}
 # Shall this be maintained in an external resource?
 excludedEntries = ['tile.flower1.name',]
 
+# Used to track untranslated and out dated MCEdit resources.
+# Set it to true to generate/add entries to 'missingmclangres.txt' in MCEdit folder.
+# ! ! ! Please, pay attention to disable this befor releasing ! ! !
+report_missing = False
+
 def getResourceName(name, data):
     match = re.findall('"minecraft/lang/%s.lang":[ ]\{\b*.*?"hash":[ ]"(.*?)",'%name, data, re.DOTALL)
     if match:
@@ -52,6 +49,9 @@ def findResourceFile(name, basedir):
             return os.path.join(basedir, root, name)
 
 def buildResources(version=None, lang=None):
+    """Loads the resource files and builds the resource dictionnaries.
+    Four dictionnaries are built. Two for the refering language (English), and two for the language to be used.
+    They are 'reversed' dictionnaries; the {foo: bar} pairs of one are the {bar: foo} of the other one."""
     log.debug('Building Minecraft language resources...')
     global enRes
     global serNe
@@ -140,6 +140,8 @@ def compound(char, string, pair=None):
     name, misc = string.split(char, 1)
     name = name.strip()
     misc = [a.strip() for a in misc.strip()[:-1].split(',')]
+    if (name not in enRes.keys() and name not in langRes.values()) and (name not in enMisc.keys() and name not in langMisc.values()):
+        addMissing(name)
     head = langRes.get(enRes.get(name, name), name)
     for i in range(len(misc)):
         if ' ' in misc[i]:
@@ -170,6 +172,10 @@ def compound(char, string, pair=None):
                         if stop[0]:
                             stop[1] = True
                 misc[i] = u' '.join((h, t))
+                if (h not in enRes.keys() and h not in langRes.values()) and (h not in enMisc.keys() and h not in langMisc.values()):
+                    addMissing(h, 'misc')
+                if (t not in enRes.keys() and t not in langRes.values()) and (t not in enMisc.keys() and t not in langMisc.values()):
+                    addMissing(t, 'misc')
         elif u'/' in misc[i]:
             misc[i] = u'/'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('/')])
         elif '-' in misc[i]:
@@ -181,18 +187,52 @@ def compound(char, string, pair=None):
     tail = u'%s%s%s'%(char, u', '.join([langMisc.get(enMisc.get(a, a), a) for a in misc]), pair)
     return u' '.join((head, tail))
 
+if report_missing:
+    def addMissing(name, cat='base'):
+        n = u''
+        for a in name:
+            if a == ' ' or a.isalnum():
+                n += a
+        elems = n.split(' ', 1)
+        head = elems[0].lower()
+        if head.isdigit():
+            head = ''
+        tail = ''
+        if len(elems) > 1:
+            tail = ''.join([a.capitalize() for a in elems[1].split(' ') if not a.isdigit()])
+        if not n.isdigit():
+            line = 'missing.%s.%s%s=%s\n'%(cat, head, tail, name)
+            f = codecs.open(os.path.join(getDataDir(), 'missingmclangres.txt'), 'a+', encoding='utf_8')
+            if line not in f.read():
+                f.write(line)
+            f.close()
+else:
+    def addMissing(*args, **kwargs): return
+
 def translate(name):
+    """Returns returns the translation of `name`, or `name` if no translation found.
+    Can handle composed strings like: 'string_present_in_translations (other_string_1, other_string_2)'.
+    Note that, in this case, the returned string may be partially translated."""
     for c in '{[(':
         if c in name:
             return compound(c, name)
+    if report_missing:
+        print '*', (name not in enRes.keys() and name not in langRes.values()) and (name not in enMisc.keys() and name not in langMisc.values()), name
+    if (name not in enRes.keys() and name not in langRes.values()) and (name not in enMisc.keys() and name not in langMisc.values()):
+        addMissing(name)
     return langRes.get(enRes.get(name, name), name)
 
 def untranslate(name, case_sensitive=True):
+    """Basic reverse function of `translate`."""
     key = serGnal.get(name, None)
     value = serNe.get(key, None)
     return value or name
 
 def search(text, untranslate=False, capitalize=True, filters=[]):
+    """Search for a `text` string in the resources entries.
+    `filters` is a list of strings: they must be parts before the '=' sign in the resource files, or parts of.
+    `filters` may be regexes.
+    Returns a sorted list of matching elements."""
     # filters may contain regexes
     text = text.lower()
     results = []
