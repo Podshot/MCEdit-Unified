@@ -550,9 +550,15 @@ class TextEditorWrapped(Widget):
 
         #Scroll the text up or down if necessary
         if self.insertion_line > self.topLine + self.dispLines - 1:
-            self.scroll_down()
+            if ip == len(text):
+                self.scroll_down_all()
+            else:
+                self.scroll_down()
         elif self.insertion_line < self.topLine:
-            self.scroll_up()
+            if ip == 0:
+                self.scroll_up_all()
+            else:
+                self.scroll_up()
 
         #Draw Border
         draw.rect(surface, self.sel_color, pygame.Rect(frame.left, frame.top, frame.size[0], frame.size[1]), 1)
@@ -643,7 +649,9 @@ class TextEditorWrapped(Widget):
             else:
 #                x, h = (0, font.size("X")[1])
                 x, h = (0, linesize)
-            if ip != i:
+            if ip > self.textRefList[0]:
+                i -= 1
+            if ip == self.textRefList[il]:
                 if self.doFix:
                     self.move_insertion_point(-1)
                     self.doFix = False
@@ -1073,6 +1081,14 @@ class TextEditorWrapped(Widget):
             self.topLine -= 1
 
     def scroll_down(self):
+        if self.topLine + 1 < len(self.textL) - self.dispLines + 1:
+            self.topLine += 1
+
+    def scroll_up_all(self):
+        if self.topLine - 1 >= 0:
+            self.topLine = 0
+
+    def scroll_down_all(self):
         if self.topLine + 1 < len(self.textL) - self.dispLines + 1:
             self.topLine = len(self.textL) - self.dispLines
 
