@@ -44,7 +44,7 @@ def getResourceName(name, data):
     if match:
         return match[0]
     else:
-        print 'Could not find %s resource name.'%name
+        log.debug('Could not find %s resource name.'%name)
 
 def findResourceFile(name, basedir):
     for root, dirs, files in os.walk(basedir):
@@ -90,12 +90,12 @@ def buildResources(version=None, lang=None):
             log.debug('Nothing built. Aborted')
             return
         log.debug('Found %s'%name)
-        lines = codecs.open(fName).readlines()
+        lines = codecs.open(fName, encoding='utf_8').readlines()
         for line in lines:
             if line.split('.')[0] in ['book', 'enchantment', 'entity', 'gameMode', 'generator', 'item', 'tile'] and line.split('=')[0].strip() not in excludedEntries:
                 enRes[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
                 serNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
-        lines = codecs.open(os.path.join(getDataDir(), 'Items', 'en_GB'))
+        lines = codecs.open(os.path.join(getDataDir(), 'Items', 'en_GB'), encoding='utf_8')
         for line in lines:
             enMisc[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
             csimNe[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
@@ -106,6 +106,9 @@ def buildResources(version=None, lang=None):
         lang = 'en_GB'
     log.debug('Looking for %s resources.'%lang)
     name = getResourceName(lang, data)
+    if not name:
+        lang = 'en_GB'
+        name = getResourceName(lang, data)
     if name:
         fName = os.path.join(objectsDirectory, name[:2], name)
         if not os.path.exists(fName):
@@ -120,7 +123,7 @@ def buildResources(version=None, lang=None):
                 langRes[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
                 serGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
         if os.path.exists(os.path.join(getDataDir(), 'Items', lang)):
-            lines = codecs.open(os.path.join(getDataDir(), 'Items', lang))
+            lines = codecs.open(os.path.join(getDataDir(), 'Items', lang), encoding='utf_8')
             for line in lines:
                 langMisc[line.split('=', 1)[0].strip()] = line.split('=', 1)[-1].strip()
                 csimGnal[line.split('=', 1)[-1].strip()] = line.split('=', 1)[0].strip()
@@ -157,7 +160,7 @@ def compound(char, string, pair=None):
                             h = langRes.get(enRes.get(h, h), h)
                             stop[0] = True
                     if not stop[1]:
-                        t = ' '.join(elems[1:])
+                        t = u' '.join(elems[1:])
                         if langMisc.get(enMisc.get(t, False), False):
                             t = langMisc.get(enMisc.get(t, t), t)
                             stop[1] = True
@@ -166,17 +169,17 @@ def compound(char, string, pair=None):
                             stop[1] = True
                         if stop[0]:
                             stop[1] = True
-                misc[i] = ' '.join((h, t))
-        elif '/' in misc[i]:
-            misc[i] = '/'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('/')])
+                misc[i] = u' '.join((h, t))
+        elif u'/' in misc[i]:
+            misc[i] = u'/'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('/')])
         elif '-' in misc[i]:
-            misc[i] = '-'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('-')])
+            misc[i] = u'-'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('-')])
         elif '_' in misc[i]:
-            misc[i] = '_'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('_')])
+            misc[i] = u'_'.join([langMisc.get(enMisc.get(a, a), translate(a)) for a in misc[i].split('_')])
         else:
             misc[i] = langRes.get(enRes.get(misc[i], misc[i]), misc[i])
-    tail = '%s%s%s'%(char, ', '.join([langMisc.get(enMisc.get(a, a), a) for a in misc]), pair)
-    return ' '.join((head, tail))
+    tail = u'%s%s%s'%(char, u', '.join([langMisc.get(enMisc.get(a, a), a) for a in misc]), pair)
+    return u' '.join((head, tail))
 
 def translate(name):
     for c in '{[(':
@@ -189,14 +192,34 @@ def untranslate(name, case_sensitive=True):
     value = serNe.get(key, None)
     return value or name
 
-def search(text, untranslate=True): # Useless?
+def search(text, untranslate=False, capitalize=True, filters=[]):
+    # filters may contain regexes
     text = text.lower()
     results = []
+    def get_result(l, w):
+            if untranslate:
+                if capitalize:
+                    results.append('-'.join([b.capitalize() for b in ' '.join([a.capitalize() for a in serNe[w].split(' ')]).split('-')]))
+                else:
+                    results.append(serNe[w].lower())
+            else:
+                if capitalize:
+                    results.append('-'.join([b.capitalize() for b in ' '.join([a.capitalize() for a in l.split(' ')]).split('-')]))
+                else:
+                    results.append(l.lower())
     for k, v in serGnal.items():
         if text in k.lower():
-            if untranslate:
-                results.append(serNe[v].lower())
-            else:
-                results.append(k.lower())
+            if not filters or map(lambda (x,y):re.match(x,y), zip(filters, [v] * len(filters))) != [None, None]:
+                if untranslate:
+                    if capitalize:
+                        results.append('-'.join([b.capitalize() for b in ' '.join([a.capitalize() for a in serNe[v].split(' ')]).split('-')]))
+                    else:
+                        results.append(serNe[v].lower())
+                else:
+                    if capitalize:
+                        results.append('-'.join([b.capitalize() for b in ' '.join([a.capitalize() for a in k.split(' ')]).split('-')]))
+                    else:
+                        results.append(k.lower())
+    results.sort()
     return results
 

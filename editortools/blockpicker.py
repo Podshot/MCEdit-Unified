@@ -200,12 +200,12 @@ class BlockPicker(Dialog):
             block = self.matchingBlocks[x]
             #&#
             #r = "{name}".format(name=block.name)
-            r = "{name}".format(name=mclangres.translate(block.name))
+            r = u"{name}".format(name=mclangres.translate(block.name))
             #&#
             if block.aka:
                 #&#
                 #r += " [{0}]".format(block.aka)
-                r += " [{0}]".format(mclangres.translate(block.aka))
+                r += u" [{0}]".format(mclangres.translate(block.aka))
                 #&#
 
             return r

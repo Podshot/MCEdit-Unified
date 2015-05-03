@@ -14,7 +14,7 @@
 from pygame import key, draw, image, Rect, event, MOUSEBUTTONDOWN
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
-    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton
+    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton, Menu
 from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _, getLang
@@ -47,6 +47,7 @@ for k, v in block_map.items():
     map_block[v] = k
 
 import mclangres
+from pygame import Surface, display
 #&#
 
 #-----------------------------------------------------------------------------
@@ -403,6 +404,16 @@ class SlotEditor(Panel):
         slot, id, count, damage = data
         self.slot = slot
         self.id = TextFieldWrapped(text=id, doNotTranslate=True, width=300)
+        #&# Prototype for blocks/items names
+        self.menu = None
+        m = Menu("", [""])
+        h = m.font.get_linesize()
+        self.menu = Menu("", [""], scrolling=True, scroll_items=(self.root.local_to_global(self.root.bottomleft)[1] - self.root.local_to_global(self.bottomleft)[1] - (m.margin * 2)) / h)
+        del m
+        self.id.change_action = self.text_entered
+        self.id.escape_action = self.close_menu
+        self.menu.key_down = self.id.key_down
+        #&#
         self.count = IntField(text="%s"%count, min=-64, max=64)
         self.damage = IntField(text="%s"%damage, min=-32768, max=32767)
         header = Label(_("Inventory Slot #%s")%slot, doNotTranslate=True)
@@ -424,6 +435,20 @@ class SlotEditor(Panel):
             data = [self.slot, self.id.text, self.count.text, self.damage.text]
             self.inventory.change_value(data)
         Panel.dismiss(self, *args, **kwargs)
+
+    #&# Prototype for blocks/items names
+    def text_entered(self):
+        text = self.id.text
+        results = mclangres.search(text, filters=[r'item\.', r'tile\.'])
+        self.menu.set_items([[a] for a in results])
+        self.menu.scrolling = True
+        self.menu.set_scroll_items((self.root.local_to_global(self.parent.bottomleft)[1] - self.root.local_to_global(self.bottomleft)[1] - (self.menu.margin * 2)) / self.menu.font.get_linesize())
+        self.menu.present(self.id, (0, self.id.bottom - self.margin))
+
+    def close_menu(self):
+        if self.menu:
+            self.menu.dismiss()
+    #&#
 
 
 #-----------------------------------------------------------------------------

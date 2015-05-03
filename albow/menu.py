@@ -71,6 +71,19 @@ class Menu(Dialog):
         self.root = self.get_root()
         self.calc_size()
 
+    #&#
+    def set_items(self, items):
+        self.items = items
+        self._items = [MenuItem(*item) for item in items]
+
+    def set_scroll_items(self, scroll_items):
+        if scroll_items < len(self.items):
+            self.scroll_items = scroll_items
+        else:
+            self.scroll_items = len(self.items)
+        self.calc_size()
+    #&#
+
     def calc_size(self):
         h = self.font.get_linesize()
         if self.scrolling:
