@@ -323,6 +323,7 @@ class OptionsPanel(Dialog):
 #            elif result == "Later":
 #                pass
 
+        self.reshowNumberFields()
         for key in self.saveOldConfig.keys():
             self.saveOldConfig[key] = key.get()
 

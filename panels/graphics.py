@@ -103,6 +103,7 @@ class GraphicsPanel(Dialog):
             config.settings.maxViewDistance.set(config.settings.maxViewDistance.get()-1)
 
     def dismiss(self, *args, **kwargs):
+        self.reshowNumberFields()
         self.checkMaxView()
         for key in self.saveOldConfig.keys():
             self.saveOldConfig[key] = key.get()

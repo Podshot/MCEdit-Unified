@@ -649,9 +649,7 @@ class TextEditorWrapped(Widget):
             else:
 #                x, h = (0, font.size("X")[1])
                 x, h = (0, linesize)
-            if ip > self.textRefList[0]:
-                i -= 1
-            if ip == self.textRefList[il]:
+            if self.textRefList and ip == self.textRefList[il]:
                 if self.doFix:
                     self.move_insertion_point(-1)
                     self.doFix = False
@@ -1150,7 +1148,7 @@ class FieldWrapped(Control, TextEditorWrapped):
     #  type      func(string) -> value
     #  editing   boolean
 
-    empty = NotImplemented
+    empty = ""
     format = u"%s"
     min = None
     max = None
