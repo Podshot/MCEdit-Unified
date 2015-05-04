@@ -7,7 +7,7 @@ from pygame import draw
 import pygame
 from pygame import key
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, K_x, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT, \
-    K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META, K_HOME, K_END
+    K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META, K_HOME, K_END, K_z, K_y
 from widget import Widget, overridable_property
 from controls import Control
 #-# This need to be changed. We need albow.translate in the config module.
@@ -36,6 +36,11 @@ class TextEditor(Widget):
         if upper is not None:
             self.upper = upper
         self.insertion_point = None
+        self.selection_end = None
+        self.selection_start = None
+        self.undoList = []
+        self.undoNum = 0
+        self.redoList = []
         self.root = self.get_root()
 
     def get_text(self):
@@ -53,7 +58,27 @@ class TextEditor(Widget):
         focused = self.has_focus()
         text, i = self.get_text_and_insertion_point()
         if focused and i is None:
-            surface.fill(self.sel_color, frame)
+            if self.selection_start is None or self.selection_end is None:
+                surface.fill(self.sel_color, frame)
+            else:
+                startStep = self.selection_start
+                endStep = self.selection_end
+
+                if startStep > endStep:
+                    x1, h = font.size(text[0:endStep])[0], font.get_linesize()
+                    x2, h = font.size(text[0:startStep])[0], font.get_linesize()
+                    x1 += frame.left
+                    x2 += frame.left
+                    y = frame.top
+                    selRect = pygame.Rect(x1, y, (x2 - x1), h)
+                else:
+                    x1, h = font.size(text[0:startStep])[0], font.get_linesize()
+                    x2, h = font.size(text[0:endStep])[0], font.get_linesize()
+                    x1 += frame.left
+                    x2 += frame.left
+                    y = frame.top
+                    selRect = pygame.Rect(x1, y, (x2 - x1), h)
+                draw.rect(surface, self.sel_color, selRect)
         image = font.render(text, True, fg)
         surface.blit(image, frame)
         if focused and i is not None:
@@ -67,47 +92,149 @@ class TextEditor(Widget):
         if not event.cmd or (event.alt and event.unicode):
             k = event.key
             if k == K_LEFT:
-                self.move_insertion_point(-1)
+                if not (key.get_mods() & KMOD_SHIFT):
+                    self.move_insertion_point(-1)
+                else:
+                    if self.selection_end is None and self.selection_start is None and self.insertion_point is None:
+                        return
+                    if self.selection_end is None and self.insertion_point != 0:
+                        self.selection_start = self.insertion_point
+                        self.selection_end = self.insertion_point - 1
+                        self.insertion_point = None
+                    elif self.selection_end is not None and self.selection_end != 0:
+                        self.selection_end -= 1
+                        if self.selection_end == self.selection_start:
+                            self.insertion_point = self.selection_end
+                            self.selection_end = None
+                            self.selection_start = None
                 return
             if k == K_RIGHT:
-                self.move_insertion_point(1)
+                if not (key.get_mods() & KMOD_SHIFT):
+                    self.move_insertion_point(1)
+                else:
+                    if self.selection_end is None and self.selection_start is None and self.insertion_point is None:
+                        return
+                    if self.selection_start is None and self.insertion_point < len(self.text):
+                        self.selection_start = self.insertion_point
+                        self.selection_end = self.insertion_point + 1
+                        self.insertion_point = None
+                    elif self.selection_start is not None and self.selection_end < len(self.text):
+                        self.selection_end += 1
+                        if self.selection_end == self.selection_start:
+                            self.insertion_point = self.selection_end
+                            self.selection_end = None
+                            self.selection_start = None
                 return
             if k == K_TAB:
                 self.attention_lost()
                 self.tab_to_next()
                 return
+            if k == K_DOWN:
+                self.move_insertion_line(1)
+                return
+            if k == K_UP:
+                self.move_insertion_line(-1)
+                return
+            if k == K_HOME:
+                if not (key.get_mods() & KMOD_SHIFT):
+                    self.selection_start = None
+                    self.selection_end = None
+                    self.insertion_point = 0
+                elif self.insertion_point != 0:
+                    if self.insertion_point is not None:
+                        self.selection_start = self.insertion_point
+                        self.insertion_point = None
+                    self.selection_end = 0
+                    if self.selection_end == self.selection_start:
+                        self.insertion_point = self.selection_end
+                        self.selection_end = None
+                        self.selection_start = None
+                return
+            if k == K_END:
+                if not (key.get_mods() & KMOD_SHIFT):
+                    self.selection_start = None
+                    self.selection_end = None
+                    self.insertion_point = len(self.text)
+                elif self.insertion_point != len(self.text):
+                    if self.insertion_point is not None:
+                        self.selection_start = self.insertion_point
+                        self.insertion_point = None
+                    self.selection_end = len(self.text)
+                    if self.selection_end == self.selection_start:
+                        self.insertion_point = self.selection_end
+                        self.selection_end = None
+                        self.selection_start = None
+                return
             try:
                 c = event.unicode
             except ValueError:
+                print 'value error'
                 c = ""
-            if k != K_DOWN and k != K_UP:
-                if self.insert_char(c, k) != 'pass':
-                    return
+            if self.insert_char(c, k) != 'pass':
+                return
         if event.cmd and event.unicode:
-            if event.key == K_c:
+            if event.key == K_c or event.key == K_x:
                 try:
                     #pygame.scrap.put(SCRAP_TEXT, self.text)
-                    pyperclip.copy(self.text)
+                    text, i = self.get_text_and_insertion_point()
+                    if i is None and (self.selection_start is None or self.selection_end is None):
+                        text = self.text
+                    elif i is None and self.selection_start is not None and self.selection_end is not None:
+                        text = text[(min(self.selection_start, self.selection_end)):max(self.selection_start, self.selection_end)]
+                    else:
+                        return
+                    pyperclip.copy(text)
                 except:
                     print "scrap not available"
+                finally:
+                    if event.key == K_x and i is None:
+                        self.insert_char(event.unicode, K_BACKSPACE)
 
             elif event.key == K_v:
                 try:
+                    self.addUndo()
                     #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
-                    t = pyperclip.paste()
-                    DEF_ENC = locale.getdefaultlocale()[1]
-                    if DEF_ENC is None:
-                        DEF_ENC = "UTF-8"
-                    if type(t) == unicode and DEF_ENC != "UTF-8":
-                        t = t.encode(DEF_ENC)
-                    allow = True
-                    for char in t:
-                        if not self.allow_char(char):
-                            allow = False
-                    if allow:
-                        self.text = t
+                    t = pyperclip.paste().replace("\n", " ")
+                    if t is not None:
+                        allow = True
+                        for char in t:
+                            if not self.allow_char(char):
+                                allow = False
+                        if not allow:
+                            return
+                        if self.insertion_point is not None:
+                            self.text = self.text[:self.insertion_point] + t + self.text[self.insertion_point:]
+                            self.insertion_point += len(t)
+                        elif self.insertion_point is None and (
+                                self.selection_start is None or self.selection_end is None):
+                            self.text = t
+                            self.insertion_point = len(t)
+                        elif self.insertion_point is None and self.selection_start is not None and self.selection_end is not None:
+                            self.selection_point = min(self.selection_start, self.selection_end) + len(t)
+                            self.text = self.text[:(min(self.selection_start, self.selection_end))] + t + self.text[(
+                            max(self.selection_start, self.selection_end)):]
+                            self.selection_start = None
+                            self.selection_end = None
+                        else:
+                            return
+                        self.change_text(self.text)
                 except:
                     print "scrap not available"
+                    #print repr(t)
+            elif event.key == K_z and self.undoNum > 0:
+                self.redoList.append(self.text)
+                self.undoNum -= 1
+                self.change_text(self.undoList[self.undoNum])
+                self.insertion_point = len(self.text)
+                self.selection_start = None
+                self.selection_end = None
+            elif event.key == K_y and len(self.undoList) > self.undoNum:
+                self.undoNum += 1
+                self.change_text(self.redoList[-1])
+                self.redoList = self.redoList[:-1]
+                self.insertion_point = len(self.text)
+                self.selection_start = None
+                self.selection_end = None
             else:
                 self.attention_lost()
 
@@ -122,6 +249,8 @@ class TextEditor(Widget):
         return text, i
 
     def move_insertion_point(self, d):
+        self.selection_start = None
+        self.selection_end = None
         text, i = self.get_text_and_insertion_point()
         if i is None:
             if d > 0:
@@ -133,6 +262,7 @@ class TextEditor(Widget):
         self.insertion_point = i
 
     def insert_char(self, c, k=None):
+        self.addUndo()
         if self.upper:
             c = c.upper()
         if k == K_BACKSPACE or k == K_DELETE:
@@ -167,12 +297,21 @@ class TextEditor(Widget):
                 return
         return 'pass'
 
+    def addUndo(self):
+        if len(self.undoList) > self.undoNum:
+            self.undoList = self.undoList[:self.undoNum]
+        self.undoList.append(self.text)
+        self.undoNum += 1
+        self.redoList = []
+
     def allow_char(self, c):
         return True
 
     def mouse_down(self, e):
         self.root.notMove = True
         self.focus()
+        self.selection_start = None
+        self.selection_end = None
         if e.num_clicks == 2:
             self.insertion_point = None
             return
@@ -523,6 +662,10 @@ class TextEditorWrapped(Widget):
         self.dispLines = lines
         self.textChanged = True
         self.allowed_chars = allowed_chars
+        self.undoList = []
+        self.undoNum = 0
+        self.redoList = []
+        self.root = self.get_root()
 
     def get_text(self):
         return self._text
@@ -661,7 +804,7 @@ class TextEditorWrapped(Widget):
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
-        self.get_root().notMove = True
+        self.root.notMove = True
         if not event.cmd or (event.alt and event.unicode):
             k = event.key
             if k == K_LEFT:
@@ -769,6 +912,7 @@ class TextEditorWrapped(Widget):
 
             elif event.key == K_v:
                 try:
+                    self.addUndo()
                     #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
                     t = pyperclip.paste().replace("\n", " ")
                     if t is not None:
@@ -798,6 +942,20 @@ class TextEditorWrapped(Widget):
                 except:
                     print "scrap not available"
                     #print repr(t)
+            elif event.key == K_z and self.undoNum > 0:
+                self.redoList.append(self.text)
+                self.undoNum -= 1
+                self.change_text(self.undoList[self.undoNum])
+                self.insertion_point = len(self.text)
+                self.selection_start = None
+                self.selection_end = None
+            elif event.key == K_y and len(self.undoList) > self.undoNum:
+                self.undoNum += 1
+                self.change_text(self.redoList[-1])
+                self.redoList = self.redoList[:-1]
+                self.insertion_point = len(self.text)
+                self.selection_start = None
+                self.selection_end = None
             else:
                 self.attention_lost()
 
@@ -920,6 +1078,7 @@ class TextEditorWrapped(Widget):
                 self.insertion_step = 0
 
     def insert_char(self, c, k=None):
+        self.addUndo()
         if self.upper:
             c = c.upper()
         if k == K_BACKSPACE or k == K_DELETE:
@@ -970,13 +1129,20 @@ class TextEditorWrapped(Widget):
                 return
         return 'pass'
 
+    def addUndo(self):
+        if len(self.undoList) > self.undoNum:
+            self.undoList = self.undoList[:self.undoNum]
+        self.undoList.append(self.text)
+        self.undoNum += 1
+        self.redoList = []
+
     def allow_char(self, c):
         if not self.allowed_chars:
             return True
         return c in self.allowed_chars
 
     def mouse_down(self, e):
-        self.get_root().notMove = True
+        self.root.notMove = True
         self.focus()
         if e.button == 1:
             if e.num_clicks == 2:
