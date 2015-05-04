@@ -129,12 +129,6 @@ class TextEditor(Widget):
                 self.attention_lost()
                 self.tab_to_next()
                 return
-            if k == K_DOWN:
-                self.move_insertion_line(1)
-                return
-            if k == K_UP:
-                self.move_insertion_line(-1)
-                return
             if k == K_HOME:
                 if not (key.get_mods() & KMOD_SHIFT):
                     self.selection_start = None
@@ -210,7 +204,6 @@ class TextEditor(Widget):
                             self.text = t
                             self.insertion_point = len(t)
                         elif self.insertion_point is None and self.selection_start is not None and self.selection_end is not None:
-                            self.selection_point = min(self.selection_start, self.selection_end) + len(t)
                             self.text = self.text[:(min(self.selection_start, self.selection_end))] + t + self.text[(
                             max(self.selection_start, self.selection_end)):]
                             self.selection_start = None
@@ -930,7 +923,6 @@ class TextEditorWrapped(Widget):
                             self.text = t
                             self.insertion_point = len(t)
                         elif self.insertion_point is None and self.selection_start is not None and self.selection_end is not None:
-                            self.selection_point = min(self.selection_start, self.selection_end) + len(t)
                             self.text = self.text[:(min(self.selection_start, self.selection_end))] + t + self.text[(
                             max(self.selection_start, self.selection_end)):]
                             self.selection_start = None
