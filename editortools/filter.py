@@ -796,8 +796,11 @@ class FilterTool(EditorTool):
                     old_trn_path = albow.translate.getLangPath()
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
-                    f = open(os.path.join(directories.getDataDir(), 'albow', 'translate.pyc'))
-                    trn = imp.load_module('trn', f, 'translate.pyc', ('.pyc', 'rb', imp.PY_COMPILED))
+                    # Rool back because of a 'bad magic number issue'
+                    # Need to be reworked
+                    # f = open(os.path.join(directories.getDataDir(), 'albow', 'translate.pyc'))
+                    # trn = imp.load_module('trn', f, 'translate.pyc', ('.pyc', 'rb', imp.PY_COMPILED))
+                    from albow import translate as trn
                     if directories.getFiltersDir() in name:
                         trn_path = os.path.split(name)[0]
                     else:
@@ -807,7 +810,13 @@ class FilterTool(EditorTool):
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
                     m.trn = trn
-                    f.close()
+                    # Rool back because of a 'bad magic number issue'
+                    #f.close()
+                    albow.translate.setLangPath(old_trn_path)
+                    albow.translate.buildTranslation(config.settings.langCode.get())
+                    self.editor.mcedit.set_update_translation(True)
+                    self.editor.mcedit.set_update_translation(False)
+                    #
                 return m
             except Exception, e:
                 # Only prints when the filter filename is presented, not the entire file path

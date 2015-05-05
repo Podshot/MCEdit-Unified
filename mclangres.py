@@ -33,6 +33,7 @@ excludedEntries = ['tile.flower1.name',]
 
 # Used to track untranslated and out dated MCEdit resources.
 # Set it to true to generate/add entries to 'missingmclangres.txt' in MCEdit folder.
+# Note that some strings may be falsely reported. (Especialy a '7 (Source)' one...)
 # ! ! ! Please, pay attention to disable this befor releasing ! ! !
 report_missing = False
 
@@ -195,8 +196,6 @@ if report_missing:
                 n += a
         elems = n.split(' ', 1)
         head = elems[0].lower()
-        if head.isdigit():
-            head = ''
         tail = ''
         if len(elems) > 1:
             tail = ''.join([a.capitalize() for a in elems[1].split(' ') if not a.isdigit()])
