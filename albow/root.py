@@ -126,6 +126,7 @@ class RootWidget(Widget):
         self.notMove = False
         self.nudge = None
         self.testTime = None
+        self.testTimeBack = 0.4
         self.nudgeDirection = None
         self.sessionStolen = False
 
@@ -326,6 +327,7 @@ class RootWidget(Widget):
                                     if keyname == key and i == self.nudgeDirection:
                                         self.nudgeDirection = None
                                         self.testTime = None
+                                        self.testTimeBack = 0.4
 
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
@@ -444,7 +446,9 @@ class RootWidget(Widget):
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
-        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds=0.1)):
+        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds=self.testTimeBack)):
+            if self.testTimeBack > 0.1:
+                self.testTimeBack -= 0.1
             self.bonus_draw_time = False
             self.testTime = datetime.now()
             if keyname == self.editor.movements[4]:
