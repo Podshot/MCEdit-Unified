@@ -15,6 +15,7 @@ from pygame import key, draw, image, Rect, event, MOUSEBUTTONDOWN
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
     ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton, Menu
+from albow.dialogs import Dialog
 from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _, getLang
@@ -421,36 +422,61 @@ class NBTExplorerOptions(ToolOptions):
             self.tool.panel.tree.build_layout()
         ToolOptions.dismiss(self, *args, **kwargs)
 
+
 #-----------------------------------------------------------------------------
-class SlotEditor(Panel):
-    def __init__(self, inventory, data):
-        Panel.__init__(self)
+#&# Prototype for blocks/items names
+class SlotEditor(Dialog):
+    def __init__(self, inventory, data, *args, **kwargs):
+        Dialog.__init__(self, *args, **kwargs)
         self.inventory = inventory
         slot, id, count, damage = data
         self.former_id_text = id
         self.slot = slot
         self.id = TextFieldWrapped(text=id, doNotTranslate=True, width=300)
-        #&# Prototype for blocks/items names
-        self.menu = None
-        m = Menu("", [""])
-        h = m.font.get_linesize()
-        self.menu = Menu("", [""], scrolling=True, scroll_items=(self.root.local_to_global(self.root.bottomleft)[1] - self.root.local_to_global(self.bottomleft)[1] - (m.margin * 2)) / h)
-        del m
         self.id.change_action = self.text_entered
-        self.id.escape_action = self.close_menu
-        self.menu.key_down = self.id.key_down
-        #&#
-        self.count = IntField(text="%s"%count, min=-64, max=64)
-        self.damage = IntField(text="%s"%damage, min=-32768, max=32767)
+        self.id.escape_action = self.cancel
+        self.id.enter_action = self.ok
+        self.count = IntField(text="%s"%count, min=0, max=64)
+        self.damage = IntField(text="%s"%damage, min=0, max=os.sys.maxint)
         header = Label(_("Inventory Slot #%s")%slot, doNotTranslate=True)
         row = Row([Label("id"), self.id,
                    Label("Count"), self.count,
                    Label("Damage"), self.damage,
                    ])
+        
+        self.matching_items = [mclangres.translate(k) for k in map_items.keys()]
+        self.matching_items.sort()
+        if id in self.matching_items:
+            self.selected_item_index = self.matching_items.index(id)
+        self.tableview = tableview = TableView(columns=[TableColumn("", 415, 'l')])
+        tableview.num_rows = lambda: len(self.matching_items)
+        tableview.row_data = lambda x: (self.matching_items[x],)
+        tableview.row_is_selected = lambda x: x == self.selected_item_index
+        tableview.click_row = self.select_tablerow
+        
+        
         buttons = Row([Button("Save", action=self.dismiss), Button("Cancel", action=self.cancel)])
-        col = Column([header, row, buttons], spacing=2)
+        col = Column([header, row, tableview, buttons], spacing=2)
         self.add(col)
         self.shrink_wrap()
+
+        try:
+            self.tableview.rows.scroll_to_item(self.selected_item_index)
+        except Exception, e:
+            print e
+            pass
+
+    def ok(self, *args, **kwargs):
+        self.id.set_text(self.matching_items[self.selected_item_index])
+        kwargs['save'] = True
+        self.dismiss(*args, **kwargs)
+
+    def select_tablerow(self, i, e):
+        old_index = self.selected_item_index
+
+        self.selected_item_index = i
+        if e.num_clicks > 1 and old_index == i:
+            self.dismiss(save=True)
 
     def cancel(self, *args, **kwargs):
         kwargs['save'] = False
@@ -460,9 +486,8 @@ class SlotEditor(Panel):
         if kwargs.pop('save', True):
             data = [self.slot, self.id.text, self.count.text, self.damage.text]
             self.inventory.change_value(data)
-        Panel.dismiss(self, *args, **kwargs)
+        Dialog.dismiss(self, *args, **kwargs)
 
-    #&# Prototype for blocks/items names
     def text_entered(self):
         text = self.id.get_text()
         if self.former_id_text == text:
@@ -473,19 +498,22 @@ class SlotEditor(Panel):
             if text.lower() in k.lower():
                 results.append(k)
         results.sort()
-        self.menu.set_items([[a] for a in results])
-        self.menu.scrolling = True
-        self.menu.set_scroll_items((self.root.local_to_global(self.parent.bottomleft)[1] - self.root.local_to_global(self.bottomleft)[1] - (self.menu.margin * 2)) / self.menu.font.get_linesize())
-        sel = self.menu.present(self.id, (0, self.id.bottom - self.margin))
-        if sel >= 0:
-            self.former_id_text = self.menu.items[sel][0]
-            self.id.change_text(self.menu.items[sel][0])
-            self.former_id_text = self.menu.items[sel][0]
+        self.matching_items = results
+        self.selected_item_index = 0
+        self.tableview.rows.scroll_to_item(self.selected_item_index)
 
-    def close_menu(self):
-        if self.menu:
-            self.menu.dismiss(-1)
-    #&#
+    def dispatch_key(self, name, evt):
+        super(SlotEditor, self).dispatch_key(name, evt)
+        if name == "key_down":
+            keyname = self.root.getKey(evt)
+            if keyname == "Up" and self.selected_item_index > 0:
+                self.selected_item_index -= 1
+                self.tableview.rows.scroll_to_item(self.selected_item_index)
+
+            elif keyname == "Down" and self.selected_item_index < len(self.matching_items) - 1:
+                self.selected_item_index += 1
+                self.tableview.rows.scroll_to_item(self.selected_item_index)
+#&#
 
 
 #-----------------------------------------------------------------------------
