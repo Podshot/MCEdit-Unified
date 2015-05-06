@@ -147,6 +147,8 @@ class FilterModuleOptions(Widget):
             optionType = optionSpec[1]
             if trn is not None:
                 n = trn._(optionName)
+            else:
+                n = optionName
             if n == optionName:
                 oName = _(optionName)
             else:
@@ -784,7 +786,7 @@ class FilterTool(EditorTool):
                     toReturn.append(module)
             return toReturn
         
-        #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py'))
+        #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py')) # This can't work, since sys.path contains only directories, not files...
 
         def tryImport(name):
             module_file_object = open(os.path.join(directories.getFiltersDir(), name))
@@ -793,13 +795,10 @@ class FilterTool(EditorTool):
                 m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
                 listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
                 if name not in listdir:
-                    old_trn_path = albow.translate.getLangPath()
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
-                    # Rool back because of a 'bad magic number issue'
-                    # Need to be reworked
-                    # f = open(os.path.join(directories.getDataDir(), 'albow', 'translate.pyc'))
-                    # trn = imp.load_module('trn', f, 'translate.pyc', ('.pyc', 'rb', imp.PY_COMPILED))
+                    if "albow.translate" in sys.modules.keys():
+                        del sys.modules["albow.translate"]
                     from albow import translate as trn
                     if directories.getFiltersDir() in name:
                         trn_path = os.path.split(name)[0]
@@ -810,13 +809,7 @@ class FilterTool(EditorTool):
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
                     m.trn = trn
-                    # Rool back because of a 'bad magic number issue'
-                    #f.close()
-                    albow.translate.setLangPath(old_trn_path)
-                    albow.translate.buildTranslation(config.settings.langCode.get())
-                    self.editor.mcedit.set_update_translation(True)
-                    self.editor.mcedit.set_update_translation(False)
-                    #
+                    import albow.translate
                 return m
             except Exception, e:
                 # Only prints when the filter filename is presented, not the entire file path
