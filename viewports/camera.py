@@ -1249,7 +1249,7 @@ class CameraViewport(GLViewport):
         # except AttributeError:
         # return
         # print "RightClickUp: ", td
-        if td.seconds > 0 or td.microseconds > 280000:
+        if td.microseconds > 180000:
             self.mouseLookOff()
 
     def leftClickDown(self, evt):
