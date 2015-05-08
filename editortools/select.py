@@ -449,11 +449,13 @@ class SelectionTool(EditorTool):
         self.sizeLabel.anchor = "wh"
         self.sizeLabel.tooltipText = _("{0:n} blocks").format(self.selectionBox().volume)
 
-        self.nudgePanel.top = self.nudgePanel.left = 0
+        self.nudgePanel.top = 0
+        self.nudgePanel.left = 0
 
         self.nudgePanel.add(self.sizeLabel)
 
         self.nudgePanel.add(self.nudgeSelectionButton)
+        self.spaceLabel.height = 3
         self.nudgeSelectionButton.top = self.spaceLabel.bottom
         self.sizeLabel.top = self.nudgeSelectionButton.bottom
         self.nudgeRow.top = self.sizeLabel.bottom
