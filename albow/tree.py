@@ -177,6 +177,34 @@ class Tree(Column):
         self.treeRow = treeRow = TreeRow((self.inner_width, row_height), 10, draw_zebra=draw_zebra)
         Column.__init__(self, [treeRow,], **kwargs)
 
+    def dispatch_key(self, name, evt):
+        if name == "key_down":
+            keyname = self.root.getKey(evt)
+            if keyname == "Up" and self.selected_item_index > 0:
+                if self.selected_item_index == None:
+                    self.selected_item_index = -1
+                self.selected_item_index = max(self.selected_item_index - 1, 0)
+
+            elif keyname == "Down" and self.selected_item_index < len(self.rows) - 1:
+                if self.selected_item_index == None:
+                    self.selected_item_index = -1
+                self.selected_item_index += 1
+            elif keyname == 'Page down':
+                if self.selected_item_index == None:
+                    self.selected_item_index = -1
+                self.selected_item_index = min(len(self.rows) - 1, self.selected_item_index + self.treeRow.num_rows())
+            elif keyname == 'Page up':
+                if self.selected_item_index == None:
+                    self.selected_item_index = -1
+                self.selected_item_index = max(0, self.selected_item_index - self.treeRow.num_rows())
+            if self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index:
+                self.treeRow.scroll_to_item(self.selected_item_index)
+
+            if keyname == 'Return' and self.selected_item_index != None:
+                self.select_item(self.selected_item_index)
+                if self.selected_item[7] in self.compound_types:
+                    self.deploy(self.selected_item[6])
+
     def cut_item(self):
         self.copyBuffer = ([] + self.selected_item, 1)
         self.delete_item()

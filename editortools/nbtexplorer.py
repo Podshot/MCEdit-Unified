@@ -198,8 +198,6 @@ create_TAG_Byte_Array = create_TAG_Int_Array = create_TAG_Short_Array = create_a
 
 #-----------------------------------------------------------------------------
 class NBTTree(Tree):
-    def key_down(self, e):
-        print 'kekek'
     def __init__(self, *args, **kwargs):
         styles = kwargs.get('styles', {})
         self.update_draw_bullets_methods(styles)
@@ -578,11 +576,6 @@ class NBTExplorerOperation(Operation):
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
-    def key_down(self, e):
-        print 'gjgjg'
-    def dispatch_key(self, name, k):
-        print name, k
-        raw_input()
     def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', close_text="Close", load_text="Open", **kwargs):
         """..."""
         Panel.__init__(self)
@@ -638,13 +631,20 @@ class NBTExplorerToolPanel(Panel):
             mclangres.buildResources(lang=getLang())
     #&#
 
+    def key_down(self, e):
+        self.dispatch_key('key_down', e)
+
+    def dispatch_key(self, name, e):
+        self.tree.dispatch_key(name, e)
+        if name == 'key_down' and self.root.getKey(e) == 'Return' and self.tree.selected_item != None:
+            self.update_side_panel(self.tree.selected_item)
+
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
             compounds = [TAG_Compound, TAG_List]
         else:
             compounds = [TAG_Compound,]
         self.compounds = compounds
-
 
     def save_NBT(self):
         if self.fileName:
@@ -981,6 +981,10 @@ class NBTExplorerTool(EditorTool):
 
     def saveFile(self, fName, data, dontSaveRootTag):
         saveFile(fName, data, dontSaveRootTag)
+
+    def keyDown(self, *args, **kwargs):
+        if self.panel:
+            self.panel.key_down(*args, **kwargs)
 
 
 #------------------------------------------------------------------------------
