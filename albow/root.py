@@ -129,6 +129,7 @@ class RootWidget(Widget):
         self.testTimeBack = 0.4
         self.nudgeDirection = None
         self.sessionStolen = False
+        self.filesToChange = []
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -392,6 +393,13 @@ class RootWidget(Widget):
                                         self.changeCameraKeys(k)
                         map(useKeys, allKeysWithData)
 
+                        for edit in self.filesToChange:
+                            newTime = os.path.getmtime(edit.filename)
+                            if newTime > edit.timeChanged:
+                                edit.timeChanged = newTime
+                                edit.makeChanges()
+
+
                 except Cancel:
                     pass
         finally:
@@ -483,6 +491,11 @@ class RootWidget(Widget):
     def changeCameraKeys(self, keyNum):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraPanKeys[self.cameraNum[keyNum]] = self.cameraMath[keyNum]
+
+    def RemoveEditFiles(self):
+        for edit in self.filesToChange:
+            os.remove(edit.filename)
+        self.filesToChange = []
 
     def call_idle_handlers(self, event):
         def call(ref):

@@ -976,6 +976,7 @@ class LevelEditor(GLViewport):
             if resp == "Save":
                 self.saveFile()
 
+        self.root.RemoveEditFiles()
         self.freezeStatus(_("Loading ") + filename)
         if self.level:
             self.selectionTool.endSelection()
@@ -1848,6 +1849,7 @@ class LevelEditor(GLViewport):
                 os.remove(p)
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
+        self.root.RemoveEditFiles()
         self.root.fix_sticky_ctrl()
         self.selectionTool.endSelection()
         self.mainViewport.mouseLookOff()
@@ -1912,6 +1914,7 @@ class LevelEditor(GLViewport):
             self._ftp_client.upload()
             self.clearUnsavedEdits()
             self.unsavedEdits = 0
+            self.root.RemoveEditFiles()
             self.root.fix_sticky_ctrl()
             self.selectionTool.endSelection()
             self.mainViewport.mouseLookOff()

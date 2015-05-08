@@ -15,6 +15,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #.# Marks the layout modifications. -- D.C.-G.
 
 import os
+import sys
+import subprocess
 from OpenGL import GL
 
 from collections import defaultdict
@@ -37,6 +39,7 @@ import tempfile
 from pymclevel import nbt
 import logging
 from albow.root import get_root
+from fileEdits import fileEdit
 
 log = logging.getLogger(__name__)
 
@@ -177,6 +180,11 @@ class SelectionToolPanel(Panel):
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
+        openButton = Button("Open File")
+        openButton.tooltipText = _("Open command blocks text in a new file")
+        openButton.action = tool.openFile
+        openButton.highlight_color = (0, 255, 0)
+
         buttonsColumn = (
             nudgeBlocksButton,
             deselectButton,
@@ -189,6 +197,7 @@ class SelectionToolPanel(Panel):
             copyButton,
             pasteButton,
             exportButton,
+            openButton,
         )
 
         buttonsColumn = Column(buttonsColumn)
@@ -1186,6 +1195,36 @@ class SelectionTool(EditorTool):
         schematic = self._copySelection()
         if schematic:
             self.editor.exportSchematic(schematic)
+
+    @alertException
+    def openFile(self):
+        name = "FileTest" + str(self.editor.level.editFileNumber) + ".txt"
+        filename = os.path.join(self.editor.level.worldFolder.filename, name)
+        file = open(filename, 'w')
+        first = True
+        for (x, y, z) in self.editor.selectionBox().positions:
+            if self.editor.level.blockAt(x, y, z) == 137:
+                if not first:
+                    file.write("\n\n")
+                first = False
+                text = self.editor.level.tileEntityAt(x, y, z)["Command"].value
+                if text == "":
+                    text = "\"\""
+                file.write(text.encode('utf-8'))
+                print text.encode('utf-8')
+        file.close()
+        if first:
+            os.remove(filename)
+            alert("Didn't found any command blocks")
+            return
+        self.editor.level.editFileNumber += 1
+        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), self.editor, self.editor.level)
+        self.root.filesToChange.append(edit)
+        if sys.platform == "win32":
+            os.startfile(filename)
+        else:
+            opener ="open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.call([opener, filename])
 
 
 class SelectionOperation(Operation):
