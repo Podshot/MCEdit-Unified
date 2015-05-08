@@ -1,6 +1,6 @@
 #-# Traditional Chinese (Taiwan)
-#-# font regular: NotoSansHant-Medium.otf
-#-# font bold: NotoSansHant-Bold.otf
+#-# font regular: SourceHanSansTC-Medium.ttf
+#-# font bold: SourceHanSansTC-Bold.ttf
 # TRANSLATION BASICS
 #
 # This file works by mapping original English strings(o##) to the new translated strings(t##)
