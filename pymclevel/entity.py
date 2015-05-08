@@ -48,6 +48,11 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
             ("BrewTime", nbt.TAG_Int),
         ),
+        "Command Block": (
+            ("Command", nbt.TAG_String),
+            ("CustomName", nbt.TAG_String),
+            ("TrackOutput", nbt.TAG_Byte),
+        ),
     }
 
     otherNames = {
@@ -59,7 +64,8 @@ class TileEntity(object):
         "Trapped Chest": "Trap",
         "Jukebox": "RecordPlayer",
         "Piston": "Piston",
-        "Cauldron": "Cauldron"
+        "Cauldron": "Cauldron",
+        "Command Block": "Command Block"
     }
 
     knownIDs = baseStructures.keys()
@@ -93,6 +99,8 @@ class TileEntity(object):
         if base:
             for (name, tag) in base:
                 tileEntityTag[name] = tag()
+                if name == "CustomName" and tileEntityID == "Command Block":
+                    tileEntityTag[name] = nbt.TAG_String("@")
 
         cls.setpos(tileEntityTag, (0, 0, 0))
         return tileEntityTag
