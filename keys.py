@@ -575,6 +575,7 @@ class KeyConfigPanel(Dialog):
         #.#
         spacing = 0
         tb = albow.TableView()
+        self.nrows = 581 / tb.font.get_linesize()
         keyConfigTable = albow.TableView(nrows=581 / tb.font.get_linesize(),
             columns=[albow.TableColumn("Command", 200, "l"), albow.TableColumn("Assigned Key", 150, "r")])
         del tb
@@ -727,6 +728,12 @@ class KeyConfigPanel(Dialog):
         elif keyname == 'Return':
             self.enter += 1
             self.askAssignSelectedKey()
+        elif keyname == 'Page down':
+            self.selectedKeyIndex = min(len(self.keyConfigKeys) - 1, self.selectedKeyIndex + self.nrows)
+        elif keyname == 'Page up':
+            self.selectedKeyIndex = max(0, self.selectedKeyIndex - self.nrows)
+        if self.keyConfigTable.rows.cell_to_item_no(0, 0) + self.keyConfigTable.rows.num_rows() -1 > self.selectedKeyIndex or self.keyConfigTable.rows.cell_to_item_no(0, 0) + self.keyConfigTable.rows.num_rows() -1 < self.selectedKeyIndex:
+            self.keyConfigTable.rows.scroll_to_item(self.selectedKeyIndex)
 
     def key_up(self, evt):
         pass

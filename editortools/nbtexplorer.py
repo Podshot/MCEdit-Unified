@@ -509,10 +509,14 @@ class SlotEditor(Dialog):
             keyname = self.root.getKey(evt)
             if keyname == "Up" and self.selected_item_index > 0:
                 self.selected_item_index -= 1
-                self.tableview.rows.scroll_to_item(self.selected_item_index)
 
             elif keyname == "Down" and self.selected_item_index < len(self.matching_items) - 1:
                 self.selected_item_index += 1
+            elif keyname == 'Page down':
+                self.selected_item_index = min(len(self.matching_items) - 1, self.selected_item_index + self.tableview.rows.num_rows())
+            elif keyname == 'Page up':
+                self.selected_item_index = max(0, self.selected_item_index - self.tableview.rows.num_rows())
+            if self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selected_item_index or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selected_item_index:
                 self.tableview.rows.scroll_to_item(self.selected_item_index)
 #&#
 
@@ -627,13 +631,26 @@ class NBTExplorerToolPanel(Panel):
             mclangres.buildResources(lang=getLang())
     #&#
 
+    def key_down(self, e):
+        self.dispatch_key('key_down', e)
+
+    def dispatch_key(self, name, e):
+        if not hasattr(e, 'key'):
+            return
+        self.tree.dispatch_key(name, e)
+        if name == 'key_down' and self.root.getKey(e) == 'Escape':
+            self.editor.key_down(e)
+        elif name == 'key_down' and self.root.getKey(e) == 'Return' and self.tree.selected_item != None:
+            self.update_side_panel(self.tree.selected_item)
+        elif name == 'key_down' and self.side_panel:
+            self.side_panel.dispatch_key(name, e)
+
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
             compounds = [TAG_Compound, TAG_List]
         else:
             compounds = [TAG_Compound,]
         self.compounds = compounds
-
 
     def save_NBT(self):
         if self.fileName:
@@ -970,6 +987,10 @@ class NBTExplorerTool(EditorTool):
 
     def saveFile(self, fName, data, dontSaveRootTag):
         saveFile(fName, data, dontSaveRootTag)
+
+    def keyDown(self, *args, **kwargs):
+        if self.panel:
+            self.panel.key_down(*args, **kwargs)
 
 
 #------------------------------------------------------------------------------

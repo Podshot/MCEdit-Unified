@@ -1604,12 +1604,32 @@ class LevelEditor(GLViewport):
         if not pygame.key.get_focused():
             return
 
-        self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         try:
             keyname = self.different_keys[keyname]
         except:
             pass
+
+        #!# D.C.-G.
+        #!# Here we have the part which is responsible for the fallback to the
+        #!# select tool when pressing 'Escape' key.
+        #!# It may be interesting to work on this to be able to return to a tool
+        #!# which have called another.
+        if keyname == 'Escape':
+            if self.selectionTool.selectionInProgress:
+                self.selectionTool.cancel()
+            elif self.toolbar.tools[3].replacing:
+                self.toolbar.tools[3].replacing = False
+                self.toolbar.tools[3].showPanel()
+            elif "select" not in str(self.currentTool):
+                self.toolbar.selectTool(0)
+            else:
+                self.mouseLookOff()
+                self.showControls()
+#            return
+        #!#
+
+        self.currentTool.keyDown(evt)
 
         if keyname == "Alt-F4":
             self.quit()
@@ -1734,23 +1754,23 @@ class LevelEditor(GLViewport):
         if keyname == config.keys.swap.get():
             self.currentTool.swap()
 
-        #!# D.C.-G.
-        #!# Here we have the part which is responsible for the fallback to the
-        #!# select tool when pressing 'Escape' key.
-        #!# It may be interesting to work on this to be able to return to a tool
-        #!# which have called another.
-        if keyname == 'Escape':
-            if self.selectionTool.selectionInProgress:
-                self.selectionTool.cancel()
-            elif self.toolbar.tools[3].replacing:
-                self.toolbar.tools[3].replacing = False
-                self.toolbar.tools[3].showPanel()
-            elif "select" not in str(self.currentTool):
-                self.toolbar.selectTool(0)
-            else:
-                self.mouseLookOff()
-                self.showControls()
-        #!#
+#        #!# D.C.-G.
+#        #!# Here we have the part which is responsible for the fallback to the
+#        #!# select tool when pressing 'Escape' key.
+#        #!# It may be interesting to work on this to be able to return to a tool
+#        #!# which have called another.
+#        if keyname == 'Escape':
+#            if self.selectionTool.selectionInProgress:
+#                self.selectionTool.cancel()
+#            elif self.toolbar.tools[3].replacing:
+#                self.toolbar.tools[3].replacing = False
+#                self.toolbar.tools[3].showPanel()
+#            elif "select" not in str(self.currentTool):
+#                self.toolbar.selectTool(0)
+#            else:
+#                self.mouseLookOff()
+#                self.showControls()
+#        #!#
 
         if keyname == config.keys.confirmConstruction.get():
             self.confirmConstruction()
