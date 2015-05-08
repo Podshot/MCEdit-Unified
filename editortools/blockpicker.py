@@ -343,6 +343,7 @@ class BlockPicker(Dialog):
 
         blocks = self.materials.allBlocks
 
+        text = text.lower()
         if len(text):
             #&# Prototype for blocks/items names
             matches = []

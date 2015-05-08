@@ -1,4 +1,5 @@
 from pymclevel.materials import Block
+from pymclevel.entity import TileEntity
 from editortools.brush import createBrushMask
 import numpy
 from editortools.operation import mkundotemp
@@ -43,10 +44,20 @@ def apply(self, op, point):
     if doomedBlock == op.options['Block'].ID and (doomedBlockData == op.options['Block'].blockData or not checkData):
         return
 
+    tileEntity = None
+    for tileEntityName in TileEntity.otherNames.keys():
+        if tileEntityName in op.options['Block'].name:
+            tileEntity = TileEntity.otherNames[tileEntityName]
+            break
+
     x, y, z = point
     saveUndoChunk(x // 16, z // 16)
     op.level.setBlockAt(x, y, z, op.options['Block'].ID)
     op.level.setBlockDataAt(x, y, z, op.options['Block'].blockData)
+    if tileEntity:
+        tileEntityObject = TileEntity.Create(tileEntity)
+        TileEntity.setpos(tileEntityObject, (x, y, z))
+        op.level.addTileEntity(tileEntityObject)
 
     def processCoords(coords):
         newcoords = collections.deque()
@@ -69,6 +80,10 @@ def apply(self, op, point):
                     saveUndoChunk(nx // 16, nz // 16)
                     op.level.setBlockAt(nx, ny, nz, op.options['Block'].ID)
                     op.level.setBlockDataAt(nx, ny, nz, op.options['Block'].blockData)
+                    if tileEntity:
+                        tileEntityObject = TileEntity.Create(tileEntity)
+                        TileEntity.setpos(tileEntityObject, (nx, ny, nz))
+                        op.level.addTileEntity(tileEntityObject)
                     newcoords.append(p)
 
         return newcoords

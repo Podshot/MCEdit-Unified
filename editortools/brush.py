@@ -50,6 +50,7 @@ from os.path import basename
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
 from pymclevel.mclevelbase import exhaust
+from pymclevel.entity import TileEntity
 import random
 from __builtin__ import __import__
 from locale import getdefaultlocale
@@ -1139,3 +1140,17 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         return mask[1:-1, 1:-1, 1:-1]
     else:
         return mask
+
+def createTileEntities(block, box, chunk):
+    tileEntity = None
+    for tileEntityName in TileEntity.otherNames.keys():
+        if tileEntityName in block.name:
+            tileEntity = TileEntity.otherNames[tileEntityName]
+            break
+
+    if tileEntity and box is not None:
+        for (x, y, z) in box.positions:
+            if chunk.world.blockAt(x, y, z) == block.ID:
+                tileEntityObject = TileEntity.Create(tileEntity)
+                TileEntity.setpos(tileEntityObject, (x, y, z))
+                chunk.addTileEntity(tileEntityObject)

@@ -1,4 +1,4 @@
-from editortools.brush import createBrushMask
+from editortools.brush import createBrushMask, createTileEntities
 from pymclevel.level import extractHeights
 import itertools
 
@@ -62,3 +62,5 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
         mask = brushMask[idx]
         blocks[idx][mask] = blocktype.ID
         data[idx][mask] = blocktype.blockData
+
+    createTileEntities(blocktype, brushBoxThisChunk, chunk)
