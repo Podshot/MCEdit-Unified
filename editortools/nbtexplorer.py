@@ -198,6 +198,8 @@ create_TAG_Byte_Array = create_TAG_Int_Array = create_TAG_Short_Array = create_a
 
 #-----------------------------------------------------------------------------
 class NBTTree(Tree):
+    def key_down(self, e):
+        print 'kekek'
     def __init__(self, *args, **kwargs):
         styles = kwargs.get('styles', {})
         self.update_draw_bullets_methods(styles)
@@ -509,10 +511,14 @@ class SlotEditor(Dialog):
             keyname = self.root.getKey(evt)
             if keyname == "Up" and self.selected_item_index > 0:
                 self.selected_item_index -= 1
-                self.tableview.rows.scroll_to_item(self.selected_item_index)
 
             elif keyname == "Down" and self.selected_item_index < len(self.matching_items) - 1:
                 self.selected_item_index += 1
+            elif keyname == 'Page down':
+                self.selected_item_index = min(len(self.matching_items) - 1, self.selected_item_index + self.tableview.rows.num_rows())
+            elif keyname == 'Page up':
+                self.selected_item_index = max(0, self.selected_item_index - self.tableview.rows.num_rows())
+            if self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selected_item_index or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selected_item_index:
                 self.tableview.rows.scroll_to_item(self.selected_item_index)
 #&#
 
@@ -572,6 +578,11 @@ class NBTExplorerOperation(Operation):
 #-----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
+    def key_down(self, e):
+        print 'gjgjg'
+    def dispatch_key(self, name, k):
+        print name, k
+        raw_input()
     def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', close_text="Close", load_text="Open", **kwargs):
         """..."""
         Panel.__init__(self)
