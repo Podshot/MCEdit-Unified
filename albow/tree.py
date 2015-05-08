@@ -178,6 +178,8 @@ class Tree(Column):
         Column.__init__(self, [treeRow,], **kwargs)
 
     def dispatch_key(self, name, evt):
+        if not hasattr(evt, 'key'):
+            return
         if name == "key_down":
             keyname = self.root.getKey(evt)
             if keyname == "Up" and self.selected_item_index > 0:

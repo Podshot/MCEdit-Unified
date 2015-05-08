@@ -635,9 +635,15 @@ class NBTExplorerToolPanel(Panel):
         self.dispatch_key('key_down', e)
 
     def dispatch_key(self, name, e):
+        if not hasattr(e, 'key'):
+            return
         self.tree.dispatch_key(name, e)
-        if name == 'key_down' and self.root.getKey(e) == 'Return' and self.tree.selected_item != None:
+        if name == 'key_down' and self.root.getKey(e) == 'Escape':
+            self.editor.key_down(e)
+        elif name == 'key_down' and self.root.getKey(e) == 'Return' and self.tree.selected_item != None:
             self.update_side_panel(self.tree.selected_item)
+        elif name == 'key_down' and self.side_panel:
+            self.side_panel.dispatch_key(name, e)
 
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():

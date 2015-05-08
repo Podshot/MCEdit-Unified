@@ -33,8 +33,6 @@ import version_utils
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
 import pygame
 
-handled_keys = ('Return', 'Up', 'Down', 'Page up', 'Page down')
-
 log = logging.getLogger(__name__)
 
 
@@ -534,29 +532,28 @@ class PlayerPositionPanel(Panel):
         self.dispatch_key('key_down', evt)
 
     def dispatch_key(self, name, evt):
+        if not hasattr(evt, 'key'):
+            return
         if name == "key_down":
             keyname = self.root.getKey(evt)
-            if keyname in handled_keys:
-                if self.pages.current_page == self.col:
-                    if keyname == "Up" and self.table.index > 0:
-                        self.table.index -= 1
-                        self.table.rows.scroll_to_item(self.table.index)
-                    elif keyname == "Down" and self.table.index < len(self.players) - 1:
-                        self.table.index += 1
-                        self.table.rows.scroll_to_item(self.table.index)
-                    elif keyname == 'Page down':
-                        self.table.index = min(len(self.players) - 1, self.table.index + self.table.rows.num_rows())
-                    elif keyname == 'Page up':
-                        self.table.index = max(0, self.table.index - self.table.rows.num_rows())
-                    elif keyname == 'Return':
-                        if self.selectedPlayer != None:
-                            self.editNBTData()
-                    if self.table.rows.cell_to_item_no(0, 0) + self.table.rows.num_rows() -1 > self.table.index or self.table.rows.cell_to_item_no(0, 0) + self.table.rows.num_rows() -1 < self.table.index:
-                        self.table.rows.scroll_to_item(self.table.index)
-                elif self.pages.current_page == self.nbtpage:
-                    self.nbttree.dispatch_key(name, evt)
-            else:
-                self.tool.editor.key_down(evt)
+            if self.pages.current_page == self.col:
+                if keyname == "Up" and self.table.index > 0:
+                    self.table.index -= 1
+                    self.table.rows.scroll_to_item(self.table.index)
+                elif keyname == "Down" and self.table.index < len(self.players) - 1:
+                    self.table.index += 1
+                    self.table.rows.scroll_to_item(self.table.index)
+                elif keyname == 'Page down':
+                    self.table.index = min(len(self.players) - 1, self.table.index + self.table.rows.num_rows())
+                elif keyname == 'Page up':
+                    self.table.index = max(0, self.table.index - self.table.rows.num_rows())
+                elif keyname == 'Return':
+                    if self.selectedPlayer != None:
+                        self.editNBTData()
+                if self.table.rows.cell_to_item_no(0, 0) + self.table.rows.num_rows() -1 > self.table.index or self.table.rows.cell_to_item_no(0, 0) + self.table.rows.num_rows() -1 < self.table.index:
+                    self.table.rows.scroll_to_item(self.table.index)
+            elif self.pages.current_page == self.nbtpage:
+                self.nbttree.dispatch_key(name, evt)
 
 
 class PlayerPositionTool(EditorTool):
@@ -910,15 +907,14 @@ class PlayerPositionTool(EditorTool):
             self.editor.addUnsavedEdit()
 
     def keyDown(self, evt):
-        keyname = evt.dict.get('keyname', None) or self.panel.get_root().getKey(evt)
+        keyname = evt.dict.get('keyname', None) or self.editor.get_root().getKey(evt)
         if not self.recordMove:
             if not pygame.key.get_focused():
                 return
 
-#            keyname = evt.dict.get('keyname', None) or self.panel.get_root().getKey(evt)
             if keyname == "Escape":
                 self.recordMove = True
-        if self.panel and keyname in handled_keys:
+        if self.panel:
             self.panel.key_down(evt)
 
     def keyUp(self, evt):
