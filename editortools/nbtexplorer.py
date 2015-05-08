@@ -446,6 +446,7 @@ class SlotEditor(Dialog):
         
         self.matching_items = [mclangres.translate(k) for k in map_items.keys()]
         self.matching_items.sort()
+        self.selected_item_index = None
         if id in self.matching_items:
             self.selected_item_index = self.matching_items.index(id)
         self.tableview = tableview = TableView(columns=[TableColumn("", 415, 'l')])
@@ -608,7 +609,8 @@ class NBTExplorerToolPanel(Panel):
         self.setCompounds()
         self.tree = NBTTree(height=max_height - btnRow.height -2, inner_width=250, data=self.data, compound_types=self.compounds,
                             copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
-        row = [self.tree, Column([Label("", width=300), ], margin=0)]
+        self.side_panel_width = 350
+        row = [self.tree, Column([Label("", width=self.side_panel_width), ], margin=0)]
         self.displayRow = Row(row, height=max_height, margin=0, spacing=0)
         if kwargs.get('no_header', False):
             self.add(Column([self.displayRow, btnRow], margin=0))
@@ -691,7 +693,7 @@ class NBTExplorerToolPanel(Panel):
                 fields = self.build_field(itm)
                 for field in fields:
                     if type(field) == TextFieldWrapped:
-                        field.set_size_for_text(300)
+                        field.set_size_for_text(self.side_panel_width)
                     row = Row([field,], margin=1)
                     rows.append(row)
                     height += row.height
@@ -701,7 +703,7 @@ class NBTExplorerToolPanel(Panel):
             if col:
                 col = Column(rows, align='l', spacing=0, height=self.displayRow.height)
             else:
-                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=300 - scroll_button_size)
+                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=self.side_panel_width - scroll_button_size)
             col.set_parent(self.displayRow)
             col.top = self.displayRow.top
             col.left = self.displayRow.subwidgets[0].right
@@ -789,6 +791,7 @@ class NBTExplorerToolPanel(Panel):
         rows = []
         items = items[0]
         slots = [["%s"%i,"","0","0"] for i in range(36)]
+        slots += [["%s"%i,"","0","0"] for i in range(100, 104)]
         slots_set = []
         for item in items:
             #&# Prototype for blocks/items names
@@ -806,11 +809,13 @@ class NBTExplorerToolPanel(Panel):
                     name = item_dict['name']
             s = int(item['Slot'].value)
             slots_set.append(s)
+            if s >= 100:
+                s = s - 100 + 36
             slots[s] = item['Slot'].value, mclangres.translate(name), item['Count'].value, item['Damage'].value
             #slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
             #&#
-        width = self.width / 2 - self.margin * 4
-        c0w = max(15, self.font.size("00")[0]) + 4
+        width = self.side_panel_width - self.margin * 5
+        c0w = max(15, self.font.size("000")[0]) + 4
         c2w = max(15, self.font.size("00")[0]) + 4
         c3w = max(15, self.font.size("000")[0]) + 4
         c1w = width - c0w - c2w - c3w
@@ -893,10 +898,14 @@ class NBTExplorerToolPanel(Panel):
                 inventory.insert(s, new_slot)
                 slots_set.append(s)
             #&# Prototype for blocks/items names
-            if i == name:
-                i = name
+#            if i == name:
+#                i = name
             #&#
-            table.slots[s] = slots[s] = s, i, c, state
+            if s >= 100:
+                n = s - 100 + 36
+            else:
+                n = s
+            table.slots[n] = slots[n] = s, i, c, state
 
         table.change_value = change_value
         rows.append(table)

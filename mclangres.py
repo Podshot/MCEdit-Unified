@@ -70,6 +70,10 @@ def buildResources(version=None, lang=None):
     csimEn = {}
     langMisc = {}
     csimGnal = {}
+    if not os.path.exists(indexesDirectory) or not os.path.exists(objectsDirectory):
+        log.debug('Minecraft installation directory is not valid.')
+        log.debug('Impossible to load the game language resources.')
+        return
     versions = os.listdir(indexesDirectory)
     if 'legacy.json' in versions:
         versions.remove('legacy.json')
