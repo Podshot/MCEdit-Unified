@@ -1213,7 +1213,6 @@ class SelectionTool(EditorTool):
                 if text == "":
                     text = "\"\""
                 file.write(text.encode('utf-8'))
-                print text.encode('utf-8')
         file.close()
         if first:
             os.remove(filename)
