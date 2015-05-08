@@ -93,7 +93,7 @@ t36 Nummernfeld
 o37 WASD Old
 t37 WASD (Alt)
 o38 Keybind Presets:
-t38 Keybind Voreinstellungen:
+t38 Tastaturbelegung-Voreinstellungen:
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -265,7 +265,7 @@ t120 Auswahl exportieren
 o121 Line Tool (Hold)
 t121 Linien Werkzeug (Halten)
 o122 <Clone Tool>
-t122 <Kopier Werkzeug>
+t122 <Kopier-Werkzeug>
 o123 Rotate (Clone)
 t123 Rotieren (Kopie)
 o124 Roll (Clone)
@@ -275,7 +275,7 @@ t125 Umdrehen
 o126 Mirror
 t126 Spiegeln
 o127 <Brush Tool>
-t127 <Pinsel Werkzeug>
+t127 <Pinsel-Werkzeug>
 o128 Rotate (Brush)
 t128 Rotieren (Pinsel)
 o129 Roll (Brush)
@@ -309,7 +309,7 @@ t142 Welt neuladen
 o143 Close World
 t143 Welt schliessen
 o144 Debug Overlay
-t144 Debug Auflage
+t144 Debug-Einblendung
 o145 Show Block Info (Hold)
 t145 Blockinfo anzeigen (Halten)
 o146 Pick Block (Hold + Click)
@@ -327,11 +327,11 @@ t151 Schneller Erhöhungs Modifizierer
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
 t152 Laub ist undurchsichtig, wie in Minecrafts 'Schnell' Grafikeinstellung
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
-t153 Alle Blöcke sind auf die gleiche Weise gezeichnet (überschreibt 'Schnelles Laub')
+t153 Alle Blöcke werden auf die gleiche Weise dargestellt. (überschreibt 'Schnelles Laub')
 o154 Enable choppy mouse movement for faster loading.
 t154 Abgehackte Mausbewegung aktivieren für schnelleres Laden.
 o155 Point here and use mousewheel to adjust
-t155 Halte hier drüber und nutze das Mausrad, um einzustellen
+t155 Drüberhalten und das Mausrad zum Einstellen nutzen.
 o156 Portable
 t156 Portabel
 o157 Fixed
@@ -341,7 +341,7 @@ t158 Ändert die Richtung der Vorwärts- und Rückwärtstasten, wenn man nach un
 o159 When you are this far above the top of the world, move fast and use low-detail mode.
 t159 Wenn man so hoch über der Welt ist und sich schnell bewegt, werden niedrigere Details benutzt.
 o160 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
-t160 Größe des Arbeitsspeichers für die Zwischenlagerung. Wenn mehr als diese gebraucht wird, wird stattdessen die Festplatte  verwendet.
+t160 Größe des Arbeitsspeichers für die Zwischenlagerung. Wenn mehr als diese gebraucht wird, wird stattdessen die Festplatte verwendet.
 o161 Change the position of the mobs in spawners while nudging.
 t161 Position der Mobs in Spawnern während des Schiebens ändern.
 o162 Change static coordinates in command blocks while nudging.
@@ -355,13 +355,13 @@ t165 Verlangsamen, wenn keine Bewegungstasten gedrückt werden.
 o166 Reverse the up and down motion of the mouse.
 t166 Die Auf- und Abwärtsbewegung der Maus umkehren.
 o167 When rotating your brush, also rotate the orientation of the block your brushing with
-t167 Beim Drehen vom Pinsel werden auch die Ausrichtungen der Blöcke gedreht
+t167 Beim Drehen des Pinsels werden auch die Ausrichtungen der Blöcke gedreht.
 o168 Choose your language.
 t168 Wähle deine Sprache aus.
 o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t169 Auswählen, damit MCEdit sich von selbst installiert, indem die Einstellungen und Schematics in das Programmverzeichnis verschoben werden
+t169 Auswählen, damit MCEdit sich von selbst installiert, indem die Einstellungen und Schematics in das Programmverzeichnis verschoben werden.
 o170 You must restart MCEdit to see language changes
-t170 MCEdit muss neugestartet werden, damit die Sprache übernommen werden kann
+t170 MCEdit muss neugestartet werden, damit die Sprache übernommen werden kann.
 o171 Restart
 t171 Neustart
 o172 Later
@@ -393,11 +393,11 @@ t184 {0:n} Blöcke
 o185 Delete Entities
 t185 Entities löschen
 o186 Remove all entities within the selection
-t186 Alle Entities in der Auswahl löschen
+t186 Alle Entities in der Auswahl löschen.
 o187 Delete Tile Ticks
 t187 Tile Ticks löschen
 o188 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t188 Alle Tile Ticks in der Auswahl löschen. Tile Ticks sind geplante Blockaktualisierungen
+t188 Alle Tile Ticks in der Auswahl löschen. Tile Ticks sind geplante Blockaktualisierungen.
 o189 Analyze
 t189 Analysieren
 o190 Count the different blocks and entities in the selection and display the totals.
@@ -405,7 +405,7 @@ t190 Zählt die verschiedenen Blöcke und Entities in der Auswahl und zeigt die 
 o191 Export
 t191 Exportieren
 o192 Expand the selection to the edges of the chunks within
-t192 Erweitert die Auswahl innerhalb der Chunkränder
+t192 Erweitert die Auswahl zu den Chunkränder
 o193 Selected Chunks:
 t193 Ausgewählte Chunks:
 o194 Extract
@@ -427,7 +427,7 @@ t201 {0} Chunks
 o202 Create new chunks within the selection.
 t202 Erstellt neue Chunks innerhalb der Auswahl.
 o203 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
-t203 Löscht die ausgewählten Chunks von der Festplatte. Minecraft wird sie neu erstelle, wenn man das nächste Mal in der Nähe ist.
+t203 Löscht die ausgewählten Chunks von der Festplatte. Minecraft wird sie neu erstellen, wenn man das nächste Mal in der Nähe ist.
 o204 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
 t204 Restliche Welt wird gelöscht, sodass nur die ausgewählten Chunks übrig bleiben. Jeder Chunk außerhalb der Auswahl wird entfernt und leere Region Dateien werden von der Festplatte gelöscht
 o205 Recalculate light values across the selected chunks
@@ -453,7 +453,7 @@ t213 Erstellt eine Kopie aller Blöcke und Entities innerhalb der Auswahl, danac
 o214 Take a copy of all blocks and entities within the selection. Shortcut: {0}
 t214 Erstellt eine Kopie aller Blöcke und Entities innerhalb der Auswahl. Tastenkürzel: {0}
 o215 Import the last item taken by Cut or Copy. Shortcut: {0}
-t215 Importieret das letzte Objekt vom Ausschneiden oder Kopieren. Tastenkürzel: {0}
+t215 Importiert das letzte Objekt vom Ausschneiden oder Kopieren. Tastenkürzel: {0}
 o216 Export the selection to a .schematic file. Shortcut: {0}
 t216 Exportiert die Auswahl in eine .schematic Datei. Tastenkürzel: {0}
 o217 Clone
@@ -615,7 +615,7 @@ t288 Level
 o289 Duration (Seconds)
 t289 Dauer (in Sekunden)
 o290 Add Potion Effect to Mobs
-t290 Fügt einen Zaubereffekt zu Mobs hinzu
+t290 Zaubereffekt zu Mobs hinzufügen
 o291 Banslimes
 t291 Banslimes
 o292 Change Mob Properties
@@ -623,7 +623,7 @@ t292 Mob-Eigenschaften ändern
 o293 Chunk Surface Repair
 t293 Chunk Oberflächen Reparatur
 o294 Classic Water Flood
-t294 Klassische Wasserüberschwemmung
+t294 Wasserüberschwemmung klassisch
 o295 Colorwires
 t295 Farbige Drähte
 o296 Create Busses
@@ -631,17 +631,17 @@ t296 Busse erstellen
 o297 Create Shops
 t297 Shops erstellen
 o298 Create Spawners
-t298 Erstelle Spawner
+t298 Spawner erstellen
 o299 Decliff
-t299 Decliff
+t299 Ebnen
 o300 Find
 t300 Finde
 o301 Forester
 t301 Förster
 o302 Make Mobs Invincible
-t302 Mache Mobs unsichtbar
+t302 Mobs unsichtbar machen
 o303 Setbiome
-t303 Setze Biom
+t303 Biom einstellen
 o304 Smooth - 2D
 t304 Glatt - 2D
 o305 Filter:
@@ -689,7 +689,7 @@ t325 Schmied (schwarze Schürze)
 o326 Priest (purple)
 t326 Geistlicher (violett)
 o327 Villager Profession
-t327 Dorfbewohner Beruf
+t327 Dorfbewohner-Beruf
 o328 Slime Size
 t328 Schleim Größe
 o329 Breeding Mode Ticks
@@ -697,15 +697,15 @@ t329 Zucht Modus Ticks
 o330 Child/Adult Age
 t330 Kind/Erwachsener Alter
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
-t331 Repariert die Oberflächen die von alten Versionen von Minecraft erstellt wurden
+t331 Repariert die Oberflächen, die von alten Versionen von Minecraft erstellt wurden.
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t332 Lässt das Wasser in der Region nach außen und nach unten fließen, werden volle Wasserblöcke in dem Prozess. Das ist ähnlich wie Minecraft Classic Wasser.
+t332 Lässt das Wasser, die in der Region nach außen und nach unten fließen, zu volle Wasserblöcke werden. Das ist ähnlich wie Minecraft Classic Wasser.
 o333 Flood Water
 t333 Überflute Wasser
 o334 Flood Lava
 t334 Überflute Lava
 o335 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t335 Das ist eine modifizierte Version von SethBling's Create Shops Filter auf DragonQuiz's Anfrage
+t335 Das ist eine modifizierte Version von SethBling's Create Shops Filter auf DragonQuiz's Anfrage.
 o336 Profession
 t336 Beruf
 o337 Add Stopping Trade
@@ -750,7 +750,7 @@ Bitte wähle eine Kiste aus, stellen die Filter-Einstellungen ein und drücke En
 o351 Notes
 t351 Notizen
 o352 Include position data
-t352 Schließe Positionsdaten ein
+t352 Positionsdaten mit einbeziehen
 o353 Both
 t353 Beide
 o354 Lower Only
@@ -758,7 +758,7 @@ t354 Nur senken
 o355 Raise Only
 t355 Nur erhöhen
 o356 Raise/Lower
-t356 Erhöhen/senken
+t356 erhöhen/senken
 o357 TileEntity
 t357 TileEntity
 o358 Entity
@@ -766,7 +766,7 @@ t358 Entity
 o359 Block
 t359 Block
 o360 Match by:
-t360 Angleichen von:
+t360 Abgleichen von:
 o361 Match block type (for TileEntity searches):
 t361 Blocktyp abgleichen (für TileEntity-Suche):
 o362 Match block:
@@ -815,7 +815,7 @@ t376 Dokumentation
 o377 Forester script by dudecon
 t377 Förster Script von dudecon
 o378 Procedural
-t378 Procedural
+t378 prozessual
 o379 Normal
 t379 Normal
 o380 Bamboo
@@ -845,9 +845,9 @@ t391 Verzweigungdichte
 o392 Trunk Thickness
 t392 Baumstammdicke
 o393 Broken Trunk
-t393 Kaputten Baustamm
+t393 Kaputter Baustamm
 o394 Hollow Trunk
-t394 Hohlen Baumstamm
+t394 Hohler Baumstamm
 o395 Wood
 t395 Holz
 o396 Foliage
@@ -1061,7 +1061,7 @@ t498 Leertaste
 o499 Tab
 t499 Tab
 o500 Delete
-t500 Entfernen
+t500 Löschen
 o501 Scroll Up
 t501 Scroll nach oben
 o502 Scroll Down
@@ -1073,7 +1073,7 @@ t504 Alt
 o505 Ctrl
 t505 Strg
 o506 Creating a new world.
-t506 Erstelle eine neue Welt.
+t506 Eine neue Welt erstellen.
 o507 Minecraft Server
 t507 Minecraft Server
 o508 Flatland
@@ -1081,7 +1081,7 @@ t508 Flaches Land
 o509 Generator:
 t509 Generator:
 o510 Will automatically download and use the latest version
-t510 Wird automatisch die aktuelleste Version herunterladen und benutzen
+t510 Wird automatisch die aktuelleste Version herunterladen und benutzen.
 o511 Height: 
 t511 Höhe: 
 o512 Grass
@@ -1095,15 +1095,15 @@ t515 Suche nach Aktualisierungen
 o516 Advanced
 t516 Erweitert
 o517 Open Server Storage
-t517 Öffne Server Speicherplatz
+t517 Server-Speicherplatz öffnen
 o518 Reveal World Cache
-t518 Zeige Welt Puffer
+t518 Welt Puffer zeigen
 o519 Delete World Cache
-t519 Lösche Welt Puffer
+t519 Welt Puffer löschen
 o520 Advanced...
 t520 Erweitert...
 o521 Simulate world
-t521 Simuliere Welt
+t521 Welt simulieren
 o522 Use snapshot versions
 t522 Snapshot-Versionen benutzen
 o523 X: 
@@ -1181,7 +1181,7 @@ t558 Tastenkürzel: {0}
 o559 View Distance ({0})
 t559 Sichtweite ({0})
 o560 Copy Stack Size: 
-t560 Kopiere Stack Größe: 
+t560 Größe der Kopierliste: 
 o561 Remove
 t561 Löschen
 o562 Reload Skins
@@ -1221,31 +1221,31 @@ t578 Spielername(n):
 o579 Chunks Borders
 t579 Chunkgrenzen
 o580 Fast Nudge
-t580 Schnelles Schieben
+t580 Schnelles Verschieben
 o581 Clone Fast Nudge Settings
-t581 Kopiere schnelles Schieben Einstellungen
+t581 Kopiereinstellungen für schnelles Verschieben:
 o582 Move by the width of selection 
 t582 Verschiebe um die Breite der Auswahl 
 o583 Moves clone by his width
 t583 Bewegt Kopie um ihre Breite
 o584 Width of clone movement: 
-t584 Breite von Kopierbewegung: 
+t584 Weite von Kopierbewegung: 
 o585 Import Fast Nudge Settings:
-t585 Importiere schnelles-Verschieben-Einstellungen:
+t585 Importiereinstellungen für schnelles-Verschieben:
 o586 Move by the width of schematic 
 t586 Bewege um die Breite der Schematic 
 o587 Moves selection by his width
 t587 Bewege Auswahl um diese Breite
 o588 Width of import movement: 
-t588 Weite von Importbewegeung: 
+t588 Weite von Importbewegung: 
 o589 Import Options
 t589 Importiereinstelunngen
 o590 Blocks Fast Nudge Settings:
-t590 Einstellungen für schnelles-Verschieben blockieren:
+t590 Blöcke-Einstellungen für schnelles-Verschieben:
 o591 Selection Fast Nudge Settings:
 t591 Auswahl-Einstellungen für schnelles-Verschieben:
 o592 Points Fast Nudge Settings:
-t592 Anzeige-Einstellungen für schnelles-Verschieben:
+t592 Punkte-Einstellungen für schnelles-Verschieben:
 o593 Moves points by the selection's width
 t593 Bewegt Punkte um Auswahlsweite
 o594 Width of points movement: 
@@ -1305,13 +1305,13 @@ t610 Maximale Nummer von kopierten Objekten.
 o611 Try to save and restore the window position.
 t611 Versucht die Fensterposition zu speichern und wiederherzustellen.
 o612 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
-t612 Das wird Ihr MCEdit "portabel" machen durch das Verschieben Ihrer Einstellungen und Schematics in den selben Ordner wie {0}. Fortsetzen?
+t612 Das wird dein MCEdit "portabel" machen, indem die Einstellungen und Schematics in den selben Ordner wie die {0} verschoben werden. Fortsetzen?
 o613 MCEditData
 t613 MCEditDaten
 o614 This will move your settings and schematics to your Documents folder. Continue?
-t614 Das wird Ihre Einstellungen und Schematics in Ihren Dokumente Ordner verschieben. Fortsetzen?
+t614 Das wird deine Einstellungen und Schematics in deinen Dokumente-Ordner verschieben. Fortsetzen?
 o615 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t615 Klicken damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in den Dokumente Ordner verschoben werden
+t615 Auswählen, damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in den Dokumente Ordner verschoben werden.
 o616 Goto Position:
 t616 Gehe zu Position:
 o617 (click anywhere to teleport)
@@ -1327,7 +1327,7 @@ t621 Tag:
 o622 Time of day:
 t622 Zeit des Tages:
 o623 RandomSeed:
-t623 ZufälligerSeed:
+t623 Zufälliger Seed:
 o624 Game Type:
 t624 Spielmodus:
 o625 Number of chunks: {0}
@@ -1377,7 +1377,7 @@ t644 Sollen nicht gespeicherte Änderungen gespeichert werden, bevor es geschlos
 o645 Load NBT file...
 t645 Lade NBT Datei...
 o646 NBT Tree Settings
-t646 NBT Verzeichnis Einstellungen
+t646 NBT-Struktureinstellungen
 o647 Use Bullet Styles
 t647 Benutze Kugel Styles
 o648 Use Bullet Text
@@ -1405,13 +1405,13 @@ Can't save it.
 t656 Das ausgewählte Objekt ist keine Datei.
 Es kann nicht gespeichert werden.
 o657 Show all the tags in the tree
-t657 Zeige alle Tags in der Struktur
+t657 alle Tags in der Struktur anzeigen
 o658 Compound
 t658 Verbindung
 o659 Integer
-t659 Ganzzahl
+t659 Integer
 o660 Floating point
-t660 Fliegender Punkt
+t660 Floating point
 o661 Text
 t661 Text
 o662 Boolean
@@ -1439,11 +1439,11 @@ t672 Zeichenfolge
 o673 List
 t673 Liste
 o674 Byte Array
-t674 Byte Sammlung
+t674 Byte Array
 o675 Int Array
-t675 Ganzzahl Sammlung
+t675 Int Array
 o676 Short Array
-t676 Short Sammlung
+t676 SShort Array
 o677 Click to bind this filter to a hotkey
 t677 Klicke, um den Filter einem Tastenkürzel zuzuweisen
 o678 Press a key to assign to the filter "{0}"
@@ -1507,7 +1507,7 @@ t698 Spawnpunkt behoben. Änderungen:
 
 
 o699 <Selection>
-t699 <Selektion>
+t699 <Auswahl>
 o700 <Miscellaneous>
 t700 <Verschiedenes>
 o701 Take Screenshot
@@ -1519,7 +1519,7 @@ t703 Speichern und Neustarten
 o704 From FTP Server
 t704 Vom FTP Server
 o705 <Chunk Control Tool>
-t705 <Chunk Verwaltungswerkzeug>
+t705 <Chunk-Verwaltungswerkzeug>
 o706 Select Chunks
 t706 Chunks auswählen
 o707 
@@ -1628,7 +1628,7 @@ o753 Fonts Proportion (%):
 t753 Schriftgrösse (%): 
 o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t754 Schriftgrösse einstellen. Die Nummer ist in Prozent.
+t754 Schriftgrösse einstellen. Die Zahl wird in Prozent angegeben.
 Neustart benötigt!
 o755 Save As
 t755 Speichern als
@@ -1649,9 +1649,9 @@ t762 Session Lock wird von Minecraft benutzt
 o763 Session Lock is being used by MCEdit
 t763 Session Lock wird von MCEdit benutzt
 o764 Show Player Skins
-t764 Zeige Spieler Skins
+t764 Spieler Skins anzeigen
 o765 Show player skins while editing the world
-t765 Zeigt Spieler Skins beim Bearbeiten der Welt
+t765 Zeigt Spieler Skins beim Bearbeiten der Welt.
 o766 Compass Size (%): 
 t766 Kompassgröße (%): 
 o767 Fog Intensity (%): 
