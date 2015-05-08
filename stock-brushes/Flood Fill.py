@@ -54,7 +54,7 @@ def apply(self, op, point):
     saveUndoChunk(x // 16, z // 16)
     op.level.setBlockAt(x, y, z, op.options['Block'].ID)
     op.level.setBlockDataAt(x, y, z, op.options['Block'].blockData)
-    if tileEntity:
+    if tileEntity and not op.level.tileEntityAt(x, y, z):
         tileEntityObject = TileEntity.Create(tileEntity)
         TileEntity.setpos(tileEntityObject, (x, y, z))
         op.level.addTileEntity(tileEntityObject)
@@ -80,7 +80,7 @@ def apply(self, op, point):
                     saveUndoChunk(nx // 16, nz // 16)
                     op.level.setBlockAt(nx, ny, nz, op.options['Block'].ID)
                     op.level.setBlockDataAt(nx, ny, nz, op.options['Block'].blockData)
-                    if tileEntity:
+                    if tileEntity and not op.level.tileEntityAt(nx, ny, nz):
                         tileEntityObject = TileEntity.Create(tileEntity)
                         TileEntity.setpos(tileEntityObject, (nx, ny, nz))
                         op.level.addTileEntity(tileEntityObject)
