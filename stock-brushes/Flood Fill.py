@@ -7,6 +7,7 @@ from albow import showProgress
 import pymclevel
 import datetime
 import collections
+from pymclevel import BoundingBox
 import logging
 log = logging.getLogger(__name__)
 
@@ -20,6 +21,16 @@ def createInputs(self):
     {'Indiscriminate': False},
     )
 
+def createTileEntities(tileEntityTag, level):
+    x, y, z = TileEntity.pos(tileEntityTag)
+
+    try:
+        chunk = level.getChunk(x >> 4, z >> 4)
+    except (pymclevel.ChunkNotPresent, pymclevel.ChunkMalformed):
+        return
+
+    chunk.TileEntities.append(tileEntityTag)
+    chunk._fakeEntities = None
 
 def apply(self, op, point):
 
@@ -54,10 +65,11 @@ def apply(self, op, point):
     saveUndoChunk(x // 16, z // 16)
     op.level.setBlockAt(x, y, z, op.options['Block'].ID)
     op.level.setBlockDataAt(x, y, z, op.options['Block'].blockData)
-    if tileEntity and not op.level.tileEntityAt(x, y, z):
-        tileEntityObject = TileEntity.Create(tileEntity)
-        TileEntity.setpos(tileEntityObject, (x, y, z))
-        op.level.addTileEntity(tileEntityObject)
+    if tileEntity:
+        if op.level.tileEntityAt(x, y, z):
+            op.level.removeTileEntitiesInBox(BoundingBox((x, y, z), (1, 1, 1)))
+        tileEntityObject = TileEntity.Create(tileEntity, (x, y, z))
+        createTileEntities(tileEntityObject, op.level)
 
     def processCoords(coords):
         newcoords = collections.deque()
@@ -80,10 +92,11 @@ def apply(self, op, point):
                     saveUndoChunk(nx // 16, nz // 16)
                     op.level.setBlockAt(nx, ny, nz, op.options['Block'].ID)
                     op.level.setBlockDataAt(nx, ny, nz, op.options['Block'].blockData)
-                    if tileEntity and not op.level.tileEntityAt(nx, ny, nz):
-                        tileEntityObject = TileEntity.Create(tileEntity)
-                        TileEntity.setpos(tileEntityObject, (nx, ny, nz))
-                        op.level.addTileEntity(tileEntityObject)
+                    if tileEntity:
+                        if op.level.tileEntityAt(nx, ny, nz):
+                            op.level.removeTileEntitiesInBox(BoundingBox((nx, ny, nz), (1, 1, 1)))
+                        tileEntityObject = TileEntity.Create(tileEntity, (nx, ny, nz))
+                        createTileEntities(tileEntityObject, op.level)
                     newcoords.append(p)
 
         return newcoords

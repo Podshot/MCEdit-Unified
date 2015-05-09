@@ -1150,7 +1150,9 @@ def createTileEntities(block, box, chunk):
 
     if tileEntity and box is not None:
         for (x, y, z) in box.positions:
-            if chunk.world.blockAt(x, y, z) == block.ID and not chunk.tileEntityAt(x, y, z):
-                tileEntityObject = TileEntity.Create(tileEntity)
-                TileEntity.setpos(tileEntityObject, (x, y, z))
-                chunk.addTileEntity(tileEntityObject)
+            if chunk.world.blockAt(x, y, z) == block.ID:
+                if chunk.tileEntityAt(x, y, z):
+                    chunk.removeTileEntitiesInBox(BoundingBox((x, y, z), (1, 1, 1)))
+                tileEntityObject = TileEntity.Create(tileEntity, (x, y, z))
+                chunk.TileEntities.append(tileEntityObject)
+                chunk._fakeEntities = None

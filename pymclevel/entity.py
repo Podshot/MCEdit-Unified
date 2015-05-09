@@ -48,7 +48,7 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
             ("BrewTime", nbt.TAG_Int),
         ),
-        "Command Block": (
+        "Control": (
             ("Command", nbt.TAG_String),
             ("CustomName", nbt.TAG_String),
             ("TrackOutput", nbt.TAG_Byte),
@@ -65,7 +65,7 @@ class TileEntity(object):
         "Jukebox": "RecordPlayer",
         "Piston": "Piston",
         "Cauldron": "Cauldron",
-        "Command Block": "Command Block"
+        "Command Block": "Control"
     }
 
     knownIDs = baseStructures.keys()
@@ -92,7 +92,7 @@ class TileEntity(object):
     }
 
     @classmethod
-    def Create(cls, tileEntityID, **kw):
+    def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
         tileEntityTag = nbt.TAG_Compound()
         tileEntityTag["id"] = nbt.TAG_String(tileEntityID)
         base = cls.baseStructures.get(tileEntityID, None)
@@ -102,7 +102,7 @@ class TileEntity(object):
                 if name == "CustomName" and tileEntityID == "Command Block":
                     tileEntityTag[name] = nbt.TAG_String("@")
 
-        cls.setpos(tileEntityTag, (0, 0, 0))
+        cls.setpos(tileEntityTag, pos)
         return tileEntityTag
 
     @classmethod
