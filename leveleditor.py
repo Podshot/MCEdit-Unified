@@ -2351,11 +2351,17 @@ class LevelEditor(GLViewport):
             keyname = self.root.getKey(evt)
             if keyname == "Escape":
                 dialog.dismiss("Cancel")
-            elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
-                worldTable.selectedWorldIndex -= 1
+            elif keyname == "Up":
+                worldTable.selectedWorldIndex = max(0, worldTable.selectedWorldIndex - 1)
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
-            elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds) - 1:
-                worldTable.selectedWorldIndex += 1
+            elif keyname == "Down":
+                worldTable.selectedWorldIndex = min(len(worlds) - 1, worldTable.selectedWorldIndex + 1)
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
+            elif keyname == 'Page up':
+                worldTable.selectedWorldIndex = max(0, worldTable.selectedWorldIndex - worldTable.rows.num_rows())
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
+            elif keyname == 'Page down':
+                worldTable.selectedWorldIndex = min(len(worlds) - 1, worldTable.selectedWorldIndex + worldTable.rows.num_rows())
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
             elif keyname == "Return":
                 loadWorld()
