@@ -516,7 +516,7 @@ class SlotEditor(Dialog):
                 self.selected_item_index = min(len(self.matching_items) - 1, self.selected_item_index + self.tableview.rows.num_rows())
             elif keyname == 'Page up':
                 self.selected_item_index = max(0, self.selected_item_index - self.tableview.rows.num_rows())
-            if self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selected_item_index or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selected_item_index:
+            if self.tableview.rows.cell_to_item_no(0, 0) != None and (self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selected_item_index or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selected_item_index):
                 self.tableview.rows.scroll_to_item(self.selected_item_index)
 #&#
 

@@ -668,7 +668,25 @@ class LevelEditor(GLViewport):
 
         saveButton = Button("Save to file...", action=saveToFile)
         col = Column((Label("Analysis"), tableBacking, saveButton))
-        Dialog(client=col, responses=["OK"]).present()
+        dlg = Dialog(client=col, responses=["OK"])
+        
+        def dispatch_key(name, evt):
+            super(Dialog, dlg).dispatch_key(name, evt)
+            if not hasattr(evt, 'key'):
+                return
+            if name == 'key_down':
+                keyname = self.root.getKey(evt)
+                if keyname == 'Up':
+                    table.rows.scroll_up()
+                elif keyname == 'Down':
+                    table.rows.scroll_down()
+                elif keyname == 'Page up':
+                    table.rows.scroll_to_item(max(0, table.rows.cell_to_item_no(0, 0) - table.rows.num_rows()))
+                elif keyname == 'Page down' and table.rows.cell_to_item_no(table.rows.num_rows(), 0) != None:
+                    table.rows.scroll_to_item(min(len(rows), table.rows.cell_to_item_no(table.rows.num_rows(), 0) + table.rows.num_rows()))
+
+        dlg.dispatch_key = dispatch_key
+        dlg.present()
 
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
@@ -2336,11 +2354,17 @@ class LevelEditor(GLViewport):
             keyname = self.root.getKey(evt)
             if keyname == "Escape":
                 dialog.dismiss("Cancel")
-            elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
-                worldTable.selectedWorldIndex -= 1
+            elif keyname == "Up":
+                worldTable.selectedWorldIndex = max(0, worldTable.selectedWorldIndex - 1)
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
-            elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds) - 1:
-                worldTable.selectedWorldIndex += 1
+            elif keyname == "Down":
+                worldTable.selectedWorldIndex = min(len(worlds) - 1, worldTable.selectedWorldIndex + 1)
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
+            elif keyname == 'Page up':
+                worldTable.selectedWorldIndex = max(0, worldTable.selectedWorldIndex - worldTable.rows.num_rows())
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
+            elif keyname == 'Page down':
+                worldTable.selectedWorldIndex = min(len(worlds) - 1, worldTable.selectedWorldIndex + worldTable.rows.num_rows())
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
             elif keyname == "Return":
                 loadWorld()

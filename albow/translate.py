@@ -378,7 +378,16 @@ def buildTranslation(lang,suppressAlert=False):
         result += r[2:]
         result = u"{" + result.replace(u"\r\n", u"\\n").replace(u"\n", u"\\n").replace(u"\t", u"\\t") + u"\"}"
         log.debug("    Conversion done. Loading JSON resource.")
-        string_cache = json.loads(result)
+        try:
+            string_cache = json.loads(result)
+        except Exception, e:
+            log.debug("Error while loading JSON resource:")
+            log.debug("    %s"%e)
+            log.debug("Dumping JSON data in %s.json"%lang)
+            f = open('%s.json'%lang, 'w')
+            f.write(result)
+            f.close()
+            return {}, False
         log.debug("    Setting up font.")
         line = rawData.splitlines()[0]
         if "#-# " in line:
