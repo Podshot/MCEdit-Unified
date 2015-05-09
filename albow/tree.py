@@ -199,7 +199,7 @@ class Tree(Column):
                 if self.selected_item_index == None:
                     self.selected_item_index = -1
                 self.selected_item_index = max(0, self.selected_item_index - self.treeRow.num_rows())
-            if self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index:
+            if self.treeRow.cell_to_item_no(0, 0) != None and (self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index):
                 self.treeRow.scroll_to_item(self.selected_item_index)
 
             if keyname == 'Return' and self.selected_item_index != None:
