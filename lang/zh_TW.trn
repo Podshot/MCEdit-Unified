@@ -1,5 +1,5 @@
 #-# Traditional Chinese (Taiwan)
-#-# font regular: SourceHanSansTC-Medium.ttf
+#-# font regular: NotoSansHant-Medium.tf
 #-# font bold: SourceHanSansTC-Bold.ttf
 # TRANSLATION BASICS
 #
@@ -95,11 +95,11 @@ t37 舊版WASD
 o38 Keybind Presets:
 t38 預設按鍵：
 o39 MCEdit
-t39
+t39 
 o40 <
-t40
+t40 
 o41 >
-t41
+t41 
 o42 Show...
 t42 顯示...
 o43 Camera View
@@ -133,11 +133,11 @@ t56 顏色：
 o57 Show Previous Selection
 t57 顯示之前的選區
 o58 R:
-t58
+t58 
 o59 G:
-t59
+t59 
 o60 B:
-t60
+t60 
 o61 Selection Options
 t61 選區工具選項
 o62 Place Immediately
@@ -319,7 +319,7 @@ t147 選擇區塊（按住）
 o148 Deselect Chunks (Hold)
 t148 取消選擇區塊（按住）
 o149 Snap Clone to Axis (Hold)
-t149
+t149 
 o150 Blocks-Only Modifier (Hold)
 t150 方塊限定修改器（按住）
 o151 Fast Increment Modifier
@@ -369,7 +369,7 @@ t172 稍後
 o173 Loading
 t173 載入中
 o174  - MCEdit
-t174
+t174 
 o175 Overworld
 t175 主世界
 o176 The End
@@ -439,7 +439,7 @@ t207 標記選擇的區塊，下次你玩Minecraft時，區塊中的樹木、礦
 o208 Unmark the selected chunks. They will not repopulate the next time you play the game.
 t208 取消重置標記，這樣你下次進入遊戲時區塊不會被重置
 o209 ...
-t209
+t209 
 o210 Select
 Right-click for options
 t210 選擇
@@ -493,7 +493,7 @@ t231 每當筆刷大小改變時，重置與筆刷的距離
 o232 Shortcut: Alt-1
 t232 快捷鍵：Alt-1
 o233 ---
-t233
+t233 
 o234 Weight 1
 t234 權重1：
 o235 Weight 2
@@ -517,11 +517,11 @@ Right-click for options
 t243 匯入
 右鍵顯示選項
 o244 x
-t244
+t244 
 o245 y
-t245
+t245 
 o246 z
-t246
+t246 
 o247 COPYING -
 t247 複製中 -
 o248 Rotate
@@ -624,15 +624,15 @@ t293 區塊表面修復
 o294 Classic Water Flood
 t294 提高水流
 o295 Colorwires
-t295
+t295 
 o296 Create Busses
-t296
+t296 
 o297 Create Shops
 t297 新建商店
 o298 Create Spawners
 t298 新建生怪磚
 o299 Decliff
-t299
+t299 
 o300 Find
 t300 尋找
 o301 Forester
@@ -692,11 +692,11 @@ t327 村民職業
 o328 Slime Size
 t328 史萊姆大小
 o329 Breeding Mode Ticks
-t329
+t329 
 o330 Child/Adult Age
 t330 小孩/成人年齡
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
-t331
+t331 
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
 t332 讓區域內水流方塊全部提高成水源方塊。類似於Minecraft Classic版本里的水方塊。
 o333 Flood Water
@@ -732,7 +732,7 @@ t346 改變身體方向。正西方為0。此值必須介於-180到180之間。
 o347 X-Axis
 t347 X軸
 o348 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t348
+t348 
 o349 Rotation
 t349 旋轉
 o350 To create a shop first put your buy in the top slot(s) of the chest.
@@ -753,39 +753,39 @@ t352 包含位置資料
 o353 Both
 t353 兩者
 o354 Lower Only
-t354
+t354 
 o355 Raise Only
-t355
+t355 
 o356 Raise/Lower
-t356
+t356 
 o357 TileEntity
-t357
+t357 
 o358 Entity
 t358 實體
 o359 Block
 t359 方塊
 o360 Match by:
-t360
+t360 
 o361 Match block type (for TileEntity searches):
-t361
+t361 
 o362 Match block:
-t362
+t362 
 o363 Match block data:
-t363
+t363 
 o364 Match tile entities (for Block searches):
-t364
+t364 
 o365 "None" for Name or Value will match any tag's Name or Value respectively.
-t365
+t365 
 o366 Match Tag Name:
-t366
+t366 
 o367 Match Tag Value:
-t367
+t367 
 o368 Case insensitive:
 t368 忽視大小寫
 o369 Any
 t369 任何
 o370 Match Tag Type:
-t370
+t370 
 o371 Start New Search
 t371 開始新尋找
 o372 Find Next
@@ -802,7 +802,7 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375
+t375 
 o376 Documentation
 t376 參考
 o377 Forester script by dudecon
@@ -816,7 +816,7 @@ t380 竹子
 o381 Palm
 t381 棕櫚樹
 o382 Stickly
-t382
+t382 
 o383 Round
 t383 圓
 o384 Cone
@@ -850,9 +850,9 @@ t397 樹葉密度
 o398 Yes
 t398 是
 o399 To Stone
-t399
+t399 
 o400 Hanging
-t400
+t400 
 o401 No
 t401 否
 o402 Roots
@@ -1050,9 +1050,9 @@ t496 查看
 o497 Ignore
 t497 忽略
 o498 Space
-t498
+t498 
 o499 Tab
-t499
+t499 
 o500 Delete
 t500 刪除
 o501 Scroll Up
@@ -1060,11 +1060,11 @@ t501 向上捲動
 o502 Scroll Down
 t502 向下捲動
 o503 Button 3
-t503
+t503 
 o504 Alt
-t504
+t504 
 o505 Ctrl
-t505
+t505 
 o506 Creating a new world.
 t506 建立一個世界。
 o507 Minecraft Server
@@ -1100,13 +1100,13 @@ t521 模擬世界
 o522 Use snapshot versions
 t522 使用快照版本
 o523 X:
-t523
+t523 
 o524 Y:
-t524
+t524 
 o525 Z:
-t525
+t525 
 o526 f:
-t526
+t526 
 o527 Seed:
 t527 種子：
 o528 East-West Chunks:
@@ -1122,15 +1122,15 @@ t532 創造
 o533 Style:
 t533 形狀：
 o534 H
-t534
+t534 
 o535 L
-t535
+t535 
 o536 W
-t536
+t536 
 o537 Minimum Spacing
 t537 筆刷間隔
 o538 Regenerate Entity UUID
-t538
+t538 
 o539 Replace blocks with any data value. Only useful for Replace operations.
 t539 替換此ID下所有數據值的方塊。只在替換功能中可用。
 o540 Entities
@@ -1138,9 +1138,9 @@ t540 實體
 o541 Items
 t541 掉落物
 o542 TileEntities
-t542
+t542 
 o543 TileTicks
-t543
+t543 
 o544 Unpopulated Chunks
 t544 未重置的區塊
 o545 Sky
@@ -1148,9 +1148,9 @@ t545 天空
 o546 Fog
 t546 霧
 o547 Ceiling
-t547
+t547 
 o548 Chunk Redraw
-t548
+t548 
 o549 Hidden Ores
 t549 隱藏岩石
 o550 Bedrock
@@ -1184,13 +1184,13 @@ t563 上一頁
 o564 Next Page
 t564 下一頁
 o565 Super Secret Settings
-t565
+t565 
 o566 Default Resource Pack
 t566 默認資源包
 o567 Square
 t567 方形
 o568 Record Macro
-t568
+t568 
 o569 Health Boost
 t569 生命提升
 o570 Saturation (no mob effect)
@@ -1256,15 +1256,15 @@ t597 按一個鍵來綁定動作"{0}"
 o598 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
-t598
+t598 
 o599 {0} is not a modifier. Press a new key.
 
 Press ESC to cancel.
-t599
+t599 
 o600 Movement keys can't use Ctrl or be with modifiers. Press a new key.
 
 Press ESC to cancel.
-t600
+t600 
 o601 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
@@ -1280,11 +1280,11 @@ t604 截圖文件目錄
 o605 Uses the Latest Snapshot Terrain Generation
 t605 使用最新的快照版地形生成器
 o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t606
+t606 
 o607 Last Played
 t607 最後遊玩
 o608 Level Name (filename)
-t608
+t608 
 o609 Load
 t609 讀取
 o610 Maximum number of copied objects.
@@ -1294,7 +1294,7 @@ t611 嘗試記住視窗位置。
 o612 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
 t612 這會將配置文件和模型文件儲存在程序目錄，使MCEdit變成可攜帶版。是否繼續？
 o613 MCEditData
-t613
+t613 
 o614 This will move your settings and schematics to your Documents folder. Continue?
 t614 這會將配置文件和模型文件儲存在文件/我的文件目錄。是否繼續？
 o615 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
@@ -1326,11 +1326,11 @@ t627 修復區域
 o628 Open Folder
 t628 打開目錄
 o629 Inventory Slot #%s
-t629
+t629 
 o630 id
 t630 ID
 o631 Count
-t631
+t631 
 o632 Damage
 t632 傷害
 o633 NBT Explorer
@@ -1389,25 +1389,25 @@ o656 The selected object is not a file.
 Can't save it.
 t656 選擇的對象不是一個文件，無法儲存。
 o657 Show all the tags in the tree
-t657
+t657 
 o658 Compound
-t658
+t658 
 o659 Integer
-t659
+t659 
 o660 Floating point
-t660
+t660 
 o661 Text
 t661 文字
 o662 Boolean
 t662 布林值
 o663 Choose default data
-t663
+t663 
 o664 Item Type: %s
-t664
+t664 
 o665 Value
 t665 值
 o666 This item type is a container. Add chlidren later.
-t666
+t666 
 o667 Choose item type
 t667 選擇物品型態
 o668 Choose a name
@@ -1475,7 +1475,7 @@ t693 NBT數據
 o694 Edit NBT
 t694 編輯NBT數據
 o695 Open the NBT Explorer to edit player's attributes and inventory
-t695
+t695 
 o696 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t696 功能尚未實現
@@ -1505,9 +1505,9 @@ o705 <Chunk Control Tool>
 t705 <區塊控制工具>
 o706 Select Chunks
 t706 選擇區塊
-o707
+o707 
 No matching blocks/tile entities found
-t707
+t707 
 沒有找到匹配的方塊/Tile Entities
 o708 Choose a filter, then click Filter or press Enter to apply it.
 t708 選擇一個過濾器，點擊「過濾」或按回車來確定。
@@ -1598,11 +1598,11 @@ t746 用以上設定新建區塊？此操作無法復原。
 o747 Add
 t747 添加
 o748 New child
-t748
+t748 
 o749 Rename
 t749 重命名
 o750 Paste as child
-t750
+t750 
 o751 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t751 你正在刪除一個包含整個區塊的選區。用空氣填充選區還是刪除區塊？
 o752 Screenshot taken and saved as '%s'
@@ -1622,7 +1622,7 @@ t757 複製%0.1f 00萬個方塊中
 o758 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
 t758 當你嘗試出生在一個Y=63和Y=64處沒有方塊的地方時，Minecraft會隨機地移動你的出生點。只有當Minecraft變更後才取消勾選此項。
 o759 Keep Data Intact
-t759
+t759 
 o760 This pulls skins from the online server, so this may take a while
 t760 這將從伺服器上載入皮膚，所以可能耗時較長。
 o761 Session:
@@ -1648,7 +1648,7 @@ t770 選區輕移寬度：
 o771 Import
 t771 匯入
 o772 Old (Messy)
-t772
+t772 
 o773 Click to open filters folder
 t773 點擊打開過濾器文件夾
 o774 Head
@@ -1660,21 +1660,21 @@ t775 過濾操作時出現異常。詳細信息見控制台。
 
 {0}
 o776 Shift
-t776
+t776 
 o777 Option
 t777 選項
 o778 Meta
-t778
+t778 
 o779 Applying {0} brush...
-t779
+t779 
 o780 Graphics Settings
 t780 圖像設置
 o781 Run Macro
-t781
+t781 
 o782 Delete Macro
-t782
+t782 
 o783 Macro Name:
-t783
+t783 
 o784 Enter a Player Name:
 t784 輸入一個玩家名稱：
 o785 Click the mouse button again to place the other selection corner.
@@ -1682,7 +1682,7 @@ t785 再次點擊游標來確定選區的另一個角。
 o786 Stop recording
 t786 停止記錄
 o787 Currently recording a macro
-t787
+t787 
 o788 Choose a custom head for the villagers you make
 t788 為你創造的村民選一個自定義頭顱
 o789 Custom Head
@@ -1705,7 +1705,7 @@ o797 Player's Name
 t797 玩家名稱
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t798
+t798 
 o799 When the brush tool is chosen, prompt for a block type.
 t799 當筆刷工具被選中時，自動打開方塊選擇器來選擇方塊。
 o800 Max View Distance
@@ -1717,7 +1717,7 @@ t801 看起來這個世界是完全空白的！
 o802 Create Chunks
 t802 新建區塊
 o803 Replace Only:
-t803
+t803 
 o804 Make Villager Silent
 t804 禁止村民發聲
 o805 Install Mode
@@ -1781,7 +1781,7 @@ t833 替換工具自動打開方塊選擇器
 o834 When the replace tool is chosen, prompt for a block type.
 t834 當替換工具被選中時，自動打開方塊選擇器來選擇方塊。
 o835 Matching Coordinates
-t835
+t835 
 o836 Session Lock Options
 t836 會話鎖設置
 o837 Override Minecraft Changes (Not Recommended)
