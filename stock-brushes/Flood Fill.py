@@ -56,10 +56,8 @@ def apply(self, op, point):
         return
 
     tileEntity = None
-    for tileEntityName in TileEntity.otherNames.keys():
-        if tileEntityName in op.options['Block'].name:
-            tileEntity = TileEntity.otherNames[tileEntityName]
-            break
+    if op.options['Block'].stringID in TileEntity.stringNames.keys():
+        tileEntity = TileEntity.stringNames[op.options['Block'].stringID]
 
     x, y, z = point
     saveUndoChunk(x // 16, z // 16)

@@ -605,7 +605,7 @@ class BrushTool(CloneTool):
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
-        
+
         brushMode = self.brushModes.get(loadedBrushOptions.get("Mode", None), None)
         if brushMode is not None:
             self.selectedBrushMode = loadedBrushOptions["Mode"]
@@ -1142,17 +1142,14 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         return mask
 
 def createTileEntities(block, box, chunk):
-    tileEntity = None
-    for tileEntityName in TileEntity.otherNames.keys():
-        if tileEntityName in block.name:
-            tileEntity = TileEntity.otherNames[tileEntityName]
-            break
+    if box is None or block.stringID not in TileEntity.stringNames.keys():
+        return
 
-    if tileEntity and box is not None:
-        for (x, y, z) in box.positions:
-            if chunk.world.blockAt(x, y, z) == block.ID:
-                if chunk.tileEntityAt(x, y, z):
-                    chunk.removeTileEntitiesInBox(BoundingBox((x, y, z), (1, 1, 1)))
-                tileEntityObject = TileEntity.Create(tileEntity, (x, y, z))
-                chunk.TileEntities.append(tileEntityObject)
-                chunk._fakeEntities = None
+    tileEntity = TileEntity.stringNames[block.stringID]
+    for (x, y, z) in box.positions:
+        if chunk.world.blockAt(x, y, z) == block.ID:
+            if chunk.tileEntityAt(x, y, z):
+                chunk.removeTileEntitiesInBox(BoundingBox((x, y, z), (1, 1, 1)))
+            tileEntityObject = TileEntity.Create(tileEntity, (x, y, z))
+            chunk.TileEntities.append(tileEntityObject)
+            chunk._fakeEntities = None

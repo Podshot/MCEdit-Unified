@@ -68,6 +68,23 @@ class TileEntity(object):
         "Command Block": "Control"
     }
 
+    stringNames = {
+        "furnace": "Furnace",
+        "lit_furnace": "Furnace",
+        "standing_sign": "Sign",
+        "wall_sign": "Sign",
+        "mob_spawner": "MobSpawner",
+        "chest": "Chest",
+        "ender_chest": "Chest",
+        "noteblock": "Music",
+        "trapped_chest": "Trap",
+        "jukebox": "RecordPlayer",
+        "sticky_piston": "Piston",
+        "piston": "Piston",
+        "cauldron": "Cauldron",
+        "command_block": "Control"
+}
+
     knownIDs = baseStructures.keys()
     maxItems = {
         "Furnace": 3,
