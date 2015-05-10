@@ -10,7 +10,7 @@ class fileEdit():
         self.level = level
 
     def makeChanges(self):
-        file = open(self.filename)
+        file = open(self.filename, 'rb')
         lines = []
         for line in file.readlines():
             if line != "\n":
@@ -23,7 +23,7 @@ class fileEdit():
                 tileEntities.append(self.level.tileEntityAt(x, y, z))
 
         if len(lines) != len(tileEntities):
-            alert("The amount of lines does not match the amount of command blocks")
+            alert("You have " + len(lines) + " lines and " + len(tileEntities) + " command blocks, it should be the same.")
             return
 
         op = FileEditsOperation(self.editor, self.level, self.box, lines, tileEntities)
@@ -52,7 +52,9 @@ class FileEditsOperation(Operation):
         for i, line in enumerate(self.lines):
             tileEntity = self.tileEntities[i]
             line = line.decode('utf-8')
-            if line == "\"\"" or line == u"\u201c\u202a\u201d\u202c":
+            line = line.replace(u"\u201c\u202a", "\"")
+            line = line.replace(u"\u201d\u202c", "\"")
+            if line == "\"\"":
                 line = ""
             if tileEntity["Command"].value != line:
                 tileEntity["Command"].value = line
