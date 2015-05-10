@@ -640,7 +640,7 @@ class KeyConfigPanel(Dialog):
             config.keys.panDown.get()
         ]
 
-        self.editor.sprint = config.keys.sprint.get()
+        self.editor.sprintKey = config.keys.sprint.get()
 
         self.root.movementLabel.text = _("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
             _(config.keys.forward.get()),
