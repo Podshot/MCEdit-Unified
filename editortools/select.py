@@ -1216,7 +1216,7 @@ class SelectionTool(EditorTool):
         file.close()
         if first:
             os.remove(filename)
-            alert("Didn't found any command blocks")
+            alert("No command blocks found")
             return
         self.editor.level.editFileNumber += 1
         edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), self.editor, self.editor.level)
