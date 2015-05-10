@@ -23,7 +23,7 @@ class fileEdit():
                 tileEntities.append(self.level.tileEntityAt(x, y, z))
 
         if len(lines) != len(tileEntities):
-            alert("You have " + len(lines) + " lines and " + len(tileEntities) + " command blocks, it should be the same.")
+            alert("You have %d lines and %d command blocks, it should be the same." % (len(lines), len(tileEntities)))
             return
 
         op = FileEditsOperation(self.editor, self.level, self.box, lines, tileEntities)
