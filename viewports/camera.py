@@ -138,9 +138,10 @@ class CameraViewport(GLViewport):
         else:
             max_speed = self.maxSpeed
 
-        if inSpace:
+        if inSpace or self.root.sprint:
             accel_factor *= 3.0
             max_speed *= 3.0
+            self.root.sprint = False
         elif config.settings.viewMode.get() == "Chunk":
             accel_factor *= 2.0
             max_speed *= 2.0

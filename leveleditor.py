@@ -184,6 +184,7 @@ class LevelEditor(GLViewport):
             config.keys.panUp.get(),
             config.keys.panDown.get()
         ]
+        self.sprintKey = config.keys.sprint.get()
         self.different_keys = {
             "mouse1": "Mouse1",
             "mouse2": "Mouse2",

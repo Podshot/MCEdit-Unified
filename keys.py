@@ -27,6 +27,7 @@ class KeyConfigPanel(Dialog):
         "Up",
         "Down",
         "Brake",
+        "Sprint",
         "",
         "<Camera>",
         "Pan Up",
@@ -142,6 +143,7 @@ class KeyConfigPanel(Dialog):
                     ("Up", "Space"),
                     ("Down", "Shift"),
                     ("Brake", "C"),
+                    ("Sprint", "None"),
 
                     ("Pan Up", "I"),
                     ("Pan Down", "K"),
@@ -223,6 +225,7 @@ class KeyConfigPanel(Dialog):
                     ("Up", "Space"),
                     ("Down", "Shift"),
                     ("Brake", "C"),
+                    ("Sprint", "None"),
 
                     ("Pan Up", "I"),
                     ("Pan Down", "K"),
@@ -304,6 +307,7 @@ class KeyConfigPanel(Dialog):
                     ("Up", "Page Up"),
                     ("Down", "Page Down"),
                     ("Brake", "Space"),
+                    ("Sprint", "None"),
 
                     ("Pan Up", "I"),
                     ("Pan Down", "K"),
@@ -385,6 +389,7 @@ class KeyConfigPanel(Dialog):
                     ("Up", "[7]"),
                     ("Down", "[1]"),
                     ("Brake", "[0]"),
+                    ("Sprint", "None"),
 
                     ("Pan Up", "I"),
                     ("Pan Down", "K"),
@@ -466,6 +471,7 @@ class KeyConfigPanel(Dialog):
                     ("Up", "Q"),
                     ("Down", "Z"),
                     ("Brake", "Space"),
+                    ("Sprint", "None"),
 
                     ("Pan Up", "I"),
                     ("Pan Down", "K"),
@@ -633,6 +639,8 @@ class KeyConfigPanel(Dialog):
             config.keys.panUp.get(),
             config.keys.panDown.get()
         ]
+
+        self.editor.sprint = config.keys.sprint.get()
 
         self.root.movementLabel.text = _("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
             _(config.keys.forward.get()),

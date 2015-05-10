@@ -129,6 +129,7 @@ class RootWidget(Widget):
         self.testTimeBack = 0.4
         self.nudgeDirection = None
         self.sessionStolen = False
+        self.sprint = False
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -382,6 +383,8 @@ class RootWidget(Widget):
                             if not keys:
                                 return
                             keyName = self.getKey(movement=True, keyname=pygame.key.name(i))
+                            if keyName == self.editor.sprintKey:
+                                self.sprint = True
                             if self.editor.level:
                                 for j, key in enumerate(self.editor.movements):
                                     if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:

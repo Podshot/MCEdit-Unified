@@ -381,6 +381,7 @@ definitions = {
         ("up", "up", "Space"),
         ("down", "down", "Shift"),
         ("brake", "brake", "C"),
+        ("sprint", "sprint", "None"),
 
         ("rotateClone", "rotate (clone)", "E"),
         ("rollClone", "roll (clone)", "R"),
