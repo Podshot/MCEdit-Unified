@@ -132,7 +132,7 @@ field_types = {TAG_Byte: (IntField, (0, 256)),
                TAG_Float: (FloatField, None),
                TAG_Int: (IntField, (-2147483647,+2147483647)),
                TAG_Long: (IntField, (-9223372036854775807,+9223372036854775807)),
-               TAG_Short: (IntField, (0, 65536)),
+               TAG_Short: (IntField, (-65535, 65536)),
                TAG_String: (TextFieldWrapped, None),
               }
 
@@ -637,13 +637,23 @@ class NBTExplorerToolPanel(Panel):
     def dispatch_key(self, name, e):
         if not hasattr(e, 'key'):
             return
-        self.tree.dispatch_key(name, e)
-        if name == 'key_down' and self.root.getKey(e) == 'Escape':
-            self.editor.key_down(e)
-        elif name == 'key_down' and self.root.getKey(e) == 'Return' and self.tree.selected_item != None:
-            self.update_side_panel(self.tree.selected_item)
-        elif name == 'key_down' and self.side_panel and self.side_panel.has_focus():
-            self.side_panel.dispatch_key(name, e)
+        if name == 'key_down':
+            caught = True
+            if self.root.getKey(e) == 'Escape':
+                if not self.tree.has_focus():
+                    self.tree.focus()
+                else:
+                    self.editor.key_down(e)
+            elif self.side_panel and self.side_panel.has_focus():
+                self.side_panel.dispatch_key(name, e)
+            elif self.root.getKey(e) == 'Return':
+                self.tree.dispatch_key(name, e)
+                if self.tree.selected_item != None:
+                    self.update_side_panel(self.tree.selected_item)
+            else:
+                caught = False
+            if not caught:
+                self.tree.dispatch_key(name, e)
 
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
@@ -870,6 +880,7 @@ class NBTExplorerToolPanel(Panel):
         table.row_data = row_data
 
         def click_row(n, e):
+            table.focus()
             table.selected_row = n
             if e.num_clicks > 1:
                 SlotEditor(table, row_data(n)).present()
@@ -944,6 +955,28 @@ class NBTExplorerToolPanel(Panel):
             table.slots[n] = slots[n] = s, i, c, state
 
         table.change_value = change_value
+
+
+        def dispatch_key(name, evt):
+            keyname = self.root.getKey(evt)
+            if keyname == 'Return':
+                SlotEditor(table, row_data(table.selected_row)).present()
+            elif keyname == "Up" and table.selected_row > 0:
+                table.selected_row -= 1
+                table.rows.scroll_to_item(table.selected_row)
+
+            elif keyname == "Down" and table.selected_row < len(slots) - 1:
+                table.selected_row += 1
+                table.rows.scroll_to_item(table.selected_row)
+            elif keyname == 'Page down':
+                table.selected_row = min(len(slots) - 1, table.selected_row + table.rows.num_rows())
+            elif keyname == 'Page up':
+                table.selected_row = max(0, table.selected_row - table.rows.num_rows())
+            if table.rows.cell_to_item_no(0, 0) != None and (table.rows.cell_to_item_no(0, 0) + table.rows.num_rows() -1 > table.selected_row or table.rows.cell_to_item_no(0, 0) + table.rows.num_rows() -1 < table.selected_row):
+                table.rows.scroll_to_item(table.selected_row)
+
+        table.dispatch_key = dispatch_key
+
         rows.append(table)
         return rows
 
