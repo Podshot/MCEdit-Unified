@@ -642,7 +642,7 @@ class NBTExplorerToolPanel(Panel):
             self.editor.key_down(e)
         elif name == 'key_down' and self.root.getKey(e) == 'Return' and self.tree.selected_item != None:
             self.update_side_panel(self.tree.selected_item)
-        elif name == 'key_down' and self.side_panel:
+        elif name == 'key_down' and self.side_panel and self.side_panel.has_focus():
             self.side_panel.dispatch_key(name, e)
 
     def setCompounds(self):
@@ -804,13 +804,17 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
     def build_inventory(self, items):
-        inventory = self.data.get('Player', {}).get('Inventory', TAG_List()) or self.data.get('Inventory', TAG_List())
+        if 'playerGameType' in self.tree.get_item_parent(self.displayed_item)[9].keys():
+            player = True
+        else:
+            player = False
+        inventory = self.tree.get_item_parent(self.displayed_item)[9].get('Inventory', TAG_List())
         rows = []
         items = items[0]
         slots = [["%s"%i,"","0","0"] for i in range(36)]
         slots += [["%s"%i,"","0","0"] for i in range(100, 104)]
         slots_set = []
-        for item in items:
+        for item, i in zip(items, range(len(items))):
             #&# Prototype for blocks/items names
             item_dict = mcitems.items.get(item['id'].value, None)
             if item_dict == None:
@@ -824,11 +828,15 @@ class NBTExplorerToolPanel(Panel):
                         name = item_dict['name'][int(item['Damage'].value)]
                 else:
                     name = item_dict['name']
-            s = int(item['Slot'].value)
+            s = i
+            _s = 0 + i
+            if player:
+                s = int(item['Slot'].value)
+                _s = 0 + s
             slots_set.append(s)
             if s >= 100:
                 s = s - 100 + 36
-            slots[s] = item['Slot'].value, mclangres.translate(name), item['Count'].value, item['Damage'].value
+            slots[s] = _s, mclangres.translate(name), item['Count'].value, item['Damage'].value
             #slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
             #&#
         width = self.side_panel_width - self.margin * 5
@@ -883,7 +891,12 @@ class NBTExplorerToolPanel(Panel):
 
             if s in slots_set:
                 for slot in inventory:
-                    if slot['Slot'].value == s:
+                    ok1 = False
+                    if player:
+                        ok1 = slot['Slot'].value == s
+                    else:
+                        ok1 = inventory.index(slot) == s
+                    if ok1:
                         if not i or int(c) < 1:
                             del inventory[s_idx]
                             i = ""
@@ -900,7 +913,8 @@ class NBTExplorerToolPanel(Panel):
                     s_idx += 1
             else:
                 new_slot = TAG_Compound()
-                new_slot['Slot'] = TAG_Byte(s)
+                if player:
+                    new_slot['Slot'] = TAG_Byte(s)
                 #&# Prototype for blocka/items names
                 #new_slot['id'] = TAG_String('minecraft:%s'%i)
                 new_slot['id'] = TAG_String(name)
@@ -909,7 +923,12 @@ class NBTExplorerToolPanel(Panel):
                 new_slot['Damage'] = TAG_Short(int(state))
                 idx = s
                 for slot in inventory:
-                    if slot['Slot'].value >= s:
+                    ok2 = False
+                    if player:
+                        ok2 = slot['Slot'].value >= s
+                    else:
+                        ok2 = inventory.index(slot) >= s
+                    if ok2:
                         idx = slot['Slot'].value
                         break
                 inventory.insert(s, new_slot)
