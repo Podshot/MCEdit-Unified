@@ -1,5 +1,9 @@
 import ConfigParser
 from pymclevel import schematic, materials
+import logging
+import re
+
+log = logging.getLogger(__name__)
 
 '''
 class BO3:
@@ -90,6 +94,54 @@ class BO3:
     def getSchematic(self):
         return self.__schem
 '''
+
+class BO3:
+    def __init__(self, filename=''):
+        if type(filename) in (str, unicode):
+            self.delta_x, self.delta_y, self.delta_z = 0, 0, 0
+            self.size_x, self.size_y, self.size_z = 0, 0, 0
+            map_block = {}
+            for k, v in materials.block_map.items():
+                map_block[v.replace('minecraft:', '')] = k
+
+            def get_delta(x, y, z):
+                if x < 0 and abs(x) > self.delta_x:
+                    self.delta_x = abs(x)
+                if y < 0 and abs(y) > self.delta_y:
+                    self.delta_y = abs(y)
+                if z < 0 and abs(z) > self.delta_z:
+                    self.delta_z = abs(z)
+                if x + self.delta_x >= self.size_x:
+                    self.size_x = x + self.delta_x + 1
+                if y + self.delta_y >= self.size_y:
+                    self.size_y = y + self.delta_y + 1
+                if z + self.delta_z >= self.size_z:
+                    self.size_z = z + self.delta_z + 1
+
+            raw_data = open(filename).read()
+            lines = re.findall(r'^Block\(.*?\)|^RandomBlock\(.*?\)', raw_data, re.M)
+            [get_delta(*b) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
+            self.__schem = schematic.MCSchematic(shape=(self.size_x, self.size_y, self.size_z))
+            for line in lines:
+                if line.startswith('Block'):
+                    x, y, z, b = line.replace("Block(", "").replace(")","").strip().split(",")
+                    x = int(x) + self.delta_x
+                    y = int(y) + self.delta_y
+                    z = int(z) + self.delta_z
+                    b_id, b_state = (b + ':0').split(':')[:2]
+                    if b_state:
+                        b_state = int(b_state)
+                    else:
+                        b_state = 0
+                    b_id = int(map_block[b_id.lower()])
+                    self.__schem.Blocks[x, z, y] = b_id
+                    self.__schem.Data[x, z, y] = b_state
+        else:
+            log.error('Wrong type for \'filename\': got %s'%type(filename))
+
+    def getSchematic(self):
+        return self.__schem
+
 
 class BO2:
     _parser = ConfigParser.RawConfigParser()
