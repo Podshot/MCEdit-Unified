@@ -133,9 +133,12 @@ class BO3:
                         b_state = int(b_state)
                     else:
                         b_state = 0
-                    b_id = int(map_block[b_id.lower()])
-                    self.__schem.Blocks[x, z, y] = b_id
-                    self.__schem.Data[x, z, y] = b_state
+                    if map_block.get(b_id.lower(), None) != None:
+                        b_id = int(map_block[b_id.lower()])
+                        self.__schem.Blocks[x, z, y] = b_id
+                        self.__schem.Data[x, z, y] = b_state
+                    else:
+                        print 'BO3 Block not found: %s'%b_id
         else:
             log.error('Wrong type for \'filename\': got %s'%type(filename))
 
