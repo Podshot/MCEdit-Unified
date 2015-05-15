@@ -840,7 +840,7 @@ class FilterTool(EditorTool):
         for key in self.category_dict.keys():
             if key != "":
                 filterModules += check(self.category_dict[key])
-        self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
+        self.filterModules = collections.OrderedDict(sorted([(self.moduleDisplayName(x), x) for x in filterModules], key=lambda x: (x[0].lower(), x[1])))
         for n, m in self.filterModules.iteritems():
             try:
                 reload(m)
