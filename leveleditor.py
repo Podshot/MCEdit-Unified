@@ -1244,16 +1244,12 @@ class LevelEditor(GLViewport):
                                           shortName, _('Minecraft World\0*.*\0\0'), "")
         if filename is None:
             return
-        old_data = (self.level.filename, self.level.worldFolder.filename)
         shutil.copytree(self.level.worldFolder.filename, filename)
-        self.level.worldFolder.setPath(filename)
+        self.level.worldFolder = AnvilWorldFolder(filename)
         self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
 
         self.saveFile()
         self.initWindowCaption()
-
-        self.level.worldFolder.setPath(old_data[1])
-        self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
 
     def addUnsavedEdit(self):
         if self.unsavedEdits:

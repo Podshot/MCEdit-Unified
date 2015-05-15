@@ -914,9 +914,6 @@ class AnvilWorldFolder(object):
 
         return path
 
-    def setPath(self, path):
-        self.filename = path
-
     # --- Region files ---
 
     def getRegionFilename(self, rx, rz):
