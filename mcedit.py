@@ -626,6 +626,8 @@ class MCEdit(GLViewport):
                 config.save()
                 mcedit.editor.renderer.discardAllChunks()
                 mcedit.editor.deleteAllCopiedSchematics()
+                mcedit.editor.level.close()
+                mcedit.editor.root.RemoveEditFiles()
                 raise
             except MemoryError:
                 traceback.print_exc()
@@ -668,6 +670,8 @@ class MCEdit(GLViewport):
         config.save()
         self.editor.renderer.discardAllChunks()
         self.editor.deleteAllCopiedSchematics()
+        self.editor.level.close()
+        self.editor.root.RemoveEditFiles()
         python = sys.executable
         if sys.argv[0].endswith('.exe') or hasattr(sys, 'frozen'):
             os.execl(python, python, * sys.argv[1:])
