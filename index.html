@@ -129,9 +129,15 @@
 					commentlink = 'Comments unavailable';
 				}
 
+				var downloadLinks = '<div class="row" style="padding-right:15px;">';
+				downloadLinks += '<div class="btn-group"><button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-windows"></i> <span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li><a href="' + getDownload('Win',version,64).browser_download_url + '">64 bit</a></li><li><a href="' + getDownload('Win',version,32).browser_download_url + '">32 bit</a></li></ul></div>';
+				downloadLinks += ' <a href="' + getDownload('OSX',version,64).browser_download_url + '" class="btn btn-xs btn-primary"><i class="fa fa-apple"></i></a>';
+				downloadLinks += ' <a href="' + getDownload('Lin',version,'Universal').browser_download_url + '" class="btn btn-xs btn-primary"><i class="fa fa-linux"></i></a>';
+				downloadLinks += '</div>';
+
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br><div class="hide" id="popover-' + version.replace(/\./g, '-') + '">' + versionDownloads + '</div><a class="badge" rel="popover" data-popover-content="#popover-' + version.replace(/\./g, '-') + '">' + totalDownloads + ' downloads</a><br>' + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br><div class="hide" id="popover-' + version.replace(/\./g, '-') + '">' + versionDownloads + '</div><a class="badge" rel="popover" data-popover-content="#popover-' + version.replace(/\./g, '-') + '">' + totalDownloads + ' downloads</a><br>' + downloadLinks + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
                 $('[rel="popover"]').popover({
                     container: 'body',
