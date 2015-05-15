@@ -719,12 +719,13 @@ t340 Erfahrung pro Handel geben
 o341 Make Villager not Move
 t341 Unbeweglicher Dorfbewohner
 o342 Villager Name
-t342 Dorfbewohner Name
+t342 Dorfbewohner-Name
 o343 Trade
 t343 Handel
 o344       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t344 Rotation
+t344       Rotiere die Position des Dorfbewohners
+(Kann nur benutzt werden, wenn er unbeweglich ist)
 o345 Y-Axis
 t345 Y-Achse
 o346 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
@@ -792,7 +793,7 @@ t371 Suchen
 o372 Find Next
 t372 Weitersuchen
 o373 Dump Found Coordinates
-t373 Entferne gefundene Koordinaten
+t373 Speichere gefundene Koordinaten
 o374 Operation:
 t374 Operation:
 o375 This filter is designed to search for NBT in either Entities or TileEntities.
