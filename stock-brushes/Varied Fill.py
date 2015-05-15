@@ -1,5 +1,5 @@
 from pymclevel.materials import Block
-from editortools.brush import createBrushMask
+from editortools.brush import createBrushMask, createTileEntities
 from albow import alert
 import numpy
 import random
@@ -102,3 +102,15 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
     data[brushMaskOption3] = replaceWith3.blockData
     blocks[brushMaskOption4] = replaceWith4.ID
     data[brushMaskOption4] = replaceWith4.blockData
+
+    UsedAlready = []
+    createTileEntities(replaceWith1, brushBoxThisChunk, chunk)
+    UsedAlready.append(replaceWith1.ID)
+    if replaceWith2.ID not in UsedAlready:
+        createTileEntities(replaceWith2, brushBoxThisChunk, chunk)
+        UsedAlready.append(replaceWith2.ID)
+    if replaceWith3.ID not in UsedAlready:
+        createTileEntities(replaceWith3, brushBoxThisChunk, chunk)
+        UsedAlready.append(replaceWith3.ID)
+    if replaceWith4.ID not in UsedAlready:
+        createTileEntities(replaceWith4, brushBoxThisChunk, chunk)

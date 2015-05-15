@@ -50,10 +50,8 @@ def fillBlocksIter(level, box, blockInfo, blocksToReplace=(), noData=False):
                 changesLighting = True
 
     tileEntity = None
-    for tileEntityName in TileEntity.otherNames.keys():
-        if tileEntityName in blockInfo.name:
-            tileEntity = TileEntity.otherNames[tileEntityName]
-            break
+    if blockInfo.stringID in TileEntity.stringNames.keys():
+        tileEntity = TileEntity.stringNames[blockInfo.stringID]
 
     blocksIdToReplace = [block.ID for block in blocksToReplace]
 

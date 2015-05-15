@@ -1,5 +1,5 @@
 from pymclevel.materials import Block
-from editortools.brush import createBrushMask
+from editortools.brush import createBrushMask, createTileEntities
 from pymclevel import block_fill
 
 displayName = 'Replace'
@@ -39,3 +39,5 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
 
     chunk.Blocks[slices][brushMask] = op.options['Block To Replace With'].ID
     chunk.Data[slices][brushMask] = op.options['Block To Replace With'].blockData
+
+    createTileEntities(op.options['Block To Replace With'], brushBoxThisChunk, chunk)

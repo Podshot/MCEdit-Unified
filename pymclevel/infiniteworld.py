@@ -1072,6 +1072,8 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
 
             self.unsavedWorkFolder = AnvilWorldFolder(workFolderPath)
 
+            self.editFileNumber = 1
+
         # maps (cx, cz) pairs to AnvilChunk
         self._loadedChunks = weakref.WeakValueDictionary()
 
