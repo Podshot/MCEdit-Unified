@@ -740,8 +740,7 @@ class FilterTool(EditorTool):
                     lib_path_stock = os.path.join(directories.getDataDir(), 'stock-filters', 'lib', lib["path"].replace("<sep>", os.path.sep))
                     if os.path.exists(lib_path):
                         sys.path.append(lib_path)
-                    
-                    elif os.path.exists(sys.path.append(lib_path_stock)):
+                    elif os.path.exists(lib_path_stock):
                         sys.path.append(lib_path_stock)
                     else:
                         try:
