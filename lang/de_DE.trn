@@ -355,7 +355,7 @@ t165 Verlangsamen, wenn keine Bewegungstasten gedrückt werden.
 o166 Reverse the up and down motion of the mouse.
 t166 Die Auf- und Abwärtsbewegung der Maus umkehren.
 o167 When rotating your brush, also rotate the orientation of the block your brushing with
-t167 Beim Drehen des Pinsels werden auch die Ausrichtungen der Blöcke gedreht.
+t167 Beim Rotieren des Pinsels werden auch die Ausrichtungen der Blöcke gedreht.
 o168 Choose your language.
 t168 Wähle deine Sprache aus.
 o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
@@ -449,13 +449,13 @@ t211 Auswahl aufheben. Tastenkürzel: {0}
 o212 Fill the selection with Air. Shortcut: {0}
 t212 Füllt die Auswahl mit Luft. Tastenkürzel: {0}
 o213 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t213 Erstellt eine Kopie aller Blöcke und Entities innerhalb der Auswahl, danach wird alles in der Auswahl gelöscht. Tastenkürzel: {0}
+t213 Erstellt eine Kopie aller Blöcke und Objekte in der Auswahl, danach wird alles in der Auswahl gelöscht. Tastenkürzel: {0}
 o214 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t214 Erstellt eine Kopie aller Blöcke und Entities innerhalb der Auswahl. Tastenkürzel: {0}
+t214 Erstellt eine Kopie aller Blöcke und Objekte in der Auswahl. Tastenkürzel: {0}
 o215 Import the last item taken by Cut or Copy. Shortcut: {0}
-t215 Importiert das letzte Objekt vom Ausschneiden oder Kopieren. Tastenkürzel: {0}
+t215 Importiert das letzte ausgeschnittene oder kopierte Element. Tastenkürzel: {0}
 o216 Export the selection to a .schematic file. Shortcut: {0}
-t216 Exportiert die Auswahl in eine .schematic Datei. Tastenkürzel: {0}
+t216 Exportiert die Auswahl in eine .schematic-Datei. Tastenkürzel: {0}
 o217 Clone
 Right-click for options
 t217 Klonen
@@ -467,15 +467,15 @@ Rechtsklick für Optionen
 o219 Fill
 t219 Füllen
 o220 Varied Fill
-t220 Varierend füllen
+t220 Variiertes Füllen
 o221 Flood Fill
-t221 Überfüllt füllen
+t221 Überfülltes Füllen
 o222 Replace
 t222 Ersetzen
 o223 Varied Replace
-t223 Varierend ersetzen
+t223 Variiertes Ersetzen
 o224 Erode
-t224 Aushöhlen
+t224 Erodieren
 o225 Topsoil
 t225 Mutterboden
 o226 Mode:
@@ -483,25 +483,25 @@ t226 Modus:
 o227 Brush:
 t227 Pinsel:
 o228 Hollow
-t228 Unterhöhlen
+t228 Aushöhlen
 o229 Fill Air
 t229 Luft füllen
 o230 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
-t230 Klicke und ziehe, um Blöcke zu platzieren. Block wählen: {P}-Klick. Erhöhen: {R}. Senken: {F}. Drehen: {E}. Rollen: {G}. Mausrad, um Abstand einzustellen.
+t230 Klicke und ziehe, um Blöcke zu platzieren. Block wählen: {P}. Erhöhen: {R}. Senken: {F}. Rotieren: {E}. Rollen: {G}. Mausrad, um Abstand einzustellen.
 o231 Whenever the brush size changes, reset the distance to the brush blocks.
-t231 Wann immer die Pinselgröße sich ändert, wird der Abstand zwischen den Blöcken, die markiert sind, und dem Pinsel zurückgesetzt.
+t231 Wenn sich die Pinselgröße ändert, wird der Abstand zwischen den ausgewählten Blöcken und dem Pinsel zurückgesetzt.
 o232 Shortcut: Alt-1
 t232 Tastenkürzel: Alt-1
 o233 ---
 t233 ---
 o234 Weight 1
-t234 Masse 1
+t234 Gewichtung 1
 o235 Weight 2
-t235 Masse 2
+t235 GewichtungGewichtung 2
 o236 Weight 3
-t236 Masse 3
+t236 Gewichtung 3
 o237 Weight 4
-t237 Masse 4
+t237 Gewichtung 4
 o238 Shortcut: Alt-3
 t238 Tastenkürzel: Alt-3
 o239 Indiscriminate
@@ -511,7 +511,7 @@ t240 Rauschen
 o241 Depth: 
 t241 Tiefe: 
 o242 Only Change Natural Earth
-t242 Nur natürliche Erde wechseln
+t242 Nur natürliche Erde ändern
 o243 Import
 Right-click for options
 t243 Importieren
@@ -523,13 +523,13 @@ t245 y
 o246 z
 t246 z
 o247 COPYING - 
-t247 KOPIERT - 
+t247 KOPIEREN - 
 o248 Rotate
-t248 Drehen
+t248 Rotieren
 o249 Roll
 t249 Rollen
 o250 Chunk Align
-t250 Chunk anpassen
+t250 Chunk-Ausrichtung
 o251 Repeat
 t251 Wiederholen
 o252 Scale Factor
@@ -547,12 +547,12 @@ t257 Spawner-Koordinaten aktualisieren
 o258 Clone
 t258 Klonen
 o259 When the clone tool is chosen, place the clone at the selection right away.
-t259 Wenn das Kopier-Werkzeug ausgewählt ist, wird die Kopie an der Auswahl sofort platziert.
+t259 Wenn das Klon-Werkzeug ausgewählt ist, wird die Kopie an der Auswahl sofort platziert.
 o260 Shortcut: Alt-2
 t260 Tastenkürzel: Alt-2
 o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
-t261 Absolute Koordinaten (x y z) werden in Befehlen automatisch aktualisiert, wenn Befehlsblöcke bewegt werden
+t261 Absolute Koordinaten (x y z) werden in Befehlen automatisch aktualisiert, wenn Befehlsblöcke bewegt werden.
 Tastenkürzel: Alt-4
 o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
@@ -565,7 +565,7 @@ Right-click for options
 t264 Füllen und Ersetzen
 Rechtsklick für Optionen
 o265 Fill with:
-t265 Füllen mit:
+t265 Fülle mit:
 o266 Search
 t266 Suche
 o267 Name
@@ -573,21 +573,21 @@ t267 Name
 o268 ID
 t268 ID
 o269 Any Subtype
-t269 Jeder Untertyp
+t269 Alle Metadaten
 o270 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
 t270 Drücke {hotkey}, um einen Block auszuwählen. Drücke {R} für den Ersetzen-Modus. Klicke Füllen oder drücke Enter, um zu bestätigen.
 o271 Find:
 t271 Finde:
 o272 Replace with:
-t272 Ersetzen mit:
+t272 Ersetze durch:
 o273 When the fill tool is chosen, prompt for a block type.
-t273 Wenn das Füll-Werkzeug ausgewählt ist, dann nach dem Blocktyp fragen.
+t273 Wenn das Füll-Werkzeug ausgewählt ist, Blockauswahl öffnen.
 o274 Filter
 t274 Filter
 o275 Strength
 t275 Stärke
 o276 Nausea (no mob effect)
-t276 Übelkeit (kein Mob Effekt)
+t276 Übelkeit (Keine Auswirkung)
 o277 Weakness
 t277 Schwäche
 o278 Water Breathing
@@ -599,13 +599,13 @@ t280 Vergiftung
 o281 Resistance
 t281 Resistenz
 o282 Hunger (no mob effect)
-t282 Hunger (kein Mob Effekt)
+t282 Hunger (Keine Auswirkung)
 o283 Haste (no mob effect)
-t283 Eile (kein Mob Effekt)
+t283 Eile (Keine Auswirkung)
 o284 Fire Resistance
 t284 Feuer Resistenz
 o285 Blindness (no mob effect)
-t285 Blindheit (kein Mob Effekt)
+t285 Blindheit (Keine Auswirkung)
 o286 Jump Boost
 t286 Sprungkraft
 o287 Effect
@@ -615,17 +615,17 @@ t288 Level
 o289 Duration (Seconds)
 t289 Dauer (in Sekunden)
 o290 Add Potion Effect to Mobs
-t290 Zaubereffekt zu Mobs hinzufügen
+t290 Statuseffekt zu Kreaturen hinzufügen
 o291 Banslimes
-t291 Banslimes
+t291 BanSlimes
 o292 Change Mob Properties
 t292 Mob-Eigenschaften ändern
 o293 Chunk Surface Repair
-t293 Chunk Oberflächen Reparatur
+t293 Chunkoberflächen-Reparatur
 o294 Classic Water Flood
-t294 Wasserüberschwemmung klassisch
+t294 Wasserüberschwemmung
 o295 Colorwires
-t295 Farbige Drähte
+t295 Farbige Leitungen
 o296 Create Busses
 t296 Busse erstellen
 o297 Create Shops
@@ -639,7 +639,7 @@ t300 Finde
 o301 Forester
 t301 Förster
 o302 Make Mobs Invincible
-t302 Mobs unsichtbar machen
+t302 Mobs unverwundbar machen
 o303 Setbiome
 t303 Biom einstellen
 o304 Smooth - 2D
@@ -653,15 +653,15 @@ t307 Max Seed
 o308 Health
 t308 Gesundheit
 o309 VelocityX
-t309 TempoX
+t309 Geschwindigkeit X
 o310 VelocityY
-t310 TempoY
+t310 Geschwindigkeit Y
 o311 VelocityZ
-t311 TempoZ
+t311 Geschwindigkeit Z
 o312 Fire
 t312 Feuer
 o313 FallDistance
-t313 Fallhöhe
+t313 Fallstrecke
 o314 AttackTime
 t314 Angriffszeit
 o315 HurtTime
@@ -673,9 +673,9 @@ t317 Kein Blitz
 o318 Lightning Creeper
 t318 Geladener Creeper
 o319 Enderman Block Id
-t319 Enderman Block Id
+t319 Enderman-Block (ID)
 o320 Enderman Block Data
-t320 Enderman Block Daten
+t320 Enderman-Block (Metadata)
 o321 Villager (green)
 t321 Dorfbewohner (grün)
 o322 Farmer (brown)
@@ -691,21 +691,21 @@ t326 Geistlicher (violett)
 o327 Villager Profession
 t327 Dorfbewohner-Beruf
 o328 Slime Size
-t328 Schleim Größe
+t328 Schleimgröße
 o329 Breeding Mode Ticks
-t329 Zucht Modus Ticks
+t329 Zuchtmodus-Ticks
 o330 Child/Adult Age
 t330 Kind/Erwachsener Alter
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
 t331 Repariert die Oberflächen, die von alten Versionen von Minecraft erstellt wurden.
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t332 Lässt das Wasser, die in der Region nach außen und nach unten fließen, zu volle Wasserblöcke werden. Das ist ähnlich wie Minecraft Classic Wasser.
+t332 Lässt Wasser in der Region nach außen unt nach unten fließen, wobei es zu vollen Wasserblöcken wird. Das ist dem Wasserverhaltens in Minecraft Classic ähnlich.
 o333 Flood Water
 t333 Überflute Wasser
 o334 Flood Lava
 t334 Überflute Lava
 o335 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t335 Das ist eine modifizierte Version von SethBling's Create Shops Filter auf DragonQuiz's Anfrage.
+t335 Das ist eine modifizierte Version von SethBling's "Create Shops"-Filter auf DragonQuiz' Anfrage.
 o336 Profession
 t336 Beruf
 o337 Add Stopping Trade
@@ -717,22 +717,22 @@ t339 Unendlicher Handel
 o340 Give Experience per a Trade
 t340 Erfahrung pro Handel geben
 o341 Make Villager not Move
-t341 Unbeweglicher Dorfbewohner 
+t341 Unbeweglicher Dorfbewohner
 o342 Villager Name
 t342 Dorfbewohner Name
 o343 Trade
 t343 Handel
 o344       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t344 
+t344 Rotation
 o345 Y-Axis
 t345 Y-Achse
 o346 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t346 Ändert die Körperrotation. Westen ist 0. Muss zwischen -180 und 180 Grad sein.
+t346 Ändert die Körperrotation, Westen ist 0. Muss zwischen -180 und 180 Grad liegen.
 o347 X-Axis
 t347 X-Achse
 o348 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t348 Ändert die Kopfrotation, Horizontal ist 0. Positive Werte zeigen nach unten. Muss zwischen -90 und 90 Grad sein.
+t348 Ändert die Kopfrotation, horizontal ist 0. Positive Werte zeigen nach unten. Muss zwischen -90 und 90 Grad liegen.
 o349 Rotation
 t349 Rotation
 o350 To create a shop first put your buy in the top slot(s) of the chest.
@@ -741,10 +741,10 @@ Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
-t350 Um einen Shop zu erstellen, muss der Gegenstand, mit dem gekauft wird, in die oberste Reihe der Kiste getan werden.
-In die mittlere Reihe kann optional ein weiterer Gegenstand mit dem gekauft wird.
+t350 Um einen Shop zu erstellen, muss der Gegenstand, der den Preis darstellt, in die oberste Reihe der Kiste getan werden.
+In die mittlere Reihe kann optional ein weiterer Preis gelegt werden.
 Das Angebot kommt in die dritte Reihe.
-Bitte wähle eine Kiste aus, stellen die Filter-Einstellungen ein und drücke Enter
+Bitte wähle eine Kiste aus, stelle die Filter-Einstellungen ein und drücke Enter
 *Alle Gegenstände müssen in der selben Spalte sein*
 
 o351 Notes
@@ -762,7 +762,7 @@ t356 erhöhen/senken
 o357 TileEntity
 t357 TileEntity
 o358 Entity
-t358 Entity
+t358 Objekt
 o359 Block
 t359 Block
 o360 Match by:
@@ -772,27 +772,27 @@ t361 Blocktyp abgleichen (für TileEntity-Suche):
 o362 Match block:
 t362 Block abgleichen:
 o363 Match block data:
-t363 Block Daten abgleichen:
+t363 Blockdaten abgleichen:
 o364 Match tile entities (for Block searches):
 t364 TileEntites abgleichen (für Blocksuchen):
 o365 "None" for Name or Value will match any tag's Name or Value respectively.
 t365 "None" als Name oder Wert bedeutet irgendein Name, bzw. Wert für diesen Tag.
 o366 Match Tag Name:
-t366 Tag Name abgleichen:
+t366 Tag-Name abgleichen:
 o367 Match Tag Value:
-t367 Tag Wert abgleichen:
+t367 Tag-Wert abgleichen:
 o368 Case insensitive:
-t368 Groß/Kleinschreibung beachten:
+t368 Groß/Kleinschreibung nicht beachten:
 o369 Any
-t369 Jede
+t369 Alle
 o370 Match Tag Type:
-t370 Tagtyp abgleichen:
+t370 Tag-Typ abgleichen:
 o371 Start New Search
-t371 Starte eine neue Suche
+t371 Suchen
 o372 Find Next
-t372 Finde nächste
+t372 Weitersuchen
 o373 Dump Found Coordinates
-t373 Dumpe gefundene Koordinaten
+t373 Entferne gefundene Koordinaten
 o374 Operation:
 t374 Operation:
 o375 This filter is designed to search for NBT in either Entities or TileEntities.
@@ -803,19 +803,19 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 Dieser Filter sucht nach NBT in Entities oder TileEntities. 
+t375 Dieser Filter sucht nach NBT-Daten in Objekten oder TileEntities. 
 Es kann auch nach Blöcken gesucht werden. 
-"Abgleichen von" entscheidet, welcher Objekttyp während des Suchens wichtig ist. Entities und TileEntities werden relativ schnell gesucht, wohingegen die Schnelligkeit bei der Suche von Blöcken direkt proportional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). 
-Alle Entity-Suche ignorieren die Blöcke Einstellungen; TileEntity-Suche versuchen die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; Block-Suche versuchen mit den Tags von der Option "Abgleichen von TileEntity" übereinzustimmen. 
-Es ist schneller TileEntity Suchen mit einem Blocktyp abzugleichen statt andersherum. 
+"Abgleichen von" entscheidet, welcher Objekttyp während des Suchens wichtig ist. Objekte und TileEntities werden relativ schnell gesucht, wohingegen die Geschwindig bei der Suche von Blöcken direkt proportional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). 
+"Alle Objekte"-Suche ignoriert die Blöck-Einstellungen; TileEntity-Suche versucht die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; "Block-Suche" versucht mit den Tags von der Option "Abgleichen von TileEntity" übereinzustimmen. 
+Es ist schneller, TileEntity-Suchen mit einem Blocktyp abzugleichen, als umgekehrt. 
 Blockabgleich kann auch optional Blockdaten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln, die in eine bestimmte Richtung zeigen.
-"Starte neue Suche" wird in der Auswahl neu suchen, wohingegen "Finde Nächste" die Suchresultate von der vorherige Suche durchgeht.
+"Suchen" wird in der Auswahl neu suchen, wohingegen "Weitersuchen" die Suchresultate von der vorherige Suche durchgeht.
 o376 Documentation
 t376 Dokumentation
 o377 Forester script by dudecon
-t377 Förster Script von dudecon
+t377 Förster-Skript von dudecon
 o378 Procedural
-t378 prozessual
+t378 Prozessual
 o379 Normal
 t379 Normal
 o380 Bamboo
@@ -997,7 +997,7 @@ t467 Tafelberghochebene F M
 o468 Mesa Plateau M
 t468 Tafelberghochebene M
 o469 (Uncalculated)
-t469 (Unberechnet)
+t469 (Nicht berechnet)
 o470 Biome
 t470 Biom
 o471 Repeat count
