@@ -592,6 +592,7 @@ class TimeField(Field):
 class FloatField(Field):
     type = float
     _increment = 0.1
+    zero = 0.000000000001
     _shift_increment = 16.0
     tooltipText = _("Point here and use mousewheel to adjust")
 
@@ -612,10 +613,16 @@ class FloatField(Field):
         self._increment = self.clamp_value(val)
 
     def decrease_value(self):
-        self.value = self.clamp_value(self.value - self.increment)
+        if abs(self.value - self.increment) < self.zero:
+            self.value = self.clamp_value(0.0)
+        else:
+            self.value = self.clamp_value(self.value - self.increment)
 
     def increase_value(self):
-        self.value = self.clamp_value(self.value + self.increment)
+        if abs(self.value + self.increment) < self.zero:
+            self.value = self.clamp_value(0.0)
+        else:
+            self.value = self.clamp_value(self.value + self.increment)
 
     def mouse_down(self, evt):
         if evt.button == 5:

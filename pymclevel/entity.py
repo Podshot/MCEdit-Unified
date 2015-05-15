@@ -116,7 +116,7 @@ class TileEntity(object):
         if base:
             for (name, tag) in base:
                 tileEntityTag[name] = tag()
-                if name == "CustomName" and tileEntityID == "Command Block":
+                if name == "CustomName" and tileEntityID == "Control":
                     tileEntityTag[name] = nbt.TAG_String("@")
 
         cls.setpos(tileEntityTag, pos)
