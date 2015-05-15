@@ -737,11 +737,12 @@ class FilterTool(EditorTool):
             if hasattr(filt, 'libraries') and isinstance(filt.libraries, list):
                 for lib in filt.libraries:
                     lib_path = os.path.join(directories.getFiltersDir(), 'lib', lib["path"].replace("<sep>", os.path.sep))
+                    lib_path_stock = os.path.join(directories.getDataDir(), 'stock-filters', 'lib', lib["path"].replace("<sep>", os.path.sep))
                     if os.path.exists(lib_path):
                         sys.path.append(lib_path)
                     
-                    elif os.path.exists(os.path.join(directories.getDataDir(), 'stock-filters', 'lib', lib["path"].replace("<sep>", os.path.sep))):
-                        sys.path.append(lib_path)
+                    elif os.path.exists(sys.path.append(lib_path_stock)):
+                        sys.path.append(lib_path_stock)
                     else:
                         try:
                             os.makedirs(os.path.join(directories.getFiltersDir(), 'lib', trim(str(str(lib["path"].replace("<sep>", os.path.sep)).split(os.path.sep)[:-1]))))
@@ -749,6 +750,7 @@ class FilterTool(EditorTool):
                             pass
                         try:
                             urllib.urlretrieve(lib["URL"], lib_path)
+                            sys.path.append(lib_path)
                         except:
                             if not lib.get("optional"):
                                 could_not_find_dependencies.append(filt)
