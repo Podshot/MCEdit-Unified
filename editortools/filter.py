@@ -786,8 +786,9 @@ class FilterTool(EditorTool):
                 if hasattr(module, "perform"):
                     toReturn.append(module)
             return toReturn
-        print '#', albow.translate.lang
+
         org_lang = albow.translate.lang
+
         #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py')) # This can't work, since sys.path contains only directories, not files...
 
         def tryImport(name):
@@ -814,7 +815,6 @@ class FilterTool(EditorTool):
                     m.trn = trn
                     import albow.translate
                     albow.translate.lang = org_lang
-                    print ' ', albow.translate.lang
                 return m
             except Exception, e:
                 # Only prints when the filter filename is presented, not the entire file path
