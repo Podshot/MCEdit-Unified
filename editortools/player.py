@@ -914,8 +914,6 @@ class PlayerPositionTool(EditorTool):
 
             if keyname == "Escape":
                 self.recordMove = True
-        if self.panel:
-            self.panel.key_down(evt)
 
     def keyUp(self, evt):
         pass

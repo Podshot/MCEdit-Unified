@@ -204,7 +204,6 @@ class MCEdit(GLViewport):
             #&#
             self.keyConfigPanel = keys.KeyConfigPanel(self)
             self.graphicsPanel = panels.GraphicsPanel(self)
-            idx = None
             if self.fileOpener in self.subwidgets:
                 idx = self.subwidgets.index(self.fileOpener)
                 self.remove(self.fileOpener)
@@ -626,7 +625,8 @@ class MCEdit(GLViewport):
                 config.save()
                 mcedit.editor.renderer.discardAllChunks()
                 mcedit.editor.deleteAllCopiedSchematics()
-                mcedit.editor.level.close()
+                if mcedit.editor.level:
+                    mcedit.editor.level.close()
                 mcedit.editor.root.RemoveEditFiles()
                 raise
             except MemoryError:
@@ -670,7 +670,8 @@ class MCEdit(GLViewport):
         config.save()
         self.editor.renderer.discardAllChunks()
         self.editor.deleteAllCopiedSchematics()
-        self.editor.level.close()
+        if self.editor.level:
+            self.editor.level.close()
         self.editor.root.RemoveEditFiles()
         python = sys.executable
         if sys.argv[0].endswith('.exe') or hasattr(sys, 'frozen'):
