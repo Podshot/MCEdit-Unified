@@ -786,7 +786,8 @@ class FilterTool(EditorTool):
                 if hasattr(module, "perform"):
                     toReturn.append(module)
             return toReturn
-        
+        print '#', albow.translate.lang
+        org_lang = albow.translate.lang
         #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py')) # This can't work, since sys.path contains only directories, not files...
 
         def tryImport(name):
@@ -795,6 +796,7 @@ class FilterTool(EditorTool):
             try:
                 m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
                 listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
+                
                 if name not in listdir:
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
@@ -811,6 +813,8 @@ class FilterTool(EditorTool):
                         trn.buildTranslation(config.settings.langCode.get())
                     m.trn = trn
                     import albow.translate
+                    albow.translate.lang = org_lang
+                    print ' ', albow.translate.lang
                 return m
             except Exception, e:
                 # Only prints when the filter filename is presented, not the entire file path
