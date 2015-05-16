@@ -209,8 +209,8 @@ if sys.platform != "darwin":
     if not os.path.exists(docsFolder):
         os.makedirs(docsFolder)
 
-    sys.path.append(fixedFiltersDir)
-    sys.path.append(portableFiltersDir)
+#    sys.path.append(fixedFiltersDir)
+#    sys.path.append(portableFiltersDir)
 
 
 def goPortable():
@@ -231,10 +231,16 @@ def goPortable():
     if os.path.exists(fixedJarStorageDir):
         move_displace(fixedJarStorageDir, portableJarStorageDir)
 
+    if filtersDir in sys.path:
+        sys.path.remove(filtersDir)
+
     schematicsDir = portableSchematicsDir
     brushesDir = portableBrushesDir
     configFilePath = portableConfigFilePath
     filtersDir = portableFiltersDir
+
+    sys.path.append(filtersDir)
+
     portable = True
     return True
 
@@ -276,10 +282,16 @@ def goFixed():
     if os.path.exists(portableJarStorageDir):
         move_displace(portableJarStorageDir, fixedJarStorageDir)
 
+    if filtersDir in sys.path:
+        sys.path.remove(filtersDir)
+
     schematicsDir = fixedSchematicsDir
     brushesDir = fixedBrushesDir
     configFilePath = fixedConfigFilePath
     filtersDir = fixedFiltersDir
+
+    sys.path.append(filtersDir)
+
     portable = False
 
 
@@ -312,6 +324,8 @@ else:
         jarStorageDir = portableJarStorageDir
         genericSupportDir = portableGenericSupportPath
     portable = True
+
+sys.path.append(filtersDir)
 
 #if portable:
 #    serverJarStorageDir = portableJarStorageDir
