@@ -33,7 +33,7 @@ class BO3:
             for k, v in materials.block_map.items():
                 map_block[v.replace('minecraft:', '')] = k
 
-            def get_delta(x, y, z):
+            def get_delta(x, y, z, debug=False, f_obj=None):
                 if x < 0 and abs(x) > self.delta_x:
                     self.delta_x = abs(x)
                 if y < 0 and abs(y) > self.delta_y:
@@ -46,10 +46,20 @@ class BO3:
                     self.size_y = y + self.delta_y + 1
                 if z + self.delta_z >= self.size_z:
                     self.size_z = z + self.delta_z + 1
+                if debug:
+                    output_str = '; '.join(('get_delta: %s, %s %s'%(x, y, z), 'deltas: %s, %s, %s'%(self.delta_x, self.delta_y, self.delta_z), 'size: %s, %s %s'%(self.size_x, self.size_y, self.size_z)))
+                    print output_str
+                    if f_obj != None:
+                        f_obj.write(output_str)
 
             raw_data = open(filename).read()
             lines = re.findall(r'^Block\(.*?\)|^RandomBlock\(.*?\)', raw_data, re.M)
+            # Doubling the schematic size calculation avoids missbuilt objects.
+            # Rework the get_delta function?
             [get_delta(*b) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
+            #print 'Size:', self.size_x, self.size_y, self.size_z
+            [get_delta(*b) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
+            #print 'Size:', self.size_x, self.size_y, self.size_z
             self.__schem = schematic.MCSchematic(shape=(self.size_x, self.size_y, self.size_z))
 
             def get_block_data(args):
@@ -93,11 +103,15 @@ class BO3:
                         obj.append(arg)
                         bit_path = True
                     if bit_id and bit_path and bit_chance:
-                        if randint(1, 100) <= obj[2]:
+                        chance = randint(1, 100)
+                        if chance <= obj[2]:
                             break
                         obj = []
                         bit_id, bit_path, bit_chance = False, False, False
-                #print 'Selected random object: %s'%obj
+                #print 'Selected random object: %s (%s, %s, %s) from %s'%(obj, x, y, z, args[3:])
+                # Fallback for chances < 100%
+                if not obj:
+                    obj = ['air', None]
                 return get_block_data((x, y, z, obj[0], obj[1]))
 
             def verify_state(id, state):
@@ -113,6 +127,7 @@ class BO3:
 
             for line in lines:
                 if line.startswith('Block') or line.startswith('RandomBlock'):
+                    #print 'Parsing', line
                     if line.startswith('Block'):
                         x, y, z, b_id, b_state, nbt_data = get_block_data(line.replace("Block(", "").replace(")","").strip().split(","))
                     else:
@@ -129,8 +144,15 @@ class BO3:
                             nbt_data.add(nbt.TAG_Int(name='y', value=y))
                             nbt_data.add(nbt.TAG_Int(name='z', value=z))
                             self.__schem.TileEntities.append(nbt_data)
-                        self.__schem.Blocks[x, z, y] = b_idn
-                        self.__schem.Data[x, z, y] = verify_state(b_id, b_state)
+                        try:
+                            self.__schem.Blocks[x, z, y] = b_idn
+                            self.__schem.Data[x, z, y] = verify_state(b_id, b_state)
+                        except Exception, e:
+                            print 'Error while building BO3 data:'
+                            print e
+                            print 'size', self.size_x, self.size_y, self.size_z
+                            print line
+                            [get_delta(*b, debug=True) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
                     else:
                         print 'BO3 Block not found: %s'%b_id
 
