@@ -325,8 +325,6 @@ else:
         genericSupportDir = portableGenericSupportPath
     portable = True
 
-sys.path.append(filtersDir)
-
 #if portable:
 #    serverJarStorageDir = portableJarStorageDir
 #    ServerJarStorage.defaultCacheDir = serverJarStorageDir
@@ -363,6 +361,8 @@ if sys.platform == "darwin":
     filtersDir = os.path.join(getCacheDir(), u"Filters")
     if not os.path.exists(getCacheDir()):
         os.makedirs(getCacheDir())
+
+sys.path.append(filtersDir)
 
 # Create pymclevel folder as needed
 if not os.path.exists(getCacheDir()):
