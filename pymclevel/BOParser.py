@@ -6,99 +6,19 @@ import logging
 import re
 import os
 from random import randint
+from directories import getDataDir
 
 log = logging.getLogger(__name__)
 
-'''
-class BO3:
-    
-    def __init__(self,filename=''):
-        self._lines = []
-        self._X_tracker = [0,0,0]
-        self._Y_tracker = [0,0,0]
-        self._Z_tracker = [0,0,0]
-        self.block_data = []
-        if filename != '':
-            fp = open(filename)
-            for line in fp.readlines():
-                if line.startswith("Block("):
-                    self._lines.append(line)
-            fp.close()
-            for block in self._lines:
-                data = block.replace("Block(", "").replace(")","").strip().split(",")
-                x = int(data[0])
-                y = int(data[1])
-                z = int(data[2])
-                if "." in data[3]:
-                    b_id = 0
-                    value = data[3].split(".")[1]
-                    for p_id, name in materials.block_map.items():
-                        t_id = str(data[3].split(".")[0])
-                        if name.replace("minecraft:", "") == t_id.lower():
-                            b_id = p_id
-                else:
-                    b_id = 0
-                    for p_id, name in materials.block_map.items():
-                        t_id = str(data[3].split(":")[0])
-                        if name.replace("minecraft:", "") == t_id.lower():
-                            b_id = p_id
-                    value = 0
-                    
-                if x < self._X_tracker[0]:
-                    self._X_tracker[0] = x
-                if x > self._X_tracker[1]:
-                    self._X_tracker[1] = x
-                
-                if y < self._Y_tracker[0]:
-                    self._Y_tracker[0] = y
-                if y > self._Y_tracker[1]:
-                    self._Y_tracker[1] = y
-                    
-                if z < self._Z_tracker[0]:
-                    self._Z_tracker[0] = z
-                if z > self._Z_tracker[1]:
-                    self._Z_tracker[1] = z
-                    
-                self.block_data.append((x,y,z,b_id,value))
-                
-            if self._X_tracker[0] < 0:
-                self._X_tracker[2] = abs(self._X_tracker[0])
-                self._X_tracker[1] += abs(self._X_tracker[0])
-                
-            if self._Y_tracker[0] < 0:
-                self._Y_tracker[2] = abs(self._Y_tracker[0])
-                self._Y_tracker[1] += abs(self._Y_tracker[0])
-                    
-            if self._Z_tracker[0] < 0:
-                self._Z_tracker[2] = abs(self._Z_tracker[0])
-                self._Z_tracker[1] += abs(self._Z_tracker[0])
-                   
-            print "==== Vertical ===="
-            print "Lowest: "+str(self._Y_tracker[0])
-            print "Highest: "+str(self._Y_tracker[1])
-            print "Shift: "+str(self._Y_tracker[2])
-            print "==== Horizontal X ===="
-            print "Lowest: "+str(self._X_tracker[0])
-            print "Highest: "+str(self._X_tracker[1])
-            print "Shift: "+str(self._X_tracker[2])
-            print "==== Horizontal Z ===="
-            print "Lowest: "+str(self._Z_tracker[0])
-            print "Highest: "+str(self._Z_tracker[1])
-            print "Shift: "+str(self._Z_tracker[2])
-            
-            self.__schem = schematic.MCSchematic(shape=(self._X_tracker[1]+1, self._Y_tracker[1]+1, self._Z_tracker[1]+1))
-            print self.__schem.size
-            for x, y, z, block, data in self.block_data:
-                x += self._X_tracker[2]
-                y += self._Y_tracker[2]
-                z += self._Z_tracker[2]
-                self.__schem.Blocks[x,y,z] = int(block)
-                self.__schem.Data[x,y,z] = int(data)
-            
-    def getSchematic(self):
-        return self.__schem
-'''
-# find athoer way for this.
+# Load the bo3.def file (internal BO3 block names).
+bo3_blocks = {}
+if not os.path.exists(os.path.join(getDataDir(), 'bo3.def')):
+    log.warning('The `bo3.def` file is missing in `%s`. The BO3 support will not be complete...'%getDataDir())
+else:
+    bo3_blocks.update([(a, int(b)) for a, b in re.findall(r'^([A-Z0-9_]+)\(([0-9]*).*\)', open(os.path.join(getDataDir(), 'bo3.def')).read(), re.M)])
+    log.debug('BO3 block definitions loaded. %s entries found'%len(bo3_blocks.keys()))
+
+# find another way for this.
 # keys are block ids in uppercase, values are tuples for ranges, lists for exact states
 corrected_states = {'CHEST':(2,6)}
 
@@ -198,8 +118,9 @@ class BO3:
                     else:
                         x, y, z, b_id, b_state, nbt_data = get_randomblock_data(line.replace("RandomBlock(", "").replace(")","").strip().split(","))
 
-                    if map_block.get(b_id.lower(), None) != None:
-                        b_idn = int(map_block[b_id.lower()])
+                    b_idn = map_block.get(b_id.lower(), bo3_blocks.get(b_id, None))
+                    if b_idn != None:
+                        b_idn = int(b_idn)
                         if b_id.lower() in tileentities_list:
                             if nbt_data == None:
                                 nbt_data = nbt.TAG_Compound()
