@@ -17,59 +17,59 @@
 # See TRANSLATION.txt for more detailed information.
 #
 o0 Autobrake
-t0 automatisches Verlangsamen
+t0 Automatisches Verlangsamen
 o1 Swap Axes Looking Down
-t1 Achsen invertieren, wenn man nach unten schaut
+t1 Achsen beim Nach-unten-schauen umkehren
 o2 Camera Acceleration: 
 t2 Kamera-Beschleunigung: 
 o3 Camera Drag: 
-t3 Kamera ziehen: 
+t3 Kamerazug: 
 o4 Camera Max Speed: 
-t4 Max. Geschwindigkeit der Kamera: 
+t4 Kamera-Maximalgeschwindigkeit: 
 o5 Camera Braking Speed: 
-t5 Kamera Bremsgeschwindigkeit: 
+t5 Kamera-Bremsgeschwindigkeit: 
 o6 Mouse Speed: 
-t6 Maus-Geschwindigkeit: 
+t6 Mausgeschwindigkeit: 
 o7 Undo Limit: 
-t7 Rückgängig machen - Limit: 
+t7 Rückgangsbegrenzung: 
 o8 Invert Mouse
 t8 Maus invertieren
 o9 Low Detail Height
-t9 Low Detail - Anfangshöhe
+t9 Detailgrenze
 o10 Block Buffer (MB):
-t10 Block Puffer (MB):
+t10 Blockspeicher (MB):
 o11 Set Window Placement
 t11 Fensterposition speichern
 o12 Rotate block with brush
 t12 Block mit Pinsel drehen
 o13 Window Resize Alert
-t13 Fenstergrössen-Änderungs Warnung
+t13 Warnung beim Ändern der Fenstergröße
 o14 Long-Distance Mode
-t14 Fern-Modus
+t14 Fernmodus
 o15 Fly Mode
-t15 Flug-Modus
+t15 Flugmodus
 o16 Language
 t16 Sprache
 o17 Static Coords While Nudging
-t17 Statische Koordinaten während des Schiebens
+t17 Statische Koordinaten beim Schieben
 o18 Change Spawners While Nudging
-t18 Spawners ändern während des Schiebens
+t18 Spawner ändern beim Schieben
 o19 Change
 t19 Wechseln
 o20 Options
 t20 Optionen
 o21 OK
-t21 OK
+t21 Fertig
 o22 Field of View: 
 t22 Sichtfeld (FOV): 
 o23 Target FPS: 
-t23 FPS-Limit: 
+t23 FPS-Begrenzung: 
 o24 Vertex Buffer Limit (MB): 
-t24 Vertex Puffer Limit (MB): 
+t24 Vertexspeicherbegrenzung (MB): 
 o25 Fast Leaves
-t25 Laub(schnell)
+t25 Schnelles Laub
 o26 Rough Graphics
-t26 Grobe Grafiken
+t26 Grobe Grafik
 o27 Enable Mouse Lag
 t27 Mausverzögerung aktivieren
 o28 Default
@@ -87,7 +87,7 @@ t33 Fertig
 o34 WASD
 t34 WASD
 o35 Arrows
-t35 Pfeile
+t35 Pfeiltasten
 o36 Numpad
 t36 Nummernfeld
 o37 WASD Old
@@ -105,7 +105,7 @@ t42 Anzeigen...
 o43 Camera View
 t43 Kamera-Ansicht
 o44 Record Undo
-t44 Rückgängig machen - protokollieren
+t44 Rückgang protokollieren
 o45 View Distance:
 t45 Sichtweite:
 o46 [UNDEFINED]
@@ -119,9 +119,9 @@ t49 Grün
 o50 Red
 t50 Rot
 o51 Teal
-t51 Blaugrün
+t51 Türkis
 o52 Pink
-t52 Pink
+t52 Rosa
 o53 Yellow
 t53 Gelb
 o54 Grey
@@ -149,7 +149,7 @@ t64 Transparenz:
 o65 Choose Block Immediately
 t65 Block sofort auswählen
 o66 Reset Distance When Brush Size Changes
-t66 Entfernung zurücksetzen, wenn Pinselgrösse geändert wurde
+t66 Entfernung zurücksetzen, wenn Pinselgröße geändert wurde
 o67 Brush Options
 t67 Pinseleinstellungen
 o68 Fill and Replace Options
@@ -157,7 +157,7 @@ t68 Füll- und Ersetzungseinstellungen
 o69 Spawn Position Safety
 t69 Spawnposition-Sicherheit
 o70 Spawn Point Options
-t70 Spawnpositionseinstellungen
+t70 Spawnpunkteinstellungen
 o71 Create New World
 t71 Neue Welt erstellen
 o72 Quick Load
@@ -167,7 +167,7 @@ t73 Öffnen...
 o74 Save
 t74 Speichern
 o75 Reload
-t75 Neuladen
+t75 Neu laden
 o76 Close
 t76 Schließen
 o77 World Info
@@ -183,7 +183,7 @@ t81 Abwählen
 o82 Quit
 t82 Beenden
 o83 Controls
-t83 Tasten
+t83 Steuerung
 o84 Graphics
 t84 Grafik
 o85 Homepage
@@ -197,13 +197,13 @@ t88 Lizenz
 o89 Config Files
 t89 Einstellungsdateien
 o90 {0}/{1}/{2}/{3}/{4}/{5} to move
-t90 {0}/{1}/{2}/{3}/{4}/{5}, um sich zu bewegen
+t90 {0}/{1}/{2}/{3}/{4}/{5} zum Bewegen
 o91 {0} to slow down
-t91 {0}, um zu verlangsamen
+t91 {0} zum Verlangsamen
 o92 Right-click to toggle camera control
-t92 Rechtsklick, um Kamerakontrolle umzuschalten
+t92 Rechtsklick zum Umschalten der Kamerasteuerung
 o93 Mousewheel to control tool distance
-t93 Mausrad, um Werkzeugsentfernung zu steuern
+t93 Mausrad, um Auswahlentfernung zu ändern
 o94 Hold {0} for details
 t94 Halte {0} für Details
 o95 Warning: Only open a world in one program at a time. If you open a world at the same time in MCEdit and in Minecraft, you will lose your work and possibly damage your save file.
@@ -211,7 +211,7 @@ o95 Warning: Only open a world in one program at a time. If you open a world at 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
 t95 Warnung: Öffne eine Welt nur zu einem Zeitpunkt in einem Programm. Wenn du eine Welt gleichzeitig in MCEdit und Minecraft öffnest, verlierst du deine Arbeit und beschädigst vielleicht die Speicherdateien.
 
- Wenn du Minecraft 1.3 oder früher verwendest, musst du Minecraft komplett schliessen, bevor du MCEdit nutzt.
+ Wenn du Minecraft 1.3 oder früher verwendest, musst du Minecraft komplett schließen, bevor du MCEdit nutzt.
 o96 Don't remind me again.
 t96 Nicht nochmal erinnern.
 o97 <Movement>
@@ -247,7 +247,7 @@ t111 Gehe zu Position
 o112 View Distance
 t112 Sichtweite
 o113 Toggle Renderer
-t113 Renderer de-/aktivieren
+t113 Renderer umschalten
 o114 <Blocks>
 t114 <Blöcke>
 o115 Swap
@@ -263,13 +263,13 @@ t119 Reichweite zurücksetzen
 o120 Export Selection
 t120 Auswahl exportieren
 o121 Line Tool (Hold)
-t121 Linien Werkzeug (Halten)
+t121 Linien-Werkzeug (Halten)
 o122 <Clone Tool>
 t122 <Kopier-Werkzeug>
 o123 Rotate (Clone)
-t123 Rotieren (Kopie)
+t123 Rotieren (Klonen)
 o124 Roll (Clone)
-t124 Rollen (Kopie)
+t124 Rollen (Klonen)
 o125 Flip
 t125 Umdrehen
 o126 Mirror
@@ -281,13 +281,13 @@ t128 Rotieren (Pinsel)
 o129 Roll (Brush)
 t129 Rollen (Pinsel)
 o130 Increase Size
-t130 Vergrössern
+t130 Vergrößern
 o131 Decrease Size
 t131 Verkleinern
 o132 <Fill and Replace Tool>
 t132 <Füllen und Ersetzen-Werkzeug>
 o133 Replace Shortcut
-t133 Tastenkürzel: Ersetzen 
+t133 Ersetzen-Tastenkürzel
 o134 <Function>
 t134 <Funktion>
 o135 Cut
@@ -307,7 +307,7 @@ t141 Öffnen
 o142 Reload World
 t142 Welt neuladen
 o143 Close World
-t143 Welt schliessen
+t143 Welt schließen
 o144 Debug Overlay
 t144 Debug-Einblendung
 o145 Show Block Info (Hold)
@@ -321,17 +321,17 @@ t148 Chunks abwählen (Halten)
 o149 Snap Clone to Axis (Hold)
 t149 Snap-Kopie zur Achse (Halten)
 o150 Blocks-Only Modifier (Hold)
-t150 Nur-Blöcke Modifizierer (Halten)
+t150 Nur-Blöcke-Modifizierer (Halten)
 o151 Fast Increment Modifier
-t151 Schneller Erhöhungs Modifizierer
+t151 Schneller Erhöhungsmodifizierer
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
-t152 Laub ist undurchsichtig, wie in Minecrafts 'Schnell' Grafikeinstellung
+t152 Laub ist undurchsichtig, wie in Minecrafts 'Schnell'-Grafikeinstellung
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
 t153 Alle Blöcke werden auf die gleiche Weise dargestellt. (überschreibt 'Schnelles Laub')
 o154 Enable choppy mouse movement for faster loading.
-t154 Abgehackte Mausbewegung aktivieren für schnelleres Laden.
+t154 Abgehackte Mausbewegung aktivieren zum schnelleren Laden.
 o155 Point here and use mousewheel to adjust
-t155 Drüberhalten und das Mausrad zum Einstellen nutzen.
+t155 Mausrad zum Einstellen nutzen
 o156 Portable
 t156 Portabel
 o157 Fixed
@@ -347,35 +347,35 @@ t161 Position der Mobs in Spawnern während des Schiebens ändern.
 o162 Change static coordinates in command blocks while nudging.
 t162 Statische Koordinaten in Befehlsblöcken während des Schiebens ändern.
 o163 Always target the farthest block under the cursor, even in mouselook mode.
-t163 Immer den weitesten Block unter dem Cursor markieren, auch im Maussperr-Modus.
+t163 Immer den weitesten Block unter dem Mauszeiger markieren, auch im Maussperrmodus.
 o164 Moving forward and Backward will not change your altitude in Fly Mode.
-t164 Vorwärts und rückwärts bewegen wird die Höhe im Flugmodus nicht ändern.
+t164 Vorwärts- und Rückwärtsbewegen wird die Höhe im Flugmodus nicht ändern. (überschreibt 'Achsen beim Nach-unten-schauen umkehren')
 o165 Apply brake when not pressing movement keys
 t165 Verlangsamen, wenn keine Bewegungstasten gedrückt werden.
 o166 Reverse the up and down motion of the mouse.
 t166 Die Auf- und Abwärtsbewegung der Maus umkehren.
 o167 When rotating your brush, also rotate the orientation of the block your brushing with
-t167 Beim Drehen des Pinsels werden auch die Ausrichtungen der Blöcke gedreht.
+t167 Beim Rotieren des Pinsels werden auch die Ausrichtungen der Blöcke gedreht.
 o168 Choose your language.
 t168 Wähle deine Sprache aus.
 o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t169 Auswählen, damit MCEdit sich von selbst installiert, indem die Einstellungen und Schematics in das Programmverzeichnis verschoben werden.
+t169 Auswählen, um die MCEdit-Einstellungen und Schematics in das Programmverzeichnis verschiebt
 o170 You must restart MCEdit to see language changes
-t170 MCEdit muss neugestartet werden, damit die Sprache übernommen werden kann.
+t170 MCEdit muss neugestartet werden, damit die Sprache geändert werden kann.
 o171 Restart
 t171 Neustart
 o172 Later
 t172 Später
 o173 Loading 
-t173 Laden 
+t173 Lädt 
 o174  - MCEdit 
-t174  - MCEdit
+t174  – MCEdit
 o175 Overworld
 t175 Oberwelt
 o176 The End
-t176 The End
+t176 Das Ende
 o177 Nether
-t177 Nether
+t177 Der Nether
 o178 Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.
 t178 Klicke oder ziehe, um eine Auswahl zu markieren. Ziehe an den Auswahlwänden, um die Größe zu ändern. Klicke in der Nähe der Kante, um die gegenüberliegende Wand zu versetzen.
 o179 Chunk View
@@ -391,9 +391,9 @@ t183 Klicke und halte. Während du hälst, verwende die Bewegungstasten ({0} / {
 o184 {0:n} blocks
 t184 {0:n} Blöcke
 o185 Delete Entities
-t185 Entities löschen
+t185 Objekte löschen
 o186 Remove all entities within the selection
-t186 Alle Entities in der Auswahl löschen.
+t186 Alle Objekte in der Auswahl löschen.
 o187 Delete Tile Ticks
 t187 Tile Ticks löschen
 o188 Removes all tile ticks within selection. Tile ticks are scheduled block updates
@@ -401,11 +401,11 @@ t188 Alle Tile Ticks in der Auswahl löschen. Tile Ticks sind geplante Blockaktu
 o189 Analyze
 t189 Analysieren
 o190 Count the different blocks and entities in the selection and display the totals.
-t190 Zählt die verschiedenen Blöcke und Entities in der Auswahl und zeigt die Gesamtanzahl.
+t190 Zählt die verschiedenen Blöcke und Objekte in der Auswahl und zeigt die Gesamtanzahl.
 o191 Export
 t191 Exportieren
 o192 Expand the selection to the edges of the chunks within
-t192 Erweitert die Auswahl zu den Chunkränder
+t192 Erweitert die Auswahl bis an die Chunkränder
 o193 Selected Chunks:
 t193 Ausgewählte Chunks:
 o194 Extract
@@ -415,13 +415,13 @@ t195 Erstellen
 o196 Prune
 t196 Beschneiden
 o197 Relight
-t197 Neu erleuchten
+t197 Neu beleuchten
 o198 Repop
 t198 Regenerieren
 o199 Don't Repop
 t199 Nicht regenerieren
 o200 Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.
-t200 Klicke und ziehe, um Chunks auszuwählen. Halte {0}, um Chunks abzuwählen. Halten {1}, um Chunks auszuwählen.
+t200 Klicke und ziehe, um Chunks auszuwählen. Halte {0}, um Chunks abzuwählen. Halte {1}, um Chunks auszuwählen.
 o201 {0} chunks
 t201 {0} Chunks
 o202 Create new chunks within the selection.
@@ -429,15 +429,15 @@ t202 Erstellt neue Chunks innerhalb der Auswahl.
 o203 Delete the selected chunks from disk. Minecraft will recreate them the next time you are near.
 t203 Löscht die ausgewählten Chunks von der Festplatte. Minecraft wird sie neu erstellen, wenn man das nächste Mal in der Nähe ist.
 o204 Prune the world, leaving only the selected chunks. Any chunks outside of the selection will be removed, and empty region files will be deleted from disk
-t204 Restliche Welt wird gelöscht, sodass nur die ausgewählten Chunks übrig bleiben. Jeder Chunk außerhalb der Auswahl wird entfernt und leere Region Dateien werden von der Festplatte gelöscht
+t204 Restliche Welt wird gelöscht, sodass nur die ausgewählten Chunks übrig bleiben. Jeder Chunk außerhalb der Auswahl wird entfernt und leere Region-Dateien werden von der Festplatte gelöscht
 o205 Recalculate light values across the selected chunks
 t205 Lichtwerte für die ausgewählten Chunks neu berechnen
 o206 Extract these chunks to individual chunk files
 t206 Extrahiert diese Chunks in einzelne Chunkdateien
 o207 Mark the selected chunks for repopulation. The next time you play Minecraft, the chunks will have trees, ores, and other features regenerated.
-t207 Markiert die ausgewählten Chunks, um sie zu wiederbeleben. Das nächste Mal, wenn du Minecraft spielst, werden die Chunks neu regenerierte Bäume, Erze etc haben.
+t207 Markiert die ausgewählten Chunks, um sie wiederzubeleben. Das nächste Mal, wenn du Minecraft spielst, werden die Chunks neu generierte Bäume, Erze etc haben.
 o208 Unmark the selected chunks. They will not repopulate the next time you play the game.
-t208 Wählt die selektierten Chunks ab. Sie werden nicht wiederbelebt, wenn du das nächste Mal Minecraft spielst.
+t208 Wählt die ausgewählten Chunks ab. Sie werden nicht wiederbelebt, wenn du das nächste Mal Minecraft spielst.
 o209 ...
 t209 ...
 o210 Select
@@ -447,18 +447,18 @@ Rechtsklick für Optionen
 o211 Remove the selection. Shortcut: {0}
 t211 Auswahl aufheben. Tastenkürzel: {0}
 o212 Fill the selection with Air. Shortcut: {0}
-t212 Füllt Auswahl mit Luft. Tastenkürzel: {0}
+t212 Füllt die Auswahl mit Luft. Tastenkürzel: {0}
 o213 Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}
-t213 Erstellt eine Kopie aller Blöcke und Entities innerhalb der Auswahl, danach wird alles in der Auswahl gelöscht. Tastenkürzel: {0}
+t213 Erstellt eine Kopie aller Blöcke und Objekte in der Auswahl, danach wird alles in der Auswahl gelöscht. Tastenkürzel: {0}
 o214 Take a copy of all blocks and entities within the selection. Shortcut: {0}
-t214 Erstellt eine Kopie aller Blöcke und Entities innerhalb der Auswahl. Tastenkürzel: {0}
+t214 Erstellt eine Kopie aller Blöcke und Objekte in der Auswahl. Tastenkürzel: {0}
 o215 Import the last item taken by Cut or Copy. Shortcut: {0}
-t215 Importiert das letzte Objekt vom Ausschneiden oder Kopieren. Tastenkürzel: {0}
+t215 Importiert das letzte ausgeschnittene oder kopierte Element. Tastenkürzel: {0}
 o216 Export the selection to a .schematic file. Shortcut: {0}
-t216 Exportiert die Auswahl in eine .schematic Datei. Tastenkürzel: {0}
+t216 Exportiert die Auswahl in eine .schematic-Datei. Tastenkürzel: {0}
 o217 Clone
 Right-click for options
-t217 Kopieren
+t217 Klonen
 Rechtsklick für Optionen
 o218 Brush
 Right-click for options
@@ -467,15 +467,15 @@ Rechtsklick für Optionen
 o219 Fill
 t219 Füllen
 o220 Varied Fill
-t220 Varierend füllen
+t220 Variiertes Füllen
 o221 Flood Fill
-t221 Überfüllt füllen
+t221 Überfülltes Füllen
 o222 Replace
 t222 Ersetzen
 o223 Varied Replace
-t223 Varierend ersetzen
+t223 Variiertes Ersetzen
 o224 Erode
-t224 Aushöhlen
+t224 Erodieren
 o225 Topsoil
 t225 Mutterboden
 o226 Mode:
@@ -483,25 +483,25 @@ t226 Modus:
 o227 Brush:
 t227 Pinsel:
 o228 Hollow
-t228 Unterhöhlen
+t228 Aushöhlen
 o229 Fill Air
 t229 Luft füllen
 o230 Click and drag to place blocks. Pick block: {P}-Click. Increase: {R}. Decrease: {F}. Rotate: {E}. Roll: {G}. Mousewheel to adjust distance.
-t230 Klicke und ziehe, um Blöcke zu platzieren. Block wählen: {P}-Klick. Erhöhen: {R}. Senken: {F}. Drehen: {E}. Rollen: {G}. Mausrad, um Abstand einzustellen.
+t230 Klicke und ziehe, um Blöcke zu platzieren. Block wählen: {P}. Erhöhen: {R}. Senken: {F}. Rotieren: {E}. Rollen: {G}. Mausrad, um Abstand einzustellen.
 o231 Whenever the brush size changes, reset the distance to the brush blocks.
-t231 Wann immer die Pinselgröße sich ändert, wird der Abstand zwischen den Blöcken, die markiert sind, und dem Pinsel zurückgesetzt.
+t231 Wenn sich die Pinselgröße ändert, wird der Abstand zwischen den ausgewählten Blöcken und dem Pinsel zurückgesetzt.
 o232 Shortcut: Alt-1
 t232 Tastenkürzel: Alt-1
 o233 ---
 t233 ---
 o234 Weight 1
-t234 Masse 1
+t234 Gewichtung 1
 o235 Weight 2
-t235 Masse 2
+t235 GewichtungGewichtung 2
 o236 Weight 3
-t236 Masse 3
+t236 Gewichtung 3
 o237 Weight 4
-t237 Masse 4
+t237 Gewichtung 4
 o238 Shortcut: Alt-3
 t238 Tastenkürzel: Alt-3
 o239 Indiscriminate
@@ -511,7 +511,7 @@ t240 Rauschen
 o241 Depth: 
 t241 Tiefe: 
 o242 Only Change Natural Earth
-t242 Nur natürliche Erde wechseln
+t242 Nur natürliche Erde ändern
 o243 Import
 Right-click for options
 t243 Importieren
@@ -523,13 +523,13 @@ t245 y
 o246 z
 t246 z
 o247 COPYING - 
-t247 KOPIERT - 
+t247 KOPIEREN - 
 o248 Rotate
-t248 Drehen
+t248 Rotieren
 o249 Roll
 t249 Rollen
 o250 Chunk Align
-t250 Chunk anpassen
+t250 Chunk-Ausrichtung
 o251 Repeat
 t251 Wiederholen
 o252 Scale Factor
@@ -545,14 +545,14 @@ t256 Befehlsblock-Koordinaten aktualisieren
 o257 Update Spawner Coords
 t257 Spawner-Koordinaten aktualisieren
 o258 Clone
-t258 Kopieren
+t258 Klonen
 o259 When the clone tool is chosen, place the clone at the selection right away.
-t259 Wenn das Kopier-Werkzeug ausgewählt ist, wird die Kopie an der Auswahl sofort platziert.
+t259 Wenn das Klon-Werkzeug ausgewählt ist, wird die Kopie an der Auswahl sofort platziert.
 o260 Shortcut: Alt-2
 t260 Tastenkürzel: Alt-2
 o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
-t261 Absolute Koordinaten (x y z) werden in Befehlen automatisch aktualisiert, wenn Befehlsblöcke bewegt werden
+t261 Absolute Koordinaten (x y z) werden in Befehlen automatisch aktualisiert, wenn Befehlsblöcke bewegt werden.
 Tastenkürzel: Alt-4
 o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
@@ -565,7 +565,7 @@ Right-click for options
 t264 Füllen und Ersetzen
 Rechtsklick für Optionen
 o265 Fill with:
-t265 Füllen mit:
+t265 Fülle mit:
 o266 Search
 t266 Suche
 o267 Name
@@ -573,21 +573,21 @@ t267 Name
 o268 ID
 t268 ID
 o269 Any Subtype
-t269 Jeder Untertyp
+t269 Alle Metadaten
 o270 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
 t270 Drücke {hotkey}, um einen Block auszuwählen. Drücke {R} für den Ersetzen-Modus. Klicke Füllen oder drücke Enter, um zu bestätigen.
 o271 Find:
 t271 Finde:
 o272 Replace with:
-t272 Ersetzen mit:
+t272 Ersetze durch:
 o273 When the fill tool is chosen, prompt for a block type.
-t273 Wenn das Füll-Werkzeug ausgewählt ist, dann nach dem Blocktyp fragen.
+t273 Wenn das Füll-Werkzeug ausgewählt ist, Blockauswahl öffnen.
 o274 Filter
 t274 Filter
 o275 Strength
 t275 Stärke
 o276 Nausea (no mob effect)
-t276 Übelkeit (kein Mob Effekt)
+t276 Übelkeit (Keine Auswirkung)
 o277 Weakness
 t277 Schwäche
 o278 Water Breathing
@@ -599,13 +599,13 @@ t280 Vergiftung
 o281 Resistance
 t281 Resistenz
 o282 Hunger (no mob effect)
-t282 Hunger (kein Mob Effekt)
+t282 Hunger (Keine Auswirkung)
 o283 Haste (no mob effect)
-t283 Eile (kein Mob Effekt)
+t283 Eile (Keine Auswirkung)
 o284 Fire Resistance
 t284 Feuer Resistenz
 o285 Blindness (no mob effect)
-t285 Blindheit (kein Mob Effekt)
+t285 Blindheit (Keine Auswirkung)
 o286 Jump Boost
 t286 Sprungkraft
 o287 Effect
@@ -615,17 +615,17 @@ t288 Level
 o289 Duration (Seconds)
 t289 Dauer (in Sekunden)
 o290 Add Potion Effect to Mobs
-t290 Zaubereffekt zu Mobs hinzufügen
+t290 Statuseffekt zu Kreaturen hinzufügen
 o291 Banslimes
-t291 Banslimes
+t291 BanSlimes
 o292 Change Mob Properties
 t292 Mob-Eigenschaften ändern
 o293 Chunk Surface Repair
-t293 Chunk Oberflächen Reparatur
+t293 Chunkoberflächen-Reparatur
 o294 Classic Water Flood
-t294 Wasserüberschwemmung klassisch
+t294 Wasserüberschwemmung
 o295 Colorwires
-t295 Farbige Drähte
+t295 Farbige Leitungen
 o296 Create Busses
 t296 Busse erstellen
 o297 Create Shops
@@ -639,7 +639,7 @@ t300 Finde
 o301 Forester
 t301 Förster
 o302 Make Mobs Invincible
-t302 Mobs unsichtbar machen
+t302 Mobs unverwundbar machen
 o303 Setbiome
 t303 Biom einstellen
 o304 Smooth - 2D
@@ -653,15 +653,15 @@ t307 Max Seed
 o308 Health
 t308 Gesundheit
 o309 VelocityX
-t309 TempoX
+t309 Geschwindigkeit X
 o310 VelocityY
-t310 TempoY
+t310 Geschwindigkeit Y
 o311 VelocityZ
-t311 TempoZ
+t311 Geschwindigkeit Z
 o312 Fire
 t312 Feuer
 o313 FallDistance
-t313 Fallhöhe
+t313 Fallstrecke
 o314 AttackTime
 t314 Angriffszeit
 o315 HurtTime
@@ -673,9 +673,9 @@ t317 Kein Blitz
 o318 Lightning Creeper
 t318 Geladener Creeper
 o319 Enderman Block Id
-t319 Enderman Block Id
+t319 Enderman-Block (ID)
 o320 Enderman Block Data
-t320 Enderman Block Daten
+t320 Enderman-Block (Metadata)
 o321 Villager (green)
 t321 Dorfbewohner (grün)
 o322 Farmer (brown)
@@ -691,21 +691,21 @@ t326 Geistlicher (violett)
 o327 Villager Profession
 t327 Dorfbewohner-Beruf
 o328 Slime Size
-t328 Schleim Größe
+t328 Schleimgröße
 o329 Breeding Mode Ticks
-t329 Zucht Modus Ticks
+t329 Zuchtmodus-Ticks
 o330 Child/Adult Age
 t330 Kind/Erwachsener Alter
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
 t331 Repariert die Oberflächen, die von alten Versionen von Minecraft erstellt wurden.
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t332 Lässt das Wasser, die in der Region nach außen und nach unten fließen, zu volle Wasserblöcke werden. Das ist ähnlich wie Minecraft Classic Wasser.
+t332 Lässt Wasser in der Region nach außen unt nach unten fließen, wobei es zu vollen Wasserblöcken wird. Das ist dem Wasserverhaltens in Minecraft Classic ähnlich.
 o333 Flood Water
 t333 Überflute Wasser
 o334 Flood Lava
 t334 Überflute Lava
 o335 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
-t335 Das ist eine modifizierte Version von SethBling's Create Shops Filter auf DragonQuiz's Anfrage.
+t335 Das ist eine modifizierte Version von SethBling's "Create Shops"-Filter auf DragonQuiz' Anfrage.
 o336 Profession
 t336 Beruf
 o337 Add Stopping Trade
@@ -717,22 +717,23 @@ t339 Unendlicher Handel
 o340 Give Experience per a Trade
 t340 Erfahrung pro Handel geben
 o341 Make Villager not Move
-t341 Unbeweglicher Dorfbewohner 
+t341 Unbeweglicher Dorfbewohner
 o342 Villager Name
-t342 Dorfbewohner Name
+t342 Dorfbewohner-Name
 o343 Trade
 t343 Handel
 o344       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t344 
+t344       Rotiere die Position des Dorfbewohners
+(Kann nur benutzt werden, wenn er unbeweglich ist)
 o345 Y-Axis
 t345 Y-Achse
 o346 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t346 Ändert die Körperrotation. Westen ist 0. Muss zwischen -180 und 180 Grad sein.
+t346 Ändert die Körperrotation, Westen ist 0. Muss zwischen -180 und 180 Grad liegen.
 o347 X-Axis
 t347 X-Achse
 o348 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t348 Ändert die Kopfrotation, Horizontal ist 0. Positive Werte zeigen nach unten. Muss zwischen -90 und 90 Grad sein.
+t348 Ändert die Kopfrotation, horizontal ist 0. Positive Werte zeigen nach unten. Muss zwischen -90 und 90 Grad liegen.
 o349 Rotation
 t349 Rotation
 o350 To create a shop first put your buy in the top slot(s) of the chest.
@@ -741,10 +742,10 @@ Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
-t350 Um einen Shop zu erstellen, muss der Gegenstand, mit dem gekauft wird, in die oberste Reihe der Kiste getan werden.
-In die mittlere Reihe kann optional ein weiterer Gegenstand mit dem gekauft wird.
+t350 Um einen Shop zu erstellen, muss der Gegenstand, der den Preis darstellt, in die oberste Reihe der Kiste getan werden.
+In die mittlere Reihe kann optional ein weiterer Preis gelegt werden.
 Das Angebot kommt in die dritte Reihe.
-Bitte wähle eine Kiste aus, stellen die Filter-Einstellungen ein und drücke Enter
+Bitte wähle eine Kiste aus, stelle die Filter-Einstellungen ein und drücke Enter
 *Alle Gegenstände müssen in der selben Spalte sein*
 
 o351 Notes
@@ -762,7 +763,7 @@ t356 erhöhen/senken
 o357 TileEntity
 t357 TileEntity
 o358 Entity
-t358 Entity
+t358 Objekt
 o359 Block
 t359 Block
 o360 Match by:
@@ -772,27 +773,27 @@ t361 Blocktyp abgleichen (für TileEntity-Suche):
 o362 Match block:
 t362 Block abgleichen:
 o363 Match block data:
-t363 Block Daten abgleichen:
+t363 Blockdaten abgleichen:
 o364 Match tile entities (for Block searches):
 t364 TileEntites abgleichen (für Blocksuchen):
 o365 "None" for Name or Value will match any tag's Name or Value respectively.
 t365 "None" als Name oder Wert bedeutet irgendein Name, bzw. Wert für diesen Tag.
 o366 Match Tag Name:
-t366 Tag Name abgleichen:
+t366 Tag-Name abgleichen:
 o367 Match Tag Value:
-t367 Tag Wert abgleichen:
+t367 Tag-Wert abgleichen:
 o368 Case insensitive:
-t368 Groß/Kleinschreibung beachten:
+t368 Groß/Kleinschreibung nicht beachten:
 o369 Any
-t369 Jede
+t369 Alle
 o370 Match Tag Type:
-t370 Tagtyp abgleichen:
+t370 Tag-Typ abgleichen:
 o371 Start New Search
-t371 Starte eine neue Suche
+t371 Suchen
 o372 Find Next
-t372 Finde nächste
+t372 Weitersuchen
 o373 Dump Found Coordinates
-t373 Dumpe gefundene Koordinaten
+t373 Speichere gefundene Koordinaten
 o374 Operation:
 t374 Operation:
 o375 This filter is designed to search for NBT in either Entities or TileEntities.
@@ -803,19 +804,19 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 Dieser Filter sucht nach NBT in Entities oder TileEntities. 
+t375 Dieser Filter sucht nach NBT-Daten in Objekten oder TileEntities. 
 Es kann auch nach Blöcken gesucht werden. 
-"Abgleichen von" entscheidet, welcher Objekttyp während des Suchens wichtig ist. Entities und TileEntities werden relativ schnell gesucht, wohingegen die Schnelligkeit bei der Suche von Blöcken direkt proportional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). 
-Alle Entity-Suche ignorieren die Blöcke Einstellungen; TileEntity-Suche versuchen die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; Block-Suche versuchen mit den Tags von der Option "Abgleichen von TileEntity" übereinzustimmen. 
-Es ist schneller TileEntity Suchen mit einem Blocktyp abzugleichen statt andersherum. 
+"Abgleichen von" entscheidet, welcher Objekttyp während des Suchens wichtig ist. Objekte und TileEntities werden relativ schnell gesucht, wohingegen die Geschwindig bei der Suche von Blöcken direkt proportional zu der Auswahlgröße ist (da jeder Block in der Auswahl überprüft wird). 
+"Alle Objekte"-Suche ignoriert die Blöck-Einstellungen; TileEntity-Suche versucht die Option "Blocktyp abgleichen" zu beachten, wenn sie ausgewählt ist; "Block-Suche" versucht mit den Tags von der Option "Abgleichen von TileEntity" übereinzustimmen. 
+Es ist schneller, TileEntity-Suchen mit einem Blocktyp abzugleichen, als umgekehrt. 
 Blockabgleich kann auch optional Blockdaten abgleichen, z.B. gleiche alle Fackeln ab, oder nur Fackeln, die in eine bestimmte Richtung zeigen.
-"Starte neue Suche" wird in der Auswahl neu suchen, wohingegen "Finde Nächste" die Suchresultate von der vorherige Suche durchgeht.
+"Suchen" wird in der Auswahl neu suchen, wohingegen "Weitersuchen" die Suchresultate von der vorherige Suche durchgeht.
 o376 Documentation
 t376 Dokumentation
 o377 Forester script by dudecon
-t377 Förster Script von dudecon
+t377 Förster-Skript von dudecon
 o378 Procedural
-t378 prozessual
+t378 Prozessual
 o379 Normal
 t379 Normal
 o380 Bamboo
@@ -997,7 +998,7 @@ t467 Tafelberghochebene F M
 o468 Mesa Plateau M
 t468 Tafelberghochebene M
 o469 (Uncalculated)
-t469 (Unberechnet)
+t469 (Nicht berechnet)
 o470 Biome
 t470 Biom
 o471 Repeat count
@@ -1533,7 +1534,7 @@ t709 Klicken, um dieses Item abzusetzen.
 o710 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
 t710 Bewege das Mausrad, um an der dritten Achse zu verschieben. Halte {0}, um nur eine Achse zu verschieben.
 o711 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t711 Klicke und ziehe, um das Item neu zu positionieren. Doppelklick, um es aufzunehmen. Klicke Kopieren oder drücke Enter, um zu bestätigen.
+t711 Klicke und ziehe, um das Item neu zu positionieren. Doppelklick, um es aufzunehmen. Klicke Klonen oder drücke Enter, um zu bestätigen.
 o712 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
 t712 Auswahl übersteigt {0:n} Blöcke. Erhöhe die Blockpuffer Einstellung und versuche es erneut .
 o713 Copying to clone buffer...
