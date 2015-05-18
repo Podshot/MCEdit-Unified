@@ -76,7 +76,10 @@ class BO3:
                 x = int(x) + self.delta_x
                 y = int(y) + self.delta_y
                 z = int(z) + self.delta_z
-                b_id, b_state = (b + ':0').split(':')[:2]
+                if b != None:
+                    b_id, b_state = (b + ':0').split(':')[:2]
+                else:
+                    b_id, b_state = '', None
                 if b_state:
                     b_state = int(b_state)
                 else:
@@ -111,7 +114,7 @@ class BO3:
                 #print 'Selected random object: %s (%s, %s, %s) from %s'%(obj, x, y, z, args[3:])
                 # Fallback for chances < 100%
                 if not obj:
-                    obj = ['air', None]
+                    obj = [None, None]
                 return get_block_data((x, y, z, obj[0], obj[1]))
 
             def verify_state(id, state):
@@ -153,7 +156,7 @@ class BO3:
                             print 'size', self.size_x, self.size_y, self.size_z
                             print line
                             [get_delta(*b, debug=True) for b in [eval(','.join(a.split('(')[1].split(')')[0].split(',', 3)[:3])) for a in lines]]
-                    else:
+                    elif b_id != '':
                         print 'BO3 Block not found: %s'%b_id
 
         else:
