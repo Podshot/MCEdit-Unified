@@ -814,11 +814,16 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
     def build_inventory(self, items):
-        if 'playerGameType' in self.tree.get_item_parent(self.displayed_item)[9].keys():
+        parent = self.tree.get_item_parent(self.displayed_item)
+        if parent:
+            parent = parent[9]
+        else:
+            parent = self.data
+        if 'playerGameType' in parent.keys():
             player = True
         else:
             player = False
-        inventory = self.tree.get_item_parent(self.displayed_item)[9].get('Inventory', TAG_List())
+        inventory = parent.get('Inventory', TAG_List())
         rows = []
         items = items[0]
         slots = [["%s"%i,"","0","0"] for i in range(36)]
