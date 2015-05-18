@@ -1810,3 +1810,19 @@ o838 Always override Minecraft changes when map is open in MCEdit. (Not recommen
 t838 Toujours écraser les changements faits dans Minecraft quand le monde est ouvert dans MCEdit. (Non recommandé)
 o839 Player Heads
 t839 Têtes des joueurs
+o840 Sprint
+t840 Accelérer
+o841 Select
+t841 Sélection
+o842 Brush
+t842 Brosse
+o843 Fill and Replace
+t843 Remplir et remplacer
+o844 World Spawnpoint
+t844 Point de spawn du monde
+o845 Open File
+t845 Ouvrir fichier
+o846 Open command blocks text in a new file
+t846 Ouvrir le texte des blocs de commande dan un nouveau fichier
+o847 No command blocks found
+t847 Aucun bloc de command trouvé
