@@ -1230,7 +1230,7 @@ t582 Verschiebe um die Breite der Auswahl
 o583 Moves clone by his width
 t583 Bewegt Kopie um ihre Breite
 o584 Width of clone movement: 
-t584 Breite der Kopierbewegung: 
+t584 Weite der Kopierbewegung: 
 o585 Import Fast Nudge Settings:
 t585 Importiereinstellungen für schnelles Verschieben:
 o586 Move by the width of schematic 
@@ -1238,7 +1238,7 @@ t586 Bewege um die Breite des Schematics
 o587 Moves selection by his width
 t587 Bewege Auswahl um diese Breite
 o588 Width of import movement: 
-t588 Breite der Importbewegung: 
+t588 Weite der Importbewegung: 
 o589 Import Options
 t589 Importiereinstelunngen
 o590 Blocks Fast Nudge Settings:
@@ -1250,7 +1250,7 @@ t592 Punkte-Einstellungen für schnelles Verschieben:
 o593 Moves points by the selection's width
 t593 Bewegt Punkte um Auswahlsweite
 o594 Width of points movement: 
-t594 Breite der Punktebewegung: 
+t594 Weite der Punktebewegung: 
 o595 Do you want to save your changes?
 t595 Möchtest du die Änderungen speichern?
 o596 Don't Save
@@ -1514,11 +1514,11 @@ t700 <Verschiedenes>
 o701 Take Screenshot
 t701 Bildschirmfoto machen
 o702 Double-click to go to this item.
-t702 Doppelklick, um zu diesem Item zu gelangen.
+t702 Doppelklicke, um zu diesem Item zu gelangen.
 o703 Save and Restart
-t703 Speichern und Neustarten
+t703 Speichern und neustarten
 o704 From FTP Server
-t704 Vom FTP Server
+t704 Vom FTP-Server
 o705 <Chunk Control Tool>
 t705 <Chunk-Verwaltungswerkzeug>
 o706 Select Chunks
@@ -1526,27 +1526,27 @@ t706 Chunks auswählen
 o707 
 No matching blocks/tile entities found
 t707 
-Keine zutreffenden Blöcke/Tile Entities gefunden
+Keine zutreffenden Blöcke/TileEntities gefunden
 o708 Choose a filter, then click Filter or press Enter to apply it.
-t708 Wählt einen Filter aus. Drücke danach Filter oder Enter, um ihn anzuwenden.
+t708 Wähle einen Filter und drücke danach Filter oder Enter, um ihn anzuwenden.
 o709 Click to set this item down.
-t709 Klicken, um dieses Item abzusetzen.
+t709 Klicke, um dieses Element abzusetzen.
 o710 Mousewheel to move along the third axis. Hold {0} to only move along one axis.
 t710 Bewege das Mausrad, um an der dritten Achse zu verschieben. Halte {0}, um nur eine Achse zu verschieben.
 o711 Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.
-t711 Klicke und ziehe, um das Item neu zu positionieren. Doppelklick, um es aufzunehmen. Klicke Klonen oder drücke Enter, um zu bestätigen.
+t711 Klicke und ziehe, um das Element neu zu positionieren. Doppelklicke, um es aufzunehmen. Klicke Klonen oder drücke Enter, um zu bestätigen.
 o712 Selection exceeds {0:n} blocks. Increase the block buffer setting and try again.
-t712 Auswahl übersteigt {0:n} Blöcke. Erhöhe die Blockpuffer Einstellung und versuche es erneut .
+t712 Auswahl übersteigt {0:n} Blöcke. Erhöhe die Blockpuffer-Einstellung und versuche es erneut.
 o713 Copying to clone buffer...
-t713 Kopiert zu Kopierpuffer...
+t713 Kopiert zum Klonpuffer...
 o714 Import a schematic or level...
 t714 Schematic oder Level importieren...
 o715 Could not find the Minecraft saves directory!
 
 ({0} was not found or is not a directory)
-t715 Minecraft saves Order konnte nicht gefunden werden!
+t715 Minecraft-Spielstände-Verzeichnis konnte nicht gefunden werden!
 
-({0} wurde nicht gefunden oder ist kein Verzeichnis!
+({0} wurde nicht gefunden oder ist kein Verzeichnis)
 o716 I don't know how to open {0}:
 
 {1!r}
@@ -1554,7 +1554,7 @@ t716 {0} kann nicht geöffnet werden:
 
 {1!r}
 o717 Checking for server updates...
-t717 Sucht nach Server Updates...
+t717 Sucht nach Serveraktualisierungen...
 o718 Time left: {0}
 t718 Restliche Zeit: {0}
 o719 Untitled World
@@ -1562,13 +1562,13 @@ t719 Unbenannte Welt
 o720 Name this new world.
 t720 Benenne diese neue Welt.
 o721 Minecraft World *.*  
-t721 Minecraft Welt *.*  
+t721 Minecraftwelt *.*  
 o722 Generating chunks...
 t722 Generiert Chunks...
 o723 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
-t723 Welt erstellt. Um diese unendliche Welt zu vergrössen, erforsche die Welt in Minecraft oder benutze das Chunk-Verwaltungswerkzeug, um Chunks zu erstellen oder zu löschen.
+t723 Welt erstellt. Um diese unendliche Welt zu vergrößen, erforsche die Welt in Minecraft oder benutze das Chunk-Verwaltungswerkzeug, um Chunks zu erstellen oder zu löschen.
 o724 Analyzing {0} blocks...
-t724 Analysiert {0} Blöcke...
+t724 Analysiere {0} Blöcke...
 o725 Save to file...
 t725 Als Datei speichern...
 o726 Fill with Air
@@ -1576,7 +1576,7 @@ t726 Mit Luft füllen
 o727 Delete Chunks
 t727 Chunks löschen
 o728 Recording undo...
-t728 Protokolliert Rückgängig-machen...
+t728 Rückgang protokollieren...
 o729 Replacing blocks...
 t729 Ersetzt Blöcke...
 o730 REPLACING - 
@@ -1584,7 +1584,7 @@ t730 ERSETZE -
 o731 Copying chunk %s...
 t731 Kopiert Chunk %s...
 o732 Continue with undo disabled?
-t732 Fortfahren ohne Rückgängig-machen Funktion?
+t732 Fortfahren? Du kannst das nicht rückgängig machen.
 o733 Continue
 t733 Fortfahren
 o734 Canceled
@@ -1598,38 +1598,38 @@ t737 ARBEITET -
 o738 Removing Tile Ticks...
 t738 Entfernt Tile Ticks...
 o739 Removing entities...
-t739 Entfernt Entities...
+t739 Entfernt Objekte...
 o740 Copying {0:n} blocks...
 t740 Kopiert {0:n} Blöcke...
 o741 Undoing...
-t741 Rückgängig machen...
+t741 Wird rückgängig gemacht...
 o742 UNDOING - 
-t742 RÜCKGÄNGIG MACHEN - 
+t742 RÜCKGANG - 
 o743 Really delete these chunks? This cannot be undone.
 t743 Wirklich diese Chunks löschen? Das kann nicht rückgängig gemacht werden.
 o744 Save these chunks and remove the rest? This cannot be undone.
 t744 Diese Chunks speichern und die restlichen entfernen? Das kann nicht rückgängig gemacht werden.
 o745 Lighting {0} chunks...
-t745 Erleuchte {0} Chunks...
+t745 Beleuchte {0} Chunks...
 o746 Create chunks using the settings above? This cannot be undone.
-t746 Chunks erstellen mit den obigen Einstellungen? Das kann nicht rückgängig gemacht werden.
+t746 Chunks mit den obigen Einstellungen erstellen? Das kann nicht rückgängig gemacht werden.
 o747 Add
 t747 Hinzufügen
 o748 New child
-t748 Neues Kind
+t748 Neuer Unterpunkt
 o749 Rename
 t749 Umbenennen
 o750 Paste as child
-t750 Füge als Kind hinzu
+t750 Füge als Unterpunkt hinzu
 o751 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
-t751 Du löschst eine Chunk-förmige Auswahl. Die Chunks mit Luft füllen oder die Chunks an sich löschen?
+t751 Du löschst eine chunkförmige Auswahl. Die Chunks mit Luft füllen oder die Chunks an sich löschen?
 o752 Screenshot taken and saved as '%s'
 t752 Bildschirmfoto wurde geschossen und als '%s' gespeichert
 o753 Fonts Proportion (%): 
-t753 Schriftgrösse (%): 
+t753 Schriftgröße (%): 
 o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
-t754 Schriftgrösse einstellen. Die Zahl wird in Prozent angegeben.
+t754 Schriftgröße einstellen. Die Zahl wird in Prozent angegeben.
 Neustart benötigt!
 o755 Save As
 t755 Speichern als
@@ -1638,11 +1638,11 @@ t756 Benenne die neue Kopie:
 o757 Copying %0.1f million blocks
 t757 Kopiere %0.1f Millionen Blöcke
 o758 Minecraft will randomly move your spawn point if you try to respawn in a column where there are no blocks at Y=63 and Y=64. Only uncheck this box if Minecraft is changed.
-t758 Minecraft wird dein Spawnpunkt zufällig verschieben, wenn du versuchst zu respawnen, wenn es keine Blöcke bei Y=63 und Y=64 gibt. Nur abwählen, wenn Minecraft verändert ist.
+t758 Minecraft wird deinen Spawnpunkt zufällig verschieben, wenn du versuchst zu respawnen, wenn es keine Blöcke bei Y=63 und Y=64 gibt. Nur abwählen, wenn Minecraft verändert ist.
 o759 Keep Data Intact
 t759 Daten intakt halten
 o760 This pulls skins from the online server, so this may take a while
-t760 Das nimmt die Skins vom Online-Server, das kann etwas dauern
+t760 Das lädt die Skins von der Online-Datenbank herunter, das kann etwas dauern
 o761 Session:
 t761 Session:
 o762 Session Lock is being used by Minecraft
@@ -1650,9 +1650,9 @@ t762 Session Lock wird von Minecraft benutzt
 o763 Session Lock is being used by MCEdit
 t763 Session Lock wird von MCEdit benutzt
 o764 Show Player Skins
-t764 Spieler Skins anzeigen
+t764 Spielerskins anzeigen
 o765 Show player skins while editing the world
-t765 Zeigt Spieler Skins beim Bearbeiten der Welt.
+t765 Zeigt Spielerskins beim Bearbeiten der Welt.
 o766 Compass Size (%): 
 t766 Kompassgröße (%): 
 o767 Fog Intensity (%): 
@@ -1668,17 +1668,17 @@ t771 Importieren
 o772 Old (Messy)
 t772 Alt (chaotisch)
 o773 Click to open filters folder
-t773 Klicke, um den Filter Ordner zu öffnen
+t773 Klicke, um das Filter-verzeichnis zu öffnen
 o774 Head
 t774 Kopf
 o775 Exception during filter operation. See console for details.
 
 {0}
-t775 Ein Fehler tauchte auf, während ein Filter lief. Siehe Konsole für Details.
+t775 Ein Fehler trat auf, während ein Filter lief. Siehe Konsole für Details.
 
 {0}
 o776 Shift
-t776 Umschalttaste (Shift)
+t776 Umschalt
 o777 Option
 t777 Option
 o778 Meta
@@ -1686,13 +1686,13 @@ t778 Meta
 o779 Applying {0} brush...
 t779 Verwende {0} Pinsel...
 o780 Graphics Settings
-t780 Grafik-Einstellungen
+t780 Grafikeinstellungen
 o781 Run Macro
 t781 Makro ausführen 
 o782 Delete Macro
 t782 Makro löschen
 o783 Macro Name: 
-t783 Makro Name:
+t783 Makroname:
 o784 Enter a Player Name: 
 t784 Spielername:
 o785 Click the mouse button again to place the other selection corner.
@@ -1702,11 +1702,11 @@ t786 Aufnehmen abbrechen
 o787 Currently recording a macro
 t787 Makro wird aufgenommen
 o788 Choose a custom head for the villagers you make
-t788 Wählt einen benutzerdefinierten Kopf für den Dorfbewohner, den du grad erstellst
+t788 Wähle einen benutzerdefinierten Kopf für den Dorfbewohner, den du gerade erstellst
 o789 Custom Head
 t789 Benutzerdefinierter Kopf
 o790 Skull Type
-t790 Kopf Typ
+t790 Kopftyp
 o791 Skeleton Skull
 t791 Skelettschädel
 o792 Wither Skeleton Skull
@@ -1714,11 +1714,11 @@ t792 Witherskelettschädel
 o793 Zombie Skull
 t793 Zombiekopf
 o794 Player Skull
-t794 Spieler Kopf
+t794 Spielerkopf
 o795 Creeper Skull
 t795 Creeperkopf
 o796 If Player Skull
-t796 Wenn Spieler Kopf ausgewählt ist:
+t796 Wenn Spielerkopf ausgewählt ist:
 o797 Player's Name
 t797 Spielername
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
@@ -1726,7 +1726,7 @@ Shortcut: Alt-6
 t798 Automatisch neue UUIDs für jedes kopiertes Objekt erstellen. [EMPFOHLEN]
 Tastenkürzel: Alt-6
 o799 When the brush tool is chosen, prompt for a block type.
-t799 Wenn das Pinsel Werkzeug ausgewählt ist, dann zur Blocktyp Auswahl auffordern 
+t799 Wenn das Pinselwerkzeug ausgewählt ist, wird die Blocktypauswahl geöffnet.
 o800 Max View Distance
 t800 Maximale Sichtweite
 o801 It looks like this level is completely empty!
@@ -1736,7 +1736,7 @@ Du musst einige Chunks erstellen, bevor du anfängst.
 o802 Create Chunks
 t802 Erstelle Chunks
 o803 Replace Only:
-t803 Nur Ersetzen:
+t803 Nur ersetzen:
 o804 Make Villager Silent
 t804 Lautloser Dorfbewohner
 o805 Install Mode
@@ -1748,25 +1748,25 @@ t807 Welttyp:
 o808 Amplified
 t808 Zerklüftet
 o809 Large Biomes
-t809 Grosse Biome
+t809 Große Biome
 o810 Superflat
 t810 Flachland
 o811 Copying chunks
 t811 Kopiert Chunks
 o812 Lighting chunks
-t812 Erleuchtet Chunks
+t812 Beleuchtet Chunks
 o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t813 Diese Welt wurde nicht von einem FTP Server heruntergeladen. Hochladen von Welten, die nicht von einem FTP Server heruntergeladen wurden, ist momentan noch nicht möglich.
+t813 Diese Welt wurde nicht von einem FTP-Server heruntergeladen. Hochladen von Welten, die nicht von einem FTP-Server heruntergeladen wurden, ist momentan noch nicht möglich.
 o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
 t814 Fenster wurde vergrössert. Du hast vielleicht Probleme beim Benutzen des Mauszeigers, bis MCEdit neugestartet wurde.
 o815 FTP Server IP:
-t815 FTP Server IP:
+t815 FTP#Server IP:
 o816 FTP Username:
-t816 FTP Benutzername:
+t816 FTP-Benutzername:
 o817 FTP Password:
-t817 FTP Passwort:
+t817 FTP-Passwort:
 o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t818 NOTIZ: MCEdit-Unified wird keine anderen FTP Server Daten benutzen als die für den Login
+t818 NOTIZ: MCEdit-Unified wird keine anderen FTP-Serverdaten benutzen die Einloggdaten
 o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
 t819 Bitte warte, während MCEdit-Unified die Welt herunterlädt. Danach wird sie geöffnet
 o820 Connect
@@ -1788,9 +1788,9 @@ t827 Fehler: {0}
 o828 Incorrect username or password
 t828 Falscher Benutzername oder Passwort
 o829 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t829 Konnte die server.properties Datei nicht finden! Der FTP Client wird die Welt nicht herunterladen können, bis die server.properties Datei im standard FTP Verzeichnis ist
+t829 Konnte die server.properties-Datei nicht finden! Der FTP-Client wird die Welt nicht herunterladen können, bis die server.properties Datei im Standard-FTP-Verzeichnis ist
 o830 Could not find the world folder from the server.properties file
-t830 Konnte den Welt-Ordner von der server.properties Datei nicht finden
+t830 Konnte das Weltverzeichnis in der server.properties-Datei nicht finden
 o831 Choose Block Immediately for Replace
 t831 Block für das Ersetzen sofort auswählen
 o832 Open Block Picker for Fill
@@ -1798,7 +1798,7 @@ t832 Blockauswahl fürs Füllen öffnen
 o833 Open Block Picker for Replace
 t833 Blockauswahl fürs Ersetzen öffnen
 o834 When the replace tool is chosen, prompt for a block type.
-t834 Wenn das Ersetzen-Werkzeug ausgewählt ist, dann nach dem Blocktyp fragen.
+t834 Wenn das Ersetzen-Werkzeug ausgewählt ist, wird die Blockauswahl geöffnet
 o835 Matching Coordinates
 t835 Zutreffende Koordinaten
 o836 Session Lock Options
