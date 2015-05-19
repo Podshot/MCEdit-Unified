@@ -69,7 +69,7 @@ def addNumField(page, optionName, oName, val, min=None, max=None, increment=0.1)
         min = None
         max = None
 
-    field = ftype(value=val, width=100, min=min, max=max)
+    field = ftype(value=val, width=200, min=min, max=max)
     field._increment = increment
     page.optionDict[optionName] = AttrRef(field, 'value')
 
