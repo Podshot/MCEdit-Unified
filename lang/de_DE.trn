@@ -59,7 +59,7 @@ t19 Wechseln
 o20 Options
 t20 Optionen
 o21 OK
-t21 Fertig
+t21 OK
 o22 Field of View: 
 t22 Sichtfeld (FOV): 
 o23 Target FPS: 
@@ -699,7 +699,7 @@ t330 Kind/Erwachsener Alter
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
 t331 Repariert die Oberflächen, die von alten Versionen von Minecraft erstellt wurden.
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
-t332 Lässt Wasser in der Region nach außen unt nach unten fließen, wobei es zu vollen Wasserblöcken wird. Das ist dem Wasserverhaltens in Minecraft Classic ähnlich.
+t332 Lässt Wasser in der Region nach außen und nach unten fließen, wobei es zu vollen Wasserblöcken wird. Das ist dem Wasserverhaltens in Minecraft Classic ähnlich.
 o333 Flood Water
 t333 Überflute Wasser
 o334 Flood Lava
@@ -1006,7 +1006,7 @@ t471 Wiederholungsanzahl
 o472 Depth
 t472 Tiefe
 o473 Pick a block:
-t473 Suche einen Block aus:
+t473 Wähle einen Block:
 o474 Players
 t474 Spieler
 o475 Player Name
@@ -1024,15 +1024,15 @@ t480 An Kamera anpassen
 o481 Player (Single Player)
 t481 Spieler (Einzelspieler)
 o482 Chunk Control
-t482 Chunk Verwaltungswerkzeug
+t482 Chunk-Verwaltungswerkzeug
 o483 Move Spawn Point
 Right-click for options
 t483 Spawnpunkt bewegen
 Rechtsklick für Optionen
 o484 Goto Spawn
-t484 Gehe zu Spawn
+t484 Gehe zum Spawn
 o485 Take a Screenshot
-t485 Mache ein Bildschirmfoto
+t485 Erstelle ein Bildschirmfoto
 o486 Load Preset
 t486 Lade Voreinstellung
 o487 Remove Presets
@@ -1040,11 +1040,11 @@ t487 Entferne Voreinstellung
 o488 Save as Preset
 t488 Speichere Voreinstellung
 o489 Preset Name:
-t489 Voreinstellungs Name:
+t489 Voreinstellungsname:
 o490 That preset name is reserved. Try pick another preset name.
-t490 Der Voreinstellungs Name ist reseviert. Nehme einen anderen Namen.
+t490 Der Voreinstellungsname ist reseviert. Wähle einen anderen Namen.
 o491 Invalid character in file name
-t491 Unerlaubte Zeichen in Dateiname
+t491 Unerlaubte Zeichen im Dateinamen
 o492 No presets saved
 t492 Keine Voreinstellungen gespeichert
 o493 Select preset to delete
@@ -1064,9 +1064,9 @@ t499 Tab
 o500 Delete
 t500 Löschen
 o501 Scroll Up
-t501 Scroll nach oben
+t501 Nach oben scrollen
 o502 Scroll Down
-t502 Scroll nach unten
+t502 Nach unten scrollen
 o503 Button 3
 t503 Maustaste 3
 o504 Alt
@@ -1074,11 +1074,11 @@ t504 Alt
 o505 Ctrl
 t505 Strg
 o506 Creating a new world.
-t506 Eine neue Welt erstellen.
+t506 Neue Welt erstellen.
 o507 Minecraft Server
-t507 Minecraft Server
+t507 Minecraft-Server
 o508 Flatland
-t508 Flaches Land
+t508 Flachland
 o509 Generator:
 t509 Generator:
 o510 Will automatically download and use the latest version
@@ -1088,7 +1088,7 @@ t511 Höhe:
 o512 Grass
 t512 Gras
 o513 Server version:
-t513 Server Version:
+t513 Serverversion:
 o514 or
 t514 oder
 o515 Check for Updates
@@ -1098,15 +1098,15 @@ t516 Erweitert
 o517 Open Server Storage
 t517 Server-Speicherplatz öffnen
 o518 Reveal World Cache
-t518 Welt Puffer zeigen
+t518 Welt-Puffer zeigen
 o519 Delete World Cache
-t519 Welt Puffer löschen
+t519 Welt-Puffer löschen
 o520 Advanced...
 t520 Erweitert...
 o521 Simulate world
 t521 Welt simulieren
 o522 Use snapshot versions
-t522 Snapshot-Versionen benutzen
+t522 Entwicklungsversionen benutzen
 o523 X: 
 t523 X:
 o524 Y: 
@@ -1116,11 +1116,11 @@ t525 Z:
 o526 f: 
 t526 f:
 o527 Seed: 
-t527 Seed:
+t527 tartwert:
 o528 East-West Chunks: 
-t528 Ost-West Chunks: 
+t528 Ost-West-Chunks: 
 o529 North-South Chunks: 
-t529 Nord-Süd Chunks: 
+t529 Nord-Süd-Chunks: 
 o530 Survival
 t530 Überleben
 o531 Cancel
@@ -1136,15 +1136,15 @@ t535 L
 o536 W
 t536 W
 o537 Minimum Spacing
-t537 Minimum Abstand
+t537 Minimalabstand
 o538 Regenerate Entity UUID
-t538 Entity UUID neu erzeugen
+t538 Entity-UUID neu erzeugen
 o539 Replace blocks with any data value. Only useful for Replace operations.
-t539 Ersetze Blöcke mit jede Datenwert. Nur sinnvoll für Ersetzen Operationen.
+t539 Ersetze Blöcke mit jedem Datenwert. Nur sinnvoll für Ersetz-Operationen.
 o540 Entities
-t540 Entities
+t540 Objekte
 o541 Items
-t541 Items
+t541 Gegenstände
 o542 TileEntities
 t542 TileEntities
 o543 TileTicks
@@ -1158,7 +1158,7 @@ t546 Nebel
 o547 Ceiling
 t547 Dach
 o548 Chunk Redraw
-t548 Chunk neu zeichnen
+t548 Neuzeichnen von Chunks
 o549 Hidden Ores
 t549 Versteckte Erze
 o550 Bedrock
@@ -1176,7 +1176,7 @@ t555 Gold
 o556 Diamond
 t556 Diamant
 o557 Nether Quartz
-t557 Nether Quarz
+t557 Netherquarz
 o558 Shortcut: {0}
 t558 Tastenkürzel: {0}
 o559 View Distance ({0})
@@ -1186,21 +1186,21 @@ t560 Größe der Kopierliste:
 o561 Remove
 t561 Löschen
 o562 Reload Skins
-t562 Skin neuladen
+t562 Skins neuladen
 o563 Previous Page
 t563 Verherige Seite
 o564 Next Page
 t564 Nächste Seite
 o565 Super Secret Settings
-t565 Super geheime Einstellungen
+t565 Super Secret Settings
 o566 Default Resource Pack
-t566 Standard Ressourcen Paket
+t566 Standard-Ressourcenpaket
 o567 Square
 t567 Quadrat
 o568 Record Macro
 t568 Makro aufnehmen
 o569 Health Boost
-t569 Lebens Boost
+t569 Lebens-Boost
 o570 Saturation (no mob effect)
 t570 Sättigung (kein Mob Effekt)
 o571 Wither
@@ -1212,11 +1212,11 @@ t573 Langsamkeit
 o574 Absorption
 t574 Absorption
 o575 Night Vision (no mob effect)
-t575 Nachtsicht (kein Mob Effekt)
+t575 Nachtsicht (Keine Auswirkung)
 o576 Speed
 t576 Schnelligkeit
 o577 Mining Fatigue (no mob effect)
-t577 Abbaulähmung (kein Mob Effekt)
+t577 Abbaulähmung (Keine Auswirkung)
 o578 Player Name(s):
 t578 Spielername(n):
 o579 Chunks Borders
@@ -1230,31 +1230,31 @@ t582 Verschiebe um die Breite der Auswahl
 o583 Moves clone by his width
 t583 Bewegt Kopie um ihre Breite
 o584 Width of clone movement: 
-t584 Weite von Kopierbewegung: 
+t584 Breite der Kopierbewegung: 
 o585 Import Fast Nudge Settings:
-t585 Importiereinstellungen für schnelles-Verschieben:
+t585 Importiereinstellungen für schnelles Verschieben:
 o586 Move by the width of schematic 
-t586 Bewege um die Breite der Schematic 
+t586 Bewege um die Breite des Schematics 
 o587 Moves selection by his width
 t587 Bewege Auswahl um diese Breite
 o588 Width of import movement: 
-t588 Weite von Importbewegung: 
+t588 Breite der Importbewegung: 
 o589 Import Options
 t589 Importiereinstelunngen
 o590 Blocks Fast Nudge Settings:
-t590 Blöcke-Einstellungen für schnelles-Verschieben:
+t590 Block-Einstellungen für schnelles Verschieben:
 o591 Selection Fast Nudge Settings:
-t591 Auswahl-Einstellungen für schnelles-Verschieben:
+t591 Auswahl-Einstellungen für schnelles Verschieben:
 o592 Points Fast Nudge Settings:
-t592 Punkte-Einstellungen für schnelles-Verschieben:
+t592 Punkte-Einstellungen für schnelles Verschieben:
 o593 Moves points by the selection's width
 t593 Bewegt Punkte um Auswahlsweite
 o594 Width of points movement: 
-t594 Weite der Punktebewegung: 
+t594 Breite der Punktebewegung: 
 o595 Do you want to save your changes?
 t595 Möchtest du die Änderungen speichern?
 o596 Don't Save
-t596 Nicht Speichern
+t596 Nicht speichern
 o597 Press a key to assign to the action "{0}"
 
 Press ESC to cancel.
@@ -1265,7 +1265,7 @@ o598 Press a key to assign to the action "{0}"
 No key means right click to fast nudge.
 Press ESC to cancel.
 t598 Drücke eine Taste, um die Aktion "{0}" zuzuweisen
-Ist keine Taste zugewiesen, kann man Rechts-Klicken, um schnell zu verschieben.
+Ist keine Taste zugewiesen, kann man rechtsklicken, um schnell zu verschieben.
 Drücke ESC, um den Vorgang abzubrechen.
 o599 {0} is not a modifier. Press a new key.
 
@@ -1282,17 +1282,17 @@ Drücke ESC, um den Vorgang abzubrechen.
 o601 You can't use the key {0}. Press a new key.
 
 Press ESC to cancel.
-t601 Du kannst nicht die Taste {0} verwenden. Drücke eine andere Taste.
+t601 Du kannst die Taste {0} nicht verwenden. Drücke eine andere Taste.
 
 Drücke ESC, um den Vorgang abzubrechen.
 o602 Reset to default
 t602 Tasten zurücksetzen
 o603 Do you want to keep your changes?
-t603 Möchtest du deine Änderungen behalten?
+t603 Möchtest du deine Änderungen beibehalten?
 o604 Screenshots
 t604 Bildschirmfotos
 o605 Uses the Latest Snapshot Terrain Generation
-t605 Verwendet die neueste Snapshot Landschafts-Generation
+t605 Verwendet die Landschaftsgenerierung der neuesten Entwicklungsversion
 o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
 t606 Simuliert die Welt für ein paar Sekunden, nachdem sie generiert wurde. Reduziert die Dateigröße um die Verarbeitung aller TileTicks.
 o607 Last Played
@@ -1302,21 +1302,21 @@ t608 Level Name (Dateiname)
 o609 Load
 t609 Laden
 o610 Maximum number of copied objects.
-t610 Maximale Nummer von kopierten Objekten.
+t610 Maximalanzahl von kopierten Objekten.
 o611 Try to save and restore the window position.
-t611 Versucht die Fensterposition zu speichern und wiederherzustellen.
+t611 Versucht, die Fensterposition zu speichern und wiederherzustellen.
 o612 This will make your MCEdit "portable" by moving your settings and schematics into the same folder as {0}. Continue?
 t612 Das wird dein MCEdit "portabel" machen, indem die Einstellungen und Schematics in den selben Ordner wie die {0} verschoben werden. Fortsetzen?
 o613 MCEditData
-t613 MCEditDaten
+t613 MCEditData
 o614 This will move your settings and schematics to your Documents folder. Continue?
 t614 Das wird deine Einstellungen und Schematics in deinen Dokumente-Ordner verschieben. Fortsetzen?
 o615 Click to make your MCEdit install persistent by moving the settings and schematics into your Documents folder
-t615 Auswählen, damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in den Dokumente Ordner verschoben werden.
+t615 Auswählen, damit sich MCEdit von selbst installiert, indem die Einstellungen und Schematics in den Dokumente-Ordner verschoben werden.
 o616 Goto Position:
 t616 Gehe zu Position:
 o617 (click anywhere to teleport)
-t617 (Klicke irgendwohin, um zu teleportieren)
+t617 (Klicke irgendwohin, um dich zu teleportieren)
 o618 Format:
 t618 Format:
 o619 Name:
@@ -1326,9 +1326,9 @@ t620 Minecraft Unendliche Welt (Anvil Format)
 o621 Day: 
 t621 Tag: 
 o622 Time of day:
-t622 Zeit des Tages:
+t622 Tageszeit:
 o623 RandomSeed:
-t623 Zufälliger Seed:
+t623 Startwert:
 o624 Game Type:
 t624 Spielmodus:
 o625 Number of chunks: {0}
@@ -1348,55 +1348,55 @@ t631 Anzahl
 o632 Damage
 t632 Schaden
 o633 NBT Explorer
-t633 NBT Explorer
+t633 NBT-Explorer
 o634 Reset
 t634 Zurücksetzen
 o635 Reset ALL your changes in the NBT data.
-t635 Setze ALLE Änderungen in den NBT Daten zurück.
+t635 Setze ALLE Änderungen in den NBT-Daten zurück.
 o636 Data Type:
-t636 Daten-Typ:
+t636 Datentyp:
 o637 -> Name
 t637 -> Name
 o638 Double-click to edit
-t638 Doppelklick, um zu editieren
+t638 Doppelklick zum Bearbeiten
 o639 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
-t639 NBT Explorer
-Tauche in die Level NBT Struktur ein.
+t639 NBT-Explorer
+Tauche in die Level-NBT-Struktur ein.
 Rechtsklick für Optionen
 o640 Save your change in the NBT data.
-t640 Speichert deine Änderungen in den NBT Daten.
+t640 Speichert deine Änderungen in den NBT-Daten.
 o641 Save unsaved edits before loading?
-t641 Nicht gespeicherte Änderungen speichern vor dem Laden?
+t641 Nicht gespeicherte Änderungen vor dem Laden speichern?
 o642 {0} unsaved edits.  {1} to save.  {2}
 t642 {0} nicht gespeicherte Änderungen.  {1} für Speichern.  {2}
 o643 (UNDO DISABLED)
-t643 (RÜCKGÄNGIG-MACHEN FUNKTION AUSGESCHALTET)
+t643 (RÜCKGANG AUSGESCHALTET)
 o644 Save unsaved edits before closing?
-t644 Sollen nicht gespeicherte Änderungen gespeichert werden, bevor es geschlossen wird?
+t644 Sollen nicht gespeicherte Änderungen gespeichert werden, bevor das Programm geschlossen wird?
 o645 Load NBT file...
-t645 Lade NBT Datei...
+t645 Lade NBT-Datei...
 o646 NBT Tree Settings
 t646 NBT-Struktureinstellungen
 o647 Use Bullet Styles
-t647 Benutze Kugel Styles
+t647 Benutze Kugelstil
 o648 Use Bullet Text
-t648 Benutze Kugel Text
+t648 Benutze Kugeltext
 o649 Use Bullet Images
-t649 Benutze Kugel Bilder
+t649 Benutze Kugelbilder
 o650 Bullet Images File
-t650 Kugel Bilderdatei
+t650 Kugel-Bilderdatei
 o651 Choose an image file...
 t651 Wähle eine Bilddatei...
 o652 Select a NBT (.dat) file...
-t652 Wähle eine NBT (.dat) Datei...
+t652 Wähle eine NBT-Datei (.dat)...
 o653 File already exists.
 Click 'OK' to choose one.
-t653 Datei ist schon vorhanden.
+t653 Datei ist bereits vorhanden.
 Klicke 'OK', um eine auszuwählen.
 o654 Choose a NBT file...
-t654 Wähle eine NBT Datei aus..
+t654 Wähle eine NBT-Datei aus..
 o655 The selected object is not a file.
 Can't load it.
 t655 Das ausgewählte Objekt ist keine Datei.
@@ -1406,9 +1406,9 @@ Can't save it.
 t656 Das ausgewählte Objekt ist keine Datei.
 Es kann nicht gespeichert werden.
 o657 Show all the tags in the tree
-t657 alle Tags in der Struktur anzeigen
+t657 Alle Tags in der Struktur anzeigen
 o658 Compound
-t658 Verbindung
+t658 Compound
 o659 Integer
 t659 Integer
 o660 Floating point
@@ -1418,15 +1418,15 @@ t661 Text
 o662 Boolean
 t662 Boolean
 o663 Choose default data
-t663 Wähle die Standard Daten
+t663 Wähle die Standarddaten
 o664 Item Type: %s
-t664 Item Typ: %s
+t664 Gegenstandstyp: %s
 o665 Value
 t665 Wert
 o666 This item type is a container. Add chlidren later.
-t666 Dieser Item Typ ist ein Behälter. Füge Unterkategorien später hinzu.
+t666 Dieser Gegenstandstyp ist ein Behälter. Füge Unterkategorien später hinzu.
 o667 Choose item type
-t667 Wähle einen Item Typ
+t667 Wähle einen Gegenstandstyp
 o668 Choose a name
 t668 Wähle einen Namen
 o669 Byte
@@ -1436,7 +1436,7 @@ t670 Long
 o671 Short
 t671 Short
 o672 String
-t672 Zeichenfolge
+t672 String
 o673 List
 t673 Liste
 o674 Byte Array
@@ -1444,7 +1444,7 @@ t674 Byte Array
 o675 Int Array
 t675 Int Array
 o676 Short Array
-t676 SShort Array
+t676 Short Array
 o677 Click to bind this filter to a hotkey
 t677 Klicke, um den Filter einem Tastenkürzel zuzuweisen
 o678 Press a key to assign to the filter "{0}"
@@ -1468,35 +1468,35 @@ t681 Drücke, um Tastenkürzel zu entfernen
 o682 Are you sure you want to delete the default player?
 t682 Bist du sicher, dass du den Standardspieler löschen willst?
 o683 Double-click or use the button below to edit the NBT Data.
-t683 Doppelklick oder nutze den Knopf darunter, um die NBT Daten zu editieren.
+t683 Doppelklicke oder nutze den Knopf hierunter, um die NBT-Daten zu editieren.
 o684 Go Back
 t684 Gehe zurück
 o685 Upload to FTP Server
-t685 Hochladen auf FTP Server
+t685 Auf FTP-Server hochladen
 o686 There are {0} unsaved changes.
 t686 Es gibt {0} ungespeicherte Änderungen.
 o687 Save and Quit
-t687 Speichern und Schließen
+t687 Speichern und schließen
 o688 Refresh Player Names
 t688 Spielernamen aktualisieren
 o689 Results
-t689 Resutate
+t689 Ergebnisse
 o690 Smooth - 3D
 t690 Glatt - 3D
 o691 Smoothing
 t691 Glättend
 o692 Made by Sethbling
-t692 Erstellt von Sethbling
+t692 Erstellt von SethBling
 o693 NBT Data
-t693 NBT Daten
+t693 NBT-Daten
 o694 Edit NBT
-t694 Bearbeite NBT
+t694 NBT bearbeiten
 o695 Open the NBT Explorer to edit player's attributes and inventory
-t695 Öffne den NBT Explorer, um die Attribute des Spielers und dessen Inventar zu editieren
+t695 Öffne den NBT-Explorer, um die Attribute des Spielers und dessen Inventar zu editieren
 o696 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t696 Noch nicht implementiert.
-Nutze den NBT Explorer, um den Spieler zu editieren.
+Nutze den NBT-Explorer, um den Spieler zu editieren.
 o697 Error while getting player file.
 %s not found.
 t697 Fehler beim Laden der Spieler Datei.
