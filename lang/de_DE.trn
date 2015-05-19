@@ -1116,7 +1116,7 @@ t525 Z:
 o526 f: 
 t526 f:
 o527 Seed: 
-t527 tartwert:
+t527 Startwert:
 o528 East-West Chunks: 
 t528 Ost-West-Chunks: 
 o529 North-South Chunks: 
@@ -1760,7 +1760,7 @@ t813 Diese Welt wurde nicht von einem FTP-Server heruntergeladen. Hochladen von 
 o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
 t814 Fenster wurde vergrössert. Du hast vielleicht Probleme beim Benutzen des Mauszeigers, bis MCEdit neugestartet wurde.
 o815 FTP Server IP:
-t815 FTP#Server IP:
+t815 FTP-Server IP:
 o816 FTP Username:
 t816 FTP-Benutzername:
 o817 FTP Password:
