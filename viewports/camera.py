@@ -27,9 +27,9 @@ from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, 
 from albow.controls import Label, ValueDisplay
 from albow.dialogs import Dialog, wrapped_label
 from albow.openglwidgets import GLViewport
+from albow.extended_widgets import BasicTextInputRow
 from albow.translate import _
 from pygame import mouse
-
 from depths import DepthOffset
 from editortools.operation import Operation
 from glutils import gl
@@ -1084,7 +1084,7 @@ class CameraViewport(GLViewport):
         maxSlot = pymclevel.TileEntity.maxItems[tileEntityTag["id"].value] - 1
         fieldRow = (
             IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
-            TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
+            BasicTextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
             # Text to allow the input of internal item names
             IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
             IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),

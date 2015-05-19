@@ -10,7 +10,7 @@ import root
 from layout import Column, Row
 from translate import _
 from menu import Menu
-from fields import FloatField, IntField, TextFieldWrapped
+from fields import FloatField, IntField, TextFieldWrapped, TextField
 from datetime import timedelta, datetime
 
 
@@ -218,6 +218,10 @@ def IntInputRow(title, *args, **kw):
 
 def TextInputRow(title, *args, **kw):
     return Row((Label(title, tooltipText=kw.get('tooltipText')), TextFieldWrapped(*args, **kw)))
+
+  
+def BasicTextInputRow(title, *args, **kw):
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextField(*args, **kw)))
 
 
 def showProgress(progressText, progressIterator, cancel=False):
