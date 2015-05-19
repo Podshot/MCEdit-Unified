@@ -6,6 +6,7 @@ from glbackground import GLBackground
 from pymclevel import materials
 from albow.root import get_root
 from pymclevel.materials import Block
+from albow.translate import getLang
 
 #&# Prototype for blocks/items names
 import mclangres
@@ -344,7 +345,7 @@ class BlockPicker(Dialog):
         blocks = self.materials.allBlocks
 
         if len(text):
-            matches = self.materials.blocksMatching(text)
+            matches = self.materials.blocksMatching(text, getLang())
             if blockData:
                 ids = set(b.ID for b in matches)
                 matches = sorted([self.materials.blockWithID(id, blockData) for id in ids])
