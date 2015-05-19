@@ -1,11 +1,13 @@
 from albow import alert
 from editortools.operation import Operation
+import itertools
 
 class fileEdit():
-    def __init__(self, filename, timeChanged, box, editor, level):
+    def __init__(self, filename, timeChanged, box, sorting, editor, level):
         self.filename = filename
         self.timeChanged = timeChanged
         self.box = box
+        self.sorting = sorting
         self.editor = editor
         self.level = level
 
@@ -18,7 +20,11 @@ class fileEdit():
         file.close()
 
         tileEntities = []
-        for (x, y, z) in self.box.positions:
+        for coords in GetSort(self.box, self.sorting):
+            if self.sorting == "xz":
+                (x, y, z) = coords
+            else:
+                (z, y, x) = coords
             if self.level.blockAt(x, y, z) == 137:
                 tileEntities.append(self.level.tileEntityAt(x, y, z))
 
@@ -64,3 +70,18 @@ class FileEditsOperation(Operation):
 
     def dirtyBox(self):
         return self.box
+
+
+def GetSort(box, sorting):
+    if sorting == "xz":
+        return itertools.product(
+            xrange(box.minx, box.maxx),
+            xrange(box.miny, box.maxy),
+            xrange(box.minz, box.maxz)
+        )
+    else:
+        return itertools.product(
+            xrange(box.minz, box.maxz),
+            xrange(box.miny, box.maxy),
+            xrange(box.minx, box.maxx)
+        )

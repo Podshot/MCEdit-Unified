@@ -4,6 +4,7 @@ import traceback
 from os.path import join
 from collections import defaultdict
 from pprint import pformat
+import mclangres
 
 import os
 
@@ -151,7 +152,7 @@ class MCMaterials(object):
         spiltNames = name.split(" ")
         amount = len(spiltNames)
         for v in self.allBlocks:
-            nameParts = v.name.lower().split(" ")
+            nameParts = mclangres.translate(v.name).lower().split(" ")
             for anotherName in v.aka.lower().split(" "):
                 nameParts.append(anotherName)
             for anotherName in v.search.lower().split(" "):

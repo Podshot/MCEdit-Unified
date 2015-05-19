@@ -595,6 +595,11 @@ definitions = {
     ("Filter Keys", "Filter Keys"): [],
     ("session", "Session",): [
         ("override", "Override", False)
+    ],
+    ("commands", "Commands"): [
+        ("sorting", "Sorting", "xz"),
+        ("space", "Space", True),
+        ("fileFormat", "File Format", "txt")
     ]
 }
 

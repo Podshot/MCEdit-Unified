@@ -22,7 +22,7 @@ from OpenGL import GL
 from collections import defaultdict
 import numpy
 import pygame
-from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress
+from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress, TextInputRow
 from albow.translate import _
 from config import config, ColorValue
 from depths import DepthOffset
@@ -39,7 +39,7 @@ import tempfile
 from pymclevel import nbt
 import logging
 from albow.root import get_root
-from fileEdits import fileEdit
+from fileEdits import fileEdit, GetSort
 
 log = logging.getLogger(__name__)
 
@@ -180,10 +180,11 @@ class SelectionToolPanel(Panel):
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
-        openButton = Button("Open File")
-        openButton.tooltipText = _("Open command blocks text in a new file")
-        openButton.action = tool.openFile
+        openButton = Button("CB Commands")
+        openButton.tooltipText = _("Open a text file with all command block commands in the currently selected area.")
+        openButton.action = tool.openCommands
         openButton.highlight_color = (0, 255, 0)
+        openButton.rightClickAction = tool.CBCommandsOptions
 
         buttonsColumn = (
             nudgeBlocksButton,
@@ -337,7 +338,6 @@ class SelectionTool(EditorTool):
         self.editor.selectionTool.setSelection(newBox)
 
     def updateSelectionColor(self):
-
         self.selectionColor = GetSelectionColor()
         from albow import theme
 
@@ -1199,15 +1199,24 @@ class SelectionTool(EditorTool):
             self.editor.exportSchematic(schematic)
 
     @alertException
-    def openFile(self):
-        name = "FileTest" + str(self.editor.level.editFileNumber) + ".txt"
+    def openCommands(self):
+        name = "CommandsFile" + str(self.editor.level.editFileNumber) + "." + config.commands.fileFormat.get()
         filename = os.path.join(self.editor.level.worldFolder.filename, name)
         file = open(filename, 'w')
         first = True
-        for (x, y, z) in self.editor.selectionBox().positions:
+        space = config.commands.space.get()
+        sorting = config.commands.sorting.get()
+        for coords in GetSort(self.editor.selectionBox(), sorting):
+            if sorting == "xz":
+                (x, y, z) = coords
+            else:
+                (z, y, x) = coords
             if self.editor.level.blockAt(x, y, z) == 137:
                 if not first:
-                    file.write("\n\n")
+                    if space:
+                        file.write("\n\n")
+                    else:
+                        file.write("\n")
                 first = False
                 text = self.editor.level.tileEntityAt(x, y, z)["Command"].value
                 if text == "":
@@ -1219,13 +1228,42 @@ class SelectionTool(EditorTool):
             alert("No command blocks found")
             return
         self.editor.level.editFileNumber += 1
-        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), self.editor, self.editor.level)
+        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), sorting, self.editor, self.editor.level)
         self.root.filesToChange.append(edit)
         if sys.platform == "win32":
             os.startfile(filename)
         else:
             opener ="open" if sys.platform == "darwin" else "xdg-open"
             subprocess.call([opener, filename])
+
+    def CBCommandsOptions(self):
+        panel = CBCommandsOptionsPanel()
+        panel.present()
+
+
+class CBCommandsOptionsPanel(ToolOptions):
+    def __init__(self):
+        Panel.__init__(self)
+
+        empty = Label("")
+
+        self.sorting = ChoiceButton(["xz", "zx"], choose=self.changeSorting)
+        self.sorting.selectedChoice = config.commands.sorting.get()
+        space = CheckBoxLabel("Space between lines",
+                              tooltipText="Make space between the lines",
+                              ref=config.commands.space)
+        fileFormat = TextInputRow("Choose file format",
+                                  tooltipText="Choose the file format for the files",
+                                  ref=config.commands.fileFormat)
+        okButton = Button("OK", action=self.dismiss)
+
+        col = Column((Label("CB Commands Options"), self.sorting, empty, space, empty, fileFormat, okButton), spacing=2)
+
+        self.add(col)
+        self.shrink_wrap()
+
+    def changeSorting(self):
+        config.commands.sorting.set(self.sorting.selectedChoice)
 
 
 class SelectionOperation(Operation):

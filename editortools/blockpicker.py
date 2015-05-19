@@ -344,12 +344,7 @@ class BlockPicker(Dialog):
         blocks = self.materials.allBlocks
 
         if len(text):
-            #&# Prototype for blocks/items names
-            oldMatches = self.materials.blocksMatching(text)
-            matches = []
-            for block in oldMatches:
-                matches.append(self.materials.allBlocks[self.searchNames.index(block.name.lower())])
-            #&#
+            matches = self.materials.blocksMatching(text)
             if blockData:
                 ids = set(b.ID for b in matches)
                 matches = sorted([self.materials.blockWithID(id, blockData) for id in ids])

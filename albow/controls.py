@@ -215,6 +215,7 @@ class SmallLabel(Label):
 class ButtonBase(Control):
     align = 'c'
     action = None
+    rightClickAction = None
     default_choice_color = ThemeProperty('default_choice_color')
     default_choice_bg_color = ThemeProperty('default_choice_bg_color')
 
@@ -236,18 +237,21 @@ class ButtonBase(Control):
                 self._highlighted = False
                 if self.enabled:
                     self.call_handler('action')
+        if event in self and button == 3 and self.enabled:
+            if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
+                self.call_handler('rightClickAction')
         self.get_root().fix_sticky_ctrl()
 
 
 
-
-
 class Button(ButtonBase, Label):
-    def __init__(self, text, action=None, enable=None, **kwds):
+    def __init__(self, text, action=None, enable=None, rightClickAction=None, **kwds):
         if action:
             kwds['action'] = action
         if enable:
             kwds['enable'] = enable
+        if rightClickAction:
+            kwds['rightClickAction'] = rightClickAction
         Label.__init__(self, text, **kwds)
 
 
