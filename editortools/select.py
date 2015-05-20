@@ -181,7 +181,7 @@ class SelectionToolPanel(Panel):
         deselectButton.highlight_color = (0, 255, 0)
 
         openButton = Button("CB Commands")
-        openButton.tooltipText = _("Open a text file with all command block commands in the currently selected area.\nRight-click for options")
+        openButton.tooltipText = _("Open a text file with all command block commands in the currently selected area.\nSave file to update command blocks.\nRight-click for options")
         openButton.action = tool.openCommands
         openButton.highlight_color = (0, 255, 0)
         openButton.rightClickAction = tool.CBCommandsOptions

@@ -1803,6 +1803,7 @@ t844
 o845 CB Commands
 t845
 o846 Open a text file with all command block commands in the currently selected area.
+Save file to update command blocks.
 Right-click for options
 t846
 o847 Command Blocks Commands Options
