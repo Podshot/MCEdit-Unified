@@ -12,9 +12,11 @@ class fileEdit():
         self.level = level
 
     def makeChanges(self):
+        self.filename = self.filename.decode('string_escape')
         file = open(self.filename, 'rb')
         lines = []
         for line in file.readlines():
+            line = line.replace("\r", "")
             if line != "\n":
                 lines.append(line.replace("\n", ""))
         file.close()
