@@ -181,7 +181,7 @@ class SelectionToolPanel(Panel):
         deselectButton.highlight_color = (0, 255, 0)
 
         openButton = Button("CB Commands")
-        openButton.tooltipText = _("Open a text file with all command block commands in the currently selected area.")
+        openButton.tooltipText = _("Open a text file with all command block commands in the currently selected area.\nRight-click for options")
         openButton.action = tool.openCommands
         openButton.highlight_color = (0, 255, 0)
         openButton.rightClickAction = tool.CBCommandsOptions
@@ -1249,15 +1249,16 @@ class CBCommandsOptionsPanel(ToolOptions):
 
         self.sorting = ChoiceButton(["xz", "zx"], choose=self.changeSorting)
         self.sorting.selectedChoice = config.commands.sorting.get()
+        sortingRow = Row((Label("Sort Order"), self.sorting))
         space = CheckBoxLabel("Space between lines",
                               tooltipText="Make space between the lines",
                               ref=config.commands.space)
-        fileFormat = TextInputRow("Choose file format",
+        fileFormat = TextInputRow("File format",
                                   tooltipText="Choose the file format for the files",
                                   ref=config.commands.fileFormat)
         okButton = Button("OK", action=self.dismiss)
 
-        col = Column((Label("CB Commands Options"), self.sorting, empty, space, empty, fileFormat, okButton), spacing=2)
+        col = Column((Label("Command Blocks Commands Options"), sortingRow, empty, space, empty, fileFormat, okButton), spacing=2)
 
         self.add(col)
         self.shrink_wrap()
