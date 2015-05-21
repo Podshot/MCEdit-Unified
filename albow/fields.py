@@ -1093,11 +1093,11 @@ class TextEditorWrapped(Widget):
                 max(self.selection_start, self.selection_end)):]
                 self.selection_start = None
                 self.selection_end = None
-            elif i > 0:
-                if k == K_BACKSPACE:
+            elif i >= 0:
+                if k == K_BACKSPACE and i > 0:
                     text = text[:i - 1] + text[i:]
                     i -= 1
-                else:
+                elif k == K_DELETE:
                     text = text[:i] + text[i + 1:]
             self.change_text(text)
             self.insertion_point = i
