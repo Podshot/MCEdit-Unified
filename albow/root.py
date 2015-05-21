@@ -496,8 +496,6 @@ class RootWidget(Widget):
             self.editor.cameraPanKeys[self.cameraNum[keyNum]] = self.cameraMath[keyNum]
 
     def RemoveEditFiles(self):
-        for edit in self.filesToChange:
-            os.remove(edit.filename)
         self.filesToChange = []
 
     def call_idle_handlers(self, event):
