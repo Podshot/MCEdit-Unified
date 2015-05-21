@@ -1201,7 +1201,7 @@ class SelectionTool(EditorTool):
     @alertException
     def openCommands(self):
         name = "CommandsFile" + str(self.editor.level.editFileNumber) + "." + config.commands.fileFormat.get()
-        filename = os.path.join(self.editor.level.worldFolder.filename, name)
+        filename = os.path.join(self.editor.level.fileEditsFolder.filename, name)
         file = open(filename, 'w')
         first = True
         space = config.commands.space.get()
