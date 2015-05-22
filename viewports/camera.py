@@ -86,6 +86,7 @@ class CameraViewport(GLViewport):
         self.mouseVector = (0, 0, 0)
 
         self.root = self.get_root()
+        self.hoveringCommandBlock = [False, ""]
         # self.add(DebugDisplay(self, "cameraPosition", "blockFaceUnderCursor", "mouseVector", "mouse3dPoint"))
 
     @property
@@ -1364,6 +1365,19 @@ class CameraViewport(GLViewport):
                 # mouse.set_pos(*self.startingMousePosition)
                 #    event.get(MOUSEMOTION)
                 #    self.oldMousePosition = (self.startingMousePosition)
+        point, face = self.blockFaceUnderCursor
+        if point is not None:
+            point = map(lambda x: int(numpy.floor(x)), point)
+            if self.editor.currentTool is self.editor.selectionTool:
+                try:
+                    block = self.editor.level.blockAt(*point)
+                    if block == pymclevel.alphaMaterials.CommandBlock.ID:
+                        self.hoveringCommandBlock[0] = True
+                        self.hoveringCommandBlock[1] = self.editor.level.tileEntityAt(*point)["Command"].value
+                    else:
+                        self.hoveringCommandBlock[0] = False
+                except (EnvironmentError, pymclevel.ChunkNotPresent):
+                    pass
 
     def activeevent(self, evt):
         if evt.state & 0x2 and evt.gain != 0:
@@ -1371,6 +1385,8 @@ class CameraViewport(GLViewport):
 
     @property
     def tooltipText(self):
+        if self.hoveringCommandBlock[0]:
+            return self.hoveringCommandBlock[1]
         return self.editor.currentTool.worldTooltipText
 
     floorQuad = numpy.array(((-4000.0, 0.0, -4000.0),
