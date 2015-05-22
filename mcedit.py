@@ -607,7 +607,8 @@ class MCEdit(GLViewport):
         while True:
             try:
                 rootwidget.run()
-            except SystemExit:
+            except (SystemExit, KeyboardInterrupt):
+                print "Shutting down..."
                 if sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
@@ -822,7 +823,7 @@ def weird_fix():
 if __name__ == "__main__":
     try:
         main(sys.argv)
-    except SystemExit:
+    except (SystemExit, KeyboardInterrupt):
         pass
     except:
         traceback.print_exc()
