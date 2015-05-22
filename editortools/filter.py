@@ -779,11 +779,28 @@ class FilterTool(EditorTool):
             alert(_("Could not find dependencies for the following filters:\n%s\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")%"\n".join(names))
     
     def reloadFilters(self):
-        sys.dont_write_bytecode = True
-        if self.filterModules:
-            for k, m in self.filterModules.iteritems():
-                del m
-            compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+        #!# Fix for Naor's filter bug
+        # Extend this to all platforms?
+        dataDir = directories.getDataDir()
+#        if os.sys.platform == 'darwin' or True: # for debug
+        if os.sys.platform == 'darwin':
+            curdir = os.getcwdu()
+            os.chdir(directories.getFiltersDir())
+            for cur, _dirs, f_names in os.walk(os.path.join(dataDir, "stock-filters")):
+                for f_name in f_names:
+                    shutil.copyfile(os.path.join(cur, f_name), os.path.join(cur.replace(os.path.join(dataDir, "stock-filters"), directories.getFiltersDir()), f_name))
+        else:
+            sys.dont_write_bytecode = True
+            if self.filterModules:
+                for k, m in self.filterModules.iteritems():
+                    del m
+                compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+#        sys.dont_write_bytecode = True
+#        if self.filterModules:
+#            for k, m in self.filterModules.iteritems():
+#                del m
+#            compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+        #!#
             
         def check(list_thing):
             toReturn = []
@@ -801,7 +818,10 @@ class FilterTool(EditorTool):
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
                 m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
-                listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
+                #!# Fix for Naor's filter bug
+#                listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
+                listdir = os.listdir(os.path.join(dataDir, "stock-filters"))
+                #!#
                 
                 if name not in listdir:
                     if "trn" in sys.modules.keys():
@@ -854,6 +874,12 @@ class FilterTool(EditorTool):
         for n, m in self.filterModules.iteritems():
             try:
                 reload(m)
+                #!# Fix for Naor's filter bug
+#                if os.sys.platform == 'darwin' or True: # for debug
+                if os.sys.platform == 'darwin':
+                    if os.path.exists(m.__file__):
+                        os.remove(m.__file__)
+                #!#
             except Exception, e:
                 print traceback.format_exc()
                 alert(
@@ -862,6 +888,13 @@ class FilterTool(EditorTool):
         #-# Remove the filter categories paths from sys.path to avoid confusion.
         map(lambda x:sys.path.remove(x), temp_paths)
         self.importLibraries()
+        #!# fix for Naor's filter bug
+#        if os.sys.platform == 'darwin' or True: # for debug
+        if os.sys.platform == 'darwin':
+            if os.path.exists(os.path.join('.', 'mcInterface.pyc')):
+                os.remove(os.path.join('.', 'mcInterface.pyc'))
+            os.chdir(curdir)
+        #!#
 
     @property
     def filterNames(self):
