@@ -522,7 +522,8 @@ definitions = {
         ("fontProportion", "Fonts Proportion", 100),
         ("downloadPlayerSkins", "Download Player Skins", True),
         ("maxViewDistance", "Max View Distance", 32),
-        ("drawPlayerHeads", "Draw Player Heads", True)
+        ("drawPlayerHeads", "Draw Player Heads", True),
+        ("showCommands", "Show Commands when hovering", True)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

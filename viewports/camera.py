@@ -33,6 +33,7 @@ from pygame import mouse
 from depths import DepthOffset
 from editortools.operation import Operation
 from glutils import gl
+from pymclevel.nbt import TAG_String
 
 
 class CameraViewport(GLViewport):
@@ -1365,19 +1366,20 @@ class CameraViewport(GLViewport):
                 # mouse.set_pos(*self.startingMousePosition)
                 #    event.get(MOUSEMOTION)
                 #    self.oldMousePosition = (self.startingMousePosition)
-        point, face = self.blockFaceUnderCursor
-        if point is not None:
-            point = map(lambda x: int(numpy.floor(x)), point)
-            if self.editor.currentTool is self.editor.selectionTool:
-                try:
-                    block = self.editor.level.blockAt(*point)
-                    if block == pymclevel.alphaMaterials.CommandBlock.ID:
-                        self.hoveringCommandBlock[0] = True
-                        self.hoveringCommandBlock[1] = self.editor.level.tileEntityAt(*point)["Command"].value
-                    else:
-                        self.hoveringCommandBlock[0] = False
-                except (EnvironmentError, pymclevel.ChunkNotPresent):
-                    pass
+        if config.settings.showCommands.get():
+            point, face = self.blockFaceUnderCursor
+            if point is not None:
+                point = map(lambda x: int(numpy.floor(x)), point)
+                if self.editor.currentTool is self.editor.selectionTool:
+                    try:
+                        block = self.editor.level.blockAt(*point)
+                        if block == pymclevel.alphaMaterials.CommandBlock.ID:
+                            self.hoveringCommandBlock[0] = True
+                            self.hoveringCommandBlock[1] = self.editor.level.tileEntityAt(*point).get("Command", TAG_String("")).value
+                        else:
+                            self.hoveringCommandBlock[0] = False
+                    except (EnvironmentError, pymclevel.ChunkNotPresent):
+                        pass
 
     def activeevent(self, evt):
         if evt.state & 0x2 and evt.gain != 0:

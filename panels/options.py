@@ -140,6 +140,10 @@ class OptionsPanel(Dialog):
         flyModeRow = albow.CheckBoxLabel("Fly Mode",
                                             ref=config.settings.flyMode,
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
+        
+        showCommandsRow = albow.CheckBoxLabel("Show Commands",
+                                              ref=config.settings.showCommands,
+                                              tooltipText="Show the command in a Command Block when hovering over it.")
 
         lng = config.settings.langCode.get()
 
@@ -189,6 +193,7 @@ class OptionsPanel(Dialog):
                     superSecretSettingsRow,
                     rotateBlockBrushRow,
                     compassToggleRow,
+                    showCommandsRow,
                     langButtonRow,
                     ) + (
                         ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
