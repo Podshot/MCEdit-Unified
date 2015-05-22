@@ -16,6 +16,7 @@ import collections
 import os
 import traceback
 import uuid
+import copy
 from albow import FloatField, IntField, AttrRef, ItemRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped
 import albow.translate
 _ = albow.translate._
@@ -306,7 +307,11 @@ class FilterModuleOptions(Widget):
 
     @property
     def options(self):
-        return dict((k, v.get()) for k, v in self.optionDict.iteritems())
+        options = {}
+        for k, v in self.optionDict.iteritems():
+            options[k] = v.get() if not isinstance(v.get(), pymclevel.materials.Block) else copy.copy(v.get())
+        return options
+        #return dict((k, (v.get())) for k, v in self.optionDict.iteritems())
 
     @options.setter
     def options(self, val):
