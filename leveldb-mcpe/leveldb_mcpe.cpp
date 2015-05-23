@@ -56,8 +56,8 @@ public:
   void Put(PyObject* _options, PyObject* _key, PyObject* _value) //Put(options, key, value)
   {
 	  const leveldb::WriteOptions& options = bp::extract<const leveldb::WriteOptions&>(_options);
-	  const leveldb::Slice& key = bp::extract<const leveldb::Slice&>(_key);
-	  const leveldb::Slice& value = bp::extract<const leveldb::Slice&>(_value);
+	  const leveldb::Slice key = bp::extract<const std::string>(_key);
+	  const leveldb::Slice value = bp::extract<const std::string>(_value);
 	  leveldb::Status s = this->_db->Put(options, key, value);
 
 	  if (!s.ok()){
@@ -68,7 +68,7 @@ public:
   void Delete(PyObject* _options, PyObject* _key) //Delete(options, key)
   {
 	  const leveldb::WriteOptions& options = bp::extract<const leveldb::WriteOptions&>(_options);
-	  const leveldb::Slice& key = bp::extract<const leveldb::Slice&>(_key);
+	  const leveldb::Slice key = bp::extract<const std::string>(_key);
 	  leveldb::Status s = this->_db->Delete(options, key);
 
 	  if (!s.ok()){
@@ -79,7 +79,7 @@ public:
   std::string Get(PyObject* _options, PyObject* _key) //Delete(options, key)
   {
 	  const leveldb::ReadOptions& options = bp::extract<const leveldb::ReadOptions&>(_options);
-	  const leveldb::Slice& key = bp::extract<const leveldb::Slice&>(_key);
+	  const leveldb::Slice key = bp::extract<const std::string>(_key);
 	  std::string value;
 	  leveldb::Status s = this->_db->Get(options, key, &value);
 
@@ -129,6 +129,7 @@ public:
   }
 };
 
+
 BOOST_PYTHON_MODULE(leveldb_mcpe)
 {
   //Exceptions
@@ -141,26 +142,38 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
     .def("Write", &DBWrap::Write)
     .def("Get", &DBWrap::Get)
     .def("NewIterator", &DBWrap::NewIterator,
-    bp::return_value_policy<bp::reference_existing_object>())
+		bp::return_value_policy<bp::reference_existing_object>())
     .def("GetSnapshot", &DBWrap::GetSnapshot,
-    bp::return_value_policy<bp::reference_existing_object>())
+		bp::return_value_policy<bp::reference_existing_object>())
     .def("ReleaseSnapshot", &DBWrap::ReleaseSnapshot)
     .def("GetProperty", &DBWrap::GetProperty)
-    .def("GetApproximateSizes", &DBWrap::GetApproximateSizes)
-    .def("CompactRange", &DBWrap::CompactRange);
+	.def("GetApproximateSizes", &DBWrap::GetApproximateSizes)
+	.def("CompactRange", &DBWrap::CompactRange);
 
   //leveldb/options.h
   bp::class_<leveldb::Options>("Options", bp::init<>())
-    .def_readonly("comparator", &leveldb::Options::comparator)
-    .def_readwrite("create_if_missing", &leveldb::Options::create_if_missing)
-    .def_readwrite("error_if_exists", &leveldb::Options::error_if_exists)
-    .def_readwrite("env", &leveldb::Options::env)
-    .def_readwrite("info_log", &leveldb::Options::info_log)
-    .def_readwrite("write_buffer_size", &leveldb::Options::write_buffer_size)
-    .def_readwrite("max_open_files", &leveldb::Options::max_open_files)
-    .def_readwrite("block_cache", &leveldb::Options::block_cache)
-    .def_readwrite("block_size", &leveldb::Options::block_size)
-    .def_readwrite("block_restart_interval", &leveldb::Options::block_restart_interval)
-    //TODO setup a way to include compressor array
-    .def_readonly("filter_policy", &leveldb::Options::filter_policy);
+	  .def_readonly("comparator", &leveldb::Options::comparator) //Pointer, maybe needs better wrapper? Untested
+	  .def_readwrite("create_if_missing", &leveldb::Options::create_if_missing)
+	  .def_readwrite("error_if_exists", &leveldb::Options::error_if_exists)
+	  .def_readwrite("env", &leveldb::Options::env) //Pointer, maybe needs better wrapper? Untested
+	  .def_readwrite("info_log", &leveldb::Options::info_log) //Pointer, maybe needs better wrapper? Untested
+	  .def_readwrite("write_buffer_size", &leveldb::Options::write_buffer_size)
+	  .def_readwrite("max_open_files", &leveldb::Options::max_open_files)
+	  .def_readwrite("block_cache", &leveldb::Options::block_cache) //Pointer, maybe needs better wrapper? Untested
+	  .def_readwrite("block_size", &leveldb::Options::block_size)
+	  .def_readwrite("block_restart_interval", &leveldb::Options::block_restart_interval)
+	  //TODO setup a way to include compressor array //Pointer, maybe needs better wrapper? Untested
+	  .def_readonly("filter_policy", &leveldb::Options::filter_policy); //Pointer, maybe needs better wrapper? Untested
+	;
+  
+  bp::class_<leveldb::ReadOptions>("ReadOptions", bp::init<>())
+	  .def_readwrite("verify_checksums", &leveldb::ReadOptions::verify_checksums)
+	  .def_readwrite("fill_cache", &leveldb::ReadOptions::fill_cache)
+	  .def_readwrite("snapshot", &leveldb::ReadOptions::snapshot) //Pointer, maybe needs better wrapper? Untested
+	;
+
+  bp::class_<leveldb::WriteOptions>("WriteOptions", bp::init<>())
+	  .def_readwrite("sync", &leveldb::WriteOptions::sync)
+	;
+
 }
