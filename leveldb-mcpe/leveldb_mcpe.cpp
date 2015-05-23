@@ -5,7 +5,9 @@
 #include <leveldb/env.h>
 #include <leveldb/filter_policy.h>
 #include <leveldb/write_batch.h>
+
 #define BOOST_PYTHON_STATIC_LIB
+
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>
 #include <boost/python/object.hpp>
@@ -21,19 +23,40 @@ namespace bp = boost::python;
 //Exception
 class LevelDBException {
 public:
-  LevelDBException(const std::string msg)
-    : message(msg) {}
+	LevelDBException(const std::string msg)
+		: message(msg) {}
 
-  std::string getMessage() const {
-    return message;
-  }
+	std::string getMessage() const {
+		return message;
+	}
 private:
-  std::string message;
+	std::string message;
 };
 
 static void ExceptionTranslator(const LevelDBException &err) {
-  PyErr_SetString(PyExc_RuntimeError, err.getMessage().c_str());
-}
+	PyErr_SetString(PyExc_RuntimeError, err.getMessage().c_str());
+};
+
+struct WriteBatchWrapper
+{
+	leveldb::WriteBatch _wb;
+
+	WriteBatchWrapper(){};
+
+	void Put(PyObject* _key, PyObject* _value)
+	{
+		const std::string key = bp::extract<const std::string>(_key);
+		const std::string value = bp::extract<const std::string>(_value);
+		this->_wb.Put(key, value);
+	}
+
+	void Delete(PyObject* _key)
+	{
+		const std::string key = bp::extract<const std::string>(_key);
+		this->_wb.Delete(key);
+	}
+};
+
 
 //leveldb::DB wrapper
 class DBWrap
@@ -90,10 +113,15 @@ public:
   }
 
 
-  leveldb::Status Write(const leveldb::WriteOptions& options,
-    leveldb::WriteBatch* updates)
+  leveldb::Status Write(PyObject* _options, PyObject* _updates)
   {
-    return this->_db->Write(options, updates);
+	  const leveldb::WriteOptions& options = bp::extract<const leveldb::WriteOptions&>(_options);
+	  WriteBatchWrapper& __updates = bp::extract<WriteBatchWrapper&>(_updates);
+	  leveldb::Status s = this->_db->Write(options, &__updates._wb);
+
+	  if (!s.ok()){
+		  throw LevelDBException(s.ToString());
+	  }
   }
 
 
@@ -176,4 +204,9 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 	  .def_readwrite("sync", &leveldb::WriteOptions::sync)
 	;
 
+  //leveldb/write_batch.h
+  bp::class_<WriteBatchWrapper>("WriteBatch", bp::init<>())
+	  .def("Put", &WriteBatchWrapper::Put)
+	  .def("Delete", &WriteBatchWrapper::Delete)
+	;
 }
