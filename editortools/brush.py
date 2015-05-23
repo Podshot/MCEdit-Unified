@@ -50,6 +50,7 @@ from os.path import basename
 from pymclevel import block_fill, BoundingBox, materials, blockrotation
 import pymclevel
 from pymclevel.mclevelbase import exhaust
+from pymclevel.entity import TileEntity
 import random
 from __builtin__ import __import__
 from locale import getdefaultlocale
@@ -513,8 +514,7 @@ class BrushTool(CloneTool):
                 path = path.encode(DEF_ENC)
             globals()[name] = m = imp.load_source(name, path)
             if not embeded:
-                if "albow.translate" in sys.modules.keys():
-                    del sys.modules["albow.translate"]
+                old_trn_path = albow.translate.getLangPath()
                 if "trn" in sys.modules.keys():
                     del sys.modules["trn"]
                 import albow.translate as trn
@@ -523,6 +523,10 @@ class BrushTool(CloneTool):
                     trn.setLangPath(trn_path)
                     trn.buildTranslation(config.settings.langCode.get())
                 m.trn = trn
+                albow.translate.setLangPath(old_trn_path)
+                albow.translate.buildTranslation(config.settings.langCode.get())
+                self.editor.mcedit.set_update_translation(True)
+                self.editor.mcedit.set_update_translation(False)
             m.materials = self.editor.level.materials
             m.createInputs(m)
             return m
@@ -601,7 +605,7 @@ class BrushTool(CloneTool):
         except:
             alert('Exception while trying to load preset. See console for details.')
         loadedBrushOptions = ast.literal_eval(f.read())
-        
+
         brushMode = self.brushModes.get(loadedBrushOptions.get("Mode", None), None)
         if brushMode is not None:
             self.selectedBrushMode = loadedBrushOptions["Mode"]
@@ -1136,3 +1140,16 @@ def createBrushMask(shape, style="Round", offset=(0, 0, 0), box=None, chance=100
         return mask[1:-1, 1:-1, 1:-1]
     else:
         return mask
+
+def createTileEntities(block, box, chunk):
+    if box is None or block.stringID not in TileEntity.stringNames.keys():
+        return
+
+    tileEntity = TileEntity.stringNames[block.stringID]
+    for (x, y, z) in box.positions:
+        if chunk.world.blockAt(x, y, z) == block.ID:
+            if chunk.tileEntityAt(x, y, z):
+                chunk.removeTileEntitiesInBox(BoundingBox((x, y, z), (1, 1, 1)))
+            tileEntityObject = TileEntity.Create(tileEntity, (x, y, z))
+            chunk.TileEntities.append(tileEntityObject)
+            chunk._fakeEntities = None

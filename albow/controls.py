@@ -8,11 +8,7 @@ from pygame import Rect, draw
 from widget import Widget, overridable_property
 from theme import ThemeProperty
 import resource
-from translate import _
-
-#-# Translation live update preparation
-#from translate import new_translation
-#-#
+from translate import _, getLang
 
 
 class Control(object):
@@ -100,7 +96,6 @@ class Label(Widget):
         #            defaults to 'text'.
         Widget.__init__(self, **kwds)
         #-# Translation live update preparation
-        #font = self.font
         self.fixed_width = width
         self.base_text = base_text or text
         self.previous_translation = _(text, doNotTranslate=kwds.get('doNotTranslate', False))
@@ -128,17 +123,15 @@ class Label(Widget):
             tw = max(1, tw)
         d = 2 * self.margin
         self.size = (tw + d, th + d)
-        #self._text = text
 
-#    def get_update_translation(self):
-#        return Widget.update_translation(self)
+    def get_update_translation(self):
+        return Widget.update_translation(self)
 
-#    def set_update_translation(self, v):
-#        # get the translation of the base_text
-##        trn = _(self.base_text)
-#        self.text = self.base_text
-#        self.calc_size()
-#        Widget.set_update_translation(self, v)
+    def set_update_translation(self, v):
+        self.text = self.base_text
+        self.set_text(self.base_text)
+        self.calc_size()
+        Widget.set_update_translation(self, v)
     #-#
 
     def __repr__(self):
@@ -147,8 +140,8 @@ class Label(Widget):
     def get_text(self):
         return self._text
 
-    def set_text(self, x):
-        self._text = _(x)
+    def set_text(self, x, doNotTranslate=False):
+        self._text = _(x, doNotTranslate=doNotTranslate)
 
     def get_align(self):
         return self._align
@@ -222,6 +215,7 @@ class SmallLabel(Label):
 class ButtonBase(Control):
     align = 'c'
     action = None
+    rightClickAction = None
     default_choice_color = ThemeProperty('default_choice_color')
     default_choice_bg_color = ThemeProperty('default_choice_bg_color')
 
@@ -232,7 +226,7 @@ class ButtonBase(Control):
 
     def mouse_drag(self, event):
         state = event in self
-        if state != self._highlighted:
+        if event.buttons[0] == 1 and state != self._highlighted:
             self._highlighted = state
             self.invalidate()
 
@@ -243,18 +237,21 @@ class ButtonBase(Control):
                 self._highlighted = False
                 if self.enabled:
                     self.call_handler('action')
+        if event in self and button == 3 and self.enabled:
+            if self is event.clicked_widget or (event.clicked_widget and self in event.clicked_widget.all_parents()):
+                self.call_handler('rightClickAction')
         self.get_root().fix_sticky_ctrl()
 
 
 
-
-
 class Button(ButtonBase, Label):
-    def __init__(self, text, action=None, enable=None, **kwds):
+    def __init__(self, text, action=None, enable=None, rightClickAction=None, **kwds):
         if action:
             kwds['action'] = action
         if enable:
             kwds['enable'] = enable
+        if rightClickAction:
+            kwds['rightClickAction'] = rightClickAction
         Label.__init__(self, text, **kwds)
 
 
@@ -293,11 +290,6 @@ class Image(Widget):
         surf.blit(image, r)
 
 
-#    def draw(self, surf):
-#        frame = self.get_margin_rect()
-#        surf.blit(self.image, frame)
-
-
 class ImageButton(ButtonBase, Image):
     pass
 
@@ -309,13 +301,6 @@ class ValueDisplay(Control, Label):
     def __init__(self, width=100, **kwds):
         Label.__init__(self, "", **kwds)
         self.set_size_for_text(width)
-
-    #    def draw(self, surf):
-    #        value = self.value
-    #        text = self.format_value(value)
-    #        buf = self.font.render(text, True, self.fg_color)
-    #        frame = surf.get_rect()
-    #        blit_in_rect(surf, buf, frame, self.align, self.margin)
 
     def get_text(self):
         return self.format_value(_(self.value))

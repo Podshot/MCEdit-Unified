@@ -10,21 +10,43 @@ import root
 from layout import Column, Row
 from translate import _
 from menu import Menu
-from fields import FloatField, IntField, TextFieldWrapped
+from fields import FloatField, IntField, TextFieldWrapped, TextField
 from datetime import timedelta, datetime
 
 
 class HotkeyColumn(Widget):
     is_gl_container = True
 
+#-# Translation live update preparation
     def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
-        if keysColumn is None:
+        self.items = items
+        self.item_spacing = item_spacing
+        self.keysColumn = keysColumn
+        self.buttonsColumn = buttonsColumn
+        Widget.__init__(self)
+        self.buildWidgets()
+
+    def set_update_translation(self, v):
+        if v:
+            self.buildWidgets()
+
+    def buildWidgets(self):
+        keysColumn = self.keysColumn
+        buttonsColumn = self.buttonsColumn
+        items = self.items
+        item_spacing = self.item_spacing
+
+        if keysColumn is None or True:
             keysColumn = []
-        if buttonsColumn is None:
+        if buttonsColumn is None or True:
             buttonsColumn = []
         labels = []
 
-        Widget.__init__(self)
+        for w in self.subwidgets:
+            for _w in w.subwidgets:
+                w.remove(_w)
+            self.remove(w)
+
         for t in items:
             if len(t) == 3:
                 (hotkey, title, action) = t
@@ -69,6 +91,8 @@ class HotkeyColumn(Widget):
         self.labels = labels
         self.add(commandRow)
         self.shrink_wrap()
+        self.invalidate()
+#-#
 
 
 class MenuButton(Button):
@@ -104,15 +128,16 @@ class ChoiceButton(ValueButton):
         self.choices = choices or ["[UNDEFINED]"]
 
         ValueButton.__init__(self, action=self.showMenu, **kw)
-#        widths = [self.font.size(_(c))[0] for c in choices] + [self.width]
-#        if len(widths):
-#            self.width = max(widths) + self.margin * 2
         self.calc_width()
         #-#
 
         self.choiceIndex = 0
 
     #-# Translation live update preparation
+    def set_update_translation(self, v):
+        ValueButton.set_update_translation(self, v)
+        self.menu.set_update_translation(v)
+
     def calc_width(self):
         widths = [self.font.size(_(c))[0] for c in self.choices] + [self.width]
         if len(widths):
@@ -152,7 +177,7 @@ class ChoiceButton(ValueButton):
     @choices.setter
     def choices(self, ch):
         self._choices = ch
-        self.menu = Menu("", ((name, "pickMenu") for name in self._choices),
+        self.menu = Menu("", [(name, "pickMenu") for name in self._choices],
                          self.scrolling, self.scroll_items)
 
 
@@ -193,6 +218,10 @@ def IntInputRow(title, *args, **kw):
 
 def TextInputRow(title, *args, **kw):
     return Row((Label(title, tooltipText=kw.get('tooltipText')), TextFieldWrapped(*args, **kw)))
+
+  
+def BasicTextInputRow(title, *args, **kw):
+    return Row((Label(title, tooltipText=kw.get('tooltipText')), TextField(*args, **kw)))
 
 
 def showProgress(progressText, progressIterator, cancel=False):

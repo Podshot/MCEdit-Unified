@@ -100,9 +100,6 @@ if enc is None:
     enc = "UTF-8"
 
 string_cache = {}
-#-# Translation live update preparation
-prev_string_cache = {}
-#-#
 font_lang_cache = {}
 langPath = os.sep.join((".", "lang"))
 lang = "Default"
@@ -137,11 +134,11 @@ def _(string, doNotTranslate=False):
         trn = u"" + string
     except UnicodeDecodeError:
         trn = string_cache.get(string, string)
-    if '-' in string:
-        # Support for hotkeys
-        trn = '-'.join([_(a) for a in string.split('-')])
     if trn == string:
         trn = string_cache.get(string, string)
+    if trn == string and '-' in string:
+        # Support for hotkeys
+        trn = '-'.join([_(a) for a in string.split('-')])
     if buildTemplate:
         global template
         global strNum
@@ -293,9 +290,15 @@ def getLangName(file, path=None):
         bold = line.split("#-# font bold: ")[1].strip()
     global font_lang_cache
     if regular and regular.lower() != "default":
-        font_lang_cache["DejaVuSans-Regular.ttf"] = {name: regular}
+        if not font_lang_cache.get("DejaVuSans-Regular.ttf", False):
+            font_lang_cache["DejaVuSans-Regular.ttf"] = {name: regular}
+        else:
+            font_lang_cache["DejaVuSans-Regular.ttf"][name] = regular
     if bold and bold.lower() != "default":
-        font_lang_cache["DejaVuSans-Bold.ttf"] = {name: bold}
+        if not font_lang_cache.get("DejaVuSans-Bold.ttf", False):
+            font_lang_cache["DejaVuSans-Bold.ttf"] = {name: bold}
+        else:
+            font_lang_cache["DejaVuSans-Bold.ttf"][name] = bold
     resource.font_lang_cache = font_lang_cache
     return name
 
@@ -312,11 +315,6 @@ def buildTranslation(lang,suppressAlert=False):
     log.debug("buildTranslation <<<")
     tm = time()
     global string_cache
-    #-# Trnaslation live update preparation
-    global prev_string_cache
-    prev_string_cache = {}
-    prev_string_cache.update([(v, k) for k, v in string_cache.items()])
-    #-#
     fileFound = False
     lang = "%s"%lang
     fName = os.path.join(langPath, lang + ".trn")
@@ -380,14 +378,26 @@ def buildTranslation(lang,suppressAlert=False):
         result += r[2:]
         result = u"{" + result.replace(u"\r\n", u"\\n").replace(u"\n", u"\\n").replace(u"\t", u"\\t") + u"\"}"
         log.debug("    Conversion done. Loading JSON resource.")
-        string_cache = json.loads(result)
+        try:
+            string_cache = json.loads(result)
+        except Exception, e:
+            log.debug("Error while loading JSON resource:")
+            log.debug("    %s"%e)
+            log.debug("Dumping JSON data in %s.json"%lang)
+            f = open('%s.json'%lang, 'w')
+            f.write(result)
+            f.close()
+            return {}, False
         log.debug("    Setting up font.")
         line = rawData.splitlines()[0]
         if "#-# " in line:
             lngNm = line.split("#-# ")[1].strip()
         else:
             lngNm = os.path.splitext(os.path.basename(fName))[0]
-        resource.setCurLang(lngNm)
+        try:
+            resource.setCurLang(lngNm)
+        except:
+            resource.__curLang = lngNm
         tm1 = time()
         log.debug("  * End on %s duration %s"%(tm, tm1 - tm))
     else:
@@ -398,19 +408,11 @@ def buildTranslation(lang,suppressAlert=False):
             log.debug("  * It's not a file.")
         if not os.access(fName, os.R_OK):
             log.debug("  * Is not readable.")
+        log.debug("Default strings will be used.")
+        string_cache = {}
     log.debug("buildTranslation >>>")
     return string_cache, fileFound
 
-#-------------------------------------------------------------------------------
-#-# Translation live update preparation
-def new_translation(string):
-    """Returns a new translation for the 'string'. The 'string' may be already translated or not."""
-    # first look in the actual string_cache
-    if string in string_cache.keys():
-        return string_cache[string]
-    # if the string is not found, look in prev_string_cache
-    return _(prev_string_cache.get(string, string))
-#-#
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
 

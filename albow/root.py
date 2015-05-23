@@ -126,8 +126,11 @@ class RootWidget(Widget):
         self.notMove = False
         self.nudge = None
         self.testTime = None
+        self.testTimeBack = 0.4
         self.nudgeDirection = None
         self.sessionStolen = False
+        self.sprint = False
+        self.filesToChange = []
 
     def get_nudge_block(self):
         return self.selectTool.panel.nudgeBlocksButton
@@ -326,6 +329,7 @@ class RootWidget(Widget):
                                     if keyname == key and i == self.nudgeDirection:
                                         self.nudgeDirection = None
                                         self.testTime = None
+                                        self.testTimeBack = 0.4
 
                             self.send_key(modal_widget, 'key_up', event)
                             if last_mouse_event_handler:
@@ -380,6 +384,8 @@ class RootWidget(Widget):
                             if not keys:
                                 return
                             keyName = self.getKey(movement=True, keyname=pygame.key.name(i))
+                            if keyName == self.editor.sprintKey:
+                                self.sprint = True
                             if self.editor.level:
                                 for j, key in enumerate(self.editor.movements):
                                     if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
@@ -389,6 +395,13 @@ class RootWidget(Widget):
                                     if keyName == key and not allKeys[pygame.K_LCTRL] and not allKeys[pygame.K_RCTRL] and not allKeys[pygame.K_RMETA] and not allKeys[pygame.K_LMETA]:
                                         self.changeCameraKeys(k)
                         map(useKeys, allKeysWithData)
+
+                        for edit in self.filesToChange:
+                            newTime = os.path.getmtime(edit.filename)
+                            if newTime > edit.timeChanged:
+                                edit.timeChanged = newTime
+                                edit.makeChanges()
+
 
                 except Cancel:
                     pass
@@ -444,7 +457,9 @@ class RootWidget(Widget):
     def changeMovementKeys(self, keyNum, keyname):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraInputs[self.movementNum[keyNum]] += self.movementMath[keyNum]
-        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds=0.1)):
+        elif self.notMove and self.nudge is not None and (self.testTime is None or datetime.now() - self.testTime >= timedelta(seconds=self.testTimeBack)):
+            if self.testTimeBack > 0.1:
+                self.testTimeBack -= 0.1
             self.bonus_draw_time = False
             self.testTime = datetime.now()
             if keyname == self.editor.movements[4]:
@@ -479,6 +494,9 @@ class RootWidget(Widget):
     def changeCameraKeys(self, keyNum):
         if self.editor.level is not None and not self.notMove:
             self.editor.cameraPanKeys[self.cameraNum[keyNum]] = self.cameraMath[keyNum]
+
+    def RemoveEditFiles(self):
+        self.filesToChange = []
 
     def call_idle_handlers(self, event):
         def call(ref):

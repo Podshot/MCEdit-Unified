@@ -914,9 +914,6 @@ class AnvilWorldFolder(object):
 
         return path
 
-    def setPath(self, path):
-        self.filename = path
-
     # --- Region files ---
 
     def getRegionFilename(self, rx, rz):
@@ -1067,13 +1064,19 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
             self.acquireSessionLock()
 
             workFolderPath = self.worldFolder.getFolderPath("##MCEDIT.TEMP##")
+            workFolderPath2 = self.worldFolder.getFolderPath("##MCEDIT.TEMP2##")
             if os.path.exists(workFolderPath):
                 # xxxxxxx Opening a world a second time deletes the first world's work folder and crashes when the first
                 # world tries to read a modified chunk from the work folder. This mainly happens when importing a world
                 # into itself after modifying it.
                 shutil.rmtree(workFolderPath, True)
+            if os.path.exists(workFolderPath2):
+                shutil.rmtree(workFolderPath2, True)
 
             self.unsavedWorkFolder = AnvilWorldFolder(workFolderPath)
+            self.fileEditsFolder = AnvilWorldFolder(workFolderPath2)
+
+            self.editFileNumber = 1
 
         # maps (cx, cz) pairs to AnvilChunk
         self._loadedChunks = weakref.WeakValueDictionary()
@@ -1253,6 +1256,7 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         try:
             self.checkSessionLock()
             shutil.rmtree(self.unsavedWorkFolder.filename, True)
+            shutil.rmtree(self.fileEditsFolder.filename, True)
         except SessionLockLost:
             pass
 

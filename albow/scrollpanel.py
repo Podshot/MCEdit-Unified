@@ -173,11 +173,11 @@ class ScrollRow(PaletteView):
 class ScrollPanel(Column):
     column_margin = 2
     def __init__(self, *args, **kwargs):
-        kwargs['margin'] = 0
+        kwargs['margin'] = kwargs.get('margin', 0)
         self.selected_item_index = None
         self.rows = kwargs.pop('rows', [])
-        self.align = kwargs.pop('align', 'l')
-        self.spacing = kwargs.pop('spacing', 4)
+        self.align = kwargs.get('align', 'l')
+        self.spacing = kwargs.get('spacing', 4)
         self.draw_zebra = kwargs.pop('draw_zebra', True)
 #        self.row_height = kwargs.pop('row_height', max([a.height for a in self.rows] + [self.font.size(' ')[1],]))
         self.row_height = kwargs.pop('row_height', max([a.height for a in self.rows] + [self.font.get_linesize(),]))
@@ -192,15 +192,20 @@ class ScrollPanel(Column):
 
     def draw_tree_cell(self, surf, i, data, cell_rect, column):
         """..."""
+        if self.align.lower() == 'r':
+            cell_rect.right = self.right - self.margin
+            if self.scrollRow.can_scroll_up() or self.scrollRow.can_scroll_down():
+                cell_rect.right -= self.scrollRow.scroll_button_size
+        elif self.align.lower() == 'c':
+            cell_rect.left = self.centerx - (cell_rect.width / 2)
         if type(data) in (str, unicode):
-            self.draw_text_cell(surf, i, data, cell_rect, 'l', self.font)
+            self.draw_text_cell(surf, i, data, cell_rect, self.align, self.font)
         else:
             self.draw_image_cell(surf, i, data, cell_rect, column)
 
-    @staticmethod
-    def draw_image_cell(surf, i, data, cell_rect, column):
+    def draw_image_cell(self, surf, i, data, cell_rect, column):
         """..."""
-        blit_in_rect(surf, data, cell_rect, 'l')
+        blit_in_rect(surf, data, cell_rect, self.align, self.margin)
 
     def draw_text_cell(self, surf, i, data, cell_rect, align, font):
         buf = font.render(unicode(data), True, self.fg_color)
@@ -223,7 +228,7 @@ class ScrollPanel(Column):
             width += sub.width
             surf = Surface((sub.width, sub.height), SRCALPHA)
             sub.draw_all(surf)
-            yield i, x + m, sub.width - d, None, surf
+            yield i, x + m, sub.width - d, i, surf
             x += width
 
     def click_item(self, n, e):

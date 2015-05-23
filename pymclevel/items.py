@@ -34,28 +34,31 @@ class Items(object):
             raise Exception("Couldn't find Item Files. Please reinstall MCEdit!")
 
         for file_ in os.listdir(itemsdir):
-            try:
-                f = open(os.path.join(itemsdir, file_, "items.json"), 'r')
-                itempack = json.load(f)
+            if os.path.isdir(os.path.join(itemsdir, file_)):
+                try:
+                    f = open(os.path.join(itemsdir, file_, "items.json"), 'r')
+                    itempack = json.load(f)
 
-                itempacknew = {}
+                    itempacknew = {}
 
-                for item in itempack:
-                    itempacknew[file_ + ":" + item] = itempack.get(item)
-                self.items.update(itempacknew)
-            except:
-                pass
-            try:
-                f = open(os.path.join(itemsdir, file_, "blocks.json"), 'r')
-                itempack = json.load(f)
+                    for item in itempack:
+                        itempacknew[file_ + ":" + item] = itempack.get(item)
+                    self.items.update(itempacknew)
+                except Exception, e:
+                    logger.debug('Error while loading items.json: %s'%e)
+                    pass
+                try:
+                    f = open(os.path.join(itemsdir, file_, "blocks.json"), 'r')
+                    itempack = json.load(f)
 
-                itempacknew = {}
+                    itempacknew = {}
 
-                for item in itempack:
-                    itempacknew[file_ + ":" + item] = itempack.get(item)
-                self.items.update(itempacknew)
-            except:
-                pass
+                    for item in itempack:
+                        itempacknew[file_ + ":" + item] = itempack.get(item)
+                    self.items.update(itempacknew)
+                except Exception, e:
+                    logger.debug('Error while loading blocks.json: %s'%e)
+                    pass
 
     def findItem(self, id=0, damage=None):
         try:

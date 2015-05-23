@@ -48,6 +48,11 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
             ("BrewTime", nbt.TAG_Int),
         ),
+        "Control": (
+            ("Command", nbt.TAG_String),
+            ("CustomName", nbt.TAG_String),
+            ("TrackOutput", nbt.TAG_Byte),
+        ),
     }
 
     otherNames = {
@@ -59,8 +64,26 @@ class TileEntity(object):
         "Trapped Chest": "Trap",
         "Jukebox": "RecordPlayer",
         "Piston": "Piston",
-        "Cauldron": "Cauldron"
+        "Cauldron": "Cauldron",
+        "Command Block": "Control"
     }
+
+    stringNames = {
+        "furnace": "Furnace",
+        "lit_furnace": "Furnace",
+        "standing_sign": "Sign",
+        "wall_sign": "Sign",
+        "mob_spawner": "MobSpawner",
+        "chest": "Chest",
+        "ender_chest": "Chest",
+        "noteblock": "Music",
+        "trapped_chest": "Trap",
+        "jukebox": "RecordPlayer",
+        "sticky_piston": "Piston",
+        "piston": "Piston",
+        "cauldron": "Cauldron",
+        "command_block": "Control"
+}
 
     knownIDs = baseStructures.keys()
     maxItems = {
@@ -86,15 +109,17 @@ class TileEntity(object):
     }
 
     @classmethod
-    def Create(cls, tileEntityID, **kw):
+    def Create(cls, tileEntityID, pos=(0, 0, 0), **kw):
         tileEntityTag = nbt.TAG_Compound()
         tileEntityTag["id"] = nbt.TAG_String(tileEntityID)
         base = cls.baseStructures.get(tileEntityID, None)
         if base:
             for (name, tag) in base:
                 tileEntityTag[name] = tag()
+                if name == "CustomName" and tileEntityID == "Control":
+                    tileEntityTag[name] = nbt.TAG_String("@")
 
-        cls.setpos(tileEntityTag, (0, 0, 0))
+        cls.setpos(tileEntityTag, pos)
         return tileEntityTag
 
     @classmethod

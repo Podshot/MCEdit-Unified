@@ -1,5 +1,5 @@
 from pymclevel.materials import Block
-from editortools.brush import createBrushMask
+from editortools.brush import createBrushMask, createTileEntities
 import numpy
 
 displayName = 'Fill'
@@ -33,3 +33,5 @@ def applyToChunkSlices(self, op, chunk, slices, brushBox, brushBoxThisChunk):
 
     chunk.Blocks[slices][brushMask] = op.options['Block'].ID
     chunk.Data[slices][brushMask] = op.options['Block'].blockData
+
+    createTileEntities(op.options['Block'], brushBoxThisChunk, chunk)

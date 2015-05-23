@@ -69,12 +69,32 @@ class Menu(Dialog):
         Dialog.__init__(self, **kwds)
 
         self.root = self.get_root()
+        self.calc_size()
 
+    #&#
+    def set_items(self, items):
+        self.items = items
+        self._items = [MenuItem(*item) for item in items]
+
+    def set_scroll_items(self, scroll_items):
+        if scroll_items < len(self.items):
+            self.scroll_items = scroll_items
+        else:
+            self.scroll_items = len(self.items)
+        self.calc_size()
+    #&#
+
+    def calc_size(self):
         h = self.font.get_linesize()
         if self.scrolling:
             self.height = h * self.scroll_items + h
         else:
             self.height = h * len(self._items) + h
+
+    def set_update_translation(self, v):
+        if v:
+            self._items = [MenuItem(*item) for item in self.items]
+        Dialog.set_update_translation(self, v)
 
     def present(self, client, pos):
         client = client or self.root

@@ -14,10 +14,11 @@
 from pygame import key, draw, image, Rect, event, MOUSEBUTTONDOWN
 from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
     FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
-    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton
+    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton, Menu
+from albow.dialogs import Dialog
 from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
-from albow.translate import _
+from albow.translate import _, getLang
 from glbackground import Panel
 from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
      TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
@@ -39,6 +40,41 @@ import os
 import mcplatform
 from config import config, DEF_ENC
 from albow.resource import resource_path
+
+#&# Protoype for blocks/items names
+from pymclevel.materials import block_map, alphaMaterials
+map_block = {}
+for k, v in block_map.items():
+    map_block[v] = k
+
+from pymclevel.items import items as mcitems
+map_items = {}
+for k, v in mcitems.items.items():
+    if type (v) == dict:
+        names = []
+        if type(v['name']) == list:
+            names = v['name']
+        else:
+            names = [v['name']]
+        for name in names:
+            if name != None and name not in map_items.keys():
+                map_items[name] = (k, names.index(name))
+
+# # DEBUG
+# #keys = map_items.keys()
+# #keys.sort()
+# #f = open('map_items.txt', 'w')
+# #for k in keys:
+# #    f.write('%s: %s\n'%(k, map_items[k]))
+# #f.close()
+# #f = open('mcitems.txt', 'w')
+# #keys = mcitems.items.keys()
+# #for k in keys:
+# #    f.write('%s: %s\n'%(k, mcitems.items[k]))
+# #f.close()
+
+import mclangres
+#&#
 
 #-----------------------------------------------------------------------------
 bullet_image = None
@@ -96,7 +132,7 @@ field_types = {TAG_Byte: (IntField, (0, 256)),
                TAG_Float: (FloatField, None),
                TAG_Int: (IntField, (-2147483647,+2147483647)),
                TAG_Long: (IntField, (-9223372036854775807,+9223372036854775807)),
-               TAG_Short: (IntField, (0, 65536)),
+               TAG_Short: (IntField, (-65535, 65536)),
                TAG_String: (TextFieldWrapped, None),
               }
 
@@ -386,25 +422,62 @@ class NBTExplorerOptions(ToolOptions):
             self.tool.panel.tree.build_layout()
         ToolOptions.dismiss(self, *args, **kwargs)
 
+
 #-----------------------------------------------------------------------------
-class SlotEditor(Panel):
-    def __init__(self, inventory, data):
-        Panel.__init__(self)
+#&# Prototype for blocks/items names
+class SlotEditor(Dialog):
+    def __init__(self, inventory, data, *args, **kwargs):
+        Dialog.__init__(self, *args, **kwargs)
         self.inventory = inventory
         slot, id, count, damage = data
+        self.former_id_text = id
         self.slot = slot
         self.id = TextFieldWrapped(text=id, doNotTranslate=True, width=300)
-        self.count = IntField(text="%s"%count, min=-64, max=64)
-        self.damage = IntField(text="%s"%damage, min=-32768, max=32767)
+        self.id.change_action = self.text_entered
+        self.id.escape_action = self.cancel
+        self.id.enter_action = self.ok
+        self.count = IntField(text="%s"%count, min=0, max=64)
+        self.damage = IntField(text="%s"%damage, min=0, max=os.sys.maxint)
         header = Label(_("Inventory Slot #%s")%slot, doNotTranslate=True)
         row = Row([Label("id"), self.id,
                    Label("Count"), self.count,
                    Label("Damage"), self.damage,
                    ])
+        
+        self.matching_items = [mclangres.translate(k) for k in map_items.keys()]
+        self.matching_items.sort()
+        self.selected_item_index = None
+        if id in self.matching_items:
+            self.selected_item_index = self.matching_items.index(id)
+        self.tableview = tableview = TableView(columns=[TableColumn("", 415, 'l')])
+        tableview.num_rows = lambda: len(self.matching_items)
+        tableview.row_data = lambda x: (self.matching_items[x],)
+        tableview.row_is_selected = lambda x: x == self.selected_item_index
+        tableview.click_row = self.select_tablerow
+        
+        
         buttons = Row([Button("Save", action=self.dismiss), Button("Cancel", action=self.cancel)])
-        col = Column([header, row, buttons], spacing=2)
+        col = Column([header, row, tableview, buttons], spacing=2)
         self.add(col)
         self.shrink_wrap()
+
+        try:
+            self.tableview.rows.scroll_to_item(self.selected_item_index)
+        except Exception, e:
+            print e
+            pass
+
+    def ok(self, *args, **kwargs):
+        self.id.set_text(self.matching_items[self.selected_item_index])
+        kwargs['save'] = True
+        self.dismiss(*args, **kwargs)
+
+    def select_tablerow(self, i, e):
+        old_index = self.selected_item_index
+
+        self.selected_item_index = i
+        if e.num_clicks > 1 and old_index == i:
+            self.dismiss(save=True)
 
     def cancel(self, *args, **kwargs):
         kwargs['save'] = False
@@ -414,7 +487,38 @@ class SlotEditor(Panel):
         if kwargs.pop('save', True):
             data = [self.slot, self.id.text, self.count.text, self.damage.text]
             self.inventory.change_value(data)
-        Panel.dismiss(self, *args, **kwargs)
+        Dialog.dismiss(self, *args, **kwargs)
+
+    def text_entered(self):
+        text = self.id.get_text()
+        if self.former_id_text == text:
+            return
+        results = []
+        for k in map_items.keys():
+            k = mclangres.translate(k)
+            if text.lower() in k.lower():
+                results.append(k)
+        results.sort()
+        self.matching_items = results
+        self.selected_item_index = 0
+        self.tableview.rows.scroll_to_item(self.selected_item_index)
+
+    def dispatch_key(self, name, evt):
+        super(SlotEditor, self).dispatch_key(name, evt)
+        if name == "key_down":
+            keyname = self.root.getKey(evt)
+            if keyname == "Up" and self.selected_item_index > 0:
+                self.selected_item_index -= 1
+
+            elif keyname == "Down" and self.selected_item_index < len(self.matching_items) - 1:
+                self.selected_item_index += 1
+            elif keyname == 'Page down':
+                self.selected_item_index = min(len(self.matching_items) - 1, self.selected_item_index + self.tableview.rows.num_rows())
+            elif keyname == 'Page up':
+                self.selected_item_index = max(0, self.selected_item_index - self.tableview.rows.num_rows())
+            if self.tableview.rows.cell_to_item_no(0, 0) != None and (self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selected_item_index or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selected_item_index):
+                self.tableview.rows.scroll_to_item(self.selected_item_index)
+#&#
 
 
 #-----------------------------------------------------------------------------
@@ -509,7 +613,8 @@ class NBTExplorerToolPanel(Panel):
         self.setCompounds()
         self.tree = NBTTree(height=max_height - btnRow.height -2, inner_width=250, data=self.data, compound_types=self.compounds,
                             copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
-        row = [self.tree, Column([Label("", width=300), ], margin=0)]
+        self.side_panel_width = 350
+        row = [self.tree, Column([Label("", width=self.side_panel_width), ], margin=0)]
         self.displayRow = Row(row, height=max_height, margin=0, spacing=0)
         if kwargs.get('no_header', False):
             self.add(Column([self.displayRow, btnRow], margin=0))
@@ -517,6 +622,38 @@ class NBTExplorerToolPanel(Panel):
             self.add(Column([header, self.displayRow, btnRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
+    #&# Prototype for Blocks/item names
+        mclangres.buildResources(lang=getLang())
+
+    def set_update_translation(self, v):
+        Panel.set_update_translation(self, v)
+        if v:
+            mclangres.buildResources(lang=getLang())
+    #&#
+
+    def key_down(self, e):
+        self.dispatch_key('key_down', e)
+
+    def dispatch_key(self, name, e):
+        if not hasattr(e, 'key'):
+            return
+        if name == 'key_down':
+            caught = True
+            if self.root.getKey(e) == 'Escape':
+                if not self.tree.has_focus():
+                    self.tree.focus()
+                else:
+                    self.editor.key_down(e)
+            elif self.side_panel and self.side_panel.has_focus():
+                self.side_panel.dispatch_key(name, e)
+            elif self.root.getKey(e) == 'Return':
+                self.tree.dispatch_key(name, e)
+                if self.tree.selected_item != None:
+                    self.update_side_panel(self.tree.selected_item)
+            else:
+                caught = False
+            if not caught:
+                self.tree.dispatch_key(name, e)
 
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
@@ -524,7 +661,6 @@ class NBTExplorerToolPanel(Panel):
         else:
             compounds = [TAG_Compound,]
         self.compounds = compounds
-
 
     def save_NBT(self):
         if self.fileName:
@@ -584,7 +720,7 @@ class NBTExplorerToolPanel(Panel):
                 fields = self.build_field(itm)
                 for field in fields:
                     if type(field) == TextFieldWrapped:
-                        field.set_size_for_text(300)
+                        field.set_size_for_text(self.side_panel_width)
                     row = Row([field,], margin=1)
                     rows.append(row)
                     height += row.height
@@ -594,7 +730,7 @@ class NBTExplorerToolPanel(Panel):
             if col:
                 col = Column(rows, align='l', spacing=0, height=self.displayRow.height)
             else:
-                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=300 - scroll_button_size)
+                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=self.side_panel_width - scroll_button_size)
             col.set_parent(self.displayRow)
             col.top = self.displayRow.top
             col.left = self.displayRow.subwidgets[0].right
@@ -678,20 +814,48 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
     def build_inventory(self, items):
-        print "build_inventory"
-        print "Inventory" in self.data.keys()
-#        print type(self.data['Inventory'])
-        inventory = self.data.get('Player', {}).get('Inventory', TAG_List()) or self.data.get('Inventory', TAG_List())
+        parent = self.tree.get_item_parent(self.displayed_item)
+        if parent:
+            parent = parent[9]
+        else:
+            parent = self.data
+        if 'playerGameType' in parent.keys():
+            player = True
+        else:
+            player = False
+        inventory = parent.get('Inventory', TAG_List())
         rows = []
         items = items[0]
         slots = [["%s"%i,"","0","0"] for i in range(36)]
+        slots += [["%s"%i,"","0","0"] for i in range(100, 104)]
         slots_set = []
-        for item in items:
-            s = int(item['Slot'].value)
+        for item, i in zip(items, range(len(items))):
+            #&# Prototype for blocks/items names
+            item_dict = mcitems.items.get(item['id'].value, None)
+            if item_dict == None:
+                name = item['id'].value
+            else:
+                if type(item_dict['name']) == list:
+                    if int(item['Damage'].value) >= len(item_dict['name']):
+                        block_id = map_block.get(item['id'].value, None)
+                        name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[0].strip()
+                    else:
+                        name = item_dict['name'][int(item['Damage'].value)]
+                else:
+                    name = item_dict['name']
+            s = i
+            _s = 0 + i
+            if player:
+                s = int(item['Slot'].value)
+                _s = 0 + s
             slots_set.append(s)
-            slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
-        width = self.width / 2 - self.margin * 4
-        c0w = max(15, self.font.size("00")[0]) + 4
+            if s >= 100:
+                s = s - 100 + 36
+            slots[s] = _s, mclangres.translate(name), item['Count'].value, item['Damage'].value
+            #slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
+            #&#
+        width = self.side_panel_width - self.margin * 5
+        c0w = max(15, self.font.size("000")[0]) + 4
         c2w = max(15, self.font.size("00")[0]) + 4
         c3w = max(15, self.font.size("000")[0]) + 4
         c1w = width - c0w - c2w - c3w
@@ -721,6 +885,7 @@ class NBTExplorerToolPanel(Panel):
         table.row_data = row_data
 
         def click_row(n, e):
+            table.focus()
             table.selected_row = n
             if e.num_clicks > 1:
                 SlotEditor(table, row_data(n)).present()
@@ -734,37 +899,89 @@ class NBTExplorerToolPanel(Panel):
             s, i, c, d = data
             s = int(s)
             s_idx = 0
+            #&# Prototype for blocks/items names
+            name, state = map_items.get(mclangres.untranslate(i), (i, '0'))
+            if ':' not in name:
+                name = 'minecraft:%s'%name
+            #&#
+
             if s in slots_set:
-#                for slot in self.data['Player']['Inventory']:
                 for slot in inventory:
-                    if slot['Slot'].value == s:
+                    ok1 = False
+                    if player:
+                        ok1 = slot['Slot'].value == s
+                    else:
+                        ok1 = inventory.index(slot) == s
+                    if ok1:
                         if not i or int(c) < 1:
                             del inventory[s_idx]
                             i = ""
                             c = u'0'
                             d = u'0'
                         else:
-                            slot['id'].value = 'minecraft:%s'%i
+                            #&# Prototype for blocks/items names
+                            #slot['id'].value = 'minecraft:%s'%i
+                            slot['id'].value = name
+                            #&#
                             slot['Count'].value = int(c)
-                            slot['Damage'].value = int(d)
+                            slot['Damage'].value = int(state)
                         break
                     s_idx += 1
             else:
                 new_slot = TAG_Compound()
-                new_slot['Slot'] = TAG_Byte(s)
-                new_slot['id'] = TAG_String('minecraft:%s'%i)
+                if player:
+                    new_slot['Slot'] = TAG_Byte(s)
+                #&# Prototype for blocka/items names
+                #new_slot['id'] = TAG_String('minecraft:%s'%i)
+                new_slot['id'] = TAG_String(name)
+                #&#
                 new_slot['Count'] = TAG_Byte(int(c))
-                new_slot['Damage'] = TAG_Short(int(d))
+                new_slot['Damage'] = TAG_Short(int(state))
                 idx = s
                 for slot in inventory:
-                    if slot['Slot'].value >= s:
+                    ok2 = False
+                    if player:
+                        ok2 = slot['Slot'].value >= s
+                    else:
+                        ok2 = inventory.index(slot) >= s
+                    if ok2:
                         idx = slot['Slot'].value
                         break
                 inventory.insert(s, new_slot)
                 slots_set.append(s)
-            table.slots[s] = slots[s] = s, i, c, d
+            #&# Prototype for blocks/items names
+#            if i == name:
+#                i = name
+            #&#
+            if s >= 100:
+                n = s - 100 + 36
+            else:
+                n = s
+            table.slots[n] = slots[n] = s, i, c, state
 
         table.change_value = change_value
+
+
+        def dispatch_key(name, evt):
+            keyname = self.root.getKey(evt)
+            if keyname == 'Return':
+                SlotEditor(table, row_data(table.selected_row)).present()
+            elif keyname == "Up" and table.selected_row > 0:
+                table.selected_row -= 1
+                table.rows.scroll_to_item(table.selected_row)
+
+            elif keyname == "Down" and table.selected_row < len(slots) - 1:
+                table.selected_row += 1
+                table.rows.scroll_to_item(table.selected_row)
+            elif keyname == 'Page down':
+                table.selected_row = min(len(slots) - 1, table.selected_row + table.rows.num_rows())
+            elif keyname == 'Page up':
+                table.selected_row = max(0, table.selected_row - table.rows.num_rows())
+            if table.rows.cell_to_item_no(0, 0) != None and (table.rows.cell_to_item_no(0, 0) + table.rows.num_rows() -1 > table.selected_row or table.rows.cell_to_item_no(0, 0) + table.rows.num_rows() -1 < table.selected_row):
+                table.rows.scroll_to_item(table.selected_row)
+
+        table.dispatch_key = dispatch_key
+
         rows.append(table)
         return rows
 
@@ -827,6 +1044,10 @@ class NBTExplorerTool(EditorTool):
 
     def saveFile(self, fName, data, dontSaveRootTag):
         saveFile(fName, data, dontSaveRootTag)
+
+    def keyDown(self, *args, **kwargs):
+        if self.panel:
+            self.panel.key_down(*args, **kwargs)
 
 
 #------------------------------------------------------------------------------

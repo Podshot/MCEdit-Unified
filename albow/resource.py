@@ -149,8 +149,6 @@ def get_font(size, *names, **kwds):
             font = pygame.font.Font(path, size)
             log.debug("Font %s loaded."%path)
             log.debug("    Original size: %s. Proportion: %s. Final size: %s."%(oSize, font_proportion, size))
-#            print '***', path
-#            print '    height', font.render('Wq', True, (255,255,255)).get_height(), 'linesize', font.get_linesize()
         except Exception, e:
             log.debug("PyGame could not load font.")
             log.debug("Exception: %s"%e)

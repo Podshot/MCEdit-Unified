@@ -27,12 +27,13 @@ from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, 
 from albow.controls import Label, ValueDisplay
 from albow.dialogs import Dialog, wrapped_label
 from albow.openglwidgets import GLViewport
+from albow.extended_widgets import BasicTextInputRow
 from albow.translate import _
 from pygame import mouse
-
 from depths import DepthOffset
 from editortools.operation import Operation
 from glutils import gl
+from pymclevel.nbt import TAG_String
 
 
 class CameraViewport(GLViewport):
@@ -86,6 +87,7 @@ class CameraViewport(GLViewport):
         self.mouseVector = (0, 0, 0)
 
         self.root = self.get_root()
+        self.hoveringCommandBlock = [False, ""]
         # self.add(DebugDisplay(self, "cameraPosition", "blockFaceUnderCursor", "mouseVector", "mouse3dPoint"))
 
     @property
@@ -138,9 +140,10 @@ class CameraViewport(GLViewport):
         else:
             max_speed = self.maxSpeed
 
-        if inSpace:
+        if inSpace or self.root.sprint:
             accel_factor *= 3.0
             max_speed *= 3.0
+            self.root.sprint = False
         elif config.settings.viewMode.get() == "Chunk":
             accel_factor *= 2.0
             max_speed *= 2.0
@@ -1083,7 +1086,7 @@ class CameraViewport(GLViewport):
         maxSlot = pymclevel.TileEntity.maxItems[tileEntityTag["id"].value] - 1
         fieldRow = (
             IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
-            TextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
+            BasicTextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
             # Text to allow the input of internal item names
             IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
             IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),
@@ -1249,7 +1252,7 @@ class CameraViewport(GLViewport):
         # except AttributeError:
         # return
         # print "RightClickUp: ", td
-        if td.seconds > 0 or td.microseconds > 280000:
+        if td.microseconds > 180000:
             self.mouseLookOff()
 
     def leftClickDown(self, evt):
@@ -1363,6 +1366,20 @@ class CameraViewport(GLViewport):
                 # mouse.set_pos(*self.startingMousePosition)
                 #    event.get(MOUSEMOTION)
                 #    self.oldMousePosition = (self.startingMousePosition)
+        if config.settings.showCommands.get():
+            point, face = self.blockFaceUnderCursor
+            if point is not None:
+                point = map(lambda x: int(numpy.floor(x)), point)
+                if self.editor.currentTool is self.editor.selectionTool:
+                    try:
+                        block = self.editor.level.blockAt(*point)
+                        if block == pymclevel.alphaMaterials.CommandBlock.ID:
+                            self.hoveringCommandBlock[0] = True
+                            self.hoveringCommandBlock[1] = self.editor.level.tileEntityAt(*point).get("Command", TAG_String("")).value
+                        else:
+                            self.hoveringCommandBlock[0] = False
+                    except (EnvironmentError, pymclevel.ChunkNotPresent):
+                        pass
 
     def activeevent(self, evt):
         if evt.state & 0x2 and evt.gain != 0:
@@ -1370,6 +1387,8 @@ class CameraViewport(GLViewport):
 
     @property
     def tooltipText(self):
+        if self.hoveringCommandBlock[0]:
+            return self.hoveringCommandBlock[1]
         return self.editor.currentTool.worldTooltipText
 
     floorQuad = numpy.array(((-4000.0, 0.0, -4000.0),
@@ -1489,7 +1508,12 @@ class CameraViewport(GLViewport):
         GL.glEnableClientState(GL.GL_COLOR_ARRAY)
 
         quad = numpy.array([-1, -1, -1, 1, 1, 1, 1, -1], dtype='float32')
-        if self.editor.level.dimNo == 1:
+        if self.editor.level.dimNo == -1:
+            colors = numpy.array([0x90, 0x00, 0x00, 0xff,
+                                  0x90, 0x00, 0x00, 0xff,
+                                  0x90, 0x00, 0x00, 0xff,
+                                  0x90, 0x00, 0x00, 0xff, ], dtype='uint8')
+        elif self.editor.level.dimNo == 1:
             colors = numpy.array([0x22, 0x27, 0x28, 0xff,
                                   0x22, 0x27, 0x28, 0xff,
                                   0x22, 0x27, 0x28, 0xff,
@@ -1618,6 +1642,10 @@ class CameraViewport(GLViewport):
             if self._compass is None:
                 self._compass = CompassOverlay()
 
+            x = getattr(getattr(self.editor, 'copyPanel', None), 'width', 0)
+            if x:
+                x = x /float( self.editor.mainViewport.width)
+            self._compass.x = x
             self._compass.yawPitch = self.yaw, 0
 
             with gl.glPushMatrix(GL.GL_PROJECTION):

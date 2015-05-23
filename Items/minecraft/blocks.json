@@ -363,9 +363,10 @@
     "stone_slab": {
         "id": 44, 
         "name": ["Stone Slab",
-                 null,
                  "Sandstone Slab",
-                 "Cobblestone Slab"],
+                 null,
+                 "Cobblestone Slab",
+                 "Bricks Slab"],
         "obtainable": true, 
         "maxdamage": 3, 
         "stacksize": 64

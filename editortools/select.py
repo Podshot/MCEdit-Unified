@@ -15,12 +15,14 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #.# Marks the layout modifications. -- D.C.-G.
 
 import os
+import sys
+import subprocess
 from OpenGL import GL
 
 from collections import defaultdict
 import numpy
 import pygame
-from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress
+from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress, TextInputRow
 from albow.translate import _
 from config import config, ColorValue
 from depths import DepthOffset
@@ -37,6 +39,7 @@ import tempfile
 from pymclevel import nbt
 import logging
 from albow.root import get_root
+from fileEdits import fileEdit, GetSort
 
 log = logging.getLogger(__name__)
 
@@ -177,6 +180,12 @@ class SelectionToolPanel(Panel):
         deselectButton.action = tool.deselect
         deselectButton.highlight_color = (0, 255, 0)
 
+        openButton = Button("CB Commands")
+        openButton.tooltipText = _("Open a text file with all command block commands in the currently selected area.\nSave file to update command blocks.\nRight-click for options")
+        openButton.action = tool.openCommands
+        openButton.highlight_color = (0, 255, 0)
+        openButton.rightClickAction = tool.CBCommandsOptions
+
         buttonsColumn = (
             nudgeBlocksButton,
             deselectButton,
@@ -189,6 +198,7 @@ class SelectionToolPanel(Panel):
             copyButton,
             pasteButton,
             exportButton,
+            openButton,
         )
 
         buttonsColumn = Column(buttonsColumn)
@@ -328,7 +338,6 @@ class SelectionTool(EditorTool):
         self.editor.selectionTool.setSelection(newBox)
 
     def updateSelectionColor(self):
-
         self.selectionColor = GetSelectionColor()
         from albow import theme
 
@@ -449,11 +458,13 @@ class SelectionTool(EditorTool):
         self.sizeLabel.anchor = "wh"
         self.sizeLabel.tooltipText = _("{0:n} blocks").format(self.selectionBox().volume)
 
-        self.nudgePanel.top = self.nudgePanel.left = 0
+        self.nudgePanel.top = 0
+        self.nudgePanel.left = 0
 
         self.nudgePanel.add(self.sizeLabel)
 
         self.nudgePanel.add(self.nudgeSelectionButton)
+        self.spaceLabel.height = 3
         self.nudgeSelectionButton.top = self.spaceLabel.bottom
         self.sizeLabel.top = self.nudgeSelectionButton.bottom
         self.nudgeRow.top = self.sizeLabel.bottom
@@ -1186,6 +1197,74 @@ class SelectionTool(EditorTool):
         schematic = self._copySelection()
         if schematic:
             self.editor.exportSchematic(schematic)
+
+    @alertException
+    def openCommands(self):
+        name = "CommandsFile" + str(self.editor.level.editFileNumber) + "." + config.commands.fileFormat.get()
+        filename = os.path.join(self.editor.level.fileEditsFolder.filename, name)
+        file = open(filename, 'w')
+        first = True
+        space = config.commands.space.get()
+        sorting = config.commands.sorting.get()
+        for coords in GetSort(self.editor.selectionBox(), sorting):
+            if sorting == "xz":
+                (x, y, z) = coords
+            else:
+                (z, y, x) = coords
+            if self.editor.level.blockAt(x, y, z) == 137:
+                if not first:
+                    if space:
+                        file.write("\n\n")
+                    else:
+                        file.write("\n")
+                first = False
+                text = self.editor.level.tileEntityAt(x, y, z)["Command"].value
+                if text == "":
+                    text = "\"\""
+                file.write(text.encode('utf-8'))
+        file.close()
+        if first:
+            os.remove(filename)
+            alert("No command blocks found")
+            return
+        self.editor.level.editFileNumber += 1
+        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), sorting, self.editor, self.editor.level)
+        self.root.filesToChange.append(edit)
+        if sys.platform == "win32":
+            os.startfile(filename)
+        else:
+            opener ="open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.call([opener, filename])
+
+    def CBCommandsOptions(self):
+        panel = CBCommandsOptionsPanel()
+        panel.present()
+
+
+class CBCommandsOptionsPanel(ToolOptions):
+    def __init__(self):
+        Panel.__init__(self)
+
+        empty = Label("")
+
+        self.sorting = ChoiceButton(["xz", "zx"], choose=self.changeSorting)
+        self.sorting.selectedChoice = config.commands.sorting.get()
+        sortingRow = Row((Label("Sort Order"), self.sorting))
+        space = CheckBoxLabel("Space between lines",
+                              tooltipText="Make space between the lines",
+                              ref=config.commands.space)
+        fileFormat = TextInputRow("File format",
+                                  tooltipText="Choose the file format for the files",
+                                  ref=config.commands.fileFormat)
+        okButton = Button("OK", action=self.dismiss)
+
+        col = Column((Label("Command Blocks Commands Options"), sortingRow, empty, space, empty, fileFormat, okButton), spacing=2)
+
+        self.add(col)
+        self.shrink_wrap()
+
+    def changeSorting(self):
+        config.commands.sorting.set(self.sorting.selectedChoice)
 
 
 class SelectionOperation(Operation):

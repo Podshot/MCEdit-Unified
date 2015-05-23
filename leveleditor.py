@@ -18,7 +18,7 @@ from pymclevel.infiniteworld import SessionLockLost
 import keys
 import pygame
 from albow.fields import FloatField
-from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow
+from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntInputRow, ScrollPanel
 from editortools.blockview import BlockButton
 import ftp_client
 import sys
@@ -184,6 +184,7 @@ class LevelEditor(GLViewport):
             config.keys.panUp.get(),
             config.keys.panDown.get()
         ]
+        self.sprintKey = config.keys.sprint.get()
         self.different_keys = {
             "mouse1": "Mouse1",
             "mouse2": "Mouse2",
@@ -200,8 +201,6 @@ class LevelEditor(GLViewport):
         self.createRenderers()
 
         self.sixteenBlockTex = self.genSixteenBlockTexture()
-
-        # self.Font = Font("Verdana, Arial", 18)
 
         self.generateStars()
 
@@ -236,7 +235,7 @@ class LevelEditor(GLViewport):
                 col.append(CheckBoxLabel(self.level.materials[ore].name.replace(" Ore", ""),
                                          ref=config.settings["showOre{}".format(ore)]))
 
-            col = Column(col, align="r")
+            col = Column(col, align="r", spacing=4)
 
             d = QuickDialog()
             d.add(col)
@@ -299,6 +298,16 @@ class LevelEditor(GLViewport):
         adapter.addFilter(LogFilter(self))
         logger.addHandler(adapter)
         self.revertPlayerSkins = False
+
+    #-# Translation live update preparation
+    def set_update_translation(self, v):
+        GLViewport.set_update_translation(self, v)
+        if v:
+            self.statusLabel.width = self.width
+            self.viewDistanceReadout.width = 40
+            self.topRow.calc_size()
+            self.controlPanel.set_update_translation(v)
+    #-#
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
@@ -395,6 +404,7 @@ class LevelEditor(GLViewport):
     def updateCopyPanel(self):
         if self.copyPanel:
             self.copyPanel.set_parent(None)
+            self.copyPanel = None
         if 0 == len(self.copyStack):
             return
 
@@ -659,7 +669,25 @@ class LevelEditor(GLViewport):
 
         saveButton = Button("Save to file...", action=saveToFile)
         col = Column((Label("Analysis"), tableBacking, saveButton))
-        Dialog(client=col, responses=["OK"]).present()
+        dlg = Dialog(client=col, responses=["OK"])
+        
+        def dispatch_key(name, evt):
+            super(Dialog, dlg).dispatch_key(name, evt)
+            if not hasattr(evt, 'key'):
+                return
+            if name == 'key_down':
+                keyname = self.root.getKey(evt)
+                if keyname == 'Up':
+                    table.rows.scroll_up()
+                elif keyname == 'Down':
+                    table.rows.scroll_down()
+                elif keyname == 'Page up':
+                    table.rows.scroll_to_item(max(0, table.rows.cell_to_item_no(0, 0) - table.rows.num_rows()))
+                elif keyname == 'Page down' and table.rows.cell_to_item_no(table.rows.num_rows(), 0) != None:
+                    table.rows.scroll_to_item(min(len(rows), table.rows.cell_to_item_no(table.rows.num_rows(), 0) + table.rows.num_rows()))
+
+        dlg.dispatch_key = dispatch_key
+        dlg.present()
 
     def exportSchematic(self, schematic):
         filename = mcplatform.askSaveSchematic(
@@ -967,6 +995,7 @@ class LevelEditor(GLViewport):
             if resp == "Save":
                 self.saveFile()
 
+        self.root.RemoveEditFiles()
         self.freezeStatus(_("Loading ") + filename)
         if self.level:
             self.selectionTool.endSelection()
@@ -1024,7 +1053,7 @@ class LevelEditor(GLViewport):
         self.renderer.position = self.currentViewport.cameraPosition
         self.renderer.loadNearbyChunks()
 
-    def loadLevel(self, level):
+    def loadLevel(self, level, saveChanges=False):
         """
         Called to load a level, world, or dimension into the editor and display it in the viewport.
         """
@@ -1038,11 +1067,13 @@ class LevelEditor(GLViewport):
         self.renderer.level = level
         self.addWorker(self.renderer)
 
-        self.undoStack = []
-        self.afterSaveUndoStack = []
-        self.redoStack = []
         self.recordUndo = True
-        self.clearUnsavedEdits()
+
+        if not saveChanges:
+            self.undoStack = []
+            self.afterSaveUndoStack = []
+            self.redoStack = []
+            self.clearUnsavedEdits()
 
         self.initWindowCaption()
         self.selectionTool.selectNone()
@@ -1114,7 +1145,7 @@ class LevelEditor(GLViewport):
     def gotoEarth(self):
         assert self.level.parentWorld
         self.removeNetherPanel()
-        self.loadLevel(self.level.parentWorld)
+        self.loadLevel(self.level.parentWorld, True)
 
         x, y, z = self.mainViewport.cameraPosition
         self.mainViewport.cameraPosition = [x * 8, y, z * 8]
@@ -1124,7 +1155,7 @@ class LevelEditor(GLViewport):
         self.removeNetherPanel()
         x, y, z = self.mainViewport.cameraPosition
         self.mainViewport.cameraPosition = [x / 8, y, z / 8]
-        self.loadLevel(self.level.getDimension(-1))
+        self.loadLevel(self.level.getDimension(-1), True)
 
     def gotoDimension(self, dimNo):
         if dimNo == self.level.dimNo:
@@ -1138,10 +1169,10 @@ class LevelEditor(GLViewport):
             if dimNo:
                 if dimNo == 1:
                     self.mainViewport.cameraPosition = (0, 96, 0)
-                self.loadLevel(self.level.getDimension(dimNo))
+                self.loadLevel(self.level.getDimension(dimNo), True)
 
             else:
-                self.loadLevel(self.level.parentWorld)
+                self.loadLevel(self.level.parentWorld, True)
 
     netherPanel = None
 
@@ -1214,16 +1245,12 @@ class LevelEditor(GLViewport):
                                           shortName, _('Minecraft World\0*.*\0\0'), "")
         if filename is None:
             return
-        old_data = (self.level.filename, self.level.worldFolder.filename)
         shutil.copytree(self.level.worldFolder.filename, filename)
-        self.level.worldFolder.setPath(filename)
+        self.level.worldFolder = AnvilWorldFolder(filename)
         self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
 
         self.saveFile()
         self.initWindowCaption()
-
-        self.level.worldFolder.setPath(old_data[1])
-        self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
 
     def addUnsavedEdit(self):
         if self.unsavedEdits:
@@ -1592,12 +1619,32 @@ class LevelEditor(GLViewport):
         if not pygame.key.get_focused():
             return
 
-        self.currentTool.keyDown(evt)
         keyname = evt.dict.get('keyname', None) or self.root.getKey(evt)
         try:
             keyname = self.different_keys[keyname]
         except:
             pass
+
+        #!# D.C.-G.
+        #!# Here we have the part which is responsible for the fallback to the
+        #!# select tool when pressing 'Escape' key.
+        #!# It may be interesting to work on this to be able to return to a tool
+        #!# which have called another.
+        if keyname == 'Escape':
+            if self.selectionTool.selectionInProgress:
+                self.selectionTool.cancel()
+            elif self.toolbar.tools[3].replacing:
+                self.toolbar.tools[3].replacing = False
+                self.toolbar.tools[3].showPanel()
+            elif "select" not in str(self.currentTool):
+                self.toolbar.selectTool(0)
+            else:
+                self.mouseLookOff()
+                self.showControls()
+#            return
+        #!#
+
+        self.currentTool.keyDown(evt)
 
         if keyname == "Alt-F4":
             self.quit()
@@ -1722,23 +1769,23 @@ class LevelEditor(GLViewport):
         if keyname == config.keys.swap.get():
             self.currentTool.swap()
 
-        #!# D.C.-G.
-        #!# Here we have the part which is responsible for the fallback to the
-        #!# select tool when pressing 'Escape' key.
-        #!# It may be interesting to work on this to be able to return to a tool
-        #!# which have called another.
-        if keyname == 'Escape':
-            if self.selectionTool.selectionInProgress:
-                self.selectionTool.cancel()
-            elif self.toolbar.tools[3].replacing:
-                self.toolbar.tools[3].replacing = False
-                self.toolbar.tools[3].showPanel()
-            elif "select" not in str(self.currentTool):
-                self.toolbar.selectTool(0)
-            else:
-                self.mouseLookOff()
-                self.showControls()
-        #!#
+#        #!# D.C.-G.
+#        #!# Here we have the part which is responsible for the fallback to the
+#        #!# select tool when pressing 'Escape' key.
+#        #!# It may be interesting to work on this to be able to return to a tool
+#        #!# which have called another.
+#        if keyname == 'Escape':
+#            if self.selectionTool.selectionInProgress:
+#                self.selectionTool.cancel()
+#            elif self.toolbar.tools[3].replacing:
+#                self.toolbar.tools[3].replacing = False
+#                self.toolbar.tools[3].showPanel()
+#            elif "select" not in str(self.currentTool):
+#                self.toolbar.selectTool(0)
+#            else:
+#                self.mouseLookOff()
+#                self.showControls()
+#        #!#
 
         if keyname == config.keys.confirmConstruction.get():
             self.confirmConstruction()
@@ -1837,9 +1884,11 @@ class LevelEditor(GLViewport):
                 os.remove(p)
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
+        self.root.RemoveEditFiles()
         self.root.fix_sticky_ctrl()
         self.selectionTool.endSelection()
         self.mainViewport.mouseLookOff()
+        self.level.close()
         self.level = None
         self.renderer.stopWork()
         self.removeWorker(self.renderer)
@@ -1900,9 +1949,11 @@ class LevelEditor(GLViewport):
             self._ftp_client.upload()
             self.clearUnsavedEdits()
             self.unsavedEdits = 0
+            self.root.RemoveEditFiles()
             self.root.fix_sticky_ctrl()
             self.selectionTool.endSelection()
             self.mainViewport.mouseLookOff()
+            self.level.close()
             self.level = None
             self.renderer.stopWork()
             self.removeWorker(self.renderer)
@@ -2300,11 +2351,17 @@ class LevelEditor(GLViewport):
             keyname = self.root.getKey(evt)
             if keyname == "Escape":
                 dialog.dismiss("Cancel")
-            elif keyname == "Up" and worldTable.selectedWorldIndex > 0:
-                worldTable.selectedWorldIndex -= 1
+            elif keyname == "Up":
+                worldTable.selectedWorldIndex = max(0, worldTable.selectedWorldIndex - 1)
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
-            elif keyname == "Down" and worldTable.selectedWorldIndex < len(worlds) - 1:
-                worldTable.selectedWorldIndex += 1
+            elif keyname == "Down":
+                worldTable.selectedWorldIndex = min(len(worlds) - 1, worldTable.selectedWorldIndex + 1)
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
+            elif keyname == 'Page up':
+                worldTable.selectedWorldIndex = max(0, worldTable.selectedWorldIndex - worldTable.rows.num_rows())
+                worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
+            elif keyname == 'Page down':
+                worldTable.selectedWorldIndex = min(len(worlds) - 1, worldTable.selectedWorldIndex + worldTable.rows.num_rows())
                 worldTable.rows.scroll_to_item(worldTable.selectedWorldIndex)
             elif keyname == "Return":
                 loadWorld()

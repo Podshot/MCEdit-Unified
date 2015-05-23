@@ -330,10 +330,10 @@ o154 Enable choppy mouse movement for faster loading.
 t154 Activeer hakkerige muis voor sneller laden.
 o155 Point here and use mousewheel to adjust
 t155 Richt hier en gebruik muiswiel om aan te passen
-o156 Install Mode: Portable
-t156 Installatie: Draagbaar
-o157 Install Mode: Fixed
-t157 Installatie: Vast
+o156 Portable
+t156 
+o157 Fixed
+t157 
 o158 Change the direction of the Forward and Backward keys when looking down
 t158 Verwissel de richting van de Vooruit/Achteruit toets als je naar beneden kijkt
 o159 When you are this far above the top of the world, move fast and use low-detail mode.
@@ -1754,3 +1754,39 @@ o834 When the replace tool is chosen, prompt for a block type.
 t834 
 o835 Matching Coordinates
 t835 
+o836 Session Lock Options
+t836 
+o837 Override Minecraft Changes (Not Recommended)
+t837 
+o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t838 
+o839 Player Heads
+t839 
+o840 Sprint
+t840 
+o841 Select
+t841 
+o842 Brush
+t842 
+o843 Fill and Replace
+t843 
+o844 World Spawnpoint
+t844 
+o845 CB Commands
+t845 
+o846 Open a text file with all command block commands in the currently selected area.
+Save file to update command blocks.
+Right-click for options
+t846 
+o847 Command Blocks Commands Options
+t847 
+o848 Sort Order
+t848 
+o849 Space between lines
+t849 
+o850 Make space between the lines
+t850 
+o851 File format
+t851 
+o852 Choose the file format for the files
+t852 

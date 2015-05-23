@@ -87,15 +87,22 @@ class GLDisplayContext(object):
             config.settings.setWindowPlacement.set(True)
             config.save()
         elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+            win = None
             dis = mcplatform.Xlib.display.Display()
             root = dis.screen().root
-            windowIDs = root.get_full_property(dis.intern_atom('_NET_CLIENT_LIST'), mcplatform.Xlib.X.AnyPropertyType).value
-            for windowID in windowIDs:
-                window = dis.create_resource_object('window', windowID)
-                name = window.get_wm_name()
-                if "MCEdit ~ Unified" in name:
-                    win = window
-            win.configure(x=config.settings.windowX.get(), y=config.settings.windowY.get())
+            # ARCH Linux 3.19.3-3 seem unable to make a query on '_NET_CLIENT_LIST'.
+            # So, restoring window position is disabled for now on distros which can't make this query.
+            try:
+                windowIDs = root.get_full_property(dis.intern_atom('_NET_CLIENT_LIST'), mcplatform.Xlib.X.AnyPropertyType).value
+                for windowID in windowIDs:
+                    window = dis.create_resource_object('window', windowID)
+                    name = window.get_wm_name()
+                    if "MCEdit ~ Unified" in name:
+                        win = window
+                win.configure(x=config.settings.windowX.get(), y=config.settings.windowY.get())
+            except Exception, e:
+                logging.debug('ERROR: Xlib could not find the MCEdit wondow object:')
+                logging.debug('       %s'%e)
             self.win = win
             dis.sync()
 

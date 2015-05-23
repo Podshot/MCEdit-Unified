@@ -1,6 +1,5 @@
 import albow
 from albow.dialogs import Dialog
-#import mceutils
 from config import config
 import pygame
 from albow.translate import _
@@ -95,7 +94,6 @@ class OptionsPanel(Dialog):
         compassSizeRow = albow.IntInputRow("Compass Size (%): ",
                                             ref=config.settings.compassSize, width=100, min=0, max=100)
 
-        # FONT SIZE
         fontProportion = albow.IntInputRow("Fonts Proportion (%): ",
                                             ref=config.settings.fontProportion, width=100, min=0,
                                             tooltipText="Fonts sizing proportion. The number is a percentage.\nRestart needed!")
@@ -108,7 +106,7 @@ class OptionsPanel(Dialog):
                                            ref=config.controls.invertMousePitch,
                                            tooltipText="Reverse the up and down motion of the mouse.")
 
-        spaceHeightRow = albow.IntInputRow(_("Low Detail Height"),
+        spaceHeightRow = albow.IntInputRow("Low Detail Height",
                                               ref=config.settings.spaceHeight,
                                               tooltipText="When you are this far above the top of the world, move fast and use low-detail mode.")
 
@@ -142,6 +140,10 @@ class OptionsPanel(Dialog):
         flyModeRow = albow.CheckBoxLabel("Fly Mode",
                                             ref=config.settings.flyMode,
                                             tooltipText="Moving forward and Backward will not change your altitude in Fly Mode.")
+        
+        showCommandsRow = albow.CheckBoxLabel("Show Commands",
+                                              ref=config.settings.showCommands,
+                                              tooltipText="Show the command in a Command Block when hovering over it.")
 
         lng = config.settings.langCode.get()
 
@@ -178,7 +180,7 @@ class OptionsPanel(Dialog):
             undoLimitRow,
             maxCopiesRow,
             compassSizeRow,
-            fontProportion, # FONT SIZE
+            fontProportion,
             fogIntensityRow,
         )
 
@@ -191,6 +193,7 @@ class OptionsPanel(Dialog):
                     superSecretSettingsRow,
                     rotateBlockBrushRow,
                     compassToggleRow,
+                    showCommandsRow,
                     langButtonRow,
                     ) + (
                         ((sys.platform == "win32" and pygame.version.vernum == (1, 9, 1)) and (windowSizeRow,) or ())
@@ -252,8 +255,16 @@ class OptionsPanel(Dialog):
             lng = self.langs[langName]
         config.settings.langCode.set(lng)
         #-# Translation live update preparation
-#        update = albow.translate.setLang(lng)[2]
-#        self.mcedit.root.set_update_translation(update or lng == 'en_US')
+        logging.debug('*** Language change detected.')
+        logging.debug('    Former language: %s.'%albow.translate.getLang())
+        logging.debug('    New language: %s.'%lng)
+        albow.translate.langPath = os.sep.join((".", "lang"))
+        update = albow.translate.setLang(lng)[2]
+        logging.debug('    Update done? %s (Magic %s)'%(update, update or lng == 'en_US'))
+        self.mcedit.root.set_update_translation(update or lng == 'en_US')
+        self.mcedit.root.set_update_translation(False)
+        self.mcedit.editor.set_update_translation(update or lng == 'en_US')
+        self.mcedit.editor.set_update_translation(False)
         #-#
 
     @staticmethod
@@ -295,26 +306,29 @@ class OptionsPanel(Dialog):
 
     def dismiss(self, *args, **kwargs):
         """Used to change the language and the font proportion"""
-        #-# The two following lines will be used for the language and font dynamic changes
-        #-# the restart boxes suppressed.
-        # lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
-        # font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
         lang = config.settings.langCode.get() == old_lang or config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
         font = config.settings.fontProportion.get() == old_fprop or config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
-        if not font or not lang:
-            editor = self.mcedit.editor
-            if editor and editor.unsavedEdits:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
-            else:
-                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
-            if result == "Save and Restart":
-                editor.saveFile()
-                self.mcedit.restart()
-            elif result == "Restart":
-                self.mcedit.restart()
-            elif result == "Later":
-                pass
-        
+        #-# The following lines will be used for the language and font dynamic changes
+        #-# The restart boxes will be suppressed.
+#        lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
+#        font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
+#        self.changeLanguage()
+
+#        if not font or not lang:
+#            editor = self.mcedit.editor
+#            if editor and editor.unsavedEdits:
+#                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
+#            else:
+#                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
+#            if result == "Save and Restart":
+#                editor.saveFile()
+#                self.mcedit.restart()
+#            elif result == "Restart":
+#                self.mcedit.restart()
+#            elif result == "Later":
+#                pass
+
+        self.reshowNumberFields()
         for key in self.saveOldConfig.keys():
             self.saveOldConfig[key] = key.get()
 
@@ -330,8 +344,8 @@ class OptionsPanel(Dialog):
         oldLanguage = self.saveOldConfig[config.settings.langCode]
         if config.settings.langCode.get() != oldLanguage:
             Changes = True
-        newPortable = _(self.portableVar.get())
-        if newPortable != _(self.saveOldPortable):
+        newPortable = self.portableVar.get()
+        if newPortable != self.saveOldPortable:
             Changes = True
         if not Changes:
             Dialog.dismiss(self, *args, **kwargs)

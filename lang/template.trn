@@ -92,7 +92,7 @@ o36 Numpad
 t36 
 o37 WASD Old
 t37 
-o38 Keybind Presets: 
+o38 Keybind Presets:
 t38 
 o39 MCEdit
 t39 
@@ -1745,3 +1745,39 @@ o834 When the replace tool is chosen, prompt for a block type.
 t834 
 o835 Matching Coordinates
 t835 
+o836 Session Lock Options
+t836 
+o837 Override Minecraft Changes (Not Recommended)
+t837 
+o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
+t838 
+o839 Player Heads
+t839 
+o840 Sprint
+t840 
+o841 Select
+t841 
+o842 Brush
+t842 
+o843 Fill and Replace
+t843 
+o844 World Spawnpoint
+t844 
+o845 CB Commands
+t845 
+o846 Open a text file with all command block commands in the currently selected area.
+Save file to update command blocks.
+Right-click for options
+t846 
+o847 Command Blocks Commands Options
+t847 
+o848 Sort Order
+t848 
+o849 Space between lines
+t849 
+o850 Make space between the lines
+t850 
+o851 File format
+t851 
+o852 Choose the file format for the files
+t852 

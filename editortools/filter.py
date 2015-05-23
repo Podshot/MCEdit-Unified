@@ -16,6 +16,7 @@ import collections
 import os
 import traceback
 import uuid
+import copy
 from albow import FloatField, IntField, AttrRef, ItemRef, Row, Label, Widget, TabPanel, CheckBox, Column, Button, TextFieldWrapped
 import albow.translate
 _ = albow.translate._
@@ -69,7 +70,7 @@ def addNumField(page, optionName, oName, val, min=None, max=None, increment=0.1)
         min = None
         max = None
 
-    field = ftype(value=val, width=100, min=min, max=max)
+    field = ftype(value=val, width=200, min=min, max=max)
     field._increment = increment
     page.optionDict[optionName] = AttrRef(field, 'value')
 
@@ -147,6 +148,8 @@ class FilterModuleOptions(Widget):
             optionType = optionSpec[1]
             if trn is not None:
                 n = trn._(optionName)
+            else:
+                n = optionName
             if n == optionName:
                 oName = _(optionName)
             else:
@@ -304,7 +307,11 @@ class FilterModuleOptions(Widget):
 
     @property
     def options(self):
-        return dict((k, v.get()) for k, v in self.optionDict.iteritems())
+        options = {}
+        for k, v in self.optionDict.iteritems():
+            options[k] = v.get() if not isinstance(v.get(), pymclevel.materials.Block) else copy.copy(v.get())
+        return options
+        #return dict((k, (v.get())) for k, v in self.optionDict.iteritems())
 
     @options.setter
     def options(self, val):
@@ -735,11 +742,11 @@ class FilterTool(EditorTool):
             if hasattr(filt, 'libraries') and isinstance(filt.libraries, list):
                 for lib in filt.libraries:
                     lib_path = os.path.join(directories.getFiltersDir(), 'lib', lib["path"].replace("<sep>", os.path.sep))
+                    lib_path_stock = os.path.join(directories.getDataDir(), 'stock-filters', 'lib', lib["path"].replace("<sep>", os.path.sep))
                     if os.path.exists(lib_path):
                         sys.path.append(lib_path)
-                    
-                    elif os.path.exists(os.path.join(directories.getDataDir(), 'stock-filters', 'lib', lib["path"].replace("<sep>", os.path.sep))):
-                        sys.path.append(lib_path)
+                    elif os.path.exists(lib_path_stock):
+                        sys.path.append(lib_path_stock)
                     else:
                         try:
                             os.makedirs(os.path.join(directories.getFiltersDir(), 'lib', trim(str(str(lib["path"].replace("<sep>", os.path.sep)).split(os.path.sep)[:-1]))))
@@ -747,6 +754,7 @@ class FilterTool(EditorTool):
                             pass
                         try:
                             urllib.urlretrieve(lib["URL"], lib_path)
+                            sys.path.append(lib_path)
                         except:
                             if not lib.get("optional"):
                                 could_not_find_dependencies.append(filt)
@@ -768,14 +776,31 @@ class FilterTool(EditorTool):
                     lines.append("    "+dep+"\n")
             with open(os.path.join(directories.getCacheDir(), 'dependencies_not_found.txt'), 'wb') as f:
                 f.writelines(lines)
-            alert("Could not find dependencies for the following filters:\n"+"\n".join(names)+"\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")
+            alert(_("Could not find dependencies for the following filters:\n%s\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")%"\n".join(names))
     
     def reloadFilters(self):
-        sys.dont_write_bytecode = True
-        if self.filterModules:
-            for k, m in self.filterModules.iteritems():
-                del m
-            compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+        #!# Fix for Naor's filter bug
+        # Extend this to all platforms?
+        dataDir = directories.getDataDir()
+#        if os.sys.platform == 'darwin' or True: # for debug
+        if os.sys.platform == 'darwin':
+            curdir = os.getcwdu()
+            os.chdir(directories.getFiltersDir())
+            for cur, _dirs, f_names in os.walk(os.path.join(dataDir, "stock-filters")):
+                for f_name in f_names:
+                    shutil.copyfile(os.path.join(cur, f_name), os.path.join(cur.replace(os.path.join(dataDir, "stock-filters"), directories.getFiltersDir()), f_name))
+        else:
+            sys.dont_write_bytecode = True
+            if self.filterModules:
+                for k, m in self.filterModules.iteritems():
+                    del m
+                compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+#        sys.dont_write_bytecode = True
+#        if self.filterModules:
+#            for k, m in self.filterModules.iteritems():
+#                del m
+#            compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
+        #!#
             
         def check(list_thing):
             toReturn = []
@@ -783,53 +808,27 @@ class FilterTool(EditorTool):
                 if hasattr(module, "perform"):
                     toReturn.append(module)
             return toReturn
-        
-        #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py'))
+
+        org_lang = albow.translate.lang
+
+        #sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', 'library.py')) # This can't work, since sys.path contains only directories, not files...
 
         def tryImport(name):
-            # [D.C.-G.]
-            # Using a file object to import the module is not needed.
-            # A more simple way is to use imp.load_source() as seen in the commented block below.
             module_file_object = open(os.path.join(directories.getFiltersDir(), name))
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
                 m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
-            #    m = __import__(name)
-            # [D.C.-G.]
-            # In my experiments in a NBTTree display issue, I went to think
-            # there was somthing wrong with the filters loading/importing. I was
-            # partially right. So I tweaked tihs part, replacing __import__()
-            # with imp.load_source().
-            # This method imports a module accordingly to its path, and can be a
-            # safer way to do the job here, since only the deisred folders are
-            # used to find the files. No missplaced filters in sys.path (e.g.
-            # for backup) can be loaded.
-            # But i don't know if this behaviour is wanted here. I didn't realy
-            # tested...
-            #
-            #import imp
-#            try:
-#                try:
-##                    path = os.path.join(directories.filtersDir, (name + ".py"))
-#                    path = os.path.join(directories.filtersDir, name)
-#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
-#            #            path = path.encode(DEF_ENC)
-##                    m = imp.load_source(name, path)
-#                    m = imp.load_source(module_name, path)
-#                except:
-##                    path = os.path.join(directories.getDataDir(), "stock-filters", (name + ".py"))
-#                    path = os.path.join(directories.getDataDir(), "stock-filters", name)
-#            #        if type(path) == unicode and DEF_ENC != "UTF-8":
-#            #            path = path.encode(DEF_ENC)
-##                    m = imp.load_source(name, path)
-#                    m = imp.load_source(module_name, path)
-                listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
+                #!# Fix for Naor's filter bug
+#                listdir = os.listdir(os.path.join(directories.getDataDir(), "stock-filters"))
+                listdir = os.listdir(os.path.join(dataDir, "stock-filters"))
+                #!#
+                
                 if name not in listdir:
-                    if "albow.translate" in sys.modules.keys():
-                        del sys.modules["albow.translate"]
                     if "trn" in sys.modules.keys():
                         del sys.modules["trn"]
-                    import albow.translate as trn
+                    if "albow.translate" in sys.modules.keys():
+                        del sys.modules["albow.translate"]
+                    from albow import translate as trn
                     if directories.getFiltersDir() in name:
                         trn_path = os.path.split(name)[0]
                     else:
@@ -839,6 +838,8 @@ class FilterTool(EditorTool):
                         trn.setLangPath(trn_path)
                         trn.buildTranslation(config.settings.langCode.get())
                     m.trn = trn
+                    import albow.translate
+                    albow.translate.lang = org_lang
                 return m
             except Exception, e:
                 # Only prints when the filter filename is presented, not the entire file path
@@ -869,10 +870,16 @@ class FilterTool(EditorTool):
         for key in self.category_dict.keys():
             if key != "":
                 filterModules += check(self.category_dict[key])
-        self.filterModules = collections.OrderedDict(sorted((self.moduleDisplayName(x), x) for x in filterModules))
+        self.filterModules = collections.OrderedDict(sorted([(self.moduleDisplayName(x), x) for x in filterModules], key=lambda x: (x[0].lower(), x[1])))
         for n, m in self.filterModules.iteritems():
             try:
                 reload(m)
+                #!# Fix for Naor's filter bug
+#                if os.sys.platform == 'darwin' or True: # for debug
+                if os.sys.platform == 'darwin':
+                    if os.path.exists(m.__file__):
+                        os.remove(m.__file__)
+                #!#
             except Exception, e:
                 print traceback.format_exc()
                 alert(
@@ -881,6 +888,13 @@ class FilterTool(EditorTool):
         #-# Remove the filter categories paths from sys.path to avoid confusion.
         map(lambda x:sys.path.remove(x), temp_paths)
         self.importLibraries()
+        #!# fix for Naor's filter bug
+#        if os.sys.platform == 'darwin' or True: # for debug
+        if os.sys.platform == 'darwin':
+            if os.path.exists(os.path.join('.', 'mcInterface.pyc')):
+                os.remove(os.path.join('.', 'mcInterface.pyc'))
+            os.chdir(curdir)
+        #!#
 
     @property
     def filterNames(self):

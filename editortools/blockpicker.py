@@ -6,6 +6,11 @@ from glbackground import GLBackground
 from pymclevel import materials
 from albow.root import get_root
 from pymclevel.materials import Block
+from albow.translate import getLang
+
+#&# Prototype for blocks/items names
+import mclangres
+#&#
 
 
 def anySubtype(self):
@@ -163,6 +168,9 @@ class BlockPicker(Dialog):
         self.anySubtype = blockInfo.wildcard
 
         self.matchingBlocks = materials.allBlocks
+        #&#
+        self.searchNames = [mclangres.translate(a.name).lower() for a in self.matchingBlocks]
+        #&#
 
         try:
             self.selectedBlockIndex = self.matchingBlocks.index(blockInfo)
@@ -191,9 +199,15 @@ class BlockPicker(Dialog):
 
         def formatBlockName(x):
             block = self.matchingBlocks[x]
-            r = "{name}".format(name=block.name)
+            #&#
+            #r = "{name}".format(name=block.name)
+            r = u"{name}".format(name=mclangres.translate(block.name))
+            #&#
             if block.aka:
-                r += " [{0}]".format(block.aka)
+                #&#
+                #r += " [{0}]".format(block.aka)
+                r += u" [{0}]".format(mclangres.translate(block.aka))
+                #&#
 
             return r
 
@@ -331,7 +345,7 @@ class BlockPicker(Dialog):
         blocks = self.materials.allBlocks
 
         if len(text):
-            matches = self.materials.blocksMatching(text)
+            matches = self.materials.blocksMatching(text, getLang())
             if blockData:
                 ids = set(b.ID for b in matches)
                 matches = sorted([self.materials.blockWithID(id, blockData) for id in ids])
@@ -358,3 +372,9 @@ class BlockPicker(Dialog):
                 self.selectedBlockIndex += 1
                 self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
                 self.blockButton.blockInfo = self.blockInfo
+            elif keyname == 'Page down':
+                self.selectedBlockIndex = min(len(self.matchingBlocks) - 1, self.selectedBlockIndex + self.tableview.rows.num_rows())
+            elif keyname == 'Page up':
+                self.selectedBlockIndex = max(0, self.selectedBlockIndex - self.tableview.rows.num_rows())
+            if self.tableview.rows.cell_to_item_no(0, 0) != None and (self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selectedBlockIndex or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selectedBlockIndex):
+                self.tableview.rows.scroll_to_item(self.selectedBlockIndex)

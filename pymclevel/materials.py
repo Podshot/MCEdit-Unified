@@ -4,6 +4,7 @@ import traceback
 from os.path import join
 from collections import defaultdict
 from pprint import pformat
+import mclangres
 
 import os
 
@@ -145,17 +146,18 @@ class MCMaterials(object):
             return self.blockWithID(id, blockData)
         return self.blockWithID(key)
 
-    def blocksMatching(self, name):
+    def blocksMatching(self, name, lan="en_US"):
         toReturn = []
         name = name.lower()
         spiltNames = name.split(" ")
         amount = len(spiltNames)
         for v in self.allBlocks:
-            nameParts = v.name.lower().split(" ")
-            for anotherName in v.aka.lower().split(" "):
-                nameParts.append(anotherName)
-            for anotherName in v.search.lower().split(" "):
-                nameParts.append(anotherName)
+            nameParts = mclangres.translate(v.name).lower().split(" ")
+            if lan == "en_US":
+                for anotherName in v.aka.lower().split(" "):
+                    nameParts.append(anotherName)
+                for anotherName in v.search.lower().split(" "):
+                    nameParts.append(anotherName)
             i = 0
             spiltNamesUsed = []
             for v2 in nameParts:

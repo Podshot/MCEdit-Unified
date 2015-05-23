@@ -127,6 +127,10 @@ import threading
 
 from utilities.gl_display_context import GLDisplayContext
 
+#&# Prototype fro blocks/items names
+import mclangres
+#&#
+
 getPlatInfo(OpenGL=OpenGL, numpy=numpy, pygame=pygame)
 
 ESCAPE = '\033'
@@ -158,8 +162,11 @@ class MCEdit(GLViewport):
         self.optionsPanel.initComponents()
         self.graphicsPanel = panels.GraphicsPanel(self)
 
+        #&# Prototype for blocks/items names
+        mclangres.buildResources(lang=albow.translate.getLang())
+        #&#
+
         #.#
-#        self.keyConfigPanel = keys.KeyConfigPanel()
         self.keyConfigPanel = keys.KeyConfigPanel(self)
         #.#
 
@@ -187,6 +194,24 @@ class MCEdit(GLViewport):
         self.add(self.fileOpener)
 
         self.fileOpener.focus()
+
+    #-# Translation live updtate preparation
+    def set_update_translation(self, v):
+        GLViewport.set_update_translation(self, v)
+        if v:
+            #&# Prototype for blocks/items names
+            mclangres.buildResources(lang=albow.translate.getLang())
+            #&#
+            self.keyConfigPanel = keys.KeyConfigPanel(self)
+            self.graphicsPanel = panels.GraphicsPanel(self)
+            if self.fileOpener in self.subwidgets:
+                idx = self.subwidgets.index(self.fileOpener)
+                self.remove(self.fileOpener)
+                self.fileOpener = albow.FileOpener(self)
+                if idx is not None:
+                    self.add(self.fileOpener)
+                self.fileOpener.focus()
+    #-#
 
     editor = None
 
@@ -582,7 +607,8 @@ class MCEdit(GLViewport):
         while True:
             try:
                 rootwidget.run()
-            except SystemExit:
+            except (SystemExit, KeyboardInterrupt):
+                print "Shutting down..."
                 if sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
@@ -600,6 +626,9 @@ class MCEdit(GLViewport):
                 config.save()
                 mcedit.editor.renderer.discardAllChunks()
                 mcedit.editor.deleteAllCopiedSchematics()
+                if mcedit.editor.level:
+                    mcedit.editor.level.close()
+                mcedit.editor.root.RemoveEditFiles()
                 raise
             except MemoryError:
                 traceback.print_exc()
@@ -642,6 +671,9 @@ class MCEdit(GLViewport):
         config.save()
         self.editor.renderer.discardAllChunks()
         self.editor.deleteAllCopiedSchematics()
+        if self.editor.level:
+            self.editor.level.close()
+        self.editor.root.RemoveEditFiles()
         python = sys.executable
         if sys.argv[0].endswith('.exe') or hasattr(sys, 'frozen'):
             os.execl(python, python, * sys.argv[1:])
@@ -791,7 +823,7 @@ def weird_fix():
 if __name__ == "__main__":
     try:
         main(sys.argv)
-    except SystemExit:
+    except (SystemExit, KeyboardInterrupt):
         pass
     except:
         traceback.print_exc()

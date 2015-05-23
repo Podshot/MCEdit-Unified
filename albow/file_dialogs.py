@@ -55,6 +55,7 @@ class FileListView(ScrollPanel):
         font = self.predict_font(kwds)
         h = font.get_linesize()
         d = 2 * self.predict(kwds, 'margin')
+        kwds['align'] = kwds.get('align', 'l')
         ScrollPanel.__init__(self, inner_width=width, **kwds)
         self.icons = {True: scale(folder_image, (self.row_height, self.row_height)), False: scale(file_image, (self.row_height, self.row_height))}
         self.client = client

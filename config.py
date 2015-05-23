@@ -381,6 +381,7 @@ definitions = {
         ("up", "up", "Space"),
         ("down", "down", "Shift"),
         ("brake", "brake", "C"),
+        ("sprint", "sprint", "None"),
 
         ("rotateClone", "rotate (clone)", "E"),
         ("rollClone", "roll (clone)", "R"),
@@ -521,7 +522,8 @@ definitions = {
         ("fontProportion", "Fonts Proportion", 100),
         ("downloadPlayerSkins", "Download Player Skins", True),
         ("maxViewDistance", "Max View Distance", 32),
-        ("drawPlayerHeads", "Draw Player Heads", True)
+        ("drawPlayerHeads", "Draw Player Heads", True),
+        ("showCommands", "Show Commands when hovering", True)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),
@@ -594,6 +596,11 @@ definitions = {
     ("Filter Keys", "Filter Keys"): [],
     ("session", "Session",): [
         ("override", "Override", False)
+    ],
+    ("commands", "Commands"): [
+        ("sorting", "Sorting", "xz"),
+        ("space", "Space", True),
+        ("fileFormat", "File Format", "txt")
     ]
 }
 
