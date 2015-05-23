@@ -6,7 +6,7 @@ op.create_if_missing = True
 wop = WriteOptions()
 rop = ReadOptions()
 db = DB(op, "test")
-db.Put(wop, "1", "5")
+db.Put(wop, "5", "5")
 db.Put(wop, "2", "6")
 
 if db.Get(rop, "5") != "5":
