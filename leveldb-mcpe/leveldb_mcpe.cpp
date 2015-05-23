@@ -16,6 +16,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+namespace bp = boost::python;
+
 //Exception
 class LevelDBException {
 public:
@@ -41,8 +43,8 @@ public:
 
   DBWrap(PyObject* _options, PyObject* _name) //Open(options, name, db)
   {
-    const leveldb::Options options = boost::python::extract<const leveldb::Options&>(_options);
-    std::string name = boost::python::extract<std::string>(_name);
+    const leveldb::Options options = bp::extract<const leveldb::Options&>(_options);
+    std::string name = bp::extract<std::string>(_name);
     leveldb::Status s = leveldb::DB::Open(options, name, &_db);
 
     if(!s.ok())
@@ -51,18 +53,42 @@ public:
     }
   }
 
-  leveldb::Status Put(const leveldb::WriteOptions& options,
-    const leveldb::Slice& key,
-    const leveldb::Slice& value)
+  void Put(PyObject* _options, PyObject* _key, PyObject* _value) //Put(options, key, value)
   {
-    return this->_db->Put(options, key, value);
+	  const leveldb::WriteOptions options = bp::extract<const leveldb::WriteOptions&>(_options);
+	  const leveldb::Slice key = bp::extract<const leveldb::Slice&>(_key);
+	  const leveldb::Slice value = bp::extract<const leveldb::Slice&>(_value);
+	  leveldb::Status s = this->_db->Put(options, key, value);
+
+	  if (!s.ok()){
+		  throw LevelDBException(s.ToString());
+	  }
   }
 
-  leveldb::Status Delete(const leveldb::WriteOptions& options,
-    const leveldb::Slice& key)
+  void Delete(PyObject* _options, PyObject* _key) //Delete(options, key)
   {
-    return this->_db->Delete(options, key);
+	  const leveldb::WriteOptions options = bp::extract<const leveldb::WriteOptions&>(_options);
+	  const leveldb::Slice key = bp::extract<const leveldb::Slice&>(_key);
+	  leveldb::Status s = this->_db->Delete(options, key);
+
+	  if (!s.ok()){
+		  throw LevelDBException(s.ToString());
+	  }
   }
+
+  std::string Get(PyObject* _options, PyObject* _key) //Delete(options, key)
+  {
+	  const leveldb::ReadOptions options = bp::extract<const leveldb::ReadOptions&>(_options);
+	  const leveldb::Slice key = bp::extract<const leveldb::Slice&>(_key);
+	  std::string value;
+	  leveldb::Status s = this->_db->Get(options, key, &value);
+
+	  if (!s.ok()){
+		  throw LevelDBException(s.ToString());
+	  }
+	  return value;
+  }
+
 
   leveldb::Status Write(const leveldb::WriteOptions& options,
     leveldb::WriteBatch* updates)
@@ -70,12 +96,6 @@ public:
     return this->_db->Write(options, updates);
   }
 
-  leveldb::Status Get(const leveldb::ReadOptions& options,
-    const leveldb::Slice& key,
-    std::string* value)
-  {
-    return this->_db->Get(options, key, value);
-  }
 
   leveldb::Iterator* NewIterator(const leveldb::ReadOptions& options)
   {
@@ -112,25 +132,25 @@ public:
 BOOST_PYTHON_MODULE(leveldb_mcpe)
 {
   //Exceptions
-  boost::python::register_exception_translator<LevelDBException>(&ExceptionTranslator);
+  bp::register_exception_translator<LevelDBException>(&ExceptionTranslator);
 
   //leveldb/db.h
-  boost::python::class_<DBWrap, boost::noncopyable>("DB", boost::python::init<PyObject*, PyObject*>())
+  bp::class_<DBWrap, boost::noncopyable>("DB", bp::init<PyObject*, PyObject*>())
     .def("Put", &DBWrap::Put)
     .def("Delete", &DBWrap::Delete)
     .def("Write", &DBWrap::Write)
     .def("Get", &DBWrap::Get)
     .def("NewIterator", &DBWrap::NewIterator,
-    boost::python::return_value_policy<boost::python::reference_existing_object>())
+    bp::return_value_policy<bp::reference_existing_object>())
     .def("GetSnapshot", &DBWrap::GetSnapshot,
-    boost::python::return_value_policy<boost::python::reference_existing_object>())
+    bp::return_value_policy<bp::reference_existing_object>())
     .def("ReleaseSnapshot", &DBWrap::ReleaseSnapshot)
     .def("GetProperty", &DBWrap::GetProperty)
     .def("GetApproximateSizes", &DBWrap::GetApproximateSizes)
     .def("CompactRange", &DBWrap::CompactRange);
 
   //leveldb/options.h
-  boost::python::class_<leveldb::Options>("Options", boost::python::init<>())
+  bp::class_<leveldb::Options>("Options", bp::init<>())
     .def_readonly("comparator", &leveldb::Options::comparator)
     .def_readwrite("create_if_missing", &leveldb::Options::create_if_missing)
     .def_readwrite("error_if_exists", &leveldb::Options::error_if_exists)
