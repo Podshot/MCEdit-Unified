@@ -8,6 +8,30 @@
 #include <stdint.h>
 #include <stdio.h>
 
+//Exceptions
+class StatusException {
+public:
+	StatusException(const std::string str) {
+		e_str = str;
+	}
+
+	~StatusException() {
+	}
+
+	std::string GetMessage() const {
+		return e_str;
+	}
+
+private:
+	std::string e_str;
+};
+
+static void StatusExceptionTranslator(const StatusException &err) {
+	PyErr_SetString(PyExc_UserWarning, err.GetMessage().c_str());
+}
+
+
+//leveldb::DB wrapper
 struct DBWrap : leveldb::DB, boost::python::wrapper<leveldb::DB>
 {
 public:
@@ -18,8 +42,10 @@ public:
 		const leveldb::Options options = boost::python::extract<const leveldb::Options&>(_options);
 		std::string name = boost::python::extract<std::string>(_name);
 		leveldb::Status s = leveldb::DB::Open(options, name, &_db);
+		if (!s.ok()){
+			throw StatusException("Failed to open database");
+		}
 	}
-
 
 	leveldb::Status Put(const leveldb::WriteOptions& options,
 		const leveldb::Slice& key,
@@ -81,6 +107,9 @@ public:
 
 BOOST_PYTHON_MODULE(leveldb_mcpe)
 {
+	//Exceptions
+	boost::python::register_exception_translator<StatusException>(&StatusExceptionTranslator);
+
 	//leveldb/db.h
 	boost::python::class_<DBWrap, boost::noncopyable>("DB", boost::python::init<PyObject*, PyObject*>())
 		.def("Put", &DBWrap::Put)
@@ -96,7 +125,6 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 		.def("GetApproximateSizes", &DBWrap::GetApproximateSizes)
 		.def("CompactRange", &DBWrap::CompactRange)
 		;
-
 
 	//leveldb/options.h
 	boost::python::class_<leveldb::Options>("Options", boost::python::init<>())
