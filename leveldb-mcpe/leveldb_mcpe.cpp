@@ -55,9 +55,9 @@ public:
 
   void Put(PyObject* _options, PyObject* _key, PyObject* _value) //Put(options, key, value)
   {
-	  const leveldb::WriteOptions options = bp::extract<const leveldb::WriteOptions&>(_options);
-	  const leveldb::Slice key = bp::extract<const leveldb::Slice&>(_key);
-	  const leveldb::Slice value = bp::extract<const leveldb::Slice&>(_value);
+	  const leveldb::WriteOptions& options = bp::extract<const leveldb::WriteOptions&>(_options);
+	  const leveldb::Slice& key = bp::extract<const leveldb::Slice&>(_key);
+	  const leveldb::Slice& value = bp::extract<const leveldb::Slice&>(_value);
 	  leveldb::Status s = this->_db->Put(options, key, value);
 
 	  if (!s.ok()){
@@ -67,8 +67,8 @@ public:
 
   void Delete(PyObject* _options, PyObject* _key) //Delete(options, key)
   {
-	  const leveldb::WriteOptions options = bp::extract<const leveldb::WriteOptions&>(_options);
-	  const leveldb::Slice key = bp::extract<const leveldb::Slice&>(_key);
+	  const leveldb::WriteOptions& options = bp::extract<const leveldb::WriteOptions&>(_options);
+	  const leveldb::Slice& key = bp::extract<const leveldb::Slice&>(_key);
 	  leveldb::Status s = this->_db->Delete(options, key);
 
 	  if (!s.ok()){
@@ -78,8 +78,8 @@ public:
 
   std::string Get(PyObject* _options, PyObject* _key) //Delete(options, key)
   {
-	  const leveldb::ReadOptions options = bp::extract<const leveldb::ReadOptions&>(_options);
-	  const leveldb::Slice key = bp::extract<const leveldb::Slice&>(_key);
+	  const leveldb::ReadOptions& options = bp::extract<const leveldb::ReadOptions&>(_options);
+	  const leveldb::Slice& key = bp::extract<const leveldb::Slice&>(_key);
 	  std::string value;
 	  leveldb::Status s = this->_db->Get(options, key, &value);
 
