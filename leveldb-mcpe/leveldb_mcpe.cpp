@@ -39,21 +39,23 @@ static void ExceptionTranslator(const LevelDBException &err) {
 
 struct WriteBatchWrapper
 {
-	leveldb::WriteBatch _wb;
+	leveldb::WriteBatch* _wb;
 
-	WriteBatchWrapper(){};
+	WriteBatchWrapper(){
+		_wb = new leveldb::WriteBatch();
+	};
 
 	void Put(PyObject* _key, PyObject* _value)
 	{
 		const std::string key = bp::extract<const std::string>(_key);
 		const std::string value = bp::extract<const std::string>(_value);
-		this->_wb.Put(key, value);
+		this->_wb->Put(key, value);
 	}
 
 	void Delete(PyObject* _key)
 	{
 		const std::string key = bp::extract<const std::string>(_key);
-		this->_wb.Delete(key);
+		this->_wb->Delete(key);
 	}
 };
 
@@ -113,11 +115,11 @@ public:
   }
 
 
-  leveldb::Status Write(PyObject* _options, PyObject* _updates)
+  void Write(PyObject* _options, PyObject* _updates)
   {
 	  const leveldb::WriteOptions& options = bp::extract<const leveldb::WriteOptions&>(_options);
 	  WriteBatchWrapper& __updates = bp::extract<WriteBatchWrapper&>(_updates);
-	  leveldb::Status s = this->_db->Write(options, &__updates._wb);
+	  leveldb::Status s = this->_db->Write(options, __updates._wb);
 
 	  if (!s.ok()){
 		  throw LevelDBException(s.ToString());
