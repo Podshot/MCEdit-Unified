@@ -481,7 +481,7 @@ definitions = {
         ("staticCommandsNudge", "Static Coords While Nudging", False),
         ("moveSpawnerPosNudge", "Change Spawners While Nudging", False),
         ("rotateBlockBrush", "rotateBlockBrushRow", True),
-        ("langCode", "Language String", "English (US)"),
+        ("langCode", "Language String", "en_US"),
         ("viewDistance", "View Distance", 8),
         ("targetFPS", "Target FPS", 30),
         ("windowWidth", "window width", 1152),
