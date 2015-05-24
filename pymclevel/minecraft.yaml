@@ -4031,7 +4031,10 @@ blocks:
     idStr: beacon
     name: Beacon
     mapcolor: [200, 200, 200]
-    tex: [9, 2]
+    tex: [20, 6]
+    tex_direction:
+        TOP: [20, 7]
+        BOTTOM: [20, 8]
     opacity: 0
     brightness: 15
 
