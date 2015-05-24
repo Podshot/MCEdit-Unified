@@ -192,7 +192,8 @@ class LevelEditor(GLViewport):
             "mouse4": "Scroll Up",
             "mouse5": "Scroll Down",
             "mouse6": "Button 4",
-            "mouse7": "Button 5"
+            "mouse7": "Button 5",
+            "Delete": "Del"
         }
         self.rightClickNudge = False
         self.root = self.get_root()

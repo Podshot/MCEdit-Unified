@@ -451,6 +451,8 @@ class RootWidget(Widget):
 
             if keyname == 'Enter':
                 keyname = 'Return'
+            elif keyname == 'Delete':
+                keyname = 'Del'
 
             return keyname
 

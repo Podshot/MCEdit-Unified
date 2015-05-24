@@ -71,7 +71,6 @@ def getDataDir():
         def fsdecode(x):
             return x.decode(sys.getfilesystemencoding())
 
-        argzero = fsdecode(os.path.abspath(sys.argv[0]))
         dataDir = os.getcwdu()
         '''
         if getattr(sys, 'frozen', False):
