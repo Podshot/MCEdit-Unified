@@ -104,6 +104,10 @@ struct WriteBatchWrapper
 		_wb = new leveldb::WriteBatch();
 	};
 
+  ~WriteBatchWrapper(){
+    delete _wb;
+  };
+
 	void Put(PyObject* _key, PyObject* _value)
 	{
 		const std::string key = bp::extract<const std::string>(_key);
@@ -189,8 +193,7 @@ public:
   IteratorWrapper NewIterator(const leveldb::ReadOptions& options)
   {
 	  leveldb::Iterator* it = this->_db->NewIterator(options);
-	  IteratorWrapper iw(it);
-	  return iw;
+	  return IteratorWrapper(it);
   }
 
   const leveldb::Snapshot* GetSnapshot()
