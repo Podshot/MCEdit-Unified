@@ -1388,7 +1388,7 @@ class CameraViewport(GLViewport):
     @property
     def tooltipText(self):
         if self.hoveringCommandBlock[0]:
-            return self.hoveringCommandBlock[1]
+            return self.hoveringCommandBlock[1] or "[Empty]"
         return self.editor.currentTool.worldTooltipText
 
     floorQuad = numpy.array(((-4000.0, 0.0, -4000.0),
