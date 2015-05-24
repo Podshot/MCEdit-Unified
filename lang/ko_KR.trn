@@ -1774,7 +1774,7 @@ t832 채우기 블럭 선택기 열기
 o833 Open Block Picker for Replace
 t833 바꾸기 블럭 선택기 열기
 o834 When the replace tool is chosen, prompt for a block type.
-t834 브러쉬 도구가 선택되면 블럭 종류를 고르도록 합니다.
+t834 바꾸기 도구가 선택되면 블럭 종류를 고르도록 합니다.
 o835 Matching Coordinates
 t835 대응되는 좌표
 o836 Session Lock Options
