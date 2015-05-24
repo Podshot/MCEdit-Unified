@@ -1821,26 +1821,28 @@ t843 Remplir et remplacer
 o844 World Spawnpoint
 t844 Point de spawn du monde
 o845 CB Commands
-t845 
+t845 Commandes BC
 o846 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t846 
+t846 Ouvre un fichier texte contenant toutes les commandes des blocks e commandes de la zone sélectionnée.
+Sauvegarder le fichier mets à jours les blocs.
+Clic-droit pour les options
 o847 Command Blocks Commands Options
-t847 
+t847 Options des commandes des blocs de commandes
 o848 Sort Order
-t848 
+t848 Ordre de tri
 o849 Space between lines
-t849 
+t849 Interligne
 o850 Make space between the lines
-t850 
+t850 Ajouter un espace entre les linges
 o851 File format
-t851 
+t851 Format de fichier
 o852 Choose the file format for the files
-t852 
+t852 Choisissez le format pour les fichiers
 o853 Del
-t853 
+t853 Suppr
 o854 Show Commands
-t854 
+t854 Voir commandes
 o855 Show the command in a Command Block when hovering over it.
-t855 
+t855 Voir les commandes d'un block lorsque le pointeur passe au-dessus.
