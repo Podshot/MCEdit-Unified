@@ -37,6 +37,65 @@ static void ExceptionTranslator(const LevelDBException &err) {
 	PyErr_SetString(PyExc_RuntimeError, err.getMessage().c_str());
 };
 
+struct IteratorWrapper{
+	leveldb::Iterator* _it;
+	
+	IteratorWrapper(leveldb::Iterator* it){
+		this->_it = it;
+	}
+
+	bool Valid()
+	{
+		return this->_it->Valid();
+	}
+
+	void SeekToFirst()
+	{
+		this->_it->SeekToFirst();
+	}
+
+	void SeekToLast()
+	{
+		this->_it->SeekToLast();
+	}
+
+	void Seek(PyObject* _target)
+	{
+		const std::string target = bp::extract<const std::string>(_target);
+		return this->_it->Seek(target);
+	}
+
+	void Next()
+	{
+		this->_it->Next();
+	}
+
+	void Prev()
+	{
+		this->_it->Prev();
+	}
+	
+	std::string key()
+	{
+		return this->_it->key().ToString();
+	}
+
+	std::string value()
+	{
+		return this->_it->value().ToString();
+	}
+
+	void status()
+	{
+		leveldb::Status s = this->_it->status();
+
+		if (!s.ok()){
+			throw LevelDBException(s.ToString());
+		}
+	}
+};
+
+//write_batch.h
 struct WriteBatchWrapper
 {
 	leveldb::WriteBatch* _wb;
@@ -127,9 +186,11 @@ public:
   }
 
 
-  leveldb::Iterator* NewIterator(const leveldb::ReadOptions& options)
+  IteratorWrapper NewIterator(const leveldb::ReadOptions& options)
   {
-    return this->_db->NewIterator(options);
+	  leveldb::Iterator* it = this->_db->NewIterator(options);
+	  IteratorWrapper iw(it);
+	  return iw;
   }
 
   const leveldb::Snapshot* GetSnapshot()
@@ -171,8 +232,7 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
     .def("Delete", &DBWrap::Delete)
     .def("Write", &DBWrap::Write)
     .def("Get", &DBWrap::Get)
-    .def("NewIterator", &DBWrap::NewIterator,
-		bp::return_value_policy<bp::reference_existing_object>())
+    .def("NewIterator", &DBWrap::NewIterator)
     .def("GetSnapshot", &DBWrap::GetSnapshot,
 		bp::return_value_policy<bp::reference_existing_object>())
     .def("ReleaseSnapshot", &DBWrap::ReleaseSnapshot)
@@ -206,9 +266,23 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 	  .def_readwrite("sync", &leveldb::WriteOptions::sync)
 	;
 
+  //leveldb/iterator.h
+  bp::class_<IteratorWrapper>("Iterator", bp::no_init)
+	  .def("Valid", &IteratorWrapper::Valid)
+	  .def("SeekToFirst", &IteratorWrapper::SeekToFirst)
+	  .def("SeekToLast", &IteratorWrapper::SeekToLast)
+	  .def("Seek", &IteratorWrapper::Seek)
+	  .def("Next", &IteratorWrapper::Next)
+	  .def("Prev", &IteratorWrapper::Prev)
+	  .def("key", &IteratorWrapper::key)
+	  .def("value", &IteratorWrapper::value)
+	  .def("status", &IteratorWrapper::status)
+
+	  ;
+
   //leveldb/write_batch.h
   bp::class_<WriteBatchWrapper>("WriteBatch", bp::init<>())
 	  .def("Put", &WriteBatchWrapper::Put)
 	  .def("Delete", &WriteBatchWrapper::Delete)
-	;
+	  ;
 }

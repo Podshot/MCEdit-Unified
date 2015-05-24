@@ -28,7 +28,7 @@ value1 = db.Get(rop, "3")
 batch = WriteBatch()
 batch.Delete("3")
 batch.Put("4", "5")
-db.Write(wop, batch)  # Causes msvc exception for some reason
+db.Write(wop, batch)
 
 try:
     db.Get(rop, "3")
@@ -40,8 +40,19 @@ if db.Get(rop, "4") != "5":
     print "Failed to write a value using WriteBatch"
     exceptions += 1
 
+it = db.NewIterator(rop)
+it.SeekToFirst()
+while it.Valid():
+    print it.key() + ": " + it.value()
+    it.Next()
+it.status()  # Possible errors are handled by C++ side
+
+
+
+
 if exceptions > 0:
     print " {0} tests failed".format(exceptions)
 else:
     print "Successfully completed test."
+
 
