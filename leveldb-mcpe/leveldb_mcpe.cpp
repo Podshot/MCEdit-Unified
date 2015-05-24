@@ -44,6 +44,10 @@ struct IteratorWrapper{
 		this->_it = it;
 	}
 
+	~IteratorWrapper{
+		delete _it;
+	}
+
 	bool Valid()
 	{
 		return this->_it->Valid();
@@ -106,7 +110,7 @@ struct WriteBatchWrapper
 
   ~WriteBatchWrapper(){
     delete _wb;
-  };
+  }
 
 	void Put(PyObject* _key, PyObject* _value)
 	{
@@ -128,6 +132,10 @@ class DBWrap
 {
 public:
   leveldb::DB * _db;
+
+  ~DBWrap(){
+	  delete _db;
+  };
 
   DBWrap(PyObject* _options, PyObject* _name) //Open(options, name, db)
   {
