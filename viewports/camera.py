@@ -1375,7 +1375,11 @@ class CameraViewport(GLViewport):
                         block = self.editor.level.blockAt(*point)
                         if block == pymclevel.alphaMaterials.CommandBlock.ID:
                             self.hoveringCommandBlock[0] = True
-                            self.hoveringCommandBlock[1] = self.editor.level.tileEntityAt(*point).get("Command", TAG_String("")).value
+                            tileEntity = self.editor.level.tileEntityAt(*point)
+                            if tileEntity:
+                                self.hoveringCommandBlock[1] = tileEntity.get("Command", TAG_String("")).value
+                            else:
+                                self.hoveringCommandBlock[0] = False
                         else:
                             self.hoveringCommandBlock[0] = False
                     except (EnvironmentError, pymclevel.ChunkNotPresent):
