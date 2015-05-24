@@ -684,7 +684,7 @@ class LevelEditor(GLViewport):
                 elif keyname == 'Page up':
                     table.rows.scroll_to_item(max(0, table.rows.cell_to_item_no(0, 0) - table.rows.num_rows()))
                 elif keyname == 'Page down' and table.rows.cell_to_item_no(table.rows.num_rows(), 0) != None:
-                    table.rows.scroll_to_item(min(len(rows), table.rows.cell_to_item_no(table.rows.num_rows(), 0) + table.rows.num_rows()))
+                    table.rows.scroll_to_item(min(len(rows), table.rows.cell_to_item_no(table.rows.num_rows(), 0)))
 
         dlg.dispatch_key = dispatch_key
         dlg.present()
