@@ -1654,160 +1654,162 @@ t775 필터 작동중 오류 발생. 자세한 정보는 콘솔 확인.
 
 {0}
 o776 Shift
-t776 
+t776 쉬프트(Shift)
 o777 Option
-t777 
+t777 옵션
 o778 Meta
-t778 
+t778 메타
 o779 Applying {0} brush...
-t779 
+t779 {0} 브러쉬 적용중
 o780 Graphics Settings
-t780 
+t780 그래픽 설정
 o781 Run Macro
-t781 
+t781 매크로 실행
 o782 Delete Macro
-t782 
+t782 매크로 삭제
 o783 Macro Name: 
-t783 
+t783 매크로 이름: 
 o784 Enter a Player Name: 
-t784 
+t784 플레이어 이름 입력: 
 o785 Click the mouse button again to place the other selection corner.
-t785 
+t785 선택 영역의 반대쪽 코너를 설정하려면 마우스를 다시 클릭하세요.
 o786 Stop recording
-t786 
+t786 녹화 중지
 o787 Currently recording a macro
-t787 
+t787 현재 매크로 녹화 중
 o788 Choose a custom head for the villagers you make
-t788 
+t788 주민의 커스텀 머리 선택
 o789 Custom Head
-t789 
+t789 커스텀 머리
 o790 Skull Type
-t790 
+t790 머리 종류
 o791 Skeleton Skull
-t791 
+t791 스켈레톤 머리
 o792 Wither Skeleton Skull
-t792 
+t792 위더 스켈레톤 머리
 o793 Zombie Skull
-t793 
+t793 좀비 머리
 o794 Player Skull
-t794 
+t794 플레이어 머리
 o795 Creeper Skull
-t795 
+t795 크리퍼 머리
 o796 If Player Skull
-t796 
+t796 만약 플레이어 머리
 o797 Player's Name
-t797 
+t797 플레이어 이름
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t798 
+t798 복사된 모든 엔티티의 UUID를 재생성합니다. [권장]
+단축키: Alt-6
 o799 When the brush tool is chosen, prompt for a block type.
-t799 
+t799 브러쉬 도구가 선택되면 블럭 종류를 고르도록 합니다.
 o800 Max View Distance
-t800 
+t800 최대 시야
 o801 It looks like this level is completely empty!
 You'll have to create some chunks before you can get started.
-t801 
+t801 맵이 텅 비었습니다!
+시작하기 전에 청크를 만들어야 합니다.
 o802 Create Chunks
-t802 
+t802 청크 생성
 o803 Replace Only:
-t803 
+t803 다음만 바꾸기: 
 o804 Make Villager Silent
-t804 
+t804 주민 음소거시키기
 o805 Install Mode
 t805 설치 모드
 o806 SAVING - 
-t806 
+t806 저장 중 - 
 o807 World Type:
-t807 
+t807 월드 종류: 
 o808 Amplified
-t808 
+t808 증폭(Amplified)
 o809 Large Biomes
-t809 
+t809 넓은 바이옴(Large Biomes)
 o810 Superflat
-t810 
+t810 평지(Superflat)
 o811 Copying chunks
-t811 
+t811 청크 복사 중
 o812 Lighting chunks
-t812 
+t812 청크 조명 중
 o813 This world was not downloaded from a FTP server. Uploading worlds that were not downloaded from a FTP server is currently not possible
-t813 
+t813 FTP 서버에서 다운로드한 맵이 아닙니다. 현재 이러한 맵을 업로드하는 것은 지원하지 않습니다. 
 o814 Window size increased. You may have problems using the cursor until MCEdit is restarted.
-t814 
+t814 윈도우 크기가 조절되었습니다. MCEdit을 재시작하기 전까지 커서 사용에 문제가 있을 수 있습니다.
 o815 FTP Server IP:
-t815 
+t815 FTP 서버 아이피: 
 o816 FTP Username:
-t816 
+t816 FTP 아이디: 
 o817 FTP Password:
-t817 
+t817 FTP 비밀번호: 
 o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t818 
+t818 참고: MCEdit은 FTP 서버 정보를 로그인하는 곳 이외에 절대 사용하지 않습니다.
 o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
-t819 
+t819 MCEdit이 맵을 다운로드하고 있습니다. 완료되면 맵이 열립니다.
 o820 Connect
-t820 
+t820 연결
 o821 Root: 
-t821 
+t821 루트: 
 o822 Directory: 
-t822 
+t822 경로: 
 o823 Files: 
-t823 
+t823 파일: 
 o824 Host: 
-t824 
+t824 호스트: 
 o825 Client: 
-t825 
+t825 클라이언트: 
 o826 Target: 
-t826 
+t826 목표: 
 o827 Error: {0}
-t827 
+t827 에러: {0}
 o828 Incorrect username or password
-t828 
+t828 아이디나 비밀번호가 일치하지 않습니다.
 o829 Could not find the server.properties file! The FTP client will not be able to download the world unless the server.properties file is in the default FTP directory
-t829 
+t829 server.properties 파일을 찾을 수 없습니다. FTP 클라이언트는 server.properties 파일이 기본 FTP 경로에 없으면 맵을 다운로드할 수 없습니다. 
 o830 Could not find the world folder from the server.properties file
-t830 
+t830 server.properties 파일에서 월드 폴더를 찾을 수 없습니다.
 o831 Choose Block Immediately for Replace
-t831 
+t831 바꾸기에 사용될 블럭 즉시 선택
 o832 Open Block Picker for Fill
-t832 
+t832 채우기 블럭 선택기 열기
 o833 Open Block Picker for Replace
-t833 
+t833 바꾸기 블럭 선택기 열기
 o834 When the replace tool is chosen, prompt for a block type.
-t834 
+t834 바꾸기 도구가 선택되면 블럭 종류를 고르도록 합니다.
 o835 Matching Coordinates
-t835 
+t835 대응되는 좌표
 o836 Session Lock Options
-t836 
+t836 세션 락 옵션
 o837 Override Minecraft Changes (Not Recommended)
-t837 
+t837 마인크래프트 변경 내용 덮어쓰기 (권장하지 않음)
 o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
-t838 
+t838 MCEdit이 맵을 열고 있으면 항상 마인크래프트 변경 내용 덮어쓰기. (권장하지 않음)
 o839 Player Heads
-t839 
+t839 플레이어 머리
 o840 Sprint
-t840 
+t840 달리기
 o841 Select
-t841 
+t841 선택
 o842 Brush
-t842 
+t842 브러쉬
 o843 Fill and Replace
-t843 
+t843 찾기/바꾸기
 o844 World Spawnpoint
-t844 
+t844 월드 스폰 지점
 o845 CB Commands
-t845 
+t845 CB Commands
 o846 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t846 
+t846 현재 선택된 영역 내의 모든 커맨드 블럭 명령어가 담긴 텍스트 파일을 엽니다.
 o847 Command Blocks Commands Options
-t847 
+t847 커맨드 블럭 명령어 옵션
 o848 Sort Order
-t848 
+t848 정렬
 o849 Space between lines
-t849 
+t849 줄 사이 간격
 o850 Make space between the lines
-t850 
+t850 줄 사이의 간격을 만들기
 o851 File format
-t851 
+t851 파일 형식
 o852 Choose the file format for the files
-t852 
+t852 파일 형식을 선택하세요
