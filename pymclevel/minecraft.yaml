@@ -3018,11 +3018,10 @@ blocks:
     data:
       0:
         name: Stone Bricks
-        search: brick, block
+        search: block
         tex: [6, 3]
       1:
         name: Mossy Stone Bricks
-        search: moss
         tex: [4, 6]
       2:
         name: Cracked Stone Bricks
