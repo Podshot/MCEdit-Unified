@@ -1,10 +1,11 @@
 from leveldb_mcpe import DB, Options, ReadOptions, WriteOptions, WriteBatch
+import os
 
 op = Options()
 op.create_if_missing = True
 wop = WriteOptions()
 rop = ReadOptions()
-db = DB(op, "Testdb\db")
+db = DB(op, os.path.sep.join(["Testdb", "db"]))
 
 with open('test.txt', 'w') as f:
     it = db.NewIterator(rop)
