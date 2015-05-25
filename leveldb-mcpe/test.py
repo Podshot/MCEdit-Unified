@@ -42,26 +42,52 @@ if db.Get(rop, "4") != "5":
     print "Failed to write a value using WriteBatch"
     exceptions += 1
 
+try:
+    it = db.NewIterator(rop)
+    it.SeekToFirst()
+    while it.Valid():
+        it.Next()
 
-it = db.NewIterator(rop)
+    it.status()  # Possible errors are handled by C++ side
+    del it
+except:
+    print "Failed to iterate over database"
+    exceptions += 1
 
-it.SeekToFirst()
-while it.Valid():
-    print it.key() + ": " + it.value()
-    it.Next()
+try:
+    db.Put(wop, "a", "old")
+    db.Put(wop, "b", "old")
 
-it.status()  # Possible errors are handled by C++ side
-del it
-print "it deleted"
+    snapshot = db.GetSnapshot()
+    ropSnapshot = ReadOptions()
+    ropSnapshot.snapshot = snapshot
 
+    db.Put(wop, "a", "new")
+    db.Put(wop, "b", "new")
 
+    snapIt = db.NewIterator(ropSnapshot)
+    newIt = db.NewIterator(rop)
+    snapIt.SeekToFirst()
+    newIt.SeekToFirst()
 
+    while snapIt.Valid():
+        if snapIt.key() in ("a", "b") and snapIt.value() != "old":
+            print "Failed to retrieve correct value from database after creating a snapshot."
+            exceptions += 1
+        snapIt.Next()
 
+    while newIt.Valid():
+        if newIt.key() in ("a", "b") and newIt.value() != "new":
+            print "Failed to retrieve correct value from database after creating a snapshot."
+            exceptions += 1
+        newIt.Next()
+except:
+    print "Failed to test snapshots"
+    exceptions += 1
+
+del newIt, snapIt, db
 
 if exceptions > 0:
     print " {0} tests failed".format(exceptions)
 else:
     print "Successfully completed test."
-
-del db
-print 'db deleted'

@@ -107,11 +107,11 @@ struct WriteBatchWrapper
 
 	WriteBatchWrapper(){
 		_wb = new leveldb::WriteBatch();
-	};
+        }
 
   ~WriteBatchWrapper(){
     delete _wb;
-  };
+  }
 
 	void Put(PyObject* _key, PyObject* _value)
 	{
@@ -209,7 +209,7 @@ public:
 
   const leveldb::Snapshot* GetSnapshot()
   {
-    return this->_db->GetSnapshot();
+	  return _db->GetSnapshot();
   }
 
   void GetApproximateSizes(const leveldb::Range* range, int n, uint64_t* sizes)
@@ -246,7 +246,8 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
     .def("Delete", &DBWrap::Delete)
     .def("Write", &DBWrap::Write)
     .def("Get", &DBWrap::Get)
-    .def("NewIterator", &DBWrap::NewIterator, bp::return_value_policy<bp::manage_new_object>())
+    .def("NewIterator", &DBWrap::NewIterator, 
+		bp::return_value_policy<bp::manage_new_object>())
     .def("GetSnapshot", &DBWrap::GetSnapshot,
 		bp::return_value_policy<bp::reference_existing_object>())
     .def("ReleaseSnapshot", &DBWrap::ReleaseSnapshot)
@@ -273,7 +274,10 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
   bp::class_<leveldb::ReadOptions>("ReadOptions", bp::init<>())
 	  .def_readwrite("verify_checksums", &leveldb::ReadOptions::verify_checksums)
 	  .def_readwrite("fill_cache", &leveldb::ReadOptions::fill_cache)
-	  .def_readwrite("snapshot", &leveldb::ReadOptions::snapshot) //Pointer, maybe needs better wrapper? Untested
+	  //.def_readwrite("snapshot", &leveldb::ReadOptions::snapshot) //Pointer, maybe needs better wrapper? Untested
+	  .add_property("snapshot",
+		bp::make_getter(&leveldb::ReadOptions::snapshot),
+		bp::make_setter(&leveldb::ReadOptions::snapshot))
 	;
 
   bp::class_<leveldb::WriteOptions>("WriteOptions", bp::init<>())
@@ -291,7 +295,6 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 	  .def("key", &IteratorWrapper::key)
 	  .def("value", &IteratorWrapper::value)
 	  .def("status", &IteratorWrapper::status)
-
 	  ;
 
   //leveldb/write_batch.h
@@ -299,4 +302,6 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 	  .def("Put", &WriteBatchWrapper::Put)
 	  .def("Delete", &WriteBatchWrapper::Delete)
 	  ;
+
+  bp::class_<leveldb::Snapshot, boost::noncopyable>("Snapshot", bp::no_init);
 }
