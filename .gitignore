@@ -20,6 +20,7 @@ parts/
 sdist/
 var/
 ENV/
+leveldb-mcpe/test
 *.egg-info/
 .installed.cfg
 *.egg

@@ -30,6 +30,8 @@ batch.Delete("3")
 batch.Put("4", "5")
 db.Write(wop, batch)
 
+del batch
+
 try:
     db.Get(rop, "3")
     print "Failed to delete a value using WriteBatch"
@@ -40,11 +42,17 @@ if db.Get(rop, "4") != "5":
     print "Failed to write a value using WriteBatch"
     exceptions += 1
 
+
 it = db.NewIterator(rop)
+
 it.SeekToFirst()
 while it.Valid():
     print it.key() + ": " + it.value()
     it.Next()
+
+del it
+print "it deleted"
+
 it.status()  # Possible errors are handled by C++ side
 
 
@@ -55,4 +63,5 @@ if exceptions > 0:
 else:
     print "Successfully completed test."
 
-
+del db
+print 'db deleted'
