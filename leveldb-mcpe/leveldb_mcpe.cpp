@@ -44,6 +44,11 @@ struct IteratorWrapper{
 		this->_it = it;
 	}
 
+  ~IteratorWrapper()
+  {
+    delete _it;
+  }
+
 	bool Valid()
 	{
 		return this->_it->Valid();
@@ -130,6 +135,7 @@ public:
   leveldb::DB * _db;
 
   DBWrap(PyObject* _options, PyObject* _name) //Open(options, name, db)
+    : _db(NULL)
   {
     const leveldb::Options options = bp::extract<const leveldb::Options&>(_options);
     std::string name = bp::extract<std::string>(_name);
@@ -139,6 +145,11 @@ public:
     {
       throw LevelDBException(s.ToString());
     }
+  }
+
+  ~DBWrap()
+  {
+    delete _db;
   }
 
   void Put(PyObject* _options, PyObject* _key, PyObject* _value) //Put(options, key, value)
