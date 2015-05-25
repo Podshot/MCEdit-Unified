@@ -50,10 +50,10 @@ while it.Valid():
     print it.key() + ": " + it.value()
     it.Next()
 
+it.status()  # Possible errors are handled by C++ side
 del it
 print "it deleted"
 
-it.status()  # Possible errors are handled by C++ side
 
 
 

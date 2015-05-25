@@ -37,7 +37,7 @@ static void ExceptionTranslator(const LevelDBException &err) {
 	PyErr_SetString(PyExc_RuntimeError, err.getMessage().c_str());
 };
 
-struct IteratorWrapper{
+struct IteratorWrapper {
 	leveldb::Iterator* _it;
 	
 	IteratorWrapper(leveldb::Iterator* it){
@@ -201,10 +201,10 @@ public:
   }
 
 
-  IteratorWrapper NewIterator(const leveldb::ReadOptions& options)
+  IteratorWrapper* NewIterator(const leveldb::ReadOptions& options)
   {
 	  leveldb::Iterator* it = this->_db->NewIterator(options);
-	  return IteratorWrapper(it);
+	  return new IteratorWrapper(it);
   }
 
   const leveldb::Snapshot* GetSnapshot()
@@ -246,7 +246,7 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
     .def("Delete", &DBWrap::Delete)
     .def("Write", &DBWrap::Write)
     .def("Get", &DBWrap::Get)
-    .def("NewIterator", &DBWrap::NewIterator)
+    .def("NewIterator", &DBWrap::NewIterator, bp::return_value_policy<bp::manage_new_object>())
     .def("GetSnapshot", &DBWrap::GetSnapshot,
 		bp::return_value_policy<bp::reference_existing_object>())
     .def("ReleaseSnapshot", &DBWrap::ReleaseSnapshot)
@@ -281,7 +281,7 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 	;
 
   //leveldb/iterator.h
-  bp::class_<IteratorWrapper>("Iterator", bp::no_init)
+  bp::class_<IteratorWrapper, boost::noncopyable>("Iterator", bp::no_init)
 	  .def("Valid", &IteratorWrapper::Valid)
 	  .def("SeekToFirst", &IteratorWrapper::SeekToFirst)
 	  .def("SeekToLast", &IteratorWrapper::SeekToLast)
