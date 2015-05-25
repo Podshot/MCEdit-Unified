@@ -18,7 +18,7 @@ with open('test.txt', 'w') as f:
         chunkType = a[8]
         x = sum(xraw[i] << (i*8) for i in range(len(xraw)))
         z = sum(zraw[i] << (i*8) for i in range(len(zraw)))
-        f.write(str(zraw) + str(x) + ", " + str(z) + "| " + str(chunkType))
+        f.write(str(x) + ", " + str(z) + "| " + str(chunkType))
         f.write("\n")
         it.Next()
     it.status()  # Possible errors are handled by C++ side
