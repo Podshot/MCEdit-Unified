@@ -85,6 +85,8 @@ except:
     print "Failed to test snapshots"
     exceptions += 1
 
+db.ReleaseSnapshot(snapshot)
+
 del newIt, snapIt, db
 
 if exceptions > 0:

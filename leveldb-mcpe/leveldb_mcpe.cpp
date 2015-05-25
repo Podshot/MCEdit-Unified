@@ -274,7 +274,6 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
   bp::class_<leveldb::ReadOptions>("ReadOptions", bp::init<>())
 	  .def_readwrite("verify_checksums", &leveldb::ReadOptions::verify_checksums)
 	  .def_readwrite("fill_cache", &leveldb::ReadOptions::fill_cache)
-	  //.def_readwrite("snapshot", &leveldb::ReadOptions::snapshot) //Pointer, maybe needs better wrapper? Untested
 	  .add_property("snapshot",
 		bp::make_getter(&leveldb::ReadOptions::snapshot),
 		bp::make_setter(&leveldb::ReadOptions::snapshot))
