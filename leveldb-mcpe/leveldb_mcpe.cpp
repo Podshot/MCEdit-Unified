@@ -5,7 +5,7 @@
 #include <leveldb/env.h>
 #include <leveldb/filter_policy.h>
 #include <leveldb/write_batch.h>
-
+#include <leveldb/zlib_compressor.h>
 #define BOOST_PYTHON_STATIC_LIB
 
 #include <boost/python/module.hpp>
@@ -137,7 +137,8 @@ public:
   DBWrap(PyObject* _options, PyObject* _name) //Open(options, name, db)
     : _db(NULL)
   {
-    const leveldb::Options options = bp::extract<const leveldb::Options&>(_options);
+    leveldb::Options options = bp::extract<leveldb::Options&>(_options);
+	options.compressors[0] = new leveldb::ZlibCompressor();
     std::string name = bp::extract<std::string>(_name);
     leveldb::Status s = leveldb::DB::Open(options, name, &_db);
 
@@ -257,18 +258,18 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 
   //leveldb/options.h
   bp::class_<leveldb::Options>("Options", bp::init<>())
-	  .def_readonly("comparator", &leveldb::Options::comparator) //Pointer, maybe needs better wrapper? Untested
+	  //.def_readonly("comparator", &leveldb::Options::comparator) //Pointer, maybe needs better wrapper? Untested
 	  .def_readwrite("create_if_missing", &leveldb::Options::create_if_missing)
 	  .def_readwrite("error_if_exists", &leveldb::Options::error_if_exists)
-	  .def_readwrite("env", &leveldb::Options::env) //Pointer, maybe needs better wrapper? Untested
-	  .def_readwrite("info_log", &leveldb::Options::info_log) //Pointer, maybe needs better wrapper? Untested
+	  //.def_readwrite("env", &leveldb::Options::env) //Pointer, maybe needs better wrapper? Untested
+	  //.def_readwrite("info_log", &leveldb::Options::info_log) //Pointer, maybe needs better wrapper? Untested
 	  .def_readwrite("write_buffer_size", &leveldb::Options::write_buffer_size)
 	  .def_readwrite("max_open_files", &leveldb::Options::max_open_files)
-	  .def_readwrite("block_cache", &leveldb::Options::block_cache) //Pointer, maybe needs better wrapper? Untested
+	  //.def_readwrite("block_cache", &leveldb::Options::block_cache) //Pointer, maybe needs better wrapper? Untested
 	  .def_readwrite("block_size", &leveldb::Options::block_size)
 	  .def_readwrite("block_restart_interval", &leveldb::Options::block_restart_interval)
 	  //TODO setup a way to include compressor array //Pointer, maybe needs better wrapper? Untested
-	  .def_readonly("filter_policy", &leveldb::Options::filter_policy); //Pointer, maybe needs better wrapper? Untested
+	  //.def_readonly("filter_policy", &leveldb::Options::filter_policy); //Pointer, maybe needs better wrapper? Untested
 	;
   
   bp::class_<leveldb::ReadOptions>("ReadOptions", bp::init<>())
