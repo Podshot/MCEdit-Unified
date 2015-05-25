@@ -81,13 +81,14 @@ try:
             print "Failed to retrieve correct value from database after creating a snapshot."
             exceptions += 1
         newIt.Next()
+    del newIt, snapIt
 except:
     print "Failed to test snapshots"
     exceptions += 1
 
 db.ReleaseSnapshot(snapshot)
 
-del newIt, snapIt, db
+del db
 
 if exceptions > 0:
     print " {0} tests failed".format(exceptions)
