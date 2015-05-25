@@ -6,12 +6,14 @@ wop = WriteOptions()
 rop = ReadOptions()
 db = DB(op, "Testdb\db")
 
-it = db.NewIterator(rop)
-it.SeekToFirst()
-while it.Valid():
-    print it.key()
-    it.Next()
-it.status()  # Possible errors are handled by C++ side
+with open('test.txt', 'w') as f:
+    it = db.NewIterator(rop)
+    it.SeekToFirst()
+    while it.Valid():
+        f.write(it.key())
+        f.write("\n")
+        it.Next()
+    it.status()  # Possible errors are handled by C++ side
 
 del it
 del db
