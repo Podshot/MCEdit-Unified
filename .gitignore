@@ -20,6 +20,10 @@ parts/
 sdist/
 var/
 ENV/
+leveldb-mcpe/test
+leveldb-mcpe/Testdb
+leveldb-mcpe/Testdb/db
+
 *.egg-info/
 .installed.cfg
 *.egg
@@ -81,3 +85,4 @@ player-skins/
 *.svg
 *.profile
 splash
+leveldb-mcpe/leveldb-mcpe.lib
