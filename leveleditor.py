@@ -1209,8 +1209,21 @@ class LevelEditor(GLViewport):
                         alert(e.message + _("\n\nYour changes cannot be saved."))
                         return
 
-                for level in itertools.chain(level.dimensions.itervalues(), [level]):
+                if hasattr(level, 'dimensions'):
+                    for level in itertools.chain(level.dimensions.itervalues(), [level]):
 
+                        if "Canceled" == showProgress("Lighting chunks", level.generateLightsIter(), cancel=True):
+                            return
+
+                        if self.level == level:
+                            if isinstance(level, pymclevel.MCInfdevOldLevel):
+                                needsRefresh = [c.chunkPosition for c in level._loadedChunkData.itervalues() if c.dirty]
+                                needsRefresh.extend(level.unsavedWorkFolder.listChunks())
+                            else:
+                                needsRefresh = [c for c in level.allChunks if level.getChunk(*c).dirty]
+                            #xxx change MCInfdevOldLevel to monitor changes since last call
+                            self.invalidateChunks(needsRefresh)
+                else:
                     if "Canceled" == showProgress("Lighting chunks", level.generateLightsIter(), cancel=True):
                         return
 
