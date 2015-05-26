@@ -43,8 +43,15 @@
 			}
 			var contributorDB = getJSON('contributors.json');
 			for (var i = 0; i < contributors.length; i++) {
+				// console.log(contributor);
+				var events = [];
+				if (contributor && contributor.events_url) {
+					var events = getJSON(contributor.events_url.replace('{/privacy}','/'));
+					console.log(events);
+				}
 				var contributor = contributors[i];
 				contributorDiv = '<a href="http://github.com/' + contributor.login + '"><i class="fa fa-github"></i></a> ';
+				contributorDiv += '<a href="https://github.com/Khroki/MCEdit-Unified/commits?author=' + contributor.login + '"><i class="fa fa-code"></i></a> ';
 				if (contributorDB[contributor.login]) {
 					if (contributorDB[contributor.login].twitter) {
 						contributorDiv += '<a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fa fa-twitter"></i></a> ';

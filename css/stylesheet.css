@@ -60,7 +60,7 @@ p, tr, td{
 	float: none;
 }
 .contributor .thumbnail {
-	min-height: 320px;
+	min-height: 350px;
 	display: block;
 }
 .contributor .thumbnail h3 {
