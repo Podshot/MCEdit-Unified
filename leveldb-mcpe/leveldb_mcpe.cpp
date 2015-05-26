@@ -235,6 +235,21 @@ public:
   }
 };
 
+class RepairWrapper{
+public:
+	~RepairWrapper(){};
+
+	RepairWrapper(PyObject* _path, PyObject* _options)
+	{
+		const std::string path = bp::extract<const std::string>(_path);
+		const leveldb::Options& options = bp::extract<const leveldb::Options&>(_options);
+		leveldb::Status s = leveldb::RepairDB(path, options);
+
+		if (!s.ok()){
+			throw LevelDBException(s.ToString());
+		}
+	}
+};
 
 BOOST_PYTHON_MODULE(leveldb_mcpe)
 {
@@ -304,4 +319,6 @@ BOOST_PYTHON_MODULE(leveldb_mcpe)
 	  ;
 
   bp::class_<leveldb::Snapshot, boost::noncopyable>("Snapshot", bp::no_init);
+
+  bp::class_<RepairWrapper>("RepairWrapper", bp::init<PyObject*, PyObject*>());
 }

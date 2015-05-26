@@ -1,5 +1,5 @@
 exceptions = 0
-from leveldb_mcpe import DB, Options, ReadOptions, WriteOptions, WriteBatch
+from leveldb_mcpe import DB, Options, ReadOptions, WriteOptions, WriteBatch, RepairWrapper
 
 op = Options()
 op.create_if_missing = True
@@ -89,6 +89,8 @@ except:
 db.ReleaseSnapshot(snapshot)
 
 del db
+RepairWrapper('test', op)
+
 
 if exceptions > 0:
     print " {0} tests failed".format(exceptions)

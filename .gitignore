@@ -21,6 +21,9 @@ sdist/
 var/
 ENV/
 leveldb-mcpe/test
+leveldb-mcpe/Testdb
+leveldb-mcpe/Testdb/db
+
 *.egg-info/
 .installed.cfg
 *.egg
