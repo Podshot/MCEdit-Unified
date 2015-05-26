@@ -26,9 +26,11 @@ function getJSON(url){
 		}
 	}
 	if (ret_val && ret_val.message && ret_val.message.indexOf('API rate limit exceeded') != -1) {
+		var rate_limit_info = getJSON('https://api.github.com/rate_limit');
+		var refreshesAt = new Date(rate_limit_info.resources.core.reset * 1000);
 		$('title').html('MCEdit Unified - Rate Limit Exceeded');
 		$('body').children().not('nav').hide();
-		$('body').append('<div id="exceededwarning"><h1>Rate Limit Exceeded</h1><br>This page requires calls to GitHub, which is a rate limited resource.</div>');
+		$('body').append('<div id="exceededwarning"><h1>Rate Limit Exceeded</h1><br>This page requires calls to GitHub, which is a rate limited resource. You can browse some other pages while you wait.<br><br>Your rate limit will refresh at ' + refreshesAt.toLocaleTimeString() + '</div>');
 		$('body').css('background-color','#444444');
 		$('#exceededwarning').css('text-align','center').css('color','white');
 	}
