@@ -19,7 +19,7 @@ except ImportError, e:
 #.#
 
 from mclevelbase import ChunkNotPresent, ChunkMalformed
-from nbt import TAG_List
+import nbt
 from numpy import array, fromstring, zeros
 import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost
@@ -39,6 +39,7 @@ Setup loggers
 
 class PocketLeveldbDatabase(object):
     holdFileOpen = True
+    holdDatabaseOpen = True
     _world_db = None
     _file = None
 
@@ -48,7 +49,7 @@ class PocketLeveldbDatabase(object):
         Opens a leveldb and keeps it open until editing finished.
         :yield: DB
         """
-        if PocketLeveldbDatabase.holdFileOpen:
+        if PocketLeveldbDatabase.holdDatabaseOpen:
             if self._world_db is None:
                 self._world_db = leveldb_mcpe.DB(self.options, os.path.join(str(self.path)))
             yield self._world_db
@@ -113,29 +114,39 @@ class PocketLeveldbDatabase(object):
     def _readChunk(self, cx, cz, readOptions=None):
         """
         :param cx, cz: int Coordinates of the chunk
-        :param db: DB
         :param readOptions: ReadOptions
         :return: None
         """
-        key = struct.pack('<i', cx) + struct.pack('<i', cz) + "0"
-        # print key
+        key = struct.pack('<i', cx) + struct.pack('<i', cz)
         with self.world_db() as db:
             rop = self.readOptions if readOptions is None else readOptions
+
+            # Only way to see if value exists is by failing db.Get()
             try:
-                data = db.Get(rop, key)
+                terrain = db.Get(rop, key + "0")
             except RuntimeError:
                 return None
 
-        if len(data) != 83200:
-            raise ChunkMalformed(str(len(data)))
+            try:
+                tile_entities = db.Get(rop, key + "1")
+            except RuntimeError:
+                tile_entities = None
+
+            try:
+                entities = db.Get(rop, key + "2")
+            except RuntimeError:
+                entities = None
+
+        if len(terrain) != 83200:
+            raise ChunkMalformed(str(len(terrain)))
 
         logger.debug("CHUNK LOAD %s %s", cx, cz)
-        return data
+        return terrain, tile_entities, entities
 
     def saveChunk(self, chunk, batch=None, writeOptions=None):
         """
         :param chunk: PocketLeveldbChunk
-        :param db: DB or WriteBatch
+        :param batch: WriteBatch
         :param writeOptions: WriteOptions
         :return: None
         """
@@ -154,7 +165,6 @@ class PocketLeveldbDatabase(object):
         """
         :param cx, cz: int Coordinates of the chunk
         :param world: PocketLeveldbWorld
-        :param db: DB
         :return: PocketLeveldbChunk
         """
         data = self._readChunk(cx, cz)
@@ -180,7 +190,6 @@ class PocketLeveldbDatabase(object):
 
     def getAllChunks(self, readOptions=None):
         """
-        :param db: DB
         :param readOptions: ReadOptions
         :return: list
         """
@@ -192,12 +201,12 @@ class PocketLeveldbDatabase(object):
             it.SeekToFirst()
             while it.Valid():
                 key = it.key()
-                rawx = key[0:4]
-                rawz = key[4:8]
+                raw_x = key[0:4]
+                raw_z = key[4:8]
                 t = key[8]
 
                 if t == "0":
-                    cx, cz = struct.unpack('<i', rawx), struct.unpack('<i', rawz)
+                    cx, cz = struct.unpack('<i', raw_x), struct.unpack('<i', raw_z)
                     allChunks.append((cx[0], cz[0]))
                 it.Next()
             it.status()  # All this does is cause an exception if something went wrong. Might be unneeded?
@@ -254,12 +263,23 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             pass
 
     def deleteChunk(self, cx, cz, batch=None):
+        """
+        Deletes a chunk at given cx, cz. Deletes using the batch if batch is given, uses world_db() otherwise.
+        :param cx, cz Coordinates of the chunk
+        :param batch WriteBatch
+        :return: None
+        """
         self.chunkFile.deleteChunk(cx, cz, batch=batch)
         if self._loadedChunks is not None and (cx, cz) in self._loadedChunks:  # Unnecessary check?
             del self._loadedChunks[(cx, cz)]
             self.allChunks.remove((cx, cz))
 
     def deleteChunksInBox(self, box):
+        """
+        Deletes all chunks in a given box.
+        :param box pymclevel.box.BoundingBox
+        :return: None
+        """
         logger.info(u"Deleting {0} chunks in {1}".format((box.maxcx - box.mincx) * (box.maxcz - box.mincz),
                                                          ((box.mincx, box.mincz), (box.maxcx, box.maxcz))))
         i = 0
@@ -321,20 +341,41 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 class PocketLeveldbChunk(LightedChunk):
     HeightMap = FakeChunk.HeightMap
 
-    Entities = TileEntities = property(lambda self: TAG_List())
+    _Entities = _TileEntities = nbt.TAG_List()
     dirty = False
 
     def __init__(self, cx, cz, data, world):
         self.chunkPosition = (cx, cz)
         self.world = world
-        data = fromstring(data, dtype='uint8')
+        terrain = fromstring(data[0], dtype='uint8')
 
-        self.Blocks, data = data[:32768], data[32768:]
-        self.Data, data = data[:16384], data[16384:]
-        self.SkyLight, data = data[:16384], data[16384:]
-        self.BlockLight, data = data[:16384], data[16384:]
-        self.DirtyColumns, data = data[:256], data[256:]
-        self.GrassColors = data[:1024]  # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
+        if data[1] is not None:
+            nbt.string_len_fmt = struct.Struct("<H")
+            data = data[1]
+            data_raw = data.split('\n')
+            data = ["\n" + d for d in data_raw]
+            for d in data:
+                d = fromstring(d, 'uint8')
+                if len(d) < 2:
+                    continue
+                ctx = nbt.load_ctx
+                ctx.offset, ctx.data = 0, d
+                nbt.TAG_Compound.load_from(ctx)
+            nbt.string_len_fmt = struct.Struct(">H")
+
+        # if data[2] is not None:
+        #     nbt.string_len_fmt = struct.Struct("<H")
+        #     self.Entities = nbt.load(buf=data[2])
+        #     nbt.string_len_fmt = struct.Struct(">H")
+
+        self.Blocks, terrain = terrain[:32768], terrain[32768:]
+        self.Data, terrain = terrain[:16384], terrain[16384:]
+        self.SkyLight, terrain = terrain[:16384], terrain[16384:]
+        self.BlockLight, terrain = terrain[:16384], terrain[16384:]
+        self.DirtyColumns, terrain = terrain[:256], terrain[256:]
+
+        # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
+        self.GrassColors = terrain[:1024]
 
         self.unpackChunkData()
         self.shapeChunkData()
@@ -343,6 +384,9 @@ class PocketLeveldbChunk(LightedChunk):
     For the sake of testing purposes, the chunks get unpacked as old pocket-chunk data.
     Values may have changed, needs verification.
     """
+
+    def loadLevelDat(self, create=False, random_seed=None, last_played=None):
+        return
 
     def unpackChunkData(self):
         for key in ('SkyLight', 'BlockLight', 'Data'):
@@ -388,3 +432,35 @@ class PocketLeveldbChunk(LightedChunk):
                         self.DirtyColumns.tostring(),
                         self.GrassColors.tostring(),
                         ])
+
+    """
+    Entities and TileEntities properties
+    Unknown why these are properties, just implemented from MCLevel
+    """
+
+    @property
+    def Entities(self):
+        return self._Entities
+
+    @Entities.setter
+    def Entities(self, _Entities):
+        """
+        :param Entities: nbt.TAG_List
+        :return:
+        """
+        self._Entities = _Entities
+
+    @property
+    def TileEntities(self):
+        return self._TileEntities
+
+    @TileEntities.setter
+    def TileEntities(self, TileEntities):
+        """
+        :param TileEntities: nbt.TAG_List
+        :return:
+        """
+        self._TileEntities = TileEntities
+
+
+
