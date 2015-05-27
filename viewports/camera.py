@@ -1366,24 +1366,31 @@ class CameraViewport(GLViewport):
                 # mouse.set_pos(*self.startingMousePosition)
                 #    event.get(MOUSEMOTION)
                 #    self.oldMousePosition = (self.startingMousePosition)
+
+        def showCommands():
+            try:
+                block = self.editor.level.blockAt(*point)
+                if block == pymclevel.alphaMaterials.CommandBlock.ID:
+                    self.hoveringCommandBlock[0] = True
+                    tileEntity = self.editor.level.tileEntityAt(*point)
+                    if tileEntity:
+                        self.hoveringCommandBlock[1] = tileEntity.get("Command", TAG_String("")).value
+                    else:
+                        self.hoveringCommandBlock[0] = False
+                else:
+                    self.hoveringCommandBlock[0] = False
+            except (EnvironmentError, pymclevel.ChunkNotPresent):
+                pass
+
+        self.showCommands = showCommands
         if config.settings.showCommands.get():
             point, face = self.blockFaceUnderCursor
             if point is not None:
                 point = map(lambda x: int(numpy.floor(x)), point)
-                if self.editor.currentTool is self.editor.selectionTool:
-                    try:
-                        block = self.editor.level.blockAt(*point)
-                        if block == pymclevel.alphaMaterials.CommandBlock.ID:
-                            self.hoveringCommandBlock[0] = True
-                            tileEntity = self.editor.level.tileEntityAt(*point)
-                            if tileEntity:
-                                self.hoveringCommandBlock[1] = tileEntity.get("Command", TAG_String("")).value
-                            else:
-                                self.hoveringCommandBlock[0] = False
-                        else:
-                            self.hoveringCommandBlock[0] = False
-                    except (EnvironmentError, pymclevel.ChunkNotPresent):
-                        pass
+                if self.editor.currentTool is self.editor.selectionTool and self.editor.selectionTool.infoKey == 0:
+                    showCommands()
+                else:
+                    self.hoveringCommandBlock[0] = False
 
     def activeevent(self, evt):
         if evt.state & 0x2 and evt.gain != 0:
@@ -1391,7 +1398,7 @@ class CameraViewport(GLViewport):
 
     @property
     def tooltipText(self):
-        if self.hoveringCommandBlock[0]:
+        if self.hoveringCommandBlock[0] and (self.editor.currentTool is self.editor.selectionTool and self.editor.selectionTool.infoKey == 0):
             return self.hoveringCommandBlock[1] or "[Empty]"
         return self.editor.currentTool.worldTooltipText
 
