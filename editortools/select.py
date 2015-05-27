@@ -19,12 +19,11 @@ import sys
 import subprocess
 from OpenGL import GL
 
-from collections import defaultdict
 import numpy
 import pygame
 from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress, TextInputRow
 from albow.translate import _
-from config import config, ColorValue
+from config import config
 from depths import DepthOffset
 from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton

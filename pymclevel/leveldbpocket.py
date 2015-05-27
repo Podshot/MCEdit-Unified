@@ -3,7 +3,7 @@ from level import FakeChunk, MCLevel
 import logging
 from materials import pocketMaterials
 import leveldb_mcpe
-from mclevelbase import ChunkNotPresent, ChunkMalformed, ChunkAccessDenied
+from mclevelbase import ChunkNotPresent, ChunkMalformed
 from nbt import TAG_List
 from numpy import array, fromstring, zeros
 import os
