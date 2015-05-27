@@ -877,7 +877,7 @@ class FilterTool(EditorTool):
                 #!# Fix for Naor's filter bug
 #                if os.sys.platform == 'darwin' or True: # for debug
                 if os.sys.platform == 'darwin':
-                    if os.path.exists(m.__file__):
+                    if os.path.exists(m.__file__) and m.__file__.endswith('.pyc'):
                         os.remove(m.__file__)
                 #!#
             except Exception, e:
