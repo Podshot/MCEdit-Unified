@@ -1375,6 +1375,8 @@ class CameraViewport(GLViewport):
                     tileEntity = self.editor.level.tileEntityAt(*point)
                     if tileEntity:
                         self.hoveringCommandBlock[1] = tileEntity.get("Command", TAG_String("")).value
+                        if len(self.hoveringCommandBlock[1]) > 1500:
+                            self.hoveringCommandBlock[1] = "**COMMAND IS TOO LONG TO SHOW MORE**"
                     else:
                         self.hoveringCommandBlock[0] = False
                 else:
