@@ -2,11 +2,25 @@ import itertools
 from level import FakeChunk, MCLevel
 import logging
 from materials import pocketMaterials
-import leveldb_mcpe
+
+import os
+
+#.# Fix for leveldb_mcpe can't find the Mojang's libleveldb library.
+#   Happens on Linux.
+try:
+    import leveldb_mcpe
+except ImportError, e:
+    print e
+    import sys
+    sys.path.append(os.path.join(os.getcwd(), 'leveldb_mcpe'))
+    os.chdir('leveldb_mcpe')
+    import leveldb_mcpe
+    os.chdir('..')
+#.#
+
 from mclevelbase import ChunkNotPresent, ChunkMalformed
 from nbt import TAG_List
 from numpy import array, fromstring, zeros
-import os
 import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost
 from level import LightedChunk

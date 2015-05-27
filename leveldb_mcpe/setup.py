@@ -33,7 +33,7 @@ elif sys.platform == "linux2":
     # boost will be intalled there to avoid elevation problems
 
     curdir = os.getcwd()
-    boostRoot = os.path.expanduser('~/.local/lib/boost_1_55_0')
+    boostRoot = os.path.expanduser('~/.local/lib/boost_1_55_0_mcpe')
     install_boost = None
     build_boost_python = None
     if not os.path.exists(boostRoot):
@@ -59,10 +59,9 @@ elif sys.platform == "linux2":
             build_boost_python = True
 
     if install_boost:
-        os.makedirs(boostRoot)
-        os.chdir(os.path.join(boostRoot, '..'))
         print "Extracting boost..."
-        os.system('tar --bzip2 -xf %s'%os.path.join(curdir, 'boost_1_55_0.tar.bz2'))
+        os.system('tar --bzip2 -xf boost_1_55_0.tar.bz2')
+        os.system('mv boost_1_55_0 %s'%boostRoot)
         os.chdir(boostRoot)
         print "Installing boost..."
         os.system('sh ./bootstrap.sh --prefix=%s'%boostRoot)
