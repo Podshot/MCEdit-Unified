@@ -20,6 +20,8 @@ parts/
 sdist/
 var/
 ENV/
+scripts-pyinstaller
+pyinstaller-develop
 *.egg-info/
 .installed.cfg
 *.egg
