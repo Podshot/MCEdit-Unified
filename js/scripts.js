@@ -1,12 +1,16 @@
 var platforms = ["OSX","Win", "Lin"];
-var requests = {};
 function getJSON(url){
+	var isRateLimitCheck = (url == "https://api.github.com/rate_limit");
 	var ret_val = {};
-	if (requests[url]) {
+	if (localStorage['cache_json_store'+url] && !isRateLimitCheck) {
 		console.log('Found cached version');
-		ret_val = requests[url];
+		ret_val = JSON.parse(localStorage['cache_json_store'+url]);
 	} else {
 		try {
+			// if (!isRateLimitCheck && url.indexOf('github') != -1) {
+			// 	console.log('Didn\'t load ' + url + ' intentionally');
+			// 	return {};
+			// }
 			var response = $.ajax({
 				type: "GET",
 				url: url,
@@ -15,8 +19,7 @@ function getJSON(url){
 			}).responseText;
 			var ret_val = JSON.parse(response);
 			if (ret_val !== undefined) {
-				requests[url] = ret_val;
-				ret_val = requests[url];
+				localStorage['cache_json_store'+url] = JSON.stringify(ret_val);
 			} else {
 				loadFailError();
 			}
@@ -26,15 +29,29 @@ function getJSON(url){
 		}
 	}
 	if (ret_val && ret_val.message && ret_val.message.indexOf('API rate limit exceeded') != -1) {
-		var rate_limit_info = getJSON('https://api.github.com/rate_limit');
-		var refreshesAt = new Date(rate_limit_info.resources.core.reset * 1000);
-		$('title').html('MCEdit Unified - Rate Limit Exceeded');
-		$('body').children().not('nav').hide();
-		$('body').append('<div id="exceededwarning"><h1>Rate Limit Exceeded</h1><br>This page requires calls to GitHub, which is a rate limited resource. You can browse some other pages while you wait.<br><br>Your rate limit will refresh at ' + refreshesAt.toLocaleTimeString() + '</div>');
-		$('body').css('background-color','#444444');
-		$('#exceededwarning').css('text-align','center').css('color','white');
+		if (!checkRateLimit()) {
+			localStorage.removeItem('cache_json_store'+url);
+			if (confirm('An error occured loading ' + url + '. The page will now reload.')) {
+				location.reload();
+			} else {
+				alert('uh...ok, well it might be broken');
+			}
+		}
 	}
 	return ret_val;
+}
+function checkRateLimit() {
+	var rate_limit_info = getJSON('https://api.github.com/rate_limit');
+	if (rate_limit_info.resources.core.remaining != 0) {
+		return false;
+	}
+	var refreshesAt = new Date(rate_limit_info.resources.core.reset * 1000);
+	$('title').html('MCEdit Unified - Rate Limit Exceeded');
+	$('body').children().not('nav').hide();
+	$('body').append('<div id="exceededwarning"><h1>Rate Limit Exceeded</h1><br>This page requires calls to GitHub, which is a rate limited resource. You can browse some other pages while you wait.<br><br>Your rate limit will refresh at ' + refreshesAt.toLocaleTimeString() + '</div>');
+	$('body').css('background-color','#444444');
+	$('#exceededwarning').css('text-align','center').css('color','white');
+	return true;
 }
 /*versionCompare from http://stackoverflow.com/a/6832721*/
 function compareVersionString(v1, v2, options) {
@@ -174,6 +191,14 @@ $(document).ready(function(){
 		$('body').append('<div id="ratewarning"><h1>Rate Limit Low</h1><br>You only have ' + ratelimits.resources.core.remaining + ' requests remaining<br><br><button onclick="$(\'#ratewarning\').remove();$(\'body\').css(\'background-color\',\'white\').children().show();" class="btn btn-default"><i class="fa fa-check"></i> Ok</button></div>');
 		$('body').css('background-color','#444444');
 		$('#ratewarning').css('text-align','center').css('color','white');
+	}
+	if (ratelimits.resources.core.remaining == 60) {
+		for (var i = 0; i < Object.keys(localStorage).length; i++) {
+			var key = Object.keys(localStorage)[i];
+			if (key.indexOf('cache_json_store') != -1) {
+				localStorage.removeItem(key);
+			}
+		}
 	}
 	if (generatePageStructure()) {
 		try {

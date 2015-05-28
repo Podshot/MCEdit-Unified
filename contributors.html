@@ -4,7 +4,7 @@
 	<title>MCEdit Unified</title>
 
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -32,8 +32,29 @@
 	<!-- Looks for outdated IE browsers -->
 	<!--[if lte IE 9]>
 		<p class="update">Hey, it looks like you are using an old browser, you can go to <a href="http://browsehappy.com/">Browsehappy.com</a> to get the latest version of your browser and others.</p>
-	<[endif]-->
-
+		<[endif]
+	-->
+	<style>
+		.circle {
+			border-radius: 50%;
+			width: 12px;
+			height: 12px;
+			position: absolute;
+			right: 19px;
+			top: 4px;
+			border: 1px solid white;
+			border-top-right-radius: 0px;
+		}
+		.contrib-success {
+			background-color: green;
+		}
+		.contrib-danger {
+			background-color: red;
+		}
+		.contrib-old {
+			background-color: orange;
+		}
+	</style>
 	<script>
 		function pageTrigger() {
 			var contributors = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/contributors');
@@ -43,15 +64,31 @@
 			}
 			var contributorDB = getJSON('contributors.json');
 			for (var i = 0; i < contributors.length; i++) {
-				// console.log(contributor);
-				var events = [];
-				if (contributor && contributor.events_url) {
-					var events = getJSON(contributor.events_url.replace('{/privacy}','/'));
-					console.log(events);
-				}
 				var contributor = contributors[i];
 				contributorDiv = '<a href="http://github.com/' + contributor.login + '"><i class="fa fa-github"></i></a> ';
 				contributorDiv += '<a href="https://github.com/Khroki/MCEdit-Unified/commits?author=' + contributor.login + '"><i class="fa fa-code"></i></a> ';
+
+				var badgeClass = 'contrib-danger';
+				var events = [];
+				if (contributor && contributor.events_url) {
+					var events = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/commits?author=' + contributor.login);
+					if (events.length > 0) {
+						var timedif = Math.abs((new Date(events[0].commit.author.date)).getTime() - (new Date()).getTime());
+						timedif = timedif / 1000;
+						var ACTIVE_COMMITTER_MAX = 432000; //seconds (5 days)
+						var RECENT_COMMITTER_MAX = 2678400; //seconds (1 month)
+						if (timedif < ACTIVE_COMMITTER_MAX) {
+							badgeClass = 'contrib-success';
+							console.log(contributor.login + ' - ' + badgeClass);
+						} else if (timedif < RECENT_COMMITTER_MAX) {
+							badgeClass = 'contrib-old';
+							console.log(contributor.login + ' - ' + badgeClass);
+						} else {
+							console.log(contributor.login + ' - ' + badgeClass);
+						}
+					}
+				}
+
 				if (contributorDB[contributor.login]) {
 					if (contributorDB[contributor.login].twitter) {
 						contributorDiv += '<a href="http://twitter.com/' + contributorDB[contributor.login].twitter + '"><i class="fa fa-twitter"></i></a> ';
@@ -69,7 +106,8 @@
 						contributorDiv += '<a href="' + contributorDB[contributor.login].payment + '"><i class="fa fa-usd"></i></a> ';
 					}
 				}
-				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 contributor"><div class="thumbnail"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '<br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
+				console.log(contributor.login + ' - ' + badgeClass);
+				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 contributor"><div class="circle ' + badgeClass + '"></div><div class="thumbnail"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '<br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
 			};
 		}
 	</script>
