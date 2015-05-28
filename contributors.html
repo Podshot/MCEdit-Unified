@@ -69,11 +69,13 @@
 				contributorDiv += '<a href="https://github.com/Khroki/MCEdit-Unified/commits?author=' + contributor.login + '"><i class="fa fa-code"></i></a> ';
 
 				var badgeClass = 'contrib-danger';
+				var lastDate = new Date();
 				var events = [];
 				if (contributor && contributor.events_url) {
 					var events = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/commits?author=' + contributor.login);
 					if (events.length > 0) {
-						var timedif = Math.abs((new Date(events[0].commit.author.date)).getTime() - (new Date()).getTime());
+						lastDate = new Date(events[0].commit.author.date);
+						var timedif = Math.abs((lastDate).getTime() - (new Date()).getTime());
 						timedif = timedif / 1000;
 						var ACTIVE_COMMITTER_MAX = 432000; //seconds (5 days)
 						var RECENT_COMMITTER_MAX = 2678400; //seconds (1 month)
@@ -107,8 +109,12 @@
 					}
 				}
 				console.log(contributor.login + ' - ' + badgeClass);
-				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 contributor"><div class="circle ' + badgeClass + '"></div><div class="thumbnail"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '<br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
-			};
+				$('#contributors').append('<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 contributor"><div class="circle ' + badgeClass + '" data-toggle="tooltip" data-placement="bottom" title="Last activity on master branch was ' + lastDate.toLocaleDateString() + '"></div><div class="thumbnail"><a href="' + contributor.html_url + '"><img src="' + contributor.avatar_url + '" alt=""></a><div class="caption"><h3>' + contributor.login + '<br><small>' + ((contributorDB[contributor.login] && (contributorDB[contributor.login].role) ? contributorDB[contributor.login].role : 'Contributor') + '<br>' + (Math.round(contributor.contributions / totalContributions * 100) == 0 ? '1' : Math.round(contributor.contributions / totalContributions * 100)) + '%') + '</small></h3><p>' + contributorDiv + '</p></div></div></div>');
+			}
+			// $('.circle').mouseover(function(){
+			// 	$(this).remove();
+			// });
+			$('[data-toggle="tooltip"]').tooltip()
 		}
 	</script>
 </head>
