@@ -64,7 +64,7 @@ def bigEndianNBT():
     nbt.TAG_Int_Array.dtype = dtype(">u4")
     nbt.TAG_Short_Array.dtype = dtype(">u2")
 
-def loadNBTCompoundList(data, sep, bigEndian=True):
+def loadNBTCompoundList(data, bigEndian=True):
     """
     Loads a list of NBT Compound tags from a bunch of data.
     Uses sep to determine where the next Compound tag starts.
@@ -73,19 +73,22 @@ def loadNBTCompoundList(data, sep, bigEndian=True):
     :param bigEndian: bool. Determines endianness
     :return: list of TAG_Compounds
     """
-    def load(_data, _sep):
-        sep_data = _data.split(_sep)
+    def load(_data):
+        sep = "\x00\x00\x00\x00\n"
+        sep_data = _data.split(sep)
         compounds = []
         for d in sep_data:
             if len(d) != 0:
-                compounds.append(nbt.load(buf=(d + _sep)))
+                if not d.startswith("\n"):
+                    d = "\n" + d
+                compounds.append(nbt.load(buf=(d + '\x00\x00\x00\x00')))
         return compounds
 
     if bigEndian:
         with bigEndianNBT():
-            return load(data, sep)
+            return load(data)
     else:
-        return load(data, sep)
+        return load(data)
 
 
 class PocketLeveldbDatabase(object):
@@ -400,16 +403,14 @@ class PocketLeveldbChunk(LightedChunk):
         self.world = world
         terrain = fromstring(data[0], dtype='uint8')
 
-        sep = '\x00\x00\x00\x00'
         # Might need to include 0a (TAG_Compound) in this, to avoid issues with ints/longs of 0
 
         if data[1] is not None:
-            self.Entities = loadNBTCompoundList(data[1], sep)
+            self.TileEntities = loadNBTCompoundList(data[1])
 
         # This still crashes, will fix this next
-        # if data[2] is not None:
-        #     self.TileEntities = loadNBTCompoundList(data[2], sep)
-        #     print len(self.TileEntities)
+        if data[2] is not None:
+            self.Entities = loadNBTCompoundList(data[2])
 
         self.Blocks, terrain = terrain[:32768], terrain[32768:]
         self.Data, terrain = terrain[:16384], terrain[16384:]
