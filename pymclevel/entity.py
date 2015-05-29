@@ -547,8 +547,12 @@ class Entity(object):
     @classmethod
     def pos(cls, tag):
         if "Pos" not in tag:
-            raise InvalidEntity(tag)
-        values = [a.value for a in tag["Pos"]]
+            if "x" in tag and "y" in tag and "z" in tag:  # Pocket Edition entity
+                values = [tag["x"].value, tag["y"].value, tag["z"].value]
+            else:
+                raise InvalidEntity(tag)
+        else:
+            values = [a.value for a in tag["Pos"]]
 
         if isnan(values[0]) and 'xTile' in tag:
             values[0] = tag['xTile'].value

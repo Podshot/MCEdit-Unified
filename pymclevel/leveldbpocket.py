@@ -5,8 +5,8 @@ from materials import pocketMaterials
 
 import os
 
-#.# Fix for leveldb_mcpe can't find the Mojang's libleveldb library.
-#   Happens on Linux.
+# Fix for leveldb_mcpe can't find the Mojang's libleveldb library.
+# Happens on Linux.
 try:
     import leveldb_mcpe
 except ImportError, e:
@@ -16,11 +16,11 @@ except ImportError, e:
     os.chdir('leveldb_mcpe')
     import leveldb_mcpe
     os.chdir('..')
-#.#
+
 
 from mclevelbase import ChunkNotPresent, ChunkMalformed
 import nbt
-from numpy import array, fromstring, zeros
+from numpy import array, fromstring, zeros, dtype
 import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost
 from level import LightedChunk
@@ -36,6 +36,57 @@ Add a way to edit the level.dat file.
 Add a way to test for broken world and repair them (use leveldbs repairer, it's been wrapped already)
 Setup loggers
 """
+
+@contextmanager
+def bigEndianNBT():
+    """
+    Pocket edition NBT files are encoded in big endian, instead of little endian.
+    This sets all the required paramaters to read big endian NBT, and makes sure they get set back after usage.
+    :return: None
+    """
+    nbt.string_len_fmt = struct.Struct("<H")
+    nbt.TAG_Byte.fmt = struct.Struct("<b")
+    nbt.TAG_Short.fmt = struct.Struct("<h")
+    nbt.TAG_Int.fmt = struct.Struct("<i")
+    nbt.TAG_Long.fmt = struct.Struct("<q")
+    nbt.TAG_Float.fmt = struct.Struct("<f")
+    nbt.TAG_Double.fmt = struct.Struct("<d")
+    nbt.TAG_Int_Array.dtype = dtype("<u4")
+    nbt.TAG_Short_Array.dtype = dtype("<u2")
+    yield
+    nbt.string_len_fmt = struct.Struct(">H")
+    nbt.TAG_Byte.fmt = struct.Struct(">b")
+    nbt.TAG_Short.fmt = struct.Struct(">h")
+    nbt.TAG_Int.fmt = struct.Struct(">i")
+    nbt.TAG_Long.fmt = struct.Struct(">q")
+    nbt.TAG_Float.fmt = struct.Struct(">f")
+    nbt.TAG_Double.fmt = struct.Struct(">d")
+    nbt.TAG_Int_Array.dtype = dtype(">u4")
+    nbt.TAG_Short_Array.dtype = dtype(">u2")
+
+def loadNBTCompoundList(data, sep, bigEndian=True):
+    """
+    Loads a list of NBT Compound tags from a bunch of data.
+    Uses sep to determine where the next Compound tag starts.
+    :param data: str, the NBT to load from
+    :param sep: str, the chars to seperate the tags with
+    :param bigEndian: bool. Determines endianness
+    :return: list of TAG_Compounds
+    """
+    def load(_data, _sep):
+        sep_data = _data.split(_sep)
+        compounds = []
+        for d in sep_data:
+            if len(d) != 0:
+                compounds.append(nbt.load(buf=(d + _sep)))
+        return compounds
+
+    if bigEndian:
+        with bigEndianNBT():
+            return load(data, sep)
+    else:
+        return load(data, sep)
+
 
 class PocketLeveldbDatabase(object):
     holdFileOpen = True
@@ -341,7 +392,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 class PocketLeveldbChunk(LightedChunk):
     HeightMap = FakeChunk.HeightMap
 
-    _Entities = _TileEntities = nbt.TAG_List()
+    _Entities = _TileEntities = []
     dirty = False
 
     def __init__(self, cx, cz, data, world):
@@ -349,24 +400,16 @@ class PocketLeveldbChunk(LightedChunk):
         self.world = world
         terrain = fromstring(data[0], dtype='uint8')
 
-        if data[1] is not None:
-            nbt.string_len_fmt = struct.Struct("<H")
-            data = data[1]
-            data_raw = data.split('\n')
-            data = ["\n" + d for d in data_raw]
-            for d in data:
-                d = fromstring(d, 'uint8')
-                if len(d) < 2:
-                    continue
-                ctx = nbt.load_ctx
-                ctx.offset, ctx.data = 0, d
-                nbt.TAG_Compound.load_from(ctx)
-            nbt.string_len_fmt = struct.Struct(">H")
+        sep = '\x00\x00\x00\x00'
+        # Might need to include 0a (TAG_Compound) in this, to avoid issues with ints/longs of 0
 
+        if data[1] is not None:
+            self.Entities = loadNBTCompoundList(data[1], sep)
+
+        # This still crashes, will fix this next
         # if data[2] is not None:
-        #     nbt.string_len_fmt = struct.Struct("<H")
-        #     self.Entities = nbt.load(buf=data[2])
-        #     nbt.string_len_fmt = struct.Struct(">H")
+        #     self.TileEntities = loadNBTCompoundList(data[2], sep)
+        #     print len(self.TileEntities)
 
         self.Blocks, terrain = terrain[:32768], terrain[32768:]
         self.Data, terrain = terrain[:16384], terrain[16384:]
@@ -386,7 +429,7 @@ class PocketLeveldbChunk(LightedChunk):
     """
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
-        return
+        self.root_tag = None
 
     def unpackChunkData(self):
         for key in ('SkyLight', 'BlockLight', 'Data'):
@@ -445,7 +488,7 @@ class PocketLeveldbChunk(LightedChunk):
     @Entities.setter
     def Entities(self, _Entities):
         """
-        :param Entities: nbt.TAG_List
+        :param Entities: list
         :return:
         """
         self._Entities = _Entities
@@ -457,7 +500,7 @@ class PocketLeveldbChunk(LightedChunk):
     @TileEntities.setter
     def TileEntities(self, TileEntities):
         """
-        :param TileEntities: nbt.TAG_List
+        :param TileEntities: list
         :return:
         """
         self._TileEntities = TileEntities
