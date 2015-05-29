@@ -359,7 +359,7 @@ t167 Beim Rotieren des Pinsels werden auch die Ausrichtungen der Blöcke gedreht
 o168 Choose your language.
 t168 Wähle deine Sprache aus.
 o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t169 Auswählen, um die MCEdit-Einstellungen und Schematics in das Programmverzeichnis verschiebt
+t169 Auswählen, um die MCEdit-Einstellungen und Schematics in das Programmverzeichnis zu verschieben
 o170 You must restart MCEdit to see language changes
 t170 MCEdit muss neugestartet werden, damit die Sprache geändert werden kann.
 o171 Restart
@@ -497,7 +497,7 @@ t233 ---
 o234 Weight 1
 t234 Gewichtung 1
 o235 Weight 2
-t235 GewichtungGewichtung 2
+t235 Gewichtung 2
 o236 Weight 3
 t236 Gewichtung 3
 o237 Weight 4

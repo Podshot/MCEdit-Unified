@@ -323,6 +323,7 @@ class RootWidget(Widget):
                             keyname = self.getKey(event)
                             if keyname == config.keys.showBlockInfo.get() and self.editor.toolbar.tools[0].infoKey == 1:
                                 self.editor.toolbar.tools[0].infoKey = 0
+                                self.editor.mainViewport.showCommands()
                             if self.nudgeDirection is not None:
                                 keyname = self.getKey(movement=True, keyname=pygame.key.name(key))
                                 for i, key in enumerate(self.editor.movements):

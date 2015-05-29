@@ -342,6 +342,17 @@ class FilterToolPanel(Panel):
 
         tool = self.tool
 
+        for (i, _) in config.config._sections["Filter Keys"].items():
+            if i == "__name__":
+                continue;
+            There = False
+            for j in tool.filterModules:
+                if i == j.lower():
+                    There = True
+                    break;
+            if not There:
+                config.config.remove_option("Filter Keys", i)
+
         if len(tool.filterModules) is 0:
             self.add(Label("No filter modules found!"))
             self.shrink_wrap()
@@ -877,7 +888,7 @@ class FilterTool(EditorTool):
                 #!# Fix for Naor's filter bug
 #                if os.sys.platform == 'darwin' or True: # for debug
                 if os.sys.platform == 'darwin':
-                    if os.path.exists(m.__file__):
+                    if os.path.exists(m.__file__) and m.__file__.endswith('.pyc'):
                         os.remove(m.__file__)
                 #!#
             except Exception, e:
