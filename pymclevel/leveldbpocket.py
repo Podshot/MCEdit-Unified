@@ -13,14 +13,11 @@ import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost
 from level import LightedChunk
 from contextlib import contextmanager
+from pymclevel import entity
 
 logger = logging.getLogger(__name__)
 
 """
-TODO
-Add entity support. << Next up is editing entity.py to support PocketEdition entities.
-    There needs to be found a way of differentiating normal entities from pocket entities.
-    It would be optimal to do so without having to edit every Entity call in the code.
 Add player support.
 Add a way to edit the level.dat file.
 Add a way to test for broken world and repair them (use leveldbs repairer, it's been wrapped already)
@@ -36,6 +33,24 @@ def littleEndianNBT():
     This sets all the required paramaters to read little endian NBT, and makes sure they get set back after usage.
     :return: None
     """
+
+    # We need to override the function to access the hard-coded endianness.
+    def override_write_string(string, buf):
+        encoded = string.encode('utf-8')
+        buf.write(struct.pack("<h%ds" % (len(encoded),), len(encoded), encoded))
+
+    def reset_write_string(string, buf):
+        encoded = string.encode('utf-8')
+        buf.write(struct.pack(">h%ds" % (len(encoded),), len(encoded), encoded))
+
+    def override_byte_array_write_value(self, buf):
+        value_str = self.value.tostring()
+        buf.write(struct.pack("<I%ds" % (len(value_str),), self.value.size, value_str))
+
+    def reset_byte_array_write_value(self, buf):
+        value_str = self.value.tostring()
+        buf.write(struct.pack("<I%ds" % (len(value_str),), self.value.size, value_str))
+
     nbt.string_len_fmt = struct.Struct("<H")
     nbt.TAG_Byte.fmt = struct.Struct("<b")
     nbt.TAG_Short.fmt = struct.Struct("<h")
@@ -45,6 +60,8 @@ def littleEndianNBT():
     nbt.TAG_Double.fmt = struct.Struct("<d")
     nbt.TAG_Int_Array.dtype = numpy.dtype("<u4")
     nbt.TAG_Short_Array.dtype = numpy.dtype("<u2")
+    nbt.write_string = override_write_string
+    nbt.TAG_Byte_Array.write_value = override_byte_array_write_value
     yield
     nbt.string_len_fmt = struct.Struct(">H")
     nbt.TAG_Byte.fmt = struct.Struct(">b")
@@ -55,6 +72,8 @@ def littleEndianNBT():
     nbt.TAG_Double.fmt = struct.Struct(">d")
     nbt.TAG_Int_Array.dtype = numpy.dtype(">u4")
     nbt.TAG_Short_Array.dtype = numpy.dtype(">u2")
+    nbt.write_string = reset_write_string
+    nbt.TAG_Byte_Array.write_value = reset_byte_array_write_value
 
 
 def loadNBTCompoundList(data, littleEndian=True):
@@ -65,6 +84,7 @@ def loadNBTCompoundList(data, littleEndian=True):
     :param littleEndian: bool. Determines endianness
     :return: list of TAG_Compounds
     """
+
     def load(_data):
         sep = "\x00\x00\x00\x00\n"
         sep_data = _data.split(sep)
@@ -149,7 +169,7 @@ class PocketLeveldbDatabase(object):
 
         if needsRepair:
             leveldb_mcpe.RepairWrapper(os.path.join(path, 'db'))
-        # Maybe setup a logger message with number of chunks in the database etc.
+            # Maybe setup a logger message with number of chunks in the database etc.
 
     def close(self):
         """
@@ -206,14 +226,22 @@ class PocketLeveldbDatabase(object):
         """
         cx, cz = chunk.chunkPosition
         data = chunk.savedData()
-        key = struct.pack('<i', cx) + struct.pack('<i', cz) + "0"
+        key = struct.pack('<i', cx) + struct.pack('<i', cz)
 
         if batch is None:
             with self.world_db() as db:
                 wop = self.writeOptions if writeOptions is None else writeOptions
-                db.Put(key, data, wop)
+                db.Put(key + "0", data[0], wop)
+                if data[1] is not None:
+                    db.Put(key + "1", data[1], wop)
+                if data[2] is not None:
+                    db.Put(key + "2", data[2], wop)
         else:
             batch.Put(key, data)
+            if data[1] is not None:
+                batch.Put(key + "1", data[1])
+            if data[2] is not None:
+                batch.Put(key + "2", data[2])
 
     def loadChunk(self, cx, cz, world):
         """
@@ -436,7 +464,6 @@ class PocketLeveldbChunk(LightedChunk):
         """
         self.chunkPosition = (cx, cz)
         self.world = world
-        self.data = data  # TODO remove this
         terrain = numpy.fromstring(data[0], dtype='uint8')
 
         if data[1] is not None:
@@ -501,6 +528,7 @@ class PocketLeveldbChunk(LightedChunk):
         Returns the data of the chunk to save to the database.
         :return: str of 83200 bytes of chunk data.
         """
+
         def packData(dataArray):
             """
             Repacks the terrain data to Mojang's leveldb library's format.
@@ -519,21 +547,28 @@ class PocketLeveldbChunk(LightedChunk):
             self.DirtyColumns[:] = 255
 
         with littleEndianNBT():
-            data = ""
+            entityData = ""
+            tileEntityData = ""
+
+            for ent in self.TileEntities:
+                tileEntityData += ent.save(compressed=False)
+
             for ent in self.Entities:
                 v = ent["id"].value
                 ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
-                data += ent.save(compressed=False)
+                entityData += ent.save(compressed=False)
+                # We have to re-invert after saving otherwise the next save will fail.
                 ent["id"] = nbt.TAG_String(v)
-            print data == self.data[2]
 
-        return ''.join([self.Blocks.tostring(),
-                        packData(self.Data).tostring(),
-                        packData(self.SkyLight).tostring(),
-                        packData(self.BlockLight).tostring(),
-                        self.DirtyColumns.tostring(),
-                        self.GrassColors.tostring(),
-                        ])
+        terrain = ''.join([self.Blocks.tostring(),
+                           packData(self.Data).tostring(),
+                           packData(self.SkyLight).tostring(),
+                           packData(self.BlockLight).tostring(),
+                           self.DirtyColumns.tostring(),
+                           self.GrassColors.tostring(),
+                           ])
+
+        return terrain, tileEntityData, entityData
 
     """
     Entities and TileEntities properties
