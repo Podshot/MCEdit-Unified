@@ -1,3 +1,5 @@
-[submodule "leveldb-mcpe/leveldb-mcpe"]
-	path = leveldb-mcpe/leveldb-mcpe
-	url = git@github.com:Mojang/leveldb-mcpe.git
+[submodule "leveldb_mcpe/leveldb-mcpe"]
+
+	path = leveldb_mcpe/leveldb-mcpe
+
+	url = https://github.com/Mojang/leveldb-mcpe.git
