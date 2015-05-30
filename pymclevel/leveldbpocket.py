@@ -5,18 +5,7 @@ from materials import pocketMaterials
 
 import os
 
-# Fix for leveldb_mcpe can't find the Mojang's libleveldb library.
-# Happens on Linux.
-try:
-    import leveldb_mcpe
-except ImportError, e:
-    print e
-    import sys
-    sys.path.append(os.path.join(os.getcwd(), 'leveldb_mcpe'))
-    os.chdir('leveldb_mcpe')
-    import leveldb_mcpe
-    os.chdir('..')
-
+import leveldb_mcpe
 
 from mclevelbase import ChunkNotPresent, ChunkMalformed
 import nbt

@@ -33,6 +33,13 @@ elif sys.platform == "linux2":
     # boost will be intalled there to avoid elevation problems
 
     curdir = os.getcwd()
+    destpath = '../pymclevel'
+    user_libdir = os.path.expanduser('~/.local/lib')
+    if not os.path.exists(user_libdir):
+        print 'Creating needed library folder: %s'%user_libdir
+        os.makedirs(user_libdir)
+        print 'Done'
+    mcpeso_dir = os.path.join(user_libdir, 'leveldb-mcpe')
     boostRoot = os.path.expanduser('~/.local/lib/boost_1_55_0_mcpe')
     install_boost = None
     build_boost_python = None
@@ -76,16 +83,18 @@ elif sys.platform == "linux2":
 
     # Unpack and build leveldb-mcpe from mojang
     build_leveldb = None
-    if not os.path.exists('leveldb-mcpe/libleveldb.a') and not os.path.exists('leveldb-mcpe/libleveldb.so'):
+    #if not os.path.exists('leveldb-mcpe/libleveldb.a') and not os.path.exists('leveldb-mcpe/libleveldb.so'):
+    if not os.path.exists('libleveldb.so'):
         build_leveldb = True
-    elif os.path.exists('leveldb-mcpe/libleveldb.a') and os.path.exists('leveldb-mcpe/libleveldb.so'):
+    #elif os.path.exists('leveldb-mcpe/libleveldb.a') and os.path.exists('leveldb-mcpe/libleveldb.so'):
+    elif os.path.exists('libleveldb.so'):
         a = raw_input("Mojang's leveldb is already built. Rebuild [y/N] ?")
         if a and a in 'yY':
             build_leveldb = True
         else:
             build_leveldb = False
     else:
-        not_exists = [os.path.basename(a) for a in ('leveldb-mcpe/libeveldb.a', 'leveldb-mcpe/libleveldb.so') if not os.path.exists(a)]
+        not_exists = [os.path.basename(a) for a in ('libeveldb.a', 'libleveldb.so') if not os.path.exists(a)]
         print "The file %s is missing. Building MCEdit one may not work."%not_exists[0]
         a = raw_input("Rebuild Mojang's leveldb-mcpe [y/N] ?")
         if a and a in 'yY':
@@ -119,6 +128,14 @@ elif sys.platform == "linux2":
         print 'Done.'
     else:
         print "Skipping Mojang's leveldb-mcpe build."
+    if not os.path.exists(os.path.join(mcpeso_dir, 'libleveldb.so.1.18')):
+        print 'Copying library to %s.'%mcpeso_dir
+        if not os.path.exists(mcpeso_dir):
+            os.makedirs(mcpeso_dir)
+        os.system('cp ./leveldb-mcpe/libleveldb.so.1.18 %s'%mcpeso_dir)
+        os.system('ln -s %s/libleveldb.so.1.18  %s/libleveldb.so.1'%(mcpeso_dir, mcpeso_dir))
+        os.system('ln -s %s/libleveldb.so.1.18  %s/libleveldb.so'%(mcpeso_dir, mcpeso_dir))
+        print 'Done.'
 
 
     ##1# This form compiles dynamic shared library
@@ -134,11 +151,11 @@ elif sys.platform == "linux2":
 
     #2# Static library build: need a boost python libs built with cxxflags"-fPIC" and linkflags="-fPIC"
     include_dirs = [boostRoot, './leveldb-mcpe/include', '.']
-    library_dirs = [boostRoot, boostRoot + '/stage/lib', '/usr/local/lib', '.', './leveldb-mcpe']
+    library_dirs = [boostRoot, boostRoot + '/stage/lib', '/usr/local/lib', '.', mcpeso_dir]
     libraries = ['boost_python', 'leveldb']
-    define_macros = [("LINUX", None),("_DEBUG", None),("_LINUX", None),("LEVELDB_PLATFORM_POSIX", None)]
+    define_macros = [("LINUX", None),("_DEBUG", None),("_LINUX", None),("LEVELDB_PLATFORM_POSIX", None), ('OS_LINUX', None)]
     extra_compile_args = ['-std=c++11'] + extra_compile_args
-    runtime_library_dirs = ['./leveldb-mcpe']
+    runtime_library_dirs = [mcpeso_dir]
 
 files = ["leveldb_mcpe.cpp"]
 
@@ -160,7 +177,7 @@ setup(name="leveldb_python_wrapper",
 
 # Need to copy leveldb_mcpe.so in the current directory
 if sys.platform == 'linux2':
-    os.system('cp $(ls -R build/*/leveldb_mcpe.so) .')
+    os.system('cp $(ls -R build/*/leveldb_mcpe.so) %s'%destpath)
 
 
 
