@@ -768,7 +768,10 @@ class CameraViewport(GLViewport):
 
         lineFields = [TextFieldWrapped(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
-            f.value = tileEntity[l].value
+            try:
+                f.value = tileEntity[l].value.decode("unicode-escape")
+            except:
+                f.value = tileEntity[l].value
 
         colors = [
             "\xa70  Black",
@@ -955,7 +958,10 @@ class CameraViewport(GLViewport):
         nameField = TextFieldWrapped(width=100)
         trackOutput = CheckBox()
 
-        commandField.value = tileEntity["Command"].value
+        try:
+            commandField.value = tileEntity["Command"].value.decode("unicode-escape")
+        except:
+            commandField.value = tileEntity["Command"].value
         oldCommand = commandField.value
         trackOutput.value = tileEntity["TrackOutput"].value
         oldTrackOutput = trackOutput.value
