@@ -433,11 +433,23 @@ class Tree(Column):
         return rows
 
     def deploy(self, id):
-            if id in self.deployed:
-                self.deployed.remove(id)
-            else:
-                self.deployed.append(id)
-            self.build_layout()
+        p = None
+        if self.selected_item:
+            s_idx = 0 + self.selected_item_index
+            num_rows = len(self.rows)
+        if id in self.deployed:
+            self.deployed.remove(id)
+            if self.selected_item:
+                if self.selected_item[4] == id:
+                    p = self.get_item_parent(self.selected_item)
+                    p_idx = self.rows.index(p)
+        else:
+            self.deployed.append(id)
+        self.build_layout()
+        if p:
+            self.select_item(p_idx)
+        elif self.selected_item and s_idx > id:
+            self.select_item(s_idx + (len(self.rows) - num_rows))
 
     def click_item(self, n, pos):
         """..."""
