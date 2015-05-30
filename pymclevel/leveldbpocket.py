@@ -1,4 +1,5 @@
 import itertools
+import time
 from level import FakeChunk, MCLevel
 import logging
 from materials import pocketMaterials
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 """
 Add player support.
-Add a way to edit the level.dat file.
+Add a way of creating new levels
 Add a way to test for broken world and repair them (use leveldbs repairer, it's been wrapped already)
 Setup loggers
 """
@@ -104,6 +105,30 @@ def loadNBTCompoundList(data, littleEndian=True):
         return load(data)
 
 
+def TagProperty(tagName, tagType, default_or_func=None):
+    """
+    Copied from infiniteworld.py. Custom property object to handle NBT-tag properties.
+    :param tagName: str, Name of the NBT-tag
+    :param tagType: int, (nbt.TAG_TYPE) Type of the NBT-tag
+    :param default_or_func: function or default value. If function, function should return the default.
+    :return: property
+    """
+    def getter(self):
+        if tagName not in self.root_tag:
+            if hasattr(default_or_func, "__call__"):
+                default = default_or_func(self)
+            else:
+                default = default_or_func
+
+            self.root_tag[tagName] = tagType(default)
+        return self.root_tag[tagName].value
+
+    def setter(self, val):
+        self.root_tag[tagName] = tagType(value=val)
+
+    return property(getter, setter)
+
+
 class PocketLeveldbDatabase(object):
     """
     Not to be confused with leveldb_mcpe.DB
@@ -112,10 +137,8 @@ class PocketLeveldbDatabase(object):
     The leveldb_mcpe.DB object handles the actual leveldb database.
     To access the actual database, world_db() should be called.
     """
-    holdFileOpen = True
     holdDatabaseOpen = True
     _world_db = None
-    _file = None
 
     @contextmanager
     def world_db(self):
@@ -125,29 +148,13 @@ class PocketLeveldbDatabase(object):
         """
         if PocketLeveldbDatabase.holdDatabaseOpen:
             if self._world_db is None:
-                self._world_db = leveldb_mcpe.DB(self.options, os.path.join(str(self.path)))
+                self._world_db = leveldb_mcpe.DB(self.options, os.path.join(str(self.path), 'db'))
             yield self._world_db
             pass
         else:
-            db = leveldb_mcpe.DB(self.options, os.path.join(str(self.path)))
+            db = leveldb_mcpe.DB(self.options, os.path.join(str(self.path), 'db'))
             yield db
             del db
-
-    @contextmanager
-    def levelfile(self):
-        """
-        Opens a file and keeps it open until editing finished.
-        Usage:
-        with file as f: do stuff
-        :yield: file
-        """
-        if PocketLeveldbDatabase.holdFileOpen:
-            if self._file is None:
-                self._file = open(os.path.join(self.path, 'level.dat'))
-            yield self._file
-        else:
-            with open(os.path.join(self.path, 'level.dat')) as f:
-                yield f
 
     def __init__(self, path):
         """
@@ -177,13 +184,10 @@ class PocketLeveldbDatabase(object):
         Not calling this method may result in corrupted worlds
         :return: None
         """
-        if PocketLeveldbDatabase.holdFileOpen:
+        if PocketLeveldbDatabase.holdDatabaseOpen:
             if self._world_db is not None:
                 del self._world_db
                 self._world_db = None
-            if self._file is not None:
-                self._file.close()
-                self._file = None
 
     def _readChunk(self, cx, cz, readOptions=None):
         """
@@ -237,7 +241,7 @@ class PocketLeveldbDatabase(object):
                 if data[2] is not None:
                     db.Put(key + "2", data[2], wop)
         else:
-            batch.Put(key, data)
+            batch.Put(key + "0", data[0])
             if data[1] is not None:
                 batch.Put(key + "1", data[1])
             if data[2] is not None:
@@ -298,6 +302,10 @@ class PocketLeveldbDatabase(object):
             return allChunks
 
 
+class InvalidPocketLevelDBWorldException(Exception):
+    pass
+
+
 class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     Height = 128
     Width = 0
@@ -305,6 +313,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     isInfinite = True
     materials = pocketMaterials
+    # root_tag = None
 
     _allChunks = None  # An array of cx, cz pairs.
     _loadedChunks = {}  # A dictionary of actual PocketLeveldbChunk objects mapped by (cx, cz)
@@ -315,10 +324,10 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :return: list with all chunks in the world.
         """
         if self._allChunks is None:
-            self._allChunks = self.chunkFile.getAllChunks()
+            self._allChunks = self.worldFile.getAllChunks()
         return self._allChunks
 
-    def __init__(self, filename):
+    def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
         """
         :param filename: path to the root dir of the level
         :return:
@@ -327,17 +336,51 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             filename = os.path.dirname(filename)
         self.filename = filename
 
-        self.chunkFile = PocketLeveldbDatabase(os.path.join(filename, 'db'))
+        self.worldFile = PocketLeveldbDatabase(os.path.join(filename))
+        self.loadLevelDat(create, random_seed, last_played)
+
+    def loadLevelDat(self, create=False, random_seed=None, last_played=None):
+        with littleEndianNBT():
+            if create:
+                return  # TODO implement this with a _create()
+            root_tag_buf = open(os.path.join(self.filename, 'level.dat')).read()
+            magic, length, root_tag_buf = root_tag_buf[:4], root_tag_buf[4:8], root_tag_buf[8:]
+            try:
+                if nbt.TAG_Int.fmt.unpack(magic)[0] < 3:
+                    logger.info("Found an old level.dat file. Aborting world load")
+                    raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
+                if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
+                    raise nbt.NBTFormatError()
+                self.root_tag = nbt.load(buf=root_tag_buf)
+            except nbt.NBTFormatError, e:
+                logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(e))
+
+    # --- NBT Tag variables ---
+
+    SizeOnDisk = TagProperty('SizeOnDisk', nbt.TAG_Int, 0)
+    RandomSeed = TagProperty('RandomSeed', nbt.TAG_Int, 0)
+
+    # TODO PE worlds have a different day length, this has to be changed to that.
+    Time = TagProperty('Time', nbt.TAG_Long, 0)
+    LastPlayed = TagProperty('LastPlayed', nbt.TAG_Long, lambda self: long(time.time() * 1000))
+
+    LevelName = TagProperty('LevelName', nbt.TAG_String, lambda self: self.defaultDisplayName)
+    GeneratorName = TagProperty('Generator', nbt.TAG_String, 'Infinite')
+
+    GameType = TagProperty('GameType', nbt.TAG_Int, 0)
+
+    def defaultDisplayName(self):
+        return os.path.basename(os.path.dirname(self.filename))
 
     def getChunk(self, cx, cz):
         """
         Used to obtain a chunk from the database.
-        :param cx, cz: cx, cz coords of the chunk
+        :param cx, cz: cx, cz coordinates of the chunk
         :return: PocketLeveldbChunk
         """
         c = self._loadedChunks.get((cx, cz))
         if c is None:
-            c = self.chunkFile.loadChunk(cx, cz, self)
+            c = self.worldFile.loadChunk(cx, cz, self)
             self._loadedChunks[(cx, cz)] = c
         return c
 
@@ -347,7 +390,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         """
         self._loadedChunks.clear()
         self._allChunks = None
-        self.chunkFile.close()
+        self.worldFile.close()
 
     def close(self):
         """
@@ -366,7 +409,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param batch WriteBatch
         :return: None
         """
-        self.chunkFile.deleteChunk(cx, cz, batch=batch)
+        self.worldFile.deleteChunk(cx, cz, batch=batch)
         if self._loadedChunks is not None and (cx, cz) in self._loadedChunks:  # Unnecessary check?
             del self._loadedChunks[(cx, cz)]
             self.allChunks.remove((cx, cz))
@@ -393,8 +436,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             if i % 100 == 0:
                 logger.info(u"Chunk {0}...".format(i))
 
-        with self.chunkFile.world_db() as db:
-            wop = self.chunkFile.writeOptions
+        with self.worldFile.world_db() as db:
+            wop = self.worldFile.writeOptions
             db.Write(wop, batch)
 
         del batch
@@ -423,12 +466,12 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         batch = leveldb_mcpe.WriteBatch()
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
-                self.chunkFile.saveChunk(chunk, batch=batch)
+                self.worldFile.saveChunk(chunk, batch=batch)
                 chunk.dirty = False
             yield
 
-        with self.chunkFile.world_db() as db:
-            wop = self.chunkFile.writeOptions
+        with self.worldFile.world_db() as db:
+            wop = self.worldFile.writeOptions
             db.Write(wop, batch)
 
     def containsChunk(self, cx, cz):
@@ -490,9 +533,6 @@ class PocketLeveldbChunk(LightedChunk):
 
         self.unpackChunkData()
         self.shapeChunkData()
-
-    def loadLevelDat(self, create=False, random_seed=None, last_played=None):  # Needs implementation.
-        self.root_tag = None
 
     def unpackChunkData(self):
         """
