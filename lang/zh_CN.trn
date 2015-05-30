@@ -723,15 +723,16 @@ o343 Trade
 t343 交易
 o344       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t344 
+t344       旋转生成的交易者的方位
+*仅当“禁止村民移动”选中时才可用*
 o345 Y-Axis
-t345 
+t345 Y轴
 o346 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
-t346 
+t346 旋转他的身体。朝西为0。数值只能在-180度到180度范围内。
 o347 X-Axis
-t347 
+t347 X轴
 o348 Changes the head rotation Horizontal is 0. Positive values look downward. Must be between -90 to 90 degrees
-t348 
+t348 旋转他的头。水平为0。正值朝下看。数值只能在-90度到90度范围内。
 o349 Rotation
 t349 旋转
 o350 To create a shop first put your buy in the top slot(s) of the chest.
@@ -1055,9 +1056,9 @@ t499
 o500 Delete
 t500 
 o501 Scroll Up
-t501 
+t501 滚轮上滚
 o502 Scroll Down
-t502 
+t502 滚轮下滚
 o503 Button 3
 t503 
 o504 Alt
@@ -1129,7 +1130,7 @@ t536
 o537 Minimum Spacing
 t537 笔刷间隔
 o538 Regenerate Entity UUID
-t538 
+t538 重新生成实体UUID
 o539 Replace blocks with any data value. Only useful for Replace operations.
 t539 替换此ID下所有数据值的方块。只在替换功能中可用。
 o540 Entities
@@ -1189,7 +1190,7 @@ t566 默认资源包
 o567 Square
 t567 方形
 o568 Record Macro
-t568 
+t568 录制宏
 o569 Health Boost
 t569 生命提升
 o570 Saturation (no mob effect)
@@ -1329,7 +1330,7 @@ t629
 o630 id
 t630 ID
 o631 Count
-t631 
+t631 数量
 o632 Damage
 t632 
 o633 NBT Explorer
@@ -1400,11 +1401,11 @@ t661
 o662 Boolean
 t662 
 o663 Choose default data
-t663 
+t663 选择默认值
 o664 Item Type: %s
-t664 
+t664 项目类型：%s
 o665 Value
-t665 
+t665 值
 o666 This item type is a container. Add chlidren later.
 t666 
 o667 Choose item type
@@ -1665,15 +1666,15 @@ t777 选项
 o778 Meta
 t778 
 o779 Applying {0} brush...
-t779 
+t779 应用{0}个笔刷...
 o780 Graphics Settings
 t780 图像设置
 o781 Run Macro
-t781 
+t781 运行宏
 o782 Delete Macro
-t782 
+t782 删除宏
 o783 Macro Name: 
-t783 
+t783 宏名字：
 o784 Enter a Player Name: 
 t784 输入一个玩家名：
 o785 Click the mouse button again to place the other selection corner.
@@ -1681,7 +1682,7 @@ t785 再次点击鼠标来确定选区的另一个角。
 o786 Stop recording
 t786 停止记录
 o787 Currently recording a macro
-t787 
+t787 正在录制宏
 o788 Choose a custom head for the villagers you make
 t788 为你创造的村民选一个自定义头颅
 o789 Custom Head
@@ -1704,7 +1705,8 @@ o797 Player's Name
 t797 玩家名
 o798 Automatically generate new UUIDs for every entity copied. [RECOMMENDED]
 Shortcut: Alt-6
-t798 
+t798 自动为每个被复制的实体重新生成UUID。[推荐]
+快捷键：Alt-6
 o799 When the brush tool is chosen, prompt for a block type.
 t799 当笔刷工具被选中时，自动打开方块选择器来选择方块。
 o800 Max View Distance
@@ -1788,7 +1790,7 @@ t837 覆盖Minecraft的更改（不推荐）
 o838 Always override Minecraft changes when map is open in MCEdit. (Not recommended)
 t838 只要地图被MCEdit打开，总是覆盖在Minecraft中的更改。（不推荐）
 o839 Player Heads
-t839 
+t839 玩家头颅
 o840 Sprint
 t840 
 o841 Select
