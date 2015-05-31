@@ -14,7 +14,7 @@ import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost
 from level import LightedChunk
 from contextlib import contextmanager
-from pymclevel import entity
+from pymclevel import entity, BoundingBox
 
 logger = logging.getLogger(__name__)
 
@@ -156,7 +156,7 @@ class PocketLeveldbDatabase(object):
             yield db
             del db
 
-    def __init__(self, path):
+    def __init__(self, path, create=False):
         """
         :param path: string, path to file
         :return: None
@@ -169,6 +169,10 @@ class PocketLeveldbDatabase(object):
         self.options = leveldb_mcpe.Options()
         self.writeOptions = leveldb_mcpe.WriteOptions()
         self.readOptions = leveldb_mcpe.ReadOptions()
+
+        if create:
+            self.options.create_if_missing = True  # The database will be created once needed first.
+            return
 
         needsRepair = False
         with self.world_db() as db:
@@ -313,7 +317,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     isInfinite = True
     materials = pocketMaterials
-    # root_tag = None
+    _bounds = None
 
     _allChunks = None  # An array of cx, cz pairs.
     _loadedChunks = {}  # A dictionary of actual PocketLeveldbChunk objects mapped by (cx, cz)
@@ -336,24 +340,70 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             filename = os.path.dirname(filename)
         self.filename = filename
 
-        self.worldFile = PocketLeveldbDatabase(os.path.join(filename))
-        self.loadLevelDat(create, random_seed, last_played)
+        self.worldFile = PocketLeveldbDatabase(filename, create=create)
+        self.readonly = readonly
+
+    def _createLevelDat(self, random_seed, last_played):
+        """
+        Creates a new level.dat root_tag, and puts it in self.root_tag.
+        To write it to the disk, self.save() should be called.
+        :param random_seed: long
+        :param last_played: long
+        :return: None
+        """
+        with littleEndianNBT():
+            root_tag = nbt.TAG_Compound()
+            root_tag["SpawnX"] = nbt.TAG_Int(0)
+            root_tag["SpawnY"] = nbt.TAG_Int(2)
+            root_tag["SpawnZ"] = nbt.TAG_Int(0)
+
+            if last_played is None:
+                last_played = long(time.time() * 100)
+            if random_seed is None:
+                random_seed = long(numpy.random.random() * 0xffffffffffffffffL) - 0x8000000000000000L
+
+            self.root_tag = root_tag
+
+            self.LastPlayed = long(last_played)
+            self.RandomSeed = long(random_seed)
+            self.SizeOnDisk = 0
+            self.Time = 1
+            self.LevelName = os.path.basename(self.worldFile.path)
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
-        with littleEndianNBT():
-            if create:
-                return  # TODO implement this with a _create()
-            root_tag_buf = open(os.path.join(self.filename, 'level.dat')).read()
+        """
+        Loads the level.dat from the worldfolder.
+        :param create: bool. If it's True, a fresh level.dat will be created instead.
+        :param random_seed: long
+        :param last_played: long
+        :return: None
+        """
+        def _loadLevelDat(filename):
+            root_tag_buf = open(filename).read()
             magic, length, root_tag_buf = root_tag_buf[:4], root_tag_buf[4:8], root_tag_buf[8:]
-            try:
-                if nbt.TAG_Int.fmt.unpack(magic)[0] < 3:
-                    logger.info("Found an old level.dat file. Aborting world load")
-                    raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
-                if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
-                    raise nbt.NBTFormatError()
-                self.root_tag = nbt.load(buf=root_tag_buf)
-            except nbt.NBTFormatError, e:
-                logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(e))
+            if nbt.TAG_Int.fmt.unpack(magic)[0] < 3:
+                logger.info("Found an old level.dat file. Aborting world load")
+                raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
+            if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
+                raise nbt.NBTFormatError()
+            self.root_tag = nbt.load(buf=root_tag_buf)
+
+        if create:
+            self._createLevelDat(random_seed, last_played)
+            return
+        try:
+            with littleEndianNBT():
+                _loadLevelDat(os.path.join(self.worldFile.path, "level.dat"))
+            return
+        except nbt.NBTFormatError, e:
+            logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(e))
+        try:
+            with littleEndianNBT():
+                _loadLevelDat(os.path.join(self.worldFile.path, "level.dat_old"))
+            return
+        except nbt.NBTFormatError, e:
+            logger.info("Failed to load level.dat_old, creating new level.dat ({0})").format(e)
+        self._createLevelDat(random_seed, last_played)
 
     # --- NBT Tag variables ---
 
@@ -371,6 +421,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     def defaultDisplayName(self):
         return os.path.basename(os.path.dirname(self.filename))
+
+    def __str__(self):
+        """
+        How to represent this level
+        :return: str
+        """
+        return "PocketLeveldbWorld(\"%s\")" % os.path.basename(os.path.dirname(self.worldFile.path))
 
     def getChunk(self, cx, cz):
         """
@@ -443,6 +500,31 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         del batch
         return ret
 
+    @property
+    def bounds(self):
+        """
+        Returns a boundingbox containing the entire level
+        :return: pymclevel.box.BoundingBox
+        """
+        if self._bounds is None:
+            self._bounds = self._getWorldBounds()
+        return self._bounds
+
+    def _getWorldBounds(self):
+        if self.chunkCount == 0:
+            return BoundingBox((0, 0, 0), (0, 0, 0))
+
+        allChunks = numpy.array(list(self.allChunks))
+        min_cx = (allChunks[:, 0]).min()
+        max_cx = (allChunks[:, 0]).max()
+        min_cz = (allChunks[:, 1]).min()
+        max_cz = (allChunks[:, 1]).max()
+
+        origin = (min_cx << 4, 0, min_cz << 4)
+        size = ((max_cx - min_cx + 1) << 4, self.Height, (max_cz - min_cz + 1) << 4)
+
+        return BoundingBox(origin, size)
+
     @classmethod
     def _isLevel(cls, filename):
         """
@@ -450,7 +532,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param filename string with path to level root directory.
         """
         clp = ("db", "level.dat")
-
         if not os.path.isdir(filename):
             f = os.path.basename(filename)
             if f not in clp:
@@ -461,11 +542,14 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     def saveInPlaceGen(self):
         """
-        Save all chunks in the database.
+        Save all chunks to the database, and write the root_tag back to level.dat.
         """
+        self.saving = True
         batch = leveldb_mcpe.WriteBatch()
+        dirtyChunkCount = 0
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
+                dirtyChunkCount += 1
                 self.worldFile.saveChunk(chunk, batch=batch)
                 chunk.dirty = False
             yield
@@ -473,6 +557,11 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         with self.worldFile.world_db() as db:
             wop = self.worldFile.writeOptions
             db.Write(wop, batch)
+
+        with littleEndianNBT():
+            self.root_tag.save(os.path.join(self.worldFile.path, "level.dat"))
+        self.saving = False
+        logger.info(u"Saved {0} chunks to the database").format(dirtyChunkCount)
 
     def containsChunk(self, cx, cz):
         """
@@ -491,7 +580,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         for chunk in self._loadedChunks.itervalues():
             if chunk.needsLighting:
                 yield chunk.chunkPosition
-
+                
 
 class PocketLeveldbChunk(LightedChunk):
     HeightMap = FakeChunk.HeightMap
