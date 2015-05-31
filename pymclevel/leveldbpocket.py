@@ -370,11 +370,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     materials = pocketMaterials
     noTileTicks = True
     _bounds = None
+    oldPlayerFolderFormat = False
 
     _allChunks = None  # An array of cx, cz pairs.
     _loadedChunks = {}  # A dictionary of actual PocketLeveldbChunk objects mapped by (cx, cz)
     _playerData = None
     _players = {}
+    _playerList = None
 
     @property
     def allChunks(self):
@@ -384,6 +386,14 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self._allChunks is None:
             self._allChunks = self.worldFile.getAllChunks()
         return self._allChunks
+
+    @property
+    def players(self):
+        if self._playerList is None:
+            self._playerList = []
+            for key in self.playerData.keys():
+                self._playerList.append(key)
+        return self._playerList
 
     @property
     def playerData(self):
