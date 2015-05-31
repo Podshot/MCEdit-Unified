@@ -26,8 +26,6 @@ Add a way of creating new levels
 
 # SELECT
 # TODO Fix up delete Entities, delete TileEntities.
-# TODO Remove delete Tile Ticks from sidebar, as pocket worlds don't have tileticks.
-# TODO Fix up paste, import.
 
 # NBT
 # TODO make it not crash on startup
@@ -284,7 +282,7 @@ class PocketLeveldbDatabase(object):
         if data is None:
             raise ChunkNotPresent((cx, cz, self))
 
-        chunk = PocketLeveldbChunk(cx, cz, data, world)
+        chunk = PocketLeveldbChunk(cx, cz, world, data)
         return chunk
 
     _allChunks = None
@@ -539,8 +537,12 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             self._bounds = self._getWorldBounds()
         return self._bounds
 
+    @property
+    def size(self):
+        return self.bounds.size
+
     def _getWorldBounds(self):
-        if self.chunkCount == 0:
+        if len(self.allChunks) == 0:
             return BoundingBox((0, 0, 0), (0, 0, 0))
 
         allChunks = numpy.array(list(self.allChunks))
@@ -600,6 +602,15 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         """
         return (cx, cz) in self.allChunks
 
+    def createChunk(self, cx, cz):
+        if self.containsChunk(cx, cz):
+            raise ValueError("{0}:Chunk {1} already present!".format(self, (cx, cz)))
+        if self.allChunks is not None:
+            self.allChunks.append((cx, cz))
+
+        self._loadedChunks[(cx, cz)] = PocketLeveldbChunk(cx, cz, self, create=True)
+        self._bounds = None
+
     @property
     def chunksNeedingLighting(self):
         """
@@ -617,7 +628,7 @@ class PocketLeveldbChunk(LightedChunk):
     _Entities = _TileEntities = nbt.TAG_List()
     dirty = False
 
-    def __init__(self, cx, cz, data, world):
+    def __init__(self, cx, cz, world, data=None, create=False):
         """
         :param cx, cz int, int Coordinates of the chunk
         :param data List of 3 strings. (83200 bytes of terrain data, tile-entity data, entity data)
@@ -625,29 +636,41 @@ class PocketLeveldbChunk(LightedChunk):
         """
         self.chunkPosition = (cx, cz)
         self.world = world
-        terrain = numpy.fromstring(data[0], dtype='uint8')
 
-        if data[1] is not None:
-            TileEntities = loadNBTCompoundList(data[1])
-            self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
+        if create:
+            self.Blocks = numpy.zeros(32768, 'uint8')
+            self.Data = numpy.zeros(16384, 'uint8')
+            self.SkyLight = numpy.zeros(16384, 'uint8')
+            self.BlockLight = numpy.zeros(16384, 'uint8')
+            self.DirtyColumns = numpy.zeros(256, 'uint8')
+            self.GrassColors = numpy.zeros(1024, 'uint8')
 
-        if data[2] is not None:
-            Entities = loadNBTCompoundList(data[2])
-            # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
-            # Whenever we save an entity, we need to make sure to swap back.
-            invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
-            for ent in Entities:
-                ent["id"] = nbt.TAG_String(invertEntities[ent["id"].value])
-            self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
+            self.TileEntities = nbt.TAG_List()
+            self.Entities = nbt.TAG_List()
 
-        self.Blocks, terrain = terrain[:32768], terrain[32768:]
-        self.Data, terrain = terrain[:16384], terrain[16384:]
-        self.SkyLight, terrain = terrain[:16384], terrain[16384:]
-        self.BlockLight, terrain = terrain[:16384], terrain[16384:]
-        self.DirtyColumns, terrain = terrain[:256], terrain[256:]
+        else:
+            terrain = numpy.fromstring(data[0], dtype='uint8')
+            if data[1] is not None:
+                TileEntities = loadNBTCompoundList(data[1])
+                self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
 
-        # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
-        self.GrassColors = terrain[:1024]
+            if data[2] is not None:
+                Entities = loadNBTCompoundList(data[2])
+                # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
+                # Whenever we save an entity, we need to make sure to swap back.
+                invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}
+                for ent in Entities:
+                    ent["id"] = nbt.TAG_String(invertEntities[ent["id"].value])
+                self.Entities = nbt.TAG_List(Entities, list_type=nbt.TAG_COMPOUND)
+
+            self.Blocks, terrain = terrain[:32768], terrain[32768:]
+            self.Data, terrain = terrain[:16384], terrain[16384:]
+            self.SkyLight, terrain = terrain[:16384], terrain[16384:]
+            self.BlockLight, terrain = terrain[:16384], terrain[16384:]
+            self.DirtyColumns, terrain = terrain[:256], terrain[256:]
+
+            # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
+            self.GrassColors = terrain[:1024]
 
         self.unpackChunkData()
         self.shapeChunkData()
