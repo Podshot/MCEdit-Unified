@@ -76,6 +76,8 @@ for k, v in mcitems.items.items():
 import mclangres
 #&#
 
+import struct
+
 #-----------------------------------------------------------------------------
 bullet_image = None
 
@@ -1081,7 +1083,16 @@ def loadFile(fName):
             alert("The selected object is not a file.\nCan't load it.")
             return
         dontSaveRootTag = False
-        nbtObject = load(fName)
+        data = open(fName).read()
+        if struct.Struct('<i').unpack(data[:4])[0] in (3, 4):
+            from pymclevel.leveldbpocket import littleEndianNBT
+            with littleEndianNBT():
+                nbtObject = load(buf=data[8:])
+        elif struct.Struct('<i').unpack(data[:4])[0] in (1, 2):
+            print 'Wrong world format'
+            return {}, '', None, fName
+        else:
+            nbtObject = load(buf=data)
         if fName.endswith('.schematic'):
             nbtObject = TAG_Compound(name='Data', value=nbtObject)
             dontSaveRootTag = True
