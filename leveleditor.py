@@ -1902,8 +1902,9 @@ class LevelEditor(GLViewport):
         self.root.fix_sticky_ctrl()
         self.selectionTool.endSelection()
         self.mainViewport.mouseLookOff()
-        self.level.close()
-        self.level = None
+        if self.level:
+            self.level.close()
+            self.level = None
         self.renderer.stopWork()
         self.removeWorker(self.renderer)
         self.renderer.level = None
@@ -1967,8 +1968,9 @@ class LevelEditor(GLViewport):
             self.root.fix_sticky_ctrl()
             self.selectionTool.endSelection()
             self.mainViewport.mouseLookOff()
-            self.level.close()
-            self.level = None
+            if self.level:
+                self.level.close()
+                self.level = None
             self.renderer.stopWork()
             self.removeWorker(self.renderer)
             self.renderer.level = None
