@@ -185,7 +185,7 @@ class SelectionToolPanel(Panel):
         openButton.highlight_color = (0, 255, 0)
         openButton.rightClickAction = tool.CBCommandsOptions
 
-        buttonsColumn = (
+        buttonsColumn = [
             nudgeBlocksButton,
             deselectButton,
             selectButton,
@@ -197,8 +197,10 @@ class SelectionToolPanel(Panel):
             copyButton,
             pasteButton,
             exportButton,
-            openButton,
-        )
+        ]
+
+        if hasattr(self.editor.level, "editFileNumber"):
+            buttonsColumn.append(openButton)
 
         buttonsColumn = Column(buttonsColumn)
 
