@@ -14,7 +14,7 @@ import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost
 from level import LightedChunk
 from contextlib import contextmanager
-from pymclevel import entity, BoundingBox
+from pymclevel import entity, BoundingBox, Entity, TileEntity
 
 logger = logging.getLogger(__name__)
 
@@ -597,12 +597,17 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def containsChunk(self, cx, cz):
         """
         Determines if the chunk exist in this world.
-        :param cx, cz: Coordinates of the chunk
+        :param cx, cz: int, Coordinates of the chunk
         :return: bool (if chunk exists)
         """
         return (cx, cz) in self.allChunks
 
     def createChunk(self, cx, cz):
+        """
+        Creates an empty chunk at given cx, cz coordinates, and stores it in self._loadedChunks
+        :param cx, cz: int, Coordinates of the chunk
+        :return:
+        """
         if self.containsChunk(cx, cz):
             raise ValueError("{0}:Chunk {1} already present!".format(self, (cx, cz)))
         if self.allChunks is not None:
@@ -615,12 +620,137 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def chunksNeedingLighting(self):
         """
         Generator containing all chunks that need lighting.
-        :yield: (cx, cz) coordinates
+        :yield: int (cx, cz) Coordinates of the chunk
         """
         for chunk in self._loadedChunks.itervalues():
             if chunk.needsLighting:
                 yield chunk.chunkPosition
-                
+
+    # -- Entity Stuff --
+
+    # A lot of this code got copy-pasted from MCInfDevOldLevel
+    # Slight modifications to make it work with MCPE
+
+    def getTileEntitiesInBox(self, box):
+        """
+        Returns the Tile Entities in given box.
+        :param box: pymclevel.box.BoundingBox
+        :return: list of nbt.TAG_Compound
+        """
+        tileEntites = []
+        for chunk, slices, point in self.getChunkSlices(box):
+            tileEntites += chunk.getTileEntitiesInBox(box)
+
+        return tileEntites
+
+    def getEntitiesInBox(self, box):
+        """
+        Returns the Entities in given box.
+        :param box: pymclevel.box.BoundingBox
+        :return: list of nbt.TAG_Compound
+        """
+        entities = []
+        for chunk, slices, point in self.getChunkSlices(box):
+            entities += chunk.getEntitiesInBox(box)
+
+        return entities
+
+    def getTileTicksInBox(self, box):
+        """
+        Always returns None, as MCPE has no TileTicks.
+        :param box: pymclevel.box.BoundingBox
+        :return: list
+        """
+        return []
+
+    def addEntity(self, entityTag):
+        """
+        Adds an entity to the level.
+        :param entityTag: nbt.TAG_Compound containing the entity's data.
+        :return:
+        """
+        assert isinstance(entityTag, nbt.TAG_Compound)
+        x, y, z = map(lambda p: int(numpy.floor(p)), Entity.pos(entityTag))
+
+        try:
+            chunk = self.getChunk(x >> 4, z >> 4)
+        except (ChunkNotPresent, ChunkMalformed):
+            return
+        chunk.addEntity(entityTag)
+        chunk.dirty = True
+
+    def addTileEntity(self, tileEntityTag):
+        """
+        Adds an entity to the level.
+        :param tileEntityTag: nbt.TAG_Compound containing the Tile entity's data.
+        :return:
+        """
+        assert isinstance(tileEntityTag, nbt.TAG_Compound)
+        if 'x' not in tileEntityTag:
+            return
+        x, y, z = TileEntity.pos(tileEntityTag)
+
+        try:
+            chunk = self.getChunk(x >> 4, z >> 4)
+        except (ChunkNotPresent, ChunkMalformed):
+            return
+        chunk.addTileEntity(tileEntityTag)
+        chunk.dirty = True
+
+    def addTileTick(self, tickTag):
+        """
+        MCPE doesn't have Tile Ticks, so this can't be added.
+        :param tickTag: nbt.TAG_Compound
+        :return: None
+        """
+        return
+
+    def tileEntityAt(self, x, y, z):
+        """
+        Retrieves a tile tick at given x, y, z coordinates
+        :param x: int
+        :param y: int
+        :param z: int
+        :return: nbt.TAG_Compound or None
+        """
+        chunk = self.getChunk(x >> 4, z >> 4)
+        return chunk.tileEntityAt(x, y, z)
+
+    def removeEntitiesInBox(self, box):
+        """
+        Removes all entities in given box
+        :param box: pymclevel.box.BoundingBox
+        :return: int, count of entities removed
+        """
+        count = 0
+        for chunk, slices, point in self.getChunkSlices(box):
+            count += chunk.removeEntitiesInBox(box)
+
+        logger.info("Removed {0} entities".format(count))
+        return count
+
+    def removeTileEntitiesInBox(self, box):
+        """
+        Removes all tile entities in given box
+        :param box: pymclevel.box.BoundingBox
+        :return: int, count of tile entities removed
+        """
+        count = 0
+        for chunk, slices, point in self.getChunkSlices(box):
+            count += chunk.removeTileEntitiesInBox(box)
+
+        logger.info("Removed {0} tile entities".format(count))
+        return count
+
+    def removeTileTicksInBox(self, box):
+        """
+        MCPE doesn't have TileTicks, so this does nothing.
+        :param box: pymclevel.box.BoundingBox
+        :return: int, count of TileTicks removed.
+        """
+        return 0
+
+
 
 class PocketLeveldbChunk(LightedChunk):
     HeightMap = FakeChunk.HeightMap
@@ -751,10 +881,7 @@ class PocketLeveldbChunk(LightedChunk):
 
         return terrain, tileEntityData, entityData
 
-    """
-    Entities and TileEntities properties
-    Unknown why these are properties, just implemented from MCLevel
-    """
+    # -- Entities and TileEntities
 
     @property
     def Entities(self):
