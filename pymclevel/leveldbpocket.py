@@ -19,11 +19,22 @@ from pymclevel import entity, BoundingBox
 logger = logging.getLogger(__name__)
 
 """
+TODO add these things:
 Add player support.
 Add a way of creating new levels
-Add a way to test for broken world and repair them (use leveldbs repairer, it's been wrapped already)
-Setup loggers
 """
+
+# SELECT
+# TODO Fix up delete Entities, delete TileEntities.
+# TODO Remove delete Tile Ticks from sidebar, as pocket worlds don't have tileticks.
+# TODO Fix up paste, import.
+
+# NBT
+# TODO make it not crash on startup
+
+# CHUNK CONTROL
+# TODO Fix up Create Chunks and Extract Chunks
+
 
 
 # noinspection PyUnresolvedReferences
@@ -175,12 +186,24 @@ class PocketLeveldbDatabase(object):
             return
 
         needsRepair = False
-        with self.world_db() as db:
-            pass  # Setup tests to see if the world is broken
+        try:
+            with self.world_db() as db:
+                it = db.NewIterator(self.readOptions)
+                it.SeekToFirst()
+                if not db.Get(self.readOptions, it.key()) == it.value():
+                    needsRepair = True
+                del it
+
+        except RuntimeError, e:
+            logger.error("Error while opening world database from %s (%s)" % path, e)
+            needsRepair = True
 
         if needsRepair:
-            leveldb_mcpe.RepairWrapper(os.path.join(path, 'db'))
-            # Maybe setup a logger message with number of chunks in the database etc.
+            logger.info("Trying to repair world %s", path)
+            try:
+                leveldb_mcpe.RepairWrapper(os.path.join(path, 'db'))
+            except RuntimeError, e:
+                logger.error("Error while repairing world %s %s" % path, e)
 
     def close(self):
         """
@@ -317,6 +340,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     isInfinite = True
     materials = pocketMaterials
+    noTileTicks = True
     _bounds = None
 
     _allChunks = None  # An array of cx, cz pairs.
@@ -342,6 +366,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
         self.worldFile = PocketLeveldbDatabase(filename, create=create)
         self.readonly = readonly
+        self.loadLevelDat(create, random_seed, last_played)
 
     def _createLevelDat(self, random_seed, last_played):
         """
@@ -397,18 +422,22 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             return
         except nbt.NBTFormatError, e:
             logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(e))
+        except IOError, e:
+            logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(e))
         try:
             with littleEndianNBT():
                 _loadLevelDat(os.path.join(self.worldFile.path, "level.dat_old"))
             return
         except nbt.NBTFormatError, e:
-            logger.info("Failed to load level.dat_old, creating new level.dat ({0})").format(e)
+            logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(e))
+        except IOError, e:
+            logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(e))
         self._createLevelDat(random_seed, last_played)
 
     # --- NBT Tag variables ---
 
     SizeOnDisk = TagProperty('SizeOnDisk', nbt.TAG_Int, 0)
-    RandomSeed = TagProperty('RandomSeed', nbt.TAG_Int, 0)
+    RandomSeed = TagProperty('RandomSeed', nbt.TAG_Long, 0)
 
     # TODO PE worlds have a different day length, this has to be changed to that.
     Time = TagProperty('Time', nbt.TAG_Long, 0)
@@ -561,7 +590,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         with littleEndianNBT():
             self.root_tag.save(os.path.join(self.worldFile.path, "level.dat"))
         self.saving = False
-        logger.info(u"Saved {0} chunks to the database").format(dirtyChunkCount)
+        logger.info(u"Saved {0} chunks to the database".format(dirtyChunkCount))
 
     def containsChunk(self, cx, cz):
         """
