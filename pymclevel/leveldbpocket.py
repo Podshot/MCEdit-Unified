@@ -6,7 +6,6 @@ from materials import pocketMaterials
 
 import os
 
-import leveldb_mcpe
 from mclevelbase import ChunkNotPresent, ChunkMalformed
 import nbt
 import numpy
@@ -18,6 +17,13 @@ from pymclevel import entity, BoundingBox, Entity, TileEntity
 
 logger = logging.getLogger(__name__)
 
+leveldb_available = True
+try:
+    import leveldb_mcpe
+except ImportError, e:
+    leveldb_available = False
+    logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
+
 """
 TODO add these things:
 Add player support.
@@ -25,7 +31,7 @@ Add a way of creating new levels
 """
 
 # SELECT
-# TODO Fix up delete Entities, delete TileEntities.
+# TODO Fix export
 
 # NBT
 # TODO make it not crash on startup
