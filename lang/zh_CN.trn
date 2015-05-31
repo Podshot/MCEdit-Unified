@@ -650,7 +650,7 @@ t306 更新过滤器
 o307 Max Seed
 t307 最大种子
 o308 Health
-t308 生命
+t308 生命值
 o309 VelocityX
 t309 X轴速度
 o310 VelocityY
@@ -658,13 +658,13 @@ t310 Y轴速度
 o311 VelocityZ
 t311 Z轴速度
 o312 Fire
-t312 
+t312 距灭火的时间
 o313 FallDistance
-t313 
+t313 已下落的距离
 o314 AttackTime
-t314 
+t314 被攻击后冷却时间
 o315 HurtTime
-t315 
+t315 从被攻击到开始冷却的时间
 o316 Lightning
 t316 高压
 o317 No Lightning
@@ -692,9 +692,9 @@ t327 村民职业
 o328 Slime Size
 t328 史莱姆大小
 o329 Breeding Mode Ticks
-t329 
+t329 距繁殖结束的时间
 o330 Child/Adult Age
-t330 
+t330 幼年/成年年龄
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
 t331 
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
@@ -1054,7 +1054,7 @@ t498
 o499 Tab
 t499 
 o500 Delete
-t500 
+t500 删除
 o501 Scroll Up
 t501 滚轮上滚
 o502 Scroll Down
@@ -1280,7 +1280,7 @@ t604 截屏文件目录
 o605 Uses the Latest Snapshot Terrain Generation
 t605 使用最新的快照版地形生成器
 o606 Simulate the world for a few seconds after generating it. Reduces the save file size by processing all of the TileTicks.
-t606 
+t606 生成世界后模拟数秒钟.处理所有的TileTicks来减小文件体积.
 o607 Last Played
 t607 最后游玩
 o608 Level Name (filename)
@@ -1348,7 +1348,7 @@ t638 双击来编辑
 o639 NBT Explorer
 Dive into level NBT structure.
 Right-click for options
-t639 NBT编辑器
+t639 NBT浏览器
 查看NBT结构列表
 右键显示选项
 o640 Save your change in the NBT data.
@@ -1407,11 +1407,11 @@ t664 项目类型：%s
 o665 Value
 t665 值
 o666 This item type is a container. Add chlidren later.
-t666 
+t666 这个标签是一个容器.请稍后增加子标签.
 o667 Choose item type
-t667 
+t667 选择标签类型
 o668 Choose a name
-t668 
+t668 选择名字
 o669 Byte
 t669 
 o670 Long
@@ -1475,7 +1475,7 @@ t693 NBT数据
 o694 Edit NBT
 t694 编辑NBT数据
 o695 Open the NBT Explorer to edit player's attributes and inventory
-t695 
+t695 打开NBT浏览器来编辑玩家的属性和物品
 o696 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t696 功能尚未实现
@@ -1598,11 +1598,11 @@ t746 用以上设定新建区块？此操作无法撤销.
 o747 Add
 t747 添加
 o748 New child
-t748 
+t748 新子标签
 o749 Rename
 t749 重命名
 o750 Paste as child
-t750 
+t750 粘贴为子标签
 o751 You are deleting a chunk-shaped selection. Fill the selection with Air, or delete the chunks themselves?
 t751 你正在删除一个包含整个区块的选区.用空气填充选区还是删除区块？
 o752 Screenshot taken and saved as '%s'
