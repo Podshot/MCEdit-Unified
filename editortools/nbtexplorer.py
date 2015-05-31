@@ -530,12 +530,18 @@ class NBTExplorerOperation(Operation):
         self.canUndo = False
 
     def extractUndo(self):
-        return copy.deepcopy(self.toolPanel.nbtObject[self.toolPanel.dataKeyName])
+        if self.toolPanel.nbtObject.get(self.toolPanel.dataKeyName):
+            return copy.deepcopy(self.toolPanel.nbtObject[self.toolPanel.dataKeyName])
+        else:
+            return copy.deepcopy(self.toolPanel.nbtObject)
 
     def perform(self, recordUndo=True):
         if self.toolPanel.nbtObject:
 
-            orgNBT = self.toolPanel.nbtObject[self.toolPanel.dataKeyName]
+            if self.toolPanel.nbtObject.get(self.toolPanel.dataKeyName):
+                orgNBT = self.toolPanel.nbtObject[self.toolPanel.dataKeyName]
+            else:
+                orgNBT = self.toolPanel.nbtObject
             newNBT = self.toolPanel.data
 
             if "%s"%orgNBT != "%s"%newNBT:
@@ -545,19 +551,28 @@ class NBTExplorerOperation(Operation):
                 if recordUndo:
                     self.canUndo = True
                     self.undoLevel = self.extractUndo()
-                self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.toolPanel.data
+                if self.toolPanel.nbtObject.get(self.toolPanel.dataKeyName):
+                    self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.toolPanel.data
+                else:
+                    self.toolPanel.bntObject = self.toolPanel.data
 
     def undo(self):
         if self.undoLevel:
             self.redoLevel = self.extractUndo()
             self.toolPanel.data.update(self.undoLevel)
-            self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.undoLevel
+            if self.toolPanel.nbtObject.get(self.toolPanel.dataKeyName):
+                self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.undoLevel
+            else:
+                self.toolPanel.nbtObject = self.undoLevel
             self.update_tool()
 
     def redo(self):
         if self.redoLevel:
             self.toolPanel.data.update(self.redoLevel)
-            self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.redoLevel
+            if self.toolPanel.nbtObject.get(self.toolPanel.dataKeyName):
+                self.toolPanel.nbtObject[self.toolPanel.dataKeyName] = self.redoLevel
+            else:
+                self.toolPanel.nbtObject = self.redoLevel
             self.update_tool()
 
     def update_tool(self):
@@ -676,10 +691,17 @@ class NBTExplorerToolPanel(Panel):
         if self.nbtObject == None and hasattr(self.editor.level, 'root_tag'):
             self.nbtObject = self.editor.level.root_tag
         if self.nbtObject:
-            if self.copy_data:
-                data = copy.deepcopy(self.nbtObject[self.dataKeyName])
+            if self.nbtObject.get('Data'):
+                if self.copy_data:
+                    data = copy.deepcopy(self.nbtObject[self.dataKeyName])
+                else:
+                    data = self.nbtObject[self.dataKeyName]
             else:
-                data = self.nbtObject[self.dataKeyName]
+                if self.copy_data:
+                    data = copy.deepcopy(self.nbtObject)
+                else:
+                    data = self.nbtObject
+                
         self.data = data
         self.setCompounds()
         if hasattr(self, 'tree'):
@@ -1075,6 +1097,16 @@ def loadFile(fName):
             nbtObject = TAG_Compound([nbtObject,])
 #        dontSaveRootTag = not fName.endswith('.schematic')
         return nbtObject, dataKeyName, dontSaveRootTag, fName
+        '''
+            magic, length, root_tag_buf = root_tag_buf[:4], root_tag_buf[4:8], root_tag_buf[8:]
+            if nbt.TAG_Int.fmt.unpack(magic)[0] < 3:
+                logger.info("Found an old level.dat file. Aborting world load")
+                raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
+            if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
+                print len(root_tag_buf), nbt.TAG_Int.fmt.unpack(length)[0]
+                raise nbt.NBTFormatError()
+            self.root_tag = nbt.load(buf=root_tag_buf)
+        '''
     return [None,] * 4
 
 def saveFile(fName, data, dontSaveRootTag):
