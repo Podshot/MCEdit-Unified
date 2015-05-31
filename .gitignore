@@ -20,6 +20,7 @@ parts/
 sdist/
 var/
 ENV/
+leveldb_mcpe
 scripts-pyinstaller
 pyinstaller-develop
 *.egg-info/
