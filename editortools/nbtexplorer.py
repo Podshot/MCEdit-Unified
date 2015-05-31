@@ -1108,16 +1108,6 @@ def loadFile(fName):
             nbtObject = TAG_Compound([nbtObject,])
 #        dontSaveRootTag = not fName.endswith('.schematic')
         return nbtObject, dataKeyName, dontSaveRootTag, fName
-        '''
-            magic, length, root_tag_buf = root_tag_buf[:4], root_tag_buf[4:8], root_tag_buf[8:]
-            if nbt.TAG_Int.fmt.unpack(magic)[0] < 3:
-                logger.info("Found an old level.dat file. Aborting world load")
-                raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
-            if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
-                print len(root_tag_buf), nbt.TAG_Int.fmt.unpack(length)[0]
-                raise nbt.NBTFormatError()
-            self.root_tag = nbt.load(buf=root_tag_buf)
-        '''
     return [None,] * 4
 
 def saveFile(fName, data, dontSaveRootTag):
