@@ -332,6 +332,30 @@ class PocketLeveldbDatabase(object):
             del it
             return allChunks
 
+    def getAllPlayerData(self, readOptions=None):
+        """
+        Returns the raw NBT data of all players in the database.
+        Every player is stored as player_<player-id>. The single-player player is stored as ~local_player
+        :param readOptions:
+        :return: dictonary key, value: key: player-id, value = player nbt data as str
+        """
+        with self.world_db() as db:
+            allPlayers = {}
+            rop = self.readOptions if readOptions is None else readOptions
+
+            it = db.NewIterator(rop)
+            it.SeekToFirst()
+            while it.Valid():
+                key = it.key()
+                if key == "~local_player":  # Singleplayer
+                    allPlayers[key] = it.value()
+                elif key.startswith('player_'):  # Multiplayer player
+                    allPlayers[key] = it.value()
+                it.Next()
+            it.status()
+            del it
+            return allPlayers
+
 
 class InvalidPocketLevelDBWorldException(Exception):
     pass
@@ -349,6 +373,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     _allChunks = None  # An array of cx, cz pairs.
     _loadedChunks = {}  # A dictionary of actual PocketLeveldbChunk objects mapped by (cx, cz)
+    _playerData = None
+    _players = {}
 
     @property
     def allChunks(self):
@@ -358,6 +384,12 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self._allChunks is None:
             self._allChunks = self.worldFile.getAllChunks()
         return self._allChunks
+
+    @property
+    def playerData(self):
+        if self._playerData is None:
+            self._playerData = self.worldFile.getAllPlayerData()
+        return self._playerData
 
     def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
         """
@@ -414,6 +446,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 logger.info("Found an old level.dat file. Aborting world load")
                 raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
             if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
+                print len(root_tag_buf), nbt.TAG_Int.fmt.unpack(length)[0]
                 raise nbt.NBTFormatError()
             self.root_tag = nbt.load(buf=root_tag_buf)
 
@@ -437,6 +470,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         except IOError, e:
             logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(e))
         self._createLevelDat(random_seed, last_played)
+        print self.root_tag['SpawnX']
 
     # --- NBT Tag variables ---
 
@@ -481,6 +515,14 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self._loadedChunks.clear()
         self._allChunks = None
         self.worldFile.close()
+        print 'test'
+        path = os.path.join(self.worldFile.path, 'level.dat')
+        print self.root_tag['SpawnX']
+        with littleEndianNBT():
+            rootTagData = self.root_tag.save(compressed=False)
+            rootTagData = nbt.TAG_Int.fmt.pack(4) + nbt.TAG_Int.fmt.pack(len(rootTagData)) + rootTagData
+            with open(path, 'w') as f:
+                f.write(rootTagData)
 
     def close(self):
         """
@@ -755,6 +797,146 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :return: int, count of TileTicks removed.
         """
         return 0
+
+    # -- Player and spawn stuff
+
+    def playerSpawnPosition(self, player=None):
+        """
+        Returns the default spawn position for the world. If player is given, the players spawn is returned instead.
+        :param player: nbt.TAG_Compound, root tag of the player.
+        :return: tuple int (x, y, z), coordinates of the spawn.
+        """
+        dataTag = self.root_tag
+        if player is None:
+            playerSpawnTag = dataTag
+        else:
+            playerSpawnTag = self.getPlayerTag(player)
+
+        return [playerSpawnTag.get(i, dataTag[i]).value for i in ("SpawnX", "SpawnY", "SpawnZ")]
+
+    def setPlayerSpawnPosition(self, pos, player=None):
+        """
+        Sets the worlds spawn point to pos. If player is given, sets that players spawn point instead.
+        :param pos: tuple int (x, y, z)
+        :param player: nbt.TAG_Compound, root tag of the player
+        :return: None
+        """
+        if player is None:
+            playerSpawnTag = self.root_tag
+        else:
+            playerSpawnTag = self.getPlayerTag(player)
+        for name, val in zip(("SpawnX", "SpawnY", "SpawnZ"), pos):
+            playerSpawnTag[name] = nbt.TAG_Int(val)
+
+    def getPlayerTag(self, player='Player'):
+        """
+        Obtains a player from the world.
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return: nbt.TAG_Compound, root tag of the player.
+        """
+        if player == 'Player':
+            player = '~local_player'
+        _player = self._players.get(player)
+        if _player is not None:
+            return _player
+        playerData = self.playerData[player]
+        with littleEndianNBT():
+            _player = nbt.load(buf=playerData)
+        return _player
+
+    def getPlayerDimension(self, player="Player"):
+        """
+        Always returns 0, as MCPE only has the overworld dimension.
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return: int
+        """
+        return 0
+
+    def setPlayerPosition(self, (x, y, z), player="Player"):
+        """
+        Sets the players position to x, y, z
+        :param (x, y, z): tuple of the coordinates of the player
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return:
+        """
+        posList = nbt.TAG_List([nbt.TAG_Double(p) for p in (x, y - 1.75, z)])
+        playerTag = self.getPlayerTag(player)
+
+        playerTag["Pos"] = posList
+
+    def getPlayerPosition(self, player="Player"):
+        """
+        Gets the players position
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return: tuple int (x, y, z): Coordinates of the player.
+        """
+        playerTag = self.getPlayerTag(player)
+        posList = playerTag["Pos"]
+        x, y, z = map(lambda x: x.value, posList)
+        return x, y + 1.75, z
+
+    def setPlayerOrientation(self, yp, player="Player"):
+        """
+        Gets the players orientation.
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :param yp: int tuple (yaw, pitch)
+        :return: None
+        """
+        self.getPlayerTag(player)["Rotation"] = nbt.TAG_List([nbt.TAG_Float(p) for p in yp])
+
+    def getPlayerOrientation(self, player="Player"):
+        """
+        Gets the players orientation.
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return: tuple int (yaw, pitch)
+        """
+        yp = map(lambda x: x.value, self.getPlayerTag(player)["Rotation"])
+        y, p = yp
+        if p == 0:
+            p = 0.000000001
+        if p == 180.0:
+            p -= 0.000000001
+        yp = y, p
+        return numpy.array(yp)
+
+    def setPlayerAbilities(self, gametype, player="Player"):
+        """
+        This method is currently unimplemented. Research needs to be done if MCPE players have abilities.
+        It should set the right abilities for given gametype.
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return: bool
+        """
+        # TODO implement this or remove it.
+        return gametype, player
+
+    def setPlayerGameType(self, gametype, player="Player"):
+        """
+        Sets the game type for player
+        :param gametype: int (0=survival, 1=creative, 2=adventure, 3=spectator)
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return: None
+        """
+
+        # This annoyingly works differently between single- and multi-player.
+        if player == "Player":
+            self.GameType = gametype
+            self.setPlayerAbilities(gametype, player)
+        else:
+            playerTag = self.getPlayerTag(player)
+            playerTag['playerGameType'] = nbt.TAG_Int(gametype)
+            self.setPlayerAbilities(gametype, player)
+
+    def getPlayerGameType(self, player="Player"):
+        """
+        Obtains the players gametype.
+        :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
+        :return: int (0=survival, 1=creative, 2=adventure, 3=spectator)
+        """
+        if player == "Player":
+            return self.GameType
+        else:
+            playerTag = self.getPlayerTag(player)
+            return playerTag["playerGameType"].value
 
 
 
