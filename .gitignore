@@ -20,9 +20,7 @@ parts/
 sdist/
 var/
 ENV/
-leveldb-mcpe/test
-leveldb-mcpe/Testdb
-leveldb-mcpe/Testdb/db
+leveldb_mcpe
 scripts-pyinstaller
 pyinstaller-develop
 
