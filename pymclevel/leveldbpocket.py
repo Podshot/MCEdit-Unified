@@ -11,7 +11,7 @@ from mclevelbase import ChunkNotPresent, ChunkMalformed
 import nbt
 import numpy
 import struct
-from infiniteworld import ChunkedLevelMixin, SessionLockLost
+from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData
 from level import LightedChunk
 from contextlib import contextmanager
 from pymclevel import entity, BoundingBox, Entity, TileEntity
@@ -36,7 +36,7 @@ Add a way of creating new levels
 # TODO Fix export
 
 # CHUNK CONTROL
-# TODO Fix up Create Chunks and Extract Chunks
+# TODO Fix Extract Chunks
 
 
 # noinspection PyUnresolvedReferences
@@ -264,11 +264,11 @@ class PocketLeveldbDatabase(object):
         if batch is None:
             with self.world_db() as db:
                 wop = self.writeOptions if writeOptions is None else writeOptions
-                db.Put(key + "0", data[0], wop)
+                db.Put(wop, key + "0", data[0])
                 if data[1] is not None:
-                    db.Put(key + "1", data[1], wop)
+                    db.Put(wop, key + "1", data[1])
                 if data[2] is not None:
-                    db.Put(key + "2", data[2], wop)
+                    db.Put(wop, key + "2", data[2])
         else:
             batch.Put(key + "0", data[0])
             if data[1] is not None:
@@ -362,7 +362,6 @@ class PocketLeveldbDatabase(object):
                 db.Put(writeOptions, player, playerData)
         else:
             batch.Put(player, playerData)
-
 
 
 class InvalidPocketLevelDBWorldException(Exception):
@@ -690,6 +689,35 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self._loadedChunks[(cx, cz)] = PocketLeveldbChunk(cx, cz, self, create=True)
         self._bounds = None
 
+    def saveGeneratedChunk(self, cx, cz, tempChunkBytes):
+        """
+        Chunks get generated using Anvil generation. This is a (slow) way of importing anvil chunk bytes
+        and converting them to MCPE chunk data. Could definitely use some improvements, but at least it works.
+        :param cx, cx: Coordinates of the chunk
+        :param tempChunkBytes: str. Raw MCRegion chunk data.
+        :return:
+        """
+        loaded_data = nbt.load(buf=tempChunkBytes)
+
+        class fake:
+            def __init__(self):
+                self.Height = 128
+
+        tempChunk = AnvilChunkData(fake(), (0, 0), loaded_data)
+
+        if not self.containsChunk(cx, cz):
+            self.createChunk(cx, cz)
+            chunk = self.getChunk(cx, cz)
+            chunk.Blocks = numpy.array(tempChunk.Blocks, dtype='uint8')
+            chunk.Data = numpy.array(tempChunk.Data, dtype='uint8')
+            chunk.SkyLight = numpy.array(tempChunk.SkyLight, dtype='uint8')
+            chunk.BlockLight = numpy.array(tempChunk.BlockLight, dtype='uint8')
+
+            chunk.dirty = True
+            self.worldFile.saveChunk(chunk)
+        else:
+            logger.info("Tried to import generated chunk at %s, %s but the chunk already existed." % cx, cz)
+
     @property
     def chunksNeedingLighting(self):
         """
@@ -869,7 +897,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             return _player
         playerData = self.playerData[player]
         with littleEndianNBT():
-            print numpy.fromstring(playerData, 'uint8')
             _player = nbt.load(buf=str(playerData))
             self.playerTagCache[player] = _player
         return _player
