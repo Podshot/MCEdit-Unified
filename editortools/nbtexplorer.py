@@ -452,7 +452,7 @@ class SlotEditor(Dialog):
         slot, id, count, damage = data
         self.former_id_text = id
         self.slot = slot
-        self.id = TextFieldWrapped(text=id, doNotTranslate=True, width=300)
+        self.id = TextFieldWrapped(text=str(id), doNotTranslate=True, width=300)
         self.id.change_action = self.text_entered
         self.id.escape_action = self.cancel
         self.id.enter_action = self.ok
@@ -895,18 +895,18 @@ class NBTExplorerToolPanel(Panel):
         for item, i in zip(items, range(len(items))):
             # &# Prototype for blocks/items names
             item_dict = mcitems.items.get(item['id'].value, None)
-            if item_dict == None:
-                name = item['id'].value
+            if item_dict is None:
+                item_name = item['id'].value
             else:
                 if type(item_dict['name']) == list:
                     if int(item['Damage'].value) >= len(item_dict['name']):
                         block_id = map_block.get(item['id'].value, None)
-                        name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[
+                        item_name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[
                             0].strip()
                     else:
-                        name = item_dict['name'][int(item['Damage'].value)]
+                        item_name = item_dict['name'][int(item['Damage'].value)]
                 else:
-                    name = item_dict['name']
+                    item_name = item_dict['name']
             s = i
             _s = 0 + i
             if player:
@@ -915,7 +915,11 @@ class NBTExplorerToolPanel(Panel):
             slots_set.append(s)
             if s >= 100:
                 s = s - 100 + 36
-            slots[s] = _s, mclangres.translate(name), item['Count'].value, item['Damage'].value
+            if type(item_name) in (unicode, str):
+                translated_item_name = mclangres.translate(item_name)
+            else:
+                translated_item_name = item_name
+            slots[s] = _s, translated_item_name, item['Count'].value, item['Damage'].value
             # slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
             # &#
         width = self.side_panel_width - self.margin * 5
@@ -1139,8 +1143,7 @@ def loadFile(fName):
                 nbtObject = load(buf=data[8:])
             savePolicy = 1
         elif struct.Struct('<i').unpack(data[:4])[0] in (1, 2):
-            print 'Wrong world format'
-            return {}, '', None, fName
+            alert(_("Old PE level.dat, unsupported at the moment."))
         else:
             nbtObject = load(buf=data)
         if fName.endswith('.schematic'):

@@ -35,9 +35,6 @@ Add a way of creating new levels
 # SELECT
 # TODO Fix export
 
-# NBT
-# TODO make it not crash on startup
-
 # CHUNK CONTROL
 # TODO Fix up Create Chunks and Extract Chunks
 
@@ -357,6 +354,16 @@ class PocketLeveldbDatabase(object):
             del it
             return allPlayers
 
+    def savePlayer(self, player, playerData, batch=None, writeOptions=None):
+        if writeOptions is None:
+            writeOptions = self.writeOptions
+        if batch is None:
+            with self.world_db() as db:
+                db.Put(writeOptions, player, playerData)
+        else:
+            batch.Put(player, playerData)
+
+
 
 class InvalidPocketLevelDBWorldException(Exception):
     pass
@@ -376,7 +383,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     _allChunks = None  # An array of cx, cz pairs.
     _loadedChunks = {}  # A dictionary of actual PocketLeveldbChunk objects mapped by (cx, cz)
     _playerData = None
-    _players = {}
+    playerTagCache = {}
     _playerList = None
 
     @property
@@ -401,6 +408,17 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if self._playerData is None:
             self._playerData = self.worldFile.getAllPlayerData()
         return self._playerData
+
+    @staticmethod
+    def getPlayerPath(player, dim=0):
+        """
+        player.py loads players from files, but PE caches them differently. This is necessary to make it work.
+        :param player: str
+        :param dim: int
+        :return: str
+        """
+        if dim == 0:
+            return player
 
     def __init__(self, filename=None, create=False, random_seed=None, last_played=None, readonly=False):
         """
@@ -457,7 +475,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 logger.info("Found an old level.dat file. Aborting world load")
                 raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
             if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
-                print len(root_tag_buf), nbt.TAG_Int.fmt.unpack(length)[0]
                 raise nbt.NBTFormatError()
             self.root_tag = nbt.load(buf=root_tag_buf)
 
@@ -477,7 +494,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         except (nbt.NBTFormatError, IOError) as err:
             logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(err))
         self._createLevelDat(random_seed, last_played)
-        print self.root_tag['SpawnX']
 
     # --- NBT Tag variables ---
 
@@ -522,12 +538,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self._loadedChunks.clear()
         self._allChunks = None
         self.worldFile.close()
-        path = os.path.join(self.worldFile.path, 'level.dat')
-        with littleEndianNBT():
-            rootTagData = self.root_tag.save(compressed=False)
-            rootTagData = nbt.TAG_Int.fmt.pack(4) + nbt.TAG_Int.fmt.pack(len(rootTagData)) + rootTagData
-            with open(path, 'w') as f:
-                f.write(rootTagData)
 
     def close(self):
         """
@@ -638,14 +648,25 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 chunk.dirty = False
             yield
 
+        with littleEndianNBT():
+            for p in self.players:
+                playerData = self.playerTagCache[p]
+                if playerData is not None:
+                    playerData = playerData.save(compressed=False)  # It will get compressed in the DB itself
+                    self.worldFile.savePlayer(p, playerData, batch=batch)
+
         with self.worldFile.world_db() as db:
             wop = self.worldFile.writeOptions
             db.Write(wop, batch)
 
-        with littleEndianNBT():
-            self.root_tag.save(os.path.join(self.worldFile.path, "level.dat"))
         self.saving = False
         logger.info(u"Saved {0} chunks to the database".format(dirtyChunkCount))
+        path = os.path.join(self.worldFile.path, 'level.dat')
+        with littleEndianNBT():
+            rootTagData = self.root_tag.save(compressed=False)
+            rootTagData = nbt.TAG_Int.fmt.pack(4) + nbt.TAG_Int.fmt.pack(len(rootTagData)) + rootTagData
+            with open(path, 'w') as f:
+                f.write(rootTagData)
 
     def containsChunk(self, cx, cz):
         """
@@ -839,14 +860,18 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
         :return: nbt.TAG_Compound, root tag of the player.
         """
+        if player == '[No players]':  # Apparently this is being called somewhere?
+            return None
         if player == 'Player':
             player = '~local_player'
-        _player = self._players.get(player)
+        _player = self.playerTagCache.get(player)
         if _player is not None:
             return _player
         playerData = self.playerData[player]
         with littleEndianNBT():
-            _player = nbt.load(buf=playerData)
+            print numpy.fromstring(playerData, 'uint8')
+            _player = nbt.load(buf=str(playerData))
+            self.playerTagCache[player] = _player
         return _player
 
     def getPlayerDimension(self, player="Player"):
