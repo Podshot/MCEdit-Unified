@@ -26,9 +26,6 @@ except ImportError as e:
     logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
     leveldb_mcpe = None
 
-# CHUNK CONTROL
-# TODO Fix Extract Chunks
-
 
 # noinspection PyUnresolvedReferences
 @contextmanager
@@ -463,7 +460,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             magic, length, root_tag_buf = root_tag_buf[:4], root_tag_buf[4:8], root_tag_buf[8:]
             if nbt.TAG_Int.fmt.unpack(magic)[0] < 3:
                 logger.info("Found an old level.dat file. Aborting world load")
-                raise InvalidPocketLevelDBWorldException()  # TODO Maybe try convert/load old PE world?
+                raise InvalidPocketLevelDBWorldException()  # Maybe try convert/load old PE world?
             if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
                 raise nbt.NBTFormatError()
             self.root_tag = nbt.load(buf=root_tag_buf)
@@ -947,15 +944,14 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         yp = y, p
         return numpy.array(yp)
 
-    def setPlayerAbilities(self, gametype, player="Player"):
+    @staticmethod  # Editor keeps putting this in. Probably unnecesary
+    def setPlayerAbilities(gametype, player="Player"):
         """
-        This method is currently unimplemented. Research needs to be done if MCPE players have abilities.
-        It should set the right abilities for given gametype.
+        This method is just to override the standard one, as MCPE has no abilities, as it seems.
+        :parm gametype, int of gamemode player gets set at.
         :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
-        :return: bool
         """
-        # TODO implement this or remove it.
-        return gametype, player
+        pass
 
     def setPlayerGameType(self, gametype, player="Player"):
         """
