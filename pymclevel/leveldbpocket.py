@@ -26,15 +26,6 @@ except ImportError as e:
     logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
     leveldb_mcpe = None
 
-"""
-TODO add these things:
-Add player support.
-Add a way of creating new levels
-"""
-
-# SELECT
-# TODO Fix export
-
 # CHUNK CONTROL
 # TODO Fix Extract Chunks
 
@@ -63,7 +54,7 @@ def littleEndianNBT():
 
     def reset_byte_array_write_value(self, buf):
         value_str = self.value.tostring()
-        buf.write(struct.pack("<I%ds" % (len(value_str),), self.value.size, value_str))
+        buf.write(struct.pack(">I%ds" % (len(value_str),), self.value.size, value_str))
 
     nbt.string_len_fmt = struct.Struct("<H")
     nbt.TAG_Byte.fmt = struct.Struct("<b")
@@ -708,7 +699,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if not self.containsChunk(cx, cz):
             self.createChunk(cx, cz)
             chunk = self.getChunk(cx, cz)
-            chunk.Blocks = numpy.array(tempChunk.Blocks, dtype='uint8')
+            chunk.Blocks = numpy.array(tempChunk.Blocks, dtype='uint16')
             chunk.Data = numpy.array(tempChunk.Data, dtype='uint8')
             chunk.SkyLight = numpy.array(tempChunk.SkyLight, dtype='uint8')
             chunk.BlockLight = numpy.array(tempChunk.BlockLight, dtype='uint8')
@@ -999,7 +990,9 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 class PocketLeveldbChunk(LightedChunk):
     HeightMap = FakeChunk.HeightMap
 
-    _Entities = _TileEntities = nbt.TAG_List()
+    # _Entities = _TileEntities = nbt.TAG_List()
+    _Entities = nbt.TAG_List()
+    _TileEntities = nbt.TAG_List()
     dirty = False
 
     def __init__(self, cx, cz, world, data=None, create=False):
@@ -1012,7 +1005,7 @@ class PocketLeveldbChunk(LightedChunk):
         self.world = world
 
         if create:
-            self.Blocks = numpy.zeros(32768, 'uint8')
+            self.Blocks = numpy.zeros(32768, 'uint16')
             self.Data = numpy.zeros(16384, 'uint8')
             self.SkyLight = numpy.zeros(16384, 'uint8')
             self.BlockLight = numpy.zeros(16384, 'uint8')
