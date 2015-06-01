@@ -20,12 +20,14 @@ from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _, getLang
 from glbackground import Panel
+from pymclevel.leveldbpocket import littleEndianNBT
 from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
-     TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
-     TAG_Short_Array, TAG_BYTE, TAG_SHORT, TAG_INT, TAG_LONG, TAG_FLOAT, TAG_DOUBLE, \
-     TAG_BYTE_ARRAY, TAG_STRING, TAG_LIST, TAG_COMPOUND, TAG_INT_ARRAY, TAG_SHORT_ARRAY
+    TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
+    TAG_Short_Array, TAG_BYTE, TAG_SHORT, TAG_INT, TAG_LONG, TAG_FLOAT, TAG_DOUBLE, \
+    TAG_BYTE_ARRAY, TAG_STRING, TAG_LIST, TAG_COMPOUND, TAG_INT_ARRAY, TAG_SHORT_ARRAY, NBTFormatError
 from numpy import array
 from albow.theme import root
+
 scroll_button_size = 0 + root.PaletteView.scroll_button_size
 bullet_color_active = root.Tree.bullet_color_active
 fg_color = root.fg_color
@@ -41,16 +43,18 @@ import mcplatform
 from config import config, DEF_ENC
 from albow.resource import resource_path
 
-#&# Protoype for blocks/items names
+# &# Protoype for blocks/items names
 from pymclevel.materials import block_map, alphaMaterials
+
 map_block = {}
 for k, v in block_map.items():
     map_block[v] = k
 
 from pymclevel.items import items as mcitems
+
 map_items = {}
 for k, v in mcitems.items.items():
-    if type (v) == dict:
+    if type(v) == dict:
         names = []
         if type(v['name']) == list:
             names = v['name']
@@ -74,40 +78,43 @@ for k, v in mcitems.items.items():
 # #f.close()
 
 import mclangres
-#&#
+# &#
 
 import struct
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 bullet_image = None
+
 
 def get_bullet_image(index, w=16, h=16):
     global bullet_image
     if not bullet_image:
         bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
-    r =  Rect(0, 0, w, h)
+    r = Rect(0, 0, w, h)
     line_length = int(bullet_image.get_width() / w)
     line = int(index / line_length)
     r.top = line * h
     r.left = (index - (line * line_length)) * w
     return bullet_image.subsurface(r)
 
-default_bullet_styles = {TAG_Byte: ((20,20,200), None, 'circle', 'b'),
-          TAG_Double: ((20,200,20), None, 'circle', 'd'),
-          TAG_Float: ((200,20,20), None, 'circle', 'f'),
-          TAG_Int: ((16,160,160), None, 'circle', 'i'),
-          TAG_Long: ((200,20,200), None, 'circle', 'l'),
-          TAG_Short: ((200,200,20), (0,0,0), 'circle', 's'),
-          TAG_String: ((60,60,60), None, 'circle', 's'),
-          TAG_Compound: (bullet_color_active, None, '', ''),
-          TAG_Byte_Array: ((20,20,200), None, 'square', 'B'),
-          TAG_Int_Array: ((16,160,160), None, 'square', 'I'),
-          TAG_List: ((200,200,200), (0,0,0), 'square', 'L'),
-          TAG_Short_Array: ((200,200,20), None, 'square', 'S'),
-          }
+
+default_bullet_styles = {TAG_Byte: ((20, 20, 200), None, 'circle', 'b'),
+                         TAG_Double: ((20, 200, 20), None, 'circle', 'd'),
+                         TAG_Float: ((200, 20, 20), None, 'circle', 'f'),
+                         TAG_Int: ((16, 160, 160), None, 'circle', 'i'),
+                         TAG_Long: ((200, 20, 200), None, 'circle', 'l'),
+                         TAG_Short: ((200, 200, 20), (0, 0, 0), 'circle', 's'),
+                         TAG_String: ((60, 60, 60), None, 'circle', 's'),
+                         TAG_Compound: (bullet_color_active, None, '', ''),
+                         TAG_Byte_Array: ((20, 20, 200), None, 'square', 'B'),
+                         TAG_Int_Array: ((16, 160, 160), None, 'square', 'I'),
+                         TAG_List: ((200, 200, 200), (0, 0, 0), 'square', 'L'),
+                         TAG_Short_Array: ((200, 200, 20), None, 'square', 'S'),
+                         }
 default_bullet_styles[dict] = default_bullet_styles[TAG_List]
 
 bullet_styles = copy.deepcopy(default_bullet_styles)
+
 
 def change_styles():
     global default_bullet_styles
@@ -116,7 +123,9 @@ def change_styles():
             config.nbtTreeSettings.useBulletImages.get() and \
             os.path.exists(config.nbtTreeSettings.bulletFileName.get()):
         i = 0
-        for key in (TAG_Byte, TAG_Double, TAG_Float, TAG_Int, TAG_Long, TAG_Short, TAG_String, TAG_Compound, TAG_Byte_Array, TAG_Int_Array, TAG_List):
+        for key in (
+                TAG_Byte, TAG_Double, TAG_Float, TAG_Int, TAG_Long, TAG_Short, TAG_String, TAG_Compound, TAG_Byte_Array,
+                TAG_Int_Array, TAG_List):
             bullet_styles[key] = (get_bullet_image(i), None, 'image', '')
             i += 1
 
@@ -126,27 +135,29 @@ def change_styles():
         bullet_styles = copy.deepcopy(default_bullet_styles)
     return bullet_styles
 
+
 change_styles()
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 field_types = {TAG_Byte: (IntField, (0, 256)),
                TAG_Double: (FloatField, None),
                TAG_Float: (FloatField, None),
-               TAG_Int: (IntField, (-2147483647,+2147483647)),
-               TAG_Long: (IntField, (-9223372036854775807,+9223372036854775807)),
+               TAG_Int: (IntField, (-2147483647, +2147483647)),
+               TAG_Long: (IntField, (-9223372036854775807, +9223372036854775807)),
                TAG_Short: (IntField, (-65535, 65536)),
                TAG_String: (TextFieldWrapped, None),
-              }
+               }
 
 array_types = {TAG_Byte_Array: field_types[TAG_Byte],
                TAG_Int_Array: field_types[TAG_Int],
                TAG_Short_Array: field_types[TAG_Short],
-              }
+               }
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class TAG_List_Type(Widget):
     choices = []
+
     def __init__(self, value=None):
         Widget.__init__(self)
         self.choiceButton = ChoiceButton(self.choices)
@@ -156,6 +167,7 @@ class TAG_List_Type(Widget):
     @property
     def value(self):
         return self.choiceButton.selectedChoice
+
 
 item_types_map = {TAG_Byte: ("Byte", IntField, 0),
                   TAG_Double: ("Floating point", FloatField, 0.0),
@@ -169,24 +181,28 @@ item_types_map = {TAG_Byte: ("Byte", IntField, 0),
                   TAG_Byte_Array: ("Byte Array", TextFieldWrapped, ""),
                   TAG_Int_Array: ("Int Array", TextFieldWrapped, ""),
                   TAG_Short_Array: ("Short Array", TextFieldWrapped, ""),
-                 }
+                  }
 
 map_types_item = setup_map_types_item(item_types_map)
 
 TAG_List_Type.choices = map_types_item.keys()
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 def create_base_item(self, i_type, i_name, i_value):
     return i_name, i_type(type(item_types_map[i_type][2])(i_value), i_name)
+
 
 create_TAG_Byte = create_TAG_Int = create_TAG_Short = create_TAG_Long = \
     create_TAG_String = create_TAG_Double = create_TAG_Float = create_base_item
 
+
 def create_TAG_Compound(self, i_type, i_name, i_value):
     return i_name, i_type([], i_name)
 
+
 def create_TAG_List(self, i_type, i_name, i_value):
     return i_name, i_type([], i_name, globals()[map_types_item[i_value][0].__name__.upper()])
+
 
 def create_array_item(self, i_type, i_name, i_value):
     value = i_value.strip().strip('[]').strip()
@@ -196,9 +212,10 @@ def create_array_item(self, i_type, i_name, i_value):
         value = None
     return i_name, i_type(array(value, i_type.dtype), i_name)
 
+
 create_TAG_Byte_Array = create_TAG_Int_Array = create_TAG_Short_Array = create_array_item
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class NBTTree(Tree):
     def __init__(self, *args, **kwargs):
         styles = kwargs.get('styles', {})
@@ -207,8 +224,8 @@ class NBTTree(Tree):
         self.map_types_item = setup_map_types_item(item_types_map)
         Tree.__init__(self, *args, **kwargs)
         for t in self.item_types:
-            if 'create_%s'%t.__name__ in globals().keys():
-                setattr(self, 'create_%s'%t.__name__, globals()['create_%s'%t.__name__])
+            if 'create_%s' % t.__name__ in globals().keys():
+                setattr(self, 'create_%s' % t.__name__, globals()['create_%s' % t.__name__])
 
     def _draw_opened_bullet(self, *args, **kwargs):
         return Tree.draw_opened_bullet(self, *args, **kwargs)
@@ -229,7 +246,7 @@ class NBTTree(Tree):
                 name = key
             else:
                 name = repr(key)
-            setattr(self, 'draw_%s_bullet'%name, self.draw_TAG_bullet)
+            setattr(self, 'draw_%s_bullet' % name, self.draw_TAG_bullet)
 
     @staticmethod
     def add_item_to_TAG_Compound(parent, name, item):
@@ -314,7 +331,7 @@ class NBTTree(Tree):
 
     def draw_TAG_bullet(self, surf, bg, fg, shape, text, item_text, lvl):
         r = self.get_bullet_rect(surf, lvl)
-        meth = getattr(self, 'draw_%s'%shape, None)
+        meth = getattr(self, 'draw_%s' % shape, None)
         if meth and config.nbtTreeSettings.useBulletStyles.get():
             meth(surf, bg, r)
             self.draw_item_text(surf, r, item_text)
@@ -336,12 +353,12 @@ class NBTTree(Tree):
                     value_name = value_name.value
             else:
                 value_name = value.name
-            values[value_name or u"%s #%03d"%(name, i)] = value
+            values[value_name or u"%s #%03d" % (name, i)] = value
             i += 1
         return values
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class NBTExplorerOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
@@ -354,9 +371,10 @@ class NBTExplorerOptions(ToolOptions):
                                    ref=config.nbtTreeSettings.useBulletText)
         self.useTextBox = useTextBox
         useImagesBox = CheckBoxLabel(title="Use Bullet Images",
-                                    ref=config.nbtTreeSettings.useBulletImages)
+                                     ref=config.nbtTreeSettings.useBulletImages)
         self.useImagesBox = useImagesBox
-        bulletFilePath = Row((Button("Bullet Images File", action=self.open_bullet_file), TextFieldWrapped(ref=config.nbtTreeSettings.bulletFileName, width=300)), margin=0)
+        bulletFilePath = Row((Button("Bullet Images File", action=self.open_bullet_file),
+                              TextFieldWrapped(ref=config.nbtTreeSettings.bulletFileName, width=300)), margin=0)
 
         def mouse_down(e):
             if self.bulletFilePath.subwidgets[1].enabled:
@@ -388,13 +406,13 @@ class NBTExplorerOptions(ToolOptions):
                                     ref=config.nbtTreeSettings.showAllTags)
 
         col = Column((
-                      Label("NBT Tree Settings"),
-                      Row((useStyleBox, useTextBox, useImagesBox)),
-                      bulletFilePath,
-                      showAllTags,
-#                      Button("Load NBT file...", action=tool.loadFile),
-                      Button("OK", action=self.dismiss),
-                    ))
+            Label("NBT Tree Settings"),
+            Row((useStyleBox, useTextBox, useImagesBox)),
+            bulletFilePath,
+            showAllTags,
+            #                      Button("Load NBT file...", action=tool.loadFile),
+            Button("OK", action=self.dismiss),
+        ))
         self.add(col)
         self.shrink_wrap()
         self.useStyleBox_click(None)
@@ -425,8 +443,8 @@ class NBTExplorerOptions(ToolOptions):
         ToolOptions.dismiss(self, *args, **kwargs)
 
 
-#-----------------------------------------------------------------------------
-#&# Prototype for blocks/items names
+# -----------------------------------------------------------------------------
+# &# Prototype for blocks/items names
 class SlotEditor(Dialog):
     def __init__(self, inventory, data, *args, **kwargs):
         Dialog.__init__(self, *args, **kwargs)
@@ -438,14 +456,14 @@ class SlotEditor(Dialog):
         self.id.change_action = self.text_entered
         self.id.escape_action = self.cancel
         self.id.enter_action = self.ok
-        self.count = IntField(text="%s"%count, min=0, max=64)
-        self.damage = IntField(text="%s"%damage, min=0, max=os.sys.maxint)
-        header = Label(_("Inventory Slot #%s")%slot, doNotTranslate=True)
+        self.count = IntField(text="%s" % count, min=0, max=64)
+        self.damage = IntField(text="%s" % damage, min=0, max=os.sys.maxint)
+        header = Label(_("Inventory Slot #%s") % slot, doNotTranslate=True)
         row = Row([Label("id"), self.id,
                    Label("Count"), self.count,
                    Label("Damage"), self.damage,
                    ])
-        
+
         self.matching_items = [mclangres.translate(k) for k in map_items.keys()]
         self.matching_items.sort()
         self.selected_item_index = None
@@ -456,8 +474,7 @@ class SlotEditor(Dialog):
         tableview.row_data = lambda x: (self.matching_items[x],)
         tableview.row_is_selected = lambda x: x == self.selected_item_index
         tableview.click_row = self.select_tablerow
-        
-        
+
         buttons = Row([Button("Save", action=self.dismiss), Button("Cancel", action=self.cancel)])
         col = Column([header, row, tableview, buttons], spacing=2)
         self.add(col)
@@ -515,15 +532,20 @@ class SlotEditor(Dialog):
             elif keyname == "Down" and self.selected_item_index < len(self.matching_items) - 1:
                 self.selected_item_index += 1
             elif keyname == 'Page down':
-                self.selected_item_index = min(len(self.matching_items) - 1, self.selected_item_index + self.tableview.rows.num_rows())
+                self.selected_item_index = min(len(self.matching_items) - 1,
+                                               self.selected_item_index + self.tableview.rows.num_rows())
             elif keyname == 'Page up':
                 self.selected_item_index = max(0, self.selected_item_index - self.tableview.rows.num_rows())
-            if self.tableview.rows.cell_to_item_no(0, 0) != None and (self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selected_item_index or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selected_item_index):
+            if self.tableview.rows.cell_to_item_no(0, 0) != None and (self.tableview.rows.cell_to_item_no(0,
+                                                                                                          0) + self.tableview.rows.num_rows() - 1 > self.selected_item_index or self.tableview.rows.cell_to_item_no(
+                0, 0) + self.tableview.rows.num_rows() - 1 < self.selected_item_index):
                 self.tableview.rows.scroll_to_item(self.selected_item_index)
-#&#
 
 
-#-----------------------------------------------------------------------------
+# &#
+
+
+# -----------------------------------------------------------------------------
 class NBTExplorerOperation(Operation):
     def __init__(self, toolPanel):
         super(NBTExplorerOperation, self).__init__(toolPanel.editor, toolPanel.editor.level)
@@ -546,7 +568,7 @@ class NBTExplorerOperation(Operation):
                 orgNBT = self.toolPanel.nbtObject
             newNBT = self.toolPanel.data
 
-            if "%s"%orgNBT != "%s"%newNBT:
+            if "%s" % orgNBT != "%s" % newNBT:
                 if self.level.saving:
                     alert(_("Cannot perform action while saving is taking place"))
                     return
@@ -590,16 +612,18 @@ class NBTExplorerOperation(Operation):
                 toolPanel.update_side_panel(item)
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class NBTExplorerToolPanel(Panel):
     """..."""
-    def __init__(self, editor, nbtObject=None, fileName=None, dontSaveRootTag=False, dataKeyName='Data', close_text="Close", load_text="Open", **kwargs):
+
+    def __init__(self, editor, nbtObject=None, fileName=None, savePolicy=0, dataKeyName='Data', close_text="Close",
+                 load_text="Open", **kwargs):
         """..."""
         Panel.__init__(self)
         self.editor = editor
         self.nbtObject = nbtObject
         self.fileName = fileName
-        self.dontSaveRootTag = dontSaveRootTag
+        self.savePolicy = savePolicy
         self.displayed_item = None
         self.dataKeyName = dataKeyName
         self.copy_data = kwargs.get('copy_data', True)
@@ -608,9 +632,11 @@ class NBTExplorerToolPanel(Panel):
         if load_text:
             btns.append(Button(load_text, action=self.editor.nbtTool.loadFile))
         btns += [
-                Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT), tooltipText="Save your change in the NBT data."),
-                Button("Reset", action=kwargs.get('reset_action', self.reset), tooltipText="Reset ALL your changes in the NBT data."),
-                ]
+            Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT),
+                   tooltipText="Save your change in the NBT data."),
+            Button("Reset", action=kwargs.get('reset_action', self.reset),
+                   tooltipText="Reset ALL your changes in the NBT data."),
+        ]
         if close_text:
             btns.append(Button(close_text, action=kwargs.get('close_action', self.close)))
 
@@ -620,15 +646,20 @@ class NBTExplorerToolPanel(Panel):
         self.btnRow = btnRow
 
         if kwargs.get('no_header', False):
-            self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - (self.margin * 2) - btnRow.height - 2
+            self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height -
+                                                      editor.subwidgets[0].height) - (
+                                               self.margin * 2) - btnRow.height - 2
         else:
             title = _("NBT Explorer")
             if fileName:
-                title += " - %s"%os.path.split(fileName)[-1]
+                title += " - %s" % os.path.split(fileName)[-1]
             header = Label(title, doNotTranslate=True)
-            self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height - editor.subwidgets[0].height) - header.height - (self.margin * 2) - btnRow.height - 2
+            self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height -
+                                                      editor.subwidgets[0].height) - header.height - (
+                                               self.margin * 2) - btnRow.height - 2
         self.setCompounds()
-        self.tree = NBTTree(height=max_height - btnRow.height -2, inner_width=250, data=self.data, compound_types=self.compounds,
+        self.tree = NBTTree(height=max_height - btnRow.height - 2, inner_width=250, data=self.data,
+                            compound_types=self.compounds,
                             copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
         self.side_panel_width = 350
         row = [self.tree, Column([Label("", width=self.side_panel_width), ], margin=0)]
@@ -639,14 +670,15 @@ class NBTExplorerToolPanel(Panel):
             self.add(Column([header, self.displayRow, btnRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
-    #&# Prototype for Blocks/item names
+        # &# Prototype for Blocks/item names
         mclangres.buildResources(lang=getLang())
 
     def set_update_translation(self, v):
         Panel.set_update_translation(self, v)
         if v:
             mclangres.buildResources(lang=getLang())
-    #&#
+
+    # &#
 
     def key_down(self, e):
         self.dispatch_key('key_down', e)
@@ -676,12 +708,12 @@ class NBTExplorerToolPanel(Panel):
         if config.nbtTreeSettings.showAllTags.get():
             compounds = [TAG_Compound, TAG_List]
         else:
-            compounds = [TAG_Compound,]
+            compounds = [TAG_Compound, ]
         self.compounds = compounds
 
     def save_NBT(self):
         if self.fileName:
-            self.editor.nbtTool.saveFile(self.fileName, self.data, self.dontSaveRootTag)
+            self.editor.nbtTool.saveFile(self.fileName, self.data, self.savePolicy)
         else:
             op = NBTExplorerOperation(self)
             self.editor.addOperation(op)
@@ -690,8 +722,9 @@ class NBTExplorerToolPanel(Panel):
 
     def init_data(self):
         data = {}
-        if self.nbtObject == None and hasattr(self.editor.level, 'root_tag'):
+        if self.nbtObject is None and hasattr(self.editor.level, 'root_tag'):
             self.nbtObject = self.editor.level.root_tag
+            self.copy_data = False
         if self.nbtObject:
             if self.nbtObject.get('Data'):
                 if self.copy_data:
@@ -703,13 +736,15 @@ class NBTExplorerToolPanel(Panel):
                     data = copy.deepcopy(self.nbtObject)
                 else:
                     data = self.nbtObject
-                
+
         self.data = data
         self.setCompounds()
         if hasattr(self, 'tree'):
             self.tree.set_parent(None)
-            self.tree = NBTTree(height=self.max_height - self.btnRow.height - 2, inner_width=250, data=self.data, compound_types=self.compounds,
-                                copyBuffer=self.editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
+            self.tree = NBTTree(height=self.max_height - self.btnRow.height - 2, inner_width=250, data=self.data,
+                                compound_types=self.compounds,
+                                copyBuffer=self.editor.nbtCopyBuffer, draw_zebra=False, _parent=self,
+                                styles=bullet_styles)
             self.displayRow.subwidgets[0].subwidgets.insert(0, self.tree)
             self.tree.set_parent(self.displayRow.subwidgets[0])
 
@@ -732,7 +767,7 @@ class NBTExplorerToolPanel(Panel):
         if config.nbtTreeSettings.showAllTags.get():
             meth = None
         else:
-            meth = getattr(self, 'build_%s'%item[3].lower(), None)
+            meth = getattr(self, 'build_%s' % item[3].lower(), None)
         col = True
         if meth and len(items) == 1:
             rows = meth(items)
@@ -745,7 +780,7 @@ class NBTExplorerToolPanel(Panel):
                 for field in fields:
                     if type(field) == TextFieldWrapped:
                         field.set_size_for_text(self.side_panel_width)
-                    row = Row([field,], margin=1)
+                    row = Row([field, ], margin=1)
                     rows.append(row)
                     height += row.height
             if height > self.displayRow.height:
@@ -754,7 +789,8 @@ class NBTExplorerToolPanel(Panel):
             if col:
                 col = Column(rows, align='l', spacing=0, height=self.displayRow.height)
             else:
-                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False, inner_width=self.side_panel_width - scroll_button_size)
+                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False,
+                                  inner_width=self.side_panel_width - scroll_button_size)
             col.set_parent(self.displayRow)
             col.top = self.displayRow.top
             col.left = self.displayRow.subwidgets[0].right
@@ -768,9 +804,9 @@ class NBTExplorerToolPanel(Panel):
         if type(itm) in field_types.keys():
             f, bounds = field_types[type(itm)]
             if bounds:
-                fields = [f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]),]
+                fields = [f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]), ]
             else:
-                fields = [f(ref=AttrRef(itm, 'value')),]
+                fields = [f(ref=AttrRef(itm, 'value')), ]
         elif type(itm) in array_types.keys():
             idx = 0
             for _itm in itm.value.tolist():
@@ -779,7 +815,9 @@ class NBTExplorerToolPanel(Panel):
                 idx += 1
         elif type(itm) in (TAG_Compound, TAG_List):
             for _itm in itm.value:
-                fields.append(Label("%s"%(_itm.name or "%s #%03d"%(itm.name or _("Item"), itm.value.index(_itm))), align='l', doNotTranslate=True))
+                fields.append(
+                    Label("%s" % (_itm.name or "%s #%03d" % (itm.name or _("Item"), itm.value.index(_itm))), align='l',
+                          doNotTranslate=True))
                 fields += NBTExplorerToolPanel.build_field(_itm)
         elif type(itm) not in (str, unicode):
             if type(getattr(itm, 'value', itm)) not in (str, unicode, int, float):
@@ -788,9 +826,9 @@ class NBTExplorerToolPanel(Panel):
             else:
                 fld = TextFieldWrapped
                 kw = {}
-            fields = [fld("%s"%getattr(itm, 'value', itm), doNotTranslate=True, **kw),]
+            fields = [fld("%s" % getattr(itm, 'value', itm), doNotTranslate=True, **kw), ]
         else:
-            fields = [TextFieldWrapped("%s"%itm, doNotTranslata=True),]
+            fields = [TextFieldWrapped("%s" % itm, doNotTranslata=True), ]
         return fields
 
     @staticmethod
@@ -809,12 +847,13 @@ class NBTExplorerToolPanel(Panel):
                 keys = mod.keys()
                 keys.remove('Name')
                 rows.append(Row([Label("-> Name", align='l')] + NBTExplorerToolPanel.build_field(mod['Name']),
-                                 margin=0))
+                                margin=0))
                 keys.sort()
                 for key in keys:
-                    rows.append(Row([Label('    %s'%key, align='l', doNotTranslate=True, tooltipText=mod[key].__class__.__name__)] \
-                                    + NBTExplorerToolPanel.build_field(mod[key]),
-                                    margin=0))
+                    rows.append(Row(
+                        [Label('    %s' % key, align='l', doNotTranslate=True, tooltipText=mod[key].__class__.__name__)] \
+                        + NBTExplorerToolPanel.build_field(mod[key]),
+                        margin=0))
         return rows
 
     def build_motion(self, items):
@@ -850,11 +889,11 @@ class NBTExplorerToolPanel(Panel):
         inventory = parent.get('Inventory', TAG_List())
         rows = []
         items = items[0]
-        slots = [["%s"%i,"","0","0"] for i in range(36)]
-        slots += [["%s"%i,"","0","0"] for i in range(100, 104)]
+        slots = [["%s" % i, "", "0", "0"] for i in range(36)]
+        slots += [["%s" % i, "", "0", "0"] for i in range(100, 104)]
         slots_set = []
         for item, i in zip(items, range(len(items))):
-            #&# Prototype for blocks/items names
+            # &# Prototype for blocks/items names
             item_dict = mcitems.items.get(item['id'].value, None)
             if item_dict == None:
                 name = item['id'].value
@@ -862,7 +901,8 @@ class NBTExplorerToolPanel(Panel):
                 if type(item_dict['name']) == list:
                     if int(item['Damage'].value) >= len(item_dict['name']):
                         block_id = map_block.get(item['id'].value, None)
-                        name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[0].strip()
+                        name = alphaMaterials.get((int(block_id), int(item['Damage'].value))).name.rsplit('(', 1)[
+                            0].strip()
                     else:
                         name = item_dict['name'][int(item['Damage'].value)]
                 else:
@@ -876,8 +916,8 @@ class NBTExplorerToolPanel(Panel):
             if s >= 100:
                 s = s - 100 + 36
             slots[s] = _s, mclangres.translate(name), item['Count'].value, item['Damage'].value
-            #slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
-            #&#
+            # slots[s] = item['Slot'].value, item['id'].value.split(':')[-1], item['Count'].value, item['Damage'].value
+            # &#
         width = self.side_panel_width - self.margin * 5
         c0w = max(15, self.font.size("000")[0]) + 4
         c2w = max(15, self.font.size("00")[0]) + 4
@@ -902,10 +942,12 @@ class NBTExplorerToolPanel(Panel):
 
         def num_rows():
             return len(slots)
+
         table.num_rows = num_rows
 
         def row_data(n):
             return slots[n]
+
         table.row_data = row_data
 
         def click_row(n, e):
@@ -913,21 +955,23 @@ class NBTExplorerToolPanel(Panel):
             table.selected_row = n
             if e.num_clicks > 1:
                 SlotEditor(table, row_data(n)).present()
+
         table.click_row = click_row
 
         def row_is_selected(n):
             return n == table.selected_row
+
         table.row_is_selected = row_is_selected
 
         def change_value(data):
             s, i, c, d = data
             s = int(s)
             s_idx = 0
-            #&# Prototype for blocks/items names
+            # &# Prototype for blocks/items names
             name, state = map_items.get(mclangres.untranslate(i), (i, '0'))
             if ':' not in name:
-                name = 'minecraft:%s'%name
-            #&#
+                name = 'minecraft:%s' % name
+            # &#
 
             if s in slots_set:
                 for slot in inventory:
@@ -943,10 +987,10 @@ class NBTExplorerToolPanel(Panel):
                             c = u'0'
                             d = u'0'
                         else:
-                            #&# Prototype for blocks/items names
-                            #slot['id'].value = 'minecraft:%s'%i
+                            # &# Prototype for blocks/items names
+                            # slot['id'].value = 'minecraft:%s'%i
                             slot['id'].value = name
-                            #&#
+                            # &#
                             slot['Count'].value = int(c)
                             slot['Damage'].value = int(state)
                         break
@@ -955,10 +999,10 @@ class NBTExplorerToolPanel(Panel):
                 new_slot = TAG_Compound()
                 if player:
                     new_slot['Slot'] = TAG_Byte(s)
-                #&# Prototype for blocka/items names
-                #new_slot['id'] = TAG_String('minecraft:%s'%i)
+                # &# Prototype for blocka/items names
+                # new_slot['id'] = TAG_String('minecraft:%s'%i)
                 new_slot['id'] = TAG_String(name)
-                #&#
+                # &#
                 new_slot['Count'] = TAG_Byte(int(c))
                 new_slot['Damage'] = TAG_Short(int(state))
                 idx = s
@@ -973,10 +1017,10 @@ class NBTExplorerToolPanel(Panel):
                         break
                 inventory.insert(s, new_slot)
                 slots_set.append(s)
-            #&# Prototype for blocks/items names
-#            if i == name:
-#                i = name
-            #&#
+                # &# Prototype for blocks/items names
+            #            if i == name:
+            #                i = name
+            # &#
             if s >= 100:
                 n = s - 100 + 36
             else:
@@ -984,7 +1028,6 @@ class NBTExplorerToolPanel(Panel):
             table.slots[n] = slots[n] = s, i, c, state
 
         table.change_value = change_value
-
 
         def dispatch_key(name, evt):
             keyname = self.root.getKey(evt)
@@ -1001,7 +1044,8 @@ class NBTExplorerToolPanel(Panel):
                 table.selected_row = min(len(slots) - 1, table.selected_row + table.rows.num_rows())
             elif keyname == 'Page up':
                 table.selected_row = max(0, table.selected_row - table.rows.num_rows())
-            if table.rows.cell_to_item_no(0, 0) != None and (table.rows.cell_to_item_no(0, 0) + table.rows.num_rows() -1 > table.selected_row or table.rows.cell_to_item_no(0, 0) + table.rows.num_rows() -1 < table.selected_row):
+            someRowBool = table.rows.cell_to_item_no(0, 0) + table.rows.num_rows() - 1 != table.selected_row
+            if table.rows.cell_to_item_no(0, 0) is not None and someRowBool:
                 table.rows.scroll_to_item(table.selected_row)
 
         table.dispatch_key = dispatch_key
@@ -1010,7 +1054,7 @@ class NBTExplorerToolPanel(Panel):
         return rows
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class NBTExplorerTool(EditorTool):
     """..."""
     tooltipText = "NBT Explorer\nDive into level NBT structure.\nRight-click for options"
@@ -1037,57 +1081,63 @@ class NBTExplorerTool(EditorTool):
     def toolReselected(self):
         self.showPanel()
 
-    def showPanel(self, fName=None, nbtObject=None, dontSaveRootTag=False, dataKeyName='Data'):
+    def showPanel(self, fName=None, nbtObject=None, savePolicy=0, dataKeyName='Data'):
         """..."""
-        if (self.panel is None and self.editor.currentTool in (self, None)): # or nbtObject:
-            #!# BAD HACK
+        if self.panel is None and self.editor.currentTool in (self, None):  # or nbtObject:
+            # !# BAD HACK
             try:
                 class fakeStdErr:
                     def __init__(self, *args, **kwargs): pass
+
                     def write(self, *args, **kwargs): pass
+
                 stderr = os.sys.stderr
                 os.sys.stderr = fakeStdErr()
                 os.sys.stderr = stderr
             except:
                 alert("Unattended data. File not loaded")
                 return
-            #!#
+            # !#
             self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName,
-                                              dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName)
-            self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + self.editor.subwidgets[0].height
+                                              savePolicy=savePolicy, dataKeyName=dataKeyName)
+            self.panel.centery = (self.editor.mainViewport.height - self.editor.toolbar.height) / 2 + \
+                                 self.editor.subwidgets[0].height
             self.panel.left = self.editor.left
             self.editor.add(self.panel)
 
     def loadFile(self, fName=None):
-        nbtObject, dataKeyName, dontSaveRootTag, fName = loadFile(fName)
-        if nbtObject != None:
+        nbtObject, dataKeyName, savePolicy, fName = loadFile(fName)
+        if nbtObject is not None:
             self.editor.toolbar.removeToolPanels()
             self.editor.currentTool = self
-            self.showPanel(fName, nbtObject, dontSaveRootTag, dataKeyName)
+            self.showPanel(fName, nbtObject, savePolicy, dataKeyName)
         self.optionsPanel.dismiss()
 
-    def saveFile(self, fName, data, dontSaveRootTag):
-        saveFile(fName, data, dontSaveRootTag)
+    def saveFile(self, fName, data, savePolicy):
+        saveFile(fName, data, savePolicy)
 
     def keyDown(self, *args, **kwargs):
         if self.panel:
             self.panel.key_down(*args, **kwargs)
 
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 def loadFile(fName):
     if not fName:
-        fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat',])
+        fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat', ])
     if fName:
         if not os.path.isfile(fName):
             alert("The selected object is not a file.\nCan't load it.")
             return
-        dontSaveRootTag = False
+        savePolicy = 0
         data = open(fName).read()
+
         if struct.Struct('<i').unpack(data[:4])[0] in (3, 4):
-            from pymclevel.leveldbpocket import littleEndianNBT
+            if struct.Struct('<i').unpack(data[4:8])[0] != len(data[8:]):
+                raise NBTFormatError()
             with littleEndianNBT():
                 nbtObject = load(buf=data[8:])
+            savePolicy = 1
         elif struct.Struct('<i').unpack(data[:4])[0] in (1, 2):
             print 'Wrong world format'
             return {}, '', None, fName
@@ -1095,7 +1145,7 @@ def loadFile(fName):
             nbtObject = load(buf=data)
         if fName.endswith('.schematic'):
             nbtObject = TAG_Compound(name='Data', value=nbtObject)
-            dontSaveRootTag = True
+            savePolicy = -1
             dataKeyName = 'Data'
         elif nbtObject.get('Data', None):
             dataKeyName = 'Data'
@@ -1104,13 +1154,16 @@ def loadFile(fName):
         else:
             nbtObject.name = 'Data'
             dataKeyName = 'Data'
-            dontSaveRootTag = True
-            nbtObject = TAG_Compound([nbtObject,])
-#        dontSaveRootTag = not fName.endswith('.schematic')
-        return nbtObject, dataKeyName, dontSaveRootTag, fName
-    return [None,] * 4
+            if savePolicy == 0:
+                savePolicy = -1
+            nbtObject = TAG_Compound([nbtObject, ])
+        return nbtObject, dataKeyName, savePolicy, fName
+    return [None] * 4
 
-def saveFile(fName, data, dontSaveRootTag):
+
+def saveFile(fName, data, savePolicy):
+    if fName is None:
+        return
     if os.path.exists(fName):
         r = ask("File already exists.\nClick 'OK' to choose one.")
         if r == 'OK':
@@ -1119,11 +1172,17 @@ def saveFile(fName, data, dontSaveRootTag):
             fName = mcplatform.askSaveFile(folder, "Choose a NBT file...", name, 'Folder\0*.dat\0*.*\0\0', suffix)
         else:
             return
-    if dontSaveRootTag:
+    if savePolicy == -1:
         if hasattr(data, 'name'):
             data.name = ""
     if not os.path.isdir(fName):
-        data.save(fName)
+        if savePolicy <= 0:
+            data.save(fName)
+        elif savePolicy == 1:
+            with littleEndianNBT():
+                toSave = data.save(compressed=False)
+                toSave = TAG_Int.fmt.pack(4) + TAG_Int.fmt.pack(len(toSave)) + toSave
+                with open(fName, 'w') as f:
+                    f.write(toSave)
     else:
         alert("The selected object is not a file.\nCan't save it.")
-

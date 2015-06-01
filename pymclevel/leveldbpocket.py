@@ -1,5 +1,6 @@
 import itertools
 import time
+from math import floor
 from level import FakeChunk, MCLevel
 import logging
 from materials import pocketMaterials
@@ -20,9 +21,10 @@ logger = logging.getLogger(__name__)
 leveldb_available = True
 try:
     import leveldb_mcpe
-except ImportError, e:
+except ImportError as e:
     leveldb_available = False
     logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
+    leveldb_mcpe = None
 
 """
 TODO add these things:
@@ -38,7 +40,6 @@ Add a way of creating new levels
 
 # CHUNK CONTROL
 # TODO Fix up Create Chunks and Extract Chunks
-
 
 
 # noinspection PyUnresolvedReferences
@@ -198,16 +199,16 @@ class PocketLeveldbDatabase(object):
                     needsRepair = True
                 del it
 
-        except RuntimeError, e:
-            logger.error("Error while opening world database from %s (%s)" % path, e)
+        except RuntimeError as err:
+            logger.error("Error while opening world database from %s (%s)" % path, err)
             needsRepair = True
 
         if needsRepair:
             logger.info("Trying to repair world %s", path)
             try:
                 leveldb_mcpe.RepairWrapper(os.path.join(path, 'db'))
-            except RuntimeError, e:
-                logger.error("Error while repairing world %s %s" % path, e)
+            except RuntimeError as err:
+                logger.error("Error while repairing world %s %s" % path, err)
 
     def close(self):
         """
@@ -467,18 +468,14 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             with littleEndianNBT():
                 _loadLevelDat(os.path.join(self.worldFile.path, "level.dat"))
             return
-        except nbt.NBTFormatError, e:
-            logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(e))
-        except IOError, e:
-            logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(e))
+        except (nbt.NBTFormatError, IOError) as err:
+            logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(err))
         try:
             with littleEndianNBT():
                 _loadLevelDat(os.path.join(self.worldFile.path, "level.dat_old"))
             return
-        except nbt.NBTFormatError, e:
-            logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(e))
-        except IOError, e:
-            logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(e))
+        except (nbt.NBTFormatError, IOError) as err:
+            logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(err))
         self._createLevelDat(random_seed, last_played)
         print self.root_tag['SpawnX']
 
@@ -525,9 +522,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self._loadedChunks.clear()
         self._allChunks = None
         self.worldFile.close()
-        print 'test'
         path = os.path.join(self.worldFile.path, 'level.dat')
-        print self.root_tag['SpawnX']
         with littleEndianNBT():
             rootTagData = self.root_tag.save(compressed=False)
             rootTagData = nbt.TAG_Int.fmt.pack(4) + nbt.TAG_Int.fmt.pack(len(rootTagData)) + rootTagData
@@ -728,7 +723,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :return:
         """
         assert isinstance(entityTag, nbt.TAG_Compound)
-        x, y, z = map(lambda p: int(numpy.floor(p)), Entity.pos(entityTag))
+        x, y, z = map(lambda p: int(floor(p)), Entity.pos(entityTag))
 
         try:
             chunk = self.getChunk(x >> 4, z >> 4)
@@ -882,7 +877,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         """
         playerTag = self.getPlayerTag(player)
         posList = playerTag["Pos"]
-        x, y, z = map(lambda x: x.value, posList)
+        x, y, z = map(lambda c: c.value, posList)
         return x, y + 1.75, z
 
     def setPlayerOrientation(self, yp, player="Player"):
@@ -947,7 +942,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         else:
             playerTag = self.getPlayerTag(player)
             return playerTag["playerGameType"].value
-
 
 
 class PocketLeveldbChunk(LightedChunk):
