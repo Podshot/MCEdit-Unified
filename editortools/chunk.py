@@ -47,11 +47,6 @@ class ChunkToolPanel(Panel):
         self.chunksLabel.align = "c"
         self.chunksLabel.tooltipText = "..."
 
-        extractButton = Button("Extract")
-        extractButton.tooltipText = "Extract these chunks to individual chunk files"
-        extractButton.action = tool.extractChunks
-        extractButton.highlight_color = (255, 255, 255)
-
         deselectButton = Button("Deselect",
                                 tooltipText=None,
                                 action=tool.editor.deselect,
@@ -87,7 +82,7 @@ class ChunkToolPanel(Panel):
 
         col = Column((
         chunkToolLabel, self.chunksLabel, deselectButton, createButton, destroyButton, pruneButton, relightButton,
-        extractButton, repopButton, dontRepopButton))
+        repopButton, dontRepopButton))
         # col.right = self.width - 10;
         self.width = col.width
         self.height = col.height
@@ -219,22 +214,6 @@ class ChunkTool(EditorTool):
 
     def selectedChunks(self):
         return self.editor.selectedChunks
-
-    @alertException
-    def extractChunks(self):
-        folder = mcplatform.askSaveFile(directories.docsFolder,
-                                        title='Export chunks to...',
-                                        defaultName=self.editor.level.displayName + "_chunks",
-                                        filetype='Folder\0*.*\0\0',
-                                        suffix="",
-        )
-        if not folder:
-            return
-
-        # TODO: We need a third dimension, Scotty!
-        for cx, cz in self.selectedChunks():
-            if self.editor.level.containsChunk(cx, cz):
-                self.editor.level.extractChunk(cx, cz, folder)
 
     @alertException
     def destroyChunks(self, chunks=None):
