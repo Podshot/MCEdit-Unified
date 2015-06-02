@@ -965,7 +965,7 @@ class CameraViewport(GLViewport):
         oldCommand = commandField.value
         trackOutput.value = tileEntity["TrackOutput"].value
         oldTrackOutput = trackOutput.value
-        nameField.value = tileEntity["CustomName"].value
+        nameField.value = tileEntity.get("CustomName", "@")
         oldNameField = nameField.value
 
         class CommandBlockEditOperation(Operation):
