@@ -178,7 +178,7 @@ class BrushPanel(Panel):
         type = value.__class__.__name__
         mi = 0
         ma = 100
-        if key in ('W','H','L'):
+        if key in ('W', 'H', 'L'):
             reference = AttrRef(self.tool, key)
         else:
             reference = ItemRef(self.tool.options, key)
@@ -193,24 +193,29 @@ class BrushPanel(Panel):
             aw = False
             if key in wcb:
                 aw = True
-            object = BlockButton(self.tool.editor.level.materials,
-                                 ref=reference,
-                                 recentBlocks=self.tool.recentBlocks[key],
-                                 allowWildcards=aw
-                                 )
+            field = BlockButton(self.tool.editor.level.materials,
+                                ref=reference,
+                                recentBlocks=self.tool.recentBlocks[key],
+                                allowWildcards=aw
+                                )
+        elif type == 'instancemethod':
+            field = Button(key, action=value)
         else:
             if doNotTranslate:
                 key = self.tool.brushMode.trn._(key)
                 value = self.tool.brushMode.trn._(value)
             if type == 'int':
-                object = IntInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
+                field = IntInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
             elif type == 'float':
-                object = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
+                field = FloatInputRow(key, ref=reference, width=50, min=mi, max=ma, doNotTranslate=doNotTranslate)
             elif type == 'bool':
-                object = CheckBoxLabel(key, ref=reference, doNotTranslate=doNotTranslate)
+                field = CheckBoxLabel(key, ref=reference, doNotTranslate=doNotTranslate)
             elif type == 'str':
-                object = Label(value, doNotTranslate=doNotTranslate)
-        return object
+                field = Label(value, doNotTranslate=doNotTranslate)
+            else:
+                print type
+                field = None
+        return field
 
     def brushModeChanged(self):
         """
@@ -398,7 +403,9 @@ class BrushTool(CloneTool):
     Used to determine the distance between the block the cursor is pointing at, and the center of the brush.
     Increased by scrolling up, decreased by scrolling down (default keys)
     """
+
     _reticleOffset = 1
+
     @property
     def reticleOffset(self):
         if getattr(self.brushMode, 'draggableBrush', True):
@@ -528,6 +535,7 @@ class BrushTool(CloneTool):
                 self.editor.mcedit.set_update_translation(True)
                 self.editor.mcedit.set_update_translation(False)
             m.materials = self.editor.level.materials
+            m.tool = self
             m.createInputs(m)
             return m
         except Exception, e:
@@ -587,6 +595,8 @@ class BrushTool(CloneTool):
                     for b in blockList:
                         saveList.append((b.ID, b.blockData))
                     optionsToSave[key + 'recentBlocks'] = saveList
+            elif self.options[key].__class__.__name__ == 'instancemethod':
+                continue
             else:
                 optionsToSave[key] = self.options[key]
         optionsToSave["Mode"] = getattr(self, 'selectedBrushMode', 'Fill')
