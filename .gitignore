@@ -22,6 +22,7 @@ var/
 ENV/
 leveldb_mcpe
 scripts-pyinstaller
+pymclevel/_nbt.html
 pyinstaller-develop
 *.egg-info/
 .installed.cfg
