@@ -7,6 +7,8 @@
 #include <leveldb/write_batch.h>
 #include <leveldb/zlib_compressor.h>
 #define BOOST_PYTHON_STATIC_LIB
+#define BOOST_SYSTEM_STATIC_LIB
+#define BOOST_ALL_STATIC_LIB
 
 #include <boost/python/module.hpp>
 #include <boost/python/def.hpp>

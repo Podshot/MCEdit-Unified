@@ -10,13 +10,23 @@ define_macros = []
 runtime_library_dirs = []
 
 if sys.platform == "win32":
-    print "Building windows application 'leveldb_mcpe'"
-    include_dirs = ["C:/boost_1_55_0","./leveldb-mcpe/include"]
-    library_dirs=["C:/boost_1_55_0/stage/lib","."]
-    libraries=["leveldb-mcpe", "shell32", "zlib"]
-    extra_compile_args += ["/EHs","/MDd"]
-    extra_link_args += ["/MACHINE:x64", "/NODEFAULTLIB:LIBCMT"]
-    define_macros = [("WIN32", None),("_DEBUG", None),("_WINDOWS", None),("LEVELDB_PLATFORM_WINDOWS", None),("OS_WIN", None)]
+	if sys.maxsize > 2**32: #64-bit
+		print "Building windows application 'leveldb_mcpe' x64"
+		include_dirs = ["C:/boost_1_55_0","./leveldb-mcpe/include"]
+		library_dirs=["C:/boost_1_55_0/stage/lib","."]
+		libraries=["leveldb-mcpe", "shell32", "zlib"]
+		extra_compile_args += ["/EHs","/MDd"]
+		extra_link_args += ["/MACHINE:x64", "/NODEFAULTLIB:LIBCMT"]
+		define_macros = [("WIN32", None),("_DEBUG", None),("_WINDOWS", None),("LEVELDB_PLATFORM_WINDOWS", None),("OS_WIN", None)]
+	else: #32-bit
+		print "Building windows application 'leveldb_mcpe' x32"
+		include_dirs = ["C:/Boost/include/boost-1_55","./leveldb-mcpe/include"]
+		library_dirs=["C:/Boost/lib/i386","."]
+		libraries=["leveldb-mcpe", "shell32"]
+		extra_compile_args += ["/EHs","/MDd","/Zi","-DZLIB_WINAPI"]
+		extra_link_args += ["/MACHINE:x86","/NODEFAULTLIB:LIBCMT"]
+		define_macros = [("WIN32", None),("_DEBUG", None),("_WINDOWS", None),("LEVELDB_PLATFORM_WINDOWS", None),("OS_WIN", None)]
+
 
 elif sys.platform == "darwin":
   include_dirs = ["/usr/local/include/boost", "./leveldb-mcpe/include", "."]
