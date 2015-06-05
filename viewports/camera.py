@@ -954,8 +954,8 @@ class CameraViewport(GLViewport):
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Command Block")
-        commandField = TextFieldWrapped(width=500)
-        nameField = TextFieldWrapped(width=100)
+        commandField = TextFieldWrapped(width=650)
+        nameField = TextFieldWrapped(width=200)
         trackOutput = CheckBox()
 
         try:
@@ -965,7 +965,7 @@ class CameraViewport(GLViewport):
         oldCommand = commandField.value
         trackOutput.value = tileEntity["TrackOutput"].value
         oldTrackOutput = trackOutput.value
-        nameField.value = tileEntity.get("CustomName", "@")
+        nameField.value = tileEntity.get("CustomName", TAG_String("@")).value
         oldNameField = nameField.value
 
         class CommandBlockEditOperation(Operation):
