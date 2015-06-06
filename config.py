@@ -144,6 +144,8 @@ class ConfigSection(object):
             value.section = section
             self._items[value.key] = value
             value.get()
+            if value.section == "Keys" and value.config.get(value.section, value.name) == "Delete":
+                value.config.set(value.section, value.name, "Del")
 
     def __getitem__(self, key):
         return self._items[key]
@@ -411,7 +413,7 @@ definitions = {
 
         ("openLevel", "open level", "O"),
         ("newLevel", "new level", "N"),
-        ("deleteBlocks", "delete blocks", "Delete"),
+        ("deleteBlocks", "delete blocks", "Del"),
         ("lineTool", "line tool", "Z"),
 
         ("longDistanceMode", "long-distance mode", "Alt-Z"),
@@ -481,7 +483,7 @@ definitions = {
         ("staticCommandsNudge", "Static Coords While Nudging", False),
         ("moveSpawnerPosNudge", "Change Spawners While Nudging", False),
         ("rotateBlockBrush", "rotateBlockBrushRow", True),
-        ("langCode", "Language String", "English (US)"),
+        ("langCode", "Language String", "en_US"),
         ("viewDistance", "View Distance", 8),
         ("targetFPS", "Target FPS", 30),
         ("windowWidth", "window width", 1152),

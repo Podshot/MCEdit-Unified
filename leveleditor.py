@@ -192,7 +192,8 @@ class LevelEditor(GLViewport):
             "mouse4": "Scroll Up",
             "mouse5": "Scroll Down",
             "mouse6": "Button 4",
-            "mouse7": "Button 5"
+            "mouse7": "Button 5",
+            "Delete": "Del"
         }
         self.rightClickNudge = False
         self.root = self.get_root()
@@ -684,7 +685,7 @@ class LevelEditor(GLViewport):
                 elif keyname == 'Page up':
                     table.rows.scroll_to_item(max(0, table.rows.cell_to_item_no(0, 0) - table.rows.num_rows()))
                 elif keyname == 'Page down' and table.rows.cell_to_item_no(table.rows.num_rows(), 0) != None:
-                    table.rows.scroll_to_item(min(len(rows), table.rows.cell_to_item_no(table.rows.num_rows(), 0) + table.rows.num_rows()))
+                    table.rows.scroll_to_item(min(len(rows), table.rows.cell_to_item_no(table.rows.num_rows(), 0)))
 
         dlg.dispatch_key = dispatch_key
         dlg.present()
@@ -1241,8 +1242,8 @@ class LevelEditor(GLViewport):
     @mceutils.alertException
     def saveAs(self):
         shortName = os.path.split(os.path.split(self.level.filename)[0])[1]
-        filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy:"),
-                                          shortName, _('Minecraft World\0*.*\0\0'), "")
+        filename = mcplatform.askSaveFile(directories.minecraftSaveFileDir, _("Name the new copy."),
+                                          shortName + " - Copy", _('Minecraft World\0*.*\0\0'), "")
         if filename is None:
             return
         shutil.copytree(self.level.worldFolder.filename, filename)

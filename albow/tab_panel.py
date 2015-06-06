@@ -145,14 +145,16 @@ class TabPanel(Widget):
 
     def tab_bg_color_for_page(self, page):
         return getattr(page, 'tab_bg_color', None) \
-               or page.bg_color \
-               or self.default_tab_bg_color
+            or page.bg_color \
+            or self.default_tab_bg_color
 
     def mouse_down(self, e):
         x, y = e.local
         if y < self.tab_height:
             i = self.tab_number_containing_x(x)
             if i is not None:
+                if self.current_page:
+                    self.current_page.dispatch_attention_loss()
                 self.show_page(self.pages[i])
 
     def tab_number_containing_x(self, x):

@@ -1790,3 +1790,13 @@ o851 File format
 t851 
 o852 Choose the file format for the files
 t852 
+o853 Del
+t853 
+o854 Show Commands
+t854 
+o855 Show the command in a Command Block when hovering over it.
+t855 
+o856 [Empty]
+t856 
+o857 Couldn't open the file
+t857 

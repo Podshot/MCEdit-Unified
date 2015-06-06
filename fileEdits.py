@@ -1,6 +1,7 @@
 from albow import alert
 from editortools.operation import Operation
 import itertools
+from albow import alert
 
 class fileEdit():
     def __init__(self, filename, timeChanged, box, sorting, editor, level):
@@ -12,8 +13,11 @@ class fileEdit():
         self.level = level
 
     def makeChanges(self):
-        self.filename = self.filename.decode('string_escape')
-        file = open(self.filename, 'rb')
+        try:
+            file = open(self.filename, 'rb')
+        except:
+            alert("Couldn't open the file")
+            return
         lines = []
         for line in file.readlines():
             line = line.replace("\r", "")

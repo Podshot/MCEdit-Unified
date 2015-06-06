@@ -311,7 +311,7 @@ class TileEntity(object):
                 execute = False
                 Slash = False
                 if command[0] == "/":
-                    command = command.replace("/", "", 1)
+                    command = command[1:]
                     Slash = True
 
                 # Adjust command coordinates.
@@ -344,7 +344,7 @@ class TileEntity(object):
                         saving_command += ' '
                         Slash = False
                         if command[0] == "/":
-                            command = command.replace("/", "", 1)
+                            command = command[1:]
                             Slash = True
                         words = command.split(' ')
                         if not command.startswith('execute'):

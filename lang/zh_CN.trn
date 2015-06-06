@@ -1403,7 +1403,7 @@ t662
 o663 Choose default data
 t663 选择默认值
 o664 Item Type: %s
-t664 标签类型：%s
+t664 项目类型：%s
 o665 Value
 t665 值
 o666 This item type is a container. Add chlidren later.
@@ -1479,7 +1479,7 @@ t695 打开NBT浏览器来编辑玩家的属性和物品
 o696 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t696 功能尚未实现
-请使用NBT浏览器来编辑这个玩家.
+请使用NBT编辑器来编辑这个玩家.
 o697 Error while getting player file.
 %s not found.
 t697 获取玩家文件失败.%s没有找到.

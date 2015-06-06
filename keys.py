@@ -678,7 +678,11 @@ class KeyConfigPanel(Dialog):
         if self.isConfigKey(configKey):
             key = config.keys[config.convert(configKey)].get()
             try:
+                oldKey = key
                 key = self.editor.different_keys[key]
+                if key != oldKey:
+                    config.keys[config.convert(configKey)].set(key)
+                    config.save()
             except:
                 pass
 
@@ -818,9 +822,9 @@ class KeyConfigPanel(Dialog):
                 return True
             oldkey = config.keys[config.convert(configKey)].get()
             config.keys[config.convert(configKey)].set(keyname)
-            if configKey not in self.changes:
+            if oldkey != keyname and configKey not in self.changes:
                 self.changes[configKey] = oldkey
-            self.changesNum = True
+                self.changesNum = True
         elif keyname != "Escape":
             self.askAssignKey(configKey,
                                     _("You can't use the key {0}. Press a new key.\n\nPress ESC to cancel.")

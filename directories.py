@@ -71,7 +71,6 @@ def getDataDir():
         def fsdecode(x):
             return x.decode(sys.getfilesystemencoding())
 
-        argzero = fsdecode(os.path.abspath(sys.argv[0]))
         dataDir = os.getcwdu()
         '''
         if getattr(sys, 'frozen', False):
@@ -367,6 +366,15 @@ sys.path.append(filtersDir)
 # Create pymclevel folder as needed
 if not os.path.exists(getCacheDir()):
     os.makedirs(getCacheDir())
+
+# build the structures of directories if they don't exists
+for directory in (filtersDir, brushesDir, schematicsDir):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+bundledLibsDir = os.path.join(filtersDir, 'lib', 'Bundled Libraries')
+if not os.path.exists(bundledLibsDir):
+    os.makedirs(bundledLibsDir)
 
 # set userCachePath
 userCachePath = os.path.join(getCacheDir(),'usercache.json')

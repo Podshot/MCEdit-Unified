@@ -359,7 +359,7 @@ t167 Beim Rotieren des Pinsels werden auch die Ausrichtungen der Blöcke gedreht
 o168 Choose your language.
 t168 Wähle deine Sprache aus.
 o169 Click to make your MCEdit install self-contained by moving the settings and schematics into the program folder
-t169 Auswählen, um die MCEdit-Einstellungen und Schematics in das Programmverzeichnis verschiebt
+t169 Auswählen, um die MCEdit-Einstellungen und Schematics in das Programmverzeichnis zu verschieben
 o170 You must restart MCEdit to see language changes
 t170 MCEdit muss neugestartet werden, damit die Sprache geändert werden kann.
 o171 Restart
@@ -497,7 +497,7 @@ t233 ---
 o234 Weight 1
 t234 Gewichtung 1
 o235 Weight 2
-t235 GewichtungGewichtung 2
+t235 Gewichtung 2
 o236 Weight 3
 t236 Gewichtung 3
 o237 Weight 4
@@ -1820,20 +1820,32 @@ t843 Füllen und ersetzen
 o844 World Spawnpoint
 t844 Welt-Spawnpunkt
 o845 CB Commands
-t845 
+t845 Befehlsblock Befehle
 o846 Open a text file with all command block commands in the currently selected area.
 Save file to update command blocks.
 Right-click for options
-t846 
+t846 Öffnet eine Textdatei mit allen Befehlen aus den Befehlsblöcken im ausgewählten Bereich.
+Datei speichern, um die Befehlsblöcke zu aktualisieren.
+Rechtsklick für Optionen
 o847 Command Blocks Commands Options
-t847 
+t847 Befehlseinstellungen der Befehlsblöcke
 o848 Sort Order
-t848 
+t848 Sortierreihenfolge
 o849 Space between lines
-t849 
+t849 Leerzeichen zwischen den Zeilen
 o850 Make space between the lines
-t850 
+t850 Leerzeichen zwischen den Zeilen hinzufügen
 o851 File format
-t851 
+t851 Dateiformat
 o852 Choose the file format for the files
-t852 
+t852 Wählt das Format für die Dateien aus.
+o853 Del
+t853 Entf
+o854 Show Commands
+t854 Befehle anzeigen
+o855 Show the command in a Command Block when hovering over it.
+t855 Zeigt den Befehl in einem Befehlsblock an, indem man drüberhält.
+o856 [Empty]
+t856 [Leer]
+o857 Couldn't open the file
+t857 

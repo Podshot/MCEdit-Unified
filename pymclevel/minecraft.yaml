@@ -3018,11 +3018,10 @@ blocks:
     data:
       0:
         name: Stone Bricks
-        search: brick, block
+        search: block
         tex: [6, 3]
       1:
         name: Mossy Stone Bricks
-        search: moss
         tex: [4, 6]
       2:
         name: Cracked Stone Bricks
@@ -4031,7 +4030,10 @@ blocks:
     idStr: beacon
     name: Beacon
     mapcolor: [200, 200, 200]
-    tex: [9, 2]
+    tex: [20, 6]
+    tex_direction:
+        TOP: [20, 7]
+        BOTTOM: [20, 8]
     opacity: 0
     brightness: 15
 
