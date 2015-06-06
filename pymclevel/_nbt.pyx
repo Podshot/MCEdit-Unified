@@ -46,6 +46,8 @@ from cStringIO import StringIO
 from cpython cimport PyTypeObject, PyUnicode_DecodeUTF8, PyList_Append, PyString_FromStringAndSize
 from contextlib import contextmanager
 import numpy
+import logging
+logger = logging.getLogger(__name__)
 
 cdef extern from "cStringIO.h":
     struct PycStringIO_CAPI:
@@ -522,7 +524,7 @@ class TAG_Compound(_TAG_Compound, collections.MutableMapping):
     pass
 
 
-cdef char _BIG_ENDIAN = 1
+_BIG_ENDIAN = 1
 
 @contextmanager
 def littleEndianNBT():
@@ -531,6 +533,7 @@ def littleEndianNBT():
     Sets the paramaters back to big-endian format after.
     :return: None
     """
+    global _BIG_ENDIAN
     _BIG_ENDIAN = 0
     yield
     _BIG_ENDIAN = 1
@@ -567,9 +570,6 @@ def load(filename="", buf=None):
     :return: Structured NBT data
     :rtype: TAG_Compound
     """
-    import traceback
-    for l in traceback.format_stack():
-        print l.strip()
     if filename:
         buf = file(filename, "rb")
 
