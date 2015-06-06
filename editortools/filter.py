@@ -754,6 +754,7 @@ class FilterTool(EditorTool):
                 for lib in filt.libraries:
                     lib_path = os.path.join(directories.getFiltersDir(), 'lib', lib["path"].replace("<sep>", os.path.sep))
                     lib_path_stock = os.path.join(directories.getDataDir(), 'stock-filters', 'lib', lib["path"].replace("<sep>", os.path.sep))
+                    print lib_path, lib_path_stock
                     if os.path.exists(lib_path):
                         sys.path.append(lib_path)
                     elif os.path.exists(lib_path_stock):
@@ -827,6 +828,8 @@ class FilterTool(EditorTool):
         def tryImport(name):
             module_file_object = open(os.path.join(directories.getFiltersDir(), name))
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
+            sys.path.append(os.path.join(directories.getFiltersDir(), 'lib', "Bundled Libraries"))
+            sys.path.append(os.path.join(directories.getDataDir(), 'stock-filters', 'lib', "Bundled Libraries"))
             try:
                 m = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
                 #!# Fix for Naor's filter bug
