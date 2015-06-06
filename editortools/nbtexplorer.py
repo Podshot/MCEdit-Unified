@@ -20,11 +20,9 @@ from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _, getLang
 from glbackground import Panel
-from pymclevel.leveldbpocket import littleEndianNBT
 from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
     TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
-    TAG_Short_Array, TAG_BYTE, TAG_SHORT, TAG_INT, TAG_LONG, TAG_FLOAT, TAG_DOUBLE, \
-    TAG_BYTE_ARRAY, TAG_STRING, TAG_LIST, TAG_COMPOUND, TAG_INT_ARRAY, TAG_SHORT_ARRAY, NBTFormatError
+    TAG_Short_Array, littleEndianNBT, NBTFormatError
 from numpy import array
 from albow.theme import root
 

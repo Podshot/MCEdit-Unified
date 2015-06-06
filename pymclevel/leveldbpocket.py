@@ -27,57 +27,6 @@ except ImportError as e:
     leveldb_mcpe = None
 
 
-# noinspection PyUnresolvedReferences
-@contextmanager
-def littleEndianNBT():
-    """
-    Pocket edition NBT files are encoded in little endian, instead of big endian.
-    This sets all the required paramaters to read little endian NBT, and makes sure they get set back after usage.
-    :return: None
-    """
-
-    # We need to override the function to access the hard-coded endianness.
-    def override_write_string(string, buf):
-        encoded = string.encode('utf-8')
-        buf.write(struct.pack("<h%ds" % (len(encoded),), len(encoded), encoded))
-
-    def reset_write_string(string, buf):
-        encoded = string.encode('utf-8')
-        buf.write(struct.pack(">h%ds" % (len(encoded),), len(encoded), encoded))
-
-    def override_byte_array_write_value(self, buf):
-        value_str = self.value.tostring()
-        buf.write(struct.pack("<I%ds" % (len(value_str),), self.value.size, value_str))
-
-    def reset_byte_array_write_value(self, buf):
-        value_str = self.value.tostring()
-        buf.write(struct.pack(">I%ds" % (len(value_str),), self.value.size, value_str))
-
-    nbt.string_len_fmt = struct.Struct("<H")
-    nbt.TAG_Byte.fmt = struct.Struct("<b")
-    nbt.TAG_Short.fmt = struct.Struct("<h")
-    nbt.TAG_Int.fmt = struct.Struct("<i")
-    nbt.TAG_Long.fmt = struct.Struct("<q")
-    nbt.TAG_Float.fmt = struct.Struct("<f")
-    nbt.TAG_Double.fmt = struct.Struct("<d")
-    nbt.TAG_Int_Array.dtype = numpy.dtype("<u4")
-    nbt.TAG_Short_Array.dtype = numpy.dtype("<u2")
-    nbt.write_string = override_write_string
-    nbt.TAG_Byte_Array.write_value = override_byte_array_write_value
-    yield
-    nbt.string_len_fmt = struct.Struct(">H")
-    nbt.TAG_Byte.fmt = struct.Struct(">b")
-    nbt.TAG_Short.fmt = struct.Struct(">h")
-    nbt.TAG_Int.fmt = struct.Struct(">i")
-    nbt.TAG_Long.fmt = struct.Struct(">q")
-    nbt.TAG_Float.fmt = struct.Struct(">f")
-    nbt.TAG_Double.fmt = struct.Struct(">d")
-    nbt.TAG_Int_Array.dtype = numpy.dtype(">u4")
-    nbt.TAG_Short_Array.dtype = numpy.dtype(">u2")
-    nbt.write_string = reset_write_string
-    nbt.TAG_Byte_Array.write_value = reset_byte_array_write_value
-
-
 def loadNBTCompoundList(data, littleEndian=True):
     """
     Loads a list of NBT Compound tags from a bunch of data.
@@ -100,7 +49,7 @@ def loadNBTCompoundList(data, littleEndian=True):
         return compounds
 
     if littleEndian:
-        with littleEndianNBT():
+        with nbt.littleEndianNBT():
             return load(data)
     else:
         return load(data)
@@ -428,7 +377,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param last_played: long
         :return: None
         """
-        with littleEndianNBT():
+        with nbt.littleEndianNBT():
             root_tag = nbt.TAG_Compound()
             root_tag["SpawnX"] = nbt.TAG_Int(0)
             root_tag["SpawnY"] = nbt.TAG_Int(2)
@@ -469,13 +418,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             self._createLevelDat(random_seed, last_played)
             return
         try:
-            with littleEndianNBT():
+            with nbt.littleEndianNBT():
                 _loadLevelDat(os.path.join(self.worldFile.path, "level.dat"))
             return
         except (nbt.NBTFormatError, IOError) as err:
             logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(err))
         try:
-            with littleEndianNBT():
+            with nbt.littleEndianNBT():
                 _loadLevelDat(os.path.join(self.worldFile.path, "level.dat_old"))
             return
         except (nbt.NBTFormatError, IOError) as err:
@@ -635,7 +584,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 chunk.dirty = False
             yield
 
-        with littleEndianNBT():
+        with nbt.littleEndianNBT():
             for p in self.players:
                 playerData = self.playerTagCache[p]
                 if playerData is not None:
@@ -649,7 +598,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self.saving = False
         logger.info(u"Saved {0} chunks to the database".format(dirtyChunkCount))
         path = os.path.join(self.worldFile.path, 'level.dat')
-        with littleEndianNBT():
+        with nbt.littleEndianNBT():
             rootTagData = self.root_tag.save(compressed=False)
             rootTagData = nbt.TAG_Int.fmt.pack(4) + nbt.TAG_Int.fmt.pack(len(rootTagData)) + rootTagData
             with open(path, 'w') as f:
@@ -884,7 +833,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if _player is not None:
             return _player
         playerData = self.playerData[player]
-        with littleEndianNBT():
+        with nbt.littleEndianNBT():
             _player = nbt.load(buf=str(playerData))
             self.playerTagCache[player] = _player
         return _player
@@ -1090,7 +1039,7 @@ class PocketLeveldbChunk(LightedChunk):
             # we only track modifications at the chunk level.
             self.DirtyColumns[:] = 255
 
-        with littleEndianNBT():
+        with nbt.littleEndianNBT():
             entityData = ""
             tileEntityData = ""
 

@@ -44,6 +44,7 @@ import zlib
 
 from cStringIO import StringIO
 from cpython cimport PyTypeObject, PyUnicode_DecodeUTF8, PyList_Append, PyString_FromStringAndSize
+from contextlib import contextmanager
 import numpy
 
 cdef extern from "cStringIO.h":
@@ -519,7 +520,33 @@ class TAG_Compound(_TAG_Compound, collections.MutableMapping):
     pass
 
 
+cdef char _BIG_ENDIAN = 1
+
+@contextmanager
+def littleEndianNBT():
+    """
+    Sets the required paramaters to read and/or save NBT in little-endian format.
+    Sets the paramaters back to big-endian format after.
+    :return: None
+    """
+    TAG_Int_Array.dtype = numpy.dtype('<u4')
+    TAG_Short_Array.dtype = numpy.dtype('<u2')
+    _BIG_ENDIAN = 0
+    yield
+    TAG_Int_Array.dtype = numpy.dtype('>u4')
+    TAG_Short_Array.dtype = numpy.dtype('>u2')
+    _BIG_ENDIAN = 1
+
 cdef void swab(void * vbuf, int nbytes):
+    """
+    Converts big endian to little endian. If littleEndianNBT is enabled,
+    this should do nothing.
+    :param vbuf: pointer to buffer of data to convert
+    :param nbytes: pointer to length of the buffer in bytes
+    :return: None
+    """
+    if not _BIG_ENDIAN:
+        return
     cdef unsigned char * buf = <unsigned char *> vbuf
     cdef int i
     for i in range((nbytes+1)/2):
@@ -814,10 +841,10 @@ cdef void save_tag_id(char tagID, object buf):
 
 cdef save_tag_name(TAG_Value tag, object buf):
     IF UNICODE_NAMES:
-        cdef unicode name = tag._name
+        cdef unicode name = tag.name
         save_string(name.encode('utf-8'), buf)
     ELSE:
-        save_string(tag._name, buf)
+        save_string(tag.name, buf)
 
 
 cdef void save_string(bytes value, object buf):
