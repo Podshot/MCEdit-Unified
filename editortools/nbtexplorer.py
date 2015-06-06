@@ -1182,7 +1182,7 @@ def saveFile(fName, data, savePolicy):
         elif savePolicy == 1:
             with littleEndianNBT():
                 toSave = data.save(compressed=False)
-                toSave = TAG_Int.fmt.pack(4) + TAG_Int.fmt.pack(len(toSave)) + toSave
+                toSave = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(toSave)) + toSave
                 with open(fName, 'w') as f:
                     f.write(toSave)
     else:

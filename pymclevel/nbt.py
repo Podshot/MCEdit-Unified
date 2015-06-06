@@ -639,3 +639,4 @@ except ImportError as err:
     # We print this directly as log.error doesn't seem to work in pymclevel. Don't know why.
     print("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback"
           "(Did you forget to run 'setup.py build_ext --inplace'? %s" % err)
+

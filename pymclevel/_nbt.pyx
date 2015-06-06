@@ -291,6 +291,8 @@ cdef class TAG_Short_Array(TAG_Value):
 
     def __init__(self, value=None, name=""):
         if value is None:
+            if _BIG_ENDIAN:
+                value = numpy.zeros((0,), )
             value = numpy.zeros((0,), self.dtype)
 
         self.value = value
@@ -529,12 +531,8 @@ def littleEndianNBT():
     Sets the paramaters back to big-endian format after.
     :return: None
     """
-    TAG_Int_Array.dtype = numpy.dtype('<u4')
-    TAG_Short_Array.dtype = numpy.dtype('<u2')
     _BIG_ENDIAN = 0
     yield
-    TAG_Int_Array.dtype = numpy.dtype('>u4')
-    TAG_Short_Array.dtype = numpy.dtype('>u2')
     _BIG_ENDIAN = 1
 
 cdef void swab(void * vbuf, int nbytes):
@@ -569,6 +567,9 @@ def load(filename="", buf=None):
     :return: Structured NBT data
     :rtype: TAG_Compound
     """
+    import traceback
+    for l in traceback.format_stack():
+        print l.strip()
     if filename:
         buf = file(filename, "rb")
 
@@ -610,7 +611,8 @@ IF UNICODE_CACHE:
 
 cdef char * read(load_ctx self, size_t s) except NULL:
     if s > self.size - self.offset:
-        raise NBTFormatError("NBT Stream too short. Asked for %d, only had %d" % (s, (self.size - self.offset)))
+        raise NBTFormatError(
+            "NBT Stream too short. Asked for {0:d}, only had {1:d}".format(s, (self.size - self.offset)))
 
     cdef char * ret = self.buffer + self.offset
     self.offset += s
@@ -765,7 +767,8 @@ cdef TAG_Short_Array load_short_array(load_ctx ctx):
 
     byte_length = length * 2
     cdef char *arr = read(ctx, byte_length)
-    return TAG_Short_Array(numpy.fromstring(arr[:byte_length], dtype=TAG_Short_Array.dtype, count=length))
+    dtype = '>u2' if _BIG_ENDIAN else '<u2'
+    return TAG_Short_Array(numpy.fromstring(arr[:byte_length], dtype=numpy.dtype(dtype), count=length))
 
 cdef TAG_Int_Array load_int_array(load_ctx ctx):
     cdef int * ptr = <int *> read(ctx, 4)
@@ -774,7 +777,8 @@ cdef TAG_Int_Array load_int_array(load_ctx ctx):
 
     byte_length = length * 4
     cdef char *arr = read(ctx, byte_length)
-    return TAG_Int_Array(numpy.fromstring(arr[:byte_length], dtype=TAG_Int_Array.dtype, count=length))
+    dtype = '>u4' if _BIG_ENDIAN else '<u4'
+    return TAG_Int_Array(numpy.fromstring(arr[:byte_length], dtype=numpy.dtype(dtype), count=length))
 
 
 # --- Identify tag type and load tag ---

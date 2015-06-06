@@ -19,13 +19,15 @@ from pymclevel import entity, BoundingBox, Entity, TileEntity
 logger = logging.getLogger(__name__)
 
 leveldb_available = True
+leveldb_mcpe = None
 try:
     import leveldb_mcpe
-except ImportError as e:
+except Exception as e:
     leveldb_available = False
     logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
     leveldb_mcpe = None
 
+leveldb_mcpe.Options()
 
 def loadNBTCompoundList(data, littleEndian=True):
     """
@@ -35,6 +37,8 @@ def loadNBTCompoundList(data, littleEndian=True):
     :param littleEndian: bool. Determines endianness
     :return: list of TAG_Compounds
     """
+    if type(data) is unicode:
+        data = str(data)
 
     def load(_data):
         sep = "\x00\x00\x00\x00\n"
@@ -131,6 +135,7 @@ class PocketLeveldbDatabase(object):
                 it.SeekToFirst()
                 if not db.Get(self.readOptions, it.key()) == it.value():
                     needsRepair = True
+                it.status()
                 del it
 
         except RuntimeError as err:
@@ -364,7 +369,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if not os.path.isdir(filename):
             filename = os.path.dirname(filename)
         self.filename = filename
-
         self.worldFile = PocketLeveldbDatabase(filename, create=create)
         self.readonly = readonly
         self.loadLevelDat(create, random_seed, last_played)
@@ -405,12 +409,12 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :return: None
         """
         def _loadLevelDat(filename):
-            root_tag_buf = open(filename).read()
+            root_tag_buf = open(filename, 'rb').read()
             magic, length, root_tag_buf = root_tag_buf[:4], root_tag_buf[4:8], root_tag_buf[8:]
-            if nbt.TAG_Int.fmt.unpack(magic)[0] < 3:
+            if struct.Struct('<i').unpack(magic)[0] < 3:
                 logger.info("Found an old level.dat file. Aborting world load")
                 raise InvalidPocketLevelDBWorldException()  # Maybe try convert/load old PE world?
-            if len(root_tag_buf) != nbt.TAG_Int.fmt.unpack(length)[0]:
+            if len(root_tag_buf) != struct.Struct('<i').unpack(length)[0]:
                 raise nbt.NBTFormatError()
             self.root_tag = nbt.load(buf=root_tag_buf)
 
@@ -600,7 +604,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         path = os.path.join(self.worldFile.path, 'level.dat')
         with nbt.littleEndianNBT():
             rootTagData = self.root_tag.save(compressed=False)
-            rootTagData = nbt.TAG_Int.fmt.pack(4) + nbt.TAG_Int.fmt.pack(len(rootTagData)) + rootTagData
+            rootTagData = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(rootTagData)) + rootTagData
             with open(path, 'w') as f:
                 f.write(rootTagData)
 
@@ -834,7 +838,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             return _player
         playerData = self.playerData[player]
         with nbt.littleEndianNBT():
-            _player = nbt.load(buf=str(playerData))
+            _player = nbt.load(buf=playerData)
             self.playerTagCache[player] = _player
         return _player
 
