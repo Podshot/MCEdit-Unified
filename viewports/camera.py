@@ -1089,7 +1089,7 @@ class CameraViewport(GLViewport):
         chestItemTable.row_is_selected = lambda x: x == chestWidget.selectedItemIndex
         chestItemTable.click_row = selectTableRow
 
-        maxSlot = pymclevel.TileEntity.maxItems[tileEntityTag["id"].value] - 1
+        maxSlot = pymclevel.TileEntity.maxItems.get(tileEntityTag["id"].value, 27) - 1
         fieldRow = (
             IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
             BasicTextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
