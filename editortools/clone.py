@@ -726,7 +726,7 @@ class CloneTool(EditorTool):
         if y < 0:
             y = 0
 
-        if not isinstance(lev, pymclevel.MCInfdevOldLevel):
+        if not lev.Width == 0 and lev.Length == 0:
             sx = size[0]
             if x + sx > lev.Width:
                 x = lev.Width - sx

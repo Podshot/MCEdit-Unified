@@ -428,17 +428,3 @@ class PocketChunk(LightedChunk):
                         packData(self.BlockLight).tostring(),
                         self.DirtyColumns.tostring(),
         ])
-
-
-class NewPocketWorld():
-    @classmethod
-    def _isLevel(cls, filename):
-        clp = ("db", "level.dat")
-
-        if not os.path.isdir(filename):
-            f = os.path.basename(filename)
-            if f not in clp:
-                return False
-            filename = os.path.dirname(filename)
-
-        return all([os.path.exists(os.path.join(filename, fl)) for fl in clp])

@@ -5,13 +5,11 @@ Created on Jul 22, 2011
 '''
 import collections
 
-import copy
 from datetime import datetime
 import itertools
 from logging import getLogger
 from math import floor
 import os
-import re
 import random
 import shutil
 import struct
@@ -21,7 +19,6 @@ import weakref
 import zlib
 import sys
 
-import blockrotation
 from box import BoundingBox
 from entity import Entity, TileEntity, TileTick
 from faces import FaceXDecreasing, FaceXIncreasing, FaceZDecreasing, FaceZIncreasing
@@ -31,8 +28,6 @@ from mclevelbase import ChunkMalformed, ChunkNotPresent, ChunkAccessDenied,Chunk
 import nbt
 from numpy import array, clip, maximum, zeros
 from regionfile import MCRegionFile
-import version_utils
-import player
 import logging
 from uuid import UUID
 

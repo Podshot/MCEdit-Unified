@@ -11,20 +11,20 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
-#-# Modified by D.C.-G. for translation purpose
-#.# Marks the layout modifications. -- D.C.-G.
+# -# Modified by D.C.-G. for translation purpose
+# .# Marks the layout modifications. -- D.C.-G.
 
 import os
 import sys
 import subprocess
 from OpenGL import GL
 
-from collections import defaultdict
 import numpy
 import pygame
-from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, showProgress, TextInputRow
+from albow import Row, Label, Button, AttrRef, Column, ask, alert, ChoiceButton, CheckBoxLabel, IntInputRow, \
+    showProgress, TextInputRow
 from albow.translate import _
-from config import config, ColorValue
+from config import config
 from depths import DepthOffset
 from editortools.editortool import EditorTool
 from editortools.nudgebutton import NudgeButton
@@ -68,34 +68,34 @@ class SelectionToolOptions(ToolOptions):
         okButton = Button("OK", action=self.dismiss)
         showPreviousRow = CheckBoxLabel("Show Previous Selection", ref=AttrRef(tool, 'showPreviousSelection'))
         spaceLabel = Label("")
-        #.#
+        # .#
         spaceLabel.height /= 1.5
-        #.#
+        # .#
         blocksNudgeLabel = Label("Blocks Fast Nudge Settings:")
         blocksNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
-                                                ref=config.fastNudgeSettings.blocksWidth,
-                                                tooltipText="Moves selection by his width")
+                                            ref=config.fastNudgeSettings.blocksWidth,
+                                            tooltipText="Moves selection by his width")
         blocksNudgeNumber = IntInputRow("Width of blocks movement: ",
-                                                ref=config.fastNudgeSettings.blocksWidthNumber, width=100, min=2, max=50)
+                                        ref=config.fastNudgeSettings.blocksWidthNumber, width=100, min=2, max=50)
         selectionNudgeLabel = Label("Selection Fast Nudge Settings:")
         selectionNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
-                                                ref=config.fastNudgeSettings.selectionWidth,
-                                                tooltipText="Moves selection by his width")
+                                               ref=config.fastNudgeSettings.selectionWidth,
+                                               tooltipText="Moves selection by his width")
         selectionNudgeNumber = IntInputRow("Width of selection movement: ",
-                                                ref=config.fastNudgeSettings.selectionWidthNumber, width=100, min=2, max=50)
+                                           ref=config.fastNudgeSettings.selectionWidthNumber, width=100, min=2, max=50)
         pointsNudgeLabel = Label("Points Fast Nudge Settings:")
         pointsNudgeCheckBox = CheckBoxLabel("Move by the width of selection ",
-                                                ref=config.fastNudgeSettings.pointsWidth,
-                                                tooltipText="Moves points by the selection's width")
+                                            ref=config.fastNudgeSettings.pointsWidth,
+                                            tooltipText="Moves points by the selection's width")
         pointsNudgeNumber = IntInputRow("Width of points movement: ",
-                                                ref=config.fastNudgeSettings.pointsWidthNumber, width=100, min=2, max=50)
+                                        ref=config.fastNudgeSettings.pointsWidthNumber, width=100, min=2, max=50)
         staticCommandsNudgeRow = CheckBoxLabel("Static Coords While Nudging",
-                                            ref=config.settings.staticCommandsNudge,
-                                            tooltipText="Change static coordinates in command blocks while nudging.")
+                                               ref=config.settings.staticCommandsNudge,
+                                               tooltipText="Change static coordinates in command blocks while nudging.")
 
         moveSpawnerPosNudgeRow = CheckBoxLabel("Change Spawners While Nudging",
-                                            ref=config.settings.moveSpawnerPosNudge,
-                                            tooltipText="Change the position of the mobs in spawners while nudging.")
+                                               ref=config.settings.moveSpawnerPosNudge,
+                                               tooltipText="Change the position of the mobs in spawners while nudging.")
 
         def set_colorvalue(ch):
             i = "RGB".index(ch)
@@ -123,10 +123,14 @@ class SelectionToolOptions(ToolOptions):
                              for ch in "RGB"]
 
         colorValuesRow = Row(colorValuesInputs)
-        #.#
-#        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))
-        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, spaceLabel, staticCommandsNudgeRow, moveSpawnerPosNudgeRow, okButton), spacing=2)
-        #.#
+        # .#
+        #        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))
+        col = Column((Label("Selection Options"), colorRow, colorValuesRow, showPreviousRow, spaceLabel,
+                      blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel,
+                      selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel, pointsNudgeLabel, pointsNudgeCheckBox,
+                      pointsNudgeNumber, spaceLabel, staticCommandsNudgeRow, moveSpawnerPosNudgeRow, okButton),
+                     spacing=2)
+        # .#
 
         self.add(col)
         self.shrink_wrap()
@@ -158,7 +162,8 @@ class SelectionToolPanel(Panel):
         analyzeButton = Button("Analyze", action=self.tool.analyzeSelection)
         analyzeButton.tooltipText = "Count the different blocks and entities in the selection and display the totals."
         cutButton = Button("Cut", action=self.tool.cutSelection)
-        cutButton.tooltipText = _("Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}").format(
+        cutButton.tooltipText = _(
+            "Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}").format(
             config.keys.cut.get())
         copyButton = Button("Copy", action=self.tool.copySelection)
         copyButton.tooltipText = _("Take a copy of all blocks and entities within the selection. Shortcut: {0}").format(
@@ -181,25 +186,34 @@ class SelectionToolPanel(Panel):
         deselectButton.highlight_color = (0, 255, 0)
 
         openButton = Button("CB Commands")
-        openButton.tooltipText = _("Open a text file with all command block commands in the currently selected area.\nSave file to update command blocks.\nRight-click for options")
+        openButton.tooltipText = _(
+            'Open a text file with all command block commands in the currently selected area.\n'
+            'Save file to update command blocks.\nRight-click for options')
         openButton.action = tool.openCommands
         openButton.highlight_color = (0, 255, 0)
         openButton.rightClickAction = tool.CBCommandsOptions
 
-        buttonsColumn = (
+        buttonsColumn = [
             nudgeBlocksButton,
             deselectButton,
             selectButton,
             deleteBlocksButton,
             deleteEntitiesButton,
-            deleteTileTicksButton,
+        ]
+
+        if not hasattr(self.editor.level, "noTileTicks"):
+            buttonsColumn.append(deleteTileTicksButton)
+
+        buttonsColumn.extend([
             analyzeButton,
             cutButton,
             copyButton,
             pasteButton,
             exportButton,
-            openButton,
-        )
+        ])
+
+        if hasattr(self.editor.level, "editFileNumber"):
+            buttonsColumn.append(openButton)
 
         buttonsColumn = Column(buttonsColumn)
 
@@ -238,7 +252,8 @@ class NudgeBlocksOperation(Operation):
             level.removeEntitiesInBox(self.destBox)
             staticCommandsNudge = config.settings.staticCommandsNudge.get()
             moveSpawnerPosNudge = config.settings.moveSpawnerPosNudge.get()
-            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin, staticCommands=staticCommandsNudge, moveSpawnerPos=moveSpawnerPosNudge)
+            level.copyBlocksFrom(tempSchematic, tempSchematic.bounds, self.destBox.origin,
+                                 staticCommands=staticCommandsNudge, moveSpawnerPos=moveSpawnerPosNudge)
             self.editor.invalidateBox(dirtyBox)
 
             self.nudgeSelection.perform(recordUndo)
@@ -300,7 +315,8 @@ class SelectionTool(EditorTool):
             except Exception, e:
                 text += repr(e)
             if "Items" in t and self.infoKey == 0:
-                text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(_(config.keys.showBlockInfoModifier.get()))
+                text += _("--Items omitted. {0} to view. Double-click to edit.--\n").format(
+                    _(config.keys.showBlockInfoModifier.get()))
                 t = nbt.TAG_Compound(list(t.value))
                 del t["Items"]
 
@@ -541,10 +557,12 @@ class SelectionTool(EditorTool):
                 if self.dragStartPoint == p:
                     if self.clickSelectionInProgress:
 
-                        return _("Click the mouse button again to place the {0} selection corner. Press {1} to switch corners.").format(
+                        return _(
+                            "Click the mouse button again to place the {0} selection corner. Press {1} to switch corners.").format(
                             self.currentCornerName, self.hotkey)
                     else:
-                        return _("Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.").format(
+                        return _(
+                            "Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.").format(
                             self.currentCornerName, self.hotkey)
 
             if self.clickSelectionInProgress:
@@ -552,7 +570,8 @@ class SelectionTool(EditorTool):
 
             return _("Release the mouse button to finish the selection")
 
-        return _("Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.").format(
+        return _(
+            "Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.").format(
             self.currentCornerName, self.hotkey)
 
     clickSelectionInProgress = False
@@ -701,7 +720,7 @@ class SelectionTool(EditorTool):
         if self.selectionInProgress or self.clickSelectionInProgress:
             return self.selectionBoxForCorners(pos, self.dragStartPoint)
 
-        # requires a selection
+            # requires a selection
 
     def dragResizePoint(self):
         # returns a point representing the intersection between the mouse ray
@@ -807,19 +826,19 @@ class SelectionTool(EditorTool):
                     if widg.parent == n or widg == n:
                         GL.glEnable(GL.GL_BLEND)
                         nudgefaces = numpy.array([
-                                                     selectionBox.minx, selectionBox.miny, selectionBox.minz,
-                                                     selectionBox.minx, selectionBox.maxy, selectionBox.minz,
-                                                     selectionBox.minx, selectionBox.maxy, selectionBox.maxz,
-                                                     selectionBox.minx, selectionBox.miny, selectionBox.maxz,
-                                                     selectionBox.minx, selectionBox.miny, selectionBox.minz,
-                                                     selectionBox.maxx, selectionBox.miny, selectionBox.minz,
-                                                     selectionBox.maxx, selectionBox.miny, selectionBox.maxz,
-                                                     selectionBox.minx, selectionBox.miny, selectionBox.maxz,
-                                                     selectionBox.minx, selectionBox.miny, selectionBox.minz,
-                                                     selectionBox.minx, selectionBox.maxy, selectionBox.minz,
-                                                     selectionBox.maxx, selectionBox.maxy, selectionBox.minz,
-                                                     selectionBox.maxx, selectionBox.miny, selectionBox.minz,
-                                                 ], dtype='float32')
+                            selectionBox.minx, selectionBox.miny, selectionBox.minz,
+                            selectionBox.minx, selectionBox.maxy, selectionBox.minz,
+                            selectionBox.minx, selectionBox.maxy, selectionBox.maxz,
+                            selectionBox.minx, selectionBox.miny, selectionBox.maxz,
+                            selectionBox.minx, selectionBox.miny, selectionBox.minz,
+                            selectionBox.maxx, selectionBox.miny, selectionBox.minz,
+                            selectionBox.maxx, selectionBox.miny, selectionBox.maxz,
+                            selectionBox.minx, selectionBox.miny, selectionBox.maxz,
+                            selectionBox.minx, selectionBox.miny, selectionBox.minz,
+                            selectionBox.minx, selectionBox.maxy, selectionBox.minz,
+                            selectionBox.maxx, selectionBox.maxy, selectionBox.minz,
+                            selectionBox.maxx, selectionBox.miny, selectionBox.minz,
+                        ], dtype='float32')
 
                         if sx != selectionBox.minx:
                             nudgefaces[0:12:3] = selectionBox.maxx
@@ -968,7 +987,7 @@ class SelectionTool(EditorTool):
         drawTerrainCuttingWire(BoundingBox(pos, (1, 1, 1)),
                                (r, g, b, 0.4),
                                (1., 1., 1., 1.0)
-        )
+                               )
 
         GL.glDisable(GL.GL_BLEND)
 
@@ -1228,12 +1247,13 @@ class SelectionTool(EditorTool):
             alert("No command blocks found")
             return
         self.editor.level.editFileNumber += 1
-        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), sorting, self.editor, self.editor.level)
+        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), sorting, self.editor,
+                        self.editor.level)
         self.root.filesToChange.append(edit)
         if sys.platform == "win32":
             os.startfile(filename)
         else:
-            opener ="open" if sys.platform == "darwin" else "xdg-open"
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
             subprocess.call([opener, filename])
 
     def CBCommandsOptions(self):
@@ -1258,7 +1278,8 @@ class CBCommandsOptionsPanel(ToolOptions):
                                   ref=config.commands.fileFormat)
         okButton = Button("OK", action=self.dismiss)
 
-        col = Column((Label("Command Blocks Commands Options"), sortingRow, empty, space, empty, fileFormat, okButton), spacing=2)
+        col = Column((Label("Command Blocks Commands Options"), sortingRow, empty, space, empty, fileFormat, okButton),
+                     spacing=2)
 
         self.add(col)
         self.shrink_wrap()

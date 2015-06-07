@@ -18,6 +18,7 @@ http://www.minecraft.net/docs/NBT.txt
 Copyright 2010 David Rio Vierra
 """
 import collections
+from contextlib import contextmanager
 import gzip
 import itertools
 import logging
@@ -65,6 +66,9 @@ class TAG_Value(object):
 
     _name = None
     _value = None
+
+    def __str__(self):
+        return nested_string(self)
 
     @property
     def value(self):
@@ -232,7 +236,6 @@ class TAG_String(TAG_Value):
 
     def write_value(self, buf):
         write_string(self._value, buf)
-
 
 string_len_fmt = struct.Struct(">H")
 
@@ -405,7 +408,6 @@ class TAG_List(TAG_Value, collections.MutableSequence):
         # can be created from a list of tags in value, with an optional
         # name, or created from raw tag data, or created with list_type
         # taken from a TAG class or instance
-
         self.name = name
         self.list_type = list_type
         self.value = value or []
@@ -550,13 +552,91 @@ def _load_buffer(buf):
 
 __all__ = [a.__name__ for a in tag_classes.itervalues()] + ["load", "gunzip"]
 
-import nbt_util
 
-TAG_Value.__str__ = nbt_util.nested_string
+@contextmanager
+def littleEndianNBT():
+    """
+    Pocket edition NBT files are encoded in little endian, instead of big endian.
+    This sets all the required paramaters to read little endian NBT, and makes sure they get set back after usage.
+    :return: None
+    """
+
+    # We need to override the function to access the hard-coded endianness.
+    def override_write_string(string, buf):
+        encoded = string.encode('utf-8')
+        buf.write(struct.pack("<h%ds" % (len(encoded),), len(encoded), encoded))
+
+    def reset_write_string(string, buf):
+        encoded = string.encode('utf-8')
+        buf.write(struct.pack(">h%ds" % (len(encoded),), len(encoded), encoded))
+
+    def override_byte_array_write_value(self, buf):
+        value_str = self.value.tostring()
+        buf.write(struct.pack("<I%ds" % (len(value_str),), self.value.size, value_str))
+
+    def reset_byte_array_write_value(self, buf):
+        value_str = self.value.tostring()
+        buf.write(struct.pack(">I%ds" % (len(value_str),), self.value.size, value_str))
+
+    global string_len_fmt
+    string_len_fmt = struct.Struct("<H")
+    TAG_Byte.fmt = struct.Struct("<b")
+    TAG_Short.fmt = struct.Struct("<h")
+    TAG_Int.fmt = struct.Struct("<i")
+    TAG_Long.fmt = struct.Struct("<q")
+    TAG_Float.fmt = struct.Struct("<f")
+    TAG_Double.fmt = struct.Struct("<d")
+    TAG_Int_Array.dtype = numpy.dtype("<u4")
+    TAG_Short_Array.dtype = numpy.dtype("<u2")
+    global write_string
+    write_string = override_write_string
+    TAG_Byte_Array.write_value = override_byte_array_write_value
+    yield
+    string_len_fmt = struct.Struct(">H")
+    TAG_Byte.fmt = struct.Struct(">b")
+    TAG_Short.fmt = struct.Struct(">h")
+    TAG_Int.fmt = struct.Struct(">i")
+    TAG_Long.fmt = struct.Struct(">q")
+    TAG_Float.fmt = struct.Struct(">f")
+    TAG_Double.fmt = struct.Struct(">d")
+    TAG_Int_Array.dtype = numpy.dtype(">u4")
+    TAG_Short_Array.dtype = numpy.dtype(">u2")
+    write_string = reset_write_string
+    TAG_Byte_Array.write_value = reset_byte_array_write_value
+
+
+def nested_string(tag, indent_string="  ", indent=0):
+    result = ""
+
+    if tag.tagID == TAG_COMPOUND:
+        result += 'TAG_Compound({\n'
+        indent += 1
+        for key, value in tag.iteritems():
+            result += indent_string * indent + '"%s": %s,\n' % (key, nested_string(value, indent_string, indent))
+        indent -= 1
+        result += indent_string * indent + '})'
+
+    elif tag.tagID == TAG_LIST:
+        result += 'TAG_List([\n'
+        indent += 1
+        for index, value in enumerate(tag):
+            result += indent_string * indent + nested_string(value, indent_string, indent) + ",\n"
+        indent -= 1
+        result += indent_string * indent + '])'
+
+    else:
+        result += "%s(%r)" % (tag.__class__.__name__, tag.value)
+
+    return result
+
 
 try:
-    #noinspection PyUnresolvedReferences
+    # noinspection PyUnresolvedReferences
     from _nbt import (load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
-                      TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError)
-except ImportError:
-    pass
+                      TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError,
+                      littleEndianNBT, nested_string, gunzip)
+except ImportError as err:
+    # We print this directly as log.error doesn't seem to work in pymclevel. Don't know why.
+    print("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback"
+          "(Did you forget to run 'setup.py build_ext --inplace'? %s" % err)
+
