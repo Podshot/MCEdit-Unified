@@ -22,12 +22,12 @@ leveldb_available = True
 leveldb_mcpe = None
 try:
     import leveldb_mcpe
+    leveldb_mcpe.Options()
 except Exception as e:
     leveldb_available = False
     logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
     leveldb_mcpe = None
 
-leveldb_mcpe.Options()
 
 def loadNBTCompoundList(data, littleEndian=True):
     """
