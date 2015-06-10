@@ -152,12 +152,14 @@ class MCMaterials(object):
         spiltNames = name.split(" ")
         amount = len(spiltNames)
         for v in self.allBlocks:
-            nameParts = mclangres.translate(v.name).lower().split(" ")
             if lan == "en_US":
+                nameParts = v.name.lower().split(" ")
                 for anotherName in v.aka.lower().split(" "):
                     nameParts.append(anotherName)
                 for anotherName in v.search.lower().split(" "):
                     nameParts.append(anotherName)
+            else:
+                nameParts = mclangres.translate(v.name).lower().split(" ")
             i = 0
             spiltNamesUsed = []
             for v2 in nameParts:

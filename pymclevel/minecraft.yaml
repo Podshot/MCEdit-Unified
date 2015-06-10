@@ -1412,7 +1412,7 @@ blocks:
     data:
       0:
         tex: [0, 4]
-        name: White Wool (White)
+        name: Wool (White)
         mapcolor: [222, 222, 222]
       1:
         tex: [2, 13]
