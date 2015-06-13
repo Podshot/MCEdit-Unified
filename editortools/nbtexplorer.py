@@ -87,7 +87,20 @@ bullet_image = None
 def get_bullet_image(index, w=16, h=16):
     global bullet_image
     if not bullet_image:
-        bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
+        # # Debug for MacOS
+        try:
+            bullet_image = image.load(resource_path(config.nbtTreeSettings.bulletFileName.get()))
+        except Exception, e:
+            print "*** MCEDIT DEBUG: bullets image could not be loaded."
+            print "*** MCEDIT DEBUG:", e
+            print "*** MCEDIT DEBUG: bullets image file:",resource_path(config.nbtTreeSettings.bulletFileName.get())
+            print "*** MCEDIT DEBUG: current directory:", os.getcwd()
+            from pygame import Surface, draw, SRCALPHA
+            bullet_image = Surface((64, 64), SRCALPHA)
+            bullet_image.fill((0, 0, 0, 0))
+            for i in range(4):
+                for j in range(4):
+                    bullet_image.fill((255/(i or 1), 255/(j or 1), 255, 255), [16*i, 16*j, 16*i+16, 16*j+16])
     r = Rect(0, 0, w, h)
     line_length = int(bullet_image.get_width() / w)
     line = int(index / line_length)
