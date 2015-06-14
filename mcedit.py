@@ -11,14 +11,9 @@ mcedit.py
 Startup, main menu, keyboard configuration, automatic updating.
 """
 import splash
-
-import resource_packs
-import version_utils
 import OpenGL
 import sys
 import os
-import directories
-import keys
 
 if "-debug" not in sys.argv:
     OpenGL.ERROR_CHECKING = False
@@ -72,6 +67,11 @@ ch.setFormatter(fmt)
 
 logger.addHandler(fh)
 logger.addHandler(ch)
+
+import resource_packs
+import version_utils
+import directories
+import keys
 
 import albow
 import locale

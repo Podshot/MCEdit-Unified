@@ -636,7 +636,7 @@ try:
                       TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError,
                       littleEndianNBT, nested_string, gunzip)
 except ImportError as err:
-    # We print this directly as log.error doesn't seem to work in pymclevel. Don't know why.
-    print("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback"
-          "(Did you forget to run 'setup.py build_ext --inplace'? %s" % err)
+    log.error("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback.")
+    log.error("(Did you forget to run 'setup.py build_ext --inplace'?)")
+    log.error("%s"%err)
 
