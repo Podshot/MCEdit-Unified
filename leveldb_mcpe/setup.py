@@ -36,14 +36,25 @@ elif sys.platform == "darwin":
     libraries = ["boost_python", "leveldb"]
 
 elif sys.platform == "linux2":
+    if sys.argv[-1] == 'setup.py':
+        print 'No command specified. Aborting.'
+        print 'Please, use `python setup.py build` to build Pocket Edition support for MCEdit.'
+        sys.exit(1)
     print "Building Linux application 'leveldb_mcpe'..."
 
-    # TODO: add checks, warnings and recomandations if something fails...
+    # TODO: add checks, warnings and recomandations if something fails... (<< On the way)
+    #       add a cleanup option
 
     # First, unpack and build dependencies: boost and mojang's leveldb-mcpe
     # Need make, g++, tar, unzip, Python 2.7 header files
     # boost will be intalled there to avoid elevation problems
 
+    # 'build_ext --inplace' is not wanted here. Let it be replaced with build
+    if '--inplace' in sys.argv:
+        sys.argv.remove('--inplace')
+    if 'build_ext' in sys.argv:
+        sys.argv.remove('build_ext')
+        sys.argv.append('build')
     curdir = os.getcwd()
     destpath = '../pymclevel'
     user_libdir = os.path.expanduser('~/.local/lib')
@@ -97,17 +108,17 @@ elif sys.platform == "linux2":
     # Unpack and build leveldb-mcpe from mojang
     build_leveldb = None
     # if not os.path.exists('leveldb-mcpe/libleveldb.a') and not os.path.exists('leveldb-mcpe/libleveldb.so'):
-    if not os.path.exists('libleveldb.so'):
+    if not os.path.exists(os.path.join(mcpeso_dir, 'libleveldb.so')):
         build_leveldb = True
     # elif os.path.exists('leveldb-mcpe/libleveldb.a') and os.path.exists('leveldb-mcpe/libleveldb.so'):
-    elif os.path.exists('libleveldb.so'):
+    elif os.path.exists(os.path.join(mcpeso_dir, 'libleveldb.so')):
         a = raw_input("Mojang's leveldb is already built. Rebuild [y/N] ?")
         if a and a in 'yY':
             build_leveldb = True
         else:
             build_leveldb = False
     else:
-        not_exists = [os.path.basename(a) for a in ('libeveldb.a', 'libleveldb.so') if not os.path.exists(a)]
+        not_exists = [os.path.basename(a) for a in (os.path.join(mcpeso_dir, 'libleveldb.a'), os.path.join(mcpeso_dir, 'libleveldb.so')) if not os.path.exists(a)]
         print "The file %s is missing. Building MCEdit one may not work." % not_exists[0]
         a = raw_input("Rebuild Mojang's leveldb-mcpe [y/N] ?")
         if a and a in 'yY':
@@ -121,19 +132,28 @@ elif sys.platform == "linux2":
 
     if build_leveldb:
         extract = True
-        if os.path.exists('leveldb-mcpe'):
-            a = raw_input("Mojang's leveldb-mcpe already exists. Replace it (reextract) [y/N] ?")
-            if not a or a not in 'yY':
-                extract = False
+    if os.path.exists('leveldb-mcpe') and os.listdir('leveldb-mcpe') != []:
+        a = raw_input("Mojang's leveldb-mcpe source directory already exists. Replace it (reextract) [y/N] ?")
+        if not a or a not in 'yY':
+            extract = False
+    else:
+        extract = True
 
-        if extract:
-            os.system('rm -R leveldb-mcpe')
-            print "Extracting Mojang's leveldb-mcpe..."
-            os.system('unzip -q leveldb-mcpe-master.zip')
-            os.system('mv leveldb-mcpe-master leveldb-mcpe')
-            os.chdir('leveldb-mcpe')
-            os.system('unzip -q ../zlib.zip')
-            os.chdir('..')
+    if extract:
+        os.system('rm -R leveldb-mcpe')
+        if not os.path.exists('leveldb-mcpe-master.zip'):
+            # Retrieve Mojang resource linked in MCEdit sources. I know, freaking command line :p
+            os.system("""wget -O leveldb-mcpe-master.zip $(wget -S -O - https://github.com/Mojang/leveldb-mcpe/tree/$(wget -S -O - https://github.com/Khroki/MCEdit-Unified/tree/master/leveldb_mcpe | egrep -o '@ <a href="/Mojang/leveldb-mcpe/tree/([0-9A-Za-z]*)"' | egrep -o '/[0-9A-Za-z]*"' | egrep -o '[0-9A-Za-z]*') | egrep '\.zip' | sed 's/<a href="\/Mojang\/leveldb-mcpe\/archive/https:\/\/codeload.github.com\/Mojang\/leveldb-mcpe\/zip/' | sed 's/.zip"//'| sed 's/ //')""")
+        print "Extracting Mojang's leveldb-mcpe..."
+        os.system('unzip -q leveldb-mcpe-master.zip')
+        os.system("mv $(ls -d1 */ | egrep 'leveldb-mcpe-') leveldb-mcpe")
+        os.chdir('leveldb-mcpe')
+        if not os.path.exists('../zlib.zip'):
+            os.system('wget -O ../zlib.zip http://zlib.net/zlib128.zip')
+        os.system('unzip -q ../zlib.zip')
+        os.system("mv $(ls -d1 */ | egrep 'zlib-') zlib")
+        os.chdir('..')
+    if build_leveldb:
         os.chdir('leveldb-mcpe')
         print "Building Mojang's leveldb-mcpe..."
         os.system('make')
