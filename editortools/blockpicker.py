@@ -348,11 +348,7 @@ class BlockPicker(Dialog):
             if getLang() == 'en_US':
                 matches = self.materials.blocksMatching(text)
             else:
-                text = text.lower()
-                matches = []
-                for name in self.searchNames:
-                    if text in name:
-                        matches.append(self.materials.allBlocks[self.searchNames.index(name)])
+                matches = self.materials.blocksMatching(text, self.searchNames)
             if blockData:
                 ids = set(b.ID for b in matches)
                 matches = sorted([self.materials.blockWithID(id, blockData) for id in ids])
