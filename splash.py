@@ -13,6 +13,10 @@ pygame.font.init()
 no_splash = False
 cur_dir = os.path.dirname(__file__)
 print "*** MCEDIT DEBUG: splash.py::__file__:", __file__
+if '.app' in cur_dir:
+    print "*** MCEDIT DEBUG: Running on MacOS"
+    cur_dir = cur_dir.split('.app') + '.app'
+    print "*** MCEDIT DEBUG: current directory:", cur_dir
 splash_name = os.path.join(cur_dir, 'splash')
 
 try:
