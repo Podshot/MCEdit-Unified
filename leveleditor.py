@@ -2070,6 +2070,8 @@ class LevelEditor(GLViewport):
             levelFormat = "MCEdit Schematic (Zipped Format)"
         elif t(pymclevel.MCJavaLevel):
             levelFormat = "Minecraft Classic or raw block array"
+        elif t(pymclevel.PocketLeveldbWorld):
+            levelFormat = "Minecraft Pocket Edition"
         else:
             levelFormat = "Unknown"
         formatLabel = Label(levelFormat)
