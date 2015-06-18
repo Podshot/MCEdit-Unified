@@ -328,6 +328,18 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     _playerList = None
 
     @property
+    def LevelName(self):
+        with open(os.path.join(self.worldFile.path, "levelname.txt"), 'r') as f:
+            name = f.read()
+        return name
+
+    @LevelName.setter
+    def LevelName(self, name):
+        self.root_tag["LevelName"] = nbt.TAG_String(value=name)
+        with open(os.path.join(self.worldFile.path, "levelname.txt"), 'w') as f:
+            f.write(name)
+
+    @property
     def allChunks(self):
         """
         :return: list with all chunks in the world.
@@ -444,7 +456,6 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     Time = TagProperty('Time', nbt.TAG_Long, 0)
     LastPlayed = TagProperty('LastPlayed', nbt.TAG_Long, lambda self: long(time.time() * 1000))
 
-    LevelName = TagProperty('LevelName', nbt.TAG_String, lambda self: self.defaultDisplayName)
     GeneratorName = TagProperty('Generator', nbt.TAG_String, 'Infinite')
 
     GameType = TagProperty('GameType', nbt.TAG_Int, 0)
