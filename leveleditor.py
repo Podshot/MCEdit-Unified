@@ -1712,7 +1712,7 @@ class LevelEditor(GLViewport):
                 self.currentTool.roll(blocksOnly=blocksOnly)
 
         if "fill" in str(self.currentTool) and keyname == config.keys.replaceShortcut.get():
-            self.currentTool.toggleReplacing()
+            self.currentTool.openReplace()
 
         if keyname == config.keys.quit.get():
             self.quit()

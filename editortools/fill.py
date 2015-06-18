@@ -106,7 +106,8 @@ class FillToolPanel(Panel):
             self.replaceBlockButton.blockInfo = tool.replaceBlockInfo
             self.replaceBlockButton.action = self.pickReplaceBlock
             self.replaceLabel.text = "Replace with:"
-            
+            self.replaceLabel.tooltipText = _("Shortcut: {0}").format(_("Esc"))
+
             self.swapButton = Button("Swap", action=self.swapBlockTypes, width=self.blockButton.width)
             self.swapButton.fg_color = (255, 255, 255, 255)
             self.swapButton.highlight_color = (60, 255, 60, 255)
@@ -229,8 +230,9 @@ class FillTool(EditorTool):
     chooseBlockImmediatelyReplace = config.fill.chooseBlockImmediatelyReplace.property()
 
     def toolReselected(self):
-        self.showPanel()
-        self.panel.pickFillBlock()
+        if not self.replacing:
+            self.showPanel()
+            self.panel.pickFillBlock()
 
     def cancel(self):
         self.hidePanel()
@@ -310,6 +312,16 @@ class FillTool(EditorTool):
         self.hidePanel()
         self.showPanel()
         if self.replacing and self.chooseBlockImmediatelyReplace:
+            self.panel.pickReplaceBlock()
+
+    def openReplace(self):
+        if not self.replacing:
+            self.replacing = True
+            self.hidePanel()
+            self.showPanel()
+            if self.chooseBlockImmediatelyReplace:
+                self.panel.pickReplaceBlock()
+        else:
             self.panel.pickReplaceBlock()
 
     @alertException
