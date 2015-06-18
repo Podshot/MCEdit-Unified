@@ -329,9 +329,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
 
     @property
     def LevelName(self):
-        with open(os.path.join(self.worldFile.path, "levelname.txt"), 'r') as f:
-            name = f.read()
-        return name
+        if "LevelName" not in self.root_tag:
+            with open(os.path.join(self.worldFile.path, "levelname.txt"), 'r') as f:
+                name = f.read()
+            if name is None:
+                name = os.path.basename(self.worldFile.path)
+            self.root_tag["LevelName"] = name
+        return self.root_tag["LevelName"]
 
     @LevelName.setter
     def LevelName(self, name):
