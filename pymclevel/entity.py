@@ -53,6 +53,10 @@ class TileEntity(object):
             ("CustomName", nbt.TAG_String),
             ("TrackOutput", nbt.TAG_Byte),
         ),
+        "FlowerPot": (
+            ("Item", nbt.TAG_String),
+            ("Data", nbt.TAG_Int),
+        ),
     }
 
     otherNames = {
@@ -65,7 +69,8 @@ class TileEntity(object):
         "Jukebox": "RecordPlayer",
         "Piston": "Piston",
         "Cauldron": "Cauldron",
-        "Command Block": "Control"
+        "Command Block": "Control",
+        "FlowerPot": "FlowerPot",
     }
 
     stringNames = {
