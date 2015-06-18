@@ -1300,11 +1300,75 @@ class CameraViewport(GLViewport):
 
                 chunk = self.editor.level.getChunk(int(int(point[0]) / 16), int(int(point[2]) / 16))
                 chunk.dirty = True
-                panel.dimiss()
+                panel.dismiss()
 
         okBtn = Button("OK", action=updateFlowerPot)
         cancel = Button("Cancel", action=panel.dismiss)
-        panel.add(Column((titleLabel, Label("Item name"), Item, Label("Data value"), Data, okBtn, cancel)))
+        panel.add(Column((titleLabel, Row((Label("Item"), Item)), Row((Label("Data"), Data)), okBtn, cancel)))
+        panel.shrink_wrap()
+        panel.present()
+
+    @mceutils.alertException
+    def editEnchantmentTable(self, point):
+        panel = Dialog()
+        tileEntity = self.editor.level.tileEntityAt(*point)
+        undoBackupEntityTag = copy.deepcopy(tileEntity)
+        if not tileEntity:
+            tileEntity = pymclevel.TAG_Compound()
+            tileEntity["id"] = pymclevel.TAG_String("EnchantTable")
+            tileEntity["x"] = pymclevel.TAG_Int(point[0])
+            tileEntity["y"] = pymclevel.TAG_Int(point[1])
+            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+            tileEntity["CustomName"] = pymclevel.TAG_String("")
+            self.editor.level.addTileEntity(tileEntity)
+
+        titleLabel = Label("Edit Enchantment Table")
+        try:
+            name = tileEntity["CustomName"].value
+        except:
+            name = ""
+        name = TextFieldWrapped(width=300, text=name)
+        oldName = name.value
+
+        class EnchantmentTableEditOperation(Operation):
+            def __init__(self, tool, level):
+                self.tool = tool
+                self.level = level
+                self.undoBackupEntityTag = undoBackupEntityTag
+                self.canUndo = False
+
+            def perform(self, recordUndo=True):
+                if self.level.saving:
+                    alert("Cannot perform action while saving is taking place")
+                    return
+                self.level.addTileEntity(tileEntity)
+                self.canUndo = True
+
+            def undo(self):
+                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
+                self.level.addTileEntity(self.undoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+            def redo(self):
+                self.level.addTileEntity(self.redoBackupEntityTag)
+                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+
+        def updateEnchantmentTable():
+            if oldName != name.value:
+                tileEntity["CustomName"] = pymclevel.TAG_String(name.value)
+
+                op = EnchantmentTableEditOperation(self.editor, self.editor.level)
+                self.editor.addOperation(op)
+                if op.canUndo:
+                    self.editor.addUnsavedEdit()
+
+                chunk = self.editor.level.getChunk(int(int(point[0]) / 16), int(int(point[2]) / 16))
+                chunk.dirty = True
+                panel.dismiss()
+
+        okBtn = Button("OK", action=updateEnchantmentTable)
+        cancel = Button("Cancel", action=panel.dismiss)
+        panel.add(Column((titleLabel, Row((Label("Custom Name"), name)), okBtn, cancel)))
         panel.shrink_wrap()
         panel.present()
 
@@ -1347,7 +1411,8 @@ class CameraViewport(GLViewport):
                                 pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock,
                                 pymclevel.alphaMaterials.Jukebox.ID: self.editJukebox,
                                 pymclevel.alphaMaterials.NoteBlock.ID: self.editNoteBlock,
-                                pymclevel.alphaMaterials.FlowerPot.ID: self.editFlowerPot
+                                pymclevel.alphaMaterials.FlowerPot.ID: self.editFlowerPot,
+                                pymclevel.alphaMaterials.EnchantmentTable.ID: self.editEnchantmentTable
                             }
                             edit = blockEditors.get(block)
                             if edit:
