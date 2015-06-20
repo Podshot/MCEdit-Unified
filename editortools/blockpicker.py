@@ -192,6 +192,7 @@ class BlockPicker(Dialog):
         fld.change_action = self.textEntered
         fld.enter_action = self.ok
         fld.escape_action = self.cancel
+        fld.attention_lost = fld.commit
 
         self.awesomeField = fld
 

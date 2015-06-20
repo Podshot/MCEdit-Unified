@@ -53,6 +53,13 @@ class TileEntity(object):
             ("CustomName", nbt.TAG_String),
             ("TrackOutput", nbt.TAG_Byte),
         ),
+        "FlowerPot": (
+            ("Item", nbt.TAG_String),
+            ("Data", nbt.TAG_Int),
+        ),
+        "EnchantTable": (
+            ("CustomName", nbt.TAG_String),
+        ),
     }
 
     otherNames = {
@@ -65,7 +72,9 @@ class TileEntity(object):
         "Jukebox": "RecordPlayer",
         "Piston": "Piston",
         "Cauldron": "Cauldron",
-        "Command Block": "Control"
+        "Command Block": "Control",
+        "FlowerPot": "FlowerPot",
+        "EnchantTable": "EnchantTable",
     }
 
     stringNames = {
@@ -82,7 +91,9 @@ class TileEntity(object):
         "sticky_piston": "Piston",
         "piston": "Piston",
         "cauldron": "Cauldron",
-        "command_block": "Control"
+        "command_block": "Control",
+        "flower_pot": "FlowerPot",
+        "enchanting_table": "EnchantTable",
     }
 
     knownIDs = baseStructures.keys()
