@@ -80,6 +80,7 @@ def addNumField(page, optionName, oName, val, min=None, max=None, increment=0.1)
 
 class FilterModuleOptions(Widget):
     is_gl_container = True
+    options = None
 
     def __init__(self, tool, module, *args, **kw):
         self._parent = None
@@ -649,8 +650,6 @@ class FilterTool(EditorTool):
     tooltipText = "Filter"
     toolIconName = "filter"
 
-    category_dict = {}
-
     def __init__(self, editor):
         EditorTool.__init__(self, editor)
 
@@ -788,43 +787,43 @@ class FilterTool(EditorTool):
                     lines.append("    "+dep+"\n")
             with open(os.path.join(directories.getCacheDir(), 'dependencies_not_found.txt'), 'wb') as f:
                 f.writelines(lines)
-            alert(_("Could not find dependencies for the following filters:\n%s\n\nAll unfound dependencies are logged in the dependencies_not_found.txt file")%"\n".join(names))
+            alert(_("Could not find dependencies for the following filters:\n%s\n\n"
+                    "All unfound dependencies are logged in the dependencies_not_found.txt file")%"\n".join(names))
     
     def reloadFilters(self):
+        def tryImport(_root, name, stock=False):
+            with open(os.path.join(_root, name)) as module_file:
+                module_name = name.split(os.path.sep)[-1].replace(".py", "")
+                try:
+                    module = imp.load_module(module_name, module_file, os.path.join(_root, name), ('.py', 'rb', imp.PY_SOURCE))
+                    if not stock:
 
-        org_lang = translate.lang
+                        # -- Note by Rubisk 20-06-2015:
+                        # I have no idea what this does, and left it as much alone as I could.
+                        # If anyone wants to explain it and/or modify this to work w/o modifying sys stuff,
+                        # that would be great.
+                        if "trn" in sys.modules.keys():
+                            del sys.modules["trn"]
+                        if "albow.translate" in sys.modules.keys():
+                            del sys.modules["albow.translate"]
+                        if directories.getFiltersDir() in name:
+                            trn_path = os.path.split(name)[0]
+                        else:
+                            trn_path = directories.getFiltersDir()
+                        trn_path = os.path.join(trn_path, module_name)
+                        module.trn = translate
+                        if os.path.exists(trn_path):
+                            module.trn.setLangPath(trn_path)
+                            module.trn.buildTranslation(config.settings.langCode.get())
+                        if not(hasattr(module, 'displayName')):
+                            module.displayName = module_name  # Python is awesome
+                    return module
 
-        def tryImport(name, stock=False):
-            module_file_object = open(os.path.join(directories.getFiltersDir(), name))
-            module_name = name.split(os.path.sep)[-1].replace(".py", "")
-            try:
-                module = imp.load_module(module_name, module_file_object, name, ('.py', 'rb', imp.PY_SOURCE))
-                if not stock:
-                    if "trn" in sys.modules.keys():
-                        del sys.modules["trn"]
-                    if "albow.translate" in sys.modules.keys():
-                        del sys.modules["albow.translate"]
-                    if directories.getFiltersDir() in name:
-                        trn_path = os.path.split(name)[0]
-                    else:
-                        trn_path = directories.getFiltersDir()
-                    trn_path = os.path.join(trn_path, module_name)
-                    if os.path.exists(trn_path):
-                        translate.setLangPath(trn_path)
-                        translate.buildTranslation(config.settings.langCode.get())
-                    module.trn = translate
-                    translate.lang = org_lang
-                return module
-            except Exception as e:
-                # Only prints when the filter filename is presented, not the entire file path
-                if os.path.sep not in name:
+                except Exception as e:
                     traceback.print_exc()
-                    alert(_(u"Exception while importing filter module {}. See console for details.\n\n{}").format(name, e))
-                return object()
-            finally:
-                module_file_object.close()
+                    alert(_(u"Exception while importing filter module {}. " +
+                            u"See console for details.\n\n{}").format(name, e))
 
-        self.category_dict.clear()
         filterModules = []
 
         for root, folders, files in os.walk(directories.getFiltersDir()):
@@ -833,7 +832,7 @@ class FilterTool(EditorTool):
                 continue
             for possible_filter in files:
                 if possible_filter.endswith(".py"):
-                    filterModules.append(tryImport(os.path.join(root, possible_filter), False))
+                    filterModules.append(tryImport(root, possible_filter, False))
 
         for root, folders, files in os.walk(os.path.join(directories.getDataDir(), "stock-filters"), True):
             filter_dir = os.path.basename(root)
@@ -841,7 +840,7 @@ class FilterTool(EditorTool):
                 continue
             for possible_filter in files:
                 if possible_filter.endswith(".py"):
-                    filterModules.append(tryImport(os.path.join(root, possible_filter)))
+                    filterModules.append(tryImport(root, possible_filter))
 
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
         self.filterModules = collections.OrderedDict(sorted([(self.moduleDisplayName(x), x) for x in filterModules],
@@ -854,26 +853,14 @@ class FilterTool(EditorTool):
     def filterNames(self):
         return [self.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
-    def moduleDisplayName(self, module):
-        cat = ""
-        for bundle in self.category_dict.items():
-            for name, mod in bundle[1]:
-                if mod == module:
-                    cat = bundle[0]
-        if hasattr(module, "displayName"):
-            n = module.displayName
-            if hasattr(module, "trn"):
-                n = module.trn._(module.displayName)
-            if n == module.displayName:
-                n = _(module.displayName)
-            if cat != "":
-                n = "{"+str(cat.replace(os.path.sep, "-"))+"} "+n
-            return n
-        else:
-            if cat != "":
-                return "{"+str(cat.replace(os.path.sep, "-"))+"} "+_(module.__name__.capitalize())
-            else:
-                return _(module.__name__.capitalize())
+    @staticmethod
+    def moduleDisplayName(module):
+        n = module.displayName
+        if hasattr(module, "trn"):
+            n = module.trn._(module.displayName)
+        if n == module.displayName:
+            n = _(module.displayName)
+        return n
 
     @alertFilterException
     def confirm(self):
@@ -915,3 +902,4 @@ class FilterTool(EditorTool):
                     self.editor.addOperation(op)
                     self.editor.addUnsavedEdit()
                     self.editor.invalidateBox(self.selectionBox())
+

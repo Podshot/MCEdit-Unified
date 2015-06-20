@@ -302,7 +302,8 @@ def fixedConfigExists():
 
 if fixedConfigExists():
     print "Running in fixed mode. Support files are in your " + (
-    sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)" or "Documents folder.")
+        sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)"
+        or "Documents folder.")
     portable = False
     if not sys.platform == "darwin":
         schematicsDir = fixedSchematicsDir
