@@ -66,22 +66,24 @@ def win32_utf8_argv():
 
 
 def getDataDir():
-    """Returns the folder where the executable is located."""
-    if sys.platform == "win32":
-        def fsdecode(x):
-            return x.decode(sys.getfilesystemencoding())
-
-        dataDir = os.getcwdu()
-        '''
-        if getattr(sys, 'frozen', False):
-            dataDir = os.path.dirname(sys._MEIPASS)
-        else:
-            dataDir = os.path.dirname(__file__)
-        '''
-            #dataDir = str(os.path.sep).join(dataDir.split(os.path.sep)[:-1])
-            
-    else:
-        dataDir = os.getcwdu()
+    """
+    Returns the folder where the executable is located.
+    :return unicode
+    """
+    # if sys.platform == "win32":
+    #     def fsdecode(x):
+    #         return x.decode(sys.getfilesystemencoding())
+    #
+    #     dataDir = os.getcwdu()
+    #     '''
+    #     if getattr(sys, 'frozen', False):
+    #         dataDir = os.path.dirname(sys._MEIPASS)
+    #     else:
+    #         dataDir = os.path.dirname(__file__)
+    #     '''
+    #
+    # else:
+    dataDir = os.getcwdu()
 
     return dataDir
 
@@ -170,9 +172,9 @@ def getDocumentsFolder():
 
 
 def getSelectedProfile():
-    '''
+    """
     Gets the selected profile from the Minecraft Launcher
-    '''
+    """
     try:
         selectedProfile = getMinecraftProfileJSON()['selectedProfile']
         return selectedProfile
@@ -207,9 +209,6 @@ if sys.platform != "darwin":
     fixedFiltersDir = os.path.join(docsFolder, u"Filters")
     if not os.path.exists(docsFolder):
         os.makedirs(docsFolder)
-
-#    sys.path.append(fixedFiltersDir)
-#    sys.path.append(portableFiltersDir)
 
 
 def goPortable():
@@ -342,7 +341,11 @@ def getAllOfAFile(file_dir, ext):
 
 
 def getCacheDir():
-    """Returns the path to the cache folder. This folder is the Application Support folder on OS X, and the Documents Folder on Windows."""
+    """
+    Returns the path to the cache folder.
+    This folder is the Application Support folder on OS X, and the Documents Folder on Windows.
+    :return unicode
+    """
     if sys.platform == "win32":
         return genericSupportDir
     elif sys.platform == "darwin":
@@ -360,8 +363,6 @@ if sys.platform == "darwin":
     filtersDir = os.path.join(getCacheDir(), u"Filters")
     if not os.path.exists(getCacheDir()):
         os.makedirs(getCacheDir())
-
-sys.path.append(filtersDir)
 
 # Create pymclevel folder as needed
 if not os.path.exists(getCacheDir()):
