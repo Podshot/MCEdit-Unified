@@ -66,24 +66,24 @@ from collections import defaultdict, deque
 
 from OpenGL import GL
 
-from albow import alert, ask, AttrRef, Button, Column, Grid, input_text, IntField, Menu, root, Row, \
+from albow import alert, ask, AttrRef, Button, Column, input_text, IntField, Row, \
     TableColumn, TableView, TextFieldWrapped, TimeField, Widget, CheckBox
 import albow.resource
 
 albow.resource.font_proportion = config.settings.fontProportion.get()
 get_font = albow.resource.get_font
-from albow.controls import Label, SmallValueDisplay, ValueDisplay, Image
+from albow.controls import Label, ValueDisplay, Image
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
 from albow.translate import _
-from pygame import display, event, key, mouse, MOUSEMOTION
+from pygame import display, event, mouse, MOUSEMOTION
 
 from depths import DepthOffset
 from editortools.operation import Operation
 from editortools.chunk import GeneratorPanel
 from glbackground import GLBackground, Panel
-from glutils import gl, Texture
-from mcplatform import askSaveFile, platform_open
+from glutils import Texture
+from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
 from pymclevel.entity import Entity
@@ -1209,8 +1209,21 @@ class LevelEditor(GLViewport):
                         alert(e.message + _("\n\nYour changes cannot be saved."))
                         return
 
-                for level in itertools.chain(level.dimensions.itervalues(), [level]):
+                if hasattr(level, 'dimensions'):
+                    for level in itertools.chain(level.dimensions.itervalues(), [level]):
 
+                        if "Canceled" == showProgress("Lighting chunks", level.generateLightsIter(), cancel=True):
+                            return
+
+                        if self.level == level:
+                            if isinstance(level, pymclevel.MCInfdevOldLevel):
+                                needsRefresh = [c.chunkPosition for c in level._loadedChunkData.itervalues() if c.dirty]
+                                needsRefresh.extend(level.unsavedWorkFolder.listChunks())
+                            else:
+                                needsRefresh = [c for c in level.allChunks if level.getChunk(*c).dirty]
+                            #xxx change MCInfdevOldLevel to monitor changes since last call
+                            self.invalidateChunks(needsRefresh)
+                else:
                     if "Canceled" == showProgress("Lighting chunks", level.generateLightsIter(), cancel=True):
                         return
 
@@ -1634,7 +1647,7 @@ class LevelEditor(GLViewport):
         if keyname == 'Escape':
             if self.selectionTool.selectionInProgress:
                 self.selectionTool.cancel()
-            elif self.toolbar.tools[3].replacing:
+            elif "fill" in str(self.currentTool) and self.toolbar.tools[3].replacing:
                 self.toolbar.tools[3].replacing = False
                 self.toolbar.tools[3].showPanel()
             elif "select" not in str(self.currentTool):
@@ -1699,7 +1712,7 @@ class LevelEditor(GLViewport):
                 self.currentTool.roll(blocksOnly=blocksOnly)
 
         if "fill" in str(self.currentTool) and keyname == config.keys.replaceShortcut.get():
-            self.currentTool.toggleReplacing()
+            self.currentTool.openReplace()
 
         if keyname == config.keys.quit.get():
             self.quit()
@@ -1889,8 +1902,9 @@ class LevelEditor(GLViewport):
         self.root.fix_sticky_ctrl()
         self.selectionTool.endSelection()
         self.mainViewport.mouseLookOff()
-        self.level.close()
-        self.level = None
+        if self.level:
+            self.level.close()
+            self.level = None
         self.renderer.stopWork()
         self.removeWorker(self.renderer)
         self.renderer.level = None
@@ -1954,8 +1968,9 @@ class LevelEditor(GLViewport):
             self.root.fix_sticky_ctrl()
             self.selectionTool.endSelection()
             self.mainViewport.mouseLookOff()
-            self.level.close()
-            self.level = None
+            if self.level:
+                self.level.close()
+                self.level = None
             self.renderer.stopWork()
             self.removeWorker(self.renderer)
             self.renderer.level = None
@@ -2055,6 +2070,8 @@ class LevelEditor(GLViewport):
             levelFormat = "MCEdit Schematic (Zipped Format)"
         elif t(pymclevel.MCJavaLevel):
             levelFormat = "Minecraft Classic or raw block array"
+        elif t(pymclevel.PocketLeveldbWorld):
+            levelFormat = "Minecraft Pocket Edition"
         else:
             levelFormat = "Unknown"
         formatLabel = Label(levelFormat)

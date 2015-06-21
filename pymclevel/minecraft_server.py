@@ -4,6 +4,7 @@ import logging
 import os
 from os.path import dirname, join, basename
 import random
+from pymclevel import PocketLeveldbWorld
 import re
 import shutil
 import subprocess
@@ -423,6 +424,7 @@ class MCServerChunkGenerator(object):
         (tempWorld.parentWorld or tempWorld).loadLevelDat()  # reload version number
 
     def copyChunkAtPosition(self, tempWorld, level, cx, cz):
+
         if level.containsChunk(cx, cz):
             return
         try:
@@ -432,8 +434,10 @@ class MCServerChunkGenerator(object):
                                                                                                      self.serverJarFile,
                                                                                                      e), sys.exc_info()[
                 2])
-
-        level.worldFolder.saveChunk(cx, cz, tempChunkBytes)
+        if isinstance(level, PocketLeveldbWorld):
+            level.saveGeneratedChunk(cx, cz, tempChunkBytes)
+        else:
+            level.worldFolder.saveChunk(cx, cz, tempChunkBytes)
         level._allChunks = None
 
     def generateChunkInLevel(self, level, cx, cz):

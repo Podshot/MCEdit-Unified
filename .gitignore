@@ -25,6 +25,7 @@ leveldb_mcpe
 scripts-pyinstaller
 pymclevel/_nbt.html
 pyinstaller-develop
+
 *.egg-info/
 .installed.cfg
 *.egg
@@ -86,3 +87,4 @@ player-skins/
 *.svg
 *.profile
 splash
+leveldb-mcpe/leveldb-mcpe.lib

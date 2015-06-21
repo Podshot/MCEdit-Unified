@@ -192,6 +192,7 @@ class BlockPicker(Dialog):
         fld.change_action = self.textEntered
         fld.enter_action = self.ok
         fld.escape_action = self.cancel
+        fld.attention_lost = fld.commit
 
         self.awesomeField = fld
 
@@ -345,7 +346,10 @@ class BlockPicker(Dialog):
         blocks = self.materials.allBlocks
 
         if len(text):
-            matches = self.materials.blocksMatching(text, getLang())
+            if getLang() == 'en_US':
+                matches = self.materials.blocksMatching(text)
+            else:
+                matches = self.materials.blocksMatching(text, self.searchNames)
             if blockData:
                 ids = set(b.ID for b in matches)
                 matches = sorted([self.materials.blockWithID(id, blockData) for id in ids])

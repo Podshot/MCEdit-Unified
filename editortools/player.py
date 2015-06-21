@@ -436,10 +436,15 @@ class PlayerPositionPanel(Panel):
         moveToCameraButton = Button("Align to Camera", action=self.tool.movePlayerToCamera)
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
-        btns = Column([self.editNBTDataButton, addButton, removeButton, gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin], margin=0, spacing=2)
+        btns = [self.editNBTDataButton]
+        if not isinstance(self.level, pymclevel.leveldbpocket.PocketLeveldbWorld):
+            btns.extend([addButton, removeButton])
+        btns.extend([gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
+        btns = Column(btns, margin=0, spacing=2)
         h = max_height - btns.height - self.pages.margin * 2 - 2 - self.font.get_linesize() * 2
 
         col = Label('')
+
         def close():
             self.pages.show_page(col)
         self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject={}, height=max_height, \
@@ -447,15 +452,15 @@ class PlayerPositionPanel(Panel):
                                             load_text=None)
         self.nbttree.shrink_wrap()
 
-        self.nbtpage = Column([self.nbttree,])
+        self.nbtpage = Column([self.nbttree])
         self.nbtpage.shrink_wrap()
         self.pages.add_page("NBT Data", self.nbtpage)
         self.pages.set_rect(map(lambda x:x+self.margin, self.nbttree._rect))
 
         tableview = TableView(nrows=(h - (self.font.get_linesize() * 2.5)) / self.font.get_linesize(),
                               header_height=self.font.get_linesize(),
-                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 3)),],
-                             )
+                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 3))],
+                              )
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
         tableview.row_data = lambda i: (players[i],)
@@ -496,26 +501,25 @@ class PlayerPositionPanel(Panel):
         elif player == '[No players]':
             return
         else:
-            path = os.path.join(os.path.split(self.level.filename)[0], 'playerdata')
-            if not os.path.exists(path):
-                path = os.path.join(os.path.split(self.level.filename)[0], 'players')
-            if player + '.dat' in os.listdir(path):
-                fName = os.path.join(path, player + '.dat')
-                nbtObject, dataKeyName, dontSaveRootTag, fn = loadFile(fName)
+            player = self.level.getPlayerTag(self.selectedPlayer)
+            if player is not None:
                 self.pages.remove_page(self.nbtpage)
+
                 def close():
                     self.pages.show_page(self.col)
-                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=nbtObject, fileName=fName,
-                                              dontSaveRootTag=dontSaveRootTag, dataKeyName=dataKeyName,
+
+                self.nbttree = NBTExplorerToolPanel(self.tool.editor, nbtObject=player, fileName=None,
+                                              savePolicy=-1, dataKeyName=None,
                                               height=self.max_height, no_header=True, close_text="Go Back",
-                                              close_action=close, load_text=None)
+                                              close_action=close, load_text=None,
+                                              copy_data=False)
+
                 self.nbtpage = Column([self.nbttree,])
                 self.nbtpage.shrink_wrap()
                 self.pages.add_page("NBT Data", self.nbtpage)
                 self.pages.show_page(self.nbtpage)
-            #elif self.selectedPlayer.isNew:
             else:
-                alert(_("Error while getting player file.\n%s not found.")%(player + '.dat'), doNotTranslate=True)
+                alert(_("Unable to load player %s" % self.selectedPlayer()))
 
     @property
     def selectedPlayer(self):

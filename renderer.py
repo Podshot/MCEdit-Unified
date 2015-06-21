@@ -1405,7 +1405,7 @@ class PlantBlockRenderer(BlockRenderer):
         lights = blockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
 
         colorize = None
-        if self.materials.name == "Alpha":  #so hacky, someone more competent fix this
+        if self.materials.name != "Classic":  #so hacky, someone more competent fix this
             colorize = (theseBlocks == pymclevel.materials.alphaMaterials.TallGrass.ID) & (bdata != 0)
             colorize2 = (theseBlocks == pymclevel.materials.alphaMaterials.TallFlowers.ID) & (bdata != 0) & (
             bdata != 1) & (bdata != 4) & (bdata != 5)

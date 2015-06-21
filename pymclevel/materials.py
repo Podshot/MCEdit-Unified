@@ -146,18 +146,20 @@ class MCMaterials(object):
             return self.blockWithID(id, blockData)
         return self.blockWithID(key)
 
-    def blocksMatching(self, name, lan="en_US"):
+    def blocksMatching(self, name, names=None):
         toReturn = []
         name = name.lower()
         spiltNames = name.split(" ")
         amount = len(spiltNames)
-        for v in self.allBlocks:
-            nameParts = mclangres.translate(v.name).lower().split(" ")
-            if lan == "en_US":
+        for i, v in enumerate(self.allBlocks):
+            if names is None:
+                nameParts = v.name.lower().split(" ")
                 for anotherName in v.aka.lower().split(" "):
                     nameParts.append(anotherName)
                 for anotherName in v.search.lower().split(" "):
                     nameParts.append(anotherName)
+            else:
+                nameParts = names[i].lower().split(" ")
             i = 0
             spiltNamesUsed = []
             for v2 in nameParts:

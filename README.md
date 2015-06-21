@@ -71,3 +71,41 @@ Debian and Ubuntu Linux users can install the following packages via apt-get to 
 
 You should now be able to run MCEdit-Unified with `python mcedit.py` assuming you've installed all the dependencies correctly.
 
+## INSTALLING _nbt.pyx:
+pymclevel contains a cython version of _nbt. This one is a lot faster, but has to be build manually.
+It requires cython 0.21.2 (there are issues with 0.22:
+' > pip install cython==0.21.2'
+It's also worth upgrading setuptools:
+' > pip install setuptools --upgrade'
+
+With cython you should be able to build the file.
+python setup.py develop
+
+If no errors occured, only thing left to do is see if it worked correctly:
+python setuptest.py
+
+
+## INSTALLING leveldb_mcpe:
+MCPE support requires a special library. MCEdit will run without it, but to have MCPE support you need to build it yourself.
+For mac and/or windows users:
+This requires a boost.python installation.
+Get boost: http://www.boost.org/ and make sure to build the python libs.
+
+Next step is to get leveldb-mcpe from Mojang:
+https://github.com/Mojang/leveldb-mcpe
+
+Build the thing using something like cmake, and copy the created leveldb-mcpe.lib to ./leveldb_mcpe
+
+After those steps, you should be able to build the required .pyx:
+' > cd ./leveldb_mcpe'
+python setup.py build
+Head into the build folder and look for the folder containing the .pyx. Copy it to ./leveldb_mcpe, and test:
+' > python test.py'
+
+If no errors occured, move the .pyx to ../pymclevel, and you should be good to go.
+
+For linux users:
+Navigate to the leveldb_mcpe folder
+'> python setup.py build'
+'> python test.py'
+And you should be good to go.

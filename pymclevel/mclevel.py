@@ -178,7 +178,9 @@ from directories import minecraftSaveFileDir
 import nbt
 from numpy import fromstring
 import os
-from pocket import PocketWorld, NewPocketWorld
+from pocket import PocketWorld
+from leveldbpocket import PocketLeveldbWorld
+from pymclevel import leveldbpocket
 from schematic import INVEditChest, MCSchematic, ZipSchematic
 import sys
 import traceback
@@ -218,8 +220,11 @@ def fromFile(filename, loadInfinite=True, readonly=False):
             raise ValueError("Asked to load {0} which is an infinite level, loadInfinite was False".format(
                 os.path.basename(filename)))
 
-    if NewPocketWorld._isLevel(filename):
-        raise ValueError("Don't have Pocket Edition 0.9+ support yet!")
+    if PocketLeveldbWorld._isLevel(filename):
+        if leveldbpocket.leveldb_available:
+            return PocketLeveldbWorld(filename)
+        else:
+            raise ValueError("An error occurred while loading MCPE support. Check the console for details.")
 
     if os.path.isdir(filename):
         raise ValueError("Folder {0} was not identified as a Minecraft level.".format(os.path.basename(filename)))

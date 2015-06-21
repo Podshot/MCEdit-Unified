@@ -53,6 +53,13 @@ class TileEntity(object):
             ("CustomName", nbt.TAG_String),
             ("TrackOutput", nbt.TAG_Byte),
         ),
+        "FlowerPot": (
+            ("Item", nbt.TAG_String),
+            ("Data", nbt.TAG_Int),
+        ),
+        "EnchantTable": (
+            ("CustomName", nbt.TAG_String),
+        ),
     }
 
     otherNames = {
@@ -65,7 +72,9 @@ class TileEntity(object):
         "Jukebox": "RecordPlayer",
         "Piston": "Piston",
         "Cauldron": "Cauldron",
-        "Command Block": "Control"
+        "Command Block": "Control",
+        "FlowerPot": "FlowerPot",
+        "EnchantTable": "EnchantTable",
     }
 
     stringNames = {
@@ -82,8 +91,10 @@ class TileEntity(object):
         "sticky_piston": "Piston",
         "piston": "Piston",
         "cauldron": "Cauldron",
-        "command_block": "Control"
-}
+        "command_block": "Control",
+        "flower_pot": "FlowerPot",
+        "enchanting_table": "EnchantTable",
+    }
 
     knownIDs = baseStructures.keys()
     maxItems = {
@@ -133,9 +144,9 @@ class TileEntity(object):
 
     @classmethod
     def copyWithOffset(cls, tileEntity, copyOffset, staticCommands, moveSpawnerPos, first):
-        #You'll need to use this function twice
-        #The first time with first equals to True
-        #The second time with first equals to False
+        # You'll need to use this function twice
+        # The first time with first equals to True
+        # The second time with first equals to False
         eTag = deepcopy(tileEntity)
         eTag['x'] = nbt.TAG_Int(tileEntity['x'].value + copyOffset[0])
         eTag['y'] = nbt.TAG_Int(tileEntity['y'].value + copyOffset[1])
@@ -212,9 +223,9 @@ class TileEntity(object):
                         del mob['Temp2']
                         del mob['Temp3']
                         parts = []
-                        for part in (x,y,z):
+                        for part in (x, y, z):
                             part = str(part)
-                            part = part[13:len(part)-2]
+                            part = part[13:len(part) - 2]
                             parts.append(part)
                         x, y, z = parts
                         pos = [float(p) for p in coords(x, y, z, moveSpawnerPos)]
@@ -233,26 +244,26 @@ class TileEntity(object):
                     if len(selector) > 4:
                         if '0' <= selector[3] <= '9':
                             new_selector = selector[:3]
-                            end_char_x = selector.find(',', 4, len(selector)-1)
+                            end_char_x = selector.find(',', 4, len(selector) - 1)
                             if end_char_x == -1:
                                 end_char_x = len(selector) - 1
                             x = selector[3:end_char_x]
                             x = coordX(x, staticCommands)
                             new_selector += x + ','
 
-                            end_char_y = selector.find(',', end_char_x+1, len(selector)-1)
+                            end_char_y = selector.find(',', end_char_x + 1, len(selector) - 1)
                             if end_char_y == -1:
                                 end_char_y = len(selector) - 1
-                            y = selector[end_char_x+1:end_char_y]
+                            y = selector[end_char_x + 1:end_char_y]
                             y = coordY(y, staticCommands)
                             new_selector += y + ','
 
-                            end_char_z = selector.find(',', end_char_y+1, len(selector)-1)
+                            end_char_z = selector.find(',', end_char_y + 1, len(selector) - 1)
                             if end_char_z == -1:
                                 end_char_z = len(selector) - 1
-                            z = selector[end_char_y+1:end_char_z]
+                            z = selector[end_char_y + 1:end_char_z]
                             z = coordZ(z, staticCommands)
-                            new_selector += z + ',' + selector[end_char_z+1:]
+                            new_selector += z + ',' + selector[end_char_z + 1:]
 
                         else:
                             for char in selector:
@@ -269,7 +280,7 @@ class TileEntity(object):
                                     elif char == 'x' and not letter:
                                         new_selector += selector[char_num:char_num + 2]
                                         char_x = char_num + 2
-                                        end_char_x = selector.find(',', char_num + 3, len(selector)-1)
+                                        end_char_x = selector.find(',', char_num + 3, len(selector) - 1)
                                         if end_char_x == -1:
                                             end_char_x = len(selector) - 1
                                         x = selector[char_x:end_char_x]
@@ -280,7 +291,7 @@ class TileEntity(object):
                                     elif char == 'y' and not letter:
                                         new_selector += selector[char_num:char_num + 2]
                                         char_y = char_num + 2
-                                        end_char_y = selector.find(',', char_num + 3, len(selector)-1)
+                                        end_char_y = selector.find(',', char_num + 3, len(selector) - 1)
                                         if end_char_y == -1:
                                             end_char_y = len(selector) - 1
                                         y = selector[char_y:end_char_y]
@@ -291,7 +302,7 @@ class TileEntity(object):
                                     elif char == 'z' and not letter:
                                         new_selector += selector[char_num:char_num + 2]
                                         char_z = char_num + 2
-                                        end_char_z = selector.find(',', char_num + 3, len(selector)-1)
+                                        end_char_z = selector.find(',', char_num + 3, len(selector) - 1)
                                         if end_char_z == -1:
                                             end_char_z = len(selector) - 1
                                         z = selector[char_z:end_char_z]
@@ -350,10 +361,14 @@ class TileEntity(object):
                         if not command.startswith('execute'):
                             stillExecuting = False
 
-                if (command.startswith('tp') and len(words) == 5) or command.startswith('particle') or command.startswith('replaceitem block') or (command.startswith('spawnpoint') and len(words) == 5) or command.startswith('stats block') or (command.startswith('summon') and len(words) >= 5):
+                if (command.startswith('tp') and len(words) == 5) or command.startswith(
+                        'particle') or command.startswith('replaceitem block') or (
+                            command.startswith('spawnpoint') and len(words) == 5) or command.startswith('stats block') or (
+                            command.startswith('summon') and len(words) >= 5):
                     x, y, z = words[2:5]
                     words[2:5] = coords(x, y, z, staticCommands)
-                elif command.startswith('blockdata') or command.startswith('setblock') or (command.startswith('setworldspawn') and len(words) == 4):
+                elif command.startswith('blockdata') or command.startswith('setblock') or (
+                            command.startswith('setworldspawn') and len(words) == 4):
                     x, y, z = words[1:4]
                     words[1:4] = coords(x, y, z, staticCommands)
                 elif command.startswith('playsound') and len(words) >= 6:
@@ -405,67 +420,67 @@ class TileEntity(object):
 
 class Entity(object):
     entityList = {
-            "Item": 1,
-            "XPOrb": 2,
-            "LeashKnot": 8,
-            "Painting": 9,
-            "Arrow": 10,
-            "Snowball": 11,
-            "Fireball": 12,
-            "SmallFireball": 13,
-            "ThrownEnderpearl": 14,
-            "EyeOfEnderSignal": 15,
-            "ThrownPotion": 16,
-            "ThrownExpBottle": 17,
-            "ItemFrame": 18,
-            "WitherSkull": 19,
-            "PrimedTnt": 20,
-            "FallingSand": 21,
-            "FireworksRocketEntity": 22,
-            "ArmorStand": 30,
-            "MinecartCommandBlock": 40,
-            "Boat": 41,
-            "MinecartRideable": 42,
-            "MinecartChest": 43,
-            "MinecartFurnace": 44,
-            "MinecartTNT": 45,
-            "MinecartHopper": 46,
-            "MinecartSpawner": 47,
-            "Mob": 48,
-            "Monster": 49,
-            "Creeper": 50,
-            "Skeleton": 51,
-            "Spider": 52,
-            "Giant": 53,
-            "Zombie": 54,
-            "Slime": 55,
-            "Ghast": 56,
-            "PigZombie": 57,
-            "Enderman": 58,
-            "CaveSpider": 59,
-            "Silverfish": 60,
-            "Blaze": 61,
-            "LavaSlime": 62,
-            "EnderDragon": 63,
-            "WitherBoss": 64,
-            "Bat": 65,
-            "Witch": 66,
-            "Endermite": 67,
-            "Guardian": 68,
-            "Pig": 90,
-            "Sheep": 91,
-            "Cow": 92,
-            "Chicken": 93,
-            "Squid": 94,
-            "Wolf": 95,
-            "MushroomCow": 96,
-            "SnowMan": 97,
-            "Ozelot": 98,
-            "VillagerGolem": 99,
-            "EntityHorse": 100,
-            "Rabbit": 101,
-            "Villager": 120,
-            "EnderCrystal": 200}
+        "Item": 1,
+        "XPOrb": 2,
+        "LeashKnot": 8,
+        "Painting": 9,
+        "Arrow": 10,
+        "Snowball": 11,
+        "Fireball": 12,
+        "SmallFireball": 13,
+        "ThrownEnderpearl": 14,
+        "EyeOfEnderSignal": 15,
+        "ThrownPotion": 16,
+        "ThrownExpBottle": 17,
+        "ItemFrame": 18,
+        "WitherSkull": 19,
+        "PrimedTnt": 20,
+        "FallingSand": 21,
+        "FireworksRocketEntity": 22,
+        "ArmorStand": 30,
+        "MinecartCommandBlock": 40,
+        "Boat": 41,
+        "MinecartRideable": 42,
+        "MinecartChest": 43,
+        "MinecartFurnace": 44,
+        "MinecartTNT": 45,
+        "MinecartHopper": 46,
+        "MinecartSpawner": 47,
+        "Mob": 48,
+        "Monster": 49,
+        "Creeper": 50,
+        "Skeleton": 51,
+        "Spider": 52,
+        "Giant": 53,
+        "Zombie": 54,
+        "Slime": 55,
+        "Ghast": 56,
+        "PigZombie": 57,
+        "Enderman": 58,
+        "CaveSpider": 59,
+        "Silverfish": 60,
+        "Blaze": 61,
+        "LavaSlime": 62,
+        "EnderDragon": 63,
+        "WitherBoss": 64,
+        "Bat": 65,
+        "Witch": 66,
+        "Endermite": 67,
+        "Guardian": 68,
+        "Pig": 90,
+        "Sheep": 91,
+        "Cow": 92,
+        "Chicken": 93,
+        "Squid": 94,
+        "Wolf": 95,
+        "MushroomCow": 96,
+        "SnowMan": 97,
+        "Ozelot": 98,
+        "VillagerGolem": 99,
+        "EntityHorse": 100,
+        "Rabbit": 101,
+        "Villager": 120,
+        "EnderCrystal": 200}
 
     monsters = ["Creeper",
                 "Skeleton",
@@ -499,7 +514,7 @@ class Entity(object):
                 "Ozelot",
                 "VillagerGolem",
                 "EntityHorse"
-    ]
+                ]
     projectiles = ["Arrow",
                    "Snowball",
                    "Egg",
@@ -511,7 +526,7 @@ class Entity(object):
                    "ThrownExpBottle",
                    "WitherSkull",
                    "FireworksRocketEntity"
-    ]
+                   ]
 
     items = ["Item",
              "XPOrb",
@@ -519,7 +534,7 @@ class Entity(object):
              "EnderCrystal",
              "ItemFrame",
              "WitherSkull",
-    ]
+             ]
     vehicles = ["MinecartRidable",
                 "MinecartChest",
                 "MinecartFurnace",
@@ -548,7 +563,8 @@ class Entity(object):
     def pos(cls, tag):
         if "Pos" not in tag:
             raise InvalidEntity(tag)
-        values = [a.value for a in tag["Pos"]]
+        else:
+            values = [a.value for a in tag["Pos"]]
 
         if isnan(values[0]) and 'xTile' in tag:
             values[0] = tag['xTile'].value
@@ -592,6 +608,41 @@ class Entity(object):
         return "No ID"
 
 
+class PocketEntity(Entity):
+    entityList = {"Chicken": 10,
+                  "Cow": 11,
+                  "Pig": 12,
+                  "Sheep": 13,
+                  "Wolf": 14,
+                  "Villager": 15,
+                  "Mooshroom": 16,
+                  "Squid": 17,
+                  "Bat": 19,
+                  "Zombie": 32,
+                  "Creeper": 33,
+                  "Skeleton": 34,
+                  "Spider": 35,
+                  "Zombie Pigman": 36,
+                  "Slime": 37,
+                  "Enderman": 38,
+                  "Silverfish": 39,
+                  "Cave Spider": 40,
+                  "Ghast": 41,
+                  "Magma Cube": 42,
+                  "Item": 64,
+                  "PrimedTnt": 65,
+                  "FallingSand": 66,
+                  "Fishing Rod Bobber": 77,
+                  "Arrow": 80,
+                  "Snowball": 81,
+                  "Egg": 82,
+                  "Painting": 83,
+                  "MinecartRideable": 84,
+                  "Fireball": 85,
+                  "Boat": 90,
+                  "Player": 63}
+
+
 class TileTick(object):
     @classmethod
     def pos(cls, tag):
@@ -602,5 +653,5 @@ class InvalidEntity(ValueError):
     pass
 
 
-class InvalidTileEntity(ValueError):
+class InvalidTileEntiy(ValueError):
     pass

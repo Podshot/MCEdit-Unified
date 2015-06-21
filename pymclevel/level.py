@@ -4,7 +4,6 @@ Created on Jul 22, 2011
 @author: Rio
 '''
 
-import blockrotation
 from box import BoundingBox
 from collections import defaultdict
 from entity import Entity, TileEntity, TileTick
@@ -12,7 +11,7 @@ import itertools
 from logging import getLogger
 import materials
 from math import floor
-from mclevelbase import ChunkMalformed, ChunkNotPresent, exhaust
+from mclevelbase import ChunkMalformed, ChunkNotPresent
 import nbt
 from numpy import argmax, swapaxes, zeros, zeros_like
 import os.path

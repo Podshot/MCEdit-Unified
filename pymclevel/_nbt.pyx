@@ -44,7 +44,10 @@ import zlib
 
 from cStringIO import StringIO
 from cpython cimport PyTypeObject, PyUnicode_DecodeUTF8, PyList_Append, PyString_FromStringAndSize
+from contextlib import contextmanager
 import numpy
+import logging
+logger = logging.getLogger(__name__)
 
 cdef extern from "cStringIO.h":
     struct PycStringIO_CAPI:
@@ -290,6 +293,8 @@ cdef class TAG_Short_Array(TAG_Value):
 
     def __init__(self, value=None, name=""):
         if value is None:
+            if _BIG_ENDIAN:
+                value = numpy.zeros((0,), )
             value = numpy.zeros((0,), self.dtype)
 
         self.value = value
@@ -519,7 +524,30 @@ class TAG_Compound(_TAG_Compound, collections.MutableMapping):
     pass
 
 
+_BIG_ENDIAN = 1
+
+@contextmanager
+def littleEndianNBT():
+    """
+    Sets the required paramaters to read and/or save NBT in little-endian format.
+    Sets the paramaters back to big-endian format after.
+    :return: None
+    """
+    global _BIG_ENDIAN
+    _BIG_ENDIAN = 0
+    yield
+    _BIG_ENDIAN = 1
+
 cdef void swab(void * vbuf, int nbytes):
+    """
+    Converts big endian to little endian. If littleEndianNBT is enabled,
+    this should do nothing.
+    :param vbuf: pointer to buffer of data to convert
+    :param nbytes: pointer to length of the buffer in bytes
+    :return: None
+    """
+    if not _BIG_ENDIAN:
+        return
     cdef unsigned char * buf = <unsigned char *> vbuf
     cdef int i
     for i in range((nbytes+1)/2):
@@ -583,7 +611,8 @@ IF UNICODE_CACHE:
 
 cdef char * read(load_ctx self, size_t s) except NULL:
     if s > self.size - self.offset:
-        raise NBTFormatError("NBT Stream too short. Asked for %d, only had %d" % (s, (self.size - self.offset)))
+        raise NBTFormatError(
+            "NBT Stream too short. Asked for {0:d}, only had {1:d}".format(s, (self.size - self.offset)))
 
     cdef char * ret = self.buffer + self.offset
     self.offset += s
@@ -738,7 +767,8 @@ cdef TAG_Short_Array load_short_array(load_ctx ctx):
 
     byte_length = length * 2
     cdef char *arr = read(ctx, byte_length)
-    return TAG_Short_Array(numpy.fromstring(arr[:byte_length], dtype=TAG_Short_Array.dtype, count=length))
+    dtype = '>u2' if _BIG_ENDIAN else '<u2'
+    return TAG_Short_Array(numpy.fromstring(arr[:byte_length], dtype=numpy.dtype(dtype), count=length))
 
 cdef TAG_Int_Array load_int_array(load_ctx ctx):
     cdef int * ptr = <int *> read(ctx, 4)
@@ -747,7 +777,8 @@ cdef TAG_Int_Array load_int_array(load_ctx ctx):
 
     byte_length = length * 4
     cdef char *arr = read(ctx, byte_length)
-    return TAG_Int_Array(numpy.fromstring(arr[:byte_length], dtype=TAG_Int_Array.dtype, count=length))
+    dtype = '>u4' if _BIG_ENDIAN else '<u4'
+    return TAG_Int_Array(numpy.fromstring(arr[:byte_length], dtype=numpy.dtype(dtype), count=length))
 
 
 # --- Identify tag type and load tag ---
@@ -814,10 +845,10 @@ cdef void save_tag_id(char tagID, object buf):
 
 cdef save_tag_name(TAG_Value tag, object buf):
     IF UNICODE_NAMES:
-        cdef unicode name = tag._name
+        cdef unicode name = tag.name
         save_string(name.encode('utf-8'), buf)
     ELSE:
-        save_string(tag._name, buf)
+        save_string(tag.name, buf)
 
 
 cdef void save_string(bytes value, object buf):

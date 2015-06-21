@@ -9,6 +9,7 @@ from javalevel import MCJavaLevel
 from level import ChunkBase, computeChunkHeightMap, EntityLevel, FakeChunk, LightedChunk, MCLevel
 from materials import alphaMaterials, classicMaterials, indevMaterials, MCMaterials, namedMaterials, pocketMaterials
 from mclevelbase import ChunkNotPresent, PlayerNotFound
+from leveldbpocket import PocketLeveldbWorld
 from directories import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from mclevel import fromFile, loadWorld, loadWorldNumber
 from nbt import load, gunzip, TAG_Byte, TAG_Byte_Array, TAG_Compound, TAG_Double, TAG_Float, TAG_Int, TAG_Int_Array, \
