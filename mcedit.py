@@ -25,8 +25,6 @@ logger = logging.getLogger()
 
 # Set the log level up while importing OpenGL.GL to hide some obnoxious warnings about old array handlers
 logger.setLevel(logging.WARN)
-from OpenGL import GL
-
 logger.setLevel(logging.DEBUG)
 
 logfile = 'mcedit.log'
@@ -68,7 +66,6 @@ ch.setFormatter(fmt)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-import resource_packs
 import version_utils
 import directories
 import keys
@@ -80,7 +77,6 @@ if DEF_ENC is None:
     DEF_ENC = "UTF-8"
 from albow.translate import _, getPlatInfo
 
-from albow.dialogs import Dialog
 from albow.openglwidgets import GLViewport
 from albow.root import RootWidget
 
@@ -89,8 +85,6 @@ from config import config
 albow.resource.resource_dir = directories.getDataDir()
 
 import panels
-import functools
-import glutils
 import leveleditor
 
 # Building translation template
@@ -739,41 +733,6 @@ def main(argv):
             os.mkdir(directories.schematicsDir)
         except Exception, e:
             logging.warning('Error creating schematics folder: {0!r}'.format(e))
-
-    try:
-        if not os.path.exists(directories.brushesDir):
-            shutil.copytree(
-                os.path.join(directories.getDataDir(), u'Brushes'),
-                directories.brushesDir
-            )
-    except Exception, e:
-        logging.warning('Error copying bundled Brushes: {0!r}'.format(e))
-        try:
-            os.mkdir(directories.brushesDir)
-        except Exception, e:
-            logging.warning('Error creating Brushes folder: {0!r}'.format(e))
-
-    try:
-        if not os.path.exists(directories.filtersDir):
-            shutil.copytree(
-                os.path.join(directories.getDataDir(), u'stock-filters'),
-                directories.filtersDir
-            )
-        else:
-            # Start hashing the filter dir
-            mceutils.compareMD5Hashes(directories.getAllOfAFile(directories.filtersDir, ".py"))
-    except Exception, e:
-        logging.warning('Error copying bundled filters: {0!r}'.format(e))
-        try:
-            os.mkdir(directories.filtersDir)
-        except Exception, e:
-            logging.warning('Error creating filters folder: {0!r}'.format(e))
-
-    if directories.filtersDir not in [s.decode(sys.getfilesystemencoding())
-                          if isinstance(s, str)
-                          else s
-                          for s in sys.path]:
-        sys.path.append(directories.filtersDir.encode(sys.getfilesystemencoding()))
 
     try:
         ServerJarStorage()

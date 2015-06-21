@@ -19,6 +19,7 @@ import copy
 from albow import FloatField, IntField, AttrRef, Row, Label, Widget, TabPanel, \
     CheckBox, Column, Button, TextFieldWrapped, translate
 _ = translate._
+import albow
 from config import config
 from editortools.blockview import BlockButton
 from editortools.editortool import EditorTool
@@ -826,12 +827,16 @@ class FilterTool(EditorTool):
 
         filterModules = []
 
+        print "Looking for filters in " + directories.getFiltersDir()
         for root, folders, files in os.walk(directories.getFiltersDir()):
+            print "Looking through dir " + root
             filter_dir = os.path.basename(root)
             if filter_dir.startswith('demo') or filter_dir.startswith('lib'):
                 continue
             for possible_filter in files:
+                print "Found file " + possible_filter
                 if possible_filter.endswith(".py"):
+                    print "Trying to import " + possible_filter
                     filterModules.append(tryImport(root, possible_filter, False))
 
         for root, folders, files in os.walk(os.path.join(directories.getDataDir(), "stock-filters"), True):
@@ -843,7 +848,7 @@ class FilterTool(EditorTool):
                     filterModules.append(tryImport(root, possible_filter))
 
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
-        self.filterModules = collections.OrderedDict(sorted([(self.moduleDisplayName(x), x) for x in filterModules],
+        self.filterModules = collections.OrderedDict(sorted([(moduleDisplayName(x), x) for x in filterModules],
                                                             key=lambda module_name: (module_name[0].lower(),
                                                                                      module_name[1])))
 
@@ -851,16 +856,7 @@ class FilterTool(EditorTool):
 
     @property
     def filterNames(self):
-        return [self.moduleDisplayName(module) for module in self.filterModules.itervalues()]
-
-    @staticmethod
-    def moduleDisplayName(module):
-        n = module.displayName
-        if hasattr(module, "trn"):
-            n = module.trn._(module.displayName)
-        if n == module.displayName:
-            n = _(module.displayName)
-        return n
+        return [moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
     @alertFilterException
     def confirm(self):
@@ -902,4 +898,13 @@ class FilterTool(EditorTool):
                     self.editor.addOperation(op)
                     self.editor.addUnsavedEdit()
                     self.editor.invalidateBox(self.selectionBox())
+
+
+def moduleDisplayName(module):
+    n = module.displayName
+    if hasattr(module, "trn"):
+        n = module.trn._(module.displayName)
+    if n == module.displayName:
+        n = _(module.displayName)
+    return n
 
