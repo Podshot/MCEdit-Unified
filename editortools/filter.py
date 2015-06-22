@@ -792,11 +792,20 @@ class FilterTool(EditorTool):
                     "All unfound dependencies are logged in the dependencies_not_found.txt file")%"\n".join(names))
     
     def reloadFilters(self):
-        def tryImport(_root, name, stock=False):
+        def tryImport(_root, name, stock=False, subFolderString=None):
+            if _root not in sys.path:
+                sys.path.append(_root)
             with open(os.path.join(_root, name)) as module_file:
                 module_name = name.split(os.path.sep)[-1].replace(".py", "")
                 try:
-                    module = imp.load_module(module_name, module_file, os.path.join(_root, name), ('.py', 'rb', imp.PY_SOURCE))
+                    # module = imp.load_module(module_name, module_file,
+                    #                          os.path.join(_root, name), ('.py', 'rb', imp.PY_SOURCE))
+                    module = imp.load_source(module_name, os.path.join(_root, name), module_file)
+                    print module
+                    module.foldersForDisplayName = subFolderString
+                    if not(hasattr(module, 'displayName')):
+                        module.displayName = module_name  # Python is awesome
+
                     if not stock:
 
                         # -- Note by Rubisk 20-06-2015:
@@ -816,47 +825,56 @@ class FilterTool(EditorTool):
                         if os.path.exists(trn_path):
                             module.trn.setLangPath(trn_path)
                             module.trn.buildTranslation(config.settings.langCode.get())
-                        if not(hasattr(module, 'displayName')):
-                            module.displayName = module_name  # Python is awesome
+                            n = module.displayName
+                            if hasattr(module, "trn"):
+                                n = module.trn._(module.displayName)
+                            if n == module.displayName:
+                                n = _(module.displayName)
+                            module.displayName = n
                     return module
 
                 except Exception as e:
                     traceback.print_exc()
                     alert(_(u"Exception while importing filter module {}. " +
                             u"See console for details.\n\n{}").format(name, e))
+                    return None
 
         filterModules = []
 
-        print "Looking for filters in " + directories.getFiltersDir()
-        for root, folders, files in os.walk(directories.getFiltersDir()):
-            print "Looking through dir " + root
-            filter_dir = os.path.basename(root)
-            if filter_dir.startswith('demo') or filter_dir.startswith('lib'):
-                continue
-            for possible_filter in files:
-                print "Found file " + possible_filter
-                if possible_filter.endswith(".py"):
-                    print "Trying to import " + possible_filter
-                    filterModules.append(tryImport(root, possible_filter, False))
+        def searchForFiltersInDir(searchFolder, stock=False):
+            for root, folders, files in os.walk(os.path.join(searchFolder), True):
+                filter_dir = os.path.basename(root)
 
-        for root, folders, files in os.walk(os.path.join(directories.getDataDir(), "stock-filters"), True):
-            filter_dir = os.path.basename(root)
-            if filter_dir.startswith('demo') or filter_dir.startswith('lib'):
-                continue
-            for possible_filter in files:
-                if possible_filter.endswith(".py"):
-                    filterModules.append(tryImport(root, possible_filter))
+                if filter_dir.startswith('demo') or filter_dir.startswith('lib'):
+                    continue
+
+                subFolderString = root.replace(searchFolder, "")
+                if subFolderString.endswith(os.sep):
+                    subFolderString = subFolderString[:len(os.sep)]
+                if len(subFolderString) > 0:
+                    subFolderString = "[" + subFolderString + "]"
+
+                for possible_filter in files:
+                    if possible_filter.endswith(".py"):
+                        filterModules.append(tryImport(root, possible_filter, stock, subFolderString))
+
+        searchForFiltersInDir(directories.getFiltersDir(), False)
+        searchForFiltersInDir(os.path.join(directories.getDataDir(), "stock-filters"), True)
 
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
-        self.filterModules = collections.OrderedDict(sorted([(moduleDisplayName(x), x) for x in filterModules],
+        self.filterModules = collections.OrderedDict(sorted([(FilterTool.moduleDisplayName(x), x) for x in filterModules],
                                                             key=lambda module_name: (module_name[0].lower(),
                                                                                      module_name[1])))
 
-        self.importLibraries()
+        # self.importLibraries()
+
+    @staticmethod
+    def moduleDisplayName(module):
+        return u"%s %s" % (module.foldersForDisplayName, module.displayName)
 
     @property
     def filterNames(self):
-        return [moduleDisplayName(module) for module in self.filterModules.itervalues()]
+        return [FilterTool.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
     @alertFilterException
     def confirm(self):
@@ -900,11 +918,4 @@ class FilterTool(EditorTool):
                     self.editor.invalidateBox(self.selectionBox())
 
 
-def moduleDisplayName(module):
-    n = module.displayName
-    if hasattr(module, "trn"):
-        n = module.trn._(module.displayName)
-    if n == module.displayName:
-        n = _(module.displayName)
-    return n
 
