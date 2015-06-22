@@ -135,7 +135,7 @@ def _(string, doNotTranslate=False):
     except UnicodeDecodeError:
         trn = string_cache.get(string, string)
     if trn == string:
-        trn = string_cache.get(string, string)
+        trn = string_cache.get(string, trn)
     if trn == string and '-' in string:
         # Support for hotkeys
         trn = '-'.join([_(a) for a in string.split('-')])
