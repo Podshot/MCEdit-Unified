@@ -484,7 +484,7 @@ class FilterToolPanel(Panel):
     def stop_record_macro(self):
         self.macro_diag = Dialog()
         macroNameLabel = Label("Macro Name: ")
-        macroNameField = TextFieldWrapped()
+        macroNameField = TextFieldWrapped(width=200)
         input_row = Row((macroNameLabel, macroNameField))
         saveButton = Button("Save", action=self.set_save)
         closeButton = Button("Close", action=self.macro_diag.dismiss)
