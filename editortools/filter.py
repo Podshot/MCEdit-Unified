@@ -127,7 +127,7 @@ class FilterModuleOptions(Widget):
             self.optionDict = dict(self.optionDict.items() + eachPage.optionDict.items())
 
     def rebuildTabPage(self, inputs, **kwargs):
-        title, page, rect = self.makeTabPage(self.tool, inputs, self.trn)
+        title, page, rect = self.makeTabPage(self.tool, inputs, self.trn, **kwargs)
         for i, t, p, s, r in self.pages.iter_tabs():
             if t == title:
                 self.pages.remove_page(p)
@@ -135,12 +135,14 @@ class FilterModuleOptions(Widget):
         self.pages.add_page(title, page, idx=i)
         self.pages.show_page(page)
 
-    def makeTabPage(self, tool, inputs, trn=None):
-        page = Widget()
+    def makeTabPage(self, tool, inputs, trn=None, **kwargs):
+        page = Widget(**kwargs)
         page.is_gl_container = True
         rows = []
         cols = []
-        max_height = tool.editor.mainViewport.height - tool.editor.toolbar.height - tool.editor.subwidgets[0].height - self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
+        max_height = tool.editor.mainViewport.height - tool.editor.toolbar.height - tool.editor.subwidgets[0].height -\
+            self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
+
         page.optionDict = {}
         page.tool = tool
         title = "Tab"
@@ -364,8 +366,8 @@ class FilterToolPanel(Panel):
         
         tool.names_list = []
         for name in tool.filterNames:
-            if name.startswith("[Macro]"):
-                name = name.replace("[Macro]", "")
+            if name.startswith("{Macro}"):
+                name = name.replace("{Macro}", "")
             if name.startswith("<") and name.endswith(">"):
                 name = name.replace("<").replace(">")
             tool.names_list.append(name)
@@ -376,7 +378,7 @@ class FilterToolPanel(Panel):
                 with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
                     json.dump(self.macro_json, f)
             for saved_macro in self.macro_json["Macros"].keys():
-                name = "[Macro] "+saved_macro
+                name = "{Macro} "+saved_macro
                 tool.names_list.append(name)
         self.filterSelect = ChoiceButton(tool.names_list, choose=self.filterChanged, doNotTranslate=True)
         self.filterSelect.selectedChoice = self.selectedFilterName
@@ -429,7 +431,7 @@ class FilterToolPanel(Panel):
         self.usingMacro = True
         for i in list(self.subwidgets):
             self.remove(i)
-        self.macro_data = self.macro_json["Macros"][self.selectedFilterName.replace("[Macro] ", "")]
+        self.macro_data = self.macro_json["Macros"][self.selectedFilterName.replace("{Macro} ", "")]
         self.filterOptionsPanel = None
         filterLabel = Label("Filter:", fg_color=(177, 177, 255, 255))
         filterLabel.mouse_down = lambda x: mcplatform.platform_open(directories.getFiltersDir())
@@ -454,14 +456,14 @@ class FilterToolPanel(Panel):
             self.centery = self.parent.centery
 
     def filterChanged(self):
-        if not self.filterSelect.selectedChoice.startswith("[Macro]"):
+        if not self.filterSelect.selectedChoice.startswith("{Macro}"):
             if self.filterSelect.selectedChoice not in self.tool.filterModules:
                 return
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
             self.reload()
         else:
-            if self.filterSelect.selectedChoice.replace("[Macro] ", "") not in self.macro_json["Macros"]:
+            if self.filterSelect.selectedChoice.replace("{Macro} ", "") not in self.macro_json["Macros"]:
                 return
             self.saveOptions()
             self.selectedFilterName = self.filterSelect.selectedChoice
@@ -470,7 +472,7 @@ class FilterToolPanel(Panel):
             self.macro_button.action = self.delete_macro
             
     def delete_macro(self):
-        macro_name = self.selectedFilterName.replace("[Macro] ", "")
+        macro_name = self.selectedFilterName.replace("{Macro} ", "")
         if macro_name in self.macro_json["Macros"]:
             del self.macro_json["Macros"][macro_name]
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
@@ -792,7 +794,7 @@ class FilterTool(EditorTool):
                     "All unfound dependencies are logged in the dependencies_not_found.txt file")%"\n".join(names))
     
     def reloadFilters(self):
-        def tryImport(_root, name, stock=False, subFolderString=None):
+        def tryImport(_root, name, stock=False, subFolderString=""):
             if _root not in sys.path:
                 sys.path.append(_root)
             with open(os.path.join(_root, name)) as module_file:
@@ -851,6 +853,8 @@ class FilterTool(EditorTool):
                 subFolderString = root.replace(searchFolder, "")
                 if subFolderString.endswith(os.sep):
                     subFolderString = subFolderString[:len(os.sep)]
+                if subFolderString.startswith(os.sep):
+                    subFolderString = subFolderString[len(os.sep):]
                 if len(subFolderString) > 0:
                     subFolderString = "[" + subFolderString + "]"
 
@@ -870,7 +874,9 @@ class FilterTool(EditorTool):
 
     @staticmethod
     def moduleDisplayName(module):
-        return u"%s %s" % (module.foldersForDisplayName, module.displayName)
+        subFolderString = getattr(module, 'foldersForDisplayName', "")
+        subFolderString = subFolderString if len(subFolderString) < 1 else subFolderString + " "
+        return subFolderString + getattr(module, "displayName", module.__name__)
 
     @property
     def filterNames(self):
