@@ -878,9 +878,9 @@ class CloneTool(EditorTool):
         if self.canRotateLevel:
             for i in range(amount & 0x1):
                 if blocksOnly:
-                    self.level.flipVertical()
-                else:
                     self.level.flipVerticalBlocks()
+                else:
+                    self.level.flipVertical()
             self.previewRenderer.level = self.level
 
     @alertException
