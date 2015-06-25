@@ -1836,8 +1836,8 @@ class LevelEditor(GLViewport):
                 if filters:
                     if self.currentTool != 4:
                         self.toolbar.selectTool(4)
-                    if self.toolbar.tools[4].panel.selectedFilterName != filters[0]:
-                        self.toolbar.tools[4].panel.selectedFilterName = filters[0]
+                    if self.toolbar.tools[4].panel.selectedName != filters[0]:
+                        self.toolbar.tools[4].panel.selectedName = filters[0]
                         self.toolbar.tools[4].panel.reload()
 
         self.root.fix_sticky_ctrl()

@@ -32,10 +32,18 @@ log = logging.getLogger(__name__)
 
 
 class Config(object):
-    def __init__(self, definitions):
-        self.load()
+    def __init__(self, config_definitions):
+        log.info("Loading config...")
+        self.config = ConfigParser.RawConfigParser([], ConfigDict)
+        self.config.observers = {}
+        try:
+            self.config.read(self.getPath())
+        except Exception, e:
+            log.warn("Error while reading configuration file mcedit.ini: {0}".format(e))
+
+        self.transformConfig()
         self._sections = {}
-        for (sectionKey, sectionName), items in definitions.iteritems():
+        for (sectionKey, sectionName), items in config_definitions.iteritems():
             self._sections[sectionKey] = ConfigSection(self.config, sectionName, items)
             setattr(self, sectionKey, self._sections[sectionKey])
         self.save()
@@ -48,14 +56,14 @@ class Config(object):
         return directories.configFilePath
 
     @staticmethod
-    def transformKey(value, i=0):
+    def transformKey(value, n=0):
         if 'left' in value and len(value) > 5:
             value = value[5:]
         elif 'right' in value and len(value) > 6:
             value = value[6:]
         if 'a' <= value <= 'z':
             value = value.replace(value[0], value[0].upper(), 1)
-        if i >= 36 and "Ctrl-" not in value:
+        if n >= 36 and "Ctrl-" not in value:
             value = "Ctrl-" + value
         if value == "Mouse3":
             value = "Button 3"
@@ -86,17 +94,17 @@ class Config(object):
             return
 
         if version == "1.1.1.1":
-            i = 1
+            n = 1
             for (name, value) in self.config.items("Keys"):
                 if name != "Swap View" and name != "Toggle Fps Counter":
-                    self.config.set("Keys", name, self.transformKey(value, i))
+                    self.config.set("Keys", name, self.transformKey(value, n))
                 elif name == "Swap View":
-                    self.config.set("Keys", "View Distance", self.transformKey(value, i))
+                    self.config.set("Keys", "View Distance", self.transformKey(value, n))
                     self.config.set("Keys", "Swap View", "None")
                 elif name == "Toggle Fps Counter":
-                    self.config.set("Keys", "Debug Overlay", self.transformKey(value, i))
+                    self.config.set("Keys", "Debug Overlay", self.transformKey(value, n))
                     self.config.set("Keys", "Toggle Fps Counter", "None")
-                i += 1
+                n += 1
             if self.config.get("Keys", "Brake") == "Space":
                 version = "1.1.2.0-update"
             else:
@@ -104,27 +112,13 @@ class Config(object):
             self.config.set("Version", "version", version)
             self.save()
 
-    def load(self):
-        log.info("Loading config...")
-        self.config = ConfigParser.RawConfigParser([], ConfigDict)
-        self.config.observers = {}
-        try:
-            self.config.read(self.getPath())
-        except Exception, e:
-            log.warn("Error while reading configuration file mcedit.ini: {0}".format(e))
-
-        self.transformConfig()
-
     def save(self):
         try:
             cf = file(self.getPath(), 'w')
             self.config.write(cf)
             cf.close()
-        except Exception, e:
-                try:
-                    log.error("Error saving configuration settings to mcedit.ini: {0}".format(e))
-                except:
-                    pass
+        except Exception as e:
+            log.error("Error saving configuration settings to mcedit.ini: {0}".format(e))
 
 
 class ConfigSection(object):
