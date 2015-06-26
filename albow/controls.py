@@ -111,7 +111,7 @@ class Label(Widget):
         tw, th = 0, 0
         for i in range(len(lines)):
             line = lines[i]
-            if i == len(lines) -1:
+            if i == len(lines) - 1:
                 w, h = self.font.size(line)
             else:
                 w, h = self.font.size(line)[0], self.font.get_linesize()

@@ -55,6 +55,7 @@ import re
 import codecs
 import json
 import resource
+import directories
 
 import platform, locale
 
@@ -101,7 +102,7 @@ if enc is None:
 
 string_cache = {}
 font_lang_cache = {}
-langPath = os.sep.join((".", "lang"))
+langPath = directories.getDataDir("lang")
 lang = "Default"
 
 # template building
@@ -307,7 +308,7 @@ from time import asctime, time
 #-------------------------------------------------------------------------------
 
 
-def buildTranslation(lang,suppressAlert=False):
+def buildTranslation(lang, suppressAlert=False):
     """Finds the file corresponding to 'lang' builds up string_cache.
     If the file is not valid, does nothing.
     Errors encountered during the process are silently ignored.
@@ -316,9 +317,9 @@ def buildTranslation(lang,suppressAlert=False):
     tm = time()
     global string_cache
     fileFound = False
-    lang = "%s"%lang
+    lang = u"%s" % lang
     fName = os.path.join(langPath, lang + ".trn")
-    log.debug("fName: %s"%fName)
+    log.debug("fName: %s" % fName)
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
         fileFound = True
         rawData = codecs.open(fName, "r", "utf-8").read()

@@ -2,33 +2,31 @@
 # Taken from http://www.pygame.org/project-Splash+screen-1186-.html by Rock Achu (rockhachu2)
 # and tweaked ;)
 import os
+import directories
 if os.sys.platform == 'linux2':
     os.sys.path.insert(1, os.path.expanduser('~/.local/lib/python2.7/site-packages'))
     os.sys.path.insert(1, os.path.abspath('./lib'))
+
 import pygame
 print 'Splash load...'
 os.environ['SDL_VIDEO_CENTERED'] = '1'
+
 pygame.init()
 pygame.font.init()
 no_splash = False
 cur_dir = os.path.dirname(__file__)
-print "*** MCEDIT DEBUG: splash.py::__file__:", __file__
-if '.app' in cur_dir:
-    print "*** MCEDIT DEBUG: Running on MacOS"
-    cur_dir = cur_dir.split('.app')[0] + '.app'
-    print "*** MCEDIT DEBUG: current directory:", cur_dir
-splash_name = os.path.join(cur_dir, 'splash')
+splash_name = os.path.join(directories.getDataDir(), 'splash')
 
 try:
-    if os.path.exists(splash_name) and len(open(splash_name).read()) > 0:
-        splash = pygame.image.load(open(splash_name).read().strip())
-    else:
-        splash = pygame.image.load(os.path.join(cur_dir, "splash.png"))
-    screen = pygame.display.set_mode(splash.get_size(),pygame.NOFRAME)
-    screen.blit(splash, (0,0))
-except:
+    # if os.path.exists(splash_name) and len(open(splash_name).read()) > 0:
+    #     splash = pygame.image.load(open(splash_name).read().strip())
+    # else:
+    splash = pygame.image.load(open(os.path.join(cur_dir, "splash.png"), 'rb'))
+    screen = pygame.display.set_mode(splash.get_size(), pygame.NOFRAME)
+    screen.blit(splash, (0, 0))
+except IOError:
     try:
-        font = pygame.font.Font(os.path.join(cur_dir, 'fonts', 'DejaVuSans-Bold.ttf'), 48)
+        font = pygame.font.Font(open(os.path.join(cur_dir, 'fonts', 'DejaVuSans-Bold.ttf'), 'rb'), 48)
         buf = font.render("MCEDit is loading...", True, (128, 128, 128))
         screen = pygame.display.set_mode((buf.get_width() + 20, buf.get_height() + 20), pygame.NOFRAME)
         screen.blit(buf, (10, 10))
