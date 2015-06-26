@@ -470,11 +470,20 @@ class FilterToolPanel(Panel):
             self.shrink_wrap()
             return
 
-        names_list = [n for n in tool.filterNames]
+        names_list = sorted([n for n in tool.filterNames if not n.startswith("[")])
+
+        # We get a list of names like ["[foo] bar", "[test] thing"]
+        # The to sort on is created by splitting on "[": "[foo", " bar" and then
+        # removing the first char: "foo", "bar"
+
+        subfolder_names_list = sorted([n for n in tool.filterNames if n.startswith("[")],
+                                      key=lambda x: x.split("]")[0][1:])
+
+        names_list.extend(subfolder_names_list)
         names_list.extend([macro for macro in self.filter_json["Macros"].keys()])
 
         if self.selectedName is None or self.selectedName not in names_list:
-            self.selectedName = tool.filterNames[0]
+            self.selectedName = names_list[0]
 
         self.filterSelect.choices = names_list
 
@@ -496,7 +505,8 @@ class FilterToolPanel(Panel):
 
                 if len(tool.filterNames) == 0:
                     raise ValueError("No filters loaded!")
-                self.confirmButton.set_text("Filter")
+                if not self._recording:
+                    self.confirmButton.set_text("Filter")
             else:  # We verified it was an existing macro already
                 macro_data = self.filter_json["Macros"][self.selectedName]
                 self.filterOptionsPanel = MacroModuleOptions(macro_data)
@@ -520,11 +530,11 @@ class FilterToolPanel(Panel):
             self.filterOptionsPanel.options = self.tool.savedOptions[self.selectedName]
 
     def filterChanged(self):
-        if self.filterSelect.selectedChoice not in self.tool.filterModules:
-            return
+        # if self.filterSelect.selectedChoice not in self.tool.filterModules:
+        #     return
         self.saveOptions()
         self.selectedName = self.filterSelect.selectedChoice
-        if self.filterSelect.selectedChoice.startswith("{Macro} "):
+        if self.filterSelect.selectedChoice not in self.tool.filterNames:  # Is macro
             self.macro_button.set_text("Delete Macro")
             self.macro_button.action = self.delete_macro
         self.reload()

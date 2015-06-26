@@ -64,8 +64,7 @@ def win32_utf8_argv():
     except Exception:
         pass
 
-
-def getDataDir():
+def getDataDir(path=""):
     """
     Returns the folder where the executable is located.
     :return unicode
@@ -84,7 +83,8 @@ def getDataDir():
     #
     # else:
     dataDir = os.getcwdu()
-
+    if len(path) > 0:
+        return os.path.join(dataDir, path)
     return dataDir
 
 

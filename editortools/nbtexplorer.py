@@ -93,7 +93,7 @@ def get_bullet_image(index, w=16, h=16):
         except Exception, e:
             print "*** MCEDIT DEBUG: bullets image could not be loaded."
             print "*** MCEDIT DEBUG:", e
-            print "*** MCEDIT DEBUG: bullets image file:",resource_path(config.nbtTreeSettings.bulletFileName.get())
+            print "*** MCEDIT DEBUG: bullets image file:", resource_path(config.nbtTreeSettings.bulletFileName.get())
             print "*** MCEDIT DEBUG: current directory:", os.getcwd()
             from pygame import Surface, draw, SRCALPHA
             bullet_image = Surface((64, 64), SRCALPHA)

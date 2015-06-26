@@ -33,14 +33,14 @@ sound_cache = {}
 text_cache = {}
 cursor_cache = {}
 
-font_proportion = 100 # %
+font_proportion = 100  # %
 gtbdr = True
 
 
 def _resource_path(default_prefix, names, prefix=""):
     path = os.path.join(resource_dir, prefix or default_prefix, *names)
-    if type(path) == unicode:
-        path = path.encode(sys.getfilesystemencoding())
+    # if type(path) == unicode:
+    #     path = path.encode(sys.getfilesystemencoding())
     return path
 
 
