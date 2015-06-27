@@ -75,6 +75,9 @@ def buildResources(version=None, lang=None):
         log.debug('Impossible to load the game language resources.')
         return
     versions = os.listdir(indexesDirectory)
+    if len(versions) == 0:
+        log.debug("No valid versions found in minecraft install directory")
+        return
     if 'legacy.json' in versions:
         versions.remove('legacy.json')
     versions.sort()
