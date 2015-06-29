@@ -449,20 +449,13 @@ class FilterToolPanel(Panel):
         if not FilterToolPanel.BACKUP_FILTER_JSON:
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
                 json.dump(self.filter_json, f)
-        self.saveOptions()
+        self._saveOptions()
 
     def reload(self):
         for i in list(self.subwidgets):
             self.remove(i)
 
         tool = self.tool
-
-        # Remove any keybindings that don't have a filter
-        for (i, j) in config["Filter Keys"].items():
-            if i == "__name__":
-                continue
-            if not any([i == m.lower for m in tool.filterModules]):
-                config.remove_option("Filter Keys", i)
 
         # Display "No filter modules found" if there are no filters
         if len(tool.filterModules) is 0:
@@ -485,10 +478,18 @@ class FilterToolPanel(Panel):
         if self.selectedName is None or self.selectedName not in names_list:
             self.selectedName = names_list[0]
 
+        # Remove any keybindings that don't have a filter
+        for (i, j) in config.config.items("Filter Keys"):
+            if i == "__name__":
+                continue
+            if not any([i == m.lower() for m in names_list]):
+                config.config.remove_option("Filter Keys", i)
+
         self.filterSelect.choices = names_list
 
         name = self.selectedName.lower()
-        btn_name = config["Filter Keys"][name] if name in config["Filter Keys"].items() else "*"
+        names = [k for (k, v) in config.config.items("Filter Keys")]
+        btn_name = config.config.get("Filter Keys", name) if name in names else "*"
         self.binding_button.set_text(btn_name)
 
         self.filterOptionsPanel = None
@@ -512,7 +513,7 @@ class FilterToolPanel(Panel):
                 self.filterOptionsPanel = MacroModuleOptions(macro_data)
                 self.confirmButton.set_text("Run Macro")
 
-        # This has to be recreated everytime in case a macro has a longer name then everything else.
+        # This has to be recreated every time in case a macro has a longer name then everything else.
         self.filterSelect = ChoiceButton(names_list, choose=self.filterChanged, doNotTranslate=True)
         self.filterSelect.selectedChoice = self.selectedName
         self.filterSelectRow = Row((self.filterLabel, self.filterSelect,
@@ -532,18 +533,26 @@ class FilterToolPanel(Panel):
     def filterChanged(self):
         # if self.filterSelect.selectedChoice not in self.tool.filterModules:
         #     return
-        self.saveOptions()
+        self._saveOptions()
         self.selectedName = self.filterSelect.selectedChoice
         if self.filterSelect.selectedChoice not in self.tool.filterNames:  # Is macro
             self.macro_button.set_text("Delete Macro")
             self.macro_button.action = self.delete_macro
+        elif not self._recording:
+            self.macro_button.set_text("Record Macro")
+            self.macro_button.action = self.start_record_macro
         self.reload()
 
     def delete_macro(self):
         macro_name = self.selectedName
         if macro_name in self.filter_json["Macros"]:
             del self.filter_json["Macros"][macro_name]
+        if len(self.filterSelect.choices) == 1:  # Just this macro available
             self.reload()
+            return
+        choices = self.filterSelect.choices
+        self.filterSelect.selectedChoice = choices[0] if choices[0] != macro_name else choices[1]
+        self.filterChanged()
 
     def stop_record_macro(self):
         macro_dialog = Dialog()
@@ -555,7 +564,7 @@ class FilterToolPanel(Panel):
 
             self.filter_json["Macros"][macro_name] = {}
             self.filter_json["Macros"][macro_name]["Number of steps"] = len(self.macro_steps)
-            self.selectedName = macro_name
+            self.filterSelect.choices.append(macro_name)
             for entry in self.macro_steps:
                 for inp in entry["Inputs"].keys():
                     if not isinstance(entry["Inputs"][inp], pymclevel.materials.Block):
@@ -565,24 +574,28 @@ class FilterToolPanel(Panel):
                     entry["Inputs"][inp] = "block-{0}:{1}".format(_inp.ID, _inp.blockData)
                 self.filter_json["Macros"][macro_name][entry["Step"]] = {"Name": entry["Name"],
                                                                          "Inputs": entry["Inputs"]}
+            stop_dialog()
+            self.filterSelect.selectedChoice = macro_name
+            self.filterChanged()
+
+        def stop_dialog():
+            self.macro_button.text = "Record Macro"
+            self.macro_button.tooltipText = None
+            self.macro_button.action = self.start_record_macro
             macro_dialog.dismiss()
+            self.macro_steps = []
+            self.current_step = 0
+            self._recording = False
 
         input_row = Row((macroNameLabel, macroNameField))
         saveButton = Button("Save", action=save_macro)
-        closeButton = Button("Close", action=macro_dialog.dismiss)
+        closeButton = Button("Close", action=stop_dialog)
         button_row = Row((saveButton, closeButton))
         macro_dialog.add(Column((input_row, button_row)))
         macro_dialog.shrink_wrap()
         macro_dialog.present()
-        self.macro_button.text = "Record Macro"
-        self.macro_button.tooltipText = None
-        self.macro_button.action = self.start_record_macro
-        self._recording = False
-        self.reload()
 
     def start_record_macro(self):
-        self.macro_steps = []
-        self.current_step = 0
         self.macro_button.text = "Stop recording"
         self.macro_button.tooltipText = "Currently recording a macro"
         self.macro_button.action = self.stop_record_macro
@@ -590,17 +603,17 @@ class FilterToolPanel(Panel):
         self.confirmButton.width += 75
         self.confirmButton.centerx = self.centerx
         self._recording = True
-    
-    def addMacroStep(self, name=None, inputs=None):
+
+    def _addMacroStep(self, name=None, inputs=None):
         data = {"Name": name, "Step": self.current_step, "Inputs": inputs}
         self.current_step += 1
         self.macro_steps.append(data)
 
     def unbind_key(self):
-        config.remove_option("Filter Keys", self.selectedName)
+        config.config.remove_option("Filter Keys", self.selectedName)
         self.binding_button.text = "*"
         self.keys_panel.dismiss()
-        self.saveOptions()
+        # self.saveOptions()
         self.reload()
 
     def bind_key(self, message=None):
@@ -616,64 +629,69 @@ class FilterToolPanel(Panel):
         panel.shrink_wrap()
 
         def panelKeyUp(evt):
-            key_name = self.root.getKey(evt)
-            panel.dismiss(key_name)
+            _key_name = self.root.getKey(evt)
+            panel.dismiss(_key_name)
 
         def panelMouseUp(evt):
             button = keys.remapMouseButton(evt.button)
-            key_name = None
+            _key_name = None
             if button == 3:
-                key_name = "Button 3"
+                _key_name = "Button 3"
             elif button == 4:
-                key_name = "Scroll Up"
+                _key_name = "Scroll Up"
             elif button == 5:
-                key_name = "Scroll Down"
+                _key_name = "Scroll Down"
             elif button == 6:
-                key_name = "Button 4"
+                _key_name = "Button 4"
             elif button == 7:
-                key_name = "Button 5"
+                _key_name = "Button 5"
             if 2 < button < 8:
-                panel.dismiss(key_name)
+                panel.dismiss(_key_name)
 
         panel.key_up = panelKeyUp
         panel.mouse_up = panelMouseUp
 
         self.keys_panel = panel
-        keyname = panel.present()
-        _keyname = _(keyname)
-        if type(keyname) is bool:
+        key_name = panel.present()
+
+        if type(key_name) is bool:
             return True
-        if keyname != "Escape":
-            if keyname in ["Alt-F4", "F1", "F2", "F3", "F4", "F5", "1", "2", "3",
-                           "4", "5", "6", "7", "8", "9", "Ctrl-Alt-F9", "Ctrl-Alt-F10"]:
+        if key_name != "Escape":
+            if key_name in ["Alt-F4", "F1", "F2", "F3", "F4", "F5", "1", "2", "3",
+                            "4", "5", "6", "7", "8", "9", "Ctrl-Alt-F9", "Ctrl-Alt-F10"]:
                 self.bind_key(_("You can't use the key {0}.\n"
                                 "Press a key to assign to the filter \"{1}\"\n\n"
                                 ""
-                                "Press ESC to cancel.").format(_keyname, self.selectedName))
+                                "Press ESC to cancel.").format(_(key_name), self.selectedName))
                 return True
 
-            keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == keyname]
+            keysUsed = [(j, i) for (j, i) in config.config.items("Keys") if i == key_name]
             if keysUsed:
                 self.bind_key(_("Can't bind. {0} is already used by {1}.\n"
                                 "Press a key to assign to the filter \"{2}\"\n\n"
                                 ""
-                                "Press ESC to cancel.").format(_keyname, keysUsed[0][0], self.selectedName))
+                                "Press ESC to cancel.").format(_(key_name), keysUsed[0][0], self.selectedName))
                 return True
 
-            filter_keys = [i for (i, j) in config["Filter Keys"].items() if j == keyname]
+            filter_keys = [i for (i, j) in config.config.items("Filter Keys") if j == key_name]
             if filter_keys:
                 self.bind_key(_("Can't bind. {0} is already used by the \"{1}\" filter.\n"
                                 "Press a new key.\n\n"
                                 ""
-                                "Press ESC to cancel.").format(_keyname, filter_keys[0]))
+                                "Press ESC to cancel.").format(_(key_name), filter_keys[0]))
                 return True
-            self.binding_button.text = keyname
-            config.config.set("Filter Keys", self.selectedName, keyname)
+            config.config.set("Filter Keys", self.selectedName.lower(), key_name)
+            print self.selectedName.lower()
+            print config.config.items("Filter Keys")
+            print config.config.get("Filter Keys", self.selectedName.lower())
         config.save()
-        self.saveOptions()
         self.reload()
 
-    def saveOptions(self):
+    def _saveOptions(self):
+        """Should never be called. Call filterchanged() or close() instead
+        , which will then call this.
+        :return:
+        """
         if self.filterOptionsPanel is not None:
             options = {}
             options.update(self.filterOptionsPanel.options)
@@ -682,7 +700,7 @@ class FilterToolPanel(Panel):
 
     def confirm(self):
         if self._recording:
-            self.addMacroStep(self.selectedName, self.filterOptionsPanel.options)
+            self._addMacroStep(self.selectedName, self.filterOptionsPanel.options)
         else:
             self.filterOptionsPanel.confirm(self.tool)
 

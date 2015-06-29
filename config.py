@@ -130,7 +130,7 @@ class ConfigSection(object):
         for item in items:
             if isinstance(item, ConfigValue):
                 value = item
-            elif type(item[2]) in [list, tuple]:
+            elif type(item[2]) in ListValue.allowedTypes:
                 value = ListValue(item[0], item[1], item[2])
             else:
                 value = ConfigValue(item[0], item[1], item[2])
