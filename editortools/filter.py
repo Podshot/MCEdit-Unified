@@ -526,7 +526,7 @@ class FilterToolPanel(Panel):
         if self.parent:
             height = self.parent.mainViewport.height - self.parent.toolbar.height
             self.centery = height / 2 + self.parent.subwidgets[0].height
-            
+
         if self.selectedName in self.tool.savedOptions:
             self.filterOptionsPanel.options = self.tool.savedOptions[self.selectedName]
 
@@ -720,7 +720,7 @@ class FilterOperation(Operation):
             return
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
-        
+
         self.filter_or_macro.perform(self.level, BoundingBox(self.box), self.options)
 
         self.canUndo = True
@@ -740,7 +740,7 @@ class FilterTool(EditorTool):
         self.filterModules = {}
         self.savedOptions = {}
         self.lastUsed = ""
-        
+
         self.updatePanel = Panel()
         updateButton = Button("Update Filters", action=self.updateFilters)
         self.updatePanel.add(updateButton)
@@ -763,7 +763,7 @@ class FilterTool(EditorTool):
         self.panel = FilterToolPanel(self)
         self.panel.selectedName = self.lastUsed
         self.lastUsed = ""
-        
+
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
         self.editor.add(self.updatePanel)
         self.reloadFilters()
@@ -816,11 +816,27 @@ class FilterTool(EditorTool):
     def reloadFilters(self):
         def tryImport(_root, name, stock=False, subFolderString=""):
             if _root not in sys.path:
-                sys.path.append(_root)
+                try:
+                    _root = str(_root)
+                    sys.path.append(_root)
+                except UnicodeEncodeError:
+                    pass
             with open(os.path.join(_root, name)) as module_file:
                 module_name = name.split(os.path.sep)[-1].replace(".py", "")
                 try:
-                    module = imp.load_source(module_name, os.path.join(_root, name), module_file)
+                    try:
+                        module = imp.load_source(module_name, os.path.join(_root, name), module_file)
+                    except UnicodeEncodeError:
+                        log.debug("UnicodeEncodeError while to %s import normally, trying to read the source at"
+                                  "%s to a string instead.", module_name, os.path.join(_root, name))
+                        source_code = module_file.read()
+                        module = imp.new_module(module_name)
+                        try:
+                            exec(source_code, module.__dict__)
+                        except ImportError:
+                            return None
+                        if module_name not in sys.modules.keys():
+                            sys.modules[module_name] = module
                     module.foldersForDisplayName = subFolderString
                     if not(hasattr(module, 'displayName')):
                         module.displayName = module_name  # Python is awesome
@@ -858,7 +874,7 @@ class FilterTool(EditorTool):
                             u"See console for details.\n\n{}").format(name, e))
                     return None
 
-        filterModules = []
+        filterFiles = []
 
         def searchForFiltersInDir(searchFolder, stock=False):
             for root, folders, files in os.walk(os.path.join(searchFolder), True):
@@ -877,10 +893,26 @@ class FilterTool(EditorTool):
 
                 for possible_filter in files:
                     if possible_filter.endswith(".py"):
-                        filterModules.append(tryImport(root, possible_filter, stock, subFolderString))
+                        filterFiles.append((root, possible_filter, stock, subFolderString))
 
         searchForFiltersInDir(directories.getFiltersDir(), False)
         searchForFiltersInDir(os.path.join(directories.getDataDir(), "stock-filters"), True)
+
+        filterModules = []
+
+        # If the path has unicode chars, there's no way of knowing what order to add the
+        # files to the sys.modules. To fix this, we keep trying to import until we import
+        # fail to import all leftover files.
+        shouldContinue = True
+        while shouldContinue:
+            shouldContinue = False
+            for f in filterFiles:
+                try:
+                    filterModules.append(tryImport(f[0], f[1], f[2], f[3]))
+                    filterFiles.remove(f)
+                    shouldContinue |= True
+                except ImportError:
+                    continue
 
         filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
         self.filterModules = collections.OrderedDict(sorted(
@@ -907,13 +939,13 @@ class FilterTool(EditorTool):
                                  self.panel.filterOptionsPanel.options, self.panel)
 
             self.editor.level.showProgress = showProgress
-            
+
             self.editor.addOperation(op)
             if op.canUndo:
                 self.editor.addUnsavedEdit()
 
             self.editor.invalidateBox(self.selectionBox())
-            
+
     @alertFilterException
     def run_macro(self, macro_data):
         with setWindowCaption("APPLYING FILTER MACRO - "):
@@ -929,8 +961,8 @@ class FilterTool(EditorTool):
                                         macro_data[step]["Inputs"][module_input] = possible
                     op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), module,
                                          macro_data[step]["Inputs"], self.panel)
-                    
+
                     self.editor.level.showProgress = showProgress
-                    
+
                     self.editor.addOperation(op)
                     self.editor.addUnsavedEdit()
