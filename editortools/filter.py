@@ -125,7 +125,7 @@ class MacroModuleOptions(Widget):
         infoColList.append(stepsLabel)
         for step in sorted(macro_data.keys()):
             if step != "Number of steps":
-                infoColList.append(wrapped_label("Step %s: %s" % (step + 1, macro_data[step]["Name"]), 300))
+                infoColList.append(wrapped_label("Step %s: %s" % (int(step) + 1, macro_data[step]["Name"]), 300))
         self.add(Column(infoColList))
         self.shrink_wrap()
 
@@ -430,7 +430,7 @@ class FilterToolPanel(Panel):
         self._recording = False
         self._save_macro = False
         self.tool = tool
-        self.selectedName = self.filterSelect.selectedChoice
+        self.selectedName = self.filter_json.get("Last Filter Opened", "")
 
     @property
     def filter_json(self):
@@ -446,10 +446,11 @@ class FilterToolPanel(Panel):
         return self._filter_json
 
     def close(self):
+        self._saveOptions()
+        self.filter_json["Last Filter Opened"] = self.selectedName
         if not FilterToolPanel.BACKUP_FILTER_JSON:
             with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as f:
                 json.dump(self.filter_json, f)
-        self._saveOptions()
 
     def reload(self):
         for i in list(self.subwidgets):
@@ -490,7 +491,7 @@ class FilterToolPanel(Panel):
         name = self.selectedName.lower()
         names = [k for (k, v) in config.config.items("Filter Keys")]
         btn_name = config.config.get("Filter Keys", name) if name in names else "*"
-        self.binding_button.set_text(btn_name)
+        self.binding_button.set_text(btn_name, updateSize=True)
 
         self.filterOptionsPanel = None
         while self.filterOptionsPanel is None:
@@ -507,11 +508,11 @@ class FilterToolPanel(Panel):
                 if len(tool.filterNames) == 0:
                     raise ValueError("No filters loaded!")
                 if not self._recording:
-                    self.confirmButton.set_text("Filter")
+                    self.confirmButton.set_text("Filter", updateSize=True)
             else:  # We verified it was an existing macro already
                 macro_data = self.filter_json["Macros"][self.selectedName]
                 self.filterOptionsPanel = MacroModuleOptions(macro_data)
-                self.confirmButton.set_text("Run Macro")
+                self.confirmButton.set_text("Run Macro", updateSize=True)
 
         # This has to be recreated every time in case a macro has a longer name then everything else.
         self.filterSelect = ChoiceButton(names_list, choose=self.filterChanged, doNotTranslate=True)
@@ -530,16 +531,20 @@ class FilterToolPanel(Panel):
         if self.selectedName in self.tool.savedOptions:
             self.filterOptionsPanel.options = self.tool.savedOptions[self.selectedName]
 
+    @property
+    def macroSelected(self):
+        return self.filterSelect.selectedChoice not in self.tool.filterNames
+
     def filterChanged(self):
         # if self.filterSelect.selectedChoice not in self.tool.filterModules:
         #     return
         self._saveOptions()
         self.selectedName = self.filterSelect.selectedChoice
-        if self.filterSelect.selectedChoice not in self.tool.filterNames:  # Is macro
-            self.macro_button.set_text("Delete Macro")
+        if self.macroSelected:  # Is macro
+            self.macro_button.set_text("Delete Macro", updateSize=True)
             self.macro_button.action = self.delete_macro
         elif not self._recording:
-            self.macro_button.set_text("Record Macro")
+            self.macro_button.set_text("Record Macro", updateSize=True)
             self.macro_button.action = self.start_record_macro
         self.reload()
 
@@ -739,7 +744,6 @@ class FilterTool(EditorTool):
 
         self.filterModules = {}
         self.savedOptions = {}
-        self.lastUsed = ""
 
         self.updatePanel = Panel()
         updateButton = Button("Update Filters", action=self.updateFilters)
@@ -761,8 +765,6 @@ class FilterTool(EditorTool):
     @alertException
     def showPanel(self):
         self.panel = FilterToolPanel(self)
-        self.panel.selectedName = self.lastUsed
-        self.lastUsed = ""
 
         self.updatePanel.bottomleft = self.editor.viewportContainer.bottomleft
         self.editor.add(self.updatePanel)
@@ -813,7 +815,8 @@ class FilterTool(EditorTool):
         finishedUpdatingWidget.shrink_wrap()
         finishedUpdatingWidget.present()
 
-    def tryImport(self, _root, name, stock=False, subFolderString=""):
+    @staticmethod
+    def tryImport(_root, name, stock=False, subFolderString=""):
         if _root not in sys.path:
             try:
                 _root = str(_root)
