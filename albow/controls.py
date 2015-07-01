@@ -140,10 +140,9 @@ class Label(Widget):
     def get_text(self):
         return self._text
 
-    def set_text(self, x, doNotTranslate=False, updateSize=False):
+    def set_text(self, x, doNotTranslate=False):
         self._text = _(x, doNotTranslate=doNotTranslate)
-        if updateSize:
-            self.calc_size()
+        self.calc_size()
 
     def get_align(self):
         return self._align

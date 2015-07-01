@@ -381,6 +381,7 @@ class FilterModuleOptions(Widget):
         options = {}
         for k, v in self.optionDict.iteritems():
             options[k] = v.get() if not isinstance(v.get(), pymclevel.materials.Block) else copy.copy(v.get())
+        options["__page_index__"] = self.pages.pages.index(self.pages.current_page)
         return options
         # return dict((k, (v.get())) for k, v in self.optionDict.iteritems())
 
@@ -389,6 +390,9 @@ class FilterModuleOptions(Widget):
         for k in val:
             if k in self.optionDict:
                 self.optionDict[k].set(val[k])
+        index = val.get("__page_index__", -1)
+        if len(self.pages.pages) > index > -1:
+            self.pages.show_page(self.pages.pages[index])
 
     def giveEditorObject(self, module):
         module.editor = self.tool.editor
@@ -491,7 +495,7 @@ class FilterToolPanel(Panel):
         name = self.selectedName.lower()
         names = [k for (k, v) in config.config.items("Filter Keys")]
         btn_name = config.config.get("Filter Keys", name) if name in names else "*"
-        self.binding_button.set_text(btn_name, updateSize=True)
+        self.binding_button.set_text(btn_name)
 
         self.filterOptionsPanel = None
         while self.filterOptionsPanel is None:
@@ -508,11 +512,11 @@ class FilterToolPanel(Panel):
                 if len(tool.filterNames) == 0:
                     raise ValueError("No filters loaded!")
                 if not self._recording:
-                    self.confirmButton.set_text("Filter", updateSize=True)
+                    self.confirmButton.set_text("Filter")
             else:  # We verified it was an existing macro already
                 macro_data = self.filter_json["Macros"][self.selectedName]
                 self.filterOptionsPanel = MacroModuleOptions(macro_data)
-                self.confirmButton.set_text("Run Macro", updateSize=True)
+                self.confirmButton.set_text("Run Macro")
 
         # This has to be recreated every time in case a macro has a longer name then everything else.
         self.filterSelect = ChoiceButton(names_list, choose=self.filterChanged, doNotTranslate=True)
@@ -541,10 +545,10 @@ class FilterToolPanel(Panel):
         self._saveOptions()
         self.selectedName = self.filterSelect.selectedChoice
         if self.macroSelected:  # Is macro
-            self.macro_button.set_text("Delete Macro", updateSize=True)
+            self.macro_button.set_text("Delete Macro")
             self.macro_button.action = self.delete_macro
         elif not self._recording:
-            self.macro_button.set_text("Record Macro", updateSize=True)
+            self.macro_button.set_text("Record Macro")
             self.macro_button.action = self.start_record_macro
         self.reload()
 
