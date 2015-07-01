@@ -19,6 +19,32 @@ blocks:
     name: Stone
     mapcolor: [120, 120, 120]
     tex: [1, 0]
+    data:
+      0:
+        name: Stone
+        mapcolor: [120, 120, 120]
+        tex: [1, 0]
+      1:
+        name: Granite
+        tex: [4, 16]
+      2:
+        name: Polished Granite
+        search: smooth
+        tex: [5, 16]
+      3:
+        name: Diorite
+        tex: [6, 16]
+      4:
+        name: Polished Diorite
+        search: smooth
+        tex: [7, 16]
+      5:
+        name: Andesite
+        tex: [8, 16]
+      6:
+        name: Polished Andesite
+        search: smooth
+        tex: [9, 16]
         
   - id: 2
     idStr: grass
