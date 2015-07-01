@@ -381,7 +381,8 @@ class FilterModuleOptions(Widget):
         options = {}
         for k, v in self.optionDict.iteritems():
             options[k] = v.get() if not isinstance(v.get(), pymclevel.materials.Block) else copy.copy(v.get())
-        options["__page_index__"] = self.pages.pages.index(self.pages.current_page)
+        if self.pages.current_page is not None:
+            options["__page_index__"] = self.pages.pages.index(self.pages.current_page)
         return options
         # return dict((k, (v.get())) for k, v in self.optionDict.iteritems())
 
