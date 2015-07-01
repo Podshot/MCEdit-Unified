@@ -813,67 +813,67 @@ class FilterTool(EditorTool):
         finishedUpdatingWidget.shrink_wrap()
         finishedUpdatingWidget.present()
 
-    def reloadFilters(self):
-        def tryImport(_root, name, stock=False, subFolderString=""):
-            if _root not in sys.path:
+    def tryImport(self, _root, name, stock=False, subFolderString=""):
+        if _root not in sys.path:
+            try:
+                _root = str(_root)
+                sys.path.append(_root)
+            except UnicodeEncodeError:
+                pass
+        with open(os.path.join(_root, name)) as module_file:
+            module_name = name.split(os.path.sep)[-1].replace(".py", "")
+            try:
                 try:
-                    _root = str(_root)
-                    sys.path.append(_root)
+                    module = imp.load_source(module_name, os.path.join(_root, name), module_file)
                 except UnicodeEncodeError:
-                    pass
-            with open(os.path.join(_root, name)) as module_file:
-                module_name = name.split(os.path.sep)[-1].replace(".py", "")
-                try:
+                    log.debug("UnicodeEncodeError while to %s import normally, trying to read the source at"
+                              "%s to a string instead.", module_name, os.path.join(_root, name))
+                    source_code = module_file.read()
+                    module = imp.new_module(module_name)
                     try:
-                        module = imp.load_source(module_name, os.path.join(_root, name), module_file)
-                    except UnicodeEncodeError:
-                        log.debug("UnicodeEncodeError while to %s import normally, trying to read the source at"
-                                  "%s to a string instead.", module_name, os.path.join(_root, name))
-                        source_code = module_file.read()
-                        module = imp.new_module(module_name)
-                        try:
-                            exec(source_code, module.__dict__)
-                        except ImportError:
-                            return None
-                        if module_name not in sys.modules.keys():
-                            sys.modules[module_name] = module
-                    module.foldersForDisplayName = subFolderString
-                    if not(hasattr(module, 'displayName')):
-                        module.displayName = module_name  # Python is awesome
+                        exec (source_code, module.__dict__)
+                    except ImportError:
+                        return None
+                    if module_name not in sys.modules.keys():
+                        sys.modules[module_name] = module
+                module.foldersForDisplayName = subFolderString
+                if not (hasattr(module, 'displayName')):
+                    module.displayName = module_name  # Python is awesome
 
-                    if not stock:
+                if not stock:
 
-                        # -- Note by Rubisk 20-06-2015:
-                        # I have no idea what this does, and left it as much alone as I could.
-                        # If anyone wants to explain it and/or modify this to work w/o modifying sys stuff,
-                        # that would be great.
-                        if "trn" in sys.modules.keys():
-                            del sys.modules["trn"]
-                        if "albow.translate" in sys.modules.keys():
-                            del sys.modules["albow.translate"]
-                        if directories.getFiltersDir() in name:
-                            trn_path = os.path.split(name)[0]
-                        else:
-                            trn_path = directories.getFiltersDir()
-                        trn_path = os.path.join(trn_path, module_name)
-                        module.trn = translate
-                        if os.path.exists(trn_path):
-                            module.trn.setLangPath(trn_path)
-                            module.trn.buildTranslation(config.settings.langCode.get())
-                            n = module.displayName
-                            if hasattr(module, "trn"):
-                                n = module.trn._(module.displayName)
-                            if n == module.displayName:
-                                n = _(module.displayName)
-                            module.displayName = n
-                    return module
+                    # -- Note by Rubisk 20-06-2015:
+                    # I have no idea what this does, and left it as much alone as I could.
+                    # If anyone wants to explain it and/or modify this to work w/o modifying sys stuff,
+                    # that would be great.
+                    if "trn" in sys.modules.keys():
+                        del sys.modules["trn"]
+                    if "albow.translate" in sys.modules.keys():
+                        del sys.modules["albow.translate"]
+                    if directories.getFiltersDir() in name:
+                        trn_path = os.path.split(name)[0]
+                    else:
+                        trn_path = directories.getFiltersDir()
+                    trn_path = os.path.join(trn_path, module_name)
+                    module.trn = translate
+                    if os.path.exists(trn_path):
+                        module.trn.setLangPath(trn_path)
+                        module.trn.buildTranslation(config.settings.langCode.get())
+                        n = module.displayName
+                        if hasattr(module, "trn"):
+                            n = module.trn._(module.displayName)
+                        if n == module.displayName:
+                            n = _(module.displayName)
+                        module.displayName = n
+                return module
 
-                except Exception as e:
-                    traceback.print_exc()
-                    alert(_(u"Exception while importing filter module {}. " +
-                            u"See console for details.\n\n{}").format(name, e))
-                    return None
+            except Exception as e:
+                traceback.print_exc()
+                alert(_(u"Exception while importing filter module {}. " +
+                        u"See console for details.\n\n{}").format(name, e))
+                return None
 
+    def reloadFilters(self):
         filterFiles = []
 
         def searchForFiltersInDir(searchFolder, stock=False):
@@ -908,7 +908,7 @@ class FilterTool(EditorTool):
             shouldContinue = False
             for f in filterFiles:
                 try:
-                    filterModules.append(tryImport(f[0], f[1], f[2], f[3]))
+                    filterModules.append(self.tryImport(f[0], f[1], f[2], f[3]))
                     filterFiles.remove(f)
                     shouldContinue |= True
                 except ImportError:
