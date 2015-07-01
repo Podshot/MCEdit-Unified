@@ -160,7 +160,6 @@ def get_font(size, *names, **kwds):
         f = open(path, 'rb')
         font_file_cache.append(f)
         font = pygame.font.Font(f, size)
-        print font.size("1")
         log.debug("Font %s loaded." % path)
         log.debug("    Original size: %s. Proportion: %s. Final size: %s." % (oSize, font_proportion, size))
         # except:

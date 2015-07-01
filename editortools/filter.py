@@ -690,9 +690,6 @@ class FilterToolPanel(Panel):
                                 "Press ESC to cancel.").format(_(key_name), filter_keys[0]))
                 return True
             config.config.set("Filter Keys", self.selectedName.lower(), key_name)
-            print self.selectedName.lower()
-            print config.config.items("Filter Keys")
-            print config.config.get("Filter Keys", self.selectedName.lower())
         config.save()
         self.reload()
 
@@ -820,33 +817,21 @@ class FilterTool(EditorTool):
         finishedUpdatingWidget.present()
 
     @staticmethod
-    def tryImport(_root, name, stock=False, subFolderString=""):
-        if _root not in sys.path:
-            try:
-                _root = str(_root)
-                sys.path.append(_root)
-            except UnicodeEncodeError:
-                pass
+    def tryImport(_root, name, stock=False, subFolderString="", unicode_name=False):
         with open(os.path.join(_root, name)) as module_file:
             module_name = name.split(os.path.sep)[-1].replace(".py", "")
             try:
-                try:
-                    module = imp.load_source(module_name, os.path.join(_root, name), module_file)
-                except UnicodeEncodeError:
-                    log.debug("UnicodeEncodeError while to %s import normally, trying to read the source at"
-                              "%s to a string instead.", module_name, os.path.join(_root, name))
+                if unicode_name:
                     source_code = module_file.read()
                     module = imp.new_module(module_name)
-                    try:
-                        exec (source_code, module.__dict__)
-                    except ImportError:
-                        return None
+                    exec (source_code, module.__dict__)
                     if module_name not in sys.modules.keys():
                         sys.modules[module_name] = module
+                else:
+                    module = imp.load_source(module_name, os.path.join(_root, name), module_file)
                 module.foldersForDisplayName = subFolderString
                 if not (hasattr(module, 'displayName')):
                     module.displayName = module_name  # Python is awesome
-
                 if not stock:
 
                     # -- Note by Rubisk 20-06-2015:
@@ -882,6 +867,7 @@ class FilterTool(EditorTool):
 
     def reloadFilters(self):
         filterFiles = []
+        unicode_module_names = []
 
         def searchForFiltersInDir(searchFolder, stock=False):
             for root, folders, files in os.walk(os.path.join(searchFolder), True):
@@ -897,6 +883,13 @@ class FilterTool(EditorTool):
                     subFolderString = subFolderString[len(os.sep):]
                 if len(subFolderString) > 0:
                     subFolderString = "[" + subFolderString + "]"
+
+                try:
+                    root = str(root)
+                    if root not in sys.path:
+                        sys.path.append(root)
+                except UnicodeEncodeError:
+                    unicode_module_names.extend([filter_name for filter_name in files])
 
                 for possible_filter in files:
                     if possible_filter.endswith(".py"):
@@ -914,14 +907,14 @@ class FilterTool(EditorTool):
         while shouldContinue:
             shouldContinue = False
             for f in filterFiles:
-                try:
-                    filterModules.append(self.tryImport(f[0], f[1], f[2], f[3]))
-                    filterFiles.remove(f)
-                    shouldContinue |= True
-                except ImportError:
+                module = self.tryImport(f[0], f[1], f[2], f[3], f[1] in unicode_module_names)
+                if module is None:
                     continue
+                filterModules.append(module)
+                filterFiles.remove(f)
+                shouldContinue |= True
 
-        filterModules = filter(lambda module: hasattr(module, "perform"), filterModules)
+        filterModules = filter(lambda m: hasattr(m, "perform"), filterModules)
         self.filterModules = collections.OrderedDict(sorted(
             [(FilterTool.moduleDisplayName(x), x) for x in filterModules],
             key=lambda module_name: (module_name[0].lower(),
