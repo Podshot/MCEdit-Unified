@@ -1590,23 +1590,6 @@ blocks:
     tex: [2, 4]
     type: THINSLICE
     opacity: 0
-    data:
-      0:
-        name: Snow Layer (1)
-      1:
-        name: Snow Layer (2)
-      2:
-        name: Snow Layer (3)
-      3:
-        name: Snow Layer (4)
-      4:
-        name: Snow Layer (5)
-      5:
-        name: Snow Layer (6)
-      6:
-        name: Snow Layer (7)
-      7:
-        name: Snow Layer (8)
 
   - id: 79
     idStr: ice
@@ -1827,77 +1810,9 @@ blocks:
         name: Cake (6 Bites)
 
   - id: 95
-    idStr: stained_glass
-    tex: [0, 19]
-    data:
-      0:
-        name: White Stained Glass
-        tex: [0, 19]
-        mapcolor: [222, 222, 222]
-      1:
-        name: Orange Stained Glass
-        tex: [1, 19]
-        mapcolor: [234, 127, 55]
-      2:
-        name: Magenta Stained Glass
-        tex: [2, 19]
-        mapcolor: [191, 75, 201]
-      3:
-        name: Light Blue Stained Glass
-        tex: [3, 19]
-        mapcolor: [104, 139, 212]
-      4:
-        name: Yellow Stained Glass
-        tex: [4, 19]
-        mapcolor: [104, 139, 212]
-      5:
-        name: Lime Stained Glass
-        tex: [5, 19]
-        mapcolor: [59, 189, 48]
-      6:
-        name: Pink Stained Glass
-        tex: [6, 19]
-        mapcolor: [217, 131, 155]
-      7:
-        name: Gray Stained Glass
-        search: grey
-        tex: [7, 19]
-        mapcolor: [66, 66, 66]
-      8:
-        name: Light Gray Stained Glass
-        search: grey
-        tex: [8, 19]
-        mapcolor: [166, 166, 166]
-      9:
-        name: Cyan Stained Glass
-        tex: [9, 19]
-        mapcolor: [39, 117, 149]
-      10:
-        name: Purple Stained Glass
-        tex: [10, 19]
-        mapcolor: [129, 54, 196]
-      11:
-        name: Blue Stained Glass
-        tex: [11, 19]
-        mapcolor: [39, 51, 161]
-      12:
-        name: Brown Stained Glass
-        tex: [12, 19]
-        mapcolor: [86, 51, 28]
-      13:
-        name: Green Stained Glass
-        tex: [13, 19]
-        mapcolor: [56, 77, 24]
-      14:
-        name: Red Stained Glass
-        tex: [14, 19]
-        mapcolor: [164, 45, 41]
-      15:
-        name: Black Stained Glass
-        tex: [15, 19]
-        mapcolor: [0, 0, 0]
-    type: GLASS
-    opacity: 0
+    idStr: invisible_bedrock
+    name: Invisible Bedrock
+    tex: [0, 0]
 
   - id: 96
     idStr: trapdoor
@@ -2769,18 +2684,6 @@ blocks:
         tex_direction:
           TOP: [11, 15]
           BOTTOM: [11, 15]
-      3:
-        name: Pillar Quartz Block (East/West)
-        tex: [17, 19]
-        tex_direction:
-          SIDES: [11, 15]
-      4:
-        name: Pillar Quartz Block (North/South)
-        tex: [10, 15]
-        tex_direction:
-          FORWARD: [11, 15]
-          BACKWARD: [11, 15]
-          SIDES: [17, 19]
 
   - id: 156
     idStr: quartz_stairs
@@ -2806,121 +2709,72 @@ blocks:
         name: Quartz Stairs (Top, North)
 
   - id: 157
-    idStr: activator_rail
-    name: Activator Rail
-    mapcolor: [100, 100, 100]
-    tex: [10, 13]
-    type: SIMPLE_RAIL
-    tex_extra:
-        powered: [11, 13]
-    opacity: 0
+    idStr: double_wooden_slab
+    name: Double Wooden Slab
+    mapcolor: [200, 200, 200]
+    tex: [4, 0]
     data:
       0:
-        name: Activator Rail (Unpowered, North/South)
+        name: Oak Double Slab
+        tex: [4, 0]
       1:
-        name: Activator Rail (Unpowered, East/West)
+        name: Spruce Double Slab
+        tex: [6, 12]
       2:
-        name: Activator Rail (Unpowered, Ascending, East)
+        name: Birch Double Slab
+        tex: [6, 13]
       3:
-        name: Activator Rail (Unpowered, Ascending, West)
+        name: Jungle Double Slab
+        tex: [7, 12]
       4:
-        name: Activator Rail (Unpowered, Ascending, North)
+        name: Acacia Double Slab
+        tex: [0, 15]
       5:
-        name: Activator Rail (Unpowered, Ascending, South)
-      8:
-        name: Activator Rail (Powered, North/South)
-        tex: [11, 13]
-      9:
-        name: Activator Rail (Powered, East/West)
-        tex: [11, 13]
-      10:
-        name: Activator Rail (Powered, Ascending, East)
-        tex: [11, 13]
-      11:
-        name: Activator Rail (Powered, Ascending, West)
-        tex: [11, 13]
-      12:
-        name: Activator Rail (Powered, Ascending, North)
-        tex: [11, 13]
-      13:
-        name: Activator Rail (Powered, Ascending, South)
-        tex: [11, 13]
+        name: Dark Oak Double Slab
+        tex: [1, 15]
 
-  - id: 158
-    idStr: dropper
-    name: Dropper
-    mapcolor: [100, 100, 100]
-    tex: [13, 2]
-    opacity: 0
+  - id: 126
+    idStr: wooden_slab
+    name: Wooden Slab
+    mapcolor: [200, 200, 200]
+    tex: [4, 0]
     data:
       0:
-        name: Dropper (Down)
-        tex_direction:
-          TOP: [14, 3]
-          BOTTOM: [18, 4]
+        name: Oak Wood Slab (Bottom)
+        tex: [4, 0]
       1:
-        name: Dropper (Up)
-        tex_direction:
-          TOP: [18, 4]
-          BOTTOM: [14, 3]
-      2: 
-        name: Dropper (North)
-        tex_direction:
-          FORWARD: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
-      3: 
-        name: Dropper (South)
-        tex_direction:
-          BACKWARD: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
-      4: 
-        name: Dropper (West)
-        tex_direction:
-          LEFT: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
-      5: 
-        name: Dropper (East)
-        tex_direction:
-          RIGHT: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
+        name: Spruce Wood Slab (Bottom)
+        tex: [6, 12]
+      2:
+        name: Birch Wood Slab (Bottom)
+        tex: [6, 13]
+      3:
+        name: Jungle Wood Slab (Bottom)
+        tex: [7, 12]
+      4:
+        name: Acacia Wood Slab (Bottom)
+        tex: [0, 15]
+      5:
+        name: Dark Oak Wood Slab (Bottom)
+        tex: [1, 15]
       8:
-        name: Dropper (On, Down)
-        tex_direction:
-          TOP: [14, 3]
-          BOTTOM: [18, 4]
+        name: Oak Wood Slab (Top)
+        tex: [4, 0]
       9:
-        name: Dropper (On, Up)
-        tex_direction:
-          TOP: [18, 4]
-          BOTTOM: [14, 3]
-      10: 
-        name: Dropper (On, North)
-        tex_direction:
-          FORWARD: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
-      11: 
-        name: Dropper (On, South)
-        tex_direction:
-          BACKWARD: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
-      12: 
-        name: Dropper (On, West)
-        tex_direction:
-          LEFT: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
-      13: 
-        name: Dropper (On, East)
-        tex_direction:
-          RIGHT: [10, 2]
-          TOP: [14, 3]
-          BOTTOM: [14, 3]
+        name: Spruce Wood Slab (Top)
+        tex: [6, 12]
+      10:
+        name: Birch Wood Slab (Top)
+        tex: [6, 13]
+      11:
+        name: Jungle Wood Slab (Top)
+        tex: [7, 12]
+      12:
+        name: Acacia Wood Slab (Top)
+        tex: [0, 15]
+      13:
+        name: Dark Oak Wood Slab (Top)
+        tex: [1, 15]
 
   - id: 159
     idStr: stained_hardened_clay
@@ -3486,9 +3340,9 @@ blocks:
       15:
         name: Acacia Fence Gate (Powered, Open, East)
 
-  - id: 243
-    idStr: podzol
-    name: Dirt (Podzol)
+  - id: 198
+    idStr: grass_path
+    name: Grass Path
     mapcolor: [134, 96, 67]
     tex: [1, 29]
     tex_direction:
@@ -3543,11 +3397,11 @@ blocks:
     idStr: stonecutter
     name: Stone Cutter
     mapcolor: [96, 96, 96]
-    tex: [13, 2]
+    tex: [14, 29]
     tex_direction:
       FORWARD: [13, 29]
       SIDES: [13, 2]
-      BACKWARD: [14, 29]
+      BACKWARD: [13, 29]
       BOTTOM: [14, 3]
 
   - id: 246
@@ -3574,19 +3428,19 @@ blocks:
         name: Used Nether Reactor
 
   - id: 248
-    idStr: UpdateGameBlock
-    name: Update Game Block
+    idStr: update_game1
+    name: Update Game Block(update!)
     mapcolor: [201, 119, 240]
     tex: [15, 29]
 
   - id: 249
-    idStr: UpdateGameBlock
-    name: Update Game Block
+    idStr: update_game2
+    name: Update Game Block(ate!upd)
     mapcolor: [201, 119, 240]
     tex: [15, 29]
 
   - id: 255
-    idStr: INFO_RESERVED6
+    idStr: info_reserved6
     name: Error Stone
     mapcolor: [201, 119, 240]
     tex: [9, 13]
