@@ -140,8 +140,32 @@ class MacroModuleOptions(Widget):
     def run(self):
         pass
 
+    @alertFilterException
     def confirm(self, tool):
-        tool.run_macro(self._macro_data)
+        with setWindowCaption("Applying Macro..."):
+            options = []
+            filters = []
+            for step in sorted(self._macro_data.keys()):
+                if step != "Number of steps":
+                    filters.append(tool.filterModules[self._macro_data[step]["Name"]])
+                    for module_input in self._macro_data[step]["Inputs"].keys():
+                        if not isinstance(self._macro_data[step]["Inputs"][module_input], (str, unicode)):
+                            continue
+                        if not self._macro_data[step]["Inputs"][module_input].startswith("block-"):
+                            continue
+                        toFind = self._macro_data[step]["Inputs"][module_input][6:].split(":")
+                        block = tool.editor.materials.get((toFind[0], toFind[1]))
+                        self._macro_data[step]["Inputs"][module_input] = block
+                    options.append(self._macro_data[step]["Inputs"])
+
+            op = MacroOperation(tool.editor, tool.editor.level, tool.selectionBox(), filters, options)
+
+            tool.editor.level.showProgress = showProgress
+
+            tool.editor.addOperation(op)
+            tool.editor.addUnsavedEdit()
+
+            tool.editor.invalidateBox(tool.selectionBox())
 
 
 class FilterModuleOptions(Widget):
@@ -384,7 +408,6 @@ class FilterModuleOptions(Widget):
         if self.pages.current_page is not None:
             options["__page_index__"] = self.pages.pages.index(self.pages.current_page)
         return options
-        # return dict((k, (v.get())) for k, v in self.optionDict.iteritems())
 
     @options.setter
     def options(self, val):
@@ -400,14 +423,25 @@ class FilterModuleOptions(Widget):
 
     @staticmethod
     def confirm(tool):
-        tool.confirm()
+        with setWindowCaption("Applying Filter... - "):
+            filterModule = tool.filterModules[tool.panel.filterSelect.selectedChoice]
+
+            op = FilterOperation(tool.editor, tool.editor.level, tool.selectionBox(), filterModule,
+                                 tool.panel.filterOptionsPanel.options)
+
+            tool.editor.level.showProgress = showProgress
+
+            tool.editor.addOperation(op)
+            tool.editor.addUnsavedEdit()
+
+            tool.editor.invalidateBox(tool.selectionBox())
 
 
 class FilterToolPanel(Panel):
 
     BACKUP_FILTER_JSON = False
     """If set to true, the filter.json is backed up to the hard disk
-    every time it's edited. The default is fault, which makes the file save
+    every time it's edited. The default is false, which makes the file save
     only whenever the tool gets closed. If MCEdit were to crash, any recorded
     macros would not be saved."""
 
@@ -446,7 +480,8 @@ class FilterToolPanel(Panel):
         else:
             try:
                 self._filter_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
-            except (ValueError, IOError):
+            except (ValueError, IOError) as e:
+                log.error("Error while loading filters.json", e)
                 self._filter_json = {"Macros": {}}
         return self._filter_json
 
@@ -713,13 +748,12 @@ class FilterToolPanel(Panel):
 
 
 class FilterOperation(Operation):
-    def __init__(self, editor, level, box, filter_or_macro, options, panel):
+    def __init__(self, editor, level, box, filter, options):
         super(FilterOperation, self).__init__(editor, level)
         self.box = box
-        self.filter_or_macro = filter_or_macro
+        self.filter = filter
         self.options = options
         self.canUndo = False
-        self.panel = panel
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -728,14 +762,34 @@ class FilterOperation(Operation):
         if recordUndo:
             self.undoLevel = self.extractUndo(self.level, self.box)
 
-        self.filter_or_macro.perform(self.level, BoundingBox(self.box), self.options)
+        self.filter.perform(self.level, BoundingBox(self.box), self.options)
 
         self.canUndo = True
-        pass
 
     def dirtyBox(self):
         return self.box
 
+class MacroOperation(Operation):
+    def __init__(self, editor, level, box, filters, options):
+        super(MacroOperation, self).__init__(editor, level)
+        self._box = box
+        self.options = options
+        self.filters = filters
+        self.canUndo = False
+
+    def perform(self, recordUndo=True):
+        if self.level.saving:
+            alert(_("Cannot perform action while saving is taking place"))
+            return
+        if recordUndo:
+            self.undoLevel = self.extractUndo(self.level, self._box)
+
+        for o, f in zip(self.options, self.filters):
+            f.perform(self.level, BoundingBox(self._box), o)
+        self.canUndo = True
+
+    def dirtyBox(self):
+        return self._box
 
 class FilterTool(EditorTool):
     tooltipText = "Filter"
@@ -887,44 +941,6 @@ class FilterTool(EditorTool):
     @property
     def filterNames(self):
         return [FilterTool.moduleDisplayName(module) for module in self.filterModules.itervalues()]
-
-    @alertFilterException
-    def confirm(self):
-        with setWindowCaption("APPLYING FILTER - "):
-            filterModule = self.filterModules[self.panel.filterSelect.selectedChoice]
-
-            op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), filterModule,
-                                 self.panel.filterOptionsPanel.options, self.panel)
-
-            self.editor.level.showProgress = showProgress
-
-            self.editor.addOperation(op)
-            if op.canUndo:
-                self.editor.addUnsavedEdit()
-
-            self.editor.invalidateBox(self.selectionBox())
-
-    @alertFilterException
-    def run_macro(self, macro_data):
-        with setWindowCaption("APPLYING FILTER MACRO - "):
-            for step in sorted(macro_data.keys()):
-                if step != "Number of steps":
-                    module = self.filterModules[macro_data[step]["Name"]]
-                    for module_input in macro_data[step]["Inputs"].keys():
-                        if isinstance(macro_data[step]["Inputs"][module_input], (str, unicode)):
-                            if macro_data[step]["Inputs"][module_input].startswith("block-"):
-                                toFind = macro_data[step]["Inputs"][module_input][6:].split(":")
-                                for possible in pymclevel.alphaMaterials.allBlocks:
-                                    if possible.ID == int(toFind[0]) and possible.blockData == int(toFind[1]):
-                                        macro_data[step]["Inputs"][module_input] = possible
-                    op = FilterOperation(self.editor, self.editor.level, self.selectionBox(), module,
-                                         macro_data[step]["Inputs"], self.panel)
-
-                    self.editor.level.showProgress = showProgress
-
-                    self.editor.addOperation(op)
-                    self.editor.addUnsavedEdit()
-
 
 def tryImport(_root, name, stock=False, subFolderString="", unicode_name=False):
     with open(os.path.join(_root, name)) as module_file:
