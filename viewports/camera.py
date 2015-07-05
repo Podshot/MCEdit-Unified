@@ -1372,22 +1372,25 @@ class CameraViewport(GLViewport):
         panel.shrink_wrap()
         panel.present()
 
-    rightMouseDragStart = None
+    should_lock = False
 
     def rightClickDown(self, evt):
-        self.rightMouseDragStart = datetime.now()
+        # self.rightMouseDragStart = datetime.now()
+        self.should_lock = True
         self.toggleMouseLook()
 
     def rightClickUp(self, evt):
-        if self.rightMouseDragStart is None:
-            return
+        if not self.should_lock:
+            self.toggleMouseLook()
+        # if self.rightMouseDragStart is None:
+        #     return
 
-        td = datetime.now() - self.rightMouseDragStart
-        # except AttributeError:
-        # return
-        # print "RightClickUp: ", td
-        if td.microseconds > 180000:
-            self.mouseLookOff()
+        # td = datetime.now() - self.rightMouseDragStart
+        # # except AttributeError:
+        # # return
+        # # print "RightClickUp: ", td
+        # if td.microseconds > 180000:
+        #     self.mouseLookOff()
 
     def leftClickDown(self, evt):
         self.editor.toolMouseDown(evt, self.blockFaceUnderCursor)
@@ -1484,7 +1487,7 @@ class CameraViewport(GLViewport):
 
         self.editor.mouseEntered = True
         if self.mouseMovesCamera:
-
+            self.should_lock = False
             pitchAdjust = sensitivityAdjust(evt.rel[1])
             if self.invertMousePitch:
                 pitchAdjust = -pitchAdjust
