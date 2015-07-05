@@ -398,25 +398,28 @@ def askOpenFolderWin32(title, initialDir):
         pass
 
 def askOpenFolderGtk(title, initialDir):
-    chooser = gtk.FileChooserDialog(title,
+    if hasGtk:
+        chooser = gtk.FileChooserDialog(title,
                                     None, gtk.FILE_CHOOSER_ACTION_SAVE,
                                     (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                     gtk.STOCK_OPEN, gtk.RESPONSE_OK))
 
-    chooser.set_default_response(gtk.RESPONSE_OK)
-    chooser.set_current_folder(initialDir)
-    chooser.set_current_name("world")
-    chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_current_folder(initialDir)
+        chooser.set_current_name("world")
+        chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
     
-    response = chooser.run()
-    if response == gtk.RESPONSE_OK:
-        filename = chooser.get_filename() # Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action
-    else:
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            filename = chooser.get_filename() # Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action
+        else:
+            chooser.destroy()
+            return  # pressed cancel
         chooser.destroy()
-        return  # pressed cancel
-    chooser.destroy()
 
-    return filename
+        return filename
+    else:
+        print "You currently need gtk to use an Open Folder Dialog!"
 
 # End Open Folder Dialogs
 
