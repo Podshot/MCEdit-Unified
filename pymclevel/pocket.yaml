@@ -463,35 +463,35 @@ blocks:
         mapcolor: [74, 131, 66]
         tex: [5, 12]
       4:
-        name: Oak Leaves (No Decay)
-        mapcolor: [60, 192, 41]
-        tex: [5, 3]
-      5:
-        name: Spruce Leaves (No Decay)
-        mapcolor: [74, 131, 66]
-        tex: [5, 8]
-      6:
-        name: Birch Leaves (No Decay)
-        mapcolor: [89, 151, 76]
-        tex: [5, 3]
-      7:
-        name: Jungle Leaves (No Decay)
-        mapcolor: [74, 131, 66]
-        tex: [5, 12]
-      8:
         name: Oak Leaves (Decaying)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
-      9:
+      5:
         name: Spruce Leaves (Decaying)
         mapcolor: [74, 131, 66]
         tex: [5, 8]
-      10:
+      6:
         name: Birch Leaves (Decaying)
         mapcolor: [89, 151, 76]
         tex: [5, 3]
-      11:
+      7:
         name: Jungle Leaves (Decaying)
+        mapcolor: [74, 131, 66]
+        tex: [5, 12]
+      8:
+        name: Oak Leaves (No Decay)
+        mapcolor: [60, 192, 41]
+        tex: [5, 3]
+      9:
+        name: Spruce Leaves (No Decay)
+        mapcolor: [74, 131, 66]
+        tex: [5, 8]
+      10:
+        name: Birch Leaves (No Decay)
+        mapcolor: [89, 151, 76]
+        tex: [5, 3]
+      11:
+        name: Jungle Leaves (No Decay)
         mapcolor: [74, 131, 66]
         tex: [5, 12]
       12:
