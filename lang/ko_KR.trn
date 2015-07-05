@@ -551,11 +551,12 @@ o260 Shortcut: Alt-2
 t260 단축키: Alt-2
 o261 When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.
 Shortcut: Alt-4
-t261 체크하면 움직일 때 커맨드 블럭의 고정 좌표도 함께 움직입니다.
+t261 명령이 입력된 커맨드 블록이 움직이면, 커맨드 블록의 고정좌표도 움직입니다.
 단축키: Alt-4
 o262 When a spawner is moved, automatically update its spawning coordinates.
 Shortcut: Alt-5
-t262 체크하면 움직일 때 스포너의 몹들도 함께 움직입니다.
+t262 스포너가 움직이면 소환 좌표도 함께 움직입니다.
+단축키: ALt-5
 o263 Shortcut: Enter
 t263 단축키: 엔터
 o264 Fill and Replace
@@ -722,7 +723,8 @@ o343 Trade
 t343 거래
 o344       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
-t344 
+t344       거래자의 위치를 회전시킵니다
+*Not Move가 체크되어야 합니다*
 o345 Y-Axis
 t345 Y-Axis
 o346 Changes its body rotation. Due west is 0. Must be between -180 to 180 degrees.
@@ -1814,12 +1816,12 @@ t851 파일 형식
 o852 Choose the file format for the files
 t852 파일 형식을 선택하세요
 o853 Del
-t853 
+t853 딜리트
 o854 Show Commands
-t854 
+t854 커맨드 보이기
 o855 Show the command in a Command Block when hovering over it.
-t855 
+t855 커맨드 블럭에 커서를 갖다대면 커맨드를 보여줍니다.
 o856 [Empty]
-t856 
+t856 [빔]
 o857 Couldn't open the file
-t857 
+t857 파일을 열 수 없습니다
