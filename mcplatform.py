@@ -99,6 +99,11 @@ if sys.platform == "win32":
         from win32com.shell import shell, shellcon  # @UnresolvedImport
     except:
         pass
+    
+    try:
+        import pywintypes
+    except:
+        pass
 
 if sys.platform == 'darwin':
     cmd_name = "Cmd"
@@ -372,6 +377,50 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
                                     filename=defaultName,
                                     pathname=None)
     return filename
+
+# Start Open Folder Dialogs
+# TODO: Possibly get an OS X dialog
+def askOpenFolderWin32(title, initialDir):
+    try:
+        desktop_pidl = shell.SHGetFolderLocation(0, shellcon.CSIDL_DESKTOP, 0, 0)
+        pidl, display_name, image_list = shell.SHBrowseForFolder (
+                                                              win32gui.GetDesktopWindow(),
+                                                              desktop_pidl,
+                                                              "Choose a folder",
+                                                              0,
+                                                              None,
+                                                              None
+                                                              )
+        return shell.SHGetPathFromIDList(pidl)
+    except pywintypes.com_error as e:
+        if e.args[0] == -2147467259:
+            print "Invalid folder selected"
+        pass
+
+def askOpenFolderGtk(title, initialDir):
+    chooser = gtk.FileChooserDialog(title,
+                                    None, gtk.FILE_CHOOSER_ACTION_SAVE,
+                                    (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+
+    chooser.set_default_response(gtk.RESPONSE_OK)
+    chooser.set_current_folder(initialDir)
+    chooser.set_current_name("world")
+    chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+    
+    response = chooser.run()
+    if response == gtk.RESPONSE_OK:
+        filename = chooser.get_filename() # Returns the folder path if gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER is the action
+    else:
+        chooser.destroy()
+        return  # pressed cancel
+    chooser.destroy()
+
+    return filename
+
+# End Open Folder Dialogs
+
+
 #   if sys.platform == "win32":
 #       try:
 #
