@@ -676,7 +676,7 @@ t319 Enderman Block Id
 o320 Enderman Block Data
 t320 Enderman Block Data
 o321 Villager (green)
-t321 마을사람 (녹색)
+t321 주민 (녹색)
 o322 Farmer (brown)
 t322 농부 (갈색)
 o323 Butcher (white apron)
@@ -684,11 +684,11 @@ t323 백정 (하얀 앞치마)
 o324 Librarian (white)
 t324 사서 (흰색)
 o325 Blacksmith (black apron)
-t325 단야사 (검은 앞치마)
+t325 대장장이 (검은 앞치마)
 o326 Priest (purple)
 t326 성직자 (보라)
 o327 Villager Profession
-t327 마을사람의 직업
+t327 주민의 직업
 o328 Slime Size
 t328 Slime Size
 o329 Breeding Mode Ticks
@@ -718,7 +718,7 @@ t340 Give Experience per a Trade
 o341 Make Villager not Move
 t341 Make Villager not Move
 o342 Villager Name
-t342 마을사람 이름
+t342 주민 이름
 o343 Trade
 t343 거래
 o344       Rotate the Position of your Trader
@@ -912,7 +912,7 @@ t430 정글의 끝
 o431 Deep Ocean
 t431 심해
 o432 Stone Beach
-t432 자강 해안
+t432 자갈 해안
 o433 Cold Beach
 t433 Cold Beach
 o434 Birch Forest
