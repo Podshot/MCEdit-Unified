@@ -424,7 +424,7 @@ class MCSchematic(EntityLevel):
                 pass
 
             try:
-                entity["Rotation"][0].value -= 180.0
+                entity["Rotation"][0].value *= -1.0
             except:
                 pass
 
@@ -499,7 +499,7 @@ class MCSchematic(EntityLevel):
                 pass
 
             try:
-                entity["Rotation"][0].value -= 180.0
+                entity["Rotation"][0].value = entity["Rotation"][0].value * -1.0 + 180
             except:
                 pass
 
