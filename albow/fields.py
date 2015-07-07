@@ -1,27 +1,24 @@
 #
 # Albow - Fields
 #
-#-# Modified by D.C.-G. for translation purpose
-import locale
+# - # Modified by D.C.-G. for translation purpose
 from pygame import draw
+import traceback
 import pygame
 from pygame import key
+# noinspection PyUnresolvedReferences
 from pygame.locals import K_LEFT, K_RIGHT, K_TAB, K_c, K_v, K_x, SCRAP_TEXT, K_UP, K_DOWN, K_RALT, K_LALT, \
-    K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META, K_HOME, K_END, K_z, K_y
+    K_BACKSPACE, K_DELETE, KMOD_SHIFT, KMOD_CTRL, KMOD_ALT, KMOD_META, K_HOME, K_END, K_z, K_y, K_KP2, K_KP1
 from widget import Widget, overridable_property
 from controls import Control
-#-# This need to be changed. We need albow.translate in the config module.
-#-# he solution can be a set of functions wich let us define the needed MCEdit 'config' data
-#-# without importing it.
-#-# It can be a 'config' module built only for albow.
+# This need to be changed. We need albow.translate in the config module.
+# he solution can be a set of functions wich let us define the needed MCEdit 'config' data
+# without importing it.
+# It can be a 'config' module built only for albow.
 from config import config
-#-#
 
-#-#
 from translate import _
 import pyperclip
-#-#
-#---------------------------------------------------------------------------
 
 
 class TextEditor(Widget):
@@ -47,6 +44,12 @@ class TextEditor(Widget):
         return self._text
 
     def set_text(self, text):
+        if type(text) == str:
+            try:
+                text = unicode(text, 'utf-8')
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                print "Failed to convert text to unicode, skipping set text"
+                traceback.print_exc()
         self._text = _(text, doNotTranslate=self.doNotTranslate)
 
     text = overridable_property('text')
@@ -169,7 +172,7 @@ class TextEditor(Widget):
         if event.cmd and event.unicode:
             if event.key == K_c or event.key == K_x:
                 try:
-                    #pygame.scrap.put(SCRAP_TEXT, self.text)
+                    # pygame.scrap.put(SCRAP_TEXT, self.text)
                     text, i = self.get_text_and_insertion_point()
                     if i is None and (self.selection_start is None or self.selection_end is None):
                         text = self.text
@@ -187,7 +190,7 @@ class TextEditor(Widget):
             elif event.key == K_v:
                 try:
                     self.addUndo()
-                    #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    # t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
                     t = pyperclip.paste().replace("\n", " ")
                     if t is not None:
                         allow = True
@@ -213,7 +216,7 @@ class TextEditor(Widget):
                         self.change_text(self.text)
                 except:
                     print "scrap not available"
-                    #print repr(t)
+                    # print repr(t)
             elif event.key == K_z and self.undoNum > 0:
                 self.redoList.append(self.text)
                 self.undoNum -= 1
@@ -261,7 +264,7 @@ class TextEditor(Widget):
         if k == K_BACKSPACE or k == K_DELETE:
             text, i = self.get_text_and_insertion_point()
             if i is None:
-                text = ""
+                text = u""
                 i = 0
             else:
                 if k == K_BACKSPACE:
@@ -343,7 +346,7 @@ class TextEditor(Widget):
         self.call_handler('change_action')
 
 
-#---------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 
 
 class Field(Control, TextEditor):
@@ -357,8 +360,8 @@ class Field(Control, TextEditor):
     enter_passes = False
 
     def __init__(self, width=None, **kwds):
-        min = self.predict_attr(kwds, 'min')
-        max = self.predict_attr(kwds, 'max')
+        mi = self.predict_attr(kwds, 'min')
+        ma = self.predict_attr(kwds, 'max')
         if 'format' in kwds:
             self.format = kwds.pop('format')
         if 'empty' in kwds:
@@ -366,10 +369,10 @@ class Field(Control, TextEditor):
         self.editing = False
         if width is None:
             w1 = w2 = ""
-            if min is not None:
-                w1 = self.format_value(min)
+            if mi is not None:
+                w1 = self.format_value(mi)
             if max is not None:
-                w2 = self.format_value(max)
+                w2 = self.format_value(ma)
             if w2:
                 if len(w1) > len(w2):
                     width = w1
@@ -392,6 +395,12 @@ class Field(Control, TextEditor):
             return self.format_value(self.value)
 
     def set_text(self, text):
+        if type(text) == str:
+            try:
+                text = unicode(text, 'utf-8')
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                print "Failed to convert text to unicode, skipping set text"
+                traceback.print_exc()
         self.editing = True
         self._text = _(text, doNotTranslate=self.doNotTranslate)
         if self.should_commit_immediately(text):
@@ -666,11 +675,18 @@ class TextEditorWrapped(Widget):
         self.undoNum = 0
         self.redoList = []
         self.root = self.get_root()
+        self.alt21 = False
 
     def get_text(self):
         return self._text
 
     def set_text(self, text):
+        if type(text) == str:
+            try:
+                text = unicode(text, 'utf-8')
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                print "Failed to convert text to unicode, skipping set text"
+                traceback.print_exc()
         self._text = _(text, doNotTranslate=self.doNotTranslate)
         self.textChanged = True
 
@@ -781,16 +797,16 @@ class TextEditorWrapped(Widget):
         for textLine in self.textL[self.topLine:self.topLine + self.dispLines]:
             image = font.render(textLine, True, fg)
             surface.blit(image, frame.move(0, h))
-#            h += font.size(textLine)[1]
+            # h += font.size(textLine)[1]
             h += linesize
 
         # Draw Cursor if Applicable
         if focused and ip is not None and i is not None and il is not None:
             if self.textL:
-#                x, h = font.size(self.textL[il][:i])
+                # x, h = font.size(self.textL[il][:i])
                 x, h = font.size(self.textL[il][:i])[0], linesize
             else:
-#                x, h = (0, font.size("X")[1])
+                # x, h = (0, font.size("X")[1])
                 x, h = (0, linesize)
             if self.textRefList and ip == self.textRefList[il]:
                 if self.doFix:
@@ -804,6 +820,18 @@ class TextEditorWrapped(Widget):
             draw.line(surface, fg, (x, y), (x, y + h - 1))
 
     def key_down(self, event):
+        # Ugly ALT + 21 hack
+        if self.alt21 and event.key == K_KP1 and event.alt:
+            self.insert_char(u"\xa7")
+            self.alt21 = False
+            return
+        elif self.alt21:
+            self.insert_char(u"2")
+        self.alt21 = False
+        if event.alt and event.key == K_KP2:
+            self.alt21 = True
+            return
+
         self.root.notMove = True
         if not event.cmd or (event.alt and event.unicode):
             k = event.key
@@ -895,7 +923,7 @@ class TextEditorWrapped(Widget):
         if event.cmd and event.unicode:
             if event.key == K_c or event.key == K_x:
                 try:
-                    #pygame.scrap.put(SCRAP_TEXT, self.text)
+                    # pygame.scrap.put(SCRAP_TEXT, self.text)
                     text, i = self.get_text_and_insertion_point()
                     if i is None and (self.selection_start is None or self.selection_end is None):
                         text = self.text
@@ -913,7 +941,7 @@ class TextEditorWrapped(Widget):
             elif event.key == K_v:
                 try:
                     self.addUndo()
-                    #t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
+                    # t = pygame.scrap.get(SCRAP_TEXT).replace('\0', '')
                     t = pyperclip.paste().replace("\n", " ")
                     if t is not None:
                         allow = True
@@ -940,7 +968,7 @@ class TextEditorWrapped(Widget):
                         self.sync_line_and_step()
                 except:
                     print "scrap not available"
-                    #print repr(t)
+                    # print repr(t)
             elif event.key == K_z and self.undoNum > 0:
                 self.redoList.append(self.text)
                 self.undoNum -= 1
@@ -1116,7 +1144,7 @@ class TextEditorWrapped(Widget):
                 elif i is None and self.selection_start is not None and self.selection_end is not None:
                     i = min(self.selection_start, self.selection_end) + 1
                     text = text[:(min(self.selection_start, self.selection_end))] + c + text[(
-                    max(self.selection_start, self.selection_end)):]
+                        max(self.selection_start, self.selection_end)):]
                     self.selection_start = None
                     self.selection_end = None
                 else:
@@ -1194,7 +1222,6 @@ class TextEditorWrapped(Widget):
         font = self.font
 
         if textL:
-#            h = font.size("X")[1]
             h = font.get_linesize()
             line = y // h
 
@@ -1307,7 +1334,7 @@ class TextEditorWrapped(Widget):
             i = 0
 
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 class FieldWrapped(Control, TextEditorWrapped):
     #  type      func(string) -> value
@@ -1357,6 +1384,12 @@ class FieldWrapped(Control, TextEditorWrapped):
             return self.format_value(self.value)
 
     def set_text(self, text):
+        if type(text) == str:
+            try:
+                text = unicode(text, 'utf-8')
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                print "Failed to convert text to unicode, skipping set text"
+                traceback.print_exc()
         self.editing = True
         self._text = _(text, doNotTranslate=self.doNotTranslate)
         if self.should_commit_immediately(text):
@@ -1422,7 +1455,7 @@ class FieldWrapped(Control, TextEditorWrapped):
 #        Control.set_value(self, x)
 #        self.editing = False
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 class TextFieldWrapped(FieldWrapped):
     type = unicode

@@ -76,7 +76,7 @@ from albow.controls import Label, ValueDisplay, Image
 from albow.dialogs import Dialog, QuickDialog, wrapped_label
 from albow.openglwidgets import GLOrtho, GLViewport
 from albow.translate import _
-from pygame import display, event, mouse, MOUSEMOTION
+from pygame import display, event, mouse, MOUSEMOTION, image
 
 from depths import DepthOffset
 from editortools.operation import Operation
@@ -252,7 +252,8 @@ class LevelEditor(GLViewport):
         self.recordUndoButton = CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
 
         # TODO: Mark
-        self.sessionLockLock = Image(os.path.join("toolicons", "session_good.png"))
+        self.sessionLockLock = Image(image.load(open(directories.getDataDir(os.path.join(u"toolicons",
+                                                                                         u"session_good.png")), 'rb')))
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLock.mouse_down = self.mouse_down_session
         self.sessionLockLabel = Label("Session:", margin=0)
@@ -1836,8 +1837,8 @@ class LevelEditor(GLViewport):
                 if filters:
                     if self.currentTool != 4:
                         self.toolbar.selectTool(4)
-                    if self.toolbar.tools[4].panel.selectedFilterName != filters[0]:
-                        self.toolbar.tools[4].panel.selectedFilterName = filters[0]
+                    if self.toolbar.tools[4].panel.selectedName != filters[0]:
+                        self.toolbar.tools[4].panel.selectedName = filters[0]
                         self.toolbar.tools[4].panel.reload()
 
         self.root.fix_sticky_ctrl()
@@ -3386,11 +3387,13 @@ class LogFilter(logging.Filter):
     def filter(self, record):
         message = record.getMessage()
         if "Session lock lost. This world is being accessed from another location." in message:
-            self.editor.sessionLockLock.set_image(get_image(os.path.join("toolicons", "session_bad.png"), prefix=""))
+            image_path = directories.getDataDir(os.path.join("toolicons", "session_bad.png"))
+            self.editor.sessionLockLock.set_image(get_image(image_path, prefix=""))
             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
         if "Re-acquired session lock" in message:
-            self.editor.sessionLockLock.set_image(get_image(os.path.join("toolicons", "session_good.png"), prefix=""))
+            image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
+            self.editor.sessionLockLock.set_image(get_image(image_path, prefix=""))
             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
             self.editor.root.sessionStolen = False

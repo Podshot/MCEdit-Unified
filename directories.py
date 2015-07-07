@@ -12,7 +12,8 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
-
+import time
+t= time.time()
 import sys
 import os
 import json
@@ -64,8 +65,7 @@ def win32_utf8_argv():
     except Exception:
         pass
 
-
-def getDataDir():
+def getDataDir(path=""):
     """
     Returns the folder where the executable is located.
     :return unicode
@@ -84,7 +84,8 @@ def getDataDir():
     #
     # else:
     dataDir = os.getcwdu()
-
+    if len(path) > 0:
+        return os.path.join(dataDir, path)
     return dataDir
 
 
@@ -181,7 +182,16 @@ def getSelectedProfile():
     except:
         return None
 
-minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")
+_minecraftSaveFileDir = None
+
+def getMinecraftSaveFileDir():
+    global _minecraftSaveFileDir
+    if _minecraftSaveFileDir is None:
+        _minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")
+    return _minecraftSaveFileDir
+
+minecraftSaveFileDir = getMinecraftSaveFileDir()
+
 ini = u"mcedit.ini"
 cache = u"usercache.json"
 
@@ -260,7 +270,6 @@ def move_displace(src, dst):
         os.rename(dst, olddst)
         shutil.move(src, dst)
     return True
-
 
 def goFixed():
     if sys.platform == "darwin":
@@ -392,3 +401,4 @@ except:
 
 def getFiltersDir():
     return filtersDir
+

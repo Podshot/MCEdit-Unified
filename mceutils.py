@@ -550,63 +550,6 @@ def setWindowCaption(prefix):
     return ctx()
 
 
-def compareMD5Hashes(found_filters):
-    '''
-    Compares the MD5 Hashes of filters
-    :param found_filters: A list of filter paths
-    '''
-    ff = {}
-    for filter in found_filters:
-        ff[os.path.split(filter)[-1]] = filter
-    try:
-        if not os.path.exists(os.path.join(directories.getDataDir(), "filters.json")):
-            filterDict = {"filter-md5s": {}}
-            with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as j:
-                json.dump(filterDict, j)
-        else:
-            convert = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
-            if "filters" in convert:
-                convert["filter-md5s"] = convert["filters"]
-                del convert["filters"]
-                with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
-                    json.dump(convert, done)
-        filterInBundledFolder = directories.getAllOfAFile(os.path.join(directories.getDataDir(), "stock-filters"), ".py")
-        filterBundle = {}
-        for bundled in filterInBundledFolder:
-            filterBundle[os.path.split(bundled)[-1]] = bundled
-        hashJSON = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
-        for filt in ff.keys():
-            realName = filt
-            if realName in filterBundle.keys():
-                with open(ff[filt], 'r') as filtr:
-                    filterData = filtr.read()
-                    if realName in hashJSON["filter-md5s"]:
-                        old_hash = hashJSON["filter-md5s"][realName]
-                        bundledData = None
-                        with open(filterBundle[realName]) as bundledFilter:
-                            bundledData = bundledFilter.read()
-                        if old_hash != hashlib.md5(bundledData).hexdigest() and bundledData is not None:
-                            shutil.copy(filterBundle[realName], directories.filtersDir)
-                            hashJSON["filter-md5s"][realName] = hashlib.md5(bundledData).hexdigest()
-                        if old_hash != hashlib.md5(filterData).hexdigest() and hashlib.md5(filterData).hexdigest() != hashlib.md5(bundledData).hexdigest():
-                            shutil.copy(filterBundle[realName], directories.filtersDir)
-                            hashJSON["filter-md5s"][realName] = hashlib.md5(bundledData).hexdigest()
-                    else:
-                        hashJSON["filter-md5s"][realName] = hashlib.md5(filterData).hexdigest()
-        for bundled in filterBundle.keys():
-            if bundled not in ff.keys():
-                shutil.copy(filterBundle[bundled], directories.filtersDir)
-                data = None
-                with open(filterBundle[bundled], 'r') as f:
-                    data = f.read()
-                if data is not None:
-                    hashJSON["filter-md5s"][bundled] = hashlib.md5(data).hexdigest()
-        with open(os.path.join(directories.getDataDir(), "filters.json"), 'w') as done:
-            json.dump(hashJSON, done)
-    except Exception, e:
-        print ('Error: {}'.format(e))
-
-
 def showProgress(progressText, progressIterator, cancel=False):
     """Show the progress for a long-running synchronous operation.
     progressIterator should be a generator-like object that can return
