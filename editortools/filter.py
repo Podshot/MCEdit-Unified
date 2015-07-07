@@ -634,7 +634,7 @@ class FilterToolPanel(Panel):
 
         input_row = Row((macroNameLabel, macroNameField))
         saveButton = Button("Save", action=save_macro)
-        closeButton = Button("Close", action=stop_dialog)
+        closeButton = Button("Cancel", action=stop_dialog)
         button_row = Row((saveButton, closeButton))
         macro_dialog.add(Column((input_row, button_row)))
         macro_dialog.shrink_wrap()
