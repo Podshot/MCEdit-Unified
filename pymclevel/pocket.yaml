@@ -1273,7 +1273,7 @@ blocks:
         name: Wheat (Age 6)
         tex: [14, 5]
       7: 
-        name: Wheat (Age 7)
+        name: Wheat (Age 7 (Max))
         tex: [15, 5]
 
   - id: 60
