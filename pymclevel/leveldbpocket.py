@@ -950,6 +950,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             playerTag = self.getPlayerTag(player)
             return playerTag["playerGameType"].value
 
+    def markDirtyChunk(self, cx, cz):
+        self.getChunk(cx, cz).chunkChanged()
+
+    def markDirtyBox(self, box):
+        for cx, cz in box.chunkPositions:
+            self.markDirtyChunk(cx, cz)
+
 
 class PocketLeveldbChunk(LightedChunk):
     HeightMap = FakeChunk.HeightMap
