@@ -1276,6 +1276,8 @@ class LevelEditor(GLViewport):
         shutil.copytree(self.level.worldFolder.filename, filename)
         self.level.worldFolder = AnvilWorldFolder(filename)
         self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
+        if hasattr(self.level, "acquireSessionLock"):
+            self.level.acquireSessionLock()
 
         self.saveFile()
         self.initWindowCaption()
