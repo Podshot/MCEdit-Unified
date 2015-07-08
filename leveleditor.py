@@ -1071,6 +1071,8 @@ class LevelEditor(GLViewport):
         Called to load a level, world, or dimension into the editor and display it in the viewport.
         """
         self.level = level
+        if hasattr(level, 'acquireSessionLock'):
+            level.acquireSessionLock()
 
         self.toolbar.removeToolPanels()
         self.selectedChunks = set()

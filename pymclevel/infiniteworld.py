@@ -1061,7 +1061,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.readonly = readonly
         if not readonly:
             self.acquireSessionLock()
-
             workFolderPath = self.worldFolder.getFolderPath("##MCEDIT.TEMP##")
             workFolderPath2 = self.worldFolder.getFolderPath("##MCEDIT.TEMP2##")
             if os.path.exists(workFolderPath):
