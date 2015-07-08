@@ -91,9 +91,9 @@ t35 화살표
 o36 Numpad
 t36 숫자패드
 o37 WASD Old
-t37 WASD 옛날
+t37 WASD 구식
 o38 Keybind Presets:
-t38 
+t38 Keybind Presets:
 o39 MCEdit
 t39 MCEdit
 o40 <
@@ -408,9 +408,9 @@ t192 선택 영역을 청크 경계까지 늘립니다.
 o193 Selected Chunks:
 t193 선택된 청크:
 o194 Extract
-t194 Extract
+t194 추출
 o195 Create
-t195 Create
+t195 생성
 o196 Prune
 t196 Prune
 o197 Relight
@@ -584,31 +584,31 @@ t273 채우기 도구가 선택되면 블럭을 상기시킵니다.
 o274 Filter
 t274 필터
 o275 Strength
-t275 Strength
+t275 힘
 o276 Nausea (no mob effect)
-t276 Nausea (no mob effect)
+t276 어지러움 (no mob effect)
 o277 Weakness
-t277 Weakness
+t277 나약함 
 o278 Water Breathing
-t278 Water Breathing
+t278 수중 호흡
 o279 Regeneration
-t279 Regeneration
+t279 재생성
 o280 Poison
-t280 Poison
+t280 독
 o281 Resistance
-t281 Resistance
+t281 저항
 o282 Hunger (no mob effect)
-t282 Hunger (no mob effect)
+t282 배고픔 (no mob effect)
 o283 Haste (no mob effect)
-t283 Haste (no mob effect)
+t283 성급함 (no mob effect)
 o284 Fire Resistance
-t284 Fire Resistance
+t284 화염 저항
 o285 Blindness (no mob effect)
-t285 Blindness (no mob effect)
+t285 실명 (no mob effect)
 o286 Jump Boost
 t286 Jump Boost
 o287 Effect
-t287 Effect
+t287 효과
 o288 Level
 t288 Level
 o289 Duration (Seconds)
@@ -626,11 +626,11 @@ t294 Classic Water Flood
 o295 Colorwires
 t295 Colorwires
 o296 Create Busses
-t296 Create Busses
+t296 부스 생성
 o297 Create Shops
-t297 Create Shops
+t297 상점 생성
 o298 Create Spawners
-t298 Create Spawners
+t298 스포너 생성
 o299 Decliff
 t299 Decliff
 o300 Find
@@ -650,7 +650,7 @@ t306 Update Filters
 o307 Max Seed
 t307 Max Seed
 o308 Health
-t308 Health
+t308 체력
 o309 VelocityX
 t309 VelocityX
 o310 VelocityY
@@ -658,7 +658,7 @@ t310 VelocityY
 o311 VelocityZ
 t311 VelocityZ
 o312 Fire
-t312 Fire
+t312 불
 o313 FallDistance
 t313 FallDistance
 o314 AttackTime
@@ -666,29 +666,29 @@ t314 AttackTime
 o315 HurtTime
 t315 HurtTime
 o316 Lightning
-t316 Lightning
+t316 번개
 o317 No Lightning
-t317 No Lightning
+t317 번개 없음
 o318 Lightning Creeper
-t318 Lightning Creeper
+t318 전격 크리퍼
 o319 Enderman Block Id
 t319 Enderman Block Id
 o320 Enderman Block Data
 t320 Enderman Block Data
 o321 Villager (green)
-t321 Villager (green)
+t321 주민 (녹색)
 o322 Farmer (brown)
-t322 Farmer (brown)
+t322 농부 (갈색)
 o323 Butcher (white apron)
-t323 Butcher (white apron)
+t323 백정 (하얀 앞치마)
 o324 Librarian (white)
-t324 Librarian (white)
+t324 사서 (흰색)
 o325 Blacksmith (black apron)
-t325 Blacksmith (black apron)
+t325 대장장이 (검은 앞치마)
 o326 Priest (purple)
-t326 Priest (purple)
+t326 성직자 (보라)
 o327 Villager Profession
-t327 Villager Profession
+t327 주민의 직업
 o328 Slime Size
 t328 Slime Size
 o329 Breeding Mode Ticks
@@ -706,7 +706,7 @@ t334 용암
 o335 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
 t335 SethBling의 Create Shop 필터를 수정한 버전입니다.
 o336 Profession
-t336 Profession
+t336 전문직
 o337 Add Stopping Trade
 t337 Add Stopping Trade
 o338 Invulnerable Villager
@@ -718,7 +718,7 @@ t340 Give Experience per a Trade
 o341 Make Villager not Move
 t341 Make Villager not Move
 o342 Villager Name
-t342 Villager Name
+t342 주민 이름
 o343 Trade
 t343 거래
 o344       Rotate the Position of your Trader
@@ -862,57 +862,57 @@ t405 나뭇잎 재질
 o406 Plant On
 t406 식물
 o407 Ocean
-t407 Ocean
+t407 바다
 o408 Plains
-t408 Plains
+t408 초원
 o409 Desert
-t409 Desert
+t409 사막
 o410 Extreme Hills
 t410 Extreme Hills
 o411 Forest
-t411 Forest
+t411 숲
 o412 Taiga
 t412 Taiga
 o413 Swamppland
-t413 Swamppland
+t413 늪지대
 o414 River
-t414 River
+t414 강
 o415 Hell (Nether)
-t415 Hell (Nether)
+t415 지옥 (네더)
 o416 Sky (End)
 t416 Sky (End)
 o417 Frozen Ocean
-t417 Frozen Ocean
+t417 얼어붙은 바다
 o418 Frozen River
-t418 Frozen River
+t418 얼어붙은 강
 o419 Ice Plains
-t419 Ice Plains
+t419 얼어 붙은 평야
 o420 Ice Mountains
-t420 Ice Mountains
+t420 설산
 o421 Mushroom Island
-t421 Mushroom Island
+t421 버섯섬
 o422 Mushroom Island Shore
-t422 Mushroom Island Shore
+t422 버섯섬 해안가
 o423 Beach
-t423 Beach
+t423 해안가
 o424 Desert Hills
-t424 Desert Hills
+t424 모래 둔덕
 o425 Forest Hills
-t425 Forest Hills
+t425 숲 언더
 o426 Taiga Hills
 t426 Taiga Hills
 o427 Extreme Hills Edge
 t427 Extreme Hills Edge
 o428 Jungle
-t428 Jungle
+t428 정글
 o429 Jungle Hills
-t429 Jungle Hills
+t429 정글 언덕
 o430 Jungle Edge
-t430 Jungle Edge
+t430 정글의 끝
 o431 Deep Ocean
-t431 Deep Ocean
+t431 심해
 o432 Stone Beach
-t432 Stone Beach
+t432 자갈 해안
 o433 Cold Beach
 t433 Cold Beach
 o434 Birch Forest

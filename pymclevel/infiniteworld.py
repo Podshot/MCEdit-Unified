@@ -1142,17 +1142,15 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.createPlayer("Player")
 
     def acquireSessionLock(self):
-        print "test"
         lock_file = self.worldFolder.getFilePath("session.lock")
         self.initTime = int(time.time() * 1000)
         with file(lock_file, "wb") as f:
             f.write(struct.pack(">q", self.initTime))
             f.flush()
             os.fsync(f.fileno())
+
         for function in self.lockAcquireFuncs:
-            print function
             function()
-        # logging.getLogger().info("Re-acquired session lock")
 
     def setSessionLockCallback(self, acquire_func, lose_func):
         self.lockAcquireFuncs.append(acquire_func)
