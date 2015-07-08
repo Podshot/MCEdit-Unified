@@ -371,7 +371,7 @@ class Field(Control, TextEditor):
             w1 = w2 = ""
             if mi is not None:
                 w1 = self.format_value(mi)
-            if max is not None:
+            if ma is not None:
                 w2 = self.format_value(ma)
             if w2:
                 if len(w1) > len(w2):
