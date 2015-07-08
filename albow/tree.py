@@ -183,29 +183,35 @@ class Tree(Column):
         if name == "key_down":
             keyname = self.root.getKey(evt)
             if keyname == "Up" and self.selected_item_index > 0:
-                if self.selected_item_index == None:
+                if self.selected_item_index is None:
                     self.selected_item_index = -1
                 self.selected_item_index = max(self.selected_item_index - 1, 0)
-
+                keyname = 'Return'
             elif keyname == "Down" and self.selected_item_index < len(self.rows) - 1:
-                if self.selected_item_index == None:
+                if self.selected_item_index is None:
                     self.selected_item_index = -1
                 self.selected_item_index += 1
+                keyname = 'Return'
             elif keyname == 'Page down':
-                if self.selected_item_index == None:
+                if self.selected_item_index is None:
                     self.selected_item_index = -1
                 self.selected_item_index = min(len(self.rows) - 1, self.selected_item_index + self.treeRow.num_rows())
+                keyname = 'Return'
             elif keyname == 'Page up':
-                if self.selected_item_index == None:
+                if self.selected_item_index is None:
                     self.selected_item_index = -1
                 self.selected_item_index = max(0, self.selected_item_index - self.treeRow.num_rows())
-            if self.treeRow.cell_to_item_no(0, 0) != None and (self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index):
+                keyname = 'Return'
+
+            if self.treeRow.cell_to_item_no(0, 0) is not None and (self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 > self.selected_item_index or self.treeRow.cell_to_item_no(0, 0) + self.treeRow.num_rows() -1 < self.selected_item_index):
                 self.treeRow.scroll_to_item(self.selected_item_index)
 
             if keyname == 'Return' and self.selected_item_index != None:
                 self.select_item(self.selected_item_index)
                 if self.selected_item[7] in self.compound_types:
                     self.deploy(self.selected_item[6])
+                if self.selected_item is not None and hasattr(self, "update_side_panel"):
+                    self.update_side_panel(self.selected_item)
 
     def cut_item(self):
         self.copyBuffer = ([] + self.selected_item, 1)

@@ -730,8 +730,8 @@ class FilterToolPanel(Panel):
         self.reload()
 
     def _saveOptions(self):
-        """Should never be called. Call filterchanged() or close() instead
-        , which will then call this.
+        """Should never be called. Call filterchanged() or close() instead,
+        which will then call this.
         :return:
         """
         if self.filterOptionsPanel is not None:
@@ -740,6 +740,7 @@ class FilterToolPanel(Panel):
             options.pop("", "")
             self.tool.savedOptions[self.selectedName] = options
 
+    @alertFilterException
     def confirm(self):
         if self._recording:
             self._addMacroStep(self.selectedName, self.filterOptionsPanel.options)

@@ -1236,8 +1236,11 @@ class SelectionTool(EditorTool):
                         file.write("\n\n")
                     else:
                         file.write("\n")
+                block = self.editor.level.tileEntityAt(x, y, z)
+                if not block:
+                    continue
+                text = block["Command"].value
                 first = False
-                text = self.editor.level.tileEntityAt(x, y, z)["Command"].value
                 if text == "":
                     text = "\"\""
                 file.write(text.encode('utf-8'))

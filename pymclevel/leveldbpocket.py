@@ -335,7 +335,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             if name is None:
                 name = os.path.basename(self.worldFile.path)
             self.root_tag["LevelName"] = name
-        return self.root_tag["LevelName"]
+        return self.root_tag["LevelName"].value
 
     @LevelName.setter
     def LevelName(self, name):
@@ -949,6 +949,13 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         else:
             playerTag = self.getPlayerTag(player)
             return playerTag["playerGameType"].value
+
+    def markDirtyChunk(self, cx, cz):
+        self.getChunk(cx, cz).chunkChanged()
+
+    def markDirtyBox(self, box):
+        for cx, cz in box.chunkPositions:
+            self.markDirtyChunk(cx, cz)
 
 
 class PocketLeveldbChunk(LightedChunk):

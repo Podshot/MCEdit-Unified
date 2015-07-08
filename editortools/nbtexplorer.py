@@ -672,6 +672,7 @@ class NBTExplorerToolPanel(Panel):
         self.tree = NBTTree(height=max_height - btnRow.height - 2, inner_width=250, data=self.data,
                             compound_types=self.compounds,
                             copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
+        self.tree.update_side_panel = self.update_side_panel
         self.side_panel_width = 350
         row = [self.tree, Column([Label("", width=self.side_panel_width), ], margin=0)]
         self.displayRow = Row(row, height=max_height, margin=0, spacing=0)
@@ -694,26 +695,25 @@ class NBTExplorerToolPanel(Panel):
     def key_down(self, e):
         self.dispatch_key('key_down', e)
 
-    def dispatch_key(self, name, e):
+    def dispatch_key(self, event_name, e):
         if not hasattr(e, 'key'):
             return
-        if name == 'key_down':
+        if event_name == 'key_down':
             caught = True
-            if self.root.getKey(e) == 'Escape':
+            keyname = self.root.getKey(e)
+            if keyname == 'Escape':
                 if not self.tree.has_focus():
                     self.tree.focus()
                 else:
                     self.editor.key_down(e)
             elif self.side_panel and self.side_panel.has_focus():
-                self.side_panel.dispatch_key(name, e)
-            elif self.root.getKey(e) == 'Return':
-                self.tree.dispatch_key(name, e)
-                if self.tree.selected_item != None:
-                    self.update_side_panel(self.tree.selected_item)
+                self.side_panel.dispatch_key(event_name, e)
+            elif keyname == 'Return':
+                self.tree.dispatch_key(event_name, e)
             else:
                 caught = False
             if not caught:
-                self.tree.dispatch_key(name, e)
+                self.tree.dispatch_key(event_name, e)
 
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
