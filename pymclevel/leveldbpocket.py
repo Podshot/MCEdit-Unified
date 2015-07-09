@@ -872,10 +872,11 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param player: string of the name of the player. "Player" for SSP player, player_<client-id> for SMP player.
         :return:
         """
-        posList = nbt.TAG_List([nbt.TAG_Double(p) for p in (x, y - 1.75, z)])
-        playerTag = self.getPlayerTag(player)
+        with nbt.littleEndianNBT():
+            posList = nbt.TAG_List([nbt.TAG_Double(p) for p in (x, y - 1.75, z)])
+            playerTag = self.getPlayerTag(player)
 
-        playerTag["Pos"] = posList
+            playerTag["Pos"] = posList
 
     def getPlayerPosition(self, player="Player"):
         """
