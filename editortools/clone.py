@@ -983,6 +983,7 @@ class CloneTool(EditorTool):
     def mouseUp(self, evt, pos, direction):
         if self.draggingFace is not None:
             self.destPoint = self.draggingOrigin()
+            self.updateOffsets()
 
         self.draggingFace = None
         self.draggingStartPoint = None
