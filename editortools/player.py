@@ -685,24 +685,25 @@ class PlayerPositionTool(EditorTool):
                 16, 8,
                 16, 16,
 
-                #
+                # Bottom
                 24, 0,
                 16, 0,
                 16, 8,
                 24, 8,
 
-                #
+                # Top
                 16, 0,
                 8, 0,
                 8, 8,
                 16, 8,
 
-                #
+                # Left
                 8, 8,
                 0, 8,
                 0, 16,
                 8, 16,
 
+                # Right
                 16, 16,
                 24, 16,
                 24, 8,
@@ -744,6 +745,87 @@ class PlayerPositionTool(EditorTool):
                 
             ), dtype='f4')
         
+        # Start Creeper
+        creeperBodyVertices = numpy.array(
+            (
+                # Back of body
+                32, 32,
+                32, 20,
+                40, 20,
+                40, 32,
+                
+                # Front
+                20, 32,
+                20, 20,
+                28, 20,
+                28, 32,
+                
+                # Bottom
+                36, 16,
+                28, 16,
+                28, 20,
+                36, 20,
+                
+                # Top
+                28, 16,
+                20, 16,
+                20, 20,
+                28, 20,
+                
+                # Left
+                20, 20,
+                16, 20,
+                16, 32,
+                20, 32,
+                
+                # Right
+                28, 32,
+                32, 32,
+                32, 20,
+                28, 20,
+                
+             ), dtype='f4')
+        
+        creeperFeetVertices = numpy.array(
+            (
+                # Back
+                12, 26,
+                12, 20,
+                16, 20,
+                16, 26,
+                
+                # Front
+                4, 26,
+                4, 20,
+                8, 20,
+                8, 26,
+                
+                # Bottom
+                12, 16,
+                8, 16,
+                8, 20,
+                12, 20,
+                
+                # Top
+                8, 16,
+                4, 16,
+                4, 20,
+                8, 20,
+                
+                # Left
+                4, 20,
+                0, 20,
+                0, 26,
+                4, 26,
+                
+                # Right
+                8, 26,
+                12, 26,
+                12, 20,
+                8, 20,
+            ), dtype='f4')
+        
+        # End Creeper
 
         textureVerticesHead.shape = (24, 2)
         textureVerticesHat.shape = (24, 2)
@@ -753,8 +835,22 @@ class PlayerPositionTool(EditorTool):
         
         textureVerticesHat *= 4
         textureVerticesHat[:, 1] *= 2
+        
+        # Start Creeper
+        creeperBodyVertices.shape = (24, 2)
+        creeperBodyVertices *= 4
+        creeperBodyVertices[:, 1] *= 2
+        
+        creeperFeetVertices.shape = (24, 2)
+        creeperFeetVertices *= 4
+        creeperFeetVertices[:, 1] *= 2
+        # End Creeper
 
-        self.texVerts = (textureVerticesHead, textureVerticesHat) 
+        self.texVerts = (textureVerticesHead, textureVerticesHat)
+        # Start Creeper
+        self.creeperTexVerts = (creeperBodyVertices, creeperFeetVertices)
+        self.creeperFeetOffsets = ((0, 8.875, -0.125), (0, 8.875, 0.375), (0.249, 8.875, -0.125), (0.249, 8.875, 0.375))
+        # End Creeper
 
         self.playerPos = {0:{}, -1:{}, 1:{}}
         self.playerTexture = {}
@@ -762,6 +858,10 @@ class PlayerPositionTool(EditorTool):
         self.inOtherDimension = {0: [], 1: [], -1: []}
 
         self.markerList = DisplayList()
+        
+        # Start Creeper
+        self.creeper_tex = loadPNGTexture('creeper.png')
+        # End Creeper
 
     panel = None
 
@@ -866,6 +966,16 @@ class PlayerPositionTool(EditorTool):
         hat_origin = (x - 0.275, y - 0.275, z - 0.275)
         hat_size = (0.55, 0.55, 0.55)
         hat_box = FloatBox(hat_origin, hat_size)
+        
+        # Start Creeper
+        creeper_head_box_origin = (x, y + 10, z)
+        creeper_head_box_size = (0.5, 0.5, 0.5)
+        creeper_head_box = FloatBox(creeper_head_box_origin, creeper_head_box_size)
+        
+        creeper_body_box_origin = (x, y + 9.25, z + 0.125)
+        creeper_body_box_size = (0.5, 0.75, 0.25)
+        creeper_body_box = FloatBox(creeper_body_box_origin, creeper_body_box_size)
+        # End Creeper
 
         if realCoords is not None and self.playerPos[dim][realCoords] != "Player" and config.settings.downloadPlayerSkins.get():
             drawCube(box,
@@ -875,6 +985,16 @@ class PlayerPositionTool(EditorTool):
             drawCube(hat_box,
                      texture=self.playerTexture[self.playerPos[dim][realCoords]], textureVertices=self.texVerts[1])
             GL.glDisable(GL.GL_BLEND)
+            # TODO: Marker
+            # Start Creeper
+            drawCube(creeper_head_box, texture=self.creeper_tex, textureVertices=self.texVerts[0])
+            drawCube(creeper_body_box, texture=self.creeper_tex, textureVertices=self.creeperTexVerts[0])
+            for offset in self.creeperFeetOffsets:
+                creeper_feet_box_origin = (x + offset[0], y + offset[1], z + offset[2])
+                creeper_feet_box_size = (0.25, 0.375, 0.25)
+                creeper_feet_box = FloatBox(creeper_feet_box_origin, creeper_feet_box_size)
+                drawCube(creeper_feet_box, texture=self.creeper_tex, textureVertices=self.creeperTexVerts[1])
+            # End Creeper
         else:
             drawCube(box,
                      texture=self.charTex, textureVertices=self.texVerts[0])

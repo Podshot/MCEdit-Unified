@@ -47,6 +47,7 @@ from OpenGL import GL
 import pymclevel
 import sys
 from config import config
+from entity_models import CreeperModel
 # import time
 
 
@@ -946,6 +947,8 @@ class BaseEntityRenderer(EntityRendererGeneric):
 class MonsterRenderer(BaseEntityRenderer):
     layer = Layer.Entities  # xxx Monsters
     notMonsters = {"Item", "XPOrb", "Painting", "ItemFrame", "ArmorStand"}
+    modelled_monsters = ["Creeper"]
+    monster_model_positions = {"Creeper": []}
 
     def makeChunkVertices(self, chunk):
         monsterPositions = []
@@ -957,7 +960,10 @@ class MonsterRenderer(BaseEntityRenderer):
                 continue
             pos = pymclevel.Entity.pos(ent)
             pos[1] += 0.5
-            monsterPositions.append(pos)
+            if id in self.modelled_monsters:
+                self.monster_model_positions[id].append(pos)
+            else:
+                monsterPositions.append(pos)
 
         monsters = self._computeVertices(monsterPositions,
                                          (0xff, 0x22, 0x22, 0x44),
@@ -965,6 +971,7 @@ class MonsterRenderer(BaseEntityRenderer):
                                          chunkPosition=chunk.chunkPosition)
         yield
         self.vertexArrays = [monsters]
+        CreeperModel(self.monster_model_positions["Creeper"])
 
 
 class EntityRenderer(BaseEntityRenderer):
@@ -3333,7 +3340,7 @@ def rendermain():
         if evt.type == pygame.MOUSEBUTTONDOWN:
             break
             # time.sleep(3.0)
-
+        
 
 import traceback
 import cProfile
