@@ -38,6 +38,8 @@ logfile = 'mcedit.log'
 #
 if sys.platform == "darwin":
     logfile = os.path.expanduser("~/Library/Logs/mcedit.log")
+else:
+    logfile = os.path.join(os.getcwdu(), logfile)
 fh = logging.FileHandler(logfile, mode="w")
 fh.setLevel(logging.DEBUG)
 

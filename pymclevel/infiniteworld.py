@@ -1040,6 +1040,10 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.players = []
         assert not (create and readonly)
 
+        self.lockAcquireFuncs = []
+        self.lockLoseFuncs = []
+        self.initTime = -1
+
         if os.path.basename(filename) in ("level.dat", "level.dat_old"):
             filename = os.path.dirname(filename)
 
@@ -1057,7 +1061,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.readonly = readonly
         if not readonly:
             self.acquireSessionLock()
-
             workFolderPath = self.worldFolder.getFolderPath("##MCEDIT.TEMP##")
             workFolderPath2 = self.worldFolder.getFolderPath("##MCEDIT.TEMP2##")
             if os.path.exists(workFolderPath):
@@ -1105,7 +1108,6 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
                     self.players.remove(player)
             if "Player" in self.root_tag["Data"]:
                 self.players.append("Player")
-                
 
             self.preloadDimensions()
 
@@ -1139,13 +1141,19 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         self.createPlayer("Player")
 
     def acquireSessionLock(self):
-        lockfile = self.worldFolder.getFilePath("session.lock")
+        lock_file = self.worldFolder.getFilePath("session.lock")
         self.initTime = int(time.time() * 1000)
-        with file(lockfile, "wb") as f:
+        with file(lock_file, "wb") as f:
             f.write(struct.pack(">q", self.initTime))
             f.flush()
             os.fsync(f.fileno())
-        # logging.getLogger().info("Re-acquired session lock")
+
+        for function in self.lockAcquireFuncs:
+            function()
+
+    def setSessionLockCallback(self, acquire_func, lose_func):
+        self.lockAcquireFuncs.append(acquire_func)
+        self.lockLoseFuncs.append(lose_func)
 
     def checkSessionLock(self):
         if self.readonly:
@@ -1157,9 +1165,9 @@ class MCInfdevOldLevel(ChunkedLevelMixin, EntityLevel):
         except struct.error:
             lock = -1
         if lock != self.initTime:
-            # I should raise an error, but this seems to always fire the exception, so I will just try to aquire it instead
+            for function in self.lockLoseFuncs:
+                function()
             raise SessionLockLost("Session lock lost. This world is being accessed from another location.")
-            #self.acquireSessionLock()
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
 

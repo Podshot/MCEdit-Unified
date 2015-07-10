@@ -294,11 +294,11 @@ class LevelEditor(GLViewport):
 
         self.controlPanel = panels.ControlPanel(self)
 
-        logger = logging.getLogger()
+        # logger = logging.getLogger()
 
-        adapter = logging.StreamHandler(sys.stdout)
-        adapter.addFilter(LogFilter(self))
-        logger.addHandler(adapter)
+        # adapter = logging.StreamHandler(sys.stdout)
+        # adapter.addFilter(LogFilter(self))
+        # logger.addHandler(adapter)
         self.revertPlayerSkins = False
 
     #-# Translation live update preparation
@@ -332,6 +332,17 @@ class LevelEditor(GLViewport):
             sessionLockPanel.present()
 
     _viewMode = None
+    _level = None
+
+    @property
+    def level(self):
+        return self._level
+
+    @level.setter
+    def level(self, level):
+        self._level = level
+        if hasattr(level, "setSessionLockCallback"):
+            level.setSessionLockCallback(self.lockAcquired, self.lockLost)
 
     @property
     def viewMode(self):
@@ -1060,6 +1071,8 @@ class LevelEditor(GLViewport):
         Called to load a level, world, or dimension into the editor and display it in the viewport.
         """
         self.level = level
+        if hasattr(level, 'acquireSessionLock'):
+            level.acquireSessionLock()
 
         self.toolbar.removeToolPanels()
         self.selectedChunks = set()
@@ -1263,6 +1276,8 @@ class LevelEditor(GLViewport):
         shutil.copytree(self.level.worldFolder.filename, filename)
         self.level.worldFolder = AnvilWorldFolder(filename)
         self.level.filename = os.path.join(self.level.worldFolder.filename, "level.dat")
+        if hasattr(self.level, "acquireSessionLock"):
+            self.level.acquireSessionLock()
 
         self.saveFile()
         self.initWindowCaption()
@@ -3114,6 +3129,20 @@ class LevelEditor(GLViewport):
         config.settings.viewDistance.set(self.renderer.viewDistance)
         config.save()
 
+    def lockLost(self):
+        image_path = directories.getDataDir(os.path.join("toolicons", "session_bad.png"))
+        self.sessionLockLock.set_image(get_image(image_path, prefix=""))
+        self.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
+        self.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
+
+    def lockAcquired(self):
+        image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
+        self.sessionLockLock.set_image(get_image(image_path, prefix=""))
+        self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
+        self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
+        self.root.sessionStolen = False
+
+
 
 class EditorToolbar(GLOrtho):
     # is_gl_container = True
@@ -3376,24 +3405,20 @@ class EditorToolbar(GLOrtho):
         GL.glDisable(GL.GL_BLEND)
 
 
+
 from albow.resource import get_image
 
-
-class LogFilter(logging.Filter):
-    def __init__(self, editor):
-        self.level = logging.WARNING
-        self.editor = editor
-
-    def filter(self, record):
-        message = record.getMessage()
-        if "Session lock lost. This world is being accessed from another location." in message:
-            image_path = directories.getDataDir(os.path.join("toolicons", "session_bad.png"))
-            self.editor.sessionLockLock.set_image(get_image(image_path, prefix=""))
-            self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
-            self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
-        if "Re-acquired session lock" in message:
-            image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
-            self.editor.sessionLockLock.set_image(get_image(image_path, prefix=""))
-            self.editor.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
-            self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
-            self.editor.root.sessionStolen = False
+# class LogFilter(logging.Filter):
+#     def __init__(self, editor):
+#         super(LogFilter, self).__init__()
+#         self.level = logging.WARNING
+#         self.editor = editor
+#
+#     def filter(self, record):
+#         message = record.getMessage()
+#         if "Session lock lost. This world is being accessed from another location." in message:
+#             image_path = directories.getDataDir(os.path.join("toolicons", "session_bad.png"))
+#             self.editor.sessionLockLock.set_image(get_image(image_path, prefix=""))
+#             self.editor.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
+#             self.editor.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
+#         if "Re-acquired session lock" in message:

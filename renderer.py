@@ -431,6 +431,7 @@ class ChunkCalculator(object):
                 #ButtonBlockRenderer,
                 FenceBlockRenderer,
                 NetherFenceBlockRenderer,
+                FenceGateBlockRenderer,
                 StairBlockRenderer,
                 RepeaterBlockRenderer,
                 VineBlockRenderer,
@@ -2189,7 +2190,7 @@ class FenceBlockRenderer(BlockRenderer):  #This code is written to only accept o
                                          numpy.newaxis]  # xxx swap z with y using ^
 
         vertexArray[..., 0:5] += self.fenceTemplates[..., 0:5]
-        vertexArray[_ST] += pymclevel.materials.alphaMaterials.blockTextures[blocks[fenceIndices][0], 0, 0]
+        vertexArray[_ST] += texMap(blocks[fenceIndices], 0)[..., numpy.newaxis, :]
 
         vertexArray.view('uint8')[_RGB] = self.fenceTemplates[..., 5][..., numpy.newaxis]
         vertexArray.view('uint8')[_A] = 0xFF
@@ -2230,6 +2231,90 @@ class NetherFenceBlockRenderer(BlockRenderer):
         self.vertexArrays = [vertexArray]
 
     makeVertices = fenceVertices
+
+
+class FenceGateBlockRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.FenceGate.ID,
+                  pymclevel.materials.alphaMaterials.SpruceFenceGate.ID,
+                  pymclevel.materials.alphaMaterials.BirchFenceGate.ID,
+                  pymclevel.materials.alphaMaterials.JungleFenceGate.ID,
+                  pymclevel.materials.alphaMaterials.DarkOakFenceGate.ID,
+                  pymclevel.materials.alphaMaterials.AcaciaFenceGate.ID
+    ]
+    closedFenceTemplates = numpy.array([
+        makeVertexTemplates(0, 0, 3 / 8., 1, .8, 5 / 8.),
+        makeVertexTemplates(3 / 8., 0, 0, 5 / 8., .8, 1)])
+
+    openFenceTemplates = numpy.array([
+        [makeVertexTemplates(0, 0, 3 / 8., 1 / 8., .8, 1),
+         makeVertexTemplates(7 / 8., 0, 3 / 8., 1, .8, 1)],
+        [makeVertexTemplates(0, 0, 0, 5 / 8., .8, 1 / 8.),
+         makeVertexTemplates(0, 0, 7 / 8., 5 / 8., .8, 1)],
+        [makeVertexTemplates(0, 0, 0, 1 / 8., .8, 5 / 8.),
+         makeVertexTemplates(7 / 8., 0, 0, 1, .8, 5 / 8.)],
+        [makeVertexTemplates(3 / 8., 0, 0, 1, .8, 1 / 8.),
+         makeVertexTemplates(3 / 8., 0, 7 / 8., 1, .8, 1)]])
+
+    def fenceGateVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+        fenceMask = self.getMaterialIndices(blockMaterials)
+        closedGateMask = fenceMask.copy()
+        closedGateMask[blockData & 4 == 4] = 0
+        openGateMask = fenceMask.copy()
+        openGateMask[blockData & 4 == 0] = 0
+        closedGateIndices = closedGateMask.nonzero()
+        openGateIndices = openGateMask.nonzero()
+
+        closedGateData = blockData[closedGateMask]
+        closedGateData &= 1
+
+        openGateData = blockData[openGateMask]
+        openGateData &= 3
+
+        yield
+
+        # closed gate
+        vertexArray = numpy.zeros((len(closedGateIndices[0]), 6, 4, 6), dtype='float32')
+        for indicies in range(3):
+            dimension = (0, 2, 1)[indicies]
+
+            vertexArray[..., indicies] = closedGateIndices[dimension][:, numpy.newaxis,
+                                         numpy.newaxis]  # xxx swap z with y using ^
+
+        vertexArray[..., 0:5] += self.closedFenceTemplates[closedGateData][..., 0:5]
+
+        vertexArray[_ST] += texMap(blocks[closedGateIndices], 0)[..., numpy.newaxis, :]
+
+        vertexArray.view('uint8')[_RGB] = self.closedFenceTemplates[closedGateData][..., 5][..., numpy.newaxis]
+        vertexArray.view('uint8')[_A] = 0xFF
+        vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][closedGateIndices][
+            ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
+        vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
+        yield
+        self.vertexArrays = [vertexArray]
+
+        # open gate
+        for i in range(2):
+            vertexArray = numpy.zeros((len(openGateIndices[0]), 6, 4, 6), dtype='float32')
+            for indicies in range(3):
+                dimension = (0, 2, 1)[indicies]
+
+                vertexArray[..., indicies] = openGateIndices[dimension][:, numpy.newaxis,
+                                             numpy.newaxis]  # xxx swap z with y using ^
+
+            vertexArray[..., 0:5] += self.openFenceTemplates[openGateData, i][..., 0:5]
+
+            vertexArray[_ST] += texMap(blocks[openGateIndices], 0)[..., numpy.newaxis, :]
+
+            vertexArray.view('uint8')[_RGB] = self.openFenceTemplates[openGateData, i] \
+                [..., 5][..., numpy.newaxis]
+            vertexArray.view('uint8')[_A] = 0xFF
+            vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][openGateIndices][
+                ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
+            vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
+            yield
+            self.vertexArrays.append(vertexArray)
+
+    makeVertices = fenceGateVertices
 
 
 class StairBlockRenderer(BlockRenderer):

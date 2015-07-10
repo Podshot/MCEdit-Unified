@@ -712,12 +712,21 @@ applyAnvilBit(Anvil)
 
 
 class FenceGate:
-    blocktypes = [alphaMaterials.FenceGate.ID]
+    blocktypes = [materials.alphaMaterials.FenceGate.ID,
+                  materials.alphaMaterials.SpruceFenceGate.ID,
+                  materials.alphaMaterials.BirchFenceGate.ID,
+                  materials.alphaMaterials.JungleFenceGate.ID,
+                  materials.alphaMaterials.DarkOakFenceGate.ID,
+                  materials.alphaMaterials.AcaciaFenceGate.ID]
 
-    South = 0
-    West = 1
-    North = 2
-    East = 3
+    South = 1
+    West = 2
+    North = 3
+    East = 0
+
+genericFlipRotation(FenceGate)
+applyFenceGateBits = applyBits48
+applyFenceGateBits(FenceGate)
 
 
 @genericFlipRotation

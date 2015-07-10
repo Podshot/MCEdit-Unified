@@ -1010,10 +1010,10 @@ class PocketLeveldbChunk(LightedChunk):
             # Unused at the moment. Might need a special editor? Maybe hooked up to biomes?
             self.GrassColors = terrain[:1024]
 
-        self.unpackChunkData()
+        self._unpackChunkData()
         self.shapeChunkData()
 
-    def unpackChunkData(self):
+    def _unpackChunkData(self):
         """
         Unpacks the terrain data to match mcedit's formatting.
         """
