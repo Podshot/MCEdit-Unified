@@ -3386,6 +3386,8 @@ blocks:
     mapcolor: [157, 128, 79]
     tex: [21, 0]
     type: FENCE_GATE
+    tex_direction:
+      TOP: [4, 0]
     opacity: 0
     data:
       0:
@@ -5598,6 +5600,8 @@ blocks:
     name: Spruce Fence Gate
     mapcolor: [157, 128, 79]
     tex: [21, 1]
+    tex_direction:
+      TOP: [6, 12]
     type: FENCE_GATE
     opacity: 0
     data:
@@ -5639,6 +5643,8 @@ blocks:
     name: Birch Fence Gate
     mapcolor: [157, 128, 79]
     tex: [21, 2]
+    tex_direction:
+      TOP: [6, 13]
     type: FENCE_GATE
     opacity: 0
     data:
@@ -5680,6 +5686,8 @@ blocks:
     name: Jungle Fence Gate
     mapcolor: [157, 128, 79]
     tex: [21, 3]
+    tex_direction:
+      TOP: [7, 12]
     type: FENCE_GATE
     opacity: 0
     data:
@@ -5721,6 +5729,8 @@ blocks:
     name: Dark Oak Fence Gate
     mapcolor: [157, 128, 79]
     tex: [21, 5]
+    tex_direction:
+      TOP: [1, 15]
     type: FENCE_GATE
     opacity: 0
     data:
@@ -5762,6 +5772,8 @@ blocks:
     name: Acacia Fence Gate
     mapcolor: [157, 128, 79]
     tex: [21, 4]
+    tex_direction:
+      TOP: [0, 15]
     type: FENCE_GATE
     opacity: 0
     data:
