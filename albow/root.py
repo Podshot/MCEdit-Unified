@@ -152,10 +152,10 @@ class RootWidget(Widget):
         self.diag.shrink_wrap()
         self.diag.present()
 
-    @staticmethod
-    def open_screenshots_folder():
+    def open_screenshots_folder(self):
         from mcplatform import platform_open
         platform_open(os.path.join(directories.getCacheDir(), "screenshots"))
+        self.screenshot_notify()
 
     def screenshot_notify(self):
         self.diag.dismiss()
