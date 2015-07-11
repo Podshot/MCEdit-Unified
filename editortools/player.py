@@ -858,7 +858,8 @@ class PlayerPositionTool(EditorTool):
         # Start Creeper
         self.creeperTexVerts = (creeperBodyVertices, creeperFeetVertices)
         #self.creeperFeetOffsets = ((0, 8.875, -0.125), (0, 8.875, 0.375), (0.249, 8.875, -0.125), (0.249, 8.875, 0.375))
-        self.creeperFeetOffsets = model["offsets"]["feet"]
+        self.creeperOffsets = (model["offsets"]["head"], model["offsets"]["body"], model["offsets"]["feet"])
+        self.creeperBoxSizes = (model["sizes"]["head"], model["sizes"]["body"], model["sizes"]["feet"])
         # End Creeper
 
         self.playerPos = {0:{}, -1:{}, 1:{}}
@@ -977,12 +978,12 @@ class PlayerPositionTool(EditorTool):
         hat_box = FloatBox(hat_origin, hat_size)
         
         # Start Creeper
-        creeper_head_box_origin = (x, y + 10, z)
-        creeper_head_box_size = (0.5, 0.5, 0.5)
+        creeper_head_box_origin = (x + self.creeperOffsets[0][0], y + self.creeperOffsets[0][1], z + self.creeperOffsets[0][2])
+        creeper_head_box_size = (self.creeperBoxSizes[0][0], self.creeperBoxSizes[0][1], self.creeperBoxSizes[0][1])
         creeper_head_box = FloatBox(creeper_head_box_origin, creeper_head_box_size)
         
-        creeper_body_box_origin = (x, y + 9.25, z + 0.125)
-        creeper_body_box_size = (0.5, 0.75, 0.25)
+        creeper_body_box_origin = (x + self.creeperOffsets[1][0], y + self.creeperOffsets[1][1], z + self.creeperOffsets[1][2])
+        creeper_body_box_size = (self.creeperBoxSizes[1][0], self.creeperBoxSizes[1][1], self.creeperBoxSizes[1][2])
         creeper_body_box = FloatBox(creeper_body_box_origin, creeper_body_box_size)
         # End Creeper
 
@@ -998,9 +999,9 @@ class PlayerPositionTool(EditorTool):
             # Start Creeper
             drawCube(creeper_head_box, texture=self.creeper_tex, textureVertices=self.texVerts[0])
             drawCube(creeper_body_box, texture=self.creeper_tex, textureVertices=self.creeperTexVerts[0])
-            for offset in self.creeperFeetOffsets:
+            for offset in self.creeperOffsets[2]:
                 creeper_feet_box_origin = (x + offset[0], y + offset[1], z + offset[2])
-                creeper_feet_box_size = (0.25, 0.375, 0.25)
+                creeper_feet_box_size = (self.creeperBoxSizes[2][0], self.creeperBoxSizes[2][1], self.creeperBoxSizes[2][2])
                 creeper_feet_box = FloatBox(creeper_feet_box_origin, creeper_feet_box_size)
                 drawCube(creeper_feet_box, texture=self.creeper_tex, textureVertices=self.creeperTexVerts[1])
             # End Creeper

@@ -1,5 +1,6 @@
 {
 	"entity id": "Creeper",
+	"_comment=texture": "Used to determine the path to the texture file",
 	"texture": "entity_models<sep>creeper.png",
 	"vertices": {
 		"head": [
@@ -97,13 +98,18 @@
 			]
 	},
 	"offsets": {
-		"head": [],
-		"body": [],
+		"head": [0.0, 10.0, 0.0],
+		"body": [0.0, 9.25, 0.125],
 		"feet": [
 			[0, 8.875, -0.125], 
 			[0, 8.875, 0.375], 
 			[0.249, 8.875, -0.125], 
 			[0.249, 8.875, 0.375]
 		]
+	},
+	"sizes": {
+		"head": [0.5, 0.5, 0.5],
+		"body": [0.5, 0.75, 0.25],
+		"feet": [0.25, 0.375, 0.25]
 	}
 }
