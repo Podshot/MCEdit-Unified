@@ -907,6 +907,9 @@ class FilterTool(EditorTool):
 
         filterModules = []
 
+        org_lang = albow.translate.lang
+
+
         # If the path has unicode chars, there's no way of knowing what order to add the
         # files to the sys.modules. To fix this, we keep trying to import until we import
         # fail to import all leftover files.
@@ -914,7 +917,7 @@ class FilterTool(EditorTool):
         while shouldContinue:
             shouldContinue = False
             for f in filterFiles:
-                module = tryImport(f[0], f[1], f[2], f[3], f[1] in unicode_module_names)
+                module = tryImport(f[0], f[1], org_lang, f[2], f[3], f[1] in unicode_module_names)
                 if module is None:
                     continue
                 filterModules.append(module)
@@ -937,13 +940,14 @@ class FilterTool(EditorTool):
     def moduleDisplayName(module):
         subFolderString = getattr(module, 'foldersForDisplayName', "")
         subFolderString = subFolderString if len(subFolderString) < 1 else subFolderString + " "
-        return subFolderString + getattr(module, "displayName", module.__name__)
+        name = getattr(module, "displayName", module.__name__)
+        return subFolderString + _(name[0].upper() + name[1:])
 
     @property
     def filterNames(self):
         return [FilterTool.moduleDisplayName(module) for module in self.filterModules.itervalues()]
 
-def tryImport(_root, name, stock=False, subFolderString="", unicode_name=False):
+def tryImport(_root, name, org_lang, stock=False, subFolderString="", unicode_name=False):
     with open(os.path.join(_root, name)) as module_file:
         module_name = name.split(os.path.sep)[-1].replace(".py", "")
         try:
@@ -960,20 +964,17 @@ def tryImport(_root, name, stock=False, subFolderString="", unicode_name=False):
                 module.displayName = module_name  # Python is awesome
             if not stock:
 
-                # -- Note by Rubisk 20-06-2015:
-                # I have no idea what this does, and left it as much alone as I could.
-                # If anyone wants to explain it and/or modify this to work w/o modifying sys stuff,
-                # that would be great.
                 if "trn" in sys.modules.keys():
                     del sys.modules["trn"]
                 if "albow.translate" in sys.modules.keys():
                     del sys.modules["albow.translate"]
+                from albow import translate as trn
                 if directories.getFiltersDir() in name:
                     trn_path = os.path.split(name)[0]
                 else:
                     trn_path = directories.getFiltersDir()
-                trn_path = os.path.join(trn_path, module_name)
-                module.trn = translate
+                trn_path = os.path.join(trn_path, subFolderString[1:-1], module_name)
+                module.trn = trn
                 if os.path.exists(trn_path):
                     module.trn.setLangPath(trn_path)
                     module.trn.buildTranslation(config.settings.langCode.get())
@@ -983,6 +984,8 @@ def tryImport(_root, name, stock=False, subFolderString="", unicode_name=False):
                     if n == module.displayName:
                         n = _(module.displayName)
                     module.displayName = n
+                import albow.translate
+                albow.translate.lang = org_lang
             return module
 
         except Exception as e:
