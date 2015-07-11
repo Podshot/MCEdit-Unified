@@ -182,24 +182,22 @@ class EntityModelTool(EditorTool):
                         x, y, z = e["Pos"][0].value, e["Pos"][1].value, e["Pos"][2].value
                         yaw, pitch = e["Rotation"][0].value, e["Rotation"][1].value
                         GL.glPushMatrix()
-                        GL.glTranslate(x, y, z)
-                        GL.glRotate(-yaw, 0, 1, 0)
-                        GL.glRotate(pitch, 1, 0, 0)
+                        #GL.glTranslate(x, y, z)
+                        #GL.glRotate(-yaw, 0, 1, 0)
+                        #GL.glRotate(pitch, 1, 0, 0)
                         GL.glColor(1, 1, 1, 1)
                         GL.glEnable(GL.GL_CULL_FACE)
                     
-                        #creeper_head_box_origin = (x, y + 10, z)
                         creeper_head_box_origin = (x + self.creeperOffsets[0][0], y + self.creeperOffsets[0][1], z + self.creeperOffsets[0][2])
                         creeper_head_box_size = (self.creeperBoxSizes[0][0], self.creeperBoxSizes[0][1], self.creeperBoxSizes[0][1])
                         creeper_head_box = FloatBox(creeper_head_box_origin, creeper_head_box_size)
         
-                        #creeper_body_box_origin = (x, y + 9.25, z + 0.125)
                         creeper_body_box_origin = (x + self.creeperOffsets[1][0], y + self.creeperOffsets[1][1], z + self.creeperOffsets[1][2])
                         creeper_body_box_size = (self.creeperBoxSizes[1][0], self.creeperBoxSizes[1][1], self.creeperBoxSizes[1][2])
                         creeper_body_box = FloatBox(creeper_body_box_origin, creeper_body_box_size)
                     
                         drawCube(creeper_head_box, texture=self.creeper_tex, textureVertices=self.creeperVertices[0])
-                        print "Drew Creeper head"
+                        print "Drew Creeper head at {0} {1} {2}".format(x, y, z)
                         drawCube(creeper_body_box, texture=self.creeper_tex, textureVertices=self.creeperVertices[1])
                         for offset in self.creeperOffsets[2]:
                             creeper_feet_box_origin = (x + offset[0], y + offset[1], z + offset[2])

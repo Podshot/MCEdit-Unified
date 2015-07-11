@@ -977,6 +977,7 @@ class PlayerPositionTool(EditorTool):
         hat_size = (0.55, 0.55, 0.55)
         hat_box = FloatBox(hat_origin, hat_size)
         
+        '''
         # Start Creeper
         creeper_head_box_origin = (x + self.creeperOffsets[0][0], y + self.creeperOffsets[0][1], z + self.creeperOffsets[0][2])
         creeper_head_box_size = (self.creeperBoxSizes[0][0], self.creeperBoxSizes[0][1], self.creeperBoxSizes[0][1])
@@ -986,6 +987,7 @@ class PlayerPositionTool(EditorTool):
         creeper_body_box_size = (self.creeperBoxSizes[1][0], self.creeperBoxSizes[1][1], self.creeperBoxSizes[1][2])
         creeper_body_box = FloatBox(creeper_body_box_origin, creeper_body_box_size)
         # End Creeper
+        '''
 
         if realCoords is not None and self.playerPos[dim][realCoords] != "Player" and config.settings.downloadPlayerSkins.get():
             drawCube(box,
@@ -996,6 +998,7 @@ class PlayerPositionTool(EditorTool):
                      texture=self.playerTexture[self.playerPos[dim][realCoords]], textureVertices=self.texVerts[1])
             GL.glDisable(GL.GL_BLEND)
             # TODO: Marker
+            '''
             # Start Creeper
             drawCube(creeper_head_box, texture=self.creeper_tex, textureVertices=self.texVerts[0])
             drawCube(creeper_body_box, texture=self.creeper_tex, textureVertices=self.creeperTexVerts[0])
@@ -1005,6 +1008,7 @@ class PlayerPositionTool(EditorTool):
                 creeper_feet_box = FloatBox(creeper_feet_box_origin, creeper_feet_box_size)
                 drawCube(creeper_feet_box, texture=self.creeper_tex, textureVertices=self.creeperTexVerts[1])
             # End Creeper
+            '''
         else:
             drawCube(box,
                      texture=self.charTex, textureVertices=self.texVerts[0])
