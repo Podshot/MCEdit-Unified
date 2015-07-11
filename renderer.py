@@ -47,7 +47,6 @@ from OpenGL import GL
 import pymclevel
 import sys
 from config import config
-from entity_models import CreeperModel
 # import time
 
 
@@ -962,6 +961,7 @@ class MonsterRenderer(BaseEntityRenderer):
             pos[1] += 0.5
             if id in self.modelled_monsters:
                 self.monster_model_positions[id].append(pos)
+                monsterPositions.append(pos)
             else:
                 monsterPositions.append(pos)
 
@@ -971,7 +971,6 @@ class MonsterRenderer(BaseEntityRenderer):
                                          chunkPosition=chunk.chunkPosition)
         yield
         self.vertexArrays = [monsters]
-        CreeperModel(self.monster_model_positions["Creeper"])
 
 
 class EntityRenderer(BaseEntityRenderer):

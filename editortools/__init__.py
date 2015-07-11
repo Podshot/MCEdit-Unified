@@ -20,4 +20,5 @@ from filter import FilterTool
 from player import PlayerPositionTool, PlayerSpawnPositionTool
 from chunk import ChunkTool
 from nbtexplorer import NBTExplorerTool
+from entitymodels import EntityModelTool
 

@@ -895,6 +895,7 @@ class LevelEditor(GLViewport):
                                                   editortools.PlayerSpawnPositionTool(self),
                                                   editortools.ChunkTool(self),
                                                   editortools.NBTExplorerTool(self),
+                                                  editortools.EntityModelTool(self),
                                                   ])
 
         self.toolbar.anchor = 'bwh'
@@ -3167,7 +3168,8 @@ class EditorToolbar(GLOrtho):
                          xmax=self.toolbarSize[0], ymax=self.toolbarSize[1],
                          near=-4.0, far=4.0)
         self.size = self.toolbarTextureSize
-        self.tools = tools
+        self.tools = tools[:-1]
+        self.modelTool = tools[-1]
         for i, t in enumerate(tools):
             t.toolNumber = i
             t.hotkey = i + 1

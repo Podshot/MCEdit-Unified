@@ -32,6 +32,7 @@ import logging
 import version_utils
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
 import pygame
+import json
 
 log = logging.getLogger(__name__)
 
@@ -670,6 +671,9 @@ class PlayerPositionTool(EditorTool):
         EditorTool.__init__(self, *args)
         self.reloadTextures()
         self.nonSavedPlayers = []
+        fp = open(os.path.join("entity_models", "creeper.json"))
+        model = json.load(fp)
+        fp.close()
 
         textureVerticesHead = numpy.array(
             (
@@ -746,8 +750,11 @@ class PlayerPositionTool(EditorTool):
             ), dtype='f4')
         
         # Start Creeper
+        creeperBodyVertices = numpy.array(model["vertices"]["body"], dtype='f4')
+        creeperFeetVertices = numpy.array(model["vertices"]["feet"], dtype='f4')
+        '''
         creeperBodyVertices = numpy.array(
-            (
+            [
                 # Back of body
                 32, 32,
                 32, 20,
@@ -784,8 +791,8 @@ class PlayerPositionTool(EditorTool):
                 32, 20,
                 28, 20,
                 
-             ), dtype='f4')
-        
+             ], dtype='f4')
+
         creeperFeetVertices = numpy.array(
             (
                 # Back
@@ -824,6 +831,7 @@ class PlayerPositionTool(EditorTool):
                 12, 20,
                 8, 20,
             ), dtype='f4')
+        '''
         
         # End Creeper
 
@@ -849,7 +857,8 @@ class PlayerPositionTool(EditorTool):
         self.texVerts = (textureVerticesHead, textureVerticesHat)
         # Start Creeper
         self.creeperTexVerts = (creeperBodyVertices, creeperFeetVertices)
-        self.creeperFeetOffsets = ((0, 8.875, -0.125), (0, 8.875, 0.375), (0.249, 8.875, -0.125), (0.249, 8.875, 0.375))
+        #self.creeperFeetOffsets = ((0, 8.875, -0.125), (0, 8.875, 0.375), (0.249, 8.875, -0.125), (0.249, 8.875, 0.375))
+        self.creeperFeetOffsets = model["offsets"]["feet"]
         # End Creeper
 
         self.playerPos = {0:{}, -1:{}, 1:{}}
@@ -860,7 +869,7 @@ class PlayerPositionTool(EditorTool):
         self.markerList = DisplayList()
         
         # Start Creeper
-        self.creeper_tex = loadPNGTexture('creeper.png')
+        self.creeper_tex = loadPNGTexture(model["texture"].replace("<sep>", os.path.sep))
         # End Creeper
 
     panel = None

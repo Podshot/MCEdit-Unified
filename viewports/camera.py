@@ -1786,6 +1786,7 @@ class CameraViewport(GLViewport):
             for t in self.editor.toolbar.tools:
                 t.drawTerrainMarkers()
                 t.drawToolMarkers()
+            self.editor.toolbar.modelTool.drawToolMarkers()
 
         if self.drawFog:
             self.disableFog()
