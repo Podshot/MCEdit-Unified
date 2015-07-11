@@ -2743,7 +2743,7 @@ blocks:
         name: Dark Oak Double Slab
         tex: [1, 15]
 
-  - id: 126
+  - id: 158
     idStr: wooden_slab
     name: Wooden Slab
     mapcolor: [200, 200, 200]
