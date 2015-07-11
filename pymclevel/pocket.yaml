@@ -2872,19 +2872,19 @@ blocks:
         mapcolor: [74, 131, 66]
         tex: [5, 3]
       4:
-        name: Acacia Leaves (No Decay)
-        mapcolor: [60, 192, 41]
-        tex: [5, 3]
-      5:
-        name: Dark Oak Leaves (No Decay)
-        mapcolor: [74, 131, 66]
-        tex: [5, 3]
-      8:
         name: Acacia Leaves (Decaying)
         mapcolor: [60, 192, 41]
         tex: [5, 3]
-      9:
+      5:
         name: Dark Oak Leaves (Decaying)
+        mapcolor: [74, 131, 66]
+        tex: [5, 3]
+      8:
+        name: Acacia Leaves (No Decay)
+        mapcolor: [60, 192, 41]
+        tex: [5, 3]
+      9:
+        name: Dark Oak Leaves (No Decay)
         mapcolor: [74, 131, 66]
         tex: [5, 3]
       12:
