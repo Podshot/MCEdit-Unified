@@ -309,6 +309,38 @@ def rotateTemplate(template, x=0, y=0):
         template[..., 0] += 0.5
     return template
 
+def makeVerticesFromModel(templates, dataMask=0):
+    if type(templates) is list:
+        templates = numpy.array(templates)
+    if templates.shape == (6, 4, 6):
+        templates = numpy.array([templates])
+
+    def makeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+        mask = self.getMaterialIndices(blockMaterials)
+        blockIndices = mask.nonzero()
+        yield
+
+        data = blockData[mask]
+        data &= dataMask
+
+        vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
+        for indicies in range(3):
+            dimension = (0, 2, 1)[indicies]
+
+            vertexArray[..., indicies] = blockIndices[dimension][:, numpy.newaxis,
+                                         numpy.newaxis]  # xxx swap z with y using ^
+
+        vertexArray[..., 0:5] += templates[data][..., 0:5]
+        vertexArray[_ST] += texMap(blocks[blockIndices], 0)[..., numpy.newaxis, :]
+
+        vertexArray.view('uint8')[_RGB] = templates[data][..., 5][..., numpy.newaxis]
+        vertexArray.view('uint8')[_A] = 0xFF
+        vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][blockIndices][
+            ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
+        vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
+        yield
+        self.vertexArrays = [vertexArray]
+    return makeVertices
 
 def makeVertexTemplates(xmin=0, ymin=0, zmin=0, xmax=1, ymax=1, zmax=1):
     return numpy.array([
@@ -2239,10 +2271,6 @@ class RedstoneBlockRenderer(BlockRenderer):
 
 # button, floor plate, door -> 1-cube features
 
-
-#BUTTONS GO HERE
-
-
 class ButtonRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Button.ID,
                   pymclevel.materials.alphaMaterials.WoodenButton.ID]
@@ -2265,33 +2293,7 @@ class ButtonRenderer(BlockRenderer):
         buttonTemplate
     ])
 
-    def buttonVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
-        buttonMask = self.getMaterialIndices(blockMaterials)
-        buttonIndices = buttonMask.nonzero()
-        yield
-
-        buttonData = blockData[buttonMask]
-        buttonData &= 7
-
-        vertexArray = numpy.zeros((len(buttonIndices[0]), 6, 4, 6), dtype='float32')
-        for indicies in range(3):
-            dimension = (0, 2, 1)[indicies]
-
-            vertexArray[..., indicies] = buttonIndices[dimension][:, numpy.newaxis,
-                                         numpy.newaxis]  # xxx swap z with y using ^
-
-        vertexArray[..., 0:5] += self.buttonTemplates[buttonData][..., 0:5]
-        vertexArray[_ST] += texMap(blocks[buttonIndices], 0)[..., numpy.newaxis, :]
-
-        vertexArray.view('uint8')[_RGB] = self.buttonTemplates[buttonData][..., 5][..., numpy.newaxis]
-        vertexArray.view('uint8')[_A] = 0xFF
-        vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][buttonIndices][
-            ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
-        vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
-        yield
-        self.vertexArrays = [vertexArray]
-
-    makeVertices = buttonVertices
+    makeVertices = makeVerticesFromModel(buttonTemplates, 7)
 
 class FenceBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Fence.ID,
@@ -2303,30 +2305,7 @@ class FenceBlockRenderer(BlockRenderer):
     ]
     fenceTemplates = makeVertexTemplates(3 / 8., 0, 3 / 8., 5 / 8., 1, 5 / 8.)
 
-    def fenceVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
-        fenceMask = self.getMaterialIndices(blockMaterials)
-        fenceIndices = fenceMask.nonzero()
-        yield
-
-        vertexArray = numpy.zeros((len(fenceIndices[0]), 6, 4, 6), dtype='float32')
-        for indicies in range(3):
-            dimension = (0, 2, 1)[indicies]
-
-            vertexArray[..., indicies] = fenceIndices[dimension][:, numpy.newaxis,
-                                         numpy.newaxis]  # xxx swap z with y using ^
-
-        vertexArray[..., 0:5] += self.fenceTemplates[..., 0:5]
-        vertexArray[_ST] += texMap(blocks[fenceIndices], 0)[..., numpy.newaxis, :]
-
-        vertexArray.view('uint8')[_RGB] = self.fenceTemplates[..., 5][..., numpy.newaxis]
-        vertexArray.view('uint8')[_A] = 0xFF
-        vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][fenceIndices][
-            ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
-        vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
-        yield
-        self.vertexArrays = [vertexArray]
-
-    makeVertices = fenceVertices
+    makeVertices = makeVerticesFromModel(fenceTemplates)
 
 
 class NetherFenceBlockRenderer(BlockRenderer):
