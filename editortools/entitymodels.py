@@ -15,6 +15,8 @@ class EntityModelTool(EditorTool):
     def __init__(self, *args):
         print "EntityModelTool"
         EditorTool.__init__(self, *args)
+        
+        # Start Creeper Model
         fp = open(os.path.join("entity_models", "creeper.json"))
         model = json.load(fp)
         fp.close()
@@ -22,126 +24,6 @@ class EntityModelTool(EditorTool):
         creeperHeadVertices = numpy.array(model["vertices"]["head"], dtype='f4')
         creeperBodyVertices = numpy.array(model["vertices"]["body"], dtype='f4')
         creeperFeetVertices = numpy.array(model["vertices"]["feet"], dtype='f4')
-        '''
-        creeperHeadVertices = numpy.array(
-            (
-                # Backside of Head
-                24, 16, # Bottom Left
-                24, 8, # Top Left
-                32, 8, # Top Right
-                32, 16, # Bottom Right
-
-                # Front of Head
-                8, 16,
-                8, 8,
-                16, 8,
-                16, 16,
-
-                # Bottom
-                24, 0,
-                16, 0,
-                16, 8,
-                24, 8,
-
-                # Top
-                16, 0,
-                8, 0,
-                8, 8,
-                16, 8,
-
-                # Left
-                8, 8,
-                0, 8,
-                0, 16,
-                8, 16,
-
-                # Right
-                16, 16,
-                24, 16,
-                24, 8,
-                16, 8,
-
-            ), dtype='f4')
-        
-        creeperBodyVertices = numpy.array(
-            (
-                # Back of body
-                32, 32,
-                32, 20,
-                40, 20,
-                40, 32,
-                
-                # Front
-                20, 32,
-                20, 20,
-                28, 20,
-                28, 32,
-                
-                # Bottom
-                36, 16,
-                28, 16,
-                28, 20,
-                36, 20,
-                
-                # Top
-                28, 16,
-                20, 16,
-                20, 20,
-                28, 20,
-                
-                # Left
-                20, 20,
-                16, 20,
-                16, 32,
-                20, 32,
-                
-                # Right
-                28, 32,
-                32, 32,
-                32, 20,
-                28, 20,
-                
-             ), dtype='f4')
-        
-        creeperFeetVertices = numpy.array(
-            (
-                # Back
-                12, 26,
-                12, 20,
-                16, 20,
-                16, 26,
-                
-                # Front
-                4, 26,
-                4, 20,
-                8, 20,
-                8, 26,
-                
-                # Bottom
-                12, 16,
-                8, 16,
-                8, 20,
-                12, 20,
-                
-                # Top
-                8, 16,
-                4, 16,
-                4, 20,
-                8, 20,
-                
-                # Left
-                4, 20,
-                0, 20,
-                0, 26,
-                4, 26,
-                
-                # Right
-                8, 26,
-                12, 26,
-                12, 20,
-                8, 20,
-            ), dtype='f4')
-        '''
         
         creeperHeadVertices.shape = (24, 2)
         creeperHeadVertices *= 4
@@ -160,9 +42,11 @@ class EntityModelTool(EditorTool):
         self.creeperOffsets = (model["offsets"]["head"], model["offsets"]["body"], model["offsets"]["feet"])
         self.creeperBoxSizes = (model["sizes"]["head"], model["sizes"]["body"], model["sizes"]["feet"])
         
+        self.creeper_tex = loadPNGTexture(model["texture"].replace("<sep>", os.path.sep))
+        # End Creeper Model
+        
         self.markerList = DisplayList()
         
-        self.creeper_tex = loadPNGTexture(model["texture"].replace("<sep>", os.path.sep))
         
     def drawToolMarkers(self):
         if self.markerLevel != self.editor.level:
@@ -180,11 +64,11 @@ class EntityModelTool(EditorTool):
                 try:
                     if e["id"].value == "Creeper":
                         x, y, z = e["Pos"][0].value, e["Pos"][1].value, e["Pos"][2].value
-                        yaw, pitch = e["Rotation"][0].value, e["Rotation"][1].value
+                        yaw = e["Rotation"][0].value
                         GL.glPushMatrix()
-                        #GL.glTranslate(x, y, z)
-                        #GL.glRotate(-yaw, 0, 1, 0)
-                        #GL.glRotate(pitch, 1, 0, 0)
+                        GL.glTranslate(x, y, z)
+                        x, y, z = (0,0,0)
+                        GL.glRotate(yaw, 0, 1, 0)
                         GL.glColor(1, 1, 1, 1)
                         GL.glEnable(GL.GL_CULL_FACE)
                     
