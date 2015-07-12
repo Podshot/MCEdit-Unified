@@ -292,6 +292,24 @@ def makeVertexTemplatesFromJsonModel(fromVertices, toVertices, uv):
     ])
 
 
+def rotateTemplate(template, x=0, y=0):
+    template = template.copy()
+    for _ in range(0, x, 90):
+        # y -> -z and z -> y
+        template[..., (1, 2)] = template[..., (2, 1)]
+        template[..., 2] -= 0.5
+        template[..., 2] *= -1
+        template[..., 2] += 0.5
+
+    for _ in range(0, y, 90):
+        # z -> -x and x -> z
+        template[..., (0, 2)] = template[..., (2, 0)]
+        template[..., 0] -= 0.5
+        template[..., 0] *= -1
+        template[..., 0] += 0.5
+    return template
+
+
 def makeVertexTemplates(xmin=0, ymin=0, zmin=0, xmax=1, ymax=1, zmax=1):
     return numpy.array([
 
@@ -2238,10 +2256,22 @@ class ButtonRenderer(BlockRenderer):
         "east": (6, 14, 10, 16)
     })
 
+    buttonTemplates = numpy.array([
+        rotateTemplate(buttonTemplate, 180, 0),
+        rotateTemplate(buttonTemplate, 90, 90),
+        rotateTemplate(buttonTemplate, 90, 270),
+        rotateTemplate(buttonTemplate, 90, 180),
+        rotateTemplate(buttonTemplate, 90, 0),
+        buttonTemplate
+    ])
+
     def buttonVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         buttonMask = self.getMaterialIndices(blockMaterials)
         buttonIndices = buttonMask.nonzero()
         yield
+
+        buttonData = blockData[buttonMask]
+        buttonData &= 7
 
         vertexArray = numpy.zeros((len(buttonIndices[0]), 6, 4, 6), dtype='float32')
         for indicies in range(3):
@@ -2250,10 +2280,10 @@ class ButtonRenderer(BlockRenderer):
             vertexArray[..., indicies] = buttonIndices[dimension][:, numpy.newaxis,
                                          numpy.newaxis]  # xxx swap z with y using ^
 
-        vertexArray[..., 0:5] += self.buttonTemplate[..., 0:5]
+        vertexArray[..., 0:5] += self.buttonTemplates[buttonData][..., 0:5]
         vertexArray[_ST] += texMap(blocks[buttonIndices], 0)[..., numpy.newaxis, :]
 
-        vertexArray.view('uint8')[_RGB] = self.buttonTemplate[..., 5][..., numpy.newaxis]
+        vertexArray.view('uint8')[_RGB] = self.buttonTemplates[buttonData][..., 5][..., numpy.newaxis]
         vertexArray.view('uint8')[_A] = 0xFF
         vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][buttonIndices][
             ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
