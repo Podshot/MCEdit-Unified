@@ -234,6 +234,64 @@ _RGB = numpy.s_[..., 20:23]
 _A = numpy.s_[..., 23]
 
 
+def makeVertexTemplatesFromJsonModel(fromVertices, toVertices, uv):
+    """
+    This is similar to makeVertexTemplates but is a more convenient
+    when reading off of the json model files.
+    :param fromVertices: from
+    :param toVertices:   to
+    :param uv:           keywords uv map
+    :return:             template for a cube
+    """
+    xmin = fromVertices[0] / 16.
+    xmax = toVertices[0] / 16.
+    ymin = fromVertices[1] / 16.
+    ymax = toVertices[1] / 16.
+    zmin = fromVertices[2] / 16.
+    zmax = toVertices[2] / 16.
+    return numpy.array([
+        # FaceXIncreasing:
+        [[xmax, ymin, zmax, uv["east"][0], uv["east"][1], 0x0b],
+         [xmax, ymin, zmin, uv["east"][2], uv["east"][1], 0x0b],
+         [xmax, ymax, zmin, uv["east"][2], uv["east"][3], 0x0b],
+         [xmax, ymax, zmax, uv["east"][0], uv["east"][3], 0x0b],
+        ],
+
+        # FaceXDecreasing:
+        [[xmin, ymin, zmin, uv["west"][2], uv["west"][1], 0x0b],
+         [xmin, ymin, zmax, uv["west"][0], uv["west"][1], 0x0b],
+         [xmin, ymax, zmax, uv["west"][0], uv["west"][3], 0x0b],
+         [xmin, ymax, zmin, uv["west"][2], uv["west"][3], 0x0b]],
+
+
+        # FaceYIncreasing:
+        [[xmin, ymax, zmin, uv["up"][0], uv["up"][1], 0x11],  # ne
+         [xmin, ymax, zmax, uv["up"][2], uv["up"][1], 0x11],  # nw
+         [xmax, ymax, zmax, uv["up"][2], uv["up"][3], 0x11],  # sw
+         [xmax, ymax, zmin, uv["up"][0], uv["up"][3], 0x11]],  # se
+
+        # FaceYDecreasing:
+        [[xmin, ymin, zmin, uv["down"][0], uv["down"][3], 0x08],
+         [xmax, ymin, zmin, uv["down"][0], uv["down"][1], 0x08],
+         [xmax, ymin, zmax, uv["down"][2], uv["down"][1], 0x08],
+         [xmin, ymin, zmax, uv["down"][2], uv["down"][3], 0x08]],
+
+        # FaceZIncreasing:
+        [[xmin, ymin, zmax, uv["south"][0], uv["south"][1], 0x0d],
+         [xmax, ymin, zmax, uv["south"][2], uv["south"][1], 0x0d],
+         [xmax, ymax, zmax, uv["south"][2], uv["south"][3], 0x0d],
+         [xmin, ymax, zmax, uv["south"][0], uv["south"][3], 0x0d]],
+
+        # FaceZDecreasing:
+        [[xmax, ymin, zmin, uv["north"][2], uv["north"][1], 0x0d],
+         [xmin, ymin, zmin, uv["north"][0], uv["north"][1], 0x0d],
+         [xmin, ymax, zmin, uv["north"][0], uv["north"][3], 0x0d],
+         [xmax, ymax, zmin, uv["north"][2], uv["north"][3], 0x0d],
+        ],
+
+    ])
+
+
 def makeVertexTemplates(xmin=0, ymin=0, zmin=0, xmax=1, ymax=1, zmax=1):
     return numpy.array([
 
@@ -2167,7 +2225,36 @@ class RedstoneBlockRenderer(BlockRenderer):
 #BUTTONS GO HERE
 
 
-class FenceBlockRenderer(BlockRenderer):  #This code is written to only accept one texture. Fix me.
+class ButtonRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.Button.ID,
+                  pymclevel.materials.alphaMaterials.WoodenButton.ID]
+
+    buttonTemplate =
+
+    def buttonVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
+        buttonMask = self.getMaterialIndices(blockMaterials)
+        buttonIndices = buttonMask.nonzero()
+        yield
+
+        vertexArray = numpy.zeros((len(buttonIndices[0]), 6, 4, 6), dtype='float32')
+        for indicies in range(3):
+            dimension = (0, 2, 1)[indicies]
+
+            vertexArray[..., indicies] = buttonIndices[dimension][:, numpy.newaxis,
+                                         numpy.newaxis]  # xxx swap z with y using ^
+
+        vertexArray[..., 0:5] += self.fenceTemplates[..., 0:5]
+        vertexArray[_ST] += texMap(blocks[buttonIndices], 0)[..., numpy.newaxis, :]
+
+        vertexArray.view('uint8')[_RGB] = self.fenceTemplates[..., 5][..., numpy.newaxis]
+        vertexArray.view('uint8')[_A] = 0xFF
+        vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][buttonIndices][
+            ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
+        vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
+        yield
+        self.vertexArrays = [vertexArray]
+
+class FenceBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Fence.ID,
                   pymclevel.materials.alphaMaterials.SpruceFence.ID,
                   pymclevel.materials.alphaMaterials.BirchFence.ID,
