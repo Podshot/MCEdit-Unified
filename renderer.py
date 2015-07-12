@@ -251,42 +251,42 @@ def makeVertexTemplatesFromJsonModel(fromVertices, toVertices, uv):
     zmax = toVertices[2] / 16.
     return numpy.array([
         # FaceXIncreasing:
-        [[xmax, ymin, zmax, uv["east"][0], uv["east"][1], 0x0b],
-         [xmax, ymin, zmin, uv["east"][2], uv["east"][1], 0x0b],
-         [xmax, ymax, zmin, uv["east"][2], uv["east"][3], 0x0b],
-         [xmax, ymax, zmax, uv["east"][0], uv["east"][3], 0x0b],
+        [[xmax, ymin, zmax, uv["east"][2], 16 - uv["east"][1], 0x0b],
+         [xmax, ymin, zmin, uv["east"][0], 16 - uv["east"][1], 0x0b],
+         [xmax, ymax, zmin, uv["east"][0], 16 - uv["east"][3], 0x0b],
+         [xmax, ymax, zmax, uv["east"][2], 16 - uv["east"][3], 0x0b],
         ],
 
         # FaceXDecreasing:
-        [[xmin, ymin, zmin, uv["west"][2], uv["west"][1], 0x0b],
-         [xmin, ymin, zmax, uv["west"][0], uv["west"][1], 0x0b],
-         [xmin, ymax, zmax, uv["west"][0], uv["west"][3], 0x0b],
-         [xmin, ymax, zmin, uv["west"][2], uv["west"][3], 0x0b]],
+        [[xmin, ymin, zmin, uv["west"][2], 16 - uv["west"][1], 0x0b],
+         [xmin, ymin, zmax, uv["west"][0], 16 - uv["west"][1], 0x0b],
+         [xmin, ymax, zmax, uv["west"][0], 16 - uv["west"][3], 0x0b],
+         [xmin, ymax, zmin, uv["west"][2], 16 - uv["west"][3], 0x0b]],
 
 
         # FaceYIncreasing:
-        [[xmin, ymax, zmin, uv["up"][0], uv["up"][1], 0x11],  # ne
-         [xmin, ymax, zmax, uv["up"][2], uv["up"][1], 0x11],  # nw
-         [xmax, ymax, zmax, uv["up"][2], uv["up"][3], 0x11],  # sw
-         [xmax, ymax, zmin, uv["up"][0], uv["up"][3], 0x11]],  # se
+        [[xmin, ymax, zmin, uv["up"][2], 16 - uv["up"][1], 0x11],  # ne
+         [xmin, ymax, zmax, uv["up"][0], 16 - uv["up"][1], 0x11],  # nw
+         [xmax, ymax, zmax, uv["up"][0], 16 - uv["up"][3], 0x11],  # sw
+         [xmax, ymax, zmin, uv["up"][2], 16 - uv["up"][3], 0x11]],  # se
 
         # FaceYDecreasing:
-        [[xmin, ymin, zmin, uv["down"][0], uv["down"][3], 0x08],
-         [xmax, ymin, zmin, uv["down"][0], uv["down"][1], 0x08],
-         [xmax, ymin, zmax, uv["down"][2], uv["down"][1], 0x08],
-         [xmin, ymin, zmax, uv["down"][2], uv["down"][3], 0x08]],
+        [[xmin, ymin, zmin, uv["down"][2], 16 - uv["down"][3], 0x08],
+         [xmax, ymin, zmin, uv["down"][2], 16 - uv["down"][1], 0x08],
+         [xmax, ymin, zmax, uv["down"][0], 16 - uv["down"][1], 0x08],
+         [xmin, ymin, zmax, uv["down"][0], 16 - uv["down"][3], 0x08]],
 
         # FaceZIncreasing:
-        [[xmin, ymin, zmax, uv["south"][0], uv["south"][1], 0x0d],
-         [xmax, ymin, zmax, uv["south"][2], uv["south"][1], 0x0d],
-         [xmax, ymax, zmax, uv["south"][2], uv["south"][3], 0x0d],
-         [xmin, ymax, zmax, uv["south"][0], uv["south"][3], 0x0d]],
+        [[xmin, ymin, zmax, uv["south"][2], 16 - uv["south"][1], 0x0d],
+         [xmax, ymin, zmax, uv["south"][0], 16 - uv["south"][1], 0x0d],
+         [xmax, ymax, zmax, uv["south"][0], 16 - uv["south"][3], 0x0d],
+         [xmin, ymax, zmax, uv["south"][2], 16 - uv["south"][3], 0x0d]],
 
         # FaceZDecreasing:
-        [[xmax, ymin, zmin, uv["north"][2], uv["north"][1], 0x0d],
-         [xmin, ymin, zmin, uv["north"][0], uv["north"][1], 0x0d],
-         [xmin, ymax, zmin, uv["north"][0], uv["north"][3], 0x0d],
-         [xmax, ymax, zmin, uv["north"][2], uv["north"][3], 0x0d],
+        [[xmax, ymin, zmin, uv["north"][2], 16 - uv["north"][1], 0x0d],
+         [xmin, ymin, zmin, uv["north"][0], 16 - uv["north"][1], 0x0d],
+         [xmin, ymax, zmin, uv["north"][0], 16 - uv["north"][3], 0x0d],
+         [xmax, ymax, zmin, uv["north"][2], 16 - uv["north"][3], 0x0d],
         ],
 
     ])
@@ -2229,7 +2229,7 @@ class ButtonRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Button.ID,
                   pymclevel.materials.alphaMaterials.WoodenButton.ID]
 
-    buttonTemplate =
+    buttonTemplate = None
 
     def buttonVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         buttonMask = self.getMaterialIndices(blockMaterials)
@@ -2243,16 +2243,18 @@ class ButtonRenderer(BlockRenderer):
             vertexArray[..., indicies] = buttonIndices[dimension][:, numpy.newaxis,
                                          numpy.newaxis]  # xxx swap z with y using ^
 
-        vertexArray[..., 0:5] += self.fenceTemplates[..., 0:5]
+        vertexArray[..., 0:5] += self.buttonTemplate[..., 0:5]
         vertexArray[_ST] += texMap(blocks[buttonIndices], 0)[..., numpy.newaxis, :]
 
-        vertexArray.view('uint8')[_RGB] = self.fenceTemplates[..., 5][..., numpy.newaxis]
+        vertexArray.view('uint8')[_RGB] = self.buttonTemplates[..., 5][..., numpy.newaxis]
         vertexArray.view('uint8')[_A] = 0xFF
         vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][buttonIndices][
             ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
         vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
         yield
         self.vertexArrays = [vertexArray]
+
+    makeVertices = buttonVertices
 
 class FenceBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Fence.ID,
