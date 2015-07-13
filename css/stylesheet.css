@@ -3,7 +3,15 @@ span[id*="-downloads"] .dl {
 	margin-top:3px;
 	margin-bottom:-10px;
 }
-
+/* Tutorial page */
+.tutorial{
+	background-color: #F4EC9A;
+	padding: 0.5em 0;
+}
+.warning{
+	background-color: #F5A9A9;
+	padding: 0.5em 0;
+}
 
 body {
 	padding-top: 70px;
@@ -73,5 +81,4 @@ p, tr, td{
 .contributor .thumbnail img {
 	width: 100%;
 }
-/* Mobile Site */
 /* END FROM TEXT.CSS*/
