@@ -314,13 +314,14 @@ from time import asctime, time
 #-------------------------------------------------------------------------------
 
 
-def buildTranslation(lang, suppressAlert=False):
+def buildTranslation(lang, extend=False, langPath=langPath):
     """Finds the file corresponding to 'lang' builds up string_cache.
     If the file is not valid, does nothing.
     Errors encountered during the process are silently ignored.
     Returns string_cache (dict) and wether the file exists (bool)."""
     log.debug("buildTranslation <<<")
     tm = time()
+    str_cache = {}
     global string_cache
     fileFound = False
     lang = u"%s" % lang
@@ -386,7 +387,9 @@ def buildTranslation(lang, suppressAlert=False):
         result = u"{" + result.replace(u"\r\n", u"\\n").replace(u"\n", u"\\n").replace(u"\t", u"\\t") + u"\"}"
         log.debug("    Conversion done. Loading JSON resource.")
         try:
-            string_cache = json.loads(result)
+            str_cache = json.loads(result)
+            if extend:
+                string_cache.update([(a, b) for (a, b) in str_cache.items() if a not in string_cache.keys()])
         except Exception, e:
             log.debug("Error while loading JSON resource:")
             log.debug("    %s"%e)
@@ -395,16 +398,17 @@ def buildTranslation(lang, suppressAlert=False):
             f.write(result)
             f.close()
             return {}, False
-        log.debug("    Setting up font.")
-        line = rawData.splitlines()[0]
-        if "#-# " in line:
-            lngNm = line.split("#-# ")[1].strip()
-        else:
-            lngNm = os.path.splitext(os.path.basename(fName))[0]
-        try:
-            resource.setCurLang(lngNm)
-        except:
-            resource.__curLang = lngNm
+#         log.debug("    Setting up font.") # Forgotten this here???
+        if not extend:
+            line = rawData.splitlines()[0]
+            if "#-# " in line:
+                lngNm = line.split("#-# ")[1].strip()
+            else:
+                lngNm = os.path.splitext(os.path.basename(fName))[0]
+            try:
+                resource.setCurLang(lngNm)
+            except:
+                resource.__curLang = lngNm
         tm1 = time()
         log.debug("  * End on %s duration %s"%(tm, tm1 - tm))
     else:
@@ -416,7 +420,9 @@ def buildTranslation(lang, suppressAlert=False):
         if not os.access(fName, os.R_OK):
             log.debug("  * Is not readable.")
         log.debug("Default strings will be used.")
-        string_cache = {}
+        str_cache = {}
+    if not extend:
+        string_cache = str_cache
     log.debug("buildTranslation >>>")
     return string_cache, fileFound
 

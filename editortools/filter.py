@@ -964,28 +964,32 @@ def tryImport(_root, name, org_lang, stock=False, subFolderString="", unicode_na
                 module.displayName = module_name  # Python is awesome
             if not stock:
 
-                if "trn" in sys.modules.keys():
-                    del sys.modules["trn"]
-                if "albow.translate" in sys.modules.keys():
-                    del sys.modules["albow.translate"]
-                from albow import translate as trn
+
+#-# WIP. Following commented lines can be removed once we're sure we don't need them any more.
+#                 if "trn" in sys.modules.keys():
+#                     del sys.modules["trn"]
+#                 if "albow.translate" in sys.modules.keys():
+#                     del sys.modules["albow.translate"]
+#                 from albow import translate as trn
                 if directories.getFiltersDir() in name:
                     trn_path = os.path.split(name)[0]
                 else:
                     trn_path = directories.getFiltersDir()
                 trn_path = os.path.join(trn_path, subFolderString[1:-1], module_name)
-                module.trn = trn
+#                 module.trn = trn
                 if os.path.exists(trn_path):
-                    module.trn.setLangPath(trn_path)
-                    module.trn.buildTranslation(config.settings.langCode.get())
-                    n = module.displayName
-                    if hasattr(module, "trn"):
-                        n = module.trn._(module.displayName)
-                    if n == module.displayName:
-                        n = _(module.displayName)
-                    module.displayName = n
-                import albow.translate
-                albow.translate.lang = org_lang
+#                     module.trn.setLangPath(trn_path)
+#                     module.trn.buildTranslation(config.settings.langCode.get())
+                    albow.translate.buildTranslation(config.settings.langCode.get(), extend=True, langPath=trn_path)
+#                     n = module.displayName
+#                     if hasattr(module, "trn"):
+#                         n = module.trn._(module.displayName)
+#                     if n == module.displayName:
+#                         n = _(module.displayName)
+#                     module.displayName = n
+                    module.displayName = _(module.displayName)
+#                 import albow.translate
+#                 albow.translate.lang = org_lang
             return module
 
         except Exception as e:
