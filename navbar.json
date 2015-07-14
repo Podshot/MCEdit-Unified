@@ -9,6 +9,10 @@
 			"url": "about.html"
 		},
 		{
+			"displayname": "Tutorial",
+			"url": "tutorial.html"
+		},
+		{
 			"displayname": "System Requirements",
 			"url": "requirements.html"
 		},
