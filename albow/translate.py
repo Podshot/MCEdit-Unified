@@ -251,6 +251,12 @@ def setLang(newlang):
     if not lang == newlang:
         sc, result = buildTranslation(newlang)
         lang = newlang
+        if newlang == 'en_US':
+            result = True
+            try:
+                resource.setCurLang(u"English (US)")
+            except:
+                resource.__curLang = u"English (US)"
     else:
         result = True
     return oldLang, lang, result

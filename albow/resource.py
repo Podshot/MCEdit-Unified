@@ -143,11 +143,15 @@ font_file_cache = []
 
 def get_font(size, *names, **kwds):
     global font_cache
+#     print names, font_lang_cache
     lngs_fontNm = font_lang_cache.get(names[-1], {})
+#     print getCurLang(), lngs_fontNm
     fontNm = lngs_fontNm.get(getCurLang(), None)
+#     print fontNm
     if fontNm:
         names = [a for a in names[:-1]]
         names.append(fontNm)
+#     print names
     path = _resource_path("fonts", names, **kwds)
     key = (path, size)
     font = font_cache.get(key)
