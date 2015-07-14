@@ -538,7 +538,6 @@ class ChunkCalculator(object):
                 IceBlockRenderer,
                 ButtonRenderer,
                 FenceBlockRenderer,
-                NetherFenceBlockRenderer,
                 FenceGateBlockRenderer,
                 StairBlockRenderer,
                 RepeaterBlockRenderer,
@@ -2284,16 +2283,33 @@ class ButtonRenderer(BlockRenderer):
         "east": (6, 14, 10, 16)
     })
 
+    buttonTemplatePressed = makeVertexTemplatesFromJsonModel((5, 0, 6), (11, 1, 10), {
+        "down": (5, 6, 11, 10),
+        "up": (5, 10, 11, 6),
+        "north": (5, 15, 11, 16),
+        "south": (5, 15, 11, 16),
+        "west": (6, 15, 10, 16),
+        "east": (6, 15, 10, 16)
+    })
+
     buttonTemplates = numpy.array([
         rotateTemplate(buttonTemplate, 180, 0),
         rotateTemplate(buttonTemplate, 90, 90),
         rotateTemplate(buttonTemplate, 90, 270),
         rotateTemplate(buttonTemplate, 90, 180),
         rotateTemplate(buttonTemplate, 90, 0),
-        buttonTemplate
+        buttonTemplate,
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6)),
+        rotateTemplate(buttonTemplatePressed, 180, 0),
+        rotateTemplate(buttonTemplatePressed, 90, 90),
+        rotateTemplate(buttonTemplatePressed, 90, 270),
+        rotateTemplate(buttonTemplatePressed, 90, 180),
+        rotateTemplate(buttonTemplatePressed, 90, 0),
+        buttonTemplatePressed,
     ])
 
-    makeVertices = makeVerticesFromModel(buttonTemplates, 7)
+    makeVertices = makeVerticesFromModel(buttonTemplates, 15)
+
 
 class FenceBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Fence.ID,
@@ -2301,41 +2317,11 @@ class FenceBlockRenderer(BlockRenderer):
                   pymclevel.materials.alphaMaterials.BirchFence.ID,
                   pymclevel.materials.alphaMaterials.JungleFence.ID,
                   pymclevel.materials.alphaMaterials.DarkOakFence.ID,
-                  pymclevel.materials.alphaMaterials.AcaciaFence.ID
-    ]
+                  pymclevel.materials.alphaMaterials.AcaciaFence.ID,
+                  pymclevel.materials.alphaMaterials.NetherBrickFence.ID]
     fenceTemplates = makeVertexTemplates(3 / 8., 0, 3 / 8., 5 / 8., 1, 5 / 8.)
 
     makeVertices = makeVerticesFromModel(fenceTemplates)
-
-
-class NetherFenceBlockRenderer(BlockRenderer):
-    blocktypes = [pymclevel.materials.alphaMaterials.NetherBrickFence.ID]
-    fenceTemplates = makeVertexTemplates(3 / 8., 0, 3 / 8., 5 / 8., 1, 5 / 8.)
-
-    def fenceVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
-        fenceMask = self.getMaterialIndices(blockMaterials)
-        fenceIndices = fenceMask.nonzero()
-        yield
-
-        vertexArray = numpy.zeros((len(fenceIndices[0]), 6, 4, 6), dtype='float32')
-        for indicies in range(3):
-            dimension = (0, 2, 1)[indicies]
-
-            vertexArray[..., indicies] = fenceIndices[dimension][:, numpy.newaxis, numpy.newaxis]
-
-        vertexArray[..., 0:5] += self.fenceTemplates[..., 0:5]
-        vertexArray[_ST] += pymclevel.materials.alphaMaterials.blockTextures[
-            pymclevel.materials.alphaMaterials.NetherBrickFence.ID, 0, 0]
-
-        vertexArray.view('uint8')[_RGB] = self.fenceTemplates[..., 5][..., numpy.newaxis]
-        vertexArray.view('uint8')[_A] = 0xFF
-        vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][fenceIndices][
-            ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
-        vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
-        yield
-        self.vertexArrays = [vertexArray]
-
-    makeVertices = fenceVertices
 
 
 class FenceGateBlockRenderer(BlockRenderer):
