@@ -96,7 +96,6 @@ class FillToolPanel(Panel):
                # swapRow,
                replaceLabel,
                # self.replaceBlockButton,
-               self.noDataCheckBox,
                self.fillButton)
 
         if replacing:
