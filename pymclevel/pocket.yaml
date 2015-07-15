@@ -941,14 +941,17 @@ blocks:
         name: Quartz Double Slab (Seamed)
         tex: [9, 13]
       7:
-        name: Full Stone Double Slab (Seamed)
+        name: Stone Double Slab (Seamless)
         tex: [6, 0]
       8:
-        name: Stone Double Slab (Seamless)
+        name: Stone Double Slab (Seamed)
         tex: [6, 0]
       9:
         name: Sandstone Double Slab (Seamless)
-        tex: [0, 11]
+        tex: [0, 12]
+        tex_direction:
+          TOP: [0, 11]
+          BOTTOM: [0, 13]
       10:
         name: Wooden Double Slab (Seamless)
         aka: Old Wood
@@ -966,7 +969,7 @@ blocks:
         name: Quartz Double Slab (Seamless)
         tex: [9, 13]
       15:
-        name: Full Stone Double Slab (Seamless)
+        name: Stone Double Slab (Seamless)
         tex: [6, 0]
 
   - id: 44
@@ -1003,7 +1006,7 @@ blocks:
         name: Quartz Slab (Bottom)
         tex: [9, 13]
       7:
-        name: Full Stone Slab (Bottom)
+        name: Stone Slab (Seamless, Bottom)
         tex: [6, 0]
       8:
         name: Stone Slab (Top)
@@ -1034,7 +1037,7 @@ blocks:
         name: Quartz Slab (Top)
         tex: [9, 13]
       15:
-        name: Full Stone Slab (Top)
+        name: Stone Slab (Seamless, Top)
         tex: [6, 0]
 
   - id: 45
@@ -2743,7 +2746,7 @@ blocks:
         name: Dark Oak Double Slab
         tex: [1, 15]
 
-  - id: 126
+  - id: 158
     idStr: wooden_slab
     name: Wooden Slab
     mapcolor: [200, 200, 200]
