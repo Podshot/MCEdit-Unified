@@ -121,11 +121,24 @@ trnHeader = """# TRANSLATION BASICS
 # See TRANSLATION.txt for more detailed information.
 #"""
 
+buildTemplateMarker = """
+### THE FOLLOWING LINES HAS BEEN ADDED BY THE TEMPLATE UPDATE FUNCTION.
+### Please, consider to analyze them and remove the entries referring
+### to ones containing string formatting.
+###
+### For example, if you have a line already defined with this text:
+### My %{animal} has %d legs.
+### you may find lines like these below:
+### My parrot has 2 legs.
+### My dog has 4 legs.
+###
+### And, remove this paragraph too...
+"""
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
 #-------------------------------------------------------------------------------
 
-def _(string, doNotTranslate=False):
+def _(string, doNotTranslate=False, hotKey=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
     if doNotTranslate:
         return string
@@ -139,8 +152,10 @@ def _(string, doNotTranslate=False):
         trn = string_cache.get(string, trn)
     if trn == string and '-' in string:
         # Support for hotkeys
-        trn = '-'.join([_(a) for a in string.split('-')])
-    if buildTemplate:
+        trn = '-'.join([_(a, hotKey=True) for a in string.split('-') if _(a, hotKey=True) != a or a])
+        hotKey = True
+    # We don't want hotkeys and blank strings.
+    if buildTemplate and not hotKey and string.strip():
         global template
         global strNum
         if (string, None) not in [(a, None) for a, b in template.values()]:
@@ -158,7 +173,7 @@ def loadTemplate(fName="template.trn"):
     global strNum
     fName = os.path.join(getLangPath(), fName)
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
-        oldData = codecs.open(fName, "r", "utf-8").read() + "\x00"
+        oldData = codecs.open(fName, "r", "utf-8").read() + buildTemplateMarker
         trnHeader = u""
         # find the first oXX
         start = re.search(ur"^o\d+[ ]", oldData, re.M|re.S)

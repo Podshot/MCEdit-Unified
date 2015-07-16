@@ -91,8 +91,31 @@ import leveleditor
 
 # Building translation template
 if "-tt" in sys.argv:
+    sys.argv.remove('-tt')
+    # Overwrite the default marker to have one adapted to our specific needs.
+    albow.translate.buildTemplateMarker = """
+### THE FOLLOWING LINES HAS BEEN ADDED BY THE TEMPLATE UPDATE FUNCTION.
+### Please, consider to analyze them and remove the entries referring
+### to ones containing string formatting.
+###
+### For example, if you have a line already defined with this text:
+### My %{animal} has %d legs.
+### you may find lines like these below:
+### My parrot has 2 legs.
+### My dog has 4 legs.
+###
+### You also may have unwanted partial strings, especially the ones 
+### used in hotkeys. Delete them too. 
+### And, remove this paragraph, or it will be displayed in the program...
+"""
     albow.translate.buildTemplate = True
     albow.translate.loadTemplate()
+    # Save the language defined in config and set en_US as current one.
+    logging.warning('MCEdit is invoked to update the translation template.')
+    orglang = config.settings.langCode.get()
+    logging.warning('The actual language is %s.'%orglang)
+    logging.warning('Setting en_US as language for this session.')
+    config.settings.langCode.set('en_US')
 
 
 import mceutils
@@ -619,6 +642,11 @@ class MCEdit(GLViewport):
                     config.settings.windowY.set(Y)
                     config.settings.windowShowCmd.set(showCmd)
 
+                # Restore the previous language if we ran with '-tt' (update translation template).
+                if albow.translate.buildTemplate:
+                    logging.warning('Restoring %s.'%orglang)
+                    config.settings.langCode.set(orglang)
+                #
                 config.save()
                 mcedit.editor.renderer.discardAllChunks()
                 mcedit.editor.deleteAllCopiedSchematics()
