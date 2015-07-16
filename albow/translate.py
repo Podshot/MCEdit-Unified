@@ -248,12 +248,13 @@ def setLangPath(path):
 #-------------------------------------------------------------------------------
 
 def getLangPath():
-    """..."""
+    """Return the actual 'lang' folder."""
     return langPath
 
 #-------------------------------------------------------------------------------
 
 def getLang():
+    """Return the actual language."""
     return lang
 
 
@@ -279,7 +280,8 @@ def setLang(newlang):
 
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
-    """Returns encoded/decoded data."""
+    """Returns encoded/decoded data.
+    Disabled for now..."""
     return data  # disabled for now, but can be use full in the future
     if type(data) == str:
         data = data.decode(newEnc)
