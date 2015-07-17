@@ -2297,7 +2297,7 @@ class DoorRenderer(BlockRenderer):
                   pymclevel.materials.alphaMaterials.AcaciaDoor.ID,
                   pymclevel.materials.alphaMaterials.DarkOakDoor.ID]
 
-    doorBottomTemplate = makeVertexTemplatesFromJsonModel(
+    doorTemplate = makeVertexTemplatesFromJsonModel(
         (0, 0, 0), (3, 16, 16),
         {
             "down": (13, 0, 16, 16),
@@ -2310,33 +2310,7 @@ class DoorRenderer(BlockRenderer):
         }
     )
 
-    doorBottomRHTemplate = makeVertexTemplatesFromJsonModel(
-        (0, 0, 0), (3, 16, 16),
-        {
-            "down": (13, 0, 16, 16),
-            # TODO handle faces that should not appear
-            "up": (13, 0, 16, 16),
-            "north": (3, 0, 0, 16),
-            "south": (0, 0, 3, 16),
-            "west": (16, 0, 0, 16),
-            "east": (0, 0, 16, 16)
-        }
-    )
-
-    doorTopTemplate = makeVertexTemplatesFromJsonModel(
-        (0, 0, 0), (3, 16, 16),
-        {
-            "down": (13, 0, 16, 16),
-            # TODO handle faces that should not appear
-            "up": (13, 0, 16, 16),
-            "north": (3, 0, 0, 16),
-            "south": (0, 0, 3, 16),
-            "west": (0, 0, 16, 16),
-            "east": (16, 0, 0, 16)
-        }
-    )
-
-    doorTopRHTemplate = makeVertexTemplatesFromJsonModel(
+    doorRHTemplate = makeVertexTemplatesFromJsonModel(
         (0, 0, 0), (3, 16, 16),
         {
             "down": (13, 0, 16, 16),
@@ -2351,41 +2325,41 @@ class DoorRenderer(BlockRenderer):
 
     doorTemplates = numpy.array([
         # lower hinge left
-        doorBottomTemplate,
-        rotateTemplate(doorBottomTemplate, y=90),
-        rotateTemplate(doorBottomTemplate, y=180),
-        rotateTemplate(doorBottomTemplate, y=270),
-        rotateTemplate(doorBottomRHTemplate, y=90),
-        rotateTemplate(doorBottomRHTemplate, y=180),
-        rotateTemplate(doorBottomRHTemplate, y=270),
-        doorBottomRHTemplate,
+        doorTemplate,
+        rotateTemplate(doorTemplate, y=90),
+        rotateTemplate(doorTemplate, y=180),
+        rotateTemplate(doorTemplate, y=270),
+        rotateTemplate(doorRHTemplate, y=90),
+        rotateTemplate(doorRHTemplate, y=180),
+        rotateTemplate(doorRHTemplate, y=270),
+        doorRHTemplate,
         # upper hinge left
-        doorTopTemplate,
-        rotateTemplate(doorTopTemplate, y=90),
-        rotateTemplate(doorTopTemplate, y=180),
-        rotateTemplate(doorTopTemplate, y=270),
-        rotateTemplate(doorTopRHTemplate, y=90),
-        rotateTemplate(doorTopRHTemplate, y=180),
-        rotateTemplate(doorTopRHTemplate, y=270),
-        doorTopRHTemplate,
+        doorTemplate,
+        rotateTemplate(doorTemplate, y=90),
+        rotateTemplate(doorTemplate, y=180),
+        rotateTemplate(doorTemplate, y=270),
+        rotateTemplate(doorRHTemplate, y=90),
+        rotateTemplate(doorRHTemplate, y=180),
+        rotateTemplate(doorRHTemplate, y=270),
+        doorRHTemplate,
         # lower hinge right
-        doorBottomRHTemplate,
-        rotateTemplate(doorBottomRHTemplate, y=90),
-        rotateTemplate(doorBottomRHTemplate, y=180),
-        rotateTemplate(doorBottomRHTemplate, y=270),
-        rotateTemplate(doorBottomTemplate, y=270),
-        doorBottomTemplate,
-        rotateTemplate(doorBottomTemplate, y=90),
-        rotateTemplate(doorBottomTemplate, y=180),
+        doorRHTemplate,
+        rotateTemplate(doorRHTemplate, y=90),
+        rotateTemplate(doorRHTemplate, y=180),
+        rotateTemplate(doorRHTemplate, y=270),
+        rotateTemplate(doorTemplate, y=270),
+        doorTemplate,
+        rotateTemplate(doorTemplate, y=90),
+        rotateTemplate(doorTemplate, y=180),
         # upper hinge right
-        doorTopRHTemplate,
-        rotateTemplate(doorTopRHTemplate, y=90),
-        rotateTemplate(doorTopRHTemplate, y=180),
-        rotateTemplate(doorTopRHTemplate, y=270),
-        rotateTemplate(doorTopTemplate, y=270),
-        doorTopTemplate,
-        rotateTemplate(doorTopTemplate, y=90),
-        rotateTemplate(doorTopTemplate, y=180),
+        doorRHTemplate,
+        rotateTemplate(doorRHTemplate, y=90),
+        rotateTemplate(doorRHTemplate, y=180),
+        rotateTemplate(doorRHTemplate, y=270),
+        rotateTemplate(doorTemplate, y=270),
+        doorTemplate,
+        rotateTemplate(doorTemplate, y=90),
+        rotateTemplate(doorTemplate, y=180),
     ])
 
     makeVertices = makeVerticesFromModel(doorTemplates, 31)
