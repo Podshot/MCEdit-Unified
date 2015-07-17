@@ -2141,20 +2141,28 @@ blocks:
     data:
       0:
         name: Oak Door (Lower, Unopened, East)
+        tex: [1, 6]
       1:
         name: Oak Door (Lower, Unopened, South)
+        tex: [1, 6]
       2:
         name: Oak Door (Lower, Unopened, West)
+        tex: [1, 6]
       3:
         name: Oak Door (Lower, Unopened, North)
+        tex: [1, 6]
       4:
         name: Oak Door (Lower, Opened, East)
+        tex: [1, 6]
       5:
         name: Oak Door (Lower, Opened, South)
+        tex: [1, 6]
       6:
         name: Oak Door (Lower, Opened, West)
+        tex: [1, 6]
       7:
         name: Oak Door (Lower, Opened, North)
+        tex: [1, 6]
       8:
         name: Oak Door (Upper, Left Hinge, Unpowered)
       9:
@@ -2163,6 +2171,17 @@ blocks:
         name: Oak Door (Upper, Left Hinge, Powered)
       11:
         name: Oak Door (Upper, Right Hinge, Powered)
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [1, 5]
+      13:
+        tex: [1, 5]
+      14:
+        tex: [1, 5]
+      15:
+        tex: [1, 5]
 
   - id: 65
     idStr: ladder

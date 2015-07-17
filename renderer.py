@@ -309,6 +309,7 @@ def rotateTemplate(template, x=0, y=0):
         template[..., 0] += 0.5
     return template
 
+# handle missing/culled faces
 def makeVerticesFromModel(templates, dataMask=0):
     if type(templates) is list:
         templates = numpy.array(templates)
@@ -331,7 +332,7 @@ def makeVerticesFromModel(templates, dataMask=0):
                                          numpy.newaxis]  # xxx swap z with y using ^
 
         vertexArray[..., 0:5] += templates[data][..., 0:5]
-        vertexArray[_ST] += texMap(blocks[blockIndices], 0)[..., numpy.newaxis, :]
+        vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices] & 15)[..., numpy.newaxis, :]
 
         vertexArray.view('uint8')[_RGB] = templates[data][..., 5][..., numpy.newaxis]
         vertexArray.view('uint8')[_A] = 0xFF
@@ -536,6 +537,7 @@ class ChunkCalculator(object):
                 EnchantingBlockRenderer,
                 RedstoneBlockRenderer,
                 IceBlockRenderer,
+                DoorRenderer,
                 ButtonRenderer,
                 FenceBlockRenderer,
                 FenceGateBlockRenderer,
@@ -836,6 +838,22 @@ class ChunkCalculator(object):
         blockMaterials = areaBlockMats[1:-1, 1:-1, 1:-1]
         if self.roughGraphics:
             blockMaterials.clip(0, 1, blockMaterials)
+
+        # Special case for doors
+        #
+        # Each part of a door itself does not have all of the information required
+        # to render, as direction/whether its open is on the lower part and the hinge
+        # side is on the upper part. So here we combine the metadata of the bottom part
+        # with the top to form 0-32 metadata(which would be used in door renderer).
+        #
+        for door in DoorRenderer.blocktypes:
+            doors = blocks == door
+            # only accept lower part one block below upper part
+            valid = doors[:, :, :-1] & doors[:, :, 1:] & (blockData[:, :, :-1] < 8) & (blockData[:, :, 1:] >= 8)
+            mask = valid.nonzero()
+            upper_mask = (mask[0], mask[1], mask[2]+1)
+            blockData[mask] += (blockData[upper_mask] - 8) * 16
+            blockData[upper_mask] = blockData[mask] + 8
 
         sx = sz = slice(0, 16)
         asx = asz = slice(0, 18)
@@ -2269,6 +2287,108 @@ class RedstoneBlockRenderer(BlockRenderer):
 
 
 # button, floor plate, door -> 1-cube features
+
+class DoorRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.WoodenDoor.ID,
+                  pymclevel.materials.alphaMaterials.IronDoor.ID,
+                  pymclevel.materials.alphaMaterials.SpruceDoor.ID,
+                  pymclevel.materials.alphaMaterials.BirchDoor.ID,
+                  pymclevel.materials.alphaMaterials.JungleDoor.ID,
+                  pymclevel.materials.alphaMaterials.AcaciaDoor.ID,
+                  pymclevel.materials.alphaMaterials.DarkOakDoor.ID]
+
+    doorBottomTemplate = makeVertexTemplatesFromJsonModel(
+        (0, 0, 0), (3, 16, 16),
+        {
+            "down": (13, 0, 16, 16),
+            # TODO handle faces that should not appear
+            "up": (13, 0, 16, 16),
+            "north": (3, 0, 0, 16),
+            "south": (0, 0, 3, 16),
+            "west": (0, 0, 16, 16),
+            "east": (16, 0, 0, 16)
+        }
+    )
+
+    doorBottomRHTemplate = makeVertexTemplatesFromJsonModel(
+        (0, 0, 0), (3, 16, 16),
+        {
+            "down": (13, 0, 16, 16),
+            # TODO handle faces that should not appear
+            "up": (13, 0, 16, 16),
+            "north": (3, 0, 0, 16),
+            "south": (0, 0, 3, 16),
+            "west": (16, 0, 0, 16),
+            "east": (0, 0, 16, 16)
+        }
+    )
+
+    doorTopTemplate = makeVertexTemplatesFromJsonModel(
+        (0, 0, 0), (3, 16, 16),
+        {
+            "down": (13, 0, 16, 16),
+            # TODO handle faces that should not appear
+            "up": (13, 0, 16, 16),
+            "north": (3, 0, 0, 16),
+            "south": (0, 0, 3, 16),
+            "west": (0, 0, 16, 16),
+            "east": (16, 0, 0, 16)
+        }
+    )
+
+    doorTopRHTemplate = makeVertexTemplatesFromJsonModel(
+        (0, 0, 0), (3, 16, 16),
+        {
+            "down": (13, 0, 16, 16),
+            # TODO handle faces that should not appear
+            "up": (13, 0, 16, 16),
+            "north": (3, 0, 0, 16),
+            "south": (0, 0, 3, 16),
+            "west": (16, 0, 0, 16),
+            "east": (0, 0, 16, 16)
+        }
+    )
+
+    doorTemplates = numpy.array([
+        # lower hinge left
+        doorBottomTemplate,
+        rotateTemplate(doorBottomTemplate, y=90),
+        rotateTemplate(doorBottomTemplate, y=180),
+        rotateTemplate(doorBottomTemplate, y=270),
+        rotateTemplate(doorBottomRHTemplate, y=90),
+        rotateTemplate(doorBottomRHTemplate, y=180),
+        rotateTemplate(doorBottomRHTemplate, y=270),
+        doorBottomRHTemplate,
+        # upper hinge left
+        doorTopTemplate,
+        rotateTemplate(doorTopTemplate, y=90),
+        rotateTemplate(doorTopTemplate, y=180),
+        rotateTemplate(doorTopTemplate, y=270),
+        rotateTemplate(doorTopRHTemplate, y=90),
+        rotateTemplate(doorTopRHTemplate, y=180),
+        rotateTemplate(doorTopRHTemplate, y=270),
+        doorTopRHTemplate,
+        # lower hinge right
+        doorBottomRHTemplate,
+        rotateTemplate(doorBottomRHTemplate, y=90),
+        rotateTemplate(doorBottomRHTemplate, y=180),
+        rotateTemplate(doorBottomRHTemplate, y=270),
+        rotateTemplate(doorBottomTemplate, y=270),
+        doorBottomTemplate,
+        rotateTemplate(doorBottomTemplate, y=90),
+        rotateTemplate(doorBottomTemplate, y=180),
+        # upper hinge right
+        doorTopRHTemplate,
+        rotateTemplate(doorTopRHTemplate, y=90),
+        rotateTemplate(doorTopRHTemplate, y=180),
+        rotateTemplate(doorTopRHTemplate, y=270),
+        rotateTemplate(doorTopTemplate, y=270),
+        doorTopTemplate,
+        rotateTemplate(doorTopTemplate, y=90),
+        rotateTemplate(doorTopTemplate, y=180),
+    ])
+
+    makeVertices = makeVerticesFromModel(doorTemplates, 31)
 
 class ButtonRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Button.ID,
