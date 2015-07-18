@@ -76,13 +76,13 @@ class PlayerRemoveOperation(Operation):
         self.tool.markerList.invalidate()
         self.tool.movingPlayer = None
 
-        pos = self.tool.revPlayerPos[self.player]
-        del self.tool.playerPos[pos]
+        pos = self.tool.revPlayerPos[self.editor.level.dimNo][self.player]
+        del self.tool.playerPos[self.editor.level.dimNo][pos]
         if self.player != "Player":
             del self.tool.playerTexture[self.player]
         else:
             del self.level.root_tag["Data"]["Player"]
-        del self.tool.revPlayerPos[self.player]
+        del self.tool.revPlayerPos[self.editor.level.dimNo][self.player]
         self.canUndo = True
 
     def undo(self):
@@ -181,8 +181,8 @@ class PlayerAddOperation(Operation):
             if self.tool.panel:
                 self.tool.panel.player_UUID[self.player] = self.uuid
 
-        self.tool.playerPos[(0,0,0)] = self.uuid
-        self.tool.revPlayerPos[self.uuid] = (0,0,0)
+        self.tool.playerPos[self.editor.level.dimNo][(0,0,0)] = self.uuid
+        self.tool.revPlayerPos[self.editor.level.dimNo][self.uuid] = (0,0,0)
         self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid, force=False))
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
