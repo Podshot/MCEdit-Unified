@@ -34,6 +34,184 @@ MCRenderer:
         (*) BlockRenderer
             Has "vertexArrays"
             One per block type, plus one for low detail and one for Entity
+
+BlockRender documentation
+
+  Each Block renderer renders a particular block types or entities.
+
+  The block renderer that is chosen to draw that block type(by ID)
+  is the block renderer class that is lowest in the list within the
+  makeRenderstates method. Each blockRenderer is assigned a materialIndex
+  and the blockMaterial parameter indicates what material index each block
+  in the chunk is therefore what block renderer is used to render it.
+
+  Vertex arrays are arrays of vertices(groups of six elements) and
+  every group of 4 vertices is a quad that will be drawn.
+
+  Before the vertex arrays will be drawn `.ravel()` will be called
+    (flattened to one dimension arrays).
+
+    The vertex arrays will draw quads and each vertex elements
+    with the foramt:
+      0:3 index - xyz values
+      3:5 index - st(texture coordinates) values
+      5   index - rgba(colour) value
+                  Note: each element of rgba value is a uint8 type(the 4 colour
+                        elements makes up 32 bits) to view/change the values use
+                        `.view('uint8')` to change the view of the array into uint8 type.
+
+  To implement a block renderer either makeVertices or makeFaceVertices
+  needs to be implemented. The base class BlockRenderer implements
+  makeVertices in terms of makeFaceVertices, by iterating over the different
+  face directions.
+
+  The makeVertices function is called on the block renderer to gat a
+  list of vertexArrays that will draw the blocks for a 16x16x16 chunk.
+
+   parameters:
+
+    all parameters are in xzy order
+
+    facingBlockIndices:
+      list of 6, (16, 16, 16) numpy boolean arrays
+
+      each array corresponds to the blocks within the chunk that
+      has it face exposed in that direction. The direction is the
+      index into the list defined by the constants in pymclevel/faces.py
+
+      This is used to only draw exposed faces
+
+    blocks:
+      (16, 16, 16) numpy array of the id of blocks in the chunk
+
+    blockMaterials:
+      (16, 16, 16) numpy array of the material index of each block in the chunk
+
+      each material refers to a different block renderer to get the
+      material index for this block renderer `self.materialIndex`
+
+    blockData:
+      (16, 16, 16) numpy array of the metadata value of each block
+      in the chunk
+
+    areaBlockLights:
+      (18, 18, 18) numpy array of light value(max of block light and
+      skylight) of the chunk and 1 block 'border' aroun it.
+
+    texMap:
+      function that takes id, data value and directions
+      and returns texture coordinates
+
+    returns a list of vertex arrays in the form of float32 numpy arrays.
+    For this chunk.
+
+  The makeFaceVertices gets an vertexArray for a particular face.
+
+   parameters:
+
+    all parameters are in xzy order
+
+    direction:
+      the face defined by constants in pymclevel/faces.py
+
+    materialIndices:
+      list of (x, z, y) indices of blocks in this chunks that
+      is of this material(in blocktypes).
+
+    exposedFaceIndices:
+      list of (x, z, y) indices of blocks that has an exposed face
+      in the direction `direction`.
+
+    blocks:
+      (16, 16, 16) numpy array of the id of blocks in the chunk
+
+    blockData:
+      (16, 16, 16) numpy array of the metadata value of each block
+      in the chunk
+
+    blockLights:
+      (16, 16, 16) numpy array of light values(max of block light and
+      skylight) of the blocks in the chunk chunk.
+
+    facingBlockLight:
+      (16, 16, 16) numpy array of light values(max of block light and
+      skylight) of the blocks just in front of the face.
+
+      i.e.
+        if direction = pymclevel.faces.FaceXDecreasing
+        facingBlockLight[1, 0, 0] refers to the light level
+        at position (0, 0, 0) within the chunk.
+
+    texMap:
+      function that takes id, data value and directions
+      and returns texture coordinates
+
+    returns a list of vertex arrays in the form of float32 numpy arrays.
+
+  Fields
+
+    blocktypes / getBlocktypes(mats)
+      list of block ids the block renderer handles
+
+    detailLevels
+      what detail level the renderer render at
+
+    layer
+      what layer is this block renderer in
+
+    renderstate
+      the render state this block renderer uses
+
+  Models:
+
+    There are also several functions that make it easy to translate
+    json models to block renderer.
+
+    makeVertexTemplatesFromJsonModel:
+      creates a template from information that is in json models
+
+    rotateTemplate:
+      rotate templates. This is equivalent to the rotation in block states files.
+
+    makeVerticesFromModel:
+      creates function based on templates to be used for makeVertices function in block renderer.
+
+  Helper functions:
+
+    self.MaterialIndices(blockMaterial):
+      Given blockMaterial(parameter in makeVertices) it return a list of
+      (x, z, y) indices of blocks in the chunk that are of this block renderer
+      material(blocktypes).
+
+    self.makeTemplate(direction, blockIndices):
+      get a vertex array filled with default values for face `direction`
+      and for the block relating to `blockIndices`
+
+    makeVertexTemplates(xmin=0, ymin=0, zmin=0, xmax=1, ymax=1, zmax=1):
+      returns a numpy array with dimensions (6, 4, 6) filled with values to create
+      a vertex array for a cube.
+
+  For Entities:
+
+    renderer's for entities are similar to blocks but:
+      - they extend EntityRendererGeneric class
+      - they are added to the list in calcFacesForChunkRenderer method
+      - makeChunkVertices(chunk) where chunk is a chunk object
+        is called rather than makeVertices
+
+    there is also a helper method _computeVertices(positions, colors, offset, chunkPosition):
+     parameters:
+      positions
+        locations of entity
+      colors
+        colors of entity boxes
+      offset
+        whether to offset the box
+      chunkPosition
+        chunk position of the chunk
+
+      creates a vertex array that draws entity boxes
+
 """
 
 from collections import defaultdict, deque
@@ -293,6 +471,10 @@ def makeVertexTemplatesFromJsonModel(fromVertices, toVertices, uv):
 
 
 def rotateTemplate(template, x=0, y=0):
+    """
+    Rotate template around x-axis and then around
+    y-axis. Both angles must to multiples of 90.
+    """
     template = template.copy()
     for _ in range(0, x, 90):
         # y -> -z and z -> y
@@ -309,8 +491,18 @@ def rotateTemplate(template, x=0, y=0):
         template[..., 0] += 0.5
     return template
 
-# handle missing/culled faces
+
 def makeVerticesFromModel(templates, dataMask=0):
+    """
+    Returns a function that creates vertex arrays.
+
+    This produces vertex arrays based on the passed
+    templates. This doesn't cull any faces based on
+    if they are exposed.
+
+    :param templates: list of templates to draw
+    :param dataMask:  mask to mask the data
+    """
     if type(templates) is list:
         templates = numpy.array(templates)
     if templates.shape == (6, 4, 6):
@@ -342,6 +534,7 @@ def makeVerticesFromModel(templates, dataMask=0):
         yield
         self.vertexArrays = [vertexArray]
     return makeVertices
+
 
 def makeVertexTemplates(xmin=0, ymin=0, zmin=0, xmax=1, ymax=1, zmax=1):
     return numpy.array([
