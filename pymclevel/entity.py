@@ -64,6 +64,9 @@ class TileEntity(object):
         "EnchantTable": (
             ("CustomName", nbt.TAG_String),
         ),
+        "Dropper": (
+            ("Items", nbt.TAG_List),
+        ),
     }
 
     otherNames = {
@@ -79,6 +82,7 @@ class TileEntity(object):
         "Command Block": "Control",
         "FlowerPot": "FlowerPot",
         "EnchantTable": "EnchantTable",
+        "Dropper": "Dropper",
     }
 
     stringNames = {
@@ -98,6 +102,7 @@ class TileEntity(object):
         "command_block": "Control",
         "flower_pot": "FlowerPot",
         "enchanting_table": "EnchantTable",
+        "dropper": "Dropper",
     }
 
     knownIDs = baseStructures.keys()
