@@ -190,15 +190,70 @@
 		</p>
 		<h2 id="Brush">Brush Tool:</h2>
 		<p>
-			The brush tool allows you to "Paint" the world using preset shapes, you can use RFEG to Increase size, Decrease size, rotate and roll this tool.
+			The brush tool allows you to "Paint" the world using preset shapes, you can use RFEG to Increase size, Decrease size, rotate and roll this tool. The varied version will randomly distribute the blocks you select based on selected weightings.
+            <br>
 			<img src="images/brush0.png" class="simg" alt="Image">
 			<br>
 		</p>
+        <h4 align=center>LINE BRUSH:</h4>
 		<p>
 			Hold Z after placing a brush and click a second point to create a solid line of that brush. Line spacing adjusts how close together brushes are.
-			<img src="images/brush0.png" class="simg" alt="Image">
+            <br>
+			<img src="images/brush1.png" class="simg" alt="Image">
+			<br>
+            The line tool works from the last brushed point, so you can continue from the end of your last line.
+		</p>
+        <h4 align=center>ERODE:</h4>
+		<p>
+			You can also erode the terrain, making it more natural. To use this tool set the size and strength you want and click and drag over the area you wish to erode.
+            <br>
+			<img src="images/brush2.png" class="simg" alt="Image">
 			<br>
 		</p>
+        <p>
+			And after.
+            <br>
+			<img src="images/brush3.png" class="simg" alt="Image">
+			<br>
+            It is recommended to make multiple lower intensity passes for best results. If the brush is still too strong at strength 1, turn up Minimum Spacing.
+            <br>
+		</p>
+        <h4 align=center>FLOOD FILL:</h4>
+		<p>
+			This brush will systematically replace all blocks of the same type touching the block you click on. This will go on until you either cancel the operation or it finishes.
+            <br>
+			<img src="images/brush4.png" class="simg" alt="Image">
+            <br>
+            An interrupted flood fill operation.
+		</p>
+        <h4 align=center>PASTE:</h4>
+        <p>
+            The paste brush simply brushes an imported schematic.
+            <br>
+            <img src="images/brush5.png" class="simg" alt="Image">
+        </p>
+        <h4 align=center>REPLACE AND VARIED REPLACE:</h4>
+        <p>
+            The replace and varied replace tools replace the block selected in the first slot with the block(s) selected in the lower box(es).
+            <br>
+            <img src="images/brush6.png" class="simg" alt="Image">
+            <br><br>
+            After:
+            <br>
+            <img src="images/brush7.png" class="simg" alt="Image">
+            <br><br>
+            And using the varied replace:
+            <br>
+            <img src="images/brush8.png" class="simg" alt="Image">
+        </p>
+        <h4 align=center>TOPSOIL:</h4>
+		<p>
+			Topsoil works by replacing the top layer of wherever you brush with the selected block. Depth is selectable.
+            <br>
+			<img src="images/brush9.png" class="simg" alt="Image">
+            <br>
+		</p>
+        
 		<h2 id="Clone">Clone Tool:</h2>
 		<p>
 			Quickly copy blocks within the same level. The selected blocks are cloned into the green box and will
