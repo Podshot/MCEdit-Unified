@@ -2141,20 +2141,28 @@ blocks:
     data:
       0:
         name: Oak Door (Lower, Unopened, East)
+        tex: [1, 6]
       1:
         name: Oak Door (Lower, Unopened, South)
+        tex: [1, 6]
       2:
         name: Oak Door (Lower, Unopened, West)
+        tex: [1, 6]
       3:
         name: Oak Door (Lower, Unopened, North)
+        tex: [1, 6]
       4:
         name: Oak Door (Lower, Opened, East)
+        tex: [1, 6]
       5:
         name: Oak Door (Lower, Opened, South)
+        tex: [1, 6]
       6:
         name: Oak Door (Lower, Opened, West)
+        tex: [1, 6]
       7:
         name: Oak Door (Lower, Opened, North)
+        tex: [1, 6]
       8:
         name: Oak Door (Upper, Left Hinge, Unpowered)
       9:
@@ -2163,6 +2171,17 @@ blocks:
         name: Oak Door (Upper, Left Hinge, Powered)
       11:
         name: Oak Door (Upper, Right Hinge, Powered)
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [1, 5]
+      13:
+        tex: [1, 5]
+      14:
+        tex: [1, 5]
+      15:
+        tex: [1, 5]
 
   - id: 65
     idStr: ladder
@@ -2322,20 +2341,28 @@ blocks:
     data:
       0:
         name: Iron Door (Lower, Unopened, East)
+        tex: [2, 6]
       1:
         name: Iron Door (Lower, Unopened, South)
+        tex: [2, 6]
       2:
         name: Iron Door (Lower, Unopened, West)
+        tex: [2, 6]
       3:
         name: Iron Door (Lower, Unopened, North)
+        tex: [2, 6]
       4:
         name: Iron Door (Lower, Opened, East)
+        tex: [2, 6]
       5:
         name: Iron Door (Lower, Opened, South)
+        tex: [2, 6]
       6:
         name: Iron Door (Lower, Opened, West)
+        tex: [2, 6]
       7:
         name: Iron Door (Lower, Opened, North)
+        tex: [2, 6]
       8:
         name: Iron Door (Upper, Left Hinge, Unpowered)
       9:
@@ -2344,6 +2371,17 @@ blocks:
         name: Iron Door (Upper, Left Hinge, Powered)
       11:
         name: Iron Door (Upper, Right Hinge, Powered)
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [2, 5]
+      13:
+        tex: [2, 5]
+      14:
+        tex: [2, 5]
+      15:
+        tex: [2, 5]
 
   - id: 72
     idStr: wooden_pressure_plate
@@ -2417,7 +2455,7 @@ blocks:
     idStr: stone_button
     name: Stone Button
     mapcolor: [120, 120, 120]
-    tex: [19, 8]
+    tex: [1, 0]
     type: BUTTON
     opacity: 0
     data:
@@ -4165,7 +4203,7 @@ blocks:
     idStr: wooden_button
     name: Wooden Button
     mapcolor: [200, 100, 100]
-    tex: [19, 7]
+    tex: [4, 0]
     type: BUTTON
     opacity: 0
     data:
@@ -5854,20 +5892,28 @@ blocks:
     data:
       0:
         name: Spruce Door (Lower, Unopened, East)
+        tex: [5, 21]
       1:
         name: Spruce Door (Lower, Unopened, South)
+        tex: [5, 21]
       2:
         name: Spruce Door (Lower, Unopened, West)
+        tex: [5, 21]
       3:
         name: Spruce Door (Lower, Unopened, North)
+        tex: [5, 21]
       4:
         name: Spruce Door (Lower, Opened, East)
+        tex: [5, 21]
       5:
         name: Spruce Door (Lower, Opened, South)
+        tex: [5, 21]
       6:
         name: Spruce Door (Lower, Opened, West)
+        tex: [5, 21]
       7:
         name: Spruce Door (Lower, Opened, North)
+        tex: [5, 21]
       8:
         name: Spruce Door (Upper, Left Hinge, Unpowered)
       9:
@@ -5876,7 +5922,18 @@ blocks:
         name: Spruce Door (Upper, Left Hinge, Powered)
       11:
         name: Spruce Door (Upper, Right Hinge, Powered)
-    
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [5, 20]
+      13:
+        tex: [5, 20]
+      14:
+        tex: [5, 20]
+      15:
+        tex: [5, 20]
+
   - id: 194
     idStr: birch_door
     name: Birch Door
@@ -5886,20 +5943,28 @@ blocks:
     data:
       0:
         name: Birch Door (Lower, Unopened, East)
+        tex: [6, 21]
       1:
         name: Birch Door (Lower, Unopened, South)
+        tex: [6, 21]
       2:
         name: Birch Door (Lower, Unopened, West)
+        tex: [6, 21]
       3:
         name: Birch Door (Lower, Unopened, North)
+        tex: [6, 21]
       4:
         name: Birch Door (Lower, Opened, East)
+        tex: [6, 21]
       5:
         name: Birch Door (Lower, Opened, South)
+        tex: [6, 21]
       6:
         name: Birch Door (Lower, Opened, West)
+        tex: [6, 21]
       7:
         name: Birch Door (Lower, Opened, North)
+        tex: [6, 21]
       8:
         name: Birch Door (Upper, Left Hinge, Unpowered)
       9:
@@ -5908,7 +5973,18 @@ blocks:
         name: Birch Door (Upper, Left Hinge, Powered)
       11:
         name: Birch Door (Upper, Right Hinge, Powered)
-  
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [6, 20]
+      13:
+        tex: [6, 20]
+      14:
+        tex: [6, 20]
+      15:
+        tex: [6, 20]
+
   - id: 195
     idStr: jungle_door
     name: Jungle Door
@@ -5918,20 +5994,28 @@ blocks:
     data:
       0:
         name: Jungle Door (Lower, Unopened, East)
+        tex: [7, 21]
       1:
         name: Jungle Door (Lower, Unopened, South)
+        tex: [7, 21]
       2:
         name: Jungle Door (Lower, Unopened, West)
+        tex: [7, 21]
       3:
         name: Jungle Door (Lower, Unopened, North)
+        tex: [7, 21]
       4:
         name: Jungle Door (Lower, Opened, East)
+        tex: [7, 21]
       5:
         name: Jungle Door (Lower, Opened, South)
+        tex: [7, 21]
       6:
         name: Jungle Door (Lower, Opened, West)
+        tex: [7, 21]
       7:
         name: Jungle Door (Lower, Opened, North)
+        tex: [7, 21]
       8:
         name: Jungle Door (Upper, Left Hinge, Unpowered)
       9:
@@ -5940,6 +6024,17 @@ blocks:
         name: Jungle Door (Upper, Left Hinge, Powered)
       11:
         name: Jungle Door (Upper, Right Hinge, Powered)
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [7, 20]
+      13:
+        tex: [7, 20]
+      14:
+        tex: [7, 20]
+      15:
+        tex: [7, 20]
 
   - id: 196
     idStr: acacia_door
@@ -5950,20 +6045,28 @@ blocks:
     data:
       0:
         name: Acacia Door (Lower, Unopened, East)
+        tex: [8, 21]
       1:
         name: Acacia Door (Lower, Unopened, South)
+        tex: [8, 21]
       2:
         name: Acacia Door (Lower, Unopened, West)
+        tex: [8, 21]
       3:
         name: Acacia Door (Lower, Unopened, North)
+        tex: [8, 21]
       4:
         name: Acacia Door (Lower, Opened, East)
+        tex: [8, 21]
       5:
         name: Acacia Door (Lower, Opened, South)
+        tex: [8, 21]
       6:
         name: Acacia Door (Lower, Opened, West)
+        tex: [8, 21]
       7:
         name: Acacia Door (Lower, Opened, North)
+        tex: [8, 21]
       8:
         name: Acacia Door (Upper, Left Hinge, Unpowered)
       9:
@@ -5972,7 +6075,18 @@ blocks:
         name: Acacia Door (Upper, Left Hinge, Powered)
       11:
         name: Acacia Door (Upper, Right Hinge, Powered)
-    
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [8, 20]
+      13:
+        tex: [8, 20]
+      14:
+        tex: [8, 20]
+      15:
+        tex: [8, 20]
+
   - id: 197
     idStr: dark_oak_door
     name: Dark Oak Door
@@ -5982,20 +6096,28 @@ blocks:
     data:
       0:
         name: Dark Oak Door (Lower, Unopened, East)
+        tex: [9, 21]
       1:
         name: Dark Oak Door (Lower, Unopened, South)
+        tex: [9, 21]
       2:
         name: Dark Oak Door (Lower, Unopened, West)
+        tex: [9, 21]
       3:
         name: Dark Oak Door (Lower, Unopened, North)
+        tex: [9, 21]
       4:
         name: Dark Oak Door (Lower, Opened, East)
+        tex: [9, 21]
       5:
         name: Dark Oak Door (Lower, Opened, South)
+        tex: [9, 21]
       6:
         name: Dark Oak Door (Lower, Opened, West)
+        tex: [9, 21]
       7:
         name: Dark Oak Door (Lower, Opened, North)
+        tex: [9, 21]
       8:
         name: Dark Oak Door (Upper, Left Hinge, Unpowered)
       9:
@@ -6004,3 +6126,14 @@ blocks:
         name: Dark Oak Door (Upper, Left Hinge, Powered)
       11:
         name: Dark Oak Door (Upper, Right Hinge, Powered)
+# the following only exist inside MCEdits rendering system
+# to represent door states that aren't encoded into minecraft's
+# metadata like (Upper, Left Hinge, Closed, East)
+      12:
+        tex: [9, 20]
+      13:
+        tex: [9, 20]
+      14:
+        tex: [9, 20]
+      15:
+        tex: [9, 20]
