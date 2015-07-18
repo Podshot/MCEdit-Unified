@@ -34,6 +34,7 @@ from depths import DepthOffset
 from editortools.operation import Operation
 from glutils import gl
 from pymclevel.nbt import TAG_String
+from editortools.nbtexplorer import SlotEditor
 
 
 class CameraViewport(GLViewport):
@@ -1083,11 +1084,34 @@ class CameraViewport(GLViewport):
 
         def selectTableRow(i, evt):
             chestWidget.selectedItemIndex = i
+            if evt.num_clicks > 1:
+                selectButtonAction()
+
+        def changeValue(data):
+            s, i, c, d = data
+            s = int(s)
+            s_idx = 0
+            chestWidget.Slot = s
+            chestWidget.id = i
+            chestWidget.Count = int(c)
+            chestWidget.Damage = int(d)
+
 
         chestItemTable.num_rows = lambda: len(tileEntityTag["Items"])
         chestItemTable.row_data = getRowData
         chestItemTable.row_is_selected = lambda x: x == chestWidget.selectedItemIndex
         chestItemTable.click_row = selectTableRow
+        chestItemTable.change_value = changeValue
+
+        def selectButtonAction():
+            print 'selectButtonAction'
+            print 'chestWidget.Slot', chestWidget.Slot
+            print 'chestWidget.id', chestWidget.id, type(chestWidget.id)
+            print 'chestWidget.Count', chestWidget.Count
+            print 'chestWidget.Damage', chestWidget.Damage
+            SlotEditor(chestItemTable,
+                       (chestWidget.Slot, chestWidget.id or u"", chestWidget.Count, chestWidget.Damage)
+                       ).present()
 
         maxSlot = pymclevel.TileEntity.maxItems.get(tileEntityTag["id"].value, 27) - 1
         fieldRow = (
@@ -1096,6 +1120,11 @@ class CameraViewport(GLViewport):
             # Text to allow the input of internal item names
             IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
             IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),
+            # This button is unactivated for now, because we need to work with different IDs types:
+            # * The 'human' IDs: Stone, Glass, Swords...
+            # * The MC ones: minecraft:stone, minecraft:air...
+            # * The PE ones: 0:0, 1:0...
+#             Button("Select", action=selectButtonAction)
         )
 
         def deleteFromWorld():
