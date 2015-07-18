@@ -20,7 +20,7 @@ def deprecated(func):
         #logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
         return func(*args, **kwargs)   
     new_func.__name__ = func.__name__
-    new_func.__doc__ = '''*Deprecated*\n''' + func.__doc__
+    new_func.__doc__ = '''*Deprecated*\n%s'''%func.__doc__
     new_func.__dict__.update(func.__dict__)
     return new_func
 
