@@ -459,7 +459,6 @@ class NBTExplorerOptions(ToolOptions):
 class SlotEditor(Dialog):
     def __init__(self, inventory, data, *args, **kwargs):
         Dialog.__init__(self, *args, **kwargs)
-        print inventory
         self.inventory = inventory
         slot, id, count, damage = data
         self.former_id_text = id
@@ -470,7 +469,6 @@ class SlotEditor(Dialog):
         self.id.enter_action = self.ok
         self.count = IntField(text="%s" % count, min=0, max=64)
         self.damage = IntField(text="%s" % damage, min=0, max=os.sys.maxint)
-#         self.new_text = u""
         header = Label(_("Inventory Slot #%s") % slot, doNotTranslate=True)
         row = Row([Label("id"), self.id,
                    Label("Count"), self.count,
@@ -507,7 +505,6 @@ class SlotEditor(Dialog):
     def select_tablerow(self, i, e):
         old_index = self.selected_item_index
         self.selected_item_index = i
-#         self.new_text = self.tableview.row_data(i)[0]
         if e.num_clicks > 1 and old_index == i:
             self.id.set_text(self.matching_items[self.selected_item_index])
             self.dismiss(save=True)
@@ -518,8 +515,6 @@ class SlotEditor(Dialog):
 
     def dismiss(self, *args, **kwargs):
         if kwargs.pop('save', True):
-#             text = kwargs.pop('text', self.id.text)
-#             data = [self.slot, text, self.count.text, self.damage.text]
             data = [self.slot, self.id.text, self.count.text, self.damage.text]
             self.inventory.change_value(data)
         Dialog.dismiss(self, *args, **kwargs)
