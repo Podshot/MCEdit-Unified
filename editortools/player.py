@@ -409,6 +409,8 @@ class PlayerPositionPanel(Panel):
                     self.player_UUID["Player (Single Player)"] = "Player"
                 if "[No players]" not in players:
                     players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player (Single Player)" else x)
+                else:
+                    self.player_UUID = {"[No players]": "[No players]"}
 
         else:
             players = ["Player (Single Player)"]
