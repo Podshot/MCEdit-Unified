@@ -135,12 +135,6 @@ class PlayerAddOperation(Operation):
             else:
                 break
         try:
-            '''
-            print "Player: \""+str(self.player)+"\""
-            self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)
-            print "UUID: \""+str(self.uuid)+"\""
-            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)  #Case Corrected
-            '''
             data = version_utils.playercache.getPlayerInfo(self.player, force=True)
             if isinstance(data, tuple):
                 self.uuid = data[0]

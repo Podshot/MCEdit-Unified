@@ -20,11 +20,14 @@ def deprecated(func):
         #logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
         return func(*args, **kwargs)   
     new_func.__name__ = func.__name__
-    new_func.__doc__ = func.__doc__
+    new_func.__doc__ = '''*Deprecated*\n''' + func.__doc__
     new_func.__dict__.update(func.__dict__)
     return new_func
 
 class __PlayerCache:
+    '''
+    Used to cache Player names and UUID's, provides an small API to interface with it
+    '''
     
     SUCCESS = 0
     FAILED = 1
@@ -249,6 +252,13 @@ class __PlayerCache:
         return toReturn
     
     def getFromCacheUUID(self, uuid, seperator=True):
+        '''
+        Checks if the UUID is already in the cache
+        :param uuid: The UUID that might be in the cache
+        :type uuid: str
+        :param seperator: Whether the UUID is seperated by -'s
+        :type seperator: bool
+        '''
         for player in self._playerCacheList:
             if seperator and player["UUID (Separator)"] == uuid:
                 return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
@@ -256,11 +266,21 @@ class __PlayerCache:
                 return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
             
     def getFromCacheName(self, name):
+        '''
+        Checks if the Player name is already in the cache
+        :param name: The name of the Player that might be in the cache
+        '''
         for player in self._playerCacheList:
             if name == player["Playername"]:
                 return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
     
     def getPlayerInfo(self, arg, force=False):
+        '''
+        Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed 'arg'
+        :param arg: Either a UUID or Player name to retrieve from the cache/Mojang
+        :type arg: str
+        :param force: True if the Player name should be forcefully fetched from Mojang
+        '''
         if arg.count('-') == 4:
             if self.uuidInCache(arg) and not force:
                 return self.getFromCacheUUID(arg)
