@@ -70,6 +70,9 @@ class TileEntity(object):
         "Dispenser": (
             ("Items", nbt.TAG_List),
         ),
+        "Hopper": (
+            ("Items", nbt.TAG_List),
+        ),
     }
 
     otherNames = {
@@ -86,7 +89,8 @@ class TileEntity(object):
         "FlowerPot": "FlowerPot",
         "EnchantTable": "EnchantTable",
         "Dropper": "Dropper",
-        "Dispanser": "Dispenser",
+        "Dispenser": "Dispenser",
+        "Hopper": "Hopper",
     }
 
     stringNames = {
@@ -108,6 +112,7 @@ class TileEntity(object):
         "enchanting_table": "EnchantTable",
         "dropper": "Dropper",
         "dispenser": "Dispenser",
+        "hopper": "Hopper",
     }
 
     knownIDs = baseStructures.keys()
