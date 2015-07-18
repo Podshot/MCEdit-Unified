@@ -229,6 +229,7 @@ class FilterModuleOptions(Widget):
         page.is_gl_container = True
         rows = []
         cols = []
+        print 'trn', trn
         max_height = tool.editor.mainViewport.height - tool.editor.toolbar.height - tool.editor.subwidgets[0].height -\
             self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
 
@@ -981,6 +982,7 @@ def tryImport(_root, name, org_lang, stock=False, subFolderString="", unicode_na
 #                     module.trn.setLangPath(trn_path)
 #                     module.trn.buildTranslation(config.settings.langCode.get())
                     albow.translate.buildTranslation(config.settings.langCode.get(), extend=True, langPath=trn_path)
+                    module.trn = albow.translate
 #                     n = module.displayName
 #                     if hasattr(module, "trn"):
 #                         n = module.trn._(module.displayName)
