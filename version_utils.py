@@ -165,7 +165,8 @@ class __PlayerCache:
     def force_refresh(self):
         players = self._playerCacheList
         for player in players:
-            self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
+            #self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
+            self.getPlayerInfo(player["UUID (Separator)"], force=True)
             
     @deprecated
     def getPlayerFromUUID(self, uuid, forceNetwork=False, dontSave=False):
