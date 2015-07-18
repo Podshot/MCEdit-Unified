@@ -459,11 +459,12 @@ class PlayerPositionPanel(Panel):
 
         tableview = TableView(nrows=(h - (self.font.get_linesize() * 2.5)) / self.font.get_linesize(),
                               header_height=self.font.get_linesize(),
-                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 3))],
+                              columns=[TableColumn("Player Name(s):", (self.nbttree.width - (self.margin * 3)) / 3),
+                                       TableColumn("Player UUID(s):", (self.nbttree.width - (self.margin * 3)))],
                               )
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
-        tableview.row_data = lambda i: (players[i],)
+        tableview.row_data = lambda i: (players[i],self.player_UUID[players[i]])
         tableview.row_is_selected = lambda x: x == tableview.index
         tableview.zebra_color = (0, 0, 0, 48)
 
