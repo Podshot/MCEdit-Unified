@@ -67,6 +67,9 @@ class TileEntity(object):
         "Dropper": (
             ("Items", nbt.TAG_List),
         ),
+        "Dispenser": (
+            ("Items", nbt.TAG_List),
+        ),
     }
 
     otherNames = {
@@ -83,6 +86,7 @@ class TileEntity(object):
         "FlowerPot": "FlowerPot",
         "EnchantTable": "EnchantTable",
         "Dropper": "Dropper",
+        "Dispanser": "Dispenser",
     }
 
     stringNames = {
@@ -103,6 +107,7 @@ class TileEntity(object):
         "flower_pot": "FlowerPot",
         "enchanting_table": "EnchantTable",
         "dropper": "Dropper",
+        "dispenser": "Dispenser",
     }
 
     knownIDs = baseStructures.keys()
@@ -113,6 +118,7 @@ class TileEntity(object):
         "Cauldron": 4,
         "Dropper": 9,
         "Hopper": 5,
+        "Dispenser": 9,
     }
     slotNames = {
         "Furnace": {
