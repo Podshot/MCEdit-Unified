@@ -20,7 +20,11 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
         ),
         "Sign": (
-            ("Items", nbt.TAG_List),
+            ("id", nbt.TAG_String),
+            ("Text1", nbt.TAG_String),
+            ("Text2", nbt.TAG_String),
+            ("Text3", nbt.TAG_String),
+            ("Text4", nbt.TAG_String),
         ),
         "MobSpawner": (
             ("Items", nbt.TAG_List),
