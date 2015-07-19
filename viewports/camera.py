@@ -1,3 +1,5 @@
+# -*- coding: utf_8 -*-
+# The above line is necessary, unless we want problems with encodings...
 import sys
 from compass import CompassOverlay
 from raycaster import TooFarException
@@ -42,8 +44,10 @@ class CameraViewport(GLViewport):
 
     oldMousePosition = None
 
-    def __init__(self, editor):
+    def __init__(self, editor, def_enc=None):
         self.editor = editor
+        global DEF_ENC
+        DEF_ENC = def_enc or editor.mcedit.def_enc
         rect = editor.mcedit.rect
         GLViewport.__init__(self, rect)
 
@@ -769,32 +773,57 @@ class CameraViewport(GLViewport):
 
         lineFields = [TextFieldWrapped(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
-            try:
-                f.value = tileEntity[l].value.decode("unicode-escape")
-            except:
-                f.value = tileEntity[l].value
 
-        colors = [
-            "\xa70  Black",
-            "\xa71  Dark Blue",
-            "\xa72  Dark Green",
-            "\xa73  Dark Aqua",
-            "\xa74  Dark Red",
-            "\xa75  Dark Purple",
-            "\xa76  Gold",
-            "\xa77  Gray",
-            "\xa78  Dark Gray",
-            "\xa79  Blue",
-            "\xa7a  Green",
-            "\xa7b  Aqua",
-            "\xa7c  Red",
-            "\xa7d  Light Purple",
-            "\xa7e  Yellow",
-            "\xa7f  White",
-        ]
+            #Fix for the '§ is Ä§' issue
+#             try:
+#                 f.value = tileEntity[l].value.decode("unicode-escape")
+#             except:
+#                 f.value = tileEntity[l].value
+            f.value = tileEntity[l].value
+
+        if DEF_ENC != 'UTF-8':
+            colors = [
+                "\xa70  Black",
+                "\xa71  Dark Blue",
+                "\xa72  Dark Green",
+                "\xa73  Dark Aqua",
+                "\xa74  Dark Red",
+                "\xa75  Dark Purple",
+                "\xa76  Gold",
+                "\xa77  Gray",
+                "\xa78  Dark Gray",
+                "\xa79  Blue",
+                "\xa7a  Green",
+                "\xa7b  Aqua",
+                "\xa7c  Red",
+                "\xa7d  Light Purple",
+                "\xa7e  Yellow",
+                "\xa7f  White",
+            ]
+        else:
+            colors = [
+                "§0  Black",
+                "§1  Dark Blue",
+                "§2  Dark Green",
+                "§3  Dark Aqua",
+                "§4  Dark Red",
+                "§5  Dark Purple",
+                "§6  Gold",
+                "§7  Gray",
+                "§8  Dark Gray",
+                "§9  Blue",
+                "§a  Green",
+                "§b  Aqua",
+                "§c  Red",
+                "§d  Light Purple",
+                "§e  Yellow",
+                "§f  White",
+            ]
 
         def menu_picked(index):
-            c = u'\xa7' + hex(index)[-1]
+            # Fix for the '§ is Ä§' issue
+#             c = u'\xa7' + hex(index)[-1]
+            c = u"§%d"%index
             currentField = panel.focus_switch.focus_switch
             currentField.text += c  # xxx view hierarchy
             currentField.insertion_point = len(currentField.text)
@@ -825,9 +854,9 @@ class CameraViewport(GLViewport):
         def changeSign():
             unsavedChanges = False
             for l, f in zip(linekeys, lineFields):
-                oldText = "{}".format(tileEntity[l])
+                oldText = '"{}"'.format(tileEntity[l])
                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
-                if "{}".format(tileEntity[l]) != oldText and not unsavedChanges:
+                if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
                 op = SignEditOperation(self.editor, self.editor.level)
@@ -959,10 +988,13 @@ class CameraViewport(GLViewport):
         nameField = TextFieldWrapped(width=200)
         trackOutput = CheckBox()
 
-        try:
-            commandField.value = tileEntity["Command"].value.decode("unicode-escape")
-        except:
-            commandField.value = tileEntity["Command"].value
+        # Fix for the '§ is Ä§' issue
+#         try:
+#             commandField.value = tileEntity["Command"].value.decode("unicode-escape")
+#         except:
+#             commandField.value = tileEntity["Command"].value
+        commandField.value = tileEntity["Command"].value
+
         oldCommand = commandField.value
         trackOutput.value = tileEntity["TrackOutput"].value
         oldTrackOutput = trackOutput.value

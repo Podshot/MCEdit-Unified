@@ -157,6 +157,7 @@ ESCAPE = '\033'
 
 class MCEdit(GLViewport):
     #debug_resize = True
+    def_enc = DEF_ENC
 
     def __init__(self, displayContext, *args):
         ws = displayContext.getWindowSize()
