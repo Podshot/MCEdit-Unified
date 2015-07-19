@@ -229,7 +229,6 @@ class FilterModuleOptions(Widget):
         page.is_gl_container = True
         rows = []
         cols = []
-        print 'trn', trn
         max_height = tool.editor.mainViewport.height - tool.editor.toolbar.height - tool.editor.subwidgets[0].height -\
             self._parent.filterSelectRow.height - self._parent.confirmButton.height - self.pages.tab_height
 

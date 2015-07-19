@@ -331,13 +331,15 @@ from time import asctime, time
 #-------------------------------------------------------------------------------
 
 
-def buildTranslation(lang, extend=False, langPath=langPath):
+def buildTranslation(lang, extend=False, langPath=None):
     """Finds the file corresponding to 'lang' builds up string_cache.
     If the file is not valid, does nothing.
     Errors encountered during the process are silently ignored.
     Returns string_cache (dict) and wether the file exists (bool)."""
     log.debug("buildTranslation <<<")
     tm = time()
+    if not langPath:
+        langPath = getLangPath()
     str_cache = {}
     global string_cache
     fileFound = False
