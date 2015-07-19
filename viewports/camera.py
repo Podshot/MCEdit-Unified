@@ -781,6 +781,15 @@ class CameraViewport(GLViewport):
 #                 f.value = tileEntity[l].value
             f.value = tileEntity[l].value
 
+            # Double quotes handling
+            if f.value == 'null':
+                f.value = ''
+            else:
+                if f.value.startswith('"') and f.value.endswith('"'):
+                    f.value = f.value[1:-1]
+                if '\\"' in f.value:
+                    f.value = f.value.replace('\\"', '"')
+
         if DEF_ENC != 'UTF-8':
             colors = [
                 "\xa70  Black",
@@ -855,7 +864,9 @@ class CameraViewport(GLViewport):
             unsavedChanges = False
             for l, f in zip(linekeys, lineFields):
                 oldText = '"{}"'.format(tileEntity[l])
-                tileEntity[l] = pymclevel.TAG_String(f.value[:255])
+                # Double quotes handling
+#                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
+                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255].replace('"', '\\"'))
                 if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
