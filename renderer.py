@@ -1039,14 +1039,20 @@ class ChunkCalculator(object):
         # side is on the upper part. So here we combine the metadata of the bottom part
         # with the top to form 0-32 metadata(which would be used in door renderer).
         #
+        copied = False
         for door in DoorRenderer.blocktypes:
             doors = blocks == door
-            # only accept lower part one block below upper part
-            valid = doors[:, :, :-1] & doors[:, :, 1:] & (blockData[:, :, :-1] < 8) & (blockData[:, :, 1:] >= 8)
-            mask = valid.nonzero()
-            upper_mask = (mask[0], mask[1], mask[2]+1)
-            blockData[mask] += (blockData[upper_mask] - 8) * 16
-            blockData[upper_mask] = blockData[mask] + 8
+            if doors.any():
+                if not copied:
+                    # copy if required but only once
+                    blockData = blockData.copy()
+                    copied = True
+                # only accept lower part one block below upper part
+                valid = doors[:, :, :-1] & doors[:, :, 1:] & (blockData[:, :, :-1] < 8) & (blockData[:, :, 1:] >= 8)
+                mask = valid.nonzero()
+                upper_mask = (mask[0], mask[1], mask[2]+1)
+                blockData[mask] += (blockData[upper_mask] - 8) * 16
+                blockData[upper_mask] = blockData[mask] + 8
 
         sx = sz = slice(0, 16)
         asx = asz = slice(0, 18)
