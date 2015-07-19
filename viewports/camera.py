@@ -1084,8 +1084,9 @@ class CameraViewport(GLViewport):
 
         def selectTableRow(i, evt):
             chestWidget.selectedItemIndex = i
-            if evt.num_clicks > 1:
-                selectButtonAction()
+            # Disabling the item selector for now, since we need PE items resources.
+#             if evt.num_clicks > 1:
+#                 selectButtonAction()
 
         def changeValue(data):
             s, i, c, d = data
@@ -1104,11 +1105,6 @@ class CameraViewport(GLViewport):
         chestItemTable.change_value = changeValue
 
         def selectButtonAction():
-            print 'selectButtonAction'
-            print 'chestWidget.Slot', chestWidget.Slot
-            print 'chestWidget.id', chestWidget.id, type(chestWidget.id)
-            print 'chestWidget.Count', chestWidget.Count
-            print 'chestWidget.Damage', chestWidget.Damage
             SlotEditor(chestItemTable,
                        (chestWidget.Slot, chestWidget.id or u"", chestWidget.Count, chestWidget.Damage)
                        ).present()
