@@ -343,9 +343,9 @@ t159 当你离世界顶端这么远时会快速移动并使用低细节模式.
 o160 Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.
 t160 临时数据使用的最大内存, 超过时使用硬盘存储临时数据.
 o161 Change the position of the mobs in spawners while nudging.
-t161 当轻移时改变刷怪箱刷出生物的位置.
+t161 当轻移时更改刷怪箱刷出生物的位置.
 o162 Change static coordinates in command blocks while nudging.
-t162 当轻移时改变命令方块命令中相关的坐标.
+t162 当轻移时更改命令方块命令中相关的坐标.
 o163 Always target the farthest block under the cursor, even in mouselook mode.
 t163 在鼠标右键切换的两种控制模式下, 始终以鼠标方向最远的方块为目标.
 o164 Moving forward and Backward will not change your altitude in Fly Mode.
@@ -388,7 +388,8 @@ o182 Nudge
 t182 轻移
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
 {6} to nudge a greater distance.
-t183 单击并按住. 按住时使用移动键({0}/{1}/{2}/{3}/{4}/{5})来轻移. 用左键按住慢速移动方块, 用右键按住快速移动.
+t183 单击并按住. 按住时使用移动键({0}/{1}/{2}/{3}/{4}/{5})来轻移. 按住左键轻移一个方块, 按住右键移动更大距离.
+按住{6}键移动更大距离.
 o184 {0:n} blocks
 t184 {0:n}个方块
 o185 Delete Entities
@@ -995,7 +996,7 @@ t469 （未计算）
 o470 Biome
 t470 生物群系
 o471 Repeat count
-t471 
+t471 重复次数
 o472 Depth
 t472 深度
 o473 Pick a block:
@@ -1327,13 +1328,13 @@ t627 修复区域
 o628 Open Folder
 t628 打开目录
 o629 Inventory Slot #%s
-t629 
+t629 物品栏 #%s
 o630 id
 t630 ID
 o631 Count
 t631 数量
 o632 Damage
-t632 
+t632 伤害值
 o633 NBT Explorer
 t633 NBT浏览器
 o634 Reset
@@ -1355,13 +1356,13 @@ t639 NBT浏览器
 o640 Save your change in the NBT data.
 t640 保存你对NBT数据的更改.
 o641 Save unsaved edits before loading?
-t641 在打开前保存尚未保存的改变吗？
+t641 在打开前保存尚未保存的更改吗？
 o642 {0} unsaved edits.  {1} to save.  {2}
 t642 {0}个未保存的编辑. {1}来保存. {2}
 o643 (UNDO DISABLED)
 t643 （撤销已禁用）
 o644 Save unsaved edits before closing?
-t644 在关闭前保存尚未保存的改变吗？
+t644 在关闭前保存尚未保存的更改吗？
 o645 Load NBT file...
 t645 打开NBT文件...
 o646 NBT Tree Settings
@@ -1461,7 +1462,7 @@ t684 返回
 o685 Upload to FTP Server
 t685 上传到FTP服务器
 o686 There are {0} unsaved changes.
-t686 {0}条未保存的改动.
+t686 {0}条未保存的更改.
 o687 Save and Quit
 t687 保存并退出
 o688 Refresh Player Names
@@ -1838,49 +1839,49 @@ o857 Couldn't open the file
 t857 无法打开文件
 
 o858 Edit Command Block
-t858 
+t858 编辑命令方块
 o859 Command:
-t859 
+t859 命令：
 o860 Custom Name:
-t860 
+t860 自定义名称：
 o861 Track Output
-t861 
+t861 跟踪输出
 o862 Slot
-t862 
+t862 槽位
 o863 ID / ID Name
-t863 
+t863 ID / ID名称
 o864 DMG
-t864 
+t864 伤害值
 o865 Slot: 
-t865 
+t865 槽位：
 o866 ID / ID Name: 
-t866 
+t866 ID / ID名称：
 o867 DMG: 
-t867 
+t867 伤害值：
 o868 Count: 
-t868 
+t868 数量：
 o869 New Item (1.7+)
-t869 
+t869 新建物品（1.7+）
 o870 Delete This Item
-t870 
+t870 删除这个物品
 o871 Delete All Instances Of This Item From World
-t871 
+t871 删除世界里的所有这种物品
 o872 Unknown Item
-t872 
+t872 未知物品
 o873 Edit Enchantment Table
-t873 
+t873 编辑附魔台
 o874 Custom Name
-t874 
+t874 自定义名称
 o875 Edit Flower Pot
-t875 
+t875 编辑花盆
 o876 Item
-t876 
+t876 物品
 o877 Data
-t877 
+t877 数据值
 o878 Current: 
-t878 
+t878 目前：
 o879 Change to: 
-t879 
+t879 更改为：
 o880 F# (0.5)
 t880 
 o881 G (0.53)
@@ -1932,12 +1933,12 @@ t903
 o904 F# (2.0)
 t904 
 o905 Only delete items with the same damage value
-t905 
+t905 仅删除具有相同伤害值的物品
 o906 Also delete blocks placed in the world
-t906 
+t906 同时删除放置在世界中的方块
 o907 No command blocks found
-t907 
+t907 没有找到命令方块
 o908 Analysis
-t908 
+t908 统计结果
 o909 Click to set the spawn position.
-t909 
+t909 点击来设置出生点.
