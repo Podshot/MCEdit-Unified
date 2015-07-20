@@ -385,6 +385,7 @@ t181 Laat los om de selectie af te maken
 o182 Nudge
 t182 Schuiven
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+{6} to nudge a greater distance.
 t183 Klik en houd ingedrukt. Terwijl je ingedrukt houd, gebruik de bewegingstoetsen ({0}{1}{2}{3}{4}{5}) om te schuiven. Links om één blok te schuiven, rechts om een grotere afstand te schuiven.
 o184 {0:n} blocks
 t184 {0:n} blokken

@@ -20,7 +20,11 @@ class TileEntity(object):
             ("Items", nbt.TAG_List),
         ),
         "Sign": (
-            ("Items", nbt.TAG_List),
+            ("id", nbt.TAG_String),
+            ("Text1", nbt.TAG_String),
+            ("Text2", nbt.TAG_String),
+            ("Text3", nbt.TAG_String),
+            ("Text4", nbt.TAG_String),
         ),
         "MobSpawner": (
             ("Items", nbt.TAG_List),
@@ -60,6 +64,15 @@ class TileEntity(object):
         "EnchantTable": (
             ("CustomName", nbt.TAG_String),
         ),
+        "Dropper": (
+            ("Items", nbt.TAG_List),
+        ),
+        "Dispenser": (
+            ("Items", nbt.TAG_List),
+        ),
+        "Hopper": (
+            ("Items", nbt.TAG_List),
+        ),
     }
 
     otherNames = {
@@ -75,6 +88,9 @@ class TileEntity(object):
         "Command Block": "Control",
         "FlowerPot": "FlowerPot",
         "EnchantTable": "EnchantTable",
+        "Dropper": "Dropper",
+        "Dispenser": "Dispenser",
+        "Hopper": "Hopper",
     }
 
     stringNames = {
@@ -94,6 +110,9 @@ class TileEntity(object):
         "command_block": "Control",
         "flower_pot": "FlowerPot",
         "enchanting_table": "EnchantTable",
+        "dropper": "Dropper",
+        "dispenser": "Dispenser",
+        "hopper": "Hopper",
     }
 
     knownIDs = baseStructures.keys()
@@ -104,6 +123,7 @@ class TileEntity(object):
         "Cauldron": 4,
         "Dropper": 9,
         "Hopper": 5,
+        "Dispenser": 9,
     }
     slotNames = {
         "Furnace": {

@@ -1,5 +1,5 @@
 ﻿#-# Traditional Chinese (Taiwan)
-#-# font regular: NotoSansTC-Medium.tf
+#-# font regular: NotoSansTC-Medium.ttf
 #-# font bold: NotoSansTC-Bold.ttf
 # TRANSLATION BASICS
 #
@@ -20,18 +20,18 @@ o0 Autobrake
 t0 自動停止移動
 o1 Swap Axes Looking Down
 t1 向下看時前後反轉
-o2 Camera Acceleration:
-t2 鏡頭加速度：
-o3 Camera Drag:
-t3 鏡頭拖曳：
-o4 Camera Max Speed:
-t4 鏡頭最大速度：
-o5 Camera Braking Speed:
-t5 鏡頭制動速度：
-o6 Mouse Speed:
-t6 游標速度：
-o7 Undo Limit:
-t7 復原次數上限：
+o2 Camera Acceleration: 
+t2 
+o3 Camera Drag: 
+t3 
+o4 Camera Max Speed: 
+t4 
+o5 Camera Braking Speed: 
+t5 
+o6 Mouse Speed: 
+t6 
+o7 Undo Limit: 
+t7 
 o8 Invert Mouse
 t8 游標上下反轉
 o9 Low Detail Height
@@ -60,12 +60,12 @@ o20 Options
 t20 選項
 o21 OK
 t21 確定
-o22 Field of View:
-t22 視野：
-o23 Target FPS:
-t23 FPS限制：
-o24 Vertex Buffer Limit (MB):
-t24 緩衝加載最大值(MB)：
+o22 Field of View: 
+t22 
+o23 Target FPS: 
+t23 
+o24 Vertex Buffer Limit (MB): 
+t24 
 o25 Fast Leaves
 t25 低品質樹葉
 o26 Rough Graphics
@@ -128,8 +128,8 @@ o54 Grey
 t54 灰色
 o55 Black
 t55 黑色
-o56 Color:
-t56 顏色：
+o56 Color: 
+t56 
 o57 Show Previous Selection
 t57 顯示之前的選區
 o58 R:
@@ -144,8 +144,8 @@ o62 Place Immediately
 t62 立即放置
 o63 Clone Options
 t63 複製工具選項
-o64 Alpha:
-t64 透明度：
+o64 Alpha: 
+t64 
 o65 Choose Block Immediately
 t65 立即打開方塊選擇器
 o66 Reset Distance When Brush Size Changes
@@ -366,9 +366,9 @@ o171 Restart
 t171 重啓
 o172 Later
 t172 稍後
-o173 Loading
-t173 載入中
-o174  - MCEdit
+o173 Loading 
+t173 
+o174  - MCEdit 
 t174 
 o175 Overworld
 t175 主世界
@@ -387,6 +387,7 @@ t181 松開游標完成選擇。
 o182 Nudge
 t182 輕移
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+{6} to nudge a greater distance.
 t183 單擊並按住。按住時使用移動鍵({0}/{1}/{2}/{3}/{4}/{5})來輕移。用左鍵按住慢速移動方塊，用右鍵按住快速移動。
 o184 {0:n} blocks
 t184 {0:n}個方塊
@@ -508,8 +509,8 @@ o239 Indiscriminate
 t239 同時填充不同種類的方塊
 o240 Noise
 t240 噪點
-o241 Depth:
-t241 深度
+o241 Depth: 
+t241 
 o242 Only Change Natural Earth
 t242 只替換自然地表
 o243 Import
@@ -522,8 +523,8 @@ o245 y
 t245 
 o246 z
 t246 
-o247 COPYING -
-t247 複製中 -
+o247 COPYING - 
+t247 
 o248 Rotate
 t248 旋轉
 o249 Roll
@@ -974,9 +975,9 @@ t459 黑森林M
 o460 Cold Taiga M
 t460 冷針葉林M
 o461 Mega Spruce Taiga
-t461 紅木森林
-o462 Mega Spruce Taiga
-t462 紅木山丘
+t461 紅木山丘
+o462 Mega Spruce Taiga 
+t462 
 o463 Extreme Hills+ M
 t463 峭壁+M
 o464 Savanna M
@@ -1003,8 +1004,8 @@ o474 Players
 t474 玩家
 o475 Player Name
 t475 玩家名稱
-o476 Player:
-t476 玩家：
+o476 Player: 
+t476 
 o477 Goto
 t477 轉到
 o478 Goto View
@@ -1075,8 +1076,8 @@ o509 Generator:
 t509 生成方式：
 o510 Will automatically download and use the latest version
 t510 將會自動下載和使用最新版
-o511 Height:
-t511 高度：
+o511 Height: 
+t511 
 o512 Grass
 t512 草地
 o513 Server version:
@@ -1099,20 +1100,20 @@ o521 Simulate world
 t521 模擬世界
 o522 Use snapshot versions
 t522 使用快照版本
-o523 X:
+o523 X: 
 t523 
-o524 Y:
+o524 Y: 
 t524 
-o525 Z:
+o525 Z: 
 t525 
-o526 f:
+o526 f: 
 t526 
-o527 Seed:
-t527 種子：
-o528 East-West Chunks:
-t528 東-西 區塊：
-o529 North-South Chunks:
-t529 南-北 區塊：
+o527 Seed: 
+t527 
+o528 East-West Chunks: 
+t528 
+o529 North-South Chunks: 
+t529 
 o530 Survival
 t530 生存
 o531 Cancel
@@ -1173,8 +1174,8 @@ o558 Shortcut: {0}
 t558 快捷鍵：{0}
 o559 View Distance ({0})
 t559 視野（{0}）
-o560 Copy Stack Size:
-t560 剪貼簿堆疊大小：
+o560 Copy Stack Size: 
+t560 
 o561 Remove
 t561 刪除
 o562 Reload Skins
@@ -1217,20 +1218,20 @@ o580 Fast Nudge
 t580 快速輕移
 o581 Clone Fast Nudge Settings
 t581 複製工具快速輕移設置
-o582 Move by the width of selection
-t582 以選區的寬度為單位輕移
+o582 Move by the width of selection 
+t582 
 o583 Moves clone by his width
 t583 以複製的寬度為單位
-o584 Width of clone movement:
-t584 複製工具輕移寬度：
+o584 Width of clone movement: 
+t584 
 o585 Import Fast Nudge Settings:
 t585 匯入工具快速輕移設置
-o586 Move by the width of schematic
-t586 以匯入文件的寬度為單位輕移
+o586 Move by the width of schematic 
+t586 
 o587 Moves selection by his width
 t587 以選區的寬度為單位
-o588 Width of import movement:
-t588 匯入工具輕移寬度：
+o588 Width of import movement: 
+t588 
 o589 Import Options
 t589 匯入工具選項
 o590 Blocks Fast Nudge Settings:
@@ -1241,8 +1242,8 @@ o592 Points Fast Nudge Settings:
 t592 選區角快速輕移設置
 o593 Moves points by the selection's width
 t593 以選區寬度為單位輕移選區角
-o594 Width of points movement:
-t594 選區角輕移寬度：
+o594 Width of points movement: 
+t594 
 o595 Do you want to save your changes?
 t595 儲存更改？
 o596 Don't Save
@@ -1309,8 +1310,8 @@ o619 Name:
 t619 名字：
 o620 Minecraft Infinite World (Anvil Format)
 t620 Minecraft無限世界
-o621 Day:
-t621 天數：
+o621 Day: 
+t621 
 o622 Time of day:
 t622 當天時間：
 o623 RandomSeed:
@@ -1483,12 +1484,10 @@ t696 功能尚未實現
 o697 Error while getting player file.
 %s not found.
 t697 獲取玩家文件失敗。%s沒有找到。
-o698 Spawn point fixed. Changes:
+o698 Spawn point fixed. Changes: 
 
 
-t698 出生點已修復。改變：
-
-
+t698 
 o699 <Selection>
 t699 <選區>
 o700 <Miscellaneous>
@@ -1543,8 +1542,8 @@ o719 Untitled World
 t719 未命名世界
 o720 Name this new world.
 t720 命名這個新世界
-o721 Minecraft World *.*
-t721 Minecraft世界 *.*
+o721 Minecraft World *.*  
+t721 
 o722 Generating chunks...
 t722 生成區塊中...
 o723 World created. To expand this infinite world, explore the world in Minecraft or use the Chunk Control tool to add or delete chunks.
@@ -1561,8 +1560,8 @@ o728 Recording undo...
 t728 記錄復原中...
 o729 Replacing blocks...
 t729 替換方塊中...
-o730 REPLACING -
-t730 替換中 -
+o730 REPLACING - 
+t730 
 o731 Copying chunk %s...
 t731 複製區塊%s中...
 o732 Continue with undo disabled?
@@ -1571,12 +1570,12 @@ o733 Continue
 t733 繼續
 o734 Canceled
 t734 已取消
-o735 DELETING -
-t735 刪除中 -
+o735 DELETING - 
+t735 
 o736 Deleting {0} blocks
 t736 刪除{0}個方塊
-o737 WORKING -
-t737 工作中 -
+o737 WORKING - 
+t737 
 o738 Removing Tile Ticks...
 t738 移除Tile Ticks中...
 o739 Removing entities...
@@ -1585,8 +1584,8 @@ o740 Copying {0:n} blocks...
 t740 複製{0:n}個方塊...
 o741 Undoing...
 t741 復原中...
-o742 UNDOING -
-t742 復原中 -
+o742 UNDOING - 
+t742 
 o743 Really delete these chunks? This cannot be undone.
 t743 確定要刪除這些區塊？此操作無法復原。
 o744 Save these chunks and remove the rest? This cannot be undone.
@@ -1607,8 +1606,8 @@ o751 You are deleting a chunk-shaped selection. Fill the selection with Air, or 
 t751 你正在刪除一個包含整個區塊的選區。用空氣填充選區還是刪除區塊？
 o752 Screenshot taken and saved as '%s'
 t752 截圖已儲存，路徑為 '%s'
-o753 Fonts Proportion (%):
-t753 字體大小（%）：
+o753 Fonts Proportion (%): 
+t753 
 o754 Fonts sizing proportion. The number is a percentage.
 Restart needed!
 t754 字體大小比例。這個數字是百分比。
@@ -1635,16 +1634,16 @@ o764 Show Player Skins
 t764 顯示玩家皮膚
 o765 Show player skins while editing the world
 t765 編輯世界時顯示玩家皮膚
-o766 Compass Size (%):
-t766 指南針大小（%）：
-o767 Fog Intensity (%):
-t767 霧的密度（%）：
+o766 Compass Size (%): 
+t766 
+o767 Fog Intensity (%): 
+t767 
 o768 Toggle compass
 t768 指南針開關
-o769 Width of blocks movement:
-t769 方塊輕移寬度：
-o770 Width of selection movement:
-t770 選區輕移寬度：
+o769 Width of blocks movement: 
+t769 
+o770 Width of selection movement: 
+t770 
 o771 Import
 t771 匯入
 o772 Old (Messy)
@@ -1673,10 +1672,10 @@ o781 Run Macro
 t781 
 o782 Delete Macro
 t782 
-o783 Macro Name:
+o783 Macro Name: 
 t783 
-o784 Enter a Player Name:
-t784 輸入一個玩家名稱：
+o784 Enter a Player Name: 
+t784 
 o785 Click the mouse button again to place the other selection corner.
 t785 再次點擊游標來確定選區的另一個角。
 o786 Stop recording
@@ -1722,8 +1721,8 @@ o804 Make Villager Silent
 t804 禁止村民發聲
 o805 Install Mode
 t805 安裝模式
-o806 SAVING -
-t806 儲存中-
+o806 SAVING - 
+t806 
 o807 World Type:
 t807 世界類型：
 o808 Amplified
@@ -1752,18 +1751,18 @@ o819 Please wait while MCEdit-Unified downloads the world. It will be opened onc
 t819 MCEdit-Unified正在下載世界，請等待。一旦下載完成，它會被自動打開。
 o820 Connect
 t820 連接
-o821 Root:
-t821 根：
-o822 Directory:
-t822 路徑：
-o823 Files:
-t823 文件：
-o824 Host:
-t824 主機：
-o825 Client:
-t825 客戶端：
-o826 Target:
-t826 目標：
+o821 Root: 
+t821 
+o822 Directory: 
+t822 
+o823 Files: 
+t823 
+o824 Host: 
+t824 
+o825 Client: 
+t825 
+o826 Target: 
+t826 
 o827 Error: {0}
 t827 錯誤：{0}
 o828 Incorrect username or password
@@ -1828,3 +1827,107 @@ o856 [Empty]
 t856 
 o857 Couldn't open the file
 t857 
+o858 Edit Command Block
+t858 
+o859 Command:
+t859 
+o860 Custom Name:
+t860 
+o861 Track Output
+t861 
+o862 Slot
+t862 
+o863 ID / ID Name
+t863 
+o864 DMG
+t864 
+o865 Slot: 
+t865 
+o866 ID / ID Name: 
+t866 
+o867 DMG: 
+t867 
+o868 Count: 
+t868 
+o869 New Item (1.7+)
+t869 
+o870 Delete This Item
+t870 
+o871 Delete All Instances Of This Item From World
+t871 
+o872 Unknown Item
+t872 
+o873 Edit Enchantment Table
+t873 
+o874 Custom Name
+t874 
+o875 Edit Flower Pot
+t875 
+o876 Item
+t876 
+o877 Data
+t877 
+o878 Current: 
+t878 
+o879 Change to: 
+t879 
+o880 F# (0.5)
+t880 
+o881 G (0.53)
+t881 
+o882 G# (0.56)
+t882 
+o883 A (0.6)
+t883 
+o884 A# (0.63)
+t884 
+o885 B (0.67)
+t885 
+o886 C (0.7)
+t886 
+o887 C# (0.75)
+t887 
+o888 D (0.8)
+t888 
+o889 D# (0.85)
+t889 
+o890 E (0.9)
+t890 
+o891 F (0.95)
+t891 
+o892 F# (1.0)
+t892 
+o893 G (1.05)
+t893 
+o894 G# (1.1)
+t894 
+o895 A (1.2)
+t895 
+o896 A# (1.25)
+t896 
+o897 B (1.32)
+t897 
+o898 C (1.4)
+t898 
+o899 C# (1.5)
+t899 
+o900 D (1.6)
+t900 
+o901 D# (1.7)
+t901 
+o902 E (1.8)
+t902 
+o903 F (1.9)
+t903 
+o904 F# (2.0)
+t904 
+o905 Only delete items with the same damage value
+t905 
+o906 Also delete blocks placed in the world
+t906 
+o907 No command blocks found
+t907 
+o908 Analysis
+t908 
+o909 Click to set the spawn position.
+t909 

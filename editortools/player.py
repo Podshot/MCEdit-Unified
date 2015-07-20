@@ -76,13 +76,13 @@ class PlayerRemoveOperation(Operation):
         self.tool.markerList.invalidate()
         self.tool.movingPlayer = None
 
-        pos = self.tool.revPlayerPos[self.player]
-        del self.tool.playerPos[pos]
+        pos = self.tool.revPlayerPos[self.editor.level.dimNo][self.player]
+        del self.tool.playerPos[self.editor.level.dimNo][pos]
         if self.player != "Player":
             del self.tool.playerTexture[self.player]
         else:
             del self.level.root_tag["Data"]["Player"]
-        del self.tool.revPlayerPos[self.player]
+        del self.tool.revPlayerPos[self.editor.level.dimNo][self.player]
         self.canUndo = True
 
     def undo(self):
@@ -135,12 +135,6 @@ class PlayerAddOperation(Operation):
             else:
                 break
         try:
-            '''
-            print "Player: \""+str(self.player)+"\""
-            self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)
-            print "UUID: \""+str(self.uuid)+"\""
-            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)  #Case Corrected
-            '''
             data = version_utils.playercache.getPlayerInfo(self.player, force=True)
             if isinstance(data, tuple):
                 self.uuid = data[0]
@@ -181,8 +175,8 @@ class PlayerAddOperation(Operation):
             if self.tool.panel:
                 self.tool.panel.player_UUID[self.player] = self.uuid
 
-        self.tool.playerPos[(0,0,0)] = self.uuid
-        self.tool.revPlayerPos[self.uuid] = (0,0,0)
+        self.tool.playerPos[self.editor.level.dimNo][(0,0,0)] = self.uuid
+        self.tool.revPlayerPos[self.editor.level.dimNo][self.uuid] = (0,0,0)
         self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid, force=False))
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
@@ -415,6 +409,8 @@ class PlayerPositionPanel(Panel):
                     self.player_UUID["Player (Single Player)"] = "Player"
                 if "[No players]" not in players:
                     players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player (Single Player)" else x)
+                else:
+                    self.player_UUID = {"[No players]": "[No players]"}
 
         else:
             players = ["Player (Single Player)"]
@@ -459,11 +455,12 @@ class PlayerPositionPanel(Panel):
 
         tableview = TableView(nrows=(h - (self.font.get_linesize() * 2.5)) / self.font.get_linesize(),
                               header_height=self.font.get_linesize(),
-                              columns=[TableColumn("Player Name(s):", self.nbttree.width - (self.margin * 3))],
+                              columns=[TableColumn("Player Name(s):", (self.nbttree.width - (self.margin * 3)) / 3),
+                                       TableColumn("Player UUID(s):", (self.nbttree.width - (self.margin * 3)))],
                               )
         tableview.index = 0
         tableview.num_rows = lambda: len(players)
-        tableview.row_data = lambda i: (players[i],)
+        tableview.row_data = lambda i: (players[i],self.player_UUID[players[i]])
         tableview.row_is_selected = lambda x: x == tableview.index
         tableview.zebra_color = (0, 0, 0, 48)
 

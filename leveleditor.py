@@ -2442,7 +2442,7 @@ class LevelEditor(GLViewport):
         row = Row((lbl, fld))
 
         worldTable = TableView(columns=[
-            TableColumn("Last Played", 170, "l"),
+            TableColumn("Last Played", 200, "l"),
             TableColumn("Level Name (filename)", 500, "l"),
         ])
 

@@ -1,3 +1,5 @@
+# -*- coding: utf_8 -*-
+# The above line is necessary, unless we want problems with encodings...
 import sys
 from compass import CompassOverlay
 from raycaster import TooFarException
@@ -34,6 +36,7 @@ from depths import DepthOffset
 from editortools.operation import Operation
 from glutils import gl
 from pymclevel.nbt import TAG_String
+from editortools.nbtexplorer import SlotEditor
 
 
 class CameraViewport(GLViewport):
@@ -41,8 +44,10 @@ class CameraViewport(GLViewport):
 
     oldMousePosition = None
 
-    def __init__(self, editor):
+    def __init__(self, editor, def_enc=None):
         self.editor = editor
+        global DEF_ENC
+        DEF_ENC = def_enc or editor.mcedit.def_enc
         rect = editor.mcedit.rect
         GLViewport.__init__(self, rect)
 
@@ -493,8 +498,8 @@ class CameraViewport(GLViewport):
 
         mobTable.selectedIndex = mobs.index(id)
 
-        oldChoiceCol = Column((Label("Current: " + id, align='l', width=200), ))
-        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: "Change to: " + selectedMob()), mobTable))
+        oldChoiceCol = Column((Label(_("Current: ") + id, align='l', width=200), ))
+        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: _("Change to: ") + selectedMob()), mobTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
         panel.add(Column((oldChoiceCol, newChoiceCol, lastRow)))
@@ -608,8 +613,8 @@ class CameraViewport(GLViewport):
         else:
             discTable.selectedIndex = discs[id] - 2255
 
-        oldChoiceCol = Column((Label("Current: " + id, align='l', width=200), ))
-        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: "Change to: " + selectedDisc(discTable.selectedIndex)), discTable))
+        oldChoiceCol = Column((Label(_("Current: ") + id, align='l', width=200), ))
+        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: _("Change to: ") + selectedDisc(discTable.selectedIndex)), discTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
         panel.add(Column((oldChoiceCol, newChoiceCol, lastRow)))
@@ -708,8 +713,8 @@ class CameraViewport(GLViewport):
 
         noteTable.selectedIndex = id
 
-        oldChoiceCol = Column((Label("Current: " + notes[id], align='l', width=200), ))
-        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: "Change to: " + selectedNote()), noteTable))
+        oldChoiceCol = Column((Label(_("Current: ") + notes[id], align='l', width=200), ))
+        newChoiceCol = Column((ValueDisplay(width=200, get_value=lambda: _("Change to: ") + selectedNote()), noteTable))
 
         lastRow = Row((Button("OK", action=panel.dismiss), Button("Cancel", action=cancel)))
         panel.add(Column((oldChoiceCol, newChoiceCol, lastRow)))
@@ -768,32 +773,66 @@ class CameraViewport(GLViewport):
 
         lineFields = [TextFieldWrapped(width=400) for l in linekeys]
         for l, f in zip(linekeys, lineFields):
-            try:
-                f.value = tileEntity[l].value.decode("unicode-escape")
-            except:
-                f.value = tileEntity[l].value
 
-        colors = [
-            "\xa70  Black",
-            "\xa71  Dark Blue",
-            "\xa72  Dark Green",
-            "\xa73  Dark Aqua",
-            "\xa74  Dark Red",
-            "\xa75  Dark Purple",
-            "\xa76  Gold",
-            "\xa77  Gray",
-            "\xa78  Dark Gray",
-            "\xa79  Blue",
-            "\xa7a  Green",
-            "\xa7b  Aqua",
-            "\xa7c  Red",
-            "\xa7d  Light Purple",
-            "\xa7e  Yellow",
-            "\xa7f  White",
-        ]
+            #Fix for the '§ is Ä§' issue
+#             try:
+#                 f.value = tileEntity[l].value.decode("unicode-escape")
+#             except:
+#                 f.value = tileEntity[l].value
+            f.value = tileEntity[l].value
+
+            # Double quotes handling
+            if f.value == 'null':
+                f.value = ''
+            else:
+                if f.value.startswith('"') and f.value.endswith('"'):
+                    f.value = f.value[1:-1]
+                if '\\"' in f.value:
+                    f.value = f.value.replace('\\"', '"')
+
+        if DEF_ENC != 'UTF-8':
+            colors = [
+                "\xa70  Black",
+                "\xa71  Dark Blue",
+                "\xa72  Dark Green",
+                "\xa73  Dark Aqua",
+                "\xa74  Dark Red",
+                "\xa75  Dark Purple",
+                "\xa76  Gold",
+                "\xa77  Gray",
+                "\xa78  Dark Gray",
+                "\xa79  Blue",
+                "\xa7a  Green",
+                "\xa7b  Aqua",
+                "\xa7c  Red",
+                "\xa7d  Light Purple",
+                "\xa7e  Yellow",
+                "\xa7f  White",
+            ]
+        else:
+            colors = [
+                "§0  Black",
+                "§1  Dark Blue",
+                "§2  Dark Green",
+                "§3  Dark Aqua",
+                "§4  Dark Red",
+                "§5  Dark Purple",
+                "§6  Gold",
+                "§7  Gray",
+                "§8  Dark Gray",
+                "§9  Blue",
+                "§a  Green",
+                "§b  Aqua",
+                "§c  Red",
+                "§d  Light Purple",
+                "§e  Yellow",
+                "§f  White",
+            ]
 
         def menu_picked(index):
-            c = u'\xa7' + hex(index)[-1]
+            # Fix for the '§ is Ä§' issue
+#             c = u'\xa7' + hex(index)[-1]
+            c = u"§%d"%index
             currentField = panel.focus_switch.focus_switch
             currentField.text += c  # xxx view hierarchy
             currentField.insertion_point = len(currentField.text)
@@ -824,9 +863,11 @@ class CameraViewport(GLViewport):
         def changeSign():
             unsavedChanges = False
             for l, f in zip(linekeys, lineFields):
-                oldText = "{}".format(tileEntity[l])
-                tileEntity[l] = pymclevel.TAG_String(f.value[:255])
-                if "{}".format(tileEntity[l]) != oldText and not unsavedChanges:
+                oldText = '"{}"'.format(tileEntity[l])
+                # Double quotes handling
+#                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
+                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255].replace('"', '\\"'))
+                if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
                 op = SignEditOperation(self.editor, self.editor.level)
@@ -958,10 +999,13 @@ class CameraViewport(GLViewport):
         nameField = TextFieldWrapped(width=200)
         trackOutput = CheckBox()
 
-        try:
-            commandField.value = tileEntity["Command"].value.decode("unicode-escape")
-        except:
-            commandField.value = tileEntity["Command"].value
+        # Fix for the '§ is Ä§' issue
+#         try:
+#             commandField.value = tileEntity["Command"].value.decode("unicode-escape")
+#         except:
+#             commandField.value = tileEntity["Command"].value
+        commandField.value = tileEntity["Command"].value
+
         oldCommand = commandField.value
         trackOutput.value = tileEntity["TrackOutput"].value
         oldTrackOutput = trackOutput.value
@@ -1083,11 +1127,30 @@ class CameraViewport(GLViewport):
 
         def selectTableRow(i, evt):
             chestWidget.selectedItemIndex = i
+            # Disabling the item selector for now, since we need PE items resources.
+#             if evt.num_clicks > 1:
+#                 selectButtonAction()
+
+        def changeValue(data):
+            s, i, c, d = data
+            s = int(s)
+            s_idx = 0
+            chestWidget.Slot = s
+            chestWidget.id = i
+            chestWidget.Count = int(c)
+            chestWidget.Damage = int(d)
+
 
         chestItemTable.num_rows = lambda: len(tileEntityTag["Items"])
         chestItemTable.row_data = getRowData
         chestItemTable.row_is_selected = lambda x: x == chestWidget.selectedItemIndex
         chestItemTable.click_row = selectTableRow
+        chestItemTable.change_value = changeValue
+
+        def selectButtonAction():
+            SlotEditor(chestItemTable,
+                       (chestWidget.Slot, chestWidget.id or u"", chestWidget.Count, chestWidget.Damage)
+                       ).present()
 
         maxSlot = pymclevel.TileEntity.maxItems.get(tileEntityTag["id"].value, 27) - 1
         fieldRow = (
@@ -1096,6 +1159,11 @@ class CameraViewport(GLViewport):
             # Text to allow the input of internal item names
             IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=-32768, max=32767),
             IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-64, max=64),
+            # This button is unactivated for now, because we need to work with different IDs types:
+            # * The 'human' IDs: Stone, Glass, Swords...
+            # * The MC ones: minecraft:stone, minecraft:air...
+            # * The PE ones: 0:0, 1:0...
+#             Button("Select", action=selectButtonAction)
         )
 
         def deleteFromWorld():
@@ -1515,7 +1583,7 @@ class CameraViewport(GLViewport):
                     if tileEntity:
                         self.hoveringCommandBlock[1] = tileEntity.get("Command", TAG_String("")).value
                         if len(self.hoveringCommandBlock[1]) > 1500:
-                            self.hoveringCommandBlock[1] = "**COMMAND IS TOO LONG TO SHOW MORE**"
+                            self.hoveringCommandBlock[1] = self.hoveringCommandBlock[1][:1500] + "\n**COMMAND IS TOO LONG TO SHOW MORE**"
                     else:
                         self.hoveringCommandBlock[0] = False
                 else:

@@ -20,27 +20,14 @@ def deprecated(func):
         #logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
         return func(*args, **kwargs)   
     new_func.__name__ = func.__name__
-    new_func.__doc__ = func.__doc__
+    new_func.__doc__ = '''*Deprecated*\n%s'''%func.__doc__
     new_func.__dict__.update(func.__dict__)
     return new_func
 
-#def getPlayerSkinURL(uuid):
-#    try:
-#        playerJSONResponse = urllib2.urlopen('https://sessionserver.mojang.com/session/minecraft/profile/{}'.format(uuid))
-#        print playerJSONResponse
-#        texturesJSON = json.loads(playerJSONResponse)['properties']
-#        for prop in properties:
-#            if prop['name'] == 'textures':
-#                b64 = base64.b64decode(prop['value']);
-#                print b64
-#                return json.loads(b64)['textures']['SKIN']['url']
-#    except:
-#        raise
-
-#print getPlayerSkinURL('4566e69fc90748ee8d71d7ba5aa00d20')
-
-
 class __PlayerCache:
+    '''
+    Used to cache Player names and UUID's, provides an small API to interface with it
+    '''
     
     SUCCESS = 0
     FAILED = 1
@@ -165,7 +152,7 @@ class __PlayerCache:
     def force_refresh(self):
         players = self._playerCacheList
         for player in players:
-            self.getPlayerFromUUID(player["UUID (Separator)"], forceNetwork=True)
+            self.getPlayerInfo(player["UUID (Separator)"], force=True)
             
     @deprecated
     def getPlayerFromUUID(self, uuid, forceNetwork=False, dontSave=False):
@@ -265,6 +252,13 @@ class __PlayerCache:
         return toReturn
     
     def getFromCacheUUID(self, uuid, seperator=True):
+        '''
+        Checks if the UUID is already in the cache
+        :param uuid: The UUID that might be in the cache
+        :type uuid: str
+        :param seperator: Whether the UUID is seperated by -'s
+        :type seperator: bool
+        '''
         for player in self._playerCacheList:
             if seperator and player["UUID (Separator)"] == uuid:
                 return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
@@ -272,11 +266,21 @@ class __PlayerCache:
                 return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
             
     def getFromCacheName(self, name):
+        '''
+        Checks if the Player name is already in the cache
+        :param name: The name of the Player that might be in the cache
+        '''
         for player in self._playerCacheList:
             if name == player["Playername"]:
                 return player["UUID (Separator)"], player["Playername"], player["UUID (No Separator)"]
     
     def getPlayerInfo(self, arg, force=False):
+        '''
+        Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed 'arg'
+        :param arg: Either a UUID or Player name to retrieve from the cache/Mojang
+        :type arg: str
+        :param force: True if the Player name should be forcefully fetched from Mojang
+        '''
         if arg.count('-') == 4:
             if self.uuidInCache(arg) and not force:
                 return self.getFromCacheUUID(arg)
@@ -364,139 +368,13 @@ class __PlayerCache:
                 
 playercache = __PlayerCache()
             
-
+@deprecated
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
     return playercache.getPlayerFromPlayername(player, forceNetwork, seperator)
-    '''
-    if forceNetwork:
-        try:
-            playerJSONResponse = urllib2.urlopen("https://api.mojang.com/users/profiles/minecraft/{}".format(player)).read()
-            playerJSON = json.loads(playerJSONResponse)
-            if seperator:
-                return "-".join((playerJSON["id"][:8], playerJSON["id"][8:12], playerJSON["id"][12:16], playerJSON["id"][16:20], playerJSON["id"][20:]))
-            else:
-                return playerJSON["id"]
-        except:
-            raise PlayerNotFound(player)
-    else:
-        try:
-            t = time.time()
-        except:
-            t = 0
-        try:
-            if not os.path.exists(userCachePath):
-                usercache = {}
-                print "{} doesn't exist, will not cache".format(userCachePath)
-            else:
-                try:
-                    f = open(userCachePath,"r+")
-                    usercache = json.loads(f.read())
-                except:
-                    print "Error loading {} from disk".format(userCachePath)
 
-                    os.remove(userCachePath)
-                    f = open(userCachePath, 'ar+')
-                    usercache = {}
-
-            try:
-                uuid = [x for x in usercache if usercache[x]["username"].lower() == player.lower()][0]
-                if os.path.exists(userCachePath) and uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
-                    refreshUUID = False
-                else:
-                    refreshUUID = True
-            except:
-                refreshUUID = True
-
-            if refreshUUID:
-                uuid = getUUIDFromPlayerName(player, seperator, True)
-                    
-                try:
-                    usercache[uuid] = {"username":getPlayerNameFromUUID(uuid, True),"timestamp":t}
-                except:
-                    print "Error updating {} from network. Using last known".format(uuid)
-                    return uuid
-            try:
-                if os.path.exists(userCachePath):
-                    f.seek(0)
-                    f.write(json.dumps(usercache))
-                    f.close()
-            except:
-                print "Error writing {} to disk".format(userCachePath)
-            return uuid
-
-        except:
-            print "Error getting the uuid for {}".format(player)
-            raise PlayerNotFound(player)
-    '''
-
-
+@deprecated
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
-    '''
-    Gets the Username from a UUID
-    :param uuid: The Player's UUID
-    :param forceNetwork: Forces use Mojang's API instead of first looking in the usercache.json
-    '''
-    return playercache.getPlayerFromUUID(uuid, forceNetwork)
-    '''
-    if forceNetwork:
-        try:
-            nuuid = uuid.replace("-", "")
-            playerJSONResponse = urllib2.urlopen("https://api.mojang.com/user/profiles/{}/names".format(nuuid)).read()
-            playerJSON = json.loads(playerJSONResponse)
-            return playerJSON[0]
-        except:
-            raise PlayerNotFound(uuid)
-    else:
-        try:
-            t = time.time()
-        except:
-            t = 0
-        try:
-            if not os.path.exists(userCachePath):
-                usercache = {}
-                print "{} doesn't exist, will not cache".format(userCachePath)
-            else:
-                try:
-                    f = open(userCachePath,"r+")
-                    usercache = json.loads(f.read())
-                except:
-                    print "Error loading {} from disk".format(userCachePath)
-                    
-                    os.remove(userCachePath)
-                    f = open(userCachePath, 'ar+')
-                    usercache = {}
-
-            try:
-                if os.path.exists(userCachePath) and uuid in usercache and "timestamp" in usercache[uuid] and t-usercache[uuid]["timestamp"] < 21600:
-                    refreshUUID = False
-                else:
-                    refreshUUID = True
-            except:
-                refreshUUID = True
-
-            if refreshUUID:
-                try:
-                    usercache[uuid] = {"username":getPlayerNameFromUUID(uuid,True),"timestamp":t}
-                except:
-                    print "Error loading {} from network".format(uuid)
-                    return uuid
-            try:
-                if os.path.exists(userCachePath):
-                    f.seek(0)
-                    f.write(json.dumps(usercache))
-                    f.close()
-            except:
-                print "Error writing {} to disk".format(userCachePath)
-            try:
-                return usercache[uuid]["username"]
-            except:
-                print "Error returning uuid"
-                return uuid
-        except:
-            print "Error getting the username for {}".format(uuid)
-            return uuid
-    '''
-        
+    return playercache.getPlayerFromUUID(uuid, forceNetwork)     
 
 def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     SKIN_URL = "http://skins.minecraft.net/MinecraftSkins/{}.png"

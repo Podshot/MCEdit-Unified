@@ -121,11 +121,24 @@ trnHeader = """# TRANSLATION BASICS
 # See TRANSLATION.txt for more detailed information.
 #"""
 
+buildTemplateMarker = """
+### THE FOLLOWING LINES HAS BEEN ADDED BY THE TEMPLATE UPDATE FUNCTION.
+### Please, consider to analyze them and remove the entries referring
+### to ones containing string formatting.
+###
+### For example, if you have a line already defined with this text:
+### My %{animal} has %d legs.
+### you may find lines like these below:
+### My parrot has 2 legs.
+### My dog has 4 legs.
+###
+### And, remove this paragraph too...
+"""
 #-------------------------------------------------------------------------------
 # Translation loading and mapping functions
 #-------------------------------------------------------------------------------
 
-def _(string, doNotTranslate=False):
+def _(string, doNotTranslate=False, hotKey=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
     if doNotTranslate:
         return string
@@ -139,8 +152,10 @@ def _(string, doNotTranslate=False):
         trn = string_cache.get(string, trn)
     if trn == string and '-' in string:
         # Support for hotkeys
-        trn = '-'.join([_(a) for a in string.split('-')])
-    if buildTemplate:
+        trn = '-'.join([_(a, hotKey=True) for a in string.split('-') if _(a, hotKey=True) != a or a])
+        hotKey = True
+    # We don't want hotkeys and blank strings.
+    if buildTemplate and not hotKey and string.strip():
         global template
         global strNum
         if (string, None) not in [(a, None) for a, b in template.values()]:
@@ -158,7 +173,7 @@ def loadTemplate(fName="template.trn"):
     global strNum
     fName = os.path.join(getLangPath(), fName)
     if os.access(fName, os.F_OK) and os.path.isfile(fName) and os.access(fName, os.R_OK):
-        oldData = codecs.open(fName, "r", "utf-8").read() + "\x00"
+        oldData = codecs.open(fName, "r", "utf-8").read() + buildTemplateMarker
         trnHeader = u""
         # find the first oXX
         start = re.search(ur"^o\d+[ ]", oldData, re.M|re.S)
@@ -233,12 +248,13 @@ def setLangPath(path):
 #-------------------------------------------------------------------------------
 
 def getLangPath():
-    """..."""
+    """Return the actual 'lang' folder."""
     return langPath
 
 #-------------------------------------------------------------------------------
 
 def getLang():
+    """Return the actual language."""
     return lang
 
 
@@ -251,6 +267,12 @@ def setLang(newlang):
     if not lang == newlang:
         sc, result = buildTranslation(newlang)
         lang = newlang
+        if newlang == 'en_US':
+            result = True
+            try:
+                resource.setCurLang(u"English (US)")
+            except:
+                resource.__curLang = u"English (US)"
     else:
         result = True
     return oldLang, lang, result
@@ -258,7 +280,8 @@ def setLang(newlang):
 
 #-------------------------------------------------------------------------------
 def correctEncoding(data, oldEnc="ascii", newEnc=enc):
-    """Returns encoded/decoded data."""
+    """Returns encoded/decoded data.
+    Disabled for now..."""
     return data  # disabled for now, but can be use full in the future
     if type(data) == str:
         data = data.decode(newEnc)
@@ -308,13 +331,16 @@ from time import asctime, time
 #-------------------------------------------------------------------------------
 
 
-def buildTranslation(lang, suppressAlert=False):
+def buildTranslation(lang, extend=False, langPath=None):
     """Finds the file corresponding to 'lang' builds up string_cache.
     If the file is not valid, does nothing.
     Errors encountered during the process are silently ignored.
     Returns string_cache (dict) and wether the file exists (bool)."""
     log.debug("buildTranslation <<<")
     tm = time()
+    if not langPath:
+        langPath = getLangPath()
+    str_cache = {}
     global string_cache
     fileFound = False
     lang = u"%s" % lang
@@ -380,7 +406,9 @@ def buildTranslation(lang, suppressAlert=False):
         result = u"{" + result.replace(u"\r\n", u"\\n").replace(u"\n", u"\\n").replace(u"\t", u"\\t") + u"\"}"
         log.debug("    Conversion done. Loading JSON resource.")
         try:
-            string_cache = json.loads(result)
+            str_cache = json.loads(result)
+            if extend:
+                string_cache.update([(a, b) for (a, b) in str_cache.items() if a not in string_cache.keys()])
         except Exception, e:
             log.debug("Error while loading JSON resource:")
             log.debug("    %s"%e)
@@ -389,16 +417,17 @@ def buildTranslation(lang, suppressAlert=False):
             f.write(result)
             f.close()
             return {}, False
-        log.debug("    Setting up font.")
-        line = rawData.splitlines()[0]
-        if "#-# " in line:
-            lngNm = line.split("#-# ")[1].strip()
-        else:
-            lngNm = os.path.splitext(os.path.basename(fName))[0]
-        try:
-            resource.setCurLang(lngNm)
-        except:
-            resource.__curLang = lngNm
+#         log.debug("    Setting up font.") # Forgotten this here???
+        if not extend:
+            line = rawData.splitlines()[0]
+            if "#-# " in line:
+                lngNm = line.split("#-# ")[1].strip()
+            else:
+                lngNm = os.path.splitext(os.path.basename(fName))[0]
+            try:
+                resource.setCurLang(lngNm)
+            except:
+                resource.__curLang = lngNm
         tm1 = time()
         log.debug("  * End on %s duration %s"%(tm, tm1 - tm))
     else:
@@ -410,7 +439,9 @@ def buildTranslation(lang, suppressAlert=False):
         if not os.access(fName, os.R_OK):
             log.debug("  * Is not readable.")
         log.debug("Default strings will be used.")
-        string_cache = {}
+        str_cache = {}
+    if not extend:
+        string_cache = str_cache
     log.debug("buildTranslation >>>")
     return string_cache, fileFound
 

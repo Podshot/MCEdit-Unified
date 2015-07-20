@@ -504,9 +504,9 @@ class SlotEditor(Dialog):
 
     def select_tablerow(self, i, e):
         old_index = self.selected_item_index
-
         self.selected_item_index = i
         if e.num_clicks > 1 and old_index == i:
+            self.id.set_text(self.matching_items[self.selected_item_index])
             self.dismiss(save=True)
 
     def cancel(self, *args, **kwargs):

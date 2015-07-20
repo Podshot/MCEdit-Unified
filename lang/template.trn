@@ -385,6 +385,7 @@ t181
 o182 Nudge
 t182 
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+{6} to nudge a greater distance.
 t183 
 o184 {0:n} blocks
 t184 
@@ -1791,3 +1792,107 @@ o856 [Empty]
 t856 
 o857 Couldn't open the file
 t857 
+o858 Edit Command Block
+t858 
+o859 Command:
+t859 
+o860 Custom Name:
+t860 
+o861 Track Output
+t861 
+o862 Slot
+t862 
+o863 ID / ID Name
+t863 
+o864 DMG
+t864 
+o865 Slot: 
+t865 
+o866 ID / ID Name: 
+t866 
+o867 DMG: 
+t867 
+o868 Count: 
+t868 
+o869 New Item (1.7+)
+t869 
+o870 Delete This Item
+t870 
+o871 Delete All Instances Of This Item From World
+t871 
+o872 Unknown Item
+t872 
+o873 Edit Enchantment Table
+t873 
+o874 Custom Name
+t874 
+o875 Edit Flower Pot
+t875 
+o876 Item
+t876 
+o877 Data
+t877 
+o878 Current: 
+t878 
+o879 Change to: 
+t879 
+o880 F# (0.5)
+t880 
+o881 G (0.53)
+t881 
+o882 G# (0.56)
+t882 
+o883 A (0.6)
+t883 
+o884 A# (0.63)
+t884 
+o885 B (0.67)
+t885 
+o886 C (0.7)
+t886 
+o887 C# (0.75)
+t887 
+o888 D (0.8)
+t888 
+o889 D# (0.85)
+t889 
+o890 E (0.9)
+t890 
+o891 F (0.95)
+t891 
+o892 F# (1.0)
+t892 
+o893 G (1.05)
+t893 
+o894 G# (1.1)
+t894 
+o895 A (1.2)
+t895 
+o896 A# (1.25)
+t896 
+o897 B (1.32)
+t897 
+o898 C (1.4)
+t898 
+o899 C# (1.5)
+t899 
+o900 D (1.6)
+t900 
+o901 D# (1.7)
+t901 
+o902 E (1.8)
+t902 
+o903 F (1.9)
+t903 
+o904 F# (2.0)
+t904 
+o905 Only delete items with the same damage value
+t905 
+o906 Also delete blocks placed in the world
+t906 
+o907 No command blocks found
+t907 
+o908 Analysis
+t908 
+o909 Click to set the spawn position.
+t909 

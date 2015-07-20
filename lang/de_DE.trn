@@ -387,7 +387,9 @@ t181 Lasse die Maustaste los, um die Auswahl zu beenden
 o182 Nudge
 t182 Verschieben
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+{6} to nudge a greater distance.
 t183 Klicke und halte. Während du hälst, verwende die Bewegungstasten ({0} / {1} / {2} / {3} / {4} / {5}) zum Verschieben. Linke Maustaste, um einen Block zu verschieben. Rechte Maustaste, um einen größeren Abstand zu verschieben.
+{6}, um um eine größere Entfernung zu verschieben.
 o184 {0:n} blocks
 t184 {0:n} Blöcke
 o185 Delete Entities
@@ -1849,3 +1851,108 @@ o856 [Empty]
 t856 [Leer]
 o857 Couldn't open the file
 t857 Datei konnte nicht geöffnet werden
+
+o858 Edit Command Block
+t858 Befehlsblock bearbeiten
+o859 Command:
+t859 Befehl:
+o860 Custom Name:
+t860 Name:
+o861 Track Output
+t861 Output
+o862 Slot
+t862 Slot
+o863 ID / ID Name
+t863 Datenwert
+o864 DMG
+t864 DMG
+o865 Slot: 
+t865 Slot: 
+o866 ID / ID Name: 
+t866 Datenwert: 
+o867 DMG: 
+t867 DMG: 
+o868 Count: 
+t868 Anzahl: 
+o869 New Item (1.7+)
+t869 Neuer Gegenstand (1.7+)
+o870 Delete This Item
+t870 Gegenstand löschen
+o871 Delete All Instances Of This Item From World
+t871 Alle Gegenstände dieser Art in dieser Welt löschen
+o872 Unknown Item
+t872 Unbekannter Gegenstand
+o873 Edit Enchantment Table
+t873 Zaubertisch bearbeiten
+o874 Custom Name
+t874 Name
+o875 Edit Flower Pot
+t875 Blumentopf bearbeiten
+o876 Item
+t876 Gegenstand
+o877 Data
+t877 Metadata
+o878 Current: 
+t878 Momentan: 
+o879 Change to: 
+t879 Ändern zu:
+o880 F# (0.5)
+t880 Fis/Ges (0,5)
+o881 G (0.53)
+t881 G (0,53)
+o882 G# (0.56)
+t882 Gis/As (0,56)
+o883 A (0.6)
+t883 A (0,6)
+o884 A# (0.63)
+t884 Ais/B (0,63)
+o885 B (0.67)
+t885 H (0,67)
+o886 C (0.7)
+t886 C (0,7)
+o887 C# (0.75)
+t887 Cis/Des (0,75)
+o888 D (0.8)
+t888 D (0,8)
+o889 D# (0.85)
+t889 Dis/Es (0,85)
+o890 E (0.9)
+t890 E (0,9)
+o891 F (0.95)
+t891 F (0,95)
+o892 F# (1.0)
+t892 Fis/Ges (1,0)
+o893 G (1.05)
+t893 G (1,05)
+o894 G# (1.1)
+t894 Gis/As (1,1)
+o895 A (1.2)
+t895 A (1,2)
+o896 A# (1.25)
+t896 Ais/B (1,25)
+o897 B (1.32)
+t897 H (1,32)
+o898 C (1.4)
+t898 C (1,4)
+o899 C# (1.5)
+t899 Cis/Des (1,5)
+o900 D (1.6)
+t900 D (1,6)
+o901 D# (1.7)
+t901 Dis/Es (1,7)
+o902 E (1.8)
+t902 E (1,8)
+o903 F (1.9)
+t903 F (1,9)
+o904 F# (2.0)
+t904 Fis/Ges (2,0)
+o905 Only delete items with the same damage value
+t905 Lösche nur Gegenstände mit den selben Metadaten
+o906 Also delete blocks placed in the world
+t906 Lösche auch Blöcke, die in der Welt platziert wurden
+o907 No command blocks found
+t907 Keine Befehlsblöcke gefunden
+o908 Analysis
+t908 Analyse
+o909 Click to set the spawn position.
+t909 Klicke, um den Spawnpunkt zu setzen.
