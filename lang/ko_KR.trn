@@ -870,11 +870,11 @@ t408 초원
 o409 Desert
 t409 사막
 o410 Extreme Hills
-t410 Extreme Hills
+t410 익스트림 힐
 o411 Forest
 t411 숲
 o412 Taiga
-t412 Taiga
+t412 침엽수 산림
 o413 Swamppland
 t413 늪지대
 o414 River
@@ -882,7 +882,7 @@ t414 강
 o415 Hell (Nether)
 t415 지옥 (네더)
 o416 Sky (End)
-t416 Sky (End)
+t416 하늘 (끝)
 o417 Frozen Ocean
 t417 얼어붙은 바다
 o418 Frozen River
@@ -900,11 +900,11 @@ t423 해안가
 o424 Desert Hills
 t424 모래 둔덕
 o425 Forest Hills
-t425 숲 언더
+t425 숲 언덕
 o426 Taiga Hills
-t426 Taiga Hills
+t426 침엽수 산림 언덕
 o427 Extreme Hills Edge
-t427 Extreme Hills Edge
+t427 협곡의 끝자락
 o428 Jungle
 t428 정글
 o429 Jungle Hills
@@ -916,71 +916,71 @@ t431 심해
 o432 Stone Beach
 t432 자갈 해안
 o433 Cold Beach
-t433 Cold Beach
+t433 차가운 해안
 o434 Birch Forest
-t434 Birch Forest
+t434 자작 나무 숲
 o435 Birch Forest Hills
-t435 Birch Forest Hills
+t435 자작 나무 숲 언덕
 o436 Roofed Forest
-t436 Roofed Forest
+t436 뒤덥힌 숲속
 o437 Cold Taiga
-t437 Cold Taiga
+t437 추운 침엽수림
 o438 Cold Taiga Hills
-t438 Cold Taiga Hills
+t438 추운 침엽수림
 o439 Mega Taiga
-t439 Mega Taiga
+t439 메가 침엽수림
 o440 Mega Taiga Hills
-t440 Mega Taiga Hills
+t440 메가 침엽수림 언덕
 o441 Extreme Hills+
-t441 Extreme Hills+
+t441 협곡들+
 o442 Savanna
-t442 Savanna
+t442 사바나
 o443 Savanna Plateau
-t443 Savanna Plateau
+t443 사바나 고원
 o444 Messa
 t444 Messa
 o445 Messa Plateau F
-t445 Messa Plateau F
+t445 Messa 고원 F
 o446 Messa Plateau
-t446 Messa Plateau
+t446 Messa 고원
 o447 Sunflower Plains
-t447 Sunflower Plains
+t447 해바라기 꽃밭
 o448 Desert M
-t448 Desert M
+t448 사막 M
 o449 Extreme Hills M
-t449 Extreme Hills M
+t449 협곡  M
 o450 Flower Forest
-t450 Flower Forest
+t450 꽃 숲
 o451 Taiga M
-t451 Taiga M
+t451 침엽수림 M
 o452 Swampland M
-t452 Swampland M
+t452 늪지대 M
 o453 Ice Plains Spikes
-t453 Ice Plains Spikes
+t453 설원 스파이크
 o454 Ice Mountains Spikes
 t454 Ice Mountains Spikes
 o455 Jungle M
-t455 Jungle M
+t455 정글 M
 o456 JungleEdge M
-t456 JungleEdge M
+t456 정글의 끝자락 M
 o457 Birch Forest M
-t457 Birch Forest M
+t457 자작 나무 숲 M
 o458 Birch Forest Hills M
-t458 Birch Forest Hills M
+t458 자작 나무 숲 언덕 M
 o459 Roofed Forest M
 t459 Roofed Forest M
 o460 Cold Taiga M
-t460 Cold Taiga M
+t460 추운 침엽수림 M
 o461 Mega Spruce Taiga
-t461 Mega Spruce Taiga
+t461 Mega 가문비 나무 침엽수림
 o462 Mega Spruce Taiga 
-t462 
+t462 Mega 가문비 나무 침엽수림
 o463 Extreme Hills+ M
-t463 Extreme Hills+ M
+t463 협곡들+ M
 o464 Savanna M
-t464 Savanna M
+t464 사바나 M
 o465 Savanna Plateau M
-t465 Savanna Plateau M
+t465 사바나 고원 M
 o466 Mesa (Bryce)
 t466 Mesa (Bryce)
 o467 Mesa Plateau F M
@@ -1004,13 +1004,13 @@ t475 플레이어 이름
 o476 Player: 
 t476 플레이어: 
 o477 Goto
-t477 
+t477 GOto
 o478 Goto View
-t478 
+t478 Goto View
 o479 Move
-t479 
+t479 Move
 o480 Align to Camera
-t480 
+t480 카메라와 나란히
 o481 Player (Single Player)
 t481 플레이어
 o482 Chunk Control
