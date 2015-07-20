@@ -389,6 +389,7 @@ t182 Pousser
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
 {6} to nudge a greater distance.
 t183 Cliquer et maintenir pour déplacer grâce aux touches de déplacement ({0}/{1}/{2}/{3}/{4}/{5}). Bouton gauche pour pousser d'un bloc, boutton droit pour plus.
+{6} pour glisser sur une plus grande distance.
 o184 {0:n} blocks
 t184 {0:n} blocs
 o185 Delete Entities
