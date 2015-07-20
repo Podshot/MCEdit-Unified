@@ -387,7 +387,8 @@ o182 Nudge
 t182 이동
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
 {6} to nudge a greater distance.
-t183 클릭하고 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 블럭씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
+t183 클릭하고 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 한 블럭 씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
+{6}으로 더 많이 움직입니다.
 o184 {0:n} blocks
 t184 {0:n} 블럭
 o185 Delete Entities
@@ -1826,51 +1827,50 @@ o856 [Empty]
 t856 [빔]
 o857 Couldn't open the file
 t857 파일을 열 수 없습니다
-
 o858 Edit Command Block
-t858 
+t858 커맨드 블럭 수정
 o859 Command:
-t859 
+t859 커맨드: 
 o860 Custom Name:
-t860 
+t860 커스텀 이름:
 o861 Track Output
-t861 
+t861 트랙 출력
 o862 Slot
-t862 
+t862 슬롯
 o863 ID / ID Name
-t863 
+t863 ID / ID 이름
 o864 DMG
-t864 
+t864 데미지
 o865 Slot: 
-t865 
+t865 슬롯: 
 o866 ID / ID Name: 
-t866 
+t866 ID / ID 이름: 
 o867 DMG: 
-t867 
+t867 데미지: 
 o868 Count: 
-t868 
+t868 수: 
 o869 New Item (1.7+)
-t869 
+t869 새로운 아이템 (1.7+)
 o870 Delete This Item
-t870 
+t870 이 아이템 삭제
 o871 Delete All Instances Of This Item From World
-t871 
+t871 월드에서 이 아이템을 모두 삭제
 o872 Unknown Item
-t872 
+t872 알려지지 않은 아이템
 o873 Edit Enchantment Table
-t873 
+t873 마법부여대(인첸트테이블) 수정
 o874 Custom Name
-t874 
+t874 커스텀 이름
 o875 Edit Flower Pot
-t875 
+t875 화분 수정
 o876 Item
-t876 
+t876 아이템
 o877 Data
-t877 
+t877 데이터
 o878 Current: 
-t878 
+t878 현재: 
 o879 Change to: 
-t879 
+t879 이것으로 바꾸기:
 o880 F# (0.5)
 t880 
 o881 G (0.53)
@@ -1922,12 +1922,12 @@ t903
 o904 F# (2.0)
 t904 
 o905 Only delete items with the same damage value
-t905 
+t905 같은 데미지 값을 가진 아이템만 삭제
 o906 Also delete blocks placed in the world
-t906 
+t906 월드에 놓인 블럭도 삭제
 o907 No command blocks found
-t907 
+t907 커맨드 블럭 없음
 o908 Analysis
-t908 
+t908 분석
 o909 Click to set the spawn position.
-t909 
+t909 스폰 지점을 설정하려면 클릭하세요.
