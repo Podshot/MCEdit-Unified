@@ -277,7 +277,7 @@ def showProgress(progressText, progressIterator, cancel=False):
                     if isinstance(amount, (int, float)):
                         self.progressFraction = float(amount) / (float(max) or 1)
                         self.progressBar.width = maxwidth * self.progressFraction
-                        self.statusText = str(u"{0} / {1}".format(amount, max))
+                        self.statusText = str("{0} / {1}".format(amount, max))
                     else:
                         self.statusText = str(amount)
 
@@ -289,7 +289,7 @@ def showProgress(progressText, progressIterator, cancel=False):
             delta = (datetime.now() - self.startTime)
             progressPercent = (int(self.progressFraction * 10000))
             left = delta * (10000 - progressPercent) / (progressPercent or 1)
-            return _(u"Time left: {0}").format(left)
+            return _("Time left: {0}").format(left)
 
         def cancel(self):
             if cancel:
