@@ -1,3 +1,4 @@
+# -*- coding: utf_8 -*-
 #.# Marks the layout modifications. -- D.C.-G.
 from config import config
 import albow
@@ -642,7 +643,7 @@ class KeyConfigPanel(Dialog):
 
         self.editor.sprintKey = config.keys.sprint.get()
 
-        self.root.movementLabel.text = _("{0}/{1}/{2}/{3}/{4}/{5} to move").format(
+        self.root.movementLabel.text = _(u"{0}/{1}/{2}/{3}/{4}/{5} to move").format(
             _(config.keys.forward.get()),
             _(config.keys.left.get()),
             _(config.keys.back.get()),
@@ -650,8 +651,8 @@ class KeyConfigPanel(Dialog):
             _(config.keys.up.get()),
             _(config.keys.down.get()),
         )
-        self.root.slowDownLabel.text = _("{0} to slow down").format(_(config.keys.brake.get()))
-        self.root.detailsLabel.text = _("Hold {0} for details").format(_(config.keys.showBlockInfo.get()))
+        self.root.slowDownLabel.text = _(u"{0} to slow down").format(_(config.keys.brake.get()))
+        self.root.detailsLabel.text = _(u"Hold {0} for details").format(_(config.keys.showBlockInfo.get()))
         self.root.commandRow.labels[0].text = config.keys.newWorld.get()
         self.root.commandRow.labels[1].text = config.keys.quickLoad.get()
         self.root.commandRow.labels[2].text = config.keys.open.get()
@@ -761,10 +762,17 @@ class KeyConfigPanel(Dialog):
         panel = Panel()
         panel.bg_color = (0.5, 0.5, 0.6, 1.0)
 
+        # Fix for the issue #435 (Crashes when binding key to "Fast Nudge" in zh-CN & zh-TW)
+        # The fact is if we want to use the format() function, we must use it with a unicode object, not a str one.
+        # But if we use the other string formatting (%), forcing to unicode seem to be not necessary.
         if labelString is None and configKey != "Fast Nudge":
-            labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(_(configKey))
+            # labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(_(configKey))
+            labelString = _(u"Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(_(configKey))
+#             labelString = _("Press a key to assign to the action \"%s\"\n\nPress ESC to cancel.")%_(configKey)
         elif labelString is None:
-            labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel.").format(_(configKey))
+            # labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel.").format(_(configKey))
+            labelString = _(u"Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel.").format(_(configKey))
+#             labelString = _("Press a key to assign to the action \"%s\"\nNo key means right click to fast nudge.\nPress ESC to cancel.")%_(configKey)
         label = albow.Label(labelString)
         unbind_button = Button("Press to unbind", action=self.unbind)
         column = Column((label, unbind_button))
@@ -807,7 +815,7 @@ class KeyConfigPanel(Dialog):
         if keyname != "Escape" and keyname not in ["Alt-F4","F1","F2","F3","F4","F5","1","2","3","4","5","6","7","8","9","Ctrl-Alt-F9","Ctrl-Alt-F10"]:
             if "Modifier" in configKey and keyname != "Ctrl" and keyname != "Alt" and keyname != "Shift":
                 self.askAssignKey(configKey,
-                                    _("{0} is not a modifier. Press a new key.\n\nPress ESC to cancel.")
+                                    _(u"{0} is not a modifier. Press a new key.\n\nPress ESC to cancel.")
                                     .format(_keyname))
                 return True
             if configKey in ['Down','Up','Back','Forward','Left','Right','Pan Down','Pan Up','Pan Left','Pan Right']:
@@ -818,7 +826,7 @@ class KeyConfigPanel(Dialog):
             filter_keys = [i for (i, j) in config.config._sections["Filter Keys"].items() if j == _keyname]
             if filter_keys:
                 self.askAssignKey(configKey,
-                                    _("Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(_keyname, filter_keys[0]))
+                                    _(u"Can't bind. {0} is already used by the \"{1}\" filter.\n Press a new key.\n\nPress ESC to cancel.").format(_keyname, filter_keys[0]))
                 return True
             oldkey = config.keys[config.convert(configKey)].get()
             config.keys[config.convert(configKey)].set(keyname)
@@ -827,7 +835,7 @@ class KeyConfigPanel(Dialog):
                 self.changesNum = True
         elif keyname != "Escape":
             self.askAssignKey(configKey,
-                                    _("You can't use the key {0}. Press a new key.\n\nPress ESC to cancel.")
+                                    _(u"You can't use the key {0}. Press a new key.\n\nPress ESC to cancel.")
                                     .format(_keyname))
             return True
 
