@@ -193,7 +193,7 @@ t86 MCEdit에 관하여
 o87 Recent Changes
 t87 업데이트 내용
 o88 License
-t88 라이선스
+t88 라이센스
 o89 Config Files
 t89 
 o90 {0}/{1}/{2}/{3}/{4}/{5} to move
@@ -608,7 +608,7 @@ t284 화염 저항
 o285 Blindness (no mob effect)
 t285 실명 (no mob effect)
 o286 Jump Boost
-t286 Jump Boost
+t286 점프 강화
 o287 Effect
 t287 효과
 o288 Level
@@ -616,7 +616,7 @@ t288 Level
 o289 Duration (Seconds)
 t289 Duration (Seconds)
 o290 Add Potion Effect to Mobs
-t290 Add Potion Effect to Mobs
+t290 몬스터에게 포션 이펙트 넣기
 o291 Banslimes
 t291 Banslimes
 o292 Change Mob Properties
@@ -626,7 +626,7 @@ t293 Chunk Surface Repair
 o294 Classic Water Flood
 t294 Classic Water Flood
 o295 Colorwires
-t295 Colorwires
+t295 색상와이어
 o296 Create Busses
 t296 부스 생성
 o297 Create Shops
@@ -662,9 +662,9 @@ t311 VelocityZ
 o312 Fire
 t312 불
 o313 FallDistance
-t313 FallDistance
+t313 낙하거리
 o314 AttackTime
-t314 AttackTime
+t314 공격시간
 o315 HurtTime
 t315 HurtTime
 o316 Lightning
@@ -696,29 +696,29 @@ t328 Slime Size
 o329 Breeding Mode Ticks
 t329 Breeding Mode Ticks
 o330 Child/Adult Age
-t330 Child/Adult Age
+t330 어린이/어른 나이
 o331 Repairs the backwards surfaces made by old versions of Minecraft.
 t331 오래된 버전의 마인크래프트가 만든 거꾸로 된 표면을 수정합니다.
 o332 Makes water in the region flood outwards and downwards, becoming full source blocks in the process. This is similar to Minecraft Classic water.
 t332 선택 영역 내의 물을 옆과 아래로 퍼지게 합니다. 클래식 버전의 물이랑 유사합니다.
 o333 Flood Water
-t333 물
+t333 넘치는 물
 o334 Flood Lava
-t334 용암
+t334 넘치는 용암
 o335 This is a modified version of SethBling's Create Shops filter at DragonQuiz's request
 t335 SethBling의 Create Shop 필터를 수정한 버전입니다.
 o336 Profession
 t336 전문직
 o337 Add Stopping Trade
-t337 Add Stopping Trade
+t337 교역 멈추기 추가
 o338 Invulnerable Villager
-t338 Invulnerable Villager
+t338 마을 사람 무적
 o339 Make Unlimited Trades
-t339 Make Unlimited Trades
+t339 교역 제한 생성
 o340 Give Experience per a Trade
-t340 Give Experience per a Trade
+t340 매 교역마다 경험치를 준다
 o341 Make Villager not Move
-t341 Make Villager not Move
+t341 마을사람을 움직이지 않게 한다
 o342 Villager Name
 t342 주민 이름
 o343 Trade
@@ -870,11 +870,11 @@ t408 초원
 o409 Desert
 t409 사막
 o410 Extreme Hills
-t410 Extreme Hills
+t410 익스트림 힐
 o411 Forest
 t411 숲
 o412 Taiga
-t412 Taiga
+t412 침엽수 산림
 o413 Swamppland
 t413 늪지대
 o414 River
@@ -882,7 +882,7 @@ t414 강
 o415 Hell (Nether)
 t415 지옥 (네더)
 o416 Sky (End)
-t416 Sky (End)
+t416 하늘 (끝)
 o417 Frozen Ocean
 t417 얼어붙은 바다
 o418 Frozen River
@@ -900,11 +900,11 @@ t423 해안가
 o424 Desert Hills
 t424 모래 둔덕
 o425 Forest Hills
-t425 숲 언더
+t425 숲 언덕
 o426 Taiga Hills
-t426 Taiga Hills
+t426 침엽수 산림 언덕
 o427 Extreme Hills Edge
-t427 Extreme Hills Edge
+t427 협곡의 끝자락
 o428 Jungle
 t428 정글
 o429 Jungle Hills
@@ -916,77 +916,77 @@ t431 심해
 o432 Stone Beach
 t432 자갈 해안
 o433 Cold Beach
-t433 Cold Beach
+t433 차가운 해안
 o434 Birch Forest
-t434 Birch Forest
+t434 자작 나무 숲
 o435 Birch Forest Hills
-t435 Birch Forest Hills
+t435 자작 나무 숲 언덕
 o436 Roofed Forest
-t436 Roofed Forest
+t436 뒤덥힌 숲속
 o437 Cold Taiga
-t437 Cold Taiga
+t437 추운 침엽수림
 o438 Cold Taiga Hills
-t438 Cold Taiga Hills
+t438 추운 침엽수림
 o439 Mega Taiga
-t439 Mega Taiga
+t439 메가 침엽수림
 o440 Mega Taiga Hills
-t440 Mega Taiga Hills
+t440 메가 침엽수림 언덕
 o441 Extreme Hills+
-t441 Extreme Hills+
+t441 협곡들+
 o442 Savanna
-t442 Savanna
+t442 사바나
 o443 Savanna Plateau
-t443 Savanna Plateau
+t443 사바나 고원
 o444 Messa
-t444 Messa
+t444 퇴적층
 o445 Messa Plateau F
-t445 Messa Plateau F
+t445 퇴적층 고원 F
 o446 Messa Plateau
-t446 Messa Plateau
+t446 퇴적층 고원
 o447 Sunflower Plains
-t447 Sunflower Plains
+t447 해바라기 꽃밭
 o448 Desert M
-t448 Desert M
+t448 사막 M
 o449 Extreme Hills M
-t449 Extreme Hills M
+t449 협곡  M
 o450 Flower Forest
-t450 Flower Forest
+t450 꽃 숲
 o451 Taiga M
-t451 Taiga M
+t451 침엽수림 M
 o452 Swampland M
-t452 Swampland M
+t452 늪지대 M
 o453 Ice Plains Spikes
-t453 Ice Plains Spikes
+t453 설원 스파이크
 o454 Ice Mountains Spikes
-t454 Ice Mountains Spikes
+t454 설산 스파이크
 o455 Jungle M
-t455 Jungle M
+t455 정글 M
 o456 JungleEdge M
-t456 JungleEdge M
+t456 정글의 끝자락 M
 o457 Birch Forest M
-t457 Birch Forest M
+t457 자작 나무 숲 M
 o458 Birch Forest Hills M
-t458 Birch Forest Hills M
+t458 자작 나무 숲 언덕 M
 o459 Roofed Forest M
-t459 Roofed Forest M
+t459 우거진 숲 M
 o460 Cold Taiga M
-t460 Cold Taiga M
+t460 추운 침엽수림 M
 o461 Mega Spruce Taiga
-t461 Mega Spruce Taiga
+t461 Mega 가문비 나무 침엽수림
 o462 Mega Spruce Taiga 
-t462 
+t462 Mega 가문비 나무 침엽수림
 o463 Extreme Hills+ M
-t463 Extreme Hills+ M
+t463 협곡들+ M
 o464 Savanna M
-t464 Savanna M
+t464 사바나 M
 o465 Savanna Plateau M
-t465 Savanna Plateau M
+t465 사바나 고원 M
 o466 Mesa (Bryce)
 t466 Mesa (Bryce)
 o467 Mesa Plateau F M
-t467 Mesa Plateau F M
+t467 퇴적층 고원 F M
 o468 Mesa Plateau M
-t468 Mesa Plateau M
+t468 퇴적층 고원 M
 o469 (Uncalculated)
 t469 (Uncalculated)
 o470 Biome
@@ -1004,13 +1004,13 @@ t475 플레이어 이름
 o476 Player: 
 t476 플레이어: 
 o477 Goto
-t477 
+t477 Goto
 o478 Goto View
-t478 
+t478 Goto View
 o479 Move
-t479 
+t479 Move
 o480 Align to Camera
-t480 
+t480 카메라와 나란히
 o481 Player (Single Player)
 t481 플레이어
 o482 Chunk Control
@@ -1066,7 +1066,7 @@ t505 Ctrl
 o506 Creating a new world.
 t506 새로운 월드를 생성 중.
 o507 Minecraft Server
-t507 마인크래프트
+t507 마인크래프트 서버
 o508 Flatland
 t508 평지
 o509 Generator:
@@ -1126,7 +1126,7 @@ t535 L
 o536 W
 t536 W
 o537 Minimum Spacing
-t537 최소한의 간격
+t537 최소 간격
 o538 Regenerate Entity UUID
 t538 UUID 재생성
 o539 Replace blocks with any data value. Only useful for Replace operations.
@@ -1148,7 +1148,7 @@ t546 안개
 o547 Ceiling
 t547 천장
 o548 Chunk Redraw
-t548 청크 변경
+t548 Chunk 변경
 o549 Hidden Ores
 t549 숨겨진 광물
 o550 Bedrock
@@ -1172,9 +1172,9 @@ t558 단축키: {0}
 o559 View Distance ({0})
 t559 시야 ({0})
 o560 Copy Stack Size: 
-t560 
+t560 Copy Stack Size:
 o561 Remove
-t561 
+t561 Remove
 o562 Reload Skins
 t562 스킨 다시 로딩
 o563 Previous Page
@@ -1194,7 +1194,7 @@ t569 체력 신장
 o570 Saturation (no mob effect)
 t570 포만감 (몹 효과 없음)
 o571 Wither
-t571 위더
+t571 나약함
 o572 Invisibility
 t572 투명화
 o573 Slowness
@@ -1210,7 +1210,7 @@ t577 피로(몹 효과 없음)
 o578 Player Name(s):
 t578 플레이어 이름:
 o579 Chunks Borders
-t579 청크 경계
+t579 Chunks 경계
 o580 Fast Nudge
 t580 빠른 이동
 o581 Clone Fast Nudge Settings
@@ -1224,7 +1224,7 @@ t584 복제의 빠른 이동 거리:
 o585 Import Fast Nudge Settings:
 t585 불러오기의 빠른 이동 설정:
 o586 Move by the width of schematic 
-t586 
+t586 도식의 범위만큼 움직입니다
 o587 Moves selection by his width
 t587 선택한 범위의 길이만큼 이동합니다
 o588 Width of import movement: 
@@ -1468,7 +1468,7 @@ t690 부드럽게 - 3D
 o691 Smoothing
 t691 부드럽게 하기
 o692 Made by Sethbling
-t692 제작자 Sethbling
+t692 제작자: Sethbling
 o693 NBT Data
 t693 NBT 값
 o694 Edit NBT
@@ -1502,9 +1502,9 @@ t703 저장하고 다시 시작
 o704 From FTP Server
 t704 FTP 서버에서
 o705 <Chunk Control Tool>
-t705 <청크 조절 도구>
+t705 <Chunk 조절 도구>
 o706 Select Chunks
-t706 청크 선택
+t706 Chunks 선택
 o707 
 No matching blocks/tile entities found
 t707 
