@@ -1,3 +1,4 @@
+# -*- coding: utf_8 -*-
 #.# Marks the layout modifications. -- D.C.-G.
 from config import config
 import albow
@@ -763,7 +764,7 @@ class KeyConfigPanel(Dialog):
 
         if labelString is None and configKey != "Fast Nudge":
             labelString = _("Press a key to assign to the action \"{0}\"\n\nPress ESC to cancel.").format(_(configKey))
-        elif labelString is None:
+       elif labelString is None:
             labelString = _("Press a key to assign to the action \"{0}\"\nNo key means right click to fast nudge.\nPress ESC to cancel.").format(_(configKey))
         label = albow.Label(labelString)
         unbind_button = Button("Press to unbind", action=self.unbind)

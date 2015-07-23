@@ -69,7 +69,7 @@ def perform(level, box, options):
         OPT = optmap.get(opt, opt.replace(" ", "").upper())
         if OPT in dir(Forester):
             val = options[opt]
-            if isinstance(val, str):
+            if isinstance(val, (str, unicode)):
                 val = val.replace(" ", "").lower()
 
             setattr(Forester, OPT, val)

@@ -145,8 +145,10 @@ def _(string, doNotTranslate=False, hotKey=False):
     if type(string) not in (str, unicode):
         return string
     try:
-        trn = u"" + string
-    except UnicodeDecodeError:
+        trn = u"%s"%(string)
+    except Exception, e:
+        print "TRANSLATE ERROR", e
+        log.debug('TRANSLATE ERROR: %s'%e)
         trn = string_cache.get(string, string)
     if trn == string:
         trn = string_cache.get(string, trn)
@@ -161,7 +163,7 @@ def _(string, doNotTranslate=False, hotKey=False):
         if (string, None) not in [(a, None) for a, b in template.values()]:
             template[len(template.keys())] = (string, "")
             strNum += 1
-    return trn or string
+    return trn or unicode(string)
 
 #-------------------------------------------------------------------------------
 
