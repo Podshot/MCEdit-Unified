@@ -143,11 +143,11 @@ class PocketLeveldbDatabase(object):
             needsRepair = True
 
         if needsRepair:
-            logger.info("Trying to repair world %s", path)
+            logger.info("Trying to repair world %s"%path)
             try:
                 leveldb_mcpe.RepairWrapper(os.path.join(path, 'db'))
             except RuntimeError as err:
-                logger.error("Error while repairing world %s %s" % path, err)
+                logger.error("Error while repairing world %s %s"%(path, err))
 
     def close(self):
         """
@@ -189,7 +189,7 @@ class PocketLeveldbDatabase(object):
         if len(terrain) != 83200:
             raise ChunkMalformed(str(len(terrain)))
 
-        logger.debug("CHUNK LOAD %s %s", cx, cz)
+        logger.debug("CHUNK LOAD %s %s"%(cx, cz))
         return terrain, tile_entities, entities
 
     def saveChunk(self, chunk, batch=None, writeOptions=None):
@@ -243,7 +243,7 @@ class PocketLeveldbDatabase(object):
             key = struct.pack('<i', cx) + struct.pack('<i', cz) + "0"
             batch.Delete(key)
 
-        logger.debug("DELETED CHUNK %s %s", cx, cz)
+        logger.debug("DELETED CHUNK %s %s"%(cx, cz))
 
     def getAllChunks(self, readOptions=None):
         """
@@ -672,7 +672,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
             chunk.dirty = True
             self.worldFile.saveChunk(chunk)
         else:
-            logger.info("Tried to import generated chunk at %s, %s but the chunk already existed." % cx, cz)
+            logger.info("Tried to import generated chunk at %s, %s but the chunk already existed."%(cx, cz))
 
     @property
     def chunksNeedingLighting(self):
