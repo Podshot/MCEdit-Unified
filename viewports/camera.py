@@ -51,6 +51,9 @@ class CameraViewport(GLViewport):
         rect = editor.mcedit.rect
         GLViewport.__init__(self, rect)
 
+        # Declare a pseudo showCommands function, since it is called by other objects before its creation in mouse_move.
+        self.showCommands = lambda:None
+
         near = 0.5
         far = 4000.0
 
