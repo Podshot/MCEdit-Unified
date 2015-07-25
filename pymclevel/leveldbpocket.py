@@ -139,7 +139,7 @@ class PocketLeveldbDatabase(object):
                 del it
 
         except RuntimeError as err:
-            logger.error("Error while opening world database from %s (%s)" % path, err)
+            logger.error("Error while opening world database from %s (%s)"%(path, err))
             needsRepair = True
 
         if needsRepair:
