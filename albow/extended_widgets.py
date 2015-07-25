@@ -18,11 +18,12 @@ class HotkeyColumn(Widget):
     is_gl_container = True
 
 #-# Translation live update preparation
-    def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None):
+    def __init__(self, items, keysColumn=None, buttonsColumn=None, item_spacing=None, translateButtons=True):
         self.items = items
         self.item_spacing = item_spacing
         self.keysColumn = keysColumn
         self.buttonsColumn = buttonsColumn
+        self.translateButtons = translateButtons
         Widget.__init__(self)
         self.buildWidgets()
 
@@ -54,9 +55,9 @@ class HotkeyColumn(Widget):
             else:
                 (hotkey, title, action, tooltipText) = t
             if isinstance(title, (str, unicode)):
-                button = Button(title, action=action)
+                button = Button(title, action=action, doNotTranslate=not self.translateButtons)
             else:
-                button = ValueButton(ref=title, action=action, width=200)
+                button = ValueButton(ref=title, action=action, width=200, doNotTranslate=not self.translateButtons)
             button.anchor = self.anchor
 
             label = Label(hotkey, width=100, margin=button.margin)
