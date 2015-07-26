@@ -140,18 +140,21 @@ buildTemplateMarker = """
 
 def _(string, doNotTranslate=False, hotKey=False):
     """Returns the translated 'string', or 'string' itself if no translation found."""
+    if type(string) == str:
+        string = unicode(string, enc)
     if doNotTranslate:
         return string
     if type(string) not in (str, unicode):
         return string
-    try:
-        trn = u"%s"%(string)
-    except Exception, e:
-        print "TRANSLATE ERROR", e
-        log.debug('TRANSLATE ERROR: %s'%e)
-        trn = string_cache.get(string, string)
-    if trn == string:
-        trn = string_cache.get(string, trn)
+#     try:
+#         trn = u"%s"%(string)
+#     except Exception, e:
+#         print "TRANSLATE ERROR", e
+#         log.debug('TRANSLATE ERROR: %s'%e)
+#         trn = string_cache.get(string, string)
+#     if trn == string:
+#         trn = string_cache.get(string, trn)
+    trn = string_cache.get(string, string)
     if trn == string and '-' in string:
         # Support for hotkeys
         trn = '-'.join([_(a, hotKey=True) for a in string.split('-') if _(a, hotKey=True) != a or a])
@@ -163,7 +166,7 @@ def _(string, doNotTranslate=False, hotKey=False):
         if (string, None) not in [(a, None) for a, b in template.values()]:
             template[len(template.keys())] = (string, "")
             strNum += 1
-    return trn or unicode(string)
+    return trn or string
 
 #-------------------------------------------------------------------------------
 

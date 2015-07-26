@@ -141,7 +141,7 @@ class Label(Widget):
         return self._text
 
     def set_text(self, x, doNotTranslate=False):
-        self._text = _(x, doNotTranslate=doNotTranslate)
+        self._text = _(x, doNotTranslate=doNotTranslate or self.doNotTranslate)
         self.calc_size()
 
     def get_align(self):
@@ -304,7 +304,7 @@ class ValueDisplay(Control, Label):
         self.set_size_for_text(width)
 
     def get_text(self):
-        return self.format_value(_(self.value))
+        return self.format_value(_(self.value, self.doNotTranslate))
 
     def format_value(self, value):
         if value is not None:
@@ -321,7 +321,7 @@ class ValueButton(ButtonBase, ValueDisplay):
     align = 'c'
 
     def get_text(self):
-        return self.format_value(_(self.value))
+        return self.format_value(_(self.value, self.doNotTranslate))
 
 
 class CheckControl(Control):

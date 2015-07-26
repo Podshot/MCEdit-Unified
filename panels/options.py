@@ -151,7 +151,7 @@ class OptionsPanel(Dialog):
 
         langNames = [k for k, v in langs]
 
-        self.languageButton = albow.ChoiceButton(langNames, choose=self.changeLanguage)
+        self.languageButton = albow.ChoiceButton(langNames, choose=self.changeLanguage, doNotTranslate=True)
         if self.sgnal[lng] in self.languageButton.choices:
             self.languageButton.selectedChoice = self.sgnal[lng]
 
