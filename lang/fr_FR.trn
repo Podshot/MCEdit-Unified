@@ -1957,4 +1957,42 @@ t908 Analyse
 o909 Click to set the spawn position.
 t909 Cliquer pour definir le point de spawn.
 o910 <Toolbar>
-t910 
+t910 <Barre d'outils>
+o911 Edit Sign
+t911 Éditer panneau
+o912 Add Color Code...
+t912 Ajouter code de couleur
+o913 §0  Black
+t913 §0  Noir
+o914 §1  Dark Blue
+t914 §1  Bleu foncé
+o915 §2  Dark Green
+t915 §2  Vert foncé
+o916 §3  Dark Aqua
+t916 §3  Bleu eau foncé
+o917 §4  Dark Red
+t917 §4  Rouge foncé
+o918 §5  Dark Purple
+t918 §5  Violet foncé
+o919 §6  Gold
+t919 §6  Or
+o920 §7  Gray
+t920 §7  Gris
+o921 §8  Dark Gray
+t921 §8  Gris foncé
+o922 §9  Blue
+t922 §9  Bleu
+o923 §a  Green
+t923 §a  Vert
+o924 §b  Aqua
+t924 §b  Bleu eau
+o925 §c  Red
+t925 §c  Rouge
+o926 §d  Light Purple
+t926 §d  Violet clair
+o927 §e  Yellow
+t927 §e  Jaune
+o928 §f  White
+t928 §f  Blanc
+o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
+t929 Cliquez-glissez pour repositionner l'objet. Double-cliquez pour le prendre. Cliquez Importer ou appuyez sur Entrée pour confirmer.

@@ -2,7 +2,7 @@ import albow
 from albow.dialogs import Dialog
 from config import config
 import pygame
-from albow.translate import _
+from albow.translate import _, buildTemplate
 import sys
 import os
 import logging
@@ -151,7 +151,7 @@ class OptionsPanel(Dialog):
 
         langNames = [k for k, v in langs]
 
-        self.languageButton = albow.ChoiceButton(langNames, choose=self.changeLanguage)
+        self.languageButton = albow.ChoiceButton(langNames, choose=self.changeLanguage, doNotTranslate=True)
         if self.sgnal[lng] in self.languageButton.choices:
             self.languageButton.selectedChoice = self.sgnal[lng]
 
@@ -248,6 +248,9 @@ class OptionsPanel(Dialog):
         return langs
 
     def changeLanguage(self):
+        if albow.translate.buildTemplate:
+            self.languageButton.selectedChoice = 'English (US)'
+            return
         langName = self.languageButton.selectedChoice
         if langName not in self.langs:
             lng = "en_US"

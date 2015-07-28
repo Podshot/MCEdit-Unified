@@ -1950,3 +1950,41 @@ o909 Click to set the spawn position.
 t909 点击来设置出生点.
 o910 <Toolbar>
 t910 <工具栏>
+o911 Edit Sign
+t911 
+o912 Add Color Code...
+t912 
+o913 §0  Black
+t913 
+o914 §1  Dark Blue
+t914 
+o915 §2  Dark Green
+t915 
+o916 §3  Dark Aqua
+t916 
+o917 §4  Dark Red
+t917 
+o918 §5  Dark Purple
+t918 
+o919 §6  Gold
+t919 
+o920 §7  Gray
+t920 
+o921 §8  Dark Gray
+t921 
+o922 §9  Blue
+t922 
+o923 §a  Green
+t923 
+o924 §b  Aqua
+t924 
+o925 §c  Red
+t925 
+o926 §d  Light Purple
+t926 
+o927 §e  Yellow
+t927 
+o928 §f  White
+t928 
+o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
+t929 

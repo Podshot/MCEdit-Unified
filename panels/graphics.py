@@ -60,7 +60,7 @@ class GraphicsPanel(Dialog):
         packs.remove('Default Resource Pack')
         packs.sort()
         packs.insert(0, 'Default Resource Pack')
-        self.resourcePackButton = albow.ChoiceButton(packs, choose=self.change_texture)
+        self.resourcePackButton = albow.ChoiceButton(packs, choose=self.change_texture, doNotTranslate=True)
         self.resourcePackButton.selectedChoice = self.saveOldResourcePack
 
         settingsColumn = albow.Column((fastLeavesRow,

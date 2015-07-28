@@ -89,7 +89,7 @@ class FileOpener(albow.Widget):
                        ('F{0}'.format(i + 1), shortnames[i], self.createLoadButtonHandler(world))
                        for i, world in enumerate(self.mcedit.recentWorlds())])
 
-        self.root.commandRow = commandRow = albow.HotkeyColumn(hotkeys, keysColumn, buttonsColumn)
+        self.root.commandRow = commandRow = albow.HotkeyColumn(hotkeys, keysColumn, buttonsColumn, translateButtons=range(3))
         commandRow.anchor = 'lrh'
 
         sideColumn1 = self.mcedit.makeSideColumn1()

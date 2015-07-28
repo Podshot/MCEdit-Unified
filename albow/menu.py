@@ -27,13 +27,13 @@ class MenuItem(object):
         cmd_name = "Ctrl "
         option_name = "Alt "
 
-    def __init__(self, text="", command=None):
+    def __init__(self, text="", command=None, doNotTranslate=False):
         self.command = command
         if "/" in text:
             text, key = text.split("/", 1)
         else:
             key = ""
-        self.text = _(text)
+        self.text = _(text, doNotTranslate=doNotTranslate)
         if key:
             keyname = key[-1]
             mods = key[:-1]
@@ -60,9 +60,9 @@ class Menu(Dialog):
     def __init__(self, title, items, scrolling=False, scroll_items=30,
                  scroll_page=5, handler=None, **kwds):
         self.handler = handler
-        self.title = _(title)
+        self.title = _(title, doNotTranslate=kwds.get('doNotTranslate', False))
         self.items = items
-        self._items = [MenuItem(*item) for item in items]
+        self._items = [MenuItem(*item, doNotTranslate=kwds.get('doNotTranslate', False)) for item in items]
         self.scrolling = scrolling and len(self._items) > scroll_items
         self.scroll_items = scroll_items
         self.scroll_page = scroll_page
@@ -74,7 +74,7 @@ class Menu(Dialog):
     #&#
     def set_items(self, items):
         self.items = items
-        self._items = [MenuItem(*item) for item in items]
+        self._items = [MenuItem(*item, doNotTranslate=self.doNotTranslate) for item in items]
 
     def set_scroll_items(self, scroll_items):
         if scroll_items < len(self.items):
@@ -93,7 +93,7 @@ class Menu(Dialog):
 
     def set_update_translation(self, v):
         if v:
-            self._items = [MenuItem(*item) for item in self.items]
+            self._items = [MenuItem(*item, doNotTranslate=self.doNotTranslate) for item in self.items]
         Dialog.set_update_translation(self, v)
 
     def present(self, client, pos):
