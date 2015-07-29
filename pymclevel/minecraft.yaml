@@ -6137,3 +6137,86 @@ blocks:
         tex: [9, 20]
       15:
         tex: [9, 20]
+    
+  - id: 198
+    idStr: end_rod
+    name: End Rod
+    mapcolor: [120, 120, 120]
+    tex: [0, 0]
+    data:
+      1:
+        name: End Rod (Upright)
+        
+  - id: 201
+    idStr: purpur_block
+    name: Purpur Block
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    
+  - id: 202
+    idStr: purpur_pillar
+    name: Purpur Pillar
+    mapcolor: [120, 120, 120]
+    tex: [0, 0]
+    data:
+      0:
+        name: Purpur Pillar (Upright)
+        tex: [19, 17]
+        tex_direction:
+          TOP: [19, 18]
+          BOTTOM: [19, 18]
+      4:
+        name: Purpur Pillar (East/West)
+        tex: [19, 19]
+        tex_direction:
+          SIDES: [19, 18]
+      8:
+        name: Purpur Pillar (North/South)
+        tex: [19, 19]
+        tex_direction:
+          FORWARD: [19, 18]
+          BACKWARD: [19, 18]
+          
+  - id: 203
+    idStr: purpur_stairs
+    name: Purpur Staris
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    type: STAIRS
+    data:
+      0:
+        name: Purpur Stairs (Bottom, East)
+      1:
+        name: Purpur Stairs (Bottom, West)
+      2:
+        name: Purpur Stairs (Bottom, South)
+      3:
+        name: Purpur Stairs (Bottom, North)
+      4:
+        name: Purpur Stairs (Top, East)
+      5:
+        name: Purpur Stairs (Top, West)
+      6:
+        name: Purpur Stairs (Top, South)
+      7:
+        name: Purpur Stairs (Top, North)
+        
+  - id: 204
+    idStr: <unknown>
+    name: Double Purpur Slabs
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    
+  - id: 205
+    idStr: purpur_slab
+    name: Purpur Slab
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    
+  - id: 206
+    idStr: end_bricks
+    name: End Stone Bricks
+    mapcolor: [120, 120, 120]
+    tex: [18, 18]
+    
+    

@@ -2813,7 +2813,8 @@ class VineBlockRenderer(BlockRenderer):
 class SlabBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.OakWoodSlab.ID,
                   pymclevel.materials.alphaMaterials.StoneSlab.ID,
-                  pymclevel.materials.alphaMaterials.RedSandstoneSlab.ID]
+                  pymclevel.materials.alphaMaterials.RedSandstoneSlab.ID,
+                  pymclevel.materials.alphaMaterials.PurpurSlab.ID]
 
     def slabFaceVertices(self, direction, blockIndices, facingBlockLight, blocks, blockData, blockLight,
                          areaBlockLights, texMap):

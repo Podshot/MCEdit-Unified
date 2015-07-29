@@ -593,6 +593,11 @@ alphaMaterials.BirchDoor = alphaMaterials[194, 0]
 alphaMaterials.JungleDoor = alphaMaterials[195, 0]
 alphaMaterials.AcaciaDoor = alphaMaterials[196, 0]
 alphaMaterials.DarkOakDoor = alphaMaterials[197, 0]
+alphaMaterials.Purpur = alphaMaterials[201, 0]
+alphaMaterials.PurpurPillar = alphaMaterials[202, 0]
+alphaMaterials.PurpurStairs = alphaMaterials[203, 0]
+alphaMaterials.PurpurSlab = alphaMaterials[205, 0]
+alphaMaterials.EndStone = alphaMaterials[206, 0]
 
 # --- Classic static block defs ---
 classicMaterials.Stone = classicMaterials[1]
@@ -959,6 +964,7 @@ for b in alphaMaterials:
     if b.ID == 0:
         b.stringID = "air"
     block_map[b.ID] = "minecraft:"+b.stringID
+print block_map[203]
 
 '''
 block_map_old = {

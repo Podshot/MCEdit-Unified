@@ -430,6 +430,7 @@ textureSlots = {
     "prismarine_bricks": (step(16),step(17)),
     "prismarine_dark": (step(17),step(17)),
     "prismarine_rough": (step(18),step(17)),
+    "purpur_pillar": (step(19),step(17)),
     # End Eigteenth Row
 
     # Start Ninteenth Row
@@ -451,6 +452,8 @@ textureSlots = {
     "hardened_clay_stained_black": (step(15),step(18)),
     "sponge_wet": (step(16),step(18)),
     "sea_lantern": (step(17),step(18)),
+    "end_bricks": (step(18),step(18)),
+    "purpur_pillar_top": (step(19),step(18)),
     # End Ninteenth Row
 
     # Start Twentieth Row
@@ -472,6 +475,7 @@ textureSlots = {
     #
     "hay_block_side_rotated": (step(16),step(19)),
     "quartz_block_lines_rotated": (step(17),step(19)),
+    "purpur_block": (step(18),step(19)),
     # End Twentieth Row
 
     # Start Twentyfirst Row
