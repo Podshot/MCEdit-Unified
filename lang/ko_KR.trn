@@ -1971,3 +1971,5 @@ o928 §f  White
 t928 
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
 t929 
+o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+t930 

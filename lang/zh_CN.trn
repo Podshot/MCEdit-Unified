@@ -1951,40 +1951,42 @@ t909 点击来设置出生点.
 o910 <Toolbar>
 t910 <工具栏>
 o911 Edit Sign
-t911 
+t911 编辑告示牌
 o912 Add Color Code...
-t912 
+t912 添加颜色代码...
 o913 §0  Black
-t913 
+t913 §0  黑色
 o914 §1  Dark Blue
-t914 
+t914 §1  深蓝色
 o915 §2  Dark Green
-t915 
+t915 §2  深绿色
 o916 §3  Dark Aqua
-t916 
+t916 §3  深青色
 o917 §4  Dark Red
-t917 
+t917 §4  深红色
 o918 §5  Dark Purple
-t918 
+t918 §5  深紫色
 o919 §6  Gold
-t919 
+t919 §6  金色
 o920 §7  Gray
-t920 
+t920 §7  灰色
 o921 §8  Dark Gray
-t921 
+t921 §8  深灰色
 o922 §9  Blue
-t922 
+t922 §9  蓝色
 o923 §a  Green
-t923 
+t923 §a  绿色
 o924 §b  Aqua
-t924 
+t924 §b  青色
 o925 §c  Red
-t925 
+t925 §c  红色
 o926 §d  Light Purple
-t926 
+t926 §d  淡紫色
 o927 §e  Yellow
-t927 
+t927 §e  黄色
 o928 §f  White
-t928 
+t928 §f  白色
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t929 
+t929 点击和拖动来重新放置物体. 双击将它拾起. 点击“导入”或按回车来确定.
+o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
+t930 为这个刷怪箱输入一个实体ID. 无效的ID可能使Minecraft崩溃. 按ESC取消.
