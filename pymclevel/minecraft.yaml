@@ -6260,5 +6260,51 @@ blocks:
     name: End Stone Bricks
     mapcolor: [120, 120, 120]
     tex: [18, 18]
-    
+
+  - id: 207
+    idStr: beetroots
+    name: Beetroot
+    mapcolor: [120, 120, 120]
+    type: CROPS
+    data:
+      0:
+        name: Beetroot (Age 0)
+        tex: [2, 29]
+      1:
+        name: Beetroot (Age 1)
+        tex: [3, 29]
+      2:
+        name: Beetroot (Age 2)
+        tex: [4, 29]
+      3:
+        name: Beetroot (Age 3)
+        tex: [5, 29]
+
+  - id: 208
+    idStr: grass_path
+    name: Path
+    tex_direction:
+      FORWARD: [1, 29]
+      BACKWARD: [1, 29]
+      LEFT: [1, 29]
+      RIGHT: [1, 29]
+      TOP: [0, 29]
+      BOTTOM: [2, 0]
+
+  - id: 255
+    idStr: structure_block
+    name: Structure Block
+    data:
+      0:
+        name: Structure Block (Save)
+        tex: [19, 10]
+      1:
+        name: Structure Block (Load)
+        tex: [20, 10]
+      2:
+        name: Structure Block (Corner)
+        tex: [20, 9]
+      3:
+        name: Structure Block (Data)
+        tex: [19, 9]
     
