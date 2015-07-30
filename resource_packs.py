@@ -489,6 +489,17 @@ textureSlots = {
     "door_jungle_upper": (step(7),step(20)),
     "door_acacia_upper": (step(8),step(20)),
     "door_dark_oak_upper": (step(9),step(20)),
+    # 
+    # 
+    # 
+    # 
+    # 
+    # 
+    # 
+    #
+    "chorus_plant": (step(13),step(20)),
+    "chorus_flower_dead": (step(14),step(20)),
+    "chorus_flower": (step(15),step(20)),
     # End Twentyfirst Row
 
     # Start MISC

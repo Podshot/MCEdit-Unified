@@ -6146,6 +6146,25 @@ blocks:
     data:
       1:
         name: End Rod (Upright)
+
+  - id: 199
+    idStr: chorus_plant
+    name: Chorus Plant
+    mapcolor: [120, 120, 120]
+    tex: [13, 20]
+        
+  - id: 200
+    idStr: chorus_flower
+    name: Chorus Flower
+    mapcolor: [120, 120, 120]
+    tex: [15, 20]
+    data:
+      0:
+        name: Chorus Flower (Alive)
+        tex: [15, 20]
+      5:
+        name: Chorus Flower (Dead)
+        tex: [14, 20]
         
   - id: 201
     idStr: purpur_block
