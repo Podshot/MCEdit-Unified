@@ -6142,10 +6142,21 @@ blocks:
     idStr: end_rod
     name: End Rod
     mapcolor: [120, 120, 120]
-    tex: [0, 0]
+    tex: [16, 20]
+    brightness: 14
     data:
+      0:
+        name: End Rod (Down)
       1:
-        name: End Rod (Upright)
+        name: End Rod (Up)
+      2:
+        name: End Rod (North)
+      3:
+        name: End Rod (South)
+      4:
+        name: End Rod (West)
+      5:
+        name: End Rod (East)
 
   - id: 199
     idStr: chorus_plant
@@ -6160,10 +6171,22 @@ blocks:
     tex: [15, 20]
     data:
       0:
-        name: Chorus Flower (Alive)
+        name: Chorus Flower (Age 0)
+        tex: [15, 20]
+      1:
+        name: Chorus Flower (Age 1)
+        tex: [15, 20]
+      2:
+        name: Chorus Flower (Age 2)
+        tex: [15, 20]
+      3:
+        name: Chorus Flower (Age 3)
+        tex: [15, 20]
+      4:
+        name: Chorus Flower (Age 4)
         tex: [15, 20]
       5:
-        name: Chorus Flower (Dead)
+        name: Chorus Flower (Age 5)
         tex: [14, 20]
         
   - id: 201

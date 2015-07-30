@@ -507,6 +507,9 @@ def makeVerticesFromModel(templates, dataMask=0):
         templates = numpy.array(templates)
     if templates.shape == (6, 4, 6):
         templates = numpy.array([templates])
+    if len(templates.shape) == 4:
+        templates = templates[numpy.newaxis, ...]
+    elements = templates.shape[0]
 
     def makeVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
         mask = self.getMaterialIndices(blockMaterials)
@@ -515,24 +518,25 @@ def makeVerticesFromModel(templates, dataMask=0):
 
         data = blockData[mask]
         data &= dataMask
+        self.vertexArrays = []
+        for i in range(elements):
+            vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
+            for indicies in range(3):
+                dimension = (0, 2, 1)[indicies]
 
-        vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
-        for indicies in range(3):
-            dimension = (0, 2, 1)[indicies]
+                vertexArray[..., indicies] = blockIndices[dimension][:, numpy.newaxis,
+                                             numpy.newaxis]  # xxx swap z with y using ^
 
-            vertexArray[..., indicies] = blockIndices[dimension][:, numpy.newaxis,
-                                         numpy.newaxis]  # xxx swap z with y using ^
+            vertexArray[..., 0:5] += templates[i, data][..., 0:5]
+            vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices] & 15)[..., numpy.newaxis, :]
 
-        vertexArray[..., 0:5] += templates[data][..., 0:5]
-        vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices] & 15)[..., numpy.newaxis, :]
-
-        vertexArray.view('uint8')[_RGB] = templates[data][..., 5][..., numpy.newaxis]
-        vertexArray.view('uint8')[_A] = 0xFF
-        vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][blockIndices][
-            ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
-        vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
-        yield
-        self.vertexArrays = [vertexArray]
+            vertexArray.view('uint8')[_RGB] = templates[i, data][..., 5][..., numpy.newaxis]
+            vertexArray.view('uint8')[_A] = 0xFF
+            vertexArray.view('uint8')[_RGB] *= areaBlockLights[1:-1, 1:-1, 1:-1][blockIndices][
+                ..., numpy.newaxis, numpy.newaxis, numpy.newaxis]
+            vertexArray.shape = (vertexArray.shape[0] * 6, 4, 6)
+            yield
+            self.vertexArrays.append(vertexArray)
     return makeVertices
 
 
@@ -738,6 +742,7 @@ class ChunkCalculator(object):
                 RepeaterBlockRenderer,
                 VineBlockRenderer,
                 PlateBlockRenderer,
+                EndRodRenderer,
                 # button, floor plate, door -> 1-cube features
                 # lever, sign, wall sign, stairs -> 2-cube features
                 # fence
@@ -2844,6 +2849,48 @@ class SlabBlockRenderer(BlockRenderer):
 
     makeFaceVertices = slabFaceVertices
 
+
+# 1.9 renderer's
+class EndRodRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.EndRod.ID]
+
+    rodTemplate = makeVertexTemplatesFromJsonModel((7, 1, 7), (9, 16, 9), {
+        "down": (4, 2, 2, 0),
+        "up": (2, 0, 4, 2),
+        "north": (0, 0, 2, 15),
+        "south": (0, 0, 2, 15),
+        "west": (0, 0, 2, 15),
+        "east": (0, 0, 2, 15)
+    })
+
+    rodTemplates = numpy.array([
+        rotateTemplate(rodTemplate, x=180),
+        rodTemplate,
+        rotateTemplate(rodTemplate, x=90),
+        rotateTemplate(rodTemplate, y=180, x=90),
+        rotateTemplate(rodTemplate, y=270, x=90),
+        rotateTemplate(rodTemplate, y=90, x=90),
+    ])
+
+    handleTemplate = makeVertexTemplatesFromJsonModel((6, 0, 6), (10, 1, 10), {
+        "down": (6, 6, 2, 2),
+        "up": (2, 2, 6, 6),
+        "north": (2, 6, 6, 7),
+        "south": (2, 6, 6, 7),
+        "west": (2, 6, 6, 7),
+        "east": (2, 6, 6, 7)
+    })
+
+    handleTemplates = numpy.array([
+        rotateTemplate(handleTemplate, x=180),
+        handleTemplate,
+        rotateTemplate(handleTemplate, x=90),
+        rotateTemplate(handleTemplate, y=180, x=90),
+        rotateTemplate(handleTemplate, y=270, x=90),
+        rotateTemplate(handleTemplate, y=90, x=90),
+    ])
+
+    makeVertices = makeVerticesFromModel([rodTemplates, handleTemplates], 7)
 
 class WaterBlockRenderer(BlockRenderer):
     waterID = pymclevel.materials.alphaMaterials.Water.ID
