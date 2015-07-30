@@ -836,44 +836,24 @@ class CameraViewport(GLViewport):
                 if '\\"' in f.value:
                     f.value = f.value.replace('\\"', '"')
 
-        if DEF_ENC != 'UTF-8':
-            colors = [
-                "\xa70  Black",
-                "\xa71  Dark Blue",
-                "\xa72  Dark Green",
-                "\xa73  Dark Aqua",
-                "\xa74  Dark Red",
-                "\xa75  Dark Purple",
-                "\xa76  Gold",
-                "\xa77  Gray",
-                "\xa78  Dark Gray",
-                "\xa79  Blue",
-                "\xa7a  Green",
-                "\xa7b  Aqua",
-                "\xa7c  Red",
-                "\xa7d  Light Purple",
-                "\xa7e  Yellow",
-                "\xa7f  White",
-            ]
-        else:
-            colors = [
-                "§0  Black",
-                "§1  Dark Blue",
-                "§2  Dark Green",
-                "§3  Dark Aqua",
-                "§4  Dark Red",
-                "§5  Dark Purple",
-                "§6  Gold",
-                "§7  Gray",
-                "§8  Dark Gray",
-                "§9  Blue",
-                "§a  Green",
-                "§b  Aqua",
-                "§c  Red",
-                "§d  Light Purple",
-                "§e  Yellow",
-                "§f  White",
-            ]
+        colors = [
+            u"§0  Black",
+            u"§1  Dark Blue",
+            u"§2  Dark Green",
+            u"§3  Dark Aqua",
+            u"§4  Dark Red",
+            u"§5  Dark Purple",
+            u"§6  Gold",
+            u"§7  Gray",
+            u"§8  Dark Gray",
+            u"§9  Blue",
+            u"§a  Green",
+            u"§b  Aqua",
+            u"§c  Red",
+            u"§d  Light Purple",
+            u"§e  Yellow",
+            u"§f  White",
+        ]
 
         def menu_picked(index):
             # Fix for the '§ is Ä§' issue

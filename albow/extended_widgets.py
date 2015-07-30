@@ -113,7 +113,8 @@ class MenuButton(Button):
     def __init__(self, title, choices, **kw):
         Button.__init__(self, title, **kw)
         self.choices = choices
-        self.menu = Menu(title, ((c, c) for c in choices))
+#         self.menu = Menu(title, ((c, c) for c in choices))
+        self.menu = Menu(title, ((c, None) for c in choices))
 
     def action(self):
         index = self.menu.present(self, (0, 0))
