@@ -736,6 +736,7 @@ class ChunkCalculator(object):
                 IceBlockRenderer,
                 DoorRenderer,
                 ButtonRenderer,
+                TrapDoorRenderer,
                 FenceBlockRenderer,
                 FenceGateBlockRenderer,
                 StairBlockRenderer,
@@ -2607,6 +2608,58 @@ class ButtonRenderer(BlockRenderer):
     ])
 
     makeVertices = makeVerticesFromModel(buttonTemplates, 15)
+
+class TrapDoorRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.IronTrapdoor.ID,
+                  pymclevel.materials.alphaMaterials.Trapdoor.ID]
+
+    openTemplate = makeVertexTemplatesFromJsonModel((0, 0, 13), (16, 16, 16), {
+        "down": (0, 13, 16, 16),
+        "up": (0, 16, 16, 13),
+        "north": (0, 0, 16, 16),
+        "south": (0, 0, 16, 16),
+        "west": (16, 0, 13, 16),
+        "east": (13, 0, 16, 16)
+    })
+
+    topTemplate = makeVertexTemplatesFromJsonModel((0, 13, 0), (16, 16, 16), {
+        "down": (0, 0, 16, 16),
+        "up": (0, 0, 16, 16),
+        "north": (0, 16, 16, 13),
+        "south": (0, 16, 16, 13),
+        "west": (0, 16, 16, 13),
+        "east": (0, 16, 16, 13)
+    })
+
+    bottomTemplate = makeVertexTemplatesFromJsonModel((0, 0, 0), (16, 3, 16), {
+        "down": (0, 0, 16, 16),
+        "up": (0, 0, 16, 16),
+        "north": (0, 16, 16, 13),
+        "south": (0, 16, 16, 13),
+        "west": (0, 16, 16, 13),
+        "east": (0, 16, 16, 13)
+    })
+
+    trapDoorTemplates = numpy.array([
+        bottomTemplate,
+        bottomTemplate,
+        bottomTemplate,
+        bottomTemplate,
+        openTemplate,
+        rotateTemplate(openTemplate, y=180),
+        rotateTemplate(openTemplate, y=270),
+        rotateTemplate(openTemplate, y=90),
+        topTemplate,
+        topTemplate,
+        topTemplate,
+        topTemplate,
+        openTemplate,
+        rotateTemplate(openTemplate, y=180),
+        rotateTemplate(openTemplate, y=270),
+        rotateTemplate(openTemplate, y=90),
+    ])
+
+    makeVertices = makeVerticesFromModel(trapDoorTemplates, 15)
 
 
 class FenceBlockRenderer(BlockRenderer):
