@@ -257,6 +257,8 @@ textureSlots = {
     "double_plant_sunflower_bottom": (step(16),step(9)),
     #
     "repeater_off_east": (step(18),step(9)),
+    "structure_block_data": (step(19),step(9)),
+    "structure_block_corner": (step(20),step(9)),
     # End Tenth Row
 
     # Start Eleventh Row
@@ -279,6 +281,8 @@ textureSlots = {
     "double_plant_syringa_bottom": (step(16),step(10)),
     "double_plant_syringa_top": (step(17),step(10)),
     "repeater_on_west": (step(18),step(10)),
+    "structure_block_save": (step(19),step(10)),
+    "structure_block_load": (step(20),step(10)),
     # End Eleventh Row
 
     # Start Twelfth Row
@@ -500,6 +504,7 @@ textureSlots = {
     "chorus_plant": (step(13),step(20)),
     "chorus_flower_dead": (step(14),step(20)),
     "chorus_flower": (step(15),step(20)),
+    "end_rod": (step(16),step(20)),
     # End Twentyfirst Row
 
     # Start MISC
