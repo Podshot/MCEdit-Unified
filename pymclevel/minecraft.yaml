@@ -6214,10 +6214,11 @@ blocks:
           SIDES: [19, 18]
       8:
         name: Purpur Pillar (North/South)
-        tex: [19, 19]
+        tex: [19, 17]
         tex_direction:
           FORWARD: [19, 18]
           BACKWARD: [19, 18]
+          SIDES: [19, 19]
           
   - id: 203
     idStr: purpur_stairs

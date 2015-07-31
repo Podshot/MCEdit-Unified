@@ -688,6 +688,18 @@ class QuartzPillar:
 
 
 @genericFlipRotation
+class PurpurPillar:
+    blocktypes = [alphaMaterials.PurpurPillar.ID]
+
+    Up = 0
+    Down = 0
+    East = 8
+    West = 8
+    North = 4
+    South = 4
+
+
+@genericFlipRotation
 class NetherPortal:
     blocktypes = [alphaMaterials.NetherPortal.ID]
 
@@ -814,6 +826,16 @@ class RedstoneComparator:
 
 applyBits48(RedstoneComparator)
 
+
+@genericFlipRotation
+class EndRod:
+    blocktypes = [alphaMaterials.EndRod.ID]
+    Down = 0
+    Up = 1
+    East = 2
+    West = 3
+    North = 4
+    South = 5
 
 def masterRotationTable(attrname):
     # compute a materials.id_limitx16 table mapping each possible blocktype/data combination to
