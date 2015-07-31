@@ -361,10 +361,11 @@ class CameraViewport(GLViewport):
                 te = self.editor.level.tileEntityAt(*focusPair[0])
                 backupTE = copy.deepcopy(te)
                 if te["id"].value == "Sign":
-                    for i in xrange(1,5):
-                        if len(te["Text"+str(i)].value) > 32767:
-                            te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
-                            changed = True
+                    if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
+                        for i in xrange(1,5):
+                            if len(te["Text"+str(i)].value) > 32767:
+                                te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
+                                changed = True
                 if changed:
                     response = None
                     if not self.dontShowMessageAgain:
