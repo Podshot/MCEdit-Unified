@@ -310,7 +310,8 @@ class MCMaterials(object):
 
         block = Block(self, blockID, blockData, stringName)
 
-        self.allBlocks.append(block)
+        if kw.pop('invalid', 'false') == 'false':
+            self.allBlocks.append(block)
         self.blocksByType[type].append(block)
 
         self.blocksByID[blockID, blockData] = block

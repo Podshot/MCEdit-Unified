@@ -2176,12 +2176,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [1, 5]
+        invalid: true
       13:
         tex: [1, 5]
+        invalid: true
       14:
         tex: [1, 5]
+        invalid: true
       15:
         tex: [1, 5]
+        invalid: true
 
   - id: 65
     idStr: ladder
@@ -2376,12 +2380,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [2, 5]
+        invalid: true
       13:
         tex: [2, 5]
+        invalid: true
       14:
         tex: [2, 5]
+        invalid: true
       15:
         tex: [2, 5]
+        invalid: true
 
   - id: 72
     idStr: wooden_pressure_plate
@@ -5927,12 +5935,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [5, 20]
+        invalid: true
       13:
         tex: [5, 20]
+        invalid: true
       14:
         tex: [5, 20]
+        invalid: true
       15:
         tex: [5, 20]
+        invalid: true
 
   - id: 194
     idStr: birch_door
@@ -5978,12 +5990,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [6, 20]
+        invalid: true
       13:
         tex: [6, 20]
+        invalid: true
       14:
         tex: [6, 20]
+        invalid: true
       15:
         tex: [6, 20]
+        invalid: true
 
   - id: 195
     idStr: jungle_door
@@ -6029,12 +6045,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [7, 20]
+        invalid: true
       13:
         tex: [7, 20]
+        invalid: true
       14:
         tex: [7, 20]
+        invalid: true
       15:
         tex: [7, 20]
+        invalid: true
 
   - id: 196
     idStr: acacia_door
@@ -6080,12 +6100,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [8, 20]
+        invalid: true
       13:
         tex: [8, 20]
+        invalid: true
       14:
         tex: [8, 20]
+        invalid: true
       15:
         tex: [8, 20]
+        invalid: true
 
   - id: 197
     idStr: dark_oak_door
@@ -6131,12 +6155,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [9, 20]
+        invalid: true
       13:
         tex: [9, 20]
+        invalid: true
       14:
         tex: [9, 20]
+        invalid: true
       15:
         tex: [9, 20]
+        invalid: true
     
   - id: 198
     idStr: end_rod
@@ -6291,6 +6319,12 @@ blocks:
       RIGHT: [1, 29]
       TOP: [0, 29]
       BOTTOM: [2, 0]
+
+  - id: 209
+    isStr: end_gateway
+    name: End Gateway
+    tex: [16, 15]
+    brightness: 15
 
   - id: 255
     idStr: structure_block
