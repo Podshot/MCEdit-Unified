@@ -1,7 +1,7 @@
-from cStringIO import StringIO
 import os
 from os.path import join
 import time
+import traceback
 import unittest
 import numpy
 from pymclevel import nbt
@@ -10,34 +10,35 @@ from templevel import TempLevel
 __author__ = 'Rio'
 
 
-class TestNBT():
+class TestNBT(unittest.TestCase):
+
     @staticmethod
     def testLoad():
-        "Load an indev level."
+        """Load an indev level."""
         level = nbt.load("testfiles/hell.mclevel")
 
         # The root tag must have a name, and so must any tag within a TAG_Compound
-        print level.name
+        assert len(level.name) > 0
 
         # Use the [] operator to look up subtags of a TAG_Compound.
-        print level["Environment"]["SurroundingGroundHeight"].value
+        assert level["Environment"]["SurroundingGroundHeight"].value is not None
 
         # Numeric, string, and bytearray types have a value that can be accessed and changed.
-        print level["Map"]["Blocks"].value
-
+        assert level["Map"]["Blocks"].value is not None
+        assert True
         return level
 
     @staticmethod
     def testLoadUncompressed():
-        root_tag = nbt.load("testfiles/uncompressed.nbt")
+        nbt.load("testfiles/uncompressed.nbt")
 
     @staticmethod
     def testLoadNBTExplorer():
-        root_tag = nbt.load("testfiles/modified_by_nbtexplorer.dat")
+        nbt.load("testfiles/modified_by_nbtexplorer.dat")
 
     @staticmethod
     def testCreate():
-        "Create an indev level."
+        """Create an indev level."""
 
         # The root of an NBT file is always a TAG_Compound.
         level = nbt.TAG_Compound(name="MinecraftLevel")
@@ -137,12 +138,17 @@ class TestNBT():
         pass
 
     def testSave(self):
+        try:
+            level = self.testCreate()
+            level["Environment"]["SurroundingWaterHeight"].value += 6
 
-        level = self.testCreate()
-        level["Environment"]["SurroundingWaterHeight"].value += 6
-
-        # Save the entire TAG structure to a different file.
-        TempLevel("atlantis.mclevel", createFunc=level.save)  # xxx don't use templevel here
+            # Save the entire TAG structure to a different file.
+            TempLevel("atlantis.mclevel", createFunc=level.save)  # xxx don't use templevel here
+        except Exception as err:
+            print err
+            traceback.print_exc()
+            assert False
+        assert True
 
     @staticmethod
     def testList():
@@ -159,7 +165,9 @@ class TestNBT():
 
         level = self.testCreate()
         level["Map"]["Spawn"][0].name = "Torg Potter"
+        print 'saving'
         data = level.save()
+        print 'loading'
         newlevel = nbt.load(buf=data)
 
         n = newlevel["Map"]["Spawn"][0].name
@@ -177,12 +185,22 @@ class TestNBT():
             assert False
 
     @staticmethod
+    def testLittleEndianNBT():
+        raw_string = open("testfiles/little_endian_level.dat").read()[8:]
+        level = nbt.load(buf=raw_string, endianness=nbt.LITTLE_ENDIAN)
+        saved_level = level.save(endianness=nbt.LITTLE_ENDIAN, compressed=False)
+        with open('test.txt', 'w') as f:
+            f.write(raw_string)
+            f.write(saved_level)
+        assert saved_level == raw_string
+
+    @staticmethod
     def testSpeed():
         d = join("testfiles", "TileTicks_chunks")
         files = [join(d, f) for f in os.listdir(d)]
         startTime = time.time()
         for f in files[:40]:
-            n = nbt.load(f)
+            nbt.load(f)
         duration = time.time() - startTime
 
         assert duration < 1.0  # Will fail when not using _nbt.pyx
