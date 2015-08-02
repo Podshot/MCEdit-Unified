@@ -83,7 +83,7 @@ def getDataDir(path=""):
     #     '''
     #
     # else:
-    dataDir = os.getcwdu()
+    dataDir = os.path.dirname(os.path.abspath(__file__))
     if len(path) > 0:
         return os.path.join(dataDir, path)
     return dataDir
