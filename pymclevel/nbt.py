@@ -18,15 +18,9 @@ http://www.minecraft.net/docs/NBT.txt
 Copyright 2010 David Rio Vierra
 """
 import collections
-from contextlib import contextmanager
-import gzip
 import itertools
 import logging
 import struct
-import zlib
-from cStringIO import StringIO
-
-import numpy
 from numpy import array, zeros, fromstring
 
 

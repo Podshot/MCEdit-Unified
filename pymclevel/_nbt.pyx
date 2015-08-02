@@ -44,7 +44,6 @@ import zlib
 
 from cStringIO import StringIO
 from cpython cimport PyTypeObject, PyUnicode_DecodeUTF8, PyList_Append, PyString_FromStringAndSize
-from contextlib import contextmanager
 import numpy
 import logging
 logger = logging.getLogger(__name__)
