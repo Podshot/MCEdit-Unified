@@ -50,6 +50,9 @@ TAG_COMPOUND = 10
 TAG_INT_ARRAY = 11
 TAG_SHORT_ARRAY = 12
 
+BIG_ENDIAN = 0
+LITTLE_ENDIAN = 1
+
 
 class TAG_Value(object):
     """Simple values. Subclasses override fmt to change the type and size.
@@ -60,7 +63,8 @@ class TAG_Value(object):
         self.value = value
         self.name = name
 
-    fmt = struct.Struct("b")
+    BIG_ENDIAN_FMT = struct.Struct("b")
+    LITTLE_ENDIAN_FMT = struct.Struct("b")
     tagID = NotImplemented
     data_type = NotImplemented
 
@@ -89,66 +93,75 @@ class TAG_Value(object):
         self._name = unicode(newVal)
 
     @classmethod
-    def load_from(cls, ctx):
+    def load_from(cls, ctx, endianness=BIG_ENDIAN):
         data = ctx.data[ctx.offset:]
-        (value,) = cls.fmt.unpack_from(data)
+        fmt = cls.BIG_ENDIAN_FMT if endianness == BIG_ENDIAN else cls.LITTLE_ENDIAN_FMT
+        (value,) = fmt.unpack_from(data)
         self = cls(value=value)
-        ctx.offset += self.fmt.size
+        ctx.offset += fmt.size
         return self
 
     def __repr__(self):
         return "<%s name=\"%s\" value=%r>" % (str(self.__class__.__name__), self.name, self.value)
 
-    def write_tag(self, buf):
-        buf.write(chr(self.tagID))
+    def write_tag(self, buf, endianness):
+        fmt = TAG_Byte.BIG_ENDIAN_FMT if endianness == BIG_ENDIAN else TAG_Byte.LITTLE_ENDIAN_FMT
+        buf.write(fmt.pack(self.tagID))
 
-    def write_name(self, buf):
+    def write_name(self, buf, endianness):
         if self.name is not None:
-            write_string(self.name, buf)
+            write_string(self.name, buf, endianness)
 
-    def write_value(self, buf):
-        buf.write(self.fmt.pack(self.value))
+    def write_value(self, buf, endianness):
+        fmt = self.BIG_ENDIAN_FMT if endianness == BIG_ENDIAN else self.LITTLE_ENDIAN_FMT
+        buf.write(fmt.pack(self.value))
 
 
 class TAG_Byte(TAG_Value):
     __slots__ = ('_name', '_value')
     tagID = TAG_BYTE
-    fmt = struct.Struct(">b")
+    BIG_ENDIAN_FMT = struct.Struct(">b")
+    LITTLE_ENDIAN_FMT = struct.Struct("<b")
     data_type = int
 
 
 class TAG_Short(TAG_Value):
     __slots__ = ('_name', '_value')
     tagID = TAG_SHORT
-    fmt = struct.Struct(">h")
+    BIG_ENDIAN_FMT = struct.Struct(">h")
+    LITTLE_ENDIAN_FMT = struct.Struct("<h")
     data_type = int
 
 
 class TAG_Int(TAG_Value):
     __slots__ = ('_name', '_value')
     tagID = TAG_INT
-    fmt = struct.Struct(">i")
+    BIG_ENDIAN_FMT = struct.Struct(">i")
+    LITTLE_ENDIAN_FMT = struct.Struct("<i")
     data_type = int
 
 
 class TAG_Long(TAG_Value):
     __slots__ = ('_name', '_value')
     tagID = TAG_LONG
-    fmt = struct.Struct(">q")
+    BIG_ENDIAN_FMT = struct.Struct(">q")
+    LITTLE_ENDIAN_FMT = struct.Struct("<q")
     data_type = long
 
 
 class TAG_Float(TAG_Value):
     __slots__ = ('_name', '_value')
     tagID = TAG_FLOAT
-    fmt = struct.Struct(">f")
+    BIG_ENDIAN_FMT = struct.Struct(">f")
+    LITTLE_ENDIAN_FMT = struct.Struct("<f")
     data_type = float
 
 
 class TAG_Double(TAG_Value):
     __slots__ = ('_name', '_value')
     tagID = TAG_DOUBLE
-    fmt = struct.Struct(">d")
+    BIG_ENDIAN_FMT = struct.Struct(">d")
+    LITTLE_ENDIAN_FMT = struct.Struct("<d")
     data_type = float
 
 
@@ -175,17 +188,19 @@ class TAG_Byte_Array(TAG_Value):
     dtype = numpy.dtype('uint8')
 
     @classmethod
-    def load_from(cls, ctx):
+    def load_from(cls, ctx, endianness=BIG_ENDIAN):
         data = ctx.data[ctx.offset:]
-        (string_len,) = TAG_Int.fmt.unpack_from(data)
+        fmt = TAG_Int.BIG_ENDIAN_FMT if endianness == BIG_ENDIAN else TAG_Int.LITTLE_ENDIAN_FMT
+        (string_len,) = fmt.unpack_from(data)
         value = fromstring(data[4:string_len * cls.dtype.itemsize + 4], cls.dtype)
         self = cls(value)
         ctx.offset += string_len * cls.dtype.itemsize + 4
         return self
 
-    def write_value(self, buf):
+    def write_value(self, buf, endianness):
         value_str = self.value.tostring()
-        buf.write(struct.pack(">I%ds" % (len(value_str),), self.value.size, value_str))
+        fmt = ">I%ds" if endianness == BIG_ENDIAN else "<I%ds"
+        buf.write(struct.pack(fmt % (len(value_str),), self.value.size, value_str))
 
 
 class TAG_Int_Array(TAG_Byte_Array):
@@ -230,28 +245,31 @@ class TAG_String(TAG_Value):
             return decoded
 
     @classmethod
-    def load_from(cls, ctx):
-        value = load_string(ctx)
+    def load_from(cls, ctx, endianness=BIG_ENDIAN):
+        value = load_string(ctx, endianness)
         return cls(value)
 
-    def write_value(self, buf):
-        write_string(self._value, buf)
+    def write_value(self, buf, endianness):
+        write_string(self._value, buf, endianness)
 
-string_len_fmt = struct.Struct(">H")
+BIG_ENDIAN_STR_LEN_FMT = struct.Struct(">H")
+LITTLE_ENDIAN_STR_LEN_FMT = struct.Struct("<H")
 
 
-def load_string(ctx):
+def load_string(ctx, endianness):
     data = ctx.data[ctx.offset:]
-    (string_len,) = string_len_fmt.unpack_from(data)
+    fmt = BIG_ENDIAN_STR_LEN_FMT if endianness == BIG_ENDIAN else LITTLE_ENDIAN_STR_LEN_FMT
+    (string_len,) = fmt.unpack_from(data)
 
     value = data[2:string_len + 2].tostring()
     ctx.offset += string_len + 2
     return value
 
 
-def write_string(string, buf):
+def write_string(string, buf, endianness):
     encoded = string.encode('utf-8')
-    buf.write(struct.pack(">h%ds" % (len(encoded),), len(encoded), encoded))
+    fmt = ">h%ds" if endianness == BIG_ENDIAN else "<h%ds"
+    buf.write(struct.pack(fmt % (len(encoded),), len(encoded), encoded))
 
 
 # noinspection PyMissingConstructor
@@ -288,7 +306,7 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
             raise ValueError("Tag needs a name to be inserted into TAG_Compound: %s" % val)
 
     @classmethod
-    def load_from(cls, ctx):
+    def load_from(cls, ctx, endianness=BIG_ENDIAN):
         self = cls()
         while ctx.offset < len(ctx.data):
             tag_type = ctx.data[ctx.offset]
@@ -297,15 +315,15 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
             if tag_type == 0:
                 break
 
-            tag_name = load_string(ctx)
-            tag = tag_classes[tag_type].load_from(ctx)
+            tag_name = load_string(ctx, endianness)
+            tag = tag_classes[tag_type].load_from(ctx, endianness)
             tag.name = tag_name
 
             self._value.append(tag)
 
         return self
 
-    def save(self, filename_or_buf=None, compressed=True):
+    def save(self, filename_or_buf=None, compressed=True, endianness=BIG_ENDIAN):
         """
         Save the TAG_Compound element to a file. Since this element is the root tag, it can be named.
 
@@ -316,9 +334,9 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
             self.name = ""
 
         buf = StringIO()
-        self.write_tag(buf)
-        self.write_name(buf)
-        self.write_value(buf)
+        self.write_tag(buf, endianness)
+        self.write_name(buf, endianness)
+        self.write_value(buf, endianness)
         data = buf.getvalue()
 
         if compressed:
@@ -337,11 +355,11 @@ class TAG_Compound(TAG_Value, collections.MutableMapping):
         else:
             filename_or_buf.write(data)
 
-    def write_value(self, buf):
+    def write_value(self, buf, endianness):
         for tag in self.value:
-            tag.write_tag(buf)
-            tag.write_name(buf)
-            tag.write_value(buf)
+            tag.write_tag(buf, endianness)
+            tag.write_name(buf, endianness)
+            tag.write_value(buf, endianness)
 
         buf.write("\x00")
 
@@ -426,25 +444,26 @@ class TAG_List(TAG_Value, collections.MutableSequence):
         return list(val)
 
     @classmethod
-    def load_from(cls, ctx):
+    def load_from(cls, ctx, endianness=BIG_ENDIAN):
         self = cls()
         self.list_type = ctx.data[ctx.offset]
         ctx.offset += 1
-
-        (list_length,) = TAG_Int.fmt.unpack_from(ctx.data, ctx.offset)
-        ctx.offset += TAG_Int.fmt.size
+        fmt = TAG_Int.BIG_ENDIAN_FMT if endianness == BIG_ENDIAN else TAG_Int.LITTLE_ENDIAN_FMT
+        (list_length,) = fmt.unpack_from(ctx.data, ctx.offset)
+        ctx.offset += fmt.size
 
         for i in range(list_length):
-            tag = tag_classes[self.list_type].load_from(ctx)
+            tag = tag_classes[self.list_type].load_from(ctx, endianness)
             self.append(tag)
 
         return self
 
-    def write_value(self, buf):
+    def write_value(self, buf, endianness):
         buf.write(chr(self.list_type))
-        buf.write(TAG_Int.fmt.pack(len(self.value)))
+        fmt = TAG_Int.BIG_ENDIAN_FMT if endianness == BIG_ENDIAN else TAG_Int.LITTLE_ENDIAN_FMT
+        buf.write(fmt.pack(len(self.value)))
         for i in self.value:
-            i.write_value(buf)
+            i.write_value(buf, endianness)
 
     def check_tag(self, value):
         if value.tagID != self.list_type:
@@ -488,10 +507,9 @@ class TAG_List(TAG_Value, collections.MutableSequence):
 
 tag_classes = {}
 
-for c in (
-TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound,
-TAG_Int_Array, TAG_Short_Array):
-    tag_classes[c.tagID] = c
+for c in (TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String, TAG_Byte_Array,
+          TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array):
+        tag_classes[c.tagID] = c
 
 
 def gunzip(data):
@@ -506,7 +524,7 @@ def try_gunzip(data):
     return data
 
 
-def load(filename="", buf=None):
+def load(filename="", buf=None, endianness=BIG_ENDIAN):
     """
     Unserialize data from an NBT file and return the root TAG_Compound object. If filename is passed,
     reads from the file, otherwise uses data from buf. Buf can be a buffer object with a read() method or a string
@@ -517,19 +535,17 @@ def load(filename="", buf=None):
 
     if hasattr(buf, "read"):
         buf = buf.read()
-
-    return _load_buffer(try_gunzip(buf))
+    return _load_buffer(try_gunzip(buf), endianness)
 
 
 class load_ctx(object):
     pass
 
 
-def _load_buffer(buf):
+def _load_buffer(buf, endianness):
     if isinstance(buf, str):
         buf = fromstring(buf, 'uint8')
     data = buf
-
     if not len(data):
         raise NBTFormatError("Asked to load root tag of zero length")
 
@@ -538,71 +554,18 @@ def _load_buffer(buf):
         magic = data[:4]
         raise NBTFormatError('Not an NBT file with a root TAG_Compound '
                              '(file starts with "%s" (0x%08x)' % (magic.tostring(), magic.view(dtype='uint32')))
-
     ctx = load_ctx()
     ctx.offset = 1
     ctx.data = data
 
-    tag_name = load_string(ctx)
-    tag = TAG_Compound.load_from(ctx)
+    tag_name = load_string(ctx, endianness)
+    tag = TAG_Compound.load_from(ctx, endianness)
     tag.name = tag_name
 
     return tag
 
 
 __all__ = [a.__name__ for a in tag_classes.itervalues()] + ["load", "gunzip"]
-
-
-@contextmanager
-def littleEndianNBT():
-    """
-    Pocket edition NBT files are encoded in little endian, instead of big endian.
-    This sets all the required paramaters to read little endian NBT, and makes sure they get set back after usage.
-    :return: None
-    """
-
-    # We need to override the function to access the hard-coded endianness.
-    def override_write_string(string, buf):
-        encoded = string.encode('utf-8')
-        buf.write(struct.pack("<h%ds" % (len(encoded),), len(encoded), encoded))
-
-    def reset_write_string(string, buf):
-        encoded = string.encode('utf-8')
-        buf.write(struct.pack(">h%ds" % (len(encoded),), len(encoded), encoded))
-
-    def override_byte_array_write_value(self, buf):
-        value_str = self.value.tostring()
-        buf.write(struct.pack("<I%ds" % (len(value_str),), self.value.size, value_str))
-
-    def reset_byte_array_write_value(self, buf):
-        value_str = self.value.tostring()
-        buf.write(struct.pack(">I%ds" % (len(value_str),), self.value.size, value_str))
-
-    global string_len_fmt
-    string_len_fmt = struct.Struct("<H")
-    TAG_Byte.fmt = struct.Struct("<b")
-    TAG_Short.fmt = struct.Struct("<h")
-    TAG_Int.fmt = struct.Struct("<i")
-    TAG_Long.fmt = struct.Struct("<q")
-    TAG_Float.fmt = struct.Struct("<f")
-    TAG_Double.fmt = struct.Struct("<d")
-    TAG_Int_Array.dtype = numpy.dtype("<u4")
-    TAG_Short_Array.dtype = numpy.dtype("<u2")
-    global write_string
-    write_string = override_write_string
-    TAG_Byte_Array.write_value = override_byte_array_write_value
-    yield
-    string_len_fmt = struct.Struct(">H")
-    TAG_Byte.fmt = struct.Struct(">b")
-    TAG_Short.fmt = struct.Struct(">h")
-    TAG_Int.fmt = struct.Struct(">i")
-    TAG_Long.fmt = struct.Struct(">q")
-    TAG_Float.fmt = struct.Struct(">f")
-    TAG_Double.fmt = struct.Struct(">d")
-    TAG_Int_Array.dtype = numpy.dtype(">u4")
-    TAG_Short_Array.dtype = numpy.dtype(">u2")
-    write_string = reset_write_string
-    TAG_Byte_Array.write_value = reset_byte_array_write_value
 
 
 def nested_string(tag, indent_string="  ", indent=0):
@@ -629,14 +592,10 @@ def nested_string(tag, indent_string="  ", indent=0):
 
     return result
 
-
 try:
     # noinspection PyUnresolvedReferences
-    from _nbt import (load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, TAG_Double, TAG_String,
-                      TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, TAG_Short_Array, NBTFormatError,
-                      littleEndianNBT, nested_string, gunzip)
+    from _nbt import *
 except ImportError as err:
     log.error("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback.")
     log.error("(Did you forget to run 'setup.py build_ext --inplace'?)")
-    log.error("%s"%err)
-
+    log.error("%s" % err)
