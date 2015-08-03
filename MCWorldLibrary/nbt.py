@@ -587,7 +587,6 @@ def nested_string(tag, indent_string="  ", indent=0):
     return result
 
 try:
-    # noinspection PyUnresolvedReferences
     from _nbt import *
 except ImportError as err:
     log.error("Failed to import Cythonized nbt file. Running on (very slow) pure-python nbt fallback.")

@@ -11,18 +11,14 @@
 # * add local undo/redo for loaded NBT files
 # * change/optimize the undo/redo when edit level NBT data
 # * add a style editor and an image wrapper for the bullets
-from pygame import key, draw, image, Rect, event, MOUSEBUTTONDOWN
-from albow import Column, Row, Label, Tree, TableView, TableColumn, Button, \
-    FloatField, IntField, TextFieldWrapped, AttrRef, ItemRef, CheckBox, Widget, \
-    ScrollPanel, ask, alert, input_text_buttons, CheckBoxLabel, ChoiceButton, Menu
+from pygame import draw, image, Rect
+import albow
 from albow.dialogs import Dialog
-from albow.tree import TreeRow, setup_map_types_item
+from albow.tree import setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _, getLang
 from glbackground import Panel
-from MCWorldLibrary.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
-    TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
-    TAG_Short_Array, littleEndianNBT, NBTFormatError
+import MCWorldLibrary.nbt
 from numpy import array
 from albow.theme import root
 
@@ -35,10 +31,9 @@ from editortools.editortool import EditorTool
 from editortools.operation import Operation
 from editortools.tooloptions import ToolOptions
 import copy
-from directories import getDataDir
 import os
 import mcplatform
-from config import config, DEF_ENC
+from config import config
 from albow.resource import resource_path
 
 # &# Protoype for blocks/items names
@@ -109,20 +104,20 @@ def get_bullet_image(index, w=16, h=16):
     return bullet_image.subsurface(r)
 
 
-default_bullet_styles = {TAG_Byte: ((20, 20, 200), None, 'circle', 'b'),
-                         TAG_Double: ((20, 200, 20), None, 'circle', 'd'),
-                         TAG_Float: ((200, 20, 20), None, 'circle', 'f'),
-                         TAG_Int: ((16, 160, 160), None, 'circle', 'i'),
-                         TAG_Long: ((200, 20, 200), None, 'circle', 'l'),
-                         TAG_Short: ((200, 200, 20), (0, 0, 0), 'circle', 's'),
-                         TAG_String: ((60, 60, 60), None, 'circle', 's'),
-                         TAG_Compound: (bullet_color_active, None, '', ''),
-                         TAG_Byte_Array: ((20, 20, 200), None, 'square', 'B'),
-                         TAG_Int_Array: ((16, 160, 160), None, 'square', 'I'),
-                         TAG_List: ((200, 200, 200), (0, 0, 0), 'square', 'L'),
-                         TAG_Short_Array: ((200, 200, 20), None, 'square', 'S'),
+default_bullet_styles = {MCWorldLibrary.nbt.TAG_Byte: ((20, 20, 200), None, 'circle', 'b'),
+                         MCWorldLibrary.nbt.TAG_Double: ((20, 200, 20), None, 'circle', 'd'),
+                         MCWorldLibrary.nbt.TAG_Float: ((200, 20, 20), None, 'circle', 'f'),
+                         MCWorldLibrary.nbt.TAG_Int: ((16, 160, 160), None, 'circle', 'i'),
+                         MCWorldLibrary.nbt.TAG_Long: ((200, 20, 200), None, 'circle', 'l'),
+                         MCWorldLibrary.nbt.TAG_Short: ((200, 200, 20), (0, 0, 0), 'circle', 's'),
+                         MCWorldLibrary.nbt.TAG_String: ((60, 60, 60), None, 'circle', 's'),
+                         MCWorldLibrary.nbt.TAG_Compound: (bullet_color_active, None, '', ''),
+                         MCWorldLibrary.nbt.TAG_Byte_Array: ((20, 20, 200), None, 'square', 'B'),
+                         MCWorldLibrary.nbt.TAG_Int_Array: ((16, 160, 160), None, 'square', 'I'),
+                         MCWorldLibrary.nbt.TAG_List: ((200, 200, 200), (0, 0, 0), 'square', 'L'),
+                         MCWorldLibrary.nbt.TAG_Short_Array: ((200, 200, 20), None, 'square', 'S'),
                          }
-default_bullet_styles[dict] = default_bullet_styles[TAG_List]
+default_bullet_styles[dict] = default_bullet_styles[MCWorldLibrary.nbt.TAG_List]
 
 bullet_styles = copy.deepcopy(default_bullet_styles)
 
@@ -135,13 +130,13 @@ def change_styles():
             os.path.exists(config.nbtTreeSettings.bulletFileName.get()):
         i = 0
         for key in (
-                TAG_Byte, TAG_Double, TAG_Float, TAG_Int, TAG_Long, TAG_Short, TAG_String, TAG_Compound, TAG_Byte_Array,
-                TAG_Int_Array, TAG_List):
+                MCWorldLibrary.nbt.TAG_Byte, MCWorldLibrary.nbt.TAG_Double, MCWorldLibrary.nbt.TAG_Float, MCWorldLibrary.nbt.TAG_Int, MCWorldLibrary.nbt.TAG_Long, MCWorldLibrary.nbt.TAG_Short, MCWorldLibrary.nbt.TAG_String, MCWorldLibrary.nbt.TAG_Compound, MCWorldLibrary.nbt.TAG_Byte_Array,
+                MCWorldLibrary.nbt.TAG_Int_Array, MCWorldLibrary.nbt.TAG_List):
             bullet_styles[key] = (get_bullet_image(i), None, 'image', '')
             i += 1
 
-        bullet_styles[TAG_Short_Array] = bullet_styles[TAG_Int_Array]
-        bullet_styles[dict] = bullet_styles[TAG_List]
+        bullet_styles[MCWorldLibrary.nbt.TAG_Short_Array] = bullet_styles[MCWorldLibrary.nbt.TAG_Int_Array]
+        bullet_styles[dict] = bullet_styles[MCWorldLibrary.nbt.TAG_List]
     else:
         bullet_styles = copy.deepcopy(default_bullet_styles)
     return bullet_styles
@@ -150,28 +145,28 @@ def change_styles():
 change_styles()
 
 # -----------------------------------------------------------------------------
-field_types = {TAG_Byte: (IntField, (0, 256)),
-               TAG_Double: (FloatField, None),
-               TAG_Float: (FloatField, None),
-               TAG_Int: (IntField, (-2147483647, +2147483647)),
-               TAG_Long: (IntField, (-9223372036854775807, +9223372036854775807)),
-               TAG_Short: (IntField, (-65535, 65536)),
-               TAG_String: (TextFieldWrapped, None),
+field_types = {MCWorldLibrary.nbt.TAG_Byte: (albow.IntField, (0, 256)),
+               MCWorldLibrary.nbt.TAG_Double: (albow.FloatField, None),
+               MCWorldLibrary.nbt.TAG_Float: (albow.FloatField, None),
+               MCWorldLibrary.nbt.TAG_Int: (albow.IntField, (-2147483647, +2147483647)),
+               MCWorldLibrary.nbt.TAG_Long: (albow.IntField, (-9223372036854775807, +9223372036854775807)),
+               MCWorldLibrary.nbt.TAG_Short: (albow.IntField, (-65535, 65536)),
+               MCWorldLibrary.nbt.TAG_String: (albow.TextFieldWrapped, None),
                }
 
-array_types = {TAG_Byte_Array: field_types[TAG_Byte],
-               TAG_Int_Array: field_types[TAG_Int],
-               TAG_Short_Array: field_types[TAG_Short],
+array_types = {MCWorldLibrary.nbt.TAG_Byte_Array: field_types[MCWorldLibrary.nbt.TAG_Byte],
+               MCWorldLibrary.nbt.TAG_Int_Array: field_types[MCWorldLibrary.nbt.TAG_Int],
+               MCWorldLibrary.nbt.TAG_Short_Array: field_types[MCWorldLibrary.nbt.TAG_Short],
                }
 
 
 # -----------------------------------------------------------------------------
-class TAG_List_Type(Widget):
+class TAG_List_Type(albow.Widget):
     choices = []
 
     def __init__(self, value=None):
-        Widget.__init__(self)
-        self.choiceButton = ChoiceButton(self.choices)
+        albow.Widget.__init__(self)
+        self.choiceButton = albow.ChoiceButton(self.choices)
         self.add(self.choiceButton)
         self.shrink_wrap()
 
@@ -180,18 +175,18 @@ class TAG_List_Type(Widget):
         return self.choiceButton.selectedChoice
 
 
-item_types_map = {TAG_Byte: ("Byte", IntField, 0),
-                  TAG_Double: ("Floating point", FloatField, 0.0),
-                  TAG_Float: ("Floating point", FloatField, 0.0),
-                  TAG_Int: ("Integral", IntField, 0),
-                  TAG_Long: ("Long", IntField, 0),
-                  TAG_Short: ("Short", IntField, 0),
-                  TAG_String: ("String", TextFieldWrapped, ""),
-                  TAG_List: ("List", TAG_List_Type, None),
-                  TAG_Compound: ("Compound", None, None),
-                  TAG_Byte_Array: ("Byte Array", TextFieldWrapped, ""),
-                  TAG_Int_Array: ("Int Array", TextFieldWrapped, ""),
-                  TAG_Short_Array: ("Short Array", TextFieldWrapped, ""),
+item_types_map = {MCWorldLibrary.nbt.TAG_Byte: ("Byte", albow.IntField, 0),
+                  MCWorldLibrary.nbt.TAG_Double: ("Floating point", albow.FloatField, 0.0),
+                  MCWorldLibrary.nbt.TAG_Float: ("Floating point", albow.FloatField, 0.0),
+                  MCWorldLibrary.nbt.TAG_Int: ("Integral", albow.IntField, 0),
+                  MCWorldLibrary.nbt.TAG_Long: ("Long", albow.IntField, 0),
+                  MCWorldLibrary.nbt.TAG_Short: ("Short", albow.IntField, 0),
+                  MCWorldLibrary.nbt.TAG_String: ("String", albow.TextFieldWrapped, ""),
+                  MCWorldLibrary.nbt.TAG_List: ("List", TAG_List_Type, None),
+                  MCWorldLibrary.nbt.TAG_Compound: ("Compound", None, None),
+                  MCWorldLibrary.nbt.TAG_Byte_Array: ("Byte Array", albow.TextFieldWrapped, ""),
+                  MCWorldLibrary.nbt.TAG_Int_Array: ("Int Array", albow.TextFieldWrapped, ""),
+                  MCWorldLibrary.nbt.TAG_Short_Array: ("Short Array", albow.TextFieldWrapped, ""),
                   }
 
 map_types_item = setup_map_types_item(item_types_map)
@@ -227,25 +222,25 @@ def create_array_item(self, i_type, i_name, i_value):
 create_TAG_Byte_Array = create_TAG_Int_Array = create_TAG_Short_Array = create_array_item
 
 # -----------------------------------------------------------------------------
-class NBTTree(Tree):
+class NBTTree(albow.Tree):
     def __init__(self, *args, **kwargs):
         styles = kwargs.get('styles', {})
         self.update_draw_bullets_methods(styles)
         global map_types_item
         self.map_types_item = setup_map_types_item(item_types_map)
-        Tree.__init__(self, *args, **kwargs)
+        albow.Tree.__init__(self, *args, **kwargs)
         for t in self.item_types:
             if 'create_%s' % t.__name__ in globals().keys():
                 setattr(self, 'create_%s' % t.__name__, globals()['create_%s' % t.__name__])
 
     def _draw_opened_bullet(self, *args, **kwargs):
-        return Tree.draw_opened_bullet(self, *args, **kwargs)
+        return albow.Tree.draw_opened_bullet(self, *args, **kwargs)
 
     def _draw_closed_bullet(self, *args, **kwargs):
-        return Tree.draw_closed_bullet(self, *args, **kwargs)
+        return albow.Tree.draw_closed_bullet(self, *args, **kwargs)
 
     def update_draw_bullets_methods(self, styles):
-        if config.nbtTreeSettings.useBulletStyles.get() and bullet_styles.get(TAG_Compound, [''] * 4)[2] != '':
+        if config.nbtTreeSettings.useBulletStyles.get() and bullet_styles.get(MCWorldLibrary.nbt.TAG_Compound, [''] * 4)[2] != '':
             self.draw_opened_bullet = self.draw_closed_bullet = self.draw_TAG_bullet
         else:
             self.draw_opened_bullet = self._draw_opened_bullet
@@ -275,7 +270,7 @@ class NBTTree(Tree):
             parent = self.get_item_parent(self.selected_item)
             if parent:
                 p_type = parent[7]
-                if p_type == TAG_List:
+                if p_type == MCWorldLibrary.nbt.TAG_List:
                     k = parent[9].list_type
                     v = None
                     for key, value in item_types_map.items():
@@ -285,13 +280,13 @@ class NBTTree(Tree):
                     if v is None:
                         return
                     types_item = {v[0]: (key, v[1], v[2])}
-        Tree.add_item(self, types_item)
+        albow.Tree.add_item(self, types_item)
 
     def add_child(self, types_item=None):
         if types_item is None:
             parent = self.selected_item
             p_type = parent[7]
-            if p_type == TAG_List:
+            if p_type == MCWorldLibrary.nbt.TAG_List:
                 k = parent[9].list_type
                 v = None
                 for key, value in item_types_map.items():
@@ -301,12 +296,12 @@ class NBTTree(Tree):
                 if v is None:
                     return
                 types_item = {v[0]: (key, v[1], v[2])}
-        Tree.add_child(self, types_item)
+        albow.Tree.add_child(self, types_item)
 
     def delete_item(self):
         parent = self.get_item_parent(self.selected_item)
         if parent:
-            if parent[7] == TAG_List:
+            if parent[7] == MCWorldLibrary.nbt.TAG_List:
                 del parent[9][parent[9].value.index(self.selected_item[9])]
             else:
                 del parent[9][self.selected_item[9].name]
@@ -317,14 +312,14 @@ class NBTTree(Tree):
         self.build_layout()
 
     def rename_item(self):
-        result = input_text_buttons("Choose a name", 300, self.selected_item[3])
+        result = albow.input_text_buttons("Choose a name", 300, self.selected_item[3])
         if type(result) in (str, unicode):
             self.selected_item[3] = result
             self.selected_item[9].name = result
             self.build_layout()
 
     def click_item(self, *args, **kwargs):
-        Tree.click_item(self, *args, **kwargs)
+        albow.Tree.click_item(self, *args, **kwargs)
         if self._parent and self.selected_item:
             self._parent.update_side_panel(self.selected_item)
 
@@ -374,31 +369,31 @@ class NBTExplorerOptions(ToolOptions):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
-        useStyleBox = CheckBoxLabel(title="Use Bullet Styles",
+        useStyleBox = albow.CheckBoxLabel(title="Use Bullet Styles",
                                     ref=config.nbtTreeSettings.useBulletStyles)
 
         self.useStyleBox = useStyleBox
-        useTextBox = CheckBoxLabel(title="Use Bullet Text",
+        useTextBox = albow.CheckBoxLabel(title="Use Bullet Text",
                                    ref=config.nbtTreeSettings.useBulletText)
         self.useTextBox = useTextBox
-        useImagesBox = CheckBoxLabel(title="Use Bullet Images",
+        useImagesBox = albow.CheckBoxLabel(title="Use Bullet Images",
                                      ref=config.nbtTreeSettings.useBulletImages)
         self.useImagesBox = useImagesBox
-        bulletFilePath = Row((Button("Bullet Images File", action=self.open_bullet_file),
-                              TextFieldWrapped(ref=config.nbtTreeSettings.bulletFileName, width=300)), margin=0)
+        bulletFilePath = albow.Row((albow.Button("Bullet Images File", action=self.open_bullet_file),
+                              albow.TextFieldWrapped(ref=config.nbtTreeSettings.bulletFileName, width=300)), margin=0)
 
         def mouse_down(e):
             if self.bulletFilePath.subwidgets[1].enabled:
-                TextFieldWrapped.mouse_down(self.bulletFilePath.subwidgets[1], e)
+                albow.TextFieldWrapped.mouse_down(self.bulletFilePath.subwidgets[1], e)
 
         bulletFilePath.subwidgets[1].mouse_down = mouse_down
         self.bulletFilePath = bulletFilePath
 
         def mouse_down(e):
-            CheckBox.mouse_down(useImagesBox.subwidgets[1], e)
+            albow.CheckBox.mouse_down(useImagesBox.subwidgets[1], e)
             for sub in bulletFilePath.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletImages.get()
-                if type(sub) == TextFieldWrapped:
+                if type(sub) == albow.TextFieldWrapped:
                     if config.nbtTreeSettings.useBulletImages.get():
                         sub.fg_color = fg_color
                     else:
@@ -407,22 +402,22 @@ class NBTExplorerOptions(ToolOptions):
         useImagesBox.subwidgets[0].mouse_down = useImagesBox.subwidgets[1].mouse_down = mouse_down
 
         def mouse_down(e):
-            CheckBox.mouse_down(useStyleBox.subwidgets[1], e)
+            albow.CheckBox.mouse_down(useStyleBox.subwidgets[1], e)
             useImagesBox.mouse_down(e)
             self.useStyleBox_click(e)
 
         useStyleBox.subwidgets[0].mouse_down = useStyleBox.subwidgets[1].mouse_down = mouse_down
 
-        showAllTags = CheckBoxLabel(title="Show all the tags in the tree",
+        showAllTags = albow.CheckBoxLabel(title="Show all the tags in the tree",
                                     ref=config.nbtTreeSettings.showAllTags)
 
-        col = Column((
-            Label("NBT Tree Settings"),
-            Row((useStyleBox, useTextBox, useImagesBox)),
+        col = albow.Column((
+            albow.Label("NBT Tree Settings"),
+            albow.Row((useStyleBox, useTextBox, useImagesBox)),
             bulletFilePath,
             showAllTags,
             #                      Button("Load NBT file...", action=tool.loadFile),
-            Button("OK", action=self.dismiss),
+            albow.Button("OK", action=self.dismiss),
         ))
         self.add(col)
         self.shrink_wrap()
@@ -432,12 +427,12 @@ class NBTExplorerOptions(ToolOptions):
         for widget in (self.useTextBox, self.useImagesBox, self.bulletFilePath):
             for sub in widget.subwidgets:
                 sub.enabled = config.nbtTreeSettings.useBulletStyles.get()
-                if type(sub) in (CheckBox, TextFieldWrapped):
+                if type(sub) in (albow.CheckBox, albow.TextFieldWrapped):
                     if config.nbtTreeSettings.useBulletStyles.get():
                         sub.fg_color = fg_color
                     else:
                         sub.fg_color = disabled_color
-                if type(sub) == CheckBox:
+                if type(sub) == albow.CheckBox:
                     sub.set_enabled(config.nbtTreeSettings.useBulletStyles.get())
 
     def open_bullet_file(self):
@@ -463,16 +458,16 @@ class SlotEditor(Dialog):
         slot, id, count, damage = data
         self.former_id_text = id
         self.slot = slot
-        self.id = TextFieldWrapped(text=str(id), doNotTranslate=True, width=300)
+        self.id = albow.TextFieldWrapped(text=str(id), doNotTranslate=True, width=300)
         self.id.change_action = self.text_entered
         self.id.escape_action = self.cancel
         self.id.enter_action = self.ok
-        self.count = IntField(text="%s" % count, min=0, max=64)
-        self.damage = IntField(text="%s" % damage, min=0, max=os.sys.maxint)
-        header = Label(_("Inventory Slot #%s") % slot, doNotTranslate=True)
-        row = Row([Label("id"), self.id,
-                   Label("Count"), self.count,
-                   Label("Damage"), self.damage,
+        self.count = albow.IntField(text="%s" % count, min=0, max=64)
+        self.damage = albow.IntField(text="%s" % damage, min=0, max=os.sys.maxint)
+        header = albow.Label(_("Inventory Slot #%s") % slot, doNotTranslate=True)
+        row = albow.Row([albow.Label("id"), self.id,
+                   albow.Label("Count"), self.count,
+                   albow.Label("Damage"), self.damage,
                    ])
 
         self.matching_items = [mclangres.translate(k) for k in map_items.keys()]
@@ -480,14 +475,14 @@ class SlotEditor(Dialog):
         self.selected_item_index = None
         if id in self.matching_items:
             self.selected_item_index = self.matching_items.index(id)
-        self.tableview = tableview = TableView(columns=[TableColumn("", 415, 'l')])
+        self.tableview = tableview = albow.TableView(columns=[albow.TableColumn("", 415, 'l')])
         tableview.num_rows = lambda: len(self.matching_items)
         tableview.row_data = lambda x: (self.matching_items[x],)
         tableview.row_is_selected = lambda x: x == self.selected_item_index
         tableview.click_row = self.select_tablerow
 
-        buttons = Row([Button("Save", action=self.dismiss), Button("Cancel", action=self.cancel)])
-        col = Column([header, row, tableview, buttons], spacing=2)
+        buttons = albow.Row([albow.Button("Save", action=self.dismiss), albow.Button("Cancel", action=self.cancel)])
+        col = albow.Column([header, row, tableview, buttons], spacing=2)
         self.add(col)
         self.shrink_wrap()
 
@@ -581,7 +576,7 @@ class NBTExplorerOperation(Operation):
 
             if "%s" % orgNBT != "%s" % newNBT:
                 if self.level.saving:
-                    alert(_("Cannot perform action while saving is taking place"))
+                    albow.alert(_("Cannot perform action while saving is taking place"))
                     return
                 if recordUndo:
                     self.canUndo = True
@@ -641,17 +636,17 @@ class NBTExplorerToolPanel(Panel):
         self.init_data()
         btns = []
         if load_text:
-            btns.append(Button(load_text, action=self.editor.nbtTool.loadFile))
+            btns.append(albow.Button(load_text, action=self.editor.nbtTool.loadFile))
         btns += [
-            Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT),
+            albow.Button({True: "Save", False: "OK"}[fileName != None], action=kwargs.get('ok_action', self.save_NBT),
                    tooltipText="Save your change in the NBT data."),
-            Button("Reset", action=kwargs.get('reset_action', self.reset),
+            albow.Button("Reset", action=kwargs.get('reset_action', self.reset),
                    tooltipText="Reset ALL your changes in the NBT data."),
         ]
         if close_text:
-            btns.append(Button(close_text, action=kwargs.get('close_action', self.close)))
+            btns.append(albow.Button(close_text, action=kwargs.get('close_action', self.close)))
 
-        btnRow = Row(btns, margin=1, spacing=4)
+        btnRow = albow.Row(btns, margin=1, spacing=4)
 
         btnRow.shrink_wrap()
         self.btnRow = btnRow
@@ -664,7 +659,7 @@ class NBTExplorerToolPanel(Panel):
             title = _("NBT Explorer")
             if fileName:
                 title += " - %s" % os.path.split(fileName)[-1]
-            header = Label(title, doNotTranslate=True)
+            header = albow.Label(title, doNotTranslate=True)
             self.max_height = max_height = kwargs.get('height', editor.mainViewport.height - editor.toolbar.height -
                                                       editor.subwidgets[0].height) - header.height - (
                                                self.margin * 2) - btnRow.height - 2
@@ -674,12 +669,12 @@ class NBTExplorerToolPanel(Panel):
                             copyBuffer=editor.nbtCopyBuffer, draw_zebra=False, _parent=self, styles=bullet_styles)
         self.tree.update_side_panel = self.update_side_panel
         self.side_panel_width = 350
-        row = [self.tree, Column([Label("", width=self.side_panel_width), ], margin=0)]
-        self.displayRow = Row(row, height=max_height, margin=0, spacing=0)
+        row = [self.tree, albow.Column([albow.Label("", width=self.side_panel_width), ], margin=0)]
+        self.displayRow = albow.Row(row, height=max_height, margin=0, spacing=0)
         if kwargs.get('no_header', False):
-            self.add(Column([self.displayRow, btnRow], margin=0))
+            self.add(albow.Column([self.displayRow, btnRow], margin=0))
         else:
-            self.add(Column([header, self.displayRow, btnRow], margin=0))
+            self.add(albow.Column([header, self.displayRow, btnRow], margin=0))
         self.shrink_wrap()
         self.side_panel = None
         # &# Prototype for Blocks/item names
@@ -717,9 +712,9 @@ class NBTExplorerToolPanel(Panel):
 
     def setCompounds(self):
         if config.nbtTreeSettings.showAllTags.get():
-            compounds = [TAG_Compound, TAG_List]
+            compounds = [MCWorldLibrary.nbt.TAG_Compound, MCWorldLibrary.nbt.TAG_List]
         else:
-            compounds = [TAG_Compound, ]
+            compounds = [MCWorldLibrary.nbt.TAG_Compound, ]
         self.compounds = compounds
 
     def save_NBT(self):
@@ -786,21 +781,21 @@ class NBTExplorerToolPanel(Panel):
             height = 0
             for itm in items:
                 t = itm.__class__.__name__
-                rows.append(Row([Label("Data Type:"), Label(t)], margin=1))
+                rows.append(albow.Row([albow.Label("Data Type:"), albow.Label(t)], margin=1))
                 fields = self.build_field(itm)
                 for field in fields:
-                    if type(field) == TextFieldWrapped:
+                    if type(field) == albow.TextFieldWrapped:
                         field.set_size_for_text(self.side_panel_width)
-                    row = Row([field, ], margin=1)
+                    row = albow.Row([field, ], margin=1)
                     rows.append(row)
                     height += row.height
             if height > self.displayRow.height:
                 col = False
         if rows:
             if col:
-                col = Column(rows, align='l', spacing=0, height=self.displayRow.height)
+                col = albow.Column(rows, align='l', spacing=0, height=self.displayRow.height)
             else:
-                col = ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False,
+                col = albow.ScrollPanel(rows=rows, align='l', spacing=0, height=self.displayRow.height, draw_zebra=False,
                                   inner_width=self.side_panel_width - scroll_button_size)
             col.set_parent(self.displayRow)
             col.top = self.displayRow.top
@@ -815,31 +810,31 @@ class NBTExplorerToolPanel(Panel):
         if type(itm) in field_types.keys():
             f, bounds = field_types[type(itm)]
             if bounds:
-                fields = [f(ref=AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]), ]
+                fields = [f(ref=albow.AttrRef(itm, 'value'), min=bounds[0], max=bounds[1]), ]
             else:
-                fields = [f(ref=AttrRef(itm, 'value')), ]
+                fields = [f(ref=albow.AttrRef(itm, 'value')), ]
         elif type(itm) in array_types.keys():
             idx = 0
             for _itm in itm.value.tolist():
                 f, bounds = array_types[type(itm)]
-                fields.append(f(ref=ItemRef(itm.value, idx)))
+                fields.append(f(ref=albow.ItemRef(itm.value, idx)))
                 idx += 1
-        elif type(itm) in (TAG_Compound, TAG_List):
+        elif type(itm) in (MCWorldLibrary.nbt.TAG_Compound, MCWorldLibrary.nbt.TAG_List):
             for _itm in itm.value:
                 fields.append(
-                    Label("%s" % (_itm.name or "%s #%03d" % (itm.name or _("Item"), itm.value.index(_itm))), align='l',
+                    albow.Label("%s" % (_itm.name or "%s #%03d" % (itm.name or _("Item"), itm.value.index(_itm))), align='l',
                           doNotTranslate=True))
                 fields += NBTExplorerToolPanel.build_field(_itm)
         elif type(itm) not in (str, unicode):
             if type(getattr(itm, 'value', itm)) not in (str, unicode, int, float):
-                fld = Label
+                fld = albow.Label
                 kw = {'align': 'l'}
             else:
-                fld = TextFieldWrapped
+                fld = albow.TextFieldWrapped
                 kw = {}
             fields = [fld("%s" % getattr(itm, 'value', itm), doNotTranslate=True, **kw), ]
         else:
-            fields = [TextFieldWrapped("%s" % itm, doNotTranslata=True), ]
+            fields = [albow.TextFieldWrapped("%s" % itm, doNotTranslata=True), ]
         return fields
 
     @staticmethod
@@ -851,18 +846,18 @@ class NBTExplorerToolPanel(Panel):
         names.sort()
         for name in names:
             item = attributes[indexes.index(name)]
-            rows.append(Row([Label(name.split('.')[-1], align='l')] + NBTExplorerToolPanel.build_field(item['Base']),
+            rows.append(albow.Row([albow.Label(name.split('.')[-1], align='l')] + NBTExplorerToolPanel.build_field(item['Base']),
                             margin=0))
             mods = item.get('Modifiers', [])
             for mod in mods:
                 keys = mod.keys()
                 keys.remove('Name')
-                rows.append(Row([Label("-> Name", align='l')] + NBTExplorerToolPanel.build_field(mod['Name']),
+                rows.append(albow.Row([albow.Label("-> Name", align='l')] + NBTExplorerToolPanel.build_field(mod['Name']),
                                 margin=0))
                 keys.sort()
                 for key in keys:
-                    rows.append(Row(
-                        [Label('    %s' % key, align='l', doNotTranslate=True, tooltipText=mod[key].__class__.__name__)] \
+                    rows.append(albow.Row(
+                        [albow.Label('    %s' % key, align='l', doNotTranslate=True, tooltipText=mod[key].__class__.__name__)] \
                         + NBTExplorerToolPanel.build_field(mod[key]),
                         margin=0))
         return rows
@@ -874,17 +869,17 @@ class NBTExplorerToolPanel(Panel):
     def build_pos(items):
         rows = []
         pos = items[0]
-        rows.append(Row([Label("X", align='l'), FloatField(ref=AttrRef(pos[0], 'value'))]))
-        rows.append(Row([Label("Y", align='l'), FloatField(ref=AttrRef(pos[1], 'value'))]))
-        rows.append(Row([Label("Z", align='l'), FloatField(ref=AttrRef(pos[2], 'value'))]))
+        rows.append(albow.Row([albow.Label("X", align='l'), albow.FloatField(ref=albow.AttrRef(pos[0], 'value'))]))
+        rows.append(albow.Row([albow.Label("Y", align='l'), albow.FloatField(ref=albow.AttrRef(pos[1], 'value'))]))
+        rows.append(albow.Row([albow.Label("Z", align='l'), albow.FloatField(ref=albow.AttrRef(pos[2], 'value'))]))
         return rows
 
     @staticmethod
     def build_rotation(items):
         rows = []
         rotation = items[0]
-        rows.append(Row([Label("Y", align='l'), FloatField(ref=AttrRef(rotation[0], 'value'))]))
-        rows.append(Row([Label("X", align='l'), FloatField(ref=AttrRef(rotation[1], 'value'))]))
+        rows.append(albow.Row([albow.Label("Y", align='l'), albow.FloatField(ref=albow.AttrRef(rotation[0], 'value'))]))
+        rows.append(albow.Row([albow.Label("X", align='l'), albow.FloatField(ref=albow.AttrRef(rotation[1], 'value'))]))
         return rows
 
     def build_inventory(self, items):
@@ -897,7 +892,7 @@ class NBTExplorerToolPanel(Panel):
             player = True
         else:
             player = False
-        inventory = parent.get('Inventory', TAG_List())
+        inventory = parent.get('Inventory', MCWorldLibrary.nbt.TAG_List())
         rows = []
         items = items[0]
         slots = [["%s" % i, "", "0", "0"] for i in range(36)]
@@ -939,13 +934,13 @@ class NBTExplorerToolPanel(Panel):
         c3w = max(15, self.font.size("000")[0]) + 4
         c1w = width - c0w - c2w - c3w
         font_height = self.font.size("qd")[1]
-        tableCols = [TableColumn("#", c0w),
-                     TableColumn("ID", c1w),
-                     TableColumn("C", c2w),
-                     TableColumn("D", c3w),
+        tableCols = [albow.TableColumn("#", c0w),
+                     albow.TableColumn("ID", c1w),
+                     albow.TableColumn("C", c2w),
+                     albow.TableColumn("D", c3w),
                      ]
         height = self.displayRow.subwidgets[0].height
-        table = TableView(height=height - (self.margin * 2),
+        table = albow.TableView(height=height - (self.margin * 2),
                           width=width,
                           nrows=((height - (self.margin * 2) - font_height / 2) / font_height),
                           columns=tableCols,
@@ -1011,15 +1006,15 @@ class NBTExplorerToolPanel(Panel):
                         break
                     s_idx += 1
             else:
-                new_slot = TAG_Compound()
+                new_slot = MCWorldLibrary.nbt.TAG_Compound()
                 if player:
-                    new_slot['Slot'] = TAG_Byte(s)
+                    new_slot['Slot'] = MCWorldLibrary.nbt.TAG_Byte(s)
                 # &# Prototype for blocka/items names
                 # new_slot['id'] = TAG_String('minecraft:%s'%i)
-                new_slot['id'] = TAG_String(name)
+                new_slot['id'] = MCWorldLibrary.nbt.TAG_String(name)
                 # &#
-                new_slot['Count'] = TAG_Byte(int(c))
-                new_slot['Damage'] = TAG_Short(int(state))
+                new_slot['Count'] = MCWorldLibrary.nbt.TAG_Byte(int(c))
+                new_slot['Damage'] = MCWorldLibrary.nbt.TAG_Short(int(state))
                 idx = s
                 for slot in inventory:
                     ok2 = False
@@ -1110,7 +1105,7 @@ class NBTExplorerTool(EditorTool):
                 os.sys.stderr = fakeStdErr()
                 os.sys.stderr = stderr
             except:
-                alert("Unattended data. File not loaded")
+                albow.alert("Unattended data. File not loaded")
                 return
             # !#
             self.panel = NBTExplorerToolPanel(self.editor, nbtObject=nbtObject, fileName=fName,
@@ -1142,23 +1137,22 @@ def loadFile(fName):
         fName = mcplatform.askOpenFile(title=_("Select a NBT (.dat) file..."), suffixes=['dat', ])
     if fName:
         if not os.path.isfile(fName):
-            alert("The selected object is not a file.\nCan't load it.")
+            albow.alert("The selected object is not a file.\nCan't load it.")
             return
         savePolicy = 0
         data = open(fName).read()
 
         if struct.Struct('<i').unpack(data[:4])[0] in (3, 4):
             if struct.Struct('<i').unpack(data[4:8])[0] != len(data[8:]):
-                raise NBTFormatError()
-            with littleEndianNBT():
-                nbtObject = load(buf=data[8:])
+                raise MCWorldLibrary.nbt.NBTFormatError()
+            nbtObject = MCWorldLibrary.nbt.load(buf=data[8:], endianness=nbt.LITTLE_ENDIAN)
             savePolicy = 1
         elif struct.Struct('<i').unpack(data[:4])[0] in (1, 2):
-            alert(_("Old PE level.dat, unsupported at the moment."))
+            albow.alert(_("Old PE level.dat, unsupported at the moment."))
         else:
-            nbtObject = load(buf=data)
+            nbtObject = MCWorldLibrary.nbt.load(buf=data)
         if fName.endswith('.schematic'):
-            nbtObject = TAG_Compound(name='Data', value=nbtObject)
+            nbtObject = MCWorldLibrary.nbt.TAG_Compound(name='Data', value=nbtObject)
             savePolicy = -1
             dataKeyName = 'Data'
         elif nbtObject.get('Data', None):
@@ -1170,7 +1164,7 @@ def loadFile(fName):
             dataKeyName = 'Data'
             if savePolicy == 0:
                 savePolicy = -1
-            nbtObject = TAG_Compound([nbtObject, ])
+            nbtObject = MCWorldLibrary.nbt.TAG_Compound([nbtObject, ])
         return nbtObject, dataKeyName, savePolicy, fName
     return [None] * 4
 
@@ -1179,7 +1173,7 @@ def saveFile(fName, data, savePolicy):
     if fName is None:
         return
     if os.path.exists(fName):
-        r = ask("File already exists.\nClick 'OK' to choose one.")
+        r = albow.ask("File already exists.\nClick 'OK' to choose one.")
         if r == 'OK':
             folder, name = os.path.split(fName)
             suffix = os.path.splitext(name)[-1][1:]
@@ -1199,4 +1193,4 @@ def saveFile(fName, data, savePolicy):
                 with open(fName, 'w') as f:
                     f.write(toSave)
     else:
-        alert("The selected object is not a file.\nCan't save it.")
+        albow.alert("The selected object is not a file.\nCan't save it.")
