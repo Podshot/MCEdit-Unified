@@ -367,24 +367,23 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         :param last_played: long
         :return: None
         """
-        with nbt.littleEndianNBT():
-            root_tag = nbt.TAG_Compound()
-            root_tag["SpawnX"] = nbt.TAG_Int(0)
-            root_tag["SpawnY"] = nbt.TAG_Int(2)
-            root_tag["SpawnZ"] = nbt.TAG_Int(0)
+        root_tag = nbt.TAG_Compound()
+        root_tag["SpawnX"] = nbt.TAG_Int(0)
+        root_tag["SpawnY"] = nbt.TAG_Int(2)
+        root_tag["SpawnZ"] = nbt.TAG_Int(0)
 
-            if last_played is None:
-                last_played = long(time.time() * 100)
-            if random_seed is None:
-                random_seed = long(numpy.random.random() * 0xffffffffffffffffL) - 0x8000000000000000L
+        if last_played is None:
+            last_played = long(time.time() * 100)
+        if random_seed is None:
+            random_seed = long(numpy.random.random() * 0xffffffffffffffffL) - 0x8000000000000000L
 
-            self.root_tag = root_tag
+        self.root_tag = root_tag
 
-            self.LastPlayed = long(last_played)
-            self.RandomSeed = long(random_seed)
-            self.SizeOnDisk = 0
-            self.Time = 1
-            self.LevelName = os.path.basename(self.worldFile.path)
+        self.LastPlayed = long(last_played)
+        self.RandomSeed = long(random_seed)
+        self.SizeOnDisk = 0
+        self.Time = 1
+        self.LevelName = os.path.basename(self.worldFile.path)
 
     def loadLevelDat(self, create=False, random_seed=None, last_played=None):
         """
@@ -402,21 +401,17 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 raise InvalidPocketLevelDBWorldException()  # Maybe try convert/load old PE world?
             if len(root_tag_buf) != struct.Struct('<i').unpack(length)[0]:
                 raise nbt.NBTFormatError()
-            self.root_tag = nbt.load(buf=root_tag_buf)
+            self.root_tag = nbt.load(buf=root_tag_buf, endianness=nbt.LITTLE_ENDIAN)
 
         if create:
             self._createLevelDat(random_seed, last_played)
             return
         try:
-            with nbt.littleEndianNBT():
-                _loadLevelDat(os.path.join(self.worldFile.path, "level.dat"))
-            return
+            _loadLevelDat(os.path.join(self.worldFile.path, "level.dat"))
         except (nbt.NBTFormatError, IOError) as err:
             logger.info("Failed to load level.dat, trying to load level.dat_old ({0})".format(err))
         try:
-            with nbt.littleEndianNBT():
-                _loadLevelDat(os.path.join(self.worldFile.path, "level.dat_old"))
-            return
+            _loadLevelDat(os.path.join(self.worldFile.path, "level.dat_old"))
         except (nbt.NBTFormatError, IOError) as err:
             logger.info("Failed to load level.dat_old, creating new level.dat ({0})".format(err))
         self._createLevelDat(random_seed, last_played)
@@ -573,12 +568,12 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
                 chunk.dirty = False
             yield
 
-        with nbt.littleEndianNBT():
-            for p in self.players:
-                playerData = self.playerTagCache[p]
-                if playerData is not None:
-                    playerData = playerData.save(compressed=False)  # It will get compressed in the DB itself
-                    self.worldFile.savePlayer(p, playerData, batch=batch)
+        for p in self.players:
+            playerData = self.playerTagCache[p]
+            if playerData is not None:
+                playerData = playerData.save(compressed=False, endianness=nbt.LITTLE_ENDIAN)
+                # It will get compressed in the DB itself
+                self.worldFile.savePlayer(p, playerData, batch=batch)
 
         with self.worldFile.world_db() as db:
             wop = self.worldFile.writeOptions
@@ -587,11 +582,10 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self.saving = False
         logger.info(u"Saved {0} chunks to the database".format(dirtyChunkCount))
         path = os.path.join(self.worldFile.path, 'level.dat')
-        with nbt.littleEndianNBT():
-            rootTagData = self.root_tag.save(compressed=False)
-            rootTagData = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(rootTagData)) + rootTagData
-            with open(path, 'w') as f:
-                f.write(rootTagData)
+        rootTagData = self.root_tag.save(compressed=False, endianness=nbt.LITTLE_ENDIAN)
+        rootTagData = struct.Struct('<i').pack(4) + struct.Struct('<i').pack(len(rootTagData)) + rootTagData
+        with open(path, 'w') as f:
+            f.write(rootTagData)
 
     def containsChunk(self, cx, cz):
         """
@@ -822,9 +816,8 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         if _player is not None:
             return _player
         playerData = self.playerData[player]
-        with nbt.littleEndianNBT():
-            _player = nbt.load(buf=playerData)
-            self.playerTagCache[player] = _player
+        _player = nbt.load(buf=playerData, endianness=nbt.LITTLE_ENDIAN)
+        self.playerTagCache[player] = _player
         return _player
 
     def getPlayerDimension(self, player="Player"):
@@ -1035,19 +1028,18 @@ class PocketLeveldbChunk(LightedChunk):
             # we only track modifications at the chunk level.
             self.DirtyColumns[:] = 255
 
-        with nbt.littleEndianNBT():
-            entityData = ""
-            tileEntityData = ""
+        entityData = ""
+        tileEntityData = ""
 
-            for ent in self.TileEntities:
-                tileEntityData += ent.save(compressed=False)
+        for ent in self.TileEntities:
+            tileEntityData += ent.save(compressed=False, endianness=nbt.LITTLE_ENDIAN)
 
-            for ent in self.Entities:
-                v = ent["id"].value
-                ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
-                entityData += ent.save(compressed=False)
-                # We have to re-invert after saving otherwise the next save will fail.
-                ent["id"] = nbt.TAG_String(v)
+        for ent in self.Entities:
+            v = ent["id"].value
+            ent["id"] = nbt.TAG_Int(entity.PocketEntity.entityList[v])
+            entityData += ent.save(compressed=False, endianness=nbt.LITTLE_ENDIAN)
+            # We have to re-invert after saving otherwise the next save will fail.
+            ent["id"] = nbt.TAG_String(v)
 
         terrain = ''.join([self.Blocks.tostring(),
                            packData(self.Data).tostring(),
