@@ -14,7 +14,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
 from editortools.thumbview import ThumbView
-from pymclevel.infiniteworld import SessionLockLost
+from MCWorldLibrary.infiniteworld import SessionLockLost
 import keys
 import pygame
 from albow.fields import FloatField
@@ -53,7 +53,7 @@ import functools
 import editortools
 import itertools
 import mcplatform
-import pymclevel
+import MCWorldLibrary
 import renderer
 import directories
 import panels
@@ -84,10 +84,10 @@ from editortools.chunk import GeneratorPanel
 from glbackground import GLBackground, Panel
 from glutils import Texture
 from mcplatform import askSaveFile
-from pymclevel.minecraft_server import alphanum_key  # ?????
+from MCWorldLibrary.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
-from pymclevel.entity import Entity
-from pymclevel.infiniteworld import AnvilWorldFolder
+from MCWorldLibrary.entity import Entity
+from MCWorldLibrary.infiniteworld import AnvilWorldFolder
 
 try:
     import resource  # @UnresolvedImport
@@ -591,10 +591,10 @@ class LevelEditor(GLViewport):
                     entID = Entity.getId(ent["id"].value)
                     if ent["id"].value == "Item":
                         try:
-                            v = pymclevel.items.items.findItem(ent["Item"]["id"].value,
+                            v = MCWorldLibrary.items.items.findItem(ent["Item"]["id"].value,
                                                                ent["Item"]["Damage"].value).name
                             v += " (Item)"
-                        except pymclevel.items.ItemNotFound:
+                        except MCWorldLibrary.items.ItemNotFound:
                             v = "Unknown Item"
                     else:
                         v = ent["id"].value
@@ -834,9 +834,9 @@ class LevelEditor(GLViewport):
             elif isinstance(inputType, (int, float)):
                 rows.append(addNumField(widget, inputName, inputType))
 
-            elif inputType == "blocktype" or isinstance(inputType, pymclevel.materials.Block):
+            elif inputType == "blocktype" or isinstance(inputType, MCWorldLibrary.materials.Block):
                 blockButton = BlockButton(self.level.materials)
-                if isinstance(inputType, pymclevel.materials.Block):
+                if isinstance(inputType, MCWorldLibrary.materials.Block):
                     blockButton.blockInfo = inputType
                 row = Column((Label(inputName), blockButton))
                 widget.inputDict[inputName] = AttrRef(blockButton, 'blockInfo')
@@ -1015,7 +1015,7 @@ class LevelEditor(GLViewport):
             self.level.close()
 
         try:
-            level = pymclevel.fromFile(filename)
+            level = MCWorldLibrary.fromFile(filename)
         except Exception, e:
             logging.exception(
                 'Wasn\'t able to open a file {file => %s}' % filename
@@ -1050,7 +1050,7 @@ class LevelEditor(GLViewport):
             if pdim and pdim in level.dimensions:
                 level = level.dimensions[pdim]
 
-        except (KeyError, pymclevel.PlayerNotFound):  # TagNotFound
+        except (KeyError, MCWorldLibrary.PlayerNotFound):  # TagNotFound
             # player tag not found, maybe
             try:
                 self.currentViewport.cameraPosition = level.playerSpawnPosition()
@@ -1097,7 +1097,7 @@ class LevelEditor(GLViewport):
         if "select" not in str(self.currentTool):
             self.toolbar.selectTool(0)
 
-        if isinstance(self.level, pymclevel.MCInfdevOldLevel):
+        if isinstance(self.level, MCWorldLibrary.MCInfdevOldLevel):
             if self.level.parentWorld:
                 dimensions = self.level.parentWorld.dimensions
             else:
@@ -1105,9 +1105,9 @@ class LevelEditor(GLViewport):
 
             dimensionsMenu = [("Overworld", "0")]
             dimensionsMenu += [
-                (pymclevel.MCAlphaDimension.dimensionNames.get(dimNo, "Dimension {0}".format(dimNo)), str(dimNo)) for
+                (MCWorldLibrary.MCAlphaDimension.dimensionNames.get(dimNo, "Dimension {0}".format(dimNo)), str(dimNo)) for
                 dimNo in dimensions]
-            for dim, name in pymclevel.MCAlphaDimension.dimensionNames.iteritems():
+            for dim, name in MCWorldLibrary.MCAlphaDimension.dimensionNames.iteritems():
                 if dim not in dimensions:
                     dimensionsMenu.append((name, str(dim)))
 
@@ -1145,7 +1145,7 @@ class LevelEditor(GLViewport):
                 responses=["Create Chunks", "Cancel"])
             if resp == "Create Chunks":
                 x, y, z = self.mainViewport.cameraPosition
-                box = pymclevel.BoundingBox((x - 128, 0, z - 128), (256, self.level.Height, 256))
+                box = MCWorldLibrary.BoundingBox((x - 128, 0, z - 128), (256, self.level.Height, 256))
                 self.selectionTool.setSelection(box)
                 self.toolbar.selectTool(8)
                 self.toolbar.tools[8].createChunks()
@@ -1211,7 +1211,7 @@ class LevelEditor(GLViewport):
     @mceutils.alertException
     def saveFile(self):
         with mceutils.setWindowCaption("SAVING - "):
-            if isinstance(self.level, pymclevel.ChunkedLevelMixin):  # xxx relight indev levels?
+            if isinstance(self.level, MCWorldLibrary.ChunkedLevelMixin):  # xxx relight indev levels?
                 level = self.level
                 if level.parentWorld:
                     level = level.parentWorld
@@ -1230,7 +1230,7 @@ class LevelEditor(GLViewport):
                             return
 
                         if self.level == level:
-                            if isinstance(level, pymclevel.MCInfdevOldLevel):
+                            if isinstance(level, MCWorldLibrary.MCInfdevOldLevel):
                                 needsRefresh = [c.chunkPosition for c in level._loadedChunkData.itervalues() if c.dirty]
                                 needsRefresh.extend(level.unsavedWorkFolder.listChunks())
                             else:
@@ -1242,7 +1242,7 @@ class LevelEditor(GLViewport):
                         return
 
                     if self.level == level:
-                        if isinstance(level, pymclevel.MCInfdevOldLevel):
+                        if isinstance(level, MCWorldLibrary.MCInfdevOldLevel):
                             needsRefresh = [c.chunkPosition for c in level._loadedChunkData.itervalues() if c.dirty]
                             needsRefresh.extend(level.unsavedWorkFolder.listChunks())
                         else:
@@ -2071,22 +2071,22 @@ class LevelEditor(GLViewport):
         items = []
 
         t = functools.partial(isinstance, self.level)
-        if t(pymclevel.MCInfdevOldLevel):
-            if self.level.version == pymclevel.MCInfdevOldLevel.VERSION_ANVIL:
+        if t(MCWorldLibrary.MCInfdevOldLevel):
+            if self.level.version == MCWorldLibrary.MCInfdevOldLevel.VERSION_ANVIL:
                 levelFormat = "Minecraft Infinite World (Anvil Format)"
-            elif self.level.version == pymclevel.MCInfdevOldLevel.VERSION_MCR:
+            elif self.level.version == MCWorldLibrary.MCInfdevOldLevel.VERSION_MCR:
                 levelFormat = "Minecraft Infinite World (Region Format)"
             else:
                 levelFormat = "Minecraft Infinite World (Old Chunk Format)"
-        elif t(pymclevel.MCIndevLevel):
+        elif t(MCWorldLibrary.MCIndevLevel):
             levelFormat = "Minecraft Indev (.mclevel format)"
-        elif t(pymclevel.MCSchematic):
+        elif t(MCWorldLibrary.MCSchematic):
             levelFormat = "MCEdit Schematic"
-        elif t(pymclevel.ZipSchematic):
+        elif t(MCWorldLibrary.ZipSchematic):
             levelFormat = "MCEdit Schematic (Zipped Format)"
-        elif t(pymclevel.MCJavaLevel):
+        elif t(MCWorldLibrary.MCJavaLevel):
             levelFormat = "Minecraft Classic or raw block array"
-        elif t(pymclevel.PocketLeveldbWorld):
+        elif t(MCWorldLibrary.PocketLeveldbWorld):
             levelFormat = "Minecraft Pocket Edition"
         else:
             levelFormat = "Unknown"
@@ -2157,7 +2157,7 @@ class LevelEditor(GLViewport):
         revealButton = Button("Open Folder", action=openFolder)
         items.append(revealButton)
 
-        if isinstance(self.level, pymclevel.MCInfdevOldLevel):
+        if isinstance(self.level, MCWorldLibrary.MCInfdevOldLevel):
             chunkCount = self.level.chunkCount
             chunkCountLabel = Label(_("Number of chunks: {0}").format(chunkCount))
 
@@ -2356,11 +2356,11 @@ class LevelEditor(GLViewport):
 
         potentialWorlds = os.listdir(directories.minecraftSaveFileDir)
         potentialWorlds = [os.path.join(directories.minecraftSaveFileDir, p) for p in potentialWorlds]
-        worldFiles = [p for p in potentialWorlds if pymclevel.MCInfdevOldLevel.isLevel(p)]
+        worldFiles = [p for p in potentialWorlds if MCWorldLibrary.MCInfdevOldLevel.isLevel(p)]
         worlds = []
         for f in worldFiles:
             try:
-                lev = pymclevel.MCInfdevOldLevel(f, readonly=True)
+                lev = MCWorldLibrary.MCInfdevOldLevel(f, readonly=True)
             except Exception:
                 continue
             else:
@@ -2529,7 +2529,7 @@ class LevelEditor(GLViewport):
         hinput = IntInputRow("North-South Chunks: ", ref=AttrRef(newWorldPanel, "h"), min=0)
         # grassinputrow = Row( (Label("Grass: ")
         # from editortools import BlockButton
-        # blockInput = BlockButton(pymclevel.alphaMaterials, pymclevel.alphaMaterials.Grass)
+        # blockInput = BlockButton(MCWorldLibrary.alphaMaterials, MCWorldLibrary.alphaMaterials.Grass)
         # blockInputRow = Row( (Label("Surface: "), blockInput) )
 
         gametypes = ["Survival", "Creative"]
@@ -2578,7 +2578,7 @@ class LevelEditor(GLViewport):
 
         self.freezeStatus("Creating world...")
         try:
-            newlevel = pymclevel.MCInfdevOldLevel(filename=filename, create=True, random_seed=seed)
+            newlevel = MCWorldLibrary.MCInfdevOldLevel(filename=filename, create=True, random_seed=seed)
             # chunks = list(itertools.product(xrange(w / 2 - w + cx, w / 2 + cx), xrange(h / 2 - h + cz, h / 2 + cz)))
 
             if generatorPanel.generatorChoice.selectedChoice == "Flatland":
@@ -2591,7 +2591,7 @@ class LevelEditor(GLViewport):
             newlevel.GameType = gametypeButton.gametype
             newlevel.GeneratorName = worldtypes[worldtypeButton.get_value()][1]
             newlevel.saveInPlace()
-            worker = generatorPanel.generate(newlevel, pymclevel.BoundingBox((x - w * 8, 0, z - h * 8),
+            worker = generatorPanel.generate(newlevel, MCWorldLibrary.BoundingBox((x - w * 8, 0, z - h * 8),
                                                                              (w * 16, newlevel.Height, h * 16)),
                                              useWorldType=generationtype)
 
@@ -2600,7 +2600,7 @@ class LevelEditor(GLViewport):
 
             if y < 64:
                 y = 64
-                newlevel.setBlockAt(x, y, z, pymclevel.alphaMaterials.Sponge.ID)
+                newlevel.setBlockAt(x, y, z, MCWorldLibrary.alphaMaterials.Sponge.ID)
             if newlevel.parentWorld:
                 newlevel = newlevel.parentWorld
             newlevel.acquireSessionLock()
@@ -2867,7 +2867,7 @@ class LevelEditor(GLViewport):
         try:
             if self.debug:
 
-                if isinstance(self.level, pymclevel.MCIndevLevel):
+                if isinstance(self.level, MCWorldLibrary.MCIndevLevel):
                     bl = self.level.blockLightAt(*blockPosition)
                     blockID = self.level.blockAt(*blockPosition)
                     bdata = self.level.blockDataAt(*blockPosition)
@@ -2875,7 +2875,7 @@ class LevelEditor(GLViewport):
                         blockID, bdata, self.level.materials.names[blockID][bdata])
                     self.inspectionString += _("Data: %d, Light: %d, ") % (bdata, bl)
 
-                elif isinstance(self.level, pymclevel.ChunkedLevelMixin):
+                elif isinstance(self.level, MCWorldLibrary.ChunkedLevelMixin):
                     sl = self.level.skylightAt(*blockPosition)
                     bl = self.level.blockLightAt(*blockPosition)
                     bdata = self.level.blockDataAt(*blockPosition)
@@ -2906,13 +2906,13 @@ class LevelEditor(GLViewport):
                     self.inspectionString += _(", NL: %d") % self.level.getChunk(cx, cz).needsLighting
                     try:
                         biome = self.level.getChunk(cx, cz).Biomes[x & 15, z & 15]
-                        from pymclevel import biome_types
+                        from MCWorldLibrary import biome_types
 
                         self.inspectionString += _(", Bio: %s") % biome_types.biome_types[biome]
                     except AttributeError:
                         pass
 
-                    if isinstance(self.level, pymclevel.pocket.PocketWorld):
+                    if isinstance(self.level, MCWorldLibrary.pocket.PocketWorld):
                         ch = self.level.getChunk(cx, cz)
                         self.inspectionString += _(", DC: %s") % ch.DirtyColumns[z & 15, x & 15]
 
@@ -2935,7 +2935,7 @@ class LevelEditor(GLViewport):
         blockPosition, faceDirection = self.blockFaceUnderCursor
         blockPosition = position or blockPosition
 
-        mceutils.drawTerrainCuttingWire(pymclevel.BoundingBox(blockPosition, (1, 1, 1)), c1=color)
+        mceutils.drawTerrainCuttingWire(MCWorldLibrary.BoundingBox(blockPosition, (1, 1, 1)), c1=color)
 
         GL.glDisable(GL.GL_POLYGON_OFFSET_FILL)
 

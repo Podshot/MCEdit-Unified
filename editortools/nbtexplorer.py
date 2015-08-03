@@ -20,7 +20,7 @@ from albow.tree import TreeRow, setup_map_types_item
 from albow.utils import blit_in_rect
 from albow.translate import _, getLang
 from glbackground import Panel
-from pymclevel.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
+from MCWorldLibrary.nbt import load, TAG_Byte, TAG_Short, TAG_Int, TAG_Long, TAG_Float, \
     TAG_Double, TAG_String, TAG_Byte_Array, TAG_List, TAG_Compound, TAG_Int_Array, \
     TAG_Short_Array, littleEndianNBT, NBTFormatError
 from numpy import array
@@ -42,13 +42,13 @@ from config import config, DEF_ENC
 from albow.resource import resource_path
 
 # &# Protoype for blocks/items names
-from pymclevel.materials import block_map, alphaMaterials
+from MCWorldLibrary.materials import block_map, alphaMaterials
 
 map_block = {}
 for k, v in block_map.items():
     map_block[v] = k
 
-from pymclevel.items import items as mcitems
+from MCWorldLibrary.items import items as mcitems
 
 map_items = {}
 for k, v in mcitems.items.items():

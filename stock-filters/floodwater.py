@@ -1,5 +1,5 @@
 from numpy import *
-from pymclevel import alphaMaterials, faceDirections, FaceYIncreasing
+from MCWorldLibrary import alphaMaterials, faceDirections, FaceYIncreasing
 from collections import deque
 import datetime
 

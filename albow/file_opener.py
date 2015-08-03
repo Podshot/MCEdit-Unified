@@ -4,7 +4,7 @@ import os
 import logging
 
 import panels
-import pymclevel
+import MCWorldLibrary
 import albow
 import mcplatform
 from config import config
@@ -67,8 +67,8 @@ class FileOpener(albow.Widget):
         for world in self.mcedit.recentWorlds():
             shortname = os.path.basename(world)
             try:
-                if pymclevel.MCInfdevOldLevel.isLevel(world):
-                    lev = pymclevel.MCInfdevOldLevel(world, readonly=True)
+                if MCWorldLibrary.MCInfdevOldLevel.isLevel(world):
+                    lev = MCWorldLibrary.MCInfdevOldLevel(world, readonly=True)
                     shortname = lev.LevelName
                     if lev.LevelName != lev.displayName:
                         shortname = u"{0} ({1})".format(lev.LevelName, lev.displayName)

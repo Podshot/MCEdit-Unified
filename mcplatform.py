@@ -34,7 +34,7 @@ if sys.platform == "win32":
         plat = "win32"
     if platform.architecture()[0] == "64bit":
         plat = "win-amd64"
-    sys.path.append(join(directories.getDataDir(), "pymclevel", "build", "lib." + plat + "-2.6").encode(enc))
+    sys.path.append(join(directories.getDataDir(), "MCWorldLibrary", "build", "lib." + plat + "-2.6").encode(enc))
 elif sys.platform == 'linux2':
     try:
         import Xlib.display
@@ -43,13 +43,13 @@ elif sys.platform == 'linux2':
     except ImportError:
         hasXlibDisplay = None
 
-os.environ["YAML_ROOT"] = join(directories.getDataDir(), "pymclevel").encode(enc)
+os.environ["YAML_ROOT"] = join(directories.getDataDir(), "MCWorldLibrary").encode(enc)
 
 from pygame import display
 
 from albow import request_new_filename, request_old_filename
 from albow.translate import _
-from pymclevel import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
+from MCWorldLibrary import minecraftSaveFileDir, getMinecraftProfileDirectory, getSelectedProfile
 from datetime import datetime
 
 try:

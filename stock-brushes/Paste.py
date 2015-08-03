@@ -1,8 +1,8 @@
-from pymclevel.materials import Block
+from MCWorldLibrary.materials import Block
 from editortools.brush import createBrushMask
 import mcplatform
-import pymclevel
-from pymclevel import BoundingBox
+import MCWorldLibrary
+from MCWorldLibrary import BoundingBox
 
 displayName = 'Paste'
 addPasteButton = True

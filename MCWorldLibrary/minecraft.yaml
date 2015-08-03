@@ -7,7 +7,7 @@
 ###
 ###
 #
-# Fields marked with * were added when updating this file for MCEdit + pymclevel
+# Fields marked with * were added when updating this file for MCEdit + MCWorldLibrary
 # The field "tex_data" is not used by MCEdit. To describe a block's alternate
 # textures when the block's data value is different, use the "data" field to
 # define block variants.

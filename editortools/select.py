@@ -32,11 +32,11 @@ from editortools.tooloptions import ToolOptions
 from glbackground import Panel
 from mceutils import alertException, drawCube, drawFace, drawTerrainCuttingWire, setWindowCaption
 from operation import Operation
-import pymclevel
-from pymclevel.box import Vector, BoundingBox, FloatBox
+import MCWorldLibrary
+from MCWorldLibrary.box import Vector, BoundingBox, FloatBox
 from fill import BlockFillOperation
 import tempfile
-from pymclevel import nbt
+from MCWorldLibrary import nbt
 import logging
 from albow.root import get_root
 from fileEdits import fileEdit, GetSort
@@ -816,7 +816,7 @@ class SelectionTool(EditorTool):
                         bt = self.editor.level.blockAt(sx, sy, sz)
                         if bt:
                             alpha = 0.2
-                    except (EnvironmentError, pymclevel.ChunkNotPresent):
+                    except (EnvironmentError, MCWorldLibrary.ChunkNotPresent):
                         pass
 
                     GL.glLineWidth(lineWidth)
@@ -972,7 +972,7 @@ class SelectionTool(EditorTool):
             if bt:
                 # #                textureCoords = materials[bt][0]
                 alpha = 0.12
-        except (EnvironmentError, pymclevel.ChunkNotPresent):
+        except (EnvironmentError, MCWorldLibrary.ChunkNotPresent):
             pass
 
         # cube sides

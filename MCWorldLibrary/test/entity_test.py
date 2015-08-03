@@ -1,4 +1,4 @@
-from pymclevel import fromFile
+from MCWorldLibrary import fromFile
 from templevel import TempLevel
 
 __author__ = 'Rio'

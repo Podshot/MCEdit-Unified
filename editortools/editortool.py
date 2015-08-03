@@ -1,7 +1,7 @@
 from OpenGL import GL
 import numpy
 from depths import DepthOffset
-from pymclevel import BoundingBox
+from MCWorldLibrary import BoundingBox
 from config import config
 from albow.translate import _
 

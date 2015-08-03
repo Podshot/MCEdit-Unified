@@ -1,10 +1,10 @@
 import itertools
 import os
 import unittest
-from pymclevel import mclevel
+from MCWorldLibrary import mclevel
 from templevel import TempLevel, mktemp
-from pymclevel.schematic import MCSchematic
-from pymclevel.box import BoundingBox
+from MCWorldLibrary.schematic import MCSchematic
+from MCWorldLibrary.box import BoundingBox
 
 __author__ = 'Rio'
 

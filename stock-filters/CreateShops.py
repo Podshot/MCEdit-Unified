@@ -16,7 +16,7 @@ the fancy stop sign. '''
 # 5) Added rotation so the villager *can rotate* when possible.
 # And a big thanks to Sethbling for creating this filter and all his other filters at http://sethbling.com/downloads/mcedit-filters/
 
-from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
+from MCWorldLibrary import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 
 displayName = "Create Shops"
 

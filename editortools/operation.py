@@ -5,12 +5,12 @@ import shutil
 import tempfile
 import albow
 from albow.translate import _
-from pymclevel import BoundingBox
+from MCWorldLibrary import BoundingBox
 import numpy
 from albow.root import Cancel
-import pymclevel
+import MCWorldLibrary
 from albow import showProgress
-from pymclevel.mclevelbase import exhaust
+from MCWorldLibrary.mclevelbase import exhaust
 
 undo_folder = os.path.join(tempfile.gettempdir(), "mcedit_undo", str(os.getpid()))
 
@@ -35,13 +35,13 @@ class Operation(object):
         self.level = level
 
     def extractUndo(self, level, box):
-        if isinstance(level, pymclevel.MCInfdevOldLevel):
+        if isinstance(level, MCWorldLibrary.MCInfdevOldLevel):
             return self.extractUndoChunks(level, box.chunkPositions, box.chunkCount)
         else:
             return self.extractUndoSchematic(level, box)
 
     def extractUndoChunks(self, level, chunks, chunkCount=None):
-        if not isinstance(level, pymclevel.MCInfdevOldLevel):
+        if not isinstance(level, MCWorldLibrary.MCInfdevOldLevel):
             chunks = numpy.array(list(chunks))
             mincx, mincz = numpy.min(chunks, 0)
             maxcx, maxcz = numpy.max(chunks, 0)
@@ -49,7 +49,7 @@ class Operation(object):
 
             return self.extractUndoSchematic(level, box)
 
-        undoLevel = pymclevel.MCInfdevOldLevel(mkundotemp(), create=True)
+        undoLevel = MCWorldLibrary.MCInfdevOldLevel(mkundotemp(), create=True)
         if not chunkCount:
             try:
                 chunkCount = len(chunks)

@@ -4,7 +4,7 @@ from directories import userCachePath, getDataDir
 import os
 import time
 import base64  # @UnusedImport
-from pymclevel.mclevelbase import PlayerNotFound
+from MCWorldLibrary.mclevelbase import PlayerNotFound
 import urllib
 from PIL import Image
 from urllib2 import HTTPError

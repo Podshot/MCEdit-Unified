@@ -180,7 +180,7 @@ from numpy import fromstring
 import os
 from pocket import PocketWorld
 from leveldbpocket import PocketLeveldbWorld
-from pymclevel import leveldbpocket
+from MCWorldLibrary import leveldbpocket
 from schematic import INVEditChest, MCSchematic, ZipSchematic
 import sys
 import traceback

@@ -3,9 +3,9 @@ from albow.dialogs import Dialog
 from editortools import thumbview
 from editortools import blockview
 from glbackground import GLBackground
-from pymclevel import materials
+from MCWorldLibrary import materials
 from albow.root import get_root
-from pymclevel.materials import Block
+from MCWorldLibrary.materials import Block
 from albow.translate import getLang
 
 #&# Prototype for blocks/items names

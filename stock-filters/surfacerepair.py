@@ -2,7 +2,7 @@ from numpy import zeros, array
 import itertools
 
 # naturally occuring materials
-from pymclevel.level import extractHeights
+from MCWorldLibrary.level import extractHeights
 
 blocktypes = [1, 2, 3, 7, 12, 13, 14, 15, 16, 56, 73, 74, 87, 88, 89]
 blockmask = zeros((256,), dtype='bool')

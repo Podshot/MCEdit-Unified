@@ -14,7 +14,7 @@ install_requires = [
 
 ext_modules = [Extension("_nbt", ["_nbt.pyx"])]
 
-setup(name='pymclevel',
+setup(name='MCWorldLibrary',
     version=version,
     description="Python library for reading Minecraft levels",
     long_description=open("./README.txt", "r").read(),
@@ -33,10 +33,10 @@ setup(name='pymclevel',
     keywords='minecraft',
     author='David Vierra',
     author_email='codewarrior0@gmail.com',
-    url='https://github.com/mcedit/pymclevel',
+    url='https://github.com/mcedit/MCWorldLibrary',
     license='MIT License',
-    package_dir={'pymclevel': '.'},
-    packages=["pymclevel"],
+    package_dir={'MCWorldLibrary': '.'},
+    packages=["MCWorldLibrary"],
     ext_modules=ext_modules,
     include_dirs=numpy.get_include(),
     include_package_data=True,
@@ -46,6 +46,6 @@ setup(name='pymclevel',
     entry_points="""
     # -*- Entry points: -*-
     [console_scripts]
-    mce.py=pymclevel.mce:main
+    mce.py=MCWorldLibrary.mce:main
     """,
 )

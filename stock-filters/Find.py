@@ -1,8 +1,8 @@
 # written by texelelf
 #-# Adding a result pages, and NBT edit stuff
-from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float, TAG_Long, \
+from MCWorldLibrary import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float, TAG_Long, \
     TAG_Byte_Array, TAG_Int_Array
-from pymclevel.box import BoundingBox
+from MCWorldLibrary.box import BoundingBox
 from albow import alert
 import ast
 

@@ -1,5 +1,5 @@
 from albow import Widget, Label, Button, TextFieldWrapped
-from pymclevel.nbt import *
+from MCWorldLibrary.nbt import *
 import release
 
 operations = {

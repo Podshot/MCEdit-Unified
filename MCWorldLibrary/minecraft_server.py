@@ -4,7 +4,7 @@ import logging
 import os
 from os.path import dirname, join, basename
 import random
-from pymclevel import PocketLeveldbWorld
+from MCWorldLibrary import PocketLeveldbWorld
 import re
 import shutil
 import subprocess
@@ -87,7 +87,7 @@ class ServerJarStorage(object):
                 f.write("""
 About this folder:
 
-This folder is used by MCEdit and pymclevel to store different versions of the
+This folder is used by MCEdit and MCWorldLibrary to store different versions of the
 Minecraft Server to use for terrain generation. It should have one or more
 subfolders, one for each version of the server. Each subfolder must hold at
 least one file named minecraft_server.jar, and the subfolder's name should
@@ -253,7 +253,7 @@ class MCServerChunkGenerator(object):
     store different versions of minecraft_server.jar in an application support
     folder.
 
-        from pymclevel import *
+        from MCWorldLibrary import *
 
     Example usage:
 
@@ -315,7 +315,7 @@ class MCServerChunkGenerator(object):
                 f.write("""
     About this folder:
 
-    This folder is used by MCEdit and pymclevel to cache levels during terrain
+    This folder is used by MCEdit and MCWorldLibrary to cache levels during terrain
     generation. Feel free to delete it for any reason.
     """)
 

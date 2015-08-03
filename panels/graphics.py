@@ -1,7 +1,7 @@
 import albow
 from albow.dialogs import Dialog
 import resource_packs
-import pymclevel
+import MCWorldLibrary
 from config import config
 
 
@@ -90,7 +90,7 @@ class GraphicsPanel(Dialog):
         self.shrink_wrap()
 
     def _reloadTextures(self, pack):
-        if hasattr(pymclevel.alphaMaterials, "terrainTexture"):
+        if hasattr(MCWorldLibrary.alphaMaterials, "terrainTexture"):
             self.mcedit.displayContext.loadTextures()
 
     def change_texture(self):

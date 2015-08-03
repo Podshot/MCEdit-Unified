@@ -1,8 +1,8 @@
 import unittest
 from templevel import TempLevel
 
-from pymclevel.box import BoundingBox
-from pymclevel.entity import Entity, TileEntity
+from MCWorldLibrary.box import BoundingBox
+from MCWorldLibrary.entity import Entity, TileEntity
 
 
 __author__ = 'Rio'

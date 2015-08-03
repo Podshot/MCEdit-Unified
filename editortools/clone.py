@@ -28,14 +28,14 @@ from glutils import gl
 from mceutils import setWindowCaption, alertException, drawFace
 import mcplatform
 from operation import Operation
-import pymclevel
-from pymclevel.box import Vector
+import MCWorldLibrary
+from MCWorldLibrary.box import Vector
 from renderer import PreviewRenderer
 import pygame
 
 from select import SelectionOperation
-from pymclevel.pocket import PocketWorld
-from pymclevel import block_copy, BoundingBox, BOParser
+from MCWorldLibrary.pocket import PocketWorld
+from MCWorldLibrary import block_copy, BoundingBox, BOParser
 
 import logging
 
@@ -128,7 +128,7 @@ class BlockCopyOperation(Operation):
 
         blocksToCopy = None
         if not (self.copyAir and self.copyWater):
-            blocksToCopy = range(pymclevel.materials.id_limit)
+            blocksToCopy = range(MCWorldLibrary.materials.id_limit)
             if not self.copyAir:
                 blocksToCopy.remove(0)
             if not self.copyWater:
@@ -231,7 +231,7 @@ class CloneToolPanel(Panel):
     useOffsetInput = True
 
     def transformEnable(self):
-        return not isinstance(self.tool.level, pymclevel.MCInfdevOldLevel)
+        return not isinstance(self.tool.level, MCWorldLibrary.MCInfdevOldLevel)
 
     def __init__(self, tool, editor, _parent=None):
         Panel.__init__(self)
@@ -588,7 +588,7 @@ class CloneTool(EditorTool):
             if part == 0:
                 newshape[i] = 1
         xyzshape = newshape[0], newshape[2], newshape[1]
-        newlevel = pymclevel.MCSchematic(xyzshape, mats=self.editor.level.materials)
+        newlevel = MCWorldLibrary.MCSchematic(xyzshape, mats=self.editor.level.materials)
 
         srcgrid = numpy.mgrid[0:roundedShape[0]:1.0 / factor, 0:roundedShape[1]:1.0 / factor,
                   0:roundedShape[2]:1.0 / factor].astype('uint')
@@ -677,7 +677,7 @@ class CloneTool(EditorTool):
 
     @property
     def canRotateLevel(self):
-        return not isinstance(self.level, (pymclevel.MCInfdevOldLevel, PocketWorld))
+        return not isinstance(self.level, (MCWorldLibrary.MCInfdevOldLevel, PocketWorld))
 
     def rotatedSelectionSize(self):
         if self.canRotateLevel:
@@ -1193,7 +1193,7 @@ class ConstructionTool(CloneTool):
         length = rows * 3 + 1
         height = 3
 
-        schematic = pymclevel.MCSchematic((width, height, length), mats=self.editor.level.materials)
+        schematic = MCWorldLibrary.MCSchematic((width, height, length), mats=self.editor.level.materials)
         schematic.Blocks[:, :, 0] = 1
 
         for i, block in enumerate(allBlocks):
@@ -1241,7 +1241,7 @@ class ConstructionTool(CloneTool):
         """ actually loads a schematic or a level """
 
         try:
-            level = pymclevel.fromFile(filename, readonly=True)
+            level = MCWorldLibrary.fromFile(filename, readonly=True)
             self.loadLevel(level)
         except Exception, e:
             logging.warn(u"Unable to import file %s : %s", filename, e)
@@ -1265,7 +1265,7 @@ class ConstructionTool(CloneTool):
 
             self.cloneCameraDistance = self.safeToolDistance()
 
-            self.chunkAlign = isinstance(self.level, pymclevel.MCInfdevOldLevel) and all(
+            self.chunkAlign = isinstance(self.level, MCWorldLibrary.MCInfdevOldLevel) and all(
                 b % 16 == 0 for b in self.level.bounds.size)
 
             self.setupPreview()

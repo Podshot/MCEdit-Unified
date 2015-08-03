@@ -14,7 +14,7 @@ import struct
 from infiniteworld import ChunkedLevelMixin, SessionLockLost, AnvilChunkData
 from level import LightedChunk
 from contextlib import contextmanager
-from pymclevel import entity, BoundingBox, Entity, TileEntity
+from MCWorldLibrary import entity, BoundingBox, Entity, TileEntity
 
 logger = logging.getLogger(__name__)
 
@@ -519,7 +519,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def deleteChunksInBox(self, box):
         """
         Deletes all chunks in a given box.
-        :param box pymclevel.box.BoundingBox
+        :param box MCWorldLibrary.box.BoundingBox
         :return: None
         """
         logger.info(u"Deleting {0} chunks in {1}".format((box.maxcx - box.mincx) * (box.maxcz - box.mincz),
@@ -549,7 +549,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def bounds(self):
         """
         Returns a boundingbox containing the entire level
-        :return: pymclevel.box.BoundingBox
+        :return: MCWorldLibrary.box.BoundingBox
         """
         if self._bounds is None:
             self._bounds = self._getWorldBounds()
@@ -692,7 +692,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def getTileEntitiesInBox(self, box):
         """
         Returns the Tile Entities in given box.
-        :param box: pymclevel.box.BoundingBox
+        :param box: MCWorldLibrary.box.BoundingBox
         :return: list of nbt.TAG_Compound
         """
         tileEntites = []
@@ -704,7 +704,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def getEntitiesInBox(self, box):
         """
         Returns the Entities in given box.
-        :param box: pymclevel.box.BoundingBox
+        :param box: MCWorldLibrary.box.BoundingBox
         :return: list of nbt.TAG_Compound
         """
         entities = []
@@ -716,7 +716,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def getTileTicksInBox(self, box):
         """
         Always returns None, as MCPE has no TileTicks.
-        :param box: pymclevel.box.BoundingBox
+        :param box: MCWorldLibrary.box.BoundingBox
         :return: list
         """
         return []
@@ -777,7 +777,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def removeEntitiesInBox(self, box):
         """
         Removes all entities in given box
-        :param box: pymclevel.box.BoundingBox
+        :param box: MCWorldLibrary.box.BoundingBox
         :return: int, count of entities removed
         """
         count = 0
@@ -790,7 +790,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def removeTileEntitiesInBox(self, box):
         """
         Removes all tile entities in given box
-        :param box: pymclevel.box.BoundingBox
+        :param box: MCWorldLibrary.box.BoundingBox
         :return: int, count of tile entities removed
         """
         count = 0
@@ -803,7 +803,7 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
     def removeTileTicksInBox(self, box):
         """
         MCPE doesn't have TileTicks, so this does nothing.
-        :param box: pymclevel.box.BoundingBox
+        :param box: MCWorldLibrary.box.BoundingBox
         :return: int, count of TileTicks removed.
         """
         return 0

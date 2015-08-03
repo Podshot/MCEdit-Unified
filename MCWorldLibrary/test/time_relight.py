@@ -1,5 +1,5 @@
-from pymclevel.infiniteworld import MCInfdevOldLevel
-from pymclevel import mclevel
+from MCWorldLibrary.infiniteworld import MCInfdevOldLevel
+from MCWorldLibrary import mclevel
 from timeit import timeit
 
 import templevel

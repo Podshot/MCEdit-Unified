@@ -29,8 +29,8 @@ from albow import ChoiceButton, showProgress, TextInputRow
 import mcplatform
 from operation import Operation
 from albow.dialogs import wrapped_label, alert, Dialog
-import pymclevel
-from pymclevel import BoundingBox
+import MCWorldLibrary
+from MCWorldLibrary import BoundingBox
 import urllib2
 import urllib
 import json
@@ -323,9 +323,9 @@ class FilterModuleOptions(Widget):
             elif isinstance(optionType, (int, float)):
                 rows.append(addNumField(self, optionName, oName, optionType))
 
-            elif optionType == "blocktype" or isinstance(optionType, pymclevel.materials.Block):
+            elif optionType == "blocktype" or isinstance(optionType, MCWorldLibrary.materials.Block):
                 blockButton = BlockButton(tool.editor.level.materials)
-                if isinstance(optionType, pymclevel.materials.Block):
+                if isinstance(optionType, MCWorldLibrary.materials.Block):
                     blockButton.blockInfo = optionType
 
                 row = Column((Label(oName, doNotTranslate=True), blockButton))
@@ -404,7 +404,7 @@ class FilterModuleOptions(Widget):
     def options(self):
         options = {}
         for k, v in self.optionDict.iteritems():
-            options[k] = v.get() if not isinstance(v.get(), pymclevel.materials.Block) else copy.copy(v.get())
+            options[k] = v.get() if not isinstance(v.get(), MCWorldLibrary.materials.Block) else copy.copy(v.get())
         if self.pages.current_page is not None:
             options["__page_index__"] = self.pages.pages.index(self.pages.current_page)
         return options
@@ -612,7 +612,7 @@ class FilterToolPanel(Panel):
             self.filterSelect.choices.append(macro_name)
             for entry in self.macro_steps:
                 for inp in entry["Inputs"].keys():
-                    if not isinstance(entry["Inputs"][inp], pymclevel.materials.Block):
+                    if not isinstance(entry["Inputs"][inp], MCWorldLibrary.materials.Block):
                         if not entry["Inputs"][inp] == "blocktype":
                             continue
                     _inp = entry["Inputs"][inp]

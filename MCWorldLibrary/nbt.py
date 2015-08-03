@@ -21,7 +21,7 @@ import collections
 import itertools
 import logging
 import struct
-from numpy import array, zeros, fromstring
+import numpy
 
 
 log = logging.getLogger(__name__)
@@ -167,7 +167,7 @@ class TAG_Byte_Array(TAG_Value):
 
     def __init__(self, value=None, name=""):
         if value is None:
-            value = zeros(0, self.dtype)
+            value = numpy.zeros(0, self.dtype)
         self.name = name
         self.value = value
 
@@ -177,7 +177,7 @@ class TAG_Byte_Array(TAG_Value):
     __slots__ = ('_name', '_value')
 
     def data_type(self, value):
-        return array(value, self.dtype)
+        return numpy.array(value, self.dtype)
 
     dtype = numpy.dtype('uint8')
 
@@ -186,7 +186,7 @@ class TAG_Byte_Array(TAG_Value):
         data = ctx.data[ctx.offset:]
         fmt = TAG_Int.BIG_ENDIAN_FMT if endianness == BIG_ENDIAN else TAG_Int.LITTLE_ENDIAN_FMT
         (string_len,) = fmt.unpack_from(data)
-        value = fromstring(data[4:string_len * cls.dtype.itemsize + 4], cls.dtype)
+        value = numpy.fromstring(data[4:string_len * cls.dtype.itemsize + 4], cls.dtype)
         self = cls(value)
         ctx.offset += string_len * cls.dtype.itemsize + 4
         return self
@@ -538,7 +538,7 @@ class load_ctx(object):
 
 def _load_buffer(buf, endianness):
     if isinstance(buf, str):
-        buf = fromstring(buf, 'uint8')
+        buf = numpy.fromstring(buf, 'uint8')
     data = buf
     if not len(data):
         raise NBTFormatError("Asked to load root tag of zero length")

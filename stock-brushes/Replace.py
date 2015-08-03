@@ -1,6 +1,6 @@
-from pymclevel.materials import Block
+from MCWorldLibrary.materials import Block
 from editortools.brush import createBrushMask, createTileEntities
-from pymclevel import block_fill
+from MCWorldLibrary import block_fill
 
 displayName = 'Replace'
 mainBlock = 'Block To Replace With'

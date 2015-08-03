@@ -189,7 +189,7 @@ class MCMaterials(object):
             f = pkg_resources.resource_stream(__name__, filename)
         except (ImportError, IOError), e:
             print "Cannot get resource_stream for ", filename, e
-            root = os.environ.get("PYMCLEVEL_YAML_ROOT", "pymclevel")  # fall back to cwd as last resort
+            root = os.environ.get("PYMCLEVEL_YAML_ROOT", "MCWorldLibrary")  # fall back to cwd as last resort
             path = join(root, filename)
 
             log.exception("Failed to read %s using pkg_resources. Trying %s instead." % (filename, path))

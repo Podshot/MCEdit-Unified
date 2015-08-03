@@ -9,7 +9,7 @@ import directories
 import os
 import mcplatform
 import numpy
-import pymclevel
+import MCWorldLibrary
 import resource_packs
 import glutils
 import mceutils
@@ -142,10 +142,10 @@ class GLDisplayContext(object):
             )
 
         textures = (
-            (pymclevel.classicMaterials, 'terrain-classic.png'),
-            (pymclevel.indevMaterials, 'terrain-classic.png'),
-            (pymclevel.alphaMaterials, resource_packs.packs.get_selected_resource_pack().terrain_path()),
-            (pymclevel.pocketMaterials, 'terrain-pocket.png')
+            (MCWorldLibrary.classicMaterials, 'terrain-classic.png'),
+            (MCWorldLibrary.indevMaterials, 'terrain-classic.png'),
+            (MCWorldLibrary.alphaMaterials, resource_packs.packs.get_selected_resource_pack().terrain_path()),
+            (MCWorldLibrary.pocketMaterials, 'terrain-pocket.png')
         )
 
         for mats, matFile in textures:

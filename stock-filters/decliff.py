@@ -6,7 +6,7 @@ http://www.minecraftforum.net/topic/13807-mcedit-minecraft-world-editor-compatib
 """
 from numpy import zeros, array
 import itertools
-from pymclevel import alphaMaterials
+from MCWorldLibrary import alphaMaterials
 
 am = alphaMaterials
 

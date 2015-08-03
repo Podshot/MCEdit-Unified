@@ -56,7 +56,7 @@ elif sys.platform == "linux2":
         sys.argv.remove('build_ext')
         sys.argv.append('build')
     curdir = os.getcwd()
-    destpath = '../pymclevel'
+    destpath = '../MCWorldLibrary'
     user_libdir = os.path.expanduser('~/.local/lib')
     if not os.path.exists(user_libdir):
         print 'Creating needed library folder: %s' % user_libdir

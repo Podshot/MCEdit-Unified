@@ -25,11 +25,11 @@ from glbackground import Panel
 from glutils import Texture
 from mceutils import alertException, setWindowCaption
 from operation import Operation
-from pymclevel.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
+from MCWorldLibrary.blockrotation import Roll, RotateLeft, FlipVertical, FlipEastWest, FlipNorthSouth
 
 from config import config
 from albow.root import get_root
-import pymclevel
+import MCWorldLibrary
 from numpy import array
 
 
@@ -167,8 +167,8 @@ class FillToolOptions(ToolOptions):
 
 class FillTool(EditorTool):
     toolIconName = "fill"
-    _blockInfo = pymclevel.alphaMaterials.Stone
-    replaceBlockInfo = pymclevel.alphaMaterials.Air
+    _blockInfo = MCWorldLibrary.alphaMaterials.Stone
+    replaceBlockInfo = MCWorldLibrary.alphaMaterials.Air
     tooltipText = "Fill and Replace\nRight-click for options"
     replacing = False
     color = (0.75, 1.0, 1.0, 0.7)

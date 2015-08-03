@@ -26,8 +26,8 @@ from glutils import DisplayList, gl
 from mceutils import alertException, setWindowCaption
 import mcplatform
 import directories
-import pymclevel
-from pymclevel.minecraft_server import MCServerChunkGenerator
+import MCWorldLibrary
+from MCWorldLibrary.minecraft_server import MCServerChunkGenerator
 from config import config
 
 from albow.dialogs import Dialog
@@ -107,7 +107,7 @@ class ChunkTool(EditorTool):
         return _("Click and drag to select chunks. Hold {0} to deselect chunks. Hold {1} to select chunks.").format(_(config.keys.deselectChunks.get()), _(config.keys.selectChunks.get()))
 
     def toolEnabled(self):
-        return isinstance(self.editor.level, pymclevel.ChunkedLevelMixin)
+        return isinstance(self.editor.level, MCWorldLibrary.ChunkedLevelMixin)
 
     _selectedChunks = None
     _displayList = None
@@ -314,7 +314,7 @@ class ChunkTool(EditorTool):
             try:
                 chunk = self.editor.level.getChunk(*cpos)
                 chunk.TerrainPopulated = False
-            except pymclevel.ChunkNotPresent:
+            except MCWorldLibrary.ChunkNotPresent:
                 continue
         self.editor.renderer.invalidateChunks(self.selectedChunks(), layers=["TerrainPopulated"])
 
@@ -324,7 +324,7 @@ class ChunkTool(EditorTool):
             try:
                 chunk = self.editor.level.getChunk(*cpos)
                 chunk.TerrainPopulated = True
-            except pymclevel.ChunkNotPresent:
+            except MCWorldLibrary.ChunkNotPresent:
                 continue
         self.editor.renderer.invalidateChunks(self.selectedChunks(), layers=["TerrainPopulated"])
 
@@ -452,7 +452,7 @@ def GeneratorPanel():
                     version = None
                 gen = MCServerChunkGenerator(version=version)
 
-                if isinstance(arg, pymclevel.BoundingBox):
+                if isinstance(arg, MCWorldLibrary.BoundingBox):
                     for i in gen.createLevelIter(level, arg, simulate=panel.simulate, worldType=useWorldType):
                         yield i
                 else:
@@ -462,8 +462,8 @@ def GeneratorPanel():
         else:
             def _createChunks():
                 height = panel.chunkHeight
-                grass = panel.grass and pymclevel.alphaMaterials.Grass.ID or pymclevel.alphaMaterials.Dirt.ID
-                if isinstance(arg, pymclevel.BoundingBox):
+                grass = panel.grass and MCWorldLibrary.alphaMaterials.Grass.ID or MCWorldLibrary.alphaMaterials.Dirt.ID
+                if isinstance(arg, MCWorldLibrary.BoundingBox):
                     chunks = list(arg.chunkPositions)
                 else:
                     chunks = arg
@@ -491,10 +491,10 @@ def GeneratorPanel():
                             grassHeight = max(0, height - 1)
 
                             ch.Blocks[:, :, grassHeight] = grass
-                            ch.Blocks[:, :, stoneHeight:grassHeight] = pymclevel.alphaMaterials.Dirt.ID
-                            ch.Blocks[:, :, :stoneHeight] = pymclevel.alphaMaterials.Stone.ID
+                            ch.Blocks[:, :, stoneHeight:grassHeight] = MCWorldLibrary.alphaMaterials.Dirt.ID
+                            ch.Blocks[:, :, :stoneHeight] = MCWorldLibrary.alphaMaterials.Stone.ID
 
-                            ch.Blocks[:, :, 0] = pymclevel.alphaMaterials.Bedrock.ID
+                            ch.Blocks[:, :, 0] = MCWorldLibrary.alphaMaterials.Bedrock.ID
                             ch.SkyLight[:, :, height:] = maxskylight
                             if maxskylight:
                                 ch.HeightMap[:] = height

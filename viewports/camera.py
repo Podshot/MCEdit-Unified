@@ -16,7 +16,7 @@ import logging
 import glutils
 import mceutils
 import itertools
-import pymclevel
+import MCWorldLibrary
 
 from math import isnan
 from datetime import datetime, timedelta
@@ -35,7 +35,7 @@ from pygame import mouse
 from depths import DepthOffset
 from editortools.operation import Operation
 from glutils import gl
-from pymclevel.nbt import TAG_String
+from MCWorldLibrary.nbt import TAG_String
 from editortools.nbtexplorer import SlotEditor
 
 class SignEditOperation(Operation):
@@ -56,11 +56,11 @@ class SignEditOperation(Operation):
         def undo(self):
             self.redoBackupEntityTag = copy.deepcopy(self.tileEntity)
             self.level.addTileEntity(self.undoBackupEntityTag)
-            return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
+            return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(self.tileEntity), (1, 1, 1))
 
         def redo(self):
             self.level.addTileEntity(self.redoBackupEntityTag)
-            return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
+            return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(self.tileEntity), (1, 1, 1))
 
 class CameraViewport(GLViewport):
     anchor = "tlbr"
@@ -364,7 +364,7 @@ class CameraViewport(GLViewport):
                     if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
                         for i in xrange(1,5):
                             if len(te["Text"+str(i)].value) > 32767:
-                                te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
+                                te["Text"+str(i)] = MCWorldLibrary.TAG_String(str(te["Text"+str(i)].value)[:32767])
                                 changed = True
                 if changed:
                     response = None
@@ -408,20 +408,20 @@ class CameraViewport(GLViewport):
 
         try:
             block = self.editor.level.blockAt(*intProjectedPoint)
-        except (EnvironmentError, pymclevel.ChunkNotPresent):
+        except (EnvironmentError, MCWorldLibrary.ChunkNotPresent):
             return intProjectedPoint, d
 
-        if block == pymclevel.alphaMaterials.SnowLayer.ID:
+        if block == MCWorldLibrary.alphaMaterials.SnowLayer.ID:
             potentialOffsets.append((0, 1, 0))
         else:
             # discard any faces that aren't likely to be exposed
-            for face, offsets in pymclevel.faceDirections:
+            for face, offsets in MCWorldLibrary.faceDirections:
                 point = map(lambda a, b: a + b, intProjectedPoint, offsets)
                 try:
                     neighborBlock = self.editor.level.blockAt(*point)
                     if block != neighborBlock:
                         potentialOffsets.append(offsets)
-                except (EnvironmentError, pymclevel.ChunkNotPresent):
+                except (EnvironmentError, MCWorldLibrary.ChunkNotPresent):
                     pass
 
         # check each component of the face vector to see if that face is exposed
@@ -483,7 +483,7 @@ class CameraViewport(GLViewport):
         else:
             self.mouseLookOff()
 
-    mobs = pymclevel.Entity.monsters + ["[Custom]"]
+    mobs = MCWorldLibrary.Entity.monsters + ["[Custom]"]
 
     @mceutils.alertException
     def editMonsterSpawner(self, point):
@@ -493,13 +493,13 @@ class CameraViewport(GLViewport):
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("MobSpawner")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
-            tileEntity["Delay"] = pymclevel.TAG_Short(120)
-            tileEntity["EntityId"] = pymclevel.TAG_String(mobs[0])
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("MobSpawner")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
+            tileEntity["Delay"] = MCWorldLibrary.TAG_Short(120)
+            tileEntity["EntityId"] = MCWorldLibrary.TAG_String(mobs[0])
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -570,14 +570,14 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntity)
                 self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
             def redo(self):
                 self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
         if id != selectedMob():
-            tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+            tileEntity["EntityId"] = MCWorldLibrary.TAG_String(selectedMob())
             op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
@@ -605,11 +605,11 @@ class CameraViewport(GLViewport):
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("RecordPlayer")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("RecordPlayer")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -685,20 +685,20 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntity)
                 self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
             def redo(self):
                 self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
         if id != selectedDisc(discTable.selectedIndex):
             if "RecordItem" in tileEntity:
                 del tileEntity["RecordItem"]
             if discTable.selectedIndex == 0:
-                tileEntity["Record"] = pymclevel.TAG_Int(0)
+                tileEntity["Record"] = MCWorldLibrary.TAG_Int(0)
                 self.editor.level.setBlockDataAt(tileEntity["x"].value, tileEntity["y"].value, tileEntity["z"].value, 0)
             else:
-                tileEntity["Record"] = pymclevel.TAG_Int(discTable.selectedIndex + 2255)
+                tileEntity["Record"] = MCWorldLibrary.TAG_Int(discTable.selectedIndex + 2255)
                 self.editor.level.setBlockDataAt(tileEntity["x"].value, tileEntity["y"].value, tileEntity["z"].value, 1)
             op = JukeboxEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
@@ -723,12 +723,12 @@ class CameraViewport(GLViewport):
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("MobSpawner")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
-            tileEntity["note"] = pymclevel.TAG_Byte(0)
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("MobSpawner")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
+            tileEntity["note"] = MCWorldLibrary.TAG_Byte(0)
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -785,14 +785,14 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntity)
                 self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
             def redo(self):
                 self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
         if id != noteTable.selectedIndex:
-            tileEntity["note"] = pymclevel.TAG_Byte(noteTable.selectedIndex)
+            tileEntity["note"] = MCWorldLibrary.TAG_Byte(noteTable.selectedIndex)
             op = NoteBlockEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:
@@ -807,13 +807,13 @@ class CameraViewport(GLViewport):
         linekeys = ["Text" + str(i) for i in range(1, 5)]
 
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("Sign")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("Sign")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
             for l in linekeys:
-                tileEntity[l] = pymclevel.TAG_String("")
+                tileEntity[l] = MCWorldLibrary.TAG_String("")
             self.editor.level.addTileEntity(tileEntity)
 
         panel = Dialog()
@@ -869,8 +869,8 @@ class CameraViewport(GLViewport):
             for l, f in zip(linekeys, lineFields):
                 oldText = '"{}"'.format(tileEntity[l])
                 # Double quotes handling
-#                 tileEntity[l] = pymclevel.TAG_String(f.value[:255])
-                tileEntity[l] = pymclevel.TAG_String(u'"%s"'%f.value[:255].replace('"', '\\"'))
+#                 tileEntity[l] = MCWorldLibrary.TAG_String(f.value[:255])
+                tileEntity[l] = MCWorldLibrary.TAG_String(u'"%s"'%f.value[:255].replace('"', '\\"'))
                 if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
@@ -911,12 +911,12 @@ class CameraViewport(GLViewport):
         }
 
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("Skull")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
-            tileEntity["SkullType"] = pymclevel.TAG_Byte(3)
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("Skull")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
+            tileEntity["SkullType"] = MCWorldLibrary.TAG_Byte(3)
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Skull Data")
@@ -952,16 +952,16 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntity)
                 self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
             def redo(self):
                 self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateSkull():
             if usernameField.value != oldUserName or oldSelectedSkull != skullMenu.selectedChoice:
-                tileEntity["ExtraType"] = pymclevel.TAG_String(usernameField.value)
-                tileEntity["SkullType"] = pymclevel.TAG_Byte(skullTypes[skullMenu.selectedChoice])
+                tileEntity["ExtraType"] = MCWorldLibrary.TAG_String(usernameField.value)
+                tileEntity["SkullType"] = MCWorldLibrary.TAG_Byte(skullTypes[skullMenu.selectedChoice])
                 if "Owner" in tileEntity:
                     del tileEntity["Owner"]
                 op = SkullEditOperation(self.editor, self.editor.level)
@@ -988,14 +988,14 @@ class CameraViewport(GLViewport):
         undoBackupEntityTag = copy.deepcopy(tileEntity)
 
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("Control")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
-            tileEntity["Command"] = pymclevel.TAG_String()
-            tileEntity["CustomName"] = pymclevel.TAG_String("@")
-            tileEntity["TrackOutput"] = pymclevel.TAG_Byte(0)
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("Control")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
+            tileEntity["Command"] = MCWorldLibrary.TAG_String()
+            tileEntity["CustomName"] = MCWorldLibrary.TAG_String("@")
+            tileEntity["TrackOutput"] = MCWorldLibrary.TAG_Byte(0)
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Command Block")
@@ -1033,17 +1033,17 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntity)
                 self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
             def redo(self):
                 self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateCommandBlock():
             if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value:
-                tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
-                tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
-                tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
+                tileEntity["Command"] = MCWorldLibrary.TAG_String(commandField.value)
+                tileEntity["TrackOutput"] = MCWorldLibrary.TAG_Byte(trackOutput.value)
+                tileEntity["CustomName"] = MCWorldLibrary.TAG_String(nameField.value)
 
                 op = CommandBlockEditOperation(self.editor, self.editor.level)
                 self.editor.addOperation(op)
@@ -1068,8 +1068,8 @@ class CameraViewport(GLViewport):
     def editContainer(self, point, containerID):
         tileEntityTag = self.editor.level.tileEntityAt(*point)
         if tileEntityTag is None:
-            tileEntityTag = pymclevel.TileEntity.Create(containerID)
-            pymclevel.TileEntity.setpos(tileEntityTag, point)
+            tileEntityTag = MCWorldLibrary.TileEntity.Create(containerID)
+            MCWorldLibrary.TileEntity.setpos(tileEntityTag, point)
             self.editor.level.addTileEntity(tileEntityTag)
 
         if tileEntityTag["id"].value != containerID:
@@ -1098,10 +1098,10 @@ class CameraViewport(GLViewport):
             id = itemProp("id")
             Damage = itemProp("Damage")
             Count = itemProp("Count")
-            itemLimit = pymclevel.TileEntity.maxItems.get(containerID, 26)
+            itemLimit = MCWorldLibrary.TileEntity.maxItems.get(containerID, 26)
 
         def slotFormat(slot):
-            slotNames = pymclevel.TileEntity.slotNames.get(containerID)
+            slotNames = MCWorldLibrary.TileEntity.slotNames.get(containerID)
             if slotNames:
                 return slotNames.get(slot, slot)
             return slot
@@ -1118,8 +1118,8 @@ class CameraViewport(GLViewport):
 
         def itemName(id, damage):
             try:
-                return pymclevel.items.items.findItem(id, damage).name
-            except pymclevel.items.ItemNotFound:
+                return MCWorldLibrary.items.items.findItem(id, damage).name
+            except MCWorldLibrary.items.ItemNotFound:
                 return "Unknown Item"
 
         def getRowData(i):
@@ -1156,7 +1156,7 @@ class CameraViewport(GLViewport):
                        (chestWidget.Slot, chestWidget.id or u"", chestWidget.Count, chestWidget.Damage)
                        ).present()
 
-        maxSlot = pymclevel.TileEntity.maxItems.get(tileEntityTag["id"].value, 27) - 1
+        maxSlot = MCWorldLibrary.TileEntity.maxItems.get(tileEntityTag["id"].value, 27) - 1
         fieldRow = (
             IntInputRow("Slot: ", ref=AttrRef(chestWidget, 'Slot'), min=0, max=maxSlot),
             BasicTextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
@@ -1265,11 +1265,11 @@ class CameraViewport(GLViewport):
                     slot += 1
             if slot >= chestWidget.itemLimit:
                 return
-            item = pymclevel.TAG_Compound()
-            item["id"] = pymclevel.TAG_String("minecraft:")
-            item["Damage"] = pymclevel.TAG_Short(0)
-            item["Slot"] = pymclevel.TAG_Byte(slot)
-            item["Count"] = pymclevel.TAG_Byte(1)
+            item = MCWorldLibrary.TAG_Compound()
+            item["id"] = MCWorldLibrary.TAG_String("minecraft:")
+            item["Damage"] = MCWorldLibrary.TAG_Short(0)
+            item["Slot"] = MCWorldLibrary.TAG_Byte(slot)
+            item["Count"] = MCWorldLibrary.TAG_Byte(1)
             tileEntityTag["Items"].append(item)
 
         addItemButton = Button("New Item (1.7+)", action=addItem, enable=addEnable)
@@ -1304,11 +1304,11 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntityTag)
                 level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntityTag), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntityTag), (1, 1, 1))
 
             def redo(self):
                 level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntityTag), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntityTag), (1, 1, 1))
 
         if chestWidget.dirty:
             op = ChestEditOperation(self.editor, self.editor.level)
@@ -1322,13 +1322,13 @@ class CameraViewport(GLViewport):
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("FlowerPot")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
-            tileEntity["Item"] = pymclevel.TAG_String("")
-            tileEntity["Data"] = pymclevel.TAG_Int(0)
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("FlowerPot")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
+            tileEntity["Item"] = MCWorldLibrary.TAG_String("")
+            tileEntity["Data"] = MCWorldLibrary.TAG_Int(0)
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Flower Pot")
@@ -1354,16 +1354,16 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntity)
                 self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
             def redo(self):
                 self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateFlowerPot():
             if oldData != Data.value or oldItem != Item.value:
-                tileEntity["Item"] = pymclevel.TAG_String(Item.value)
-                tileEntity["Data"] = pymclevel.TAG_Int(Data.value)
+                tileEntity["Item"] = MCWorldLibrary.TAG_String(Item.value)
+                tileEntity["Data"] = MCWorldLibrary.TAG_Int(Data.value)
 
                 op = FlowerPotEditOperation(self.editor, self.editor.level)
                 self.editor.addOperation(op)
@@ -1386,12 +1386,12 @@ class CameraViewport(GLViewport):
         tileEntity = self.editor.level.tileEntityAt(*point)
         undoBackupEntityTag = copy.deepcopy(tileEntity)
         if not tileEntity:
-            tileEntity = pymclevel.TAG_Compound()
-            tileEntity["id"] = pymclevel.TAG_String("EnchantTable")
-            tileEntity["x"] = pymclevel.TAG_Int(point[0])
-            tileEntity["y"] = pymclevel.TAG_Int(point[1])
-            tileEntity["z"] = pymclevel.TAG_Int(point[2])
-            tileEntity["CustomName"] = pymclevel.TAG_String("")
+            tileEntity = MCWorldLibrary.TAG_Compound()
+            tileEntity["id"] = MCWorldLibrary.TAG_String("EnchantTable")
+            tileEntity["x"] = MCWorldLibrary.TAG_Int(point[0])
+            tileEntity["y"] = MCWorldLibrary.TAG_Int(point[1])
+            tileEntity["z"] = MCWorldLibrary.TAG_Int(point[2])
+            tileEntity["CustomName"] = MCWorldLibrary.TAG_String("")
             self.editor.level.addTileEntity(tileEntity)
 
         titleLabel = Label("Edit Enchantment Table")
@@ -1419,15 +1419,15 @@ class CameraViewport(GLViewport):
             def undo(self):
                 self.redoBackupEntityTag = copy.deepcopy(tileEntity)
                 self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
             def redo(self):
                 self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
+                return MCWorldLibrary.BoundingBox(MCWorldLibrary.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateEnchantmentTable():
             if oldName != name.value:
-                tileEntity["CustomName"] = pymclevel.TAG_String(name.value)
+                tileEntity["CustomName"] = MCWorldLibrary.TAG_String(name.value)
 
                 op = EnchantmentTableEditOperation(self.editor, self.editor.level)
                 self.editor.addOperation(op)
@@ -1479,15 +1479,15 @@ class CameraViewport(GLViewport):
                         block = self.editor.level.blockAt(*point)
                         if distance2(point, self.cameraPosition) > 4:
                             blockEditors = {
-                                pymclevel.alphaMaterials.MonsterSpawner.ID: self.editMonsterSpawner,
-                                pymclevel.alphaMaterials.Sign.ID: self.editSign,
-                                pymclevel.alphaMaterials.WallSign.ID: self.editSign,
-                                pymclevel.alphaMaterials.MobHead.ID: self.editSkull,
-                                pymclevel.alphaMaterials.CommandBlock.ID: self.editCommandBlock,
-                                pymclevel.alphaMaterials.Jukebox.ID: self.editJukebox,
-                                pymclevel.alphaMaterials.NoteBlock.ID: self.editNoteBlock,
-                                pymclevel.alphaMaterials.FlowerPot.ID: self.editFlowerPot,
-                                pymclevel.alphaMaterials.EnchantmentTable.ID: self.editEnchantmentTable
+                                MCWorldLibrary.alphaMaterials.MonsterSpawner.ID: self.editMonsterSpawner,
+                                MCWorldLibrary.alphaMaterials.Sign.ID: self.editSign,
+                                MCWorldLibrary.alphaMaterials.WallSign.ID: self.editSign,
+                                MCWorldLibrary.alphaMaterials.MobHead.ID: self.editSkull,
+                                MCWorldLibrary.alphaMaterials.CommandBlock.ID: self.editCommandBlock,
+                                MCWorldLibrary.alphaMaterials.Jukebox.ID: self.editJukebox,
+                                MCWorldLibrary.alphaMaterials.NoteBlock.ID: self.editNoteBlock,
+                                MCWorldLibrary.alphaMaterials.FlowerPot.ID: self.editFlowerPot,
+                                MCWorldLibrary.alphaMaterials.EnchantmentTable.ID: self.editEnchantmentTable
                             }
                             edit = blockEditors.get(block)
                             if edit:
@@ -1499,7 +1499,7 @@ class CameraViewport(GLViewport):
                                 if te and "Items" in te and "id" in te:
                                     self.editor.endSelection()
                                     self.editContainer(point, te["id"].value)
-                    except (EnvironmentError, pymclevel.ChunkNotPresent):
+                    except (EnvironmentError, MCWorldLibrary.ChunkNotPresent):
                         pass
 
     def leftClickUp(self, evt):
@@ -1581,7 +1581,7 @@ class CameraViewport(GLViewport):
         def showCommands():
             try:
                 block = self.editor.level.blockAt(*point)
-                if block == pymclevel.alphaMaterials.CommandBlock.ID:
+                if block == MCWorldLibrary.alphaMaterials.CommandBlock.ID:
                     self.hoveringCommandBlock[0] = True
                     tileEntity = self.editor.level.tileEntityAt(*point)
                     if tileEntity:
@@ -1592,7 +1592,7 @@ class CameraViewport(GLViewport):
                         self.hoveringCommandBlock[0] = False
                 else:
                     self.hoveringCommandBlock[0] = False
-            except (EnvironmentError, pymclevel.ChunkNotPresent):
+            except (EnvironmentError, MCWorldLibrary.ChunkNotPresent):
                 pass
 
         self.showCommands = showCommands
@@ -1837,7 +1837,7 @@ class CameraViewport(GLViewport):
         if self.editor.level:
             try:
                 self.updateBlockFaceUnderCursor()
-            except (EnvironmentError, pymclevel.ChunkNotPresent) as e:
+            except (EnvironmentError, MCWorldLibrary.ChunkNotPresent) as e:
                 logging.debug("Updating cursor block: %s", e)
                 self.blockFaceUnderCursor = (None, None)
 

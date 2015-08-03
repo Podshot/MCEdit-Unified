@@ -1,5 +1,5 @@
 from editortools.brush import createBrushMask, createTileEntities
-from pymclevel.level import extractHeights
+from MCWorldLibrary.level import extractHeights
 import itertools
 
 displayName = "Topsoil"

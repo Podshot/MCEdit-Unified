@@ -2,13 +2,13 @@
 # please give credit to SethBling.
 # http://youtube.com/SethBling
 
-from pymclevel import TAG_List
-from pymclevel import TAG_Byte
-from pymclevel import TAG_Int
-from pymclevel import TAG_Float
-from pymclevel import TAG_Short
-from pymclevel import TAG_Double
-from pymclevel import TAG_String
+from MCWorldLibrary import TAG_List
+from MCWorldLibrary import TAG_Byte
+from MCWorldLibrary import TAG_Int
+from MCWorldLibrary import TAG_Float
+from MCWorldLibrary import TAG_Short
+from MCWorldLibrary import TAG_Double
+from MCWorldLibrary import TAG_String
 
 displayName = "Change Mob Properties"
 

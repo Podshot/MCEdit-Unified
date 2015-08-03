@@ -1,11 +1,11 @@
 # !/usr/bin/env python
-import pymclevel.mclevelbase
-import pymclevel.mclevel
-import pymclevel.materials
-import pymclevel.infiniteworld
+import MCWorldLibrary.mclevelbase
+import MCWorldLibrary.mclevel
+import MCWorldLibrary.materials
+import MCWorldLibrary.infiniteworld
 import sys
 import os
-from pymclevel.box import BoundingBox, Vector
+from MCWorldLibrary.box import BoundingBox, Vector
 import numpy
 from numpy import zeros, bincount
 import logging
@@ -17,10 +17,10 @@ import codecs
 
 from math import floor
 
-mclevelbase = pymclevel.mclevelbase
-mclevel = pymclevel.mclevel
-materials = pymclevel.materials
-infiniteworld = pymclevel.infiniteworld
+mclevelbase = MCWorldLibrary.mclevelbase
+mclevel = MCWorldLibrary.mclevel
+materials = MCWorldLibrary.materials
+infiniteworld = MCWorldLibrary.infiniteworld
 
 try:
     import readline  # if available, used by raw_input()
@@ -759,7 +759,7 @@ class mce(object):
         [North/South, Down/Up, East/West]
 
     """
-        from pymclevel.items import items
+        from MCWorldLibrary.items import items
 
         if len(command):
             filename = command[0]

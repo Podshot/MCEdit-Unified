@@ -20,7 +20,7 @@ from datetime import datetime, timedelta
 from albow.dialogs import wrapped_label
 from albow.translate import _
 
-from pymclevel.box import Vector
+from MCWorldLibrary.box import Vector
 
 #-# This need to be changed. We need albow.translate in the config module.
 #-# he solution can be a set of functions wich let us define the needed MCEdit 'config' data

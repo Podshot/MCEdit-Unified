@@ -47,10 +47,10 @@ from numpy import newaxis
 import numpy
 from operation import Operation, mkundotemp
 from os.path import basename
-from pymclevel import block_fill, BoundingBox, materials, blockrotation
-import pymclevel
-from pymclevel.mclevelbase import exhaust
-from pymclevel.entity import TileEntity
+from MCWorldLibrary import block_fill, BoundingBox, materials, blockrotation
+import MCWorldLibrary
+from MCWorldLibrary.mclevelbase import exhaust
+from MCWorldLibrary.entity import TileEntity
 import random
 from __builtin__ import __import__
 from locale import getdefaultlocale
@@ -842,7 +842,7 @@ class BrushTool(CloneTool):
         key = getattr(self.brushMode, 'mainBlock', 'Block')
         blockInfo = self.options[key]
 
-        class FakeLevel(pymclevel.MCLevel):
+        class FakeLevel(MCWorldLibrary.MCLevel):
             filename = "Fake Level"
             materials = self.editor.level.materials
 
@@ -857,7 +857,7 @@ class BrushTool(CloneTool):
                 if (cx, cz) in self.chunkCache:
                     return self.chunkCache[cx, cz]
 
-                class FakeBrushChunk(pymclevel.level.FakeChunk):
+                class FakeBrushChunk(MCWorldLibrary.level.FakeChunk):
                     Entities = []
                     TileEntities = []
 
@@ -1045,7 +1045,7 @@ class BrushTool(CloneTool):
         clipFilename = mcplatform.askOpenFile(title='Choose a schematic or level...', schematics=True)
         if clipFilename:
             try:
-                self.loadLevel(pymclevel.fromFile(clipFilename, readonly=True))
+                self.loadLevel(MCWorldLibrary.fromFile(clipFilename, readonly=True))
             except Exception:
                 alert("Failed to load file %s" % clipFilename)
                 self.brushMode = "Fill"

@@ -23,7 +23,7 @@ var/
 ENV/
 leveldb_mcpe
 scripts-pyinstaller
-pymclevel/_nbt.html
+MCWorldLibrary/_nbt.html
 pyinstaller-develop
 
 *.egg-info/
@@ -76,7 +76,8 @@ Thumbs.db
 
 # MCEdit stuff
 filters.json
-pymclevel/.git/
+MCWorldLibrary/.git/
+MCWorldLibrary/test/testfiles/*
 *.lnk
 Filters/
 Schematics/

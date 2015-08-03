@@ -1,5 +1,5 @@
 import ConfigParser
-from pymclevel import schematic, materials
+from MCWorldLibrary import schematic, materials
 from entity import TileEntity
 import nbt
 import logging

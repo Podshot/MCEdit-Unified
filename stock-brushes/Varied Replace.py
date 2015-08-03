@@ -1,7 +1,7 @@
-from pymclevel.materials import Block
+from MCWorldLibrary.materials import Block
 from editortools.brush import createBrushMask, createTileEntities
 from albow import alert
-from pymclevel import block_fill
+from MCWorldLibrary import block_fill
 import numpy
 import random
 

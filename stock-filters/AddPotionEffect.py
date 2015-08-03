@@ -2,10 +2,10 @@
 # please give credit to SethBling.
 # http://youtube.com/SethBling
 
-from pymclevel import TAG_List
-from pymclevel import TAG_Byte
-from pymclevel import TAG_Int
-from pymclevel import TAG_Compound
+from MCWorldLibrary import TAG_List
+from MCWorldLibrary import TAG_Byte
+from MCWorldLibrary import TAG_Int
+from MCWorldLibrary import TAG_Compound
 
 displayName = "Add Potion Effect to Mobs"
 

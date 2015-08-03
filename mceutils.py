@@ -36,7 +36,7 @@ from OpenGL import GL
 import os
 import png
 from pygame import display
-import pymclevel
+import MCWorldLibrary
 import json
 import hashlib
 import shutil
@@ -56,7 +56,7 @@ def alertException(func):
             return func(*args, **kw)
         except root.Cancel:
             alert("Canceled.")
-        except pymclevel.infiniteworld.SessionLockLost as e:
+        except MCWorldLibrary.infiniteworld.SessionLockLost as e:
             alert(e.message + _("\n\nYour changes cannot be saved."))
         except Exception, e:
             logging.exception("Exception:")
@@ -68,7 +68,7 @@ def drawFace(box, face, type=GL.GL_QUADS):
     x, y, z, = box.origin
     x2, y2, z2 = box.maximum
 
-    if face == pymclevel.faces.FaceXDecreasing:
+    if face == MCWorldLibrary.faces.FaceXDecreasing:
 
         faceVertices = numpy.array(
             (x, y2, z2,
@@ -77,7 +77,7 @@ def drawFace(box, face, type=GL.GL_QUADS):
              x, y, z2,
             ), dtype='f4')
 
-    elif face == pymclevel.faces.FaceXIncreasing:
+    elif face == MCWorldLibrary.faces.FaceXIncreasing:
 
         faceVertices = numpy.array(
             (x2, y, z2,
@@ -86,7 +86,7 @@ def drawFace(box, face, type=GL.GL_QUADS):
              x2, y2, z2,
             ), dtype='f4')
 
-    elif face == pymclevel.faces.FaceYDecreasing:
+    elif face == MCWorldLibrary.faces.FaceYDecreasing:
         faceVertices = numpy.array(
             (x2, y, z2,
              x, y, z2,
@@ -94,7 +94,7 @@ def drawFace(box, face, type=GL.GL_QUADS):
              x2, y, z,
             ), dtype='f4')
 
-    elif face == pymclevel.faces.FaceYIncreasing:
+    elif face == MCWorldLibrary.faces.FaceYIncreasing:
         faceVertices = numpy.array(
             (x2, y2, z,
              x, y2, z,
@@ -102,7 +102,7 @@ def drawFace(box, face, type=GL.GL_QUADS):
              x2, y2, z2,
             ), dtype='f4')
 
-    elif face == pymclevel.faces.FaceZDecreasing:
+    elif face == MCWorldLibrary.faces.FaceZDecreasing:
         faceVertices = numpy.array(
             (x, y, z,
              x, y2, z,
@@ -110,7 +110,7 @@ def drawFace(box, face, type=GL.GL_QUADS):
              x2, y, z,
             ), dtype='f4')
 
-    elif face == pymclevel.faces.FaceZIncreasing:
+    elif face == MCWorldLibrary.faces.FaceZIncreasing:
         faceVertices = numpy.array(
             (x2, y, z2,
              x2, y2, z2,

@@ -1,7 +1,7 @@
 from numpy import zeros
 import itertools
-from pymclevel import alphaMaterials
-from pymclevel.level import extractHeights
+from MCWorldLibrary import alphaMaterials
+from MCWorldLibrary.level import extractHeights
 
 am = alphaMaterials
 

@@ -4,7 +4,7 @@ import time
 import traceback
 import unittest
 import numpy
-from pymclevel import nbt
+from MCWorldLibrary import nbt
 from templevel import TempLevel
 
 __author__ = 'Rio'

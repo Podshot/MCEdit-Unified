@@ -1,5 +1,5 @@
 import ast
-from pymclevel.box import BoundingBox
+from MCWorldLibrary.box import BoundingBox
 
 inputs = [(("Entities", True),
            ("Tile Entities", True),

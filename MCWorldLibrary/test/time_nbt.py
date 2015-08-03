@@ -2,7 +2,7 @@ from StringIO import StringIO
 
 __author__ = 'Rio'
 
-import pymclevel.nbt as nbt
+import MCWorldLibrary.nbt as nbt
 
 from timeit import timeit
 

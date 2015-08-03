@@ -359,12 +359,12 @@ def getCacheDir():
     if sys.platform == "win32":
         return genericSupportDir
     elif sys.platform == "darwin":
-        return os.path.expanduser("~/Library/Application Support/pymclevel")
+        return os.path.expanduser("~/Library/Application Support/MCWorldLibrary")
     else:
         try:
             return genericSupportDir
         except:
-            return os.path.expanduser("~/.pymclevel")
+            return os.path.expanduser("~/.MCWorldLibrary")
 
 if sys.platform == "darwin":
     configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
@@ -374,7 +374,7 @@ if sys.platform == "darwin":
     if not os.path.exists(getCacheDir()):
         os.makedirs(getCacheDir())
 
-# Create pymclevel folder as needed
+# Create MCWorldLibrary folder as needed
 if not os.path.exists(getCacheDir()):
     os.makedirs(getCacheDir())
 

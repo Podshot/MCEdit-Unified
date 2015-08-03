@@ -131,13 +131,13 @@ if mcplatform.hasXlibDisplay:
 #-#
 from mcplatform import platform_open
 import numpy
-from pymclevel.minecraft_server import ServerJarStorage
+from MCWorldLibrary.minecraft_server import ServerJarStorage
 
 import os
 import os.path
 import pygame
 from pygame import display, rect
-import pymclevel
+import MCWorldLibrary
 import release
 import shutil
 import sys
@@ -202,8 +202,8 @@ class MCEdit(GLViewport):
         if len(sys.argv) > 1:
             for arg in sys.argv[1:]:
                 f = arg.decode(sys.getfilesystemencoding())
-                if os.path.isdir(os.path.join(pymclevel.minecraftSaveFileDir, f)):
-                    f = os.path.join(pymclevel.minecraftSaveFileDir, f)
+                if os.path.isdir(os.path.join(MCWorldLibrary.minecraftSaveFileDir, f)):
+                    f = os.path.join(MCWorldLibrary.minecraftSaveFileDir, f)
                     self.droppedLevel = f
                     break
                 if os.path.exists(f):
@@ -520,7 +520,7 @@ class MCEdit(GLViewport):
 
         rootwidget.add(mcedit)
         rootwidget.focus_switch = mcedit
-        if 0 == len(pymclevel.alphaMaterials.yamlDatas):
+        if 0 == len(MCWorldLibrary.alphaMaterials.yamlDatas):
             albow.alert("Failed to load minecraft.yaml. Check the console window for details.")
 
         if mcedit.droppedLevel:

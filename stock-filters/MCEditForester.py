@@ -5,7 +5,7 @@
    Needs the dummy mcInterface for MCEdit, and the default Forester script.
 '''
 
-from pymclevel.materials import alphaMaterials
+from MCWorldLibrary.materials import alphaMaterials
 import Forester
 
 displayName = "Forester"

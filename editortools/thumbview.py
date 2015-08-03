@@ -3,7 +3,7 @@ from numpy import array
 from albow import Widget
 from albow.openglwidgets import GLPerspective
 from glutils import FramebufferTexture, gl
-import pymclevel
+import MCWorldLibrary
 from renderer import PreviewRenderer
 
 
@@ -122,7 +122,7 @@ class BlockThumbView(Widget):
             if b is None:
                 return
 
-            sch = pymclevel.MCSchematic(shape=(1, 1, 1), mats=self.materials)
+            sch = MCWorldLibrary.MCSchematic(shape=(1, 1, 1), mats=self.materials)
             if b:
                 sch.Blocks[:] = b.ID
                 sch.Data[:] = b.blockData

@@ -1,4 +1,4 @@
-from pymclevel.infiniteworld import SessionLockLost, MCInfdevOldLevel
+from MCWorldLibrary.infiniteworld import SessionLockLost, MCInfdevOldLevel
 from templevel import TempLevel
 import unittest
 

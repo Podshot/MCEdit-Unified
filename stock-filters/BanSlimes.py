@@ -2,7 +2,7 @@
 # please give credit to SethBling.
 # http://youtube.com/SethBling
 
-from pymclevel import TAG_Long
+from MCWorldLibrary import TAG_Long
 
 # This mimics some of the functionality from the Java Random class.
 # Java Random source code can be found here: http://developer.classpath.org/doc/java/util/Random-source.html

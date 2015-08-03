@@ -5,12 +5,12 @@
 #
 # If you modify and redistribute this code, please credit SethBling
 
-from pymclevel import MCSchematic
-from pymclevel import TAG_Compound
-from pymclevel import TAG_Short
-from pymclevel import TAG_Byte
-from pymclevel import TAG_Byte_Array
-from pymclevel import TAG_String
+from MCWorldLibrary import MCSchematic
+from MCWorldLibrary import TAG_Compound
+from MCWorldLibrary import TAG_Short
+from MCWorldLibrary import TAG_Byte
+from MCWorldLibrary import TAG_Byte_Array
+from MCWorldLibrary import TAG_String
 from numpy import zeros
 
 inputs = (

@@ -1,13 +1,13 @@
-from pymclevel.materials import Block
-from pymclevel.entity import TileEntity
+from MCWorldLibrary.materials import Block
+from MCWorldLibrary.entity import TileEntity
 from editortools.brush import createBrushMask
 import numpy
 from editortools.operation import mkundotemp
 from albow import showProgress
-import pymclevel
+import MCWorldLibrary
 import datetime
 import collections
-from pymclevel import BoundingBox
+from MCWorldLibrary import BoundingBox
 import logging
 log = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ def createTileEntities(tileEntityTag, level):
 
     try:
         chunk = level.getChunk(x >> 4, z >> 4)
-    except (pymclevel.ChunkNotPresent, pymclevel.ChunkMalformed):
+    except (MCWorldLibrary.ChunkNotPresent, MCWorldLibrary.ChunkMalformed):
         return
 
     chunk.TileEntities.append(tileEntityTag)
@@ -34,7 +34,7 @@ def createTileEntities(tileEntityTag, level):
 
 def apply(self, op, point):
 
-    undoLevel = pymclevel.MCInfdevOldLevel(mkundotemp(), create=True)
+    undoLevel = MCWorldLibrary.MCInfdevOldLevel(mkundotemp(), create=True)
     dirtyChunks = set()
 
     def saveUndoChunk(cx, cz):
@@ -73,7 +73,7 @@ def apply(self, op, point):
         newcoords = collections.deque()
 
         for (x, y, z) in coords:
-            for _dir, offsets in pymclevel.faceDirections:
+            for _dir, offsets in MCWorldLibrary.faceDirections:
                 dx, dy, dz = offsets
                 p = (x + dx, y + dy, z + dz)
 

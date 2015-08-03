@@ -1,4 +1,4 @@
-from pymclevel.materials import Block
+from MCWorldLibrary.materials import Block
 from editortools.brush import createBrushMask, createTileEntities
 from albow import alert
 import numpy

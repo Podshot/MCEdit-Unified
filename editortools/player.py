@@ -25,9 +25,9 @@ from glbackground import Panel
 from glutils import DisplayList
 from mceutils import loadPNGTexture, alertException, drawTerrainCuttingWire, drawCube
 from operation import Operation
-import pymclevel
-from pymclevel.box import BoundingBox, FloatBox
-from pymclevel import nbt
+import MCWorldLibrary
+from MCWorldLibrary.box import BoundingBox, FloatBox
+from MCWorldLibrary import nbt
 import logging
 import version_utils
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
@@ -286,7 +286,7 @@ class PlayerMoveOperation(Operation):
             self.tool.markerList.invalidate()
             self.canUndo = True
 
-        except pymclevel.PlayerNotFound, e:
+        except MCWorldLibrary.PlayerNotFound, e:
             print "Player move failed: ", e
 
     def undo(self):
@@ -359,7 +359,7 @@ class PlayerSpawnMoveOperation(Operation):
             return
         level = self.tool.editor.level
         '''
-        if isinstance(level, pymclevel.MCInfdevOldLevel):
+        if isinstance(level, MCWorldLibrary.MCInfdevOldLevel):
             if not positionValid(level, self.pos):
                 if config.spawn.spawnProtection.get():
                     raise SpawnPositionInvalid(
@@ -433,7 +433,7 @@ class PlayerPositionPanel(Panel):
         reloadSkin = Button("Reload Skins", action=self.tool.reloadSkins, tooltipText="This pulls skins from the online server, so this may take a while")
 
         btns = [self.editNBTDataButton]
-        if not isinstance(self.level, pymclevel.leveldbpocket.PocketLeveldbWorld):
+        if not isinstance(self.level, MCWorldLibrary.leveldbpocket.PocketLeveldbWorld):
             btns.extend([addButton, removeButton])
         btns.extend([gotoButton, gotoCameraButton, moveButton, moveToCameraButton, reloadSkin])
         btns = Column(btns, margin=0, spacing=2)
@@ -640,7 +640,7 @@ class PlayerPositionTool(EditorTool):
             self.editor.mainViewport.pitch = p
             self.editor.mainViewport.stopMoving()
             self.editor.mainViewport.invalidate()
-        except pymclevel.PlayerNotFound:
+        except MCWorldLibrary.PlayerNotFound:
             pass
 
     def gotoPlayer(self):
@@ -660,7 +660,7 @@ class PlayerPositionTool(EditorTool):
 
             self.editor.mainViewport.cameraPosition = pos
             self.editor.mainViewport.stopMoving()
-        except pymclevel.PlayerNotFound:
+        except MCWorldLibrary.PlayerNotFound:
             pass
 
     def __init__(self, *args):
@@ -995,7 +995,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         x, y, z = map(lambda p, d: p + d, pos, direction)
 
         color = (1.0, 1.0, 1.0, 0.5)
-        if isinstance(self.editor.level, pymclevel.MCInfdevOldLevel) and self.spawnProtection:
+        if isinstance(self.editor.level, MCWorldLibrary.MCInfdevOldLevel) and self.spawnProtection:
             if not positionValid(self.editor.level, (x, y, z)):
                 color = (1.0, 0.0, 0.0, 0.5)
 
@@ -1021,7 +1021,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
         GL.glDisable(GL.GL_DEPTH_TEST)
 
     def drawCage(self, x, y, z):
-        cageTexVerts = numpy.array(pymclevel.MCInfdevOldLevel.materials.blockTextures[52, 0])
+        cageTexVerts = numpy.array(MCWorldLibrary.MCInfdevOldLevel.materials.blockTextures[52, 0])
 
         pixelScale = 0.5 if self.editor.level.materials.name in ("Pocket", "Alpha") else 1.0
         texSize = 16 * pixelScale
@@ -1032,7 +1032,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
              cageTexVerts], dtype='float32')
         GL.glEnable(GL.GL_ALPHA_TEST)
 
-        drawCube(BoundingBox((x, y, z), (1, 1, 1)), texture=pymclevel.alphaMaterials.terrainTexture,
+        drawCube(BoundingBox((x, y, z), (1, 1, 1)), texture=MCWorldLibrary.alphaMaterials.terrainTexture,
                  textureVertices=cageTexVerts)
         GL.glDisable(GL.GL_ALPHA_TEST)
 
