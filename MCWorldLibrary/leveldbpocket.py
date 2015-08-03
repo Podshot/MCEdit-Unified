@@ -21,8 +21,9 @@ logger = logging.getLogger(__name__)
 leveldb_available = True
 leveldb_mcpe = None
 try:
-    import leveldb_mcpe
-    leveldb_mcpe.Options()
+    from leveldb_mcpe import leveldb_mcpe
+    op = leveldb_mcpe.Options()
+    del op
 except Exception as e:
     leveldb_available = False
     logger.info("Error while trying to import leveldb_mcpe, starting without PE support ({0})".format(e))
