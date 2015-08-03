@@ -1,5 +1,5 @@
 [submodule "leveldb_mcpe/leveldb-mcpe"]
 
-	path = leveldb_mcpe/leveldb-mcpe
+	path = pymclevel/leveldb_mcpe
 
 	url = https://github.com/Mojang/leveldb-mcpe.git
