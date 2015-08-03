@@ -29,36 +29,6 @@ except Exception as e:
     leveldb_mcpe = None
 
 
-def loadNBTCompoundList(data, littleEndian=True):
-    """
-    Loads a list of NBT Compound tags from a bunch of data.
-    Uses sep to determine where the next Compound tag starts.
-    :param data: str, the NBT to load from
-    :param littleEndian: bool. Determines endianness
-    :return: list of TAG_Compounds
-    """
-    if type(data) is unicode:
-        data = str(data)
-
-    def load(_data):
-        sep = "\x00\x00\x00\x00\n"
-        sep_data = _data.split(sep)
-        compounds = []
-        for d in sep_data:
-            if len(d) != 0:
-                if not d.startswith("\n"):
-                    d = "\n" + d
-                tag = (nbt.load(buf=(d + '\x00\x00\x00\x00')))
-                compounds.append(tag)
-        return compounds
-
-    if littleEndian:
-        with nbt.littleEndianNBT():
-            return load(data)
-    else:
-        return load(data)
-
-
 def TagProperty(tagName, tagType, default_or_func=None):
     """
     Copied from infiniteworld.py. Custom property object to handle NBT-tag properties.
@@ -989,11 +959,11 @@ class PocketLeveldbChunk(LightedChunk):
         else:
             terrain = numpy.fromstring(data[0], dtype='uint8')
             if data[1] is not None:
-                TileEntities = loadNBTCompoundList(data[1])
+                TileEntities = nbt.loadNBTCompoundList(data[1])
                 self.TileEntities = nbt.TAG_List(TileEntities, list_type=nbt.TAG_COMPOUND)
 
             if data[2] is not None:
-                Entities = loadNBTCompoundList(data[2])
+                Entities = nbt.loadNBTCompoundList(data[2])
                 # PE saves entities with their int ID instead of string name. We swap them to make it work in mcedit.
                 # Whenever we save an entity, we need to make sure to swap back.
                 invertEntities = {v: k for k, v in entity.PocketEntity.entityList.items()}

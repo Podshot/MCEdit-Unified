@@ -587,6 +587,28 @@ def load(filename="", buf=None, endianness=BIG_ENDIAN):
     return tag
 
 
+def loadNBTCompoundList(data, endianness=LITTLE_ENDIAN):
+    """
+    Loads a list of NBT Compound tags from a bunch of data.
+    Uses sep to determine where the next Compound tag starts.
+    :param data: str, the NBT to load from
+    :param littleEndian: bool. Determines endianness
+    :return: list of TAG_Compounds
+    """
+    if type(data) is unicode:
+        data = str(data)
+
+    sep = "\x00\x00\x00\x00\n"
+    sep_data = data.split(sep)
+    compounds = []
+    for d in sep_data:
+        if len(d) != 0:
+            if not d.startswith("\n"):
+                d = "\n" + d
+            tag = (load(buf=(d + '\x00\x00\x00\x00'), endianness=endianness))
+            compounds.append(tag)
+    return compounds
+
 
 # Simple input stream, buffers the entire file. Faster than builtin file, StringIO, or GzipFile.
 
