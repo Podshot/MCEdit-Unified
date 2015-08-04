@@ -2176,12 +2176,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [1, 5]
+        invalid: true
       13:
         tex: [1, 5]
+        invalid: true
       14:
         tex: [1, 5]
+        invalid: true
       15:
         tex: [1, 5]
+        invalid: true
 
   - id: 65
     idStr: ladder
@@ -2376,12 +2380,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [2, 5]
+        invalid: true
       13:
         tex: [2, 5]
+        invalid: true
       14:
         tex: [2, 5]
+        invalid: true
       15:
         tex: [2, 5]
+        invalid: true
 
   - id: 72
     idStr: wooden_pressure_plate
@@ -5927,12 +5935,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [5, 20]
+        invalid: true
       13:
         tex: [5, 20]
+        invalid: true
       14:
         tex: [5, 20]
+        invalid: true
       15:
         tex: [5, 20]
+        invalid: true
 
   - id: 194
     idStr: birch_door
@@ -5978,12 +5990,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [6, 20]
+        invalid: true
       13:
         tex: [6, 20]
+        invalid: true
       14:
         tex: [6, 20]
+        invalid: true
       15:
         tex: [6, 20]
+        invalid: true
 
   - id: 195
     idStr: jungle_door
@@ -6029,12 +6045,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [7, 20]
+        invalid: true
       13:
         tex: [7, 20]
+        invalid: true
       14:
         tex: [7, 20]
+        invalid: true
       15:
         tex: [7, 20]
+        invalid: true
 
   - id: 196
     idStr: acacia_door
@@ -6080,12 +6100,16 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [8, 20]
+        invalid: true
       13:
         tex: [8, 20]
+        invalid: true
       14:
         tex: [8, 20]
+        invalid: true
       15:
         tex: [8, 20]
+        invalid: true
 
   - id: 197
     idStr: dark_oak_door
@@ -6131,9 +6155,191 @@ blocks:
 # metadata like (Upper, Left Hinge, Closed, East)
       12:
         tex: [9, 20]
+        invalid: true
       13:
         tex: [9, 20]
+        invalid: true
       14:
         tex: [9, 20]
+        invalid: true
       15:
         tex: [9, 20]
+        invalid: true
+    
+  - id: 198
+    idStr: end_rod
+    name: End Rod
+    mapcolor: [120, 120, 120]
+    tex: [16, 20]
+    brightness: 14
+    data:
+      0:
+        name: End Rod (Down)
+      1:
+        name: End Rod (Up)
+      2:
+        name: End Rod (North)
+      3:
+        name: End Rod (South)
+      4:
+        name: End Rod (West)
+      5:
+        name: End Rod (East)
+
+  - id: 199
+    idStr: chorus_plant
+    name: Chorus Plant
+    mapcolor: [120, 120, 120]
+    tex: [13, 20]
+        
+  - id: 200
+    idStr: chorus_flower
+    name: Chorus Flower
+    mapcolor: [120, 120, 120]
+    tex: [15, 20]
+    data:
+      0:
+        name: Chorus Flower (Age 0)
+        tex: [15, 20]
+      1:
+        name: Chorus Flower (Age 1)
+        tex: [15, 20]
+      2:
+        name: Chorus Flower (Age 2)
+        tex: [15, 20]
+      3:
+        name: Chorus Flower (Age 3)
+        tex: [15, 20]
+      4:
+        name: Chorus Flower (Age 4)
+        tex: [15, 20]
+      5:
+        name: Chorus Flower (Age 5)
+        tex: [14, 20]
+        
+  - id: 201
+    idStr: purpur_block
+    name: Purpur Block
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    
+  - id: 202
+    idStr: purpur_pillar
+    name: Purpur Pillar
+    mapcolor: [120, 120, 120]
+    tex: [0, 0]
+    data:
+      0:
+        name: Purpur Pillar (Upright)
+        tex: [19, 17]
+        tex_direction:
+          TOP: [19, 18]
+          BOTTOM: [19, 18]
+      4:
+        name: Purpur Pillar (East/West)
+        tex: [19, 19]
+        tex_direction:
+          SIDES: [19, 18]
+      8:
+        name: Purpur Pillar (North/South)
+        tex: [19, 17]
+        tex_direction:
+          FORWARD: [19, 18]
+          BACKWARD: [19, 18]
+          SIDES: [19, 19]
+          
+  - id: 203
+    idStr: purpur_stairs
+    name: Purpur Staris
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    type: STAIRS
+    data:
+      0:
+        name: Purpur Stairs (Bottom, East)
+      1:
+        name: Purpur Stairs (Bottom, West)
+      2:
+        name: Purpur Stairs (Bottom, South)
+      3:
+        name: Purpur Stairs (Bottom, North)
+      4:
+        name: Purpur Stairs (Top, East)
+      5:
+        name: Purpur Stairs (Top, West)
+      6:
+        name: Purpur Stairs (Top, South)
+      7:
+        name: Purpur Stairs (Top, North)
+        
+  - id: 204
+    idStr: <unknown>
+    name: Double Purpur Slabs
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    
+  - id: 205
+    idStr: purpur_slab
+    name: Purpur Slab
+    mapcolor: [120, 120, 120]
+    tex: [18, 19]
+    
+  - id: 206
+    idStr: end_bricks
+    name: End Stone Bricks
+    mapcolor: [120, 120, 120]
+    tex: [18, 18]
+
+  - id: 207
+    idStr: beetroots
+    name: Beetroot
+    mapcolor: [120, 120, 120]
+    type: CROPS
+    data:
+      0:
+        name: Beetroot (Age 0)
+        tex: [2, 29]
+      1:
+        name: Beetroot (Age 1)
+        tex: [3, 29]
+      2:
+        name: Beetroot (Age 2)
+        tex: [4, 29]
+      3:
+        name: Beetroot (Age 3)
+        tex: [5, 29]
+
+  - id: 208
+    idStr: grass_path
+    name: Path
+    tex_direction:
+      FORWARD: [1, 29]
+      BACKWARD: [1, 29]
+      LEFT: [1, 29]
+      RIGHT: [1, 29]
+      TOP: [0, 29]
+      BOTTOM: [2, 0]
+
+  - id: 209
+    isStr: end_gateway
+    name: End Gateway
+    tex: [16, 15]
+    brightness: 15
+
+  - id: 255
+    idStr: structure_block
+    name: Structure Block
+    data:
+      0:
+        name: Structure Block (Save)
+        tex: [19, 10]
+      1:
+        name: Structure Block (Load)
+        tex: [20, 10]
+      2:
+        name: Structure Block (Corner)
+        tex: [20, 9]
+      3:
+        name: Structure Block (Data)
+        tex: [19, 9]
+    

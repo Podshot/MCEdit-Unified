@@ -1932,44 +1932,44 @@ t908 분석
 o909 Click to set the spawn position.
 t909 스폰 지점을 설정하려면 클릭하세요.
 o910 <Toolbar>
-t910 
+t910 <툴바>
 o911 Edit Sign
-t911 
+t911 표지판 수정
 o912 Add Color Code...
-t912 
+t912 색상 코드 추가
 o913 §0  Black
-t913 
+t913 §0  검은색
 o914 §1  Dark Blue
-t914 
+t914 §1  어두운 파란색
 o915 §2  Dark Green
-t915 
+t915 §2  어두운 초록색
 o916 §3  Dark Aqua
-t916 
+t916 §3  어두운 청록색
 o917 §4  Dark Red
-t917 
+t917 §4  어두운 빨간색
 o918 §5  Dark Purple
-t918 
+t918 §5  어두운 보라색
 o919 §6  Gold
-t919 
+t919 §6  금색
 o920 §7  Gray
-t920 
+t920 §7  회색
 o921 §8  Dark Gray
-t921 
+t921 §8  짙은 회색
 o922 §9  Blue
-t922 
+t922 §9  파란색
 o923 §a  Green
-t923 
+t923 §a  초록색
 o924 §b  Aqua
-t924 
+t924 §b  청록색
 o925 §c  Red
-t925 
+t925 §c  빨간색
 o926 §d  Light Purple
-t926 
+t926 §d  밝은 보라색
 o927 §e  Yellow
-t927 
+t927 §e  노란색
 o928 §f  White
-t928 
+t928 §f  흰색
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t929 
+t929 아이템의 위치를 옮기려면 드래그하세요. 더블클릭으로 들어올리세요. Import(불러오기) 또는 Enter를 눌러 완료하세요.
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t930 
+t930 이 스포너의 엔티티ID를 입력하세요. 잘못된 ID는 마인크래프트 크래시의 원인이 됩니다.

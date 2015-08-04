@@ -89,6 +89,8 @@ elif sys.platform == "linux2":
             build_boost_python = True
 
     if install_boost:
+        print "Dowloading Boost 1.55.0 from SourceForge..."
+        os.system('wget http://freefr.dl.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2')
         print "Extracting boost..."
         os.system('tar --bzip2 -xf boost_1_55_0.tar.bz2')
         os.system('mv boost_1_55_0 %s' % boostRoot)

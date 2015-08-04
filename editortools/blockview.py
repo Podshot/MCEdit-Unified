@@ -45,7 +45,12 @@ class BlockView(GLOrtho):
                                                      - 1, 1,
                                                      1, 1,
                                                      1, -1, ], dtype='float32'))
-        texOrigin = array(self.materials.blockTextures[blockInfo.ID, blockInfo.blockData, 0])
+        # hack to get end rod to render properly
+        # we really should use json models?
+        if blockInfo.ID == 198:
+            texOrigin = array([17*16, 20*16])
+        else:
+            texOrigin = array(self.materials.blockTextures[blockInfo.ID, blockInfo.blockData, 0])
         texOrigin *= pixelScale
 
         GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, array([texOrigin[0], texOrigin[1] + texSize,

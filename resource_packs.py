@@ -257,6 +257,8 @@ textureSlots = {
     "double_plant_sunflower_bottom": (step(16),step(9)),
     #
     "repeater_off_east": (step(18),step(9)),
+    "structure_block_data": (step(19),step(9)),
+    "structure_block_corner": (step(20),step(9)),
     # End Tenth Row
 
     # Start Eleventh Row
@@ -279,6 +281,8 @@ textureSlots = {
     "double_plant_syringa_bottom": (step(16),step(10)),
     "double_plant_syringa_top": (step(17),step(10)),
     "repeater_on_west": (step(18),step(10)),
+    "structure_block_save": (step(19),step(10)),
+    "structure_block_load": (step(20),step(10)),
     # End Eleventh Row
 
     # Start Twelfth Row
@@ -430,6 +434,7 @@ textureSlots = {
     "prismarine_bricks": (step(16),step(17)),
     "prismarine_dark": (step(17),step(17)),
     "prismarine_rough": (step(18),step(17)),
+    "purpur_pillar": (step(19),step(17)),
     # End Eigteenth Row
 
     # Start Ninteenth Row
@@ -451,6 +456,8 @@ textureSlots = {
     "hardened_clay_stained_black": (step(15),step(18)),
     "sponge_wet": (step(16),step(18)),
     "sea_lantern": (step(17),step(18)),
+    "end_bricks": (step(18),step(18)),
+    "purpur_pillar_top": (step(19),step(18)),
     # End Ninteenth Row
 
     # Start Twentieth Row
@@ -472,6 +479,7 @@ textureSlots = {
     #
     "hay_block_side_rotated": (step(16),step(19)),
     "quartz_block_lines_rotated": (step(17),step(19)),
+    "purpur_block": (step(18),step(19)),
     # End Twentieth Row
 
     # Start Twentyfirst Row
@@ -485,6 +493,18 @@ textureSlots = {
     "door_jungle_upper": (step(7),step(20)),
     "door_acacia_upper": (step(8),step(20)),
     "door_dark_oak_upper": (step(9),step(20)),
+    # 
+    # 
+    # 
+    # 
+    # 
+    # 
+    # 
+    #
+    "chorus_plant": (step(13),step(20)),
+    "chorus_flower_dead": (step(14),step(20)),
+    "chorus_flower": (step(15),step(20)),
+    "end_rod": (step(16),step(20)),
     # End Twentyfirst Row
 
     # Start MISC

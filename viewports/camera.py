@@ -25,7 +25,7 @@ from OpenGL import GL
 from OpenGL import GLU
 
 from albow import alert, AttrRef, Button, Column, input_text, Row, TableColumn, TableView, Widget, CheckBox, \
-    TextFieldWrapped, MenuButton, ChoiceButton, IntInputRow, TextInputRow, showProgress, IntField
+    TextFieldWrapped, MenuButton, ChoiceButton, IntInputRow, TextInputRow, showProgress, IntField, ask
 from albow.controls import Label, ValueDisplay
 from albow.dialogs import Dialog, wrapped_label
 from albow.openglwidgets import GLViewport
@@ -38,11 +38,35 @@ from glutils import gl
 from pymclevel.nbt import TAG_String
 from editortools.nbtexplorer import SlotEditor
 
+class SignEditOperation(Operation):
+        def __init__(self, tool, level, tileEntity, backupTileEntity):
+            self.tool = tool
+            self.level = level
+            self.tileEntity = tileEntity
+            self.undoBackupEntityTag = backupTileEntity
+            self.canUndo = False
+
+        def perform(self, recordUndo=True):
+            if self.level.saving:
+                alert("Cannot perform action while saving is taking place")
+                return
+            self.level.addTileEntity(self.tileEntity)
+            self.canUndo = True
+
+        def undo(self):
+            self.redoBackupEntityTag = copy.deepcopy(self.tileEntity)
+            self.level.addTileEntity(self.undoBackupEntityTag)
+            return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
+
+        def redo(self):
+            self.level.addTileEntity(self.redoBackupEntityTag)
+            return pymclevel.BoundingBox(pymclevel.TileEntity.pos(self.tileEntity), (1, 1, 1))
 
 class CameraViewport(GLViewport):
     anchor = "tlbr"
 
     oldMousePosition = None
+    dontShowMessageAgain = False
 
     def __init__(self, editor, def_enc=None):
         self.editor = editor
@@ -331,12 +355,32 @@ class CameraViewport(GLViewport):
                     focusPair = (self.getCameraPoint(), (0, 0, 0))
                 else:
                     focusPair = self.blockFaceUnderCursor
+                    
+            if focusPair[0] is not None and self.editor.level.tileEntityAt(*focusPair[0]):
+                changed = False
+                te = self.editor.level.tileEntityAt(*focusPair[0])
+                backupTE = copy.deepcopy(te)
+                if te["id"].value == "Sign":
+                    if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
+                        for i in xrange(1,5):
+                            if len(te["Text"+str(i)].value) > 32767:
+                                te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
+                                changed = True
+                if changed:
+                    response = None
+                    if not self.dontShowMessageAgain:
+                        response = ask("Found a sign that exceeded the maximum character limit. Automatically trimmed the sign to prevent crashes.", responses=["Ok", "Don't show this again"])
+                    if response is not None and response == "Don't show this again":
+                        self.dontShowMessageAgain = True
+                    op = SignEditOperation(self.editor, self.editor.level, te, backupTE)
+                    self.editor.addOperation(op)
+                    if op.canUndo:
+                        self.editor.addUnsavedEdit()
 
             self.blockFaceUnderCursor = focusPair
 
     def _findBlockFaceUnderCursor(self, projectedPoint):
         """Returns a (pos, Face) pair or None if one couldn't be found"""
-
         d = [0, 0, 0]
 
         try:
@@ -793,44 +837,24 @@ class CameraViewport(GLViewport):
                 if '\\"' in f.value:
                     f.value = f.value.replace('\\"', '"')
 
-        if DEF_ENC != 'UTF-8':
-            colors = [
-                "\xa70  Black",
-                "\xa71  Dark Blue",
-                "\xa72  Dark Green",
-                "\xa73  Dark Aqua",
-                "\xa74  Dark Red",
-                "\xa75  Dark Purple",
-                "\xa76  Gold",
-                "\xa77  Gray",
-                "\xa78  Dark Gray",
-                "\xa79  Blue",
-                "\xa7a  Green",
-                "\xa7b  Aqua",
-                "\xa7c  Red",
-                "\xa7d  Light Purple",
-                "\xa7e  Yellow",
-                "\xa7f  White",
-            ]
-        else:
-            colors = [
-                "§0  Black",
-                "§1  Dark Blue",
-                "§2  Dark Green",
-                "§3  Dark Aqua",
-                "§4  Dark Red",
-                "§5  Dark Purple",
-                "§6  Gold",
-                "§7  Gray",
-                "§8  Dark Gray",
-                "§9  Blue",
-                "§a  Green",
-                "§b  Aqua",
-                "§c  Red",
-                "§d  Light Purple",
-                "§e  Yellow",
-                "§f  White",
-            ]
+        colors = [
+            u"§0  Black",
+            u"§1  Dark Blue",
+            u"§2  Dark Green",
+            u"§3  Dark Aqua",
+            u"§4  Dark Red",
+            u"§5  Dark Purple",
+            u"§6  Gold",
+            u"§7  Gray",
+            u"§8  Dark Gray",
+            u"§9  Blue",
+            u"§a  Green",
+            u"§b  Aqua",
+            u"§c  Red",
+            u"§d  Light Purple",
+            u"§e  Yellow",
+            u"§f  White",
+        ]
 
         def menu_picked(index):
             # Fix for the '§ is Ä§' issue
@@ -839,29 +863,6 @@ class CameraViewport(GLViewport):
             currentField = panel.focus_switch.focus_switch
             currentField.text += c  # xxx view hierarchy
             currentField.insertion_point = len(currentField.text)
-
-        class SignEditOperation(Operation):
-            def __init__(self, tool, level):
-                self.tool = tool
-                self.level = level
-                self.undoBackupEntityTag = undoBackupEntityTag
-                self.canUndo = False
-
-            def perform(self, recordUndo=True):
-                if self.level.saving:
-                    alert("Cannot perform action while saving is taking place")
-                    return
-                self.level.addTileEntity(tileEntity)
-                self.canUndo = True
-
-            def undo(self):
-                self.redoBackupEntityTag = copy.deepcopy(tileEntity)
-                self.level.addTileEntity(self.undoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
-
-            def redo(self):
-                self.level.addTileEntity(self.redoBackupEntityTag)
-                return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def changeSign():
             unsavedChanges = False
@@ -873,7 +874,7 @@ class CameraViewport(GLViewport):
                 if '"{}"'.format(tileEntity[l]) != oldText and not unsavedChanges:
                     unsavedChanges = True
             if unsavedChanges:
-                op = SignEditOperation(self.editor, self.editor.level)
+                op = SignEditOperation(self.editor, self.editor.level, tileEntity, undoBackupEntityTag)
                 self.editor.addOperation(op)
                 if op.canUndo:
                     self.editor.addUnsavedEdit()
