@@ -2892,6 +2892,18 @@ blocks:
         tex_direction:
           TOP: [11, 15]
           BOTTOM: [11, 15]
+      3:
+        name: Pillar Quartz Block (East/West)
+        tex: [17, 19]
+        tex_direction:
+          SIDES: [11, 15]
+      4:
+        name: Pillar Quartz Block (North/South)
+        tex: [10, 15]
+        tex_direction:
+          FORWARD: [11, 15]
+          BACKWARD: [11, 15]
+          SIDES: [17, 19]
 
   - id: 156
     idStr: quartz_stairs
