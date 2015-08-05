@@ -151,11 +151,14 @@
 				<span style="font-weight: bold">E
 				</span> to swap materials.
 			</li>
+            <li>
+				<a href="#Filter">Filter</a>: External scripts for advanced functionality.
+			</li>
 			<li>
 				<a href="#Crane">Import</a>: Import a <i>Schematic</i> file or an entire level into the current world.
 			</li>
 			<li>
-				<a href="#Player">Player</a>: Click to move the player. Press twice to teleport.
+				<a href="#Player">Player</a>: Modifies, deletes, and adds players in the world.
 			</li>
 			<li>
 				<a href="#Spawn">Spawn</a>: Click to move the player's spawn. Press twice to teleport.
@@ -186,19 +189,74 @@
 			A completed selection.
 			<br>
 			<img src="images/Selection1.png" class="simg" alt="Image">
-			<br>The selection tool can also be used to export schematics and do some other basic tasks.
+			<br>The selection tool can also be used to export schematics and do other basic tasks. Some tools cannot be used without a selection.
 		</p>
 		<h2 id="Brush">Brush Tool:</h2>
 		<p>
-			The brush tool allows you to "Paint" the world using preset shapes, you can use RFEG to Increase size, Decrease size, rotate and roll this tool.
+			The brush tool allows you to "Paint" the world using preset shapes, you can use RFEG to Increase size, Decrease size, rotate and roll this tool. The varied version will randomly distribute the blocks you select based on selected weightings.
+            <br>
 			<img src="images/brush0.png" class="simg" alt="Image">
 			<br>
 		</p>
+        <h4 align=center>LINE BRUSH:</h4>
 		<p>
 			Hold Z after placing a brush and click a second point to create a solid line of that brush. Line spacing adjusts how close together brushes are.
-			<img src="images/brush0.png" class="simg" alt="Image">
+            <br>
+			<img src="images/brush1.png" class="simg" alt="Image">
+			<br>
+            The line tool works from the last brushed point, so you can continue from the end of your last line.
+		</p>
+        <h4 align=center>ERODE:</h4>
+		<p>
+			You can also erode the terrain, making it more natural. To use this tool set the size and strength you want and click and drag over the area you wish to erode.
+            <br>
+			<img src="images/brush2.png" class="simg" alt="Image">
 			<br>
 		</p>
+        <p>
+			And after.
+            <br>
+			<img src="images/brush3.png" class="simg" alt="Image">
+			<br>
+            It is recommended to make multiple lower intensity passes for best results. If the brush is still too strong at strength 1, turn up Minimum Spacing.
+            <br>
+		</p>
+        <h4 align=center>FLOOD FILL:</h4>
+		<p>
+			This brush will systematically replace all blocks of the same type touching the block you click on. This will go on until you either cancel the operation or it finishes.
+            <br>
+			<img src="images/brush4.png" class="simg" alt="Image">
+            <br>
+            An interrupted flood fill operation.
+		</p>
+        <h4 align=center>PASTE:</h4>
+        <p>
+            The paste brush simply brushes an imported schematic.
+            <br>
+            <img src="images/brush5.png" class="simg" alt="Image">
+        </p>
+        <h4 align=center>REPLACE AND VARIED REPLACE:</h4>
+        <p>
+            The replace and varied replace tools replace the block selected in the first slot with the block(s) selected in the lower slot(s).
+            <br>
+            <img src="images/brush6.png" class="simg" alt="Image">
+            <br><br>
+            After:
+            <br>
+            <img src="images/brush7.png" class="simg" alt="Image">
+            <br><br>
+            And using the varied replace:
+            <br>
+            <img src="images/brush8.png" class="simg" alt="Image">
+        </p>
+        <h4 align=center>TOPSOIL:</h4>
+		<p>
+			Topsoil works by replacing the top layer of wherever you brush with the selected block. Depth is selectable.
+            <br>
+			<img src="images/brush9.png" class="simg" alt="Image">
+            <br>
+		</p>
+        
 		<h2 id="Clone">Clone Tool:</h2>
 		<p>
 			Quickly copy blocks within the same level. The selected blocks are cloned into the green box and will
@@ -212,7 +270,7 @@
 			<img src="images/clone2.png" class="simg" alt="Image">
 		</p>
 		<p>
-			Once you are happy with the clone's location, click <strong>Clone</strong> or press <strong>Enter</strong> to apply, a selection will appear over the cloned area when complete.
+			Once you are happy with the clone's location, click <span style="font-weight: bold">Clone</span> or press <span style="font-weight: bold">Enter</span> to apply, a selection will appear over the cloned area when complete.
 			<br>
 			<img src="images/clone1.png" class="simg" alt="Image">
 		</p>
@@ -222,6 +280,17 @@
 			<br>
 			<img src="images/replace.png" class="simg" alt="Image">
 		</p>
+		<h2 id="Filter">Filter Tool:</h2>
+		<p>
+			The filter tool allows the use of external plugins called filters for advanced functions not covered by other tools. The filters folder can be found by clicking the <span style="font-style: italic">Config Files</span> button on the main menu.
+            To use the filter tool; first select the area you wish to modify then select the filter you wish to use. After you've finished configuring the filter click <span style="font-weight: bold">Filter</span> to apply.
+			<br>
+			<img src="images/Filter0.png" class="simg" alt="Image">
+            <br>
+            The forester filter in action. *Note, forester requires selection to include ground.
+            <br>
+            <img src="images/Filter1.png" class="simg" alt="Image">
+		</p>
 		<h2 id="Crane">Import tool:</h2>
 		<p>
 			The import tool lets you import blocks from different sources: It can place blocks previously saved using the select tool to a schematic.
@@ -229,47 +298,54 @@
 			the level or schematic will appear in the green box. Although it may take a few seconds to display the
 			contents of the import, it is fully loaded and can be placed without waiting for everything to render.
 			<br>
-			<a href="images/crane0.jpg">
-				<img src="images/crane0.jpg" class="simg" alt="Image">
-			</a>
-			<br>Here, I've placed
-			<a href="http://www.minecraftforum.net/viewtopic.php?f=23&amp;t=13796" class="postlink">the destroyed city.</a>
+			<img src="images/crane0.jpg" class="simg" alt="Image">
 		</p>
 		<p>
 			As before, you can click to pick the blocks up, and use <span style="font-weight: bold">E R F </span> to rotate, roll, and flip them.
 			<br>
-			<a href="images/crane1.jpg">
-				<img src="images/crane1.jpg" class="simg" alt="Image">
-			</a>
+			<img src="images/crane1.jpg" class="simg" alt="Image">
 		</p>
 		<p>
 			Press ENTER or click <span style="font-weight: bold">Import</span> to construct. Constructions of up to 64 million blocks should take less than a minute. The copy is done once you regain control. You should press Control-S to save your level now. The lighting recalculation for this city took about 3 minutes on a Core i5.
 			<br>
-			<a href="images/crane2.jpg">
-				<img src="images/crane2.jpg" class="simg" alt="Image">
-			</a>
+            <img src="images/crane2.jpg" class="simg" alt="Image">
 		</p>
+        <h2 id="Player">Player Tool:</h2>
 		<p>
-			Et voila.<br>
-			<a href="http://img413.imageshack.us/img413/4492/voila.jpg">
-				<img src="http://img413.imageshack.us/img413/4492/voila.jpg" class="simg" alt="Image">
-			</a>
+			Tool used to add/delete/move players in your world. Mostly self-explanatory. <span style="font-weight: bold">Align to Camera</span> moves the selected player to your current location.
+			<br>
+			<img src="images/player0.png" class="simg" alt="Image">
+            <br><br>
+            <span style="font-weight: bold">EditNBT</span> allows you to modify a player's NBT data, use at own risk. See NBT section for more details.
+            <br>
+            <img src="images/player1.png" class="simg" alt="Image">
+		</p>
+        <h2 id="Spawn">Spawn Tool:</h2>
+		<p>
+			Used to move or view the world's spawn. Click to apply a new spawn point.
+            <br>
+            <img src="images/spawn.png" class="simg" alt="Image">
+			<br>
 		</p>
 		<h2 id="Chunk">Chunk tool:</h2>
 		<p>
-			<img src="images/chunk.jpg" alt="Image">
+			<img src="images/chunk.png" alt="Image">
 			<br>
 			When you pick the Chunk tool, the visible selection is
 			automatically expanded to cover all of the chunks it touches. Press <span style="font-style: italic">Create</span> to create all missing chunks in the selection, ignoring any chunks already present. 
-			Press <span style="font-style: italic">Destroy</span> to remove any chunks within the selection. Use <span style="font-style: italic">Prune</span> to keep all of the chunks in the selection, and delete the ones outside. 
-			All of these will ask you for confirmation because there's no way to undo them.
+			Press <span style="font-style: italic">Destroy</span> to remove any chunks within the selection. Use <span style="font-style: italic">Prune</span> to keep all of the chunks in the selection, and delete the ones outside.
+            Use <span style="font-style: italic">Repop</span> to mark chunks for repopulation of ores and structures next time minecraft loads the chunk.
+			All of these will ask you for confirmation because there's no way to undo them. Use <span style="font-weight: bold">TAB</span> to get a better view for chunk pruning.
 		</p>
 		<p>
 			Finally, you can press <span style="font-style: italic">Relight</span> to fix any bad lighting within the selected chunks. If other programs leave your level full of black spots, you can fix it with this.
 		</p>
-		<span id="Spawn"></span>
+		<h2 id="NBT">NBT Editor:</h2>
 		<p>
-			(not pictured: Player and Player Spawn tools, DELETE operation)
+			Used to modify the raw NBT data of the world. Use at own risk. To modify a more specific area or object use the NBT editor filter.
+            <br>
+            <img src="images/NBT.png" class="simg" alt="Image">
+			<br>
 		</p>
 	</div>
 

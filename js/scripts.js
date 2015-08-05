@@ -3,7 +3,7 @@ function getJSON(url){
 	var isRateLimitCheck = (url == "https://api.github.com/rate_limit");
 	var ret_val = {};
 	if (localStorage['cache_json_store'+url] && !isRateLimitCheck) {
-		console.log('Found cached version');
+		// console.log('Found cached version'); dont do this way to much console-ing
 		ret_val = JSON.parse(localStorage['cache_json_store'+url]);
 	} else {
 		try {
