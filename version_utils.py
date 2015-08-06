@@ -12,6 +12,7 @@ import atexit
 import threading
 import traceback
 import logging
+from uuid import UUID
 
 logger = logging.getLogger()
 
@@ -285,12 +286,13 @@ class PlayerCache:
         :type arg: str
         :param force: True if the Player name should be forcefully fetched from Mojang
         '''
-        if arg.count('-') == 4:
+        try:
+            UUID(arg, version=4)
             if self.uuidInCache(arg) and not force:
                 return self.getFromCacheUUID(arg)
             else:
                 return self._getPlayerInfoUUID(arg)
-        else:
+        except ValueError:
             if self.nameInCache(arg) and not force:
                 return self.getFromCacheName(arg)
             else:
