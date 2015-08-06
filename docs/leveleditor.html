@@ -614,7 +614,12 @@ location in the window.  use for hit testing.</p>
 
 <dl class="attribute">
 <dt id="leveleditor.LevelEditor.lastRendererDraw">
-<code class="descname">lastRendererDraw</code><em class="property"> = datetime.datetime(2015, 3, 30, 18, 10, 41, 292000)</em><a class="headerlink" href="#leveleditor.LevelEditor.lastRendererDraw" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lastRendererDraw</code><em class="property"> = datetime.datetime(2015, 8, 6, 11, 52, 2, 13000)</em><a class="headerlink" href="#leveleditor.LevelEditor.lastRendererDraw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="leveleditor.LevelEditor.level">
+<code class="descname">level</code><a class="headerlink" href="#leveleditor.LevelEditor.level" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -625,13 +630,23 @@ location in the window.  use for hit testing.</p>
 
 <dl class="method">
 <dt id="leveleditor.LevelEditor.loadLevel">
-<code class="descname">loadLevel</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.loadLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.loadLevel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loadLevel</code><span class="sig-paren">(</span><em>level</em>, <em>saveChanges=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.loadLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.loadLevel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Called to load a level, world, or dimension into the editor and display it in the viewport.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="leveleditor.LevelEditor.loadWorldFromFTP">
 <code class="descname">loadWorldFromFTP</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.loadWorldFromFTP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.loadWorldFromFTP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="leveleditor.LevelEditor.lockAcquired">
+<code class="descname">lockAcquired</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.lockAcquired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.lockAcquired" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="leveleditor.LevelEditor.lockLost">
+<code class="descname">lockLost</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.lockLost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.lockLost" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -678,6 +693,11 @@ location in the window.  use for hit testing.</p>
 <dl class="method">
 <dt id="leveleditor.LevelEditor.mouse_down">
 <code class="descname">mouse_down</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.mouse_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.mouse_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="leveleditor.LevelEditor.mouse_down_session">
+<code class="descname">mouse_down_session</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.mouse_down_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.mouse_down_session" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -813,6 +833,11 @@ location in the window.  use for hit testing.</p>
 <dl class="method">
 <dt id="leveleditor.LevelEditor.selectionToChunks">
 <code class="descname">selectionToChunks</code><span class="sig-paren">(</span><em>remove=False</em>, <em>add=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.selectionToChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.selectionToChunks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="leveleditor.LevelEditor.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.set_update_translation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -953,17 +978,6 @@ location in the window.  use for hit testing.</p>
 <dl class="method">
 <dt id="leveleditor.LevelEditor.yes">
 <code class="descname">yes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LevelEditor.yes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LevelEditor.yes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="leveleditor.LogFilter">
-<em class="property">class </em><code class="descclassname">leveleditor.</code><code class="descname">LogFilter</code><span class="sig-paren">(</span><em>editor</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LogFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LogFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">logging.Filter</span></code></p>
-<dl class="method">
-<dt id="leveleditor.LogFilter.filter">
-<code class="descname">filter</code><span class="sig-paren">(</span><em>record</em><span class="sig-paren">)</span><a class="reference internal" href="modules/leveleditor.html#LogFilter.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#leveleditor.LogFilter.filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
