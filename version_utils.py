@@ -20,17 +20,22 @@ def deprecated(func):
         #logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
         return func(*args, **kwargs)   
     new_func.__name__ = func.__name__
-    new_func.__doc__ = '''*Deprecated*\n%s'''%func.__doc__
+    if func.__doc__ is not None:
+        new_func.__doc__ = '''*Deprecated*\n%s'''%func.__doc__
+    else:
+        new_func.__doc__ = '''*Deprecated*'''
     new_func.__dict__.update(func.__dict__)
     return new_func
 
-class __PlayerCache:
+class PlayerCache:
     '''
     Used to cache Player names and UUID's, provides an small API to interface with it
     '''
     
     SUCCESS = 0
     FAILED = 1
+    
+    _playerCacheList = []
 
     def __convert(self):
         jsonFile = None
@@ -60,9 +65,7 @@ class __PlayerCache:
                 del player["Timstamp"]
         self._save()
     
-    
-    def __init__(self):
-        self._playerCacheList = []
+    def load(self):
         if not os.path.exists(userCachePath):
             out = open(userCachePath, 'w') 
             json.dump(self._playerCacheList, out)
@@ -85,9 +88,7 @@ class __PlayerCache:
         self.refresh_lock = threading.Lock()
         self.player_refreshing = threading.Thread(target=self._refreshAll)
         self.player_refreshing.daemon = True
-        self.player_refreshing.start()
-        #self._refreshAll()
-        
+        self.player_refreshing.start()     
 
     def _save(self):
         out = open(userCachePath, "w")
@@ -254,6 +255,7 @@ class __PlayerCache:
     def getFromCacheUUID(self, uuid, seperator=True):
         '''
         Checks if the UUID is already in the cache
+        
         :param uuid: The UUID that might be in the cache
         :type uuid: str
         :param seperator: Whether the UUID is seperated by -'s
@@ -268,6 +270,7 @@ class __PlayerCache:
     def getFromCacheName(self, name):
         '''
         Checks if the Player name is already in the cache
+        
         :param name: The name of the Player that might be in the cache
         '''
         for player in self._playerCacheList:
@@ -277,6 +280,7 @@ class __PlayerCache:
     def getPlayerInfo(self, arg, force=False):
         '''
         Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed 'arg'
+        
         :param arg: Either a UUID or Player name to retrieve from the cache/Mojang
         :type arg: str
         :param force: True if the Player name should be forcefully fetched from Mojang
@@ -365,15 +369,23 @@ class __PlayerCache:
         for toRemove in remove:
             self._playerCacheList.remove(toRemove)
         self._save()
-                
-playercache = __PlayerCache()
+         
+_playercache = PlayerCache()
+_playercache.load()
+playercache = _playercache
             
 @deprecated
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
+    '''
+    Old compatibility function for the PlayerCache method. It is recommended to use playercache.getPlayerInfo()
+    '''
     return playercache.getPlayerFromPlayername(player, forceNetwork, seperator)
 
 @deprecated
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
+    '''
+    Old compatibility function for the PlayerCache method. It is recommended to use playercache.getPlayerInfo()
+    '''
     return playercache.getPlayerFromUUID(uuid, forceNetwork)     
 
 def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
