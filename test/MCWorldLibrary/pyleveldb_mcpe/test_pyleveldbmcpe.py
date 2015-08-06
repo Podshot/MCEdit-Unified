@@ -5,7 +5,10 @@ import leveldb_mcpe
 import shutil
 
 
-class TestLeveldbImpl(unittest.TestCase):
+class TestPyLeveldbMCPE(unittest.TestCase):
+    """
+    Tests for the leveldb_mcpe python hook.
+    """
     db = None
 
     @classmethod
@@ -98,6 +101,8 @@ class TestLeveldbImpl(unittest.TestCase):
 
         del newIt, snapIt
 
+    # For some reason, repairing DB's is broken.
+    # TODO Needs further investigation.
     @unittest.expectedFailure
     def test_repair(self):
         try:
@@ -107,9 +112,9 @@ class TestLeveldbImpl(unittest.TestCase):
             inputs = [{str(i), str(random.random())} for i in range(10)]
             for key, value in inputs:
                 self.db.Put(wop, key, value)
-            TestLeveldbImpl.db = None
+            TestPyLeveldbImpl.db = None
             leveldb_mcpe.RepairWrapper("test", op)
-            TestLeveldbImpl.db = leveldb_mcpe.DB(op, "test")
+            TestPyLeveldbImpl.db = leveldb_mcpe.DB(op, "test")
             for key, value in inputs:
                 self.assertTrue(self.db.Get(rop, key) == value)
         except RuntimeError as err:

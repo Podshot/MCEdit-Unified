@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 *.c
+*.a
+*.lib
+CMakeLists.txt
 
 # Distribution / packaging
 .Python

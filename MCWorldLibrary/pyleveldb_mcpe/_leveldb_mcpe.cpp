@@ -1,4 +1,5 @@
 //Rubisks trying to wrap leveldb-mcpe
+#include <cmath> // Fixes a compiler error for mingw.
 #include <leveldb/cache.h>
 #include <leveldb/comparator.h>
 #include <leveldb/db.h>
@@ -253,7 +254,7 @@ public:
 	}
 };
 
-BOOST_PYTHON_MODULE(leveldb_mcpe)
+BOOST_PYTHON_MODULE(_leveldb_mcpe)
 {
   //Exceptions
   bp::register_exception_translator<LevelDBException>(&ExceptionTranslator);

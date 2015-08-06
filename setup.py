@@ -1,4 +1,5 @@
 import numpy
+import imp
 from setuptools import setup
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
@@ -14,9 +15,18 @@ install_requires = ['numpy', 'Cython']
 
 PE = "--include_leveldb_mcpe" in sys.argv
 
+
+def load_module(name):
+    names = name.split(".")
+    path = None
+    for name in names:
+        f, path, info = imp.find_module(name, path)
+        path = [path]
+    return imp.load_module(name, f, path[0], info)
+
 if PE:
     sys.argv.remove("--include_leveldb_mcpe")
-    import MCWorldLibrary.leveldb_mcpe.extension as ext
+    ext = load_module("MCWorldLibrary.pyleveldb_mcpe.extension")
     ext_modules.append(ext.get_extension())
 
 setup(

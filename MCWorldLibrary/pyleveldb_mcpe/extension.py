@@ -12,17 +12,16 @@ include_dirs = []
 
 if sys.platform == "win32":
     if sys.maxsize > 2 ** 32:  # 64-bit
-        print "Building windows application 'leveldb_mcpe' x64"
-        include_dirs = ["C:/Boost/include/boost-1_55", "./MCWorldLibrary/leveldb_mcpe/leveldb-mcpe/include"]
-        library_dirs = ["C:/Boost/lib/x64", "./MCWorldLibrary/leveldb_mcpe/"]
-        libraries = ["leveldb-mcpe", "shell32", "zlib"]
-        extra_compile_args += ["/EHs", "/MD"]
-        extra_link_args += ["/MACHINE:x64", "/NODEFAULTLIB:LIBCMT"]
+        print "Building windows application 'pyleveldb_mcpe' x64"
+        include_dirs = ["C:/Boost/include/boost-1_55", "./MCWorldLibrary/pyleveldb_mcpe/leveldb-mcpe/include"]
+        library_dirs = ["C:/boost_1_55_0/stage/lib", "./MCWorldLibrary/pyleveldb_mcpe/"]
+        libraries = ["leveldb", "zlib", "msvcr90", "boost_python-mgw49-mt-1_55"]
+        extra_compile_args += ["-std=c++11"]
         define_macros = [("WIN32", None), ("_WINDOWS", None), ("LEVELDB_PLATFORM_WINDOWS", None), ("OS_WIN", None)]
     else:  # 32-bit
-        print "Building windows application 'leveldb_mcpe' x32"
-        include_dirs = ["C:/Boost/include/boost-1_55", "./MCWorldLibrary/leveldb_mcpe/leveldb-mcpe/include"]
-        library_dirs = ["C:/Boost/lib/i386", "./MCWorldLibrary/leveldb_mcpe/"]
+        print "Building windows application 'pyleveldb_mcpe' x32"
+        include_dirs = ["C:/Boost/include/boost-1_55", "./MCWorldLibrary/pyleveldb_mcpe/leveldb-mcpe/include"]
+        library_dirs = ["C:/Boost/lib/i386", "./MCWorldLibrary/pyleveldb_mcpe/"]
         libraries = ["leveldb-mcpe", "shell32", "zlib"]
         extra_compile_args += ["/EHs", "/MD"]
         extra_link_args += ["/MACHINE:x86", "/NODEFAULTLIB:LIBCMT"]
@@ -30,9 +29,9 @@ if sys.platform == "win32":
 
 
 elif sys.platform == "darwin":
-    include_dirs = ["/usr/local/include/boost", "./MCWorldLibrary/leveldb_mcpe/leveldb-mcpe/include",
-                    "./MCWorldLibrary/leveldb_mcpe/"]
-    library_dirs = ["/usr/local/lib", ".", "./MCWorldLibrary/leveldb_mcpe/leveldb-mcpe"]
+    include_dirs = ["/usr/local/include/boost", "./MCWorldLibrary/pyleveldb_mcpe/leveldb-mcpe/include",
+                    "./MCWorldLibrary/pyleveldb_mcpe/"]
+    library_dirs = ["/usr/local/lib", ".", "./MCWorldLibrary/pyleveldb_mcpe/leveldb-mcpe"]
     libraries = ["boost_python", "leveldb"]
 
 elif sys.platform == "linux2":
@@ -40,7 +39,7 @@ elif sys.platform == "linux2":
         print 'No command specified. Aborting.'
         print 'Please, use \`python setup.py build\` to build Pocket Edition support for MCEdit.'
         sys.exit(1)
-    print "Building Linux application 'leveldb_mcpe'..."
+    print "Building Linux application 'pyleveldb_mcpe'..."
 
     # TODO: add checks, warnings and recomandations if something fails... (<< On the way)
     #       add a cleanup option
@@ -56,7 +55,7 @@ elif sys.platform == "linux2":
         sys.argv.remove('build_ext')
         sys.argv.append('build')
     curdir = os.getcwd()
-    destpath = './MCWorldLibrary/leveldb_mcpe'
+    destpath = './MCWorldLibrary/pyleveldb_mcpe'
     user_libdir = os.path.expanduser('~/.local/lib')
     if not os.path.exists(user_libdir):
         print 'Creating needed library folder: %s' % user_libdir
@@ -150,7 +149,7 @@ elif sys.platform == "linux2":
         if not os.path.exists('leveldb-mcpe-master.zip'):
             # Retrieve Mojang resource linked in MCEdit sources. I know, freaking command line :p
             os.system(
-                """wget -O leveldb-mcpe-master.zip $(wget -S -O - https://github.com/Mojang/leveldb-mcpe/tree/$(wget -S -O - https://github.com/Khroki/MCEdit-Unified/tree/master/leveldb_mcpe | egrep -o '@ <a href="/Mojang/leveldb-mcpe/tree/([0-9A-Za-z]*)"' | egrep -o '/[0-9A-Za-z]*"' | egrep -o '[0-9A-Za-z]*') | egrep '\.zip' | sed 's/<a href="\/Mojang\/leveldb-mcpe\/archive/https:\/\/codeload.github.com\/Mojang\/leveldb-mcpe\/zip/' | sed 's/.zip"//'| sed 's/ //')""")
+                """wget -O leveldb-mcpe-master.zip $(wget -S -O - https://github.com/Mojang/leveldb-mcpe/tree/$(wget -S -O - https://github.com/Khroki/MCEdit-Unified/tree/master/pyleveldb_mcpe | egrep -o '@ <a href="/Mojang/leveldb-mcpe/tree/([0-9A-Za-z]*)"' | egrep -o '/[0-9A-Za-z]*"' | egrep -o '[0-9A-Za-z]*') | egrep '\.zip' | sed 's/<a href="\/Mojang\/leveldb-mcpe\/archive/https:\/\/codeload.github.com\/Mojang\/leveldb-mcpe\/zip/' | sed 's/.zip"//'| sed 's/ //')""")
         print "Extracting Mojang's leveldb-mcpe..."
         os.system('unzip -q leveldb-mcpe-master.zip')
         os.system("mv $(ls -d1 */ | egrep 'leveldb-mcpe-') %s" % leveldb_mcpe_path)
@@ -189,8 +188,8 @@ elif sys.platform == "linux2":
     #           'libboost_python.so.1.55.0 libboost_python.so' % boostRoot)
 
     # 2# Static library build: need a boost python libs built with cxxflags"-fPIC" and linkflags="-fPIC"
-    include_dirs = [boostRoot, '%s/include' % leveldb_mcpe_path, 'MCWorldLibrary/leveldb_mcpe']
-    library_dirs = [boostRoot, boostRoot + '/stage/lib', '/usr/local/lib', 'MCWorldLibrary/leveldb_mcpe',
+    include_dirs = [boostRoot, '%s/include' % leveldb_mcpe_path, 'MCWorldLibrary/pyleveldb_mcpe']
+    library_dirs = [boostRoot, boostRoot + '/stage/lib', '/usr/local/lib', 'MCWorldLibrary/pyleveldb_mcpe',
                     mcpeso_dir]
     libraries = ['boost_python', 'leveldb']
     define_macros = [("LINUX", None), ("_DEBUG", None), ("_LINUX", None), ("LEVELDB_PLATFORM_POSIX", None),
@@ -198,10 +197,10 @@ elif sys.platform == "linux2":
     extra_compile_args = ['-std=c++11'] + extra_compile_args
     runtime_library_dirs = [mcpeso_dir]
 
-files = ["MCWorldLibrary\leveldb_mcpe\leveldb_mcpe.cpp"]
+files = ["MCWorldLibrary\pyleveldb_mcpe\_leveldb_mcpe.cpp"]
 
 e = Extension(
-    "leveldb_mcpe",
+    "_leveldb_mcpe",
     files,
     library_dirs=library_dirs,
     libraries=libraries,

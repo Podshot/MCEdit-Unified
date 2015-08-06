@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 leveldb_available = True
 leveldb_mcpe = None
 try:
-    from leveldb_mcpe import leveldb_mcpe
+    import leveldb_mcpe
     op = leveldb_mcpe.Options()
     del op
 except Exception as e:

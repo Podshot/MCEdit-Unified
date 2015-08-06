@@ -1,5 +1,5 @@
-[submodule "MCWorldLibrary/leveldb_mcpe/leveldb-mcpe"]
+[submodule "MCWorldLibrary/pyleveldb_mcpe/leveldb-mcpe"]
 
-	path = MCWorldLibrary/leveldb_mcpe/leveldb-mcpe
+	path = MCWorldLibrary/pyleveldb_mcpe/leveldb-mcpe
 
 	url = https://github.com/Mojang/leveldb-mcpe.git
