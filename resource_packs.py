@@ -528,7 +528,7 @@ class IResourcePack:
 
     def __init__(self):
         self.__stop = False
-        texture_path = os.path.join(directories.parentDir, "textures", self._pack_name)
+        texture_path = directories.getDataDir(os.path.join("textures", self._pack_name))
         self.texture_path = texture_path
         self._isEmpty = False
         self._too_big = False
@@ -548,7 +548,8 @@ class IResourcePack:
             for texy in xrange(0,33):
                 self.all_texture_slots.append((step(texx),step(texy)))
         self._terrain_name = self._pack_name.replace(" ", "_")+".png"
-        self._terrain_path = os.path.join("terrain-textures", self._terrain_name.replace(" ", "_"))
+        self._terrain_path = directories.getDataDir(os.path.join("terrain-textures",
+                                                                 self._terrain_name.replace(" ", "_")))
 
     @property
     def pack_name(self):
@@ -759,7 +760,7 @@ class DefaultResourcePack(IResourcePack):
     def __init__(self):
         self._isEmpty = False
         self._too_big = False
-        self._terrain_path = "terrain.png"
+        self._terrain_path = directories.getDataDir("terrain.png")
         self._pack_name = "Default"
 
     def terrain_path(self):

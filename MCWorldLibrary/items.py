@@ -28,7 +28,7 @@ class Items(object):
     items = {}
 
     def __init__(self, filename=None):
-        itemsdir = os.path.join(directories.getDataDir(), "Items")
+        itemsdir = directories.getDataDir("Items")
 
         if not os.path.exists(itemsdir):
             raise Exception("Couldn't find Item Files. Please reinstall MCEdit!")

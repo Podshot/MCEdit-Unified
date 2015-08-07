@@ -13,7 +13,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 import time
-t= time.time()
+t = time.time()
 import sys
 import os
 import json
@@ -65,25 +65,19 @@ def win32_utf8_argv():
     except Exception:
         pass
 
+
 def getDataDir(path=""):
     """
     Returns the folder where the executable is located.
     :return unicode
     """
-    # if sys.platform == "win32":
-    #     def fsdecode(x):
-    #         return x.decode(sys.getfilesystemencoding())
-    #
-    #     dataDir = os.getcwdu()
-    #     '''
-    #     if getattr(sys, 'frozen', False):
-    #         dataDir = os.path.dirname(sys._MEIPASS)
-    #     else:
-    #         dataDir = os.path.dirname(__file__)
-    #     '''
-    #
-    # else:
-    dataDir = os.path.dirname(os.path.abspath(__file__))
+    if sys.platform == "win32":
+        if hasattr(sys, '_MEIPASS'):
+            dataDir = sys._MEIPASS
+        else:
+            dataDir = os.path.dirname(__file__)
+    else:
+        dataDir = os.path.dirname(os.path.abspath(__file__))
     if len(path) > 0:
         return os.path.join(dataDir, path)
     return dataDir
@@ -196,7 +190,7 @@ ini = u"mcedit.ini"
 cache = u"usercache.json"
 
 parentDir = os.path.dirname(getDataDir())
-docsFolder = os.path.join(getDocumentsFolder(),'MCEdit')
+docsFolder = os.path.join(getDocumentsFolder(), 'MCEdit')
 
 if sys.platform != "darwin":
 

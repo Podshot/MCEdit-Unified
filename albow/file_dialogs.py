@@ -29,6 +29,11 @@ import logging
 log = logging.getLogger(__name__)
 
 if sys.platform in ('darwin', 'linux2'):
+    # TODO
+    # Albow should never rely on files outside of it's own folder directly.
+    # file_image and folder_image either should be moved into albow, or passed as an argument to albow somewhere.
+    # Hacked in as of right now, needs fixing.
+
     print "*** MCEDIT DEBUG: file_dialog:", __file__
     print "*** MCEDIT DEBUG: directory:", os.path.dirname(__file__)
     print "*** MCEDIT DEBUG: current directory:", os.getcwd()
@@ -50,9 +55,10 @@ if sys.platform in ('darwin', 'linux2'):
         draw.line(folder_image, (255, 255, 255, 255), [3, 15], [3, 1], 2)
         draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 0, pi/1.9, 2)
         draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 3*pi/2, 2*pi, 2)
-else: # windows
-    file_image = image.load('file.png')
-    folder_image = image.load('folder.png')
+else:  # windows
+    import directories
+    file_image = image.load(directories.getDataDir('file.png'))
+    folder_image = image.load(directories.getDataDir('folder.png'))
 
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
