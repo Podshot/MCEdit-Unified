@@ -104,7 +104,10 @@ class JsonDictProperty(dict):
 
     def _getJson(self):
         try:
-            return json.load(open(self._filename), 'rb')
+            filter_json = json.load(open(self._filename), 'rb')
+            if "Macros" not in filter_json.keys():
+                filter_json["Macros"] = {}
+            return filter_json
         except (ValueError, IOError):
             return {"Macros": {}}
 
@@ -471,18 +474,24 @@ class FilterToolPanel(Panel):
         self.tool = tool
         self.selectedName = self.filter_json.get("Last Filter Opened", "")
 
-    @property
-    def filter_json(self):
-        if self._filter_json is not None:
-            return self._filter_json
+    @staticmethod
+    def load_filter_json():
         if FilterToolPanel.BACKUP_FILTER_JSON:
-            self._filter_json = JsonDictProperty(os.path.join(directories.getDataDir(), "filters.json"))
+            filter_json = JsonDictProperty(os.path.join(directories.getDataDir(), "filters.json"))
         else:
             try:
-                self._filter_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+                filter_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
             except (ValueError, IOError) as e:
                 log.error("Error while loading filters.json", e)
-                self._filter_json = {"Macros": {}}
+                filter_json = {}
+        if "Macros" not in filter_json.keys():
+            filter_json["Macros"] = {}
+        return filter_json
+
+    @property
+    def filter_json(self):
+        if self._filter_json is None:
+            self._filter_json = load_filter_json()
         return self._filter_json
 
     def close(self):
