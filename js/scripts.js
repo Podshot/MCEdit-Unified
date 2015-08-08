@@ -1,6 +1,7 @@
 var hasGottenReleaseData = false;
 var platforms = ["OSX","Win", "Lin"];
 function getJSON(url,forceLoad){
+	forceLoad = false
 	if (forceLoad !== true) {
 		forceLoad = false
 	} else {
