@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>compass module &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
+    <title>fileEdits module &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -47,9 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
-    <link rel="next" title="config module" href="config.html" />
-    <link rel="prev" title="bresenham module" href="bresenham.html" /> 
+    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
@@ -67,12 +65,10 @@
           <ul class="nav navbar-nav navbar-right">
 
             
-              <li><a href="bresenham.html" title="bresenham module" accesskey="P">previous </a></li>
-              <li><a href="config.html" title="config module" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
             
-            <li class="visible-xs"><a href="sources/compass.txt" rel="nofollow">Show Source</a></li>
+            <li class="visible-xs"><a href="sources/fileEdits.txt" rel="nofollow">Show Source</a></li>
 
             <li class="visible-xs">
                 <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
@@ -107,16 +103,10 @@
     <p class="logo"><a href="index.html">
       <img class="logo" src="static/favicon.png" alt="Logo"/>
     </a></p>
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="bresenham.html"
-                        title="previous chapter">bresenham module</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="config.html"
-                        title="next chapter">config module</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="sources/compass.txt"
+      <li><a href="sources/fileEdits.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -146,39 +136,38 @@
               <div class="bodywrapper">
                 <div class="body">
                   
-  <div class="section" id="module-compass">
-<span id="compass-module"></span><h1>compass module<a class="headerlink" href="#module-compass" title="Permalink to this headline">¶</a></h1>
-<p>compass</p>
+  <div class="section" id="module-fileEdits">
+<span id="fileedits-module"></span><h1>fileEdits module<a class="headerlink" href="#module-fileEdits" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="compass.CompassOverlay">
-<em class="property">class </em><code class="descclassname">compass.</code><code class="descname">CompassOverlay</code><a class="reference internal" href="modules/compass.html#CompassOverlay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#compass.CompassOverlay" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="drawable.html#drawable.Drawable" title="drawable.Drawable"><code class="xref py py-class docutils literal"><span class="pre">drawable.Drawable</span></code></a></p>
+<dt id="fileEdits.FileEditsOperation">
+<em class="property">class </em><code class="descclassname">fileEdits.</code><code class="descname">FileEditsOperation</code><span class="sig-paren">(</span><em>editor</em>, <em>level</em>, <em>box</em>, <em>lines</em>, <em>tileEntities</em><span class="sig-paren">)</span><a class="reference internal" href="modules/fileEdits.html#FileEditsOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fileEdits.FileEditsOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="editortools.html#editortools.operation.Operation" title="editortools.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">editortools.operation.Operation</span></code></a></p>
 <dl class="method">
-<dt id="compass.CompassOverlay.drawSelf">
-<code class="descname">drawSelf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/compass.html#CompassOverlay.drawSelf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#compass.CompassOverlay.drawSelf" title="Permalink to this definition">¶</a></dt>
+<dt id="fileEdits.FileEditsOperation.dirtyBox">
+<code class="descname">dirtyBox</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/fileEdits.html#FileEditsOperation.dirtyBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fileEdits.FileEditsOperation.dirtyBox" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="compass.CompassOverlay.x">
-<code class="descname">x</code><em class="property"> = 0</em><a class="headerlink" href="#compass.CompassOverlay.x" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="compass.CompassOverlay.y">
-<code class="descname">y</code><em class="property"> = 0</em><a class="headerlink" href="#compass.CompassOverlay.y" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="compass.CompassOverlay.yawPitch">
-<code class="descname">yawPitch</code><a class="headerlink" href="#compass.CompassOverlay.yawPitch" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="fileEdits.FileEditsOperation.perform">
+<code class="descname">perform</code><span class="sig-paren">(</span><em>recordUndo=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/fileEdits.html#FileEditsOperation.perform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fileEdits.FileEditsOperation.perform" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
-<dt id="compass.makeQuad">
-<code class="descclassname">compass.</code><code class="descname">makeQuad</code><span class="sig-paren">(</span><em>minx</em>, <em>miny</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="modules/compass.html#makeQuad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#compass.makeQuad" title="Permalink to this definition">¶</a></dt>
+<dt id="fileEdits.GetSort">
+<code class="descclassname">fileEdits.</code><code class="descname">GetSort</code><span class="sig-paren">(</span><em>box</em>, <em>sorting</em><span class="sig-paren">)</span><a class="reference internal" href="modules/fileEdits.html#GetSort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fileEdits.GetSort" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="class">
+<dt id="fileEdits.fileEdit">
+<em class="property">class </em><code class="descclassname">fileEdits.</code><code class="descname">fileEdit</code><span class="sig-paren">(</span><em>filename</em>, <em>timeChanged</em>, <em>box</em>, <em>sorting</em>, <em>editor</em>, <em>level</em><span class="sig-paren">)</span><a class="reference internal" href="modules/fileEdits.html#fileEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fileEdits.fileEdit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="fileEdits.fileEdit.makeChanges">
+<code class="descname">makeChanges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/fileEdits.html#fileEdit.makeChanges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fileEdits.fileEdit.makeChanges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 </div>
 
@@ -201,8 +190,6 @@
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="bresenham.html" title="bresenham module" >previous</a></li>
-        <li><a href="config.html" title="config module" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="#">top</a></li> 

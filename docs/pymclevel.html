@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pymclevel package &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>pymclevel package &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.3.0.0',
+            VERSION:     'v1.4.0.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,8 +47,8 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
-    <link rel="next" title="pyperclip module" href="pyperclip.html" />
+    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
+    <link rel="next" title="pymclevel.test package" href="pymclevel.test.html" />
     <link rel="prev" title="png module" href="png.html" /> 
   </head>
   <body role="document">
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.4.0.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -70,7 +70,9 @@
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
 <li><a class="reference internal" href="#">pymclevel package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pymclevel.BOParser">pymclevel.BOParser module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.biome_types">pymclevel.biome_types module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.block_copy">pymclevel.block_copy module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.block_fill">pymclevel.block_fill module</a></li>
@@ -86,12 +88,12 @@
 <li><a class="reference internal" href="#module-pymclevel.javalevel">pymclevel.javalevel module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.level">pymclevel.level module</a></li>
 <li><a class="reference internal" href="#pymclevel-leveldb-module">pymclevel.leveldb module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.leveldbpocket">pymclevel.leveldbpocket module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.materials">pymclevel.materials module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.mclevel">pymclevel.mclevel module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.mclevelbase">pymclevel.mclevelbase module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.minecraft_server">pymclevel.minecraft_server module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.nbt">pymclevel.nbt module</a></li>
-<li><a class="reference internal" href="#pymclevel-nbt-util-module">pymclevel.nbt_util module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.player">pymclevel.player module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.pocket">pymclevel.pocket module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.regionfile">pymclevel.regionfile module</a></li>
@@ -109,7 +111,7 @@
 
             
               <li><a href="png.html" title="png module" accesskey="P">previous </a></li>
-              <li><a href="pyperclip.html" title="pyperclip module" accesskey="N">next </a></li>
+              <li><a href="pymclevel.test.html" title="pymclevel.test package" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
             
@@ -151,7 +153,9 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">pymclevel package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pymclevel.BOParser">pymclevel.BOParser module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.biome_types">pymclevel.biome_types module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.block_copy">pymclevel.block_copy module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.block_fill">pymclevel.block_fill module</a></li>
@@ -167,12 +171,12 @@
 <li><a class="reference internal" href="#module-pymclevel.javalevel">pymclevel.javalevel module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.level">pymclevel.level module</a></li>
 <li><a class="reference internal" href="#pymclevel-leveldb-module">pymclevel.leveldb module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.leveldbpocket">pymclevel.leveldbpocket module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.materials">pymclevel.materials module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.mclevel">pymclevel.mclevel module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.mclevelbase">pymclevel.mclevelbase module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.minecraft_server">pymclevel.minecraft_server module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.nbt">pymclevel.nbt module</a></li>
-<li><a class="reference internal" href="#pymclevel-nbt-util-module">pymclevel.nbt_util module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.player">pymclevel.player module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.pocket">pymclevel.pocket module</a></li>
 <li><a class="reference internal" href="#module-pymclevel.regionfile">pymclevel.regionfile module</a></li>
@@ -189,8 +193,8 @@
   <p class="topless"><a href="png.html"
                         title="previous chapter">png module</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="pyperclip.html"
-                        title="next chapter">pyperclip module</a></p>
+  <p class="topless"><a href="pymclevel.test.html"
+                        title="next chapter">pymclevel.test package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -226,8 +230,68 @@
                   
   <div class="section" id="pymclevel-package">
 <h1>pymclevel package<a class="headerlink" href="#pymclevel-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pymclevel.test.html">pymclevel.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.anvil_test">pymclevel.test.anvil_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.entity_test">pymclevel.test.entity_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.extended_id_test">pymclevel.test.extended_id_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.indev_test">pymclevel.test.indev_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.java_test">pymclevel.test.java_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.mcr_test">pymclevel.test.mcr_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.nbt_test">pymclevel.test.nbt_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.pocket_test">pymclevel.test.pocket_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.schematic_test">pymclevel.test.schematic_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.server_test">pymclevel.test.server_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.session_lock_test">pymclevel.test.session_lock_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.templevel">pymclevel.test.templevel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.test_primordial">pymclevel.test.test_primordial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#pymclevel-test-time-nbt-module">pymclevel.test.time_nbt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test.time_relight">pymclevel.test.time_relight module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymclevel.test.html#module-pymclevel.test">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pymclevel.BOParser">
+<span id="pymclevel-boparser-module"></span><h2>pymclevel.BOParser module<a class="headerlink" href="#module-pymclevel.BOParser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.BOParser.BO2">
+<em class="property">class </em><code class="descclassname">pymclevel.BOParser.</code><code class="descname">BO2</code><span class="sig-paren">(</span><em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/BOParser.html#BO2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.BOParser.BO2" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pymclevel.BOParser.BO2.blocks">
+<code class="descname">blocks</code><a class="headerlink" href="#pymclevel.BOParser.BO2.blocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.BOParser.BO2.getSchematic">
+<code class="descname">getSchematic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/BOParser.html#BO2.getSchematic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.BOParser.BO2.getSchematic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.BOParser.BO2.meta">
+<code class="descname">meta</code><a class="headerlink" href="#pymclevel.BOParser.BO2.meta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymclevel.BOParser.BO3">
+<em class="property">class </em><code class="descclassname">pymclevel.BOParser.</code><code class="descname">BO3</code><span class="sig-paren">(</span><em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/BOParser.html#BO3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.BOParser.BO3" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pymclevel.BOParser.BO3.getSchematic">
+<code class="descname">getSchematic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/BOParser.html#BO3.getSchematic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.BOParser.BO3.getSchematic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pymclevel.biome_types">
 <span id="pymclevel-biome-types-module"></span><h2>pymclevel.biome_types module<a class="headerlink" href="#module-pymclevel.biome_types" title="Permalink to this headline">¶</a></h2>
@@ -423,7 +487,7 @@ and copy block and entities in the sub box to the dest chunk.</p>
 
 <dl class="attribute">
 <dt id="pymclevel.blockrotation.BlockRotation.typeTable">
-<code class="descname">typeTable</code><em class="property"> = {128: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 130: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000B287A68&gt;, 34: &lt;class pymclevel.blockrotation.PistonHead at 0x000000000B287FA8&gt;, 86: &lt;class pymclevel.blockrotation.Pumpkin at 0x000000000B287AC8&gt;, 134: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 135: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 136: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 162: &lt;class pymclevel.blockrotation.Log at 0x000000000B287E28&gt;, 194: &lt;class pymclevel.blockrotation.Door at 0x000000000B287DC8&gt;, 143: &lt;class pymclevel.blockrotation.Button at 0x000000000B287C48&gt;, 144: &lt;class pymclevel.blockrotation.MobHead at 0x000000000B2984C8&gt;, 17: &lt;class pymclevel.blockrotation.Log at 0x000000000B287E28&gt;, 195: &lt;class pymclevel.blockrotation.Door at 0x000000000B287DC8&gt;, 149: &lt;class pymclevel.blockrotation.RedstoneComparator at 0x000000000B2985E8&gt;, 154: &lt;class pymclevel.blockrotation.Hopper at 0x000000000B298528&gt;, 23: &lt;class pymclevel.blockrotation.Dropper at 0x000000000B298588&gt;, 196: &lt;class pymclevel.blockrotation.Door at 0x000000000B287DC8&gt;, 26: &lt;class pymclevel.blockrotation.Bed at 0x000000000B287D08&gt;, 27: &lt;class pymclevel.blockrotation.PoweredDetectorRail at 0x000000000B287B88&gt;, 156: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 157: &lt;class pymclevel.blockrotation.PoweredDetectorRail at 0x000000000B287B88&gt;, 158: &lt;class pymclevel.blockrotation.Dropper at 0x000000000B298588&gt;, 69: &lt;class pymclevel.blockrotation.Lever at 0x000000000B287BE8&gt;, 33: &lt;class pymclevel.blockrotation.PistonBody at 0x000000000B287F48&gt;, 197: &lt;class pymclevel.blockrotation.Door at 0x000000000B287DC8&gt;, 163: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 164: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 167: &lt;class pymclevel.blockrotation.Trapdoor at 0x000000000B287EE8&gt;, 28: &lt;class pymclevel.blockrotation.PoweredDetectorRail at 0x000000000B287B88&gt;, 193: &lt;class pymclevel.blockrotation.Door at 0x000000000B287DC8&gt;, 43: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 44: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 29: &lt;class pymclevel.blockrotation.PistonBody at 0x000000000B287F48&gt;, 176: &lt;class pymclevel.blockrotation.SignPost at 0x000000000B287CA8&gt;, 177: &lt;class pymclevel.blockrotation.WallSign at 0x000000000B287A08&gt;, 50: &lt;class pymclevel.blockrotation.Torch at 0x000000000B287888&gt;, 180: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 53: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 182: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 183: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000B298348&gt;, 184: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000B298348&gt;, 185: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000B298348&gt;, 186: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000B298348&gt;, 187: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000B298348&gt;, 61: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000B287A68&gt;, 62: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000B287A68&gt;, 181: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 64: &lt;class pymclevel.blockrotation.Door at 0x000000000B287DC8&gt;, 65: &lt;class pymclevel.blockrotation.Ladder at 0x000000000B2878E8&gt;, 66: &lt;class pymclevel.blockrotation.Rail at 0x000000000B287B28&gt;, 67: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 68: &lt;class pymclevel.blockrotation.WallSign at 0x000000000B287A08&gt;, 54: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000B287A68&gt;, 198: &lt;class pymclevel.blockrotation.EndRod at 0x000000000B298648&gt;, 71: &lt;class pymclevel.blockrotation.Door at 0x000000000B287DC8&gt;, 204: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 202: &lt;class pymclevel.blockrotation.PurpurPillar at 0x000000000B298228&gt;, 75: &lt;class pymclevel.blockrotation.Torch at 0x000000000B287888&gt;, 76: &lt;class pymclevel.blockrotation.Torch at 0x000000000B287888&gt;, 205: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 77: &lt;class pymclevel.blockrotation.Button at 0x000000000B287C48&gt;, 155: &lt;class pymclevel.blockrotation.QuartzPillar at 0x000000000B2981C8&gt;, 203: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 90: &lt;class pymclevel.blockrotation.NetherPortal at 0x000000000B298288&gt;, 91: &lt;class pymclevel.blockrotation.Pumpkin at 0x000000000B287AC8&gt;, 93: &lt;class pymclevel.blockrotation.RedstoneRepeater at 0x000000000B287E88&gt;, 94: &lt;class pymclevel.blockrotation.RedstoneRepeater at 0x000000000B287E88&gt;, 96: &lt;class pymclevel.blockrotation.Trapdoor at 0x000000000B287EE8&gt;, 99: &lt;class pymclevel.blockrotation.HugeMushroom at 0x000000000B298048&gt;, 100: &lt;class pymclevel.blockrotation.HugeMushroom at 0x000000000B298048&gt;, 145: &lt;class pymclevel.blockrotation.Anvil at 0x000000000B298108&gt;, 119: &lt;class pymclevel.blockrotation.EnderPortal at 0x000000000B2983A8&gt;, 106: &lt;class pymclevel.blockrotation.Vines at 0x000000000B2980A8&gt;, 107: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000B298348&gt;, 108: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 109: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 114: &lt;class pymclevel.blockrotation.Stair at 0x000000000B287948&gt;, 150: &lt;class pymclevel.blockrotation.RedstoneComparator at 0x000000000B2985E8&gt;, 131: &lt;class pymclevel.blockrotation.TripwireHook at 0x000000000B298468&gt;, 170: &lt;class pymclevel.blockrotation.Hay at 0x000000000B298168&gt;, 120: &lt;class pymclevel.blockrotation.EndPortal at 0x000000000B287D68&gt;, 63: &lt;class pymclevel.blockrotation.SignPost at 0x000000000B287CA8&gt;, 125: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 126: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000B2879A8&gt;, 127: &lt;class pymclevel.blockrotation.CocoaPlant at 0x000000000B298408&gt;}</em><a class="headerlink" href="#pymclevel.blockrotation.BlockRotation.typeTable" title="Permalink to this definition">¶</a></dt>
+<code class="descname">typeTable</code><em class="property"> = {128: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 130: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000CB76828&gt;, 34: &lt;class pymclevel.blockrotation.PistonHead at 0x000000000CB76D68&gt;, 86: &lt;class pymclevel.blockrotation.Pumpkin at 0x000000000CB76888&gt;, 134: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 135: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 136: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 162: &lt;class pymclevel.blockrotation.Log at 0x000000000CB76BE8&gt;, 194: &lt;class pymclevel.blockrotation.Door at 0x000000000CB76B88&gt;, 143: &lt;class pymclevel.blockrotation.Button at 0x000000000CB76A08&gt;, 144: &lt;class pymclevel.blockrotation.MobHead at 0x000000000CB7F288&gt;, 17: &lt;class pymclevel.blockrotation.Log at 0x000000000CB76BE8&gt;, 195: &lt;class pymclevel.blockrotation.Door at 0x000000000CB76B88&gt;, 149: &lt;class pymclevel.blockrotation.RedstoneComparator at 0x000000000CB7F3A8&gt;, 154: &lt;class pymclevel.blockrotation.Hopper at 0x000000000CB7F2E8&gt;, 23: &lt;class pymclevel.blockrotation.Dropper at 0x000000000CB7F348&gt;, 196: &lt;class pymclevel.blockrotation.Door at 0x000000000CB76B88&gt;, 26: &lt;class pymclevel.blockrotation.Bed at 0x000000000CB76AC8&gt;, 27: &lt;class pymclevel.blockrotation.PoweredDetectorRail at 0x000000000CB76948&gt;, 156: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 157: &lt;class pymclevel.blockrotation.PoweredDetectorRail at 0x000000000CB76948&gt;, 158: &lt;class pymclevel.blockrotation.Dropper at 0x000000000CB7F348&gt;, 69: &lt;class pymclevel.blockrotation.Lever at 0x000000000CB769A8&gt;, 33: &lt;class pymclevel.blockrotation.PistonBody at 0x000000000CB76D08&gt;, 197: &lt;class pymclevel.blockrotation.Door at 0x000000000CB76B88&gt;, 163: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 164: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 167: &lt;class pymclevel.blockrotation.Trapdoor at 0x000000000CB76CA8&gt;, 28: &lt;class pymclevel.blockrotation.PoweredDetectorRail at 0x000000000CB76948&gt;, 193: &lt;class pymclevel.blockrotation.Door at 0x000000000CB76B88&gt;, 43: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 44: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 29: &lt;class pymclevel.blockrotation.PistonBody at 0x000000000CB76D08&gt;, 176: &lt;class pymclevel.blockrotation.SignPost at 0x000000000CB76A68&gt;, 177: &lt;class pymclevel.blockrotation.WallSign at 0x000000000CB767C8&gt;, 50: &lt;class pymclevel.blockrotation.Torch at 0x000000000CB76648&gt;, 180: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 53: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 182: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 183: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000CB7F108&gt;, 184: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000CB7F108&gt;, 185: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000CB7F108&gt;, 186: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000CB7F108&gt;, 187: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000CB7F108&gt;, 61: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000CB76828&gt;, 62: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000CB76828&gt;, 181: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 64: &lt;class pymclevel.blockrotation.Door at 0x000000000CB76B88&gt;, 65: &lt;class pymclevel.blockrotation.Ladder at 0x000000000CB766A8&gt;, 66: &lt;class pymclevel.blockrotation.Rail at 0x000000000CB768E8&gt;, 67: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 68: &lt;class pymclevel.blockrotation.WallSign at 0x000000000CB767C8&gt;, 54: &lt;class pymclevel.blockrotation.FurnaceDispenserChest at 0x000000000CB76828&gt;, 198: &lt;class pymclevel.blockrotation.EndRod at 0x000000000CB7F408&gt;, 71: &lt;class pymclevel.blockrotation.Door at 0x000000000CB76B88&gt;, 204: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 202: &lt;class pymclevel.blockrotation.PurpurPillar at 0x000000000CB76FA8&gt;, 75: &lt;class pymclevel.blockrotation.Torch at 0x000000000CB76648&gt;, 76: &lt;class pymclevel.blockrotation.Torch at 0x000000000CB76648&gt;, 205: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 77: &lt;class pymclevel.blockrotation.Button at 0x000000000CB76A08&gt;, 155: &lt;class pymclevel.blockrotation.QuartzPillar at 0x000000000CB76F48&gt;, 203: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 90: &lt;class pymclevel.blockrotation.NetherPortal at 0x000000000CB7F048&gt;, 91: &lt;class pymclevel.blockrotation.Pumpkin at 0x000000000CB76888&gt;, 93: &lt;class pymclevel.blockrotation.RedstoneRepeater at 0x000000000CB76C48&gt;, 94: &lt;class pymclevel.blockrotation.RedstoneRepeater at 0x000000000CB76C48&gt;, 96: &lt;class pymclevel.blockrotation.Trapdoor at 0x000000000CB76CA8&gt;, 99: &lt;class pymclevel.blockrotation.HugeMushroom at 0x000000000CB76DC8&gt;, 100: &lt;class pymclevel.blockrotation.HugeMushroom at 0x000000000CB76DC8&gt;, 145: &lt;class pymclevel.blockrotation.Anvil at 0x000000000CB76E88&gt;, 119: &lt;class pymclevel.blockrotation.EnderPortal at 0x000000000CB7F168&gt;, 106: &lt;class pymclevel.blockrotation.Vines at 0x000000000CB76E28&gt;, 107: &lt;class pymclevel.blockrotation.FenceGate at 0x000000000CB7F108&gt;, 108: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 109: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 114: &lt;class pymclevel.blockrotation.Stair at 0x000000000CB76708&gt;, 150: &lt;class pymclevel.blockrotation.RedstoneComparator at 0x000000000CB7F3A8&gt;, 131: &lt;class pymclevel.blockrotation.TripwireHook at 0x000000000CB7F228&gt;, 170: &lt;class pymclevel.blockrotation.Hay at 0x000000000CB76EE8&gt;, 120: &lt;class pymclevel.blockrotation.EndPortal at 0x000000000CB76B28&gt;, 63: &lt;class pymclevel.blockrotation.SignPost at 0x000000000CB76A68&gt;, 125: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 126: &lt;class pymclevel.blockrotation.HalfSlab at 0x000000000CB76768&gt;, 127: &lt;class pymclevel.blockrotation.CocoaPlant at 0x000000000CB7F1C8&gt;}</em><a class="headerlink" href="#pymclevel.blockrotation.BlockRotation.typeTable" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -3402,7 +3466,7 @@ Clear the cache with f.clear().
 
 <dl class="attribute">
 <dt id="pymclevel.gprof2dot.Main.themes">
-<code class="descname">themes</code><em class="property"> = {'color': &lt;pymclevel.gprof2dot.Theme instance at 0x0000000010866C88&gt;, 'pink': &lt;pymclevel.gprof2dot.Theme instance at 0x0000000010866D08&gt;, 'bw': &lt;pymclevel.gprof2dot.Theme instance at 0x0000000010866E08&gt;, 'gray': &lt;pymclevel.gprof2dot.Theme instance at 0x0000000010866088&gt;}</em><a class="headerlink" href="#pymclevel.gprof2dot.Main.themes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">themes</code><em class="property"> = {'color': &lt;pymclevel.gprof2dot.Theme instance at 0x00000000142A96C8&gt;, 'pink': &lt;pymclevel.gprof2dot.Theme instance at 0x00000000142A9848&gt;, 'bw': &lt;pymclevel.gprof2dot.Theme instance at 0x00000000142A9688&gt;, 'gray': &lt;pymclevel.gprof2dot.Theme instance at 0x00000000142A9C08&gt;}</em><a class="headerlink" href="#pymclevel.gprof2dot.Main.themes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
@@ -5459,6 +5523,575 @@ In all other places, including an entity&#8217;s &#8216;Pos&#8217;, the order is
 <div class="section" id="pymclevel-leveldb-module">
 <h2>pymclevel.leveldb module<a class="headerlink" href="#pymclevel-leveldb-module" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pymclevel.leveldbpocket">
+<span id="pymclevel-leveldbpocket-module"></span><h2>pymclevel.leveldbpocket module<a class="headerlink" href="#module-pymclevel.leveldbpocket" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="pymclevel.leveldbpocket.InvalidPocketLevelDBWorldException">
+<em class="property">exception </em><code class="descclassname">pymclevel.leveldbpocket.</code><code class="descname">InvalidPocketLevelDBWorldException</code><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#InvalidPocketLevelDBWorldException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.InvalidPocketLevelDBWorldException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbChunk">
+<em class="property">class </em><code class="descclassname">pymclevel.leveldbpocket.</code><code class="descname">PocketLeveldbChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em>, <em>world</em>, <em>data=None</em>, <em>create=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymclevel.level.LightedChunk" title="pymclevel.level.LightedChunk"><code class="xref py py-class docutils literal"><span class="pre">pymclevel.level.LightedChunk</span></code></a></p>
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbChunk.Entities">
+<code class="descname">Entities</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbChunk.Entities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbChunk.HeightMap">
+<code class="descname">HeightMap</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbChunk.HeightMap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbChunk.TileEntities">
+<code class="descname">TileEntities</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbChunk.TileEntities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbChunk.dirty">
+<code class="descname">dirty</code><em class="property"> = False</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbChunk.dirty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbChunk.savedData">
+<code class="descname">savedData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbChunk.savedData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbChunk.savedData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the data of the chunk to save to the database.
+:return: str of 83200 bytes of chunk data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbChunk.shapeChunkData">
+<code class="descname">shapeChunkData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbChunk.shapeChunkData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbChunk.shapeChunkData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the shape of the terrain data.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase">
+<em class="property">class </em><code class="descclassname">pymclevel.leveldbpocket.</code><code class="descname">PocketLeveldbDatabase</code><span class="sig-paren">(</span><em>path</em>, <em>create=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Not to be confused with leveldb_mcpe.DB
+A PocketLeveldbDatabase is an interface around leveldb_mcpe.DB, providing various functions
+to load/write chunk data, and access the level.dat file.
+The leveldb_mcpe.DB object handles the actual leveldb database.
+To access the actual database, world_db() should be called.</p>
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should be called before deleting this instance of the level.
+Not calling this method may result in corrupted worlds
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.deleteChunk">
+<code class="descname">deleteChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em>, <em>batch=None</em>, <em>writeOptions=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.deleteChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.deleteChunk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.getAllChunks">
+<code class="descname">getAllChunks</code><span class="sig-paren">(</span><em>readOptions=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.getAllChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.getAllChunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all chunks that have terrain data in the database.
+Chunks with only Entities or TileEntities are ignored.
+:param readOptions: ReadOptions
+:return: list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.getAllPlayerData">
+<code class="descname">getAllPlayerData</code><span class="sig-paren">(</span><em>readOptions=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.getAllPlayerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.getAllPlayerData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the raw NBT data of all players in the database.
+Every player is stored as player_&lt;player-id&gt;. The single-player player is stored as ~local_player
+:param readOptions:
+:return: dictonary key, value: key: player-id, value = player nbt data as str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.holdDatabaseOpen">
+<code class="descname">holdDatabaseOpen</code><em class="property"> = True</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.holdDatabaseOpen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.loadChunk">
+<code class="descname">loadChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em>, <em>world</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.loadChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.loadChunk" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cz</strong> (<em>cx,</em>) &#8211; int Coordinates of the chunk</li>
+<li><strong>world</strong> &#8211; PocketLeveldbWorld</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">PocketLeveldbChunk</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.saveChunk">
+<code class="descname">saveChunk</code><span class="sig-paren">(</span><em>chunk</em>, <em>batch=None</em>, <em>writeOptions=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.saveChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.saveChunk" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>chunk</strong> &#8211; PocketLeveldbChunk</li>
+<li><strong>batch</strong> &#8211; WriteBatch</li>
+<li><strong>writeOptions</strong> &#8211; WriteOptions</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.savePlayer">
+<code class="descname">savePlayer</code><span class="sig-paren">(</span><em>player</em>, <em>playerData</em>, <em>batch=None</em>, <em>writeOptions=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.savePlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.savePlayer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbDatabase.world_db">
+<code class="descname">world_db</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbDatabase.world_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbDatabase.world_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a leveldb and keeps it open until editing finished.
+:yield: DB</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld">
+<em class="property">class </em><code class="descclassname">pymclevel.leveldbpocket.</code><code class="descname">PocketLeveldbWorld</code><span class="sig-paren">(</span><em>filename=None</em>, <em>create=False</em>, <em>random_seed=None</em>, <em>last_played=None</em>, <em>readonly=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymclevel.infiniteworld.ChunkedLevelMixin" title="pymclevel.infiniteworld.ChunkedLevelMixin"><code class="xref py py-class docutils literal"><span class="pre">pymclevel.infiniteworld.ChunkedLevelMixin</span></code></a>, <a class="reference internal" href="#pymclevel.level.MCLevel" title="pymclevel.level.MCLevel"><code class="xref py py-class docutils literal"><span class="pre">pymclevel.level.MCLevel</span></code></a></p>
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.GameType">
+<code class="descname">GameType</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.GameType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.GeneratorName">
+<code class="descname">GeneratorName</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.GeneratorName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.Height">
+<code class="descname">Height</code><em class="property"> = 128</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.Height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.LastPlayed">
+<code class="descname">LastPlayed</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.LastPlayed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.Length">
+<code class="descname">Length</code><em class="property"> = 0</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.Length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.LevelName">
+<code class="descname">LevelName</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.LevelName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.RandomSeed">
+<code class="descname">RandomSeed</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.RandomSeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.SizeOnDisk">
+<code class="descname">SizeOnDisk</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.SizeOnDisk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.Time">
+<code class="descname">Time</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.Time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.Width">
+<code class="descname">Width</code><em class="property"> = 0</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.Width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.addEntity">
+<code class="descname">addEntity</code><span class="sig-paren">(</span><em>entityTag</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.addEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.addEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an entity to the level.
+:param entityTag: nbt.TAG_Compound containing the entity&#8217;s data.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.addTileEntity">
+<code class="descname">addTileEntity</code><span class="sig-paren">(</span><em>tileEntityTag</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.addTileEntity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.addTileEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an entity to the level.
+:param tileEntityTag: nbt.TAG_Compound containing the Tile entity&#8217;s data.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.addTileTick">
+<code class="descname">addTileTick</code><span class="sig-paren">(</span><em>tickTag</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.addTileTick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.addTileTick" title="Permalink to this definition">¶</a></dt>
+<dd><p>MCPE doesn&#8217;t have Tile Ticks, so this can&#8217;t be added.
+:param tickTag: nbt.TAG_Compound
+:return: None</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.allChunks">
+<code class="descname">allChunks</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.allChunks" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list with all chunks in the world.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.bounds">
+<code class="descname">bounds</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boundingbox containing the entire level
+:return: pymclevel.box.BoundingBox</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.chunksNeedingLighting">
+<code class="descname">chunksNeedingLighting</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.chunksNeedingLighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator containing all chunks that need lighting.
+:yield: int (cx, cz) Coordinates of the chunk</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unload all chunks and close all open file-handlers. Discard any unsaved data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.containsChunk">
+<code class="descname">containsChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.containsChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.containsChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if the chunk exist in this world.
+:param cx, cz: int, Coordinates of the chunk
+:return: bool (if chunk exists)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.createChunk">
+<code class="descname">createChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.createChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.createChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an empty chunk at given cx, cz coordinates, and stores it in self._loadedChunks
+:param cx, cz: int, Coordinates of the chunk
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.defaultDisplayName">
+<code class="descname">defaultDisplayName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.defaultDisplayName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.defaultDisplayName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.deleteChunk">
+<code class="descname">deleteChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em>, <em>batch=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.deleteChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.deleteChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a chunk at given cx, cz. Deletes using the batch if batch is given, uses world_db() otherwise.
+:param cx, cz Coordinates of the chunk
+:param batch WriteBatch
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.deleteChunksInBox">
+<code class="descname">deleteChunksInBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.deleteChunksInBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.deleteChunksInBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all chunks in a given box.
+:param box pymclevel.box.BoundingBox
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getChunk">
+<code class="descname">getChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to obtain a chunk from the database.
+:param cx, cz: cx, cz coordinates of the chunk
+:return: PocketLeveldbChunk</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getEntitiesInBox">
+<code class="descname">getEntitiesInBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getEntitiesInBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getEntitiesInBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Entities in given box.
+:param box: pymclevel.box.BoundingBox
+:return: list of nbt.TAG_Compound</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerDimension">
+<code class="descname">getPlayerDimension</code><span class="sig-paren">(</span><em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getPlayerDimension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerDimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Always returns 0, as MCPE only has the overworld dimension.
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:return: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerGameType">
+<code class="descname">getPlayerGameType</code><span class="sig-paren">(</span><em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getPlayerGameType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerGameType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the players gametype.
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:return: int (0=survival, 1=creative, 2=adventure, 3=spectator)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerOrientation">
+<code class="descname">getPlayerOrientation</code><span class="sig-paren">(</span><em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getPlayerOrientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the players orientation.
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:return: tuple int (yaw, pitch)</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerPath">
+<em class="property">static </em><code class="descname">getPlayerPath</code><span class="sig-paren">(</span><em>player</em>, <em>dim=0</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getPlayerPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>player.py loads players from files, but PE caches them differently. This is necessary to make it work.
+:param player: str
+:param dim: int
+:return: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerPosition">
+<code class="descname">getPlayerPosition</code><span class="sig-paren">(</span><em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getPlayerPosition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the players position
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:return: tuple int (x, y, z): Coordinates of the player.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerTag">
+<code class="descname">getPlayerTag</code><span class="sig-paren">(</span><em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getPlayerTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getPlayerTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains a player from the world.
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:return: nbt.TAG_Compound, root tag of the player.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getTileEntitiesInBox">
+<code class="descname">getTileEntitiesInBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getTileEntitiesInBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getTileEntitiesInBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Tile Entities in given box.
+:param box: pymclevel.box.BoundingBox
+:return: list of nbt.TAG_Compound</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.getTileTicksInBox">
+<code class="descname">getTileTicksInBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.getTileTicksInBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.getTileTicksInBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Always returns None, as MCPE has no TileTicks.
+:param box: pymclevel.box.BoundingBox
+:return: list</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.isInfinite">
+<code class="descname">isInfinite</code><em class="property"> = True</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.isInfinite" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.loadLevelDat">
+<code class="descname">loadLevelDat</code><span class="sig-paren">(</span><em>create=False</em>, <em>random_seed=None</em>, <em>last_played=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.loadLevelDat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.loadLevelDat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the level.dat from the worldfolder.
+:param create: bool. If it&#8217;s True, a fresh level.dat will be created instead.
+:param random_seed: long
+:param last_played: long
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.markDirtyBox">
+<code class="descname">markDirtyBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.markDirtyBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.markDirtyBox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.markDirtyChunk">
+<code class="descname">markDirtyChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.markDirtyChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.markDirtyChunk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.materials">
+<code class="descname">materials</code><em class="property"> = &lt;MCMaterials (Pocket)&gt;</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.materials" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.noTileTicks">
+<code class="descname">noTileTicks</code><em class="property"> = True</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.noTileTicks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.oldPlayerFolderFormat">
+<code class="descname">oldPlayerFolderFormat</code><em class="property"> = False</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.oldPlayerFolderFormat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.playerData">
+<code class="descname">playerData</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.playerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.playerSpawnPosition">
+<code class="descname">playerSpawnPosition</code><span class="sig-paren">(</span><em>player=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.playerSpawnPosition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.playerSpawnPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default spawn position for the world. If player is given, the players spawn is returned instead.
+:param player: nbt.TAG_Compound, root tag of the player.
+:return: tuple int (x, y, z), coordinates of the spawn.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.playerTagCache">
+<code class="descname">playerTagCache</code><em class="property"> = {}</em><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.playerTagCache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.players">
+<code class="descname">players</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.players" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.removeEntitiesInBox">
+<code class="descname">removeEntitiesInBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.removeEntitiesInBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.removeEntitiesInBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all entities in given box
+:param box: pymclevel.box.BoundingBox
+:return: int, count of entities removed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.removeTileEntitiesInBox">
+<code class="descname">removeTileEntitiesInBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.removeTileEntitiesInBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.removeTileEntitiesInBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all tile entities in given box
+:param box: pymclevel.box.BoundingBox
+:return: int, count of tile entities removed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.removeTileTicksInBox">
+<code class="descname">removeTileTicksInBox</code><span class="sig-paren">(</span><em>box</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.removeTileTicksInBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.removeTileTicksInBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>MCPE doesn&#8217;t have TileTicks, so this does nothing.
+:param box: pymclevel.box.BoundingBox
+:return: int, count of TileTicks removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.saveGeneratedChunk">
+<code class="descname">saveGeneratedChunk</code><span class="sig-paren">(</span><em>cx</em>, <em>cz</em>, <em>tempChunkBytes</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.saveGeneratedChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.saveGeneratedChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chunks get generated using Anvil generation. This is a (slow) way of importing anvil chunk bytes
+and converting them to MCPE chunk data. Could definitely use some improvements, but at least it works.
+:param cx, cx: Coordinates of the chunk
+:param tempChunkBytes: str. Raw MCRegion chunk data.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.saveInPlaceGen">
+<code class="descname">saveInPlaceGen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.saveInPlaceGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.saveInPlaceGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save all chunks to the database, and write the root_tag back to level.dat.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerAbilities">
+<em class="property">static </em><code class="descname">setPlayerAbilities</code><span class="sig-paren">(</span><em>gametype</em>, <em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.setPlayerAbilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerAbilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is just to override the standard one, as MCPE has no abilities, as it seems.
+:parm gametype, int of gamemode player gets set at.
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerGameType">
+<code class="descname">setPlayerGameType</code><span class="sig-paren">(</span><em>gametype</em>, <em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.setPlayerGameType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerGameType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the game type for player
+:param gametype: int (0=survival, 1=creative, 2=adventure, 3=spectator)
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerOrientation">
+<code class="descname">setPlayerOrientation</code><span class="sig-paren">(</span><em>yp</em>, <em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.setPlayerOrientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the players orientation.
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:param yp: int tuple (yaw, pitch)
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerPosition">
+<code class="descname">setPlayerPosition</code><span class="sig-paren">(</span><em>(x</em>, <em>y</em>, <em>z)</em>, <em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.setPlayerPosition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the players position to x, y, z
+:param (x, y, z): tuple of the coordinates of the player
+:param player: string of the name of the player. &#8220;Player&#8221; for SSP player, player_&lt;client-id&gt; for SMP player.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerSpawnPosition">
+<code class="descname">setPlayerSpawnPosition</code><span class="sig-paren">(</span><em>pos</em>, <em>player=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.setPlayerSpawnPosition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.setPlayerSpawnPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the worlds spawn point to pos. If player is given, sets that players spawn point instead.
+:param pos: tuple int (x, y, z)
+:param player: nbt.TAG_Compound, root tag of the player
+:return: None</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.size">
+<code class="descname">size</code><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.tileEntityAt">
+<code class="descname">tileEntityAt</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.tileEntityAt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.tileEntityAt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a tile tick at given x, y, z coordinates
+:param x: int
+:param y: int
+:param z: int
+:return: nbt.TAG_Compound or None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.leveldbpocket.PocketLeveldbWorld.unload">
+<code class="descname">unload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#PocketLeveldbWorld.unload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.PocketLeveldbWorld.unload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unload all chunks and close all open file-handlers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pymclevel.leveldbpocket.TagProperty">
+<code class="descclassname">pymclevel.leveldbpocket.</code><code class="descname">TagProperty</code><span class="sig-paren">(</span><em>tagName</em>, <em>tagType</em>, <em>default_or_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#TagProperty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.TagProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copied from infiniteworld.py. Custom property object to handle NBT-tag properties.
+:param tagName: str, Name of the NBT-tag
+:param tagType: int, (nbt.TAG_TYPE) Type of the NBT-tag
+:param default_or_func: function or default value. If function, function should return the default.
+:return: property</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymclevel.leveldbpocket.loadNBTCompoundList">
+<code class="descclassname">pymclevel.leveldbpocket.</code><code class="descname">loadNBTCompoundList</code><span class="sig-paren">(</span><em>data</em>, <em>littleEndian=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/leveldbpocket.html#loadNBTCompoundList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.leveldbpocket.loadNBTCompoundList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a list of NBT Compound tags from a bunch of data.
+Uses sep to determine where the next Compound tag starts.
+:param data: str, the NBT to load from
+:param littleEndian: bool. Determines endianness
+:return: list of TAG_Compounds</p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pymclevel.materials">
 <span id="pymclevel-materials-module"></span><h2>pymclevel.materials module<a class="headerlink" href="#module-pymclevel.materials" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -6188,9 +6821,6 @@ If filename is given, loads NBT data from that file. If buf is given, loads NBT 
 <dd></dd></dl>
 
 </div>
-<div class="section" id="pymclevel-nbt-util-module">
-<h2>pymclevel.nbt_util module<a class="headerlink" href="#pymclevel-nbt-util-module" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="module-pymclevel.player">
 <span id="pymclevel-player-module"></span><h2>pymclevel.player module<a class="headerlink" href="#module-pymclevel.player" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -6854,12 +7484,12 @@ value for damage to create unnaturally sturdy tools.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.4.0.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="png.html" title="png module" >previous</a></li>
-        <li><a href="pyperclip.html" title="pyperclip module" >next</a></li>
+        <li><a href="pymclevel.test.html" title="pymclevel.test package" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="#">top</a></li> 

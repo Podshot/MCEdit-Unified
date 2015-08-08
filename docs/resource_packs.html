@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>resource_packs module &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>resource_packs module &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.3.0.0',
+            VERSION:     'v1.4.0.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
     <link rel="next" title="splash module" href="splash.html" />
     <link rel="prev" title="renderer module" href="renderer.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.4.0.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -152,6 +152,7 @@
 <dt id="resource_packs.DefaultResourcePack">
 <em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">DefaultResourcePack</code><a class="reference internal" href="modules/resource_packs.html#DefaultResourcePack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.DefaultResourcePack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#resource_packs.IResourcePack" title="resource_packs.IResourcePack"><code class="xref py py-class docutils literal"><span class="pre">resource_packs.IResourcePack</span></code></a></p>
+<p>Represents the default Resource Pack that is always present</p>
 <dl class="attribute">
 <dt id="resource_packs.DefaultResourcePack.isEmpty">
 <code class="descname">isEmpty</code><a class="headerlink" href="#resource_packs.DefaultResourcePack.isEmpty" title="Permalink to this definition">¶</a></dt>
@@ -176,93 +177,106 @@
 <dl class="method">
 <dt id="resource_packs.FolderResourcePack.add_textures">
 <code class="descname">add_textures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#FolderResourcePack.add_textures"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.FolderResourcePack.add_textures" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scraps the block textures folder and puts texture data into a dictionary with exactly identical structure as ZipResourcePack</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="resource_packs.IResourcePack">
 <em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">IResourcePack</code><a class="reference internal" href="modules/resource_packs.html#IResourcePack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="resource_packs.IResourcePack.big_textures_max">
-<code class="descname">big_textures_max</code><em class="property"> = None</em><a class="headerlink" href="#resource_packs.IResourcePack.big_textures_max" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>try:</dt>
-<dd>os.makedirs(self.texture_path)</dd>
-<dt>except OSError:</dt>
-<dd>pass</dd>
-</dl>
-</dd></dl>
-
+<dd><p>Sets all base variables for a Resource Pack</p>
 <dl class="method">
 <dt id="resource_packs.IResourcePack.handle_too_big_packs">
 <code class="descname">handle_too_big_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#IResourcePack.handle_too_big_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack.handle_too_big_packs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Removes the parsed PNG file</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="resource_packs.IResourcePack.isEmpty">
 <code class="descname">isEmpty</code><a class="headerlink" href="#resource_packs.IResourcePack.isEmpty" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns true if the Resource Pack doesn&#8217;t replace the minimum amount of textures</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="resource_packs.IResourcePack.pack_name">
 <code class="descname">pack_name</code><a class="headerlink" href="#resource_packs.IResourcePack.pack_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The name of the Resource Pack</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="resource_packs.IResourcePack.parse_terrain_png">
 <code class="descname">parse_terrain_png</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#IResourcePack.parse_terrain_png"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack.parse_terrain_png" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Parses each block texture into a usable PNG file like terrain.png</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="resource_packs.IResourcePack.terrain_name">
 <code class="descname">terrain_name</code><a class="headerlink" href="#resource_packs.IResourcePack.terrain_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Name of the parsed texture PNG file</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="resource_packs.IResourcePack.terrain_path">
 <code class="descname">terrain_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#IResourcePack.terrain_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.IResourcePack.terrain_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Path to the parsed PNG file</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="resource_packs.IResourcePack.tooBig">
 <code class="descname">tooBig</code><a class="headerlink" href="#resource_packs.IResourcePack.tooBig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns true if the Resource Pack has a greater resolution than 32x32</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="resource_packs.ResourcePackHandler">
 <em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">ResourcePackHandler</code><a class="reference internal" href="modules/resource_packs.html#ResourcePackHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>A single point to manage which Resource Pack is being used and to provide the paths to each parsed PNG</p>
+<dl class="method">
 <dt id="resource_packs.ResourcePackHandler.get_available_resource_packs">
 <code class="descname">get_available_resource_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#ResourcePackHandler.get_available_resource_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.get_available_resource_packs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the names of all the Resource Packs that can be used</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="resource_packs.ResourcePackHandler.get_selected_resource_pack">
 <code class="descname">get_selected_resource_pack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#ResourcePackHandler.get_selected_resource_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.get_selected_resource_pack" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the selected Resource Pack instance. Can be an instance of either DefaultResourcePack, ZipResourcePack or FolderResourcePack</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="resource_packs.ResourcePackHandler.get_selected_resource_pack_name">
 <code class="descname">get_selected_resource_pack_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#ResourcePackHandler.get_selected_resource_pack_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.get_selected_resource_pack_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the currently selected Resource Pack&#8217;s name</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="resource_packs.ResourcePackHandler.reload_resource_packs">
 <code class="descname">reload_resource_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#ResourcePackHandler.reload_resource_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.reload_resource_packs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Reparses all Resource Packs</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="resource_packs.ResourcePackHandler.resource_packs">
 <code class="descname">resource_packs</code><a class="headerlink" href="#resource_packs.ResourcePackHandler.resource_packs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A dictionary of Resource Packs, where the key is the pack&#8217;s file/folder name, and the value is the path to the parsed PNG</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="resource_packs.ResourcePackHandler.set_selected_resource_pack_name">
 <code class="descname">set_selected_resource_pack_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#ResourcePackHandler.set_selected_resource_pack_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ResourcePackHandler.set_selected_resource_pack_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Sets the currently selected Resource Pack</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; Name of the Resource Pack</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -270,23 +284,34 @@
 <dt id="resource_packs.ZipResourcePack">
 <em class="property">class </em><code class="descclassname">resource_packs.</code><code class="descname">ZipResourcePack</code><span class="sig-paren">(</span><em>zipfileFile</em>, <em>noEncConvert=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#ZipResourcePack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ZipResourcePack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#resource_packs.IResourcePack" title="resource_packs.IResourcePack"><code class="xref py py-class docutils literal"><span class="pre">resource_packs.IResourcePack</span></code></a></p>
-<p>Represents a single Resource Pack</p>
+<p>Represents a single Resource Pack that is in a zip file</p>
 <dl class="method">
 <dt id="resource_packs.ZipResourcePack.open_pack">
 <code class="descname">open_pack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#ZipResourcePack.open_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.ZipResourcePack.open_pack" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Opens the zip file and puts texture data into a dictionary, where the key is the texture file name, and the value is a PIL.Image instance</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="resource_packs.setup_resource_packs">
 <code class="descclassname">resource_packs.</code><code class="descname">setup_resource_packs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#setup_resource_packs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.setup_resource_packs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Handles parsing of Resource Packs and removing ones that are either have to0 high of a resolution, or don&#8217;t replace any textures</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="resource_packs.step">
 <code class="descclassname">resource_packs.</code><code class="descname">step</code><span class="sig-paren">(</span><em>slot</em><span class="sig-paren">)</span><a class="reference internal" href="modules/resource_packs.html#step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#resource_packs.step" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Utility method for multiplying the slot by 16</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>slot</strong> (<em>int</em>) &#8211; Texture slot</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 
@@ -305,7 +330,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.4.0.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
