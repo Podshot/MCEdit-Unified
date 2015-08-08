@@ -1,16 +1,13 @@
 import json
 import urllib2
-from directories import userCachePath, getDataDir
+from directories import userCachePath
 import os
 import time
-import base64  # @UnusedImport
-from pymclevel.mclevelbase import PlayerNotFound
 import urllib
 from PIL import Image
 from urllib2 import HTTPError
 import atexit
 import threading
-import traceback
 import logging
 from uuid import UUID
 
@@ -28,13 +25,11 @@ def deprecated(func):
     new_func.__dict__.update(func.__dict__)
     return new_func
 
+
 class PlayerCache:
     '''
     Used to cache Player names and UUID's, provides an small API to interface with it
     '''
-    
-    SUCCESS = 0
-    FAILED = 1
     
     _playerCacheList = []
 
@@ -60,6 +55,9 @@ class PlayerCache:
             print "Convert usercache.json"
             
     def fixAllOfPodshotsBugs(self):
+        '''
+        Convenient function that fixes any bugs/typos (in the usercache.json file) that Podshot may have created
+        '''
         for player in self._playerCacheList:
             if "Timstamp" in player:
                 player["Timestamp"] = player["Timstamp"]
@@ -67,6 +65,9 @@ class PlayerCache:
         self._save()
     
     def load(self):
+        '''
+        Loads from the usercache.json file if it exists, if not an empty one will be generated
+        '''
         if not os.path.exists(userCachePath):
             out = open(userCachePath, 'w') 
             json.dump(self._playerCacheList, out)
@@ -119,6 +120,13 @@ class PlayerCache:
             self._save()
             
     def nameInCache(self, name):
+        '''
+        Checks to see if the name is already in the cache
+        
+        :param name: The name of the player
+        :type name: str
+        :rtype: bool
+        '''
         isInCache = False
         for p in self._playerCacheList:
             if p["Playername"] == name:
@@ -126,6 +134,15 @@ class PlayerCache:
         return isInCache
     
     def uuidInCache(self, uuid, seperator=True):
+        '''
+        Checks to see if the UUID is already in the cache
+        
+        :param uuid: The UUID of the player
+        :type uuid: str
+        :param seperator: True if the UUID has separators ('-')
+        :type seperator: bool
+        :rtype: bool
+        '''
         isInCache = False
         for p in self._playerCacheList:
             if seperator:
@@ -152,6 +169,9 @@ class PlayerCache:
                 self._save()
     
     def force_refresh(self):
+        '''
+        Refreshes all players in the cache, regardless of how long ago the name was synced
+        '''
         players = self._playerCacheList
         for player in players:
             self.getPlayerInfo(player["UUID (Separator)"], force=True)
@@ -236,6 +256,16 @@ class PlayerCache:
     
     # 0 if for a list of the playernames, 1 is for a dictionary of all player data
     def getAllPlayersKnown(self, returnType=0, include_failed_lookups=False):
+        '''
+        Returns all players in the cache
+        
+        :param returnType: What type should be returned, 0 for a list of playernames, 1 for a dictionary of player data, with the key being the player name
+        :type returnType: int
+        :param include_failed_lookups: Whether all current failed lookups also be included
+        :type include_failed_lookups: bool
+        :return: All player data in the specified data structure
+        :rtype: list or dict
+        '''
         toReturn = None
         if returnType == 0:
             toReturn = []
@@ -261,6 +291,8 @@ class PlayerCache:
         :type uuid: str
         :param seperator: Whether the UUID is seperated by -'s
         :type seperator: bool
+        :return: The player data that is in the cache for the specified UUID, same format as getPlayerInfo()
+        :rtype: tuple
         '''
         for player in self._playerCacheList:
             if seperator and player["UUID (Separator)"] == uuid:
@@ -273,6 +305,8 @@ class PlayerCache:
         Checks if the Player name is already in the cache
         
         :param name: The name of the Player that might be in the cache
+        :return: The player data that is in the cache for the specified Player name, same format as getPlayerInfo()
+        :rtype: tuple
         '''
         for player in self._playerCacheList:
             if name == player["Playername"]:
@@ -280,11 +314,14 @@ class PlayerCache:
     
     def getPlayerInfo(self, arg, force=False):
         '''
-        Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed 'arg'
+        Recommended method to call to get Player data. Roughly determines whether a UUID or Player name was passed in 'arg'
         
         :param arg: Either a UUID or Player name to retrieve from the cache/Mojang
         :type arg: str
         :param force: True if the Player name should be forcefully fetched from Mojang
+        :type force: bool
+        :return: A tuple with the data in this order: (UUID with separator, Player name, UUID without separator)
+        :rtype: tuple
         '''
         try:
             UUID(arg, version=4)
@@ -364,6 +401,9 @@ class PlayerCache:
         pass
     
     def cleanup(self):
+        '''
+        Removes all failed UUID/Player name lookups from the cache
+        '''
         remove = []
         for player in self._playerCacheList:
             if not player["WasSuccessful"]:
@@ -391,6 +431,20 @@ def getPlayerNameFromUUID(uuid,forceNetwork=False):
     return playercache.getPlayerFromUUID(uuid, forceNetwork)     
 
 def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
+    '''
+    Gets the player's skin from Mojang's skin servers
+    
+    :param uuid: The UUID of the player
+    :type uuid: str
+    :param force: Should the skin be redownloaded even if it has already been downloaded
+    :type force: bool
+    :param trying_again: True if the method already failed once
+    :type trying_again: bool
+    :param instance: The instance of the PlayerTool
+    :type instance: PlayerTool
+    :return: The path to the player skin
+    :rtype: str
+    '''
     SKIN_URL = "http://skins.minecraft.net/MinecraftSkins/{}.png"
     toReturn = 'char.png'
     try:
