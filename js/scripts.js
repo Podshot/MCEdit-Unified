@@ -188,6 +188,7 @@ function loadFailError() {
 }
 function getReleaseData() {
 	var releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases',(!hasGottenReleaseData));
+	hasGottenReleaseData = true;
 	return releaseData.sort(compareVersionObject);
 }
 $(document).ready(function(){
