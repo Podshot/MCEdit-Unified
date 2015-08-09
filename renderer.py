@@ -800,7 +800,7 @@ class ChunkCalculator(object):
             materialCount += 1
 
     # don't show boundaries between dirt,grass,sand,gravel,or stone.
-    hiddenOreMaterials = numpy.arange(pymclevel.materials.id_limit, dtype='uint8')
+    hiddenOreMaterials = numpy.arange(pymclevel.materials.id_limit, dtype='uint16')
     stoneid = pymclevel.materials.alphaMaterials.Stone.ID
     hiddenOreMaterials[pymclevel.materials.alphaMaterials.Dirt.ID] = stoneid
     hiddenOreMaterials[pymclevel.materials.alphaMaterials.Grass.ID] = stoneid
