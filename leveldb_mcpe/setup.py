@@ -36,18 +36,20 @@ elif sys.platform == "darwin":
     libraries = ["boost_python", "leveldb"]
 
 elif sys.platform == "linux2":
+    import platform
     if sys.argv[-1] == 'setup.py':
         print 'No command specified. Aborting.'
-        print 'Please, use \`python setup.py build\` to build Pocket Edition support for MCEdit.'
+        print 'Please, use `python setup.py build` to build Pocket Edition support for MCEdit.'
         sys.exit(1)
     print "Building Linux application 'leveldb_mcpe'..."
 
     # TODO: add checks, warnings and recomandations if something fails... (<< On the way)
     #       add a cleanup option
+    #       make this part a separate file
 
     # First, unpack and build dependencies: boost and mojang's leveldb-mcpe
     # Need make, g++, tar, unzip, Python 2.7 header files
-    # boost will be intalled there to avoid elevation problems
+    # boost will be installed there to avoid elevation problems
 
     # 'build_ext --inplace' is not wanted here. Let it be replaced with build
     if '--inplace' in sys.argv:
@@ -55,30 +57,57 @@ elif sys.platform == "linux2":
     if 'build_ext' in sys.argv:
         sys.argv.remove('build_ext')
         sys.argv.append('build')
+
     curdir = os.getcwd()
     destpath = '../pymclevel'
+
+    # Check if leveldb_mcpe is already built
+    if (not os.system('ls -R build/*/leveldb_mcpe.so > /dev/null')) or os.path.exists(os.path.join(destpath, 'leveldb_mcpe.so')):
+        a =raw_input('The library is already present. Do you want to recompile [y/N]?')
+        if a and a in 'yY':
+            if os.path.exists('build'):
+                os.system('rm -R build')
+            if os.path.exists(os.path.join(destpath, 'leveldb_mcpe.so')):
+                os.system('rm %s'%os.path.join(destpath, 'leveldb_mcpe.so'))
+        else:
+            print 'Exiting.'
+            sys.exit(0)
+
+    # Check if the user library directory exists
     user_libdir = os.path.expanduser('~/.local/lib')
     if not os.path.exists(user_libdir):
         print 'Creating needed library folder: %s' % user_libdir
         os.makedirs(user_libdir)
         print 'Done'
+
+    # Set the definitive Mojang's leveldb-mcpe lib directory to the user's one
     mcpeso_dir = os.path.join(user_libdir, 'leveldb-mcpe')
-    boostRoot = os.path.expanduser('~/.local/lib/boost_1_55_0_mcpe')
+
+    # Check and install Boost
+    boost_version = '1.58.0'
+
+    boostRoot = os.path.expanduser('~/.local/lib/boost_%s_mcpe'%boost_version.replace('.', '_'))
     install_boost = None
     build_boost_python = None
     if not os.path.exists(boostRoot):
         install_boost = True
     else:
-        print 'Boost found in %s. Skipping installation.' % boostRoot
-        install_boost = False
+        a = raw_input('Boost found in %s.\nDo you want to reinstall it [y/N]?' % boostRoot)
+        if a and a in 'yY':
+            install_boost = True
+        else:
+            install_boost = False
     if not os.path.exists(os.path.join(boostRoot, 'stage', 'lib', 'libboost_python.a')):
         build_boost_python = True
     else:
-        print 'Boost Python wrapper found in %s. Skipping build.' % os.path.join(boostRoot, 'stage', 'lib')
-        build_boost_python = False
+        a = raw_input('Boost Python wrapper found in %s.\nDo you want to rebuild it [y/N]?' % os.path.join(boostRoot, 'stage', 'lib'))
+        if a and a in 'yY':
+            build_boost_python = True
+        else:
+            build_boost_python = False
 
     if install_boost is None:  # Shall not happen...
-        print 'Impossible to determine if Boost 1.55.0 is installed in your personnal library folder.'
+        print 'Impossible to determine if Boost %s is installed in your personnal library folder.'%boost_version
         a = raw_input('Do you want to (re)install it [y/N] ?')
         if a and a in 'yY':
             install_boost = True
@@ -89,11 +118,11 @@ elif sys.platform == "linux2":
             build_boost_python = True
 
     if install_boost:
-        print "Dowloading Boost 1.55.0 from SourceForge..."
-        os.system('wget http://freefr.dl.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2')
+        print "Dowloading Boost %s from SourceForge..."%boost_version
+        os.system('wget http://freefr.dl.sourceforge.net/project/boost/boost/%s/boost_%s.tar.bz2'%(boost_version, boost_version.replace('.', '_')))
         print "Extracting boost..."
-        os.system('tar --bzip2 -xf boost_1_55_0.tar.bz2')
-        os.system('mv boost_1_55_0 %s' % boostRoot)
+        os.system('tar --bzip2 -xf boost_%s.tar.bz2'%boost_version.replace('.', '_'))
+        os.system('mv boost_%s %s' % (boost_version.replace('.', '_'), boostRoot))
         os.chdir(boostRoot)
         print "Installing boost..."
         os.system('sh ./bootstrap.sh --prefix=%s' % boostRoot)
@@ -109,10 +138,8 @@ elif sys.platform == "linux2":
 
     # Unpack and build leveldb-mcpe from mojang
     build_leveldb = None
-    # if not os.path.exists('leveldb-mcpe/libleveldb.a') and not os.path.exists('leveldb-mcpe/libleveldb.so'):
-    if not os.path.exists(os.path.join(mcpeso_dir, 'libleveldb.so')):
+    if (not os.path.exists(mcpeso_dir)) or (not 'libleveldb.so' in os.listdir(mcpeso_dir)):
         build_leveldb = True
-    # elif os.path.exists('leveldb-mcpe/libleveldb.a') and os.path.exists('leveldb-mcpe/libleveldb.so'):
     elif os.path.exists(os.path.join(mcpeso_dir, 'libleveldb.so')):
         a = raw_input("Mojang's leveldb is already built. Rebuild [y/N] ?")
         if a and a in 'yY':
@@ -132,14 +159,14 @@ elif sys.platform == "linux2":
         if a and a in 'yY':
             build_leveldb = True
 
+    extract = False
     if build_leveldb:
-        extract = True
-    if os.path.exists('leveldb-mcpe') and os.listdir('leveldb-mcpe') != []:
-        a = raw_input("Mojang's leveldb-mcpe source directory already exists. Replace it (reextract) [y/N] ?")
-        if not a or a not in 'yY':
-            extract = False
-    else:
-        extract = True
+        if os.path.exists('leveldb-mcpe') and os.listdir('leveldb-mcpe') != []:
+            a = raw_input("Mojang's leveldb-mcpe source directory already exists. Replace it (reextract) [y/N] ?")
+            if not a or a not in 'yY':
+                extract = False
+        else:
+            extract = True
 
     if extract:
         os.system('rm -R leveldb-mcpe')
@@ -158,6 +185,9 @@ elif sys.platform == "linux2":
     if build_leveldb:
         os.chdir('leveldb-mcpe')
         print "Building Mojang's leveldb-mcpe..."
+        data = open('Makefile').read()
+        data = data.replace('LIBS += $(PLATFORM_LIBS) -lz', 'LIBS += $(PLATFORM_LIBS)')
+        open('Makefile', 'w').write(data)
         os.system('make')
         os.chdir(curdir)
         print 'Done.'
@@ -171,6 +201,8 @@ elif sys.platform == "linux2":
         os.system('ln -s %s/libleveldb.so.1.18  %s/libleveldb.so.1' % (mcpeso_dir, mcpeso_dir))
         os.system('ln -s %s/libleveldb.so.1.18  %s/libleveldb.so' % (mcpeso_dir, mcpeso_dir))
         print 'Done.'
+
+    print 'Building leveldb_mcpe...'
 
     # #1# This form compiles dynamic shared library
     # include_dirs = [boosRoot, './leveldb-mcpe/include', '.']
@@ -187,10 +219,11 @@ elif sys.platform == "linux2":
     include_dirs = [boostRoot, './leveldb-mcpe/include', '.']
     library_dirs = [boostRoot, boostRoot + '/stage/lib', '/usr/local/lib', '.', mcpeso_dir]
     libraries = ['boost_python', 'leveldb']
-    define_macros = [("LINUX", None), ("_DEBUG", None), ("_LINUX", None), ("LEVELDB_PLATFORM_POSIX", None),
+    define_macros = [("LINUX", None), ("_LINUX", None), ("LEVELDB_PLATFORM_POSIX", None),
                      ('OS_LINUX', None)]
-    extra_compile_args = ['-std=c++11'] + extra_compile_args
+    extra_compile_args = ['-std=c++11', '-fPIC'] + extra_compile_args
     runtime_library_dirs = [mcpeso_dir]
+    extra_link_args += ['-v']
 
 files = ["leveldb_mcpe.cpp"]
 
@@ -213,6 +246,11 @@ setup(name="leveldb_python_wrapper",
 # Need to copy leveldb_mcpe.so in the current directory
 if sys.platform == 'linux2':
     os.system('cp $(ls -R build/*/leveldb_mcpe.so) %s' % destpath)
+    # Link the library and run the test
+    os.system('ln -s %s/leveldb_mcpe.so leveldb_mcpe.so'%destpath)
+    os.system('python test.py')
+    # Delete the link
+    os.system('rm leveldb_mcpe.so')
 
 
 
