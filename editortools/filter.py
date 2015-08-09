@@ -491,7 +491,7 @@ class FilterToolPanel(Panel):
     @property
     def filter_json(self):
         if self._filter_json is None:
-            self._filter_json = load_filter_json()
+            self._filter_json = FilterToolPanel.load_filter_json()
         return self._filter_json
 
     def close(self):
