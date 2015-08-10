@@ -11,9 +11,39 @@ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
 ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
-import time
-t = time.time()
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+------------------------------------------------------------------------------------------------------------------------
+
+FOR USERS:
+To use this file, you should never interact with the classes directly. The interface is provided
+at the methods below. They wil automatically take care of all loading and caching stuff.
+
+FOR EDITORS:
+What is going on in this file:
+
+Little bit of history:
+This file used to take about 1.4 seconds to import. One of the main goals was to bring this down to the bare minimum.
+Right now, it takes about 0.5 seconds to import instead.
+
+In the past, all directories got looked up on import. Right now, importing the file does almost no work.
+There's 2 classes, MinecraftDirectories and MCEditDirectories.
+MinecraftDirectories contains all "read-only" directories. Those are (usually) created by Minecraft.
+They get looked up once needed the first time, and cached for the lifetime of the module.
+
+MCEditDirectories contains all directories and files created by mcedit, such as the mcedit.ini file,
+and the Filters/Schematics folder. On import, the class doesn't exist.
+To get access to all other methods, setupMCEditDirectories() has to be called. This will look up all
+of mcedit's user files, create an MCEditDirectories instance and create any missing files or folders.
+After that, the class is fully functional.
+
+There's also some loose methods that are essential to the behavior of the program itself
+and can always be used, such as getDataDir()
+"""
+
+import logging
+log = logging.getLogger(__name__)
+
 import sys
 import os
 import json
@@ -21,233 +51,19 @@ import glob
 import shutil
 
 
-def win32_utf8_argv():
-    """Uses shell32.GetCommandLineArgvW to get sys.argv as a list of UTF-8
-    strings.
-
-    Versions 2.5 and older of Python don't support Unicode in sys.argv on
-    Windows, with the underlying Windows API instead replacing multi-byte
-    characters with '?'.
-
-    Returns None on failure.
-
-    Example usage:
-
-    >>> def main(argv=None):
-    ...    if argv is None:
-    ...        argv = win32_utf8_argv() or sys.argv
-    ...
+def _unicodify(text):
+    """Converts any basestring to a utf-8 encoded string.
+    :param text: String to convert
+    :type text: basestring
+    :return: Converted string
+    :rtype: unicode
     """
-
-    try:
-        from ctypes import POINTER, byref, cdll, c_int, windll
-        from ctypes.wintypes import LPCWSTR, LPWSTR
-
-        GetCommandLineW = cdll.kernel32.GetCommandLineW
-        GetCommandLineW.argtypes = []
-        GetCommandLineW.restype = LPCWSTR
-
-        CommandLineToArgvW = windll.shell32.CommandLineToArgvW
-        CommandLineToArgvW.argtypes = [LPCWSTR, POINTER(c_int)]
-        CommandLineToArgvW.restype = POINTER(LPWSTR)
-
-        cmd = GetCommandLineW()
-        argc = c_int(0)
-        argv = CommandLineToArgvW(cmd, byref(argc))
-        if argc.value > 0:
-            # # Remove Python executable if present
-            #            if argc.value - len(sys.argv) == 1:
-            #                start = 1
-            #            else:
-            #                start = 0
-            return [argv[i] for i in
-                    xrange(0, argc.value)]
-    except Exception:
-        pass
+    if type(text) is not unicode:
+        return unicode(text, 'utf-8')
+    return text
 
 
-def getDataDir(path=""):
-    """
-    Returns the folder where the executable is located.
-    :return unicode
-    """
-    if sys.platform == "win32":
-        if hasattr(sys, '_MEIPASS'):
-            dataDir = sys._MEIPASS
-        else:
-            dataDir = os.path.dirname(__file__)
-    else:
-        dataDir = os.path.dirname(os.path.abspath(__file__))
-    if len(path) > 0:
-        return os.path.join(dataDir, path)
-    return dataDir
-
-
-def win32_appdata():
-    # try to use win32 api to get the AppData folder since python doesn't populate os.environ with unicode strings.
-
-    try:
-        import win32com.client
-
-        objShell = win32com.client.Dispatch("WScript.Shell")
-        return objShell.SpecialFolders("AppData")
-    except Exception, e:
-        print "Error while getting AppData folder using WScript.Shell.SpecialFolders: {0!r}".format(e)
-        try:
-            from win32com.shell import shell, shellcon
-
-            return shell.SHGetPathFromIDListEx(
-                shell.SHGetSpecialFolderLocation(0, shellcon.CSIDL_APPDATA)
-            )
-        except Exception, e:
-            print "Error while getting AppData folder using SHGetSpecialFolderLocation: {0!r}".format(e)
-
-            return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
-
-
-def getMinecraftProfileJSON():
-    """Returns a dictionary object with the minecraft profile information"""
-    if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), "launcher_profiles.json")):
-        try:
-            with open(os.path.join(getMinecraftLauncherDirectory(), "launcher_profiles.json")) as jsonString:
-                minecraftProfilesJSON = json.load(jsonString)
-            return minecraftProfilesJSON
-        except:
-            return None
-
-
-def getMinecraftProfileDirectory(profileName):
-    """Returns the path to the sent minecraft profile directory"""
-    try:
-        profileDir = getMinecraftProfileJSON()['profiles'][profileName][
-            'gameDir']  # profileDir update to correct location.
-        return profileDir
-    except:
-        return os.path.join(getMinecraftLauncherDirectory())
-
-
-def getMinecraftLauncherDirectory():
-    '''
-    Returns the /minecraft directory, note: may not contain the /saves folder!
-    '''
-    if sys.platform == "win32":
-        return os.path.join(win32_appdata(), ".minecraft")
-    elif sys.platform == "darwin":
-        return os.path.expanduser("~/Library/Application Support/minecraft")
-    else:
-        return os.path.expanduser("~/.minecraft")
-
-
-def getDocumentsFolder():
-    if sys.platform == "win32":
-        try:
-            import win32com.client
-            from win32com.shell import shell, shellcon
-            objShell = win32com.client.Dispatch("WScript.Shell")
-            docsFolder = objShell.SpecialFolders("MyDocuments")
-
-        except Exception, e:
-            print e
-            try:
-                docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_MYDOCUMENTS, 0, 0)
-            except Exception:
-                userprofile = os.environ['USERPROFILE'].decode(sys.getfilesystemencoding())
-                docsFolder = os.path.join(userprofile, "Documents")
-
-    elif sys.platform == "darwin":
-        docsFolder = os.path.expanduser("~/Documents")
-    else:
-        docsFolder = os.path.expanduser("~/.mcedit")
-    try:
-        os.mkdir(docsFolder)
-    except:
-        pass
-
-    return docsFolder
-
-
-def getSelectedProfile():
-    """
-    Gets the selected profile from the Minecraft Launcher
-    """
-    try:
-        selectedProfile = getMinecraftProfileJSON()['selectedProfile']
-        return selectedProfile
-    except:
-        return None
-
-_minecraftSaveFileDir = None
-
-def getMinecraftSaveFileDir():
-    global _minecraftSaveFileDir
-    if _minecraftSaveFileDir is None:
-        _minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), "saves")
-    return _minecraftSaveFileDir
-
-minecraftSaveFileDir = getMinecraftSaveFileDir()
-
-ini = u"mcedit.ini"
-cache = u"usercache.json"
-
-parentDir = os.path.dirname(getDataDir())
-docsFolder = os.path.join(getDocumentsFolder(), 'MCEdit')
-
-if sys.platform != "darwin":
-
-    portableConfigFilePath = os.path.join(parentDir, ini)
-    portableCacheFilePath = os.path.join(parentDir, cache)
-    portableGenericSupportPath = os.path.join(parentDir)
-    portableSchematicsDir = os.path.join(parentDir, u"Schematics")
-    portableBrushesDir = os.path.join(parentDir, u"Brushes")
-    portableJarStorageDir = os.path.join(parentDir, u"ServerJarStorage")
-    portableFiltersDir = os.path.join(parentDir, u"Filters")
-    if not os.path.exists(parentDir):
-        os.makedirs(parentDir)
-
-    fixedCacheFilePath = os.path.join(docsFolder, cache)
-    fixedConfigFilePath = os.path.join(docsFolder, ini)
-    fixedGenericSupportPath = os.path.join(docsFolder)
-    fixedSchematicsDir = os.path.join(docsFolder, u"Schematics")
-    fixedBrushesDir = os.path.join(docsFolder, u"Brushes")
-    fixedJarStorageDir = os.path.join(docsFolder, u"ServerJarStorage")
-    fixedFiltersDir = os.path.join(docsFolder, u"Filters")
-    if not os.path.exists(docsFolder):
-        os.makedirs(docsFolder)
-
-
-def goPortable():
-    if sys.platform == "darwin":
-        return False
-    global configFilePath, schematicsDir, filtersDir, portable, brushesDir
-
-    if os.path.exists(fixedSchematicsDir):
-        move_displace(fixedSchematicsDir, portableSchematicsDir)
-    if os.path.exists(fixedBrushesDir):
-        move_displace(fixedBrushesDir, portableBrushesDir)
-    if os.path.exists(fixedConfigFilePath):
-        move_displace(fixedConfigFilePath, portableConfigFilePath)
-    if os.path.exists(fixedFiltersDir):
-        move_displace(fixedFiltersDir, portableFiltersDir)
-    if os.path.exists(fixedCacheFilePath):
-        move_displace(fixedCacheFilePath, portableCacheFilePath)
-    if os.path.exists(fixedJarStorageDir):
-        move_displace(fixedJarStorageDir, portableJarStorageDir)
-
-    if filtersDir in sys.path:
-        sys.path.remove(filtersDir)
-
-    schematicsDir = portableSchematicsDir
-    brushesDir = portableBrushesDir
-    configFilePath = portableConfigFilePath
-    filtersDir = portableFiltersDir
-
-    sys.path.append(filtersDir)
-
-    portable = True
-    return True
-
-
-def move_displace(src, dst):
+def _move_displace(src, dst):
     dstFolder = os.path.basename(os.path.dirname(dst))
     if not os.path.exists(dst):
 
@@ -265,134 +81,310 @@ def move_displace(src, dst):
         shutil.move(src, dst)
     return True
 
+
+class _MinecraftDirectories(object):
+
+    _dataDirectory = u""
+    _minecraftSaveFileDirectory = u""
+    _minecraftLauncherDirectory = u""
+    _minecraftProfileJson = None
+
+    @property
+    def minecraftSaveFileDirectory(self):
+        if self._minecraftSaveFileDirectory == u"":
+            self._minecraftSaveFileDirectory = self._getSaveFileDirectory()
+        return self._minecraftSaveFileDirectory
+
+    @property
+    def minecraftLauncherDirectory(self):
+        if self._minecraftLauncherDirectory == u"":
+            self._minecraftLauncherDirectory = self._getMinecraftLauncherDirectory()
+        return self._minecraftLauncherDirectory
+
+    @property
+    def selectedProfile(self):
+        j = self.minecraftProfileJSON
+        return None if j is None else j["selectedProfile"]
+
+    @property
+    def minecraftProfileJSON(self):
+        if self._minecraftProfileJson is None:
+            self._minecraftProfileJson = self._getMinecraftProfileJSON()
+        return self._minecraftProfileJson
+
+    def getMinecraftProfileDirectory(self, profileName):
+        try:
+            profileDir = self.minecraftProfileJSON['profiles'][profileName]['gameDir']
+            # profileDir update to correct location.
+            return profileDir
+        except (IOError, OSError, KeyError):
+            return self.minecraftLauncherDirectory
+
+    def _getSaveFileDirectory(self):
+        return os.path.join(self.getMinecraftProfileDirectory(self.selectedProfile), "saves")
+
+    @staticmethod
+    def _getMinecraftLauncherDirectory():
+        if sys.platform == "win32":
+            return os.path.join(os.getenv('APPDATA'), ".minecraft")
+        elif sys.platform == "darwin":
+            return os.path.expanduser("~/Library/Application Support/minecraft")
+        else:
+            return os.path.expanduser("~/.minecraft")
+
+    def _getMinecraftProfileJSON(self):
+        try:
+            with open(os.path.join(self.minecraftLauncherDirectory, "launcher_profiles.json")) as jsonString:
+                minecraftProfilesJSON = json.load(jsonString)
+            return minecraftProfilesJSON
+        except (IOError, ValueError, OSError):
+            return None
+
+
+class _MCEditDirectories(object):
+
+    _INI = u"mcedit.ini"
+    _USERCACHE = u"usercache.json"
+    _FILES = [u"brushes", u"schematics", u"filters", u"serverJarStorage", u"config", u"usercache"]
+
+    def __init__(self):
+        self.setup = False
+        self._portable = None
+        self._dataDirectory = ""
+
+    def __getitem__(self, item):
+        if not self.setup:
+            self._setupMCEditDirectories()
+        return _unicodify(getattr(self, "_" + item))
+
+    def _setupMCEditDirectories(self):
+        log.info(u"Setting up MCEdit directories")
+        self._renameLegacyDirs()
+        self._portable = not self._fixedFilesExist()
+        if not self._portable:
+            print u"Running in fixed mode. Support files can be found at %s" % self._getFixedMCEditDirectory()
+        else:
+            print u"Running in portable mode. Support files can be found at %s" % self._getPortableMCEditDirectory()
+        self.setup = True
+        for f in self._FILES:
+            path = self[f]
+            if f not in (u"config", u"usercache"):
+                if os.path.exists(path):
+                    continue
+                os.makedirs(path)
+            else:
+                if not os.path.exists(os.path.dirname(path)):
+                    os.makedirs(os.path.dirname(path))
+                if not os.path.exists(path):
+                    _f = open(path, 'w')
+                    _f.close()
+
+    @staticmethod
+    def _renameLegacyDirs():
+        u = os.path.expanduser
+        if sys.platform == 'darwin':
+            if os.path.exists(u(u"~/Library/Application Support/pymclevel")):
+                os.rename(u(u"~/Library/Application Support/pymclevel"),
+                          u(u"~/Library/Application Support/MCEdit"))
+        elif sys.platform != 'win32':  # Linux etc.
+            if os.path.exists(u(u"~/.pymclevel")):
+                os.rename(u(u"~/.pymclevel"),
+                          u(u"~/.mcedit"))
+
+    @property
+    def portable(self):
+        if not self.setup:
+            self._setupMCEditDirectories()
+        return self._portable
+
+    @property
+    def _parentDirectory(self):
+        return os.path.dirname(getDataDirectory())
+
+    @property
+    def _filters(self):
+        return os.path.join(self._getSupportDir(), u"Filters")
+
+    @property
+    def _schematics(self):
+        return os.path.join(self._getSupportDir(), u"Schematics")
+
+    @property
+    def _serverJarStorage(self):
+        return os.path.join(self._getSupportDir(), u"ServerJarStorage")
+
+    @property
+    def _brushes(self):
+        return os.path.join(self._getSupportDir(), u"Brushes")
+
+    @property
+    def _usercache(self):
+        return os.path.join(self._getSupportDir(), self._USERCACHE)
+
+    @property
+    def _config(self):
+        if sys.platform == "darwin":
+            return os.path.join(os.path.expanduser(u"~/Library/Preferences"), self._INI)
+        return os.path.join(self._getSupportDir(), self._INI)
+
+    @property
+    def userCacheFilePath(self):
+        return self._usercache
+
+    def _getSupportDir(self):
+        if sys.platform == "darwin":
+            return os.path.expanduser(u"~/Library/Application Support/MCEdit")
+        return self._getPortableMCEditDirectory() if self._portable else self._getFixedMCEditDirectory()
+
+    def goFixed(self):
+        assert self._portable is True
+        if not self.setup:
+            self._setupMCEditDirectories()
+        self._setPortable(False)
+
+    def goPortable(self):
+        assert self._portable is False
+        if not self.setup:
+            self._setupMCEditDirectories()
+        self._setPortable(True)
+
+    def _setPortable(self, value):
+        if sys.platform == 'darwin':
+            return
+        if not value:
+            print u"Moving to fixed mode. Support files can be found at %s" % self._getFixedMCEditDirectory()
+        else:
+            print u"Moving to portable mode. Support files can be found at %s" % self._getPortableMCEditDirectory()
+        old_paths = [self[key] for key in self._FILES]
+        self._portable = value
+        new_paths = [self[key] for key in self._FILES]
+        for o, n in zip(old_paths, new_paths):
+            if os.path.exists(o):
+                _move_displace(o, n)
+
+    @staticmethod
+    def _getFixedMCEditDirectory():
+        if sys.platform == "darwin":
+            return ""
+        elif sys.platform == "win32":
+            folder = os.path.join(os.path.expanduser(os.path.join(u"~", u"Documents")), u"MCEdit")
+        else:
+            folder = os.path.expanduser(u"~/.mcedit")
+        return folder
+
+    def _getPortableMCEditDirectory(self):
+        if sys.platform == "darwin":
+            return ""
+        return self._parentDirectory
+
+    def _fixedFilesExist(self):
+        return os.path.exists(os.path.join(self._getFixedMCEditDirectory(), self._INI)) or not os.path.exists(
+            os.path.join(self._getPortableMCEditDirectory(), self._INI)) or sys.platform == "darwin"
+
+
+_mcdirs = _MinecraftDirectories()
+_mceditdirs = _MCEditDirectories()
+
+
+def getDataDirectory(path=""):
+    """
+    MCEdit's executable root data directory.
+    Note that for windows PyInstaller, this directory is temporary.
+    Files should never be written here, but it can be used
+    to access data files (like images or fonts).
+    :return: MCEdit's main data directory.
+    :rtype: unicode
+    """
+    if sys.platform == "win32":
+        dataDir = getattr(sys, '_MEIPASS', os.path.dirname(__file__))
+    else:
+        dataDir = os.path.dirname(os.path.abspath(__file__))
+    dataDir = _unicodify(dataDir)
+    if len(path) > 0:
+        dataDir = os.path.join(dataDir, path)
+    return dataDir
+
+
+def getMinecraftLauncherDirectory():
+    """
+    Use this to obtain the path to MC's launcher directory.
+    Can be used to access minecraft's assets, version etc.
+    :return: Path to minecraft launcher directory
+    :rtype: unicode
+    """
+    return _unicodify(_mcdirs.minecraftLauncherDirectory)
+
+
+def getMinecraftProfileJSON():
+    """
+    Use this to obtain the json file in minecraft_profiles.json.
+    :return: Minecrafts profile json.
+    :rtype: dict
+    """
+    return _mcdirs.minecraftProfileJSON
+
+
+def getSelectedProfile():
+    """
+    Returns the name of minecrafts selected profile.
+    :return: Name of the selected profile
+    :rtype: unicode
+    """
+    assert(type(_mcdirs.selectedProfile)) == unicode
+    return _mcdirs.selectedProfile
+
+
+def getMinecraftSaveFileDirectory():
+    return _unicodify(_mcdirs.minecraftSaveFileDirectory)
+
+
+def getMinecraftProfileDirectory(profileName):
+    return _unicodify(_mcdirs.getMinecraftProfileDirectory(profileName))
+
+
+def getFiltersDirectory():
+    return _mceditdirs['filters']
+
+
+def getSchematicsDirectory():
+    return _mceditdirs['schematics']
+
+
+def getBrushesDirectory():
+    return _mceditdirs['brushes']
+
+
+def getJarStorageDirectory():
+    return _mceditdirs['serverJarStorage']
+
+
+def getConfigFilePath():
+    return _mceditdirs['config']
+
+
+def getUserCacheFilePath():
+    return _mceditdirs['usercache']
+
+
+def getScreenShotDir():
+    return _mceditdirs['screenshots']
+
+
 def goFixed():
-    if sys.platform == "darwin":
-        return False
-    global configFilePath, schematicsDir, filtersDir, portable, cacheDir, brushesDir
-
-    if os.path.exists(portableSchematicsDir):
-        move_displace(portableSchematicsDir, fixedSchematicsDir)
-    if os.path.exists(portableBrushesDir):
-        move_displace(portableBrushesDir, fixedBrushesDir)
-    if os.path.exists(portableConfigFilePath):
-        move_displace(portableConfigFilePath, fixedConfigFilePath)
-    if os.path.exists(portableFiltersDir):
-        move_displace(portableFiltersDir, fixedFiltersDir)
-    if os.path.exists(portableCacheFilePath):
-        move_displace(portableCacheFilePath, fixedCacheFilePath)
-    if os.path.exists(portableJarStorageDir):
-        move_displace(portableJarStorageDir, fixedJarStorageDir)
-
-    if filtersDir in sys.path:
-        sys.path.remove(filtersDir)
-
-    schematicsDir = fixedSchematicsDir
-    brushesDir = fixedBrushesDir
-    configFilePath = fixedConfigFilePath
-    filtersDir = fixedFiltersDir
-
-    sys.path.append(filtersDir)
-
-    portable = False
+    _mceditdirs.goFixed()
 
 
-def fixedConfigExists():
-    if sys.platform == "darwin":
-        return True
-    # Check for files at portable locations. Cannot be Mac because config doesn't move
-    return os.path.exists(fixedConfigFilePath) or not os.path.exists(portableConfigFilePath)
+def goPortable():
+    _mceditdirs.goPortable()
 
 
-if fixedConfigExists():
-    print "Running in fixed mode. Support files are in your " + (
-        sys.platform == "darwin" and "App Support Folder (Available from the main menu of MCEdit)"
-        or "Documents folder.")
-    portable = False
-    if not sys.platform == "darwin":
-        schematicsDir = fixedSchematicsDir
-        brushesDir = fixedBrushesDir
-        configFilePath = fixedConfigFilePath
-        filtersDir = fixedFiltersDir
-        jarStorageDir = fixedJarStorageDir
-        genericSupportDir = fixedGenericSupportPath
-
-else:
-    print "Running in portable mode. Support files are stored next to the MCEdit directory."
-    if not sys.platform == "darwin":
-        schematicsDir = portableSchematicsDir
-        brushesDir = portableBrushesDir
-        configFilePath = portableConfigFilePath
-        filtersDir = portableFiltersDir
-        jarStorageDir = portableJarStorageDir
-        genericSupportDir = portableGenericSupportPath
-    portable = True
-
-#if portable:
-#    serverJarStorageDir = portableJarStorageDir
-#    ServerJarStorage.defaultCacheDir = serverJarStorageDir
-#    jarStorage = ServerJarStorage(serverJarStorageDir)
-#else:
-#    serverJarStorageDir = fixedJarStorageDir
+def isPortable():
+    return _mceditdirs.portable
 
 
 def getAllOfAFile(file_dir, ext):
-    '''
-    Returns a list of all the files the direcotry with the specified file extenstion
+    """Returns a list of all the files the directory with the specified file extension.
     :param file_dir: Directory to search
     :param ext: The file extension (IE: ".py")
-    '''
-    return glob.glob(file_dir+"/*"+ext)
-
-
-def getCacheDir():
     """
-    Returns the path to the cache folder.
-    This folder is the Application Support folder on OS X, and the Documents Folder on Windows.
-    :return unicode
-    """
-    if sys.platform == "win32":
-        return genericSupportDir
-    elif sys.platform == "darwin":
-        return os.path.expanduser("~/Library/Application Support/MCWorldLibrary")
-    else:
-        try:
-            return genericSupportDir
-        except:
-            return os.path.expanduser("~/.MCWorldLibrary")
-
-if sys.platform == "darwin":
-    configFilePath = os.path.expanduser("~/Library/Preferences/mcedit.ini")
-    schematicsDir = os.path.join(getCacheDir(), u"Schematics")
-    brushesDir = os.path.join(getCacheDir(), u"Brushes")
-    filtersDir = os.path.join(getCacheDir(), u"Filters")
-    if not os.path.exists(getCacheDir()):
-        os.makedirs(getCacheDir())
-
-# Create MCWorldLibrary folder as needed
-if not os.path.exists(getCacheDir()):
-    os.makedirs(getCacheDir())
-
-# build the structures of directories if they don't exists
-for directory in (filtersDir, brushesDir, schematicsDir):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-bundledLibsDir = os.path.join(filtersDir, 'lib', 'Bundled Libraries')
-if not os.path.exists(bundledLibsDir):
-    os.makedirs(bundledLibsDir)
-
-# set userCachePath
-userCachePath = os.path.join(getCacheDir(),'usercache.json')
-# Make sure it exists
-try:
-    if not os.path.exists(userCachePath):
-        f = open(userCachePath,'w')
-        f.write('{}')
-        f.close()
-except:
-    print "Unable to make usercache.json at {}".format(userCachePath)
-
-
-def getFiltersDir():
-    return filtersDir
-
+    return _unicodify(glob.glob(file_dir + u"/*" + ext))
