@@ -1585,6 +1585,23 @@ blocks:
     tex: [2, 4]
     type: THINSLICE
     opacity: 0
+    data:
+      0:
+        name: Snow Layer (1)
+      1:
+        name: Snow Layer (2)
+      2:
+        name: Snow Layer (3)
+      3:
+        name: Snow Layer (4)
+      4:
+        name: Snow Layer (5)
+      5:
+        name: Snow Layer (6)
+      6:
+        name: Snow Layer (7)
+      7:
+        name: Snow Layer (8)
 
   - id: 79
     idStr: ice
@@ -1768,6 +1785,20 @@ blocks:
     tex: [9, 6]
     explored: true
     brightness: 15
+
+  - id: 90
+    idStr: portal
+    name: Nether Portal
+    mapcolor: [214, 127, 255]
+    type: PORTAL
+    tex: [6, 15]
+    brightness: 11
+    opacity: 0
+    data:
+      1:
+        name: Nether Portal (East/West)
+      2:
+        name: Nether Portal (North/South)
 
   - id: 91
     idStr: lit_pumpkin
@@ -2384,6 +2415,14 @@ blocks:
     aka: Block
     mapcolor: [54, 24, 30]
     tex: [0, 14]
+
+  - id: 113
+    idStr: nether_brick_fence
+    name: Nether Brick Fence
+    mapcolor: [54, 24, 30]
+    tex: [0, 14]
+    type: FENCE
+    opacity: 0
 
   - id: 114
     idStr: nether_brick_stairs
