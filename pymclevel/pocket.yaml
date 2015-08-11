@@ -976,6 +976,7 @@ blocks:
     idStr: stone_slab
     mapcolor: [200, 200, 200]
     tex: [6, 0]
+    type: HALFHEIGHT
     data:
       0:
         name: Stone Slab (Bottom)
@@ -2997,6 +2998,7 @@ blocks:
     name: Wooden Slab
     mapcolor: [200, 200, 200]
     tex: [4, 0]
+    type: HALFHEIGHT
     data:
       0:
         name: Oak Wood Slab (Bottom)
