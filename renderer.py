@@ -1037,28 +1037,28 @@ class ChunkCalculator(object):
         blockMaterials = areaBlockMats[1:-1, 1:-1, 1:-1]
         if self.roughGraphics:
             blockMaterials.clip(0, 1, blockMaterials)
-
-        # Special case for doors
-        #
-        # Each part of a door itself does not have all of the information required
-        # to render, as direction/whether its open is on the lower part and the hinge
-        # side is on the upper part. So here we combine the metadata of the bottom part
-        # with the top to form 0-32 metadata(which would be used in door renderer).
-        #
-        copied = False
-        for door in DoorRenderer.blocktypes:
-            doors = blocks == door
-            if doors.any():
-                if not copied:
-                    # copy if required but only once
-                    blockData = blockData.copy()
-                    copied = True
-                # only accept lower part one block below upper part
-                valid = doors[:, :, :-1] & doors[:, :, 1:] & (blockData[:, :, :-1] < 8) & (blockData[:, :, 1:] >= 8)
-                mask = valid.nonzero()
-                upper_mask = (mask[0], mask[1], mask[2]+1)
-                blockData[mask] += (blockData[upper_mask] - 8) * 16
-                blockData[upper_mask] = blockData[mask] + 8
+        else:
+            # Special case for doors
+            #
+            # Each part of a door itself does not have all of the information required
+            # to render, as direction/whether its open is on the lower part and the hinge
+            # side is on the upper part. So here we combine the metadata of the bottom part
+            # with the top to form 0-32 metadata(which would be used in door renderer).
+            #
+            copied = False
+            for door in DoorRenderer.blocktypes:
+                doors = blocks == door
+                if doors.any():
+                    if not copied:
+                        # copy if required but only once
+                        blockData = blockData.copy()
+                        copied = True
+                    # only accept lower part one block below upper part
+                    valid = doors[:, :, :-1] & doors[:, :, 1:] & (blockData[:, :, :-1] < 8) & (blockData[:, :, 1:] >= 8)
+                    mask = valid.nonzero()
+                    upper_mask = (mask[0], mask[1], mask[2]+1)
+                    blockData[mask] += (blockData[upper_mask] - 8) * 16
+                    blockData[upper_mask] = blockData[mask] + 8
 
         sx = sz = slice(0, 16)
         asx = asz = slice(0, 18)
@@ -2605,6 +2605,7 @@ class ButtonRenderer(BlockRenderer):
         rotateTemplate(buttonTemplatePressed, 90, 180),
         rotateTemplate(buttonTemplatePressed, 90, 0),
         buttonTemplatePressed,
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6)),
     ])
 
     makeVertices = makeVerticesFromModel(buttonTemplates, 15)
@@ -2923,6 +2924,7 @@ class EndRodRenderer(BlockRenderer):
         rotateTemplate(rodTemplate, y=180, x=90),
         rotateTemplate(rodTemplate, y=270, x=90),
         rotateTemplate(rodTemplate, y=90, x=90),
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
     ])
 
     handleTemplate = makeVertexTemplatesFromJsonModel((6, 0, 6), (10, 1, 10), {
@@ -2941,6 +2943,7 @@ class EndRodRenderer(BlockRenderer):
         rotateTemplate(handleTemplate, y=180, x=90),
         rotateTemplate(handleTemplate, y=270, x=90),
         rotateTemplate(handleTemplate, y=90, x=90),
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
     ])
 
     makeVertices = makeVerticesFromModel([rodTemplates, handleTemplates], 7)
