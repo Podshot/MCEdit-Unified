@@ -1,5 +1,8 @@
 var hasGottenReleaseData = false;
 var platforms = ["OSX","Win", "Lin"];
+var releasesURL = 'https://api.github.com/repos/Khroki/MCEdit-Unified/releases';
+var cacheItemPrependString = 'cache_json_store'
+
 function getJSON(url,forceLoad){
 	forceLoad = false
 	if (forceLoad !== true) {
@@ -9,9 +12,9 @@ function getJSON(url,forceLoad){
 	}
 	var isRateLimitCheck = (url == "https://api.github.com/rate_limit");
 	var ret_val = {};
-	if (localStorage['cache_json_store'+url] && !isRateLimitCheck && !forceLoad) {
+	if (localStorage[cacheItemPrependString+url] && !isRateLimitCheck && !forceLoad) {
 		// console.log('Found cached version'); dont do this way to much console-ing
-		ret_val = JSON.parse(localStorage['cache_json_store'+url]);
+		ret_val = JSON.parse(localStorage[cacheItemPrependString+url]);
 	} else {
 		try {
 			// if (!isRateLimitCheck && url.indexOf('github') != -1) {
@@ -26,7 +29,7 @@ function getJSON(url,forceLoad){
 			}).responseText;
 			var ret_val = JSON.parse(response);
 			if (ret_val !== undefined) {
-				localStorage['cache_json_store'+url] = JSON.stringify(ret_val);
+				localStorage[cacheItemPrependString+url] = JSON.stringify(ret_val);
 			} else {
 				loadFailError();
 			}
@@ -37,7 +40,7 @@ function getJSON(url,forceLoad){
 	}
 	if (ret_val && ret_val.message && ret_val.message.indexOf('API rate limit exceeded') != -1) {
 		if (!checkRateLimit()) {
-			localStorage.removeItem('cache_json_store'+url);
+			localStorage.removeItem(cacheItemPrependString+url);
 			if (confirm('An error occured loading ' + url + '. The page will now reload.')) {
 				location.reload();
 			} else {
@@ -46,6 +49,9 @@ function getJSON(url,forceLoad){
 		}
 	}
 	return ret_val;
+}
+function resetCacheForURL(url) {
+	delete localStorage[cacheItemPrependString + url];
 }
 function checkRateLimit() {
 	var rate_limit_info = getJSON('https://api.github.com/rate_limit');
@@ -196,7 +202,7 @@ function loadFailError() {
 	$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 }
 function getReleaseData() {
-	var releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases',(!hasGottenReleaseData));
+	var releaseData = getJSON(releasesURL,(!hasGottenReleaseData));
 	hasGottenReleaseData = true;
 	return releaseData.sort(compareVersionObject);
 }

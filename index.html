@@ -4,7 +4,7 @@
 	<title>MCEdit Unified</title>
 
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -32,7 +32,8 @@
 	<!-- Looks for outdated IE browsers -->
 	<!--[if lte IE 9]>
 		<p class="update">Hey, it looks like you are using an old browser, you can go to <a href="http://browsehappy.com/">Browsehappy.com</a> to get the latest version of your browser and others.</p>
-	<[endif]-->
+		<[endif]
+	-->
 
 	<script>
 		function pageTrigger() {
@@ -85,40 +86,39 @@
 					releasetime = Math.round(releasetimesec / 60 / 60 / 24) + ' days ago';
 				}
 
-                var downloadNames = {
-                    ".Win.64bit.exe" : "Windows 64bit",
-                    ".Win.64bit.zip" : "Windows 64bit",
-                    ".Win.32bit.exe" : "Windows 32bit",
-                    ".Win.32bit.zip" : "Windows 32bit",
-                    ".OSX.64bit.zip" : "OS X",
-                    ".Lin.Universal.run" : "Linux",
-                    ".Universal.run" : "Linux",
-                    ".Source.zip" : "Source Code"
-                }
+				var downloadNames = {
+					".Win.64bit.exe": "Windows 64bit",
+					".Win.64bit.zip": "Windows 64bit",
+					".Win.32bit.exe": "Windows 32bit",
+					".Win.32bit.zip": "Windows 32bit",
+					".OSX.64bit.zip": "OS X",
+					".Lin.Universal.run": "Linux",
+					".Universal.run": "Linux",
+					".Source.zip": "Source Code"
+				}
 
-                var getDownloadName = function(key)
-                {
-                    if(key == "translations.zip")
-                        return "Translations";
-                    key = key.split(version)[1];
-                    var res = downloadNames[key];
-                    if(typeof(res) == "undefined")
-                        res = key
-                    return res;
-                }
+				function getDownloadName(key) {
+					if(key == "translations.zip")
+						return "Translations";
+					key = key.split(version)[1];
+					var res = downloadNames[key];
+					if(typeof(res) == "undefined")
+						res = key
+					return res;
+				}
 
-                var versionDownloads = '';
+				var versionDownloads = '';
 
 				var totalDownloads = 0
 
-                releaseData[i].assets.sort(function(a, b) {
-                    return a.download_count - b.download_count;
-                });
+				releaseData[i].assets.sort(function(a, b) {
+					return a.download_count - b.download_count;
+				});
 
 				for (var x = releaseData[i].assets.length - 1; x >= 0; x--) {
-                    versionDownloads += getDownloadName(releaseData[i].assets[x].name) + ' - ' + releaseData[i].assets[x].download_count;
-                    if(x > 0)
-                        versionDownloads += '<br/>';
+					versionDownloads += getDownloadName(releaseData[i].assets[x].name) + ' - ' + releaseData[i].assets[x].download_count;
+					if(x > 0)
+						versionDownloads += '<br/>';
 					totalDownloads += releaseData[i].assets[x].download_count;
 				}
 
@@ -137,21 +137,29 @@
 
 				$('#changelog').append('<div class="row releasenote" version="' + version + '"></div>' + (i < releaseData.length - 1 ? '<hr>' : ''));
 				releasenote = $('.releasenote[version="' + version + '"]');
-				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br><div class="hide" id="popover-' + version.replace(/\./g, '-') + '">' + versionDownloads + '</div><a class="badge" rel="popover" data-popover-content="#popover-' + version.replace(/\./g, '-') + '">' + totalDownloads + ' downloads</a><br>' + downloadLinks + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
+				releasenote.append('<div class="col-md-2 releasenote-title"><div style="padding-right:10px;"><h2 style="display:inline;"><a href="' + releaseData[i].html_url + '">' + version + '</a></h2><br><div class="hide" id="popover-' + version.replace(/\./g, '-') + '">' + versionDownloads + '</div><a class="badge download-badge" rel="popover" data-popover-content="#popover-' + version.replace(/\./g, '-') + '">' + totalDownloads + ' downloads</a><br>' + downloadLinks + commentlink + '<br>' + (releaseData[i].prerelease ? 'Pre-release<br>' : '') + releasetime + '</div></div>');
 				releasenote.append('<div class="col-md-10"><p>' + note + '</p></div></div>');
-                $('[rel="popover"]').popover({
-                    container: 'body',
-                    html: true,
-                    trigger: 'hover',
-                    content: function () {
-                        var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
-                        return clone;
-                    }
-                }).click(function(e) {
-                    e.preventDefault();
-                });
+				$('[rel="popover"]').popover({
+					container: 'body',
+					html: true,
+					trigger: 'hover',
+					content: function () {
+						var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+						return clone;
+					}
+				}).click(function(e) {
+					e.preventDefault();
+				});
 			}
 			$('#changelog').show();
+
+			$('.download-badge').mousedown(function(event) {
+				if (event.which == 3) {
+					if (confirm('Reset download count?')) {
+						resetCacheForURL(releasesURL);
+					}
+				}
+			});
 
 			var latestRelease = getReleaseData()[0];
 			for (var i = 0; i < platforms.length; i++) {
@@ -192,7 +200,7 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12" style="padding:0xp;">
+			<div class="col-md-12">
 				<div class="jumbotron" style="text-align:center;" id="downloads">
 					<div class="row">
 						<div class="col-md-4" id="OSX-downloads-toplevel">
@@ -237,35 +245,49 @@
 							</span>
 						</div>
 					</div>
+
+					<!-- Row to reveal all platforms on md/lg -->
 					<div class="row hidden-xs hidden-sm override-platform-specific-downloads-container" style="position:absolute;bottom:30px;right:70px;display:none;">
 						<div class="col-md-12">
 							<i class="fa fa-star"></i> Click <a href="#" class="override-platform-specific-downloads">here</a> to view other platforms
 						</div>
 					</div>
+
+					<!-- Linux source on md/lg -->
 					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:50px;">
 						<div class="col-md-12">
 							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
 						</div>
 					</div>
+
+					<!-- Pre-anvil on md/lg -->
 					<div class="row hidden-xs hidden-sm" style="position:absolute;bottom:30px;">
 						<div class="col-md-12">
 							<i class="fa fa-history"></i> Pre-Anvil versions can be found at <a href="https://github.com/Khroki/mcedit-old/releases?after=0.1.6build315">this page.</a>
 						</div>
 					</div>
+
+					<!-- Line-break on sm/xs -->
 					<div class="row hidden-md hidden-lg">
 						<br>
 					</div>
-					<div class="row hidden-md hidden-lg override-platform-specific-downloads-container" style="display:none; text-align:left;">
+
+					<!-- Row to reveal all platforms on sm/xs -->
+					<div class="row hidden-md hidden-lg override-platform-specific-downloads-container" style="display:none; text-align:center;">
 						<div class="col-md-12">
 							<i class="fa fa-star"></i> Click <a href="#" class="override-platform-specific-downloads">here</a> to view other platforms
 						</div>
 					</div>
-					<div class="row hidden-md hidden-lg" style="text-align:left;">
+
+					<!-- Linux on sm/xs -->
+					<div class="row hidden-md hidden-lg" style="text-align:center;">
 						<div class="col-md-12">
 							<i class="fa fa-linux"></i> Linux users can also <a href="http://github.com/Khroki/MCEdit-Unified/releases">run from source.</a>
 						</div>
 					</div>
-					<div class="row hidden-md hidden-lg" style="text-align:left;">
+
+					<!-- Pre-anvil on sm/xs -->
+					<div class="row hidden-md hidden-lg" style="text-align:center;">
 						<div class="col-md-12">
 							<i class="fa fa-history"></i> Pre-Anvil versions can be found at <a href="https://github.com/Khroki/mcedit-old/releases?after=0.1.6build315">this page.</a>
 						</div>
