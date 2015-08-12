@@ -1,31 +1,8 @@
-/* Contributors Page */
-.circle {
-	border-radius: 50%;
-	width: 12px;
-	height: 12px;
-	position: absolute;
-	right: 19px;
-	top: 4px;
-	border: 1px solid white;
-	border-top-right-radius: 0px;
-}
-.contrib-success {
-	ackground-color: green;
-}
-.contrib-danger {
-	background-color: red;
-}
-.contrib-old {
-	background-color: orange;
-}
-/* End Contributors Page */
-
 span[id*="-downloads"] .dl {
 	width: 195px;
 	margin-top:3px;
 	margin-bottom:-10px;
 }
-
 /* Tutorial page */
 .tutorial{
 	background-color: #F4EC9A;

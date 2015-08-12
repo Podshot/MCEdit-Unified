@@ -2,6 +2,7 @@
 <html lang="en-US">
 <head>
 	<title>MCEdit Unified</title>
+
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -9,12 +10,16 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/scripts.js"></script>
 	<script src="js/marked.js"></script>
-	<!-- Tool Tip Navbar -->
-	<script>
-		$(document).ready(function(){
-			$('[data-toggle="tooltip"]').tooltip();
-		});
-	</script>
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/stylesheet.css">
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<link rel="stylesheet" href="css/text.css">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<!-- Google Analytics -->
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -25,64 +30,13 @@
 		ga('create', 'UA-57749723-1', 'auto');
 		ga('send', 'pageview');
 	</script>
-	
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/stylesheet.css">
-	<link rel="shortcut icon" href="favicon.ico">
 
 	<!-- Looks for outdated IE browsers -->
 	<!--[if lte IE 9]>
 		<p class="update">Hey, it looks like you are using an old browser, you can go to <a href="http://browsehappy.com/">Browsehappy.com</a> to get the latest version of your browser and others.</p>
 	<[endif]-->
-
 </head>
 <body>
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="container nav-container">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-			  <a class="navbar-brand" href="./">MCEdit Unified</a>
-			</div>
-			<!-- Collect the nav links and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="./">Home</a></li>
-					<li class="active"><a href="about.html">About</a></li>
-					<li><a href="requirements.html">System Requirements</a></li>
-					<li><a href="contributors.html">Contributors <i class="fa fa-users"></i></a></li>
-					<li><a href="https://www.reddit.com/r/MCEdit">MCEdit Subreddit <i class="fa fa-reddit"></i></a></li>
-					<li class="dropdown">
-					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tutorial <i class="fa fa-caret-down"></i></a>
-						<ul class="dropdown-menu">
-							<li><a href="tutorial.html" data-toggle="tooltip" data-placement="right" title="Currently in Reconstruction">Computer Edition
-							<i class="fa fa-desktop fa-lg"></i>/<i class="fa fa-laptop fa-lg"></i></a></li>
-							<li class="disabled"><a href="./" data-toggle="tooltip" data-placement="right" title="In Progress">Pocket Edition
-							<i class="fa fa-tablet fa-lg"></i>/<i class="fa fa-mobile fa-lg"></i></a></li></a></li>
-							<li class="disabled"><a href="./" data-toggle="tooltip" data-placement="right" title="In Progress">Windows 10 Edition
-							<i class="fa fa-windows fa-lg"></i></a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Misc. <i class="fa fa-caret-down"></i></a>
-						<ul class="dropdown-menu">
-							<li><a href="docs/index.html">Documentation <i class="fa fa-file-code-o fa-lg"></i></i></a></li>
-							<li><a href="http://github.com/Khroki/MCEdit-Unified/" data-toggle="tooltip" data-placement="right" title="Github">Source Code <i class="fa fa-github fa-lg"></i></a></li>
-							<li><a href="http://www.mcedit.net/" data-toggle="tooltip" data-placement="right" title="Codewarrior, In Alpha">MCEdit 2</a></li>
-							<li class="disabled"><a href="./" data-toggle="tooltip" data-placement="right" title="In Progress">External Tools <i class="fa fa-wrench fa-lg"></i></a></li>
-						</ul>
-					</li>
-				</ul>
-			</div><!-- /.navbar-collapse -->
-		</div><!-- /.container-fluid (old) -->
-	</nav>
 	<div class="container">
 		<p>
 			The MCEdit Unified project was born out of the community wanting to revive the aging program after Codewarrior had
@@ -109,7 +63,7 @@
 	<div class="footer">
 		&copy; 2010-2014 David Rio Vierra (<a href="https://twitter.com/codewarrior0">Codewarrior0</a>).
 		&copy; 2014-2015 <a href="http://khroki.github.io/MCEdit-Unified/contributors.html">Khroki and all of the contributers</a>.
-		All Rights Reserved to their respective owners.
+		All Rights Reserved to their respective ownership.
 	</div>
 
 </body>
