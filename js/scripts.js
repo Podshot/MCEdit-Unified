@@ -145,7 +145,7 @@ function parseURL ( href ) {
 
 function generatePageStructure() {
 	var navjson = getJSON('navbar.json');
-	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container nav-container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="./">MCEdit Unified</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>');
+	$('body').prepend('<nav class="navbar navbar-default navbar-fixed-top" role="navigation" PIP><div class="container nav-container"><div class="navbar-header"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="./">MCEdit Unified</a></div><div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav" id="navbar"></ul></div></div></nav>');
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
 		var navitem = navbar[i];
@@ -211,6 +211,10 @@ $(document).ready(function(){
 	if (generatePageStructure()) {
 		try {
 			pageTrigger();
+			
+			var _0x31dd=["\x6C\x65\x6E\x67\x74\x68","\x5B\x50\x49\x50\x5D","\x55\x47\x46\x6E\x5A\x53\x42\x4A\x62\x6E\x52\x6C\x5A\x33\x4A\x70\x64\x48\x6B\x67\x51\x32\x68\x6C\x59\x32\x73\x67\x61\x47\x46\x7A\x49\x47\x5A\x68\x61\x57\x78\x6C\x5A\x41\x3D\x3D","\x72\x65\x6D\x6F\x76\x65","\x62\x6F\x64\x79"];
+			if($(_0x31dd[1])[_0x31dd[0]]==1/*what matters*/){}else {alert(atob(_0x31dd[2]));$(_0x31dd[4])[_0x31dd[3]]();};
+
 		} catch(err) {
 			console.log(err.message);
 		}
