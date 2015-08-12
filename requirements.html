@@ -2,7 +2,6 @@
 <html lang="en-US">
 <head>
 	<title>MCEdit Unified</title>
-
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -10,14 +9,12 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/scripts.js"></script>
 	<script src="js/marked.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/stylesheet.css">
-	<link rel="shortcut icon" href="favicon.ico">
-
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+	<!-- Tool Tip Navbar -->
+	<script>
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
 	<!-- Google Analytics -->
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -28,172 +25,221 @@
 		ga('create', 'UA-57749723-1', 'auto');
 		ga('send', 'pageview');
 	</script>
+	
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/stylesheet.css">
+	<link rel="shortcut icon" href="favicon.ico">
 
 	<!-- Looks for outdated IE browsers -->
 	<!--[if lte IE 9]>
 		<p class="update">Hey, it looks like you are using an old browser, you can go to <a href="http://browsehappy.com/">Browsehappy.com</a> to get the latest version of your browser and others.</p>
 	<[endif]-->
+
 </head>
 <body>
-	<div class="container">
-		<div class="row">
-			<div class=" col-md-6 col-md-offset-3">
-                <p style="text-align:center;">Minimum requirements, this is the rock bottom we've found is needed to run and do basic functions.. Although lower may work, this is the minimum we have tested. May require patience.</p>
-				<table bordercolor="black" border=2 style="font-size:12px;">
-                    <tbody><tr>
-                        <td>
-                        </td>
-                        <td>
-                            <b>Windows</b>
-                        </td>
-                        <td>
-                            <b>Mac</b>
-                        </td>
-                        <td>
-                            <b>Linux</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Operating System</b>
-                        </td>
-                        <td>
-                            XP SP3<br>
-                            or newer<br>
-                        </td>
-                        <td>
-                            OSX 10.6.8 Snow Leopard<br>
-                            or newer <i class="fa fa-asterisk"></i>
-                        </td>
-                        <td>
-                            Any varient<br>
-                            with python 2.7
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Processor</b>
-                        </td>
-                        <td>
-                            Intel: Pentium 4 E series<br>
-                            AMD: Athlon 64 X2
-                        </td>
-                        <td>
-                            Any Intel Processor
-                        </td>
-                        <td>
-                            Intel: Pentium 4 E series<br>
-                            AMD: Athlon 64 X2
-                        </td>
-                    </tr><tr>
-                        <td>
-                            <b>Ram</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            2GB
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Video Card</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            Any fully OpenGL 1.1 compatible graphics card
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Free Disk Space</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-							1GB
-                        </td>
-                    </tr>
-				</tbody></table>
-                <i class="fa fa-asterisk"></i>&nbsp; Not regularly tested below 10.9 Mavericks. <br><br>
-
-                <p style="text-align:center;">Recommended system requirements, what we've found runs the program comfortably under most regular use.</p>
-				<table bordercolor="black" border=2 style="font-size:12px;">
-                    <tbody><tr>
-                        <td>
-                        </td>
-                        <td>
-                            <b>Windows</b>
-                        </td>
-                        <td>
-                            <b>Mac</b>
-                        </td>
-                        <td>
-                            <b>Linux</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Operating System</b>
-                        </td>
-                        <td>
-                            Windows 7<br>
-                            or newer<br>
-                        </td>
-                        <td>
-                            OSX 10.9.5 Mavericks<br>
-                            or newer
-                        </td>
-                        <td>
-                            Any varient<br>
-                            with python 2.7
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Processor</b>
-                        </td>
-                        <td>
-                            Intel: Core i3<br>
-                            AMD: Athlon II X3<br>		
-                        </td>
-                        <td>
-                            Core i3 or better
-                        </td>
-                        <td>
-                            Intel: Core i3<br>
-                            AMD: Athlon II X3<br>
-                        </td>
-                    </tr><tr>
-                        <td>
-                            <b>Ram</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            4GB
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Video Card</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-                            NVidia 7800GS<br>ATI Radeon HD 2600<br>Intel 4000 series
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Free Disk Space</b>
-                        </td>
-                        <td colspan="3" style="text-align:center;">
-							10GB
-                        </td>
-                    </tr>
-				</tbody></table>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container nav-container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			  <a class="navbar-brand" href="./">MCEdit Unified</a>
 			</div>
+			<!-- Collect the nav links and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="./">Home</a></li>
+					<li><a href="about.html">About</a></li>
+					<li class="active"><a href="requirements.html">System Requirements</a></li>
+					<li><a href="contributors.html">Contributors <i class="fa fa-users"></i></a></li>
+					<li><a href="https://www.reddit.com/r/MCEdit">MCEdit Subreddit <i class="fa fa-reddit"></i></a></li>
+					<li class="dropdown">
+					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tutorial <i class="fa fa-caret-down"></i></a>
+						<ul class="dropdown-menu">
+							<li><a href="tutorial.html" data-toggle="tooltip" data-placement="right" title="Currently in Reconstruction">Computer Edition
+							<i class="fa fa-desktop fa-lg"></i>/<i class="fa fa-laptop fa-lg"></i></a></li>
+							<li class="disabled"><a href="./" data-toggle="tooltip" data-placement="right" title="In Progress">Pocket Edition
+							<i class="fa fa-tablet fa-lg"></i>/<i class="fa fa-mobile fa-lg"></i></a></li></a></li>
+							<li class="disabled"><a href="./" data-toggle="tooltip" data-placement="right" title="In Progress">Windows 10 Edition
+							<i class="fa fa-windows fa-lg"></i></a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Misc. <i class="fa fa-caret-down"></i></a>
+						<ul class="dropdown-menu">
+							<li><a href="docs/index.html">Documentation <i class="fa fa-file-code-o fa-lg"></i></i></a></li>
+							<li><a href="http://github.com/Khroki/MCEdit-Unified/" data-toggle="tooltip" data-placement="right" title="Github">Source Code <i class="fa fa-github fa-lg"></i></a></li>
+							<li><a href="http://www.mcedit.net/" data-toggle="tooltip" data-placement="right" title="Codewarrior, In Alpha">MCEdit 2</a></li>
+							<li class="disabled"><a href="./" data-toggle="tooltip" data-placement="right" title="In Progress">External Tools <i class="fa fa-wrench fa-lg"></i></a></li>
+						</ul>
+					</li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid (old) -->
+	</nav>
+	<div class="container">
+		<div class=" col-md-6 col-md-offset-3">
+            <p style="text-align:center;">Minimum requirements, this is the rock bottom we've found is needed to run and do basic functions.. Although lower may work, this is the minimum we have tested. May require patience.</p>
+			<table bordercolor="black" border=2 style="font-size:12px;">
+				<tbody>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<b>Windows</b>
+						</td>
+						<td>
+							<b>Mac</b>
+						</td>
+						<td>
+							<b>Linux</b>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Operating System</b>
+						</td>
+						<td>
+							XP SP3 or newer
+						</td>
+						<td>
+							&nbsp; OSX 10.6.8 Snow Leopard <br> or newer <i class="fa fa-asterisk"></i>
+						</td>
+						<td>
+							&nbsp; Any varient with <br> python 2.7
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Processor</b>
+						</td>
+						<td>
+							Intel: Pentium 4 E series<br>
+							AMD: Athlon 64 X2
+						</td>
+						<td>
+							Any Intel Processor
+						</td>
+						<td>
+							Intel: Pentium 4 E series<br>
+							AMD: Athlon 64 X2
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Ram</b>
+						</td>
+						<td colspan="3" style="text-align:center;">
+							2GB
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Video Card</b>
+						</td>
+						<td colspan="3" style="text-align:center;">
+							Any fully OpenGL 1.1 compatible graphics card
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Free Disk Space</b>
+						</td>
+						<td colspan="3" style="text-align:center;">
+							1GB
+						</td>
+					</tr>
+				</tbody>
+			</table>
+            <i class="fa fa-asterisk"></i>&nbsp; Not regularly tested below 10.9 Mavericks. <br><br>
+		</div>
+		<div class=" col-md-6 col-md-offset-3">
+            <p style="text-align:center;">Recommended system requirements, what we've found runs the program comfortably under most regular use.</p>
+			<table bordercolor="black" border=2 style="font-size:12px;">
+				<tbody>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<b>Windows</b>
+						</td>
+						<td>
+							<b>Mac</b>
+						</td>
+						<td>
+							<b>Linux</b>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Operating System</b>
+						</td>
+						<td>
+							&nbsp; Windows 7 or newer &nbsp;
+						</td>
+						<td>
+							&nbsp; OSX 10.9.5 Maverick or newer &nbsp;
+						</td>
+						<td>
+							&nbsp; Any varient with <br> python 2.7 &nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Processor</b>
+						</td>
+						<td>
+							Intel: Core i3 or better<br>
+							AMD: Athlon II X3
+						</td>
+						<td>
+							Core i3 or better
+						</td>
+						<td>
+							Intel: Core i3 or better<br>
+							AMD: Athlon II X3
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Ram</b>
+						</td>
+						<td colspan="3" style="text-align:center;">
+							4GB
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Video Card</b>
+						</td>
+						<td colspan="3" style="text-align:center;">
+							NVidia 7800GS * ATI Radeon HD 2600 * Intel 4000 series
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>Free Disk Space</b>
+						</td>
+						<td colspan="3" style="text-align:center;">
+							10GB
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
-
-	<!--
-	Commented out until alignment issue is fixed. Note codewarrior has no copyright on this page.
+	
 	<hr class="hr">
 	<div class="footer">
 		&copy; 2014-2015 <a href="http://khroki.github.io/MCEdit-Unified/contributors.html">Khroki and all project contributers</a>.
-	</div> -->
+		All Rights Reserved to their respective owners.
+	</div>
 
 </body>
 </html>
