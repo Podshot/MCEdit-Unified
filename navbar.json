@@ -1,36 +1,44 @@
 {
-	"navbar": [
-		{
-			"displayname": "Home",
-			"url": "index.html"
-		},
-		{
-			"displayname": "About",
-			"url": "about.html"
-		},
-		{
-			"displayname": "Tutorial",
-			"url": "tutorial.html"
-		},
-		{
-			"displayname": "System Requirements",
-			"url": "requirements.html"
-		},
-		{
-			"displayname": "Contributors",
-			"url": "contributors.html"
-		},
-		{
-			"displayname": "MCEdit Subreddit",
-			"url": "http://www.reddit.com/r/MCEdit/"
-		},
-		{
-			"displayname": "Documentation",
-			"url": "docs/index.html"
-		},
-		{
-			"displayname": "GitHub",
-			"url": "http://github.com/Khroki/MCEdit-Unified/"
-		}
-	]
+  "navbar": [
+    {
+      "icon": "home",
+      "showTextInNavbar": false,
+      "displayname": "Home",
+      "url": "index.html"
+    },
+    {
+      "displayname": "About",
+      "url": "about.html"
+    },
+    {
+      "displayname": "Tutorial",
+      "url": "tutorial.html"
+    },
+    {
+      "displayname": "System Requirements",
+      "url": "requirements.html"
+    },
+    {
+      "displayname": "Contributors",
+      "url": "contributors.html",
+      "icon": "users"
+    },
+    {
+      "displayname": "Documentation",
+      "url": "docs/index.html",
+      "icon": "book"
+    },
+    {
+      "icon": "reddit",
+      "showTextInNavbar": false,
+      "displayname": "MCEdit Subreddit",
+      "url": "http://www.reddit.com/r/MCEdit/"
+    },
+    {
+      "displayname": "GitHub",
+      "icon": "github",
+      "showTextInNavbar": false,
+      "url": "http://github.com/Khroki/MCEdit-Unified/"
+    }
+  ]
 }
