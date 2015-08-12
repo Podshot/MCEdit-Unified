@@ -149,11 +149,19 @@ function generatePageStructure() {
 	var navbar = navjson.navbar;
 	for (var i = 0; i < navbar.length; i++) {
 		var navitem = navbar[i];
-		var active = location.href == parseURL( navitem.url ).href;
+
+		console.log(navitem);
+
+		var active = (location.href == parseURL( navitem.url ).href);
 		if (active) {
 			$('title').html('MCEdit Unified - ' + navitem.displayname);
 		}
-		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navitem.url + '">' + navitem.displayname + '</a></li>');
+		
+		if (navitem.showTextInNavbar === undefined) {
+			navitem.showTextInNavbar = true
+		}
+
+		$('#navbar').append('<li class="' + (active ? 'active' : '') + '"><a href="' + navitem.url + '">' + (navitem.icon ? '<i class="fa fa-' + navitem.icon + '"></i>' : '') + (navitem.icon && navitem.showTextInNavbar ? ' ' : '') + (navitem.showTextInNavbar ? navitem.displayname : '') + '</a></li>');
 	}
 	return true;
 }
