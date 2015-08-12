@@ -1,8 +1,15 @@
+var hasGottenReleaseData = false;
 var platforms = ["OSX","Win", "Lin"];
-function getJSON(url){
+function getJSON(url,forceLoad){
+	forceLoad = false
+	if (forceLoad !== true) {
+		forceLoad = false
+	} else {
+		console.log("Forcing load of " + url);
+	}
 	var isRateLimitCheck = (url == "https://api.github.com/rate_limit");
 	var ret_val = {};
-	if (localStorage['cache_json_store'+url] && !isRateLimitCheck) {
+	if (localStorage['cache_json_store'+url] && !isRateLimitCheck && !forceLoad) {
 		// console.log('Found cached version'); dont do this way to much console-ing
 		ret_val = JSON.parse(localStorage['cache_json_store'+url]);
 	} else {
@@ -181,7 +188,8 @@ function loadFailError() {
 	$('body').css('background-color','#444444').css('text-align','center').css('color','white');
 }
 function getReleaseData() {
-	var releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases');
+	var releaseData = getJSON('https://api.github.com/repos/Khroki/MCEdit-Unified/releases',(!hasGottenReleaseData));
+	hasGottenReleaseData = true;
 	return releaseData.sort(compareVersionObject);
 }
 $(document).ready(function(){

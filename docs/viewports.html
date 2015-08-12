@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>viewports package &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>viewports package &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.3.0.0',
+            VERSION:     'v1.4.0.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
     <link rel="prev" title="version_utils module" href="version_utils.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.4.0.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -176,7 +176,7 @@
 <span id="viewports-camera-module"></span><h2>viewports.camera module<a class="headerlink" href="#module-viewports.camera" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="viewports.camera.CameraViewport">
-<em class="property">class </em><code class="descclassname">viewports.camera.</code><code class="descname">CameraViewport</code><span class="sig-paren">(</span><em>editor</em><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#CameraViewport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.CameraViewport" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">viewports.camera.</code><code class="descname">CameraViewport</code><span class="sig-paren">(</span><em>editor</em>, <em>def_enc=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#CameraViewport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.CameraViewport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="albow.html#albow.openglwidgets.GLViewport" title="albow.openglwidgets.GLViewport"><code class="xref py py-class docutils literal"><span class="pre">albow.openglwidgets.GLViewport</span></code></a></p>
 <dl class="method">
 <dt id="viewports.camera.CameraViewport.activeevent">
@@ -213,6 +213,11 @@
 <em class="property">static </em><code class="descname">disableFog</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#CameraViewport.disableFog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.CameraViewport.disableFog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="viewports.camera.CameraViewport.dontShowMessageAgain">
+<code class="descname">dontShowMessageAgain</code><em class="property"> = False</em><a class="headerlink" href="#viewports.camera.CameraViewport.dontShowMessageAgain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="viewports.camera.CameraViewport.drawCeiling">
 <code class="descname">drawCeiling</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#CameraViewport.drawCeiling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.CameraViewport.drawCeiling" title="Permalink to this definition">¶</a></dt>
@@ -246,6 +251,16 @@
 <dl class="method">
 <dt id="viewports.camera.CameraViewport.editContainer">
 <code class="descname">editContainer</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#viewports.camera.CameraViewport.editContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="viewports.camera.CameraViewport.editEnchantmentTable">
+<code class="descname">editEnchantmentTable</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#viewports.camera.CameraViewport.editEnchantmentTable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="viewports.camera.CameraViewport.editFlowerPot">
+<code class="descname">editFlowerPot</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#viewports.camera.CameraViewport.editFlowerPot" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -325,7 +340,7 @@
 
 <dl class="attribute">
 <dt id="viewports.camera.CameraViewport.lastRendererUpdate">
-<code class="descname">lastRendererUpdate</code><em class="property"> = datetime.datetime(2015, 3, 30, 18, 10, 41, 223000)</em><a class="headerlink" href="#viewports.camera.CameraViewport.lastRendererUpdate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">lastRendererUpdate</code><em class="property"> = datetime.datetime(2015, 8, 8, 18, 33, 52, 944000)</em><a class="headerlink" href="#viewports.camera.CameraViewport.lastRendererUpdate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -413,11 +428,6 @@
 <code class="descname">rightClickUp</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#CameraViewport.rightClickUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.CameraViewport.rightClickUp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="viewports.camera.CameraViewport.rightMouseDragStart">
-<code class="descname">rightMouseDragStart</code><em class="property"> = None</em><a class="headerlink" href="#viewports.camera.CameraViewport.rightMouseDragStart" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="viewports.camera.CameraViewport.setModelview">
 <code class="descname">setModelview</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#CameraViewport.setModelview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.CameraViewport.setModelview" title="Permalink to this definition">¶</a></dt>
@@ -431,6 +441,11 @@
 <dl class="method">
 <dt id="viewports.camera.CameraViewport.setup_projection">
 <code class="descname">setup_projection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#CameraViewport.setup_projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.CameraViewport.setup_projection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="viewports.camera.CameraViewport.should_lock">
+<code class="descname">should_lock</code><em class="property"> = False</em><a class="headerlink" href="#viewports.camera.CameraViewport.should_lock" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -455,7 +470,7 @@
 
 <dl class="attribute">
 <dt id="viewports.camera.CameraViewport.tickInterval">
-<code class="descname">tickInterval</code><em class="property"> = 33</em><a class="headerlink" href="#viewports.camera.CameraViewport.tickInterval" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tickInterval</code><em class="property"> = 16</em><a class="headerlink" href="#viewports.camera.CameraViewport.tickInterval" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -491,6 +506,27 @@
 <dl class="attribute">
 <dt id="viewports.camera.CameraViewport.viewingFrustum">
 <code class="descname">viewingFrustum</code><em class="property"> = None</em><a class="headerlink" href="#viewports.camera.CameraViewport.viewingFrustum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="viewports.camera.SignEditOperation">
+<em class="property">class </em><code class="descclassname">viewports.camera.</code><code class="descname">SignEditOperation</code><span class="sig-paren">(</span><em>tool</em>, <em>level</em>, <em>tileEntity</em>, <em>backupTileEntity</em><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#SignEditOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.SignEditOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="editortools.html#editortools.operation.Operation" title="editortools.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">editortools.operation.Operation</span></code></a></p>
+<dl class="method">
+<dt id="viewports.camera.SignEditOperation.perform">
+<code class="descname">perform</code><span class="sig-paren">(</span><em>recordUndo=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#SignEditOperation.perform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.SignEditOperation.perform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="viewports.camera.SignEditOperation.redo">
+<code class="descname">redo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#SignEditOperation.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.SignEditOperation.redo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="viewports.camera.SignEditOperation.undo">
+<code class="descname">undo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/viewports/camera.html#SignEditOperation.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#viewports.camera.SignEditOperation.undo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -605,7 +641,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.4.0.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

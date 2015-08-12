@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools package &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>editortools package &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.3.0.0',
+            VERSION:     'v1.4.0.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
     <link rel="next" title="frustum module" href="frustum.html" />
     <link rel="prev" title="drawable module" href="drawable.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.4.0.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -733,6 +733,11 @@ and only the part of the world contained in box is returned as an array.
 :keyword hollow, input to calculate a hollow brush.</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="editortools.brush.createTileEntities">
+<code class="descclassname">editortools.brush.</code><code class="descname">createTileEntities</code><span class="sig-paren">(</span><em>block</em>, <em>box</em>, <em>chunk</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/brush.html#createTileEntities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.brush.createTileEntities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-editortools.chunk">
 <span id="editortools-chunk-module"></span><h2>editortools.chunk module<a class="headerlink" href="#module-editortools.chunk" title="Permalink to this headline">¶</a></h2>
@@ -774,11 +779,6 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dl class="method">
 <dt id="editortools.chunk.ChunkTool.drawToolMarkers">
 <code class="descname">drawToolMarkers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/chunk.html#ChunkTool.drawToolMarkers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.chunk.ChunkTool.drawToolMarkers" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="editortools.chunk.ChunkTool.extractChunks">
-<code class="descname">extractChunks</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#editortools.chunk.ChunkTool.extractChunks" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1574,6 +1574,11 @@ transparent block for the block placing tool.</p>
 <code class="descname">hidePanel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/editortool.html#EditorTool.hidePanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.editortool.EditorTool.hidePanel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="editortools.editortool.EditorTool.hotkey">
+<code class="descname">hotkey</code><a class="headerlink" href="#editortools.editortool.EditorTool.hotkey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="editortools.editortool.EditorTool.increaseToolReach">
 <code class="descname">increaseToolReach</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/editortool.html#EditorTool.increaseToolReach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.editortool.EditorTool.increaseToolReach" title="Permalink to this definition">¶</a></dt>
@@ -1803,6 +1808,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="editortools.fill.FillTool.chooseBlockImmediatelyReplace">
+<code class="descname">chooseBlockImmediatelyReplace</code><a class="headerlink" href="#editortools.fill.FillTool.chooseBlockImmediatelyReplace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="editortools.fill.FillTool.color">
 <code class="descname">color</code><em class="property"> = (0.75, 1.0, 1.0, 0.7)</em><a class="headerlink" href="#editortools.fill.FillTool.color" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1860,6 +1870,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dl class="attribute">
 <dt id="editortools.fill.FillTool.noData">
 <code class="descname">noData</code><em class="property"> = False</em><a class="headerlink" href="#editortools.fill.FillTool.noData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.fill.FillTool.openReplace">
+<code class="descname">openReplace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/fill.html#FillTool.openReplace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.fill.FillTool.openReplace" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1979,6 +1994,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dt id="editortools.filter.FilterModuleOptions">
 <em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">FilterModuleOptions</code><span class="sig-paren">(</span><em>tool</em>, <em>module</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterModuleOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterModuleOptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="albow.html#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
+<dl class="staticmethod">
+<dt id="editortools.filter.FilterModuleOptions.confirm">
+<em class="property">static </em><code class="descname">confirm</code><span class="sig-paren">(</span><em>tool</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterModuleOptions.confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterModuleOptions.confirm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="editortools.filter.FilterModuleOptions.giveEditorObject">
 <code class="descname">giveEditorObject</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterModuleOptions.giveEditorObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterModuleOptions.giveEditorObject" title="Permalink to this definition">¶</a></dt>
@@ -1991,7 +2011,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="method">
 <dt id="editortools.filter.FilterModuleOptions.makeTabPage">
-<code class="descname">makeTabPage</code><span class="sig-paren">(</span><em>tool</em>, <em>inputs</em>, <em>trn=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterModuleOptions.makeTabPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterModuleOptions.makeTabPage" title="Permalink to this definition">¶</a></dt>
+<code class="descname">makeTabPage</code><span class="sig-paren">(</span><em>tool</em>, <em>inputs</em>, <em>trn=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterModuleOptions.makeTabPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterModuleOptions.makeTabPage" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2008,7 +2028,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="class">
 <dt id="editortools.filter.FilterOperation">
-<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">FilterOperation</code><span class="sig-paren">(</span><em>editor</em>, <em>level</em>, <em>box</em>, <em>filter</em>, <em>options</em>, <em>panel</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterOperation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">FilterOperation</code><span class="sig-paren">(</span><em>editor</em>, <em>level</em>, <em>box</em>, <em>filter</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterOperation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#editortools.operation.Operation" title="editortools.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">editortools.operation.Operation</span></code></a></p>
 <dl class="method">
 <dt id="editortools.filter.FilterOperation.dirtyBox">
@@ -2026,16 +2046,6 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dt id="editortools.filter.FilterTool">
 <em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">FilterTool</code><span class="sig-paren">(</span><em>editor</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#editortools.editortool.EditorTool" title="editortools.editortool.EditorTool"><code class="xref py py-class docutils literal"><span class="pre">editortools.editortool.EditorTool</span></code></a></p>
-<dl class="method">
-<dt id="editortools.filter.FilterTool.closeFinishedUpdatingWidget">
-<code class="descname">closeFinishedUpdatingWidget</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.closeFinishedUpdatingWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.closeFinishedUpdatingWidget" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="editortools.filter.FilterTool.confirm">
-<code class="descname">confirm</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.confirm" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="attribute">
 <dt id="editortools.filter.FilterTool.filterNames">
 <code class="descname">filterNames</code><a class="headerlink" href="#editortools.filter.FilterTool.filterNames" title="Permalink to this definition">¶</a></dt>
@@ -2046,24 +2056,14 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <code class="descname">hidePanel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.hidePanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.hidePanel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="editortools.filter.FilterTool.importLibraries">
-<code class="descname">importLibraries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.importLibraries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.importLibraries" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
+<dl class="staticmethod">
 <dt id="editortools.filter.FilterTool.moduleDisplayName">
-<code class="descname">moduleDisplayName</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.moduleDisplayName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.moduleDisplayName" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">moduleDisplayName</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.moduleDisplayName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.moduleDisplayName" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="editortools.filter.FilterTool.reloadFilters">
 <code class="descname">reloadFilters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.reloadFilters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.reloadFilters" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="editortools.filter.FilterTool.run_macro">
-<code class="descname">run_macro</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterTool.run_macro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterTool.run_macro" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2107,14 +2107,28 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dt id="editortools.filter.FilterToolPanel">
 <em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">FilterToolPanel</code><span class="sig-paren">(</span><em>tool</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="glbackground.html#glbackground.Panel" title="glbackground.Panel"><code class="xref py py-class docutils literal"><span class="pre">glbackground.Panel</span></code></a></p>
-<dl class="method">
-<dt id="editortools.filter.FilterToolPanel.addMacroStep">
-<code class="descname">addMacroStep</code><span class="sig-paren">(</span><em>name=None</em>, <em>inputs=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.addMacroStep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.addMacroStep" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dl class="attribute">
+<dt id="editortools.filter.FilterToolPanel.BACKUP_FILTER_JSON">
+<code class="descname">BACKUP_FILTER_JSON</code><em class="property"> = False</em><a class="headerlink" href="#editortools.filter.FilterToolPanel.BACKUP_FILTER_JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>If set to true, the filter.json is backed up to the hard disk
+every time it&#8217;s edited. The default is false, which makes the file save
+only whenever the tool gets closed. If MCEdit were to crash, any recorded
+macros would not be saved.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="editortools.filter.FilterToolPanel.bind_key">
 <code class="descname">bind_key</code><span class="sig-paren">(</span><em>message=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.bind_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.bind_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.filter.FilterToolPanel.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.filter.FilterToolPanel.confirm">
+<code class="descname">confirm</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.confirm" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2128,33 +2142,18 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="editortools.filter.FilterToolPanel.filterOptionsPanel">
-<code class="descname">filterOptionsPanel</code><em class="property"> = None</em><a class="headerlink" href="#editortools.filter.FilterToolPanel.filterOptionsPanel" title="Permalink to this definition">¶</a></dt>
+<dt id="editortools.filter.FilterToolPanel.filter_json">
+<code class="descname">filter_json</code><a class="headerlink" href="#editortools.filter.FilterToolPanel.filter_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="editortools.filter.FilterToolPanel.macroSelected">
+<code class="descname">macroSelected</code><a class="headerlink" href="#editortools.filter.FilterToolPanel.macroSelected" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="editortools.filter.FilterToolPanel.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><em>filterOptionsPanel=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.reload" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="editortools.filter.FilterToolPanel.reload_macro">
-<code class="descname">reload_macro</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.reload_macro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.reload_macro" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="editortools.filter.FilterToolPanel.run_macro">
-<code class="descname">run_macro</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.run_macro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.run_macro" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="editortools.filter.FilterToolPanel.saveOptions">
-<code class="descname">saveOptions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.saveOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.saveOptions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="editortools.filter.FilterToolPanel.set_save">
-<code class="descname">set_save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.set_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.set_save" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.reload" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2168,20 +2167,83 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="editortools.filter.FilterToolPanel.unbind">
-<code class="descname">unbind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.unbind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.unbind" title="Permalink to this definition">¶</a></dt>
+<dt id="editortools.filter.FilterToolPanel.unbind_key">
+<code class="descname">unbind_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.unbind_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.unbind_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="editortools.filter.JsonDictProperty">
+<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">JsonDictProperty</code><span class="sig-paren">(</span><em>filename</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#JsonDictProperty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.JsonDictProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dict</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="editortools.filter.MacroModuleOptions">
+<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">MacroModuleOptions</code><span class="sig-paren">(</span><em>macro_data</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#MacroModuleOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.MacroModuleOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="albow.html#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
+<dl class="method">
+<dt id="editortools.filter.MacroModuleOptions.confirm">
+<code class="descname">confirm</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#MacroModuleOptions.confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.MacroModuleOptions.confirm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="editortools.filter.MacroModuleOptions.is_gl_container">
+<code class="descname">is_gl_container</code><em class="property"> = True</em><a class="headerlink" href="#editortools.filter.MacroModuleOptions.is_gl_container" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="editortools.filter.MacroModuleOptions.options">
+<code class="descname">options</code><a class="headerlink" href="#editortools.filter.MacroModuleOptions.options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.filter.MacroModuleOptions.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#MacroModuleOptions.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.MacroModuleOptions.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="editortools.filter.MacroOperation">
+<em class="property">class </em><code class="descclassname">editortools.filter.</code><code class="descname">MacroOperation</code><span class="sig-paren">(</span><em>editor</em>, <em>level</em>, <em>box</em>, <em>filters</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#MacroOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.MacroOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#editortools.operation.Operation" title="editortools.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">editortools.operation.Operation</span></code></a></p>
+<dl class="method">
+<dt id="editortools.filter.MacroOperation.dirtyBox">
+<code class="descname">dirtyBox</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#MacroOperation.dirtyBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.MacroOperation.dirtyBox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.filter.MacroOperation.perform">
+<code class="descname">perform</code><span class="sig-paren">(</span><em>recordUndo=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#MacroOperation.perform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.MacroOperation.perform" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="editortools.filter.addNumField">
-<code class="descclassname">editortools.filter.</code><code class="descname">addNumField</code><span class="sig-paren">(</span><em>page</em>, <em>optionName</em>, <em>oName</em>, <em>val</em>, <em>min=None</em>, <em>max=None</em>, <em>increment=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#addNumField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.addNumField" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">editortools.filter.</code><code class="descname">addNumField</code><span class="sig-paren">(</span><em>page</em>, <em>optionName</em>, <em>oName</em>, <em>val</em>, <em>min_value=None</em>, <em>max_value=None</em>, <em>increment=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#addNumField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.addNumField" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="editortools.filter.alertFilterException">
 <code class="descclassname">editortools.filter.</code><code class="descname">alertFilterException</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#alertFilterException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.alertFilterException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="editortools.filter.tryImport">
+<code class="descclassname">editortools.filter.</code><code class="descname">tryImport</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em><span class="sig-paren">)</span><a class="headerlink" href="#editortools.filter.tryImport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="editortools.filter.tryImport_new">
+<code class="descclassname">editortools.filter.</code><code class="descname">tryImport_new</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#tryImport_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.tryImport_new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="editortools.filter.tryImport_old">
+<code class="descclassname">editortools.filter.</code><code class="descname">tryImport_old</code><span class="sig-paren">(</span><em>_root</em>, <em>name</em>, <em>org_lang</em>, <em>stock=False</em>, <em>subFolderString=''</em>, <em>unicode_name=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#tryImport_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.tryImport_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -2250,18 +2312,23 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="editortools.nbtexplorer.NBTExplorerTool.keyDown">
+<code class="descname">keyDown</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerTool.keyDown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerTool.keyDown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="editortools.nbtexplorer.NBTExplorerTool.loadFile">
 <code class="descname">loadFile</code><span class="sig-paren">(</span><em>fName=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerTool.loadFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerTool.loadFile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="editortools.nbtexplorer.NBTExplorerTool.saveFile">
-<code class="descname">saveFile</code><span class="sig-paren">(</span><em>fName</em>, <em>data</em>, <em>dontSaveRootTag</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerTool.saveFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerTool.saveFile" title="Permalink to this definition">¶</a></dt>
+<code class="descname">saveFile</code><span class="sig-paren">(</span><em>fName</em>, <em>data</em>, <em>savePolicy</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerTool.saveFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerTool.saveFile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="editortools.nbtexplorer.NBTExplorerTool.showPanel">
-<code class="descname">showPanel</code><span class="sig-paren">(</span><em>fName=None</em>, <em>nbtObject=None</em>, <em>dontSaveRootTag=False</em>, <em>dataKeyName='Data'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerTool.showPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerTool.showPanel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">showPanel</code><span class="sig-paren">(</span><em>fName=None</em>, <em>nbtObject=None</em>, <em>savePolicy=0</em>, <em>dataKeyName='Data'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerTool.showPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerTool.showPanel" title="Permalink to this definition">¶</a></dt>
 <dd><p>...</p>
 </dd></dl>
 
@@ -2284,7 +2351,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="class">
 <dt id="editortools.nbtexplorer.NBTExplorerToolPanel">
-<em class="property">class </em><code class="descclassname">editortools.nbtexplorer.</code><code class="descname">NBTExplorerToolPanel</code><span class="sig-paren">(</span><em>editor</em>, <em>nbtObject=None</em>, <em>fileName=None</em>, <em>dontSaveRootTag=False</em>, <em>dataKeyName='Data'</em>, <em>close_text='Close'</em>, <em>load_text='Open'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">editortools.nbtexplorer.</code><code class="descname">NBTExplorerToolPanel</code><span class="sig-paren">(</span><em>editor</em>, <em>nbtObject=None</em>, <em>fileName=None</em>, <em>savePolicy=0</em>, <em>dataKeyName='Data'</em>, <em>close_text='Close'</em>, <em>load_text='Open'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="glbackground.html#glbackground.Panel" title="glbackground.Panel"><code class="xref py py-class docutils literal"><span class="pre">glbackground.Panel</span></code></a></p>
 <p>...</p>
 <dl class="staticmethod">
@@ -2323,8 +2390,18 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="editortools.nbtexplorer.NBTExplorerToolPanel.dispatch_key">
+<code class="descname">dispatch_key</code><span class="sig-paren">(</span><em>event_name</em>, <em>e</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel.dispatch_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel.dispatch_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="editortools.nbtexplorer.NBTExplorerToolPanel.init_data">
 <code class="descname">init_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel.init_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel.init_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.nbtexplorer.NBTExplorerToolPanel.key_down">
+<code class="descname">key_down</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel.key_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel.key_down" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2340,6 +2417,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dl class="method">
 <dt id="editortools.nbtexplorer.NBTExplorerToolPanel.setCompounds">
 <code class="descname">setCompounds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel.setCompounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel.setCompounds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.nbtexplorer.NBTExplorerToolPanel.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel.set_update_translation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2422,8 +2504,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="class">
 <dt id="editortools.nbtexplorer.SlotEditor">
-<em class="property">class </em><code class="descclassname">editortools.nbtexplorer.</code><code class="descname">SlotEditor</code><span class="sig-paren">(</span><em>inventory</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="glbackground.html#glbackground.Panel" title="glbackground.Panel"><code class="xref py py-class docutils literal"><span class="pre">glbackground.Panel</span></code></a></p>
+<em class="property">class </em><code class="descclassname">editortools.nbtexplorer.</code><code class="descname">SlotEditor</code><span class="sig-paren">(</span><em>inventory</em>, <em>data</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="albow.html#albow.dialogs.Dialog" title="albow.dialogs.Dialog"><code class="xref py py-class docutils literal"><span class="pre">albow.dialogs.Dialog</span></code></a></p>
 <dl class="method">
 <dt id="editortools.nbtexplorer.SlotEditor.cancel">
 <code class="descname">cancel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor.cancel" title="Permalink to this definition">¶</a></dt>
@@ -2434,6 +2516,26 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <code class="descname">dismiss</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor.dismiss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor.dismiss" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="editortools.nbtexplorer.SlotEditor.dispatch_key">
+<code class="descname">dispatch_key</code><span class="sig-paren">(</span><em>name</em>, <em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor.dispatch_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor.dispatch_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.nbtexplorer.SlotEditor.ok">
+<code class="descname">ok</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor.ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor.ok" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.nbtexplorer.SlotEditor.select_tablerow">
+<code class="descname">select_tablerow</code><span class="sig-paren">(</span><em>i</em>, <em>e</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor.select_tablerow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor.select_tablerow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.nbtexplorer.SlotEditor.text_entered">
+<code class="descname">text_entered</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#SlotEditor.text_entered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.SlotEditor.text_entered" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -2442,7 +2544,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dd><p>Bases: <a class="reference internal" href="albow.html#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
 <dl class="attribute">
 <dt id="editortools.nbtexplorer.TAG_List_Type.choices">
-<code class="descname">choices</code><em class="property"> = ['Short', 'String', 'List', u'Floating point (TAG_Float)', 'Byte Array', 'Integral', 'Long', 'Int Array', u'Floating point (TAG_Double)', 'Compound', 'Byte', 'Short Array']</em><a class="headerlink" href="#editortools.nbtexplorer.TAG_List_Type.choices" title="Permalink to this definition">¶</a></dt>
+<code class="descname">choices</code><em class="property"> = ['Short', 'String', 'Integral', u'Floating point (TAG_Float)', 'Byte Array', 'List', 'Long', 'Int Array', u'Floating point (TAG_Double)', 'Compound', 'Byte', 'Short Array']</em><a class="headerlink" href="#editortools.nbtexplorer.TAG_List_Type.choices" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2539,7 +2641,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="function">
 <dt id="editortools.nbtexplorer.saveFile">
-<code class="descclassname">editortools.nbtexplorer.</code><code class="descname">saveFile</code><span class="sig-paren">(</span><em>fName</em>, <em>data</em>, <em>dontSaveRootTag</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#saveFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.saveFile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">editortools.nbtexplorer.</code><code class="descname">saveFile</code><span class="sig-paren">(</span><em>fName</em>, <em>data</em>, <em>savePolicy</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#saveFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.saveFile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -2734,8 +2836,18 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <em class="property">class </em><code class="descclassname">editortools.player.</code><code class="descname">PlayerPositionPanel</code><span class="sig-paren">(</span><em>tool</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerPositionPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerPositionPanel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="glbackground.html#glbackground.Panel" title="glbackground.Panel"><code class="xref py py-class docutils literal"><span class="pre">glbackground.Panel</span></code></a></p>
 <dl class="method">
+<dt id="editortools.player.PlayerPositionPanel.dispatch_key">
+<code class="descname">dispatch_key</code><span class="sig-paren">(</span><em>name</em>, <em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerPositionPanel.dispatch_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerPositionPanel.dispatch_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="editortools.player.PlayerPositionPanel.editNBTData">
 <code class="descname">editNBTData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerPositionPanel.editNBTData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerPositionPanel.editNBTData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.player.PlayerPositionPanel.key_down">
+<code class="descname">key_down</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerPositionPanel.key_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerPositionPanel.key_down" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2761,7 +2873,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="method">
 <dt id="editortools.player.PlayerPositionTool.drawCharacterHead">
-<code class="descname">drawCharacterHead</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>realCoords=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerPositionTool.drawCharacterHead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerPositionTool.drawCharacterHead" title="Permalink to this definition">¶</a></dt>
+<code class="descname">drawCharacterHead</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>realCoords=None</em>, <em>dim=0</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerPositionTool.drawCharacterHead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerPositionTool.drawCharacterHead" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2888,7 +3000,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
 <dl class="class">
 <dt id="editortools.player.PlayerRemoveOperation">
-<em class="property">class </em><code class="descclassname">editortools.player.</code><code class="descname">PlayerRemoveOperation</code><span class="sig-paren">(</span><em>tool</em>, <em>player='Player'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerRemoveOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerRemoveOperation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">editortools.player.</code><code class="descname">PlayerRemoveOperation</code><span class="sig-paren">(</span><em>tool</em>, <em>player='Player (Single Player)'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/player.html#PlayerRemoveOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.player.PlayerRemoveOperation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#editortools.operation.Operation" title="editortools.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">editortools.operation.Operation</span></code></a></p>
 <dl class="method">
 <dt id="editortools.player.PlayerRemoveOperation.perform">
@@ -3052,6 +3164,17 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
+<dl class="class">
+<dt id="editortools.select.CBCommandsOptionsPanel">
+<em class="property">class </em><code class="descclassname">editortools.select.</code><code class="descname">CBCommandsOptionsPanel</code><a class="reference internal" href="modules/editortools/select.html#CBCommandsOptionsPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.CBCommandsOptionsPanel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#editortools.tooloptions.ToolOptions" title="editortools.tooloptions.ToolOptions"><code class="xref py py-class docutils literal"><span class="pre">editortools.tooloptions.ToolOptions</span></code></a></p>
+<dl class="method">
+<dt id="editortools.select.CBCommandsOptionsPanel.changeSorting">
+<code class="descname">changeSorting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/select.html#CBCommandsOptionsPanel.changeSorting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.CBCommandsOptionsPanel.changeSorting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="editortools.select.GetSelectionColor">
 <code class="descclassname">editortools.select.</code><code class="descname">GetSelectionColor</code><span class="sig-paren">(</span><em>colorWord=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/select.html#GetSelectionColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.GetSelectionColor" title="Permalink to this definition">¶</a></dt>
@@ -3144,6 +3267,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dt id="editortools.select.SelectionTool">
 <em class="property">class </em><code class="descclassname">editortools.select.</code><code class="descname">SelectionTool</code><span class="sig-paren">(</span><em>editor</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/select.html#SelectionTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.SelectionTool" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#editortools.editortool.EditorTool" title="editortools.editortool.EditorTool"><code class="xref py py-class docutils literal"><span class="pre">editortools.editortool.EditorTool</span></code></a></p>
+<dl class="method">
+<dt id="editortools.select.SelectionTool.CBCommandsOptions">
+<code class="descname">CBCommandsOptions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/select.html#SelectionTool.CBCommandsOptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.SelectionTool.CBCommandsOptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="editortools.select.SelectionTool.alpha">
 <code class="descname">alpha</code><em class="property"> = 0.25</em><a class="headerlink" href="#editortools.select.SelectionTool.alpha" title="Permalink to this definition">¶</a></dt>
@@ -3357,6 +3485,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dl class="method">
 <dt id="editortools.select.SelectionTool.nudgeTopRight">
 <code class="descname">nudgeTopRight</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/select.html#SelectionTool.nudgeTopRight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.select.SelectionTool.nudgeTopRight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.select.SelectionTool.openCommands">
+<code class="descname">openCommands</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="headerlink" href="#editortools.select.SelectionTool.openCommands" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -3629,7 +3762,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.4.0.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

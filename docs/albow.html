@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>albow package &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>albow package &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.3.0.0',
+            VERSION:     'v1.4.0.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
     <link rel="next" title="bresenham module" href="bresenham.html" />
     <link rel="prev" title="Welcome to MCEdit-Unified’s documentation!" href="index.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.3.0.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.4.0.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -253,7 +253,7 @@
 
 <dl class="class">
 <dt id="albow.controls.Button">
-<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">Button</code><span class="sig-paren">(</span><em>text</em>, <em>action=None</em>, <em>enable=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Button" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">Button</code><span class="sig-paren">(</span><em>text</em>, <em>action=None</em>, <em>enable=None</em>, <em>rightClickAction=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.controls.ButtonBase" title="albow.controls.ButtonBase"><code class="xref py py-class docutils literal"><span class="pre">albow.controls.ButtonBase</span></code></a>, <a class="reference internal" href="#albow.controls.Label" title="albow.controls.Label"><code class="xref py py-class docutils literal"><span class="pre">albow.controls.Label</span></code></a></p>
 </dd></dl>
 
@@ -284,6 +284,11 @@
 <dl class="method">
 <dt id="albow.controls.ButtonBase.mouse_up">
 <code class="descname">mouse_up</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#ButtonBase.mouse_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.ButtonBase.mouse_up" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="albow.controls.ButtonBase.rightClickAction">
+<code class="descname">rightClickAction</code><em class="property"> = None</em><a class="headerlink" href="#albow.controls.ButtonBase.rightClickAction" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -399,7 +404,7 @@
 
 <dl class="class">
 <dt id="albow.controls.GLLabel">
-<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">GLLabel</code><span class="sig-paren">(</span><em>text</em>, <em>width=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#GLLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.GLLabel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">GLLabel</code><span class="sig-paren">(</span><em>text</em>, <em>width=None</em>, <em>base_text=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#GLLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.GLLabel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.controls.Label" title="albow.controls.Label"><code class="xref py py-class docutils literal"><span class="pre">albow.controls.Label</span></code></a></p>
 </dd></dl>
 
@@ -458,11 +463,16 @@
 
 <dl class="class">
 <dt id="albow.controls.Label">
-<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">Label</code><span class="sig-paren">(</span><em>text</em>, <em>width=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">Label</code><span class="sig-paren">(</span><em>text</em>, <em>width=None</em>, <em>base_text=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
 <dl class="attribute">
 <dt id="albow.controls.Label.align">
 <code class="descname">align</code><a class="headerlink" href="#albow.controls.Label.align" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.controls.Label.calc_size">
+<code class="descname">calc_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label.calc_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label.calc_size" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -490,6 +500,11 @@
 <code class="descname">get_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label.get_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label.get_text" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="albow.controls.Label.get_update_translation">
+<code class="descname">get_update_translation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label.get_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label.get_update_translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="albow.controls.Label.highlighted">
 <code class="descname">highlighted</code><em class="property"> = False</em><a class="headerlink" href="#albow.controls.Label.highlighted" title="Permalink to this definition">¶</a></dt>
@@ -507,7 +522,12 @@
 
 <dl class="method">
 <dt id="albow.controls.Label.set_text">
-<code class="descname">set_text</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label.set_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label.set_text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_text</code><span class="sig-paren">(</span><em>x</em>, <em>doNotTranslate=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label.set_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label.set_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.controls.Label.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#Label.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.Label.set_update_translation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -546,7 +566,7 @@
 
 <dl class="class">
 <dt id="albow.controls.SmallLabel">
-<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">SmallLabel</code><span class="sig-paren">(</span><em>text</em>, <em>width=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#SmallLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.SmallLabel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.controls.</code><code class="descname">SmallLabel</code><span class="sig-paren">(</span><em>text</em>, <em>width=None</em>, <em>base_text=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/controls.html#SmallLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.controls.SmallLabel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.controls.Label" title="albow.controls.Label"><code class="xref py py-class docutils literal"><span class="pre">albow.controls.Label</span></code></a></p>
 <p>Small text size. See theme.py</p>
 </dd></dl>
@@ -688,7 +708,7 @@
 
 <dl class="function">
 <dt id="albow.dialogs.input_text_buttons">
-<code class="descclassname">albow.dialogs.</code><code class="descname">input_text_buttons</code><span class="sig-paren">(</span><em>prompt</em>, <em>width</em>, <em>initial=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/dialogs.html#input_text_buttons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.dialogs.input_text_buttons" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">albow.dialogs.</code><code class="descname">input_text_buttons</code><span class="sig-paren">(</span><em>prompt</em>, <em>width</em>, <em>initial=None</em>, <em>allowed_chars=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/dialogs.html#input_text_buttons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.dialogs.input_text_buttons" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -699,6 +719,11 @@
 </div>
 <div class="section" id="module-albow.extended_widgets">
 <span id="albow-extended-widgets-module"></span><h2>albow.extended_widgets module<a class="headerlink" href="#module-albow.extended_widgets" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="albow.extended_widgets.BasicTextInputRow">
+<code class="descclassname">albow.extended_widgets.</code><code class="descname">BasicTextInputRow</code><span class="sig-paren">(</span><em>title</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#BasicTextInputRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.BasicTextInputRow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="function">
 <dt id="albow.extended_widgets.CheckBoxLabel">
 <code class="descclassname">albow.extended_widgets.</code><code class="descname">CheckBoxLabel</code><span class="sig-paren">(</span><em>title</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#CheckBoxLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.CheckBoxLabel" title="Permalink to this definition">¶</a></dt>
@@ -711,6 +736,16 @@
 <dl class="attribute">
 <dt id="albow.extended_widgets.ChoiceButton.align">
 <code class="descname">align</code><em class="property"> = 'c'</em><a class="headerlink" href="#albow.extended_widgets.ChoiceButton.align" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.extended_widgets.ChoiceButton.calc_size">
+<code class="descname">calc_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#ChoiceButton.calc_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.ChoiceButton.calc_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.extended_widgets.ChoiceButton.calc_width">
+<code class="descname">calc_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#ChoiceButton.calc_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.ChoiceButton.calc_width" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -734,6 +769,11 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.extended_widgets.ChoiceButton.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#ChoiceButton.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.ChoiceButton.set_update_translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.extended_widgets.ChoiceButton.showMenu">
 <code class="descname">showMenu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#ChoiceButton.showMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.ChoiceButton.showMenu" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -747,11 +787,21 @@
 
 <dl class="class">
 <dt id="albow.extended_widgets.HotkeyColumn">
-<em class="property">class </em><code class="descclassname">albow.extended_widgets.</code><code class="descname">HotkeyColumn</code><span class="sig-paren">(</span><em>items</em>, <em>keysColumn=None</em>, <em>buttonsColumn=None</em>, <em>item_spacing=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#HotkeyColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.HotkeyColumn" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.extended_widgets.</code><code class="descname">HotkeyColumn</code><span class="sig-paren">(</span><em>items</em>, <em>keysColumn=None</em>, <em>buttonsColumn=None</em>, <em>item_spacing=None</em>, <em>translateButtons=True</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#HotkeyColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.HotkeyColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
+<dl class="method">
+<dt id="albow.extended_widgets.HotkeyColumn.buildWidgets">
+<code class="descname">buildWidgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#HotkeyColumn.buildWidgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.HotkeyColumn.buildWidgets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="albow.extended_widgets.HotkeyColumn.is_gl_container">
 <code class="descname">is_gl_container</code><em class="property"> = True</em><a class="headerlink" href="#albow.extended_widgets.HotkeyColumn.is_gl_container" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.extended_widgets.HotkeyColumn.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#HotkeyColumn.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.HotkeyColumn.set_update_translation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -776,6 +826,11 @@
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="albow.extended_widgets.TextInputRow">
+<code class="descclassname">albow.extended_widgets.</code><code class="descname">TextInputRow</code><span class="sig-paren">(</span><em>title</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/extended_widgets.html#TextInputRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.extended_widgets.TextInputRow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="albow.extended_widgets.showProgress">
@@ -869,7 +924,7 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 
 <dl class="class">
 <dt id="albow.fields.FieldWrapped">
-<em class="property">class </em><code class="descclassname">albow.fields.</code><code class="descname">FieldWrapped</code><span class="sig-paren">(</span><em>width=None</em>, <em>lines=1</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#FieldWrapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.FieldWrapped" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.fields.</code><code class="descname">FieldWrapped</code><span class="sig-paren">(</span><em>width=None</em>, <em>lines=1</em>, <em>allowed_chars=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#FieldWrapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.FieldWrapped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.controls.Control" title="albow.controls.Control"><code class="xref py py-class docutils literal"><span class="pre">albow.controls.Control</span></code></a>, <a class="reference internal" href="#albow.fields.TextEditorWrapped" title="albow.fields.TextEditorWrapped"><code class="xref py py-class docutils literal"><span class="pre">albow.fields.TextEditorWrapped</span></code></a></p>
 <dl class="method">
 <dt id="albow.fields.FieldWrapped.attention_lost">
@@ -888,7 +943,7 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 
 <dl class="attribute">
 <dt id="albow.fields.FieldWrapped.empty">
-<code class="descname">empty</code><em class="property"> = NotImplemented</em><a class="headerlink" href="#albow.fields.FieldWrapped.empty" title="Permalink to this definition">¶</a></dt>
+<code class="descname">empty</code><em class="property"> = ''</em><a class="headerlink" href="#albow.fields.FieldWrapped.empty" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -979,7 +1034,7 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 
 <dl class="attribute">
 <dt id="albow.fields.FloatField.tooltipText">
-<code class="descname">tooltipText</code><em class="property"> = 'Point here and use mousewheel to adjust'</em><a class="headerlink" href="#albow.fields.FloatField.tooltipText" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tooltipText</code><em class="property"> = u'Point here and use mousewheel to adjust'</em><a class="headerlink" href="#albow.fields.FloatField.tooltipText" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -987,6 +1042,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <code class="descname">type</code><a class="headerlink" href="#albow.fields.FloatField.type" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">float</span></code></p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="albow.fields.FloatField.zero">
+<code class="descname">zero</code><em class="property"> = 1e-12</em><a class="headerlink" href="#albow.fields.FloatField.zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1031,7 +1091,7 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 
 <dl class="attribute">
 <dt id="albow.fields.IntField.tooltipText">
-<code class="descname">tooltipText</code><em class="property"> = 'Point here and use mousewheel to adjust'</em><a class="headerlink" href="#albow.fields.IntField.tooltipText" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tooltipText</code><em class="property"> = u'Point here and use mousewheel to adjust'</em><a class="headerlink" href="#albow.fields.IntField.tooltipText" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
@@ -1045,6 +1105,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dt id="albow.fields.TextEditor">
 <em class="property">class </em><code class="descclassname">albow.fields.</code><code class="descname">TextEditor</code><span class="sig-paren">(</span><em>width</em>, <em>upper=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
+<dl class="method">
+<dt id="albow.fields.TextEditor.addUndo">
+<code class="descname">addUndo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditor.addUndo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditor.addUndo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="albow.fields.TextEditor.allow_char">
 <code class="descname">allow_char</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditor.allow_char"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditor.allow_char" title="Permalink to this definition">¶</a></dt>
@@ -1124,11 +1189,16 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 
 <dl class="class">
 <dt id="albow.fields.TextEditorWrapped">
-<em class="property">class </em><code class="descclassname">albow.fields.</code><code class="descname">TextEditorWrapped</code><span class="sig-paren">(</span><em>width</em>, <em>lines</em>, <em>upper=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.fields.</code><code class="descname">TextEditorWrapped</code><span class="sig-paren">(</span><em>width</em>, <em>lines</em>, <em>upper=None</em>, <em>allowed_chars=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
-<dl class="staticmethod">
+<dl class="method">
+<dt id="albow.fields.TextEditorWrapped.addUndo">
+<code class="descname">addUndo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.addUndo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.addUndo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.fields.TextEditorWrapped.allow_char">
-<em class="property">static </em><code class="descname">allow_char</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.allow_char"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.allow_char" title="Permalink to this definition">¶</a></dt>
+<code class="descname">allow_char</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.allow_char"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.allow_char" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1207,8 +1277,18 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.fields.TextEditorWrapped.scroll_down_all">
+<code class="descname">scroll_down_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.scroll_down_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.scroll_down_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.fields.TextEditorWrapped.scroll_up">
 <code class="descname">scroll_up</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.scroll_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.scroll_up" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.fields.TextEditorWrapped.scroll_up_all">
+<code class="descname">scroll_up_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextEditorWrapped.scroll_up_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextEditorWrapped.scroll_up_all" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1282,7 +1362,7 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 
 <dl class="class">
 <dt id="albow.fields.TextFieldWrapped">
-<em class="property">class </em><code class="descclassname">albow.fields.</code><code class="descname">TextFieldWrapped</code><span class="sig-paren">(</span><em>width=None</em>, <em>lines=1</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextFieldWrapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextFieldWrapped" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.fields.</code><code class="descname">TextFieldWrapped</code><span class="sig-paren">(</span><em>width=None</em>, <em>lines=1</em>, <em>allowed_chars=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/fields.html#TextFieldWrapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.fields.TextFieldWrapped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.fields.FieldWrapped" title="albow.fields.FieldWrapped"><code class="xref py py-class docutils literal"><span class="pre">albow.fields.FieldWrapped</span></code></a></p>
 <dl class="attribute">
 <dt id="albow.fields.TextFieldWrapped.type">
@@ -1331,11 +1411,7 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 </div>
 <div class="section" id="albow-file-dialogs-module">
 <h2>albow.file_dialogs module<a class="headerlink" href="#albow-file-dialogs-module" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-albow.file_dialogs"></span><p>TODO:</p>
-<ul class="simple">
-<li>Implement Windows support.</li>
-</ul>
-<dl class="class">
+<span class="target" id="module-albow.file_dialogs"></span><dl class="class">
 <dt id="albow.file_dialogs.DirPathView">
 <em class="property">class </em><code class="descclassname">albow.file_dialogs.</code><code class="descname">DirPathView</code><span class="sig-paren">(</span><em>width</em>, <em>client</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/file_dialogs.html#DirPathView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.file_dialogs.DirPathView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
@@ -1650,6 +1726,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <em class="property">class </em><code class="descclassname">albow.file_opener.</code><code class="descname">FileOpener</code><span class="sig-paren">(</span><em>mcedit</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/file_opener.html#FileOpener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.file_opener.FileOpener" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
 <dl class="method">
+<dt id="albow.file_opener.FileOpener.buildWidgets">
+<code class="descname">buildWidgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/file_opener.html#FileOpener.buildWidgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.file_opener.FileOpener.buildWidgets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.file_opener.FileOpener.createLoadButtonHandler">
 <code class="descname">createLoadButtonHandler</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/file_opener.html#FileOpener.createLoadButtonHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.file_opener.FileOpener.createLoadButtonHandler" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1682,6 +1763,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dl class="method">
 <dt id="albow.file_opener.FileOpener.promptOpenAndLoad">
 <code class="descname">promptOpenAndLoad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/file_opener.html#FileOpener.promptOpenAndLoad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.file_opener.FileOpener.promptOpenAndLoad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.file_opener.FileOpener.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/file_opener.html#FileOpener.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.file_opener.FileOpener.set_update_translation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1830,6 +1916,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dt id="albow.layout.RowOrColumn">
 <em class="property">class </em><code class="descclassname">albow.layout.</code><code class="descname">RowOrColumn</code><span class="sig-paren">(</span><em>size</em>, <em>items</em>, <em>kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/layout.html#RowOrColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.layout.RowOrColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
+<dl class="method">
+<dt id="albow.layout.RowOrColumn.calc_size">
+<code class="descname">calc_size</code><span class="sig-paren">(</span><em>_items=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/layout.html#RowOrColumn.calc_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.layout.RowOrColumn.calc_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -1839,6 +1930,11 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <dt id="albow.menu.Menu">
 <em class="property">class </em><code class="descclassname">albow.menu.</code><code class="descname">Menu</code><span class="sig-paren">(</span><em>title</em>, <em>items</em>, <em>scrolling=False</em>, <em>scroll_items=30</em>, <em>scroll_page=5</em>, <em>handler=None</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.Menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.dialogs.Dialog" title="albow.dialogs.Dialog"><code class="xref py py-class docutils literal"><span class="pre">albow.dialogs.Dialog</span></code></a></p>
+<dl class="method">
+<dt id="albow.menu.Menu.calc_size">
+<code class="descname">calc_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#Menu.calc_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.Menu.calc_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="albow.menu.Menu.can_scroll_down">
 <code class="descname">can_scroll_down</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#Menu.can_scroll_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.Menu.can_scroll_down" title="Permalink to this definition">¶</a></dt>
@@ -1944,11 +2040,26 @@ or a tuple of (float value, string) to set the progress and update the label</p>
 <code class="descname">scroll_up_rect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#Menu.scroll_up_rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.Menu.scroll_up_rect" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="albow.menu.Menu.set_items">
+<code class="descname">set_items</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#Menu.set_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.Menu.set_items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.menu.Menu.set_scroll_items">
+<code class="descname">set_scroll_items</code><span class="sig-paren">(</span><em>scroll_items</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#Menu.set_scroll_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.Menu.set_scroll_items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.menu.Menu.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#Menu.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.Menu.set_update_translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="albow.menu.MenuItem">
-<em class="property">class </em><code class="descclassname">albow.menu.</code><code class="descname">MenuItem</code><span class="sig-paren">(</span><em>text=''</em>, <em>command=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#MenuItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.MenuItem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">albow.menu.</code><code class="descname">MenuItem</code><span class="sig-paren">(</span><em>text=''</em>, <em>command=None</em>, <em>doNotTranslate=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/menu.html#MenuItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.menu.MenuItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="albow.menu.MenuItem.alt">
@@ -2477,6 +2588,11 @@ from the current playlist.</p>
 <em class="property">class </em><code class="descclassname">albow.root.</code><code class="descname">RootWidget</code><span class="sig-paren">(</span><em>surface</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/root.html#RootWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.root.RootWidget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
 <dl class="method">
+<dt id="albow.root.RootWidget.RemoveEditFiles">
+<code class="descname">RemoveEditFiles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/root.html#RootWidget.RemoveEditFiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.root.RootWidget.RemoveEditFiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.root.RootWidget.add_idle_handler">
 <code class="descname">add_idle_handler</code><span class="sig-paren">(</span><em>widget</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/root.html#RootWidget.add_idle_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.root.RootWidget.add_idle_handler" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2576,9 +2692,9 @@ from the current playlist.</p>
 <em class="property">static </em><code class="descname">music_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/root.html#RootWidget.music_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.root.RootWidget.music_end" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="staticmethod">
+<dl class="method">
 <dt id="albow.root.RootWidget.open_screenshots_folder">
-<em class="property">static </em><code class="descname">open_screenshots_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/root.html#RootWidget.open_screenshots_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.root.RootWidget.open_screenshots_folder" title="Permalink to this definition">¶</a></dt>
+<code class="descname">open_screenshots_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/root.html#RootWidget.open_screenshots_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.root.RootWidget.open_screenshots_folder" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2722,9 +2838,9 @@ the event loop, and only when the frame timer is running.</p>
 <code class="descname">column_margin</code><em class="property"> = 2</em><a class="headerlink" href="#albow.scrollpanel.ScrollPanel.column_margin" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="staticmethod">
+<dl class="method">
 <dt id="albow.scrollpanel.ScrollPanel.draw_image_cell">
-<em class="property">static </em><code class="descname">draw_image_cell</code><span class="sig-paren">(</span><em>surf</em>, <em>i</em>, <em>data</em>, <em>cell_rect</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollPanel.draw_image_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollPanel.draw_image_cell" title="Permalink to this definition">¶</a></dt>
+<code class="descname">draw_image_cell</code><span class="sig-paren">(</span><em>surf</em>, <em>i</em>, <em>data</em>, <em>cell_rect</em>, <em>column</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/scrollpanel.html#ScrollPanel.draw_image_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.scrollpanel.ScrollPanel.draw_image_cell" title="Permalink to this definition">¶</a></dt>
 <dd><p>...</p>
 </dd></dl>
 
@@ -3305,7 +3421,7 @@ file en_EN.trn would never be present.</p>
 * _ function to translate strings.</p>
 <dl class="function">
 <dt id="albow.translate.buildTranslation">
-<code class="descclassname">albow.translate.</code><code class="descname">buildTranslation</code><span class="sig-paren">(</span><em>lang</em>, <em>suppressAlert=False</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/translate.html#buildTranslation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.translate.buildTranslation" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">albow.translate.</code><code class="descname">buildTranslation</code><span class="sig-paren">(</span><em>lang</em>, <em>extend=False</em>, <em>langPath=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/translate.html#buildTranslation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.translate.buildTranslation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the file corresponding to &#8216;lang&#8217; builds up string_cache.
 If the file is not valid, does nothing.
 Errors encountered during the process are silently ignored.
@@ -3315,13 +3431,15 @@ Returns string_cache (dict) and wether the file exists (bool).</p>
 <dl class="function">
 <dt id="albow.translate.correctEncoding">
 <code class="descclassname">albow.translate.</code><code class="descname">correctEncoding</code><span class="sig-paren">(</span><em>data</em>, <em>oldEnc='ascii'</em>, <em>newEnc='cp1252'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/translate.html#correctEncoding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.translate.correctEncoding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns encoded/decoded data.</p>
+<dd><p>Returns encoded/decoded data.
+Disabled for now...</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="albow.translate.getLang">
 <code class="descclassname">albow.translate.</code><code class="descname">getLang</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/translate.html#getLang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.translate.getLang" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the actual language.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="albow.translate.getLangName">
@@ -3333,7 +3451,7 @@ If the name is not found, return the file base name.</p>
 <dl class="function">
 <dt id="albow.translate.getLangPath">
 <code class="descclassname">albow.translate.</code><code class="descname">getLangPath</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/translate.html#getLangPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.translate.getLangPath" title="Permalink to this definition">¶</a></dt>
-<dd><p>...</p>
+<dd><p>Return the actual &#8216;lang&#8217; folder.</p>
 </dd></dl>
 
 <dl class="function">
@@ -3487,6 +3605,11 @@ Returns the template.</p>
 <dl class="method">
 <dt id="albow.tree.Tree.deploy">
 <code class="descname">deploy</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/tree.html#Tree.deploy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.tree.Tree.deploy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="albow.tree.Tree.dispatch_key">
+<code class="descname">dispatch_key</code><span class="sig-paren">(</span><em>name</em>, <em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/tree.html#Tree.dispatch_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.tree.Tree.dispatch_key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -3920,6 +4043,11 @@ Returns the template.</p>
 <code class="descname">get_top_widget</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/widget.html#Widget.get_top_widget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.widget.Widget.get_top_widget" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="albow.widget.Widget.get_update_translation">
+<code class="descname">get_update_translation</code><a class="headerlink" href="#albow.widget.Widget.get_update_translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="albow.widget.Widget.get_visible">
 <code class="descname">get_visible</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/widget.html#Widget.get_visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.widget.Widget.get_visible" title="Permalink to this definition">¶</a></dt>
@@ -4156,6 +4284,11 @@ Returns the template.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="albow.widget.Widget.set_update_translation">
+<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/widget.html#Widget.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.widget.Widget.set_update_translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="albow.widget.Widget.set_visible">
 <code class="descname">set_visible</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="modules/albow/widget.html#Widget.set_visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#albow.widget.Widget.set_visible" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -4269,7 +4402,7 @@ by Gregory Ewing
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.3.0.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.4.0.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
