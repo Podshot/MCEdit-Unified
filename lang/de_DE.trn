@@ -386,7 +386,7 @@ o181 Release the mouse button to finish the selection
 t181 Lasse die Maustaste los, um die Auswahl zu beenden
 o182 Nudge
 t182 Verschieben
-o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
 {6} to nudge a greater distance.
 t183 Klicke und halte. Während du hälst, verwende die Bewegungstasten ({0} / {1} / {2} / {3} / {4} / {5}) zum Verschieben. Linke Maustaste, um einen Block zu verschieben. Rechte Maustaste, um einen größeren Abstand zu verschieben.
 {6}, um um eine größere Entfernung zu verschieben.

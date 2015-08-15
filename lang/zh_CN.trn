@@ -386,7 +386,7 @@ o181 Release the mouse button to finish the selection
 t181 松开鼠标完成选择.
 o182 Nudge
 t182 轻移
-o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
 {6} to nudge a greater distance.
 t183 单击并按住. 按住时使用移动键({0}/{1}/{2}/{3}/{4}/{5})来轻移. 按住左键轻移一个方块, 按住右键移动更大距离.
 按住{6}键移动更大距离.

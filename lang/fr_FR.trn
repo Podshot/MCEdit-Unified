@@ -386,7 +386,7 @@ o181 Release the mouse button to finish the selection
 t181 Relâchez le bouton pour finir la sélection
 o182 Nudge
 t182 Pousser
-o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
 {6} to nudge a greater distance.
 t183 Cliquer et maintenir pour déplacer grâce aux touches de déplacement ({0}/{1}/{2}/{3}/{4}/{5}). Bouton gauche pour pousser d'un bloc, boutton droit pour plus.
 {6} pour glisser sur une plus grande distance.
