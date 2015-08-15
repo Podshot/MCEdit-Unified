@@ -3580,19 +3580,20 @@ blocks:
     mapcolor: [112, 8, 28]
     tex: [4, 14]
     type: NETHER_WART
-    tex_extra:
-      smaller_1: [3, 14]
-      smaller_2: [2, 14]
     opacity: 0
     data:
       0:
         name: Nether Wart (Age 0)
+        tex: [2, 14]
       1:
         name: Nether Wart (Age 1)
+        tex: [3, 14]
       2:
         name: Nether Wart (Age 2)
+        tex: [3, 14]
       3:
         name: Nether Wart (Age 3)
+        tex: [4, 14]
 
   - id: 116
     idStr: enchanting_table

@@ -20,6 +20,12 @@ except:
 
 
 def step(slot):
+    '''
+    Utility method for multiplying the slot by 16
+    
+    :param slot: Texture slot
+    :type slot: int
+    '''
     texSlot = slot*16
     return texSlot
 '''
@@ -525,6 +531,9 @@ textureSlots = {
 
 
 class IResourcePack:
+    '''
+    Sets all base variables for a Resource Pack
+    '''
 
     def __init__(self):
         self.__stop = False
@@ -534,12 +543,6 @@ class IResourcePack:
         self._too_big = False
         self.big_textures_counted = 0
         self.big_textures_max = 10
-        '''
-        try:
-            os.makedirs(self.texture_path)
-        except OSError:
-            pass
-        '''
         self.block_image = {}
         self.propogated_textures = []
         self.all_texture_slots = []
@@ -552,24 +555,42 @@ class IResourcePack:
 
     @property
     def pack_name(self):
+        '''
+        The name of the Resource Pack
+        '''
         return self._pack_name
 
     @property
     def terrain_name(self):
+        '''
+        Name of the parsed texture PNG file
+        '''
         return self._terrain_name
 
     def terrain_path(self):
+        '''
+        Path to the parsed PNG file
+        '''
         return self._terrain_path
 
     @property
     def isEmpty(self):
+        '''
+        Returns true if the Resource Pack doesn't replace the minimum amount of textures
+        '''
         return self._isEmpty
 
     @property
     def tooBig(self):
+        '''
+        Returns true if the Resource Pack has a greater resolution than 32x32
+        '''
         return self._too_big
 
     def parse_terrain_png(self):
+        '''
+        Parses each block texture into a usable PNG file like terrain.png
+        '''
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
             if not self.__stop and tex in textureSlots.keys():
@@ -613,6 +634,9 @@ class IResourcePack:
         del self.block_image
 
     def handle_too_big_packs(self):
+        '''
+        Removes the parsed PNG file
+        '''
         self._too_big = True
         #print u"{} seems to be a higher resolution than supported".format(self._pack_name)
         try:
@@ -624,7 +648,7 @@ class IResourcePack:
 
 class ZipResourcePack(IResourcePack):
     '''
-    Represents a single Resource Pack
+    Represents a single Resource Pack that is in a zip file
     '''
 
     def __init__(self, zipfileFile, noEncConvert=False):
@@ -640,6 +664,9 @@ class ZipResourcePack(IResourcePack):
                     print "Error while trying to load one of the resource packs: {}".format(e)
 
     def open_pack(self):
+        '''
+        Opens the zip file and puts texture data into a dictionary, where the key is the texture file name, and the value is a PIL.Image instance
+        '''
         zfile = zipfile.ZipFile(self.zipfile)
         for name in zfile.infolist():
             if name.filename.endswith(".png") and not name.filename.split(os.path.sep)[-1].startswith("._"):
@@ -705,6 +732,9 @@ class FolderResourcePack(IResourcePack):
             self.add_textures()
 
     def add_textures(self):
+        '''
+        Scraps the block textures folder and puts texture data into a dictionary with exactly identical structure as ZipResourcePack
+        '''
         base_path = os.path.join(self._full_path, "assets", "minecraft", "textures", "blocks")
         if os.path.exists(base_path):
             files = os.listdir(base_path)
@@ -755,6 +785,9 @@ class FolderResourcePack(IResourcePack):
 
 
 class DefaultResourcePack(IResourcePack):
+    '''
+    Represents the default Resource Pack that is always present
+    '''
 
     def __init__(self):
         self._isEmpty = False
@@ -775,6 +808,9 @@ class DefaultResourcePack(IResourcePack):
 
 
 def setup_resource_packs():
+    '''
+    Handles parsing of Resource Packs and removing ones that are either have to0 high of a resolution, or don't replace any textures
+    '''
     terrains = {}
     try:
         os.mkdir("terrain-textures")
@@ -809,6 +845,9 @@ def setup_resource_packs():
 
 
 class ResourcePackHandler:
+    '''
+    A single point to manage which Resource Pack is being used and to provide the paths to each parsed PNG
+    '''
 
     def __init__(self):
         try:
@@ -822,22 +861,42 @@ class ResourcePackHandler:
 
     @property
     def resource_packs(self):
+        '''
+        A dictionary of Resource Packs, where the key is the pack's file/folder name, and the value is the path to the parsed PNG
+        '''
         return self._resource_packs
 
     def get_available_resource_packs(self):
+        '''
+        Returns the names of all the Resource Packs that can be used
+        '''
         return self._resource_packs.keys()
 
     def reload_resource_packs(self):
+        '''
+        Reparses all Resource Packs
+        '''
         self._resource_packs = setup_resource_packs()
 
     def get_selected_resource_pack_name(self):
+        '''
+        Returns the currently selected Resource Pack's name
+        '''
         return self._selected_resource_pack
 
     def set_selected_resource_pack_name(self, name):
+        '''
+        Sets the currently selected Resource Pack
+        
+        :param name: Name of the Resource Pack
+        '''
         config.settings.resourcePack.set(name)
         self._selected_resource_pack = name
 
     def get_selected_resource_pack(self):
+        '''
+        Returns the selected Resource Pack instance. Can be an instance of either DefaultResourcePack, ZipResourcePack or FolderResourcePack
+        '''
         return self._resource_packs[self._selected_resource_pack]
 
 packs = ResourcePackHandler()

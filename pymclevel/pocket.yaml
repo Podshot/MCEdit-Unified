@@ -976,6 +976,7 @@ blocks:
     idStr: stone_slab
     mapcolor: [200, 200, 200]
     tex: [6, 0]
+    type: HALFHEIGHT
     data:
       0:
         name: Stone Slab (Bottom)
@@ -1585,6 +1586,23 @@ blocks:
     tex: [2, 4]
     type: THINSLICE
     opacity: 0
+    data:
+      0:
+        name: Snow Layer (1)
+      1:
+        name: Snow Layer (2)
+      2:
+        name: Snow Layer (3)
+      3:
+        name: Snow Layer (4)
+      4:
+        name: Snow Layer (5)
+      5:
+        name: Snow Layer (6)
+      6:
+        name: Snow Layer (7)
+      7:
+        name: Snow Layer (8)
 
   - id: 79
     idStr: ice
@@ -1768,6 +1786,20 @@ blocks:
     tex: [9, 6]
     explored: true
     brightness: 15
+
+  - id: 90
+    idStr: portal
+    name: Nether Portal
+    mapcolor: [214, 127, 255]
+    type: PORTAL
+    tex: [6, 15]
+    brightness: 11
+    opacity: 0
+    data:
+      1:
+        name: Nether Portal (East/West)
+      2:
+        name: Nether Portal (North/South)
 
   - id: 91
     idStr: lit_pumpkin
@@ -2385,6 +2417,14 @@ blocks:
     mapcolor: [54, 24, 30]
     tex: [0, 14]
 
+  - id: 113
+    idStr: nether_brick_fence
+    name: Nether Brick Fence
+    mapcolor: [54, 24, 30]
+    tex: [0, 14]
+    type: FENCE
+    opacity: 0
+
   - id: 114
     idStr: nether_brick_stairs
     name: Nether Brick Stairs
@@ -2892,6 +2932,18 @@ blocks:
         tex_direction:
           TOP: [11, 15]
           BOTTOM: [11, 15]
+      3:
+        name: Pillar Quartz Block (East/West)
+        tex: [17, 19]
+        tex_direction:
+          SIDES: [11, 15]
+      4:
+        name: Pillar Quartz Block (North/South)
+        tex: [10, 15]
+        tex_direction:
+          FORWARD: [11, 15]
+          BACKWARD: [11, 15]
+          SIDES: [17, 19]
 
   - id: 156
     idStr: quartz_stairs
@@ -2946,6 +2998,7 @@ blocks:
     name: Wooden Slab
     mapcolor: [200, 200, 200]
     tex: [4, 0]
+    type: HALFHEIGHT
     data:
       0:
         name: Oak Wood Slab (Bottom)

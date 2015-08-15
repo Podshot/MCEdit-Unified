@@ -40,7 +40,7 @@ MCEdit-Unified is written in Python using a variety of open source modules. When
 
 Clone MCEdit-Unified using your github client of choice:
 
-`>git clone https://github.com/Khroki/MCEdit-Unified`
+`>git clone --recursive https://github.com/Khroki/MCEdit-Unified`
 
 Or, if you've already cloned MCEdit in the past and need to update, go to the existing source folder then run:
 

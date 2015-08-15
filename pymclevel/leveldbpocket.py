@@ -260,6 +260,11 @@ class PocketLeveldbDatabase(object):
             it.SeekToFirst()
             while it.Valid():
                 key = it.key()
+
+                if len(key) < 9:
+                    it.Next()
+                    continue
+                    
                 raw_x = key[0:4]
                 raw_z = key[4:8]
                 t = key[8]
