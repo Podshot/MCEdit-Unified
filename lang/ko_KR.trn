@@ -385,7 +385,7 @@ o181 Release the mouse button to finish the selection
 t181 마우스 버튼을 놓아서 선택을 완료하세요.
 o182 Nudge
 t182 이동
-o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block, Right mouse to nudge a greater distance.
+o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
 {6} to nudge a greater distance.
 t183 클릭하고 꾹 누르세요. 누르는 동안에 ({0}/{1}/{2}/{3}/{4}/{5})를 사용해서 이동하세요. 클릭은 한 블럭 씩 이동되고, 우클릭은 한 번에 더 많이 이동됩니다.
 {6}으로 더 많이 움직입니다.
