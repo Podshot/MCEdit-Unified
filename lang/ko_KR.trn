@@ -617,8 +617,8 @@ o289 Duration (Seconds)
 t289 Duration (Seconds)
 o290 Add Potion Effect to Mobs
 t290 몬스터에게 포션 이펙트 넣기
-o291 Banslimes
-t291 Banslimes
+o291 BanSlimes
+t291 BanSlimes
 o292 Change Mob Properties
 t292 Change Mob Properties
 o293 Chunk Surface Repair
@@ -1973,3 +1973,5 @@ o929 Click and drag to reposition the item. Double-click to pick it up. Click Im
 t929 아이템의 위치를 옮기려면 드래그하세요. 더블클릭으로 들어올리세요. Import(불러오기) 또는 Enter를 눌러 완료하세요.
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 이 스포너의 엔티티ID를 입력하세요. 잘못된 ID는 마인크래프트 크래시의 원인이 됩니다.
+o931 Check to show/hide specific ores using the settings below.
+t931 

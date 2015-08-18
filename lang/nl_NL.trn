@@ -611,7 +611,7 @@ o289 Duration (Seconds)
 t289 Duur (Seconden)
 o290 Add Potion Effect to Mobs
 t290 Voeg toverdrank effect toe aan mobs
-o291 Banslimes
+o291 BanSlimes
 t291 Verban slimes
 o292 Change Mob Properties
 t292 Verander Mob Eigenschappen
@@ -1947,3 +1947,5 @@ o929 Click and drag to reposition the item. Double-click to pick it up. Click Im
 t929 
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 
+o931 Check to show/hide specific ores using the settings below.
+t931 
