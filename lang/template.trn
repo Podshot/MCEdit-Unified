@@ -608,7 +608,7 @@ o289 Duration (Seconds)
 t289 
 o290 Add Potion Effect to Mobs
 t290 
-o291 Banslimes
+o291 BanSlimes
 t291 
 o292 Change Mob Properties
 t292 
@@ -1938,3 +1938,7 @@ o929 Click and drag to reposition the item. Double-click to pick it up. Click Im
 t929 
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 
+o931 Check to show/hide specific ores using the settings below.
+t931 
+o932 NBTEdit
+t932 

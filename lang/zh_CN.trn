@@ -388,8 +388,8 @@ o182 Nudge
 t182 轻移
 o183 Click and hold.  While holding, use the movement keys ({0}/{1}/{2}/{3}/{4}/{5}) to nudge. Left mouse to nudge a block.
 {6} to nudge a greater distance.
-t183 单击并按住. 按住时使用移动键({0}/{1}/{2}/{3}/{4}/{5})来轻移. 按住左键轻移一个方块, 按住右键移动更大距离.
-按住{6}键移动更大距离.
+t183 单击并按住. 按住时使用移动键({0}/{1}/{2}/{3}/{4}/{5})来轻移. 按住左键轻移一个方块.
+按住{6}移动更大距离.
 o184 {0:n} blocks
 t184 {0:n}个方块
 o185 Delete Entities
@@ -617,7 +617,7 @@ o289 Duration (Seconds)
 t289 持续时间（秒）
 o290 Add Potion Effect to Mobs
 t290 给生物添加药水效果
-o291 Banslimes
+o291 BanSlimes
 t291 禁止史莱姆
 o292 Change Mob Properties
 t292 更改生物属性
@@ -626,9 +626,9 @@ t293
 o294 Classic Water Flood
 t294 提高水流
 o295 Colorwires
-t295 
+t295 红石线着色
 o296 Create Busses
-t296 
+t296 新建红石线
 o297 Create Shops
 t297 新建商店
 o298 Create Spawners
@@ -767,27 +767,27 @@ t358 实体
 o359 Block
 t359 方块
 o360 Match by:
-t360 
+t360 搜索依据：
 o361 Match block type (for TileEntity searches):
-t361 
+t361 仅搜索指定的方块类型（搜索TileEntity时有效）：
 o362 Match block:
-t362 
+t362 指定方块类型：
 o363 Match block data:
-t363 
+t363 仅搜索相同的方块数据值：
 o364 Match tile entities (for Block searches):
-t364 
+t364 仅搜索指定的TileEntity（搜索方块时有效）：
 o365 "None" for Name or Value will match any tag's Name or Value respectively.
-t365 
+t365 在名字或值中输入“None”则会搜索所有的标签名字或值.
 o366 Match Tag Name:
-t366 
+t366 指定标签名字：
 o367 Match Tag Value:
-t367 
+t367 指定标签的值：
 o368 Case insensitive:
 t368 忽视大小写：
 o369 Any
-t369 
+t369 任何
 o370 Match Tag Type:
-t370 
+t370 指定标签类型：
 o371 Start New Search
 t371 开始新查找
 o372 Find Next
@@ -804,7 +804,13 @@ All Entity searches will ignore the block settings; TileEntity searches will try
 It is faster to match TileEntity searches with a Block Type than vice versa.
 Block matching can also optionally match block data, e.g. matching all torches, or only torches facing a specific direction.
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
-t375 
+t375 这个滤镜可以用于搜索实体或者TileEntity的NBT标签.
+它也可以用于搜索方块.
+“搜索依据”决定上述哪种元素被作为搜索的对象.
+相较而言，实体和TileEntity会搜索得较快，方块的搜索速度很大程度上取决于选区的大小（因为区块内每一个方块都会被检查一遍）.
+实体的搜索会忽略方块的信息；如果搜索TileEntity时，勾选了“仅搜索指定的方块类型”，则会只搜索指定方块的TileEntity；如果搜索方块时，勾选了“仅搜索指定的TileEntity”；则会只搜索含指定TileEntity的方块.
+依据TileEntity搜索，并指定方块类型，要比颠倒过来更快.
+方块的搜索还可以选择性地指定方块数据值，例如搜索所有的火把，或搜索指定朝向的火把.
 o376 Documentation
 t376 参考
 o377 Forester script by dudecon
@@ -1154,7 +1160,7 @@ t547
 o548 Chunk Redraw
 t548 
 o549 Hidden Ores
-t549 隐藏岩石
+t549 隐藏矿石
 o550 Bedrock
 t550 基岩
 o551 Coal
@@ -1400,7 +1406,7 @@ Can't save it.
 t656 选择的对象不是一个文件.
 无法保存.
 o657 Show all the tags in the tree
-t657 
+t657 允许显示多层级的子标签
 o658 Compound
 t658 
 o659 Integer
@@ -1490,7 +1496,7 @@ t695 打开NBT浏览器来编辑玩家的属性和物品
 o696 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t696 功能尚未实现.
-请使用NBT编辑器来编辑这个玩家.
+请使用NBT浏览器来编辑这个玩家.
 o697 Error while getting player file.
 %s not found.
 t697 获取玩家文件失败.
@@ -1508,7 +1514,7 @@ t700 <杂项>
 o701 Take Screenshot
 t701 截屏
 o702 Double-click to go to this item.
-t702 
+t702 双击前往这个项目.
 o703 Save and Restart
 t703 保存并重启
 o704 From FTP Server
@@ -1990,3 +1996,7 @@ o929 Click and drag to reposition the item. Double-click to pick it up. Click Im
 t929 点击和拖动来重新放置物体. 双击将它拾起. 点击“导入”或按回车来确定.
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 为这个刷怪箱输入一个实体ID. 无效的ID可能使Minecraft崩溃. 按ESC取消.
+o931 Check to show/hide specific ores using the settings below.
+t931 配合下面的选项使用，隐藏或显示指定的矿石.
+o932 NBTEdit
+t932 NBT编辑器
