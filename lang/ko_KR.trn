@@ -1975,3 +1975,5 @@ o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 이 스포너의 엔티티ID를 입력하세요. 잘못된 ID는 마인크래프트 크래시의 원인이 됩니다.
 o931 Check to show/hide specific ores using the settings below.
 t931 
+o932 NBTEdit
+t932 

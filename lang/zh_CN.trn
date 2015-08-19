@@ -1496,7 +1496,7 @@ t695 打开NBT浏览器来编辑玩家的属性和物品
 o696 Not yet implemented.
 Use the NBT Explorer to edit this player.
 t696 功能尚未实现.
-请使用NBT编辑器来编辑这个玩家.
+请使用NBT浏览器来编辑这个玩家.
 o697 Error while getting player file.
 %s not found.
 t697 获取玩家文件失败.
@@ -1998,3 +1998,5 @@ o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 为这个刷怪箱输入一个实体ID. 无效的ID可能使Minecraft崩溃. 按ESC取消.
 o931 Check to show/hide specific ores using the settings below.
 t931 配合下面的选项使用，隐藏或显示指定的矿石.
+o932 NBTEdit
+t932 NBT编辑器
