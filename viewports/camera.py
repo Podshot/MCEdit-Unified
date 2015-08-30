@@ -355,27 +355,30 @@ class CameraViewport(GLViewport):
                     focusPair = (self.getCameraPoint(), (0, 0, 0))
                 else:
                     focusPair = self.blockFaceUnderCursor
-                    
-            if focusPair[0] is not None and self.editor.level.tileEntityAt(*focusPair[0]):
-                changed = False
-                te = self.editor.level.tileEntityAt(*focusPair[0])
-                backupTE = copy.deepcopy(te)
-                if te["id"].value == "Sign":
-                    if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
-                        for i in xrange(1,5):
-                            if len(te["Text"+str(i)].value) > 32767:
-                                te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
-                                changed = True
-                if changed:
-                    response = None
-                    if not self.dontShowMessageAgain:
-                        response = ask("Found a sign that exceeded the maximum character limit. Automatically trimmed the sign to prevent crashes.", responses=["Ok", "Don't show this again"])
-                    if response is not None and response == "Don't show this again":
-                        self.dontShowMessageAgain = True
-                    op = SignEditOperation(self.editor, self.editor.level, te, backupTE)
-                    self.editor.addOperation(op)
-                    if op.canUndo:
-                        self.editor.addUnsavedEdit()
+
+            try:
+                if focusPair[0] is not None and self.editor.level.tileEntityAt(*focusPair[0]):
+                    changed = False
+                    te = self.editor.level.tileEntityAt(*focusPair[0])
+                    backupTE = copy.deepcopy(te)
+                    if te["id"].value == "Sign":
+                        if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
+                            for i in xrange(1,5):
+                                if len(te["Text"+str(i)].value) > 32767:
+                                    te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
+                                    changed = True
+                    if changed:
+                        response = None
+                        if not self.dontShowMessageAgain:
+                            response = ask("Found a sign that exceeded the maximum character limit. Automatically trimmed the sign to prevent crashes.", responses=["Ok", "Don't show this again"])
+                        if response is not None and response == "Don't show this again":
+                            self.dontShowMessageAgain = True
+                        op = SignEditOperation(self.editor, self.editor.level, te, backupTE)
+                        self.editor.addOperation(op)
+                        if op.canUndo:
+                            self.editor.addUnsavedEdit()
+            except:
+                pass
 
             self.blockFaceUnderCursor = focusPair
 
