@@ -13,8 +13,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
-from editortools.thumbview import ThumbView
-from pymclevel.infiniteworld import SessionLockLost
+from editortools.thumbview import ThumbView 
 import keys
 import pygame
 from albow.fields import FloatField
@@ -88,7 +87,8 @@ from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
 from pymclevel.entity import Entity
-from pymclevel.infiniteworld import AnvilWorldFolder
+from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDimension,\
+    MCInfdevOldLevel
 
 try:
     import resource  # @UnresolvedImport
@@ -350,6 +350,9 @@ class LevelEditor(GLViewport):
         if not (len(self.waypoints) > 0):
             self.waypoints["Empty"] = [0,0,0,0,0,0]
             
+        if "LastPosition" in self.nbt_waypoints:
+            self.gotoLastPosition()
+            
         
         #self.waypoints.save(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat"))
         
@@ -435,10 +438,44 @@ class LevelEditor(GLViewport):
         if not (len(self.waypoints) > 0):
             self.waypoints["Empty"] = [0,0,0,0,0,0]
         
+    def saveLastPosition(self):
+        if "LastPosition" in self.nbt_waypoints:
+            del self.nbt_waypoints["LastPosition"]
+        topTag = nbt.TAG_Compound()
+        topTag["Dimension"] = nbt.TAG_Int(self.level.dimNo)
         
+        pos = nbt.TAG_List()
+        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[0]))
+        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[1]))
+        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[2]))
+        topTag["Coordinates"] = pos
+        
+        rot = nbt.TAG_List()
+        rot.append(nbt.TAG_Float(self.mainViewport.yaw))
+        rot.append(nbt.TAG_Float(self.mainViewport.pitch))
+        topTag["Rotation"] = rot
+        
+        self.nbt_waypoints["LastPosition"] = topTag
+        self.saveWaypoints()
+        
+    def gotoLastPosition(self):
+        if "LastPosition" not in self.nbt_waypoints:
+            return
+        self.gotoDimension(self.nbt_waypoints["LastPosition"]["Dimension"].value)
+        self.mainViewport.skyList = None
+        self.mainViewport.drawSkyBackground()
+        
+        self.mainViewport.cameraPosition = [self.nbt_waypoints["LastPosition"]["Coordinates"][0].value, 
+                                            self.nbt_waypoints["LastPosition"]["Coordinates"][1].value, 
+                                            self.nbt_waypoints["LastPosition"]["Coordinates"][2].value
+                                            ]
+        self.mainViewport.yaw = self.nbt_waypoints["LastPosition"]["Rotation"][0].value
+        self.mainViewport.pitch = self.nbt_waypoints["LastPosition"]["Rotation"][1].value
+        del self.nbt_waypoints["LastPosition"]
+    
     def showWaypointsDialog(self):
         #print "Yay waypoints!"
-        if str(type(self.level)) != "<class 'pymclevel.infiniteworld.MCInfdevOldLevel'>" and str(type(self.level)) != "<class 'pymclevel.infiniteworld.MCAlphaDimension'>":
+        if not isinstance(self.level, (MCInfdevOldLevel, MCAlphaDimension)):
             print type(self.level)
             self.Notify("Waypoints currently only support PC Worlds")
             return
@@ -3284,6 +3321,7 @@ class LevelEditor(GLViewport):
         self.sessionLockLock.set_image(get_image(image_path, prefix=""))
         self.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
+        self.saveLastPosition()
 
     def lockAcquired(self):
         image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
@@ -3291,8 +3329,6 @@ class LevelEditor(GLViewport):
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
         self.root.sessionStolen = False
-
-
 
 class EditorToolbar(GLOrtho):
     # is_gl_container = True
