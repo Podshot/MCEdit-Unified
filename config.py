@@ -519,7 +519,8 @@ definitions = {
         ("downloadPlayerSkins", "Download Player Skins", True),
         ("maxViewDistance", "Max View Distance", 32),
         ("drawPlayerHeads", "Draw Player Heads", True),
-        ("showCommands", "Show Commands when hovering", True)
+        ("showCommands", "Show Commands when hovering", True),
+        ("savePositionOnClose", "Save camera position on close", False)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),
