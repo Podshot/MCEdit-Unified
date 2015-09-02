@@ -491,7 +491,10 @@ class LevelEditor(GLViewport):
         gotoWaypointButton = Button("Goto Waypoint", action=self.gotoWaypoint)
         deleteWaypointButton = Button("Delete Waypoint", action=self.deleteWaypoint)
         
-        col = Column((self.waypointsChoiceButton, Row((createWaypointButton, gotoWaypointButton, deleteWaypointButton)), Button("Close", action=self.waypointDialog.dismiss)))
+        saveCameraOnClose = CheckBoxLabel("Save Camera position on world close",
+                                    ref=config.settings.savePositionOnClose)
+        
+        col = Column((self.waypointsChoiceButton, Row((createWaypointButton, gotoWaypointButton, deleteWaypointButton)), saveCameraOnClose, Button("Close", action=self.waypointDialog.dismiss)))
         self.waypointDialog.add(col)
         self.waypointDialog.shrink_wrap()
         #qd.topleft = self.waypointsButton.bottomleft
@@ -2099,6 +2102,8 @@ class LevelEditor(GLViewport):
         for p in self.toolbar.tools[6].nonSavedPlayers:
             if os.path.exists(p):
                 os.remove(p)
+        if config.settings.savePositionOnClose.get():
+            self.saveLastPosition()
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.RemoveEditFiles()
