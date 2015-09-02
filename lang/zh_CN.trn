@@ -322,8 +322,8 @@ o149 Snap Clone to Axis (Hold)
 t149 锁定克隆区域移动轴线（按住）
 o150 Blocks-Only Modifier (Hold)
 t150 仅方块应用变换（按住）
-o151 Fast Increment Modifier
-t151 数字框快速增减（按住）
+o151 Fast Increment Modifier (Hold)
+t151 
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
 t152 树叶实心显示, 类似Minecraft的“低品质”图像
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
@@ -977,8 +977,8 @@ o460 Cold Taiga M
 t460 冷针叶林M
 o461 Mega Spruce Taiga
 t461 红木森林
-o462 Mega Spruce Taiga 
-t462 红木山丘
+o462 Mega Spruce Taiga Hills
+t462 
 o463 Extreme Hills+ M
 t463 峭壁+M
 o464 Savanna M
@@ -1992,3 +1992,7 @@ o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 为这个刷怪箱输入一个实体ID. 无效的ID可能使Minecraft崩溃. 按ESC取消.
 o931 Right mouse
 t931 
+o932 Deleting the item {0} from the entire world ({1} chunks)
+t932 
+o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t933 
