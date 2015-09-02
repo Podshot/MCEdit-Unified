@@ -56,6 +56,7 @@ class TileEntity(object):
             ("Command", nbt.TAG_String),
             ("CustomName", nbt.TAG_String),
             ("TrackOutput", nbt.TAG_Byte),
+            ("SuccessCount", nbt.TAG_Int)
         ),
         "FlowerPot": (
             ("Item", nbt.TAG_String),
@@ -108,6 +109,8 @@ class TileEntity(object):
         "piston": "Piston",
         "cauldron": "Cauldron",
         "command_block": "Control",
+        "repeating_command_block": "Control",
+        "chain_command_block": "Control",
         "flower_pot": "FlowerPot",
         "enchanting_table": "EnchantTable",
         "dropper": "Dropper",
@@ -147,8 +150,11 @@ class TileEntity(object):
         if base:
             for (name, tag) in base:
                 tileEntityTag[name] = tag()
-                if name == "CustomName" and tileEntityID == "Control":
-                    tileEntityTag[name] = nbt.TAG_String("@")
+                if tileEntityID == "Control":
+                    if name == "CustomName":
+                        tileEntityTag[name] = nbt.TAG_String("@")
+                    elif name == "SuccessCount":
+                        tileEntityTag[name] = nbt.TAG_Int(0)
 
         cls.setpos(tileEntityTag, pos)
         return tileEntityTag
