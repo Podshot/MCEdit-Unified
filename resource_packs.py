@@ -311,6 +311,10 @@ textureSlots = {
     "double_plant_grass_bottom": (step(16),step(11)),
     "double_plant_grass_top": (step(17),step(11)),
     "repeater_on_north": (step(18),step(11)),
+    "command_block_back": (step(19),step(11)),
+    "command_block_conditional": (step(20),step(11)),
+    "command_block_front": (step(21),step(11)),
+    "command_block_side": (step(22),step(11)),
     # End Twelfth Row
 
     # Start Thriteenth Row
@@ -333,6 +337,10 @@ textureSlots = {
     "double_plant_fern_bottom": (step(16),step(12)),
     "double_plant_fern_top": (step(17),step(12)),
     "repeater_on_east": (step(18),step(12)),
+    "repeating_command_block_back": (step(19),step(12)),
+    "repeating_command_block_conditional": (step(20),step(12)),
+    "repeating_command_block_front": (step(21),step(12)),
+    "repeating_command_block_side": (step(22),step(12)),
     # End Thriteenth Row
 
     # Start Fourteenth Row
@@ -354,6 +362,10 @@ textureSlots = {
     #
     "double_plant_rose_bottom": (step(16),step(13)),
     "double_plant_rose_top": (step(17),step(13)),
+    "chain_command_block_back": (step(19),step(11)),
+    "chain_command_block_conditional": (step(20),step(11)),
+    "chain_command_block_front": (step(21),step(11)),
+    "chain_command_block_side": (step(22),step(11)),
     # End Fourteenth Row
 
     # Start Fifteenth Row
