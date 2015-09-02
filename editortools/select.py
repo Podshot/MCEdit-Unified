@@ -1230,7 +1230,8 @@ class SelectionTool(EditorTool):
                 (x, y, z) = coords
             else:
                 (z, y, x) = coords
-            if self.editor.level.blockAt(x, y, z) == 137:
+            blockID = self.editor.level.blockAt(x, y, z)
+            if blockID == 137 or blockID == 210 or blockID == 211:
                 if not first:
                     if space:
                         file.write("\n\n")
