@@ -1585,7 +1585,7 @@ class CameraViewport(GLViewport):
             try:
                 if point:
                     block = self.editor.level.blockAt(*point)
-                    if block == pymclevel.alphaMaterials.CommandBlock.ID:
+                    if block == pymclevel.alphaMaterials.CommandBlock.ID or block == 210 or block == 211:
                         self.hoveringCommandBlock[0] = True
                         tileEntity = self.editor.level.tileEntityAt(*point)
                         if tileEntity:
