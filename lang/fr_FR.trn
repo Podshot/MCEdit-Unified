@@ -323,7 +323,7 @@ t149 Pos. clone sur axe (Maintenir)
 o150 Blocks-Only Modifier (Hold)
 t150 Modif. blocs seuls (Maintenir)
 o151 Fast Increment Modifier (Hold)
-t151 
+t151 Modif. incrément rapide (Maintenir)
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
 t152 Les feuillages sont 'solides', comme pour l'option 'Rapides' des graphismes de Minecraft
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
@@ -2005,6 +2005,6 @@ t932 Suppression de l'objet {0} du monde ({1} chunks)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 ATTENTION : Vous allez modifier le monde dans son ensemble. Il n'est pas possible de retourner en arrière. Vraiment supprimer toutes les copies dans tout le paysage, tous les conteneurs (y compris l'inventaire des joueurs) ansi que les objets au sol ?
 o934 Check to show/hide specific ores using the settings below.
-t934 
+t934 Cochez cette case pour afficher les minerais cachés.
 o935 NBTEdit
 t935 
