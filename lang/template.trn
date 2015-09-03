@@ -1944,3 +1944,7 @@ o932 Deleting the item {0} from the entire world ({1} chunks)
 t932 
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 
+o934 Check to show/hide specific ores using the settings below.
+t934 
+o935 NBTEdit
+t935 

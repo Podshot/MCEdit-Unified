@@ -2004,3 +2004,7 @@ o932 Deleting the item {0} from the entire world ({1} chunks)
 t932 Suppression de l'objet {0} du monde ({1} chunks)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 ATTENTION : Vous allez modifier le monde dans son ensemble. Il n'est pas possible de retourner en arrière. Vraiment supprimer toutes les copies dans tout le paysage, tous les conteneurs (y compris l'inventaire des joueurs) ansi que les objets au sol ?
+o934 Check to show/hide specific ores using the settings below.
+t934 
+o935 NBTEdit
+t935 
