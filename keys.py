@@ -98,7 +98,7 @@ class KeyConfigPanel(Dialog):
         "Take a Screenshot",
         "Debug Overlay",
         "Fast Nudge",
-        "Fast Increment Modifier",
+        "Fast Increment Modifier (Hold)",
         "",
         "<Toolbar>",
         "Select",
@@ -205,7 +205,7 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl"),
+                    ("Fast Increment Modifier (Hold)", "Ctrl"),
 
                     ("Select", "1"),
                     ("Brush", "2"),
@@ -287,7 +287,7 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl"),
+                    ("Fast Increment Modifier (Hold)", "Ctrl"),
 
                     ("Select", "1"),
                     ("Brush", "2"),
@@ -369,7 +369,7 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl"),
+                    ("Fast Increment Modifier (Hold)", "Ctrl"),
 
                     ("Select", "1"),
                     ("Brush", "2"),
@@ -451,7 +451,7 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "None"),
-                    ("Fast Increment Modifier", "Ctrl"),
+                    ("Fast Increment Modifier (Hold)", "Ctrl"),
 
                     ("Select", "1"),
                     ("Brush", "2"),
@@ -533,7 +533,7 @@ class KeyConfigPanel(Dialog):
                     ("Take a Screenshot", "F6"),
                     ("Debug Overlay", "0"),
                     ("Fast Nudge", "Shift"),
-                    ("Fast Increment Modifier", "Shift"),
+                    ("Fast Increment Modifier (Hold)", "Shift"),
 
                     ("Select", "1"),
                     ("Brush", "2"),

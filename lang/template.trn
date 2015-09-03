@@ -320,7 +320,7 @@ o149 Snap Clone to Axis (Hold)
 t149 
 o150 Blocks-Only Modifier (Hold)
 t150 
-o151 Fast Increment Modifier
+o151 Fast Increment Modifier (Hold)
 t151 
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
 t152 
@@ -963,7 +963,7 @@ o460 Cold Taiga M
 t460 
 o461 Mega Spruce Taiga
 t461 
-o462 Mega Spruce Taiga 
+o462 Mega Spruce Taiga Hills
 t462 
 o463 Extreme Hills+ M
 t463 
@@ -1938,7 +1938,9 @@ o929 Click and drag to reposition the item. Double-click to pick it up. Click Im
 t929 
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 
-o931 Check to show/hide specific ores using the settings below.
+o931 Right mouse
 t931 
-o932 NBTEdit
+o932 Deleting the item {0} from the entire world ({1} chunks)
 t932 
+o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t933 

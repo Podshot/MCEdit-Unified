@@ -13,8 +13,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."""
 #-# Modified by D.C.-G. for translation purpose
 #.# Marks the layout modifications. -- D.C.-G.
-from editortools.thumbview import ThumbView
-from pymclevel.infiniteworld import SessionLockLost
+from editortools.thumbview import ThumbView 
 import keys
 import pygame
 from albow.fields import FloatField
@@ -22,6 +21,7 @@ from albow import ChoiceButton, TextInputRow, CheckBoxLabel, showProgress, IntIn
 from editortools.blockview import BlockButton
 import ftp_client
 import sys
+from pymclevel import nbt
 
 """
 leveleditor.py
@@ -87,7 +87,8 @@ from mcplatform import askSaveFile
 from pymclevel.minecraft_server import alphanum_key  # ?????
 from renderer import MCRenderer
 from pymclevel.entity import Entity
-from pymclevel.infiniteworld import AnvilWorldFolder
+from pymclevel.infiniteworld import AnvilWorldFolder, SessionLockLost, MCAlphaDimension,\
+    MCInfdevOldLevel
 
 try:
     import resource  # @UnresolvedImport
@@ -245,6 +246,10 @@ class LevelEditor(GLViewport):
             d.present(centered=False)
 
         self.viewButton = Button("Show...", action=showViewOptions)
+        
+        self.waypoints = None
+        self.loadWaypoints()
+        self.waypointsButton = Button("Waypoints", action=self.showWaypointsDialog)
 
         self.viewportButton = Button("Camera View", action=self.swapViewports,
                                      tooltipText=_("Shortcut: {0}").format(_(config.keys.toggleView.get())))
@@ -259,10 +264,11 @@ class LevelEditor(GLViewport):
         self.sessionLockLabel = Label("Session:", margin=0)
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel.mouse_down = self.mouse_down_session
-
+        
+        # TODO: Marker
         row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout,
                self.viewDistanceUp, self.viewButton, self.viewportButton, self.recordUndoButton,
-               Row((self.sessionLockLabel, self.sessionLockLock), spacing=2))
+               Row((self.sessionLockLabel, self.sessionLockLock), spacing=2), self.waypointsButton)
 
         self.topRow = row = Row(row)
         self.add(row)
@@ -313,6 +319,187 @@ class LevelEditor(GLViewport):
 
     def __del__(self):
         self.deleteAllCopiedSchematics()
+        
+    def loadWaypoints(self):
+        if self.level is None:
+            return
+        
+        def build(waypts):
+            points = {}
+            for point in waypts:
+                points["{0} ({1},{2},{3})".format(point["Name"].value, round(point["Coordinates"][0].value, 2), round(point["Coordinates"][1].value, 2), round(point["Coordinates"][2].value, 2))] = [
+                                                                                                                                                                        point["Coordinates"][0].value, 
+                                                                                                                                                                        point["Coordinates"][1].value, 
+                                                                                                                                                                        point["Coordinates"][2].value,
+                                                                                                                                                                        point["Rotation"][0].value,
+                                                                                                                                                                        point["Rotation"][1].value,
+                                                                                                                                                                        point["Dimension"].value
+                                                                                                                                                                        ]
+                
+            return points
+        
+        self.nbt_waypoints = None
+        self.waypoints = {}
+        if not os.path.exists(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat")):
+            self.nbt_waypoints = nbt.TAG_Compound()
+            self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
+            self.waypoints = build(self.nbt_waypoints["Waypoints"])
+        else:
+            self.nbt_waypoints = nbt.load(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat"))
+            self.waypoints = build(self.nbt_waypoints["Waypoints"])
+        if not (len(self.waypoints) > 0):
+            self.waypoints["Empty"] = [0,0,0,0,0,0]
+            
+        if "LastPosition" in self.nbt_waypoints:
+            self.gotoLastPosition()
+            
+        
+        #self.waypoints.save(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat"))
+        
+    def showCreateDialog(self):
+        widg = Widget()
+        
+        nameField = TextFieldWrapped(width=100)
+        xField = FloatField()
+        yField = FloatField()
+        zField = FloatField()
+        saveCameraRotation = CheckBoxLabel("Save Rotation")
+        
+        xField.value = round(self.mainViewport.cameraPosition[0], 2)
+        yField.value = round(self.mainViewport.cameraPosition[1], 2)
+        zField.value = round(self.mainViewport.cameraPosition[2], 2)
+        
+        coordRow = Row((Label("X:"), xField, Label("Y:"), yField, Label("Z:"), zField))
+        col = Column((Row((Label("Waypoint Name:"), nameField)), coordRow, saveCameraRotation), align="c")
+        
+        widg.add(col)
+        widg.shrink_wrap()
+        
+        result = Dialog(widg, ["Create", "Cancel"]).present()
+        if result == "Create":
+            if saveCameraRotation.checkbox.value:
+                self.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
+                                                                                                                         yField.value, 
+                                                                                                                         zField.value,
+                                                                                                                         self.mainViewport.yaw,
+                                                                                                                         self.mainViewport.pitch,
+                                                                                                                         self.level.dimNo
+                                                                                                                         ] 
+            
+            else:
+                self.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
+                                                                                                                     yField.value, 
+                                                                                                                     zField.value,
+                                                                                                                     0.0,
+                                                                                                                     0.0,
+                                                                                                                     self.level.dimNo]
+            if "Empty" in self.waypoints:
+                del self.waypoints["Empty"]
+            self.waypointDialog.dismiss()
+            self.saveWaypoints()
+            #self.nbt_waypoints["Waypoints"] = self.waypoints
+            #self.nbt_waypoints.s
+            
+    def saveWaypoints(self):
+        del self.nbt_waypoints["Waypoints"]
+        self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
+        for waypoint in self.waypoints.keys():
+            way = nbt.TAG_Compound()
+            way["Name"] = nbt.TAG_String(waypoint.split()[0])
+            way["Dimension"] = nbt.TAG_Int(self.waypoints[waypoint][5])
+            coords = nbt.TAG_List()
+            coords.append(nbt.TAG_Float(self.waypoints[waypoint][0]))
+            coords.append(nbt.TAG_Float(self.waypoints[waypoint][1]))
+            coords.append(nbt.TAG_Float(self.waypoints[waypoint][2]))
+            rot = nbt.TAG_List()
+            rot.append(nbt.TAG_Float(self.waypoints[waypoint][3]))
+            rot.append(nbt.TAG_Float(self.waypoints[waypoint][4]))
+            way["Coordinates"] = coords
+            way["Rotation"] = rot
+            self.nbt_waypoints["Waypoints"].append(way)
+        self.nbt_waypoints.save(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat"))
+    
+    def gotoWaypoint(self):
+        self.gotoDimension(self.waypoints[self.waypointsChoiceButton.value][5])
+        self.mainViewport.skyList = None
+        self.mainViewport.drawSkyBackground()
+        
+        self.mainViewport.cameraPosition = self.waypoints[self.waypointsChoiceButton.value][:3]
+        self.mainViewport.yaw = self.waypoints[self.waypointsChoiceButton.value][3]
+        self.mainViewport.pitch = self.waypoints[self.waypointsChoiceButton.value][4]
+        self.mainViewport.skyList = None
+        self.mainViewport.drawSkyBackground()
+        self.waypointDialog.dismiss()
+        
+    def deleteWaypoint(self):
+        self.waypointDialog.dismiss()
+        del self.waypoints[self.waypointsChoiceButton.value]
+        self.saveWaypoints()
+        if not (len(self.waypoints) > 0):
+            self.waypoints["Empty"] = [0,0,0,0,0,0]
+        
+    def saveLastPosition(self):
+        if "LastPosition" in self.nbt_waypoints:
+            del self.nbt_waypoints["LastPosition"]
+        topTag = nbt.TAG_Compound()
+        topTag["Dimension"] = nbt.TAG_Int(self.level.dimNo)
+        
+        pos = nbt.TAG_List()
+        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[0]))
+        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[1]))
+        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[2]))
+        topTag["Coordinates"] = pos
+        
+        rot = nbt.TAG_List()
+        rot.append(nbt.TAG_Float(self.mainViewport.yaw))
+        rot.append(nbt.TAG_Float(self.mainViewport.pitch))
+        topTag["Rotation"] = rot
+        
+        self.nbt_waypoints["LastPosition"] = topTag
+        self.saveWaypoints()
+        
+    def gotoLastPosition(self):
+        if "LastPosition" not in self.nbt_waypoints:
+            return
+        self.gotoDimension(self.nbt_waypoints["LastPosition"]["Dimension"].value)
+        self.mainViewport.skyList = None
+        self.mainViewport.drawSkyBackground()
+        
+        self.mainViewport.cameraPosition = [self.nbt_waypoints["LastPosition"]["Coordinates"][0].value, 
+                                            self.nbt_waypoints["LastPosition"]["Coordinates"][1].value, 
+                                            self.nbt_waypoints["LastPosition"]["Coordinates"][2].value
+                                            ]
+        self.mainViewport.yaw = self.nbt_waypoints["LastPosition"]["Rotation"][0].value
+        self.mainViewport.pitch = self.nbt_waypoints["LastPosition"]["Rotation"][1].value
+        del self.nbt_waypoints["LastPosition"]
+    
+    def showWaypointsDialog(self):
+        #print "Yay waypoints!"
+        if not isinstance(self.level, (MCInfdevOldLevel, MCAlphaDimension)):
+            print type(self.level)
+            self.Notify("Waypoints currently only support PC Worlds")
+            return
+        
+        
+        #print os.path.dirname(self.level.filename)
+        
+        #print dir(self.level)
+        self.waypointDialog = QuickDialog()
+        
+        self.waypointsChoiceButton = ChoiceButton(self.waypoints.keys())
+        createWaypointButton = Button("Create Waypoint", action=self.showCreateDialog)
+        gotoWaypointButton = Button("Goto Waypoint", action=self.gotoWaypoint)
+        deleteWaypointButton = Button("Delete Waypoint", action=self.deleteWaypoint)
+        
+        saveCameraOnClose = CheckBoxLabel("Save Camera position on world close",
+                                    ref=config.settings.savePositionOnClose)
+        
+        col = Column((self.waypointsChoiceButton, Row((createWaypointButton, gotoWaypointButton, deleteWaypointButton)), saveCameraOnClose, Button("Close", action=self.waypointDialog.dismiss)))
+        self.waypointDialog.add(col)
+        self.waypointDialog.shrink_wrap()
+        #qd.topleft = self.waypointsButton.bottomleft
+        self.waypointDialog.present(True)
+            
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):
@@ -1119,15 +1306,18 @@ class LevelEditor(GLViewport):
                 self.gotoDimension(dimNo)
                 self.mainViewport.skyList = None
                 self.mainViewport.drawSkyBackground()
-
+                
+            self.loadWaypoints()
+            
             dimensionsList = [d[0] for d in dimensionsMenu]
             self.netherButton = ChoiceButton(dimensionsList, choose=presentMenu)
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
             self.remove(self.topRow)
+            # TODO: Marker
             self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"),
                                self.viewDistanceReadout, self.viewDistanceUp, self.viewButton,
                                self.viewportButton, self.recordUndoButton, self.netherButton,
-                               Row((self.sessionLockLabel, self.sessionLockLock), spacing=2)))
+                               Row((self.sessionLockLabel, self.sessionLockLock), spacing=2), self.waypointsButton))
             self.add(self.topRow, 0)
 
         else:
@@ -1912,6 +2102,8 @@ class LevelEditor(GLViewport):
         for p in self.toolbar.tools[6].nonSavedPlayers:
             if os.path.exists(p):
                 os.remove(p)
+        if config.settings.savePositionOnClose.get():
+            self.saveLastPosition()
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.RemoveEditFiles()
@@ -3134,6 +3326,7 @@ class LevelEditor(GLViewport):
         self.sessionLockLock.set_image(get_image(image_path, prefix=""))
         self.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
+        self.saveLastPosition()
 
     def lockAcquired(self):
         image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
@@ -3141,8 +3334,6 @@ class LevelEditor(GLViewport):
         self.sessionLockLock.tooltipText = "Session Lock is being used by MCEdit"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by MCEdit"
         self.root.sessionStolen = False
-
-
 
 class EditorToolbar(GLOrtho):
     # is_gl_container = True

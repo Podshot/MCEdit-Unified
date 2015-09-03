@@ -4,7 +4,7 @@ import mcplatform
 import pymclevel
 from pymclevel import BoundingBox
 
-displayName = 'Paste'
+displayName = 'Schematic'
 addPasteButton = True
 disableStyleButton = True
 
