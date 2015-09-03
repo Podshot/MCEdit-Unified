@@ -618,7 +618,7 @@ o289 Duration (Seconds)
 t289 Dauer (in Sekunden)
 o290 Add Potion Effect to Mobs
 t290 Statuseffekt zu Kreaturen hinzufügen
-o291 Banslimes
+o291 BanSlimes
 t291 BanSlimes
 o292 Change Mob Properties
 t292 Mob-Eigenschaften ändern
@@ -2004,3 +2004,7 @@ o932 Deleting the item {0} from the entire world ({1} chunks)
 t932 Lösche den Gegenstand {0} aus der gesamten Welt ({1} Chunks)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 WARNUNG: Du bist dabei, die komplette Welt zu verändern. Dies kann nicht rückgängig gemacht werden. Möchtest du wirklich alle Vorkommnisse dieses Gegenstandes in allen Chunks, Truhen, Öfen, Werfern, sowie allen sontigen Behältern und Inventaren in dieser Welt entfernen?
+o934 Check to show/hide specific ores using the settings below.
+t934 
+o935 NBTEdit
+t935 

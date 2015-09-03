@@ -616,7 +616,7 @@ o289 Duration (Seconds)
 t289 持續時間（秒）
 o290 Add Potion Effect to Mobs
 t290 給生物添加藥水效果
-o291 Banslimes
+o291 BanSlimes
 t291 禁止史萊姆
 o292 Change Mob Properties
 t292 更改生物屬性
@@ -1979,3 +1979,7 @@ o932 Deleting the item {0} from the entire world ({1} chunks)
 t932 
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 
+o934 Check to show/hide specific ores using the settings below.
+t934 
+o935 NBTEdit
+t935 
