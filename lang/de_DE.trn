@@ -1851,7 +1851,6 @@ o856 [Empty]
 t856 [Leer]
 o857 Couldn't open the file
 t857 Datei konnte nicht geöffnet werden
-
 o858 Edit Command Block
 t858 Befehlsblock bearbeiten
 o859 Command:
@@ -1947,9 +1946,9 @@ t903 F (1,9)
 o904 F# (2.0)
 t904 Fis/Ges (2,0)
 o905 Only delete items with the same damage value
-t905 Lösche nur Gegenstände mit den selben Metadaten
+t905 Nur Gegenstände mit den selben Metadaten löschen
 o906 Also delete blocks placed in the world
-t906 Lösche auch Blöcke, die in der Welt platziert wurden
+t906 Auch Blöcke löschen, die in der Welt platziert wurden
 o907 No command blocks found
 t907 Keine Befehlsblöcke gefunden
 o908 Analysis
@@ -1985,7 +1984,7 @@ t922 §9  Blau
 o923 §a  Green
 t923 §a  Grün
 o924 §b  Aqua
-t924 §b  Hallblau
+t924 §b  Hellblau
 o925 §c  Red
 t925 §c  Rot
 o926 §d  Light Purple
@@ -2005,6 +2004,6 @@ t932 Lösche den Gegenstand {0} aus der gesamten Welt ({1} Chunks)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
 t933 WARNUNG: Du bist dabei, die komplette Welt zu verändern. Dies kann nicht rückgängig gemacht werden. Möchtest du wirklich alle Vorkommnisse dieses Gegenstandes in allen Chunks, Truhen, Öfen, Werfern, sowie allen sontigen Behältern und Inventaren in dieser Welt entfernen?
 o934 Check to show/hide specific ores using the settings below.
-t934 
+t934 Auswählen, um spezifische Erze mithilfe der folgenden Einstellungen anzuzeigen oder zu verstecken
 o935 NBTEdit
-t935 
+t935 NBTEdit
