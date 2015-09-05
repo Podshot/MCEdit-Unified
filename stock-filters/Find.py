@@ -81,16 +81,16 @@ def nbt_ok_action():
     by = get_by()
     chunks = get_chunks()
     box = get_box()
-    if by not in ('TileEntity', 'Entity'):
+    if by not in (trn._('TileEntity'), trn._('Entity')):
         return
     if chunks:
         for chunk, slices, point in chunks:
-            if by == 'TileEntity':
+            if by == trn._('TileEntity'):
                 for e in chunk.TileEntities:
                     x = e["x"].value
                     y = e["y"].value
                     z = e["z"].value
-            elif by == 'Entity':
+            elif by == trn._('Entity'):
                 for e in chunk.Entities:
                     x = e["Pos"][0].value
                     y = e["Pos"][1].value
@@ -197,7 +197,7 @@ def perform(level, box, options):
     matchname = u"" if options["Match Tag Name:"] == "None" else unicode(options["Match Tag Name:"])
     matchval = u"" if options["Match Tag Value:"] == "None" else unicode(options["Match Tag Value:"])
     caseSensitive = not options["Case insensitive:"]
-    matchtagtype = tagtypes[options["Match Tag Type:"]] if options["Match Tag Type:"] != "Any" else "Any"
+    matchtagtype = tagtypes.get(options["Match Tag Type:"], "Any")
     op = options["Operation:"]
 
     datas = []
@@ -213,7 +213,7 @@ def perform(level, box, options):
         search = []
 
     if not search:
-        if by == "Block":
+        if by == trn._("Block"):
             for x in xrange(box.minx, box.maxx):
                 for z in xrange(box.minz, box.maxz):
                     for y in xrange(box.miny, box.maxy):
@@ -232,7 +232,7 @@ def perform(level, box, options):
                                 continue
                         search.append((x, y, z))
                         datas.append(data)
-        elif by == "TileEntity":
+        elif by == trn._("TileEntity"):
             chunks = []
             for (chunk, slices, point) in level.getChunkSlices(box):
                 for e in chunk.TileEntities:
@@ -269,14 +269,14 @@ def perform(level, box, options):
         alert("\nNo matching blocks/tile entities found")
     else:
         search.sort()
-        if op == "Dump Found Coordinates":
+        if op == trn._("Dump Found Coordinates"):
             alert("\n".join("%d, %d, %d" % pos for pos in search), height=editor.height, colLabel="Matching Coordinates")
         else:
             treeData = {}
             for i in range(len(search)):
-                if by == 'Block':
+                if by == trn._('Block'):
                     treeData[u"%s"%(search[i],)] = datas[i]
-                elif by == 'Entity':
+                elif by == trn._('Entity'):
                     treeData[u"%s"%((datas[i]['Pos'][0].value, datas[i]['Pos'][1].value, datas[i]['Pos'][2].value),)] = datas[i]
                 else:
                     treeData[u"%s"%((datas[i]['x'].value, datas[i]['y'].value, datas[i]['z'].value),)] = datas[i]

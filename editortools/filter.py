@@ -1047,8 +1047,9 @@ def tryImport_new(_root, name, org_lang, stock=False, subFolderString="", unicod
                 trn_path = os.path.join(trn_path, subFolderString[1:-1], module_name)
                 if os.path.exists(trn_path):
                     albow.translate.buildTranslation(config.settings.langCode.get(), extend=True, langPath=trn_path)
-                    module.trn = albow.translate
+#                     module.trn = albow.translate
                     module.displayName = _(module.displayName)
+            module.trn = albow.translate
             return module
 
         except Exception as e:
