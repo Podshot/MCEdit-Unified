@@ -975,7 +975,7 @@ class FilterTool(EditorTool):
 #-# The 'new_method' variable is used to select the latest working code or the actual under development one.
 #-# This variable must be on False when releasing unless the actual code is fully working.
 
-new_method = False
+new_method = True
 
 def tryImport_old(_root, name, org_lang, stock=False, subFolderString="", unicode_name=False):
     with open(os.path.join(_root, name)) as module_file:
