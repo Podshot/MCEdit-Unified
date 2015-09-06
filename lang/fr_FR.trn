@@ -2008,3 +2008,17 @@ o934 Check to show/hide specific ores using the settings below.
 t934 Cochez cette case pour afficher les minerais cachés.
 o935 NBTEdit
 t935 
+o936 Save camera position on close
+t936 Sauver la position de la caméra en quitant
+o937 Waypoints
+t937 Pts. de passage
+o938 Empty
+t938 Vide
+o939 Create Waypoint
+t939 Créer point
+o940 Goto Waypoint
+t940 Aller au point
+o941 Delete Waypoint
+t941 Suppr. point
+o942 Save Camera position on world close
+t942 Sauver la position de la caméra en quitant
