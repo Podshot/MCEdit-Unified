@@ -51,8 +51,6 @@ by = None # what is searched: Entities, TileEntities or blocs
 def set_tree(t):
     global tree
     tree = t
-    if hasattr(tree, 'treeRow'):
-        t.treeRow.tooltipText = "Double-click to go to this item."
 
 # Use this method to overwrite the NBT tree default behaviour on mouse clicks
 def nbttree_mouse_down(e):
@@ -209,7 +207,7 @@ def perform(level, box, options):
     if matchtile and matchname == "" and matchval == "":
         alert("\nInvalid Tag Name and Value; the present values will match every tag of the specified type.")
 
-    if search is None or op == "Start New Search" or op == "Dump Found Coordinates":
+    if search is None or op == trn._("Start New Search") or op == trn._("Dump Found Coordinates"):
         search = []
 
     if not search:
@@ -273,12 +271,13 @@ def perform(level, box, options):
             alert("\n".join("%d, %d, %d" % pos for pos in search), height=editor.height, colLabel="Matching Coordinates")
         else:
             treeData = {}
+            # To set tooltip text to the items the need it, use a dict: {"value": <item to be added to the tree>, "tooltipText": "Some text"}
             for i in range(len(search)):
                 if by == trn._('Block'):
-                    treeData[u"%s"%(search[i],)] = datas[i]
+                    treeData[u"%s"%(search[i],)] = {"value": datas[i], "tooltipText": "Double-click to go to this item."}
                 elif by == trn._('Entity'):
-                    treeData[u"%s"%((datas[i]['Pos'][0].value, datas[i]['Pos'][1].value, datas[i]['Pos'][2].value),)] = datas[i]
+                    treeData[u"%s"%((datas[i]['Pos'][0].value, datas[i]['Pos'][1].value, datas[i]['Pos'][2].value),)] = {"value": datas[i], "tooltipText": "Double-click to go to this item."}
                 else:
-                    treeData[u"%s"%((datas[i]['x'].value, datas[i]['y'].value, datas[i]['z'].value),)] = datas[i]
+                    treeData[u"%s"%((datas[i]['x'].value, datas[i]['y'].value, datas[i]['z'].value),)] = {"value": datas[i], "tooltipText": "Double-click to go to this item."}
             inputs[1][1][1][1] = {'Data': treeData}
             options[""](inputs[1])
