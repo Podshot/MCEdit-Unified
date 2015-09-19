@@ -11,7 +11,7 @@ from pygame import event, Surface, SRCALPHA, Rect, draw, mouse
 
 #-----------------------------------------------------------------------------
 class ScrollRow(PaletteView):
-    __tooltipText = u""
+    __tooltipText = None
     @property
     def tooltipText(self):
         pos = mouse.get_pos()
@@ -26,7 +26,11 @@ class ScrollRow(PaletteView):
             row = (y - d) // h
             col = (x - d) // w
             if row < self.num_items():
-                return self.row_data(row)[-1]
+                row_data = self.row_data(row)
+                if type(row_data) == list:
+                    return self.row_data(row)[-1]
+                else:
+                    return self.__tooltipText
 
     @tooltipText.setter
     def tooltipText(self, text):
