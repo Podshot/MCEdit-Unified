@@ -476,14 +476,16 @@ class FilterToolPanel(Panel):
 
     @staticmethod
     def load_filter_json():
+        filter_json_file = os.path.join(directories.getDataDir(), "filters.json")
+        filter_json = {}
         if FilterToolPanel.BACKUP_FILTER_JSON:
-            filter_json = JsonDictProperty(os.path.join(directories.getDataDir(), "filters.json"))
+            filter_json = JsonDictProperty(filter_json_file)
         else:
             try:
-                filter_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+                if os.path.exists(filter_json_file):
+                    filter_json = json.load(open(filter_json_file, 'rb'))
             except (ValueError, IOError) as e:
-                log.error("Error while loading filters.json", e)
-                filter_json = {}
+                log.error("Error while loading filters.json %s", e)
         if "Macros" not in filter_json.keys():
             filter_json["Macros"] = {}
         return filter_json
