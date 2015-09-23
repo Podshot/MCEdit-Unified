@@ -2008,16 +2008,16 @@ t934 Auswählen, um spezifische Erze mithilfe der folgenden Einstellungen anzuze
 o935 NBTEdit
 t935 NBTEdit
 o936 Save camera position on close
-t936 
+t936 Kameraposition beim Schließen speichern
 o937 Waypoints
-t937 
+t937 Wegpunkte
 o938 Empty
-t938 
+t938 Leer
 o939 Create Waypoint
-t939 
+t939 Wegpunkt erstellen
 o940 Goto Waypoint
-t940 
+t940 zum Wegpunkt gehen
 o941 Delete Waypoint
-t941 
+t941 Wegpunkt löschen
 o942 Save Camera position on world close
-t942 
+t942 Kameraposition beim Schließen der Welt speichern
