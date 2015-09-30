@@ -1997,3 +1997,7 @@ o941 Delete Waypoint
 t941 웨이포인트 삭제
 o942 Save Camera position on world close
 t942 맵 종료시 카메라 위치를 저장
+o943 Save Rotation
+t943 
+o945 Waypoint Name:
+t945 

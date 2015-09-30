@@ -2022,3 +2022,7 @@ o941 Delete Waypoint
 t941 Suppr. point
 o942 Save Camera position on world close
 t942 Sauver la position de la caméra en quitant
+o943 Save Rotation
+t943 
+o945 Waypoint Name:
+t945 
