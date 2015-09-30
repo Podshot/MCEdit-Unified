@@ -421,7 +421,7 @@ definitions = {
         ("brushLineTool", "brush line tool", "Z"),
         ("snapCloneToAxis", "snap clone to axis", "Ctrl"),
         ("blocksOnlyModifier", "blocks-only modifier", "Alt"),
-        ("fastIncrementModifier", "fast increment modifier", "Ctrl"),
+        ("fastIncrementModifierHold", "fast increment modifier", "Ctrl"),
         ("fastNudge", "fast nudge", "None"),
 
         ("takeAScreenshot", "take a screenshot", "F6"),

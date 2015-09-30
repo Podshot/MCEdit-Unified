@@ -318,11 +318,11 @@ t147 청크 선택 (꾹 누르기)
 o148 Deselect Chunks (Hold)
 t148 청크 선택 취소 (꾹 누르기)
 o149 Snap Clone to Axis (Hold)
-t149 Snap Clone to Axis (꾹 누르기)
+t149 복제를 축에 맞춰서 이동 (꾹 누르기)
 o150 Blocks-Only Modifier (Hold)
 t150 Blocks-Only Modifier (꾹 누르기)
 o151 Fast Increment Modifier (Hold)
-t151 
+t151 빠른 이동 조절 (꾹 누르기)
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
 t152 나뭇잎은 마인크래프트의 '빠른'그래픽같이 불투명합니다.
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
@@ -926,7 +926,7 @@ t436 뒤덥힌 숲속
 o437 Cold Taiga
 t437 추운 침엽수림
 o438 Cold Taiga Hills
-t438 추운 침엽수림
+t438 추운 침엽수림 언덕
 o439 Mega Taiga
 t439 메가 침엽수림
 o440 Mega Taiga Hills
@@ -974,7 +974,7 @@ t460 추운 침엽수림 M
 o461 Mega Spruce Taiga
 t461 Mega 가문비 나무 침엽수림
 o462 Mega Spruce Taiga Hills
-t462 
+t462 Mega 가문비 나무 침엽수림 언덕
 o463 Extreme Hills+ M
 t463 협곡들+ M
 o464 Savanna M
@@ -1974,12 +1974,26 @@ t929 아이템의 위치를 옮기려면 드래그하세요. 더블클릭으로 
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
 t930 이 스포너의 엔티티ID를 입력하세요. 잘못된 ID는 마인크래프트 크래시의 원인이 됩니다.
 o931 Right mouse
-t931 
+t931 오른쪽 마우스
 o932 Deleting the item {0} from the entire world ({1} chunks)
-t932 
+t932 월드 전체에서 아이템 {0}을 삭제합니다. ({1} 청크)
 o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
-t933 
+t933 경고: 월드 전체를 수정하려 합니다. 이것은 되돌릴 수 없습니다. 이 아이템을 월드의 모든 땅, 상자, 화로, 발사기, 떨어진 아이템, 아이템을 포함하는 개체, 플레이어 인벤토리에서 제거하시겠습니까?
 o934 Check to show/hide specific ores using the settings below.
-t934 
+t934 체크하여 아래의 설정으로 원석을 보이거나 숨깁니다.
 o935 NBTEdit
-t935 
+t935 NBTEdit
+o936 Save camera position on close
+t936 종료시 카메라 위치를 저장
+o937 Waypoints
+t937 웨이포인트
+o938 Empty
+t938 비어있음
+o939 Create Waypoint
+t939 웨이포인트 생성
+o940 Goto Waypoint
+t940 웨이포인트로 이동
+o941 Delete Waypoint
+t941 웨이포인트 삭제
+o942 Save Camera position on world close
+t942 맵 종료시 카메라 위치를 저장

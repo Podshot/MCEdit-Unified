@@ -476,14 +476,16 @@ class FilterToolPanel(Panel):
 
     @staticmethod
     def load_filter_json():
+        filter_json_file = os.path.join(directories.getDataDir(), "filters.json")
+        filter_json = {}
         if FilterToolPanel.BACKUP_FILTER_JSON:
-            filter_json = JsonDictProperty(os.path.join(directories.getDataDir(), "filters.json"))
+            filter_json = JsonDictProperty(filter_json_file)
         else:
             try:
-                filter_json = json.load(open(os.path.join(directories.getDataDir(), "filters.json"), 'rb'))
+                if os.path.exists(filter_json_file):
+                    filter_json = json.load(open(filter_json_file, 'rb'))
             except (ValueError, IOError) as e:
-                log.error("Error while loading filters.json", e)
-                filter_json = {}
+                log.error("Error while loading filters.json %s", e)
         if "Macros" not in filter_json.keys():
             filter_json["Macros"] = {}
         return filter_json
@@ -885,6 +887,10 @@ class FilterTool(EditorTool):
         filterFiles = []
         unicode_module_names = []
 
+        # Tracking stock and custom filters names in order to load correctly the translations.
+        stock_filters = []
+        cust_filters = []
+
         def searchForFiltersInDir(searchFolder, stock=False):
             for root, folders, files in os.walk(os.path.join(searchFolder), True):
                 filter_dir = os.path.basename(root)
@@ -909,10 +915,20 @@ class FilterTool(EditorTool):
 
                 for possible_filter in files:
                     if possible_filter.endswith(".py"):
-                        filterFiles.append((root, possible_filter, stock, subFolderString))
+                        if stock:
+                            stock_filters.append(possible_filter)
+                            _stock = True
+                        else:
+                            cust_filters.append(possible_filter)
+                            _stock = False
+                        # Force the 'stock' parameter if the filter was found in the stock-filters directory
+                        if possible_filter in stock_filters:
+                            _stock = True
+                        filterFiles.append((root, possible_filter, _stock, subFolderString))
 
-        searchForFiltersInDir(directories.getFiltersDir(), False)
+        # Search first for the stock filters.
         searchForFiltersInDir(os.path.join(directories.getDataDir(), "stock-filters"), True)
+        searchForFiltersInDir(directories.getFiltersDir(), False)
 
         filterModules = []
 
@@ -961,7 +977,7 @@ class FilterTool(EditorTool):
 #-# The 'new_method' variable is used to select the latest working code or the actual under development one.
 #-# This variable must be on False when releasing unless the actual code is fully working.
 
-new_method = False
+new_method = True
 
 def tryImport_old(_root, name, org_lang, stock=False, subFolderString="", unicode_name=False):
     with open(os.path.join(_root, name)) as module_file:
@@ -1033,8 +1049,9 @@ def tryImport_new(_root, name, org_lang, stock=False, subFolderString="", unicod
                 trn_path = os.path.join(trn_path, subFolderString[1:-1], module_name)
                 if os.path.exists(trn_path):
                     albow.translate.buildTranslation(config.settings.langCode.get(), extend=True, langPath=trn_path)
-                    module.trn = albow.translate
+#                     module.trn = albow.translate
                     module.displayName = _(module.displayName)
+            module.trn = albow.translate
             return module
 
         except Exception as e:

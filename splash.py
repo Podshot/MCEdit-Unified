@@ -14,14 +14,14 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
 pygame.font.init()
 no_splash = False
-cur_dir = os.path.dirname(__file__)
-splash_name = os.path.join(directories.getDataDir(), 'splash')
+cur_dir = directories.getDataDir()
+splash_name = os.path.join(cur_dir, 'splash')
 
 try:
-    # if os.path.exists(splash_name) and len(open(splash_name).read()) > 0:
-    #     splash = pygame.image.load(open(splash_name).read().strip())
-    # else:
-    splash = pygame.image.load(open(os.path.join(cur_dir, "splash.png"), 'rb'))
+    if os.path.exists(splash_name) and len(open(splash_name).read()) > 0:
+        splash = pygame.image.load(open(splash_name).read().strip())
+    else:
+        splash = pygame.image.load(open(os.path.join(cur_dir, "splash.png"), 'rb'))
     screen = pygame.display.set_mode(splash.get_size(), pygame.NOFRAME)
     screen.blit(splash, (0, 0))
 except IOError:

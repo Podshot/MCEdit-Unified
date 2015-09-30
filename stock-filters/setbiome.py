@@ -148,7 +148,7 @@ biomes = {
 
 
 def perform(level, box, options):
-    biome = biomes[options["Biome"]]
+    biome = dict([(trn._(a), b) for a, b in biomes.items()])[options["Biome"]]
 
     minx = int(box.minx / 16) * 16
     minz = int(box.minz / 16) * 16
