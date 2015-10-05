@@ -1966,3 +1966,7 @@ o943 Save Rotation
 t943 
 o945 Waypoint Name:
 t945 
+o946 Session lock lost. This world is being accessed from another location.
+
+Your changes cannot be saved.
+t946 

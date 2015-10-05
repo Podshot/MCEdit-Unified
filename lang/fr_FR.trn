@@ -2026,3 +2026,7 @@ o943 Save Rotation
 t943 Sauvegarder rotation
 o945 Waypoint Name:
 t945 Nom du point :
+o946 Session lock lost. This world is being accessed from another location.
+
+Your changes cannot be saved.
+t946 

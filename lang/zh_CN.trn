@@ -2024,3 +2024,9 @@ o943 Save Rotation
 t943 保存镜头朝向
 o945 Waypoint Name:
 t945 路径点名字：
+o946 Session lock lost. This world is being accessed from another location.
+
+Your changes cannot be saved.
+t946 会话锁被占用。这个世界正在被另一个软件读写。
+
+你的更改不会被保存。
