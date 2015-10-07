@@ -1999,5 +1999,11 @@ o942 Save Camera position on world close
 t942 맵 종료시 카메라 위치를 저장
 o943 Save Rotation
 t943 
-o945 Waypoint Name:
+o944 Waypoint Name:
+t944 
+o945 Session lock lost. This world is being accessed from another location.
 t945 
+o946 
+
+Your changes cannot be saved.
+t946 

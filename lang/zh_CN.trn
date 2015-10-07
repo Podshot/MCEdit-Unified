@@ -2022,5 +2022,11 @@ o942 Save Camera position on world close
 t942 在关闭世界时保存镜头所在位置
 o943 Save Rotation
 t943 保存镜头朝向
-o945 Waypoint Name:
-t945 路径点名字：
+o944 Waypoint Name:
+t944 路径点名字：
+o945 Session lock lost. This world is being accessed from another location.
+t945 
+o946 
+
+Your changes cannot be saved.
+t946 
