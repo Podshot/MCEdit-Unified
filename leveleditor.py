@@ -1410,7 +1410,7 @@ class LevelEditor(GLViewport):
                     try:
                         level.checkSessionLock()
                     except SessionLockLost, e:
-                        alert(e.message + _("\n\nYour changes cannot be saved."))
+                        alert(_(e.message) + _("\n\nYour changes cannot be saved."))
                         return
 
                 if hasattr(level, 'dimensions'):
