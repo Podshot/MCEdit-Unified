@@ -73,6 +73,7 @@ def getPlatInfo(**kwargs):
     log.debug("    Processor: %s"%platform.processor())
     log.debug("    Locale: %s"%locale.getdefaultlocale()[0])
     log.debug("    Encoding: %s"%locale.getdefaultlocale()[1])
+    log.debug("    FS encoding: %s"%os.sys.getfilesystemencoding())
     reVer = re.compile(r"__version__|_version_|__version|_version|version|"
                        "__ver__|_ver_|__ver|_ver|ver", re.IGNORECASE)
     for name, mod in kwargs.items():
