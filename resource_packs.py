@@ -619,7 +619,12 @@ class IResourcePack:
                     new_terrain.paste(image, slot, image)
                     self.propogated_textures.append(slot)
                 except Exception as e:
-                    print "An Exception occurred while trying to parse textures for {}".format(self._pack_name)
+                    try:
+                        # Print the resource pack 'raw' name.
+                        print "An Exception occurred while trying to parse textures for {}".format(self._pack_name)
+                    except:
+                        # I for a reason it fails, print the 'representation' of it.
+                        print "An Exception occurred while trying to parse textures for {}".format(repr(self._pack_name))
                     traceback.print_stack()
                     print "Exception Message: "+str(e)
                     print "Exception type: "+str(type(e))
