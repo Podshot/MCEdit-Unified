@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-#!# This file contains a bad stuff for debuging .zip packs not loaded.
-#!# The logging messages are displayed only if the argument '--debug-packs'
-#!# is on the command line, otherwise, these messages are sent to a fake logger.
-#!# The 'log.debug()' calls may be removed when the bug is corrected.
-#!# The code enclosed between these '#!#' may be also removed.
-#!#
+#!# If the comman line parameter '--debug-packs' is given, the logging level is set to debug.
+#!# Otherwise, it is set to critical.
 from PIL import Image
 import zipfile
 import directories
@@ -26,33 +22,14 @@ except:
 
 #!# Debugging .zip resource pack not loaded bug.
 
+import logging
+
+level = 50
 if '--debug-packs' in os.sys.argv:
-    import logging
-    log = logging.getLogger(__name__)
-else:
-    class FakeLogger(object):
-        """Fake logger class. Return fakeFunc for every attribute which does not axists"""
-        def fakeFunc(self, *args, **kwargs):
-            return ""
-    
-        def __getattr__(self, attr):
-            """Return fakeFunc for attr if attr not in self.__dict__."""
-            if attr in self.__dict__.keys():
-                return self.__dict__[attr]
-            else:
-                return self.fakeFunc
-    
-    # test = FakeLogger()
-    # print "test.init", test.init
-    # print "test.aFunc()", test.aFunc()
-    # print "test.oFunc(1, 2, 3, 4, a=1, b=2)", test.oFunc(1, 2, 3, 4, a=1, b=2)
-    # print "test.__init__", test.__init__
-    # print "test.__class__", test.__class__
-    # print "test.__setattr__", test.__setattr__
-    # print "test.__getattr__", test.__getattr__
-    
-    
-    log = FakeLogger()
+    level = 10
+
+log = logging.getLogger(__name__)
+log.setLevel(level)
 
 #!#
 
