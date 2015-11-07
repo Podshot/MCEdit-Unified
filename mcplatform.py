@@ -20,6 +20,9 @@ mcplatform.py
 Platform-specific functions, folder paths, and the whole fixed/portable nonsense.
 """
 
+import logging
+log = logging.getLogger(__name__)
+
 import directories
 import os
 from os.path import dirname, exists, join
@@ -68,8 +71,8 @@ schematicsDir = directories.schematicsDir
 
 #!# Disabling platform specific file chooser:
 #!# Please, don't touch these two lines and the 'platChooser' stuff. -- D.C.-G.
-platChooser = sys.platform in ('linux2', 'darwin')
-#platChooser = sys.platform == 'darwin'
+# platChooser = sys.platform in ('linux2', 'darwin')
+platChooser = sys.platform == 'darwin'
 
 def getTexturePacks():
     try:
@@ -217,7 +220,15 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
             return askOpenFileGtk(title, _suffixes, initialDir)
 
         else:
-            return request_old_filename(suffixes=_suffixes, directory=initialDir)
+            log.debug("Calling internal file chooser.")
+            log.debug("'initialDir' is %s (%s)"%(repr(initialDir), type(initialDir)))
+            try:
+                iDir = initialDir.encode(enc)
+            except Exception, e:
+                iDir = initialDir
+                log.debug("Could not encode 'initialDir' %s"%repr(initialDir))
+                log.debug("Encode function returned: %s"%e)
+            return request_old_filename(suffixes=_suffixes, directory=iDir)
 
     filename = _askOpen(suffixes)
     if filename:
@@ -371,10 +382,25 @@ def askSaveFile(initialDir, title, defaultName, filetype, suffix):
         chooser.destroy()
 
     else: #Fallback
+        log.debug("Calling internal file chooser.")
+        log.debug("'initialDir' is %s (%s)"%(repr(initialDir), type(initialDir)))
+        log.debug("'defaultName' is %s (%s)"%(repr(defaultName), type(defaultName)))
+        try:
+            iDir = initialDir.encode(enc)
+        except:
+            iDir = initialDir
+            log.debug("Could not encode 'initialDir' %s"%repr(initialDir))
+            log.debug("Encode function returned: %s"%e)
+        try:
+            dName = defaultName.encode(enc)
+        except:
+            dName = defaultName
+            log.debug("Could not encode 'defaultName' %s"%repr(defaultName))
+            log.debug("Encode function returned: %s"%e)
         filename = request_new_filename(prompt=title,
                                     suffix=("." + suffix) if suffix else "",
-                                    directory=initialDir,
-                                    filename=defaultName,
+                                    directory=iDir,
+                                    filename=dName,
                                     pathname=None)
     return filename
 

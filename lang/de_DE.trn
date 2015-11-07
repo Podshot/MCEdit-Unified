@@ -1768,7 +1768,7 @@ t816 FTP-Benutzername:
 o817 FTP Password:
 t817 FTP-Passwort:
 o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t818 NOTIZ: MCEdit-Unified wird keine anderen FTP-Serverdaten benutzen die Einloggdaten
+t818 NOTIZ: MCEdit-Unified wird keine anderen FTP-Serverdaten benutzen bis auf die Einloggdaten
 o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
 t819 Bitte warte, während MCEdit-Unified die Welt herunterlädt. Danach wird sie geöffnet
 o820 Connect
@@ -2021,3 +2021,15 @@ o941 Delete Waypoint
 t941 Wegpunkt löschen
 o942 Save Camera position on world close
 t942 Kameraposition beim Schließen der Welt speichern
+o943 Save Rotation
+t943 Speichere Rotation
+o944 Waypoint Name:
+t944 Wegpunkt Name:
+o945 Session lock lost. This world is being accessed from another location.
+t945 
+o946 
+
+Your changes cannot be saved.
+t946 
+o947 Click to import this item.
+t947 

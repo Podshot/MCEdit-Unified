@@ -2007,16 +2007,28 @@ t934 使用下方的选项来指定要显示/隐藏的矿石
 o935 NBTEdit
 t935 NBT编辑器
 o936 Save camera position on close
-t936 
+t936 在关闭世界时保存镜头所在位置
 o937 Waypoints
-t937 
+t937 路径点
 o938 Empty
-t938 
+t938 空
 o939 Create Waypoint
-t939 
+t939 新建路径点
 o940 Goto Waypoint
-t940 
+t940 转到路径点
 o941 Delete Waypoint
-t941 
+t941 删除路径点
 o942 Save Camera position on world close
-t942 
+t942 在关闭世界时保存镜头所在位置
+o943 Save Rotation
+t943 保存镜头朝向
+o944 Waypoint Name:
+t944 路径点名字：
+o945 Session lock lost. This world is being accessed from another location.
+t945 
+o946 
+
+Your changes cannot be saved.
+t946 
+o947 Click to import this item.
+t947 

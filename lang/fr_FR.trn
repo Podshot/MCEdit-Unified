@@ -2022,3 +2022,17 @@ o941 Delete Waypoint
 t941 Suppr. point
 o942 Save Camera position on world close
 t942 Sauver la position de la caméra en quitant
+o943 Save Rotation
+t943 Sauvegarder rotation
+o944 Waypoint Name:
+t944 Nom du point :
+o945 Session lock lost. This world is being accessed from another location.
+t945 La session est verrouilée par une autre application.
+o946 
+
+Your changes cannot be saved.
+t946 
+
+Vos changements ne peuvent être sauvegardés.
+o947 Click to import this item.
+t947 

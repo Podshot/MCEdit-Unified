@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 # extended_widgets.py
 # Moved albow related stuff from mceutils.
-import resource_packs
 from controls import ValueDisplay
 from dialogs import alert, ask, Dialog
 from controls import Button, Label, ValueButton, CheckBox, AttrRef
