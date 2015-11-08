@@ -559,6 +559,14 @@ blocks:
         mapcolor: [218, 210, 158]
         tex: [6, 14]
 
+  id: 25
+    idStr: noteblock
+    name: Note Block
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
   - id: 26
     idStr: bed
     name: Bed
@@ -716,6 +724,14 @@ blocks:
       13:
         name: Powered Rail (Powered, Ascending, South)
         tex: [3, 11]
+
+  id: 28
+    idStr: detector_rail
+    name: Detector Rail
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
 
   - id: 30
     idStr: web
@@ -1215,6 +1231,14 @@ blocks:
           BOTTOM: [16, 3]
     opacity: 0
 
+  id: 55
+    idStr: redstone_wire
+    name: Redstone Wire
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
   - id: 56
     idStr: diamond_ore
     name: Diamond Ore
@@ -1531,6 +1555,22 @@ blocks:
       5: 
         name: Wall Sign (East)
 
+  id: 69
+    idStr: lever
+    name: Lever
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+  id: 70
+    idStr: stone_pressure_plate
+    name: Stone Pressure Plate
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
   - id: 71
     idStr: iron_door
     name: Iron Door
@@ -1566,6 +1606,14 @@ blocks:
       11:
         name: Iron Door (Upper, Right Hinge, Powered)
 
+  id: 72
+    idStr: wooden_pressure_plate
+    name: Wooden Pressure Plate
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
   - id: 73
     idStr: redstone_ore
     name: Redstone Ore
@@ -1578,6 +1626,30 @@ blocks:
     mapcolor: [131, 107, 107]
     tex: [20, 4]
     brightness: 9
+
+    id: 75
+    idStr: unlit_redstone_torch
+    name: Unlit Redstone Torch
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+  id: 76
+    idStr: redstone_torch
+    name: Redstone Torch
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+  id: 77
+    idStr: stone_button
+    name: Stone Button
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
 
   - id: 78
     idStr: snow_layer
@@ -2533,6 +2605,30 @@ blocks:
     mapcolor: [235, 248, 182]
     tex: [15, 10]
 
+    id: 123
+    idStr: redstone_lamp
+    name: Redstone Lamp
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+    id: 124
+    idStr: lit_redstone_lamp
+    name: Lit Redstone Lamp
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+    id: 126
+    idStr: activator_rail
+    name: Activator Rail
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
   - id: 127
     idStr: cocoa
     name: Cocoa
@@ -2598,6 +2694,22 @@ blocks:
     name: Emerald Ore
     mapcolor: [200, 200, 200]
     tex: [11, 10]
+
+  id: 131
+    idStr: tripwire_hook
+    name: Tripwire Hook
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+  id: 132
+    idStr: tripwire
+    name: Tripwire
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
 
   - id: 133
     idStr: emerald_block
@@ -2799,6 +2911,14 @@ blocks:
         name: Potatoes (Age 7)
         tex: [12, 12]
 
+  id: 143
+    idStr: wooden_button
+    name: Wooden Button
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
   - id: 144
     idStr: skull
     name: Mob Head
@@ -2899,6 +3019,38 @@ blocks:
         tex_direction:
           TOP: [8, 14]
           BOTTOM: [7, 13]
+ 
+  id: 146
+    idStr: trapped_chest
+    name: Trapped Chest
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+  id: 147
+    idStr: light_weighted_pressure
+    name: Light Weighted Pressure
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+  id: 148
+    idStr: Heavy Weighted Pressure Plate
+    name: heavy_weighted_pressure_plate
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
+
+  id: 151
+    idStr: daylight_detector
+    name: Daylight Detector
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
 
   - id: 152
     idStr: redstone_block
@@ -3243,6 +3395,15 @@ blocks:
       7:
         name: Dark Oak Wood Stairs (Top, North)
 
+  id: 167
+    idStr: iron_trapdoor
+    name: Iron Trapdoor
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    type: TRAPDOOR
+    brightness: 0
+    opacity: 15
+
   - id: 170
     idStr: hay_block
     name: Hay Bale
@@ -3395,6 +3556,14 @@ blocks:
       11:
         name: Double Plant (Upper Half, East)
         tex: [5, 3]
+
+  id: 178
+    idStr: daylight_detector_inverted
+    name: Inverted Daylight Sensor
+    mapcolor: [201, 119, 240]
+    tex: [31, 31]
+    brightness: 0
+    opacity: 15
 
   - id: 183
     idStr: spruce_fence_gate
