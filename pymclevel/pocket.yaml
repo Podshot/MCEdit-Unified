@@ -559,7 +559,7 @@ blocks:
         mapcolor: [218, 210, 158]
         tex: [6, 14]
 
-  id: 25
+  - id: 25
     idStr: noteblock
     name: Note Block
     mapcolor: [201, 119, 240]
@@ -725,7 +725,7 @@ blocks:
         name: Powered Rail (Powered, Ascending, South)
         tex: [3, 11]
 
-  id: 28
+  - id: 28
     idStr: detector_rail
     name: Detector Rail
     mapcolor: [201, 119, 240]
@@ -1231,7 +1231,7 @@ blocks:
           BOTTOM: [16, 3]
     opacity: 0
 
-  id: 55
+  - id: 55
     idStr: redstone_wire
     name: Redstone Wire
     mapcolor: [201, 119, 240]
@@ -1555,7 +1555,7 @@ blocks:
       5: 
         name: Wall Sign (East)
 
-  id: 69
+  - id: 69
     idStr: lever
     name: Lever
     mapcolor: [201, 119, 240]
@@ -1563,7 +1563,7 @@ blocks:
     brightness: 0
     opacity: 15
 
-  id: 70
+  - id: 70
     idStr: stone_pressure_plate
     name: Stone Pressure Plate
     mapcolor: [201, 119, 240]
@@ -1606,7 +1606,7 @@ blocks:
       11:
         name: Iron Door (Upper, Right Hinge, Powered)
 
-  id: 72
+  - id: 72
     idStr: wooden_pressure_plate
     name: Wooden Pressure Plate
     mapcolor: [201, 119, 240]
@@ -1627,7 +1627,7 @@ blocks:
     tex: [20, 4]
     brightness: 9
 
-    id: 75
+  - id: 75
     idStr: unlit_redstone_torch
     name: Unlit Redstone Torch
     mapcolor: [201, 119, 240]
@@ -1635,7 +1635,7 @@ blocks:
     brightness: 0
     opacity: 15
 
-  id: 76
+  - id: 76
     idStr: redstone_torch
     name: Redstone Torch
     mapcolor: [201, 119, 240]
@@ -1643,7 +1643,7 @@ blocks:
     brightness: 0
     opacity: 15
 
-  id: 77
+  - id: 77
     idStr: stone_button
     name: Stone Button
     mapcolor: [201, 119, 240]
@@ -2605,7 +2605,7 @@ blocks:
     mapcolor: [235, 248, 182]
     tex: [15, 10]
 
-    id: 123
+  - id: 123
     idStr: redstone_lamp
     name: Redstone Lamp
     mapcolor: [201, 119, 240]
@@ -2613,7 +2613,7 @@ blocks:
     brightness: 0
     opacity: 15
 
-    id: 124
+  - id: 124
     idStr: lit_redstone_lamp
     name: Lit Redstone Lamp
     mapcolor: [201, 119, 240]
@@ -2621,7 +2621,7 @@ blocks:
     brightness: 0
     opacity: 15
 
-    id: 126
+  - id: 126
     idStr: activator_rail
     name: Activator Rail
     mapcolor: [201, 119, 240]
@@ -2695,7 +2695,7 @@ blocks:
     mapcolor: [200, 200, 200]
     tex: [11, 10]
 
-  id: 131
+  - id: 131
     idStr: tripwire_hook
     name: Tripwire Hook
     mapcolor: [201, 119, 240]
@@ -2703,7 +2703,7 @@ blocks:
     brightness: 0
     opacity: 15
 
-  id: 132
+  - id: 132
     idStr: tripwire
     name: Tripwire
     mapcolor: [201, 119, 240]
@@ -2911,7 +2911,7 @@ blocks:
         name: Potatoes (Age 7)
         tex: [12, 12]
 
-  id: 143
+  - id: 143
     idStr: wooden_button
     name: Wooden Button
     mapcolor: [201, 119, 240]
@@ -3020,7 +3020,7 @@ blocks:
           TOP: [8, 14]
           BOTTOM: [7, 13]
  
-  id: 146
+  - id: 146
     idStr: trapped_chest
     name: Trapped Chest
     mapcolor: [201, 119, 240]
@@ -3028,7 +3028,7 @@ blocks:
     brightness: 0
     opacity: 15
 
-  id: 147
+  - id: 147
     idStr: light_weighted_pressure
     name: Light Weighted Pressure
     mapcolor: [201, 119, 240]
@@ -3036,9 +3036,9 @@ blocks:
     brightness: 0
     opacity: 15
 
-  id: 148
-    idStr: Heavy Weighted Pressure Plate
-    name: heavy_weighted_pressure_plate
+  - id: 148
+    idStr: heavy_weighted_pressure_plate
+    name: Heavy Weighted Pressure Plate
     mapcolor: [201, 119, 240]
     tex: [31, 31]
     brightness: 0
@@ -3395,7 +3395,7 @@ blocks:
       7:
         name: Dark Oak Wood Stairs (Top, North)
 
-  id: 167
+  - id: 167
     idStr: iron_trapdoor
     name: Iron Trapdoor
     mapcolor: [201, 119, 240]
@@ -3557,7 +3557,7 @@ blocks:
         name: Double Plant (Upper Half, East)
         tex: [5, 3]
 
-  id: 178
+  - id: 178
     idStr: daylight_detector_inverted
     name: Inverted Daylight Sensor
     mapcolor: [201, 119, 240]
