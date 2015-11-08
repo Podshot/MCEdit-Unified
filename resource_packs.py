@@ -7,6 +7,7 @@ import directories
 import os
 import shutil
 from config import config
+from cStringIO import StringIO
 
 import locale
 import traceback
@@ -747,8 +748,9 @@ class ZipResourcePack(IResourcePack):
                     #!# But, reading the fd data and writing it to a temporary file seem to work...
                     log.debug("                Done. (%s, seekable: %s, readable: %s)"%(type(fp), fp.seekable(), fp.readable()))
                     log.debug("            Saving fp data to temp file.")
-                    fp1 = os.tmpfile()
+                    fp1 = StringIO()
                     fp1.write(fp.read())
+                    fp.close()
                     fp1.seek(0)
                     log.debug("                Done.")
                     #possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
