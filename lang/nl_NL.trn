@@ -1973,9 +1973,13 @@ o942 Save Camera position on world close
 t942 
 o943 Save Rotation
 t943 
-o945 Waypoint Name:
+o944 Waypoint Name:
+t944 
+o945 Session lock lost. This world is being accessed from another location.
 t945 
-o946 Session lock lost. This world is being accessed from another location.
-
+o946 
+ 
 Your changes cannot be saved.
 t946 
+o947 Click to import this item.
+t947 
