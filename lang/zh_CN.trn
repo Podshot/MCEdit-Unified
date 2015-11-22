@@ -1,4 +1,4 @@
-#-# Simplified Chinese (China)
+﻿#-# Simplified Chinese (China)
 #-# font regular: NotoSansHans-Medium.ttf
 #-# font bold: NotoSansHans-Bold.ttf
 # TRANSLATION BASICS
@@ -2025,22 +2025,12 @@ t943 保存镜头朝向
 o944 Waypoint Name:
 t944 路径点名字：
 o945 Session lock lost. This world is being accessed from another location.
-<<<<<<< HEAD
 t945 会话锁丢失。这个世界正在被另一个软件读写.
 o946 
- 
+
 Your changes cannot be saved.
 t946 
  
 你的更改不会被保存.
 o947 Click to import this item.
 t947 点击来导入这个物品.
-=======
-t945 
-o946 
-
-Your changes cannot be saved.
-t946 
-o947 Click to import this item.
-t947 
->>>>>>> Khroki/master
