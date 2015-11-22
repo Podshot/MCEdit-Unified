@@ -173,7 +173,8 @@ class FurnaceDispenserChest:
         alphaMaterials.Furnace.ID,
         alphaMaterials.LitFurnace.ID,
         alphaMaterials.Chest.ID,
-        alphaMaterials.EnderChest.ID
+        alphaMaterials.EnderChest.ID,
+        alphaMaterials.TrappedChest.ID
     ]
     East = 2
     West = 3

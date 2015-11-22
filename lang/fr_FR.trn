@@ -2029,6 +2029,7 @@ t944 Nom du point :
 o945 Session lock lost. This world is being accessed from another location.
 t945 La session est verrouilée par une autre application.
 o946 
+<<<<<<< HEAD
  
 Your changes cannot be saved.
 t946 
@@ -2036,3 +2037,12 @@ t946
 Vos changements ne peuvent être sauvegardés.
 o947 Click to import this item.
 t947 
+=======
+
+Your changes cannot be saved.
+t946 
+
+Vos changements ne peuvent être sauvegardés.
+o947 Click to import this item.
+t947 
+>>>>>>> Khroki/master

@@ -46,9 +46,9 @@ fh.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.WARN)
 
-if "-v" in sys.argv:
+if "--log-info" in sys.argv:
     ch.setLevel(logging.INFO)
-if "-vv" in sys.argv:
+if "--log-debug" in sys.argv:
     ch.setLevel(logging.DEBUG)
 
 

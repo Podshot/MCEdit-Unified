@@ -22,6 +22,8 @@ from editortools.blockview import BlockButton
 import ftp_client
 import sys
 from pymclevel import nbt
+from editortools.select import SelectionTool
+from pymclevel.box import BoundingBox
 
 """
 leveleditor.py
@@ -80,7 +82,7 @@ from pygame import display, event, mouse, MOUSEMOTION, image
 
 from depths import DepthOffset
 from editortools.operation import Operation
-from editortools.chunk import GeneratorPanel
+from editortools.chunk import GeneratorPanel, ChunkTool
 from glbackground import GLBackground, Panel
 from glutils import Texture
 from mcplatform import askSaveFile
@@ -1410,7 +1412,7 @@ class LevelEditor(GLViewport):
                     try:
                         level.checkSessionLock()
                     except SessionLockLost, e:
-                        alert(e.message + _("\n\nYour changes cannot be saved."))
+                        alert(_(e.message) + _("\n\nYour changes cannot be saved."))
                         return
 
                 if hasattr(level, 'dimensions'):
@@ -2828,6 +2830,15 @@ class LevelEditor(GLViewport):
                 selectedChunks.update(boxedChunks)
 
         self.selectionTool.selectNone()
+        
+    def chunksToSelection(self):
+        starting_chunk = self.selectedChunks.pop()
+        box = self.selectionTool.selectionBoxForCorners((starting_chunk[0] << 4, 0, starting_chunk[1] << 4), ((starting_chunk[0] << 4) + 15, 256, (starting_chunk[1] << 4) + 15))
+        for c in self.selectedChunks:
+            box = box.union(self.selectionTool.selectionBoxForCorners((c[0] << 4, 0, c[1] << 4), ((c[0] << 4) + 15, 256, (c[1] << 4) + 15)))
+        self.selectedChunks = set([])
+        self.selectionTool.selectNone()
+        self.selectionTool.setSelection(box)
 
     def selectAll(self):
 
@@ -3424,6 +3435,7 @@ class EditorToolbar(GLOrtho):
             self.parent.selectionTool.hidePanel()
             if self.parent.currentTool is not None:
                 self.parent.currentTool.cancel()
+                self.parent.currentTool.toolDeselected()
             self.parent.currentTool = t
             self.parent.currentTool.toolSelected()
             return
