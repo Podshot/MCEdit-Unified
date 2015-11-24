@@ -1,4 +1,4 @@
-#-# Simplified Chinese (China)
+﻿#-# Simplified Chinese (China)
 #-# font regular: NotoSansHans-Medium.ttf
 #-# font bold: NotoSansHans-Bold.ttf
 # TRANSLATION BASICS
@@ -2030,5 +2030,7 @@ o946
 
 Your changes cannot be saved.
 t946 
+
+你的更改不会被保存.
 o947 Click to import this item.
 t947 点击来导入这个物品.
