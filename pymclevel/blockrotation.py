@@ -797,6 +797,7 @@ class Hopper:
     North = 4
     South = 5
 
+applyBit8(Hopper)
 Hopper.roll = arange(16, dtype='uint8')
 Hopper.roll[Hopper.Down] = Hopper.South
 Hopper.roll[Hopper.North] = Hopper.Down
