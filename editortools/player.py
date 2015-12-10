@@ -1038,7 +1038,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
 
         pixelScale = 0.5 if self.editor.level.materials.name in ("Pocket", "Alpha") else 1.0
         texSize = 16 * pixelScale
-        cageTexVerts *= pixelScale
+        cageTexVerts = cageTexVerts.astype(float) * pixelScale
 
         cageTexVerts = numpy.array(
             [((tx, ty), (tx + texSize, ty), (tx + texSize, ty + texSize), (tx, ty + texSize)) for (tx, ty) in

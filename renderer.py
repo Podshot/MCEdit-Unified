@@ -1570,7 +1570,7 @@ class LowDetailBlockRenderer(BlockRenderer):
             va1[_XYZ][:, :, 0] *= step
             va1[_XYZ][:, :, 2] *= step
 
-            flatcolors *= 0.8
+            flatcolors = flatcolors.astype(float) * 0.8
 
             va1.view('uint8')[_RGBA] = flatcolors
             grassmask = topBlocks[nonAirBlocks] == 2
@@ -1617,7 +1617,7 @@ class GenericBlockRenderer(BlockRenderer):
             if self.materials.name in ("Alpha", "Pocket"):
                 if direction == pymclevel.faces.FaceYIncreasing:
                     grass = theseBlocks == pymclevel.materials.alphaMaterials.Grass.ID
-                    vertexArray.view('uint8')[_RGB][grass] *= self.grassColor
+                    vertexArray.view('uint8')[_RGB][grass] = vertexArray.view('uint8')[_RGB][grass].astype(float) * self.grassColor
             yield
 
             vertexArrays.append(vertexArray)
@@ -1688,12 +1688,12 @@ class LeafBlockRenderer(BlockRenderer):
 
             vertexArray.view('uint8')[_RGB] *= facingBlockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
             if self.materials.name in ("Alpha", "Pocket"):
-                vertexArray.view('uint8')[_RGB][leaves] *= self.leafColor
-                vertexArray.view('uint8')[_RGB][pines] *= self.pineLeafColor
-                vertexArray.view('uint8')[_RGB][birches] *= self.birchLeafColor
-                vertexArray.view('uint8')[_RGB][jungle] *= self.jungleLeafColor
-                vertexArray.view('uint8')[_RGB][acacia] *= self.acaciaLeafColor
-                vertexArray.view('uint8')[_RGB][darkoak] *= self.darkoakLeafColor
+                vertexArray.view('uint8')[_RGB][leaves] = vertexArray.view('uint8')[_RGB][leaves].astype(float) * self.leafColor
+                vertexArray.view('uint8')[_RGB][pines] = vertexArray.view('uint8')[_RGB][pines].astype(float) * self.pineLeafColor
+                vertexArray.view('uint8')[_RGB][birches] = vertexArray.view('uint8')[_RGB][birches].astype(float) * self.birchLeafColor
+                vertexArray.view('uint8')[_RGB][jungle] = vertexArray.view('uint8')[_RGB][jungle].astype(float) * self.jungleLeafColor
+                vertexArray.view('uint8')[_RGB][acacia] = vertexArray.view('uint8')[_RGB][acacia].astype(float) * self.acaciaLeafColor
+                vertexArray.view('uint8')[_RGB][darkoak] = vertexArray.view('uint8')[_RGB][darkoak].astype(float) * self.darkoakLeafColor
 
             yield
             arrays.append(vertexArray)
@@ -1762,8 +1762,8 @@ class PlantBlockRenderer(BlockRenderer):
             vertexArray.view('uint8')[_RGB] = 0xf  # ignore precomputed directional light
             vertexArray.view('uint8')[_RGB] *= lights
             if colorize is not None:
-                vertexArray.view('uint8')[_RGB][colorize] *= LeafBlockRenderer.leafColor
-                vertexArray.view('uint8')[_RGB][colorize2] *= LeafBlockRenderer.leafColor
+                vertexArray.view('uint8')[_RGB][colorize] = vertexArray.view('uint8')[_RGB][colorize].astype(float) * LeafBlockRenderer.leafColor
+                vertexArray.view('uint8')[_RGB][colorize2] = vertexArray.view('uint8')[_RGB][colorize2].astype(float) * LeafBlockRenderer.leafColor
             arrays.append(vertexArray)
             yield
 
@@ -1994,7 +1994,7 @@ class RailBlockRenderer(BlockRenderer):
         tex = texMap(railBlocks, bdata, pymclevel.faces.FaceYIncreasing)[:, numpy.newaxis, :]
 
         # disable 'powered' or 'pressed' bit for powered and detector rails
-        bdata[railBlocks != pymclevel.materials.alphaMaterials.Rail.ID] &= ~0x8
+        bdata[railBlocks != pymclevel.materials.alphaMaterials.Rail.ID] = bdata[railBlocks != pymclevel.materials.alphaMaterials.Rail.ID].astype(int) & ~0x8
 
         vertexArray = self.makeTemplate(direction, blockIndices)
         if not len(vertexArray):
