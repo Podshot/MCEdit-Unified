@@ -2016,7 +2016,7 @@ t938 Leer
 o939 Create Waypoint
 t939 Wegpunkt erstellen
 o940 Goto Waypoint
-t940 zum Wegpunkt gehen
+t940 Zum Wegpunkt gehen
 o941 Delete Waypoint
 t941 Wegpunkt löschen
 o942 Save Camera position on world close
@@ -2026,10 +2026,12 @@ t943 Speichere Rotation
 o944 Waypoint Name:
 t944 Wegpunkt Name:
 o945 Session lock lost. This world is being accessed from another location.
-t945 
+t945 Session Lock verloren. Ein anderes Programm greift auf diese Welt zu.
 o946 
 
 Your changes cannot be saved.
 t946 
+
+Deine Änderungen konnten nicht gespeichert werden.
 o947 Click to import this item.
-t947 
+t947 Klicke, um dieses Element zu importieren.

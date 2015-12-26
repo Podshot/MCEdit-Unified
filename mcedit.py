@@ -773,6 +773,7 @@ def main(argv):
     try:
         MCEdit.main()
     except Exception as e:
+        print "mcedit.main MCEdit exited with errors."
         logging.error("MCEdit version %s", release.get_version())
         display.quit()
         if hasattr(sys, 'frozen') and sys.platform == 'win32':
@@ -810,10 +811,37 @@ def weird_fix():
         pass
 
 
+class FakeStdOutErr:
+    """Fake file object to redirect very last Python output.
+    Used to track 'errors' not handled in MCEdit.
+    Mimics 'write' and 'close' file objects methods.
+    Used on Linux only."""
+    mode = 'a'
+    def __init__(self, *args, **kwargs):
+        """*args and **kwargs are ignored.
+        Deletes the 'logger' object and reopen 'logfile' in append mode."""
+        global logger
+        global logfile
+        del logger
+        self.fd = open(logfile, 'a')
+
+    def write(self, msg):
+        self.fd.write(msg)
+
+    def close(self, *args, **kwargs):
+        self.fd.flush()
+        self.fd.close()
+
 if __name__ == "__main__":
     try:
         main(sys.argv)
     except (SystemExit, KeyboardInterrupt):
+        # It happens that on Linux, Python tries to kill already dead processes and display errors in the console.
+        # Redirecting them to the log file preserve them and other errors which may occur.
+        if sys.platform == "linux2":
+            logger.debug("MCEdit is exiting normally.")
+            logger.debug("Lines below this one are pure Python output.")
+            sys.stdout = sys.stderr = FakeStdOutErr()
         pass
     except:
         traceback.print_exc()

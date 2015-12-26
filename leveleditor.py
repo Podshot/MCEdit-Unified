@@ -24,6 +24,7 @@ import sys
 from pymclevel import nbt
 from editortools.select import SelectionTool
 from pymclevel.box import BoundingBox
+from waypoints import WaypointManager
 
 """
 leveleditor.py
@@ -249,8 +250,9 @@ class LevelEditor(GLViewport):
 
         self.viewButton = Button("Show...", action=showViewOptions)
         
-        self.waypoints = None
-        self.loadWaypoints()
+        self.waypointManager = WaypointManager(editor=self)
+        self.waypointManager.load()
+        #self.loadWaypoints()
         self.waypointsButton = Button("Waypoints", action=self.showWaypointsDialog)
 
         self.viewportButton = Button("Camera View", action=self.swapViewports,
@@ -322,41 +324,6 @@ class LevelEditor(GLViewport):
     def __del__(self):
         self.deleteAllCopiedSchematics()
         
-    def loadWaypoints(self):
-        if self.level is None:
-            return
-        
-        def build(waypts):
-            points = {}
-            for point in waypts:
-                points["{0} ({1},{2},{3})".format(point["Name"].value, round(point["Coordinates"][0].value, 2), round(point["Coordinates"][1].value, 2), round(point["Coordinates"][2].value, 2))] = [
-                                                                                                                                                                        point["Coordinates"][0].value, 
-                                                                                                                                                                        point["Coordinates"][1].value, 
-                                                                                                                                                                        point["Coordinates"][2].value,
-                                                                                                                                                                        point["Rotation"][0].value,
-                                                                                                                                                                        point["Rotation"][1].value,
-                                                                                                                                                                        point["Dimension"].value
-                                                                                                                                                                        ]
-                
-            return points
-        
-        self.nbt_waypoints = None
-        self.waypoints = {}
-        if not os.path.exists(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat")):
-            self.nbt_waypoints = nbt.TAG_Compound()
-            self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
-            self.waypoints = build(self.nbt_waypoints["Waypoints"])
-        else:
-            self.nbt_waypoints = nbt.load(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat"))
-            self.waypoints = build(self.nbt_waypoints["Waypoints"])
-        if not (len(self.waypoints) > 0):
-            self.waypoints["Empty"] = [0,0,0,0,0,0]
-            
-        if "LastPosition" in self.nbt_waypoints:
-            self.gotoLastPosition()
-            
-        
-        #self.waypoints.save(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat"))
         
     def showCreateDialog(self):
         widg = Widget()
@@ -380,7 +347,7 @@ class LevelEditor(GLViewport):
         result = Dialog(widg, ["Create", "Cancel"]).present()
         if result == "Create":
             if saveCameraRotation.checkbox.value:
-                self.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
+                self.waypointManager.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
                                                                                                                          yField.value, 
                                                                                                                          zField.value,
                                                                                                                          self.mainViewport.yaw,
@@ -389,91 +356,48 @@ class LevelEditor(GLViewport):
                                                                                                                          ] 
             
             else:
-                self.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
+                self.waypointManager.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
                                                                                                                      yField.value, 
                                                                                                                      zField.value,
                                                                                                                      0.0,
                                                                                                                      0.0,
                                                                                                                      self.level.dimNo]
-            if "Empty" in self.waypoints:
-                del self.waypoints["Empty"]
+            if "Empty" in self.waypointManager.waypoints:
+                del self.waypointManager.waypoints["Empty"]
             self.waypointDialog.dismiss()
-            self.saveWaypoints()
+            self.waypointManager.save()
+            #self.saveWaypoints()
             #self.nbt_waypoints["Waypoints"] = self.waypoints
             #self.nbt_waypoints.s
-            
-    def saveWaypoints(self):
-        del self.nbt_waypoints["Waypoints"]
-        self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
-        for waypoint in self.waypoints.keys():
-            way = nbt.TAG_Compound()
-            way["Name"] = nbt.TAG_String(waypoint.split()[0])
-            way["Dimension"] = nbt.TAG_Int(self.waypoints[waypoint][5])
-            coords = nbt.TAG_List()
-            coords.append(nbt.TAG_Float(self.waypoints[waypoint][0]))
-            coords.append(nbt.TAG_Float(self.waypoints[waypoint][1]))
-            coords.append(nbt.TAG_Float(self.waypoints[waypoint][2]))
-            rot = nbt.TAG_List()
-            rot.append(nbt.TAG_Float(self.waypoints[waypoint][3]))
-            rot.append(nbt.TAG_Float(self.waypoints[waypoint][4]))
-            way["Coordinates"] = coords
-            way["Rotation"] = rot
-            self.nbt_waypoints["Waypoints"].append(way)
-        self.nbt_waypoints.save(os.path.join(os.path.dirname(self.level.filename), u"mcedit_waypoints.dat"))
     
     def gotoWaypoint(self):
-        self.gotoDimension(self.waypoints[self.waypointsChoiceButton.value][5])
+        self.gotoDimension(self.waypointManager.waypoints[self.waypointsChoiceButton.value][5])
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
         
-        self.mainViewport.cameraPosition = self.waypoints[self.waypointsChoiceButton.value][:3]
-        self.mainViewport.yaw = self.waypoints[self.waypointsChoiceButton.value][3]
-        self.mainViewport.pitch = self.waypoints[self.waypointsChoiceButton.value][4]
+        self.mainViewport.cameraPosition = self.waypointManager.waypoints[self.waypointsChoiceButton.value][:3]
+        self.mainViewport.yaw = self.waypointManager.waypoints[self.waypointsChoiceButton.value][3]
+        self.mainViewport.pitch = self.waypointManager.waypoints[self.waypointsChoiceButton.value][4]
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
         self.waypointDialog.dismiss()
         
     def deleteWaypoint(self):
         self.waypointDialog.dismiss()
-        del self.waypoints[self.waypointsChoiceButton.value]
-        self.saveWaypoints()
-        if not (len(self.waypoints) > 0):
-            self.waypoints["Empty"] = [0,0,0,0,0,0]
+        self.waypointManager.delete(self.waypointsChoiceButton.value)
         
-    def saveLastPosition(self):
-        if "LastPosition" in self.nbt_waypoints:
-            del self.nbt_waypoints["LastPosition"]
-        topTag = nbt.TAG_Compound()
-        topTag["Dimension"] = nbt.TAG_Int(self.level.dimNo)
-        
-        pos = nbt.TAG_List()
-        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[0]))
-        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[1]))
-        pos.append(nbt.TAG_Float(self.mainViewport.cameraPosition[2]))
-        topTag["Coordinates"] = pos
-        
-        rot = nbt.TAG_List()
-        rot.append(nbt.TAG_Float(self.mainViewport.yaw))
-        rot.append(nbt.TAG_Float(self.mainViewport.pitch))
-        topTag["Rotation"] = rot
-        
-        self.nbt_waypoints["LastPosition"] = topTag
-        self.saveWaypoints()
-        
-    def gotoLastPosition(self):
-        if "LastPosition" not in self.nbt_waypoints:
-            return
-        self.gotoDimension(self.nbt_waypoints["LastPosition"]["Dimension"].value)
+    def gotoLastPosition(self, lastPos):
+        self.gotoDimension(lastPos["Dimension"].value)
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
         
-        self.mainViewport.cameraPosition = [self.nbt_waypoints["LastPosition"]["Coordinates"][0].value, 
-                                            self.nbt_waypoints["LastPosition"]["Coordinates"][1].value, 
-                                            self.nbt_waypoints["LastPosition"]["Coordinates"][2].value
+        self.mainViewport.cameraPosition = [lastPos["Coordinates"][0].value, 
+                                            lastPos["Coordinates"][1].value, 
+                                            lastPos["Coordinates"][2].value
                                             ]
-        self.mainViewport.yaw = self.nbt_waypoints["LastPosition"]["Rotation"][0].value
-        self.mainViewport.pitch = self.nbt_waypoints["LastPosition"]["Rotation"][1].value
-        del self.nbt_waypoints["LastPosition"]
+        self.mainViewport.yaw = lastPos["Rotation"][0].value
+        self.mainViewport.pitch = lastPos["Rotation"][1].value
+        del self.waypointManager.nbt_waypoints["LastPosition"]
     
     def showWaypointsDialog(self):
         #print "Yay waypoints!"
@@ -488,7 +412,7 @@ class LevelEditor(GLViewport):
         #print dir(self.level)
         self.waypointDialog = QuickDialog()
         
-        self.waypointsChoiceButton = ChoiceButton(self.waypoints.keys())
+        self.waypointsChoiceButton = ChoiceButton(self.waypointManager.waypoints.keys())
         createWaypointButton = Button("Create Waypoint", action=self.showCreateDialog)
         gotoWaypointButton = Button("Goto Waypoint", action=self.gotoWaypoint)
         deleteWaypointButton = Button("Delete Waypoint", action=self.deleteWaypoint)
@@ -1309,8 +1233,8 @@ class LevelEditor(GLViewport):
                 self.mainViewport.skyList = None
                 self.mainViewport.drawSkyBackground()
                 
-            self.loadWaypoints()
-            
+            self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
+            self.waypointManager.load()
             dimensionsList = [d[0] for d in dimensionsMenu]
             self.netherButton = ChoiceButton(dimensionsList, choose=presentMenu)
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
