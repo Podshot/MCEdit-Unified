@@ -557,6 +557,39 @@ textureSlots = {
     # Start Comparator Block
     }
 
+class MultipartTexture(object):
+    subclasses = []
+    texture_dict = {}
+    
+    def __init__(self, texture_objects):
+        #print dir(self.__class__)
+        for subcls in self.__class__.__subclasses__():
+            self.subclasses.append(subcls)
+        for cls in self.subclasses:
+            instance = cls(texture_objects)
+            self.texture_dict[instance.target] = instance
+        #print self.texture_dict
+            
+        
+class LeverTexture(MultipartTexture):
+    target = "lever"
+    
+    def __init__(self, texture_objects):
+        self.texture_objects = texture_objects
+    
+    def parse_texture(self):
+        lever = self.texture_objects["lever"].copy()
+        cobblestone = self.texture_objects["cobblestone"].copy()
+        base_1 = cobblestone.crop((5, 4, 11, 12))
+        lever.paste(base_1, (10, 0, 16, 8))
+    
+        base_2 = cobblestone.crop((5, 0, 11, 3))
+        lever.paste(base_2, (10, 8, 16, 11))
+
+        base_3 = cobblestone.crop((4, 0, 12, 3))
+        lever.paste(base_3, (2, 0, 10, 3))
+        return lever
+
 
 class IResourcePack:
     '''
@@ -619,12 +652,16 @@ class IResourcePack:
         '''
         Parses each block texture into a usable PNG file like terrain.png
         '''
+        multiparts = MultipartTexture(self.block_image)
         log.debug("Parsing terrain.png")
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
             if not self.__stop and tex in textureSlots.keys():
                 try:
-                    image = self.block_image[tex]
+                    if tex not in multiparts.texture_dict:
+                        image = self.block_image[tex]
+                    else:
+                        image = multiparts.texture_dict[tex].parse_texture()
                     log.debug("    Image is %s"%tex)
                     log.debug("        Image mode: %s"%image.mode)
                     if image.mode != "RGBA":

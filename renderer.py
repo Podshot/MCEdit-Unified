@@ -526,7 +526,7 @@ def makeVerticesFromModel(templates, dataMask=0):
 
                 vertexArray[..., indicies] = blockIndices[dimension][:, numpy.newaxis,
                                              numpy.newaxis]  # xxx swap z with y using ^
-
+                
             vertexArray[..., 0:5] += templates[i, data][..., 0:5]
             vertexArray[_ST] += texMap(blocks[blockIndices], blockData[blockIndices] & 15)[..., numpy.newaxis, :]
 
@@ -744,6 +744,7 @@ class ChunkCalculator(object):
                 VineBlockRenderer,
                 PlateBlockRenderer,
                 EndRodRenderer,
+                LeverBlockRenderer,
                 # button, floor plate, door -> 1-cube features
                 # lever, sign, wall sign, stairs -> 2-cube features
                 # fence
@@ -1775,8 +1776,8 @@ class PlantBlockRenderer(BlockRenderer):
 class TorchBlockRenderer(BlockRenderer):  #Levers here until someone makes a separate renderer for it.
     blocktypes = [pymclevel.materials.alphaMaterials.Torch.ID,
                   pymclevel.materials.alphaMaterials.RedstoneTorchOff.ID,
-                  pymclevel.materials.alphaMaterials.RedstoneTorchOn.ID,
-                  pymclevel.materials.alphaMaterials.Lever.ID]
+                  pymclevel.materials.alphaMaterials.RedstoneTorchOn.ID
+                  ]
     renderstate = ChunkCalculator.renderstateAlphaTest
     torchOffsetsStraight = [
         [  # FaceXIncreasing
@@ -1928,7 +1929,50 @@ class TorchBlockRenderer(BlockRenderer):  #Levers here until someone makes a sep
         self.vertexArrays = arrays
 
     makeVertices = makeTorchVertices
-
+    
+class LeverBlockRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.Lever.ID]
+    
+    leverBaseTemplate = makeVertexTemplatesFromJsonModel((5, 0, 4), (11, 3, 12), {
+        "down": (10, 0, 16, 8),
+        "up": (10, 0, 16, 8),
+        "north": (10, 8, 16, 11),
+        "south": (10, 8, 16, 11),
+        "west": (2, 0, 10, 3),
+        "east": (2, 0, 10, 3)
+    })
+    
+    leverBaseTemplates = numpy.array([
+        rotateTemplate(leverBaseTemplate, x=180, y=90),
+        rotateTemplate(leverBaseTemplate, x=90, y=90),
+        rotateTemplate(leverBaseTemplate, x=90, y=270),
+        rotateTemplate(leverBaseTemplate, x=90, y=180),
+        rotateTemplate(leverBaseTemplate, x=90, y=270),
+        rotateTemplate(leverBaseTemplate, x=0, y=0),
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
+    ])
+    
+    leverTemplate = makeVertexTemplatesFromJsonModel((7, 1, 7), (9, 11, 9), {
+        "down": (7, 6, 9, 8),
+        "up": (7, 6, 9, 8),
+        "north": (7, 6, 9, 16),
+        "south": (7, 6, 9, 16),
+        "west": (7, 6, 9, 16),
+        "east": (7, 6, 9, 16)
+    })
+    
+    leverTemplates = numpy.array([
+        rotateTemplate(leverTemplate, x=180, y=90),
+        rotateTemplate(leverTemplate, x=90, y=90),
+        leverTemplate,
+        rotateTemplate(leverTemplate, x=90, y=180),
+        rotateTemplate(leverTemplate, x=90, y=270),
+        rotateTemplate(leverTemplate, x=0, y=0),
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
+    ])
+    
+    makeVertices = makeVerticesFromModel([leverBaseTemplates, leverTemplates], 5)
+    
 
 class RailBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Rail.ID,
