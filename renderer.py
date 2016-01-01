@@ -728,8 +728,9 @@ class ChunkCalculator(object):
                 PaneBlockRenderer,
                 CakeBlockRenderer,
                 DaylightBlockRenderer,
+                StandingSignRenderer,
                 WallSignBlockRenderer,
-                #LeverBlockRenderer,
+                LeverBlockRenderer,
                 BedBlockRenderer,
                 EnchantingBlockRenderer,
                 RedstoneBlockRenderer,
@@ -744,7 +745,6 @@ class ChunkCalculator(object):
                 VineBlockRenderer,
                 PlateBlockRenderer,
                 EndRodRenderer,
-                LeverBlockRenderer,
                 # button, floor plate, door -> 1-cube features
                 # lever, sign, wall sign, stairs -> 2-cube features
                 # fence
@@ -2106,7 +2106,8 @@ class LadderBlockRenderer(BlockRenderer):
 
 class WallSignBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.WallSign.ID]
-
+    
+    '''
     wallSignOffsets = numpy.array([
                                     [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
                                     [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
@@ -2147,6 +2148,61 @@ class WallSignBlockRenderer(BlockRenderer):
         self.vertexArrays = [vertexArray]
 
     makeVertices = WallSignVertices
+    '''
+    
+    wallSignTemplate = makeVertexTemplatesFromJsonModel((0, 4.5, 0), (16, 13.5, 2), {
+        "down": (0, 11, 18, 13),
+        "up": (0, 6, 16, 8),
+        "north": (0, 4, 16, 13),
+        "south": (0, 4, 16, 13),
+        "west": (0, 4, 2, 13),
+        "east": (10, 4, 12, 13)
+    })
+    
+    wallSignTemplates = numpy.array([
+        wallSignTemplate,
+        rotateTemplate(wallSignTemplate, x=90),
+        rotateTemplate(wallSignTemplate, y=180),
+        wallSignTemplate,
+        rotateTemplate(wallSignTemplate, y=90),
+        rotateTemplate(wallSignTemplate, x=90),
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
+    ])
+    
+    makeVertices = makeVerticesFromModel(wallSignTemplates, 6)
+    
+class StandingSignRenderer(BlockRenderer):
+    blocktypes = [pymclevel.materials.alphaMaterials.Sign.ID]
+    
+    signTemplate = makeVertexTemplatesFromJsonModel((0, 7, 7), (16, 16, 9), {
+        "down": (0, 14, 16, 16),
+        "up": (0, 12, 16, 14),
+        "north": (0, 7, 16, 16),
+        "south": (0, 7, 16, 16),
+        "west": (0, 7, 2, 16),
+        "east": (14, 7, 16, 16)
+    })
+    
+    signTemplates = numpy.array([
+        signTemplate,
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
+    ])
+    
+    postTemplate = makeVertexTemplatesFromJsonModel((7, 0, 7), (9, 7, 9), {
+        "down": (7, 0, 9, 6),
+        "up": (7, 0, 9, 6),
+        "north": (7, 0, 9, 6),
+        "south": (7, 0, 9, 6),
+        "west": (7, 0, 9, 6),
+        "east": (7, 0, 9, 6),
+    })
+    
+    postTemplates = numpy.array([
+        postTemplate,
+        numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
+    ])
+    
+    makeVertices = makeVerticesFromModel([signTemplates, postTemplates])
 
 
 class SnowBlockRenderer(BlockRenderer):
