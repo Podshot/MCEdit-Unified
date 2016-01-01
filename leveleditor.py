@@ -2756,6 +2756,8 @@ class LevelEditor(GLViewport):
         self.selectionTool.selectNone()
         
     def chunksToSelection(self):
+        if len(self.selectedChunks) == 0:
+            return
         starting_chunk = self.selectedChunks.pop()
         box = self.selectionTool.selectionBoxForCorners((starting_chunk[0] << 4, 0, starting_chunk[1] << 4), ((starting_chunk[0] << 4) + 15, 256, (starting_chunk[1] << 4) + 15))
         for c in self.selectedChunks:
