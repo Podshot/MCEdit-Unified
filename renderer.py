@@ -492,7 +492,7 @@ def rotateTemplate(template, x=0, y=0):
     return template
 
 
-def makeVerticesFromModel(templates, dataMask=0):
+def makeVerticesFromModel(templates, dataMask=0, debug=False, id=""):
     """
     Returns a function that creates vertex arrays.
 
@@ -519,6 +519,12 @@ def makeVerticesFromModel(templates, dataMask=0):
         data = blockData[mask]
         data &= dataMask
         self.vertexArrays = []
+        if debug:
+            print "=== " + id + " ==="
+            print "Elements: " + str(elements)
+            print "Data: " + str(data)
+            print "Block Mask: " + str(blockData[mask])
+            print "Supplied Mask: " + str(dataMask)
         for i in range(elements):
             vertexArray = numpy.zeros((len(blockIndices[0]), 6, 4, 6), dtype='float32')
             for indicies in range(3):
@@ -1947,8 +1953,17 @@ class LeverBlockRenderer(BlockRenderer):
         rotateTemplate(leverBaseTemplate, x=90, y=90),
         rotateTemplate(leverBaseTemplate, x=90, y=270),
         rotateTemplate(leverBaseTemplate, x=90, y=180),
-        rotateTemplate(leverBaseTemplate, x=90, y=270),
-        rotateTemplate(leverBaseTemplate, x=0, y=0),
+        rotateTemplate(leverBaseTemplate, x=270, y=180),
+        leverBaseTemplate,
+        rotateTemplate(leverBaseTemplate, y=90),
+        rotateTemplate(leverBaseTemplate, x=180),
+        rotateTemplate(leverBaseTemplate, x=180, y=90),
+        rotateTemplate(leverBaseTemplate, x=90, y=90),
+        rotateTemplate(leverBaseTemplate, x=270, y=90),
+        rotateTemplate(leverBaseTemplate, x=270),
+        rotateTemplate(leverBaseTemplate, x=270, y=180),
+        leverBaseTemplate,
+        rotateTemplate(leverBaseTemplate, y=90),
         numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
     ])
     
@@ -1962,16 +1977,25 @@ class LeverBlockRenderer(BlockRenderer):
     })
     
     leverTemplates = numpy.array([
-        rotateTemplate(leverTemplate, x=180, y=90),
+        rotateTemplate(leverTemplate, x=180),
         rotateTemplate(leverTemplate, x=90, y=90),
-        leverTemplate,
+        rotateTemplate(leverTemplate, x=90, y=270), 
         rotateTemplate(leverTemplate, x=90, y=180),
-        rotateTemplate(leverTemplate, x=90, y=270),
-        rotateTemplate(leverTemplate, x=0, y=0),
+        rotateTemplate(leverTemplate, x=270, y=180),
+        leverTemplate,
+        rotateTemplate(leverTemplate, y=90),
+        rotateTemplate(leverTemplate, x=180),
+        rotateTemplate(leverTemplate, x=180),
+        rotateTemplate(leverTemplate, x=90, y=90),
+        rotateTemplate(leverTemplate, x=270, y=90),
+        rotateTemplate(leverTemplate, x=270),
+        rotateTemplate(leverTemplate, x=270, y=180),
+        leverTemplate,
+        leverTemplate,
         numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
     ])
     
-    makeVertices = makeVerticesFromModel([leverBaseTemplates, leverTemplates], 5)
+    makeVertices = makeVerticesFromModel([leverBaseTemplates, leverTemplates], 15)
     
 
 class RailBlockRenderer(BlockRenderer):
@@ -2107,49 +2131,6 @@ class LadderBlockRenderer(BlockRenderer):
 class WallSignBlockRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.WallSign.ID]
     
-    '''
-    wallSignOffsets = numpy.array([
-                                    [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
-                                    [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)],
-
-                                    [(0, -1, 0.9), (0, 0, -0.1), (0, 0, -0.1), (0, -1, 0.9)],  # facing east
-                                    [(0, 0, 0.1), (0, -1, -.9), (0, -1, -.9), (0, 0, 0.1)],  # facing west
-                                    [(.9, -1, 0), (.9, -1, 0), (-.1, 0, 0), (-.1, 0, 0)],  # north
-                                    [(0.1, 0, 0), (0.1, 0, 0), (-.9, -1, 0), (-.9, -1, 0)],  # south
-
-                                ] + [[(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)]] * 10, dtype='float32')
-
-    wallSignTextures = numpy.array([
-                                     [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-                                     [(0, 192), (0, 208), (16, 208), (16, 192)],  # unknown
-
-                                     [(96, 176), (96, 160), (80, 160), (80, 176), ],  # e
-                                     [(80, 160), (80, 176), (96, 176), (96, 160), ],  # w
-                                     [(80, 176), (96, 176), (96, 160), (80, 160), ],  # n
-                                     [(96, 160), (80, 160), (80, 176), (96, 176), ],  # s
-
-                                 ] + [[(0, 192), (0, 208), (16, 208), (16, 192)]] * 10, dtype='float32')
-
-    def WallSignVertices(self, facingBlockIndices, blocks, blockMaterials, blockData, areaBlockLights, texMap):
-        blockIndices = self.getMaterialIndices(blockMaterials)
-        blockLight = areaBlockLights[1:-1, 1:-1, 1:-1]
-        yield
-        bdata = blockData[blockIndices]
-
-        vertexArray = self.makeTemplate(pymclevel.faces.FaceYIncreasing, blockIndices)
-        if not len(vertexArray):
-            return
-
-        vertexArray[_ST] = self.wallSignTextures[bdata]
-        vertexArray[_XYZ] += self.wallSignOffsets[bdata]
-        vertexArray.view('uint8')[_RGB] *= blockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
-
-        yield
-        self.vertexArrays = [vertexArray]
-
-    makeVertices = WallSignVertices
-    '''
-    
     wallSignTemplate = makeVertexTemplatesFromJsonModel((0, 4.5, 0), (16, 13.5, 2), {
         "down": (0, 11, 18, 13),
         "up": (0, 6, 16, 8),
@@ -2159,17 +2140,18 @@ class WallSignBlockRenderer(BlockRenderer):
         "east": (10, 4, 12, 13)
     })
     
+    # I don't know how this sytem works and how it should be structured, but this seem to do the job
     wallSignTemplates = numpy.array([
         wallSignTemplate,
-        rotateTemplate(wallSignTemplate, x=90),
+        wallSignTemplate,
         rotateTemplate(wallSignTemplate, y=180),
         wallSignTemplate,
         rotateTemplate(wallSignTemplate, y=90),
-        rotateTemplate(wallSignTemplate, x=90),
+        rotateTemplate(wallSignTemplate, y=270),
         numpy.zeros((6, 4, 6)), numpy.zeros((6, 4, 6))
     ])
     
-    makeVertices = makeVerticesFromModel(wallSignTemplates, 6)
+    makeVertices = makeVerticesFromModel(wallSignTemplates, 7)
     
 class StandingSignRenderer(BlockRenderer):
     blocktypes = [pymclevel.materials.alphaMaterials.Sign.ID]

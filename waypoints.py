@@ -6,7 +6,6 @@ class WaypointManager:
     
     def __init__(self, worldDir=None, editor=None):
         self.worldDirectory = worldDir
-        print self.worldDirectory
         self.waypoints = {}
         self.editor = editor
         
