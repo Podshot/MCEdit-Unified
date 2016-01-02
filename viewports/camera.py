@@ -262,7 +262,7 @@ class CameraViewport(GLViewport):
     def setModelview(self):
         pos = self.cameraPosition
         look = numpy.array(self.cameraPosition)
-        look += self.cameraVector
+        look = look.astype(float) + self.cameraVector
         up = (0, 1, 0)
         GLU.gluLookAt(pos[0], pos[1], pos[2],
                       look[0], look[1], look[2],

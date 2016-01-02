@@ -2935,7 +2935,7 @@ class VineBlockRenderer(BlockRenderer):
         lights = blockLight[blockIndices][..., numpy.newaxis, numpy.newaxis]
         vertexArray.view('uint8')[_RGB] *= lights
 
-        vertexArray.view('uint8')[_RGB] *= LeafBlockRenderer.leafColor
+        vertexArray.view('uint8')[_RGB] = vertexArray.view('uint8')[_RGB].astype(float) * LeafBlockRenderer.leafColor
 
         if direction == pymclevel.faces.FaceZIncreasing:
             vertexArray[_XYZ][..., 2] -= 0.0625

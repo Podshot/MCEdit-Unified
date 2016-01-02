@@ -4,13 +4,13 @@ import itertools
 from albow import alert
 
 class fileEdit():
-    def __init__(self, filename, timeChanged, box, sorting, editor, level):
+    def __init__(self, filename, timeChanged, box, editor, level):
         self.filename = filename
         self.timeChanged = timeChanged
         self.box = box
-        self.sorting = sorting
         self.editor = editor
         self.level = level
+        self.order = []
 
     def makeChanges(self):
         try:
@@ -26,13 +26,13 @@ class fileEdit():
         file.close()
 
         tileEntities = []
-        for coords in GetSort(self.box, self.sorting):
-            if self.sorting == "xz":
-                (x, y, z) = coords
-            else:
-                (z, y, x) = coords
-            if self.level.blockAt(x, y, z) == 137:
+        for (x,y,z) in self.order:
+            blockAtXYZ = self.level.blockAt(x, y, z)
+            if blockAtXYZ == 137 or blockAtXYZ == 210 or blockAtXYZ == 211:
                 tileEntities.append(self.level.tileEntityAt(x, y, z))
+            else:
+                alert("The blocks are different now!")
+                return
 
         if len(lines) != len(tileEntities):
             alert("You have %d lines and %d command blocks, it should be the same." % (len(lines), len(tileEntities)))
@@ -42,6 +42,44 @@ class fileEdit():
         self.editor.addOperation(op)
         if op.canUndo:
             self.editor.addUnsavedEdit()
+
+    def writeCommandInFile(self, first, space, (x,y,z), fileTemp, skip, chain, done, order):
+        block = self.editor.level.tileEntityAt(x, y, z)
+        if chain:
+            if not block or (x, y, z) in done:
+                return
+        if not first:
+            if space:
+                fileTemp.write("\n\n")
+            else:
+                fileTemp.write("\n")
+        text = block["Command"].value
+        if text == "":
+            text = "\"\""
+        order.append((x,y,z))
+        fileTemp.write(text.encode('utf-8'))
+
+        if chain:
+            done.append((x, y, z))
+            blockData =  self.editor.level.blockDataAt(x, y, z)
+            if blockData == 0 and self.level.blockAt(x, y-1, z) == 211:
+                skip.append((x,y-1,z))
+                self.writeCommandInFile(False, space, (x, y-1, z), fileTemp, skip, True, done, order)
+            elif blockData == 1 and self.level.blockAt(x, y+1, z) == 211:
+                skip.append((x,y+1,z))
+                self.writeCommandInFile(False, space, (x, y+1, z), fileTemp, skip, True, done, order)
+            elif blockData == 2 and self.level.blockAt(x, y, z-1) == 211:
+                skip.append((x,y,z-1))
+                self.writeCommandInFile(False, space, (x, y, z-1), fileTemp, skip, True, done, order)
+            elif blockData == 3 and self.level.blockAt(x, y, z+1) == 211:
+                skip.append((x,y,z+1))
+                self.writeCommandInFile(False, space, (x, y, z+1), fileTemp, skip, True, done, order)
+            elif blockData == 4 and self.level.blockAt(x-1, y, z) == 211:
+                skip.append((x-1,y,z))
+                self.writeCommandInFile(False, space, (x-1, y, z), fileTemp, skip, True, done, order)
+            elif blockData == 5 and self.level.blockAt(x+1, y, z) == 211:
+                skip.append((x+1,y,z))
+                self.writeCommandInFile(False, space, (x+1, y, z), fileTemp, skip, True, done, order)
 
 
 class FileEditsOperation(Operation):
@@ -79,7 +117,7 @@ class FileEditsOperation(Operation):
 
 
 def GetSort(box, sorting):
-    if sorting == "xz":
+    if sorting == "xz" or sorting == "chain":
         return itertools.product(
             xrange(box.minx, box.maxx),
             xrange(box.miny, box.maxy),

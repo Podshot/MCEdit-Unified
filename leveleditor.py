@@ -698,7 +698,7 @@ class LevelEditor(GLViewport):
                 blocks = numpy.array(chunk.Blocks[slices], dtype='uint16')
                 blocks |= (numpy.array(chunk.Data[slices], dtype='uint16') << 12)
                 b = numpy.bincount(blocks.ravel())
-                types[:b.shape[0]] += b
+                types[:b.shape[0]] = types[:b.shape[0]].astype(int) + b
 
                 for ent in chunk.getEntitiesInBox(box):
                     entID = Entity.getId(ent["id"].value)
