@@ -446,6 +446,7 @@ textureSlots = {
     #
     #
     #
+    "frosted_ice_0": (step(19), step(16)),
     # End Seventeenth Row
 
     # Start Eigteenth Row

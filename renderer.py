@@ -474,6 +474,7 @@ def rotateTemplate(template, x=0, y=0):
     """
     Rotate template around x-axis and then around
     y-axis. Both angles must to multiples of 90.
+    TODO: Add ability for multiples of 45
     """
     template = template.copy()
     for _ in range(0, x, 90):
