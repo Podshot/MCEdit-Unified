@@ -543,7 +543,12 @@ class CameraViewport(GLViewport):
             mobs[mobTable.selectedIndex] = id
             panel.dismiss()
 
-        id = tileEntity["EntityId"].value
+        if "EntityId" in tileEntity:
+            id = tileEntity["EntityId"].value
+        elif "SpawnData" in tileEntity:
+            id = tileEntity["SpawnData"]["id"].value
+        else:
+            id = "[Custom]"
         addMob(id)
 
         mobTable.selectedIndex = mobs.index(id)
@@ -581,6 +586,8 @@ class CameraViewport(GLViewport):
 
         if id != selectedMob():
             tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+            tileEntity["SpawnData"] = pymclevel.TAG_Compound()
+            tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
             op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:

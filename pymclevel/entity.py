@@ -27,7 +27,7 @@ class TileEntity(object):
             ("Text4", nbt.TAG_String),
         ),
         "MobSpawner": (
-            ("Items", nbt.TAG_List),
+            ("EntityId", nbt.TAG_String),
         ),
         "Chest": (
             ("Items", nbt.TAG_List),
@@ -155,6 +155,9 @@ class TileEntity(object):
                         tileEntityTag[name] = nbt.TAG_String("@")
                     elif name == "SuccessCount":
                         tileEntityTag[name] = nbt.TAG_Int(0)
+                elif tileEntityID == "MobSpawner":
+                    if name == "EntityId":
+                        tileEntityTag[name] = nbt.TAG_String("Pig")
 
         cls.setpos(tileEntityTag, pos)
         return tileEntityTag
@@ -225,22 +228,17 @@ class TileEntity(object):
 
         if eTag['id'].value == 'MobSpawner':
             mobs = []
-            try:
-                mob = eTag.get('SpawnData')
-            except:
-                mob = None
-            if mob:
-                mobs.append(mob)
-            try:
-                potentials = eTag.get('SpawnPotentials')
-            except:
-                potentials = None
-            if potentials:
+            if 'SpawnData' in eTag:
+                mob = eTag['SpawnData']
+                if mob:
+                    mobs.append(mob)
+            if 'SpawnPotentials' in eTag:
+                potentials = eTag['SpawnPotentials']
                 for p in potentials:
-                    try:
+                    if 'properties' in p:
                         mobs.extend(p["Properties"])
-                    except:
-                        pass
+                    elif 'Entity' in p:
+                        mobs.extend(p["Entity"])
 
             for mob in mobs:
                 if "Pos" in mob:
