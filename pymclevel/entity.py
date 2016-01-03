@@ -225,12 +225,22 @@ class TileEntity(object):
 
         if eTag['id'].value == 'MobSpawner':
             mobs = []
-            mob = eTag.get('SpawnData')
+            try:
+                mob = eTag.get('SpawnData')
+            except:
+                mob = None
             if mob:
                 mobs.append(mob)
-            potentials = eTag.get('SpawnPotentials')
+            try:
+                potentials = eTag.get('SpawnPotentials')
+            except:
+                potentials = None
             if potentials:
-                mobs.extend(p["Properties"] for p in potentials)
+                for p in potentials:
+                    try:
+                        mobs.extend(p["Properties"])
+                    except:
+                        pass
 
             for mob in mobs:
                 if "Pos" in mob:

@@ -2566,7 +2566,7 @@ class RedstoneBlockRenderer(BlockRenderer):
         bdata[bdata > 0] |= 0x80
 
         vertexArray.view('uint8')[_RGBA][..., 0] = bdata[..., numpy.newaxis]
-        vertexArray.view('uint8')[_RGBA][..., 0:3] *= [1, 0, 0]
+        vertexArray.view('uint8')[_RGBA][..., 0:3] = vertexArray.view('uint8')[_RGBA][..., 0:3] * [1, 0, 0]
 
         yield
         self.vertexArrays = [vertexArray]
