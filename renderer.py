@@ -1555,7 +1555,7 @@ class LowDetailBlockRenderer(BlockRenderer):
 
             if self.detailLevel == 2:
                 heightfactor = (y / float(2.0 * ch.world.Height)) + 0.5
-                flatcolors[..., :3] *= heightfactor[:, numpy.newaxis, numpy.newaxis]
+                flatcolors[..., :3] = flatcolors[..., :3].astype(float) * heightfactor[:, numpy.newaxis, numpy.newaxis]
 
             _RGBA = numpy.s_[..., 12:16]
             va0.view('uint8')[_RGBA] = flatcolors
