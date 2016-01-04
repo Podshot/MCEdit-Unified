@@ -1159,6 +1159,8 @@ class SelectionTool(EditorTool):
 
     @alertException
     def cutSelection(self):
+        if not self.selectionBox():
+            return
         self.copySelection()
         self.deleteBlocks()
         self.deleteEntities(False)
