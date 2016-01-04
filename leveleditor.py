@@ -386,7 +386,7 @@ class LevelEditor(GLViewport):
         self.waypointDialog.dismiss()
         self.waypointManager.delete(self.waypointsChoiceButton.value)
         
-    def gotoLastPosition(self, lastPos):
+    def gotoLastWaypoint(self, lastPos):
         self.gotoDimension(lastPos["Dimension"].value)
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
@@ -2029,7 +2029,7 @@ class LevelEditor(GLViewport):
             if os.path.exists(p):
                 os.remove(p)
         if config.settings.savePositionOnClose.get():
-            self.saveLastPosition()
+            self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.RemoveEditFiles()
@@ -3263,7 +3263,7 @@ class LevelEditor(GLViewport):
         self.sessionLockLock.set_image(get_image(image_path, prefix=""))
         self.sessionLockLock.tooltipText = "Session Lock is being used by Minecraft"
         self.sessionLockLabel.tooltipText = "Session Lock is being used by Minecraft"
-        self.saveLastPosition()
+        self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
 
     def lockAcquired(self):
         image_path = directories.getDataDir(os.path.join("toolicons", "session_good.png"))
