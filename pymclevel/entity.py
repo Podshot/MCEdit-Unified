@@ -680,7 +680,8 @@ class PocketEntity(Entity):
                   "MinecartRideable": 84,
                   "Fireball": 85,
                   "Boat": 90,
-                  "Player": 63}
+                  "Player": 63,
+                  "Entity": 69}
 
 
 class TileTick(object):
