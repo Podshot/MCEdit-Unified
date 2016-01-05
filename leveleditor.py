@@ -387,29 +387,24 @@ class LevelEditor(GLViewport):
         self.waypointManager.delete(self.waypointsChoiceButton.value)
         
     def gotoLastWaypoint(self, lastPos):
-        self.gotoDimension(lastPos["Dimension"].value)
-        self.mainViewport.skyList = None
-        self.mainViewport.drawSkyBackground()
-        
-        self.mainViewport.cameraPosition = [lastPos["Coordinates"][0].value, 
-                                            lastPos["Coordinates"][1].value, 
-                                            lastPos["Coordinates"][2].value
-                                            ]
-        self.mainViewport.yaw = lastPos["Rotation"][0].value
-        self.mainViewport.pitch = lastPos["Rotation"][1].value
-        del self.waypointManager.nbt_waypoints["LastPosition"]
+        #!# Added checks to verify the waypoint NBT data consistency. (Avoid crashed in case of corrupted file.)
+        if lastPos.get("Dimension") and lastPos.get("Coordinates") and lastPos.get("Rotation"):
+            self.gotoDimension(lastPos["Dimension"].value)
+            self.mainViewport.skyList = None
+            self.mainViewport.drawSkyBackground()
+            self.mainViewport.cameraPosition = [lastPos["Coordinates"][0].value, 
+                                                lastPos["Coordinates"][1].value, 
+                                                lastPos["Coordinates"][2].value
+                                                ]
+            self.mainViewport.yaw = lastPos["Rotation"][0].value
+            self.mainViewport.pitch = lastPos["Rotation"][1].value
     
     def showWaypointsDialog(self):
-        #print "Yay waypoints!"
         if not isinstance(self.level, (MCInfdevOldLevel, MCAlphaDimension)):
             print type(self.level)
             self.Notify("Waypoints currently only support PC Worlds")
             return
         
-        
-        #print os.path.dirname(self.level.filename)
-        
-        #print dir(self.level)
         self.waypointDialog = QuickDialog()
         
         self.waypointsChoiceButton = ChoiceButton(self.waypointManager.waypoints.keys())
@@ -1233,8 +1228,9 @@ class LevelEditor(GLViewport):
                 self.mainViewport.skyList = None
                 self.mainViewport.drawSkyBackground()
                 
-            self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
-            self.waypointManager.load()
+            #!# The two following lines has been moved down.
+#             self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
+#             self.waypointManager.load()
             dimensionsList = [d[0] for d in dimensionsMenu]
             self.netherButton = ChoiceButton(dimensionsList, choose=presentMenu)
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
@@ -1254,6 +1250,10 @@ class LevelEditor(GLViewport):
                 self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
+            #!# Adding waypoints handling for all world types
+        self.waypointManager = WaypointManager(os.path.dirname(self.level.filename), self)
+        self.waypointManager.load()
+
 
         if len(list(self.level.allChunks)) == 0:
             resp = ask(
@@ -2030,6 +2030,7 @@ class LevelEditor(GLViewport):
                 os.remove(p)
         if config.settings.savePositionOnClose.get():
             self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
+        self.waypointManager.save()
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.RemoveEditFiles()
@@ -3122,6 +3123,9 @@ class LevelEditor(GLViewport):
             op.perform(self.recordUndo)
 
     def quit(self):
+        if config.settings.savePositionOnClose.get():
+            self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
+        self.waypointManager.save()
         self.mouseLookOff()
         self.mcedit.confirm_quit()
 

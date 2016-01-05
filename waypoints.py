@@ -8,6 +8,9 @@ class WaypointManager:
         self.worldDirectory = worldDir
         self.waypoints = {}
         self.editor = editor
+        self.nbt_waypoints = nbt.TAG_Compound()
+        self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
+        self.load()
         
     def build(self):
         for point in self.nbt_waypoints["Waypoints"]:
@@ -24,8 +27,8 @@ class WaypointManager:
         if self.editor.level is None:
             return
         if not os.path.exists(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat")):
-            self.nbt_waypoints = nbt.TAG_Compound()
-            self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
+#            self.nbt_waypoints = nbt.TAG_Compound()
+#            self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
             self.build()
         else:
             self.nbt_waypoints = nbt.load(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"))
@@ -35,6 +38,7 @@ class WaypointManager:
         
         if "LastPosition" in self.nbt_waypoints:
             self.editor.gotoLastWaypoint(self.nbt_waypoints["LastPosition"])
+            del self.nbt_waypoints["LastPosition"]
             
     def save(self):
         del self.nbt_waypoints["Waypoints"]
@@ -53,15 +57,17 @@ class WaypointManager:
             way["Coordinates"] = coords
             way["Rotation"] = rot
             self.nbt_waypoints["Waypoints"].append(way)
+        print self.worldDirectory
         self.nbt_waypoints.save(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"))
         
     def delete(self, choice):
-        del self.waypointManager.waypoints[choice]
-        self.waypointManager.save()
-        if not (len(self.waypointManager.waypoints) > 0):
-            self.waypointManager.waypoints["Empty"] = [0,0,0,0,0,0]
+        del self.waypoints[choice]
+        self.save()
+        if not (len(self.waypoints) > 0):
+            self.waypoints["Empty"] = [0,0,0,0,0,0]
         
     def saveLastPosition(self, mainViewport, dimension):
+        print 'Saving last position'
         if "LastPosition" in self.nbt_waypoints:
             del self.nbt_waypoints["LastPosition"]
         topTag = nbt.TAG_Compound()
