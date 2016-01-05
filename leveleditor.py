@@ -327,23 +327,23 @@ class LevelEditor(GLViewport):
         
     def showCreateDialog(self):
         widg = Widget()
-        
+
         nameField = TextFieldWrapped(width=100)
         xField = FloatField()
         yField = FloatField()
         zField = FloatField()
         saveCameraRotation = CheckBoxLabel("Save Rotation")
-        
+
         xField.value = round(self.mainViewport.cameraPosition[0], 2)
         yField.value = round(self.mainViewport.cameraPosition[1], 2)
         zField.value = round(self.mainViewport.cameraPosition[2], 2)
-        
+
         coordRow = Row((Label("X:"), xField, Label("Y:"), yField, Label("Z:"), zField))
         col = Column((Row((Label("Waypoint Name:"), nameField)), coordRow, saveCameraRotation), align="c")
-        
+
         widg.add(col)
         widg.shrink_wrap()
-        
+
         result = Dialog(widg, ["Create", "Cancel"]).present()
         if result == "Create":
             if saveCameraRotation.checkbox.value:
@@ -354,7 +354,7 @@ class LevelEditor(GLViewport):
                                                                                                                          self.mainViewport.pitch,
                                                                                                                          self.level.dimNo
                                                                                                                          ] 
-            
+
             else:
                 self.waypointManager.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
                                                                                                                      yField.value, 
@@ -369,23 +369,23 @@ class LevelEditor(GLViewport):
             #self.saveWaypoints()
             #self.nbt_waypoints["Waypoints"] = self.waypoints
             #self.nbt_waypoints.s
-    
+
     def gotoWaypoint(self):
         self.gotoDimension(self.waypointManager.waypoints[self.waypointsChoiceButton.value][5])
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
-        
+
         self.mainViewport.cameraPosition = self.waypointManager.waypoints[self.waypointsChoiceButton.value][:3]
         self.mainViewport.yaw = self.waypointManager.waypoints[self.waypointsChoiceButton.value][3]
         self.mainViewport.pitch = self.waypointManager.waypoints[self.waypointsChoiceButton.value][4]
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
         self.waypointDialog.dismiss()
-        
+
     def deleteWaypoint(self):
         self.waypointDialog.dismiss()
         self.waypointManager.delete(self.waypointsChoiceButton.value)
-        
+
     def gotoLastWaypoint(self, lastPos):
         #!# Added checks to verify the waypoint NBT data consistency. (Avoid crashed in case of corrupted file.)
         if lastPos.get("Dimension") and lastPos.get("Coordinates") and lastPos.get("Rotation"):
@@ -398,29 +398,28 @@ class LevelEditor(GLViewport):
                                                 ]
             self.mainViewport.yaw = lastPos["Rotation"][0].value
             self.mainViewport.pitch = lastPos["Rotation"][1].value
-    
+
     def showWaypointsDialog(self):
         if not isinstance(self.level, (MCInfdevOldLevel, MCAlphaDimension)):
             print type(self.level)
             self.Notify("Waypoints currently only support PC Worlds")
             return
-        
+
         self.waypointDialog = QuickDialog()
-        
+
         self.waypointsChoiceButton = ChoiceButton(self.waypointManager.waypoints.keys())
         createWaypointButton = Button("Create Waypoint", action=self.showCreateDialog)
         gotoWaypointButton = Button("Goto Waypoint", action=self.gotoWaypoint)
         deleteWaypointButton = Button("Delete Waypoint", action=self.deleteWaypoint)
-        
+
         saveCameraOnClose = CheckBoxLabel("Save Camera position on world close",
                                     ref=config.settings.savePositionOnClose)
-        
+
         col = Column((self.waypointsChoiceButton, Row((createWaypointButton, gotoWaypointButton, deleteWaypointButton)), saveCameraOnClose, Button("Close", action=self.waypointDialog.dismiss)))
         self.waypointDialog.add(col)
         self.waypointDialog.shrink_wrap()
         #qd.topleft = self.waypointsButton.bottomleft
         self.waypointDialog.present(True)
-            
 
     def mouse_down_session(self, evt):
         class SessionLockOptions(Panel):
