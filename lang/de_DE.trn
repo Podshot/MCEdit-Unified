@@ -2022,7 +2022,7 @@ t941 Wegpunkt löschen
 o942 Save Camera position on world close
 t942 Kameraposition beim Schließen der Welt speichern
 o943 Save Rotation
-t943 Speichere Rotation
+t943 Rotation speichern
 o944 Waypoint Name:
 t944 Wegpunkt Name:
 o945 Session lock lost. This world is being accessed from another location.
