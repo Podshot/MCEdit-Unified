@@ -1159,6 +1159,8 @@ class SelectionTool(EditorTool):
 
     @alertException
     def cutSelection(self):
+        if not self.selectionBox():
+            return
         self.copySelection()
         self.deleteBlocks()
         self.deleteEntities(False)
@@ -1225,34 +1227,49 @@ class SelectionTool(EditorTool):
         first = True
         space = config.commands.space.get()
         sorting = config.commands.sorting.get()
-        for coords in GetSort(self.editor.selectionBox(), sorting):
-            if sorting == "xz":
+        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), self.editor,
+                        self.editor.level)
+
+        order = []
+        if sorting == "chain":
+            skip = []
+            done = []
+            chainStored = []
+            for coords in GetSort(self.editor.selectionBox(), sorting):
                 (x, y, z) = coords
-            else:
-                (z, y, x) = coords
-            blockID = self.editor.level.blockAt(x, y, z)
-            if blockID == 137 or blockID == 210 or blockID == 211:
-                if not first:
-                    if space:
-                        file.write("\n\n")
-                    else:
-                        file.write("\n")
-                block = self.editor.level.tileEntityAt(x, y, z)
-                if not block:
+                if (x,y,z) in skip:
+                    skip.remove((x,y,z))
                     continue
-                text = block["Command"].value
-                first = False
-                if text == "":
-                    text = "\"\""
-                file.write(text.encode('utf-8'))
+                blockID = self.editor.level.blockAt(x, y, z)
+                if blockID == 211:
+                    chainStored.append((x, y, z))
+                    continue
+                if blockID == 137 or blockID == 210:
+                    edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+                    first = False
+            for (x, y, z) in chainStored:
+                if (x, y, z) in done:
+                    continue
+                edit.writeCommandInFile(first, space, (x,y,z), file, skip, True, done, order)
+
+        else:
+            for coords in GetSort(self.editor.selectionBox(), sorting):
+                if sorting == "xz":
+                    (x, y, z) = coords
+                else:
+                    (z, y, x) = coords
+                blockID = self.editor.level.blockAt(x, y, z)
+                if blockID == 137 or blockID == 210 or blockID == 211:
+                    edit.writeCommandInFile(first, space, (x,y,z), file, None, False, None, order)
+                    first = False
         file.close()
         if first:
             os.remove(filename)
             alert("No command blocks found")
+            del edit
             return
+        edit.order = order
         self.editor.level.editFileNumber += 1
-        edit = fileEdit(filename, os.path.getmtime(filename), self.editor.selectionBox(), sorting, self.editor,
-                        self.editor.level)
         self.root.filesToChange.append(edit)
         if sys.platform == "win32":
             os.startfile(filename)
@@ -1271,7 +1288,7 @@ class CBCommandsOptionsPanel(ToolOptions):
 
         empty = Label("")
 
-        self.sorting = ChoiceButton(["xz", "zx"], choose=self.changeSorting)
+        self.sorting = ChoiceButton(["chain", "xz", "zx"], choose=self.changeSorting)
         self.sorting.selectedChoice = config.commands.sorting.get()
         sortingRow = Row((Label("Sort Order"), self.sorting))
         space = CheckBoxLabel("Space between lines",

@@ -7,6 +7,7 @@ import directories
 import os
 import shutil
 from config import config
+from cStringIO import StringIO
 
 import locale
 import traceback
@@ -445,6 +446,7 @@ textureSlots = {
     #
     #
     #
+    "frosted_ice_0": (step(19), step(16)),
     # End Seventeenth Row
 
     # Start Eigteenth Row
@@ -556,6 +558,64 @@ textureSlots = {
     # Start Comparator Block
     }
 
+class MultipartTexture(object):
+    
+    def __init__(self, texture_objects):
+        self.subclasses = []
+        self.runAnyways = []
+        self.texture_dict = {}
+        for subcls in self.__class__.__subclasses__(): # This is why I love Python
+            self.subclasses.append(subcls)
+        for cls in self.subclasses:
+            instance = cls(texture_objects)
+            if instance.runAnyway:
+                self.runAnyways.append(instance)
+            else:
+                self.texture_dict[instance.target] = instance
+            
+        
+class LeverTexture(MultipartTexture):
+    target = "lever"
+    runAnyway = False
+    
+    def __init__(self, texture_objects):
+        self.texture_objects = texture_objects
+    
+    def parse_texture(self):
+        if "lever" not in self.texture_objects or "cobblestone" not in self.texture_objects:
+            return None
+        lever = self.texture_objects["lever"].copy()
+        cobblestone = self.texture_objects["cobblestone"].copy()
+        base_1 = cobblestone.crop((5, 4, 11, 12))
+        lever.paste(base_1, (10, 0, 16, 8))
+    
+        base_2 = cobblestone.crop((5, 0, 11, 3))
+        lever.paste(base_2, (10, 8, 16, 11))
+
+        base_3 = cobblestone.crop((4, 0, 12, 3))
+        lever.paste(base_3, (2, 0, 10, 3))
+        return lever
+    
+class StandingSignTexture(MultipartTexture):
+    target = ""
+    runAnyway = True
+    position = (step(20), step(5))
+    
+    def __init__(self, texture_objects):
+        self.texture_objects = texture_objects
+        
+    def parse_texture(self):
+        if "planks_oak" not in self.texture_objects or "log_oak" not in self.texture_objects:
+            return None
+        planks = self.texture_objects["planks_oak"].copy()
+        log_tex = self.texture_objects["log_oak"].copy()
+        
+        sign = planks.crop((0, 7, 16, 16))
+        log_tex.paste(sign, (0, 7, 16, 16))
+        if log_tex.mode != "RGBA":
+            log_tex = log_tex.convert("RGBA")
+        return log_tex
+
 
 class IResourcePack:
     '''
@@ -618,19 +678,31 @@ class IResourcePack:
         '''
         Parses each block texture into a usable PNG file like terrain.png
         '''
+        multiparts = MultipartTexture(self.block_image)
         log.debug("Parsing terrain.png")
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
             if not self.__stop and tex in textureSlots.keys():
                 try:
-                    image = self.block_image[tex]
+                    if tex not in multiparts.texture_dict:
+                        image = self.block_image[tex]
+                    else:
+                        image = multiparts.texture_dict[tex].parse_texture()
+                        if image is None:
+                            continue
                     log.debug("    Image is %s"%tex)
                     log.debug("        Image mode: %s"%image.mode)
                     if image.mode != "RGBA":
-                        image = image.convert("RGBA")
-                        log.debug("        Image converted to RGBA.")
+                        try:
+                            image = image.convert("RGBA")
+                            log.debug("        Image converted to RGBA.")
+                        except Exception, ee:
+                            print "* * *", tex, ee
                     slot = textureSlots[tex]
-                    new_terrain.paste(image, slot, image)
+                    try:
+                        new_terrain.paste(image, slot, image)
+                    except Exception, eee:
+                        print "* * * new_terrain error:", eee
                     self.propogated_textures.append(slot)
                     log.debug("        Image pasted and propagated.")
                 except Exception as e:
@@ -647,14 +719,20 @@ class IResourcePack:
                     log.debug("Exception Message: "+str(e))
                     print "Exception type: "+str(type(e))
                     log.debug("Exception type: "+str(type(e)))
+                    print e
                     self.__stop = True
                     self._isEmpty = True
                     log.debug("Parsing stopped.")
                     log.debug("Resource pack considered as empty.")
                     pass
+        for runAnyway in multiparts.runAnyways:
+            parsed_texture = runAnyway.parse_texture()
+            if parsed_texture is not None:
+                new_terrain.paste(parsed_texture, runAnyway.position, parsed_texture)
+                self.propogated_textures.append(runAnyway.position)
         copy = self.old_terrain.copy()
 
-        log.debug("Correcting testures...")
+        log.debug("Correcting textures...")
         for t in self.all_texture_slots:
             if t not in self.propogated_textures:
                 old_tex = copy.crop((t[0],t[1],t[0]+16,t[1]+16))
@@ -662,9 +740,6 @@ class IResourcePack:
         log.debug("    Done.")
 
         log.debug("Saving %s."%self._terrain_path)
-        #!# Some resources packs make an error to be cast on the next line.
-        #!# Nothing critical, but the concerned resource packs are not saw in MCEdit.
-        #!# The exception message is 'I/O operation on closed file'
         new_terrain.save(self._terrain_path)
         log.debug("    Done.")
         try:
@@ -676,9 +751,14 @@ class IResourcePack:
             self._isEmpty = True
             log.debug("No propagated textures.\nTexture pack considered as empty.")
             #print u"{} did not replace any textures".format(self._pack_name)
-        log.debug("Parsing terrain.png ended.")
 
         del self.block_image
+        if hasattr(self, 'fps'):
+            log.debug("    Closing file descriptors.")
+            for f in self.fps:
+                f.close()
+            log.debug("        Done")
+        log.debug("Parsing terrain.png ended.")
 
     def handle_too_big_packs(self):
         '''
@@ -704,6 +784,8 @@ class ZipResourcePack(IResourcePack):
         log.debug("Zip file: %s"%zipfileFile)
         self._pack_name = os.path.splitext(os.path.split(zipfileFile)[-1])[0]
         log.debug("Pack name: %s"%self._pack_name)
+        # Define a list of opened textures file objects to be cleaned when operations are finished.
+        self.fps = []
         IResourcePack.__init__(self)
 
         if not os.path.exists(self._terrain_path):
@@ -718,6 +800,7 @@ class ZipResourcePack(IResourcePack):
         Opens the zip file and puts texture data into a dictionary, where the key is the texture file name, and the value is a PIL.Image instance
         '''
         zfile = zipfile.ZipFile(self.zipfile)
+        self.fps = []
         for name in zfile.infolist():
             if name.filename.endswith(".png") and not name.filename.split(os.path.sep)[-1].startswith("._"):
 #                 log.debug("Image found: %s"%name.filename)
@@ -735,8 +818,9 @@ class ZipResourcePack(IResourcePack):
                     #!# But, reading the fd data and writing it to a temporary file seem to work...
                     log.debug("                Done. (%s, seekable: %s, readable: %s)"%(type(fp), fp.seekable(), fp.readable()))
                     log.debug("            Saving fp data to temp file.")
-                    fp1 = os.tmpfile()
+                    fp1 = StringIO()
                     fp1.write(fp.read())
+                    fp.close()
                     fp1.seek(0)
                     log.debug("                Done.")
                     #possible_texture = Image.open(os.path.join(self.texture_path, os.path.normpath(name.filename)))
@@ -788,8 +872,7 @@ class ZipResourcePack(IResourcePack):
                         else:
                             self.block_image[block_name] = possible_texture.crop((0,0,16,16))
                             log.debug("             Is loaded.")
-                    log.debug("Closing temp file.")
-                    fp1.close()
+                    self.fps.append(fp1)
         if self.big_textures_counted >= self.big_textures_max:
             self.handle_too_big_packs()
         else:

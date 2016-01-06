@@ -173,7 +173,8 @@ class FurnaceDispenserChest:
         alphaMaterials.Furnace.ID,
         alphaMaterials.LitFurnace.ID,
         alphaMaterials.Chest.ID,
-        alphaMaterials.EnderChest.ID
+        alphaMaterials.EnderChest.ID,
+        alphaMaterials.TrappedChest.ID
     ]
     East = 2
     West = 3
@@ -796,6 +797,7 @@ class Hopper:
     North = 4
     South = 5
 
+applyBit8(Hopper)
 Hopper.roll = arange(16, dtype='uint8')
 Hopper.roll[Hopper.Down] = Hopper.South
 Hopper.roll[Hopper.North] = Hopper.Down

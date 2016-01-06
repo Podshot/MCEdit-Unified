@@ -51,7 +51,7 @@ class BlockView(GLOrtho):
             texOrigin = array([17*16, 20*16])
         else:
             texOrigin = array(self.materials.blockTextures[blockInfo.ID, blockInfo.blockData, 0])
-        texOrigin *= pixelScale
+        texOrigin = texOrigin.astype(float) * pixelScale
 
         GL.glTexCoordPointer(2, GL.GL_FLOAT, 0, array([texOrigin[0], texOrigin[1] + texSize,
                                                        texOrigin[0], texOrigin[1],

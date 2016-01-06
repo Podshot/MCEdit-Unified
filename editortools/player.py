@@ -1014,8 +1014,21 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
 
     def _drawToolMarkers(self):
         x, y, z = self.editor.level.playerSpawnPosition()
-        GL.glColor(1.0, 1.0, 1.0, 1.0)
+        
+        GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+        GL.glEnable(GL.GL_BLEND);
+        
+        color = config.selectionColors.black.get() + (0.35,)
+        GL.glColor(*color)
+        GL.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE)
+        GL.glLineWidth(2.0)
+        drawCube(FloatBox((x, y, z), (1, 1, 1)))
+        GL.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL)
+        drawCube(FloatBox((x, y, z), (1, 1, 1)))
+        GL.glDisable(GL.GL_BLEND)
+        
         GL.glEnable(GL.GL_DEPTH_TEST)
+        GL.glColor(1.0, 1.0, 1.0, 1.0)
         self.drawCage(x, y, z)
         self.drawCharacterHead(x + 0.5, y + 0.5 + 0.125 * numpy.sin(self.editor.frames * 0.05), z + 0.5)
         GL.glDisable(GL.GL_DEPTH_TEST)
@@ -1025,7 +1038,7 @@ class PlayerSpawnPositionTool(PlayerPositionTool):
 
         pixelScale = 0.5 if self.editor.level.materials.name in ("Pocket", "Alpha") else 1.0
         texSize = 16 * pixelScale
-        cageTexVerts *= pixelScale
+        cageTexVerts = cageTexVerts.astype(float) * pixelScale
 
         cageTexVerts = numpy.array(
             [((tx, ty), (tx + texSize, ty), (tx + texSize, ty + texSize), (tx, ty + texSize)) for (tx, ty) in
