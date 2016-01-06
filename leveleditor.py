@@ -2029,7 +2029,7 @@ class LevelEditor(GLViewport):
                 os.remove(p)
         if config.settings.savePositionOnClose.get():
             self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
-        self.waypointManager.save()
+        self.waypointManager.save("editor.closeEditor")
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.RemoveEditFiles()
@@ -3124,7 +3124,7 @@ class LevelEditor(GLViewport):
     def quit(self):
         if config.settings.savePositionOnClose.get():
             self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
-        self.waypointManager.save()
+        self.waypointManager.save("editor.quit")
         self.mouseLookOff()
         self.mcedit.confirm_quit()
 

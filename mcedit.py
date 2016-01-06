@@ -465,6 +465,9 @@ class MCEdit(GLViewport):
         self.saveWindowPosition()
         config.save()
         if self.editor.unsavedEdits:
+            if config.settings.savePositionOnClose.get():
+                self.editor.waypointManager.saveLastPosition(self.editor.mainViewport, self.editor.level.getPlayerDimension())
+            self.editor.waypointManager.save("mcedit.confirm_quit")
             result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
             if result == "Save and Quit":

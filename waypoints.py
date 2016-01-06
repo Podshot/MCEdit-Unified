@@ -3,7 +3,7 @@ import os
 import logging
 
 log = logging.getLogger(__name__)
-
+DEBUG = False
 
 class WaypointManager:
 
@@ -41,7 +41,9 @@ class WaypointManager:
             self.editor.gotoLastWaypoint(self.nbt_waypoints["LastPosition"])
             del self.nbt_waypoints["LastPosition"]
 
-    def save(self):
+    def save(self, calledFrom):
+        if DEBUG:
+            print "Called from: \"" + str(calledFrom) + "\""
         del self.nbt_waypoints["Waypoints"]
         self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
         for waypoint in self.waypoints.keys():
@@ -85,4 +87,4 @@ class WaypointManager:
         topTag["Rotation"] = rot
 
         self.nbt_waypoints["LastPosition"] = topTag
-        self.save()
+        self.save("self.saveLastPosition")
