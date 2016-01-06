@@ -55,6 +55,10 @@ class SelectionToolOptions(ToolOptions):
 
         color = config.selection.color.get()
 
+        if color.lower() not in names:
+            config.selection.color.set("White")
+            color = "White"
+
         self.colorPopupButton.choiceIndex = names.index(color.lower())
 
     def __init__(self, tool):
