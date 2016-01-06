@@ -346,31 +346,21 @@ class LevelEditor(GLViewport):
 
         result = Dialog(widg, ["Create", "Cancel"]).present()
         if result == "Create":
+            if nameField.value in self.waypointManager.waypoint_names:
+                self.Notify("You cannot have duplicate waypoint names")
+                return
             if saveCameraRotation.checkbox.value:
-                self.waypointManager.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
-                                                                                                                         yField.value, 
-                                                                                                                         zField.value,
-                                                                                                                         self.mainViewport.yaw,
-                                                                                                                         self.mainViewport.pitch,
-                                                                                                                         self.level.dimNo
-                                                                                                                         ] 
-
+                self.waypointManager.add_waypoint(nameField.value, (xField.value, yField.value, zField.value), (self.mainViewport.yaw, self.mainViewport.pitch), self.level.dimNo)
             else:
-                self.waypointManager.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
-                                                                                                                     yField.value, 
-                                                                                                                     zField.value,
-                                                                                                                     0.0,
-                                                                                                                     0.0,
-                                                                                                                     self.level.dimNo]
+                self.waypointManager.add_waypoint(nameField.value, (xField.value, yField.value, zField.value), (0.0, 0.0), self.level.dimNo)
             if "Empty" in self.waypointManager.waypoints:
                 del self.waypointManager.waypoints["Empty"]
             self.waypointDialog.dismiss()
             self.waypointManager.save()
-            #self.saveWaypoints()
-            #self.nbt_waypoints["Waypoints"] = self.waypoints
-            #self.nbt_waypoints.s
 
     def gotoWaypoint(self):
+        if self.waypointsChoiceButton.value == "Empty":
+            return
         self.gotoDimension(self.waypointManager.waypoints[self.waypointsChoiceButton.value][5])
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
@@ -384,6 +374,8 @@ class LevelEditor(GLViewport):
 
     def deleteWaypoint(self):
         self.waypointDialog.dismiss()
+        if self.waypointsChoiceButton.value == "Empty":
+            return
         self.waypointManager.delete(self.waypointsChoiceButton.value)
 
     def gotoLastWaypoint(self, lastPos):
@@ -2029,7 +2021,7 @@ class LevelEditor(GLViewport):
                 os.remove(p)
         if config.settings.savePositionOnClose.get():
             self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
-        self.waypointManager.save("editor.closeEditor")
+        self.waypointManager.save()
         self.clearUnsavedEdits()
         self.unsavedEdits = 0
         self.root.RemoveEditFiles()
@@ -3124,7 +3116,7 @@ class LevelEditor(GLViewport):
     def quit(self):
         if config.settings.savePositionOnClose.get():
             self.waypointManager.saveLastPosition(self.mainViewport, self.level.getPlayerDimension())
-        self.waypointManager.save("editor.quit")
+        self.waypointManager.save()
         self.mouseLookOff()
         self.mcedit.confirm_quit()
 

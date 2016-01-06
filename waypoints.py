@@ -1,6 +1,7 @@
 from pymclevel import nbt
 import os
 import logging
+import inspect
 
 log = logging.getLogger(__name__)
 DEBUG = False
@@ -10,6 +11,7 @@ class WaypointManager:
     def __init__(self, worldDir=None, editor=None):
         self.worldDirectory = worldDir
         self.waypoints = {}
+        self.waypoint_names = []
         self.editor = editor
         self.nbt_waypoints = nbt.TAG_Compound()
         self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
@@ -17,6 +19,7 @@ class WaypointManager:
 
     def build(self):
         for point in self.nbt_waypoints["Waypoints"]:
+            self.waypoint_names.append(point["Name"].value)
             self.waypoints["{0} ({1},{2},{3})".format(point["Name"].value, round(point["Coordinates"][0].value, 2), round(point["Coordinates"][1].value, 2), round(point["Coordinates"][2].value, 2))] = [
                                                                                                                                                                         point["Coordinates"][0].value, 
                                                                                                                                                                         point["Coordinates"][1].value, 
@@ -41,12 +44,16 @@ class WaypointManager:
             self.editor.gotoLastWaypoint(self.nbt_waypoints["LastPosition"])
             del self.nbt_waypoints["LastPosition"]
 
-    def save(self, calledFrom):
+    def save(self):
         if DEBUG:
-            print "Called from: \"" + str(calledFrom) + "\""
+            current_frame = inspect.currentframe()
+            outerframe = inspect.getouterframes(current_frame, 2)[1]
+            print "Called by '" + str(outerframe[3]) + "()' in '" + str(outerframe[1].split("\\")[-1]) + "' at line " + str(outerframe[2])
         del self.nbt_waypoints["Waypoints"]
         self.nbt_waypoints["Waypoints"] = nbt.TAG_List()
         for waypoint in self.waypoints.keys():
+            if waypoint.split()[0] == "Empty":
+                continue
             way = nbt.TAG_Compound()
             way["Name"] = nbt.TAG_String(waypoint.split()[0])
             way["Dimension"] = nbt.TAG_Int(self.waypoints[waypoint][5])
@@ -61,6 +68,12 @@ class WaypointManager:
             way["Rotation"] = rot
             self.nbt_waypoints["Waypoints"].append(way)
         self.nbt_waypoints.save(os.path.join(self.worldDirectory, u"mcedit_waypoints.dat"))
+        
+    def add_waypoint(self, name, coordinates, rotation, dimension):
+        formatted_name = "{0} ({1},{2},{3})".format(name, coordinates[0], coordinates[1], coordinates[2])
+        data = coordinates + rotation + (dimension,)
+        self.waypoint_names.append(name)
+        self.waypoints[formatted_name] = data
 
     def delete(self, choice):
         del self.waypoints[choice]
@@ -87,4 +100,4 @@ class WaypointManager:
         topTag["Rotation"] = rot
 
         self.nbt_waypoints["LastPosition"] = topTag
-        self.save("self.saveLastPosition")
+        self.save()
