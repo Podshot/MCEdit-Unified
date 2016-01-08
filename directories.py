@@ -64,6 +64,16 @@ def win32_utf8_argv():
                     xrange(0, argc.value)]
     except Exception:
         pass
+    
+def getNewDataDir(path=""):
+    dataDir = os.path.dirname(os.path.abspath(__file__))
+    #print "Dynamic: " + str(os.getcwdu())
+    #print "Fixed: " + str(dataDir) 
+    if len(path) > 0:
+        return os.path.join(dataDir, path)
+    return dataDir
+
+getNewDataDir()
 
 def getDataDir(path=""):
     """
@@ -88,6 +98,7 @@ def getDataDir(path=""):
         return os.path.join(dataDir, path)
     return dataDir
 
+getDataDir = getNewDataDir
 
 def win32_appdata():
     # try to use win32 api to get the AppData folder since python doesn't populate os.environ with unicode strings.
