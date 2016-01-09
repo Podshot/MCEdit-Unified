@@ -595,7 +595,7 @@ definitions = {
         ("override", "Override", False)
     ],
     ("commands", "Commands"): [
-        ("sorting", "Sorting", "xz"),
+        ("sorting", "Sorting", "chain"),
         ("space", "Space", True),
         ("fileFormat", "File Format", "txt")
     ]

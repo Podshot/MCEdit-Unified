@@ -371,14 +371,17 @@ class BlockPicker(Dialog):
                 self.selectedBlockIndex -= 1
                 self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
                 self.blockButton.blockInfo = self.blockInfo
-
             elif keyname == "Down" and self.selectedBlockIndex < len(self.matchingBlocks) - 1:
                 self.selectedBlockIndex += 1
                 self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
                 self.blockButton.blockInfo = self.blockInfo
             elif keyname == 'Page down':
                 self.selectedBlockIndex = min(len(self.matchingBlocks) - 1, self.selectedBlockIndex + self.tableview.rows.num_rows())
+                self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+                self.blockButton.blockInfo = self.blockInfo
             elif keyname == 'Page up':
                 self.selectedBlockIndex = max(0, self.selectedBlockIndex - self.tableview.rows.num_rows())
+                self.tableview.rows.scroll_to_item(self.selectedBlockIndex)
+                self.blockButton.blockInfo = self.blockInfo
             if self.tableview.rows.cell_to_item_no(0, 0) != None and (self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 > self.selectedBlockIndex or self.tableview.rows.cell_to_item_no(0, 0) + self.tableview.rows.num_rows() -1 < self.selectedBlockIndex):
                 self.tableview.rows.scroll_to_item(self.selectedBlockIndex)

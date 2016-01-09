@@ -446,6 +446,7 @@ textureSlots = {
     #
     #
     #
+    "frosted_ice_0": (step(19), step(16)),
     # End Seventeenth Row
 
     # Start Eigteenth Row
@@ -557,6 +558,64 @@ textureSlots = {
     # Start Comparator Block
     }
 
+class MultipartTexture(object):
+    
+    def __init__(self, texture_objects):
+        self.subclasses = []
+        self.runAnyways = []
+        self.texture_dict = {}
+        for subcls in self.__class__.__subclasses__(): # This is why I love Python
+            self.subclasses.append(subcls)
+        for cls in self.subclasses:
+            instance = cls(texture_objects)
+            if instance.runAnyway:
+                self.runAnyways.append(instance)
+            else:
+                self.texture_dict[instance.target] = instance
+            
+        
+class LeverTexture(MultipartTexture):
+    target = "lever"
+    runAnyway = False
+    
+    def __init__(self, texture_objects):
+        self.texture_objects = texture_objects
+    
+    def parse_texture(self):
+        if "lever" not in self.texture_objects or "cobblestone" not in self.texture_objects:
+            return None
+        lever = self.texture_objects["lever"].copy()
+        cobblestone = self.texture_objects["cobblestone"].copy()
+        base_1 = cobblestone.crop((5, 4, 11, 12))
+        lever.paste(base_1, (10, 0, 16, 8))
+    
+        base_2 = cobblestone.crop((5, 0, 11, 3))
+        lever.paste(base_2, (10, 8, 16, 11))
+
+        base_3 = cobblestone.crop((4, 0, 12, 3))
+        lever.paste(base_3, (2, 0, 10, 3))
+        return lever
+    
+class StandingSignTexture(MultipartTexture):
+    target = ""
+    runAnyway = True
+    position = (step(20), step(5))
+    
+    def __init__(self, texture_objects):
+        self.texture_objects = texture_objects
+        
+    def parse_texture(self):
+        if "planks_oak" not in self.texture_objects or "log_oak" not in self.texture_objects:
+            return None
+        planks = self.texture_objects["planks_oak"].copy()
+        log_tex = self.texture_objects["log_oak"].copy()
+        
+        sign = planks.crop((0, 7, 16, 16))
+        log_tex.paste(sign, (0, 7, 16, 16))
+        if log_tex.mode != "RGBA":
+            log_tex = log_tex.convert("RGBA")
+        return log_tex
+
 
 class IResourcePack:
     '''
@@ -619,12 +678,18 @@ class IResourcePack:
         '''
         Parses each block texture into a usable PNG file like terrain.png
         '''
+        multiparts = MultipartTexture(self.block_image)
         log.debug("Parsing terrain.png")
         new_terrain = Image.new("RGBA", (512, 512), None)
         for tex in self.block_image.keys():
             if not self.__stop and tex in textureSlots.keys():
                 try:
-                    image = self.block_image[tex]
+                    if tex not in multiparts.texture_dict:
+                        image = self.block_image[tex]
+                    else:
+                        image = multiparts.texture_dict[tex].parse_texture()
+                        if image is None:
+                            continue
                     log.debug("    Image is %s"%tex)
                     log.debug("        Image mode: %s"%image.mode)
                     if image.mode != "RGBA":
@@ -660,6 +725,11 @@ class IResourcePack:
                     log.debug("Parsing stopped.")
                     log.debug("Resource pack considered as empty.")
                     pass
+        for runAnyway in multiparts.runAnyways:
+            parsed_texture = runAnyway.parse_texture()
+            if parsed_texture is not None:
+                new_terrain.paste(parsed_texture, runAnyway.position, parsed_texture)
+                self.propogated_textures.append(runAnyway.position)
         copy = self.old_terrain.copy()
 
         log.debug("Correcting textures...")

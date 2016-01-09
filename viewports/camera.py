@@ -262,7 +262,7 @@ class CameraViewport(GLViewport):
     def setModelview(self):
         pos = self.cameraPosition
         look = numpy.array(self.cameraPosition)
-        look += self.cameraVector
+        look = look.astype(float) + self.cameraVector
         up = (0, 1, 0)
         GLU.gluLookAt(pos[0], pos[1], pos[2],
                       look[0], look[1], look[2],
@@ -543,7 +543,12 @@ class CameraViewport(GLViewport):
             mobs[mobTable.selectedIndex] = id
             panel.dismiss()
 
-        id = tileEntity["EntityId"].value
+        if "EntityId" in tileEntity:
+            id = tileEntity["EntityId"].value
+        elif "SpawnData" in tileEntity:
+            id = tileEntity["SpawnData"]["id"].value
+        else:
+            id = "[Custom]"
         addMob(id)
 
         mobTable.selectedIndex = mobs.index(id)
@@ -581,6 +586,8 @@ class CameraViewport(GLViewport):
 
         if id != selectedMob():
             tileEntity["EntityId"] = pymclevel.TAG_String(selectedMob())
+            tileEntity["SpawnData"] = pymclevel.TAG_Compound()
+            tileEntity["SpawnData"]["id"] = pymclevel.TAG_String(selectedMob())
             op = MonsterSpawnerEditOperation(self.editor, self.editor.level)
             self.editor.addOperation(op)
             if op.canUndo:

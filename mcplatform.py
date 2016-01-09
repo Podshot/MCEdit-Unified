@@ -213,6 +213,10 @@ def askOpenFile(title='Select a Minecraft level....', schematics=False, suffixes
 
             _suffixes.append("inv")
 
+            # BO support
+            _suffixes.append("bo2")
+            _suffixes.append("bo3")
+
         if sys.platform == "win32": #!#
             return askOpenFileWin32(title, schematics, initialDir)
 

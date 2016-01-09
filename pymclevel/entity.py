@@ -27,7 +27,7 @@ class TileEntity(object):
             ("Text4", nbt.TAG_String),
         ),
         "MobSpawner": (
-            ("Items", nbt.TAG_List),
+            ("EntityId", nbt.TAG_String),
         ),
         "Chest": (
             ("Items", nbt.TAG_List),
@@ -155,6 +155,9 @@ class TileEntity(object):
                         tileEntityTag[name] = nbt.TAG_String("@")
                     elif name == "SuccessCount":
                         tileEntityTag[name] = nbt.TAG_Int(0)
+                elif tileEntityID == "MobSpawner":
+                    if name == "EntityId":
+                        tileEntityTag[name] = nbt.TAG_String("Pig")
 
         cls.setpos(tileEntityTag, pos)
         return tileEntityTag
@@ -225,12 +228,17 @@ class TileEntity(object):
 
         if eTag['id'].value == 'MobSpawner':
             mobs = []
-            mob = eTag.get('SpawnData')
-            if mob:
-                mobs.append(mob)
-            potentials = eTag.get('SpawnPotentials')
-            if potentials:
-                mobs.extend(p["Properties"] for p in potentials)
+            if 'SpawnData' in eTag:
+                mob = eTag['SpawnData']
+                if mob:
+                    mobs.append(mob)
+            if 'SpawnPotentials' in eTag:
+                potentials = eTag['SpawnPotentials']
+                for p in potentials:
+                    if 'properties' in p:
+                        mobs.extend(p["Properties"])
+                    elif 'Entity' in p:
+                        mobs.extend(p["Entity"])
 
             for mob in mobs:
                 if "Pos" in mob:
@@ -643,7 +651,11 @@ class PocketEntity(Entity):
                   "Villager": 15,
                   "Mooshroom": 16,
                   "Squid": 17,
+                  "Rabbit": 18,
                   "Bat": 19,
+                  "Iron Golem": 20,
+                  "Snow Golem": 21,
+                  "Ocelot": 22,
                   "Zombie": 32,
                   "Creeper": 33,
                   "Skeleton": 34,
@@ -655,6 +667,8 @@ class PocketEntity(Entity):
                   "Cave Spider": 40,
                   "Ghast": 41,
                   "Magma Cube": 42,
+                  "Blaze": 43,
+                  "Zombie Villager": 44,
                   "Item": 64,
                   "PrimedTnt": 65,
                   "FallingSand": 66,
@@ -666,7 +680,8 @@ class PocketEntity(Entity):
                   "MinecartRideable": 84,
                   "Fireball": 85,
                   "Boat": 90,
-                  "Player": 63}
+                  "Player": 63,
+                  "Entity": 69}
 
 
 class TileTick(object):

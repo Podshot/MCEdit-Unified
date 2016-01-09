@@ -399,7 +399,7 @@ class MCEdit(GLViewport):
             win = dis.create_resource_object('window', display.get_wm_info()['window'])
             geom = win.query_tree().parent.get_geometry()
 
-        if w >= 1000 and h >= 700:
+        if w >= 1000 and h >= 680:
             config.settings.windowWidth.set(w)
             config.settings.windowHeight.set(h)
             config.save()
@@ -465,6 +465,9 @@ class MCEdit(GLViewport):
         self.saveWindowPosition()
         config.save()
         if self.editor.unsavedEdits:
+#             if config.settings.savePositionOnClose.get():
+#                 self.editor.waypointManager.saveLastPosition(self.editor.mainViewport, self.editor.level.getPlayerDimension())
+#             self.editor.waypointManager.save()
             result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
             if result == "Save and Quit":
@@ -629,6 +632,11 @@ class MCEdit(GLViewport):
                 rootwidget.run()
             except (SystemExit, KeyboardInterrupt):
                 print "Shutting down..."
+                exc_txt = traceback.format_exc()
+                if mcedit.editor.level:
+                    if config.settings.savePositionOnClose.get():
+                        mcedit.editor.waypointManager.saveLastPosition(mcedit.editor.mainViewport, mcedit.editor.level.getPlayerDimension())
+                    mcedit.editor.waypointManager.save()
                 if sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
@@ -654,7 +662,13 @@ class MCEdit(GLViewport):
                 if mcedit.editor.level:
                     mcedit.editor.level.close()
                 mcedit.editor.root.RemoveEditFiles()
-                raise
+                if 'SystemExit' in traceback.format_exc() or 'KeyboardInterrupt' in traceback.format_exc():
+                    raise
+                else:
+                    if 'SystemExit' in exc_txt:
+                        raise SystemExit
+                    if 'KeyboardInterrupt' in exc_txt:
+                        raise KeyboardInterrupt
             except MemoryError:
                 traceback.print_exc()
                 mcedit.editor.handleMemoryError()
