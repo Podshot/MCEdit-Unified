@@ -399,7 +399,7 @@ class MCEdit(GLViewport):
             win = dis.create_resource_object('window', display.get_wm_info()['window'])
             geom = win.query_tree().parent.get_geometry()
 
-        if w >= 1000 and h >= 700:
+        if w >= 1000 and h >= 680:
             config.settings.windowWidth.set(w)
             config.settings.windowHeight.set(h)
             config.save()
