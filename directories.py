@@ -98,7 +98,8 @@ def getDataDir(path=""):
         return os.path.join(dataDir, path)
     return dataDir
 
-getDataDir = getNewDataDir
+if sys.platform == "win32":
+    getDataDir = getNewDataDir
 
 def win32_appdata():
     # try to use win32 api to get the AppData folder since python doesn't populate os.environ with unicode strings.
