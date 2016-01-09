@@ -407,10 +407,10 @@ class MCEdit(GLViewport):
                 win.configure(height=geom.height, width=geom.width)
         elif w !=0 and h !=0:
             config.settings.windowWidth.set(1000)
-            config.settings.windowHeight.set(700)
+            config.settings.windowHeight.set(680)
             config.save()
             if dis:
-                win.configure(height=700, width=1000)
+                win.configure(height=680, width=1000)
         if dw > 20 or dh > 20:
             if not hasattr(self, 'resizeAlert'):
                 self.resizeAlert = self.shouldResizeAlert
