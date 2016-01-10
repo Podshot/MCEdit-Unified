@@ -264,10 +264,10 @@ class OptionsPanel(Dialog):
         albow.translate.langPath = os.sep.join((directories.getDataDir(), "lang"))
         update = albow.translate.setLang(lng)[2]
         logging.debug('    Update done? %s (Magic %s)'%(update, update or lng == 'en_US'))
-        self.mcedit.root.set_update_translation(update or lng == 'en_US')
-        self.mcedit.root.set_update_translation(False)
-        self.mcedit.editor.set_update_translation(update or lng == 'en_US')
-        self.mcedit.editor.set_update_translation(False)
+        self.mcedit.root.set_update_ui(update or lng == 'en_US')
+        self.mcedit.root.set_update_ui(False)
+        self.mcedit.editor.set_update_ui(update or lng == 'en_US')
+        self.mcedit.editor.set_update_ui(False)
         #-#
 
     @staticmethod
@@ -312,10 +312,10 @@ class OptionsPanel(Dialog):
         # If font proportion setting has changed, update the UI.
         if config.settings.fontProportion.get() != self.saveOldConfig[config.settings.fontProportion]:
             albow.resource.reload_fonts(proportion=config.settings.fontProportion.get())
-            self.mcedit.root.set_update_translation(True)
-            self.mcedit.root.set_update_translation(False)
-            self.mcedit.editor.set_update_translation(True)
-            self.mcedit.editor.set_update_translation(False)
+            self.mcedit.root.set_update_ui(True)
+            self.mcedit.root.set_update_ui(False)
+            self.mcedit.editor.set_update_ui(True)
+            self.mcedit.editor.set_update_ui(False)
 
         self.reshowNumberFields()
         for key in self.saveOldConfig.keys():

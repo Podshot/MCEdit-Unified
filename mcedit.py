@@ -216,8 +216,8 @@ class MCEdit(GLViewport):
         self.fileOpener.focus()
 
     #-# Translation live updtate preparation
-    def set_update_translation(self, v):
-        GLViewport.set_update_translation(self, v)
+    def set_update_ui(self, v):
+        GLViewport.set_update_ui(self, v)
         if v:
             #&# Prototype for blocks/items names
             mclangres.buildResources(lang=albow.translate.getLang())

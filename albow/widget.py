@@ -113,11 +113,11 @@ class Widget(object):
     def get_update_translation(self):
         return self.__update_translation
 
-    def set_update_translation(self, v):
+    def set_update_ui(self, v):
         if v:
             self.font = self.predict_font({})
             for widget in self.subwidgets:
-                widget.set_update_translation(v)
+                widget.set_update_ui(v)
             if self.shrink_wrapped:
                 self.shrink_wrap()
             if hasattr(self, 'calc_size'):

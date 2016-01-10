@@ -127,11 +127,11 @@ class Label(Widget):
     def get_update_translation(self):
         return Widget.update_translation(self)
 
-    def set_update_translation(self, v):
+    def set_update_ui(self, v):
         self.text = self.base_text
         self.set_text(self.base_text)
         self.calc_size()
-        Widget.set_update_translation(self, v)
+        Widget.set_update_ui(self, v)
     #-#
 
     def __repr__(self):

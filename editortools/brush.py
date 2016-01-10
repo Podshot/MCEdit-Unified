@@ -532,8 +532,8 @@ class BrushTool(CloneTool):
                 m.trn = trn
                 albow.translate.setLangPath(old_trn_path)
                 albow.translate.buildTranslation(config.settings.langCode.get())
-                self.editor.mcedit.set_update_translation(True)
-                self.editor.mcedit.set_update_translation(False)
+                self.editor.mcedit.set_update_ui(True)
+                self.editor.mcedit.set_update_ui(False)
             m.materials = self.editor.level.materials
             m.tool = self
             m.createInputs(m)
