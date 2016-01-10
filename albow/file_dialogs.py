@@ -24,6 +24,7 @@ from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
 from tree import Tree
+from directories import getDataDir
 
 import logging
 log = logging.getLogger(__name__)
@@ -51,8 +52,8 @@ if sys.platform in ('darwin', 'linux2'):
         draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 0, pi/1.9, 2)
         draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 3*pi/2, 2*pi, 2)
 else: # windows
-    file_image = image.load('file.png')
-    folder_image = image.load('folder.png')
+    file_image = image.load(os.path.join(getDataDir(), 'file.png'))
+    folder_image = image.load(os.path.join(getDataDir(), 'folder.png'))
 
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
