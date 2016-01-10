@@ -24,18 +24,21 @@ from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
 from tree import Tree
-from directories import getDataDir
-
 import logging
 log = logging.getLogger(__name__)
 
-if sys.platform in ('darwin', 'linux2'):
+
+DEBUG = False
+
+if DEBUG:
+    from albow.resource import get_image
+
     print "*** MCEDIT DEBUG: file_dialog:", __file__
     print "*** MCEDIT DEBUG: directory:", os.path.dirname(__file__)
     print "*** MCEDIT DEBUG: current directory:", os.getcwd()
     try:
-        file_image = image.load('file.png')
-        folder_image = image.load('folder.png')
+        file_image = get_image('file.png')
+        folder_image = get_image('folder.png')
     except Exception, e:
         print "MCEDIT DEBUG: Could not load file dialog images."
         print e
@@ -51,9 +54,35 @@ if sys.platform in ('darwin', 'linux2'):
         draw.line(folder_image, (255, 255, 255, 255), [3, 15], [3, 1], 2)
         draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 0, pi/1.9, 2)
         draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 3*pi/2, 2*pi, 2)
-else: # windows
-    file_image = image.load(os.path.join(getDataDir(), 'file.png'))
-    folder_image = image.load(os.path.join(getDataDir(), 'folder.png'))
+
+else:
+    from directories import getDataDir
+
+    if sys.platform in ('darwin', 'linux2'):
+        print "*** MCEDIT DEBUG: file_dialog:", __file__
+        print "*** MCEDIT DEBUG: directory:", os.path.dirname(__file__)
+        print "*** MCEDIT DEBUG: current directory:", os.getcwd()
+        try:
+            file_image = image.load('file.png')
+            folder_image = image.load('folder.png')
+        except Exception, e:
+            print "MCEDIT DEBUG: Could not load file dialog images."
+            print e
+            from pygame import draw, Surface
+            from pygame.locals import SRCALPHA
+            from math import pi
+            file_image = Surface((16, 16), SRCALPHA)
+            file_image.fill((0,0,0,0))
+            draw.lines(file_image, (255, 255, 255, 255), False, [[3, 15], [3, 1], [13, 1]], 2)
+            draw.line(file_image, (255, 255, 255, 255), [3, 7], [10, 7], 2)
+            folder_image = Surface((16, 16), SRCALPHA)
+            folder_image.fill((0,0,0,0))
+            draw.line(folder_image, (255, 255, 255, 255), [3, 15], [3, 1], 2)
+            draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 0, pi/1.9, 2)
+            draw.arc(folder_image, (255, 255, 255, 255), [0, 1, 13, 15], 3*pi/2, 2*pi, 2)
+    else: # windows
+        file_image = image.load(os.path.join(getDataDir(), 'file.png'))
+        folder_image = image.load(os.path.join(getDataDir(), 'folder.png'))
 
 class DirPathView(Widget):
     def __init__(self, width, client, **kwds):
