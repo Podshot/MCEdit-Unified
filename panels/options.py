@@ -308,28 +308,14 @@ class OptionsPanel(Dialog):
         return True
 
     def dismiss(self, *args, **kwargs):
-        """Used to change the language and the font proportion"""
-        lang = config.settings.langCode.get() == old_lang or config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
-        font = config.settings.fontProportion.get() == old_fprop or config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
-        #-# The following lines will be used for the language and font dynamic changes
-        #-# The restart boxes will be suppressed.
-#        lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
-#        font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
-#        self.changeLanguage()
-
-#        if not font or not lang:
-#            editor = self.mcedit.editor
-#            if editor and editor.unsavedEdits:
-#                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
-#            else:
-#                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
-#            if result == "Save and Restart":
-#                editor.saveFile()
-#                self.mcedit.restart()
-#            elif result == "Restart":
-#                self.mcedit.restart()
-#            elif result == "Later":
-#                pass
+        """Used to change the font proportion."""
+        # If font proportion setting has changed, update the UI.
+        if config.settings.fontProportion.get() != self.saveOldConfig[config.settings.fontProportion]:
+            albow.resource.reload_fonts(proportion=config.settings.fontProportion.get())
+            self.mcedit.root.set_update_translation(True)
+            self.mcedit.root.set_update_translation(False)
+            self.mcedit.editor.set_update_translation(True)
+            self.mcedit.editor.set_update_translation(False)
 
         self.reshowNumberFields()
         for key in self.saveOldConfig.keys():
