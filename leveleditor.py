@@ -1240,8 +1240,7 @@ class LevelEditor(GLViewport):
         else:
             self.remove(self.topRow)
             self.topRow = Row((
-                self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout,
-                self.viewDistanceUp,
+                self.mcEditButton, Label("View Distance:"), self.viewDistanceReadout,
                 self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
