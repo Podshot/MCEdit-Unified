@@ -18,9 +18,13 @@ cur_dir = directories.getDataDir()
 splash_name = os.path.join(cur_dir, 'splash')
 
 try:
-    if os.path.exists(splash_name) and len(open(splash_name).read()) > 0:
-        splash = pygame.image.load(open(splash_name).read().strip())
-    else:
+    found = False
+    if os.path.exists(splash_name):
+        splash_img = open(splash_name).read().strip()
+        if os.path.exists(splash_img):
+            found = True
+            splash = pygame.image.load(open(splash_img, 'rb'))
+    if not found:
         splash = pygame.image.load(open(os.path.join(cur_dir, "splash.png"), 'rb'))
     screen = pygame.display.set_mode(splash.get_size(), pygame.NOFRAME)
     screen.blit(splash, (0, 0))
@@ -56,4 +60,3 @@ if len(open(splash_name).read()) > 0:
     if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
         new_splash = choice(os.listdir(splashes_folder))
         open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
-
