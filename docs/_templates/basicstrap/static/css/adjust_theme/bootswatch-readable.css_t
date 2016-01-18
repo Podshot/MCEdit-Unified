@@ -1,0 +1,73 @@
+{% set table_border_color = "#dddddd" %}
+
+{% set danger_color = "#ffffff" %}
+{% set danger_background_color = "#db524b" %}
+{% set danger_border_color  = "#db524b" %}
+
+{% set warning_color = "#ffffff" %}
+{% set warning_background_color = "#f2ae43" %}
+{% set warning_border_color  = "#f2ae43" %}
+
+{% set note_color = "#ffffff" %}
+{% set note_background_color = "#39af40" %}
+{% set note_border_color  = "#39af40" %}
+
+{% set hint_color = "#ffffff" %}
+{% set hint_background_color = "#56C0E0" %}
+{% set hint_border_color  = "#56C0E0" %}
+
+{% include "static/css/adjust_theme/_common_adjust.css" %}
+
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #eeeeee !important;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #eeeeee;
+ border-top: 1px solid #eeeeee;
+ border-bottom: 1px solid #eeeeee;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #f7f7f7;
+  border-color: #eeeeee;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   margin-left: 7px;
+   margin-right: 7px;
+   border: 1px solid transparent;
+   border-radius: 4px;
+   color: #4582ec;
+}
+ul.sp-localtoc ul a:hover{
+   border-color: #dddddd;
+   color: #4582ec;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #333333;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #333333;
+}
+
+
+/* Etc
+   ---------------------------------------------------------*/
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 15px;
+}

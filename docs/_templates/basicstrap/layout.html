@@ -1,0 +1,467 @@
+{#
+    basicstrap/layout.html
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Master layout template for Sphinx themes. on Twitter Bootstrap
+
+    :copyright: Copyright 2012 by tell-k.
+    :license: MIT Licence, see LICENSE for details.
+#}
+{%- block doctype -%}
+<!DOCTYPE html>
+{%- endblock %}
+{%- set reldelim1 = reldelim1 is not defined and ' &raquo;' or reldelim1 %}
+{%- set reldelim2 = reldelim2 is not defined and ' |' or reldelim2 %}
+{%- set render_sidebar = (not embedded) and (not theme_nosidebar|tobool) and
+(sidebars != []) %}
+{%- set url_root = pathto('', 1) %}
+{# XXX necessary? #}
+{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
+{%- if not embedded and docstitle %}
+{%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+{%- else %}
+{%- set titlesuffix = "" %}
+{%- endif %}
+
+{%- if theme_bootstrap_version == "3" %}
+  {%- set bs_span_prefix = "col-md-" %}
+  {%- set class_device_xs= "xs" %}
+  {%- set class_device_sm= "sm" %}
+  {%- set class_device_md= "md" %}
+  {%- set class_row = "row" %}
+{%- else %}
+  {%- set bs_span_prefix = "span" %}
+  {%- set class_device_xs= "phone" %}
+  {%- set class_device_sm= "tablet" %}
+  {%- set class_device_md= "desktop" %}
+  {%- if (not theme_row_fixed|tobool) %}
+    {%- set class_row = "row-fluid" %}
+  {%- else %}
+    {%- set class_row = "row" %}
+  {%- endif %}
+{%- endif %}
+
+{%- macro relbar() %}
+<div id="navbar-related" class=" related navbar {% if (theme_relbar_inverse|tobool) %}navbar-inverse{% else %}navbar-default{% endif %}" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav {% if theme_noresponsiverelbar|tobool %}text-center{% endif %}">
+        <li><a href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a></li>
+    </ul>
+<ul class="nav navbar-nav {% if not theme_noresponsiverelbar|tobool %}pull-right hidden-{{ class_device_xs }} hidden-{{ class_device_sm }}{% else %}text-center{% endif %}">
+      {% if not (theme_nosidebar|tobool) %}
+        {%- for rellink in rellinks|reverse %}
+        <li><a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}" {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a></li>
+        {%- endfor %}
+        {%- block rootrellink %}
+        {%- endblock %}
+        {%- for parent in parents %}
+        <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a></li>
+        {%- endfor %}
+        <li><a href="#">top</a></li>
+        {%- block relbaritems %} {% endblock %}
+      {% else %}
+        {%- if prev %}
+        <li><a href="{{ prev.link|e }}"><i class="icon icon-double-angle-left"></i>&nbsp;{{ prev.title }}</a></li>
+        {%- endif %}
+        <li><a class="uplink" href="{{ pathto(master_doc) }}">{{ _('Contents') }}</a></li>
+        {%- if next %}
+        <li><a href="{{ next.link|e }}">{{ next.title }}&nbsp;<i class="icon icon-double-angle-right"></i></a></li>
+        {%- endif %}
+        <li><a href="#">top</a></li>
+      {%- endif %}
+    </ul>
+  </div>
+</div>
+{%- endmacro %}
+
+{%- macro sidebar() %}
+{%- if render_sidebar %}
+<div class="{{ bs_span_prefix }}{{ theme_sidebar_span }} hidden-{{ class_device_xs }}" id="sidebar-wrapper">
+  <div class="sidebar hidden-{{ class_device_xs }}" role="navigation" aria-label="main navigation">
+    {%- block sidebarlogo %}
+    {%- if logo %}
+    <p class="logo"><a href="{{ pathto(master_doc) }}">
+      <img class="logo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
+    </a></p>
+    {%- endif %}
+    {%- endblock %}
+
+    {%- if sidebars != None %}
+    {#- new style sidebar: explicitly include/exclude templates #}
+    {%- for sidebartemplate in sidebars %}
+    {%- include sidebartemplate %}
+    {%- endfor %}
+    {%- else %}
+    {#- old style sidebars: using blocks -- should be deprecated #}
+    {%- block sidebartoc %}
+    {%- include "localtoc.html" %}
+    {%- endblock %}
+    {%- block sidebarrel %}
+    {%- include "relations.html" %}
+    {%- endblock %}
+    {%- block sidebarsourcelink %}
+    {%- include "sourcelink.html" %}
+    {%- endblock %}
+    {%- if customsidebar %}
+    {%- include customsidebar %}
+    {%- endif %}
+    {%- block sidebarsearch %}
+    {%- include "searchbox.html" %}
+    {%- endblock %}
+    {%- endif %}
+  </div>
+</div>
+{%- endif %}
+{%- endmacro %}
+
+{% set script_files = script_files + ['_static/js/bootstrap' + theme_bootstrap_version + '.min.js'] %}
+{%- macro script() %}
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '{{ url_root }}',
+            VERSION:     '{{ release|e }}',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '{{ '' if no_search_suffix else file_suffix }}',
+            HAS_SOURCE:  {{ has_source|lower }}
+  };
+</script>
+{%- for scriptfile in script_files %}
+    {%- if scriptfile == '_static/jquery.js' %}
+    <script type="text/javascript" src="{{ pathto('_static/js/jquery.min.js', 1) }}"></script>
+    {%- else %}
+    <script type="text/javascript" src="{{ pathto(scriptfile, 1) }}"></script>
+    {%- endif %}
+{%- endfor %}
+<script type="text/javascript" src="{{ pathto('_static/js/jquery.cookie.min.js', 1) }}"></script>
+<script type="text/javascript" src="{{ pathto('_static/js/basicstrap.js', 1) }}"></script>
+<script type="text/javascript">
+</script>
+{%- endmacro %}
+
+{%- macro css() %}
+{%- if (theme_googlewebfont|tobool) %}
+<link rel="stylesheet" href="{{ pathto(theme_googlewebfont_url, 1) }}" media="screen and (min-width:481px)" type="text/css" />
+{%- endif %}
+
+<link rel="stylesheet" href="{{ pathto('_static/css/basicstrap-base.css', 1) }}" type="text/css" />
+
+{%- if (theme_inner_theme|tobool) %}
+<link rel="stylesheet" id="current-theme" href="{{ pathto('_static/css/bootstrap' + theme_bootstrap_version + '/' + theme_inner_theme_name + '.css', 1) }}" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="{{ pathto('_static/css/adjust_theme/' + theme_inner_theme_name + '.css', 1) }}" type="text/css" />
+{%- else %}
+<link rel="stylesheet" id="current-theme" href="{{ pathto('_static/css/bootstrap' + theme_bootstrap_version + '/bootstrap.min.css', 1) }}" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+{%- endif %}
+
+{%- if theme_bootstrap_version == "3" and theme_noflatdesign|tobool %}
+<link rel="stylesheet" href="{{ pathto('_static/css/bootstrap' + theme_bootstrap_version + '/bootstrap-theme.min.css', 1) }}" type="text/css" />
+{%- endif %}
+
+<link rel="stylesheet" href="{{ pathto('_static/css/font-awesome.min.css', 1) }}">
+{% if (theme_nav_fixed_top|tobool) %}
+<style type="text/css">
+  body {
+    {%- if theme_bootstrap_version == "3" %}
+    padding-top: 60px;
+    padding-bottom: 40px;
+    {%- else %}
+    padding-top: 60px;
+    padding-bottom: 40px;
+    {%- endif %}
+  }
+</style>
+{% endif %}
+<link rel="stylesheet" href="{{ pathto('_static/' + style, 1) }}" type="text/css" />
+<link rel="stylesheet" href="{{ pathto('_static/pygments.css', 1) }}" type="text/css" />
+{%- for cssfile in css_files %}
+<link rel="stylesheet" href="{{ pathto(cssfile, 1) }}" type="text/css" />
+{%- endfor %}
+{%- if (not theme_noresponsive|tobool) and theme_bootstrap_version == "2" %}
+<link rel="stylesheet" href="{{ pathto('_static/css/bootstrap2/bootstrap-responsive.min.css', 1) }}" type="text/css" />
+{%- endif %}
+
+{%- if theme_noresponsive|tobool and theme_bootstrap_version == "3" %}
+<link rel="stylesheet" href="{{ pathto('_static/css/bootstrap3/bootstrap-non-responsive.css', 1) }}" type="text/css" />
+{%- endif %}
+
+{%- endmacro %}
+
+<html lang="{{ theme_lang }}">
+  <head>
+    <meta charset="{{ encoding }}" />
+    {{ metatags }}
+    {%- block htmltitle %}
+    <title>{{ title|striptags|e }}{{ titlesuffix }}</title>
+    {%- endblock %}
+
+    {%- if theme_noresponsive|tobool and theme_bootstrap_version == "3" %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%- endif %}
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {{ css() }}
+    {%- if not embedded %}
+    {{ script() }}
+    {%- if use_opensearch %}
+    <link rel="search" type="application/opensearchdescription+xml"
+    title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}"
+    href="{{ pathto('_static/opensearch.xml', 1) }}"/>
+    {%- endif %}
+    {%- if favicon %}
+    <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
+    {%- endif %}
+    {%- endif %}
+    {%- block linktags %}
+    {%- if hasdoc('about') %}
+    <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}" />
+    {%- endif %}
+    {%- if hasdoc('genindex') %}
+    <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}" />
+    {%- endif %}
+    {%- if hasdoc('search') %}
+    <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}" />
+    {%- endif %}
+    {%- if hasdoc('copyright') %}
+    <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}" />
+    {%- endif %}
+    <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}" />
+    {%- if parents %}
+    <link rel="up" title="{{ parents[-1].title|striptags|e }}" href="{{ parents[-1].link|e }}" />
+    {%- endif %}
+    {%- if next %}
+    <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" />
+    {%- endif %}
+    {%- if prev %}
+    <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}" />
+    {%- endif %}
+    {%- endblock %}
+    {%- block extrahead %} {% endblock %}
+  </head>
+  <body role="document">
+
+    {%- block header %}
+
+    {%- if theme_bootstrap_version == "3" %}
+    <div id="navbar-top" class="navbar {% if (theme_nav_fixed_top|tobool) %}navbar-fixed-top {% endif %}{% if (theme_header_inverse|tobool) %}navbar-inverse{% else %}navbar-default{% endif %}" role="navigation" aria-label="top navigation">
+      <div class="{% if (not theme_nav_fixed|tobool) %}container-fluid{% else %}container{% endif %}">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            {%- if (not theme_noresponsive|tobool) and display_toc %}
+              <li class="dropdown visible-{{ class_device_xs }}">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">{{ _('Table Of Contents') }} <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                {{ toc }}
+                </ul>
+              </li>
+            {%- endif %}
+
+            {%- if theme_theme_preview|tobool %}
+            <li><a href="#" data-toggle="modal" data-target=".debug-modal">theme preview</a></li>
+            {%- endif %}
+
+            {% if not (theme_nosidebar|tobool) %}
+              {%- for rellink in rellinks|reverse %}
+              <li><a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}" {{ accesskey(rellink[2]) }}>{{ rellink[3] }} </a></li>
+              {%- endfor %}
+              {%- for parent in parents %}
+              <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a></li>
+              {%- endfor %}
+            {% else %}
+              <li><a class="uplink" href="{{ pathto(master_doc) }}">{{ _('Contents') }}</a></li>
+              {%- if prev %}
+              <li><a href="{{ prev.link|e }}"><i class="icon icon-double-angle-left"></i>&nbsp;{{ prev.title }}</a></li>
+              {%- endif %}
+              {%- if next %}
+              <li><a href="{{ next.link|e }}">{{ next.title }}&nbsp;<i class="icon icon-double-angle-right"></i></a></li>
+              {%- endif %}
+            {%- endif %}
+
+            {%- if not theme_noresponsive|tobool %}
+            {%- if show_source and has_source and sourcename %}
+            <li class="visible-{{ class_device_xs }}"><a href="{{ pathto('_sources/' + sourcename, true)|e }}" rel="nofollow">{{ _('Show Source') }}</a></li>
+            {%- endif %}
+
+            <li class="visible-{{ class_device_xs }}">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="{{ pathto('search') }}" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="{{ _('Go') }}" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+            {%- endif %}
+
+            {% if (theme_nosidebar|tobool) and (theme_header_searchbox|tobool) %}
+            <li>
+              <form class="navbar-form navbar-right" action="{{ pathto('search') }}" method="get">
+               <div class="form-group" style="padding-right:20px;">
+                <input type="text" name="q" class="form-control" placeholder="Search" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="navbar" />
+               </div>
+              </form>
+            </li>
+            {% endif %}
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    {%- else %}
+
+    <div id="navbar-top" class="navbar {% if (theme_nav_fixed_top|tobool) %}navbar-fixed-top {% endif %}{% if (theme_header_inverse|tobool) %}navbar-inverse{% else %}navbar-default{% endif %}" role="navigation" aria-label="top navigation">
+      <div class="navbar-inner">
+        <div class="{% if (not theme_nav_fixed|tobool) %}container-fluid{% else %}container{% endif %}">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <div role="banner">
+            <a class="brand" href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>
+          </div>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+
+              {%- if (not theme_noresponsive|tobool) and display_toc %}
+                <li class="dropdown hidden-lg hidden-{{ class_device_md }}">
+                  <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">{{ _('Table Of Contents') }} <b class="caret"></b></a>
+                  <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                  {{ toc }}
+                  </ul>
+                </li>
+              {%- endif %}
+
+              {%- if theme_theme_preview|tobool %}
+              <li><a href="#" data-toggle="modal" data-target=".debug-modal">quick preview</a></li>
+              {%- endif %}
+
+              {% if not (theme_nosidebar|tobool) %}
+                {%- for rellink in rellinks|reverse %}
+                <li><a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}" {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a></li>
+                {%- endfor %}
+                {%- for parent in parents %}
+                <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a></li>
+                {%- endfor %}
+              {% else %}
+                <li><a class="uplink" href="{{ pathto(master_doc) }}">{{ _('Contents') }}</a></li>
+                {%- if prev %}
+                <li><a href="{{ prev.link|e }}"><i class="icon icon-double-angle-left"></i>&nbsp;{{ prev.title }}</a></li>
+                {%- endif %}
+                {%- if next %}
+                <li><a href="{{ next.link|e }}">{{ next.title }}&nbsp;<i class="icon icon-double-angle-right"></i></a></li>
+                {%- endif %}
+              {%- endif %}
+
+              {%- if not theme_noresponsive|tobool %}
+              {%- if show_source and has_source and sourcename %}
+              <li class="hidden-lg hidden-{{ class_device_md }}"><a href="{{ pathto('_sources/' + sourcename, true)|e }}" rel="nofollow">{{ _('Show Source') }}</a></li>
+              {%- endif %}
+
+              <li class="hidden-lg hidden-{{ class_device_md }}">
+                  <form class="search form-search form-inline sp-searchbox" action="{{ pathto('search') }}" method="get">
+                    <div class="input-append">
+                      <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                      <input type="submit" class="btn" value="{{ _('Go') }}" />
+                    </div>
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                  </form>
+              </li>
+              {%- endif %}
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%- endif %}
+    {% endblock %}
+
+    <!-- container -->
+    <div class="{% if (not theme_content_fixed|tobool) %}container-fluid{% else %}container{% endif %}">
+
+      <!-- row -->
+      <div class="{{ class_row }}">
+        {%- block content %}
+
+        {%- block sidebar1 %}
+        {% if (not theme_rightsidebar|tobool) %} {{ sidebar() }} {% endif %}
+        {% endblock %}
+
+        <div class="{% if (not theme_nosidebar|tobool) %}{{ bs_span_prefix }}{{ 12 - theme_sidebar_span|int }}{% else %}{{ bs_span_prefix }}12{% endif %}">
+          <div class="document" role="main">
+            {%- block document %}
+            <div class="documentwrapper">
+              {%- if render_sidebar %}
+              <div class="bodywrapper">
+                {%- endif %}
+                <div class="body">
+                  {% block body %} {% endblock %}
+                </div>
+                {%- if render_sidebar %}
+              </div>
+              {%- endif %}
+            </div>
+            {%- endblock %}
+          </div>
+        </div>
+
+        {%- block sidebar2 %}
+        {% if (theme_rightsidebar|tobool) %} {{ sidebar() }} {% endif %}
+        {% endblock %}
+
+        {%- endblock %}{# /content block #}
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="{{ class_row }} footer-relbar">
+        {%- block relbar2 %}{{ relbar() }}{% endblock %}
+      </div><!-- /row -->
+
+      <!-- footer -->
+      {%- block footer %}
+      <footer role="contentinfo">
+      {%- if show_copyright %}
+        {%- if hasdoc('copyright') %}
+          {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
+        {%- else %}
+          {% trans copyright=copyright|e %}&copy; Copyright {{ copyright }}.{% endtrans %}
+        {%- endif %}
+      {%- endif %}
+      {%- if last_updated %}
+        {% trans last_updated=last_updated|e %}Last updated on {{ last_updated }}.{% endtrans %}
+      {%- endif %}
+      {%- if show_sphinx %}
+        {% trans sphinx_version=sphinx_version|e %}Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version }}.{% endtrans %}
+      {%- endif %}
+      </footer>
+      {%- endblock %}
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+    {%- if theme_theme_preview|tobool %}
+    {%- include "_theme_preview.html" %}
+    {%- endif %}
+
+  </body>
+</html>

@@ -1,0 +1,60 @@
+{% set table_border_color = "#464545" %}
+
+{% set danger_color = "#ffffff" %}
+{% set danger_background_color = "#e94b35" %}
+{% set danger_border_color  = "#e94b35" %}
+
+{% set warning_color = "#ffffff" %}
+{% set warning_background_color = "#f59d00" %}
+{% set warning_border_color  = "#f59d00" %}
+
+{% set note_color = "#ffffff" %}
+{% set note_background_color = "#00bd8b" %}
+{% set note_border_color  = "#00bd8b" %}
+
+{% set hint_color = "#ffffff" %}
+{% set hint_background_color = "#2c97de" %}
+{% set hint_border_color  = "#2c97de" %}
+
+{% include "static/css/adjust_theme/_common_adjust.css" %}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #464545 !important;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #464545;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #464545;
+ border-top: 1px solid #464545;
+ border-bottom: 1px solid #464545;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+ul.sp-localtoc ul a:hover{
+   background-color: transparent;
+   color: #00bc8c;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   background-color: transparent;
+   color: #375a7f;
+}

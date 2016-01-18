@@ -1,0 +1,36 @@
+{% set table_border_color = "#999999" %}
+{% set table_oddrow_color = "#eaeaea;" %}
+{% set table_hover_color  = "#dddddd" %}
+
+{% set danger_color = "#ffffff" %}
+{% set danger_background_color = "#d14432" %}
+{% set danger_border_color  = "#c72d35" %}
+
+{% set warning_color = "#ffffff" %}
+{% set warning_background_color = "#f26522" %}
+{% set warning_border_color  = "#f13614" %}
+
+{% set note_color = "#ffffff" %}
+{% set note_background_color = "#24c00b" %}
+{% set note_border_color  = "#3aa80a" %}
+
+{% set hint_color = "#ffffff" %}
+{% set hint_background_color = "#185af9" %}
+{% set hint_border_color  = "#066ee7" %}
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 15px;
+}
+
+@media (max-width: 480px) {
+    a.brand {
+        line-height: 25px;
+    }
+}
+
+table.docutils th.head {
+    background-color: #015b4e;
+color: #fff;
+}
+
+{% include "static/css/adjust_theme/_common_adjust.css" %}
