@@ -1,22 +1,88 @@
-{% set table_border_color = "#1c1e22" %}
 
-{% set danger_color = "rgba(255, 255, 255, 0.9)" %}
-{% set danger_background_color = "#f05e57" %}
-{% set danger_border_color  = "#ef4b60" %}
 
-{% set warning_color = "rgba(255, 255, 255, 0.9)" %}
-{% set warning_background_color = "#fa9500" %}
-{% set warning_border_color  = "#eb6500" %}
 
-{% set note_color = "rgba(255, 255, 255, 0.9)" %}
-{% set note_background_color = "#468847" %}
-{% set note_border_color  = "#5ec65d" %}
 
-{% set hint_color = "rgba(255, 255, 255, 0.9)" %}
-{% set hint_background_color = "#56C0E0" %}
-{% set hint_border_color  = "#31ced9" %}
 
-{% include "static/css/adjust_theme/_common_adjust.css" %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #1c1e22;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #1c1e22;
+}
+table.docutils tbody + tbody {
+  border-color: #1c1e22;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #1c1e22;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #fa9500;
+  border-color: #eb6500;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #f05e57;
+  border-color: #ef4b60;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #fa9500;
+  border-color: #eb6500;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #468847;
+  border-color: #5ec65d;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #56C0E0;
+  border-color: #31ced9;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #1c1e22;
+}
 
 /* Heading
    ---------------------------------------------------------*/

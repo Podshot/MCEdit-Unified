@@ -12,15 +12,18 @@
    directories
    drawable
    editortools
+   fileEdits
    frustum
    ftp_client
    glbackground
    glutils
+   hook-updater4pyi
    keys
    leveleditor
    mce
    mcedit
    mceutils
+   mclangres
    mcplatform
    panels
    pkgutil
@@ -31,6 +34,9 @@
    release
    renderer
    resource_packs
+   setup
+   setuptest
    splash
+   utilities
    version_utils
    viewports

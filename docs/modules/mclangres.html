@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>mclangres &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../index.html">
+      <img class="logo" src="../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for mclangres</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf_8 -*-</span>
+<span class="c">#</span>
+<span class="c"># mclangres.py</span>
+<span class="c">#</span>
+<span class="c"># Collect the Minecraft internal translations.</span>
+<span class="c">#</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Uses `.minecraft/assets/indexes/[version].json`. The version is the highest</span>
+<span class="sd">found by default.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">from</span> <span class="nn">directories</span> <span class="kn">import</span> <span class="n">getMinecraftLauncherDirectory</span><span class="p">,</span> <span class="n">getDataDir</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="n">indexesDirectory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">&#39;assets&#39;</span><span class="p">,</span> <span class="s">&#39;indexes&#39;</span><span class="p">)</span>
+<span class="n">objectsDirectory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">&#39;assets&#39;</span><span class="p">,</span> <span class="s">&#39;objects&#39;</span><span class="p">)</span>
+
+<span class="n">enRes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">serNe</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">langRes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">serGnal</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">enMisc</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">csimNe</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">langMisc</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">csimGnal</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># Shall this be maintained in an external resource?</span>
+<span class="n">excludedEntries</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;tile.flower1.name&#39;</span><span class="p">,]</span>
+
+<span class="c"># Used to track untranslated and out dated MCEdit resources.</span>
+<span class="c"># Set it to true to generate/add entries to &#39;missingmclangres.txt&#39; in MCEdit folder.</span>
+<span class="c"># Note that some strings may be falsely reported. (Especialy a &#39;7 (Source)&#39; one...)</span>
+<span class="c"># ! ! ! Please, pay attention to disable this befor releasing ! ! !</span>
+<span class="n">report_missing</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="getResourceName"><a class="viewcode-back" href="../mclangres.html#mclangres.getResourceName">[docs]</a><span class="k">def</span> <span class="nf">getResourceName</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;&quot;minecraft/lang/</span><span class="si">%s</span><span class="s">.lang&quot;:[ ]\{</span><span class="se">\b</span><span class="s">*.*?&quot;hash&quot;:[ ]&quot;(.*?)&quot;,&#39;</span><span class="o">%</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Could not find </span><span class="si">%s</span><span class="s"> resource name.&#39;</span><span class="o">%</span><span class="n">name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="findResourceFile"><a class="viewcode-back" href="../mclangres.html#mclangres.findResourceFile">[docs]</a><span class="k">def</span> <span class="nf">findResourceFile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">basedir</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">basedir</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="buildResources"><a class="viewcode-back" href="../mclangres.html#mclangres.buildResources">[docs]</a><span class="k">def</span> <span class="nf">buildResources</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads the resource files and builds the resource dictionnaries.</span>
+<span class="sd">    Four dictionnaries are built. Two for the refering language (English), and two for the language to be used.</span>
+<span class="sd">    They are &#39;reversed&#39; dictionnaries; the {foo: bar} pairs of one are the {bar: foo} of the other one.&quot;&quot;&quot;</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Building Minecraft language resources...&#39;</span><span class="p">)</span>
+    <span class="k">global</span> <span class="n">enRes</span>
+    <span class="k">global</span> <span class="n">serNe</span>
+    <span class="k">global</span> <span class="n">langRes</span>
+    <span class="k">global</span> <span class="n">serGnal</span>
+    <span class="k">global</span> <span class="n">enMisc</span>
+    <span class="k">global</span> <span class="n">csimEn</span>
+    <span class="k">global</span> <span class="n">langMisc</span>
+    <span class="k">global</span> <span class="n">csimGnal</span>
+    <span class="n">enRes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">serNe</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">langRes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">serGnal</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">enMisc</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">csimEn</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">langMisc</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">csimGnal</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">indexesDirectory</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">objectsDirectory</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Minecraft installation directory is not valid.&#39;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Impossible to load the game language resources.&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="n">versions</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">indexesDirectory</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">versions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;No valid versions found in minecraft install directory&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="s">&#39;legacy.json&#39;</span> <span class="ow">in</span> <span class="n">versions</span><span class="p">:</span>
+        <span class="n">versions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;legacy.json&#39;</span><span class="p">)</span>
+    <span class="n">versions</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.json&quot;</span><span class="o">%</span><span class="n">version</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">versions</span><span class="p">:</span>
+        <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indexesDirectory</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indexesDirectory</span><span class="p">,</span> <span class="n">versions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Using </span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">getResourceName</span><span class="p">(</span><span class="s">&#39;en_GB&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">objectsDirectory</span><span class="p">,</span> <span class="n">name</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fName</span><span class="p">):</span>
+            <span class="n">fName</span> <span class="o">=</span> <span class="n">findResourceFile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">objectsDirectory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">fName</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Can</span><span class="se">\&#39;</span><span class="s">t get the resource </span><span class="si">%s</span><span class="s">.&#39;</span><span class="o">%</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Nothing built. Aborted&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Found </span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;book&#39;</span><span class="p">,</span> <span class="s">&#39;enchantment&#39;</span><span class="p">,</span> <span class="s">&#39;entity&#39;</span><span class="p">,</span> <span class="s">&#39;gameMode&#39;</span><span class="p">,</span> <span class="s">&#39;generator&#39;</span><span class="p">,</span> <span class="s">&#39;item&#39;</span><span class="p">,</span> <span class="s">&#39;tile&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excludedEntries</span><span class="p">:</span>
+                <span class="n">enRes</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">serNe</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&#39;Items&#39;</span><span class="p">,</span> <span class="s">&#39;en_GB&#39;</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">enMisc</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">csimNe</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;... Loaded!&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lang</span><span class="p">:</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="s">&#39;en_GB&#39;</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Looking for </span><span class="si">%s</span><span class="s"> resources.&#39;</span><span class="o">%</span><span class="n">lang</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">getResourceName</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="s">&#39;en_GB&#39;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">getResourceName</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">objectsDirectory</span><span class="p">,</span> <span class="n">name</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fName</span><span class="p">):</span>
+            <span class="n">fName</span> <span class="o">=</span> <span class="n">findResourceFile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">objectsDirectory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">fName</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Can</span><span class="se">\&#39;</span><span class="s">t get the resource </span><span class="si">%s</span><span class="s">.&#39;</span><span class="o">%</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Found </span><span class="si">%s</span><span class="s">...&#39;</span><span class="o">%</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;book&#39;</span><span class="p">,</span> <span class="s">&#39;enchantment&#39;</span><span class="p">,</span> <span class="s">&#39;entity&#39;</span><span class="p">,</span> <span class="s">&#39;gameMode&#39;</span><span class="p">,</span> <span class="s">&#39;generator&#39;</span><span class="p">,</span> <span class="s">&#39;item&#39;</span><span class="p">,</span> <span class="s">&#39;tile&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excludedEntries</span><span class="p">:</span>
+                <span class="n">langRes</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">serGnal</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&#39;Items&#39;</span><span class="p">,</span> <span class="n">lang</span><span class="p">)):</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&#39;Items&#39;</span><span class="p">,</span> <span class="n">lang</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="n">langMisc</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">csimGnal</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;... Loaded!&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="compound"><a class="viewcode-back" href="../mclangres.html#mclangres.compound">[docs]</a><span class="k">def</span> <span class="nf">compound</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">pair</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">pair</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="ow">in</span> <span class="s">&#39;{[(&#39;</span><span class="p">:</span>
+            <span class="n">pair</span> <span class="o">=</span> <span class="s">&#39;}])&#39;</span><span class="p">[</span><span class="s">&#39;{[(&#39;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">char</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pair</span> <span class="o">=</span> <span class="n">char</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">misc</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">misc</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enRes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langRes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enMisc</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="n">addMissing</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">misc</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="s">&#39; &#39;</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">False</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stop</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">elems</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">stop</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">h</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+                            <span class="n">h</span> <span class="o">=</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">h</span><span class="p">)</span>
+                            <span class="n">stop</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="k">elif</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+                            <span class="n">h</span> <span class="o">=</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">h</span><span class="p">)</span>
+                            <span class="n">stop</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">stop</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">t</span> <span class="o">=</span> <span class="s">u&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                        <span class="k">if</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span>
+                            <span class="n">stop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="k">elif</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="bp">False</span><span class="p">):</span>
+                            <span class="n">t</span> <span class="o">=</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span>
+                            <span class="n">stop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="k">if</span> <span class="n">stop</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                            <span class="n">stop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">h</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enRes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">h</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langRes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">h</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enMisc</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">h</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                    <span class="n">addMissing</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="s">&#39;misc&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enRes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langRes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enMisc</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                    <span class="n">addMissing</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s">&#39;misc&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s">u&#39;/&#39;</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">translate</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="s">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">translate</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="s">&#39;_&#39;</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">translate</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">misc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">tail</span> <span class="o">=</span> <span class="s">u&#39;</span><span class="si">%s%s%s</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s">u&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">langMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enMisc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">misc</span><span class="p">]),</span> <span class="n">pair</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">u&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">))</span>
+</div>
+<span class="k">if</span> <span class="n">report_missing</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">addMissing</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cat</span><span class="o">=</span><span class="s">&#39;base&#39;</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="s">u&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="s">&#39; &#39;</span> <span class="ow">or</span> <span class="n">a</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
+                <span class="n">n</span> <span class="o">+=</span> <span class="n">a</span>
+        <span class="n">elems</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elems</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">tail</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s">&#39;missing.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s%s</span><span class="s">=</span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&#39;missingmclangres.txt&#39;</span><span class="p">),</span> <span class="s">&#39;a+&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf_8&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="addMissing"><a class="viewcode-back" href="../mclangres.html#mclangres.addMissing">[docs]</a>    <span class="k">def</span> <span class="nf">addMissing</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="translate"><a class="viewcode-back" href="../mclangres.html#mclangres.translate">[docs]</a><span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns returns the translation of `name`, or `name` if no translation found.</span>
+<span class="sd">    Can handle composed strings like: &#39;string_present_in_translations (other_string_1, other_string_2)&#39;.</span>
+<span class="sd">    Note that, in this case, the returned string may be partially translated.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s">&#39;{[(&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">compound</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">report_missing</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;*&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enRes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langRes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enMisc</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enRes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langRes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">enMisc</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">langMisc</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="n">addMissing</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">langRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">enRes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="untranslate"><a class="viewcode-back" href="../mclangres.html#mclangres.untranslate">[docs]</a><span class="k">def</span> <span class="nf">untranslate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basic reverse function of `translate`.&quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">serGnal</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">serNe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="ow">or</span> <span class="n">name</span>
+</div>
+<div class="viewcode-block" id="search"><a class="viewcode-back" href="../mclangres.html#mclangres.search">[docs]</a><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">untranslate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">capitalize</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Search for a `text` string in the resources entries.</span>
+<span class="sd">    `filters` is a list of strings: they must be parts before the &#39;=&#39; sign in the resource files, or parts of.</span>
+<span class="sd">    `filters` may be regexes.</span>
+<span class="sd">    Returns a sorted list of matching elements.&quot;&quot;&quot;</span>
+    <span class="c"># filters may contain regexes</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">untranslate</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">capitalize</span><span class="p">:</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">serNe</span><span class="p">[</span><span class="n">w</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">serNe</span><span class="p">[</span><span class="n">w</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">capitalize</span><span class="p">:</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">serGnal</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">filters</span> <span class="ow">or</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="nb">zip</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">filters</span><span class="p">)))</span> <span class="o">!=</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">untranslate</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">capitalize</span><span class="p">:</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">serNe</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)]))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">serNe</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">capitalize</span><span class="p">:</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">b</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)]))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../genindex.html" title="General Index" >index</a></li>
+        <li><a href="index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

@@ -38,7 +38,6 @@ Contents:
    release
    renderer
    resource_packs
-   setup
    splash
    version_utils
    viewports

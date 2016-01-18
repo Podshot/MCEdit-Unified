@@ -12,14 +12,6 @@ utilities.gl_display_context module
     :undoc-members:
     :show-inheritance:
 
-utilities.md5_utility module
-----------------------------
-
-.. automodule:: utilities.md5_utility
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

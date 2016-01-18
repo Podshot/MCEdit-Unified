@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>MCWorldLibrary package &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">MCWorldLibrary package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-boparser-module">MCWorldLibrary.BOParser module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-biome-types-module">MCWorldLibrary.biome_types module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-block-copy-module">MCWorldLibrary.block_copy module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-block-fill-module">MCWorldLibrary.block_fill module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-blockrotation-module">MCWorldLibrary.blockrotation module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-box-module">MCWorldLibrary.box module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-cachefunc-module">MCWorldLibrary.cachefunc module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-entity-module">MCWorldLibrary.entity module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-faces-module">MCWorldLibrary.faces module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-gprof2dot-module">MCWorldLibrary.gprof2dot module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-indev-module">MCWorldLibrary.indev module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-infiniteworld-module">MCWorldLibrary.infiniteworld module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-items-module">MCWorldLibrary.items module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-javalevel-module">MCWorldLibrary.javalevel module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-level-module">MCWorldLibrary.level module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-leveldb-module">MCWorldLibrary.leveldb module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-leveldbpocket-module">MCWorldLibrary.leveldbpocket module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-materials-module">MCWorldLibrary.materials module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-mclevel-module">MCWorldLibrary.mclevel module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-mclevelbase-module">MCWorldLibrary.mclevelbase module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-minecraft-server-module">MCWorldLibrary.minecraft_server module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-nbt-module">MCWorldLibrary.nbt module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-player-module">MCWorldLibrary.player module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-pocket-module">MCWorldLibrary.pocket module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-regionfile-module">MCWorldLibrary.regionfile module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-run-regression-test-module">MCWorldLibrary.run_regression_test module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-schematic-module">MCWorldLibrary.schematic module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-test-leveldb-module">MCWorldLibrary.test_leveldb module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="sources/MCWorldLibrary.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MCWorldLibrary package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-boparser-module">MCWorldLibrary.BOParser module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-biome-types-module">MCWorldLibrary.biome_types module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-block-copy-module">MCWorldLibrary.block_copy module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-block-fill-module">MCWorldLibrary.block_fill module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-blockrotation-module">MCWorldLibrary.blockrotation module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-box-module">MCWorldLibrary.box module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-cachefunc-module">MCWorldLibrary.cachefunc module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-entity-module">MCWorldLibrary.entity module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-faces-module">MCWorldLibrary.faces module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-gprof2dot-module">MCWorldLibrary.gprof2dot module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-indev-module">MCWorldLibrary.indev module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-infiniteworld-module">MCWorldLibrary.infiniteworld module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-items-module">MCWorldLibrary.items module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-javalevel-module">MCWorldLibrary.javalevel module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-level-module">MCWorldLibrary.level module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-leveldb-module">MCWorldLibrary.leveldb module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-leveldbpocket-module">MCWorldLibrary.leveldbpocket module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-materials-module">MCWorldLibrary.materials module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-mclevel-module">MCWorldLibrary.mclevel module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-mclevelbase-module">MCWorldLibrary.mclevelbase module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-minecraft-server-module">MCWorldLibrary.minecraft_server module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-nbt-module">MCWorldLibrary.nbt module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-player-module">MCWorldLibrary.player module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-pocket-module">MCWorldLibrary.pocket module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-regionfile-module">MCWorldLibrary.regionfile module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-run-regression-test-module">MCWorldLibrary.run_regression_test module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-schematic-module">MCWorldLibrary.schematic module</a></li>
+<li><a class="reference internal" href="#mcworldlibrary-test-leveldb-module">MCWorldLibrary.test_leveldb module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/MCWorldLibrary.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="mcworldlibrary-package">
+<h1>MCWorldLibrary package<a class="headerlink" href="#mcworldlibrary-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MCWorldLibrary.leveldb_mcpe.html">MCWorldLibrary.leveldb_mcpe package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MCWorldLibrary.leveldb_mcpe.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MCWorldLibrary.leveldb_mcpe.html#mcworldlibrary-leveldb-mcpe-extension-module">MCWorldLibrary.leveldb_mcpe.extension module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MCWorldLibrary.leveldb_mcpe.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-boparser-module">
+<h2>MCWorldLibrary.BOParser module<a class="headerlink" href="#mcworldlibrary-boparser-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-biome-types-module">
+<h2>MCWorldLibrary.biome_types module<a class="headerlink" href="#mcworldlibrary-biome-types-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-block-copy-module">
+<h2>MCWorldLibrary.block_copy module<a class="headerlink" href="#mcworldlibrary-block-copy-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-block-fill-module">
+<h2>MCWorldLibrary.block_fill module<a class="headerlink" href="#mcworldlibrary-block-fill-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-blockrotation-module">
+<h2>MCWorldLibrary.blockrotation module<a class="headerlink" href="#mcworldlibrary-blockrotation-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-box-module">
+<h2>MCWorldLibrary.box module<a class="headerlink" href="#mcworldlibrary-box-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-cachefunc-module">
+<h2>MCWorldLibrary.cachefunc module<a class="headerlink" href="#mcworldlibrary-cachefunc-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-entity-module">
+<h2>MCWorldLibrary.entity module<a class="headerlink" href="#mcworldlibrary-entity-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-faces-module">
+<h2>MCWorldLibrary.faces module<a class="headerlink" href="#mcworldlibrary-faces-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-gprof2dot-module">
+<h2>MCWorldLibrary.gprof2dot module<a class="headerlink" href="#mcworldlibrary-gprof2dot-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-indev-module">
+<h2>MCWorldLibrary.indev module<a class="headerlink" href="#mcworldlibrary-indev-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-infiniteworld-module">
+<h2>MCWorldLibrary.infiniteworld module<a class="headerlink" href="#mcworldlibrary-infiniteworld-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-items-module">
+<h2>MCWorldLibrary.items module<a class="headerlink" href="#mcworldlibrary-items-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-javalevel-module">
+<h2>MCWorldLibrary.javalevel module<a class="headerlink" href="#mcworldlibrary-javalevel-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-level-module">
+<h2>MCWorldLibrary.level module<a class="headerlink" href="#mcworldlibrary-level-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-leveldb-module">
+<h2>MCWorldLibrary.leveldb module<a class="headerlink" href="#mcworldlibrary-leveldb-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-leveldbpocket-module">
+<h2>MCWorldLibrary.leveldbpocket module<a class="headerlink" href="#mcworldlibrary-leveldbpocket-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-materials-module">
+<h2>MCWorldLibrary.materials module<a class="headerlink" href="#mcworldlibrary-materials-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-mclevel-module">
+<h2>MCWorldLibrary.mclevel module<a class="headerlink" href="#mcworldlibrary-mclevel-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-mclevelbase-module">
+<h2>MCWorldLibrary.mclevelbase module<a class="headerlink" href="#mcworldlibrary-mclevelbase-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-minecraft-server-module">
+<h2>MCWorldLibrary.minecraft_server module<a class="headerlink" href="#mcworldlibrary-minecraft-server-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-nbt-module">
+<h2>MCWorldLibrary.nbt module<a class="headerlink" href="#mcworldlibrary-nbt-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-player-module">
+<h2>MCWorldLibrary.player module<a class="headerlink" href="#mcworldlibrary-player-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-pocket-module">
+<h2>MCWorldLibrary.pocket module<a class="headerlink" href="#mcworldlibrary-pocket-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-regionfile-module">
+<h2>MCWorldLibrary.regionfile module<a class="headerlink" href="#mcworldlibrary-regionfile-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-run-regression-test-module">
+<h2>MCWorldLibrary.run_regression_test module<a class="headerlink" href="#mcworldlibrary-run-regression-test-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-schematic-module">
+<h2>MCWorldLibrary.schematic module<a class="headerlink" href="#mcworldlibrary-schematic-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="mcworldlibrary-test-leveldb-module">
+<h2>MCWorldLibrary.test_leveldb module<a class="headerlink" href="#mcworldlibrary-test-leveldb-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

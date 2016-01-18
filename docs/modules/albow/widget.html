@@ -1,58 +1,139 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>albow.widget &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>albow.widget &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for albow.widget</h1><div class="highlight"><pre>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">albow</span> <span class="c"># used for translation update</span>
 <span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">Rect</span><span class="p">,</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">image</span>
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="n">K_RETURN</span><span class="p">,</span> <span class="n">K_KP_ENTER</span><span class="p">,</span> <span class="n">K_ESCAPE</span><span class="p">,</span> <span class="n">K_TAB</span><span class="p">,</span> <span class="n">KEYDOWN</span><span class="p">,</span> <span class="n">SRCALPHA</span>
 <span class="kn">from</span> <span class="nn">pygame.mouse</span> <span class="kn">import</span> <span class="n">set_cursor</span>
@@ -147,6 +228,11 @@
         <span class="k">if</span> <span class="n">rect</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="n">Rect</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Widget rect not a pygame.Rect&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="n">rect</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+        <span class="c">#-# Translation live update preparation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lang</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">getLang</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__update_translation</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrapped</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="c">#-#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subwidgets</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">focus_switch</span> <span class="o">=</span> <span class="bp">None</span>
@@ -155,6 +241,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_spacings</span><span class="p">()</span>
 
+    <span class="c">#-# Translation live update preparation</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">get_update_translation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_translation</span>
+
+<div class="viewcode-block" id="Widget.set_update_ui"><a class="viewcode-back" href="../../albow.html#albow.widget.Widget.set_update_ui">[docs]</a>    <span class="k">def</span> <span class="nf">set_update_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_font</span><span class="p">({})</span>
+            <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subwidgets</span><span class="p">:</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrapped</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;calc_size&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">calc_size</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__update_translation</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="c">#-#</span>
+</div>
 <div class="viewcode-block" id="Widget.setup_spacings"><a class="viewcode-back" href="../../albow.html#albow.widget.Widget.setup_spacings">[docs]</a>    <span class="k">def</span> <span class="nf">setup_spacings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">new_size</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
             <span class="n">size</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
@@ -228,7 +333,7 @@
             <span class="n">widget</span><span class="o">.</span><span class="n">parent_resized</span><span class="p">(</span><span class="n">dw</span><span class="p">,</span> <span class="n">dh</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Widget.parent_resized"><a class="viewcode-back" href="../../albow.html#albow.widget.Widget.parent_resized">[docs]</a>    <span class="k">def</span> <span class="nf">parent_resized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">dh</span><span class="p">):</span>
-        <span class="n">debug_resize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_resize</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">debug_resize</span>
+        <span class="n">debug_resize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_resize</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s">&#39;debug_resize&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">debug_resize</span><span class="p">:</span>
             <span class="k">print</span> <span class="s">&quot;Widget.parent_resized:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;by&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">dw</span><span class="p">,</span> <span class="n">dh</span><span class="p">)</span>
         <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span>
@@ -628,10 +733,13 @@
             <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rects</span><span class="p">:</span>
                 <span class="n">rmax</span> <span class="o">=</span> <span class="n">rmax</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">rmax</span><span class="o">.</span><span class="n">topleft</span><span class="p">,</span> <span class="n">rmax</span><span class="o">.</span><span class="n">bottomright</span><span class="p">)</span>
+        <span class="c">#-# Translation live update preparation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrapped</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="c">#-#</span>
 </div>
 <div class="viewcode-block" id="Widget.invalidate"><a class="viewcode-back" href="../../albow.html#albow.widget.Widget.invalidate">[docs]</a>    <span class="k">def</span> <span class="nf">invalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
 </div>
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Widget.get_cursor"><a class="viewcode-back" href="../../albow.html#albow.widget.Widget.get_cursor">[docs]</a>    <span class="k">def</span> <span class="nf">get_cursor</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
@@ -837,39 +945,43 @@
         <span class="k">pass</span></div></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

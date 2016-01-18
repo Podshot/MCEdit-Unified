@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>editortools.fill &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>editortools.fill &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for editortools.fill</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
 
@@ -67,7 +147,7 @@
 <span class="c">#-# Modified by D.C.-G. for translation purpose</span>
 <span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">alert</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">alert</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">showProgress</span><span class="p">,</span> <span class="n">CheckBoxLabel</span>
 <span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
 <span class="kn">from</span> <span class="nn">depths</span> <span class="kn">import</span> <span class="n">DepthOffset</span>
 <span class="kn">from</span> <span class="nn">editortools.blockpicker</span> <span class="kn">import</span> <span class="n">BlockPicker</span>
@@ -76,10 +156,9 @@
 <span class="kn">from</span> <span class="nn">editortools.tooloptions</span> <span class="kn">import</span> <span class="n">ToolOptions</span>
 <span class="kn">from</span> <span class="nn">glbackground</span> <span class="kn">import</span> <span class="n">Panel</span>
 <span class="kn">from</span> <span class="nn">glutils</span> <span class="kn">import</span> <span class="n">Texture</span>
-<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">showProgress</span><span class="p">,</span> <span class="n">CheckBoxLabel</span><span class="p">,</span> <span class="n">alertException</span><span class="p">,</span> <span class="n">setWindowCaption</span>
+<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">alertException</span><span class="p">,</span> <span class="n">setWindowCaption</span>
 <span class="kn">from</span> <span class="nn">operation</span> <span class="kn">import</span> <span class="n">Operation</span>
 <span class="kn">from</span> <span class="nn">pymclevel.blockrotation</span> <span class="kn">import</span> <span class="n">Roll</span><span class="p">,</span> <span class="n">RotateLeft</span><span class="p">,</span> <span class="n">FlipVertical</span><span class="p">,</span> <span class="n">FlipEastWest</span><span class="p">,</span> <span class="n">FlipNorthSouth</span>
-<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">AttrRef</span>
 
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">albow.root</span> <span class="kn">import</span> <span class="n">get_root</span>
@@ -141,7 +220,7 @@
         <span class="n">replaceLabel</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">toggleReplacing</span><span class="p">()</span>
         <span class="n">replaceLabel</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">177</span><span class="p">,</span> <span class="mi">177</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
         <span class="c"># replaceLabelRow = Row( (Label(rollkey), replaceLabel) )</span>
-        <span class="n">replaceLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rollkey</span><span class="p">)</span>
+        <span class="n">replaceLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">rollkey</span><span class="p">))</span>
         <span class="n">replaceLabel</span><span class="o">.</span><span class="n">align</span> <span class="o">=</span> <span class="s">&quot;c&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">noDataCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Keep Data Intact&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span> <span class="s">&quot;noData&quot;</span><span class="p">))</span>
         
@@ -150,7 +229,6 @@
                <span class="c"># swapRow,</span>
                <span class="n">replaceLabel</span><span class="p">,</span>
                <span class="c"># self.replaceBlockButton,</span>
-               <span class="bp">self</span><span class="o">.</span><span class="n">noDataCheckBox</span><span class="p">,</span>
                <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">replacing</span><span class="p">:</span>
@@ -160,13 +238,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="o">.</span><span class="n">blockInfo</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">replaceBlockInfo</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">replaceBlockButton</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pickReplaceBlock</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">replaceLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&quot;Replace with:&quot;</span>
-            
+            <span class="bp">self</span><span class="o">.</span><span class="n">replaceLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Esc&quot;</span><span class="p">))</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Swap&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">swapBlockTypes</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="o">.</span><span class="n">fg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
             <span class="n">swapkey</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">swap</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">swapkey</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">swapButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">swapkey</span><span class="p">))</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Replace&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">confirm</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blockButton</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fillButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Shortcut: Enter&quot;</span>
@@ -207,11 +286,13 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
         <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Choose Block Immediately&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBoxFill</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Open Block Picker for Fill&quot;</span><span class="p">,</span>
                                                 <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">chooseBlockImmediately</span><span class="p">,</span>
                                                 <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;When the fill tool is chosen, prompt for a block type.&quot;</span><span class="p">)</span>
-
-        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Fill Options&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBox</span><span class="p">,</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBoxReplace</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Open Block Picker for Replace&quot;</span><span class="p">,</span>
+                                                       <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">chooseBlockImmediatelyReplace</span><span class="p">,</span>
+                                                       <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;When the replace tool is chosen, prompt for a block type.&quot;</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Fill and Replace Options&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBoxFill</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoChooseCheckBoxReplace</span><span class="p">,</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
@@ -278,10 +359,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
 </div>
     <span class="n">chooseBlockImmediately</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">chooseBlockImmediately</span><span class="o">.</span><span class="n">property</span><span class="p">()</span>
+    <span class="n">chooseBlockImmediatelyReplace</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">fill</span><span class="o">.</span><span class="n">chooseBlockImmediatelyReplace</span><span class="o">.</span><span class="n">property</span><span class="p">()</span>
 
 <div class="viewcode-block" id="FillTool.toolReselected"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.toolReselected">[docs]</a>    <span class="k">def</span> <span class="nf">toolReselected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">pickFillBlock</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">pickFillBlock</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="FillTool.cancel"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hidePanel</span><span class="p">()</span>
@@ -360,7 +443,17 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">hidePanel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">chooseBlockImmediatelyReplace</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">pickReplaceBlock</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="FillTool.openReplace"><a class="viewcode-back" href="../../editortools.html#editortools.fill.FillTool.openReplace">[docs]</a>    <span class="k">def</span> <span class="nf">openReplace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replacing</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidePanel</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chooseBlockImmediatelyReplace</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">pickReplaceBlock</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">pickReplaceBlock</span><span class="p">()</span>
 </div>
     <span class="nd">@alertException</span>
@@ -465,39 +558,43 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">pickBlockKey</span> <span class="o">=</span> <span class="mi">0</span></div></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

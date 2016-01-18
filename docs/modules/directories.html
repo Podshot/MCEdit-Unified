@@ -1,435 +1,118 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>directories &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>directories &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
-  <h1>Source code for directories</h1><div class="highlight"><pre>
-# -*- coding: utf-8 -*-
-&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;
-
-import sys
-import os
-import json
-import glob
-import shutil
-
-
-<div class="viewcode-block" id="win32_utf8_argv"><a class="viewcode-back" href="../directories.html#directories.win32_utf8_argv">[docs]</a>def win32_utf8_argv():
-    &quot;&quot;&quot;Uses shell32.GetCommandLineArgvW to get sys.argv as a list of UTF-8
-    strings.
-
-    Versions 2.5 and older of Python don&#39;t support Unicode in sys.argv on
-    Windows, with the underlying Windows API instead replacing multi-byte
-    characters with &#39;?&#39;.
-
-    Returns None on failure.
-
-    Example usage:
-
-    &gt;&gt;&gt; def main(argv=None):
-    ...    if argv is None:
-    ...        argv = win32_utf8_argv() or sys.argv
-    ...
-    &quot;&quot;&quot;
-
-    try:
-        from ctypes import POINTER, byref, cdll, c_int, windll
-        from ctypes.wintypes import LPCWSTR, LPWSTR
-
-        GetCommandLineW = cdll.kernel32.GetCommandLineW
-        GetCommandLineW.argtypes = []
-        GetCommandLineW.restype = LPCWSTR
-
-        CommandLineToArgvW = windll.shell32.CommandLineToArgvW
-        CommandLineToArgvW.argtypes = [LPCWSTR, POINTER(c_int)]
-        CommandLineToArgvW.restype = POINTER(LPWSTR)
-
-        cmd = GetCommandLineW()
-        argc = c_int(0)
-        argv = CommandLineToArgvW(cmd, byref(argc))
-        if argc.value &gt; 0:
-            # # Remove Python executable if present
-            #            if argc.value - len(sys.argv) == 1:
-            #                start = 1
-            #            else:
-            #                start = 0
-            return [argv[i] for i in
-                    xrange(0, argc.value)]
-    except Exception:
-        pass
-
-</div>
-<div class="viewcode-block" id="getDataDir"><a class="viewcode-back" href="../directories.html#directories.getDataDir">[docs]</a>def getDataDir():
-    &quot;&quot;&quot;Returns the folder where the executable is located.&quot;&quot;&quot;
-    if sys.platform == &quot;win32&quot;:
-        def fsdecode(x):
-            return x.decode(sys.getfilesystemencoding())
-
-        argzero = fsdecode(os.path.abspath(sys.argv[0]))
-        if getattr(sys, &#39;frozen&#39;, False):
-            dataDir = os.path.dirname(sys._MEIPASS)
-        else:
-            dataDir = os.path.dirname(__file__)
-            #dataDir = str(os.path.sep).join(dataDir.split(os.path.sep)[:-1])
+              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="index.html" accesskey="U">Module code</a></li>
             
-    else:
-        dataDir = os.getcwdu()
 
-    return dataDir
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
 
-</div>
-<div class="viewcode-block" id="win32_appdata"><a class="viewcode-back" href="../directories.html#directories.win32_appdata">[docs]</a>def win32_appdata():
-    # try to use win32 api to get the AppData folder since python doesn&#39;t populate os.environ with unicode strings.
+            
 
-    try:
-        import win32com.client
+          </ul>
 
-        objShell = win32com.client.Dispatch(&quot;WScript.Shell&quot;)
-        return objShell.SpecialFolders(&quot;AppData&quot;)
-    except Exception, e:
-        print &quot;Error while getting AppData folder using WScript.Shell.SpecialFolders: {0!r}&quot;.format(e)
-        try:
-            from win32com.shell import shell, shellcon
-
-            return shell.SHGetPathFromIDListEx(
-                shell.SHGetSpecialFolderLocation(0, shellcon.CSIDL_APPDATA)
-            )
-        except Exception, e:
-            print &quot;Error while getting AppData folder using SHGetSpecialFolderLocation: {0!r}&quot;.format(e)
-
-            return os.environ[&#39;APPDATA&#39;].decode(sys.getfilesystemencoding())
-
-</div>
-<div class="viewcode-block" id="getMinecraftProfileJSON"><a class="viewcode-back" href="../directories.html#directories.getMinecraftProfileJSON">[docs]</a>def getMinecraftProfileJSON():
-    &quot;&quot;&quot;Returns a dictionary object with the minecraft profile information&quot;&quot;&quot;
-    if os.path.isfile(os.path.join(getMinecraftLauncherDirectory(), &quot;launcher_profiles.json&quot;)):
-        try:
-            with open(os.path.join(getMinecraftLauncherDirectory(), &quot;launcher_profiles.json&quot;)) as jsonString:
-                minecraftProfilesJSON = json.load(jsonString)
-            return minecraftProfilesJSON
-        except:
-            return None
-
-</div>
-<div class="viewcode-block" id="getMinecraftProfileDirectory"><a class="viewcode-back" href="../directories.html#directories.getMinecraftProfileDirectory">[docs]</a>def getMinecraftProfileDirectory(profileName):
-    &quot;&quot;&quot;Returns the path to the sent minecraft profile directory&quot;&quot;&quot;
-    try:
-        profileDir = getMinecraftProfileJSON()[&#39;profiles&#39;][profileName][
-            &#39;gameDir&#39;]  # profileDir update to correct location.
-        return profileDir
-    except:
-        return os.path.join(getMinecraftLauncherDirectory())
-
-</div>
-<div class="viewcode-block" id="getMinecraftLauncherDirectory"><a class="viewcode-back" href="../directories.html#directories.getMinecraftLauncherDirectory">[docs]</a>def getMinecraftLauncherDirectory():
-    &#39;&#39;&#39;
-    Returns the /minecraft directory, note: may not contain the /saves folder!
-    &#39;&#39;&#39;
-    if sys.platform == &quot;win32&quot;:
-        return os.path.join(win32_appdata(), &quot;.minecraft&quot;)
-    elif sys.platform == &quot;darwin&quot;:
-        return os.path.expanduser(&quot;~/Library/Application Support/minecraft&quot;)
-    else:
-        return os.path.expanduser(&quot;~/.minecraft&quot;)
-
-</div>
-<div class="viewcode-block" id="getDocumentsFolder"><a class="viewcode-back" href="../directories.html#directories.getDocumentsFolder">[docs]</a>def getDocumentsFolder():
-    if sys.platform == &quot;win32&quot;:
-        try:
-            import win32com.client
-            from win32com.shell import shell, shellcon
-            objShell = win32com.client.Dispatch(&quot;WScript.Shell&quot;)
-            docsFolder = objShell.SpecialFolders(&quot;MyDocuments&quot;)
-
-        except Exception, e:
-            print e
-            try:
-                docsFolder = shell.SHGetFolderPath(0, shellcon.CSIDL_MYDOCUMENTS, 0, 0)
-            except Exception:
-                userprofile = os.environ[&#39;USERPROFILE&#39;].decode(sys.getfilesystemencoding())
-                docsFolder = os.path.join(userprofile, &quot;Documents&quot;)
-
-    elif sys.platform == &quot;darwin&quot;:
-        docsFolder = os.path.expanduser(&quot;~/Documents&quot;)
-    else:
-        docsFolder = os.path.expanduser(&quot;~/.mcedit&quot;)
-    try:
-        os.mkdir(docsFolder)
-    except:
-        pass
-
-    return docsFolder
-
-</div>
-<div class="viewcode-block" id="getSelectedProfile"><a class="viewcode-back" href="../directories.html#directories.getSelectedProfile">[docs]</a>def getSelectedProfile():
-    &#39;&#39;&#39;
-    Gets the selected profile from the Minecraft Launcher
-    &#39;&#39;&#39;
-    try:
-        selectedProfile = getMinecraftProfileJSON()[&#39;selectedProfile&#39;]
-        return selectedProfile
-    except:
-        return None
-</div>
-minecraftSaveFileDir = os.path.join(getMinecraftProfileDirectory(getSelectedProfile()), &quot;saves&quot;)
-ini = u&quot;mcedit.ini&quot;
-cache = u&quot;usercache.json&quot;
-
-parentDir = os.path.dirname(getDataDir())
-docsFolder = os.path.join(getDocumentsFolder(),&#39;MCEdit&#39;)
-
-if sys.platform != &quot;darwin&quot;:
-
-    portableConfigFilePath = os.path.join(parentDir, ini)
-    portableCacheFilePath = os.path.join(parentDir, cache)
-    portableGenericSupportPath = os.path.join(parentDir)
-    portableSchematicsDir = os.path.join(parentDir, u&quot;Schematics&quot;)
-    portableBrushesDir = os.path.join(parentDir, u&quot;Brushes&quot;)
-    portableJarStorageDir = os.path.join(parentDir, u&quot;ServerJarStorage&quot;)
-    portableFiltersDir = os.path.join(parentDir, u&quot;Filters&quot;)
-    if not os.path.exists(parentDir):
-        os.makedirs(parentDir)
-
-    fixedCacheFilePath = os.path.join(docsFolder, cache)
-    fixedConfigFilePath = os.path.join(docsFolder, ini)
-    fixedGenericSupportPath = os.path.join(docsFolder)
-    fixedSchematicsDir = os.path.join(docsFolder, u&quot;Schematics&quot;)
-    fixedBrushesDir = os.path.join(docsFolder, u&quot;Brushes&quot;)
-    fixedJarStorageDir = os.path.join(docsFolder, u&quot;ServerJarStorage&quot;)
-    fixedFiltersDir = os.path.join(docsFolder, u&quot;Filters&quot;)
-    if not os.path.exists(docsFolder):
-        os.makedirs(docsFolder)
-
-    sys.path.append(fixedFiltersDir)
-    sys.path.append(portableFiltersDir)
-
-
-<div class="viewcode-block" id="goPortable"><a class="viewcode-back" href="../directories.html#directories.goPortable">[docs]</a>def goPortable():
-    if sys.platform == &quot;darwin&quot;:
-        return False
-    global configFilePath, schematicsDir, filtersDir, portable, brushesDir
-
-    if os.path.exists(fixedSchematicsDir):
-        move_displace(fixedSchematicsDir, portableSchematicsDir)
-    if os.path.exists(fixedBrushesDir):
-        move_displace(fixedBrushesDir, portableBrushesDir)
-    if os.path.exists(fixedConfigFilePath):
-        move_displace(fixedConfigFilePath, portableConfigFilePath)
-    if os.path.exists(fixedFiltersDir):
-        move_displace(fixedFiltersDir, portableFiltersDir)
-    if os.path.exists(fixedCacheFilePath):
-        move_displace(fixedCacheFilePath, portableCacheFilePath)
-    if os.path.exists(fixedJarStorageDir):
-        move_displace(fixedJarStorageDir, portableJarStorageDir)
-
-    schematicsDir = portableSchematicsDir
-    brushesDir = portableBrushesDir
-    configFilePath = portableConfigFilePath
-    filtersDir = portableFiltersDir
-    portable = True
-    return True
-
-</div>
-<div class="viewcode-block" id="move_displace"><a class="viewcode-back" href="../directories.html#directories.move_displace">[docs]</a>def move_displace(src, dst):
-    dstFolder = os.path.basename(os.path.dirname(dst))
-    if not os.path.exists(dst):
-
-        print &quot;Moving {0} to {1}&quot;.format(os.path.basename(src), dstFolder)
-        shutil.move(src, dst)
-    else:
-        olddst = dst + &quot;.old&quot;
-        i = 0
-        while os.path.exists(olddst):
-            olddst = dst + &quot;.old&quot; + str(i)
-            i += 1
-
-        print &quot;{0} already found in {1}! Renamed it to {2}.&quot;.format(os.path.basename(src), dstFolder, dst)
-        os.rename(dst, olddst)
-        shutil.move(src, dst)
-    return True
-
-</div>
-<div class="viewcode-block" id="goFixed"><a class="viewcode-back" href="../directories.html#directories.goFixed">[docs]</a>def goFixed():
-    if sys.platform == &quot;darwin&quot;:
-        return False
-    global configFilePath, schematicsDir, filtersDir, portable, cacheDir, brushesDir
-
-    if os.path.exists(portableSchematicsDir):
-        move_displace(portableSchematicsDir, fixedSchematicsDir)
-    if os.path.exists(portableBrushesDir):
-        move_displace(portableBrushesDir, fixedBrushesDir)
-    if os.path.exists(portableConfigFilePath):
-        move_displace(portableConfigFilePath, fixedConfigFilePath)
-    if os.path.exists(portableFiltersDir):
-        move_displace(portableFiltersDir, fixedFiltersDir)
-    if os.path.exists(portableCacheFilePath):
-        move_displace(portableCacheFilePath, fixedCacheFilePath)
-    if os.path.exists(portableJarStorageDir):
-        move_displace(portableJarStorageDir, fixedJarStorageDir)
-
-    schematicsDir = fixedSchematicsDir
-    brushesDir = fixedBrushesDir
-    configFilePath = fixedConfigFilePath
-    filtersDir = fixedFiltersDir
-    portable = False
-
-</div>
-<div class="viewcode-block" id="fixedConfigExists"><a class="viewcode-back" href="../directories.html#directories.fixedConfigExists">[docs]</a>def fixedConfigExists():
-    if sys.platform == &quot;darwin&quot;:
-        return True
-    # Check for files at portable locations. Cannot be Mac because config doesn&#39;t move
-    return os.path.exists(fixedConfigFilePath) or not os.path.exists(portableConfigFilePath)
-
-</div>
-if fixedConfigExists():
-    print &quot;Running in fixed mode. Support files are in your &quot; + (
-    sys.platform == &quot;darwin&quot; and &quot;App Support Folder (Available from the main menu of MCEdit)&quot; or &quot;Documents folder.&quot;)
-    portable = False
-    if not sys.platform == &quot;darwin&quot;:
-        schematicsDir = fixedSchematicsDir
-        brushesDir = fixedBrushesDir
-        configFilePath = fixedConfigFilePath
-        filtersDir = fixedFiltersDir
-        jarStorageDir = fixedJarStorageDir
-        genericSupportDir = fixedGenericSupportPath
-
-else:
-    print &quot;Running in portable mode. Support files are stored next to the MCEdit directory.&quot;
-    if not sys.platform == &quot;darwin&quot;:
-        schematicsDir = portableSchematicsDir
-        brushesDir = portableBrushesDir
-        configFilePath = portableConfigFilePath
-        filtersDir = portableFiltersDir
-        jarStorageDir = portableJarStorageDir
-        genericSupportDir = portableGenericSupportPath
-    portable = True
-
-#if portable:
-#    serverJarStorageDir = portableJarStorageDir
-#    ServerJarStorage.defaultCacheDir = serverJarStorageDir
-#    jarStorage = ServerJarStorage(serverJarStorageDir)
-#else:
-#    serverJarStorageDir = fixedJarStorageDir
-
-
-<div class="viewcode-block" id="getAllOfAFile"><a class="viewcode-back" href="../directories.html#directories.getAllOfAFile">[docs]</a>def getAllOfAFile(file_dir, ext):
-    &#39;&#39;&#39;
-    Returns a list of all the files the direcotry with the specified file extenstion
-    :param file_dir: Directory to search
-    :param ext: The file extension (IE: &quot;.py&quot;)
-    &#39;&#39;&#39;
-    return glob.glob(file_dir+&quot;/*&quot;+ext)
-
-</div>
-<div class="viewcode-block" id="getCacheDir"><a class="viewcode-back" href="../directories.html#directories.getCacheDir">[docs]</a>def getCacheDir():
-    &quot;&quot;&quot;Returns the path to the cache folder. This folder is the Application Support folder on OS X, and the Documents Folder on Windows.&quot;&quot;&quot;
-    if sys.platform == &quot;win32&quot;:
-        return genericSupportDir
-    elif sys.platform == &quot;darwin&quot;:
-        return os.path.expanduser(&quot;~/Library/Application Support/pymclevel&quot;)
-    else:
-        try:
-            return genericSupportDir
-        except:
-            return os.path.expanduser(&quot;~/.pymclevel&quot;)
-</div>
-if sys.platform == &quot;darwin&quot;:
-    configFilePath = os.path.expanduser(&quot;~/Library/Preferences/mcedit.ini&quot;)
-    schematicsDir = os.path.join(getCacheDir(), u&quot;Schematics&quot;)
-    brushesDir = os.path.join(getCacheDir(), u&quot;Brushes&quot;)
-    filtersDir = os.path.join(getCacheDir(), u&quot;Filters&quot;)
-    if not os.path.exists(getCacheDir()):
-        os.makedirs(getCacheDir())
-
-# Create pymclevel folder as needed
-if not os.path.exists(getCacheDir()):
-    os.makedirs(getCacheDir())
-
-# set userCachePath
-userCachePath = os.path.join(getCacheDir(),&#39;usercache.json&#39;)
-# Make sure it exists
-try:
-    if not os.path.exists(userCachePath):
-        f = open(userCachePath,&#39;w&#39;)
-        f.write(&#39;{}&#39;)
-        f.close()
-except:
-    print &quot;Unable to make usercache.json at {}&quot;.format(userCachePath)
-
-
-<div class="viewcode-block" id="getFiltersDir"><a class="viewcode-back" href="../directories.html#directories.getFiltersDir">[docs]</a>def getFiltersDir():
-    return filtersDir</div>
-</pre></div>
-
-          </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../index.html">
+      <img class="logo" src="../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
   <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+  <form class="search form-inline" action="../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -437,22 +120,471 @@ except:
     Enter search terms or a module, class or function name.
     </p>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for directories</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
+
+<span class="sd">Permission to use, copy, modify, and/or distribute this software for any</span>
+<span class="sd">purpose with or without fee is hereby granted, provided that the above</span>
+<span class="sd">copyright notice and this permission notice appear in all copies.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES</span>
+<span class="sd">WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF</span>
+<span class="sd">MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR</span>
+<span class="sd">ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES</span>
+<span class="sd">WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
+<span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
+<span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">t</span><span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+
+<div class="viewcode-block" id="win32_utf8_argv"><a class="viewcode-back" href="../directories.html#directories.win32_utf8_argv">[docs]</a><span class="k">def</span> <span class="nf">win32_utf8_argv</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Uses shell32.GetCommandLineArgvW to get sys.argv as a list of UTF-8</span>
+<span class="sd">    strings.</span>
+
+<span class="sd">    Versions 2.5 and older of Python don&#39;t support Unicode in sys.argv on</span>
+<span class="sd">    Windows, with the underlying Windows API instead replacing multi-byte</span>
+<span class="sd">    characters with &#39;?&#39;.</span>
+
+<span class="sd">    Returns None on failure.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; def main(argv=None):</span>
+<span class="sd">    ...    if argv is None:</span>
+<span class="sd">    ...        argv = win32_utf8_argv() or sys.argv</span>
+<span class="sd">    ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="n">POINTER</span><span class="p">,</span> <span class="n">byref</span><span class="p">,</span> <span class="n">cdll</span><span class="p">,</span> <span class="n">c_int</span><span class="p">,</span> <span class="n">windll</span>
+        <span class="kn">from</span> <span class="nn">ctypes.wintypes</span> <span class="kn">import</span> <span class="n">LPCWSTR</span><span class="p">,</span> <span class="n">LPWSTR</span>
+
+        <span class="n">GetCommandLineW</span> <span class="o">=</span> <span class="n">cdll</span><span class="o">.</span><span class="n">kernel32</span><span class="o">.</span><span class="n">GetCommandLineW</span>
+        <span class="n">GetCommandLineW</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">GetCommandLineW</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">LPCWSTR</span>
+
+        <span class="n">CommandLineToArgvW</span> <span class="o">=</span> <span class="n">windll</span><span class="o">.</span><span class="n">shell32</span><span class="o">.</span><span class="n">CommandLineToArgvW</span>
+        <span class="n">CommandLineToArgvW</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">LPCWSTR</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_int</span><span class="p">)]</span>
+        <span class="n">CommandLineToArgvW</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">LPWSTR</span><span class="p">)</span>
+
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">GetCommandLineW</span><span class="p">()</span>
+        <span class="n">argc</span> <span class="o">=</span> <span class="n">c_int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">argv</span> <span class="o">=</span> <span class="n">CommandLineToArgvW</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">byref</span><span class="p">(</span><span class="n">argc</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">argc</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c"># # Remove Python executable if present</span>
+            <span class="c">#            if argc.value - len(sys.argv) == 1:</span>
+            <span class="c">#                start = 1</span>
+            <span class="c">#            else:</span>
+            <span class="c">#                start = 0</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                    <span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">argc</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span>
+    </div>
+<div class="viewcode-block" id="getNewDataDir"><a class="viewcode-back" href="../directories.html#directories.getNewDataDir">[docs]</a><span class="k">def</span> <span class="nf">getNewDataDir</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">dataDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+    <span class="c">#print &quot;Dynamic: &quot; + str(os.getcwdu())</span>
+    <span class="c">#print &quot;Fixed: &quot; + str(dataDir) </span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dataDir</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataDir</span>
+</div>
+<span class="n">getNewDataDir</span><span class="p">()</span>
+
+<div class="viewcode-block" id="getDataDir"><a class="viewcode-back" href="../directories.html#directories.getDataDir">[docs]</a><span class="k">def</span> <span class="nf">getDataDir</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the folder where the executable is located.</span>
+<span class="sd">    :return unicode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># if sys.platform == &quot;win32&quot;:</span>
+    <span class="c">#     def fsdecode(x):</span>
+    <span class="c">#         return x.decode(sys.getfilesystemencoding())</span>
+    <span class="c">#</span>
+    <span class="c">#     dataDir = os.getcwdu()</span>
+    <span class="c">#     &#39;&#39;&#39;</span>
+    <span class="c">#     if getattr(sys, &#39;frozen&#39;, False):</span>
+    <span class="c">#         dataDir = os.path.dirname(sys._MEIPASS)</span>
+    <span class="c">#     else:</span>
+    <span class="c">#         dataDir = os.path.dirname(__file__)</span>
+    <span class="c">#     &#39;&#39;&#39;</span>
+    <span class="c">#</span>
+    <span class="c"># else:</span>
+    <span class="n">dataDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwdu</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dataDir</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataDir</span>
+</div>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span>
+    <span class="n">getDataDir</span> <span class="o">=</span> <span class="n">getNewDataDir</span>
+
+<div class="viewcode-block" id="win32_appdata"><a class="viewcode-back" href="../directories.html#directories.win32_appdata">[docs]</a><span class="k">def</span> <span class="nf">win32_appdata</span><span class="p">():</span>
+    <span class="c"># try to use win32 api to get the AppData folder since python doesn&#39;t populate os.environ with unicode strings.</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">win32com.client</span>
+
+        <span class="n">objShell</span> <span class="o">=</span> <span class="n">win32com</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="s">&quot;WScript.Shell&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">objShell</span><span class="o">.</span><span class="n">SpecialFolders</span><span class="p">(</span><span class="s">&quot;AppData&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Error while getting AppData folder using WScript.Shell.SpecialFolders: {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">win32com.shell</span> <span class="kn">import</span> <span class="n">shell</span><span class="p">,</span> <span class="n">shellcon</span>
+
+            <span class="k">return</span> <span class="n">shell</span><span class="o">.</span><span class="n">SHGetPathFromIDListEx</span><span class="p">(</span>
+                <span class="n">shell</span><span class="o">.</span><span class="n">SHGetSpecialFolderLocation</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">shellcon</span><span class="o">.</span><span class="n">CSIDL_APPDATA</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Error while getting AppData folder using SHGetSpecialFolderLocation: {0!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;APPDATA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="getMinecraftProfileJSON"><a class="viewcode-back" href="../directories.html#directories.getMinecraftProfileJSON">[docs]</a><span class="k">def</span> <span class="nf">getMinecraftProfileJSON</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dictionary object with the minecraft profile information&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">&quot;launcher_profiles.json&quot;</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">(),</span> <span class="s">&quot;launcher_profiles.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">jsonString</span><span class="p">:</span>
+                <span class="n">minecraftProfilesJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jsonString</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">minecraftProfilesJSON</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="getMinecraftProfileDirectory"><a class="viewcode-back" href="../directories.html#directories.getMinecraftProfileDirectory">[docs]</a><span class="k">def</span> <span class="nf">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">profileName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the path to the sent minecraft profile directory&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">profileDir</span> <span class="o">=</span> <span class="n">getMinecraftProfileJSON</span><span class="p">()[</span><span class="s">&#39;profiles&#39;</span><span class="p">][</span><span class="n">profileName</span><span class="p">][</span>
+            <span class="s">&#39;gameDir&#39;</span><span class="p">]</span>  <span class="c"># profileDir update to correct location.</span>
+        <span class="k">return</span> <span class="n">profileDir</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftLauncherDirectory</span><span class="p">())</span>
+
+</div>
+<div class="viewcode-block" id="getMinecraftLauncherDirectory"><a class="viewcode-back" href="../directories.html#directories.getMinecraftLauncherDirectory">[docs]</a><span class="k">def</span> <span class="nf">getMinecraftLauncherDirectory</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the /minecraft directory, note: may not contain the /saves folder!</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">win32_appdata</span><span class="p">(),</span> <span class="s">&quot;.minecraft&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/Library/Application Support/minecraft&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/.minecraft&quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="getDocumentsFolder"><a class="viewcode-back" href="../directories.html#directories.getDocumentsFolder">[docs]</a><span class="k">def</span> <span class="nf">getDocumentsFolder</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">win32com.client</span>
+            <span class="kn">from</span> <span class="nn">win32com.shell</span> <span class="kn">import</span> <span class="n">shell</span><span class="p">,</span> <span class="n">shellcon</span>
+            <span class="n">objShell</span> <span class="o">=</span> <span class="n">win32com</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="s">&quot;WScript.Shell&quot;</span><span class="p">)</span>
+            <span class="n">docsFolder</span> <span class="o">=</span> <span class="n">objShell</span><span class="o">.</span><span class="n">SpecialFolders</span><span class="p">(</span><span class="s">&quot;MyDocuments&quot;</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">docsFolder</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">SHGetFolderPath</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">shellcon</span><span class="o">.</span><span class="n">CSIDL_MYDOCUMENTS</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">userprofile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;USERPROFILE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">())</span>
+                <span class="n">docsFolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">userprofile</span><span class="p">,</span> <span class="s">&quot;Documents&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="n">docsFolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/Documents&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">docsFolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/.mcedit&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">docsFolder</span>
+
+</div>
+<div class="viewcode-block" id="getSelectedProfile"><a class="viewcode-back" href="../directories.html#directories.getSelectedProfile">[docs]</a><span class="k">def</span> <span class="nf">getSelectedProfile</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the selected profile from the Minecraft Launcher</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">selectedProfile</span> <span class="o">=</span> <span class="n">getMinecraftProfileJSON</span><span class="p">()[</span><span class="s">&#39;selectedProfile&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">selectedProfile</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<span class="n">_minecraftSaveFileDir</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="getMinecraftSaveFileDir"><a class="viewcode-back" href="../directories.html#directories.getMinecraftSaveFileDir">[docs]</a><span class="k">def</span> <span class="nf">getMinecraftSaveFileDir</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_minecraftSaveFileDir</span>
+    <span class="k">if</span> <span class="n">_minecraftSaveFileDir</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">_minecraftSaveFileDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getMinecraftProfileDirectory</span><span class="p">(</span><span class="n">getSelectedProfile</span><span class="p">()),</span> <span class="s">&quot;saves&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_minecraftSaveFileDir</span>
+</div>
+<span class="n">minecraftSaveFileDir</span> <span class="o">=</span> <span class="n">getMinecraftSaveFileDir</span><span class="p">()</span>
+
+<span class="n">ini</span> <span class="o">=</span> <span class="s">u&quot;mcedit.ini&quot;</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="s">u&quot;usercache.json&quot;</span>
+
+<span class="n">parentDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">getDataDir</span><span class="p">())</span>
+<span class="n">docsFolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getDocumentsFolder</span><span class="p">(),</span><span class="s">&#39;MCEdit&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">!=</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+
+    <span class="n">portableConfigFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parentDir</span><span class="p">,</span> <span class="n">ini</span><span class="p">)</span>
+    <span class="n">portableCacheFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parentDir</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+    <span class="n">portableGenericSupportPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parentDir</span><span class="p">)</span>
+    <span class="n">portableSchematicsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">u&quot;Schematics&quot;</span><span class="p">)</span>
+    <span class="n">portableBrushesDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">u&quot;Brushes&quot;</span><span class="p">)</span>
+    <span class="n">portableJarStorageDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">u&quot;ServerJarStorage&quot;</span><span class="p">)</span>
+    <span class="n">portableFiltersDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">u&quot;Filters&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">parentDir</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">parentDir</span><span class="p">)</span>
+
+    <span class="n">fixedCacheFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+    <span class="n">fixedConfigFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">,</span> <span class="n">ini</span><span class="p">)</span>
+    <span class="n">fixedGenericSupportPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">)</span>
+    <span class="n">fixedSchematicsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">,</span> <span class="s">u&quot;Schematics&quot;</span><span class="p">)</span>
+    <span class="n">fixedBrushesDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">,</span> <span class="s">u&quot;Brushes&quot;</span><span class="p">)</span>
+    <span class="n">fixedJarStorageDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">,</span> <span class="s">u&quot;ServerJarStorage&quot;</span><span class="p">)</span>
+    <span class="n">fixedFiltersDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">,</span> <span class="s">u&quot;Filters&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">docsFolder</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="goPortable"><a class="viewcode-back" href="../directories.html#directories.goPortable">[docs]</a><span class="k">def</span> <span class="nf">goPortable</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">global</span> <span class="n">configFilePath</span><span class="p">,</span> <span class="n">schematicsDir</span><span class="p">,</span> <span class="n">filtersDir</span><span class="p">,</span> <span class="n">portable</span><span class="p">,</span> <span class="n">brushesDir</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedSchematicsDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedSchematicsDir</span><span class="p">,</span> <span class="n">portableSchematicsDir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedBrushesDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedBrushesDir</span><span class="p">,</span> <span class="n">portableBrushesDir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">,</span> <span class="n">portableConfigFilePath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedFiltersDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedFiltersDir</span><span class="p">,</span> <span class="n">portableFiltersDir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedCacheFilePath</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedCacheFilePath</span><span class="p">,</span> <span class="n">portableCacheFilePath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedJarStorageDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">fixedJarStorageDir</span><span class="p">,</span> <span class="n">portableJarStorageDir</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">filtersDir</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">)</span>
+
+    <span class="n">schematicsDir</span> <span class="o">=</span> <span class="n">portableSchematicsDir</span>
+    <span class="n">brushesDir</span> <span class="o">=</span> <span class="n">portableBrushesDir</span>
+    <span class="n">configFilePath</span> <span class="o">=</span> <span class="n">portableConfigFilePath</span>
+    <span class="n">filtersDir</span> <span class="o">=</span> <span class="n">portableFiltersDir</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">)</span>
+
+    <span class="n">portable</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="move_displace"><a class="viewcode-back" href="../directories.html#directories.move_displace">[docs]</a><span class="k">def</span> <span class="nf">move_displace</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+    <span class="n">dstFolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dst</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
+
+        <span class="k">print</span> <span class="s">&quot;Moving {0} to {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">src</span><span class="p">),</span> <span class="n">dstFolder</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">olddst</span> <span class="o">=</span> <span class="n">dst</span> <span class="o">+</span> <span class="s">&quot;.old&quot;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">olddst</span><span class="p">):</span>
+            <span class="n">olddst</span> <span class="o">=</span> <span class="n">dst</span> <span class="o">+</span> <span class="s">&quot;.old&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">print</span> <span class="s">&quot;{0} already found in {1}! Renamed it to {2}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">src</span><span class="p">),</span> <span class="n">dstFolder</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">olddst</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="goFixed"><a class="viewcode-back" href="../directories.html#directories.goFixed">[docs]</a><span class="k">def</span> <span class="nf">goFixed</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">global</span> <span class="n">configFilePath</span><span class="p">,</span> <span class="n">schematicsDir</span><span class="p">,</span> <span class="n">filtersDir</span><span class="p">,</span> <span class="n">portable</span><span class="p">,</span> <span class="n">cacheDir</span><span class="p">,</span> <span class="n">brushesDir</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableSchematicsDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableSchematicsDir</span><span class="p">,</span> <span class="n">fixedSchematicsDir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableBrushesDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableBrushesDir</span><span class="p">,</span> <span class="n">fixedBrushesDir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">,</span> <span class="n">fixedConfigFilePath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableFiltersDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableFiltersDir</span><span class="p">,</span> <span class="n">fixedFiltersDir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableCacheFilePath</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableCacheFilePath</span><span class="p">,</span> <span class="n">fixedCacheFilePath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableJarStorageDir</span><span class="p">):</span>
+        <span class="n">move_displace</span><span class="p">(</span><span class="n">portableJarStorageDir</span><span class="p">,</span> <span class="n">fixedJarStorageDir</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">filtersDir</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">)</span>
+
+    <span class="n">schematicsDir</span> <span class="o">=</span> <span class="n">fixedSchematicsDir</span>
+    <span class="n">brushesDir</span> <span class="o">=</span> <span class="n">fixedBrushesDir</span>
+    <span class="n">configFilePath</span> <span class="o">=</span> <span class="n">fixedConfigFilePath</span>
+    <span class="n">filtersDir</span> <span class="o">=</span> <span class="n">fixedFiltersDir</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">)</span>
+
+    <span class="n">portable</span> <span class="o">=</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="fixedConfigExists"><a class="viewcode-back" href="../directories.html#directories.fixedConfigExists">[docs]</a><span class="k">def</span> <span class="nf">fixedConfigExists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="c"># Check for files at portable locations. Cannot be Mac because config doesn&#39;t move</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fixedConfigFilePath</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">portableConfigFilePath</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">fixedConfigExists</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">&quot;Running in fixed mode. Support files are in your &quot;</span> <span class="o">+</span> <span class="p">(</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span> <span class="ow">and</span> <span class="s">&quot;App Support Folder (Available from the main menu of MCEdit)&quot;</span>
+        <span class="ow">or</span> <span class="s">&quot;Documents folder.&quot;</span><span class="p">)</span>
+    <span class="n">portable</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="n">schematicsDir</span> <span class="o">=</span> <span class="n">fixedSchematicsDir</span>
+        <span class="n">brushesDir</span> <span class="o">=</span> <span class="n">fixedBrushesDir</span>
+        <span class="n">configFilePath</span> <span class="o">=</span> <span class="n">fixedConfigFilePath</span>
+        <span class="n">filtersDir</span> <span class="o">=</span> <span class="n">fixedFiltersDir</span>
+        <span class="n">jarStorageDir</span> <span class="o">=</span> <span class="n">fixedJarStorageDir</span>
+        <span class="n">genericSupportDir</span> <span class="o">=</span> <span class="n">fixedGenericSupportPath</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;Running in portable mode. Support files are stored next to the MCEdit directory.&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="n">schematicsDir</span> <span class="o">=</span> <span class="n">portableSchematicsDir</span>
+        <span class="n">brushesDir</span> <span class="o">=</span> <span class="n">portableBrushesDir</span>
+        <span class="n">configFilePath</span> <span class="o">=</span> <span class="n">portableConfigFilePath</span>
+        <span class="n">filtersDir</span> <span class="o">=</span> <span class="n">portableFiltersDir</span>
+        <span class="n">jarStorageDir</span> <span class="o">=</span> <span class="n">portableJarStorageDir</span>
+        <span class="n">genericSupportDir</span> <span class="o">=</span> <span class="n">portableGenericSupportPath</span>
+    <span class="n">portable</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c">#if portable:</span>
+<span class="c">#    serverJarStorageDir = portableJarStorageDir</span>
+<span class="c">#    ServerJarStorage.defaultCacheDir = serverJarStorageDir</span>
+<span class="c">#    jarStorage = ServerJarStorage(serverJarStorageDir)</span>
+<span class="c">#else:</span>
+<span class="c">#    serverJarStorageDir = fixedJarStorageDir</span>
+
+
+<div class="viewcode-block" id="getAllOfAFile"><a class="viewcode-back" href="../directories.html#directories.getAllOfAFile">[docs]</a><span class="k">def</span> <span class="nf">getAllOfAFile</span><span class="p">(</span><span class="n">file_dir</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns a list of all the files the direcotry with the specified file extenstion</span>
+<span class="sd">    :param file_dir: Directory to search</span>
+<span class="sd">    :param ext: The file extension (IE: &quot;.py&quot;)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">file_dir</span><span class="o">+</span><span class="s">&quot;/*&quot;</span><span class="o">+</span><span class="n">ext</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="getCacheDir"><a class="viewcode-back" href="../directories.html#directories.getCacheDir">[docs]</a><span class="k">def</span> <span class="nf">getCacheDir</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the path to the cache folder.</span>
+<span class="sd">    This folder is the Application Support folder on OS X, and the Documents Folder on Windows.</span>
+<span class="sd">    :return unicode</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">genericSupportDir</span>
+    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/Library/Application Support/pymclevel&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">genericSupportDir</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/.pymclevel&quot;</span><span class="p">)</span>
+</div>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
+    <span class="n">configFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&quot;~/Library/Preferences/mcedit.ini&quot;</span><span class="p">)</span>
+    <span class="n">schematicsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">u&quot;Schematics&quot;</span><span class="p">)</span>
+    <span class="n">brushesDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">u&quot;Brushes&quot;</span><span class="p">)</span>
+    <span class="n">filtersDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">u&quot;Filters&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">()):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">())</span>
+
+<span class="c"># Create pymclevel folder as needed</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">()):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">())</span>
+
+<span class="c"># build the structures of directories if they don&#39;t exists</span>
+<span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="p">(</span><span class="n">filtersDir</span><span class="p">,</span> <span class="n">brushesDir</span><span class="p">,</span> <span class="n">schematicsDir</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+<span class="n">bundledLibsDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtersDir</span><span class="p">,</span> <span class="s">&#39;lib&#39;</span><span class="p">,</span> <span class="s">&#39;Bundled Libraries&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">bundledLibsDir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">bundledLibsDir</span><span class="p">)</span>
+
+<span class="c"># set userCachePath</span>
+<span class="n">userCachePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getCacheDir</span><span class="p">(),</span><span class="s">&#39;usercache.json&#39;</span><span class="p">)</span>
+<span class="c"># Make sure it exists</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;{}&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;Unable to make usercache.json at {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">userCachePath</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="getFiltersDir"><a class="viewcode-back" href="../directories.html#directories.getFiltersDir">[docs]</a><span class="k">def</span> <span class="nf">getFiltersDir</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">filtersDir</span>
+</pre></div></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+        
+        
+      </div><!-- /row -->
 
-    
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../genindex.html" title="General Index" >index</a></li>
+        <li><a href="index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

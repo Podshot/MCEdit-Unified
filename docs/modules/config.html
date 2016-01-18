@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>config &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>config &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../index.html">
+      <img class="logo" src="../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for config</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
 
@@ -85,10 +165,18 @@
 
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../config.html#config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definitions</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_definitions</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Loading config...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">([],</span> <span class="n">ConfigDict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getPath</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Error while reading configuration file mcedit.ini: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformConfig</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">sectionKey</span><span class="p">,</span> <span class="n">sectionName</span><span class="p">),</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">definitions</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">sectionKey</span><span class="p">,</span> <span class="n">sectionName</span><span class="p">),</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">config_definitions</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="n">sectionKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConfigSection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">sectionName</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sectionKey</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="n">sectionKey</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -101,14 +189,14 @@
         <span class="k">return</span> <span class="n">directories</span><span class="o">.</span><span class="n">configFilePath</span>
 </div>
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Config.transformKey"><a class="viewcode-back" href="../config.html#config.Config.transformKey">[docs]</a>    <span class="k">def</span> <span class="nf">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Config.transformKey"><a class="viewcode-back" href="../config.html#config.Config.transformKey">[docs]</a>    <span class="k">def</span> <span class="nf">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="k">if</span> <span class="s">&#39;left&#39;</span> <span class="ow">in</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
         <span class="k">elif</span> <span class="s">&#39;right&#39;</span> <span class="ow">in</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
         <span class="k">if</span> <span class="s">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="s">&#39;z&#39;</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">36</span> <span class="ow">and</span> <span class="s">&quot;Ctrl-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">36</span> <span class="ow">and</span> <span class="s">&quot;Ctrl-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Ctrl-&quot;</span> <span class="o">+</span> <span class="n">value</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s">&quot;Mouse3&quot;</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Button 3&quot;</span>
@@ -139,17 +227,17 @@
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="s">&quot;1.1.1.1&quot;</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s">&quot;Swap View&quot;</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="s">&quot;Toggle Fps Counter&quot;</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
                 <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;Swap View&quot;</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Swap View&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;Toggle Fps Counter&quot;</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformKey</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Toggle Fps Counter&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
-                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Brake&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Space&quot;</span><span class="p">:</span>
                 <span class="n">version</span> <span class="o">=</span> <span class="s">&quot;1.1.2.0-update&quot;</span>
             <span class="k">else</span><span class="p">:</span>
@@ -157,27 +245,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Version&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="Config.load"><a class="viewcode-back" href="../config.html#config.Config.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Loading config...&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">([],</span> <span class="n">ConfigDict</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">observers</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getPath</span><span class="p">())</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Error while reading configuration file mcedit.ini: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">transformConfig</span><span class="p">()</span>
-</div>
 <div class="viewcode-block" id="Config.save"><a class="viewcode-back" href="../config.html#config.Config.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">cf</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getPath</span><span class="p">(),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
             <span class="n">cf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Error saving configuration settings to mcedit.ini: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="k">pass</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Error saving configuration settings to mcedit.ini: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
 </div></div>
 <div class="viewcode-block" id="ConfigSection"><a class="viewcode-back" href="../config.html#config.ConfigSection">[docs]</a><span class="k">class</span> <span class="nc">ConfigSection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -189,7 +263,7 @@
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ConfigValue</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">item</span>
-            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="ow">in</span> <span class="n">ListValue</span><span class="o">.</span><span class="n">allowedTypes</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">ListValue</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">ConfigValue</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -197,6 +271,8 @@
             <span class="n">value</span><span class="o">.</span><span class="n">section</span> <span class="o">=</span> <span class="n">section</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">value</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
             <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">section</span> <span class="o">==</span> <span class="s">&quot;Keys&quot;</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;Delete&quot;</span><span class="p">:</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">section</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;Del&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -434,6 +510,7 @@
         <span class="p">(</span><span class="s">&quot;up&quot;</span><span class="p">,</span> <span class="s">&quot;up&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;down&quot;</span><span class="p">,</span> <span class="s">&quot;down&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;brake&quot;</span><span class="p">,</span> <span class="s">&quot;brake&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;sprint&quot;</span><span class="p">,</span> <span class="s">&quot;sprint&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
 
         <span class="p">(</span><span class="s">&quot;rotateClone&quot;</span><span class="p">,</span> <span class="s">&quot;rotate (clone)&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;rollClone&quot;</span><span class="p">,</span> <span class="s">&quot;roll (clone)&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span>
@@ -463,7 +540,7 @@
 
         <span class="p">(</span><span class="s">&quot;openLevel&quot;</span><span class="p">,</span> <span class="s">&quot;open level&quot;</span><span class="p">,</span> <span class="s">&quot;O&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;newLevel&quot;</span><span class="p">,</span> <span class="s">&quot;new level&quot;</span><span class="p">,</span> <span class="s">&quot;N&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&quot;deleteBlocks&quot;</span><span class="p">,</span> <span class="s">&quot;delete blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;deleteBlocks&quot;</span><span class="p">,</span> <span class="s">&quot;delete blocks&quot;</span><span class="p">,</span> <span class="s">&quot;Del&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;lineTool&quot;</span><span class="p">,</span> <span class="s">&quot;line tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
 
         <span class="p">(</span><span class="s">&quot;longDistanceMode&quot;</span><span class="p">,</span> <span class="s">&quot;long-distance mode&quot;</span><span class="p">,</span> <span class="s">&quot;Alt-Z&quot;</span><span class="p">),</span>
@@ -477,7 +554,7 @@
         <span class="p">(</span><span class="s">&quot;brushLineTool&quot;</span><span class="p">,</span> <span class="s">&quot;brush line tool&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;snapCloneToAxis&quot;</span><span class="p">,</span> <span class="s">&quot;snap clone to axis&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;blocksOnlyModifier&quot;</span><span class="p">,</span> <span class="s">&quot;blocks-only modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Alt&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&quot;fastIncrementModifier&quot;</span><span class="p">,</span> <span class="s">&quot;fast increment modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fastIncrementModifierHold&quot;</span><span class="p">,</span> <span class="s">&quot;fast increment modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;fastNudge&quot;</span><span class="p">,</span> <span class="s">&quot;fast nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
 
         <span class="p">(</span><span class="s">&quot;takeAScreenshot&quot;</span><span class="p">,</span> <span class="s">&quot;take a screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
@@ -503,6 +580,17 @@
         <span class="p">(</span><span class="s">&quot;exportSelection&quot;</span><span class="p">,</span> <span class="s">&quot;export selection&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-E&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;toggleRenderer&quot;</span><span class="p">,</span> <span class="s">&quot;toggle renderer&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-M&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;uploadWorld&quot;</span><span class="p">,</span> <span class="s">&quot;upload world&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl-U&quot;</span><span class="p">),</span>
+
+        <span class="p">(</span><span class="s">&quot;select&quot;</span><span class="p">,</span> <span class="s">&quot;select&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;brush&quot;</span><span class="p">,</span> <span class="s">&quot;brush&quot;</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;clone&quot;</span><span class="p">,</span> <span class="s">&quot;clone&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fillAndReplace&quot;</span><span class="p">,</span> <span class="s">&quot;fill and replace&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;filter&quot;</span><span class="p">,</span> <span class="s">&quot;filter&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;importKey&quot;</span><span class="p">,</span> <span class="s">&quot;import&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;players&quot;</span><span class="p">,</span> <span class="s">&quot;players&quot;</span><span class="p">,</span> <span class="s">&quot;7&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;worldSpawnpoint&quot;</span><span class="p">,</span> <span class="s">&quot;world spawnpoint&quot;</span><span class="p">,</span> <span class="s">&quot;8&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;chunkControl&quot;</span><span class="p">,</span> <span class="s">&quot;chunk control&quot;</span><span class="p">,</span> <span class="s">&quot;9&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;nbtExplorer&quot;</span><span class="p">,</span> <span class="s">&quot;nbt explorer&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
     <span class="p">],</span>
     <span class="p">(</span><span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;Version&quot;</span><span class="p">):</span> <span class="p">[</span>
         <span class="p">(</span><span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;1.1.2.0&quot;</span><span class="p">)</span>
@@ -522,7 +610,7 @@
         <span class="p">(</span><span class="s">&quot;staticCommandsNudge&quot;</span><span class="p">,</span> <span class="s">&quot;Static Coords While Nudging&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;moveSpawnerPosNudge&quot;</span><span class="p">,</span> <span class="s">&quot;Change Spawners While Nudging&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;rotateBlockBrush&quot;</span><span class="p">,</span> <span class="s">&quot;rotateBlockBrushRow&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&quot;langCode&quot;</span><span class="p">,</span> <span class="s">&quot;Language String&quot;</span><span class="p">,</span> <span class="s">&quot;English (US)&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;langCode&quot;</span><span class="p">,</span> <span class="s">&quot;Language String&quot;</span><span class="p">,</span> <span class="s">&quot;en_US&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;viewDistance&quot;</span><span class="p">,</span> <span class="s">&quot;View Distance&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;targetFPS&quot;</span><span class="p">,</span> <span class="s">&quot;Target FPS&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;windowWidth&quot;</span><span class="p">,</span> <span class="s">&quot;window width&quot;</span><span class="p">,</span> <span class="mi">1152</span><span class="p">),</span>
@@ -558,10 +646,14 @@
         <span class="p">(</span><span class="s">&quot;maxCopies&quot;</span><span class="p">,</span> <span class="s">&quot;Copy stack size&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;superSecretSettings&quot;</span><span class="p">,</span> <span class="s">&quot;Super Secret Settings&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;compassToggle&quot;</span><span class="p">,</span> <span class="s">&quot;Compass Toggle&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&quot;compassSize&quot;</span><span class="p">,</span> <span class="s">&quot;Compass Size&quot;</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;compassSize&quot;</span><span class="p">,</span> <span class="s">&quot;Compass Size&quot;</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;fogIntensity&quot;</span><span class="p">,</span> <span class="s">&quot;Fog Intensity&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;fontProportion&quot;</span><span class="p">,</span> <span class="s">&quot;Fonts Proportion&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&quot;downloadPlayerSkins&quot;</span><span class="p">,</span> <span class="s">&quot;Download Player Skins&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;maxViewDistance&quot;</span><span class="p">,</span> <span class="s">&quot;Max View Distance&quot;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;drawPlayerHeads&quot;</span><span class="p">,</span> <span class="s">&quot;Draw Player Heads&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;showCommands&quot;</span><span class="p">,</span> <span class="s">&quot;Show Commands when hovering&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;savePositionOnClose&quot;</span><span class="p">,</span> <span class="s">&quot;Save camera position on close&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
     <span class="p">],</span>
     <span class="p">(</span><span class="s">&quot;controls&quot;</span><span class="p">,</span> <span class="s">&quot;Controls&quot;</span><span class="p">):</span> <span class="p">[</span>
         <span class="p">(</span><span class="s">&quot;mouseSpeed&quot;</span><span class="p">,</span> <span class="s">&quot;mouse speed&quot;</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
@@ -591,7 +683,8 @@
         <span class="p">(</span><span class="s">&quot;placeImmediately&quot;</span><span class="p">,</span> <span class="s">&quot;Place Immediately&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
     <span class="p">],</span>
     <span class="p">(</span><span class="s">&quot;fill&quot;</span><span class="p">,</span> <span class="s">&quot;Fill&quot;</span><span class="p">):</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s">&quot;chooseBlockImmediately&quot;</span><span class="p">,</span> <span class="s">&quot;Choose Block Immediately&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="p">(</span><span class="s">&quot;chooseBlockImmediately&quot;</span><span class="p">,</span> <span class="s">&quot;Choose Block Immediately&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;chooseBlockImmediatelyReplace&quot;</span><span class="p">,</span> <span class="s">&quot;Choose Block Immediately for Replace&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
     <span class="p">],</span>
     <span class="p">(</span><span class="s">&quot;spawn&quot;</span><span class="p">,</span> <span class="s">&quot;Spawn&quot;</span><span class="p">):</span> <span class="p">[</span>
         <span class="p">(</span><span class="s">&quot;spawnProtection&quot;</span><span class="p">,</span> <span class="s">&quot;Spawn Protection&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
@@ -631,6 +724,14 @@
         <span class="p">(</span><span class="s">&quot;showAllTags&quot;</span><span class="p">,</span> <span class="s">&quot;Show all the tags in the tree&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
     <span class="p">],</span>
     <span class="p">(</span><span class="s">&quot;Filter Keys&quot;</span><span class="p">,</span> <span class="s">&quot;Filter Keys&quot;</span><span class="p">):</span> <span class="p">[],</span>
+    <span class="p">(</span><span class="s">&quot;session&quot;</span><span class="p">,</span> <span class="s">&quot;Session&quot;</span><span class="p">,):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;override&quot;</span><span class="p">,</span> <span class="s">&quot;Override&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="p">(</span><span class="s">&quot;commands&quot;</span><span class="p">,</span> <span class="s">&quot;Commands&quot;</span><span class="p">):</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&quot;sorting&quot;</span><span class="p">,</span> <span class="s">&quot;Sorting&quot;</span><span class="p">,</span> <span class="s">&quot;chain&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;space&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;fileFormat&quot;</span><span class="p">,</span> <span class="s">&quot;File Format&quot;</span><span class="p">,</span> <span class="s">&quot;txt&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
 <span class="p">}</span>
 
 
@@ -640,39 +741,43 @@
     <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">definitions</span><span class="p">)</span>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../genindex.html" title="General Index" >index</a></li>
+        <li><a href="index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>albow.root &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>albow.root &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for albow.root</h1><div class="highlight"><pre>
 <span class="c"># ---------------------------------------------------------------------------</span>
 <span class="c">#</span>
@@ -71,10 +151,16 @@
 
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">wrapped_label</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
 
 <span class="kn">from</span> <span class="nn">pymclevel.box</span> <span class="kn">import</span> <span class="n">Vector</span>
 
+<span class="c">#-# This need to be changed. We need albow.translate in the config module.</span>
+<span class="c">#-# he solution can be a set of functions wich let us define the needed MCEdit &#39;config&#39; data</span>
+<span class="c">#-# without importing it.</span>
+<span class="c">#-# It can be a &#39;config&#39; module built only for albow.</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="c">#-#</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">directories</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -153,7 +239,7 @@
     <span class="c">#  is_gl     True if OpenGL surface</span>
 
     <span class="n">redraw_every_frame</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
     <span class="n">_is_gl_container</span> <span class="o">=</span> <span class="bp">True</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">):</span>
@@ -173,21 +259,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">notMove</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nudge</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">testTime</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">testTimeBack</span> <span class="o">=</span> <span class="mf">0.4</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nudgeDirection</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sessionStolen</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sprint</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filesToChange</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="RootWidget.get_nudge_block"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.get_nudge_block">[docs]</a>    <span class="k">def</span> <span class="nf">get_nudge_block</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectTool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">nudgeBlocksButton</span>
 </div>
 <div class="viewcode-block" id="RootWidget.take_screenshot"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.take_screenshot">[docs]</a>    <span class="k">def</span> <span class="nf">take_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;screenshots&quot;</span><span class="p">))</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">&quot;screenshots&quot;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
             <span class="k">pass</span>
-        <span class="n">screenshot_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;screenshots&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> (%I-%M-%S-%p)&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span>
+        <span class="n">screenshot_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">&quot;screenshots&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> (%I-%M-%S-%p)&quot;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.png&quot;</span><span class="p">)</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">get_surface</span><span class="p">(),</span> <span class="n">screenshot_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">()</span>
-        <span class="n">lbl</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Screenshot taken and saved as &#39;&quot;</span><span class="o">+</span><span class="n">screenshot_name</span><span class="o">+</span><span class="s">&quot;&#39;&quot;</span><span class="p">)</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Screenshot taken and saved as &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">)</span><span class="o">%</span><span class="n">screenshot_name</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">folderBtn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Open Folder&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_screenshots_folder</span><span class="p">)</span>
         <span class="n">btn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Ok&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">screenshot_notify</span><span class="p">)</span>
         <span class="n">buttonsRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">btn</span><span class="p">,</span><span class="n">folderBtn</span><span class="p">))</span>
@@ -196,10 +285,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
 </div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="RootWidget.open_screenshots_folder"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.open_screenshots_folder">[docs]</a>    <span class="k">def</span> <span class="nf">open_screenshots_folder</span><span class="p">():</span>
+<div class="viewcode-block" id="RootWidget.open_screenshots_folder"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.open_screenshots_folder">[docs]</a>    <span class="k">def</span> <span class="nf">open_screenshots_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">mcplatform</span> <span class="kn">import</span> <span class="n">platform_open</span>
-        <span class="n">platform_open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">parentDir</span><span class="p">,</span> <span class="s">&quot;screenshots&quot;</span><span class="p">))</span>
+        <span class="n">platform_open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directories</span><span class="o">.</span><span class="n">getCacheDir</span><span class="p">(),</span> <span class="s">&quot;screenshots&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screenshot_notify</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="RootWidget.screenshot_notify"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.screenshot_notify">[docs]</a>    <span class="k">def</span> <span class="nf">screenshot_notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diag</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
@@ -259,8 +348,8 @@
                 <span class="n">clicked_widget</span> <span class="o">=</span> <span class="n">modal_widget</span>
             <span class="n">num_clicks</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">last_click_time</span> <span class="o">=</span> <span class="n">start_time</span>
-            <span class="n">last_click_button</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">last_click_button</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
 
             <span class="k">while</span> <span class="n">modal_widget</span><span class="o">.</span><span class="n">modal_result</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -270,8 +359,8 @@
                             <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">check_for_version</span><span class="p">()</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">hover_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_widget</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">())</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">True</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_gl</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">gl_clear</span><span class="p">()</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">gl_draw_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -291,7 +380,7 @@
                         <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">QUIT</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                             <span class="n">t</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
                             <span class="k">if</span> <span class="n">t</span> <span class="o">-</span> <span class="n">last_click_time</span> <span class="o">&lt;=</span> <span class="n">double_click_time</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="n">last_click_button</span><span class="p">:</span>
                                 <span class="n">num_clicks</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -314,7 +403,7 @@
                             <span class="n">mouse_widget</span><span class="o">.</span><span class="n">notify_attention_loss</span><span class="p">()</span>
                             <span class="n">mouse_widget</span><span class="o">.</span><span class="n">handle_mouse</span><span class="p">(</span><span class="s">&#39;mouse_down&#39;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">MOUSEMOTION</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                             <span class="n">add_modifiers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                             <span class="n">modal_widget</span><span class="o">.</span><span class="n">dispatch_key</span><span class="p">(</span><span class="s">&#39;mouse_delta&#39;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
                             <span class="n">last_mouse_event</span> <span class="o">=</span> <span class="n">event</span>
@@ -331,7 +420,7 @@
                                 <span class="n">mouse_widget</span><span class="o">.</span><span class="n">handle_mouse</span><span class="p">(</span><span class="s">&#39;mouse_move&#39;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">MOUSEBUTTONUP</span><span class="p">:</span>
                             <span class="n">add_modifiers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                             <span class="n">mouse_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_widget</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">captured_widget</span><span class="p">:</span>
                                 <span class="n">mouse_widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">captured_widget</span>
@@ -349,7 +438,7 @@
                             <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span>
                             <span class="n">set_modifier</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
                             <span class="n">add_modifiers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                             <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">takeAScreenshot</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">take_screenshot</span><span class="p">()</span>
@@ -363,16 +452,18 @@
                             <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span>
                             <span class="n">set_modifier</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
                             <span class="n">add_modifiers</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                             <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">showBlockInfo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">tools</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">infoKey</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">tools</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">infoKey</span> <span class="o">=</span> <span class="mi">0</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span><span class="o">.</span><span class="n">showCommands</span><span class="p">()</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudgeDirection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                                 <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">movement</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">keyname</span><span class="o">=</span><span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
                                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">movements</span><span class="p">):</span>
                                     <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="n">key</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudgeDirection</span><span class="p">:</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">nudgeDirection</span> <span class="o">=</span> <span class="bp">None</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">testTime</span> <span class="o">=</span> <span class="bp">None</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">testTimeBack</span> <span class="o">=</span> <span class="mf">0.4</span>
 
                             <span class="bp">self</span><span class="o">.</span><span class="n">send_key</span><span class="p">(</span><span class="n">modal_widget</span><span class="p">,</span> <span class="s">&#39;key_up&#39;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">last_mouse_event_handler</span><span class="p">:</span>
@@ -385,9 +476,9 @@
                             <span class="n">make_scheduled_calls</span><span class="p">()</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_modal</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_every_frame</span><span class="p">:</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                                 <span class="k">else</span><span class="p">:</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">+=</span> <span class="mi">1</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">True</span>
                                 <span class="k">if</span> <span class="n">last_mouse_event_handler</span><span class="p">:</span>
                                     <span class="n">event</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="s">&#39;pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_mouse_event</span><span class="o">.</span><span class="n">pos</span>
                                     <span class="n">event</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="s">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_mouse_event</span><span class="o">.</span><span class="n">local</span>
@@ -396,7 +487,7 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">begin_frame</span><span class="p">()</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">VIDEORESIZE</span><span class="p">:</span>
                             <span class="c">#add_modifiers(event)</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
                             <span class="c">#self.dispatch_key(&#39;reshape&#39;, event)</span>
                         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">ACTIVEEVENT</span><span class="p">:</span>
@@ -408,11 +499,14 @@
 
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sessionStolen</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&quot;checkSessionLock&quot;</span><span class="p">):</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">checkSessionLock</span><span class="p">()</span>
                         <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
                             <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">u&quot;Error reading chunk: </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">sessionStolen</span> <span class="o">=</span> <span class="bp">True</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">override</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">sessionStolen</span> <span class="o">=</span> <span class="bp">True</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">acquireSessionLock</span><span class="p">()</span>
 
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">cameraInputs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
@@ -424,6 +518,8 @@
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
                                 <span class="k">return</span>
                             <span class="n">keyName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">movement</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">keyname</span><span class="o">=</span><span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                            <span class="k">if</span> <span class="n">keyName</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">sprintKey</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">sprint</span> <span class="o">=</span> <span class="bp">True</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
                                 <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">movements</span><span class="p">):</span>
                                     <span class="k">if</span> <span class="n">keyName</span> <span class="o">==</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LCTRL</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_RCTRL</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_RMETA</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LMETA</span><span class="p">]:</span>
@@ -433,6 +529,13 @@
                                     <span class="k">if</span> <span class="n">keyName</span> <span class="o">==</span> <span class="n">key</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LCTRL</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_RCTRL</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_RMETA</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allKeys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LMETA</span><span class="p">]:</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">changeCameraKeys</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
                         <span class="nb">map</span><span class="p">(</span><span class="n">useKeys</span><span class="p">,</span> <span class="n">allKeysWithData</span><span class="p">)</span>
+
+                        <span class="k">for</span> <span class="n">edit</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filesToChange</span><span class="p">:</span>
+                            <span class="n">newTime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">edit</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">newTime</span> <span class="o">&gt;</span> <span class="n">edit</span><span class="o">.</span><span class="n">timeChanged</span><span class="p">:</span>
+                                <span class="n">edit</span><span class="o">.</span><span class="n">timeChanged</span> <span class="o">=</span> <span class="n">newTime</span>
+                                <span class="n">edit</span><span class="o">.</span><span class="n">makeChanges</span><span class="p">()</span>
+
 
                 <span class="k">except</span> <span class="n">Cancel</span><span class="p">:</span>
                     <span class="k">pass</span>
@@ -457,8 +560,8 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Meta&#39;</span><span class="p">:</span>
                 <span class="n">keyname</span> <span class="o">=</span> <span class="s">&#39;Ctrl&#39;</span>
-            <span class="n">newKeyname</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">movement</span><span class="p">:</span>
+                <span class="n">newKeyname</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
                 <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">shift</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Shift&quot;</span><span class="p">:</span>
                     <span class="n">newKeyname</span> <span class="o">+=</span> <span class="s">&quot;Shift-&quot;</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">evt</span><span class="o">.</span><span class="n">ctrl</span> <span class="ow">or</span> <span class="n">evt</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">:</span>
@@ -466,17 +569,34 @@
                 <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">alt</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Alt&quot;</span><span class="p">:</span>
                     <span class="n">newKeyname</span> <span class="o">+=</span> <span class="s">&quot;Alt-&quot;</span>
 
-            <span class="n">keyname</span> <span class="o">=</span> <span class="n">newKeyname</span> <span class="o">+</span> <span class="n">keyname</span>
+                <span class="n">keyname</span> <span class="o">=</span> <span class="n">newKeyname</span> <span class="o">+</span> <span class="n">keyname</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">newKeyname</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&#39;linux2&#39;</span><span class="p">:</span>
+                        <span class="n">test_key</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">evt</span><span class="p">,</span> <span class="s">&#39;scancode&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+                        <span class="n">tool_keys</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">test_key</span> <span class="o">=</span> <span class="n">keyname</span>
+                        <span class="n">tool_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">,</span> <span class="s">&#39;8&#39;</span><span class="p">,</span> <span class="s">&#39;9&#39;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">test_key</span> <span class="ow">in</span> <span class="n">tool_keys</span><span class="p">:</span>
+                        <span class="n">keyname</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tool_keys</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">test_key</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">test_key</span> <span class="o">==</span> <span class="mi">19</span><span class="p">:</span>
+                        <span class="n">keyname</span> <span class="o">=</span> <span class="s">&#39;0&#39;</span>
 
             <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Enter&#39;</span><span class="p">:</span>
                 <span class="n">keyname</span> <span class="o">=</span> <span class="s">&#39;Return&#39;</span>
+            <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Delete&#39;</span><span class="p">:</span>
+                <span class="n">keyname</span> <span class="o">=</span> <span class="s">&#39;Del&#39;</span>
 
             <span class="k">return</span> <span class="n">keyname</span>
 </div>
 <div class="viewcode-block" id="RootWidget.changeMovementKeys"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.changeMovementKeys">[docs]</a>    <span class="k">def</span> <span class="nf">changeMovementKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyNum</span><span class="p">,</span> <span class="n">keyname</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">notMove</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">cameraInputs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">movementNum</span><span class="p">[</span><span class="n">keyNum</span><span class="p">]]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">movementMath</span><span class="p">[</span><span class="n">keyNum</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">notMove</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">testTime</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">testTime</span> <span class="o">&gt;=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mf">0.325</span><span class="p">)):</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">notMove</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">testTime</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">testTime</span> <span class="o">&gt;=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">testTimeBack</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">testTimeBack</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">testTimeBack</span> <span class="o">-=</span> <span class="mf">0.1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bonus_draw_time</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">testTime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">movements</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nudge</span><span class="o">.</span><span class="n">nudge</span><span class="p">(</span><span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -510,6 +630,9 @@
 <div class="viewcode-block" id="RootWidget.changeCameraKeys"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.changeCameraKeys">[docs]</a>    <span class="k">def</span> <span class="nf">changeCameraKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyNum</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">notMove</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">cameraPanKeys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cameraNum</span><span class="p">[</span><span class="n">keyNum</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cameraMath</span><span class="p">[</span><span class="n">keyNum</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="RootWidget.RemoveEditFiles"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.RemoveEditFiles">[docs]</a>    <span class="k">def</span> <span class="nf">RemoveEditFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filesToChange</span> <span class="o">=</span> <span class="p">[]</span>
 </div>
 <div class="viewcode-block" id="RootWidget.call_idle_handlers"><a class="viewcode-back" href="../../albow.html#albow.root.RootWidget.call_idle_handlers">[docs]</a>    <span class="k">def</span> <span class="nf">call_idle_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">ref</span><span class="p">):</span>
@@ -554,7 +677,7 @@
 
         <span class="k">def</span> <span class="nf">TextTooltip</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
             <span class="n">tooltipBacking</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">()</span>
-            <span class="n">tooltipBacking</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>
+            <span class="n">tooltipBacking</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
             <span class="n">tooltipBacking</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labelClass</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
             <span class="n">tooltipBacking</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">tooltipBacking</span>
@@ -658,39 +781,43 @@
     <span class="n">insort</span><span class="p">(</span><span class="n">scheduled_calls</span><span class="p">,</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">func</span><span class="p">))</span></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>editortools.select &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>editortools.select &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for editortools.select</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
 
@@ -64,24 +144,26 @@
 <span class="sd">WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN</span>
 <span class="sd">ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF</span>
 <span class="sd">OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&quot;&quot;&quot;</span>
-<span class="c">#-# Modified by D.C.-G. for translation purpose</span>
-<span class="c">#.# Marks the layout modifications. -- D.C.-G.</span>
+<span class="c"># -# Modified by D.C.-G. for translation purpose</span>
+<span class="c"># .# Marks the layout modifications. -- D.C.-G.</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ask</span><span class="p">,</span> <span class="n">alert</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ask</span><span class="p">,</span> <span class="n">alert</span><span class="p">,</span> <span class="n">ChoiceButton</span><span class="p">,</span> <span class="n">CheckBoxLabel</span><span class="p">,</span> <span class="n">IntInputRow</span><span class="p">,</span> \
+    <span class="n">showProgress</span><span class="p">,</span> <span class="n">TextInputRow</span>
 <span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
-<span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">ColorValue</span>
+<span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">depths</span> <span class="kn">import</span> <span class="n">DepthOffset</span>
 <span class="kn">from</span> <span class="nn">editortools.editortool</span> <span class="kn">import</span> <span class="n">EditorTool</span>
 <span class="kn">from</span> <span class="nn">editortools.nudgebutton</span> <span class="kn">import</span> <span class="n">NudgeButton</span>
 <span class="kn">from</span> <span class="nn">editortools.tooloptions</span> <span class="kn">import</span> <span class="n">ToolOptions</span>
 <span class="kn">from</span> <span class="nn">glbackground</span> <span class="kn">import</span> <span class="n">Panel</span>
-<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">ChoiceButton</span><span class="p">,</span> <span class="n">CheckBoxLabel</span><span class="p">,</span> <span class="n">IntInputRow</span><span class="p">,</span> <span class="n">alertException</span><span class="p">,</span> <span class="n">drawCube</span><span class="p">,</span> <span class="n">drawFace</span><span class="p">,</span> <span class="n">drawTerrainCuttingWire</span><span class="p">,</span> <span class="n">setWindowCaption</span><span class="p">,</span> <span class="n">showProgress</span>
+<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">alertException</span><span class="p">,</span> <span class="n">drawCube</span><span class="p">,</span> <span class="n">drawFace</span><span class="p">,</span> <span class="n">drawTerrainCuttingWire</span><span class="p">,</span> <span class="n">setWindowCaption</span>
 <span class="kn">from</span> <span class="nn">operation</span> <span class="kn">import</span> <span class="n">Operation</span>
 <span class="kn">import</span> <span class="nn">pymclevel</span>
 <span class="kn">from</span> <span class="nn">pymclevel.box</span> <span class="kn">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">BoundingBox</span><span class="p">,</span> <span class="n">FloatBox</span>
@@ -90,6 +172,7 @@
 <span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">nbt</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">albow.root</span> <span class="kn">import</span> <span class="n">get_root</span>
+<span class="kn">from</span> <span class="nn">fileEdits</span> <span class="kn">import</span> <span class="n">fileEdit</span><span class="p">,</span> <span class="n">GetSort</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -105,6 +188,10 @@
 
         <span class="n">color</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="n">color</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;White&quot;</span><span class="p">)</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="s">&quot;White&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">colorPopupButton</span><span class="o">.</span><span class="n">choiceIndex</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 </div>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">):</span>
@@ -118,27 +205,34 @@
         <span class="n">okButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)</span>
         <span class="n">showPreviousRow</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Show Previous Selection&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="n">tool</span><span class="p">,</span> <span class="s">&#39;showPreviousSelection&#39;</span><span class="p">))</span>
         <span class="n">spaceLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-        <span class="c">#.#</span>
+        <span class="c"># .#</span>
         <span class="n">spaceLabel</span><span class="o">.</span><span class="n">height</span> <span class="o">/=</span> <span class="mf">1.5</span>
-        <span class="c">#.#</span>
+        <span class="c"># .#</span>
         <span class="n">blocksNudgeLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Blocks Fast Nudge Settings:&quot;</span><span class="p">)</span>
         <span class="n">blocksNudgeCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Move by the width of selection &quot;</span><span class="p">,</span>
-                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">blocksWidth</span><span class="p">,</span>
-                                                <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Moves selection by his width&quot;</span><span class="p">)</span>
+                                            <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">blocksWidth</span><span class="p">,</span>
+                                            <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Moves selection by his width&quot;</span><span class="p">)</span>
         <span class="n">blocksNudgeNumber</span> <span class="o">=</span> <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Width of blocks movement: &quot;</span><span class="p">,</span>
-                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">blocksWidthNumber</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+                                        <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">blocksWidthNumber</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
         <span class="n">selectionNudgeLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Selection Fast Nudge Settings:&quot;</span><span class="p">)</span>
         <span class="n">selectionNudgeCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Move by the width of selection &quot;</span><span class="p">,</span>
-                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">selectionWidth</span><span class="p">,</span>
-                                                <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Moves selection by his width&quot;</span><span class="p">)</span>
+                                               <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">selectionWidth</span><span class="p">,</span>
+                                               <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Moves selection by his width&quot;</span><span class="p">)</span>
         <span class="n">selectionNudgeNumber</span> <span class="o">=</span> <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Width of selection movement: &quot;</span><span class="p">,</span>
-                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">selectionWidthNumber</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+                                           <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">selectionWidthNumber</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
         <span class="n">pointsNudgeLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Points Fast Nudge Settings:&quot;</span><span class="p">)</span>
         <span class="n">pointsNudgeCheckBox</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Move by the width of selection &quot;</span><span class="p">,</span>
-                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">pointsWidth</span><span class="p">,</span>
-                                                <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Moves points by the selection&#39;s width&quot;</span><span class="p">)</span>
+                                            <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">pointsWidth</span><span class="p">,</span>
+                                            <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Moves points by the selection&#39;s width&quot;</span><span class="p">)</span>
         <span class="n">pointsNudgeNumber</span> <span class="o">=</span> <span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Width of points movement: &quot;</span><span class="p">,</span>
-                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">pointsWidthNumber</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+                                        <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fastNudgeSettings</span><span class="o">.</span><span class="n">pointsWidthNumber</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+        <span class="n">staticCommandsNudgeRow</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Static Coords While Nudging&quot;</span><span class="p">,</span>
+                                               <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">staticCommandsNudge</span><span class="p">,</span>
+                                               <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Change static coordinates in command blocks while nudging.&quot;</span><span class="p">)</span>
+
+        <span class="n">moveSpawnerPosNudgeRow</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Change Spawners While Nudging&quot;</span><span class="p">,</span>
+                                               <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">moveSpawnerPosNudge</span><span class="p">,</span>
+                                               <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Change the position of the mobs in spawners while nudging.&quot;</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">set_colorvalue</span><span class="p">(</span><span class="n">ch</span><span class="p">):</span>
             <span class="n">i</span> <span class="o">=</span> <span class="s">&quot;RGB&quot;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
@@ -166,10 +260,14 @@
                              <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s">&quot;RGB&quot;</span><span class="p">]</span>
 
         <span class="n">colorValuesRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">(</span><span class="n">colorValuesInputs</span><span class="p">)</span>
-        <span class="c">#.#</span>
-<span class="c">#        col = Column((Label(&quot;Selection Options&quot;), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Selection Options&quot;</span><span class="p">),</span> <span class="n">colorRow</span><span class="p">,</span> <span class="n">colorValuesRow</span><span class="p">,</span> <span class="n">showPreviousRow</span><span class="p">,</span> <span class="n">spaceLabel</span><span class="p">,</span> <span class="n">blocksNudgeLabel</span><span class="p">,</span> <span class="n">blocksNudgeCheckBox</span><span class="p">,</span> <span class="n">blocksNudgeNumber</span><span class="p">,</span> <span class="n">spaceLabel</span><span class="p">,</span> <span class="n">selectionNudgeLabel</span><span class="p">,</span> <span class="n">selectionNudgeCheckBox</span><span class="p">,</span> <span class="n">selectionNudgeNumber</span><span class="p">,</span> <span class="n">spaceLabel</span><span class="p">,</span>  <span class="n">pointsNudgeLabel</span><span class="p">,</span> <span class="n">pointsNudgeCheckBox</span><span class="p">,</span> <span class="n">pointsNudgeNumber</span><span class="p">,</span> <span class="n">okButton</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="c">#.#</span>
+        <span class="c"># .#</span>
+        <span class="c">#        col = Column((Label(&quot;Selection Options&quot;), colorRow, colorValuesRow, showPreviousRow, spaceLabel, blocksNudgeLabel, blocksNudgeCheckBox, blocksNudgeNumber, spaceLabel, selectionNudgeLabel, selectionNudgeCheckBox, selectionNudgeNumber, spaceLabel,  pointsNudgeLabel, pointsNudgeCheckBox, pointsNudgeNumber, okButton))</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Selection Options&quot;</span><span class="p">),</span> <span class="n">colorRow</span><span class="p">,</span> <span class="n">colorValuesRow</span><span class="p">,</span> <span class="n">showPreviousRow</span><span class="p">,</span> <span class="n">spaceLabel</span><span class="p">,</span>
+                      <span class="n">blocksNudgeLabel</span><span class="p">,</span> <span class="n">blocksNudgeCheckBox</span><span class="p">,</span> <span class="n">blocksNudgeNumber</span><span class="p">,</span> <span class="n">spaceLabel</span><span class="p">,</span> <span class="n">selectionNudgeLabel</span><span class="p">,</span>
+                      <span class="n">selectionNudgeCheckBox</span><span class="p">,</span> <span class="n">selectionNudgeNumber</span><span class="p">,</span> <span class="n">spaceLabel</span><span class="p">,</span> <span class="n">pointsNudgeLabel</span><span class="p">,</span> <span class="n">pointsNudgeCheckBox</span><span class="p">,</span>
+                      <span class="n">pointsNudgeNumber</span><span class="p">,</span> <span class="n">spaceLabel</span><span class="p">,</span> <span class="n">staticCommandsNudgeRow</span><span class="p">,</span> <span class="n">moveSpawnerPosNudgeRow</span><span class="p">,</span> <span class="n">okButton</span><span class="p">),</span>
+                     <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="c"># .#</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
@@ -192,7 +290,7 @@
 
         <span class="n">deleteBlocksButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Delete Blocks&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">deleteBlocks</span><span class="p">)</span>
         <span class="n">deleteBlocksButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Fill the selection with Air. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">deleteBlocks</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">deleteBlocks</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
         <span class="n">deleteEntitiesButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Delete Entities&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">deleteEntities</span><span class="p">)</span>
         <span class="n">deleteEntitiesButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Remove all entities within the selection&quot;</span>
         <span class="n">deleteTileTicksButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Delete Tile Ticks&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">deleteTileTicks</span><span class="p">)</span>
@@ -201,17 +299,18 @@
         <span class="n">analyzeButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Analyze&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">analyzeSelection</span><span class="p">)</span>
         <span class="n">analyzeButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Count the different blocks and entities in the selection and display the totals.&quot;</span>
         <span class="n">cutButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cut&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">cutSelection</span><span class="p">)</span>
-        <span class="n">cutButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">cutButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span>
+            <span class="s">&quot;Take a copy of all blocks and entities within the selection, then delete everything within the selection. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">cut</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
         <span class="n">copyButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Copy&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">copySelection</span><span class="p">)</span>
         <span class="n">copyButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Take a copy of all blocks and entities within the selection. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">copy</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">copy</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
         <span class="n">pasteButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Paste&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">pasteSelection</span><span class="p">)</span>
         <span class="n">pasteButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Import the last item taken by Cut or Copy. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">paste</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">paste</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
         <span class="n">exportButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Export&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">exportSelection</span><span class="p">)</span>
         <span class="n">exportButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Export the selection to a .schematic file. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">exportSelection</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">exportSelection</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
 
         <span class="n">selectButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Select Chunks&quot;</span><span class="p">)</span>
         <span class="n">selectButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Expand the selection to the edges of the chunks within&quot;</span>
@@ -219,23 +318,39 @@
         <span class="n">selectButton</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="n">deselectButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Deselect&quot;</span><span class="p">)</span>
-        <span class="n">deselectButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Remove the selection. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">deselect</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+        <span class="n">deselectButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Remove the selection. Shortcut: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">deselect</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
         <span class="n">deselectButton</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">deselect</span>
         <span class="n">deselectButton</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">openButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;CB Commands&quot;</span><span class="p">)</span>
+        <span class="n">openButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span>
+            <span class="s">&#39;Open a text file with all command block commands in the currently selected area.</span><span class="se">\n</span><span class="s">&#39;</span>
+            <span class="s">&#39;Save file to update command blocks.</span><span class="se">\n</span><span class="s">Right-click for options&#39;</span><span class="p">)</span>
+        <span class="n">openButton</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">openCommands</span>
+        <span class="n">openButton</span><span class="o">.</span><span class="n">highlight_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">openButton</span><span class="o">.</span><span class="n">rightClickAction</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">CBCommandsOptions</span>
+
+        <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">nudgeBlocksButton</span><span class="p">,</span>
             <span class="n">deselectButton</span><span class="p">,</span>
             <span class="n">selectButton</span><span class="p">,</span>
             <span class="n">deleteBlocksButton</span><span class="p">,</span>
             <span class="n">deleteEntitiesButton</span><span class="p">,</span>
-            <span class="n">deleteTileTicksButton</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&quot;noTileTicks&quot;</span><span class="p">):</span>
+            <span class="n">buttonsColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deleteTileTicksButton</span><span class="p">)</span>
+
+        <span class="n">buttonsColumn</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
             <span class="n">analyzeButton</span><span class="p">,</span>
             <span class="n">cutButton</span><span class="p">,</span>
             <span class="n">copyButton</span><span class="p">,</span>
             <span class="n">pasteButton</span><span class="p">,</span>
             <span class="n">exportButton</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="s">&quot;editFileNumber&quot;</span><span class="p">):</span>
+            <span class="n">buttonsColumn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">openButton</span><span class="p">)</span>
 
         <span class="n">buttonsColumn</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">buttonsColumn</span><span class="p">)</span>
 
@@ -274,7 +389,8 @@
             <span class="n">level</span><span class="o">.</span><span class="n">removeEntitiesInBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">destBox</span><span class="p">)</span>
             <span class="n">staticCommandsNudge</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">staticCommandsNudge</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
             <span class="n">moveSpawnerPosNudge</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">moveSpawnerPosNudge</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-            <span class="n">level</span><span class="o">.</span><span class="n">copyBlocksFrom</span><span class="p">(</span><span class="n">tempSchematic</span><span class="p">,</span> <span class="n">tempSchematic</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">staticCommands</span><span class="o">=</span><span class="n">staticCommandsNudge</span><span class="p">,</span> <span class="n">moveSpawnerPos</span><span class="o">=</span><span class="n">moveSpawnerPosNudge</span><span class="p">)</span>
+            <span class="n">level</span><span class="o">.</span><span class="n">copyBlocksFrom</span><span class="p">(</span><span class="n">tempSchematic</span><span class="p">,</span> <span class="n">tempSchematic</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destBox</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+                                 <span class="n">staticCommands</span><span class="o">=</span><span class="n">staticCommandsNudge</span><span class="p">,</span> <span class="n">moveSpawnerPos</span><span class="o">=</span><span class="n">moveSpawnerPosNudge</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">invalidateBox</span><span class="p">(</span><span class="n">dirtyBox</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">nudgeSelection</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">recordUndo</span><span class="p">)</span>
@@ -336,7 +452,8 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">text</span> <span class="o">+=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">if</span> <span class="s">&quot;Items&quot;</span> <span class="ow">in</span> <span class="n">t</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">infoKey</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">text</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;--Items omitted. {0} to view. Double-click to edit.--</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">showBlockInfoModifier</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+                <span class="n">text</span> <span class="o">+=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;--Items omitted. {0} to view. Double-click to edit.--</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">showBlockInfoModifier</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
                 <span class="n">t</span> <span class="o">=</span> <span class="n">nbt</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
                 <span class="k">del</span> <span class="n">t</span><span class="p">[</span><span class="s">&quot;Items&quot;</span><span class="p">]</span>
 
@@ -352,7 +469,6 @@
         <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">try</span><span class="p">:</span>
-
             <span class="n">size</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="n">box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBoxInProgress</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">box</span><span class="p">:</span>
@@ -375,7 +491,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">setSelection</span><span class="p">(</span><span class="n">newBox</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SelectionTool.updateSelectionColor"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionTool.updateSelectionColor">[docs]</a>    <span class="k">def</span> <span class="nf">updateSelectionColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">selectionColor</span> <span class="o">=</span> <span class="n">GetSelectionColor</span><span class="p">()</span>
         <span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">theme</span>
 
@@ -485,20 +600,27 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">nudgeSelectionButton</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionColor</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.7</span><span class="p">,)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nudgeSelectionButton</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;twh&quot;</span>
 
+            <span class="bp">self</span><span class="o">.</span><span class="n">spaceLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spaceLabel</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;twh&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spaceLabel</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spaceLabel</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;sizeLabel&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizeLabelText</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="s">&quot;wh&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;{0:n} blocks&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">()</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nudgeSelectionButton</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">height</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nudgeSelectionButton</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nudgeRow</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="o">.</span><span class="n">bottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spaceLabel</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nudgeSelectionButton</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spaceLabel</span><span class="o">.</span><span class="n">bottom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudgeSelectionButton</span><span class="o">.</span><span class="n">bottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nudgeRow</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="o">.</span><span class="n">bottom</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sizeLabel</span><span class="o">.</span><span class="n">centerx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nudgePanel</span><span class="o">.</span><span class="n">centerx</span>
@@ -572,10 +694,12 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dragStartPoint</span> <span class="o">==</span> <span class="n">p</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clickSelectionInProgress</span><span class="p">:</span>
 
-                        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Click the mouse button again to place the {0} selection corner. Press {1} to switch corners.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="k">return</span> <span class="n">_</span><span class="p">(</span>
+                            <span class="s">&quot;Click the mouse button again to place the {0} selection corner. Press {1} to switch corners.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">currentCornerName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotkey</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="k">return</span> <span class="n">_</span><span class="p">(</span>
+                            <span class="s">&quot;Release the mouse button here to place the {0} selection corner. Press {1} to switch corners.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">currentCornerName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotkey</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clickSelectionInProgress</span><span class="p">:</span>
@@ -583,7 +707,8 @@
 
             <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Release the mouse button to finish the selection&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_</span><span class="p">(</span>
+            <span class="s">&quot;Click or drag to make a selection. Drag the selection walls to resize. Click near the edge to drag the opposite wall.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">currentCornerName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hotkey</span><span class="p">)</span>
 
     <span class="n">clickSelectionInProgress</span> <span class="o">=</span> <span class="bp">False</span>
@@ -732,7 +857,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionInProgress</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">clickSelectionInProgress</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBoxForCorners</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dragStartPoint</span><span class="p">)</span>
 
-        <span class="c"># requires a selection</span>
+            <span class="c"># requires a selection</span>
 </div>
 <div class="viewcode-block" id="SelectionTool.dragResizePoint"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionTool.dragResizePoint">[docs]</a>    <span class="k">def</span> <span class="nf">dragResizePoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c"># returns a point representing the intersection between the mouse ray</span>
@@ -838,19 +963,19 @@
                     <span class="k">if</span> <span class="n">widg</span><span class="o">.</span><span class="n">parent</span> <span class="o">==</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">widg</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
                         <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">)</span>
                         <span class="n">nudgefaces</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                     <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
-                                                 <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float32&#39;</span><span class="p">)</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxy</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                            <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">miny</span><span class="p">,</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minz</span><span class="p">,</span>
+                        <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float32&#39;</span><span class="p">)</span>
 
                         <span class="k">if</span> <span class="n">sx</span> <span class="o">!=</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">minx</span><span class="p">:</span>
                             <span class="n">nudgefaces</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">selectionBox</span><span class="o">.</span><span class="n">maxx</span>
@@ -999,7 +1124,7 @@
         <span class="n">drawTerrainCuttingWire</span><span class="p">(</span><span class="n">BoundingBox</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
                                <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
                                <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-        <span class="p">)</span>
+                               <span class="p">)</span>
 
         <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">)</span>
 </div>
@@ -1171,6 +1296,8 @@
 
     <span class="nd">@alertException</span>
     <span class="k">def</span> <span class="nf">cutSelection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">():</span>
+            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">copySelection</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deleteBlocks</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deleteEntities</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
@@ -1229,7 +1356,96 @@
         <span class="k">if</span> <span class="n">schematic</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">exportSchematic</span><span class="p">(</span><span class="n">schematic</span><span class="p">)</span>
 
-</div>
+    <span class="nd">@alertException</span>
+    <span class="k">def</span> <span class="nf">openCommands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;CommandsFile&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">editFileNumber</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">fileFormat</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">fileEditsFolder</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">space</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">space</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">sorting</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">sorting</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">edit</span> <span class="o">=</span> <span class="n">fileEdit</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+
+        <span class="n">order</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">sorting</span> <span class="o">==</span> <span class="s">&quot;chain&quot;</span><span class="p">:</span>
+            <span class="n">skip</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">chainStored</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">GetSort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="n">sorting</span><span class="p">):</span>
+                <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">=</span> <span class="n">coords</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">skip</span><span class="p">:</span>
+                    <span class="n">skip</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">))</span>
+                    <span class="k">continue</span>
+                <span class="n">blockID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">211</span><span class="p">:</span>
+                    <span class="n">chainStored</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">137</span> <span class="ow">or</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">210</span><span class="p">:</span>
+                    <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">),</span> <span class="nb">file</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">chainStored</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">),</span> <span class="nb">file</span><span class="p">,</span> <span class="n">skip</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">GetSort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">selectionBox</span><span class="p">(),</span> <span class="n">sorting</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sorting</span> <span class="o">==</span> <span class="s">&quot;xz&quot;</span><span class="p">:</span>
+                    <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">=</span> <span class="n">coords</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">coords</span>
+                <span class="n">blockID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">blockAt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">137</span> <span class="ow">or</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">210</span> <span class="ow">or</span> <span class="n">blockID</span> <span class="o">==</span> <span class="mi">211</span><span class="p">:</span>
+                    <span class="n">edit</span><span class="o">.</span><span class="n">writeCommandInFile</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">),</span> <span class="nb">file</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">alert</span><span class="p">(</span><span class="s">&quot;No command blocks found&quot;</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">edit</span>
+            <span class="k">return</span>
+        <span class="n">edit</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">editFileNumber</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">filesToChange</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edit</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">startfile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">opener</span> <span class="o">=</span> <span class="s">&quot;open&quot;</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span> <span class="k">else</span> <span class="s">&quot;xdg-open&quot;</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="n">opener</span><span class="p">,</span> <span class="n">filename</span><span class="p">])</span>
+
+<div class="viewcode-block" id="SelectionTool.CBCommandsOptions"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionTool.CBCommandsOptions">[docs]</a>    <span class="k">def</span> <span class="nf">CBCommandsOptions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">panel</span> <span class="o">=</span> <span class="n">CBCommandsOptionsPanel</span><span class="p">()</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">present</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="CBCommandsOptionsPanel"><a class="viewcode-back" href="../../editortools.html#editortools.select.CBCommandsOptionsPanel">[docs]</a><span class="k">class</span> <span class="nc">CBCommandsOptionsPanel</span><span class="p">(</span><span class="n">ToolOptions</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Panel</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">empty</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sorting</span> <span class="o">=</span> <span class="n">ChoiceButton</span><span class="p">([</span><span class="s">&quot;chain&quot;</span><span class="p">,</span> <span class="s">&quot;xz&quot;</span><span class="p">,</span> <span class="s">&quot;zx&quot;</span><span class="p">],</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">changeSorting</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sorting</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">sorting</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">sortingRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Sort Order&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">sorting</span><span class="p">))</span>
+        <span class="n">space</span> <span class="o">=</span> <span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Space between lines&quot;</span><span class="p">,</span>
+                              <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Make space between the lines&quot;</span><span class="p">,</span>
+                              <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">space</span><span class="p">)</span>
+        <span class="n">fileFormat</span> <span class="o">=</span> <span class="n">TextInputRow</span><span class="p">(</span><span class="s">&quot;File format&quot;</span><span class="p">,</span>
+                                  <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Choose the file format for the files&quot;</span><span class="p">,</span>
+                                  <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">fileFormat</span><span class="p">)</span>
+        <span class="n">okButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;OK&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)</span>
+
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Command Blocks Commands Options&quot;</span><span class="p">),</span> <span class="n">sortingRow</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">space</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">fileFormat</span><span class="p">,</span> <span class="n">okButton</span><span class="p">),</span>
+                     <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CBCommandsOptionsPanel.changeSorting"><a class="viewcode-back" href="../../editortools.html#editortools.select.CBCommandsOptionsPanel.changeSorting">[docs]</a>    <span class="k">def</span> <span class="nf">changeSorting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">sorting</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sorting</span><span class="o">.</span><span class="n">selectedChoice</span><span class="p">)</span>
+
+</div></div>
 <div class="viewcode-block" id="SelectionOperation"><a class="viewcode-back" href="../../editortools.html#editortools.select.SelectionOperation">[docs]</a><span class="k">class</span> <span class="nc">SelectionOperation</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
     <span class="n">changedLevel</span> <span class="o">=</span> <span class="bp">False</span>
 
@@ -1287,39 +1503,43 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">selectionTool</span><span class="o">.</span><span class="n">setSelectionPoints</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redoPoints</span><span class="p">)</span></div></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

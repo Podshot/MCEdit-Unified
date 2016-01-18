@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>albow.scrollpanel &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>albow.scrollpanel &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for albow.scrollpanel</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf_8 -*-</span>
 <span class="c">#</span>
@@ -60,10 +140,35 @@
 <span class="kn">from</span> <span class="nn">palette_view</span> <span class="kn">import</span> <span class="n">PaletteView</span>
 <span class="kn">from</span> <span class="nn">layout</span> <span class="kn">import</span> <span class="n">Column</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">blit_in_rect</span>
-<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">event</span><span class="p">,</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">SRCALPHA</span><span class="p">,</span> <span class="n">Rect</span><span class="p">,</span> <span class="n">draw</span>
+<span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">event</span><span class="p">,</span> <span class="n">Surface</span><span class="p">,</span> <span class="n">SRCALPHA</span><span class="p">,</span> <span class="n">Rect</span><span class="p">,</span> <span class="n">draw</span><span class="p">,</span> <span class="n">mouse</span>
 
 <span class="c">#-----------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="ScrollRow"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollRow">[docs]</a><span class="k">class</span> <span class="nc">ScrollRow</span><span class="p">(</span><span class="n">PaletteView</span><span class="p">):</span>
+    <span class="n">__tooltipText</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tooltipText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_to_local</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+<span class="c">#         print &quot;pos&quot;, pos</span>
+<span class="c">#         print &quot;x&quot;, x, &quot;y&quot;, y</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_size</span>
+        <span class="n">W</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">W</span> <span class="o">-</span> <span class="n">d</span> <span class="ow">and</span> <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">H</span> <span class="o">-</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span> <span class="o">//</span> <span class="n">h</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span> <span class="o">//</span> <span class="n">w</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_items</span><span class="p">():</span>
+                <span class="n">row_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_data</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_data</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tooltipText</span>
+
+    <span class="nd">@tooltipText.setter</span>
+    <span class="k">def</span> <span class="nf">tooltipText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tooltipText</span> <span class="o">=</span> <span class="n">text</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_size</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_zebra</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;draw_zebra&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
         <span class="n">scrolling</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;scrolling&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
@@ -226,30 +331,39 @@
 <div class="viewcode-block" id="ScrollPanel"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollPanel">[docs]</a><span class="k">class</span> <span class="nc">ScrollPanel</span><span class="p">(</span><span class="n">Column</span><span class="p">):</span>
     <span class="n">column_margin</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;margin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;margin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;margin&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected_item_index</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;rows&#39;</span><span class="p">,</span> <span class="p">[])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">align</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;align&#39;</span><span class="p">,</span> <span class="s">&#39;l&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;spacing&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">align</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;align&#39;</span><span class="p">,</span> <span class="s">&#39;l&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;spacing&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_zebra</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;draw_zebra&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">row_height</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;row_height&#39;</span><span class="p">,</span> <span class="nb">max</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">height</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],]))</span>
+<span class="c">#        self.row_height = kwargs.pop(&#39;row_height&#39;, max([a.height for a in self.rows] + [self.font.size(&#39; &#39;)[1],]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row_height</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;row_height&#39;</span><span class="p">,</span> <span class="nb">max</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">height</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">(),]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inner_width</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;inner_width&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scrollRow</span> <span class="o">=</span> <span class="n">scrollRow</span> <span class="o">=</span> <span class="n">ScrollRow</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">inner_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_height</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="n">draw_zebra</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">draw_zebra</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;scrolling&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hscrolling</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;hscrolling&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollRow</span> <span class="o">=</span> <span class="n">scrollRow</span> <span class="o">=</span> <span class="n">ScrollRow</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">inner_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_height</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="n">draw_zebra</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">draw_zebra</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                               <span class="n">scrolling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scrolling</span><span class="p">,</span> <span class="n">hscrolling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hscrolling</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="n">Column</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">scrollRow</span><span class="p">,],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ScrollPanel.draw_tree_cell"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollPanel.draw_tree_cell">[docs]</a>    <span class="k">def</span> <span class="nf">draw_tree_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;r&#39;</span><span class="p">:</span>
+            <span class="n">cell_rect</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrollRow</span><span class="o">.</span><span class="n">can_scroll_up</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrollRow</span><span class="o">.</span><span class="n">can_scroll_down</span><span class="p">():</span>
+                <span class="n">cell_rect</span><span class="o">.</span><span class="n">right</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrollRow</span><span class="o">.</span><span class="n">scroll_button_size</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;c&#39;</span><span class="p">:</span>
+            <span class="n">cell_rect</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">centerx</span> <span class="o">-</span> <span class="p">(</span><span class="n">cell_rect</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">draw_text_cell</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="s">&#39;l&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_text_cell</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">align</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_image_cell</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
 </div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="ScrollPanel.draw_image_cell"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollPanel.draw_image_cell">[docs]</a>    <span class="k">def</span> <span class="nf">draw_image_cell</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+<div class="viewcode-block" id="ScrollPanel.draw_image_cell"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollPanel.draw_image_cell">[docs]</a>    <span class="k">def</span> <span class="nf">draw_image_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
-        <span class="n">blit_in_rect</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="s">&#39;l&#39;</span><span class="p">)</span>
+        <span class="n">blit_in_rect</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">align</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">margin</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ScrollPanel.draw_text_cell"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollPanel.draw_text_cell">[docs]</a>    <span class="k">def</span> <span class="nf">draw_text_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cell_rect</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">font</span><span class="p">):</span>
         <span class="n">buf</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fg_color</span><span class="p">)</span>
@@ -272,7 +386,7 @@
             <span class="n">width</span> <span class="o">+=</span> <span class="n">sub</span><span class="o">.</span><span class="n">width</span>
             <span class="n">surf</span> <span class="o">=</span> <span class="n">Surface</span><span class="p">((</span><span class="n">sub</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">SRCALPHA</span><span class="p">)</span>
             <span class="n">sub</span><span class="o">.</span><span class="n">draw_all</span><span class="p">(</span><span class="n">surf</span><span class="p">)</span>
-            <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">m</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">d</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">surf</span>
+            <span class="k">yield</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">m</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">surf</span>
             <span class="n">x</span> <span class="o">+=</span> <span class="n">width</span>
 </div>
 <div class="viewcode-block" id="ScrollPanel.click_item"><a class="viewcode-back" href="../../albow.html#albow.scrollpanel.ScrollPanel.click_item">[docs]</a>    <span class="k">def</span> <span class="nf">click_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
@@ -293,39 +407,43 @@
                         <span class="k">break</span>
 </pre></div></div></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

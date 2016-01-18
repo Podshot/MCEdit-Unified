@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>editortools.player &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>editortools.player &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for editortools.player</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
 
@@ -84,7 +164,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">version_utils</span>
 <span class="kn">from</span> <span class="nn">nbtexplorer</span> <span class="kn">import</span> <span class="n">loadFile</span><span class="p">,</span> <span class="n">saveFile</span><span class="p">,</span> <span class="n">NBTExplorerToolPanel</span>
-
+<span class="kn">import</span> <span class="nn">pygame</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -92,7 +172,7 @@
 <div class="viewcode-block" id="PlayerRemoveOperation"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerRemoveOperation">[docs]</a><span class="k">class</span> <span class="nc">PlayerRemoveOperation</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
     <span class="n">undoTag</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="n">player</span><span class="o">=</span><span class="s">&quot;Player&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="n">player</span><span class="o">=</span><span class="s">&quot;Player (Single Player)&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PlayerRemoveOperation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="n">player</span>
@@ -104,10 +184,11 @@
             <span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Cannot perform action while saving is taking place&quot;</span><span class="p">))</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">==</span> <span class="s">&quot;Player&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">==</span> <span class="s">&quot;Player (Single Player)&quot;</span><span class="p">:</span>
             <span class="n">answer</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Are you sure you want to delete the default player?&quot;</span><span class="p">),</span> <span class="p">[</span><span class="s">&quot;Yes&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">&quot;Cancel&quot;</span><span class="p">:</span>
                 <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="s">&quot;Player&quot;</span>
 
         <span class="k">if</span> <span class="n">recordUndo</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">undoTag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span>
@@ -118,7 +199,7 @@
                 <span class="c">#self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerFromUUID</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&quot;Player&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&quot;Player (Single Player)&quot;</span><span class="p">)</span>
 
             <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">-=</span> <span class="mi">1</span>
@@ -126,14 +207,15 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">hidePanel</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">markerList</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">movingPlayer</span> <span class="o">=</span> <span class="bp">None</span>
 
-        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">][</span><span class="n">pos</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">root_tag</span><span class="p">[</span><span class="s">&quot;Data&quot;</span><span class="p">][</span><span class="s">&quot;Player&quot;</span><span class="p">]</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canUndo</span> <span class="o">=</span> <span class="bp">True</span>
 </div>
 <div class="viewcode-block" id="PlayerRemoveOperation.undo"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerRemoveOperation.undo">[docs]</a>    <span class="k">def</span> <span class="nf">undo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -148,7 +230,7 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerFromUUID</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Player&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Player (Single Player)&quot;</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="s">&quot;[No players]&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&quot;[No players]&quot;</span><span class="p">)</span>
@@ -171,23 +253,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">canUndo</span> <span class="o">=</span> <span class="bp">False</span>
 
 <div class="viewcode-block" id="PlayerAddOperation.perform"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerAddOperation.perform">[docs]</a>    <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recordUndo</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="n">input_text_buttons</span><span class="p">(</span><span class="s">&quot;Enter a Player Name: &quot;</span><span class="p">,</span> <span class="mi">160</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">16</span><span class="p">:</span>
-            <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Name to long. Maximum name length is 16.&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Name to short. Minimum name length is 4.&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">allowed_chars</span> <span class="o">=</span> <span class="s">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_&quot;</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="n">input_text_buttons</span><span class="p">(</span><span class="s">&quot;Enter a Player Name: &quot;</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">,</span> <span class="n">allowed_chars</span><span class="o">=</span><span class="n">allowed_chars</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">16</span><span class="p">:</span>
+                <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Name too long. Maximum name length is 16.&quot;</span><span class="p">)</span>
+                <span class="n">initial</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Name too short. Minimum name length is 1.&quot;</span><span class="p">)</span>
+                <span class="n">initial</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            print &quot;Player: \&quot;&quot;+str(self.player)+&quot;\&quot;&quot;</span>
-<span class="sd">            self.uuid = version_utils.playercache.getPlayerFromPlayername(self.player)</span>
-<span class="sd">            print &quot;UUID: \&quot;&quot;+str(self.uuid)+&quot;\&quot;&quot;</span>
-<span class="sd">            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)  #Case Corrected</span>
-<span class="sd">            &#39;&#39;&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">,</span> <span class="n">other_uuid</span> <span class="o">=</span> <span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">data</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">action</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="s">&quot;Could not get {}&#39;s UUID. Please make sure that you are connected to the internet and that the player {} exists.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">),</span> <span class="p">[</span><span class="s">&quot;Enter UUID manually&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">action</span> <span class="o">!=</span> <span class="s">&quot;Enter UUID manually&quot;</span><span class="p">:</span>
@@ -222,8 +308,8 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">][(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadPNGTexture</span><span class="p">(</span><span class="n">version_utils</span><span class="o">.</span><span class="n">getPlayerSkin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">markerList</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">recordMove</span> <span class="o">=</span> <span class="bp">False</span>
@@ -232,6 +318,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">hidePanel</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">showPanel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">canUndo</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">playerTag</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">nonSavedPlayers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">inOtherDimension</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="PlayerAddOperation.newPlayer"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerAddOperation.newPlayer">[docs]</a>    <span class="k">def</span> <span class="nf">newPlayer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">playerTag</span> <span class="o">=</span> <span class="n">nbt</span><span class="o">.</span><span class="n">TAG_Compound</span><span class="p">()</span>
@@ -245,6 +334,7 @@
         <span class="n">playerTag</span><span class="p">[</span><span class="s">&#39;Score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nbt</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">playerTag</span><span class="p">[</span><span class="s">&#39;FallDistance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nbt</span><span class="o">.</span><span class="n">TAG_Float</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">playerTag</span><span class="p">[</span><span class="s">&#39;OnGround&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nbt</span><span class="o">.</span><span class="n">TAG_Byte</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">playerTag</span><span class="p">[</span><span class="s">&#39;Dimension&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nbt</span><span class="o">.</span><span class="n">TAG_Int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">)</span>
 
         <span class="n">playerTag</span><span class="p">[</span><span class="s">&quot;Inventory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nbt</span><span class="o">.</span><span class="n">TAG_List</span><span class="p">()</span>
 
@@ -267,12 +357,15 @@
 </div>
 <div class="viewcode-block" id="PlayerAddOperation.undo"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerAddOperation.undo">[docs]</a>    <span class="k">def</span> <span class="nf">undo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">movingPlayer</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">player_UUID</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">nonSavedPlayers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">markerList</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
 </div>
@@ -284,6 +377,11 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadPNGTexture</span><span class="p">(</span><span class="n">version_utils</span><span class="o">.</span><span class="n">getPlayerSkin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">playerTag</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">nonSavedPlayers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">markerList</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
 
@@ -435,16 +533,20 @@
                         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">player</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">player</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;-&quot;</span><span class="p">:</span>
                             <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">worldFolder</span><span class="o">.</span><span class="n">getFolderPath</span><span class="p">(</span><span class="s">&quot;playerdata&quot;</span><span class="p">),</span> <span class="n">player</span><span class="o">+</span><span class="s">&quot;.dat&quot;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">worldFolder</span><span class="o">.</span><span class="n">getFolderPath</span><span class="p">(</span><span class="s">&quot;playerdata&quot;</span><span class="p">),</span> <span class="n">player</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;.dat&quot;</span><span class="p">))</span>
                             <span class="n">player</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                        <span class="c">#self.player_UUID[version_utils.playercache.getPlayerFromUUID(player)] = player</span>
-                        <span class="n">uuid</span><span class="p">,</span> <span class="n">player</span><span class="p">,</span> <span class="n">other_data</span> <span class="o">=</span> <span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerInfo</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
+                        <span class="n">data</span> <span class="o">=</span> <span class="n">version_utils</span><span class="o">.</span><span class="n">playercache</span><span class="o">.</span><span class="n">getPlayerInfo</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
                 <span class="k">if</span> <span class="s">&quot;Player&quot;</span> <span class="ow">in</span> <span class="n">players</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="s">&quot;Player&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Player&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="s">&quot;Player (Single Player)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Player&quot;</span>
                 <span class="k">if</span> <span class="s">&quot;[No players]&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">players</span><span class="p">:</span>
-                    <span class="n">players</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">False</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s">&quot;Player&quot;</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+                    <span class="n">players</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">False</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s">&quot;Player (Single Player)&quot;</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;[No players]&quot;</span><span class="p">:</span> <span class="s">&quot;[No players]&quot;</span><span class="p">}</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">players</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Player&quot;</span><span class="p">]</span>
+            <span class="n">players</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Player (Single Player)&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="n">players</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="n">TabPanel</span><span class="p">()</span>
@@ -454,26 +556,44 @@
         <span class="c">#-# Uncomment the following line to have a maximum height for this panel.</span>
         <span class="c"># max_height = min(max_height, 500)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">editNBTDataButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Edit NBT Data&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">editNBTData</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Open the NBT Explorer to edit player&#39;s attributes and inventory&quot;</span><span class="p">)</span>
-        <span class="n">addButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Add Player&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">addPlayer</span><span class="p">)</span>
-        <span class="n">removeButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Remove Player&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">removePlayer</span><span class="p">)</span>
-        <span class="n">gotoButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Goto Player&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">gotoPlayer</span><span class="p">)</span>
-        <span class="n">gotoCameraButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Goto Player&#39;s View&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">gotoPlayerCamera</span><span class="p">)</span>
-        <span class="n">moveButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Move Player&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">movePlayer</span><span class="p">)</span>
-        <span class="n">moveToCameraButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Align Player to Camera&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">movePlayerToCamera</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editNBTDataButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Edit NBT&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">editNBTData</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Open the NBT Explorer to edit player&#39;s attributes and inventory&quot;</span><span class="p">)</span>
+        <span class="n">addButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Add&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">addPlayer</span><span class="p">)</span>
+        <span class="n">removeButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Remove&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">removePlayer</span><span class="p">)</span>
+        <span class="n">gotoButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Goto&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">gotoPlayer</span><span class="p">)</span>
+        <span class="n">gotoCameraButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Goto View&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">gotoPlayerCamera</span><span class="p">)</span>
+        <span class="n">moveButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Move&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">movePlayer</span><span class="p">)</span>
+        <span class="n">moveToCameraButton</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Align to Camera&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">movePlayerToCamera</span><span class="p">)</span>
         <span class="n">reloadSkin</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Reload Skins&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">reloadSkins</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;This pulls skins from the online server, so this may take a while&quot;</span><span class="p">)</span>
 
-        <span class="n">btns</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">editNBTDataButton</span><span class="p">,</span> <span class="n">addButton</span><span class="p">,</span> <span class="n">removeButton</span><span class="p">,</span> <span class="n">gotoButton</span><span class="p">,</span> <span class="n">gotoCameraButton</span><span class="p">,</span> <span class="n">moveButton</span><span class="p">,</span> <span class="n">moveToCameraButton</span><span class="p">,</span> <span class="n">reloadSkin</span><span class="p">],</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">max_height</span> <span class="o">-</span> <span class="n">btns</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">btns</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">editNBTDataButton</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">leveldbpocket</span><span class="o">.</span><span class="n">PocketLeveldbWorld</span><span class="p">):</span>
+            <span class="n">btns</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">addButton</span><span class="p">,</span> <span class="n">removeButton</span><span class="p">])</span>
+        <span class="n">btns</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">gotoButton</span><span class="p">,</span> <span class="n">gotoCameraButton</span><span class="p">,</span> <span class="n">moveButton</span><span class="p">,</span> <span class="n">moveToCameraButton</span><span class="p">,</span> <span class="n">reloadSkin</span><span class="p">])</span>
+        <span class="n">btns</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">btns</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">max_height</span> <span class="o">-</span> <span class="n">btns</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
 
-        <span class="n">tableview</span> <span class="o">=</span> <span class="n">TableView</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">2.5</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
-                              <span class="n">header_height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
-                              <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Player Name(s):&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">),],</span>
-                              <span class="n">height</span><span class="o">=</span><span class="n">h</span><span class="p">,</span>
-                             <span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">close</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span> <span class="o">=</span> <span class="n">NBTExplorerToolPanel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">nbtObject</span><span class="o">=</span><span class="p">{},</span> <span class="n">height</span><span class="o">=</span><span class="n">max_height</span><span class="p">,</span> \
+                                            <span class="n">close_text</span><span class="o">=</span><span class="s">&quot;Go Back&quot;</span><span class="p">,</span> <span class="n">no_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">close_action</span><span class="o">=</span><span class="n">close</span><span class="p">,</span>
+                                            <span class="n">load_text</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="s">&quot;NBT Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">set_rect</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">margin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="o">.</span><span class="n">_rect</span><span class="p">))</span>
+
+        <span class="n">tableview</span> <span class="o">=</span> <span class="n">TableView</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">()</span> <span class="o">*</span> <span class="mf">2.5</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">(),</span>
+                              <span class="n">header_height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">(),</span>
+                              <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Player Name(s):&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">3</span><span class="p">),</span>
+                                       <span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Player UUID(s):&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">margin</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)))],</span>
+                              <span class="p">)</span>
         <span class="n">tableview</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">tableview</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">players</span><span class="p">)</span>
-        <span class="n">tableview</span><span class="o">.</span><span class="n">row_data</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="p">(</span><span class="n">players</span><span class="p">[</span><span class="n">i</span><span class="p">],)</span>
+        <span class="n">tableview</span><span class="o">.</span><span class="n">row_data</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="p">(</span><span class="n">players</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="n">players</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
         <span class="n">tableview</span><span class="o">.</span><span class="n">row_is_selected</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="n">tableview</span><span class="o">.</span><span class="n">index</span>
         <span class="n">tableview</span><span class="o">.</span><span class="n">zebra_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
 
@@ -492,21 +612,12 @@
         <span class="n">tableview</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Double-click or use the button below to edit the NBT Data.&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">tableview</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="n">tableview</span><span class="p">,</span> <span class="n">btns</span><span class="p">],</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
-        <span class="k">def</span> <span class="nf">close</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span> <span class="o">=</span> <span class="n">NBTExplorerToolPanel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">nbtObject</span><span class="o">=</span><span class="p">{},</span> <span class="n">height</span><span class="o">=</span><span class="n">max_height</span><span class="p">,</span> \
-                                            <span class="n">close_text</span><span class="o">=</span><span class="s">&quot;Go Back&quot;</span><span class="p">,</span> <span class="n">no_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">close_action</span><span class="o">=</span><span class="n">close</span><span class="p">,</span>
-                                            <span class="n">load_text</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
-        
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="s">&quot;Players&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="p">,])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="s">&quot;NBT Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">set_rect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="o">.</span><span class="n">_rect</span><span class="p">)</span>
+
+        <span class="n">col</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="n">tableview</span><span class="p">,</span> <span class="n">btns</span><span class="p">],</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="s">&quot;Players&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
@@ -515,43 +626,70 @@
 
 <div class="viewcode-block" id="PlayerPositionPanel.editNBTData"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionPanel.editNBTData">[docs]</a>    <span class="k">def</span> <span class="nf">editNBTData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedPlayer</span>
-        <span class="k">if</span> <span class="n">player</span> <span class="o">==</span> <span class="s">&#39;Player&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">player</span> <span class="o">==</span> <span class="s">&#39;Player (Single Player)&#39;</span><span class="p">:</span>
             <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Not yet implemented.</span><span class="se">\n</span><span class="s">Use the NBT Explorer to edit this player.&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">player</span> <span class="o">==</span> <span class="s">&#39;[No players]&#39;</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;playerdata&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;players&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">player</span> <span class="o">+</span> <span class="s">&#39;.dat&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-                <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">player</span> <span class="o">+</span> <span class="s">&#39;.dat&#39;</span><span class="p">)</span>
-                <span class="n">nbtObject</span><span class="p">,</span> <span class="n">dataKeyName</span><span class="p">,</span> <span class="n">dontSaveRootTag</span><span class="p">,</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">loadFile</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span>
+            <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectedPlayer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">player</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">remove_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="p">)</span>
+
                 <span class="k">def</span> <span class="nf">close</span><span class="p">():</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span> <span class="o">=</span> <span class="n">NBTExplorerToolPanel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">nbtObject</span><span class="o">=</span><span class="n">nbtObject</span><span class="p">,</span> <span class="n">fileName</span><span class="o">=</span><span class="n">fName</span><span class="p">,</span>
-                                              <span class="n">dontSaveRootTag</span><span class="o">=</span><span class="n">dontSaveRootTag</span><span class="p">,</span> <span class="n">dataKeyName</span><span class="o">=</span><span class="n">dataKeyName</span><span class="p">,</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span> <span class="o">=</span> <span class="n">NBTExplorerToolPanel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">nbtObject</span><span class="o">=</span><span class="n">player</span><span class="p">,</span> <span class="n">fileName</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                              <span class="n">savePolicy</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dataKeyName</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                                               <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_height</span><span class="p">,</span> <span class="n">no_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">close_text</span><span class="o">=</span><span class="s">&quot;Go Back&quot;</span><span class="p">,</span>
-                                              <span class="n">close_action</span><span class="o">=</span><span class="n">close</span><span class="p">,</span> <span class="n">load_text</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+                                              <span class="n">close_action</span><span class="o">=</span><span class="n">close</span><span class="p">,</span> <span class="n">load_text</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                              <span class="n">copy_data</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span> <span class="o">=</span> <span class="n">Column</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="p">,])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="s">&quot;NBT Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">show_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Error while getting player file.</span><span class="se">\n</span><span class="si">%s</span><span class="s"> not found.&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="n">player</span> <span class="o">+</span> <span class="s">&#39;.dat&#39;</span><span class="p">),</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Unable to load player </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedPlayer</span><span class="p">()))</span>
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selectedPlayer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">oldPlayerFolderFormat</span><span class="p">:</span>
             <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span> <span class="ow">and</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;[No players]&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;Player (Single Player)&quot;</span> <span class="ow">and</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;[No players]&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_UUID</span><span class="p">[</span><span class="n">player</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">player</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
 
+<div class="viewcode-block" id="PlayerPositionPanel.key_down"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionPanel.key_down">[docs]</a>    <span class="k">def</span> <span class="nf">key_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_key</span><span class="p">(</span><span class="s">&#39;key_down&#39;</span><span class="p">,</span> <span class="n">evt</span><span class="p">)</span>
 </div>
+<div class="viewcode-block" id="PlayerPositionPanel.dispatch_key"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionPanel.dispatch_key">[docs]</a>    <span class="k">def</span> <span class="nf">dispatch_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">evt</span><span class="p">,</span> <span class="s">&#39;key&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;key_down&quot;</span><span class="p">:</span>
+            <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">current_page</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&quot;Up&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&quot;Down&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Page down&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">num_rows</span><span class="p">())</span>
+                <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Page up&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">num_rows</span><span class="p">())</span>
+                <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Return&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedPlayer</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">editNBTData</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">cell_to_item_no</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">num_rows</span><span class="p">()</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">cell_to_item_no</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">num_rows</span><span class="p">()</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">current_page</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbtpage</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nbttree</span><span class="o">.</span><span class="n">dispatch_key</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">evt</span><span class="p">)</span>
+
+</div></div>
 <div class="viewcode-block" id="PlayerPositionTool"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool">[docs]</a><span class="k">class</span> <span class="nc">PlayerPositionTool</span><span class="p">(</span><span class="n">EditorTool</span><span class="p">):</span>
     <span class="n">surfaceBuild</span> <span class="o">=</span> <span class="bp">True</span>
     <span class="n">toolIconName</span> <span class="o">=</span> <span class="s">&quot;player&quot;</span>
@@ -585,10 +723,14 @@
     <span class="k">def</span> <span class="nf">movePlayer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">selectedPlayer</span> <span class="o">!=</span> <span class="s">&quot;[No players]&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">selectedPlayer</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span> <span class="o">==</span> <span class="s">&quot;Player (Single Player)&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span> <span class="o">=</span> <span class="s">&quot;Player&quot;</span>
 
     <span class="nd">@alertException</span>
     <span class="k">def</span> <span class="nf">movePlayerToCamera</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">selectedPlayer</span>
+        <span class="k">if</span> <span class="n">player</span> <span class="o">==</span> <span class="s">&quot;Player (Single Player)&quot;</span><span class="p">:</span>
+            <span class="n">player</span> <span class="o">=</span> <span class="s">&quot;Player&quot;</span>
         <span class="k">if</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;[No players]&quot;</span><span class="p">:</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span><span class="o">.</span><span class="n">cameraPosition</span>
             <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span><span class="o">.</span><span class="n">yaw</span>
@@ -610,7 +752,7 @@
         <span class="c">#if result == &quot;Ok&quot;:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span> <span class="ow">and</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;[No players]&quot;</span> <span class="ow">and</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span> <span class="ow">and</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="n">player</span><span class="p">]</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadPNGTexture</span><span class="p">(</span><span class="n">version_utils</span><span class="o">.</span><span class="n">getPlayerSkin</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
         <span class="k">except</span><span class="p">:</span>
@@ -618,6 +760,9 @@
 
 <div class="viewcode-block" id="PlayerPositionTool.gotoPlayerCamera"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool.gotoPlayerCamera">[docs]</a>    <span class="k">def</span> <span class="nf">gotoPlayerCamera</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">selectedPlayer</span>
+        <span class="k">if</span> <span class="n">player</span> <span class="o">==</span> <span class="s">&quot;Player (Single Player)&quot;</span><span class="p">:</span>
+            <span class="n">player</span> <span class="o">=</span> <span class="s">&quot;Player&quot;</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPosition</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
             <span class="n">y</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerOrientation</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
@@ -633,6 +778,8 @@
 </div>
 <div class="viewcode-block" id="PlayerPositionTool.gotoPlayer"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool.gotoPlayer">[docs]</a>    <span class="k">def</span> <span class="nf">gotoPlayer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">selectedPlayer</span>
+        <span class="k">if</span> <span class="n">player</span> <span class="o">==</span> <span class="s">&quot;Player (Single Player)&quot;</span><span class="p">:</span>
+            <span class="n">player</span> <span class="o">=</span> <span class="s">&quot;Player&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">mainViewport</span><span class="o">.</span><span class="n">pitch</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -652,6 +799,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="n">EditorTool</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reloadTextures</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nonSavedPlayers</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">textureVerticesHead</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">(</span>
@@ -738,9 +886,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">texVerts</span> <span class="o">=</span> <span class="p">(</span><span class="n">textureVerticesHead</span><span class="p">,</span> <span class="n">textureVerticesHat</span><span class="p">)</span> 
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:{},</span> <span class="o">-</span><span class="mi">1</span><span class="p">:{},</span> <span class="mi">1</span><span class="p">:{}}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:{},</span> <span class="o">-</span><span class="mi">1</span><span class="p">:{},</span> <span class="mi">1</span><span class="p">:{}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inOtherDimension</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[],</span> <span class="mi">1</span><span class="p">:</span> <span class="p">[],</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="p">[]}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">markerList</span> <span class="o">=</span> <span class="n">DisplayList</span><span class="p">()</span>
 
@@ -765,6 +914,7 @@
             <span class="k">return</span>
 
         <span class="n">pos</span><span class="p">,</span> <span class="n">direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">blockFaceUnderCursor</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerDimension</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span><span class="p">)</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">pos</span>
@@ -772,11 +922,11 @@
         <span class="c"># x,y,z=map(lambda p,d: p+d, pos, direction)</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">)</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glColor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drawCharacterHead</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawCharacterHead</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span><span class="p">],</span> <span class="n">dim</span><span class="p">)</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">)</span>
 
         <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_DEPTH_TEST</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">drawCharacterHead</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawCharacterHead</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">movingPlayer</span><span class="p">],</span> <span class="n">dim</span><span class="p">)</span>
         <span class="n">drawTerrainCuttingWire</span><span class="p">(</span><span class="n">BoundingBox</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
         <span class="n">drawTerrainCuttingWire</span><span class="p">(</span><span class="n">BoundingBox</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
         <span class="c">#drawTerrainCuttingWire( BoundingBox((x,y-2,z), (1,1,1)) )</span>
@@ -785,6 +935,8 @@
     <span class="n">markerLevel</span> <span class="o">=</span> <span class="bp">None</span>
 
 <div class="viewcode-block" id="PlayerPositionTool.drawToolMarkers"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool.drawToolMarkers">[docs]</a>    <span class="k">def</span> <span class="nf">drawToolMarkers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">drawPlayerHeads</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">markerLevel</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">markerList</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">markerLevel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span>
@@ -800,22 +952,26 @@
                 <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerPosition</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
                 <span class="n">yaw</span><span class="p">,</span> <span class="n">pitch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerOrientation</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
                 <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">getPlayerDimension</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">dim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">:</span>
-                    <span class="k">continue</span>
-
-                <span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">inOtherDimension</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">player</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">revPlayerPos</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span>
+                
                 <span class="k">if</span> <span class="n">player</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">downloadPlayerSkins</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadPNGTexture</span><span class="p">(</span><span class="n">version_utils</span><span class="o">.</span><span class="n">getPlayerSkin</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="n">player</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charTex</span>
+                    
+                <span class="k">if</span> <span class="n">dim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
                 <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">pos</span>
                 <span class="n">GL</span><span class="o">.</span><span class="n">glPushMatrix</span><span class="p">()</span>
                 <span class="n">GL</span><span class="o">.</span><span class="n">glTranslate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
                 <span class="n">GL</span><span class="o">.</span><span class="n">glRotate</span><span class="p">(</span><span class="o">-</span><span class="n">yaw</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="n">GL</span><span class="o">.</span><span class="n">glRotate</span><span class="p">(</span><span class="n">pitch</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="n">GL</span><span class="o">.</span><span class="n">glColor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">drawCharacterHead</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">drawCharacterHead</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">dimNo</span><span class="p">)</span>
                 <span class="n">GL</span><span class="o">.</span><span class="n">glPopMatrix</span><span class="p">()</span>
                 <span class="c"># GL.glEnable(GL.GL_BLEND)</span>
                 <span class="n">drawTerrainCuttingWire</span><span class="p">(</span><span class="n">FloatBox</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">z</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
@@ -831,7 +987,7 @@
 
         <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_DEPTH_TEST</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PlayerPositionTool.drawCharacterHead"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool.drawCharacterHead">[docs]</a>    <span class="k">def</span> <span class="nf">drawCharacterHead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">realCoords</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PlayerPositionTool.drawCharacterHead"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool.drawCharacterHead">[docs]</a>    <span class="k">def</span> <span class="nf">drawCharacterHead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">realCoords</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_CULL_FACE</span><span class="p">)</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">z</span> <span class="o">-</span> <span class="mf">0.25</span><span class="p">)</span>
         <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
@@ -841,13 +997,13 @@
         <span class="n">hat_size</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">)</span>
         <span class="n">hat_box</span> <span class="o">=</span> <span class="n">FloatBox</span><span class="p">(</span><span class="n">hat_origin</span><span class="p">,</span> <span class="n">hat_size</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">realCoords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">realCoords</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">downloadPlayerSkins</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">realCoords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="n">realCoords</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;Player&quot;</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">downloadPlayerSkins</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="n">drawCube</span><span class="p">(</span><span class="n">box</span><span class="p">,</span>
-                     <span class="n">texture</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">realCoords</span><span class="p">]],</span> <span class="n">textureVertices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">texVerts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                     <span class="n">texture</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="n">realCoords</span><span class="p">]],</span> <span class="n">textureVertices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">texVerts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">)</span>
             <span class="n">GL</span><span class="o">.</span><span class="n">glBlendFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_SRC_ALPHA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_ONE_MINUS_SRC_ALPHA</span><span class="p">)</span>
             <span class="n">drawCube</span><span class="p">(</span><span class="n">hat_box</span><span class="p">,</span>
-                     <span class="n">texture</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">realCoords</span><span class="p">]],</span> <span class="n">textureVertices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">texVerts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                     <span class="n">texture</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">playerTexture</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">playerPos</span><span class="p">[</span><span class="n">dim</span><span class="p">][</span><span class="n">realCoords</span><span class="p">]],</span> <span class="n">textureVertices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">texVerts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">drawCube</span><span class="p">(</span><span class="n">box</span><span class="p">,</span>
@@ -876,13 +1032,24 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recordMove</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addOperation</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="n">addingMoving</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">performWithRetry</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>  <span class="c">#Prevent recording of Undo when adding player</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">recordMove</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addUnsavedEdit</span><span class="p">()</span>
+            <span class="n">addingMoving</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">canUndo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">addingMoving</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addUnsavedEdit</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PlayerPositionTool.keyDown"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool.keyDown">[docs]</a>    <span class="k">def</span> <span class="nf">keyDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="n">keyname</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;keyname&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">getKey</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recordMove</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_focused</span><span class="p">():</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&quot;Escape&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">recordMove</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">__class__</span> <span class="o">==</span> <span class="n">PlayerPositionPanel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">key_down</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="PlayerPositionTool.keyUp"><a class="viewcode-back" href="../../editortools.html#editortools.player.PlayerPositionTool.keyUp">[docs]</a>    <span class="k">def</span> <span class="nf">keyUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -980,8 +1147,21 @@
 </div>
     <span class="k">def</span> <span class="nf">_drawToolMarkers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">playerSpawnPosition</span><span class="p">()</span>
-        <span class="n">GL</span><span class="o">.</span><span class="n">glColor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        
+        <span class="n">GL</span><span class="o">.</span><span class="n">glBlendFunc</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_SRC_ALPHA</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_ONE_MINUS_SRC_ALPHA</span><span class="p">);</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">);</span>
+        
+        <span class="n">color</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">selectionColors</span><span class="o">.</span><span class="n">black</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glColor</span><span class="p">(</span><span class="o">*</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glPolygonMode</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_FRONT_AND_BACK</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_LINE</span><span class="p">)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glLineWidth</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">drawCube</span><span class="p">(</span><span class="n">FloatBox</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glPolygonMode</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_FRONT_AND_BACK</span><span class="p">,</span> <span class="n">GL</span><span class="o">.</span><span class="n">GL_FILL</span><span class="p">)</span>
+        <span class="n">drawCube</span><span class="p">(</span><span class="n">FloatBox</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_BLEND</span><span class="p">)</span>
+        
         <span class="n">GL</span><span class="o">.</span><span class="n">glEnable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_DEPTH_TEST</span><span class="p">)</span>
+        <span class="n">GL</span><span class="o">.</span><span class="n">glColor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drawCage</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drawCharacterHead</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">frames</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">z</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
         <span class="n">GL</span><span class="o">.</span><span class="n">glDisable</span><span class="p">(</span><span class="n">GL</span><span class="o">.</span><span class="n">GL_DEPTH_TEST</span><span class="p">)</span>
@@ -991,7 +1171,7 @@
 
         <span class="n">pixelScale</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;Pocket&quot;</span><span class="p">,</span> <span class="s">&quot;Alpha&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="mf">1.0</span>
         <span class="n">texSize</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">pixelScale</span>
-        <span class="n">cageTexVerts</span> <span class="o">*=</span> <span class="n">pixelScale</span>
+        <span class="n">cageTexVerts</span> <span class="o">=</span> <span class="n">cageTexVerts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">*</span> <span class="n">pixelScale</span>
 
         <span class="n">cageTexVerts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">[((</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">),</span> <span class="p">(</span><span class="n">tx</span> <span class="o">+</span> <span class="n">texSize</span><span class="p">,</span> <span class="n">ty</span><span class="p">),</span> <span class="p">(</span><span class="n">tx</span> <span class="o">+</span> <span class="n">texSize</span><span class="p">,</span> <span class="n">ty</span> <span class="o">+</span> <span class="n">texSize</span><span class="p">),</span> <span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span> <span class="o">+</span> <span class="n">texSize</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">)</span> <span class="ow">in</span>
@@ -1055,39 +1235,43 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gotoSpawn</span><span class="p">()</span></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>mcedit module &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
+    <title>mcedit module &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.4.0.0',
+            VERSION:     'v1.5.1.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
     <link rel="next" title="mceutils module" href="mceutils.html" />
     <link rel="prev" title="mce module" href="mce.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.4.0.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -150,6 +150,30 @@
 <span id="mcedit-module"></span><h1>mcedit module<a class="headerlink" href="#module-mcedit" title="Permalink to this headline">¶</a></h1>
 <p>mcedit.py</p>
 <p>Startup, main menu, keyboard configuration, automatic updating.</p>
+<dl class="class">
+<dt id="mcedit.FakeStdOutErr">
+<em class="property">class </em><code class="descclassname">mcedit.</code><code class="descname">FakeStdOutErr</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcedit.html#FakeStdOutErr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcedit.FakeStdOutErr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fake file object to redirect very last Python output.
+Used to track &#8216;errors&#8217; not handled in MCEdit.
+Mimics &#8216;write&#8217; and &#8216;close&#8217; file objects methods.
+Used on Linux only.</p>
+<dl class="method">
+<dt id="mcedit.FakeStdOutErr.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcedit.html#FakeStdOutErr.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcedit.FakeStdOutErr.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mcedit.FakeStdOutErr.mode">
+<code class="descname">mode</code><em class="property"> = 'a'</em><a class="headerlink" href="#mcedit.FakeStdOutErr.mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mcedit.FakeStdOutErr.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcedit.html#FakeStdOutErr.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcedit.FakeStdOutErr.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="mcedit.FileLineFormatter">
 <em class="property">class </em><code class="descclassname">mcedit.</code><code class="descname">FileLineFormatter</code><span class="sig-paren">(</span><em>fmt=None</em>, <em>datefmt=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcedit.html#FileLineFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcedit.FileLineFormatter" title="Permalink to this definition">¶</a></dt>
@@ -288,8 +312,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="mcedit.MCEdit.set_update_translation">
-<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcedit.html#MCEdit.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcedit.MCEdit.set_update_translation" title="Permalink to this definition">¶</a></dt>
+<dt id="mcedit.MCEdit.set_update_ui">
+<code class="descname">set_update_ui</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/mcedit.html#MCEdit.set_update_ui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mcedit.MCEdit.set_update_ui" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -353,7 +377,7 @@ shutdowns.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.4.0.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -370,7 +394,7 @@ shutdowns.</p>
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2015, MCEdit-Unified Team.
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
       </footer>
       <!-- /footer -->

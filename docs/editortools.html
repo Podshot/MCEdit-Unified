@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>editortools package &mdash; MCEdit-Unified v1.4.0.0 documentation</title>
+    <title>editortools package &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     'v1.4.0.0',
+            VERSION:     'v1.5.1.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -47,7 +47,7 @@
 <script type="text/javascript">
 </script>
     <link rel="shortcut icon" href="static/favicon.ico"/>
-    <link rel="top" title="MCEdit-Unified v1.4.0.0 documentation" href="index.html" />
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
     <link rel="next" title="frustum module" href="frustum.html" />
     <link rel="prev" title="drawable module" href="drawable.html" /> 
   </head>
@@ -61,7 +61,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.4.0.0 documentation</a>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -824,6 +824,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <dl class="attribute">
 <dt id="editortools.chunk.ChunkTool.statusText">
 <code class="descname">statusText</code><a class="headerlink" href="#editortools.chunk.ChunkTool.statusText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="editortools.chunk.ChunkTool.toolDeselected">
+<code class="descname">toolDeselected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/chunk.html#ChunkTool.toolDeselected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.chunk.ChunkTool.toolDeselected" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1712,6 +1717,11 @@ returns a BoundingBox containing all the blocks within.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="editortools.editortool.EditorTool.toolDeselected">
+<code class="descname">toolDeselected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/editortool.html#EditorTool.toolDeselected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.editortool.EditorTool.toolDeselected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="editortools.editortool.EditorTool.toolEnabled">
 <code class="descname">toolEnabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/editortool.html#EditorTool.toolEnabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.editortool.EditorTool.toolEnabled" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2146,6 +2156,11 @@ macros would not be saved.</p>
 <code class="descname">filter_json</code><a class="headerlink" href="#editortools.filter.FilterToolPanel.filter_json" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="staticmethod">
+<dt id="editortools.filter.FilterToolPanel.load_filter_json">
+<em class="property">static </em><code class="descname">load_filter_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/filter.html#FilterToolPanel.load_filter_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.filter.FilterToolPanel.load_filter_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="editortools.filter.FilterToolPanel.macroSelected">
 <code class="descname">macroSelected</code><a class="headerlink" href="#editortools.filter.FilterToolPanel.macroSelected" title="Permalink to this definition">¶</a></dt>
@@ -2420,8 +2435,8 @@ macros would not be saved.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="editortools.nbtexplorer.NBTExplorerToolPanel.set_update_translation">
-<code class="descname">set_update_translation</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel.set_update_translation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel.set_update_translation" title="Permalink to this definition">¶</a></dt>
+<dt id="editortools.nbtexplorer.NBTExplorerToolPanel.set_update_ui">
+<code class="descname">set_update_ui</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="modules/editortools/nbtexplorer.html#NBTExplorerToolPanel.set_update_ui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#editortools.nbtexplorer.NBTExplorerToolPanel.set_update_ui" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -2544,7 +2559,7 @@ macros would not be saved.</p>
 <dd><p>Bases: <a class="reference internal" href="albow.html#albow.widget.Widget" title="albow.widget.Widget"><code class="xref py py-class docutils literal"><span class="pre">albow.widget.Widget</span></code></a></p>
 <dl class="attribute">
 <dt id="editortools.nbtexplorer.TAG_List_Type.choices">
-<code class="descname">choices</code><em class="property"> = ['Short', 'String', 'Integral', u'Floating point (TAG_Float)', 'Byte Array', 'List', 'Long', 'Int Array', u'Floating point (TAG_Double)', 'Compound', 'Byte', 'Short Array']</em><a class="headerlink" href="#editortools.nbtexplorer.TAG_List_Type.choices" title="Permalink to this definition">¶</a></dt>
+<code class="descname">choices</code><em class="property"> = ['Short', 'String', 'List', u'Floating point (TAG_Float)', 'Byte Array', 'Integral', 'Long', 'Int Array', u'Floating point (TAG_Double)', 'Compound', 'Byte', 'Short Array']</em><a class="headerlink" href="#editortools.nbtexplorer.TAG_List_Type.choices" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3762,7 +3777,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">MCEdit-Unified v1.4.0.0 documentation</a></li>
+        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -3779,7 +3794,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</p>
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2015, MCEdit-Unified Team.
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
       </footer>
       <!-- /footer -->

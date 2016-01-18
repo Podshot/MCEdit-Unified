@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>editortools.clone &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>editortools.clone &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for editortools.clone</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Copyright (c) 2010-2012 David Rio Vierra</span>
 
@@ -69,7 +149,8 @@
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">from</span> <span class="nn">OpenGL</span> <span class="kn">import</span> <span class="n">GL</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">IntField</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">CheckBox</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">FloatField</span><span class="p">,</span> <span class="n">alert</span>
+<span class="kn">from</span> <span class="nn">albow</span> <span class="kn">import</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">IntField</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Row</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Button</span><span class="p">,</span> <span class="n">CheckBox</span><span class="p">,</span> <span class="n">AttrRef</span><span class="p">,</span> <span class="n">FloatField</span><span class="p">,</span> <span class="n">alert</span><span class="p">,</span> <span class="n">CheckBoxLabel</span><span class="p">,</span> <span class="n">IntInputRow</span><span class="p">,</span> \
+    <span class="n">showProgress</span>
 <span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
 <span class="kn">from</span> <span class="nn">depths</span> <span class="kn">import</span> <span class="n">DepthOffset</span>
 <span class="kn">from</span> <span class="nn">editortools.editortool</span> <span class="kn">import</span> <span class="n">EditorTool</span>
@@ -77,7 +158,7 @@
 <span class="kn">from</span> <span class="nn">editortools.tooloptions</span> <span class="kn">import</span> <span class="n">ToolOptions</span>
 <span class="kn">from</span> <span class="nn">glbackground</span> <span class="kn">import</span> <span class="n">Panel</span>
 <span class="kn">from</span> <span class="nn">glutils</span> <span class="kn">import</span> <span class="n">gl</span>
-<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">setWindowCaption</span><span class="p">,</span> <span class="n">showProgress</span><span class="p">,</span> <span class="n">alertException</span><span class="p">,</span> <span class="n">drawFace</span><span class="p">,</span> <span class="n">CheckBoxLabel</span><span class="p">,</span> <span class="n">IntInputRow</span>
+<span class="kn">from</span> <span class="nn">mceutils</span> <span class="kn">import</span> <span class="n">setWindowCaption</span><span class="p">,</span> <span class="n">alertException</span><span class="p">,</span> <span class="n">drawFace</span>
 <span class="kn">import</span> <span class="nn">mcplatform</span>
 <span class="kn">from</span> <span class="nn">operation</span> <span class="kn">import</span> <span class="n">Operation</span>
 <span class="kn">import</span> <span class="nn">pymclevel</span>
@@ -87,7 +168,7 @@
 
 <span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">SelectionOperation</span>
 <span class="kn">from</span> <span class="nn">pymclevel.pocket</span> <span class="kn">import</span> <span class="n">PocketWorld</span>
-<span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">block_copy</span><span class="p">,</span> <span class="n">BoundingBox</span>
+<span class="kn">from</span> <span class="nn">pymclevel</span> <span class="kn">import</span> <span class="n">block_copy</span><span class="p">,</span> <span class="n">BoundingBox</span><span class="p">,</span> <span class="n">BOParser</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
@@ -363,7 +444,7 @@
         <span class="n">copyWaterRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">copyWaterCheckBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">copyWaterLabel</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesCheckBox</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span> <span class="s">&quot;copyBiomes&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Copy Biomes&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Copy Biome(s)&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesLabel</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesCheckBox</span><span class="o">.</span><span class="n">mouse_down</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Shortcut: Alt-3&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesCheckBox</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesLabel</span><span class="o">.</span><span class="n">tooltipText</span>
@@ -371,25 +452,25 @@
         <span class="n">copyBiomesRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesCheckBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">copyBiomesLabel</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsCheckBox</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span> <span class="s">&quot;staticCommands&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Change Coordinates&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Update Command Block Coords&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsLabel</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsCheckBox</span><span class="o">.</span><span class="n">mouse_down</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Check to automatically change command block static coordinates when moved.</span><span class="se">\n</span><span class="s">Shortcut: Alt-4&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;When a command block is moved, and it contains a command, automatically update static coordinates (x y z) within that command.</span><span class="se">\n</span><span class="s">Shortcut: Alt-4&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsCheckBox</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsLabel</span><span class="o">.</span><span class="n">tooltipText</span>
 
         <span class="n">staticCommandsRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsCheckBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">staticCommandsLabel</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosCheckBox</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span> <span class="s">&quot;moveSpawnerPos&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Change Spawners&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Update Spawner Coords&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosLabel</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosCheckBox</span><span class="o">.</span><span class="n">mouse_down</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Check to automatically change the position of the mobs in spawners when moved.</span><span class="se">\n</span><span class="s">Shortcut: Alt-5&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;When a spawner is moved, automatically update its spawning coordinates.</span><span class="se">\n</span><span class="s">Shortcut: Alt-5&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosCheckBox</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosLabel</span><span class="o">.</span><span class="n">tooltipText</span>
 
         <span class="n">moveSpawnerPosRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosCheckBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveSpawnerPosLabel</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDCheckBox</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span><span class="p">,</span> <span class="s">&quot;regenerateUUID&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Regenerate UUID&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDLabel</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="s">&quot;Regenerate Entity UUID&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDLabel</span><span class="o">.</span><span class="n">mouse_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDCheckBox</span><span class="o">.</span><span class="n">mouse_down</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Check to automatically generate new UUIDs for entities.</span><span class="se">\n</span><span class="s">Shortcut: Alt-6&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDLabel</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="s">&quot;Automatically generate new UUIDs for every entity copied. [RECOMMENDED]</span><span class="se">\n</span><span class="s">Shortcut: Alt-6&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDCheckBox</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDLabel</span><span class="o">.</span><span class="n">tooltipText</span>
 
         <span class="n">regenerateUUIDRow</span> <span class="o">=</span> <span class="n">Row</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDCheckBox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regenerateUUIDLabel</span><span class="p">))</span>
@@ -513,7 +594,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destPoint</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="s">&quot;Click to set this item down.&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">draggingFace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&quot;Mousewheel to move along the third axis. Hold {0} to only move along one axis.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">snapCloneToAxis</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Mousewheel to move along the third axis. Hold {0} to only move along one axis.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">snapCloneToAxis</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
 
         <span class="k">return</span> <span class="s">&quot;Click and drag to reposition the item. Double-click to pick it up. Click Clone or press Enter to confirm.&quot;</span>
 
@@ -778,7 +859,7 @@
         <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lev</span><span class="p">,</span> <span class="n">pymclevel</span><span class="o">.</span><span class="n">MCInfdevOldLevel</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lev</span><span class="o">.</span><span class="n">Width</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">lev</span><span class="o">.</span><span class="n">Length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">sx</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">x</span> <span class="o">+</span> <span class="n">sx</span> <span class="o">&gt;</span> <span class="n">lev</span><span class="o">.</span><span class="n">Width</span><span class="p">:</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">lev</span><span class="o">.</span><span class="n">Width</span> <span class="o">-</span> <span class="n">sx</span>
@@ -930,9 +1011,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">canRotateLevel</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">amount</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">blocksOnly</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">flipVertical</span><span class="p">()</span>
-                <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">flipVerticalBlocks</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">flipVertical</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">previewRenderer</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span>
 
     <span class="nd">@alertException</span>
@@ -1035,6 +1116,7 @@
     <span class="k">def</span> <span class="nf">mouseUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">draggingFace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">destPoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draggingOrigin</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateOffsets</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">draggingFace</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draggingStartPoint</span> <span class="o">=</span> <span class="bp">None</span>
@@ -1116,7 +1198,6 @@
         <span class="n">sourceBox</span> <span class="o">=</span> <span class="n">sourceLevel</span><span class="o">.</span><span class="n">bounds</span>
 
         <span class="n">destLevel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">level</span>
-        <span class="n">destVolume</span> <span class="o">=</span> <span class="n">BoundingBox</span><span class="p">(</span><span class="n">destPoint</span><span class="p">,</span> <span class="n">sourceBox</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span>
         <span class="n">op</span> <span class="o">=</span> <span class="n">CloneOperation</span><span class="p">(</span><span class="n">editor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span>
                             <span class="n">sourceLevel</span><span class="o">=</span><span class="n">sourceLevel</span><span class="p">,</span>
                             <span class="n">sourceBox</span><span class="o">=</span><span class="n">sourceBox</span><span class="p">,</span>
@@ -1269,8 +1350,15 @@
         <span class="n">clipFilename</span> <span class="o">=</span> <span class="n">mcplatform</span><span class="o">.</span><span class="n">askOpenFile</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;Import a schematic or level...&#39;</span><span class="p">,</span> <span class="n">schematics</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="c"># xxx mouthful</span>
         <span class="k">if</span> <span class="n">clipFilename</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loadSchematic</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span>
-            <span class="k">return</span>
+            <span class="k">if</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;schematic&quot;</span><span class="p">,</span> <span class="s">&quot;schematic.gz&quot;</span><span class="p">,</span> <span class="s">&quot;zip&quot;</span><span class="p">,</span> <span class="s">&quot;inv&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loadSchematic</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;bo2&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loadLevel</span><span class="p">(</span><span class="n">BOParser</span><span class="o">.</span><span class="n">BO2</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">getSchematic</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;bo3&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loadLevel</span><span class="p">(</span><span class="n">BOParser</span><span class="o">.</span><span class="n">BO3</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span><span class="o">.</span><span class="n">getSchematic</span><span class="p">())</span>
+<span class="c">#                alert(&quot;BO3 support is currently not available&quot;)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loadSchematic</span><span class="p">(</span><span class="n">clipFilename</span><span class="p">)</span>
 
         <span class="k">print</span> <span class="s">&quot;Canceled&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -1340,39 +1428,43 @@
         <span class="n">CloneTool</span><span class="o">.</span><span class="n">mouseDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span></div></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

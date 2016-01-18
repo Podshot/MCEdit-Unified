@@ -1,8 +1,23 @@
 pymclevel package
 =================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    pymclevel.test
+
 Submodules
 ----------
+
+pymclevel.BOParser module
+-------------------------
+
+.. automodule:: pymclevel.BOParser
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 pymclevel.biome_types module
 ----------------------------
@@ -124,6 +139,14 @@ pymclevel.leveldb module
     :undoc-members:
     :show-inheritance:
 
+pymclevel.leveldbpocket module
+------------------------------
+
+.. automodule:: pymclevel.leveldbpocket
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pymclevel.materials module
 --------------------------
 
@@ -160,14 +183,6 @@ pymclevel.nbt module
 --------------------
 
 .. automodule:: pymclevel.nbt
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pymclevel.nbt_util module
--------------------------
-
-.. automodule:: pymclevel.nbt_util
     :members:
     :undoc-members:
     :show-inheritance:

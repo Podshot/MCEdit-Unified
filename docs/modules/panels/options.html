@@ -1,68 +1,149 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>panels.options &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>panels.options &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for panels.options</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">albow</span>
 <span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
-<span class="kn">import</span> <span class="nn">mceutils</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span><span class="p">,</span> <span class="n">buildTemplate</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">directories</span>
 
+<span class="n">old_lang</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">old_fprop</span> <span class="o">=</span> <span class="bp">None</span>
 
 <div class="viewcode-block" id="OptionsPanel"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel">[docs]</a><span class="k">class</span> <span class="nc">OptionsPanel</span><span class="p">(</span><span class="n">Dialog</span><span class="p">):</span>
     <span class="n">anchor</span> <span class="o">=</span> <span class="s">&#39;wh&#39;</span>
@@ -102,91 +183,100 @@
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="p">:</span>            <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fogIntensity</span><span class="p">:</span>              <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fogIntensity</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
         <span class="p">}</span>
+        <span class="k">global</span> <span class="n">old_lang</span>
+        <span class="k">if</span> <span class="n">old_lang</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">old_lang</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">global</span> <span class="n">old_fprop</span>
+        <span class="k">if</span> <span class="n">old_fprop</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">old_fprop</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
 <div class="viewcode-block" id="OptionsPanel.initComponents"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.initComponents">[docs]</a>    <span class="k">def</span> <span class="nf">initComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initilize the window components. Call this after translation hs been loaded.&quot;&quot;&quot;</span>
-        <span class="n">autoBrakeRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Autobrake&quot;</span><span class="p">,</span>
+        <span class="n">autoBrakeRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Autobrake&quot;</span><span class="p">,</span>
                                               <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">autobrake</span><span class="p">,</span>
                                               <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Apply brake when not pressing movement keys&quot;</span><span class="p">)</span>
 
-        <span class="n">swapAxesRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Swap Axes Looking Down&quot;</span><span class="p">,</span>
+        <span class="n">swapAxesRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Swap Axes Looking Down&quot;</span><span class="p">,</span>
                                              <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">swapAxes</span><span class="p">,</span>
                                              <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Change the direction of the Forward and Backward keys when looking down&quot;</span><span class="p">)</span>
 
-        <span class="n">cameraAccelRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Acceleration: &quot;</span><span class="p">,</span>
+        <span class="n">cameraAccelRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Acceleration: &quot;</span><span class="p">,</span>
                                                 <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">cameraAccel</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
 
-        <span class="n">cameraDragRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Drag: &quot;</span><span class="p">,</span>
+        <span class="n">cameraDragRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Drag: &quot;</span><span class="p">,</span>
                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">cameraDrag</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-        <span class="n">cameraMaxSpeedRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Max Speed: &quot;</span><span class="p">,</span>
+        <span class="n">cameraMaxSpeedRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Max Speed: &quot;</span><span class="p">,</span>
                                                    <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">cameraMaxSpeed</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-        <span class="n">cameraBrakeSpeedRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Braking Speed: &quot;</span><span class="p">,</span>
+        <span class="n">cameraBrakeSpeedRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Camera Braking Speed: &quot;</span><span class="p">,</span>
                                                      <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">cameraBrakingSpeed</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                                                      <span class="nb">min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-        <span class="n">mouseSpeedRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Mouse Speed: &quot;</span><span class="p">,</span>
+        <span class="n">mouseSpeedRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">FloatInputRow</span><span class="p">(</span><span class="s">&quot;Mouse Speed: &quot;</span><span class="p">,</span>
                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">mouseSpeed</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                <span class="nb">max</span><span class="o">=</span><span class="mf">20.0</span><span class="p">)</span>
 
-        <span class="n">undoLimitRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Undo Limit: &quot;</span><span class="p">,</span>
+        <span class="n">undoLimitRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Undo Limit: &quot;</span><span class="p">,</span>
                                             <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">undoLimit</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">maxCopiesRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Copy Stack Size: &quot;</span><span class="p">,</span>
+        <span class="n">maxCopiesRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Copy Stack Size: &quot;</span><span class="p">,</span>
                                             <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">maxCopies</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                                             <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Maximum number of copied objects.&quot;</span><span class="p">)</span>
 
-        <span class="n">compassSizeRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Compass Size (%): &quot;</span><span class="p">,</span>
+        <span class="n">compassSizeRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Compass Size (%): &quot;</span><span class="p">,</span>
                                             <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">compassSize</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
-        <span class="c"># FONT SIZE</span>
-        <span class="n">fontProportion</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Fonts Proportion (%): &quot;</span><span class="p">,</span>
+        <span class="n">fontProportion</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Fonts Proportion (%): &quot;</span><span class="p">,</span>
                                             <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                                             <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Fonts sizing proportion. The number is a percentage.</span><span class="se">\n</span><span class="s">Restart needed!&quot;</span><span class="p">)</span>
         <span class="n">albow</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">font_proportion</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
-        <span class="n">fogIntensityRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Fog Intensity (%): &quot;</span><span class="p">,</span>
+        <span class="n">fogIntensityRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Fog Intensity (%): &quot;</span><span class="p">,</span>
                                             <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fogIntensity</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
-        <span class="n">invertRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Invert Mouse&quot;</span><span class="p">,</span>
+        <span class="n">invertRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Invert Mouse&quot;</span><span class="p">,</span>
                                            <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">controls</span><span class="o">.</span><span class="n">invertMousePitch</span><span class="p">,</span>
                                            <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Reverse the up and down motion of the mouse.&quot;</span><span class="p">)</span>
 
-        <span class="n">spaceHeightRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Low Detail Height&quot;</span><span class="p">),</span>
+        <span class="n">spaceHeightRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Low Detail Height&quot;</span><span class="p">,</span>
                                               <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">spaceHeight</span><span class="p">,</span>
                                               <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;When you are this far above the top of the world, move fast and use low-detail mode.&quot;</span><span class="p">)</span>
 
-        <span class="n">blockBufferRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Block Buffer (MB):&quot;</span><span class="p">,</span>
+        <span class="n">blockBufferRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">IntInputRow</span><span class="p">(</span><span class="s">&quot;Block Buffer (MB):&quot;</span><span class="p">,</span>
                                               <span class="n">ref</span><span class="o">=</span><span class="n">albow</span><span class="o">.</span><span class="n">AttrRef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;blockBuffer&#39;</span><span class="p">),</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                               <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Amount of memory used for temporary storage.  When more than this is needed, the disk is used instead.&quot;</span><span class="p">)</span>
 
-        <span class="n">setWindowPlacementRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Set Window Placement&quot;</span><span class="p">,</span>
+        <span class="n">setWindowPlacementRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Set Window Placement&quot;</span><span class="p">,</span>
                                                        <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setWindowPlacement</span><span class="p">,</span>
                                                        <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Try to save and restore the window position.&quot;</span><span class="p">)</span>
 
-        <span class="n">rotateBlockBrushRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Rotate block with brush&quot;</span><span class="p">,</span>
+        <span class="n">rotateBlockBrushRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Rotate block with brush&quot;</span><span class="p">,</span>
                                                         <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">rotateBlockBrush</span><span class="p">,</span>
                                                         <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;When rotating your brush, also rotate the orientation of the block your brushing with&quot;</span><span class="p">)</span>
 
-        <span class="n">compassToggleRow</span> <span class="o">=</span><span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Toggle compass&quot;</span><span class="p">,</span>
+        <span class="n">compassToggleRow</span> <span class="o">=</span><span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Toggle compass&quot;</span><span class="p">,</span>
                                                         <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">compassToggle</span><span class="p">)</span>
 
-        <span class="n">windowSizeRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Window Resize Alert&quot;</span><span class="p">,</span>
+        <span class="n">windowSizeRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Window Resize Alert&quot;</span><span class="p">,</span>
                                                <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">shouldResizeAlert</span><span class="p">,</span>
                                                <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Reminds you that the cursor won&#39;t work correctly after resizing the window.&quot;</span><span class="p">)</span>
 
-        <span class="n">superSecretSettingsRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Super Secret Settings&quot;</span><span class="p">,</span>
+        <span class="n">superSecretSettingsRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Super Secret Settings&quot;</span><span class="p">,</span>
                                                 <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">superSecretSettings</span><span class="p">,</span>
                                                 <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Weird stuff happen!&quot;</span><span class="p">)</span>
 
-        <span class="n">longDistanceRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span>
+        <span class="n">longDistanceRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Long-Distance Mode&quot;</span><span class="p">,</span>
                                                  <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">longDistanceMode</span><span class="p">,</span>
                                                  <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Always target the farthest block under the cursor, even in mouselook mode.&quot;</span><span class="p">)</span>
 
-        <span class="n">flyModeRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span>
+        <span class="n">flyModeRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Fly Mode&quot;</span><span class="p">,</span>
                                             <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">flyMode</span><span class="p">,</span>
                                             <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Moving forward and Backward will not change your altitude in Fly Mode.&quot;</span><span class="p">)</span>
+        
+        <span class="n">showCommandsRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Show Commands&quot;</span><span class="p">,</span>
+                                              <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">showCommands</span><span class="p">,</span>
+                                              <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Show the command in a Command Block when hovering over it.&quot;</span><span class="p">)</span>
 
         <span class="n">lng</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
@@ -194,32 +284,25 @@
 
         <span class="n">langNames</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">langs</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">languageButton</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">ChoiceButton</span><span class="p">(</span><span class="n">langNames</span><span class="p">,</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">changeLanguage</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">languageButton</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ChoiceButton</span><span class="p">(</span><span class="n">langNames</span><span class="p">,</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">changeLanguage</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sgnal</span><span class="p">[</span><span class="n">lng</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languageButton</span><span class="o">.</span><span class="n">choices</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">languageButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sgnal</span><span class="p">[</span><span class="n">lng</span><span class="p">]</span>
 
         <span class="n">langButtonRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Language&quot;</span><span class="p">,</span> <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Choose your language.&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">languageButton</span><span class="p">))</span>
 
-        <span class="n">staticCommandsNudgeRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Static Coords While Nudging&quot;</span><span class="p">,</span>
-                                            <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">staticCommandsNudge</span><span class="p">,</span>
-                                            <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Change static coordinates in command blocks while nudging.&quot;</span><span class="p">)</span>
-
-        <span class="n">moveSpawnerPosNudgeRow</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">CheckBoxLabel</span><span class="p">(</span><span class="s">&quot;Change Spawners While Nudging&quot;</span><span class="p">,</span>
-                                            <span class="n">ref</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">moveSpawnerPosNudge</span><span class="p">,</span>
-                                            <span class="n">tooltipText</span><span class="o">=</span><span class="s">&quot;Change the position of the mobs in spawners while nudging.&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">goPortableButton</span> <span class="o">=</span> <span class="n">goPortableButton</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Change&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">togglePortable</span><span class="p">)</span>
+        <span class="n">portableList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Portable&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goPortableButton</span> <span class="o">=</span> <span class="n">goPortableButton</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ChoiceButton</span><span class="p">(</span><span class="n">portableList</span><span class="p">,</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">togglePortable</span><span class="p">)</span>
+        <span class="n">goPortableButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldPortable</span>
 
         <span class="n">goPortableButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">portableButtonTooltip</span><span class="p">()</span>
-        <span class="n">goPortableRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">albow</span><span class="o">.</span><span class="n">ValueDisplay</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">portableVar</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">),</span> <span class="n">goPortableButton</span><span class="p">))</span>
+        <span class="n">goPortableRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Install Mode&quot;</span><span class="p">),</span> <span class="n">goPortableButton</span><span class="p">))</span>
 
 <span class="c"># Disabled Crash Reporting Option</span>
-<span class="c">#       reportRow = mceutils.CheckBoxLabel(&quot;Report Errors&quot;,</span>
+<span class="c">#       reportRow = albow.CheckBoxLabel(&quot;Report Errors&quot;,</span>
 <span class="c">#                                          ref=config.settings.reportCrashes,</span>
 <span class="c">#                                          tooltipText=&quot;Automatically report errors to the developer.&quot;)</span>
 
-        <span class="n">inputs</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">spaceHeightRow</span><span class="p">,</span>
             <span class="n">cameraAccelRow</span><span class="p">,</span>
             <span class="n">cameraDragRow</span><span class="p">,</span>
@@ -230,7 +313,7 @@
             <span class="n">undoLimitRow</span><span class="p">,</span>
             <span class="n">maxCopiesRow</span><span class="p">,</span>
             <span class="n">compassSizeRow</span><span class="p">,</span>
-            <span class="n">fontProportion</span><span class="p">,</span> <span class="c"># FONT SIZE</span>
+            <span class="n">fontProportion</span><span class="p">,</span>
             <span class="n">fogIntensityRow</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -241,10 +324,9 @@
                     <span class="n">swapAxesRow</span><span class="p">,</span>
                     <span class="n">invertRow</span><span class="p">,</span>
                     <span class="n">superSecretSettingsRow</span><span class="p">,</span>
-                    <span class="n">staticCommandsNudgeRow</span><span class="p">,</span>
-                    <span class="n">moveSpawnerPosNudgeRow</span><span class="p">,</span>
                     <span class="n">rotateBlockBrushRow</span><span class="p">,</span>
                     <span class="n">compassToggleRow</span><span class="p">,</span>
+                    <span class="n">showCommandsRow</span><span class="p">,</span>
                     <span class="n">langButtonRow</span><span class="p">,</span>
                     <span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
                         <span class="p">((</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">pygame</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">vernum</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">windowSizeRow</span><span class="p">,)</span> <span class="ow">or</span> <span class="p">())</span>
@@ -255,7 +337,7 @@
                     <span class="p">)</span>
 
         <span class="n">rightcol</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
-        <span class="n">leftcol</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">leftcol</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
 
         <span class="n">optionsColumn</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Column</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Options&quot;</span><span class="p">),</span>
                                       <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">leftcol</span><span class="p">,</span> <span class="n">rightcol</span><span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;t&quot;</span><span class="p">)))</span>
@@ -299,12 +381,27 @@
         <span class="k">return</span> <span class="n">langs</span>
 </div>
 <div class="viewcode-block" id="OptionsPanel.changeLanguage"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.changeLanguage">[docs]</a>    <span class="k">def</span> <span class="nf">changeLanguage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">buildTemplate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">languageButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&#39;English (US)&#39;</span>
+            <span class="k">return</span>
         <span class="n">langName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">languageButton</span><span class="o">.</span><span class="n">selectedChoice</span>
         <span class="k">if</span> <span class="n">langName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">langs</span><span class="p">:</span>
             <span class="n">lng</span> <span class="o">=</span> <span class="s">&quot;en_US&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">lng</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">langs</span><span class="p">[</span><span class="n">langName</span><span class="p">]</span>
         <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">lng</span><span class="p">)</span>
+        <span class="c">#-# Translation live update preparation</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;*** Language change detected.&#39;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;    Former language: </span><span class="si">%s</span><span class="s">.&#39;</span><span class="o">%</span><span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">getLang</span><span class="p">())</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;    New language: </span><span class="si">%s</span><span class="s">.&#39;</span><span class="o">%</span><span class="n">lng</span><span class="p">)</span>
+        <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">langPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(),</span> <span class="s">&quot;lang&quot;</span><span class="p">))</span>
+        <span class="n">update</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">setLang</span><span class="p">(</span><span class="n">lng</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;    Update done? </span><span class="si">%s</span><span class="s"> (Magic </span><span class="si">%s</span><span class="s">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">update</span><span class="p">,</span> <span class="n">update</span> <span class="ow">or</span> <span class="n">lng</span> <span class="o">==</span> <span class="s">&#39;en_US&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="n">update</span> <span class="ow">or</span> <span class="n">lng</span> <span class="o">==</span> <span class="s">&#39;en_US&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="n">update</span> <span class="ow">or</span> <span class="n">lng</span> <span class="o">==</span> <span class="s">&#39;en_US&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="c">#-#</span>
 </div>
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="OptionsPanel.portableButtonTooltip"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.portableButtonTooltip">[docs]</a>    <span class="k">def</span> <span class="nf">portableButtonTooltip</span><span class="p">():</span>
@@ -315,7 +412,7 @@
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">portableLabelText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Install Mode: Portable&quot;</span><span class="p">),</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Install Mode: Fixed&quot;</span><span class="p">))[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">directories</span><span class="o">.</span><span class="n">portable</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&quot;Portable&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed&quot;</span><span class="p">)[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">directories</span><span class="o">.</span><span class="n">portable</span><span class="p">]</span>
 
     <span class="nd">@portableLabelText.setter</span>
     <span class="k">def</span> <span class="nf">portableLabelText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -329,9 +426,6 @@
                 <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span> <span class="ow">and</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;the MCEdit application&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;MCEditData&quot;</span><span class="p">))),</span>
             <span class="n">_</span><span class="p">(</span><span class="s">&quot;This will move your settings and schematics to your Documents folder. Continue?&quot;</span><span class="p">),</span>
         <span class="p">]</span>
-        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;darwin&quot;</span><span class="p">:</span>
-            <span class="n">textChoices</span><span class="p">[</span>
-                <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;This will move your schematics to your Documents folder and your settings to your Preferences folder. Continue?&quot;</span><span class="p">)</span>
 
         <span class="n">alertText</span> <span class="o">=</span> <span class="n">textChoices</span><span class="p">[</span><span class="n">directories</span><span class="o">.</span><span class="n">portable</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="n">alertText</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;OK&quot;</span><span class="p">:</span>
@@ -340,28 +434,23 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
                 <span class="n">albow</span><span class="o">.</span><span class="n">alert</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Error while moving files: {0}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">goPortableButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldPortable</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">goPortableButton</span><span class="o">.</span><span class="n">tooltipText</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">portableButtonTooltip</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">True</span>
 </div>
 <div class="viewcode-block" id="OptionsPanel.dismiss"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.dismiss">[docs]</a>    <span class="k">def</span> <span class="nf">dismiss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Used to change the language and the font proportion&quot;&quot;&quot;</span>
-        <span class="n">lang</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="p">]</span>
-        <span class="n">font</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">font</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">lang</span><span class="p">:</span>
-            <span class="n">editor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span>
-            <span class="k">if</span> <span class="n">editor</span> <span class="ow">and</span> <span class="n">editor</span><span class="o">.</span><span class="n">unsavedEdits</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s">&quot;You must restart MCEdit to see language changes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Save and Restart&quot;</span><span class="p">,</span> <span class="s">&quot;Restart&quot;</span><span class="p">,</span> <span class="s">&quot;Later&quot;</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s">&quot;You must restart MCEdit to see language changes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;Restart&quot;</span><span class="p">,</span> <span class="s">&quot;Later&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Save and Restart&quot;</span><span class="p">:</span>
-                <span class="n">editor</span><span class="o">.</span><span class="n">saveFile</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">restart</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Restart&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">restart</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">result</span> <span class="o">==</span> <span class="s">&quot;Later&quot;</span><span class="p">:</span>
-                <span class="k">pass</span>
-        
+        <span class="sd">&quot;&quot;&quot;Used to change the font proportion.&quot;&quot;&quot;</span>
+        <span class="c"># If font proportion setting has changed, update the UI.</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="p">]:</span>
+            <span class="n">albow</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">reload_fonts</span><span class="p">(</span><span class="n">proportion</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fontProportion</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mcedit</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">set_update_ui</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reshowNumberFields</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
@@ -370,14 +459,15 @@
 </div>
 <div class="viewcode-block" id="OptionsPanel.cancel"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">Changes</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reshowNumberFields</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                 <span class="n">Changes</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">oldLanguage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="n">oldLanguage</span><span class="p">:</span>
             <span class="n">Changes</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="n">newPortable</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">portableVar</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">newPortable</span> <span class="o">!=</span> <span class="n">_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveOldPortable</span><span class="p">):</span>
+        <span class="n">newPortable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">portableVar</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">newPortable</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldPortable</span><span class="p">:</span>
             <span class="n">Changes</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">Changes</span><span class="p">:</span>
             <span class="n">Dialog</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -405,6 +495,7 @@
         <span class="n">Dialog</span><span class="o">.</span><span class="n">dismiss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="OptionsPanel.resetDefault"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.resetDefault">[docs]</a>    <span class="k">def</span> <span class="nf">resetDefault</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reshowNumberFields</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">saveOldConfig</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="s">&quot;AttrRef&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
                 <span class="n">key</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">blockBuffer</span><span class="o">.</span><span class="n">default</span> <span class="o">/</span> <span class="mi">1048576</span><span class="p">)</span>
@@ -414,11 +505,15 @@
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&quot;en_US&quot;</span><span class="p">:</span>
             <span class="n">config</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">langCode</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;en_US&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">changeLanguage</span><span class="p">()</span>
-        <span class="k">if</span> <span class="s">&quot;Fixed&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">portableVar</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">portableVar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Install Mode: Fixed&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&quot;Fixed&quot;</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">portableVar</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">portableVar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;Fixed&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">togglePortable</span><span class="p">()</span>
 
         <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OptionsPanel.reshowNumberFields"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.reshowNumberFields">[docs]</a>    <span class="k">def</span> <span class="nf">reshowNumberFields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">subwidgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">editing</span> <span class="o">=</span> <span class="bp">False</span>
 </div>
 <div class="viewcode-block" id="OptionsPanel.dispatch_key"><a class="viewcode-back" href="../../panels.html#panels.options.OptionsPanel.dispatch_key">[docs]</a>    <span class="k">def</span> <span class="nf">dispatch_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">OptionsPanel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">dispatch_key</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">evt</span><span class="p">)</span>
@@ -428,39 +523,43 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span></div></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

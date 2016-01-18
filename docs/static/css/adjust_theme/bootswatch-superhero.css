@@ -1,22 +1,88 @@
-{% set table_border_color = "#4d5d6d" %}
 
-{% set danger_color = "#ffffff" %}
-{% set danger_background_color = "#db524b" %}
-{% set danger_border_color  = "#db524b" %}
 
-{% set warning_color = "#ffffff" %}
-{% set warning_background_color = "#f2ae43" %}
-{% set warning_border_color  = "#f2ae43" %}
 
-{% set note_color = "#ffffff" %}
-{% set note_background_color = "#58b957" %}
-{% set note_border_color  = "#58b957" %}
 
-{% set hint_color = "#ffffff" %}
-{% set hint_background_color = "#56c0e0" %}
-{% set hint_border_color  = "#56c0e0" %}
 
-{% include "static/css/adjust_theme/_common_adjust.css" %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #4d5d6d;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #4d5d6d;
+}
+table.docutils tbody + tbody {
+  border-color: #4d5d6d;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #4d5d6d;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #f2ae43;
+  border-color: #f2ae43;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #db524b;
+  border-color: #db524b;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #f2ae43;
+  border-color: #f2ae43;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #58b957;
+  border-color: #58b957;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #56c0e0;
+  border-color: #56c0e0;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #4d5d6d;
+}
 
 /* Heading
    ---------------------------------------------------------*/
@@ -120,4 +186,3 @@ div.navbar-inner ul.pull-right li a{
       line-height: 30px;
   }
 }
-

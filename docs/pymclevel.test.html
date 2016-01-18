@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pymclevel.test package &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="index.html" />
+    <link rel="up" title="pymclevel package" href="pymclevel.html" />
+    <link rel="next" title="pyperclip module" href="pyperclip.html" />
+    <link rel="prev" title="pymclevel package" href="pymclevel.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">pymclevel.test package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.anvil_test">pymclevel.test.anvil_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.entity_test">pymclevel.test.entity_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.extended_id_test">pymclevel.test.extended_id_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.indev_test">pymclevel.test.indev_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.java_test">pymclevel.test.java_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.mcr_test">pymclevel.test.mcr_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.nbt_test">pymclevel.test.nbt_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.pocket_test">pymclevel.test.pocket_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.schematic_test">pymclevel.test.schematic_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.server_test">pymclevel.test.server_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.session_lock_test">pymclevel.test.session_lock_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.templevel">pymclevel.test.templevel module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.test_primordial">pymclevel.test.test_primordial module</a></li>
+<li><a class="reference internal" href="#pymclevel-test-time-nbt-module">pymclevel.test.time_nbt module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.time_relight">pymclevel.test.time_relight module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="pymclevel.html" title="pymclevel package" accesskey="P">previous </a></li>
+              <li><a href="pyperclip.html" title="pyperclip module" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="pymclevel.html" accesskey="U">pymclevel package</a></li>
+            
+            <li class="visible-xs"><a href="sources/pymclevel.test.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="static/favicon.png" alt="Logo"/>
+    </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pymclevel.test package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.anvil_test">pymclevel.test.anvil_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.entity_test">pymclevel.test.entity_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.extended_id_test">pymclevel.test.extended_id_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.indev_test">pymclevel.test.indev_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.java_test">pymclevel.test.java_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.mcr_test">pymclevel.test.mcr_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.nbt_test">pymclevel.test.nbt_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.pocket_test">pymclevel.test.pocket_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.schematic_test">pymclevel.test.schematic_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.server_test">pymclevel.test.server_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.session_lock_test">pymclevel.test.session_lock_test module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.templevel">pymclevel.test.templevel module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.test_primordial">pymclevel.test.test_primordial module</a></li>
+<li><a class="reference internal" href="#pymclevel-test-time-nbt-module">pymclevel.test.time_nbt module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test.time_relight">pymclevel.test.time_relight module</a></li>
+<li><a class="reference internal" href="#module-pymclevel.test">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pymclevel.html"
+                        title="previous chapter">pymclevel package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pyperclip.html"
+                        title="next chapter">pyperclip module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="sources/pymclevel.test.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="pymclevel-test-package">
+<h1>pymclevel.test package<a class="headerlink" href="#pymclevel-test-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pymclevel.test.anvil_test">
+<span id="pymclevel-test-anvil-test-module"></span><h2>pymclevel.test.anvil_test module<a class="headerlink" href="#module-pymclevel.test.anvil_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel">
+<em class="property">class </em><code class="descclassname">pymclevel.test.anvil_test.</code><code class="descname">TestAnvilLevel</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testBigEndianIntHeightMap">
+<code class="descname">testBigEndianIntHeightMap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testBigEndianIntHeightMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testBigEndianIntHeightMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test modifying, saving, and loading the new TAG_Int_Array heightmap
+added with the Anvil format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testCopyChunks">
+<code class="descname">testCopyChunks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testCopyChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testCopyChunks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testCopyConvertBlocks">
+<code class="descname">testCopyConvertBlocks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testCopyConvertBlocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testCopyConvertBlocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testCreateChunks">
+<code class="descname">testCreateChunks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testCreateChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testCreateChunks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testFill">
+<code class="descname">testFill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testFill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testFill" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testGetEntities">
+<code class="descname">testGetEntities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testGetEntities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testGetEntities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testImportSchematic">
+<code class="descname">testImportSchematic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testImportSchematic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testImportSchematic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testPlayerSpawn">
+<code class="descname">testPlayerSpawn</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testPlayerSpawn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testPlayerSpawn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testRecompress">
+<code class="descname">testRecompress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testRecompress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testRecompress" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testRecreateChunks">
+<code class="descname">testRecreateChunks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testRecreateChunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testRecreateChunks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testReplace">
+<code class="descname">testReplace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testReplace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testReplace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testSaveRelight">
+<code class="descname">testSaveRelight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testSaveRelight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testSaveRelight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevel.testUnsetProperties">
+<code class="descname">testUnsetProperties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevel.testUnsetProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevel.testUnsetProperties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevelCreate">
+<em class="property">class </em><code class="descclassname">pymclevel.test.anvil_test.</code><code class="descname">TestAnvilLevelCreate</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevelCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevelCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.anvil_test.TestAnvilLevelCreate.testCreate">
+<code class="descname">testCreate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/anvil_test.html#TestAnvilLevelCreate.testCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.anvil_test.TestAnvilLevelCreate.testCreate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.entity_test">
+<span id="pymclevel-test-entity-test-module"></span><h2>pymclevel.test.entity_test module<a class="headerlink" href="#module-pymclevel.test.entity_test" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pymclevel.test.entity_test.test_command_block">
+<code class="descclassname">pymclevel.test.entity_test.</code><code class="descname">test_command_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/entity_test.html#test_command_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.entity_test.test_command_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.extended_id_test">
+<span id="pymclevel-test-extended-id-test-module"></span><h2>pymclevel.test.extended_id_test module<a class="headerlink" href="#module-pymclevel.test.extended_id_test" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pymclevel.test.extended_id_test.alpha_test_level">
+<code class="descclassname">pymclevel.test.extended_id_test.</code><code class="descname">alpha_test_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/extended_id_test.html#alpha_test_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.extended_id_test.alpha_test_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pymclevel.test.extended_id_test.testAlphaIDs">
+<code class="descclassname">pymclevel.test.extended_id_test.</code><code class="descname">testAlphaIDs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/extended_id_test.html#testAlphaIDs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.extended_id_test.testAlphaIDs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pymclevel.test.extended_id_test.testExport">
+<code class="descclassname">pymclevel.test.extended_id_test.</code><code class="descname">testExport</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/extended_id_test.html#testExport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.extended_id_test.testExport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pymclevel.test.extended_id_test.test_schematic_extended_ids">
+<code class="descclassname">pymclevel.test.extended_id_test.</code><code class="descname">test_schematic_extended_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/extended_id_test.html#test_schematic_extended_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.extended_id_test.test_schematic_extended_ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.indev_test">
+<span id="pymclevel-test-indev-test-module"></span><h2>pymclevel.test.indev_test module<a class="headerlink" href="#module-pymclevel.test.indev_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.indev_test.TestIndevLevel">
+<em class="property">class </em><code class="descclassname">pymclevel.test.indev_test.</code><code class="descname">TestIndevLevel</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/indev_test.html#TestIndevLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.indev_test.TestIndevLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.indev_test.TestIndevLevel.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/indev_test.html#TestIndevLevel.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.indev_test.TestIndevLevel.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.indev_test.TestIndevLevel.testCopy">
+<code class="descname">testCopy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/indev_test.html#TestIndevLevel.testCopy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.indev_test.TestIndevLevel.testCopy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.indev_test.TestIndevLevel.testEntities">
+<code class="descname">testEntities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/indev_test.html#TestIndevLevel.testEntities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.indev_test.TestIndevLevel.testEntities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.indev_test.TestIndevLevel.testFill">
+<code class="descname">testFill</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/indev_test.html#TestIndevLevel.testFill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.indev_test.TestIndevLevel.testFill" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.java_test">
+<span id="pymclevel-test-java-test-module"></span><h2>pymclevel.test.java_test module<a class="headerlink" href="#module-pymclevel.test.java_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.java_test.TestJavaLevel">
+<em class="property">class </em><code class="descclassname">pymclevel.test.java_test.</code><code class="descname">TestJavaLevel</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/java_test.html#TestJavaLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.java_test.TestJavaLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.java_test.TestJavaLevel.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/java_test.html#TestJavaLevel.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.java_test.TestJavaLevel.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.java_test.TestJavaLevel.testCopy">
+<code class="descname">testCopy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/java_test.html#TestJavaLevel.testCopy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.java_test.TestJavaLevel.testCopy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.mcr_test">
+<span id="pymclevel-test-mcr-test-module"></span><h2>pymclevel.test.mcr_test module<a class="headerlink" href="#module-pymclevel.test.mcr_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.mcr_test.TestMCR">
+<em class="property">class </em><code class="descclassname">pymclevel.test.mcr_test.</code><code class="descname">TestMCR</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/mcr_test.html#TestMCR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.mcr_test.TestMCR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymclevel.test.anvil_test.TestAnvilLevel" title="pymclevel.test.anvil_test.TestAnvilLevel"><code class="xref py py-class docutils literal"><span class="pre">pymclevel.test.anvil_test.TestAnvilLevel</span></code></a></p>
+<dl class="method">
+<dt id="pymclevel.test.mcr_test.TestMCR.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/mcr_test.html#TestMCR.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.mcr_test.TestMCR.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.nbt_test">
+<span id="pymclevel-test-nbt-test-module"></span><h2>pymclevel.test.nbt_test module<a class="headerlink" href="#module-pymclevel.test.nbt_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.nbt_test.TestNBT">
+<em class="property">class </em><code class="descclassname">pymclevel.test.nbt_test.</code><code class="descname">TestNBT</code><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="pymclevel.test.nbt_test.TestNBT.testCreate">
+<em class="property">static </em><code class="descname">testCreate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an indev level.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.nbt_test.TestNBT.testErrors">
+<code class="descname">testErrors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testErrors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testErrors" title="Permalink to this definition">¶</a></dt>
+<dd><p>attempt to name elements of a TAG_List
+named list elements are not allowed by the NBT spec,
+so we must discard any names when writing a list.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.test.nbt_test.TestNBT.testList">
+<em class="property">static </em><code class="descname">testList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.test.nbt_test.TestNBT.testLoad">
+<em class="property">static </em><code class="descname">testLoad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testLoad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testLoad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load an indev level.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.test.nbt_test.TestNBT.testLoadNBTExplorer">
+<em class="property">static </em><code class="descname">testLoadNBTExplorer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testLoadNBTExplorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testLoadNBTExplorer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.test.nbt_test.TestNBT.testLoadUncompressed">
+<em class="property">static </em><code class="descname">testLoadUncompressed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testLoadUncompressed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testLoadUncompressed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.nbt_test.TestNBT.testModify">
+<code class="descname">testModify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testModify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testModify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.test.nbt_test.TestNBT.testMultipleCompound">
+<em class="property">static </em><code class="descname">testMultipleCompound</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testMultipleCompound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testMultipleCompound" title="Permalink to this definition">¶</a></dt>
+<dd><p>According to rumor, some TAG_Compounds store several tags with the same name. Once I find a chunk file
+with such a compound, I need to test TAG_Compound.get_all()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.nbt_test.TestNBT.testSave">
+<code class="descname">testSave</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testSave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testSave" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymclevel.test.nbt_test.TestNBT.testSpeed">
+<em class="property">static </em><code class="descname">testSpeed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testSpeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.nbt_test.TestNBT.testToStrings">
+<code class="descname">testToStrings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/nbt_test.html#TestNBT.testToStrings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.nbt_test.TestNBT.testToStrings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.pocket_test">
+<span id="pymclevel-test-pocket-test-module"></span><h2>pymclevel.test.pocket_test module<a class="headerlink" href="#module-pymclevel.test.pocket_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.pocket_test.TestPocket">
+<em class="property">class </em><code class="descclassname">pymclevel.test.pocket_test.</code><code class="descname">TestPocket</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/pocket_test.html#TestPocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.pocket_test.TestPocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.pocket_test.TestPocket.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/pocket_test.html#TestPocket.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.pocket_test.TestPocket.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.pocket_test.TestPocket.testPocket">
+<code class="descname">testPocket</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/pocket_test.html#TestPocket.testPocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.pocket_test.TestPocket.testPocket" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.schematic_test">
+<span id="pymclevel-test-schematic-test-module"></span><h2>pymclevel.test.schematic_test module<a class="headerlink" href="#module-pymclevel.test.schematic_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.schematic_test.TestSchematics">
+<em class="property">class </em><code class="descclassname">pymclevel.test.schematic_test.</code><code class="descname">TestSchematics</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/schematic_test.html#TestSchematics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.schematic_test.TestSchematics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.schematic_test.TestSchematics.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/schematic_test.html#TestSchematics.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.schematic_test.TestSchematics.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.schematic_test.TestSchematics.testCreate">
+<code class="descname">testCreate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/schematic_test.html#TestSchematics.testCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.schematic_test.TestSchematics.testCreate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.schematic_test.TestSchematics.testINVEditChests">
+<code class="descname">testINVEditChests</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/schematic_test.html#TestSchematics.testINVEditChests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.schematic_test.TestSchematics.testINVEditChests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.schematic_test.TestSchematics.testRotate">
+<code class="descname">testRotate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/schematic_test.html#TestSchematics.testRotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.schematic_test.TestSchematics.testRotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.schematic_test.TestSchematics.testZipSchematic">
+<code class="descname">testZipSchematic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/schematic_test.html#TestSchematics.testZipSchematic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.schematic_test.TestSchematics.testZipSchematic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.server_test">
+<span id="pymclevel-test-server-test-module"></span><h2>pymclevel.test.server_test module<a class="headerlink" href="#module-pymclevel.test.server_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.server_test.TestServerGen">
+<em class="property">class </em><code class="descclassname">pymclevel.test.server_test.</code><code class="descname">TestServerGen</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/server_test.html#TestServerGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.server_test.TestServerGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.server_test.TestServerGen.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/server_test.html#TestServerGen.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.server_test.TestServerGen.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.server_test.TestServerGen.testCreate">
+<code class="descname">testCreate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/server_test.html#TestServerGen.testCreate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.server_test.TestServerGen.testCreate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymclevel.test.server_test.TestServerGen.testServerGen">
+<code class="descname">testServerGen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/server_test.html#TestServerGen.testServerGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.server_test.TestServerGen.testServerGen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.session_lock_test">
+<span id="pymclevel-test-session-lock-test-module"></span><h2>pymclevel.test.session_lock_test module<a class="headerlink" href="#module-pymclevel.test.session_lock_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.session_lock_test.SessionLockTest">
+<em class="property">class </em><code class="descclassname">pymclevel.test.session_lock_test.</code><code class="descname">SessionLockTest</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/session_lock_test.html#SessionLockTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.session_lock_test.SessionLockTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.session_lock_test.SessionLockTest.test_session_lock">
+<code class="descname">test_session_lock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/session_lock_test.html#SessionLockTest.test_session_lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.session_lock_test.SessionLockTest.test_session_lock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.templevel">
+<span id="pymclevel-test-templevel-module"></span><h2>pymclevel.test.templevel module<a class="headerlink" href="#module-pymclevel.test.templevel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pymclevel.test.templevel.TempLevel">
+<em class="property">class </em><code class="descclassname">pymclevel.test.templevel.</code><code class="descname">TempLevel</code><span class="sig-paren">(</span><em>filename</em>, <em>createFunc=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/templevel.html#TempLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.templevel.TempLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pymclevel.test.templevel.TempLevel.removeTemp">
+<code class="descname">removeTemp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/templevel.html#TempLevel.removeTemp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.templevel.TempLevel.removeTemp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pymclevel.test.templevel.mktemp">
+<code class="descclassname">pymclevel.test.templevel.</code><code class="descname">mktemp</code><span class="sig-paren">(</span><em>suffix</em><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/templevel.html#mktemp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.templevel.mktemp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test.test_primordial">
+<span id="pymclevel-test-test-primordial-module"></span><h2>pymclevel.test.test_primordial module<a class="headerlink" href="#module-pymclevel.test.test_primordial" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pymclevel.test.test_primordial.testPrimordialDesert">
+<code class="descclassname">pymclevel.test.test_primordial.</code><code class="descname">testPrimordialDesert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/test_primordial.html#testPrimordialDesert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.test_primordial.testPrimordialDesert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="pymclevel-test-time-nbt-module">
+<h2>pymclevel.test.time_nbt module<a class="headerlink" href="#pymclevel-test-time-nbt-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pymclevel.test.time_relight">
+<span id="pymclevel-test-time-relight-module"></span><h2>pymclevel.test.time_relight module<a class="headerlink" href="#module-pymclevel.test.time_relight" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pymclevel.test.time_relight.manmade_relight">
+<code class="descclassname">pymclevel.test.time_relight.</code><code class="descname">manmade_relight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/time_relight.html#manmade_relight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.time_relight.manmade_relight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pymclevel.test.time_relight.natural_relight">
+<code class="descclassname">pymclevel.test.time_relight.</code><code class="descname">natural_relight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/pymclevel/test/time_relight.html#natural_relight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymclevel.test.time_relight.natural_relight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pymclevel.test">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymclevel.test" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="pymclevel.html" title="pymclevel package" >previous</a></li>
+        <li><a href="pyperclip.html" title="pyperclip module" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="pymclevel.html" >pymclevel package</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

@@ -1,60 +1,140 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>keys &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>keys &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../index.html">
+      <img class="logo" src="../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for keys</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf_8 -*-</span>
 <span class="c">#.# Marks the layout modifications. -- D.C.-G.</span>
 <span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">import</span> <span class="nn">albow</span>
-<span class="kn">import</span> <span class="nn">mceutils</span>
 <span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">key</span>
 <span class="kn">from</span> <span class="nn">albow.dialogs</span> <span class="kn">import</span> <span class="n">Dialog</span>
 <span class="kn">from</span> <span class="nn">albow.translate</span> <span class="kn">import</span> <span class="n">_</span>
@@ -81,6 +161,7 @@
         <span class="s">&quot;Up&quot;</span><span class="p">,</span>
         <span class="s">&quot;Down&quot;</span><span class="p">,</span>
         <span class="s">&quot;Brake&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Sprint&quot;</span><span class="p">,</span>
         <span class="s">&quot;&quot;</span><span class="p">,</span>
         <span class="s">&quot;&lt;Camera&gt;&quot;</span><span class="p">,</span>
         <span class="s">&quot;Pan Up&quot;</span><span class="p">,</span>
@@ -150,7 +231,19 @@
         <span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span>
         <span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span>
         <span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span>
-        <span class="s">&quot;Fast Increment Modifier&quot;</span>
+        <span class="s">&quot;Fast Increment Modifier (Hold)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;&lt;Toolbar&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Select&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Brush&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Clone&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Fill and Replace&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Filter&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Import Key&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Players&quot;</span><span class="p">,</span>
+        <span class="s">&quot;World Spawnpoint&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Chunk Control&quot;</span><span class="p">,</span>
+        <span class="s">&quot;NBT Explorer&quot;</span>
     <span class="p">]</span>
 
     <span class="n">otherNames</span> <span class="o">=</span> <span class="p">{</span>
@@ -171,7 +264,8 @@
         <span class="s">&quot;Deselect Chunks&quot;</span><span class="p">:</span> <span class="s">&quot;Deselect Chunks (Hold)&quot;</span><span class="p">,</span>
         <span class="s">&quot;Delete Blocks&quot;</span><span class="p">:</span> <span class="s">&quot;Delete&quot;</span><span class="p">,</span>
         <span class="s">&quot;Export Selection&quot;</span><span class="p">:</span> <span class="s">&quot;Export&quot;</span><span class="p">,</span>
-        <span class="s">&quot;Take a Screenshot&quot;</span><span class="p">:</span> <span class="s">&quot;Take Screenshot&quot;</span>
+        <span class="s">&quot;Take a Screenshot&quot;</span><span class="p">:</span> <span class="s">&quot;Take Screenshot&quot;</span><span class="p">,</span>
+        <span class="s">&quot;Import Key&quot;</span><span class="p">:</span> <span class="s">&quot;Import&quot;</span>
     <span class="p">}</span>
 
     <span class="n">presets</span> <span class="o">=</span> <span class="p">{</span>
@@ -183,6 +277,7 @@
                     <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Sprint&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
 
                     <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
@@ -243,7 +338,18 @@
                     <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier (Hold)&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush&quot;</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Clone&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fill and Replace&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Filter&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Import Key&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Players&quot;</span><span class="p">,</span> <span class="s">&quot;7&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Spawnpoint&quot;</span><span class="p">,</span> <span class="s">&quot;8&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Chunk Control&quot;</span><span class="p">,</span> <span class="s">&quot;9&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;NBT Explorer&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
                 <span class="p">],</span>
                 <span class="s">&quot;ESDF&quot;</span><span class="p">:</span> <span class="p">[</span>
                     <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;E&quot;</span><span class="p">),</span>
@@ -253,6 +359,7 @@
                     <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Sprint&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
 
                     <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
@@ -313,7 +420,18 @@
                     <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier (Hold)&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush&quot;</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Clone&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fill and Replace&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Filter&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Import Key&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Players&quot;</span><span class="p">,</span> <span class="s">&quot;7&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Spawnpoint&quot;</span><span class="p">,</span> <span class="s">&quot;8&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Chunk Control&quot;</span><span class="p">,</span> <span class="s">&quot;9&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;NBT Explorer&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
                 <span class="p">],</span>
                 <span class="s">&quot;Arrows&quot;</span><span class="p">:</span> <span class="p">[</span>
                     <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;Up&quot;</span><span class="p">),</span>
@@ -323,6 +441,7 @@
                     <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Page Up&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Page Down&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Sprint&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
 
                     <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
@@ -383,7 +502,18 @@
                     <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier (Hold)&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush&quot;</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Clone&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fill and Replace&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Filter&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Import Key&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Players&quot;</span><span class="p">,</span> <span class="s">&quot;7&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Spawnpoint&quot;</span><span class="p">,</span> <span class="s">&quot;8&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Chunk Control&quot;</span><span class="p">,</span> <span class="s">&quot;9&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;NBT Explorer&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
                 <span class="p">],</span>
                 <span class="s">&quot;Numpad&quot;</span><span class="p">:</span> <span class="p">[</span>
                     <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;[8]&quot;</span><span class="p">),</span>
@@ -393,6 +523,7 @@
                     <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;[7]&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;[1]&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;[0]&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Sprint&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
 
                     <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
@@ -453,7 +584,18 @@
                     <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">)</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier (Hold)&quot;</span><span class="p">,</span> <span class="s">&quot;Ctrl&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush&quot;</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Clone&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fill and Replace&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Filter&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Import Key&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Players&quot;</span><span class="p">,</span> <span class="s">&quot;7&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Spawnpoint&quot;</span><span class="p">,</span> <span class="s">&quot;8&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Chunk Control&quot;</span><span class="p">,</span> <span class="s">&quot;9&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;NBT Explorer&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
                 <span class="p">],</span>
                 <span class="s">&quot;WASD Old&quot;</span><span class="p">:</span> <span class="p">[</span>
                     <span class="p">(</span><span class="s">&quot;Forward&quot;</span><span class="p">,</span> <span class="s">&quot;W&quot;</span><span class="p">),</span>
@@ -463,6 +605,7 @@
                     <span class="p">(</span><span class="s">&quot;Up&quot;</span><span class="p">,</span> <span class="s">&quot;Q&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span> <span class="s">&quot;Z&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Brake&quot;</span><span class="p">,</span> <span class="s">&quot;Space&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Sprint&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">),</span>
 
                     <span class="p">(</span><span class="s">&quot;Pan Up&quot;</span><span class="p">,</span> <span class="s">&quot;I&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Pan Down&quot;</span><span class="p">,</span> <span class="s">&quot;K&quot;</span><span class="p">),</span>
@@ -523,34 +666,29 @@
                     <span class="p">(</span><span class="s">&quot;Take a Screenshot&quot;</span><span class="p">,</span> <span class="s">&quot;F6&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Debug Overlay&quot;</span><span class="p">,</span> <span class="s">&quot;0&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s">&quot;Fast Nudge&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">)</span>
+                    <span class="p">(</span><span class="s">&quot;Fast Increment Modifier (Hold)&quot;</span><span class="p">,</span> <span class="s">&quot;Shift&quot;</span><span class="p">),</span>
+
+                    <span class="p">(</span><span class="s">&quot;Select&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Brush&quot;</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Clone&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Fill and Replace&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Filter&quot;</span><span class="p">,</span> <span class="s">&quot;5&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Import Key&quot;</span><span class="p">,</span> <span class="s">&quot;6&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Players&quot;</span><span class="p">,</span> <span class="s">&quot;7&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;World Spawnpoint&quot;</span><span class="p">,</span> <span class="s">&quot;8&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;Chunk Control&quot;</span><span class="p">,</span> <span class="s">&quot;9&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&quot;NBT Explorer&quot;</span><span class="p">,</span> <span class="s">&quot;None&quot;</span><span class="p">)</span>
                 <span class="p">]}</span>
 
     <span class="n">selectedKeyIndex</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mcedit</span><span class="p">):</span>
         <span class="n">Dialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="c">#.#</span>
-        <span class="n">spacing</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">keyConfigTable</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">TableView</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">albow</span><span class="o">.</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Command&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;l&quot;</span><span class="p">),</span> <span class="n">albow</span><span class="o">.</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Assigned Key&quot;</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)])</span>
-        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">)</span>
-        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">row_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRowData</span>
-        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">row_is_selected</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span>
-        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">click_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectTableRow</span>
-        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">key_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_down</span>
-        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">key_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_up</span>
-        <span class="c">#.#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">tableWidget</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Widget</span><span class="p">()</span>
-        <span class="n">tableWidget</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">keyConfigTable</span><span class="p">)</span>
-        <span class="n">tableWidget</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span> <span class="o">=</span> <span class="n">keyConfigTable</span>
 
         <span class="n">buttonRow</span> <span class="o">=</span> <span class="p">(</span><span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Assign Key...&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">askAssignSelectedKey</span><span class="p">),</span>
                     <span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Done&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">),</span> <span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cancel</span><span class="p">))</span>
@@ -559,7 +697,7 @@
 
         <span class="n">resetToDefaultRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s">&quot;Reset to default&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">resetDefault</span><span class="p">),))</span>
 
-        <span class="n">choiceButton</span> <span class="o">=</span> <span class="n">mceutils</span><span class="o">.</span><span class="n">ChoiceButton</span><span class="p">([</span><span class="s">&quot;WASD&quot;</span><span class="p">,</span> <span class="s">&quot;ESDF&quot;</span><span class="p">,</span> <span class="s">&quot;Arrows&quot;</span><span class="p">,</span> <span class="s">&quot;Numpad&quot;</span><span class="p">,</span> <span class="s">&quot;WASD Old&quot;</span><span class="p">],</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">choosePreset</span><span class="p">)</span>
+        <span class="n">choiceButton</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">ChoiceButton</span><span class="p">([</span><span class="s">&quot;WASD&quot;</span><span class="p">,</span> <span class="s">&quot;ESDF&quot;</span><span class="p">,</span> <span class="s">&quot;Arrows&quot;</span><span class="p">,</span> <span class="s">&quot;Numpad&quot;</span><span class="p">,</span> <span class="s">&quot;WASD Old&quot;</span><span class="p">],</span> <span class="n">choose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">choosePreset</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;E&quot;</span><span class="p">:</span>
             <span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span> <span class="o">=</span> <span class="s">&quot;ESDF&quot;</span>
         <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;Up&quot;</span><span class="p">:</span>
@@ -571,8 +709,28 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">oldChoice</span> <span class="o">=</span> <span class="n">choiceButton</span><span class="o">.</span><span class="n">selectedChoice</span>
 
-        <span class="n">choiceRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Presets: &quot;</span><span class="p">),</span> <span class="n">choiceButton</span><span class="p">))</span>
+        <span class="n">choiceRow</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Row</span><span class="p">((</span><span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s">&quot;Keybind Presets:&quot;</span><span class="p">),</span> <span class="n">choiceButton</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">choiceButton</span> <span class="o">=</span> <span class="n">choiceButton</span>
+
+        <span class="c">#.#</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">TableView</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">581</span> <span class="o">/</span> <span class="n">tb</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">()</span>
+        <span class="n">keyConfigTable</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">TableView</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">581</span> <span class="o">/</span> <span class="n">tb</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">get_linesize</span><span class="p">(),</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">albow</span><span class="o">.</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Command&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;l&quot;</span><span class="p">),</span> <span class="n">albow</span><span class="o">.</span><span class="n">TableColumn</span><span class="p">(</span><span class="s">&quot;Assigned Key&quot;</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)])</span>
+        <span class="k">del</span> <span class="n">tb</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">)</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">row_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRowData</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">row_is_selected</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">click_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectTableRow</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">key_down</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_down</span>
+        <span class="n">keyConfigTable</span><span class="o">.</span><span class="n">key_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_up</span>
+        <span class="n">tableWidget</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Widget</span><span class="p">()</span>
+        <span class="n">tableWidget</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">keyConfigTable</span><span class="p">)</span>
+        <span class="n">tableWidget</span><span class="o">.</span><span class="n">shrink_wrap</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span> <span class="o">=</span> <span class="n">keyConfigTable</span>
+        <span class="c">#.#</span>
 
         <span class="n">col</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Column</span><span class="p">((</span><span class="n">tableWidget</span><span class="p">,</span> <span class="n">choiceRow</span><span class="p">,</span> <span class="n">buttonRow</span><span class="p">,</span> <span class="n">resetToDefaultRow</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
@@ -596,12 +754,41 @@
             <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">down</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="p">]</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">toolbarKeys</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">select</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">brush</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">clone</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">fillAndReplace</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">importKey</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">worldSpawnpoint</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">chunkControl</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">nbtExplorer</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="p">]</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">cameraPan</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panLeft</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
             <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panRight</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
             <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panUp</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
             <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">panDown</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">sprintKey</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">sprint</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">movementLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;{0}/{1}/{2}/{3}/{4}/{5} to move&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">back</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">up</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
+            <span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">down</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">slowDownLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;{0} to slow down&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">detailsLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Hold {0} for details&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">showBlockInfo</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">commandRow</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">newWorld</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">commandRow</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">quickLoad</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">commandRow</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span>
 </div>
@@ -625,7 +812,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isConfigKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">):</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="n">oldKey</span> <span class="o">=</span> <span class="n">key</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">different_keys</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="n">oldKey</span><span class="p">:</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span>
 
@@ -683,6 +874,12 @@
         <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Return&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">askAssignSelectedKey</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Page down&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyConfigKeys</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nrows</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">keyname</span> <span class="o">==</span> <span class="s">&#39;Page up&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nrows</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">cell_to_item_no</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">num_rows</span><span class="p">()</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">cell_to_item_no</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">num_rows</span><span class="p">()</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">keyConfigTable</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">scroll_to_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectedKeyIndex</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="KeyConfigPanel.key_up"><a class="viewcode-back" href="../keys.html#keys.KeyConfigPanel.key_up">[docs]</a>    <span class="k">def</span> <span class="nf">key_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -699,9 +896,9 @@
         <span class="n">panel</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">labelString</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">configKey</span> <span class="o">!=</span> <span class="s">&quot;Fast Nudge&quot;</span><span class="p">:</span>
-            <span class="n">labelString</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press a key to assign to the action </span><span class="se">\&quot;</span><span class="s">{0}</span><span class="se">\&quot;\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">configKey</span><span class="p">)</span>
+            <span class="n">labelString</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press a key to assign to the action </span><span class="se">\&quot;</span><span class="s">{0}</span><span class="se">\&quot;\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">configKey</span><span class="p">))</span>
         <span class="k">elif</span> <span class="n">labelString</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">labelString</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press a key to assign to the action </span><span class="se">\&quot;</span><span class="s">{0}</span><span class="se">\&quot;\n</span><span class="s">No key means right click to fast nudge.</span><span class="se">\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">configKey</span><span class="p">)</span>
+            <span class="n">labelString</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Press a key to assign to the action </span><span class="se">\&quot;</span><span class="s">{0}</span><span class="se">\&quot;\n</span><span class="s">No key means right click to fast nudge.</span><span class="se">\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">configKey</span><span class="p">))</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">albow</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">labelString</span><span class="p">)</span>
         <span class="n">unbind_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="s">&quot;Press to unbind&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unbind</span><span class="p">)</span>
         <span class="n">column</span> <span class="o">=</span> <span class="n">Column</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="n">unbind_button</span><span class="p">))</span>
@@ -740,70 +937,75 @@
             <span class="k">return</span> <span class="bp">True</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">enter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">_keyname</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">keyname</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Escape&quot;</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;Alt-F4&quot;</span><span class="p">,</span><span class="s">&quot;F1&quot;</span><span class="p">,</span><span class="s">&quot;F2&quot;</span><span class="p">,</span><span class="s">&quot;F3&quot;</span><span class="p">,</span><span class="s">&quot;F4&quot;</span><span class="p">,</span><span class="s">&quot;F5&quot;</span><span class="p">,</span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="s">&quot;3&quot;</span><span class="p">,</span><span class="s">&quot;4&quot;</span><span class="p">,</span><span class="s">&quot;5&quot;</span><span class="p">,</span><span class="s">&quot;6&quot;</span><span class="p">,</span><span class="s">&quot;7&quot;</span><span class="p">,</span><span class="s">&quot;8&quot;</span><span class="p">,</span><span class="s">&quot;9&quot;</span><span class="p">,</span><span class="s">&quot;Ctrl-Alt-F9&quot;</span><span class="p">,</span><span class="s">&quot;Ctrl-Alt-F10&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="s">&quot;Modifier&quot;</span> <span class="ow">in</span> <span class="n">configKey</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Ctrl&quot;</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Alt&quot;</span> <span class="ow">and</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Shift&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
                                     <span class="n">_</span><span class="p">(</span><span class="s">&quot;{0} is not a modifier. Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span>
-                                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyname</span><span class="p">))</span>
+                                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_keyname</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">True</span>
             <span class="k">if</span> <span class="n">configKey</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;Down&#39;</span><span class="p">,</span><span class="s">&#39;Up&#39;</span><span class="p">,</span><span class="s">&#39;Back&#39;</span><span class="p">,</span><span class="s">&#39;Forward&#39;</span><span class="p">,</span><span class="s">&#39;Left&#39;</span><span class="p">,</span><span class="s">&#39;Right&#39;</span><span class="p">,</span><span class="s">&#39;Pan Down&#39;</span><span class="p">,</span><span class="s">&#39;Pan Up&#39;</span><span class="p">,</span><span class="s">&#39;Pan Left&#39;</span><span class="p">,</span><span class="s">&#39;Pan Right&#39;</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="s">&#39;Ctrl&#39;</span> <span class="ow">in</span> <span class="n">keyname</span> <span class="ow">or</span> <span class="s">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">keyname</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
                                     <span class="s">&quot;Movement keys can&#39;t use Ctrl or be with modifiers. Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span>
                     <span class="k">return</span> <span class="bp">True</span>
-            <span class="n">filter_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="s">&quot;Filter Keys&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">keyname</span><span class="p">]</span>
+            <span class="n">filter_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_sections</span><span class="p">[</span><span class="s">&quot;Filter Keys&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">_keyname</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">filter_keys</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
-                                    <span class="n">_</span><span class="p">(</span><span class="s">&quot;Can&#39;t bind. {0} is already used by the </span><span class="se">\&quot;</span><span class="s">{1}</span><span class="se">\&quot;</span><span class="s"> filter.</span><span class="se">\n</span><span class="s"> Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyname</span><span class="p">,</span> <span class="n">filter_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                                    <span class="n">_</span><span class="p">(</span><span class="s">&quot;Can&#39;t bind. {0} is already used by the </span><span class="se">\&quot;</span><span class="s">{1}</span><span class="se">\&quot;</span><span class="s"> filter.</span><span class="se">\n</span><span class="s"> Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_keyname</span><span class="p">,</span> <span class="n">filter_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                 <span class="k">return</span> <span class="bp">True</span>
             <span class="n">oldkey</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
             <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">configKey</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">keyname</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">configKey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">oldkey</span> <span class="o">!=</span> <span class="n">keyname</span> <span class="ow">and</span> <span class="n">configKey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">changes</span><span class="p">[</span><span class="n">configKey</span><span class="p">]</span> <span class="o">=</span> <span class="n">oldkey</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changesNum</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">elif</span> <span class="n">keyname</span> <span class="o">!=</span> <span class="s">&quot;Escape&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">askAssignKey</span><span class="p">(</span><span class="n">configKey</span><span class="p">,</span>
                                     <span class="n">_</span><span class="p">(</span><span class="s">&quot;You can&#39;t use the key {0}. Press a new key.</span><span class="se">\n\n</span><span class="s">Press ESC to cancel.&quot;</span><span class="p">)</span>
-                                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keyname</span><span class="p">))</span>
+                                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_keyname</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">True</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">True</span></div></div>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../genindex.html" title="General Index" >index</a></li>
+        <li><a href="index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>

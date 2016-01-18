@@ -1,55 +1,135 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     
-    <title>albow.translate &mdash; MCEdit-Unified v1.3.0.0 documentation</title>
+    <title>albow.translate &mdash; MCEdit-Unified v1.5.1.0 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     
-    <link rel="stylesheet" href="../../static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../static/css/bootstrap3/bootswatch-yeti.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" href="../../static/css/adjust_theme/bootswatch-yeti.css" type="text/css" />
+
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     'v1.3.0.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../static/jquery.js"></script>
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../',
+            VERSION:     'v1.5.1.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/underscore.js"></script>
     <script type="text/javascript" src="../../static/doctools.js"></script>
-    <link rel="top" title="MCEdit-Unified v1.3.0.0 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
-   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
-
+    <script type="text/javascript" src="../../static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../static/favicon.ico"/>
+    <link rel="top" title="MCEdit-Unified v1.5.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MCEdit-Unified v1.3.0.0 documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
             
+              <li><a href="../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../static/favicon.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1>Source code for albow.translate</h1><div class="highlight"><pre>
 <span class="c"># -*- encoding: utf_8 -*-</span>
 <span class="c">#</span>
@@ -108,6 +188,7 @@
 <span class="kn">import</span> <span class="nn">codecs</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">resource</span>
+<span class="kn">import</span> <span class="nn">directories</span>
 
 <span class="kn">import</span> <span class="nn">platform</span><span class="o">,</span> <span class="nn">locale</span>
 
@@ -125,6 +206,7 @@
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    Processor: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">platform</span><span class="o">.</span><span class="n">processor</span><span class="p">())</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    Locale: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">locale</span><span class="o">.</span><span class="n">getdefaultlocale</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    Encoding: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">locale</span><span class="o">.</span><span class="n">getdefaultlocale</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    FS encoding: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">os</span><span class="o">.</span><span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">())</span>
     <span class="n">reVer</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;__version__|_version_|__version|_version|version|&quot;</span>
                        <span class="s">&quot;__ver__|_ver_|__ver|_ver|ver&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -154,7 +236,7 @@
 
 <span class="n">string_cache</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">font_lang_cache</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">langPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="s">&quot;lang&quot;</span><span class="p">))</span>
+<span class="n">langPath</span> <span class="o">=</span> <span class="n">directories</span><span class="o">.</span><span class="n">getDataDir</span><span class="p">(</span><span class="s">&quot;lang&quot;</span><span class="p">)</span>
 <span class="n">lang</span> <span class="o">=</span> <span class="s">&quot;Default&quot;</span>
 
 <span class="c"># template building</span>
@@ -173,18 +255,46 @@
 <span class="s"># See TRANSLATION.txt for more detailed information.</span>
 <span class="s">#&quot;&quot;&quot;</span>
 
+<span class="n">buildTemplateMarker</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">### THE FOLLOWING LINES HAS BEEN ADDED BY THE TEMPLATE UPDATE FUNCTION.</span>
+<span class="s">### Please, consider to analyze them and remove the entries referring</span>
+<span class="s">### to ones containing string formatting.</span>
+<span class="s">###</span>
+<span class="s">### For example, if you have a line already defined with this text:</span>
+<span class="s">### My %{animal} has </span><span class="si">%d</span><span class="s"> legs.</span>
+<span class="s">### you may find lines like these below:</span>
+<span class="s">### My parrot has 2 legs.</span>
+<span class="s">### My dog has 4 legs.</span>
+<span class="s">###</span>
+<span class="s">### And, remove this paragraph too...</span>
+<span class="s">&quot;&quot;&quot;</span>
 <span class="c">#-------------------------------------------------------------------------------</span>
 <span class="c"># Translation loading and mapping functions</span>
 <span class="c">#-------------------------------------------------------------------------------</span>
 
-<span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">doNotTranslate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">hotKey</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the translated &#39;string&#39;, or &#39;string&#39; itself if no translation found.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">enc</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">doNotTranslate</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">string</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">string</span>
-    <span class="n">trn</span> <span class="o">=</span> <span class="n">string_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">buildTemplate</span><span class="p">:</span>
+<span class="c">#     try:</span>
+<span class="c">#         trn = u&quot;%s&quot;%(string)</span>
+<span class="c">#     except Exception, e:</span>
+<span class="c">#         print &quot;TRANSLATE ERROR&quot;, e</span>
+<span class="c">#         log.debug(&#39;TRANSLATE ERROR: %s&#39;%e)</span>
+<span class="c">#         trn = string_cache.get(string, string)</span>
+<span class="c">#     if trn == string:</span>
+<span class="c">#         trn = string_cache.get(string, trn)</span>
+    <span class="n">trn</span> <span class="o">=</span> <span class="n">string_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trn</span> <span class="o">==</span> <span class="n">string</span> <span class="ow">and</span> <span class="s">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="c"># Support for hotkeys</span>
+        <span class="n">trn</span> <span class="o">=</span> <span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">_</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">hotKey</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">_</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">hotKey</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="o">!=</span> <span class="n">a</span> <span class="ow">or</span> <span class="n">a</span><span class="p">])</span>
+        <span class="n">hotKey</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="c"># We don&#39;t want hotkeys and blank strings.</span>
+    <span class="k">if</span> <span class="n">buildTemplate</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">hotKey</span> <span class="ow">and</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
         <span class="k">global</span> <span class="n">template</span>
         <span class="k">global</span> <span class="n">strNum</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">template</span><span class="o">.</span><span class="n">values</span><span class="p">()]:</span>
@@ -202,7 +312,7 @@
     <span class="k">global</span> <span class="n">strNum</span>
     <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">getLangPath</span><span class="p">(),</span> <span class="n">fName</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">F_OK</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span><span class="p">):</span>
-        <span class="n">oldData</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">,</span> <span class="s">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\x00</span><span class="s">&quot;</span>
+        <span class="n">oldData</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">,</span> <span class="s">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="o">+</span> <span class="n">buildTemplateMarker</span>
         <span class="n">trnHeader</span> <span class="o">=</span> <span class="s">u&quot;&quot;</span>
         <span class="c"># find the first oXX</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">ur&quot;^o\d+[ ]&quot;</span><span class="p">,</span> <span class="n">oldData</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="o">|</span><span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">)</span>
@@ -254,8 +364,6 @@
         <span class="n">keys</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
             <span class="n">org</span><span class="p">,</span> <span class="n">trn</span> <span class="o">=</span> <span class="n">template</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-<span class="c">#            f.write(u&quot;\no%s %s\nt%s &quot;%(key, value, key))</span>
-<span class="c">#            f.write(u&quot;\no%s %s&quot;%(key, value.replace(u&quot;\nt%s&quot;, u&quot;\nt%s&quot;%key)))</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">u&quot;</span><span class="se">\n</span><span class="s">o</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="se">\n</span><span class="s">t</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">org</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">trn</span><span class="p">))</span>
         <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
@@ -279,12 +387,13 @@
 <span class="c">#-------------------------------------------------------------------------------</span>
 </div>
 <div class="viewcode-block" id="getLangPath"><a class="viewcode-back" href="../../albow.html#albow.translate.getLangPath">[docs]</a><span class="k">def</span> <span class="nf">getLangPath</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Return the actual &#39;lang&#39; folder.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">langPath</span>
 
 <span class="c">#-------------------------------------------------------------------------------</span>
 </div>
 <div class="viewcode-block" id="getLang"><a class="viewcode-back" href="../../albow.html#albow.translate.getLang">[docs]</a><span class="k">def</span> <span class="nf">getLang</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return the actual language.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">lang</span>
 
 </div>
@@ -297,6 +406,12 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">lang</span> <span class="o">==</span> <span class="n">newlang</span><span class="p">:</span>
         <span class="n">sc</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">buildTranslation</span><span class="p">(</span><span class="n">newlang</span><span class="p">)</span>
         <span class="n">lang</span> <span class="o">=</span> <span class="n">newlang</span>
+        <span class="k">if</span> <span class="n">newlang</span> <span class="o">==</span> <span class="s">&#39;en_US&#39;</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">resource</span><span class="o">.</span><span class="n">setCurLang</span><span class="p">(</span><span class="s">u&quot;English (US)&quot;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">resource</span><span class="o">.</span><span class="n">__curLang</span> <span class="o">=</span> <span class="s">u&quot;English (US)&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">True</span>
     <span class="k">return</span> <span class="n">oldLang</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">result</span>
@@ -304,7 +419,8 @@
 
 <span class="c">#-------------------------------------------------------------------------------</span></div>
 <div class="viewcode-block" id="correctEncoding"><a class="viewcode-back" href="../../albow.html#albow.translate.correctEncoding">[docs]</a><span class="k">def</span> <span class="nf">correctEncoding</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">oldEnc</span><span class="o">=</span><span class="s">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">newEnc</span><span class="o">=</span><span class="n">enc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns encoded/decoded data.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Returns encoded/decoded data.</span>
+<span class="sd">    Disabled for now...&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">data</span>  <span class="c"># disabled for now, but can be use full in the future</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">newEnc</span><span class="p">)</span>
@@ -337,9 +453,15 @@
         <span class="n">bold</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;#-# font bold: &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">global</span> <span class="n">font_lang_cache</span>
     <span class="k">if</span> <span class="n">regular</span> <span class="ow">and</span> <span class="n">regular</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&quot;default&quot;</span><span class="p">:</span>
-        <span class="n">font_lang_cache</span><span class="p">[</span><span class="s">&quot;DejaVuSans-Regular.ttf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">regular</span><span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">font_lang_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;DejaVuSans-Regular.ttf&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">font_lang_cache</span><span class="p">[</span><span class="s">&quot;DejaVuSans-Regular.ttf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">regular</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">font_lang_cache</span><span class="p">[</span><span class="s">&quot;DejaVuSans-Regular.ttf&quot;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">regular</span>
     <span class="k">if</span> <span class="n">bold</span> <span class="ow">and</span> <span class="n">bold</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&quot;default&quot;</span><span class="p">:</span>
-        <span class="n">font_lang_cache</span><span class="p">[</span><span class="s">&quot;DejaVuSans-Bold.ttf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">bold</span><span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">font_lang_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;DejaVuSans-Bold.ttf&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">font_lang_cache</span><span class="p">[</span><span class="s">&quot;DejaVuSans-Bold.ttf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">bold</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">font_lang_cache</span><span class="p">[</span><span class="s">&quot;DejaVuSans-Bold.ttf&quot;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">bold</span>
     <span class="n">resource</span><span class="o">.</span><span class="n">font_lang_cache</span> <span class="o">=</span> <span class="n">font_lang_cache</span>
     <span class="k">return</span> <span class="n">name</span>
 
@@ -348,18 +470,21 @@
 <span class="c">#-------------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="buildTranslation"><a class="viewcode-back" href="../../albow.html#albow.translate.buildTranslation">[docs]</a><span class="k">def</span> <span class="nf">buildTranslation</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span><span class="n">suppressAlert</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="buildTranslation"><a class="viewcode-back" href="../../albow.html#albow.translate.buildTranslation">[docs]</a><span class="k">def</span> <span class="nf">buildTranslation</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">langPath</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Finds the file corresponding to &#39;lang&#39; builds up string_cache.</span>
 <span class="sd">    If the file is not valid, does nothing.</span>
 <span class="sd">    Errors encountered during the process are silently ignored.</span>
 <span class="sd">    Returns string_cache (dict) and wether the file exists (bool).&quot;&quot;&quot;</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;buildTranslation &lt;&lt;&lt;&quot;</span><span class="p">)</span>
     <span class="n">tm</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">langPath</span><span class="p">:</span>
+        <span class="n">langPath</span> <span class="o">=</span> <span class="n">getLangPath</span><span class="p">()</span>
+    <span class="n">str_cache</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">global</span> <span class="n">string_cache</span>
     <span class="n">fileFound</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="n">lang</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">lang</span>
+    <span class="n">lang</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">lang</span>
     <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">langPath</span><span class="p">,</span> <span class="n">lang</span> <span class="o">+</span> <span class="s">&quot;.trn&quot;</span><span class="p">)</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;fName: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;fName: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">fName</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">F_OK</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span><span class="p">):</span>
         <span class="n">fileFound</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">rawData</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">,</span> <span class="s">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -419,14 +544,29 @@
         <span class="n">result</span> <span class="o">+=</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
         <span class="n">result</span> <span class="o">=</span> <span class="s">u&quot;{&quot;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">u&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">u&quot;</span><span class="se">\\</span><span class="s">n&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">u&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">u&quot;</span><span class="se">\\</span><span class="s">n&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">u&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">u&quot;</span><span class="se">\\</span><span class="s">t&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s">u&quot;</span><span class="se">\&quot;</span><span class="s">}&quot;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    Conversion done. Loading JSON resource.&quot;</span><span class="p">)</span>
-        <span class="n">string_cache</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    Setting up font.&quot;</span><span class="p">)</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">rawData</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s">&quot;#-# &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-            <span class="n">lngNm</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;#-# &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">lngNm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fName</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">resource</span><span class="o">.</span><span class="n">setCurLang</span><span class="p">(</span><span class="n">lngNm</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">str_cache</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">extend</span><span class="p">:</span>
+                <span class="n">string_cache</span><span class="o">.</span><span class="n">update</span><span class="p">([(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="n">str_cache</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">string_cache</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Error while loading JSON resource:&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;    </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Dumping JSON data in </span><span class="si">%s</span><span class="s">.json&quot;</span><span class="o">%</span><span class="n">lang</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">.json&#39;</span><span class="o">%</span><span class="n">lang</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span> <span class="p">{},</span> <span class="bp">False</span>
+<span class="c">#         log.debug(&quot;    Setting up font.&quot;) # Forgotten this here???</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">extend</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">rawData</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s">&quot;#-# &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">lngNm</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;#-# &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lngNm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fName</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">resource</span><span class="o">.</span><span class="n">setCurLang</span><span class="p">(</span><span class="n">lngNm</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">resource</span><span class="o">.</span><span class="n">__curLang</span> <span class="o">=</span> <span class="n">lngNm</span>
         <span class="n">tm1</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;  * End on </span><span class="si">%s</span><span class="s"> duration </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span> <span class="n">tm1</span> <span class="o">-</span> <span class="n">tm</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
@@ -437,6 +577,10 @@
             <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;  * It&#39;s not a file.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="n">fName</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">R_OK</span><span class="p">):</span>
             <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;  * Is not readable.&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Default strings will be used.&quot;</span><span class="p">)</span>
+        <span class="n">str_cache</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">extend</span><span class="p">:</span>
+        <span class="n">string_cache</span> <span class="o">=</span> <span class="n">str_cache</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;buildTranslation &gt;&gt;&gt;&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">string_cache</span><span class="p">,</span> <span class="n">fileFound</span>
 
@@ -452,39 +596,43 @@
     <span class="c">###</span>
 </pre></div>
 
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">MCEdit-Unified v1.5.1.0 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, MCEdit-Unified Team.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.2</a>
-      
-    </div>
+      </div><!-- /row -->
 
-    
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2010-2014 David Rio Vierra (Codewarrior0). 2014-2016 MCEdit-Unified Team and all of the contributers. All Rights Reserved to their respective ownership..
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.
+      </footer>
+      <!-- /footer -->
 
-    
+    </div>
+    <!-- /container -->
+
   </body>
 </html>
