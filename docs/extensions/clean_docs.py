@@ -5,7 +5,6 @@ def setup(app):
     app.connect('build-finished', clean)
     
 def clean(app, exc):
-    print "Called!"
     files = glob.glob(app.builder.outdir + os.path.sep + "*.html")
     for f in files:
         lines = []
