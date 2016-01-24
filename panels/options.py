@@ -293,11 +293,20 @@ class OptionsPanel(Dialog):
                 (sys.platform == "darwin" and _("the MCEdit application") or _("MCEditData"))),
             _("This will move your settings and schematics to your Documents folder. Continue?"),
         ]
-
+        useExisting = False
+        
         alertText = textChoices[directories.portable]
         if albow.ask(alertText) == "OK":
+            if [directories.hasPreviousPortableInstallation, directories.hasPreviousFixedInstallation][directories.portable]():
+                asked = albow.ask("Found a previous " + ["portable", "fixed"][directories.portable] + " installation", responses=["Use", "Overwrite", "Cancel"])
+                if asked == "Use":
+                    useExisting = True
+                elif asked == "Overwrite":
+                    useExisting = False
+                elif asked == "Cancel":
+                    return False
             try:
-                [directories.goPortable, directories.goFixed][directories.portable]()
+                [directories.goPortable, directories.goFixed][directories.portable](useExisting)
             except Exception, e:
                 traceback.print_exc()
                 albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
