@@ -15,9 +15,12 @@ import glutils
 import mceutils
 import functools
 
+DEBUG_WM = mcplatform.DEBUG_WM
+
 
 class GLDisplayContext(object):
     def __init__(self, splash=None):
+        self.win = None
         self.reset(splash)
 
     @staticmethod
@@ -39,7 +42,11 @@ class GLDisplayContext(object):
 
         display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
 
+        if DEBUG_WM:
+            print "config.settings.windowMaximized.get()", config.settings.windowMaximized.get()
         wwh = self.getWindowSize()
+        if DEBUG_WM:
+            print "wwh 1", wwh
         d = display.set_mode(wwh, self.displayMode())
 
         GL.glEnableClientState(GL.GL_VERTEX_ARRAY)
@@ -50,24 +57,13 @@ class GLDisplayContext(object):
         GL.glMatrixMode(GL.GL_TEXTURE)
         GL.glScale(1 / 256., 1 / 256., 1 / 256.)
 
-        if splash:
-            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
-            GL.glWindowPos2d(0, 0)
-            back = Surface(wwh)
-            back.fill((0, 0, 0))
-            GL.glDrawPixels(wwh[0], wwh[1], GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
-                            numpy.fromstring(image.tostring(back, 'RGBA'), dtype='uint8'))
-            swh = splash.get_size()
-            x, y = (wwh[0] / 2 - swh[0] / 2, wwh[1] / 2 - swh[1] / 2)
-            w, h = swh
-            data = image.tostring(splash, 'RGBA', 1)
-            GL.glWindowPos2d(x, y)
-            GL.glDrawPixels(w, h,
-                            GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, numpy.fromstring(data, dtype='uint8'))
-            display.flip()
-
         display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
-        if sys.platform == 'win32' and config.settings.setWindowPlacement.get():
+
+        if mcplatform.WindowHandler:
+            self.win = mcplatform.WindowHandler()
+
+        # The following Windows specific code won't be executed if we're using '--debug-wm' switch.
+        if not DEBUG_WM and sys.platform == 'win32' and config.settings.setWindowPlacement.get():
             config.settings.setWindowPlacement.set(False)
             config.save()
             X, Y = config.settings.windowX.get(), config.settings.windowY.get()
@@ -86,25 +82,49 @@ class GLDisplayContext(object):
 
             config.settings.setWindowPlacement.set(True)
             config.save()
-        elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
-            win = None
-            dis = mcplatform.Xlib.display.Display()
-            root = dis.screen().root
-            # ARCH Linux 3.19.3-3 seem unable to make a query on '_NET_CLIENT_LIST'.
-            # So, restoring window position is disabled for now on distros which can't make this query.
-            try:
-                windowIDs = root.get_full_property(dis.intern_atom('_NET_CLIENT_LIST'), mcplatform.Xlib.X.AnyPropertyType).value
-                for windowID in windowIDs:
-                    window = dis.create_resource_object('window', windowID)
-                    name = window.get_wm_name()
-                    if "MCEdit ~ Unified" in name:
-                        win = window
-                win.configure(x=config.settings.windowX.get(), y=config.settings.windowY.get())
-            except Exception, e:
-                logging.debug('ERROR: Xlib could not find the MCEdit wondow object:')
-                logging.debug('       %s'%e)
-            self.win = win
-            dis.sync()
+        elif self.win:
+            maximized = config.settings.windowMaximized.get()
+            if DEBUG_WM:
+                print "maximized", maximized
+            if maximized:
+                geom = self.win.get_root_rect()
+                in_w, in_h = self.win.get_size()
+                x, y = int((geom[2] - in_w) / 2), int((geom[3] - in_h) / 2)
+                os.environ['SDL_VIDEO_CENTERED'] = '1'
+            else:
+                os.environ['SDL_VIDEO_CENTERED'] = '0'
+                x, y = config.settings.windowX.get(), config.settings.windowY.get()
+                wwh = self.win.get_size()
+            if DEBUG_WM:
+                print "x", x, "y", y
+                print "wwh 2", wwh
+
+        if splash:
+            GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA)
+            GL.glWindowPos2d(0, 0)
+            back = Surface(wwh)
+            back.fill((0, 0, 0))
+            GL.glDrawPixels(wwh[0], wwh[1], GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
+                            numpy.fromstring(image.tostring(back, 'RGBA'), dtype='uint8'))
+            swh = splash.get_size()
+            _x, _y = (wwh[0] / 2 - swh[0] / 2, wwh[1] / 2 - swh[1] / 2)
+            w, h = swh
+            data = image.tostring(splash, 'RGBA', 1)
+            GL.glWindowPos2d(_x, _y)
+            GL.glDrawPixels(w, h,
+                            GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, numpy.fromstring(data, dtype='uint8'))
+
+        if splash:
+            display.flip()
+
+        if self.win:
+            if not maximized:
+                wwh = self.getWindowSize()
+            if DEBUG_WM:
+                print "wwh 3", wwh
+            self.win.set_position((x, y), update=True)
+            if DEBUG_WM:
+                print "* self.win.get_position()", self.win.get_position()
 
         try:
             iconpath = os.path.join(directories.getDataDir(), 'favicon.png')

@@ -39,14 +39,14 @@ except IOError:
         splash = pygame.display.set_mode((1, 1))
     no_splash = True
 pygame.display.update()
-os.environ['SDL_VIDEO_CENTERED'] = '0'
+#os.environ['SDL_VIDEO_CENTERED'] = '0' # Done later, when initializing MCEdit 'real' display.
 
 # Random splash
 #
 # Uses a 'splash' file to check the state.
 # This file contains the name of the splash to be loaded next time MCEdit starts.
 # No splash file means it has to be created.
-# An empty file means the 'splash.png' file will alwas be used.
+# An empty file means the 'splash.png' file will always be used.
 #
 
 if not os.path.exists(splash_name):
