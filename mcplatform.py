@@ -618,7 +618,7 @@ DEBUG_WM = False
 # The two last ones tell whether these pixels shall be added only once (at program startup) or always.
 #
 desktops = {'linux2': {
-        'cinnamon': {
+        'cinnamon': { # Actually, there's a bug when resizing on XCinnamon.
             'position_setter': 'parent',
             'position_getter': 'parent.parent',
             'position_gap': (9, 8, True, True),
@@ -664,11 +664,65 @@ linux_unsuported = ('afterstep',
                     'xfce4')
 
 # Window handlers classes
-class XWindowHandler:
+class BaseWindowHandler:
+    """Abstract class for the platform specific window handlers.
+    If initialized, this class casts a NotImplementedError."""
+    desk_env = desktop_environment
+
+    def __init__(self, *args, **kwargs):
+        """..."""
+        if not len(kwargs):
+            raise NotImplementedError, "Abstract class."
+        self.mode = kwargs['mode']
+
+    def set_mode(self, size, mode):
+        """Wrapper for pygame.display.set_mode()."""
+        display.set_mode(size, mode)
+
+    def get_root_rect(self):
+        """..."""
+        raise NotImplementedError, "Abstract method."
+
+    def get_size(self):
+        """..."""
+        raise NotImplementedError, "Abstract method."
+
+    def set_size(self, size, update=True):
+        """..."""
+        raise NotImplementedError, "Abstract method."
+
+    def get_position(self):
+        """..."""
+        raise NotImplementedError, "Abstract method."
+
+    def set_position(self, pos, update=True):
+        """..."""
+        raise NotImplementedError, "Abstract method."
+
+    def get_state(self):
+        """..."""
+        raise NotImplementedError, "Abstract method."
+
+    def set_state(self, state=NORMAL, size=(-1, -1), pos=(-1, -1), update=True):
+        """..."""
+        raise NotImplementedError, "Abstract method."
+
+    def flush(self):
+        """Just does nothing..."""
+        return
+
+    def sync(self):
+        """Just does nothing..."""
+        return
+
+
+class XWindowHandler(BaseWindowHandler):
     """Object to deal with XWindow managers (Linux)."""
     desk_env = desktop_environment
-    def __init__(self):
+    def __init__(self, pos=(0, 0), size=(0, 0), mode=None):
         """Set up the internal handlers."""
+        BaseWindowHandler.__init__(self, pos=pos, size=size, mode=mode)
+        self.mode = mode
         # setup the internal data, especially the Xlib object we need.
         # Tests
         if DEBUG_WM:
@@ -795,6 +849,9 @@ class XWindowHandler:
         Raises a TypeError if something else than a list or a tuple is sent."""
         if type(size) in (list, tuple):
             # Call the Xlib object handling the size to update it.
+            if DEBUG_WM:
+                print "Setting size to", size
+                print "actual size", self.get_size()
             self.sizeSetter.configure(width=size[0], height=size[1])
             if update:
                 self.sync()
@@ -805,13 +862,15 @@ class XWindowHandler:
     def get_position(self):
         """Return the window actual position as a tuple."""
         geom = self.positionGetter.get_geometry()
-        if DEBUG_WM:
-            print "Actual position is", geom.x, geom.y
-        return (geom.x, geom.y)
+        x, y = geom.x, geom.y
+#         if DEBUG_WM:
+#             print "Actual position is", x, y
+        return (x, y)
 
     def set_position(self, pos, update=True):
         """Set the window position.
-        :pos: list or tuple: the new position (x, y)."""
+        :pos: list or tuple: the new position (x, y).
+        :update: bool: wheteher to call the internal sync method."""
         if DEBUG_WM:
             print "Setting position to", pos
         if type(pos) in (list, tuple):
@@ -834,32 +893,67 @@ class XWindowHandler:
     def get_state(self):
         """Return wheter the window is maximized or not, or minimized or full screen."""
         state = self.stateHandler.get_full_property(self.display.intern_atom("_NET_WM_STATE"), 4)
-        if DEBUG_WM:
-            print "state_1.value", state.value
-            print "max vert", self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_VERT") ,self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_VERT") in state.value
-            print "max horz", self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_HORZ"), self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_HORZ") in state.value
+#         if DEBUG_WM:
+#             print "state_1.value", state.value
+#             print "max vert", self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_VERT") ,self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_VERT") in state.value
+#             print "max horz", self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_HORZ"), self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_HORZ") in state.value
         if self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_HORZ") in state.value and self.display.intern_atom("_NET_WM_STATE_MAXIMIZED_VERT") in state.value:
+#             if DEBUG_WM:
+#                 print MAXIMIZED
             return MAXIMIZED
         elif self.display.intern_atom("_NET_WM_STATE_HIDEN") in state.value:
+#             if DEBUG_WM:
+#                 print MINIMIZED
             return MINIMIZED
         elif self.display.intern_atom("_NET_WM_STATE_FULLSCREEN") in state.value:
+#             if DEBUG_WM:
+#                 print FULLSCREEN
             return FULLSCREEN
+#         if DEBUG_WM:
+#             print NORMAL
         return NORMAL
 
-    def set_state(self, state, update=True):
+    def set_state(self, state=NORMAL, size=(-1, -1), pos=(-1, -1), update=True):
         """Set wheter the window is maximized or not, or minimized or full screen.
         If no argument is given, assume the state will be windowed and not maximized.
         If arguments are given, only the first is relevant. The other ones are ignored.
 
-        ** Only maximizing window is implemented for now. **
+        ** Only maximized and normal states are implemented for now. **
 
-        Valid arguments:
-        'minimized', MINIMIZED, 0: ...
-        'normal', NORMAL, 1: windowed, not maximized
-        'maximized', MAXIMIZED, 2
-        'fullscreen, FULLSCREEN, 3"""
+        :state: valid arguments:
+        'minimized', MINIMIZED, 0.
+        'normal', NORMAL, 1: windowed, not maximized.
+        'maximized', MAXIMIZED, 2.
+        'fullscreen, FULLSCREEN, 3.
+
+        :size: list, tuple: the new size; if (-1, -1) self.get_size() is used.
+               If one element is -1 it is replaced by the corresponding valur from self.get_size().
+        :pos: list, tuple: the new position; if (-1, -1), self.get_position is used.
+              If one element is -1 it is replaced by the corresponding valur from self.get_position().
+        :update: bool: whether to call the internal flush method."""
+        if state not in (0, MINIMIZED, 'minimized',1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
+            # Raise a value error.
+            raise ValueError, "Invalid state argument: %s is not a correct value"%state
+        if type(size) not in (list, tuple):
+            raise TypeError, "Invalid size argument: %s is not a list or a tuple."
+        if type(pos) not in (list, tuple):
+            raise TypeError, "Invalid pos argument: %s is not a list or a tuple."
+
         if state in (1, NORMAL, 'normal'):
-            pass
+            size = list(size)
+            sz = self.get_size()
+            if size[0] == -1:
+                size[0] = sz[0]
+            if size[1] == -1:
+                size[1] = sz[1]
+            pos = list(pos)
+            ps = self.get_position()
+            if pos[0] == -1:
+                pos[0] = ps[0]
+            if pos[1] == -1:
+                pos[1] = ps[1]
+            self.set_mode(size, self.mode)
+            self.set_position(pos)
         elif state in (0, MINIMIZED, 'minimized'):
             pass
         elif state in (2, MAXIMIZED, 'maximized'):
@@ -874,15 +968,12 @@ class XWindowHandler:
                 print "sending event"
             self.display.screen().root.send_event(x_event, event_mask=Xlib.X.SubstructureRedirectMask)
 
-            if update:
-                self.flush()
             if DEBUG_WM:
                 print self.stateHandler.get_wm_state()
         elif state in (3, FULLSCREEN, 'fullscreen'):
             pass
-        else:
-            # Raise a value error.
-            raise ValueError, "%s is not a correct argument value"%state
+        if update:
+            self.flush()
 
     def flush(self):
         """Wrapper around Xlib.Display.flush()"""
@@ -900,11 +991,12 @@ class XWindowHandler:
 #=======================================================================
 # WARNING: This class has been built on Linux using wine.
 # Please review this code and change it consequently before using it without '--debug-wm' switch!
-class WWindowHandler:
+class WWindowHandler(BaseWindowHandler):
     """Object to deal with Microsoft Window managers."""
     desk_env = desktop_environment
-    def __init__(self):
+    def __init__(self, pos=(0, 0), size=(0, 0), mode=None):
         """Set up the internal handlers."""
+        BaseWindowHandler.__init__(self, pos=pos, size=size, mode=mode)
         # Tests
         if DEBUG_WM:
             print "#" * 72
@@ -915,7 +1007,6 @@ class WWindowHandler:
                     print item, getattr(win32con, item)
         self.base_handler = display
         self.base_handler_id = display.get_wm_info()['window']
-#         sys.exit()
 
     def get_root_rect(self):
         """Return a four values tuple containing the position and size of the very first OS window object."""
@@ -932,25 +1023,31 @@ class WWindowHandler:
     def set_size(self, size, update=True):
         """Set the window size.
         :size: list or tuple: the new size.
+        :mode: bool: (re)set the pygame.display mode; self.mode must be a pygame display mode object.
         Raises a TypeError if something else than a list or a tuple is sent."""
         if type(size) in (list, tuple):
             w, h = size
+            cx, cy = win32gui.GetCursorPos()
+            if DEBUG_WM:
+                print "Settin size to", size
+                print "actual size", self.get_size()
+                print "actual position", self.get_position()
+                
+                print 'cursor pos', cx, cy
             flags, showCmd, ptMin, ptMax, rect = win32gui.GetWindowPlacement(self.base_handler_id)
+            if DEBUG_WM:
+                print "set_size rect", rect, "ptMin", ptMin, "ptMax", ptMax, "flags", flags
             x = rect[0]
             y = rect[1]
-
-#             showCmd = config.settings.windowShowCmd.get()
             rect = (x, y, x + w, y + h)
-
             win32gui.SetWindowPlacement(self.base_handler_id, (0, showCmd, ptMin, ptMax, rect))
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple."%size
+            raise TypeError, "%s is not a list or a tuple."%repr(size)
 
     def get_position(self):
         """Return the window actual position as a tuple."""
-        (flags, showCmd, ptMin, ptMax, rect) = win32gui.GetWindowPlacement(
-            self.base_handler_id)
+        (flags, showCmd, ptMin, ptMax, rect) = win32gui.GetWindowPlacement(self.base_handler_id)
         x, y, r, b = rect
         return (x, y)
 
@@ -960,20 +1057,25 @@ class WWindowHandler:
         if DEBUG_WM:
             print "Setting position to", pos
         if type(pos) in (list, tuple):
+            self.first_pos = False
             x, y = pos
-            flags, showCmd, ptMin, ptMax, rect = win32gui.GetWindowPlacement(self.base_handler_id)
-            realW = rect[2] - rect[0]
-            realH = rect[3] - rect[1]
+            if update:
+                flags, showCmd, ptMin, ptMax, rect = win32gui.GetWindowPlacement(self.base_handler_id)
+                if DEBUG_WM:
+                    print "set_position rect", rect, "ptMin", ptMin, "ptMax", ptMax
+                realW = rect[2] - rect[0]
+                realH = rect[3] - rect[1]
+                if DEBUG_WM:
+                    print 'rect[0]', rect[0], 'rect[1]', rect[1]
+                    print 'realW', realW, 'realH', realH
+                    print 'cursor pos', win32gui.GetCursorPos()
 
-#             showCmd = config.settings.windowShowCmd.get()
-            rect = (x, y, x + realW, y + realH)
+                rect = (x, y, x + realW, y + realH)
 
-            win32gui.SetWindowPlacement(self.base_handler_id, (0, showCmd, ptMin, ptMax, rect))
-#             if update:
-#                 win32gui.UpdateWindow(self.base_handler_id)
+                win32gui.SetWindowPlacement(self.base_handler_id, (0, showCmd, ptMin, ptMax, rect))
         else:
             # Raise a Type error.
-            raise TypeError, "%s is not a list or a tuple."%pos
+            raise TypeError, "%s is not a list or a tuple."%repr(pos)
 
     def get_state(self):
         """Return wheter the window is maximized or not, or minimized or full screen."""
@@ -986,41 +1088,54 @@ class WWindowHandler:
             return MINIMIZED
         return NORMAL
 
-    def set_state(self, state, update=True):
+    def set_state(self, state=NORMAL, size=(-1, -1), pos=(-1, -1), update=True):
         """Set wheter the window is maximized or not, or minimized or full screen.
         If no argument is given, assume the state will be windowed and not maximized.
         If arguments are given, only the first is relevant. The other ones are ignored.
 
-        ** Only maximizing window is implemented for now. **
+        ** Only maximized and normal states are implemented for now. **
 
-        Valid arguments:
-        'minimized', MINIMIZED, 0: ...
-        'normal', NORMAL, 1: windowed, not maximized
-        'maximized', MAXIMIZED, 2
-        'fullscreen, FULLSCREEN, 3"""
+        :state: valid arguments:
+        'minimized', MINIMIZED, 0.
+        'normal', NORMAL, 1: windowed, not maximized.
+        'maximized', MAXIMIZED, 2.
+        'fullscreen, FULLSCREEN, 3.
+
+        :size: list, tuple: the new size; if (-1, -1) self.get_size() is used.
+               If one element is -1 it is replaced by the corresponding valur from self.get_size().
+        :pos: list, tuple: the new position; if (-1, -1), self.get_position is used.
+              If one element is -1 it is replaced by the corresponding valur from self.get_position().
+        :update: bool: whether to call the internal flush method."""
+        if state not in (0, MINIMIZED, 'minimized',1, NORMAL, 'normal', 2, MAXIMIZED, 'maximized', 3, FULLSCREEN, 'fullscreen'):
+            # Raise a value error.
+            raise ValueError, "Invalid state argument: %s is not a correct value"%state
+        if type(size) not in (list, tuple):
+            raise TypeError, "Invalid size argument: %s is not a list or a tuple."
+        if type(pos) not in (list, tuple):
+            raise TypeError, "Invalid pos argument: %s is not a list or a tuple."
+
         if state in (1, NORMAL, 'normal'):
-            pass
+            size = list(size)
+            sz = self.get_size()
+            if size[0] == -1:
+                size[0] = sz[0]
+            if size[1] == -1:
+                size[1] = sz[1]
+            pos = list(pos)
+            ps = self.get_position()
+            if pos[0] == -1:
+                pos[0] = ps[0]
+            if pos[1] == -1:
+                pos[1] = ps[1]
+            self.set_mode(size, self.mode)
+            self.set_position(pos)
         elif state in (0, MINIMIZED, 'minimized'):
             pass
         elif state in (2, MAXIMIZED, 'maximized'):
             win32gui.ShowWindow(self.base_handler_id, win32con.SW_MAXIMIZE)
         elif state in (3, FULLSCREEN, 'fullscreen'):
             pass
-        else:
-            # Raise a value error.
-            raise ValueError, "%s is not a correct argument value"%state
 
-    def flush(self):
-        """Wrapper around Xlib.Display.flush()"""
-        if DEBUG_WM:
-            print "* flushing display"
-        return
-
-    def sync(self):
-        """Wrapper around Xlib.Display.sync()"""
-        if DEBUG_WM:
-            print "* syncing display"
-        return
 
 
 

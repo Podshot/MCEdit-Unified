@@ -60,7 +60,7 @@ class GLDisplayContext(object):
         display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
 
         if mcplatform.WindowHandler:
-            self.win = mcplatform.WindowHandler()
+            self.win = mcplatform.WindowHandler(mode=self.displayMode())
 
         # The following Windows specific code won't be executed if we're using '--debug-wm' switch.
         if not DEBUG_WM and sys.platform == 'win32' and config.settings.setWindowPlacement.get():

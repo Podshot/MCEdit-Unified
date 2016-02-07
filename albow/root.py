@@ -358,8 +358,7 @@ class RootWidget(Widget):
                             self.size = (event.w, event.h)
                             #self.dispatch_key('reshape', event)
                         elif type == VIDEOEXPOSE:
-                            # Used to store the position of the window.
-                            if not self.mcedit.maximized and self.mcedit.displayContext.win:
+                            if self.mcedit.displayContext.win and self.mcedit.displayContext.win.get_state() == 1:
                                 x, y = config.settings.windowX.get(), config.settings.windowY.get()
                                 pos = self.mcedit.displayContext.win.get_position()
                                 if pos[0] != x:

@@ -172,7 +172,11 @@ def get_font(size, *names, **kwds):
                 font_file_cache[path] = f
             else:
                 f = font_file_cache[path]
-            font = pygame.font.Font(f, size)
+            # It may happen (on wine and Widows XP) that the font can't be called back from the opened file cache...
+            try:
+                font = pygame.font.Font(f, size)
+            except:
+                font = pygame.font.Font(path, size)
             log.debug("Font %s loaded." % path)
             log.debug("    Original size: %s. Proportion: %s. Final size: %s." % (oSize, font_proportion, size))
             # except:

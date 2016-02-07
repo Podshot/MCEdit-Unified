@@ -171,6 +171,7 @@ class MCEdit(GLViewport):
         if DEBUG_WM:
             print "############################ __INIT__ ###########################"
         self.maximized = config.settings.windowMaximized.get()
+        self.saved_pos = config.settings.windowX.get(), config.settings.windowY.get()
         if displayContext.win and DEBUG_WM:
             print "* self.displayContext.win.state", displayContext.win.get_state()
             print "* self.displayContext.win.position", displayContext.win.get_position()
@@ -204,7 +205,10 @@ class MCEdit(GLViewport):
                 print "###\nself.win", self.win.get_geometry()
                 print "###\nself.wParent.get_geometry()", self.wParent.get_geometry()
                 print "###\nself.wGrandParent.get_geometry()", self.wGrandParent.get_geometry()
-                print "###\nself.wGrandParent.query_tree().parent.get_geometry()", self.wGrandParent.query_tree().parent.get_geometry()
+                try:
+                    print "###\nself.wGrandParent.query_tree().parent.get_geometry()", self.wGrandParent.query_tree().parent.get_geometry()
+                except:
+                    pass
                 print "###\nself.maximizeHandler.get_geometry()", self.maximizeHandler.get_geometry()
                 print "###\nself.geomReciever.get_geometry()", self.geomReciever.get_geometry()
                 print "###\nself.geomSender.get_geometry()", self.geomSender.get_geometry()
@@ -446,91 +450,97 @@ class MCEdit(GLViewport):
         """
         if DEBUG_WM:
             print "############################ RESIZED ############################"
-        GLViewport.resized(self, dw, dh)
 
         (w, h) = self.size
         config_w, config_h = config.settings.windowWidth.get(), config.settings.windowHeight.get()
+        win = self.displayContext.win
+
         if DEBUG_WM:
             print "dw", dw, "dh", dh
-            print "self.size (w, h) 1", self.size
+            print "self.size (w, h) 1", self.size, "win.get_size", win.get_size()
             print "size 1", config_w, config_h
+
+        if win:
+            x, y =  win.get_position()
+            if DEBUG_WM:
+                print "position", x, y
+                print "config pos", (config.settings.windowX.get(), config.settings.windowY.get())
+
         if w == 0 and h == 0:
             # The window has been minimized, no need to draw anything.
             self.editor.renderer.render = False
             return
 
+        if w < 1000:
+            config.settings.windowWidth.set(1000)
+            w = 1000
+            x = config.settings.windowX.get()
+
+        if h < 680:
+            config.settings.windowHeight.set(680)
+            h = 680
+            y = config.settings.windowY.get()
+
         if not self.editor.renderer.render:
             self.editor.renderer.render = True
 
         save_geom = True
-        restore_pos = False
-        flush = True
-        win = self.displayContext.win
+
         if win:
             maximized = win.get_state() == mcplatform.MAXIMIZED
             sz = map(max, win.get_size(), (w, h))
+
             if DEBUG_WM:
                 print "sz", sz
                 print "maximized", maximized, "self.maximized", self.maximized
+
             if maximized:
                 if DEBUG_WM:
                     print "maximize, saving maximized size"
                 config.settings.windowMaximizedWidth.set(sz[0])
                 config.settings.windowMaximizedHeight.set(sz[1])
                 config.save()
+                self.saved_pos = config.settings.windowX.get(), config.settings.windowY.get()
                 save_geom = False
-                pygame.display.set_mode(sz, self.displayContext.displayMode())
-                pygame.display.flip()
+                self.resizing = 0
+                win.set_mode(sz, self.displayContext.displayMode())
             else:
                 if DEBUG_WM:
                     print "size 2", config.settings.windowWidth.get(), config.settings.windowHeight.get()
                     print "config_w", config_w, "config_h", config_h
                     print "pos", config.settings.windowX.get(), config.settings.windowY.get()
                 if self.maximized != maximized:
-                    flush = False
                     if DEBUG_WM:
                         print "restoring window pos and size"
-                    pygame.display.set_mode((config_w, config_h), self.displayContext.displayMode())
-                    pygame.display.flip()
-                    if DEBUG_WM:
                         print "(config.settings.windowX.get(), config.settings.windowY.get())", (config.settings.windowX.get(), config.settings.windowY.get())
-                    win.set_size((config_w, config_h), update=False)
-                    win.set_position((config.settings.windowX.get(), config.settings.windowY.get()), update=True)
-                    self.size = (w, h) = (config_w, config_h)
+                    (w, h) = (config_w, config_h)
+                    win.set_state(1, (w, h), self.saved_pos)
                 else:
-                    pygame.display.set_mode((w, h), self.displayContext.displayMode())
+                    if DEBUG_WM:
+                        print "window resized"
+                        print "setting size to", (w, h), "and pos to", (x,y)
+                    win.set_mode((w, h), self.displayContext.displayMode())
+                    win.set_position((x, y))
                 config.settings.windowMaximizedWidth.set(0)
                 config.settings.windowMaximizedHeight.set(0)
                 config.save()
             self.maximized = maximized
-
 
         if DEBUG_WM:
             print "self.size (w, h) 2", self.size, (w, h)
             surf = pygame.display.get_surface()
             print "display surf rect", surf.get_rect()
             if win:
-                try:
+                if hasattr(win.base_handler, 'get_geometry'):
                     print "win.base_handler geometry", win.base_handler.get_geometry()
                     print "win.base_handler.parent geometry", win.base_handler.query_tree().parent.get_geometry()
                     print "win.base_handler.parent.parent geometry", win.base_handler.query_tree().parent.query_tree().parent.get_geometry()
-                except:
-                    pass
 
-        if w >= 1000 and h >= 680:
-            if save_geom:
-                config.settings.windowWidth.set(w)
-                config.settings.windowHeight.set(h)
-                config.save()
-            if win and flush:
-                win.set_size(sz, update=False)
-        elif w !=0 and h !=0:
-            if save_geom:
-                config.settings.windowWidth.set(1000)
-                config.settings.windowHeight.set(680)
-                config.save()
-            if win and flush:
-                win.set_size((1000, 680), update=False)
+        if save_geom:
+            config.settings.windowWidth.set(w)
+            config.settings.windowHeight.set(h)
+            config.save()
+
         # The alert window is disabled if win is not None
         if not win and (dw > 20 or dh > 20):
             if not hasattr(self, 'resizeAlert'):
@@ -540,7 +550,9 @@ class MCEdit(GLViewport):
                     "Window size increased. You may have problems using the cursor until MCEdit is restarted.")
                 self.resizeAlert = False
         if win:
-            win.flush()
+            win.sync()
+
+        GLViewport.resized(self, dw, dh)
 
     shouldResizeAlert = config.settings.shouldResizeAlert.property()
 
@@ -820,10 +832,12 @@ class MCEdit(GLViewport):
             config.settings.windowMaximized.set(self.maximized)
             if not self.maximized:
                 x, y = win.get_position()
-                if DEBUG_WM:
-                    print "x", x, "y", y
-                config.settings.windowX.set(x)
-                config.settings.windowY.set(y)
+            else:
+                x, y = self.saved_pos
+            if DEBUG_WM:
+                print "x", x, "y", y
+            config.settings.windowX.set(x)
+            config.settings.windowY.set(y)
             
 
     def restart(self):

@@ -294,11 +294,11 @@ class OptionsPanel(Dialog):
             _("This will move your settings and schematics to your Documents folder. Continue?"),
         ]
         useExisting = False
-        
+
         alertText = textChoices[directories.portable]
         if albow.ask(alertText) == "OK":
             if [directories.hasPreviousPortableInstallation, directories.hasPreviousFixedInstallation][directories.portable]():
-                asked = albow.ask("Found a previous " + ["portable", "fixed"][directories.portable] + " installation", responses=["Use", "Overwrite", "Cancel"])
+                asked = albow.ask("Found a previous %s installation"%["portable", "fixed"][directories.portable], responses=["Use", "Overwrite", "Cancel"])
                 if asked == "Use":
                     useExisting = True
                 elif asked == "Overwrite":
