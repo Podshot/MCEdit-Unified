@@ -21,7 +21,7 @@ try:
     found = False
     if os.path.exists(splash_name):
         splash_img = open(splash_name).read().strip()
-        if os.path.exists(splash_img):
+        if os.path.exists(splash_img) and splash_img.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
             found = True
             splash = pygame.image.load(open(splash_img, 'rb'))
     if not found:
@@ -59,4 +59,5 @@ if len(open(splash_name).read()) > 0:
         splashes_folder = os.path.join(cur_dir, splashes_folder)
     if os.path.exists(splashes_folder) and os.listdir(splashes_folder):
         new_splash = choice(os.listdir(splashes_folder))
-        open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
+        if new_splash.split('.')[-1].lower() in ('jpg', 'png', 'bmp', 'pcx', 'tif', 'lbm', 'pbm', 'pgm', 'ppm', 'xpm'):
+            open(splash_name, 'w').write(os.path.join(cur_dir, splashes_folder, new_splash))
