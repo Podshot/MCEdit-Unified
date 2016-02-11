@@ -1177,7 +1177,7 @@ class CameraViewport(GLViewport):
             BasicTextInputRow("ID / ID Name: ", ref=AttrRef(chestWidget, 'id'), width=300),
             # Text to allow the input of internal item names
             IntInputRow("DMG: ", ref=AttrRef(chestWidget, 'Damage'), min=0, max=32767),
-            IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=0, max=64),
+            IntInputRow("Count: ", ref=AttrRef(chestWidget, 'Count'), min=-1, max=64),
             # This button is inactive for now, because we need to work with different IDs types:
             # * The 'human' IDs: Stone, Glass, Swords...
             # * The MC ones: minecraft:stone, minecraft:air...
