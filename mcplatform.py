@@ -1008,6 +1008,11 @@ class WWindowHandler(BaseWindowHandler):
         self.base_handler = display
         self.base_handler_id = display.get_wm_info()['window']
 
+    def set_mode(self, size, mode):
+        """Wrapper for pygame.display.set_mode()."""
+        display.set_mode(size, mode)
+        display.flip()
+
     def get_root_rect(self):
         """Return a four values tuple containing the position and size of the very first OS window object."""
         flags, showCmd, ptMin, ptMax, rect = win32gui.GetWindowPlacement(win32gui.GetDesktopWindow())

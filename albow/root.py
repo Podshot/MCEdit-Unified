@@ -352,20 +352,28 @@ class RootWidget(Widget):
                                     add_modifiers(event)
                                     last_mouse_event_handler.setup_cursor(event)
                                 self.begin_frame()
+                        #'# Actual Windows working but Linux non working code.
+#                         elif type == VIDEORESIZE:
+#                             #pygame.display.set_mode(event.dict['size'], self.surface.get_flags())
+#                             pygame.display.flip()
+#                             #add_modifiers(event)
+#                             #self.bonus_draw_time = False
+#                             old_w, old_h = self.size
+#                             print "Old: " + str(self.size)
+#                             #self.size = (event.w, event.h)
+#                             print "New: " + str(event.__dict__['size'])
+#                             #self.dispatch_key('reshape', event)
+#                             #self.mcedit.displayContext.flip()
+#                             #pygame.display.flip()
+#                             self.root._resized((old_w, old_h))
+#                             print "Resized via pygame"
+                        #'# Old code before the changes for window management (and working on Linux).
                         elif type == VIDEORESIZE:
-                            #pygame.display.set_mode(event.dict['size'], self.surface.get_flags())
-                            pygame.display.flip()
                             #add_modifiers(event)
-                            #self.bonus_draw_time = False
-                            old_w, old_h = self.size
-                            print "Old: " + str(self.size)
-                            #self.size = (event.w, event.h)
-                            print "New: " + str(event.__dict__['size'])
+                            self.bonus_draw_time = False
+                            self.size = (event.w, event.h)
                             #self.dispatch_key('reshape', event)
-                            #self.mcedit.displayContext.flip()
-                            #pygame.display.flip()
-                            self.root._resized((old_w, old_h))
-                            print "Resized via pygame"
+                        #'#
                         elif type == VIDEOEXPOSE:
                             if self.mcedit.displayContext.win and self.mcedit.displayContext.win.get_state() == 1:
                                 x, y = config.settings.windowX.get(), config.settings.windowY.get()
