@@ -242,7 +242,10 @@ class Widget(object):
         if resize:
             if debug_resize:
                 print "Widget.parent_resized: changing rect to", (left, top, width, height)
-            self.rect = (left, top, width, height)
+            print "({0},{1},{2},{3})".format(left, top, width, height)
+            r = Rect((left, top, width, height))
+            print "Type: " + str(type(r))
+            self.rect = Rect((left, top, width, height))
         elif move:
             if debug_resize:
                 print "Widget.parent_resized: moving to", (left, top)
@@ -418,7 +421,7 @@ class Widget(object):
     def dispatch_key(self, name, event):
         if self.visible:
 
-            if event.cmd and event.type == KEYDOWN:
+            if event.type == KEYDOWN:
                 menubar = self._menubar
                 if menubar and menubar.handle_command_key(event):
                     return

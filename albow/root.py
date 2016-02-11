@@ -353,10 +353,19 @@ class RootWidget(Widget):
                                     last_mouse_event_handler.setup_cursor(event)
                                 self.begin_frame()
                         elif type == VIDEORESIZE:
+                            #pygame.display.set_mode(event.dict['size'], self.surface.get_flags())
+                            pygame.display.flip()
                             #add_modifiers(event)
-                            self.bonus_draw_time = False
-                            self.size = (event.w, event.h)
+                            #self.bonus_draw_time = False
+                            old_w, old_h = self.size
+                            print "Old: " + str(self.size)
+                            #self.size = (event.w, event.h)
+                            print "New: " + str(event.__dict__['size'])
                             #self.dispatch_key('reshape', event)
+                            #self.mcedit.displayContext.flip()
+                            #pygame.display.flip()
+                            self.root._resized((old_w, old_h))
+                            print "Resized via pygame"
                         elif type == VIDEOEXPOSE:
                             if self.mcedit.displayContext.win and self.mcedit.displayContext.win.get_state() == 1:
                                 x, y = config.settings.windowX.get(), config.settings.windowY.get()
@@ -371,6 +380,9 @@ class RootWidget(Widget):
                         elif type == NOEVENT:
                             add_modifiers(event)
                             self.call_idle_handlers(event)
+                        #elif type == VIDEORESIZE:
+                        #    pygame.display.set_mode(event.dict['size'],self.surface.get_flags())
+                        #    pygame.display.flip()
 
                     if not self.sessionStolen:
                         try:
