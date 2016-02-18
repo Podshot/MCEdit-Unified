@@ -11,6 +11,8 @@ from cStringIO import StringIO
 
 import locale
 import traceback
+from utilities.misc import Singleton
+
 DEF_ENC = locale.getdefaultlocale()[1]
 if DEF_ENC is None:
     DEF_ENC = "UTF-8"
@@ -617,7 +619,7 @@ class StandingSignTexture(MultipartTexture):
         return log_tex
 
 
-class IResourcePack:
+class IResourcePack(object):
     '''
     Sets all base variables for a Resource Pack
     '''
@@ -965,60 +967,59 @@ class DefaultResourcePack(IResourcePack):
     def tooBig(self):
         return self._too_big
 
-
-def setup_resource_packs():
-    '''
-    Handles parsing of Resource Packs and removing ones that are either have to0 high of a resolution, or don't replace any textures
-    '''
-    log.debug("Setting up the resource packs.")
-    terrains = {}
-    try:
-        os.mkdir("terrain-textures")
-    except OSError:
-        pass
-    terrains["Default Resource Pack"] = DefaultResourcePack()
-
-    if os.path.exists(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")):
-        log.debug("Gathering zipped packs...")
-        zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")
-        log.debug("Gatering folder packs...")
-        folderResourcePacks = os.listdir(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")))
-        log.debug("Processing zipped packs...")
-        for zip_tex_pack in zipResourcePacks:
-            zrp = ZipResourcePack(zip_tex_pack)
-            if not zrp.isEmpty:
-                if not zrp.tooBig:
-                    terrains[zrp.pack_name] = zrp
-        log.debug("Processing folder packs...")
-        for folder_tex_pack in folderResourcePacks:
-            if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", folder_tex_pack)):
-                frp = FolderResourcePack(folder_tex_pack)
-                if not frp.isEmpty:
-                    if not frp.tooBig:
-                        terrains[frp.pack_name] = frp
-    for tex in terrains.keys():
-        pack = terrains[tex]
-        if not os.path.exists(pack.terrain_path()):
-            del terrains[tex]
-    try:
-        shutil.rmtree(os.path.join(directories.parentDir, "textures"))
-    except:
-        print "Could not remove \"textures\" directory"
-        pass
-    return terrains
-
-
+@Singleton
 class ResourcePackHandler:
     '''
     A single point to manage which Resource Pack is being used and to provide the paths to each parsed PNG
     '''
+    Instance = None
+    
+    def setup_reource_packs(self):
+        '''
+        Handles parsing of Resource Packs and removing ones that are either have to0 high of a resolution, or don't replace any textures
+        '''
+        log.debug("Setting up the resource packs.")
+        self._resource_packs = {}
+        try:
+            os.mkdir("terrain-textures")
+        except OSError:
+            pass
+        self._resource_packs["Default Resource Pack"] = DefaultResourcePack()
+
+        if os.path.exists(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")):
+            log.debug("Gathering zipped packs...")
+            zipResourcePacks = directories.getAllOfAFile(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")), ".zip")
+            log.debug("Gatering folder packs...")
+            folderResourcePacks = os.listdir(unicode(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks")))
+            log.debug("Processing zipped packs...")
+            for zip_tex_pack in zipResourcePacks:
+                zrp = ZipResourcePack(zip_tex_pack)
+                if not zrp.isEmpty:
+                    if not zrp.tooBig:
+                        self._resource_packs[zrp.pack_name] = zrp
+            log.debug("Processing folder packs...")
+            for folder_tex_pack in folderResourcePacks:
+                if os.path.isdir(os.path.join(directories.getMinecraftProfileDirectory(directories.getSelectedProfile()), "resourcepacks", folder_tex_pack)):
+                    frp = FolderResourcePack(folder_tex_pack)
+                    if not frp.isEmpty:
+                        if not frp.tooBig:
+                            self._resource_packs[frp.pack_name] = frp
+        for tex in self._resource_packs.keys():
+            pack = self._resource_packs[tex]
+            if not os.path.exists(pack.terrain_path()):
+                del self._resource_packs[tex]
+        try:
+            shutil.rmtree(os.path.join(directories.parentDir, "textures"))
+        except:
+            print "Could not remove \"textures\" directory"
+            pass
 
     def __init__(self):
         try:
             os.mkdir(os.path.join(directories.parentDir, "textures"))
         except OSError:
             pass
-        self._resource_packs = setup_resource_packs()
+        self.setup_reource_packs()
         self._selected_resource_pack = config.settings.resourcePack.get()
         if self._selected_resource_pack not in self._resource_packs.keys():
             self.set_selected_resource_pack_name("Default Resource Pack")
@@ -1040,7 +1041,15 @@ class ResourcePackHandler:
         '''
         Reparses all Resource Packs
         '''
-        self._resource_packs = setup_resource_packs()
+        self.setup_resource_packs()
+        
+    def reparse_resource_pack(self, packName):
+        if packName in self._resource_packs:
+            pack = self._resource_packs[packName]
+            if isinstance(pack, FolderResourcePack):
+                pack.add_textures()
+            elif isinstance(pack, ZipResourcePack):
+                pack.open_pack()
 
     def get_selected_resource_pack_name(self):
         '''
@@ -1063,4 +1072,4 @@ class ResourcePackHandler:
         '''
         return self._resource_packs[self._selected_resource_pack]
 
-packs = ResourcePackHandler()
+#packs = ResourcePackHandler()

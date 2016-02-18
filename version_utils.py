@@ -10,28 +10,20 @@ import atexit
 import threading
 import logging
 from uuid import UUID
+from utilities.misc import deprecated, Singleton
+import httplib
+import base64
 
 logger = logging.getLogger()
 
-def deprecated(func):
-    def new_func(*args, **kwargs):
-        #logger.warn("Function \""+str(func.__name__)+"\" is deprecated and should not be used")
-        return func(*args, **kwargs)   
-    new_func.__name__ = func.__name__
-    if func.__doc__ is not None:
-        new_func.__doc__ = '''*Deprecated*\n%s'''%func.__doc__
-    else:
-        new_func.__doc__ = '''*Deprecated*'''
-    new_func.__dict__.update(func.__dict__)
-    return new_func
-
-
+@Singleton
 class PlayerCache:
     '''
     Used to cache Player names and UUID's, provides an small API to interface with it
     '''
-    
+    Instance = None
     _playerCacheList = []
+    SKIN_URL = "https://sessionserver.mojang.com/session/minecraft/profile/{}"
 
     def __convert(self):
         jsonFile = None
@@ -59,9 +51,13 @@ class PlayerCache:
         Convenient function that fixes any bugs/typos (in the usercache.json file) that Podshot may have created
         '''
         for player in self._playerCacheList:
+            # Timestamp type fixing
             if "Timstamp" in player:
                 player["Timestamp"] = player["Timstamp"]
                 del player["Timstamp"]
+                
+            if "Skin" not in player:
+                player["Skin"] = {"Timestamp": time.time()}   
         self._save()
     
     def load(self):
@@ -388,15 +384,107 @@ class PlayerCache:
         else:
             return playername
             #raise Exception("Couldn't find player")
+            
+    def getPlayerDict(self, key, value):
+        for player in self._playerCacheList:
+            if player.get(key, None) == value:
+                return player
+        return None
+            
+    def getPlayerSkin(self, arg, force_download=True, instance=None):
+        toReturn = 'char.png'
+        try:
+            os.mkdir("player-skins")
+        except OSError:
+            pass
+        uuid_sep, name, uuid = self.getPlayerInfo(arg)
+        player = self.getPlayerDict("UUID (Separator)", uuid_sep)
+        skin_path = os.path.join("player-skins", uuid_sep.replace("-", "_") + ".png")
+        try:
+            if not force_download and os.path.exists(skin_path):
+                skin = Image.open(skin_path)
+                if skin.size == (64,64):
+                    skin = skin.crop((0,0,64,32))
+                    skin.save(skin_path)
+                toReturn = skin_path
+            elif force_download or not os.path.exists(skin_path):
+                
+                if (time.time() - player["Skin"]["Timestamp"]) >= 120:
+                    if os.path.exists(skin_path):
+                        return skin_path
+                    else:
+                        return toReturn
+                    
+                response = self._getDataFromURL(self.SKIN_URL.format(uuid))
+                if response is not None:
+                    parsed = self._parseSkinResponse(response)
+                    if parsed is not None:
+                        with open(skin_path, 'wb') as fp:
+                            fp.write(parsed)
+                        skin = Image.open(skin_path)
+                        if skin.size == (64, 64):
+                            skin = skin.crop((0,0,64,32))
+                            skin.save(skin_path)
+                        toReturn = skin_path
+                        del player["Skin"]["Timestamp"]
+                        player["Skin"]["Timestamp"] = time.time()
+        except IOError:
+            print "Couldn't find Image file ("+skin_path+") or the file may be corrupted"
+            if instance is not None:
+                instance.delete_skin(uuid_sep.replace("-","_"))
+                os.remove(skin_path)
+                toReturn = self.getPlayerSkin(arg, True, instance)
+        except Exception:
+            import traceback
+            print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
+            traceback.format_exc()
+        return toReturn
+    
+    def _getDataFromURL(self, url):
+        try:
+            return urllib2.urlopen(url).read()
+        except urllib2.HTTPError, e:
+            print "Encountered a HTTPError"
+            print "Error: " + str(e.code)
+        except urllib2.URLError, e:
+            print "Encountered an URLError"
+            print "Error: " + str(e.reason)
+        except httplib.HTTPException:
+            print "Encountered a HTTPException"
+        except Exception:
+            import traceback
+            print "Unknown error occurred while trying to get data from URL: " + url
+            traceback.format_exc()
+        return None
+        
+    
+    def _parseSkinResponse(self, response):
+        try:
+            resp = json.loads(response)
+            decoded = base64.b64decode(resp["properties"][0]["value"])
+            resp = json.loads(decoded)
+            if "SKIN" in resp["textures"]:
+                resp = self._getDataFromURL(resp["textures"]["SKIN"]["url"])
+                return resp
+        except:
+            import traceback
+            print "Couldn't parse skin response JSON"
+            traceback.format_exc()
+        return None
+            
     
     @staticmethod
     def __formats():
         player = {
                   "Playername":"<Username>",
-                  "UUID":"<uuid>",
+                  "UUID (Separator)":"<uuid with the '-' separator>",
+                  "UUID (No Separator)":"<uuid without the '-' separator",
                   "Timestamp":"<timestamp>",
                   # WasSuccessful will be true if the UUID/Player name was retrieved successfully
-                  "WasSuccessful":True
+                  "WasSuccessful":True,
+                  "Skin": {
+                           "Timestamp":"<timestamp>",
+                           }
                   }
         pass
     
@@ -412,23 +500,24 @@ class PlayerCache:
             self._playerCacheList.remove(toRemove)
         self._save()
          
-_playercache = PlayerCache()
-_playercache.load()
-playercache = _playercache
+#_playercache = PlayerCache()
+#_playercache.load()
+#playercache = _playercache
+PlayerCache.Instance().load()
             
 @deprecated
 def getUUIDFromPlayerName(player, seperator=True, forceNetwork=False):
     '''
     Old compatibility function for the PlayerCache method. It is recommended to use playercache.getPlayerInfo()
     '''
-    return playercache.getPlayerFromPlayername(player, forceNetwork, seperator)
+    return PlayerCache.Instance().getPlayerFromPlayername(player, forceNetwork, seperator)
 
 @deprecated
 def getPlayerNameFromUUID(uuid,forceNetwork=False):
     '''
     Old compatibility function for the PlayerCache method. It is recommended to use playercache.getPlayerInfo()
     '''
-    return playercache.getPlayerFromUUID(uuid, forceNetwork)     
+    return PlayerCache.Instance().getPlayerFromUUID(uuid, forceNetwork)     
 
 def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     '''
@@ -445,6 +534,8 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     :return: The path to the player skin
     :rtype: str
     '''
+    '''
+    playercache = PlayerCache.Instance()
     SKIN_URL = "http://skins.minecraft.net/MinecraftSkins/{}.png"
     toReturn = 'char.png'
     try:
@@ -489,6 +580,9 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
         print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
         pass
     return toReturn
+    '''
+    #return PlayerCache.Instance().getPlayerSkin(uuid, force, instance)
+    return 'char.png'
 
 def _cleanup():
     if os.path.exists("player-skins"):
@@ -500,7 +594,7 @@ def _cleanup():
             except IOError:
                 fp.close()
                 os.remove(os.path.join("player-skins", image_file))
-    playercache.cleanup()
+    PlayerCache.Instance().cleanup()
     
 atexit.register(_cleanup)
 

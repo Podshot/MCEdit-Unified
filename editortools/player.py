@@ -29,7 +29,7 @@ import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
 from pymclevel import nbt
 import logging
-import version_utils
+from version_utils import PlayerCache, getPlayerSkin
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
 import pygame
 
@@ -45,6 +45,7 @@ class PlayerRemoveOperation(Operation):
         self.player = player
         self.level = self.tool.editor.level
         self.canUndo = False
+        self.playercache = PlayerCache.Instance()
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -64,7 +65,7 @@ class PlayerRemoveOperation(Operation):
         if self.tool.panel:
             if self.player != "Player":
                 #self.tool.panel.players.remove(version_utils.getPlayerNameFromUUID(self.player))
-                self.tool.panel.players.remove(version_utils.playercache.getPlayerFromUUID(self.player))
+                self.tool.panel.players.remove(self.playercache.getPlayerFromUUID(self.player))
             else:
                 self.tool.panel.players.remove("Player (Single Player)")
 
@@ -95,7 +96,7 @@ class PlayerRemoveOperation(Operation):
             self.level.players.append(self.player)
             if self.tool.panel:
                 if self.player != "Player":
-                    self.tool.panel.players.append(version_utils.playercache.getPlayerFromUUID(self.player))
+                    self.tool.panel.players.append(self.playercache.getPlayerFromUUID(self.player))
                 else:
                     self.tool.panel.players.append("Player (Single Player)")
 
@@ -118,6 +119,7 @@ class PlayerAddOperation(Operation):
         self.tool = tool
         self.level = self.tool.editor.level
         self.canUndo = False
+        self.playercache = PlayerCache.Instance()
 
     def perform(self, recordUndo=True):
         initial = ""
@@ -135,7 +137,7 @@ class PlayerAddOperation(Operation):
             else:
                 break
         try:
-            data = version_utils.playercache.getPlayerInfo(self.player, force=True)
+            data = self.playercache.getPlayerInfo(self.player, force=True)
             if isinstance(data, tuple):
                 self.uuid = data[0]
                 self.player = data[1]
@@ -148,7 +150,7 @@ class PlayerAddOperation(Operation):
             self.uuid = input_text_buttons("Enter a Player UUID: ", 160)
             if not self.uuid:
                 return
-            self.player = version_utils.playercache.getPlayerFromUUID(self.uuid)
+            self.player = self.playercache.getPlayerFromUUID(self.uuid)
             if self.player == self.uuid.replace("-", ""):
                 if ask("UUID was not found. Continue anyways?") == "Cancel":
                     return
@@ -177,7 +179,7 @@ class PlayerAddOperation(Operation):
 
         self.tool.playerPos[self.editor.level.dimNo][(0,0,0)] = self.uuid
         self.tool.revPlayerPos[self.editor.level.dimNo][self.uuid] = (0,0,0)
-        self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid, force=False))
+        self.tool.playerTexture[self.uuid] = loadPNGTexture(self.getPlayerSkin(self.uuid, force=False))
         self.tool.markerList.invalidate()
         self.tool.recordMove = False
         self.tool.movingPlayer = self.uuid
@@ -244,7 +246,7 @@ class PlayerAddOperation(Operation):
             if self.tool.panel:
                 self.tool.panel.players.append(self.player)
                 self.tool.panel.player_UUID[self.player] = self.uuid
-            self.tool.playerTexture[self.uuid] = loadPNGTexture(version_utils.getPlayerSkin(self.uuid))
+            self.tool.playerTexture[self.uuid] = loadPNGTexture(getPlayerSkin(self.uuid))
             self.tool.playerPos[(0,0,0)] = self.uuid
             self.tool.revPlayerPos[self.uuid] = (0,0,0)
             self.playerTag.save(self.level.getPlayerPath(self.uuid))
@@ -392,6 +394,7 @@ class PlayerPositionPanel(Panel):
         self.tool = tool
         self.player_UUID = {}
         self.level = tool.editor.level
+        self.playercache = PlayerCache.Instance()
         if hasattr(self.level, 'players'):
             players = self.level.players or ["[No players]"]
             if not self.level.oldPlayerFolderFormat:
@@ -400,7 +403,7 @@ class PlayerPositionPanel(Panel):
                         if len(player) > 4 and player[4] == "-":
                             os.rename(os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player+".dat"), os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player.replace("-", "", 1)+".dat"))
                             player = player.replace("-", "", 1)
-                        data = version_utils.playercache.getPlayerInfo(player)
+                        data = self.playercache.getPlayerInfo(player)
                         if isinstance(data, tuple):
                             self.player_UUID[data[1]] = data[0]
                         else:
@@ -621,7 +624,8 @@ class PlayerPositionTool(EditorTool):
             for player in self.editor.level.players:
                 if player != "Player" and player in self.playerTexture.keys():
                     del self.playerTexture[player]
-                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=True, instance=self))
+                    self.playerTexture[player] = loadPNGTexture(getPlayerSkin(player, force=True, instance=self))
+            self.markerList.call(self._drawToolMarkers)
         except:
             raise Exception("Could not connect to the skins server, please check your Internet connection and try again.")
 
@@ -825,7 +829,7 @@ class PlayerPositionTool(EditorTool):
                 self.revPlayerPos[dim][player] = pos
                 
                 if player != "Player" and config.settings.downloadPlayerSkins.get():
-                    self.playerTexture[player] = loadPNGTexture(version_utils.getPlayerSkin(player, force=False))
+                    self.playerTexture[player] = loadPNGTexture(getPlayerSkin(player, force=False))
                 else:
                     self.playerTexture[player] = self.charTex
                     
