@@ -242,9 +242,7 @@ class Widget(object):
         if resize:
             if debug_resize:
                 print "Widget.parent_resized: changing rect to", (left, top, width, height)
-            print "({0},{1},{2},{3})".format(left, top, width, height)
             r = Rect((left, top, width, height))
-            print "Type: " + str(type(r))
             self.rect = Rect((left, top, width, height))
         elif move:
             if debug_resize:

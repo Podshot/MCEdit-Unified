@@ -1008,10 +1008,21 @@ class WWindowHandler(BaseWindowHandler):
         self.base_handler = display
         self.base_handler_id = display.get_wm_info()['window']
 
-    def set_mode(self, size, mode):
-        """Wrapper for pygame.display.set_mode()."""
-        display.set_mode(size, mode)
-        display.flip()
+    if platform.dist() == ('', '', ''):
+        # We're running on a native Windows.
+        def set_mode(self, size, mode):
+            """Wrapper for pygame.display.set_mode()."""
+            # Windows pygame implementation seem to work on the display mode and size on it's own...
+            return
+    else:
+        # We're running on wine.
+        def set_mode(self, size, mode):
+            """Wrapper for pygame.display.set_mode()."""
+            if getattr(self, 'wine_state_fix', False):
+                self.set_size(size)
+                self.wine_state_fix = True
+            else:
+                self.wine_state_fix = False
 
     def get_root_rect(self):
         """Return a four values tuple containing the position and size of the very first OS window object."""
