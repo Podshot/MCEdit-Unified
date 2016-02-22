@@ -261,7 +261,7 @@ class PocketLeveldbDatabase(object):
             while it.Valid():
                 key = it.key()
 
-                if len(key) < 9:
+                if len(key) != 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
                     it.Next()
                     continue
                     
