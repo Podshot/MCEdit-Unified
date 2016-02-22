@@ -68,7 +68,7 @@ ch.setFormatter(fmt)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-import version_utils
+from version_utils import PlayerCache
 import directories
 import keys
 
@@ -383,7 +383,7 @@ class MCEdit(GLViewport):
             platform_open(os.path.join(directories.getDataDir(), "LICENSE.txt"))
             
         def refresh():
-            version_utils.playercache.force_refresh()
+            PlayerCache.Instance().force_refresh()
 
         hotkeys = ([("",
                      "Controls",
