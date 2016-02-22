@@ -69,12 +69,14 @@ def perform(level, box, options):
         OPT = optmap.get(opt, opt.replace(" ", "").upper())
         if OPT in dir(Forester):
             val = options[opt]
+            print 'opt', opt, 'val', val
             if isinstance(val, (str, unicode)):
                 val = val.replace(" ", "").lower()
 
             setattr(Forester, OPT, val)
 
     # set all of the options
+    print 'options', options
     for option in options:
         setOption(option)
     # set the EDGEHEIGHT the same as CENTERHEIGHT

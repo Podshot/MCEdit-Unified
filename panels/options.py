@@ -261,13 +261,13 @@ class OptionsPanel(Dialog):
         logging.debug('*** Language change detected.')
         logging.debug('    Former language: %s.'%albow.translate.getLang())
         logging.debug('    New language: %s.'%lng)
-        albow.translate.langPath = os.sep.join((".", "lang"))
+        albow.translate.langPath = os.sep.join((directories.getDataDir(), "lang"))
         update = albow.translate.setLang(lng)[2]
         logging.debug('    Update done? %s (Magic %s)'%(update, update or lng == 'en_US'))
-        self.mcedit.root.set_update_translation(update or lng == 'en_US')
-        self.mcedit.root.set_update_translation(False)
-        self.mcedit.editor.set_update_translation(update or lng == 'en_US')
-        self.mcedit.editor.set_update_translation(False)
+        self.mcedit.root.set_update_ui(update or lng == 'en_US')
+        self.mcedit.root.set_update_ui(False)
+        self.mcedit.editor.set_update_ui(update or lng == 'en_US')
+        self.mcedit.editor.set_update_ui(False)
         #-#
 
     @staticmethod
@@ -293,11 +293,20 @@ class OptionsPanel(Dialog):
                 (sys.platform == "darwin" and _("the MCEdit application") or _("MCEditData"))),
             _("This will move your settings and schematics to your Documents folder. Continue?"),
         ]
+        useExisting = False
 
         alertText = textChoices[directories.portable]
         if albow.ask(alertText) == "OK":
+            if [directories.hasPreviousPortableInstallation, directories.hasPreviousFixedInstallation][directories.portable]():
+                asked = albow.ask("Found a previous %s installation"%["portable", "fixed"][directories.portable], responses=["Use", "Overwrite", "Cancel"])
+                if asked == "Use":
+                    useExisting = True
+                elif asked == "Overwrite":
+                    useExisting = False
+                elif asked == "Cancel":
+                    return False
             try:
-                [directories.goPortable, directories.goFixed][directories.portable]()
+                [directories.goPortable, directories.goFixed][directories.portable](useExisting)
             except Exception, e:
                 traceback.print_exc()
                 albow.alert(_(u"Error while moving files: {0}").format(repr(e)))
@@ -308,28 +317,14 @@ class OptionsPanel(Dialog):
         return True
 
     def dismiss(self, *args, **kwargs):
-        """Used to change the language and the font proportion"""
-        lang = config.settings.langCode.get() == old_lang or config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
-        font = config.settings.fontProportion.get() == old_fprop or config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
-        #-# The following lines will be used for the language and font dynamic changes
-        #-# The restart boxes will be suppressed.
-#        lang = config.settings.langCode.get() == self.saveOldConfig[config.settings.langCode]
-#        font = config.settings.fontProportion.get() == self.saveOldConfig[config.settings.fontProportion]
-#        self.changeLanguage()
-
-#        if not font or not lang:
-#            editor = self.mcedit.editor
-#            if editor and editor.unsavedEdits:
-#                result = albow.ask("You must restart MCEdit to see language changes", ["Save and Restart", "Restart", "Later"])
-#            else:
-#                result = albow.ask("You must restart MCEdit to see language changes", ["Restart", "Later"])
-#            if result == "Save and Restart":
-#                editor.saveFile()
-#                self.mcedit.restart()
-#            elif result == "Restart":
-#                self.mcedit.restart()
-#            elif result == "Later":
-#                pass
+        """Used to change the font proportion."""
+        # If font proportion setting has changed, update the UI.
+        if config.settings.fontProportion.get() != self.saveOldConfig[config.settings.fontProportion]:
+            albow.resource.reload_fonts(proportion=config.settings.fontProportion.get())
+            self.mcedit.root.set_update_ui(True)
+            self.mcedit.root.set_update_ui(False)
+            self.mcedit.editor.set_update_ui(True)
+            self.mcedit.editor.set_update_ui(False)
 
         self.reshowNumberFields()
         for key in self.saveOldConfig.keys():

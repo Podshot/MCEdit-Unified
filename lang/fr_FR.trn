@@ -322,8 +322,8 @@ o149 Snap Clone to Axis (Hold)
 t149 Pos. clone sur axe (Maintenir)
 o150 Blocks-Only Modifier (Hold)
 t150 Modif. blocs seuls (Maintenir)
-o151 Fast Increment Modifier
-t151 Modif. incrément rapide
+o151 Fast Increment Modifier (Hold)
+t151 Modif. incrément rapide (Maintenir)
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
 t152 Les feuillages sont 'solides', comme pour l'option 'Rapides' des graphismes de Minecraft
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
@@ -618,7 +618,7 @@ o289 Duration (Seconds)
 t289 Durée (secondes)
 o290 Add Potion Effect to Mobs
 t290 Ajouter effet de potion aux monstres
-o291 Banslimes
+o291 BanSlimes
 t291 Bannir slimes
 o292 Change Mob Properties
 t292 Changer prop. des monstres
@@ -986,8 +986,8 @@ o460 Cold Taiga M
 t460 Taïga froide M
 o461 Mega Spruce Taiga
 t461 Méga taïga avec épicéas
-o462 Mega Spruce Taiga 
-t462 Méga taïga avec épicéas 
+o462 Mega Spruce Taiga Hills
+t462 
 o463 Extreme Hills+ M
 t463 Collines extrêmes+ M
 o464 Savanna M
@@ -1997,6 +1997,44 @@ t928 §f  Blanc
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
 t929 Cliquez-glissez pour repositionner l'objet. Double-cliquez pour le prendre. Cliquez Importer ou appuyez sur Entrée pour confirmer.
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t930 
+t930 Entrez un ID d'entié pour ce spawner. Les IDs invalides peuvent crasher Minecraft.
 o931 Right mouse
-t931 
+t931 Bouton droit
+o932 Deleting the item {0} from the entire world ({1} chunks)
+t932 Suppression de l'objet {0} du monde ({1} chunks)
+o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t933 ATTENTION : Vous allez modifier le monde dans son ensemble. Il n'est pas possible de retourner en arrière. Vraiment supprimer toutes les copies dans tout le paysage, tous les conteneurs (y compris l'inventaire des joueurs) ansi que les objets au sol ?
+o934 Check to show/hide specific ores using the settings below.
+t934 Cochez cette case pour afficher les minerais cachés.
+o935 NBTEdit
+t935 
+o936 Save camera position on close
+t936 Sauver la position de la caméra en quitant
+o937 Waypoints
+t937 Pts. de passage
+o938 Empty
+t938 Vide
+o939 Create Waypoint
+t939 Créer point
+o940 Goto Waypoint
+t940 Aller au point
+o941 Delete Waypoint
+t941 Suppr. point
+o942 Save Camera position on world close
+t942 Sauver la position de la caméra en quitant
+o943 Save Rotation
+t943 Sauvegarder rotation
+o944 Waypoint Name:
+t944 Nom du point :
+o945 Session lock lost. This world is being accessed from another location.
+t945 La session est verrouilée par une autre application.
+o946 
+
+Your changes cannot be saved.
+t946 
+
+Vos changements ne peuvent être sauvegardés.
+o947 Click to import this item.
+t947 Cliquer pour importe cet objet.
+o948 Menu
+t948 Menu

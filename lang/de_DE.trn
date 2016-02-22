@@ -322,8 +322,8 @@ o149 Snap Clone to Axis (Hold)
 t149 Snap-Kopie zur Achse (Halten)
 o150 Blocks-Only Modifier (Hold)
 t150 Nur-Blöcke-Modifizierer (Halten)
-o151 Fast Increment Modifier
-t151 Schneller Erhöhungsmodifizierer
+o151 Fast Increment Modifier (Hold)
+t151 Schneller Erhöhungsmodifizierer (Halten)
 o152 Leaves are solid, like Minecraft's 'Fast' graphics
 t152 Laub ist undurchsichtig, wie in Minecrafts 'Schnell'-Grafikeinstellung
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
@@ -618,7 +618,7 @@ o289 Duration (Seconds)
 t289 Dauer (in Sekunden)
 o290 Add Potion Effect to Mobs
 t290 Statuseffekt zu Kreaturen hinzufügen
-o291 Banslimes
+o291 BanSlimes
 t291 BanSlimes
 o292 Change Mob Properties
 t292 Mob-Eigenschaften ändern
@@ -985,7 +985,7 @@ o460 Cold Taiga M
 t460 Verschneite Taiga M
 o461 Mega Spruce Taiga
 t461 Riesenfichten-Taiga
-o462 Mega Spruce Taiga 
+o462 Mega Spruce Taiga Hills
 t462 Riesenfichten-Taigahügel
 o463 Extreme Hills+ M
 t463 Extreme Berge+ M
@@ -1768,7 +1768,7 @@ t816 FTP-Benutzername:
 o817 FTP Password:
 t817 FTP-Passwort:
 o818 NOTE: MCEdit-Unified will not use any FTP server info other than to login to the server
-t818 NOTIZ: MCEdit-Unified wird keine anderen FTP-Serverdaten benutzen die Einloggdaten
+t818 NOTIZ: MCEdit-Unified wird keine anderen FTP-Serverdaten benutzen bis auf die Einloggdaten
 o819 Please wait while MCEdit-Unified downloads the world. It will be opened once completed
 t819 Bitte warte, während MCEdit-Unified die Welt herunterlädt. Danach wird sie geöffnet
 o820 Connect
@@ -1851,7 +1851,6 @@ o856 [Empty]
 t856 [Leer]
 o857 Couldn't open the file
 t857 Datei konnte nicht geöffnet werden
-
 o858 Edit Command Block
 t858 Befehlsblock bearbeiten
 o859 Command:
@@ -1947,9 +1946,9 @@ t903 F (1,9)
 o904 F# (2.0)
 t904 Fis/Ges (2,0)
 o905 Only delete items with the same damage value
-t905 Lösche nur Gegenstände mit den selben Metadaten
+t905 Nur Gegenstände mit den selben Metadaten löschen
 o906 Also delete blocks placed in the world
-t906 Lösche auch Blöcke, die in der Welt platziert wurden
+t906 Auch Blöcke löschen, die in der Welt platziert wurden
 o907 No command blocks found
 t907 Keine Befehlsblöcke gefunden
 o908 Analysis
@@ -1957,46 +1956,84 @@ t908 Analyse
 o909 Click to set the spawn position.
 t909 Klicke, um den Spawnpunkt zu setzen.
 o910 <Toolbar>
-t910 
+t910 <Schnellzugriffsleiste>
 o911 Edit Sign
-t911 
+t911 Schild bearbeiten
 o912 Add Color Code...
-t912 
+t912 Farbcode hinzufügen...
 o913 §0  Black
-t913 
+t913 §0  Schwarz
 o914 §1  Dark Blue
-t914 
+t914 §1  Dunkelblau
 o915 §2  Dark Green
-t915 
+t915 §2  Dunkelgrün
 o916 §3  Dark Aqua
-t916 
+t916 §3  Türkis
 o917 §4  Dark Red
-t917 
+t917 §4  Dunkelrot
 o918 §5  Dark Purple
-t918 
+t918 §5  Lila
 o919 §6  Gold
-t919 
+t919 §6  Gold
 o920 §7  Gray
-t920 
+t920 §7  Grau
 o921 §8  Dark Gray
-t921 
+t921 §8  Dunkelgrau
 o922 §9  Blue
-t922 
+t922 §9  Blau
 o923 §a  Green
-t923 
+t923 §a  Grün
 o924 §b  Aqua
-t924 
+t924 §b  Hellblau
 o925 §c  Red
-t925 
+t925 §c  Rot
 o926 §d  Light Purple
-t926 
+t926 §d  Pink
 o927 §e  Yellow
-t927 
+t927 §e  Gelb
 o928 §f  White
-t928 
+t928 §f  Weiß
 o929 Click and drag to reposition the item. Double-click to pick it up. Click Import or press Enter to confirm.
-t929 
+t929 Klicke und ziehe, um das Objekt neu zu positionieren. Doppelklicke, um es aufzunehmen. Klicke Import oder drücke Enter zur Bestätigung
 o930 Type in an EntityID for this spawner. Invalid IDs may crash Minecraft.
-t930 
+t930 Entity-ID des Typs dieses Spawners. Ungültige Werte können Minecraft zum Abstürzen bringen.
 o931 Right mouse
-t931 
+t931 Rechte Maustaste
+o932 Deleting the item {0} from the entire world ({1} chunks)
+t932 Lösche den Gegenstand {0} aus der gesamten Welt ({1} Chunks)
+o933 WARNING: You are about to modify the entire world. This cannot be undone. Really delete all copies of this item from all land, chests, furnaces, dispensers, dropped items, item-containing tiles, and player inventories in this world?
+t933 WARNUNG: Du bist dabei, die komplette Welt zu verändern. Dies kann nicht rückgängig gemacht werden. Möchtest du wirklich alle Vorkommnisse dieses Gegenstandes in allen Chunks, Truhen, Öfen, Werfern, sowie allen sontigen Behältern und Inventaren in dieser Welt entfernen?
+o934 Check to show/hide specific ores using the settings below.
+t934 Auswählen, um spezifische Erze mithilfe der folgenden Einstellungen anzuzeigen oder zu verstecken
+o935 NBTEdit
+t935 NBTEdit
+o936 Save camera position on close
+t936 Kameraposition beim Schließen speichern
+o937 Waypoints
+t937 Wegpunkte
+o938 Empty
+t938 Leer
+o939 Create Waypoint
+t939 Wegpunkt erstellen
+o940 Goto Waypoint
+t940 Zum Wegpunkt gehen
+o941 Delete Waypoint
+t941 Wegpunkt löschen
+o942 Save Camera position on world close
+t942 Kameraposition beim Schließen der Welt speichern
+o943 Save Rotation
+t943 Rotation speichern
+o944 Waypoint Name:
+t944 Wegpunkt Name:
+o945 Session lock lost. This world is being accessed from another location.
+t945 Session Lock verloren. Ein anderes Programm greift auf diese Welt zu.
+o946 
+
+Your changes cannot be saved.
+t946 
+
+Deine Änderungen konnten nicht gespeichert werden.
+o947 Click to import this item.
+t947 Klicke, um dieses Element zu importieren.
+o948 Menu
+t948 Menü

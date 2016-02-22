@@ -173,7 +173,8 @@ class FurnaceDispenserChest:
         alphaMaterials.Furnace.ID,
         alphaMaterials.LitFurnace.ID,
         alphaMaterials.Chest.ID,
-        alphaMaterials.EnderChest.ID
+        alphaMaterials.EnderChest.ID,
+        alphaMaterials.TrappedChest.ID
     ]
     East = 2
     West = 3
@@ -718,9 +719,9 @@ class Wood:
     North = 3
 
 
-genericFlipRotation(Anvil)
-applyAnvilBit = applyBit8
-applyAnvilBit(Anvil)
+genericFlipRotation(Wood)
+applyWoodBit = applyBit8
+applyWoodBit(Wood)
 
 
 class FenceGate:
@@ -763,21 +764,19 @@ class CocoaPlant:
 
 applyBits48(CocoaPlant)  # growth state
 
-
 @genericFlipRotation
 class TripwireHook:
     blocktypes = [alphaMaterials.TripwireHook.ID]
 
-    South = 0
-    West = 1
-    North = 2
-    East = 3
+    South = 1
+    West = 2
+    North = 3
+    East = 0
 
-
-applyBits48(TripwireHook)  # activation/ready state
-
+applyBits48(TripwireHook)
 
 @genericFlipRotation
+
 class MobHead:
     blocktypes = [alphaMaterials.MobHead.ID]
 
@@ -796,6 +795,7 @@ class Hopper:
     North = 4
     South = 5
 
+applyBit8(Hopper)
 Hopper.roll = arange(16, dtype='uint8')
 Hopper.roll[Hopper.Down] = Hopper.South
 Hopper.roll[Hopper.North] = Hopper.Down

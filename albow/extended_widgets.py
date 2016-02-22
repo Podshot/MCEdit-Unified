@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 # extended_widgets.py
 # Moved albow related stuff from mceutils.
-import resource_packs
 from controls import ValueDisplay
 from dialogs import alert, ask, Dialog
 from controls import Button, Label, ValueButton, CheckBox, AttrRef
@@ -36,7 +35,7 @@ class HotkeyColumn(Widget):
         Widget.__init__(self)
         self.buildWidgets()
 
-    def set_update_translation(self, v):
+    def set_update_ui(self, v):
         if v:
             self.buildWidgets()
 
@@ -150,9 +149,9 @@ class ChoiceButton(ValueButton):
         self.choiceIndex = 0
 
     #-# Translation live update preparation
-    def set_update_translation(self, v):
-        ValueButton.set_update_translation(self, v)
-        self.menu.set_update_translation(v)
+    def set_update_ui(self, v):
+        ValueButton.set_update_ui(self, v)
+        self.menu.set_update_ui(v)
 
     def calc_width(self):
         widths = [self.font.size(_(c, self.doNotTranslate))[0] for c in self.choices] + [self.width]

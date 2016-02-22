@@ -4067,13 +4067,34 @@ blocks:
   - id: 137
     idStr: command_block
     name: Command Block
+    search: Impulse
     mapcolor: [200, 200, 200]
-    tex: [8, 11]
+    tex: [19, 11]
     data:
       0:
-        name: Command Block
+        name: Command Block (Not Conditional, Down)
       1:
-        name: Command Block (Triggered)
+        name: Command Block (Not Conditional, Up)
+      2:
+        name: Command Block (Not Conditional, North)
+      3:
+        name: Command Block (Not Conditional, South)
+      4:
+        name: Command Block (Not Conditional, West)
+      5:
+        name: Command Block (Not Conditional, East)
+      8:
+        name: Command Block (Conditional, Down)
+      9:
+        name: Command Block (Conditional, Up)
+      10:
+        name: Command Block (Conditional, North)
+      11:
+        name: Command Block (Conditional, South)
+      12:
+        name: Command Block (Conditional, West)
+      13:
+        name: Command Block (Conditional, East)
 
   - id: 138
     idStr: beacon
@@ -6327,6 +6348,82 @@ blocks:
     tex: [16, 15]
     brightness: 15
 
+  - id: 210
+    idStr: repeating_command_block
+    name: Repeating Command Block
+    mapcolor: [200, 200, 200]
+    tex: [19, 12]
+    data:
+      0:
+        name: Repeating Command Block (Not Conditional, Down)
+      1:
+        name: Repeating Command Block (Not Conditional, Up)
+      2:
+        name: Repeating Command Block (Not Conditional, North)
+      3:
+        name: Repeating Command Block (Not Conditional, South)
+      4:
+        name: Repeating Command Block (Not Conditional, West)
+      5:
+        name: Repeating Command Block (Not Conditional, East)
+      8:
+        name: Repeating Command Block (Conditional, Down)
+      9:
+        name: Repeating Command Block (Conditional, Up)
+      10:
+        name: Repeating Command Block (Conditional, North)
+      11:
+        name: Repeating Command Block (Conditional, South)
+      12:
+        name: Repeating Command Block (Conditional, West)
+      13:
+        name: Repeating Command Block (Conditional, East)
+
+  - id: 211
+    idStr: chain_command_block
+    name: Chain Command Block
+    mapcolor: [200, 200, 200]
+    tex: [19, 13]
+    data:
+      0:
+        name: Chain Command Block (Not Conditional, Down)
+      1:
+        name: Chain Command Block (Not Conditional, Up)
+      2:
+        name: Chain Command Block (Not Conditional, North)
+      3:
+        name: Chain Command Block (Not Conditional, South)
+      4:
+        name: Chain Command Block (Not Conditional, West)
+      5:
+        name: Chain Command Block (Not Conditional, East)
+      8:
+        name: Chain Command Block (Conditional, Down)
+      9:
+        name: Chain Command Block (Conditional, Up)
+      10:
+        name: Chain Command Block (Conditional, North)
+      11:
+        name: Chain Command Block (Conditional, South)
+      12:
+        name: Chain Command Block (Conditional, West)
+      13:
+        name: Chain Command Block (Conditional, East)
+        
+  - id: 212
+    idStr: frosted_ice
+    name: Frosted Ice
+    tex: [19, 16]
+    data:
+      0:
+        name: Frosted Ice
+      1:
+        name: Frosted Ice (Stage 1 Cracks)
+      2:
+        name: Frosted Ice (Stage 2 Cracks)
+      3:
+        name: Frosted Ice (Stage 3 Cracks)
+        
   - id: 255
     idStr: structure_block
     name: Structure Block

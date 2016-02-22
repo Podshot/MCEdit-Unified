@@ -7,10 +7,35 @@
 from palette_view import PaletteView
 from layout import Column
 from utils import blit_in_rect
-from pygame import event, Surface, SRCALPHA, Rect, draw
+from pygame import event, Surface, SRCALPHA, Rect, draw, mouse
 
 #-----------------------------------------------------------------------------
 class ScrollRow(PaletteView):
+    __tooltipText = None
+    @property
+    def tooltipText(self):
+        pos = mouse.get_pos()
+
+        x, y = self.global_to_local(pos)
+#         print "pos", pos
+#         print "x", x, "y", y
+        w, h = self.cell_size
+        W, H = self.size
+        d = self.margin
+        if d <= x < W - d and d <= y < H - d:
+            row = (y - d) // h
+            col = (x - d) // w
+            if row < self.num_items():
+                row_data = self.row_data(row)
+                if type(row_data) == list:
+                    return self.row_data(row)[-1]
+                else:
+                    return self.__tooltipText
+
+    @tooltipText.setter
+    def tooltipText(self, text):
+        self.__tooltipText = text
+
     def __init__(self, cell_size, nrows, **kwargs):
         self.draw_zebra = kwargs.pop('draw_zebra', True)
         scrolling = kwargs.pop('scrolling', True)

@@ -46,9 +46,9 @@ fh.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.WARN)
 
-if "-v" in sys.argv:
+if "--log-info" in sys.argv:
     ch.setLevel(logging.INFO)
-if "-vv" in sys.argv:
+if "--log-debug" in sys.argv:
     ch.setLevel(logging.DEBUG)
 
 
@@ -120,8 +120,17 @@ if "-tt" in sys.argv:
 
 import mceutils
 import mcplatform
+
+# This switch is used to test/debug window handling.
+# Must be specified to enable the internal handler for Windows.
+if "--debug-wm" in sys.argv:
+    mcplatform.DEBUG_WM = True
+    mcplatform.setupWindowHandler()
+
+DEBUG_WM = mcplatform.DEBUG_WM
+
 #-# DEBUG
-if mcplatform.hasXlibDisplay:
+if mcplatform.hasXlibDisplay and DEBUG_WM:
     print '*** Xlib version', str(mcplatform.Xlib.__version__).replace(' ', '').replace(',', '.')[1:-1], 'found in',
     if os.path.expanduser('~/.local/lib/python2.7/site-packages') in mcplatform.Xlib.__file__:
         print 'user\'s',
@@ -156,13 +165,70 @@ ESCAPE = '\033'
 
 
 class MCEdit(GLViewport):
-    #debug_resize = True
     def_enc = DEF_ENC
 
     def __init__(self, displayContext, *args):
+        if DEBUG_WM:
+            print "############################ __INIT__ ###########################"
+        self.maximized = config.settings.windowMaximized.get()
+        self.saved_pos = config.settings.windowX.get(), config.settings.windowY.get()
+        if displayContext.win and DEBUG_WM:
+            print "* self.displayContext.win.state", displayContext.win.get_state()
+            print "* self.displayContext.win.position", displayContext.win.get_position()
+            self.dis = None
+            self.win = None
+            self.wParent = None
+            self.wGrandParent = None
+            self.linux = False
+            if sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
+                self.linux = True
+                self.dis = dis = mcplatform.Xlib.display.Display()
+                self.win = win = dis.create_resource_object('window', display.get_wm_info()['window'])
+                curDesk = os.environ.get('XDG_CURRENT_DESKTOP')
+                if curDesk in ('GNOME', 'X-Cinnamon', 'Unity'):
+                    self.geomReciever = self.maximizeHandler = wParent = win.query_tree().parent
+                    self.geomSender = wGrandParent = wParent.query_tree().parent
+                elif curDesk == 'KDE':
+                    self.maximizeHandler = win.query_tree().parent
+                    wParent = win.query_tree().parent.query_tree().parent
+                    wGrandParent = wParent.query_tree().parent.query_tree().parent
+                    self.geomReciever = self.geomSender = win.query_tree().parent.query_tree().parent.query_tree().parent
+                else:
+                    self.maximizeHandler = self.geomReciever = self.geomSender = wGrandParent = wParent = None
+                self.wParent = wParent
+                self.wGrandParent = wGrandParent
+                root = dis.screen().root
+                windowID = root.get_full_property(dis.intern_atom('_NET_ACTIVE_WINDOW'), mcplatform.Xlib.X.AnyPropertyType).value[0]
+                print "###\nwindowID", windowID
+                window = dis.create_resource_object('window', windowID)
+                print "###\nwindow.get_geometry()", window.get_geometry()
+                print "###\nself.win", self.win.get_geometry()
+                print "###\nself.wParent.get_geometry()", self.wParent.get_geometry()
+                print "###\nself.wGrandParent.get_geometry()", self.wGrandParent.get_geometry()
+                try:
+                    print "###\nself.wGrandParent.query_tree().parent.get_geometry()", self.wGrandParent.query_tree().parent.get_geometry()
+                except:
+                    pass
+                print "###\nself.maximizeHandler.get_geometry()", self.maximizeHandler.get_geometry()
+                print "###\nself.geomReciever.get_geometry()", self.geomReciever.get_geometry()
+                print "###\nself.geomSender.get_geometry()", self.geomSender.get_geometry()
+                print "###\nself.win", self.win
+                print "###\nself.wParent", self.wParent
+                print "###\nself.wGrandParent", self.wGrandParent
+                print "###\nself.maximizeHandler", self.maximizeHandler
+                print "###\nself.geomReciever", self.geomReciever
+                print "###\nself.geomSender", self.geomSender
+
         ws = displayContext.getWindowSize()
         r = rect.Rect(0, 0, ws[0], ws[1])
         GLViewport.__init__(self, r)
+        if DEBUG_WM:
+            print "self.size", self.size, "ws", ws
+        if displayContext.win and self.maximized:
+            # Send a maximize event now
+            displayContext.win.set_state(mcplatform.MAXIMIZED)
+            # Flip pygame.display to avoid to see the splash un-centered.
+            pygame.display.flip()
         self.displayContext = displayContext
         self.bg_color = (0, 0, 0, 1)
         self.anchor = 'tlbr'
@@ -216,8 +282,8 @@ class MCEdit(GLViewport):
         self.fileOpener.focus()
 
     #-# Translation live updtate preparation
-    def set_update_translation(self, v):
-        GLViewport.set_update_translation(self, v)
+    def set_update_ui(self, v):
+        GLViewport.set_update_ui(self, v)
         if v:
             #&# Prototype for blocks/items names
             mclangres.buildResources(lang=albow.translate.getLang())
@@ -382,44 +448,111 @@ class MCEdit(GLViewport):
         """
         Handle window resizing events.
         """
-        GLViewport.resized(self, dw, dh)
+        if DEBUG_WM:
+            print "############################ RESIZED ############################"
 
         (w, h) = self.size
+        config_w, config_h = config.settings.windowWidth.get(), config.settings.windowHeight.get()
+        win = self.displayContext.win
+
+        if DEBUG_WM:
+            print "dw", dw, "dh", dh
+            print "self.size (w, h) 1", self.size, "win.get_size", win.get_size()
+            print "size 1", config_w, config_h
+
+        if win:
+            x, y =  win.get_position()
+            if DEBUG_WM:
+                print "position", x, y
+                print "config pos", (config.settings.windowX.get(), config.settings.windowY.get())
+
         if w == 0 and h == 0:
             # The window has been minimized, no need to draw anything.
             self.editor.renderer.render = False
             return
 
+        if w < 1000:
+            config.settings.windowWidth.set(1000)
+            w = 1000
+            x = config.settings.windowX.get()
+
+        if h < 680:
+            config.settings.windowHeight.set(680)
+            h = 680
+            y = config.settings.windowY.get()
+
         if not self.editor.renderer.render:
             self.editor.renderer.render = True
 
-        dis = None
-        if sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
-            dis = mcplatform.Xlib.display.Display()
-            win = dis.create_resource_object('window', display.get_wm_info()['window'])
-            geom = win.query_tree().parent.get_geometry()
+        save_geom = True
 
-        if w >= 1000 and h >= 700:
+        if win:
+            maximized = win.get_state() == mcplatform.MAXIMIZED
+            sz = map(max, win.get_size(), (w, h))
+
+            if DEBUG_WM:
+                print "sz", sz
+                print "maximized", maximized, "self.maximized", self.maximized
+
+            if maximized:
+                if DEBUG_WM:
+                    print "maximize, saving maximized size"
+                config.settings.windowMaximizedWidth.set(sz[0])
+                config.settings.windowMaximizedHeight.set(sz[1])
+                config.save()
+                self.saved_pos = config.settings.windowX.get(), config.settings.windowY.get()
+                save_geom = False
+                self.resizing = 0
+                win.set_mode(sz, self.displayContext.displayMode())
+            else:
+                if DEBUG_WM:
+                    print "size 2", config.settings.windowWidth.get(), config.settings.windowHeight.get()
+                    print "config_w", config_w, "config_h", config_h
+                    print "pos", config.settings.windowX.get(), config.settings.windowY.get()
+                if self.maximized != maximized:
+                    if DEBUG_WM:
+                        print "restoring window pos and size"
+                        print "(config.settings.windowX.get(), config.settings.windowY.get())", (config.settings.windowX.get(), config.settings.windowY.get())
+                    (w, h) = (config_w, config_h)
+                    win.set_state(1, (w, h), self.saved_pos)
+                else:
+                    if DEBUG_WM:
+                        print "window resized"
+                        print "setting size to", (w, h), "and pos to", (x,y)
+                    win.set_mode((w, h), self.displayContext.displayMode())
+                    win.set_position((x, y))
+                config.settings.windowMaximizedWidth.set(0)
+                config.settings.windowMaximizedHeight.set(0)
+                config.save()
+            self.maximized = maximized
+
+        if DEBUG_WM:
+            print "self.size (w, h) 2", self.size, (w, h)
+            surf = pygame.display.get_surface()
+            print "display surf rect", surf.get_rect()
+            if win:
+                if hasattr(win.base_handler, 'get_geometry'):
+                    print "win.base_handler geometry", win.base_handler.get_geometry()
+                    print "win.base_handler.parent geometry", win.base_handler.query_tree().parent.get_geometry()
+                    print "win.base_handler.parent.parent geometry", win.base_handler.query_tree().parent.query_tree().parent.get_geometry()
+
+        if save_geom:
             config.settings.windowWidth.set(w)
             config.settings.windowHeight.set(h)
             config.save()
-            if dis:
-                win.configure(height=geom.height, width=geom.width)
-        elif w !=0 and h !=0:
-            config.settings.windowWidth.set(1000)
-            config.settings.windowHeight.set(700)
-            config.save()
-            if dis:
-                win.configure(height=700, width=1000)
-        if dw > 20 or dh > 20:
+
+        # The alert window is disabled if win is not None
+        if not win and (dw > 20 or dh > 20):
             if not hasattr(self, 'resizeAlert'):
                 self.resizeAlert = self.shouldResizeAlert
             if self.resizeAlert:
                 albow.alert(
                     "Window size increased. You may have problems using the cursor until MCEdit is restarted.")
                 self.resizeAlert = False
-        if dis:
-            dis.sync()
+        if win:
+            win.sync()
+
+        GLViewport.resized(self, dw, dh)
 
     shouldResizeAlert = config.settings.shouldResizeAlert.property()
 
@@ -465,6 +598,9 @@ class MCEdit(GLViewport):
         self.saveWindowPosition()
         config.save()
         if self.editor.unsavedEdits:
+#             if config.settings.savePositionOnClose.get():
+#                 self.editor.waypointManager.saveLastPosition(self.editor.mainViewport, self.editor.level.getPlayerDimension())
+#             self.editor.waypointManager.save()
             result = albow.ask(_("There are {0} unsaved changes.").format(self.editor.unsavedEdits),
                                responses=["Save and Quit", "Quit", "Cancel"])
             if result == "Save and Quit":
@@ -511,6 +647,8 @@ class MCEdit(GLViewport):
     @classmethod
     def main(cls):
         displayContext = GLDisplayContext(splash.splash)
+
+        os.environ['SDL_VIDEO_CENTERED'] = '0'
 
         rootwidget = RootWidget(displayContext.display)
         mcedit = MCEdit(displayContext)
@@ -629,7 +767,13 @@ class MCEdit(GLViewport):
                 rootwidget.run()
             except (SystemExit, KeyboardInterrupt):
                 print "Shutting down..."
-                if sys.platform == "win32" and config.settings.setWindowPlacement.get():
+                exc_txt = traceback.format_exc()
+                if mcedit.editor.level:
+                    if config.settings.savePositionOnClose.get():
+                        mcedit.editor.waypointManager.saveLastPosition(mcedit.editor.mainViewport, mcedit.editor.level.getPlayerDimension())
+                    mcedit.editor.waypointManager.save()
+                # The following Windows specific code won't be executed if we're using '--debug-wm' switch.
+                if not DEBUG_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
                     X, Y, r, b = rect
@@ -654,15 +798,24 @@ class MCEdit(GLViewport):
                 if mcedit.editor.level:
                     mcedit.editor.level.close()
                 mcedit.editor.root.RemoveEditFiles()
-                raise
+                if 'SystemExit' in traceback.format_exc() or 'KeyboardInterrupt' in traceback.format_exc():
+                    raise
+                else:
+                    if 'SystemExit' in exc_txt:
+                        raise SystemExit
+                    if 'KeyboardInterrupt' in exc_txt:
+                        raise KeyboardInterrupt
             except MemoryError:
                 traceback.print_exc()
                 mcedit.editor.handleMemoryError()
 
-    @staticmethod
-    def saveWindowPosition():
+    def saveWindowPosition(self):
         """Save the window position in the configuration handler."""
-        if sys.platform == "win32" and config.settings.setWindowPlacement.get():
+        if DEBUG_WM:
+            print "############################ EXITING ############################"
+        win = self.displayContext.win
+        # The following Windows specific code will not be executed if we're using '--debug-wm' switch.
+        if not DEBUG_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():
             (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                 display.get_wm_info()['window'])
             X, Y, r, b = rect
@@ -675,21 +828,17 @@ class MCEdit(GLViewport):
             config.settings.windowX.set(X)
             config.settings.windowY.set(Y)
             config.settings.windowShowCmd.set(showCmd)
-        elif sys.platform == 'linux2' and mcplatform.hasXlibDisplay:
-            win = display.get_wm_info()['window']
-            dis = mcplatform.Xlib.display.Display()
-            win = dis.create_resource_object('window', win)
-            curDesk = os.environ.get('XDG_CURRENT_DESKTOP')
-            if curDesk in ('GNOME', 'X-Cinnamon', 'Unity'):
-                wParent = win.query_tree().parent.query_tree().parent
-            elif curDesk == 'KDE':
-                wParent = win.query_tree().parent.query_tree().parent.query_tree().parent
+        elif win:
+            config.settings.windowMaximized.set(self.maximized)
+            if not self.maximized:
+                x, y = win.get_position()
             else:
-                wParent = None
-            if wParent:
-                geom = wParent.get_geometry()
-                config.settings.windowX.set(geom.x)
-                config.settings.windowY.set(geom.y)
+                x, y = self.saved_pos
+            if DEBUG_WM:
+                print "x", x, "y", y
+            config.settings.windowX.set(x)
+            config.settings.windowY.set(y)
+            
 
     def restart(self):
         self.saveWindowPosition()
@@ -773,6 +922,7 @@ def main(argv):
     try:
         MCEdit.main()
     except Exception as e:
+        print "mcedit.main MCEdit exited with errors."
         logging.error("MCEdit version %s", release.get_version())
         display.quit()
         if hasattr(sys, 'frozen') and sys.platform == 'win32':
@@ -810,10 +960,37 @@ def weird_fix():
         pass
 
 
+class FakeStdOutErr:
+    """Fake file object to redirect very last Python output.
+    Used to track 'errors' not handled in MCEdit.
+    Mimics 'write' and 'close' file objects methods.
+    Used on Linux only."""
+    mode = 'a'
+    def __init__(self, *args, **kwargs):
+        """*args and **kwargs are ignored.
+        Deletes the 'logger' object and reopen 'logfile' in append mode."""
+        global logger
+        global logfile
+        del logger
+        self.fd = open(logfile, 'a')
+
+    def write(self, msg):
+        self.fd.write(msg)
+
+    def close(self, *args, **kwargs):
+        self.fd.flush()
+        self.fd.close()
+
 if __name__ == "__main__":
     try:
         main(sys.argv)
     except (SystemExit, KeyboardInterrupt):
+        # It happens that on Linux, Python tries to kill already dead processes and display errors in the console.
+        # Redirecting them to the log file preserve them and other errors which may occur.
+        if sys.platform == "linux2":
+            logger.debug("MCEdit is exiting normally.")
+            logger.debug("Lines below this one are pure Python output.")
+            sys.stdout = sys.stderr = FakeStdOutErr()
         pass
     except:
         traceback.print_exc()

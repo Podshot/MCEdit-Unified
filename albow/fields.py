@@ -494,7 +494,7 @@ class IntField(Field):
 
     @property
     def increment(self):
-        fastIncrementModifier = config.keys.fastIncrementModifier.get()
+        fastIncrementModifier = config.keys.fastIncrementModifierHold.get()
         if (fastIncrementModifier == "Shift" and key.get_mods() & KMOD_SHIFT) or (fastIncrementModifier == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (fastIncrementModifier == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
         return self._increment
@@ -612,7 +612,7 @@ class FloatField(Field):
 
     @property
     def increment(self):
-        fastIncrementModifier = config.keys.fastIncrementModifier.get()
+        fastIncrementModifier = config.keys.fastIncrementModifierHold.get()
         if (fastIncrementModifier == "Shift" and key.get_mods() & KMOD_SHIFT) or (fastIncrementModifier == "Ctrl" and (key.get_mods() & KMOD_CTRL) or (key.get_mods() & KMOD_META)) or (fastIncrementModifier == "Alt" and key.get_mods() & KMOD_ALT):
             return self._shift_increment
         return self._increment

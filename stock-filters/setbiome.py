@@ -69,7 +69,7 @@ inputs = (
                 "Roofed Forest M",
                 "Cold Taiga M",
                 "Mega Spruce Taiga",
-                "Mega Spruce Taiga ",
+                "Mega Spruce Taiga Hills",
                 "Extreme Hills+ M",
                 "Savanna M",
                 "Savanna Plateau M",
@@ -136,7 +136,7 @@ biomes = {
     "Roofed Forest M": 157,
     "Cold Taiga M": 158,
     "Mega Spruce Taiga": 160,
-    "Mega Spruce Taiga 2": 161,
+    "Mega Spruce Taiga Hills": 161,
     "Extreme Hills+ M": 162,
     "Savanna M": 163,
     "Savanna Plateau M": 164,
@@ -148,7 +148,7 @@ biomes = {
 
 
 def perform(level, box, options):
-    biome = biomes[options["Biome"]]
+    biome = dict([(trn._(a), b) for a, b in biomes.items()])[options["Biome"]]
 
     minx = int(box.minx / 16) * 16
     minz = int(box.minz / 16) * 16

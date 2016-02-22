@@ -1,7 +1,12 @@
 LEVELDB_MCPE INSTALLATION INSTRUCTIONS FOR LINUX SYSTEMS
 ========================================================
 
-In order to install this library, you will run the setup.py file.
+In order to install this library, you will run the 'setup.py' file.
+
+An alternative beta file 'setupnx.py' is also provided. It will try to
+solve the binary and library dependencies for you, provided you have
+them installed on your system. These dependencies are the same as for
+the 'setup.py' script.
 
 Since the library is compiled against Boost, Mojang's leveldb-mcpe and
 Python 2.7, you will need these dependencies.
@@ -47,11 +52,12 @@ Like Boost, this library will be installed if not found.
 It will be installed in '~/.local/lib/leveldb-mcpe'.
 
 
-PYTHON 2.7 HEADERS
-~~~~~~~~~~~~~~~~~~
+PYTHON 2.7 HEADERS AND DEV PACKAGE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Unfortunately, no solution to build Boost and leveldb_mcpe
-against a user specific install of Python header was found (for now).
+Unfortunately, no solution to build Boost and leveldb_mcpe against a
+user specific install of Python headers and devolopment package was
+found (for now).
 
 You'll have to install them on you system with you package manager...
 

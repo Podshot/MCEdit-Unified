@@ -421,7 +421,7 @@ definitions = {
         ("brushLineTool", "brush line tool", "Z"),
         ("snapCloneToAxis", "snap clone to axis", "Ctrl"),
         ("blocksOnlyModifier", "blocks-only modifier", "Alt"),
-        ("fastIncrementModifier", "fast increment modifier", "Ctrl"),
+        ("fastIncrementModifierHold", "fast increment modifier", "Ctrl"),
         ("fastNudge", "fast nudge", "None"),
 
         ("takeAScreenshot", "take a screenshot", "F6"),
@@ -482,6 +482,9 @@ definitions = {
         ("targetFPS", "Target FPS", 30),
         ("windowWidth", "window width", 1152),
         ("windowHeight", "window height", 864),
+        ("windowMaximized", "window maximized", False),
+        ("windowMaximizedHeight", "window maximized height", 0),
+        ("windowMaximizedWidth", "window maximized width", 0),
         ("windowX", "window x", 0),
         ("windowY", "window y", 0),
         ("windowShowCmd", "window showcmd", 1),
@@ -519,7 +522,8 @@ definitions = {
         ("downloadPlayerSkins", "Download Player Skins", True),
         ("maxViewDistance", "Max View Distance", 32),
         ("drawPlayerHeads", "Draw Player Heads", True),
-        ("showCommands", "Show Commands when hovering", True)
+        ("showCommands", "Show Commands when hovering", True),
+        ("savePositionOnClose", "Save camera position on close", False)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),
@@ -594,7 +598,7 @@ definitions = {
         ("override", "Override", False)
     ],
     ("commands", "Commands"): [
-        ("sorting", "Sorting", "xz"),
+        ("sorting", "Sorting", "chain"),
         ("space", "Space", True),
         ("fileFormat", "File Format", "txt")
     ]

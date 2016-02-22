@@ -45,7 +45,7 @@ inputs = (
 
 
 def perform(level, box, options):
-    effect = Effects[options["Effect"]]
+    effect = dict([(trn._(a), b) for a, b in Effects.items()])[options["Effect"]]
     amp = options["Level"]
     duration = options["Duration (Seconds)"] * 20
 
@@ -56,7 +56,7 @@ def perform(level, box, options):
             z = e["Pos"][2].value
 
             if box.minx <= x < box.maxx and box.miny <= y < box.maxy and box.minz <= z < box.maxz:
-                if "Health" in e:
+                if trn._("Health") in e:
                     if "ActiveEffects" not in e:
                         e["ActiveEffects"] = TAG_List()
 

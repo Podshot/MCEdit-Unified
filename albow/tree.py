@@ -393,10 +393,17 @@ class Tree(Column):
         aId = len(items) + 1
         while items:
             lvl, k, v, p, c, id = items.pop(0)
-            
+            t = None
             _c = False
             fields = []
             c = [] + c
+            # If the 'v' object is a dict containing the keys 'value' and 'tooltipText',
+            # extract the text, and override the 'v' object with the 'value' value.
+            if type(v) == dict and len(v.keys()) and ('value' in v.keys() and 'tooltipText' in v.keys()):
+                t = v['tooltipText']
+                if type(t) not in (str, unicode):
+                    t = repr(t)
+                v = v['value']
             if type(v) in self.compound_types:
                 meth = getattr(self, 'parse_%s'%v.__class__.__name__, None)
                 if meth is not None:
@@ -434,7 +441,7 @@ class Tree(Column):
                 meth(head, bg, fg, shape, text, k, lvl)
             except:
                 pass
-            rows.append([head, fields, [w] * len(fields), k, p, c, id, type(v), lvl, v])
+            rows.append([head, fields, [w] * len(fields), k, p, c, id, type(v), lvl, v, t])
         self.rows = rows
         return rows
 
