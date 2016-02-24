@@ -616,7 +616,9 @@ class NewPlayerCache:
         json.dump(self._cache, fp, indent=4, separators=(',', ':'))
         fp.close()
     
-    def load(self):
+    def load(self, path=None):
+        if path is not None:
+            self.PATH = path
         self._cache = {"Version": 2, "Cache": {}}
         if not os.path.exists(self.PATH):
             fp = open(self.PATH, 'w')
@@ -636,7 +638,7 @@ class NewPlayerCache:
             
     # --- Checking if supplied data is in the Cache ---
     def UUIDInCache(self, uuid):
-        return uuid in self._cache["Cache"]
+        return uuid.replace("-", "") in self._cache["Cache"]
     
     def nameInCache(self, name):
         for uuid in self._cache["Cache"].keys():
@@ -661,7 +663,7 @@ class NewPlayerCache:
     def getPlayerInfo(self, arg, force=False):
         try:
             UUID(arg, version=4)
-            if self.UUIDInCahe(arg) and not force:
+            if self.UUIDInCache(arg) and not force:
                 return self._getDataFromCacheUUID(arg)
             else:
                 return self._getPlayerInfoUUID(arg)
@@ -683,6 +685,8 @@ class NewPlayerCache:
                 player["Timestamp"] = time.time()
                 player["Successful"] = True
                 self._cache["Cache"][clean_uuid] = player
+                self.save()
+                print self._cache
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
             except:
                 return uuid
@@ -700,6 +704,8 @@ class NewPlayerCache:
                 player["Timestamp"] = time.time()
                 player["Successful"] = True
                 self._cache["Cache"][uuid] = player
+                print self._cache
+                self.save()
                 return (self.insertSeperators(uuid), player["Name"], uuid)
             except:
                 return name           
@@ -798,14 +804,3 @@ def _cleanup():
     PlayerCache.Instance().cleanup()
     
 atexit.register(_cleanup)
-
-def testNewCache():
-    instance = NewPlayerCache.Instance()
-    instance.load()
-    print instance.getPlayerInfo("Podshot", force=True)
-    atexit.register(instance.save)
-    print instance.insertSeperators("11d0102c41784953917509bbd7d46264")
-    print "11d0102c-4178-4953-9175-09bbd7d46264"
-    print "11d0102c-4178-4953-9175-09bbd7d46264" == instance.insertSeperators("11d0102c41784953917509bbd7d46264")
-    
-testNewCache()
