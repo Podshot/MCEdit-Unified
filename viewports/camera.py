@@ -1009,7 +1009,7 @@ class CameraViewport(GLViewport):
         titleLabel = Label("Edit Command Block")
         commandField = TextFieldWrapped(width=650)
         nameField = TextFieldWrapped(width=200)
-        successField = IntInputRow("SuccessCount")
+        successField = IntInputRow("SuccessCount", min=0, max=15)
         trackOutput = CheckBox()
 
         # Fix for the '§ is Ä§' issue
@@ -1024,8 +1024,8 @@ class CameraViewport(GLViewport):
         oldTrackOutput = trackOutput.value
         nameField.value = tileEntity.get("CustomName", TAG_String("@")).value
         oldNameField = nameField.value
-        successField.value = tileEntity["SuccessCount"].value
-        oldSuccess = successField.value
+        successField.subwidgets[1].value = tileEntity.get("SuccessCount", pymclevel.TAG_Int(0)).value
+        oldSuccess = successField.subwidgets[1].value
 
         class CommandBlockEditOperation(Operation):
             def __init__(self, tool, level):
@@ -1051,11 +1051,11 @@ class CameraViewport(GLViewport):
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateCommandBlock():
-            if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value or oldSuccess != successField.value:
+            if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value or oldSuccess != successField.subwidgets[1].value:
                 tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
                 tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
                 tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
-                tileEntity["SuccessCount"] = pymclevel.TAG_Int(successField.value)
+                tileEntity["SuccessCount"] = pymclevel.TAG_Int(successField.subwidgets[1].value)
 
                 op = CommandBlockEditOperation(self.editor, self.editor.level)
                 self.editor.addOperation(op)
