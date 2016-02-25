@@ -38,14 +38,17 @@ class NewPlayerDataTest(unittest.TestCase):
     def testPlayerSkinWithUUID(self):
         result = self.cache.getPlayerSkin("11d0102c-4178-4953-9175-09bbd7d46264", force_download=True)
         self.assertIsInstance(result, str)
-        self.assertEqual(result, "player-skins\\11d0102c_4178_4953_9175_09bbd7d46264.png")
+        if ASSERT_CONTENTS:
+            self.assertEqual(result, "player-skins\\11d0102c_4178_4953_9175_09bbd7d46264.png")
         
         # Should equal 'char.png' due to the download being forced and time between the requests being under than 1 minute
         result = self.cache.getPlayerSkin("11d0102c-4178-4953-9175-09bbd7d46264", force_download=True)
         self.assertIsInstance(result, str)
-        self.assertEqual(result, "char.png")
+        if ASSERT_CONTENTS:
+            self.assertEqual(result, "char.png")
         
         result = self.cache.getPlayerSkin("11d0102c-4178-4953-9175-09bbd7d46264", force_download=False)
         self.assertIsInstance(result, str)
-        self.assertEqual(result, "player-skins\\11d0102c_4178_4953_9175_09bbd7d46264.png")
+        if ASSERT_CONTENTS:
+            self.assertEqual(result, "player-skins\\11d0102c_4178_4953_9175_09bbd7d46264.png")
         

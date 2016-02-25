@@ -596,6 +596,7 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
 class NewPlayerCache:
     
     PATH = os.path.join(directories.getDataDir(), "newcache.json")
+    TIMEOUT = 2.5
     
     __shared_state = {}
     
@@ -632,7 +633,7 @@ class NewPlayerCache:
     def load(self, path=None):
         if path is not None:
             self.PATH = path
-        self._cache = {"Version": 2, "Cache": {}}
+        self._cache = {"Version": 2, "Connection Timeout": 2.5, "Cache": {}}
         if not os.path.exists(self.PATH):
             print "Path does not exist"
             print self.PATH
@@ -653,6 +654,7 @@ class NewPlayerCache:
         finally:
             fp.close()
         self.temp_skin_cache = {}
+        self.TIMEOUT = self._cache.get("Connection Timeout", 2.5)
             
     # --- Checking if supplied data is in the Cache ---
     def UUIDInCache(self, uuid):
@@ -667,8 +669,8 @@ class NewPlayerCache:
     # --- Getting data from the Cache ---
     def _getDataFromCacheUUID(self, uuid):
         clean_uuid = uuid.replace("-","")
-        player = self._cache["Cache"][clean_uuid]
-        return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
+        player = self._cache["Cache"].get(clean_uuid, {})
+        return (self.insertSeperators(clean_uuid), player.get("Name", "<Unknown Name>"), clean_uuid)
     
     def _getDataFromCacheName(self, name):
         for uuid in self._cache["Cache"].keys():
@@ -676,7 +678,7 @@ class NewPlayerCache:
             player = self._cache["Cache"][uuid]
             if player["Name"] == name:
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
-        return (None, name, None)
+        return ("<Unknown UUID>", name, "<Unknown UUID>")
             
     def getPlayerInfo(self, arg, force=False):
         try:
@@ -703,14 +705,17 @@ class NewPlayerCache:
                 player["Timestamp"] = time.time()
                 player["Successful"] = True
                 self._cache["Cache"][clean_uuid] = player
+                self.temp_skin_cache[clean_uuid] = response
                 #self.save()
                 print self._cache
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
             except:
                 player["Successful"] = False
+                self._cache["Cache"][clean_uuid] = player
                 return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
         else:
             player["Successful"] = False
+            self._cache["Cache"][clean_uuid] = player
             return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
         
     def _getPlayerInfoName(self, name):
@@ -749,14 +754,11 @@ class NewPlayerCache:
     
     def getPlayerSkin(self, arg, force_download=True, instance=None):
         toReturn = 'char.png'
-        try:
-            os.mkdir("player-skins")
-        except OSError:
-            pass
+        
         uuid_sep, name, uuid = self.getPlayerInfo(arg)
         player = self._cache["Cache"][uuid]
         skin_path = os.path.join("player-skins", uuid_sep.replace("-","_") + ".png")
-        temp_skin_path = os.path.join("player-skin", uuid_sep.replace("-","_") + ".temp.png")
+        #temp_skin_path = os.path.join("player-skin", uuid_sep.replace("-","_") + ".temp.png")
         try:
             if not force_download and os.path.exists(skin_path):
                 skin = Image.open(skin_path)
@@ -764,22 +766,26 @@ class NewPlayerCache:
                     skin = skin.crop((0,0,64,32))
                     skin.save(skin_path)
                 toReturn = skin_path
-            elif force_download or not os.path.exists(skin_path):
+            elif force_download or not os.path.exists(skin_path) and uuid not in self.temp_skin_cache:
                 response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(uuid))
                 if response is not None:
                     parsed = self._parseSkinResponse(response)
                     if parsed is not None:
-                        with open(skin_path, 'wb') as fp:
-                            fp.write(parsed)
-                        skin = Image.open(skin_path)
-                        if skin.size == (64,64):
-                            skin = skin.crop((0,0,64,32))
-                            skin.save(skin_path)
+                        self._saveSkin(uuid, parsed)
                         toReturn = skin_path
                         player["Skin"]["Timestamp"] = time.time()
                         self._cache["Cache"][uuid] = player
                         print self._cache
                         self.save()
+            elif force_download or not os.path.exists(skin_path) and uuid in self.temp_skin_cache:
+                parsed = self._parseSkinResponse(self.temp_skin_cache[uuid])
+                if parsed is not None:
+                    self._saveSkin(uuid, parsed)
+                    toReturn = skin_path
+                    player["Skin"]["Timestamp"] = time.time()
+                    self._cache["Cache"][uuid] = player
+                    print self._cache
+                    self.save()
         except IOError:
             print "Couldn't find Image file ("+skin_path+") or the file may be corrupted"
             if instance is not None:
@@ -792,25 +798,46 @@ class NewPlayerCache:
             print "Unknown error occurred while reading/downloading skin for "+str(uuid.replace("-","_")+".png")
             print traceback.format_exc()
         return toReturn
+    
+    def _saveSkin(self, uuid, data):
+        if "-" not in uuid:
+            uuid = self.insertSeperators(uuid)
+            
+        try:
+            os.mkdir("player-skins")
+        except OSError:
+            pass
         
+        skin_path = os.path.join("player-skins", uuid.replace("-","_") + ".png")
+        
+        with open(skin_path, 'wb') as fp:
+            fp.write(data)
+        skin = Image.open(skin_path)
+        if skin.size == (64,64):
+            skin = skin.crop((0,0,64,32))
+            skin.save(skin_path)
+                            
     def _getDataFromURL(self, url):
+        import traceback
         try:
             print "Getting data from: {}".format(url)
-            response = urllib2.urlopen(url, timeout=10).read()
+            response = urllib2.urlopen(url, timeout=self.TIMEOUT).read()
             print "\"{}\"".format(response)
             return response
         except urllib2.HTTPError, e:
             print "Encountered a HTTPError"
             print "Error: " + str(e.code)
+            #print traceback.format_exc()
         except urllib2.URLError, e:
             print "Encountered an URLError"
             print "Error: " + str(e.reason)
+            #print traceback.format_exc()
         except httplib.HTTPException:
             print "Encountered a HTTPException"
+            #print traceback.format_exc()
         except Exception:
-            import traceback
             print "Unknown error occurred while trying to get data from URL: " + url
-            print traceback.format_exc()
+            #print traceback.format_exc()
         return None
             
 def _cleanup():
@@ -826,3 +853,4 @@ def _cleanup():
     PlayerCache.Instance().cleanup()
     
 atexit.register(_cleanup)
+NewPlayerCache().load()

@@ -29,11 +29,13 @@ import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
 from pymclevel import nbt
 import logging
-from version_utils import PlayerCache, getPlayerSkin
+from version_utils import NewPlayerCache, getPlayerSkin
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
 import pygame
 
 log = logging.getLogger(__name__)
+
+USE_NEW_CACHE = True
 
 
 class PlayerRemoveOperation(Operation):
@@ -45,7 +47,7 @@ class PlayerRemoveOperation(Operation):
         self.player = player
         self.level = self.tool.editor.level
         self.canUndo = False
-        self.playercache = PlayerCache.Instance()
+        self.playercache = NewPlayerCache()
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -119,7 +121,7 @@ class PlayerAddOperation(Operation):
         self.tool = tool
         self.level = self.tool.editor.level
         self.canUndo = False
-        self.playercache = PlayerCache.Instance()
+        self.playercache = NewPlayerCache()
 
     def perform(self, recordUndo=True):
         initial = ""
@@ -138,11 +140,8 @@ class PlayerAddOperation(Operation):
                 break
         try:
             data = self.playercache.getPlayerInfo(self.player, force=True)
-            if isinstance(data, tuple):
-                self.uuid = data[0]
-                self.player = data[1]
-            else:
-                self.uuid = data
+            self.uuid = data[0]
+            self.player = data[1]
         except:
             action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":
@@ -392,9 +391,10 @@ class PlayerPositionPanel(Panel):
     def __init__(self, tool):
         Panel.__init__(self)
         self.tool = tool
-        self.player_UUID = {}
+        self.player_UUID = {"UUID": [], "Name": []}
         self.level = tool.editor.level
-        self.playercache = PlayerCache.Instance()
+        self.playercache = NewPlayerCache()
+        
         if hasattr(self.level, 'players'):
             players = self.level.players or ["[No players]"]
             if not self.level.oldPlayerFolderFormat:
@@ -404,20 +404,27 @@ class PlayerPositionPanel(Panel):
                             os.rename(os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player+".dat"), os.path.join(self.level.worldFolder.getFolderPath("playerdata"), player.replace("-", "", 1)+".dat"))
                             player = player.replace("-", "", 1)
                         data = self.playercache.getPlayerInfo(player)
-                        if isinstance(data, tuple):
-                            self.player_UUID[data[1]] = data[0]
-                        else:
-                            self.player_UUID[player] = data
+                        #self.player_UUID[data[0]] = data[1]
+                        self.player_UUID["UUID"].append(data[0])
+                        self.player_UUID["Name"].append(data[1])
+                        #self.player_UUID[player] = data
                 if "Player" in players:
-                    self.player_UUID["Player (Single Player)"] = "Player"
+                    #self.player_UUID["Player (Single Player)"] = "Player"
+                    self.player_UUID["UUID"].append("Player")
+                    self.player_UUID["Name"].append("Player (Single Player)")
                 if "[No players]" not in players:
-                    players = sorted(self.player_UUID.keys(), key=lambda x: False if x == "Player (Single Player)" else x)
+                    self.player_names = sorted(self.player_UUID.values(), key=lambda x: False if x == "Player (Single Player)" else x)
                 else:
-                    self.player_UUID = {"[No players]": "[No players]"}
+                    self.player_UUID["UUID"].append("[No players]")
+                    self.player_UUID["Name"].append("[No players]")
 
         else:
             players = ["Player (Single Player)"]
         self.players = players
+        
+        print "Players: " + str(self.players)
+        print "Player names: " + str(self.player_names)
+        print "player_UUID: " + str(self.player_UUID)
 
         self.pages = TabPanel()
         tab_height = self.pages.tab_height
@@ -462,8 +469,8 @@ class PlayerPositionPanel(Panel):
                                        TableColumn("Player UUID(s):", (self.nbttree.width - (self.margin * 3)))],
                               )
         tableview.index = 0
-        tableview.num_rows = lambda: len(players)
-        tableview.row_data = lambda i: (players[i],self.player_UUID[players[i]])
+        tableview.num_rows = lambda: len(self.player_UUID["UUID"])
+        tableview.row_data = lambda i: (self.player_UUID["Name"][i],self.player_UUID["UUID"][i])
         tableview.row_is_selected = lambda x: x == tableview.index
         tableview.zebra_color = (0, 0, 0, 48)
 
@@ -526,7 +533,7 @@ class PlayerPositionPanel(Panel):
         if not self.level.oldPlayerFolderFormat:
             player = self.players[self.table.index]
             if player != "Player (Single Player)" and player != "[No players]":
-                return self.player_UUID[player]
+                return self.player_UUID["UUID"][self.table.index]
             else:
                 return player
         else:
@@ -829,7 +836,7 @@ class PlayerPositionTool(EditorTool):
                 self.revPlayerPos[dim][player] = pos
                 
                 if player != "Player" and config.settings.downloadPlayerSkins.get():
-                    self.playerTexture[player] = loadPNGTexture(getPlayerSkin(player, force=False))
+                    self.playerTexture[player] = loadPNGTexture(NewPlayerCache().getPlayerSkin(player, force_download=False))
                 else:
                     self.playerTexture[player] = self.charTex
                     
