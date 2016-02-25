@@ -3,9 +3,7 @@ import urllib2
 from directories import userCachePath
 import os
 import time
-import urllib
 from PIL import Image
-from urllib2 import HTTPError
 import atexit
 import threading
 import logging
@@ -14,6 +12,7 @@ from utilities.misc import deprecated, Singleton
 import httplib
 import base64
 import directories
+import datetime
 
 logger = logging.getLogger()
 
@@ -593,14 +592,28 @@ def getPlayerSkin(uuid, force=False, trying_again=False, instance=None):
     return PlayerCache.Instance().getPlayerSkin(uuid, force, instance)
     #return 'char.png'
 
-@Singleton
+#@Singleton
 class NewPlayerCache:
     
     PATH = os.path.join(directories.getDataDir(), "newcache.json")
     
+    __shared_state = {}
+    
+    def __init__(self):
+        self.__dict__ = self.__shared_state
+    
+    # --- Utility Functions ---
     @staticmethod
     def insertSeperators(uuid):
         return uuid[:8] + "-" + uuid[8:12] + "-" + uuid[12:16] + "-" + uuid[16:20] + "-" + uuid[20:]
+    
+    @staticmethod
+    def getDeltaTime(timestamp, unit):
+        t = time.time()
+        old = datetime.datetime.fromtimestamp(timestamp)
+        current = datetime.datetime.fromtimestamp(t)
+        delta = current - old
+        return getattr(delta, unit, "hours")
     
     def __convert(self, json_in):
         for player in json_in:
@@ -621,9 +634,13 @@ class NewPlayerCache:
             self.PATH = path
         self._cache = {"Version": 2, "Cache": {}}
         if not os.path.exists(self.PATH):
+            print "Path does not exist"
+            print self.PATH
             fp = open(self.PATH, 'w')
             json.dump(self._cache, fp)
             fp.close()
+        else:
+            print "Path exists"
         fp = open(self.PATH, 'r')
         try:
             json_in = json.load(fp)
@@ -635,6 +652,7 @@ class NewPlayerCache:
             logger.warning("Usercache.json may be corrupted")
         finally:
             fp.close()
+        self.temp_skin_cache = {}
             
     # --- Checking if supplied data is in the Cache ---
     def UUIDInCache(self, uuid):
@@ -676,22 +694,24 @@ class NewPlayerCache:
     # --- Player Data Getters ---
     def _getPlayerInfoUUID(self, uuid):
         clean_uuid = uuid.replace("-","")
+        player = self._cache["Cache"].get(clean_uuid, {})
         response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(clean_uuid))
         if response is not None:
             try:
                 response = json.loads(response)
-                player = self._cache["Cache"].get(clean_uuid, {})
                 player["Name"] = response.get("name", player.get("Name", "<Unknown Name>"))
                 player["Timestamp"] = time.time()
                 player["Successful"] = True
                 self._cache["Cache"][clean_uuid] = player
-                self.save()
+                #self.save()
                 print self._cache
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
             except:
-                return uuid
+                player["Successful"] = False
+                return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
         else:
-            return uuid
+            player["Successful"] = False
+            return (self.insertSeperators(clean_uuid), "<Unknown Name>", clean_uuid)
         
     def _getPlayerInfoName(self, name):
         response = self._getDataFromURL("https://api.mojang.com/users/profiles/minecraft/{}".format(name))
@@ -708,9 +728,9 @@ class NewPlayerCache:
                 self.save()
                 return (self.insertSeperators(uuid), player["Name"], uuid)
             except:
-                return name           
+                return ("<Unknown UUID>", name, "<Unknown UUID>")           
         else:
-            return name
+            return ("<Unknown UUID>", name, "<Unknown UUID>")
         
     # --- Skin Getting ---
     def _parseSkinResponse(self, response):
@@ -758,6 +778,8 @@ class NewPlayerCache:
                         toReturn = skin_path
                         player["Skin"]["Timestamp"] = time.time()
                         self._cache["Cache"][uuid] = player
+                        print self._cache
+                        self.save()
         except IOError:
             print "Couldn't find Image file ("+skin_path+") or the file may be corrupted"
             if instance is not None:
