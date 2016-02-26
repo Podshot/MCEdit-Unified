@@ -54,7 +54,7 @@ def check_for_new_version(release_api_response):
         if not is_dev():
             # release_api_response = json.loads(urllib2.urlopen("https://api.github.com/repos/Khroki/MCEdit-Unified/releases").read())
             version = release_api_response[0]
-            if version["tag_name"] != get_release_tag():
+            if version["tag_name"] > get_release_tag():
                 is_64bit = sys.maxsize > 2**32
                 assets = version["assets"]
                 for asset in assets:

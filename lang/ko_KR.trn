@@ -12,7 +12,7 @@
 #
 # The first line of this file must start with #-# followed by a space and the Language (Country) pair.
 #
-# The second and third lines ca be used to specify particuliar fonts to use. They can be ommited.
+# The second and third lines can be used to specify particuliar fonts to use. They can be ommited.
 #
 # See TRANSLATION.txt for more detailed information.
 #
@@ -195,7 +195,7 @@ t87 업데이트 내용
 o88 License
 t88 라이센스
 o89 Config Files
-t89 
+t89 설정 파일
 o90 {0}/{1}/{2}/{3}/{4}/{5} to move
 t90 {0}/{1}/{2}/{3}/{4}/{5}로 움직이세요.
 o91 {0} to slow down
@@ -210,6 +210,7 @@ o95 Warning: Only open a world in one program at a time. If you open a world at 
 
  If you are using Minecraft 1.3 or earlier, you need to close Minecraft completely before you use MCEdit.
 t95 경고: 한 번에 하나의 프로그램에서만 월드를 여세요. 마인크래프트와 MCEdit에서 동시에 월드를 열면 변경 사항을 잃고 세이브파일을 손상시킬 수 있습니다.
+
 마인크래프트 1.3 이하 버전을 쓴다면 마인크래프트를 완전히 닫고 MCEdit을 사용해야 합니다.
 o96 Don't remind me again.
 t96 다시 보지 않기
@@ -368,7 +369,7 @@ t172 나중에
 o173 Loading 
 t173 로딩중 
 o174  - MCEdit 
-t174 
+t174  - MCEdit 
 o175 Overworld
 t175 오버월드
 o176 The End
@@ -496,13 +497,13 @@ t232 단축키: Alt-1
 o233 ---
 t233 ---
 o234 Weight 1
-t234 
+t234 무게 1
 o235 Weight 2
-t235 
+t235 무게 2
 o236 Weight 3
-t236 
+t236 무게 3
 o237 Weight 4
-t237 
+t237 무게 4
 o238 Shortcut: Alt-3
 t238 단축키: Alt-3
 o239 Indiscriminate
@@ -743,9 +744,14 @@ Third put a sell in the bottom slot.
 Click the chest you want and choose what you want and click hit enter
 *All items must be in the same row*
 
-t350 
+t350 상점을 만드려면 먼저 살 물건을 상자의 위쪽에 넣습니다.
+그 다음 두번째 살 물건을 가운데에 넣습니다.(옵션)
+마지막으로 팔 물건을 아래쪽에 넣습니다.
+원하는 상자와 물건을 클릭하고 엔터를 누릅니다.
+*모든 아이템은 같은 열에 있어야 합니다*
+
 o351 Notes
-t351 
+t351 Notes
 o352 Include position data
 t352 Include position data
 o353 Both
@@ -2008,6 +2014,8 @@ o946
 Your changes cannot be saved.
 t946 
 
-변경사항이 저장될 수 없습니다.
+변경사항을 저장할 수 없습니다.
 o947 Click to import this item.
-t947 
+t947 이 아이템을 불러오려면 클릭하십시오.
+o948 Menu
+t948 메뉴

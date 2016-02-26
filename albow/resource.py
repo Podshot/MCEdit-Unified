@@ -139,7 +139,7 @@ def _2478aq_heot(aqz):
 # to all file objects to make sure they don't get garbage collected.
 # Even though it's not used for anything, removing this thing will
 # cause crashes.
-font_file_cache = []
+font_file_cache = {}
 
 def get_font(size, *names, **kwds):
     global font_cache
@@ -166,9 +166,17 @@ def get_font(size, *names, **kwds):
             size /= float(100)
             size = int(size * font_proportion / 1000)
             # try:
-            f = open(path, 'rb')
-            font_file_cache.append(f)
-            font = pygame.font.Font(f, size)
+            # We don't need to add a file to the cache if it's already loaded.
+            if path not in font_file_cache.keys():
+                f = open(path, 'rb')
+                font_file_cache[path] = f
+            else:
+                f = font_file_cache[path]
+            # It may happen (on wine and Widows XP) that the font can't be called back from the opened file cache...
+            try:
+                font = pygame.font.Font(f, size)
+            except:
+                font = pygame.font.Font(path, size)
             log.debug("Font %s loaded." % path)
             log.debug("    Original size: %s. Proportion: %s. Final size: %s." % (oSize, font_proportion, size))
             # except:
@@ -186,6 +194,20 @@ def get_font(size, *names, **kwds):
             #     font = pygame.font.SysFont("Courier New", size)
     font_cache[key] = font
     return font
+
+def reload_fonts(proportion=font_proportion):
+    """Reload the fonts defined in font_cache. Used to update the font sizes withpout restarting the application."""
+    log.debug("Reloading fonts.")
+    global font_cache
+    global font_proportion
+    if proportion != font_proportion:
+        font_proportion = proportion
+    keys = [(os.path.split(a)[-1], b) for a, b in font_cache.keys()]
+    font_cache = {}
+    while keys:
+        name, size = keys.pop()
+        get_font(size, name)
+    log.debug("Fonts reloaded.")
 
 
 class DummySound(object):

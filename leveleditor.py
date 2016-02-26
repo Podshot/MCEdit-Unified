@@ -211,10 +211,14 @@ class LevelEditor(GLViewport):
 
         self.optionsBar = Widget()
 
-        self.mcEditButton = Button("MCEdit", action=self.showControls)
-        self.viewDistanceDown = Button("<", action=self.decreaseViewDistance)
-        self.viewDistanceUp = Button(">", action=self.increaseViewDistance)
-        self.viewDistanceReadout = ValueDisplay(width=40, ref=AttrRef(self.renderer, "viewDistance"))
+        self.mcEditButton = Button("Menu", action=self.showControls)
+
+        def chooseDistance():
+            self.changeViewDistance(int(self.viewDistanceReadout.get_value()))
+        self.viewDistanceReadout = ChoiceButton(["%s"%a for a in range(2,34,2)], width=20, ref=AttrRef(self.renderer, "viewDistance"), choose=chooseDistance)
+        self.viewDistanceReadout.selectedChoice = "%s"%self.renderer.viewDistance
+        self.viewDistanceReadout.shrink_wrap()
+
 
         def showViewOptions():
             col = [CheckBoxLabel("Entities", fg_color=(0xff, 0x22, 0x22),
@@ -258,7 +262,7 @@ class LevelEditor(GLViewport):
         self.viewportButton = Button("Camera View", action=self.swapViewports,
                                      tooltipText=_("Shortcut: {0}").format(_(config.keys.toggleView.get())))
 
-        self.recordUndoButton = CheckBoxLabel("Record Undo", ref=AttrRef(self, 'recordUndo'))
+        self.recordUndoButton = CheckBoxLabel("Undo", ref=AttrRef(self, 'recordUndo'))
 
         # TODO: Mark
         self.sessionLockLock = Image(image.load(open(directories.getDataDir(os.path.join(u"toolicons",
@@ -270,9 +274,10 @@ class LevelEditor(GLViewport):
         self.sessionLockLabel.mouse_down = self.mouse_down_session
         
         # TODO: Marker
-        row = (self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout,
-               self.viewDistanceUp, self.viewButton, self.viewportButton, self.recordUndoButton,
+        row = (self.mcEditButton, Label("View Distance:"), self.viewDistanceReadout,
+               self.viewButton, self.viewportButton, self.recordUndoButton,
                Row((self.sessionLockLabel, self.sessionLockLock), spacing=2), self.waypointsButton)
+
 
         self.topRow = row = Row(row)
         self.add(row)
@@ -312,13 +317,12 @@ class LevelEditor(GLViewport):
         self.revertPlayerSkins = False
 
     #-# Translation live update preparation
-    def set_update_translation(self, v):
-        GLViewport.set_update_translation(self, v)
+    def set_update_ui(self, v):
+        GLViewport.set_update_ui(self, v)
         if v:
             self.statusLabel.width = self.width
-            self.viewDistanceReadout.width = 40
             self.topRow.calc_size()
-            self.controlPanel.set_update_translation(v)
+            self.controlPanel.set_update_ui(v)
     #-#
 
     def __del__(self):
@@ -346,31 +350,21 @@ class LevelEditor(GLViewport):
 
         result = Dialog(widg, ["Create", "Cancel"]).present()
         if result == "Create":
+            if nameField.value in self.waypointManager.waypoint_names:
+                self.Notify("You cannot have duplicate waypoint names")
+                return
             if saveCameraRotation.checkbox.value:
-                self.waypointManager.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
-                                                                                                                         yField.value, 
-                                                                                                                         zField.value,
-                                                                                                                         self.mainViewport.yaw,
-                                                                                                                         self.mainViewport.pitch,
-                                                                                                                         self.level.dimNo
-                                                                                                                         ] 
-
+                self.waypointManager.add_waypoint(nameField.value, (xField.value, yField.value, zField.value), (self.mainViewport.yaw, self.mainViewport.pitch), self.level.dimNo)
             else:
-                self.waypointManager.waypoints["{0} ({1},{2},{3})".format(nameField.value.replace(" ", "_"), xField.value, yField.value, zField.value)] = [xField.value, 
-                                                                                                                     yField.value, 
-                                                                                                                     zField.value,
-                                                                                                                     0.0,
-                                                                                                                     0.0,
-                                                                                                                     self.level.dimNo]
+                self.waypointManager.add_waypoint(nameField.value, (xField.value, yField.value, zField.value), (0.0, 0.0), self.level.dimNo)
             if "Empty" in self.waypointManager.waypoints:
                 del self.waypointManager.waypoints["Empty"]
             self.waypointDialog.dismiss()
             self.waypointManager.save()
-            #self.saveWaypoints()
-            #self.nbt_waypoints["Waypoints"] = self.waypoints
-            #self.nbt_waypoints.s
 
     def gotoWaypoint(self):
+        if self.waypointsChoiceButton.value == "Empty":
+            return
         self.gotoDimension(self.waypointManager.waypoints[self.waypointsChoiceButton.value][5])
         self.mainViewport.skyList = None
         self.mainViewport.drawSkyBackground()
@@ -384,6 +378,8 @@ class LevelEditor(GLViewport):
 
     def deleteWaypoint(self):
         self.waypointDialog.dismiss()
+        if self.waypointsChoiceButton.value == "Empty":
+            return
         self.waypointManager.delete(self.waypointsChoiceButton.value)
 
     def gotoLastWaypoint(self, lastPos):
@@ -1235,8 +1231,8 @@ class LevelEditor(GLViewport):
             self.netherButton.selectedChoice = [d[0] for d in dimensionsMenu if d[1] == str(self.level.dimNo)][0]
             self.remove(self.topRow)
             # TODO: Marker
-            self.topRow = Row((self.mcEditButton, self.viewDistanceDown, Label("View Distance:"),
-                               self.viewDistanceReadout, self.viewDistanceUp, self.viewButton,
+            self.topRow = Row((self.mcEditButton, Label("View Distance:"),
+                               self.viewDistanceReadout, self.viewButton,
                                self.viewportButton, self.recordUndoButton, self.netherButton,
                                Row((self.sessionLockLabel, self.sessionLockLock), spacing=2), self.waypointsButton))
             self.add(self.topRow, 0)
@@ -1244,8 +1240,7 @@ class LevelEditor(GLViewport):
         else:
             self.remove(self.topRow)
             self.topRow = Row((
-                self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout,
-                self.viewDistanceUp,
+                self.mcEditButton, Label("View Distance:"), self.viewDistanceReadout,
                 self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock
@@ -2453,13 +2448,8 @@ class LevelEditor(GLViewport):
         self.addWorker(self.renderer)
         config.settings.viewDistance.set(self.renderer.viewDistance)
 
-    def increaseViewDistance(self):
-        self.renderer.viewDistance = min(self.renderer.maxViewDistance, self.renderer.viewDistance + 2)
-        self.addWorker(self.renderer)
-        config.settings.viewDistance.set(self.renderer.viewDistance)
-
-    def decreaseViewDistance(self):
-        self.renderer.viewDistance = max(self.renderer.minViewDistance, self.renderer.viewDistance - 2)
+    def changeViewDistance(self, dist):
+        self.renderer.viewDistance = min(self.renderer.maxViewDistance, dist)
         self.addWorker(self.renderer)
         config.settings.viewDistance.set(self.renderer.viewDistance)
 
