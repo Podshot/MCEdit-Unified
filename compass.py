@@ -38,7 +38,7 @@ class CompassOverlay(Drawable):
             filename = os.path.join("toolicons", "compass.png")
 
             self._tex = loadPNGTexture(filename)
-
+            
         self._tex.bind()
         size = 0.001 * config.settings.compassSize.get()
 

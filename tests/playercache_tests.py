@@ -1,9 +1,9 @@
 import unittest
-from version_utils import NewPlayerCache
 import os
 import atexit
+from version_utils import NewPlayerCache
 
-ASSERT_CONTENTS = False
+ASSERT_CONTENTS = True
 
 cache = NewPlayerCache()
 cache.load(os.path.abspath(__file__).replace("playercache_tests", "new_cache").replace(".pyc", ".json").replace(".py", ".json"))

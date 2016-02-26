@@ -68,7 +68,7 @@ ch.setFormatter(fmt)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-from version_utils import PlayerCache
+from version_utils import NewPlayerCache
 import directories
 import keys
 
