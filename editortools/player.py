@@ -139,7 +139,7 @@ class PlayerAddOperation(Operation):
             else:
                 break
         try:
-            data = self.playercache.getPlayerInfo(self.player, force=True)
+            data = self.playercache.getPlayerInfo(self.player)
             self.uuid = data[0]
             self.player = data[1]
         except:
@@ -164,17 +164,18 @@ class PlayerAddOperation(Operation):
 
         if self.level.oldPlayerFolderFormat:
             self.level.playerTagCache[self.level.getPlayerPath(self.player)] = self.playerTag
-
+            
             self.level.players.append(self.player)
             #if self.tool.panel:
                 #self.tool.panel.player_UUID[self.player] = self.player
 
         else:
             self.level.playerTagCache[self.level.getPlayerPath(self.uuid)] = self.playerTag
-
+            
             self.level.players.append(self.uuid)
             if self.tool.panel:
-                self.tool.panel.player_UUID[self.player] = self.uuid
+                self.tool.panel.player_UUID["UUID"].append(self.uuid)
+                self.tool.panel.player_UUID["Name"].append(self.player)
 
         self.tool.playerPos[self.editor.level.dimNo][(0,0,0)] = self.uuid
         self.tool.revPlayerPos[self.editor.level.dimNo][self.uuid] = (0,0,0)
@@ -228,7 +229,8 @@ class PlayerAddOperation(Operation):
         self.tool.movingPlayer = None
         if self.tool.panel:
             #self.tool.panel.players.remove(self.player)
-            #self.tool.panel.player_UUID.pop(self.player)
+            self.tool.panel.player_UUID["UUID"].remove(self.uuid)
+            self.tool.panel.player_UUID["Name"].remove(self.player)
             self.tool.hidePanel()
             self.tool.showPanel()
         if self.tool.movingPlayer is None:
@@ -249,8 +251,10 @@ class PlayerAddOperation(Operation):
 
             self.level.players.append(self.uuid)
             if self.tool.panel:
-                self.tool.panel.players.append(self.player)
-                self.tool.panel.player_UUID[self.player] = self.uuid
+                #self.tool.panel.players.append(self.uuid)
+                #self.tool.panel.player_UUID[self.player] = self.uuid
+                self.tool.panel.player_UUID["UUID"].append(self.uuid)
+                self.tool.panel.player_UUID["Name"].append(self.player)
             self.tool.playerTexture[self.uuid] = loadPNGTexture(self.playercache.getPlayerSkin(self.uuid))
             self.tool.playerPos[(0,0,0)] = self.uuid
             self.tool.revPlayerPos[self.uuid] = (0,0,0)
@@ -290,8 +294,6 @@ class PlayerMoveOperation(Operation):
                 level.setPlayerOrientation((yaw, pitch), self.player)
             level.setPlayerPosition(self.pos, self.player)
             level.setPlayerDimension(level.dimNo, self.player)
-            print "Pos: " + str(self.pos)
-            print "Player: " + str(self.player)
             self.tool.playerPos[self.pos] = self.player
             self.tool.revPlayerPos[self.player] = self.pos
             self.tool.markerList.invalidate()
