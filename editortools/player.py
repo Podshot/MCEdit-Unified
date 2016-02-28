@@ -630,7 +630,7 @@ class PlayerPositionTool(EditorTool):
 
     def delete_skin(self, uuid):
         del self.playerTexture[uuid]
-        self.playerTexture[uuid] = loadPNGTexture('char.png')
+        self.playerTexture[uuid] = self.charTex
 
     @alertException
     def reloadSkins(self):

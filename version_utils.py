@@ -79,6 +79,40 @@ class NewPlayerCache:
             fp.close()
         self.temp_skin_cache = {}
         self.TIMEOUT = self._cache.get("Connection Timeout", 2.5)
+        self._batchRefreshPlayers()
+        
+    # --- Refreshing ---
+    def _batchRefreshPlayers(self):
+        # TODO: Put this into a thread, since it could take alot of time to run
+        # TODO: Handle entries that weren't successful last time the cache was modified
+        to_refresh_successful = []
+        to_refresh_failed = []
+        
+        for uuid in self._cache["Cache"].keys():
+            player = self._cache["Cache"][uuid]
+            if player["Successful"]:
+                if self.getDeltaTime(player["Timestamp"], "hours") > 6:
+                    to_refresh_successful.append(player["Name"])
+            else:
+                to_refresh_failed.append(uuid)
+                
+        response_successful = self._postDataToURL("https://api.mojang.com/profiles/minecraft", json.dumps(to_refresh_successful), {"Content-Type": "application/json"})
+        if response_successful is not None:
+            response_successful = json.loads(response_successful)
+            for player in response_successful:
+                name = player["name"]
+                uuid = player["id"]
+                entry = self._cache["Cache"].get(uuid,{}) # Since we have to retrieve information via Playernames, the info returned could be for another UUID that took the existing Playername
+                if entry == {}:
+                    entry["Name"] = name
+                    entry["Successful"] = True
+                    entry["Timestamp"] = time.time()
+                else:
+                    entry["Name"] = name
+                    entry["Timestamp"] = time.time()
+                self._cache["Cache"][uuid] = entry
+        self.save()
+        
             
     # --- Checking if supplied data is in the Cache ---
     def UUIDInCache(self, uuid):
@@ -251,6 +285,28 @@ class NewPlayerCache:
             #print "Getting data from: {}".format(url)
             response = urllib2.urlopen(url, timeout=self.TIMEOUT).read()
             #print "\"{}\"".format(response)
+            return response
+        except urllib2.HTTPError, e:
+            print "Encountered a HTTPError"
+            print "Error: " + str(e.code)
+            #print traceback.format_exc()
+        except urllib2.URLError, e:
+            print "Encountered an URLError"
+            print "Error: " + str(e.reason)
+            #print traceback.format_exc()
+        except httplib.HTTPException:
+            print "Encountered a HTTPException"
+            #print traceback.format_exc()
+        except Exception:
+            print "Unknown error occurred while trying to get data from URL: " + url
+            print traceback.format_exc()
+        return None
+    
+    def _postDataToURL(self, url, payload, headers):
+        import traceback
+        try:
+            request = urllib2.Request(url, payload, headers)
+            response = urllib2.urlopen(request, timeout=self.TIMEOUT).read()
             return response
         except urllib2.HTTPError, e:
             print "Encountered a HTTPError"
