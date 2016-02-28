@@ -19,9 +19,9 @@ DEBUG_WM = mcplatform.DEBUG_WM
 
 
 class GLDisplayContext(object):
-    def __init__(self, splash=None):
+    def __init__(self, splash=None, caption=("", "")):
         self.win = None
-        self.reset(splash)
+        self.reset(splash, caption=caption)
 
     @staticmethod
     def getWindowSize():
@@ -32,7 +32,7 @@ class GLDisplayContext(object):
     def displayMode():
         return pygame.OPENGL | pygame.RESIZABLE | pygame.DOUBLEBUF
 
-    def reset(self, splash=None):
+    def reset(self, splash=None, caption=("", "")):
         pygame.key.set_repeat(500, 100)
 
         try:
@@ -57,7 +57,7 @@ class GLDisplayContext(object):
         GL.glMatrixMode(GL.GL_TEXTURE)
         GL.glScale(1 / 256., 1 / 256., 1 / 256.)
 
-        display.set_caption('MCEdit ~ ' + release.get_version(), 'MCEdit')
+        display.set_caption(*caption)
 
         if mcplatform.WindowHandler:
             self.win = mcplatform.WindowHandler(mode=self.displayMode())
