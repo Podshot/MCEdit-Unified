@@ -104,13 +104,25 @@ def wrapped_label(text, wrap_width, **kwds):
 def alert(mess, **kwds):
     ask(mess, ["OK"], **kwds)
 
+ask_tied_to = None
+# ask_tied_to = []
+ask_tied_tos = []
 
 def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
         wrap_width=60, **kwds):
     # If height is specified as a keyword, the Dialog object will have this haight, and the inner massage will
     # be displayed in a scrolling widget
-    colLbl = kwds.pop('colLabel', "")
+    # If 'responses_tooltips' it present in kwds, it must be dict with 'responses' as keys and the tooltips as values.
+    # If 'tie_widget_to' is in kwds keys and the value is True, the global 'ask_tied_to' will be set up to the 'box'.
+    # When called again with 'tie_widget_to', if 'ask_tied_to' is not None, the function returns a dummy answer.
+    global ask_tied_to
+    responses_tooltips = kwds.pop('responses_tooltips', {})
+    tie_widget_to = kwds.pop('tie_widget_to', None)
+    # Return a dummy answer if tie_windget_to is True and the global 'ask_tied_to' is not None
+    if tie_widget_to and ask_tied_to:
+        return "_OK"
 
+    colLbl = kwds.pop('colLabel', "")
 
     box = Dialog(**kwds)
     d = box.margin
@@ -118,6 +130,8 @@ def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
     buts = []
     for caption in responses:
         but = Button(caption, action=lambda x=caption: box.dismiss(x))
+        if caption in responses_tooltips.keys():
+            but.tooltipText = responses_tooltips[caption]
         buts.append(but)
     brow = Row(buts, spacing=d)
     lb.width = max(lb.width, brow.width)
@@ -158,6 +172,9 @@ def ask(mess, responses=["OK", "Cancel"], default=0, cancel=-1,
                     box.dismiss(responses[default])
 
     box.dispatch_key = dispatchKeyForAsk
+    if tie_widget_to:
+        ask_tied_to = box
+        ask_tied_tos.append(box)
     return box.present()
 
 

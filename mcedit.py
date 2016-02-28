@@ -170,6 +170,7 @@ class MCEdit(GLViewport):
     def __init__(self, displayContext, *args):
         if DEBUG_WM:
             print "############################ __INIT__ ###########################"
+        self.resizeAlert = config.settings.showWindowSizeWarning.get()
         self.maximized = config.settings.windowMaximized.get()
         self.saved_pos = config.settings.windowX.get(), config.settings.windowY.get()
         if displayContext.win and DEBUG_WM:
@@ -471,15 +472,76 @@ class MCEdit(GLViewport):
             self.editor.renderer.render = False
             return
 
-        if w < 1000:
-            config.settings.windowWidth.set(1000)
-            w = 1000
-            x = config.settings.windowX.get()
+        if win:
+            # Handling too small resolutions.
+            # Dialog texts.
+            # "MCEdit does not support window resolutions below 1000x700.\nYou may not be able to access all functions at this resolution."
+            # New buttons:
+            # "Don't warn me again": disable the window popup across sessions.
+            #     Tooltip: "Disable this message. Definitively. Even the next time you start MCEdit."
+            # "OK": dismiss the window and let go, don't pop up again for the session
+            #     Tooltip: "Continue and not see this message until you restart MCEdit"
+            # "Cancel": resizes the window to the minimum size
+            #     Tooltip: "Resize the window to the minimum recommended resolution."
 
-        if h < 680:
-            config.settings.windowHeight.set(680)
-            h = 680
-            y = config.settings.windowY.get()
+            # If the config showWindowSizeWarning is true and self.resizeAlert is true, show the popup
+            if (w < 1000 or h < 680) and config.settings.showWindowSizeWarning.get():
+                _w = w
+                _h = h
+                if self.resizeAlert:
+                    answer = "_OK"
+
+                    # Force the size only for the dimension that needs it.
+                    if w < 1000 and h < 680:
+                        _w = 1000
+                        _h = 680
+                    elif w < 1000:
+                        _w = 1000
+                    elif h < 680:
+                        _h = 680
+                    if not albow.dialogs.ask_tied_to:
+                        answer = albow.ask(
+                                           "MCEdit does not support window resolutions below 1000x700.\nYou may not be able to access all functions at this resolution.",
+                                           ["Don't remind me again.", "OK", "Cancel"], default=1, cancel=1,
+                                           responses_tooltips = {"Don't remind me again.": "Disable this message. Definitively. Even the next time you start MCEdit.",
+                                                                 "OK": "Continue and not see this message until you restart MCEdit",
+                                                                 "Cancel": "Resize the window to the minimum recommended resolution."},
+                                           tie_widget_to=True)
+                    else:
+                        if not albow.dialogs.ask_tied_to._visible:
+                            albow.dialogs.ask_tied_to._visible = True
+                            answer = albow.dialogs.ask_tied_to.present()
+                    if answer == "Don't remind me again.":
+                        config.settings.showWindowSizeWarning = False
+                        self.resizeAlert = False
+                    elif answer == "OK":
+                        w, h = self.size
+                        self.resizeAlert = False
+                    elif answer == "Cancel":
+                        w, h = _w, _h
+                else:
+                    if albow.dialogs.ask_tied_to:
+                        albow.dialogs.ask_tied_to.dismiss("_OK")
+                        del albow.dialogs.ask_tied_to
+                        albow.dialogs.ask_tied_to = None
+            elif (w >= 1000 or h >= 680):
+                if albow.dialogs.ask_tied_tos:
+                    for ask_tied_to in albow.dialogs.ask_tied_tos:
+                        ask_tied_to._visible = False
+                        ask_tied_to.dismiss("_OK")
+                        ask_tied_to.set_parent(None)
+                        del ask_tied_to
+
+        if not win:
+            if w < 1000:
+                config.settings.windowWidth.set(1000)
+                w = 1000
+                x = config.settings.windowX.get()
+
+            if h < 680:
+                config.settings.windowHeight.set(680)
+                h = 680
+                y = config.settings.windowY.get()
 
         if not self.editor.renderer.render:
             self.editor.renderer.render = True

@@ -523,7 +523,8 @@ definitions = {
         ("maxViewDistance", "Max View Distance", 32),
         ("drawPlayerHeads", "Draw Player Heads", True),
         ("showCommands", "Show Commands when hovering", True),
-        ("savePositionOnClose", "Save camera position on close", False)
+        ("savePositionOnClose", "Save camera position on close", False),
+        ("showWindowSizeWarning", "Show window size warning", True)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),
