@@ -14,7 +14,7 @@ import base64
 import directories
 import datetime
 
-logger = logging.getLogger()
+log = logging.getLogger(__name__)
 
 #@Singleton
 class NewPlayerCache:
@@ -74,7 +74,7 @@ class NewPlayerCache:
             else:
                 self._cache = json_in
         except:
-            logger.warning("Usercache.json may be corrupted")
+            log.warning("Usercache.json may be corrupted")
         finally:
             fp.close()
         self.temp_skin_cache = {}
@@ -134,7 +134,7 @@ class NewPlayerCache:
         for uuid in self._cache["Cache"].keys():
             clean_uuid = uuid.replace("-","")
             player = self._cache["Cache"][uuid]
-            if player["Name"] == name:
+            if player.get("Name", "") == name and player.get("Successful", False):
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
         return ("<Unknown UUID>", name, "<Unknown UUID>")
             
@@ -289,19 +289,21 @@ class NewPlayerCache:
             #print "\"{}\"".format(response)
             return response
         except urllib2.HTTPError, e:
-            print "Encountered a HTTPError"
-            print "Error: " + str(e.code)
+            log.warn("Encountered a HTTPError while trying to access \"" + url + "\"")
+            log.warn("Error: " + str(e.code))
+            #print "Encountered a HTTPError"
+            #print "Error: " + str(e.code)
             #print traceback.format_exc()
         except urllib2.URLError, e:
-            print "Encountered an URLError"
-            print "Error: " + str(e.reason)
+            log.warn("Encountered an URLError while trying to access \"" + url + "\"")
+            log.warn("Error: " + str(e.reason))
             #print traceback.format_exc()
         except httplib.HTTPException:
-            print "Encountered a HTTPException"
+            log.warn("Encountered a HTTPException while trying to access \"" + url + "\"")
             #print traceback.format_exc()
         except Exception:
-            print "Unknown error occurred while trying to get data from URL: " + url
-            print traceback.format_exc()
+            log.warn("Unknown error occurred while trying to get data from URL: " + url)
+            log.warn(traceback.format_exc())
         return None
     
     def _postDataToURL(self, url, payload, headers):
@@ -311,19 +313,19 @@ class NewPlayerCache:
             response = urllib2.urlopen(request, timeout=self.TIMEOUT).read()
             return response
         except urllib2.HTTPError, e:
-            print "Encountered a HTTPError"
-            print "Error: " + str(e.code)
+            log.warn("Encountered a HTTPError while trying to POST to \"" + url + "\"")
+            log.warn("Error: " + str(e.code))
             #print traceback.format_exc()
         except urllib2.URLError, e:
-            print "Encountered an URLError"
-            print "Error: " + str(e.reason)
+            log.warn("Encountered an URLError while trying to POST to \"" + url + "\"")
+            log.warn("Error: " + str(e.reason))
             #print traceback.format_exc()
         except httplib.HTTPException:
-            print "Encountered a HTTPException"
+            log.warn("Encountered a HTTPException while trying to POST to \"" + url + "\"")
             #print traceback.format_exc()
         except Exception:
-            print "Unknown error occurred while trying to get data from URL: " + url
-            print traceback.format_exc()
+            log.warn("Unknown error occurred while trying to POST data to URL: " + url)
+            log.warn(traceback.format_exc())
         return None
             
 def _cleanup():
