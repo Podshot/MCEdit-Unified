@@ -138,12 +138,13 @@ class PlayerAddOperation(Operation):
                 initial = self.player
             else:
                 break
-        try:
-            data = self.playercache.getPlayerInfo(self.player)
+            
+        data = self.playercache.getPlayerInfo(self.player)
+        if "<Unknown UUID>" not in data:
             self.uuid = data[0]
             self.player = data[1]
-        except:
-            action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player {} exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
+        else:
+            action = ask("Could not get {}'s UUID. Please make sure that you are connected to the internet and that the player \"{}\" exists.".format(self.player, self.player), ["Enter UUID manually", "Cancel"])
             if action != "Enter UUID manually":
                 return
             self.uuid = input_text_buttons("Enter a Player UUID: ", 160)

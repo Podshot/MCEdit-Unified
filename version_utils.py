@@ -120,7 +120,7 @@ class NewPlayerCache:
     
     def nameInCache(self, name):
         for uuid in self._cache["Cache"].keys():
-            if self._cache["Cache"][uuid]["Name"] == name:
+            if self._cache["Cache"][uuid].get("Name", "") == name:
                 return True
         return False
     
@@ -156,7 +156,7 @@ class NewPlayerCache:
         clean_uuid = uuid.replace("-","")
         player = self._cache["Cache"].get(clean_uuid, {})
         response = self._getDataFromURL("https://sessionserver.mojang.com/session/minecraft/profile/{}".format(clean_uuid))
-        if response is not None:
+        if response:
             try:
                 data = response
                 response = json.loads(response)
@@ -179,7 +179,7 @@ class NewPlayerCache:
         
     def _getPlayerInfoName(self, name):
         response = self._getDataFromURL("https://api.mojang.com/users/profiles/minecraft/{}".format(name))
-        if response is not None:
+        if response:
             try:
                 response = json.loads(response)
                 uuid = response["id"]
@@ -215,6 +215,8 @@ class NewPlayerCache:
         toReturn = 'char.png'
         
         uuid_sep, name, uuid = self.getPlayerInfo(arg)
+        if uuid == "<Unknown UUID>":
+            return toReturn
         player = self._cache["Cache"][uuid]
         skin_path = os.path.join("player-skins", uuid_sep.replace("-","_") + ".png")
         #temp_skin_path = os.path.join("player-skin", uuid_sep.replace("-","_") + ".temp.png")
@@ -330,7 +332,8 @@ def _cleanup():
             fp = None
             try:
                 fp = open(os.path.join("player-skins", image_file), 'rb')
-                Image.open(fp)
+                im = Image.open(fp)
+                im.close()
             except IOError:
                 fp.close()
                 os.remove(os.path.join("player-skins", image_file))
@@ -338,3 +341,4 @@ def _cleanup():
     
 atexit.register(_cleanup)
 NewPlayerCache().load()
+atexit.register(NewPlayerCache().save)
