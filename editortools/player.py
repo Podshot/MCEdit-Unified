@@ -410,7 +410,6 @@ class PlayerPositionPanel(Panel):
         
         if hasattr(self.level, 'players'):
             players = self.level.players or ["[No players]"]
-            print "Players: " + str(players)
             if not self.level.oldPlayerFolderFormat:
                 for player in players:
                     if player != "Player" and player != "[No players]":

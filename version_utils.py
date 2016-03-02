@@ -79,39 +79,47 @@ class NewPlayerCache:
             fp.close()
         self.temp_skin_cache = {}
         self.TIMEOUT = self._cache.get("Connection Timeout", 2.5)
-        self._batchRefreshPlayers()
+        self.cache_lock = threading.RLock()
+        self.player_refeshing = threading.Thread(target=self._batchRefreshPlayers)
+        #self.player_refeshing.daemon(True) # No idea whether to use the property setter function or the attribute, so I'll use both
+        self.player_refeshing.daemon = True
+        self.player_refeshing.start()
         
     # --- Refreshing ---
     def _batchRefreshPlayers(self):
-        # TODO: Put this into a thread, since it could take alot of time to run
-        # TODO: Handle entries that weren't successful last time the cache was modified
         to_refresh_successful = []
         to_refresh_failed = []
+        with self.cache_lock:
+            # TODO: Put this into a thread, since it could take alot of time to run
+            # TODO: Handle entries that weren't successful last time the cache was modified
         
-        for uuid in self._cache["Cache"].keys():
-            player = self._cache["Cache"][uuid]
-            if player["Successful"]:
-                if self.getDeltaTime(player["Timestamp"], "hours") > 6:
-                    to_refresh_successful.append(player["Name"])
-            else:
-                to_refresh_failed.append(uuid)
-                
-        response_successful = self._postDataToURL("https://api.mojang.com/profiles/minecraft", json.dumps(to_refresh_successful), {"Content-Type": "application/json"})
-        if response_successful is not None:
-            response_successful = json.loads(response_successful)
-            for player in response_successful:
-                name = player["name"]
-                uuid = player["id"]
-                entry = self._cache["Cache"].get(uuid,{}) # Since we have to retrieve information via Playernames, the info returned could be for another UUID that took the existing Playername
-                if entry == {}:
-                    entry["Name"] = name
-                    entry["Successful"] = True
-                    entry["Timestamp"] = time.time()
+            for uuid in self._cache["Cache"].keys():
+                player = self._cache["Cache"][uuid]
+                if player["Successful"]:
+                    if self.getDeltaTime(player["Timestamp"], "hours") > 6:
+                        to_refresh_successful.append(player["Name"])
                 else:
-                    entry["Name"] = name
-                    entry["Timestamp"] = time.time()
-                self._cache["Cache"][uuid] = entry
+                    to_refresh_failed.append(uuid)
+                
+            response_successful = self._postDataToURL("https://api.mojang.com/profiles/minecraft", json.dumps(to_refresh_successful), {"Content-Type": "application/json"})
+            if response_successful is not None:
+                response_successful = json.loads(response_successful)
+                for player in response_successful:
+                    name = player["name"]
+                    uuid = player["id"]
+                    entry = self._cache["Cache"].get(uuid,{}) # Since we have to retrieve information via Playernames, the info returned could be for another UUID that took the existing Playername
+                    if entry == {}:
+                        entry["Name"] = name
+                        entry["Successful"] = True
+                        entry["Timestamp"] = time.time()
+                    else:
+                        entry["Name"] = name
+                        entry["Timestamp"] = time.time()
+                    self._cache["Cache"][uuid] = entry
         self.save()
+        print to_refresh_failed
+        with self.cache_lock:
+            pass
         
             
     # --- Checking if supplied data is in the Cache ---
@@ -137,16 +145,28 @@ class NewPlayerCache:
             if player.get("Name", "") == name and player.get("Successful", False):
                 return (self.insertSeperators(clean_uuid), player["Name"], clean_uuid)
         return ("<Unknown UUID>", name, "<Unknown UUID>")
+    
+    def _wasSuccessfulUUID(self, uuid):
+        clean_uuid = uuid.replace("-","")
+        player = self._cache["Cache"].get(clean_uuid, {})
+        return player.get("Successful", False)
+    
+    def _wasSuccessfulName(self, name):
+        for uuid in self._cache["Cache"].keys():
+            player = self._cache["Cache"][uuid]
+            if player.get("Name", "") == name:
+                return player.get("Successful", False)
+        return False
             
     def getPlayerInfo(self, arg, force=False):
         try:
             UUID(arg, version=4)
-            if self.UUIDInCache(arg) and not force:
+            if self.UUIDInCache(arg) and self._wasSuccessfulUUID(arg) and not force:
                 return self._getDataFromCacheUUID(arg)
             else:
                 return self._getPlayerInfoUUID(arg)
         except ValueError:
-            if self.nameInCache(arg) and not force:
+            if self.nameInCache(arg) and self._wasSuccessfulName(arg) and not force:
                 return self._getDataFromCacheName(arg)
             else:
                 return self._getPlayerInfoName(arg)
