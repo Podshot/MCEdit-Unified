@@ -29,7 +29,7 @@ import pymclevel
 from pymclevel.box import BoundingBox, FloatBox
 from pymclevel import nbt
 import logging
-from version_utils import NewPlayerCache
+from version_utils import PlayerCache
 from nbtexplorer import loadFile, saveFile, NBTExplorerToolPanel
 import pygame
 
@@ -44,7 +44,7 @@ class PlayerRemoveOperation(Operation):
         self.player = player
         self.level = self.tool.editor.level
         self.canUndo = False
-        self.playercache = NewPlayerCache()
+        self.playercache = PlayerCache()
 
     def perform(self, recordUndo=True):
         if self.level.saving:
@@ -121,7 +121,7 @@ class PlayerAddOperation(Operation):
         self.tool = tool
         self.level = self.tool.editor.level
         self.canUndo = False
-        self.playercache = NewPlayerCache()
+        self.playercache = PlayerCache()
 
     def perform(self, recordUndo=True):
         initial = ""
@@ -406,7 +406,7 @@ class PlayerPositionPanel(Panel):
         self.tool = tool
         self.player_UUID = {"UUID": [], "Name": []}
         self.level = tool.editor.level
-        self.playercache = NewPlayerCache()
+        self.playercache = PlayerCache()
         
         if hasattr(self.level, 'players'):
             players = self.level.players or ["[No players]"]
@@ -777,7 +777,7 @@ class PlayerPositionTool(EditorTool):
         self.playerTexture = {}
         self.revPlayerPos = {0:{}, -1:{}, 1:{}}
         self.inOtherDimension = {0: [], 1: [], -1: []}
-        self.playercache = NewPlayerCache()
+        self.playercache = PlayerCache()
 
         self.markerList = DisplayList()
 

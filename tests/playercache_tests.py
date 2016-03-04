@@ -1,11 +1,11 @@
 import unittest
 import os
 import atexit
-from version_utils import NewPlayerCache
+from version_utils import PlayerCache
 
 ASSERT_CONTENTS = True
 
-cache = NewPlayerCache()
+cache = PlayerCache()
 cache.load(os.path.abspath(__file__).replace("playercache_tests", "new_cache").replace(".pyc", ".json").replace(".py", ".json"))
         
 class NewPlayerDataTest(unittest.TestCase):

@@ -68,7 +68,7 @@ ch.setFormatter(fmt)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-from version_utils import NewPlayerCache
+from version_utils import PlayerCache
 import directories
 import keys
 
@@ -646,6 +646,7 @@ class MCEdit(GLViewport):
 
     @classmethod
     def main(cls):
+        PlayerCache().load()
         displayContext = GLDisplayContext(splash.splash)
 
         os.environ['SDL_VIDEO_CENTERED'] = '0'
