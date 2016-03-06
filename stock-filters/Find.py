@@ -3,8 +3,11 @@
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float, TAG_Long, \
     TAG_Byte_Array, TAG_Int_Array
 from pymclevel.box import BoundingBox
-from albow import alert
+from albow import alert, ask
 import ast
+# Let import the stuff to save files.
+from mcplatform import askSaveFile
+from directories import getDocumentsFolder
 
 displayName = "Find"
 
@@ -268,7 +271,13 @@ def perform(level, box, options):
     else:
         search.sort()
         if op == trn._("Dump Found Coordinates"):
-            alert("\n".join("%d, %d, %d" % pos for pos in search), height=editor.height, colLabel="Matching Coordinates")
+            result = "\n".join("%d, %d, %d" % pos for pos in search)
+            answer = ask(result, height=editor.height, colLabel="Matching Coordinates", responses=["Save", "OK"])
+            if answer == "Save":
+                fName = askSaveFile(getDocumentsFolder(), "Save to file...", "find.txt", 'Folder\0*.dat\0*.*\0\0', 'txt')
+                if fName:
+                    fData = "# MCEdit find output\n# Search options:\n# Match by: %s\n# Match block type: %s\n# Match block: %s\n# Match block data: %s\n# Match tile entities: %s\n# Match Tag Name:%s\n# Match Tag Value: %s\n# Case insensitive: %s\n# Match Tag Type: %s\n\n%s"%(by, matchtype, matchblock, matchdata, matchtile, matchname, matchval, caseSensitive, matchtagtype, result)
+                    open(fName, 'w').write(fData)
         else:
             treeData = {}
             # To set tooltip text to the items the need it, use a dict: {"value": <item to be added to the tree>, "tooltipText": "Some text"}

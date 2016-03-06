@@ -19,7 +19,7 @@ from albow.dialogs import Dialog, ask, alert
 from albow.controls import Label, Button, Image
 from albow.fields import TextFieldWrapped
 from albow.layout import Row, Column
-from albow.palette_view import PaletteView
+from albow.palette_view import PaletteView # @Unused
 from albow.scrollpanel import ScrollPanel
 from albow.theme import ThemeProperty
 from translate import _
