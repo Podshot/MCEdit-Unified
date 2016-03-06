@@ -153,7 +153,6 @@ class PaletteView(GridView):
             n = self.num_items() / getattr(getattr(self, 'parent', None), 'num_cols', lambda: 1)()
             # Get the displayed row number (v)
             s = float(d) / n
-            print self.scroll_rel, s
             if abs(self.scroll_rel) >= s:
                 if self.scroll_rel > 0:
                     self.scroll_down()
