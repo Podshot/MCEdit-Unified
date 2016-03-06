@@ -55,10 +55,17 @@ class PaletteView(GridView):
     def draw(self, surface):
 
         GridView.draw(self, surface)
+        u = False
+        d = False
         if self.can_scroll_up():
+            u = True
             self.draw_scroll_up_button(surface)
         if self.can_scroll_down():
+            d = True
             self.draw_scroll_down_button(surface)
+
+        if u or d:
+            self.draw_scrollbar(surface)
 
     def draw_scroll_up_button(self, surface):
         r = self.scroll_up_rect()
@@ -187,3 +194,31 @@ class PaletteView(GridView):
 
     def click_item(self, n, e):
         pass
+
+    def scrollbar_rect(self):
+        # Get the distance between the scroll buttons (d)
+        sub = self.scroll_up_rect().bottom
+        t = self.scroll_down_rect().top
+        d = t - sub
+        # Get the total row number (n).
+        n = self.num_items() / getattr(getattr(self, 'parent', None), 'num_cols', lambda: 1)()
+        # Get the displayed row number (v)
+        v = self.num_rows()
+        s = float(d) / n
+        h = s * v
+        if type(h) == float:
+            if h - int(h) > 0:
+                h += 1
+
+        top = sub + (s * self.scroll)
+        r = Rect(0, top, self.scroll_button_size, h)
+        m = self.margin
+        r.right = self.width - m
+        r.bottom = min(r.bottom, t)
+        r.inflate_ip(-4, -4)
+        return r
+
+    def draw_scrollbar(self, surface):
+        r = self.scrollbar_rect()
+        c = map(lambda x: min(255, max(0, x + 10)), self.scroll_button_color)
+        draw.rect(surface, c, r)
