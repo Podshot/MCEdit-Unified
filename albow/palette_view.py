@@ -33,6 +33,8 @@ class PaletteView(GridView):
             #self.scroll_up_rect = Rect(l, 0, d, d).inflate(-4, -4)
             #self.scroll_down_rect = Rect(l, b - d, d, d).inflate(-4, -4)
         self.scroll = 0
+        self.dragging_hover = False
+        self.scroll_rel = 0
 
     def scroll_up_rect(self):
         d = self.scroll_button_size
@@ -125,7 +127,10 @@ class PaletteView(GridView):
         if event.button == 1:
             if self.scrolling:
                 p = event.local
-                if self.scroll_up_rect().collidepoint(p):
+                if self.scrollbar_rect().collidepoint(p):
+                    self.dragging_hover = True
+                    return
+                elif self.scroll_up_rect().collidepoint(p):
                     self.scroll_up()
                     return
                 elif self.scroll_down_rect().collidepoint(p):
@@ -137,6 +142,30 @@ class PaletteView(GridView):
             self.scroll_down()
 
         GridView.mouse_down(self, event)
+
+    def mouse_drag(self, event):
+        if self.dragging_hover:
+            self.scroll_rel += event.rel[1]
+            sub = self.scroll_up_rect().bottom
+            t = self.scroll_down_rect().top
+            d = t - sub
+            # Get the total row number (n).
+            n = self.num_items() / getattr(getattr(self, 'parent', None), 'num_cols', lambda: 1)()
+            # Get the displayed row number (v)
+            s = float(d) / n
+            print self.scroll_rel, s
+            if abs(self.scroll_rel) >= s:
+                if self.scroll_rel > 0:
+                    self.scroll_down()
+                else:
+                    self.scroll_up()
+                self.scroll_rel = 0
+
+    def mouse_up(self, event):
+        if event.button == 1:
+            if self.dragging_hover:
+                self.dragging_hover = False
+                self.scroll_rel = 0
 
     def scroll_up(self):
         if self.can_scroll_up():
@@ -210,7 +239,7 @@ class PaletteView(GridView):
             if h - int(h) > 0:
                 h += 1
 
-        top = sub + (s * self.scroll)
+        top = max(sub, sub + (s * self.scroll) + self.scroll_rel)
         r = Rect(0, top, self.scroll_button_size, h)
         m = self.margin
         r.right = self.width - m

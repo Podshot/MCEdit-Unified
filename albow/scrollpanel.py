@@ -42,6 +42,8 @@ class ScrollRow(PaletteView):
         self.hscrolling = kwargs.pop('hscrolling', True)
         self.hscroll = 0
         self.virtual_width = 1000
+        self.dragging_hhover = False
+        self.hscroll_rel = 0
         PaletteView.__init__(self, cell_size, nrows, 1, scrolling=scrolling)
         if self.hscrolling:
             self.height += self.scroll_button_size
@@ -145,8 +147,9 @@ class ScrollRow(PaletteView):
             if w - int(w) > 0:
                 w += 1
 
-        left = slr + (d * (float(self.hscroll) / self.virtual_width))
+        left = max(slr, slr + (d * (float(self.hscroll) / self.virtual_width)) + self.hscroll_rel)
         r = Rect(left, slt, w, self.scroll_button_size)
+        r.right = min(r.right, d + slr)
         r.inflate_ip(-4, -4)
         return r
 
@@ -211,7 +214,10 @@ class ScrollRow(PaletteView):
         if event.button == 1:
             if self.hscrolling:
                 p = event.local
-                if self.scroll_left_rect().collidepoint(p):
+                if self.hscrollbar_rect().collidepoint(p):
+                    self.dragging_hhover = True
+                    return
+                elif self.scroll_left_rect().collidepoint(p):
                     self.scroll_left()
                     return
                 elif self.scroll_right_rect().collidepoint(p):
@@ -224,6 +230,28 @@ class ScrollRow(PaletteView):
             if self.hscrolling:
                 self.scroll_right()
         PaletteView.mouse_down(self, event)
+
+    def mouse_drag(self, event):
+        if self.dragging_hhover:
+            self.hscroll_rel += event.rel[0]
+            slr, slt = self.scroll_left_rect().topright
+            d = self.scroll_right_rect().left - slr
+            _s = self.cell_size[1]
+            n = float(self.virtual_width) / _s
+            s = float(d) / n
+            if abs(self.hscroll_rel) > s:
+                if self.hscroll_rel > 0:
+                    self.scroll_right()
+                else:
+                    self.scroll_left()
+                self.hscroll_rel = 0
+        PaletteView.mouse_drag(self, event)
+
+    def mouse_up(self, event):
+        if self.dragging_hhover:
+            self.dragging_hhover = False
+            self.hscroll_rel = 0
+        PaletteView.mouse_up(self, event)
 
     def cell_rect(self, row, col):
         w, h = self.cell_size
