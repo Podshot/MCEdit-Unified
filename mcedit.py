@@ -121,13 +121,19 @@ if "-tt" in sys.argv:
 import mceutils
 import mcplatform
 
-# This switch is used to test/debug window handling.
-# Must be specified to enable the internal handler for Windows.
+# The two next switches '--debug-wm' and '--no-wm' are used to debug/disable the internal window handler.
+# They are exclusive. You can't debug if it is disabled.
 if "--debug-wm" in sys.argv:
     mcplatform.DEBUG_WM = True
+if "--no-wm" in sys.argv:
+    mcplatform.DEBUG_WM = False
+    mcplatform.USE_WM = False
+else:
     mcplatform.setupWindowHandler()
 
 DEBUG_WM = mcplatform.DEBUG_WM
+USE_WM = mcplatform.USE_WM
+
 
 #-# DEBUG
 if mcplatform.hasXlibDisplay and DEBUG_WM:
@@ -835,7 +841,7 @@ class MCEdit(GLViewport):
                         mcedit.editor.waypointManager.saveLastPosition(mcedit.editor.mainViewport, mcedit.editor.level.getPlayerDimension())
                     mcedit.editor.waypointManager.save()
                 # The following Windows specific code won't be executed if we're using '--debug-wm' switch.
-                if not DEBUG_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():
+                if not USE_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():
                     (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                         display.get_wm_info()['window'])
                     X, Y, r, b = rect
@@ -877,7 +883,7 @@ class MCEdit(GLViewport):
             print "############################ EXITING ############################"
         win = self.displayContext.win
         # The following Windows specific code will not be executed if we're using '--debug-wm' switch.
-        if not DEBUG_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():
+        if not USE_WM and sys.platform == "win32" and config.settings.setWindowPlacement.get():
             (flags, showCmd, ptMin, ptMax, rect) = mcplatform.win32gui.GetWindowPlacement(
                 display.get_wm_info()['window'])
             X, Y, r, b = rect

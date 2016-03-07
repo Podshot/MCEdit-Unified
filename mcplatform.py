@@ -603,6 +603,7 @@ def is_running(process):
 desktop_environment = get_desktop_environment()
 
 DEBUG_WM = False
+USE_WM = True
 
 # Desktops settings
 # Each entry in the platform sub-dictionaries represent which object is used to get/set the window metrics.
@@ -1162,15 +1163,19 @@ def setupWindowHandler():
     # Don't initialize the window handler here.
     # We need MCEdit display objects to get the right object.
     global WindowHandler
-    if sys.platform == 'linux2':
-        if XWindowHandler.desk_env == 'unknown':
-            log.warning("Your desktop environment could not be determined. The support for window sizing/moving is not availble.")
-        elif XWindowHandler.desk_env in linux_unsuported:
-            log.warning("Your desktop environment is not yet supported for window sizing/moving.")
-        else:
-            WindowHandler = XWindowHandler
-    elif sys.platform == 'win32' and DEBUG_WM: # Don't fall in this part untill the Windows handler is OK.
-        WindowHandler = WWindowHandler
+    if USE_WM:
+        log.warn("Initializing window management...")
+        if sys.platform == 'linux2':
+            if XWindowHandler.desk_env == 'unknown':
+                log.warning("Your desktop environment could not be determined. The support for window sizing/moving is not availble.")
+            elif XWindowHandler.desk_env in linux_unsuported:
+                log.warning("Your desktop environment is not yet supported for window sizing/moving.")
+            else:
+                WindowHandler = XWindowHandler
+                log.info("XWindowHandler initialized.")
+        elif sys.platform == 'win32':
+            WindowHandler = WWindowHandler
+            log.info("WWindowHandler initialized.")
     return WindowHandler
 
-setupWindowHandler()
+# setupWindowHandler()

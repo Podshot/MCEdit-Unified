@@ -16,6 +16,7 @@ import mceutils
 import functools
 
 DEBUG_WM = mcplatform.DEBUG_WM
+USE_WM = mcplatform.USE_WM
 
 
 class GLDisplayContext(object):
@@ -63,7 +64,7 @@ class GLDisplayContext(object):
             self.win = mcplatform.WindowHandler(mode=self.displayMode())
 
         # The following Windows specific code won't be executed if we're using '--debug-wm' switch.
-        if not DEBUG_WM and sys.platform == 'win32' and config.settings.setWindowPlacement.get():
+        if not USE_WM and sys.platform == 'win32' and config.settings.setWindowPlacement.get():
             config.settings.setWindowPlacement.set(False)
             config.save()
             X, Y = config.settings.windowX.get(), config.settings.windowY.get()
