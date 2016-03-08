@@ -6409,7 +6409,21 @@ blocks:
         name: Chain Command Block (Conditional, West)
       13:
         name: Chain Command Block (Conditional, East)
-
+        
+  - id: 212
+    idStr: frosted_ice
+    name: Frosted Ice
+    tex: [19, 16]
+    data:
+      0:
+        name: Frosted Ice
+      1:
+        name: Frosted Ice (Stage 1 Cracks)
+      2:
+        name: Frosted Ice (Stage 2 Cracks)
+      3:
+        name: Frosted Ice (Stage 3 Cracks)
+        
   - id: 255
     idStr: structure_block
     name: Structure Block

@@ -8,6 +8,9 @@ then
 elif [ -f "mcedit.pyc" ]
 then
     f="mcedit.pyc"
+elif [ -f "mcedit" ]
+then
+    f="mcedit"
 else
     echo "MCEdit program not found."
     echo "Check your installation and retry."

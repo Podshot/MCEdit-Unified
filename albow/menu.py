@@ -91,10 +91,10 @@ class Menu(Dialog):
         else:
             self.height = h * len(self._items) + h
 
-    def set_update_translation(self, v):
+    def set_update_ui(self, v):
         if v:
             self._items = [MenuItem(*item, doNotTranslate=self.doNotTranslate) for item in self.items]
-        Dialog.set_update_translation(self, v)
+        Dialog.set_update_ui(self, v)
 
     def present(self, client, pos):
         client = client or self.root
