@@ -449,7 +449,7 @@ class MCServerChunkGenerator(object):
         self.generateAtPosition(tempWorld, tempDir, cx, cz)
         self.copyChunkAtPosition(tempWorld, level, cx, cz)
 
-    minRadius = 5
+    minRadius = 12
     maxRadius = 20
 
     def createLevel(self, level, box, simulate=False, **kw):
