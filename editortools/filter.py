@@ -866,8 +866,15 @@ class FilterTool(EditorTool):
             totalFilters += 1
             if hasattr(module, "UPDATE_URL") and hasattr(module, "VERSION"):
                 if isinstance(module.UPDATE_URL, (str, unicode)) and isinstance(module.VERSION, (str, unicode)):
-                    versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
-                    if module.VERSION != versionJSON["Version"]:
+                    # Pass on URL or network errors.
+                    # This is a basic error hadling, need more refinement to sort errors...
+                    update = True
+                    try:
+                        versionJSON = json.loads(urllib2.urlopen(module.UPDATE_URL).read())
+                    except Exception, e:
+                        update = False
+                        log.warn(" Could not fetch source for %s. System said: %s"%(module.displayName, e))
+                    if update and module.VERSION != versionJSON["Version"]:
                         urllib.urlretrieve(versionJSON["Download-URL"],
                                            os.path.join(filtersDir, "updates", versionJSON["Name"]))
                         updatedFilters += 1

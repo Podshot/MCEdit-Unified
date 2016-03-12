@@ -685,8 +685,8 @@ class NBTExplorerToolPanel(Panel):
         # &# Prototype for Blocks/item names
         mclangres.buildResources(lang=getLang())
 
-    def set_update_translation(self, v):
-        Panel.set_update_translation(self, v)
+    def set_update_ui(self, v):
+        Panel.set_update_ui(self, v)
         if v:
             mclangres.buildResources(lang=getLang())
 

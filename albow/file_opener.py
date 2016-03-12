@@ -107,8 +107,8 @@ class FileOpener(albow.Widget):
         self.invalidate()
 #        self.shrink_wrap()
 
-    def set_update_translation(self, v):
-        albow.Widget.set_update_translation(self, v)
+    def set_update_ui(self, v):
+        albow.Widget.set_update_ui(self, v)
         if v:
             self.buildWidgets()
     #-#

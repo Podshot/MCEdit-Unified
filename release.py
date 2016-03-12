@@ -13,7 +13,7 @@ def get_version():
     try:
         with open(os.path.join(directories.getDataDir(), "RELEASE-VERSION.json"), 'rb') as jsonString:
             current = json.load(jsonString)
-            return current["name"].replace("{tag_name}",current["tag_name"])
+            return current["name"].replace("{tag_name}",current["tag_name"]).replace("{mc_versions}", current["mc_versions"]).replace("{pe_versions}", current["pe_versions"])
     except:
         raise
 

@@ -482,6 +482,9 @@ definitions = {
         ("targetFPS", "Target FPS", 30),
         ("windowWidth", "window width", 1152),
         ("windowHeight", "window height", 864),
+        ("windowMaximized", "window maximized", False),
+        ("windowMaximizedHeight", "window maximized height", 0),
+        ("windowMaximizedWidth", "window maximized width", 0),
         ("windowX", "window x", 0),
         ("windowY", "window y", 0),
         ("windowShowCmd", "window showcmd", 1),
@@ -520,7 +523,8 @@ definitions = {
         ("maxViewDistance", "Max View Distance", 32),
         ("drawPlayerHeads", "Draw Player Heads", True),
         ("showCommands", "Show Commands when hovering", True),
-        ("savePositionOnClose", "Save camera position on close", False)
+        ("savePositionOnClose", "Save camera position on close", False),
+        ("showWindowSizeWarning", "Show window size warning", True)
     ],
     ("controls", "Controls"): [
         ("mouseSpeed", "mouse speed", 5.0),

@@ -39,7 +39,7 @@ t9 Låg Detalj Höjd
 o10 Block Buffer (MB):
 t10 
 o11 Set Window Placement
-t11 
+t11 Sett Fönster Placering
 o12 Rotate block with brush
 t12 Rotera block med pensel
 o13 Window Resize Alert
@@ -63,7 +63,7 @@ t21 OK
 o22 Field of View: 
 t22 Synfält
 o23 Target FPS: 
-t23 
+t23 Mål FPS
 o24 Vertex Buffer Limit (MB): 
 t24 
 o25 Fast Leaves
@@ -79,9 +79,9 @@ t29 Inställningar
 o30 Command
 t30 Kommando
 o31 Assigned Key
-t31 
+t31 Tilldelad Nyckel
 o32 Assign Key...
-t32 
+t32 Tilldela Nyckel...
 o33 Done
 t33 Klart
 o34 WASD
@@ -119,7 +119,7 @@ t49 Grön
 o50 Red
 t50 Röd
 o51 Teal
-t51 
+t51 Turkos
 o52 Pink
 t52 Rosa
 o53 Yellow
@@ -191,9 +191,9 @@ t85 Hemsida
 o86 About MCEdit
 t86 Om MCEdit
 o87 Recent Changes
-t87 
+t87 Nya Ändringar
 o88 License
-t88 
+t88 Licens
 o89 Config Files
 t89 Konfigurera Filer
 o90 {0}/{1}/{2}/{3}/{4}/{5} to move
@@ -273,7 +273,7 @@ t124 Rulla (Kopiera)
 o125 Flip
 t125 Vänd
 o126 Mirror
-t126 
+t126 Spegla
 o127 <Brush Tool>
 t127 <Pensel Verktyg>
 o128 Rotate (Brush)
@@ -329,7 +329,7 @@ t152 Löv är fasta, some i Minecraft's 'Snabb' grafik
 o153 All blocks are drawn the same way (overrides 'Fast Leaves')
 t153 Alla block ritas på samma sätt (överskriver 'Snabba Löv')
 o154 Enable choppy mouse movement for faster loading.
-t154 
+t154 Tillåt musen att röra sig hackit så att det laddar fortare.
 o155 Point here and use mousewheel to adjust
 t155 Peka här och använd mushjulet för att justera
 o156 Portable
@@ -347,7 +347,7 @@ t161 Ändra positionen av mobs i spawners medans du knuffar.
 o162 Change static coordinates in command blocks while nudging.
 t162 Ändra statiska koordinater i kommando block medans du knuffar.
 o163 Always target the farthest block under the cursor, even in mouselook mode.
-t163 
+t163 Målsätt alltid det block som är längst bort från musen, även i mus-hitta läge.
 o164 Moving forward and Backward will not change your altitude in Fly Mode.
 t164 Din altitud i Flyg Läge ändras inte genom att gå framåt och bakåt.
 o165 Apply brake when not pressing movement keys
@@ -396,9 +396,9 @@ t185 Radera Enheter
 o186 Remove all entities within the selection
 t186 Ta bort alla enheter inom markeringen.
 o187 Delete Tile Ticks
-t187 
+t187 Radera Rut Ticks
 o188 Removes all tile ticks within selection. Tile ticks are scheduled block updates
-t188 
+t188 Raderar alla rut ticks inom selektionen. Rut ticks är schemalagda block uppdateringar
 o189 Analyze
 t189 Analysera
 o190 Count the different blocks and entities in the selection and display the totals.
@@ -530,7 +530,7 @@ t248 Rotera
 o249 Roll
 t249 Rulla
 o250 Chunk Align
-t250 
+t250 Anpassa Chunks
 o251 Repeat
 t251 Repetera
 o252 Scale Factor
@@ -573,7 +573,7 @@ t267 Namn
 o268 ID
 t268 ID
 o269 Any Subtype
-t269 
+t269 Vilken som helst Subtyp
 o270 Press {hotkey} to choose a block. Press {R} to enter replace mode. Click Fill or press Enter to confirm.
 t270 Tryck på {hotkey} för att välja ett block. Tryck på {R} för att aktivera byt ut läge. Klicka på Fyll eller tryck på Enter för att acceptera.
 o271 Find:
@@ -601,13 +601,13 @@ t281 Motstånd
 o282 Hunger (no mob effect)
 t282 Hunger (ingen mob effekt)
 o283 Haste (no mob effect)
-t283 
+t283 Brådska (ingen mob effekt)
 o284 Fire Resistance
 t284 Eld Motstånd
 o285 Blindness (no mob effect)
 t285 Blindhet (ingen mob effekt)
 o286 Jump Boost
-t286 
+t286 Hopp Förstärkning
 o287 Effect
 t287 Effekt
 o288 Level
@@ -625,7 +625,7 @@ t293
 o294 Classic Water Flood
 t294 Klassisk Vatten Översvämning
 o295 Colorwires
-t295 
+t295 Färgkablar
 o296 Create Busses
 t296 Skapa Bussar
 o297 Create Shops
@@ -649,7 +649,7 @@ t305 Filter:
 o306 Update Filters
 t306 Uppdatera Filter
 o307 Max Seed
-t307 
+t307 Max Seed
 o308 Health
 t308 Liv
 o309 VelocityX
@@ -661,11 +661,11 @@ t311
 o312 Fire
 t312 Eld
 o313 FallDistance
-t313 
+t313 FallDistans
 o314 AttackTime
-t314 
+t314 AttackTid
 o315 HurtTime
-t315 
+t315 SkadeTid
 o316 Lightning
 t316 Blixt
 o317 No Lightning
@@ -685,11 +685,11 @@ t323
 o324 Librarian (white)
 t324 Bibliotikarie (vit)
 o325 Blacksmith (black apron)
-t325 
+t325 Smed (svart förkläde)
 o326 Priest (purple)
 t326 Präst (lila)
 o327 Villager Profession
-t327 
+t327 Bybo Yrke
 o328 Slime Size
 t328 Slime Storlek
 o329 Breeding Mode Ticks
@@ -711,17 +711,17 @@ t336
 o337 Add Stopping Trade
 t337 
 o338 Invulnerable Villager
-t338 
+t338 Odödlig Bybo
 o339 Make Unlimited Trades
-t339 
+t339 Skapa Oändliga Byten
 o340 Give Experience per a Trade
-t340 
+t340 Ge XP per byte
 o341 Make Villager not Move
-t341 
+t341 Gör så att Bybon inte rör sig
 o342 Villager Name
-t342 
+t342 Bybo Namn
 o343 Trade
-t343 
+t343 Byta
 o344       Rotate the Position of your Trader
 *Can only be used if Not Move is checked*
 t344 
@@ -743,53 +743,53 @@ Click the chest you want and choose what you want and click hit enter
 
 t350 
 o351 Notes
-t351 
+t351 Anteckningar
 o352 Include position data
-t352 
+t352 Inkludera positions data
 o353 Both
-t353 
+t353 Båda
 o354 Lower Only
-t354 
+t354 Sänk Bara
 o355 Raise Only
-t355 
+t355 Höj bara
 o356 Raise/Lower
-t356 
+t356 Höj/Sänk
 o357 TileEntity
-t357 
+t357 RutEntity
 o358 Entity
-t358 
+t358 Entity
 o359 Block
-t359 
+t359 Block
 o360 Match by:
-t360 
+t360 Matcha med:
 o361 Match block type (for TileEntity searches):
-t361 
+t361 Matcha block typ (för RutEntity sökningar):
 o362 Match block:
-t362 
+t362 Matcha block:
 o363 Match block data:
-t363 
+t363 Matcha block data:
 o364 Match tile entities (for Block searches):
-t364 
+t364 Matcha rut entitier (för Block sökningar):
 o365 "None" for Name or Value will match any tag's Name or Value respectively.
-t365 
+t365 "Inget" för Namn eller Värde kommer att matcha vilket taggs Namn eller Värde som helst.
 o366 Match Tag Name:
-t366 
+t366 Matcha Tagg Namn:
 o367 Match Tag Value:
-t367 
+t367 Matcha Tagg Värde:
 o368 Case insensitive:
-t368 
+t368 Inte Skriftslägessensitiv:
 o369 Any
-t369 
+t369 Vilket/Vilken som helst:
 o370 Match Tag Type:
-t370 
+t370 Matcha Tagg Typ:
 o371 Start New Search
-t371 
+t371 Påbörja Ny Sökning:
 o372 Find Next
-t372 
+t372 Hitta Nästa
 o373 Dump Found Coordinates
-t373 
+t373 Släng Hittade Koordinater
 o374 Operation:
-t374 
+t374 Operation:
 o375 This filter is designed to search for NBT in either Entities or TileEntities.
 It can also be used to search for blocks.
 "Match by" determines which type of object is prioritized during the search.
@@ -800,195 +800,195 @@ Block matching can also optionally match block data, e.g. matching all torches, 
 "Start New Search" will re-search through the selected volume, while "Find Next" will iterate through the search results of the previous search.
 t375 
 o376 Documentation
-t376 
+t376 Dokumentation
 o377 Forester script by dudecon
 t377 
 o378 Procedural
-t378 
+t378 Procedur
 o379 Normal
-t379 
+t379 Normal
 o380 Bamboo
-t380 
+t380 Bambu
 o381 Palm
-t381 
+t381 Palm
 o382 Stickly
 t382 
 o383 Round
-t383 
+t383 Rund
 o384 Cone
-t384 
+t384 Kon
 o385 Rainforest
-t385 
+t385 Regnskog
 o386 Mangrove
-t386 
+t386 Mangrove Skog
 o387 Shape
-t387 
+t387 Form
 o388 Tree Count
-t388 
+t388 Träd Antal
 o389 Tree Height
-t389 
+t389 Träd Höjd
 o390 Height Variation
-t390 
+t390 Höjd Variation
 o391 Branch Density
-t391 
+t391 Gren Densitet
 o392 Trunk Thickness
-t392 
+t392 Stam Tjocklek
 o393 Broken Trunk
-t393 
+t393 Förstörd Stam
 o394 Hollow Trunk
-t394 
+t394 Ihålig Stam
 o395 Wood
-t395 
+t395 Trä
 o396 Foliage
-t396 
+t396 Lövverk
 o397 Foliage Density
-t397 
+t397 Lövverksdensitet
 o398 Yes
-t398 
+t398 Ja
 o399 To Stone
-t399 
+t399 Till Sten
 o400 Hanging
-t400 
+t400 Hängande
 o401 No
-t401 
+t401 Nej
 o402 Roots
-t402 
+t402 Rötter
 o403 Root Buttresses
 t403 
 o404 Wood Material
-t404 
+t404 Trä Material
 o405 Leaf Material
-t405 
+t405 Löv Material
 o406 Plant On
-t406 
+t406 Plantera På
 o407 Ocean
-t407 
+t407 Hav
 o408 Plains
-t408 
+t408 Slätt
 o409 Desert
-t409 
+t409 Öken
 o410 Extreme Hills
-t410 
+t410 Extrema Kullar
 o411 Forest
-t411 
+t411 Skog
 o412 Taiga
-t412 
+t412 Taiga
 o413 Swamppland
-t413 
+t413 Träsk
 o414 River
-t414 
+t414 Flod
 o415 Hell (Nether)
-t415 
+t415 Helvete (Nether)
 o416 Sky (End)
-t416 
+t416 Himmel (Slut)
 o417 Frozen Ocean
-t417 
+t417 Fruset Hav
 o418 Frozen River
-t418 
+t418 Frusen Flod
 o419 Ice Plains
-t419 
+t419 Isslätter
 o420 Ice Mountains
-t420 
+t420 Isberg
 o421 Mushroom Island
-t421 
+t421 Svamp Ö
 o422 Mushroom Island Shore
-t422 
+t422 Svamp Ö Kust
 o423 Beach
-t423 
+t423 Strand
 o424 Desert Hills
-t424 
+t424 Öken Kullar
 o425 Forest Hills
-t425 
+t425 Skogskullar
 o426 Taiga Hills
-t426 
+t426 Taiga Kullar
 o427 Extreme Hills Edge
-t427 
+t427 Extrema Kullars Kant
 o428 Jungle
-t428 
+t428 Djungel
 o429 Jungle Hills
-t429 
+t429 Djungel Kullar
 o430 Jungle Edge
-t430 
+t430 Djungel Kant
 o431 Deep Ocean
-t431 
+t431 Djupt Hav
 o432 Stone Beach
-t432 
+t432 Sten Strand
 o433 Cold Beach
-t433 
+t433 Kall Strand
 o434 Birch Forest
-t434 
+t434 Björk Skog
 o435 Birch Forest Hills
-t435 
+t435 Björk Skogskullar
 o436 Roofed Forest
-t436 
+t436 Takförsedd Skog
 o437 Cold Taiga
-t437 
+t437 Kall Taiga
 o438 Cold Taiga Hills
-t438 
+t438 Kalla Taiga Kullar
 o439 Mega Taiga
-t439 
+t439 Mega Taiga
 o440 Mega Taiga Hills
-t440 
+t440 Mega Taiga Kullar
 o441 Extreme Hills+
-t441 
+t441 Extrema Kullar+
 o442 Savanna
-t442 
+t442 Savann
 o443 Savanna Plateau
-t443 
+t443 Savann Platå
 o444 Messa
-t444 
+t444 Messa
 o445 Messa Plateau F
-t445 
+t445 Messa Platå F
 o446 Messa Plateau
-t446 
+t446 Messa Platå
 o447 Sunflower Plains
-t447 
+t447 Solros Slätter
 o448 Desert M
-t448 
+t448 Öken M
 o449 Extreme Hills M
-t449 
+t449 Extrema Kullar M
 o450 Flower Forest
-t450 
+t450 Blomskog
 o451 Taiga M
-t451 
+t451 Taiga M
 o452 Swampland M
-t452 
+t452 Träsk M
 o453 Ice Plains Spikes
-t453 
+t453 Isslätter med Spetsar
 o454 Ice Mountains Spikes
-t454 
+t454 Isberg med Spetsar
 o455 Jungle M
-t455 
+t455 Djungel M
 o456 JungleEdge M
-t456 
+t456 DjungelKant M
 o457 Birch Forest M
-t457 
+t457 Björk Skog M
 o458 Birch Forest Hills M
-t458 
+t458 Björkskogskullar M
 o459 Roofed Forest M
-t459 
+t459 Takförsedd Skog M
 o460 Cold Taiga M
-t460 
+t460 Kall Taiga M
 o461 Mega Spruce Taiga
-t461 
+t461 Mega Gran Taiga
 o462 Mega Spruce Taiga Hills
-t462 
+t462 Mega Gran Taiga Kullar
 o463 Extreme Hills+ M
-t463 
+t463 Extrema Kullar+ M
 o464 Savanna M
-t464 
+t464 Savann M
 o465 Savanna Plateau M
-t465 
+t465 Savann Platå M
 o466 Mesa (Bryce)
-t466 
+t466 Mesa (Bryce)
 o467 Mesa Plateau F M
-t467 
+t467 Mesa Platå F M
 o468 Mesa Plateau M
-t468 
+t468 Mesa Platå M
 o469 (Uncalculated)
-t469 
+t469 (Outräknad)
 o470 Biome
-t470 
+t470 Biom
 o471 Repeat count
 t471 
 o472 Depth
@@ -1984,3 +1984,8 @@ o947 Click to import this item.
 t947 
 o948 Menu
 t948 Meny
+o949 for
+t949 
+o950 MCEdit does not support window resolutions below 1000x700.
+You may not be able to access all functions at this resolution.
+t950 

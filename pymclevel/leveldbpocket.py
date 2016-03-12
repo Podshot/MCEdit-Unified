@@ -261,7 +261,7 @@ class PocketLeveldbDatabase(object):
             while it.Valid():
                 key = it.key()
 
-                if len(key) < 9:
+                if len(key) != 9:  # Bad. Hardcode since nether has length 13. Someone go fix nether.
                     it.Next()
                     continue
                     
@@ -601,6 +601,9 @@ class PocketLeveldbWorld(ChunkedLevelMixin, MCLevel):
         self.saving = True
         batch = leveldb_mcpe.WriteBatch()
         dirtyChunkCount = 0
+        for c in self.chunksNeedingLighting():
+            self.getChunk(*c).genFastLights()
+
         for chunk in self._loadedChunks.itervalues():
             if chunk.dirty:
                 dirtyChunkCount += 1

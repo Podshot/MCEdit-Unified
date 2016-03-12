@@ -317,12 +317,12 @@ class LevelEditor(GLViewport):
         self.revertPlayerSkins = False
 
     #-# Translation live update preparation
-    def set_update_translation(self, v):
-        GLViewport.set_update_translation(self, v)
+    def set_update_ui(self, v):
+        GLViewport.set_update_ui(self, v)
         if v:
             self.statusLabel.width = self.width
             self.topRow.calc_size()
-            self.controlPanel.set_update_translation(v)
+            self.controlPanel.set_update_ui(v)
     #-#
 
     def __del__(self):
@@ -1240,8 +1240,7 @@ class LevelEditor(GLViewport):
         else:
             self.remove(self.topRow)
             self.topRow = Row((
-                self.mcEditButton, self.viewDistanceDown, Label("View Distance:"), self.viewDistanceReadout,
-                self.viewDistanceUp,
+                self.mcEditButton, Label("View Distance:"), self.viewDistanceReadout,
                 self.viewButton, self.viewportButton, self.recordUndoButton))
             self.add(self.topRow, 0)
             self.level.sessionLockLock = self.sessionLockLock

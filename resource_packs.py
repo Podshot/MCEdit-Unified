@@ -951,7 +951,7 @@ class DefaultResourcePack(IResourcePack):
     def __init__(self):
         self._isEmpty = False
         self._too_big = False
-        self._terrain_path = "terrain.png"
+        self._terrain_path = os.path.join(directories.getDataDir(), "terrain.png")
         self._pack_name = "Default"
 
     def terrain_path(self):
