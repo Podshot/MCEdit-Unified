@@ -10,17 +10,12 @@ function getJSON(url,forceLoad){
 	} else {
 		console.log("Forcing load of " + url);
 	}
-	var isRateLimitCheck = (url == "https://api.github.com/rate_limit");
+	var isRateLimitCheck = (url.indexOf('rate_limit') != -1);
 	var ret_val = {};
 	if (localStorage[cacheItemPrependString+url] && !isRateLimitCheck && !forceLoad) {
-		// console.log('Found cached version'); dont do this way to much console-ing
 		ret_val = JSON.parse(localStorage[cacheItemPrependString+url]);
 	} else {
 		try {
-			// if (!isRateLimitCheck && url.indexOf('github') != -1) {
-			// 	console.log('Didn\'t load ' + url + ' intentionally');
-			// 	return {};
-			// }
 			var response = $.ajax({
 				type: "GET",
 				url: url,
@@ -28,9 +23,9 @@ function getJSON(url,forceLoad){
 				async: false
 			}).responseText;
 			var ret_val = JSON.parse(response);
-			if (ret_val !== undefined) {
+			if (ret_val !== undefined && !isRateLimitCheck) {
 				localStorage[cacheItemPrependString+url] = JSON.stringify(ret_val);
-			} else {
+			} else if (!isRateLimitCheck) { 
 				loadFailError();
 			}
 		} catch(err) {
@@ -38,7 +33,7 @@ function getJSON(url,forceLoad){
 			loadFailError();
 		}
 	}
-	if (ret_val && ret_val.message && ret_val.message.indexOf('API rate limit exceeded') != -1) {
+	if (ret_val && ret_val.message && ret_val.message.indexOf('rate limit') != -1) {
 		if (!checkRateLimit()) {
 			localStorage.removeItem(cacheItemPrependString+url);
 			if (confirm('An error occured loading ' + url + '. The page will now reload.')) {
@@ -214,13 +209,8 @@ $(document).ready(function(){
 		$('body').css('background-color','#444444');
 		$('#ratewarning').css('text-align','center').css('color','white');
 	}
-	if (ratelimits.resources.core.remaining == 60) {
-		for (var i = 0; i < Object.keys(localStorage).length; i++) {
-			var key = Object.keys(localStorage)[i];
-			if (key.indexOf('cache_json_store') != -1) {
-				localStorage.removeItem(key);
-			}
-		}
+	if (ratelimits.resources.core.remaining > 40) {
+		localStorage.clear();
 	}
 	if (generatePageStructure()) {
 		try {
