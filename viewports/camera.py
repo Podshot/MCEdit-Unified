@@ -355,30 +355,27 @@ class CameraViewport(GLViewport):
                     focusPair = (self.getCameraPoint(), (0, 0, 0))
                 else:
                     focusPair = self.blockFaceUnderCursor
-
-            try:
-                if focusPair[0] is not None and self.editor.level.tileEntityAt(*focusPair[0]):
-                    changed = False
-                    te = self.editor.level.tileEntityAt(*focusPair[0])
-                    backupTE = copy.deepcopy(te)
-                    if te["id"].value == "Sign":
-                        if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
-                            for i in xrange(1,5):
-                                if len(te["Text"+str(i)].value) > 32767:
-                                    te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
-                                    changed = True
-                    if changed:
-                        response = None
-                        if not self.dontShowMessageAgain:
-                            response = ask("Found a sign that exceeded the maximum character limit. Automatically trimmed the sign to prevent crashes.", responses=["Ok", "Don't show this again"])
-                        if response is not None and response == "Don't show this again":
-                            self.dontShowMessageAgain = True
-                        op = SignEditOperation(self.editor, self.editor.level, te, backupTE)
-                        self.editor.addOperation(op)
-                        if op.canUndo:
-                            self.editor.addUnsavedEdit()
-            except:
-                pass
+                    
+            if focusPair[0] is not None and self.editor.level.tileEntityAt(*focusPair[0]):
+                changed = False
+                te = self.editor.level.tileEntityAt(*focusPair[0])
+                backupTE = copy.deepcopy(te)
+                if te["id"].value == "Sign":
+                    if "Text1" in te and "Text2" in te and "Text3" in te and "Text4" in te:
+                        for i in xrange(1,5):
+                            if len(te["Text"+str(i)].value) > 32767:
+                                te["Text"+str(i)] = pymclevel.TAG_String(str(te["Text"+str(i)].value)[:32767])
+                                changed = True
+                if changed:
+                    response = None
+                    if not self.dontShowMessageAgain:
+                        response = ask("Found a sign that exceeded the maximum character limit. Automatically trimmed the sign to prevent crashes.", responses=["Ok", "Don't show this again"])
+                    if response is not None and response == "Don't show this again":
+                        self.dontShowMessageAgain = True
+                    op = SignEditOperation(self.editor, self.editor.level, te, backupTE)
+                    self.editor.addOperation(op)
+                    if op.canUndo:
+                        self.editor.addUnsavedEdit()
 
             self.blockFaceUnderCursor = focusPair
 
@@ -1012,7 +1009,7 @@ class CameraViewport(GLViewport):
         titleLabel = Label("Edit Command Block")
         commandField = TextFieldWrapped(width=650)
         nameField = TextFieldWrapped(width=200)
-        successField = IntInputRow("SuccessCount")
+        successField = IntInputRow("SuccessCount", min=0, max=15)
         trackOutput = CheckBox()
 
         # Fix for the '§ is Ä§' issue
@@ -1027,8 +1024,8 @@ class CameraViewport(GLViewport):
         oldTrackOutput = trackOutput.value
         nameField.value = tileEntity.get("CustomName", TAG_String("@")).value
         oldNameField = nameField.value
-        successField.value = tileEntity["SuccessCount"].value
-        oldSuccess = successField.value
+        successField.subwidgets[1].value = tileEntity.get("SuccessCount", pymclevel.TAG_Int(0)).value
+        oldSuccess = successField.subwidgets[1].value
 
         class CommandBlockEditOperation(Operation):
             def __init__(self, tool, level):
@@ -1054,11 +1051,11 @@ class CameraViewport(GLViewport):
                 return pymclevel.BoundingBox(pymclevel.TileEntity.pos(tileEntity), (1, 1, 1))
 
         def updateCommandBlock():
-            if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value or oldSuccess != successField.value:
+            if oldCommand != commandField.value or oldTrackOutput != trackOutput.value or oldNameField != nameField.value or oldSuccess != successField.subwidgets[1].value:
                 tileEntity["Command"] = pymclevel.TAG_String(commandField.value)
                 tileEntity["TrackOutput"] = pymclevel.TAG_Byte(trackOutput.value)
                 tileEntity["CustomName"] = pymclevel.TAG_String(nameField.value)
-                tileEntity["SuccessCount"] = pymclevel.TAG_Int(successField.value)
+                tileEntity["SuccessCount"] = pymclevel.TAG_Int(successField.subwidgets[1].value)
 
                 op = CommandBlockEditOperation(self.editor, self.editor.level)
                 self.editor.addOperation(op)
