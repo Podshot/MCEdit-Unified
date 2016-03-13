@@ -25,6 +25,7 @@ function getJSONAsync(url, forceLoad, callback) {
 	var ret_val = {};
 	if (localStorage[cacheItemPrependString+url] && !isRateLimitCheck && !forceLoad) {
 		ret_val = JSON.parse(localStorage[cacheItemPrependString+url]);
+		callback(ret_val);
 	} else {
 		try {
 			$.ajax({
